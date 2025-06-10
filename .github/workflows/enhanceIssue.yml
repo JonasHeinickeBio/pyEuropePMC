@@ -36,6 +36,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ORIGINAL_TITLE: ${{ github.event.issue.title }}
         run: |
           echo "AI Response:"
           echo '${{ steps.inference.outputs.response }}' > ai_response.json
@@ -48,7 +49,7 @@ jobs:
           # Fallback to original title if improved title is empty or null
           if [ -z "$IMPROVED_TITLE" ] || [ "$IMPROVED_TITLE" == "null" ]; then
             echo "Improved title is empty. Falling back to original title."
-            IMPROVED_TITLE="${{ github.event.issue.title }}"
+            IMPROVED_TITLE="$ORIGINAL_TITLE"
           fi
 
           # Compose new issue body
