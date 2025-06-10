@@ -1,1 +1,1 @@
-# This file makes the 'py_europepmc' directory a Python module.
+__version__ = "0.0.1"
