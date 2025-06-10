@@ -34,6 +34,7 @@ types-PyYAML = "6.0.12.20240311"
 types-requests = "2.26.0"
 flake8 = ">=4.0"
 pytest-benchmark = "^5.1.0"
+flake8-pyproject = "^1.2.3"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -64,3 +65,9 @@ markers = [
   "network: mark test that requires network access (use '-m \"not network\"' to skip)",
   "functional: mark test as functional (use '-m \"not functional\"' to skip)",
 ]
+
+[tool.flake8]
+ignore = ["E731", "E266", "E501", "C901", "W503"]
+max-line-length = 99
+exclude = [".git", "node_modules", ".venv", "dist", "build", "docs", "tests", "__pycache__", ".pytest_cache"]
+

@@ -2,7 +2,7 @@
 # GLOBALS                                                                       #
 #################################################################################
 
-PROJECT_NAME = AID-PAIS-KnowledgeGraph
+PROJECT_NAME = pyEuropePMC
 PYTHON_VERSION = 3.10
 PYTHON_INTERPRETER = python
 
@@ -29,23 +29,31 @@ clean:
 ## Lint using flake8 and black (use `make format` to do formatting)
 .PHONY: lint
 lint:
-	flake8 aid_pais_knowledgegraph
-	isort --check --diff --profile black aid_pais_knowledgegraph
-	black --check --config pyproject.toml aid_pais_knowledgegraph
+	flake8 pyEuropePMC
+	isort --check --diff --profile black pyEuropePMC
+	black --check --config pyproject.toml pyEuropePMC
 
 ## Format source code with black
 .PHONY: format
 format:
-	black --config pyproject.toml aid_pais_knowledgegraph
+	black --config pyproject.toml pyEuropePMC
 
 
 
+
+## Install pipx
+.PHONY: pipx
+pipx:
+	$(PYTHON_INTERPRETER) -m pip install --user pipx
+	$(PYTHON_INTERPRETER) -m pipx ensurepath
 
 ## Set up python interpreter environment
 .PHONY: create_environment
-create_environment:
-	@bash -c "if [ ! -z `which virtualenvwrapper.sh` ]; then source `which virtualenvwrapper.sh`; mkvirtualenv $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); else mkvirtualenv.bat $(PROJECT_NAME) --python=$(PYTHON_INTERPRETER); fi"
-	@echo ">>> New virtualenv created. Activate with:\nworkon $(PROJECT_NAME)"
+create_environment: pipx
+	pipx install poetry || true
+	poetry env use $(PYTHON_INTERPRETER)
+	poetry install
+	@echo ">>> Poetry virtual environment created. Activate with:\nsource $$(poetry env info --path)/bin/activate"
 	
 
 
