@@ -1,0 +1,23 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.10.13"
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Release Poetry Python Project
+        uses: bjoluc/semantic-release-config-poetry@v2.2.0
+        with:
+          pypi_token: ${{ secrets.PYPI_TOKEN }}
+
