@@ -1,0 +1,58 @@
+name: Enhance new issues
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  enhance:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+      models: read
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run AI inference
+        id: inference
+        uses: actions/ai-inference@v1
+        with:
+          prompt: |
+            Please rewrite the following GitHub issue for clarity and structure.
+            Respond ONLY in valid JSON (no markdown, no code fences) with the following fields:
+            {
+              "improved_title": "<your improved title>",
+              "improved_body": "<your improved body>",
+              "checklist": "<your checklist in markdown>"
+            }
+            Original Title: ${{ github.event.issue.title }}
+            Original Body: ${{ github.event.issue.body }}
+          max-tokens: 4000
+
+      - name: Update issue with improved title and body
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+        run: |
+          echo "AI Response:"
+          echo '${{ steps.inference.outputs.response }}' > ai_response.json
+
+          # Parse JSON fields using jq
+          IMPROVED_TITLE=$(jq -r '.improved_title' ai_response.json)
+          IMPROVED_BODY=$(jq -r '.improved_body' ai_response.json)
+          CHECKLIST=$(jq -r '.checklist' ai_response.json)
+
+          # Fallback to original title if improved title is empty or null
+          if [ -z "$IMPROVED_TITLE" ] || [ "$IMPROVED_TITLE" == "null" ]; then
+            echo "Improved title is empty. Falling back to original title."
+            IMPROVED_TITLE="${{ github.event.issue.title }}"
+          fi
+
+          # Compose new issue body
+          NEW_BODY="$IMPROVED_BODY"$'\n\n'"$CHECKLIST"
+
+          # Update the issue
+          gh issue edit "$ISSUE_NUMBER" --title "$IMPROVED_TITLE" --body "$NEW_BODY"
