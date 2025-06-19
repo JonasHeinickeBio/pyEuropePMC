@@ -3,7 +3,7 @@ import time
 from typing import Any, Dict, Optional
 
 import backoff
-import requests  # type: ignore[import-untyped]
+import requests
 
 
 class APIClientError(Exception):
@@ -34,7 +34,7 @@ class BaseAPIClient:
         on_giveup=lambda details: BaseAPIClient.logger.error(
             f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
         ),
-    )  # type: ignore[misc]
+    )
     def _get(
         self, endpoint: str, params: Optional[Dict[str, Any]] = None, stream: bool = False
     ) -> requests.Response:
@@ -70,7 +70,7 @@ class BaseAPIClient:
         on_giveup=lambda details: BaseAPIClient.logger.error(
             f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
         ),
-    )  # type: ignore[misc]
+    )
     def _post(
         self, endpoint: str, data: Dict[str, Any], headers: Optional[Dict[str, str]] = None
     ) -> requests.Response:

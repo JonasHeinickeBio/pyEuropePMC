@@ -18,6 +18,8 @@ repos:
     hooks:
       - id: mypy
         language_version: python3.10
+        additional_dependencies: ["types-requests"]
+        args: [--config-file=pyproject.toml]
         exclude: ^tests/
 
   - repo: https://github.com/PyCQA/bandit
