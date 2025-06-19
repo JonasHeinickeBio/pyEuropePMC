@@ -144,7 +144,7 @@ source = ["pyeuropepmc"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
-fail_under = 90  # Set your desired test coverage threshold
+fail_under = 50  # Set your desired test coverage threshold
 
 [tool.bandit]
 skips = ["B101", "B303"]

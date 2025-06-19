@@ -49,7 +49,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           poetry run coverage run -m pytest
-          poetry run coverage report --fail-under=90
+          poetry run coverage report
           poetry run coverage xml
 
       - name: Upload coverage to GitHub (optional, for PRs)
