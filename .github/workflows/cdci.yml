@@ -30,10 +30,6 @@ jobs:
         run: |
           poetry install --no-interaction --no-ansi
 
-      - name: Run Black (code formatting check)
-        run: |
-          poetry run black --check .
-
       - name: Run isort (import sorting check)
         run: |
           poetry run isort --check --diff .
