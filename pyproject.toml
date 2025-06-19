@@ -158,4 +158,4 @@ strict = true
 ignore_missing_imports = true
 exclude = "tests/"
 files = "src/"
-disable_error_code = ["misc"]
+disable_error_code = ["misc", "import-untyped"]

@@ -48,7 +48,7 @@ jobs:
 
       - name: Run tests with coverage
         run: |
-          poetry run coverage run -m pytest --fail-fast
+          poetry run coverage run -m pytest
           poetry run coverage report --fail-under=90
           poetry run coverage xml
 
