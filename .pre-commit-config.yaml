@@ -50,3 +50,11 @@ repos:
       - id: python-check-blanket-noqa
       - id: python-no-eval
       - id: python-no-log-warn
+
+  - repo: local
+    hooks:
+      - id: poetry-lock
+        name: Ensure poetry.lock is up-to-date
+        entry: bash -c 'poetry lock && git diff --exit-code poetry.lock'
+        language: system
+        pass_filenames: false
