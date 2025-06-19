@@ -6,8 +6,8 @@
 
 ## 🚧 Project Status
 
-**PyEuropePMC is under active development.**  
-APIs, features, and documentation may change.  
+**PyEuropePMC is under active development.**
+APIs, features, and documentation may change.
 Contributions, feedback, and suggestions are welcome!
 
 ---
@@ -71,14 +71,14 @@ for paper in results:
 
 ## 🤝 Contributing
 
-Contributions are welcome!  
+Contributions are welcome!
 Please open issues or pull requests for bugs, features, or suggestions.
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License.  
+Distributed under the MIT License.
 See [LICENSE](LICENSE) for details.
 
 ---

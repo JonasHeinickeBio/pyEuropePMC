@@ -1,11 +1,14 @@
-from typing import Optional, Dict, Any, List, Union
-from .base import BaseAPIClient
+from typing import Any, Dict, List, Optional, Union
+
+from pyeuropepmc.base import BaseAPIClient
+from pyeuropepmc.parser import EuropePMCParser
 
 logger = BaseAPIClient.logger
 
 
 class EuropePMCError(Exception):
     """Custom exception for Europe PMC API errors."""
+
     pass
 
 
@@ -15,10 +18,11 @@ class SearchClient(BaseAPIClient):
     This client provides methods to search for publications using various parameters,
     including keywords, phrases, fielded searches, and specific publication identifiers.
     """
+
     def __init__(self, rate_limit_delay: float = 1.0) -> None:
         """
         Initialize the SearchClient with an optional rate limit delay.
-        
+
         Parameters
         ----------
         rate_limit_delay : float, optional
@@ -26,22 +30,20 @@ class SearchClient(BaseAPIClient):
         """
         super().__init__(rate_limit_delay=rate_limit_delay)
 
-    def __enter__(self):
+    def __enter__(self) -> "SearchClient":
         """
         Enter the runtime context related to this object.
         Returns self to allow method chaining.
         """
         return self
-    
+
     def __repr__(self) -> str:
         return super().__repr__()
-
 
     def close(self) -> None:
         return super().close()
 
-
-    def search(self, query: str, **kwargs) -> Union[Dict[str, Any], str]:
+    def search(self, query: str, **kwargs: Any) -> Union[Dict[str, Any], str]:
         """
         Search the Europe PMC publication database.
 
@@ -51,21 +53,25 @@ class SearchClient(BaseAPIClient):
             User query. Possible options are:
             - a keyword or combination of keywords (e.g. HPV virus).
             - a phrase with enclosing speech marks (e.g. "human malaria").
-            - a fielded search (e.g. auth:stoehr). Available search fields are listed in the Appendix 1 of the Reference Guide or can be retrieved using the fields module of the API.
-            - a specific publication (e.g. ext_id:781840 src:med). Specify ext_id as the article identifier, and src as the source database. List of the data sources can be found on the help pages or in section 3 of the Reference Guide.
+            - a fielded search (e.g. auth:stoehr).
+            - a specific publication (e.g. ext_id:781840 src:med).
         resultType : str
-            Response Type. Determines the fields returned by XML and JSON formats, but has no effect on the DC format. Possible values:
+            Response Type. Determines fields returned by XML and JSON formats, but not DC format.
+            Possible values:
             - idlist: returns a list of IDs and sources for the given search terms
             - lite: returns key metadata for the given search terms
-            - core: returns full metadata for a given publication ID; including abstract, full text links, and MeSH terms
+            - core: returns full metadata for a given publication ID; including abstract,
+              full text links, and MeSH terms
         synonym : bool
-            Synonym searches are not made by default (default = False). Queries can be expanded using MeSH terminology. For example, aspirin's synonym acetylsalicylic acid can be included by setting this to True. Case insensitive.
+            Synonym searches are not made by default (default = False).
+            Queries can be expanded using MeSH terminology.
         cursorMark : str
-            CursorMark for pagination. For the first request, omit or use '*'. For following pages, use the returned nextCursorMark.
+            CursorMark for pagination. For the first request, omit or use '*'.
+            For following pages, use the returned nextCursorMark.
         pageSize : int
             Number of articles per page. Default is 25. Max is 1000.
         sort : str
-            Sort order. Default is relevance. Specify field and order (asc or desc), e.g., 'CITED asc'.
+            Sort order. Default is relevance. Specify field and order (asc or desc), 'CITED asc'.
         format : str
             Response format. Can be XML, JSON, or DC (Dublin Core).
         callback : str
@@ -76,9 +82,9 @@ class SearchClient(BaseAPIClient):
         Returns
         -------
         dict or str
-            Parsed API response as JSON dict, or raw XML/DC string depending on the requested format.
+            Parsed API response as JSON dict, or raw XML/DC string depending on requested format.
         """
-        params: dict = {
+        params: Dict[str, Any] = {
             "query": query,
             "resultType": kwargs.pop("resultType", "lite"),
             "synonym": str(kwargs.pop("synonym", False)).upper(),
@@ -87,23 +93,23 @@ class SearchClient(BaseAPIClient):
         }
         params.update(kwargs)
         try:
-            r = self._get("search", params)
-            if not r:
+            response = self._get("search", params)
+            if not response:
                 raise EuropePMCError("No response from server")
             response_format = params["format"].lower()
             if response_format == "json":
-                return r.json()
+                response_json: Dict[str, Any] = response.json()
+                return response_json
             else:
-                return r.text
+                return str(response.text)
         except Exception as e:
             raise EuropePMCError(f"Error during search: {e}")
 
-
-    def search_post(self, query: str, **kwargs) -> Union[dict, str]:
+    def search_post(self, query: str, **kwargs: Any) -> Union[Dict[str, Any], str]:
         """
         Search the Europe PMC publication database using a POST request.
 
-        This endpoint is suitable for complex or very long queries that might exceed URL length limits.
+        This endpoint is for complex or very long queries that might exceed URL length limits.
         All parameters are sent as URL-encoded form data in the request body.
 
         Parameters
@@ -112,21 +118,24 @@ class SearchClient(BaseAPIClient):
             User query. Possible options are:
             - a keyword or combination of keywords (e.g. HPV virus).
             - a phrase with enclosing speech marks (e.g. "human malaria").
-            - a fielded search (e.g. auth:stoehr). Available search fields are listed in the Appendix 1 of the Reference Guide or can be retrieved using the fields module of the API.
-            - a specific publication (e.g. ext_id:781840 src:med). Specify ext_id as the article identifier, and src as the source database. List of the data sources can be found on the help pages or in section 3 of the Reference Guide.
+            - a fielded search (e.g. auth:stoehr).
+            - a specific publication (e.g. ext_id:781840 src:med).
         resultType : str, optional
-            Response Type. Determines the fields returned by XML and JSON formats, but has no effect on the DC format. Possible values:
+            Response Type. Determines fields returned by XML and JSON formats, but not DC format.
+            Possible values:
             - idlist: returns a list of IDs and sources for the given search terms
             - lite: returns key metadata for the given search terms
-            - core: returns full metadata for a given publication ID; including abstract, full text links, and MeSH terms
+            - core: returns full metadata for a given publication ID; including abstract,
+            full text links, and MeSH terms
         synonym : bool, optional
-            Synonym searches are not made by default (default = False). Queries can be expanded using MeSH terminology. For example, aspirin's synonym acetylsalicylic acid can be included by setting this to True. Case insensitive.
+            Synonym searches are not made by default (default = False).
         cursorMark : str, optional
-            CursorMark for pagination. For the first request, omit or use '*'. For following pages, use the returned nextCursorMark.
+            CursorMark for pagination. For the first request, omit or use '*'.
+            For following pages, use the returned nextCursorMark.
         pageSize : int, optional
             Number of articles per page. Default is 25. Max is 1000.
         sort : str, optional
-            Sort order. Default is relevance. Specify field and order (asc or desc), e.g., 'CITED asc'.
+            Sort order. Default is relevance. Specify order (asc or desc), e.g., 'CITED asc'.
         format : str, optional
             Response format. Can be XML, JSON, or DC (Dublin Core).
         callback : str, optional
@@ -137,14 +146,14 @@ class SearchClient(BaseAPIClient):
         Returns
         -------
         dict or str
-            Parsed API response as JSON dict, or raw XML/DC string depending on the requested format.
+            Parsed API response as JSON dict, or raw XML/DC string depending on the format.
 
         Raises
         ------
         EuropePMCError
             If the request fails or the response cannot be parsed.
         """
-        data: dict = {
+        data: Dict[str, Any] = {
             "query": query,
             "resultType": kwargs.pop("resultType", "lite"),
             "synonym": str(kwargs.pop("synonym", False)).upper(),
@@ -156,23 +165,19 @@ class SearchClient(BaseAPIClient):
         try:
             # Ensure Content-Type is set for form data
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
-            r = self._post("searchPOST", data=data, headers=headers)
-            if not r:
+            response = self._post("searchPOST", data=data, headers=headers)
+            if not response:
                 raise EuropePMCError("No response from server")
             if response_format == "json":
-                return r.json()
+                response_json: Dict[str, Any] = response.json()
+                return response_json
             else:
-                return r.text
+                return str(response.text)
         except Exception as e:
             raise EuropePMCError(f"Error during POST search: {e}")
 
-
     def fetch_all_pages(
-        self,
-        query: str,
-        page_size: int = 100,
-        max_results: Optional[int] = None,
-        **kwargs
+        self, query: str, page_size: int = 100, max_results: Optional[int] = None, **kwargs: Any
     ) -> List[Dict[str, Any]]:
         """
         Fetch all results for a query, handling pagination automatically.
@@ -199,7 +204,9 @@ class SearchClient(BaseAPIClient):
 
         while True:
             data = self.search(query, pageSize=page_size, cursorMark=cursor_mark, **kwargs)
-            if not isinstance(data, dict): # If data is not a dict (e.g., it's a string), stop fetching
+            if not isinstance(
+                data, dict
+            ):  # If data is not a dict (e.g., it's a string), stop fetching
                 break
             if data.get("hitCount") == 0:
                 logger.info(f"No results found for query: {query}")
@@ -224,12 +231,12 @@ class SearchClient(BaseAPIClient):
             if len(page_results) < page_size:
                 break
         return results
-    
 
-    def interactive_search(self, query: str, **kwargs) -> List[Dict[str, Any]]:
+    def interactive_search(self, query: str, **kwargs: Any) -> List[Dict[str, Any]]:
         """
-        Interactive search: Show hit count, prompt user for number of results, fetch and return them.
-        This method performs an initial search to get the hit count, prompts the user for how many results they want,
+        Interactive search: Show hit count, prompt user for number of results, fetch and return.
+        This method performs an initial search to get the hit count,
+        it then prompts the user for how many results they want,
         and then fetches that many results, handling pagination as needed.
         The user can type 'q' or 'quit' to exit without fetching results.
         """
@@ -237,7 +244,10 @@ class SearchClient(BaseAPIClient):
         response = self.search(query, pageSize=1, **kwargs)
 
         if isinstance(response, str):
-            logger.warning("Received a string response, which is unexpected. Please check your query or parameters.")
+            logger.warning(
+                "Received a string response, which is unexpected. "
+                "Please check your query or parameters."
+            )
             return []
         if not response or "hitCount" not in response:
             logger.info("No results found or error occurred.")
@@ -247,7 +257,10 @@ class SearchClient(BaseAPIClient):
 
         # Step 2: Prompt user for number of results to fetch, allow quit
         while True:
-            user_input = input(f"How many results would you like to retrieve? (max {hit_count}, 'q', 'quit' or 0 to quit): ").strip()
+            user_input = input(
+                f"How many results would you like to retrieve? (max {hit_count}, "
+                f"'q', 'quit' or 0 to quit): "
+            ).strip()
             if user_input in ("0", "q", "quit"):
                 logger.info("No results will be fetched. Exiting interactive search.")
                 return []
@@ -264,18 +277,32 @@ class SearchClient(BaseAPIClient):
         results = self.fetch_all_pages(query, max_results=n, **kwargs)
         logger.info(f"Fetched {len(results)} results.")
         return results
-    
 
-    """def search_and_parse(self, query: str, format: str = "json", **kwargs) -> List[Dict[str, Any]]:
+    def search_and_parse(
+        self, query: str, format: str = "json", **kwargs: Any
+    ) -> List[Dict[str, Any]]:
+        """
+        Search and parse results from Europe PMC.
+        Parameters
+        ----------
+        query : str
+            The search query.
+        format : str, optional
+            The format of the response. Can be 'json', 'xml', or 'dc' (Dublin Core).
+            Default is 'json'.
+        **kwargs
+            Additional parameters for the search.
+        Returns
+        -------
+        List[Dict[str, Any]]
+            Parsed results as a list of dictionaries.
+        """
         raw = self.search(query, format=format, **kwargs)
         if format == "json" and isinstance(raw, dict):
-            return self.parse_json(raw)
+            return EuropePMCParser.parse_json(raw)
         elif format == "xml" and isinstance(raw, str):
-            return self.parse_xml(raw)
+            return EuropePMCParser.parse_xml(raw)
         elif format == "dc" and isinstance(raw, str):
-            return self.parse_dc(raw)
+            return EuropePMCParser.parse_dc(raw)
         else:
-            raise ValueError("Unknown format or parsing error")"""
-    
-
-
+            raise ValueError("Unknown format or parsing error")

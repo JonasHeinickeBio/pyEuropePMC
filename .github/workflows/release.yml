@@ -23,4 +23,3 @@ jobs:
         uses: bjoluc/semantic-release-config-poetry@v2.2.0
         with:
           pypi_token: ${{ secrets.PYPI_TOKEN }}
-

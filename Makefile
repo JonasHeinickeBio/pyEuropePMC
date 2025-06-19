@@ -16,7 +16,7 @@ PYTHON_INTERPRETER = python
 requirements:
 	$(PYTHON_INTERPRETER) -m pip install -U pip
 	$(PYTHON_INTERPRETER) -m pip install -r requirements.txt
-	
+
 
 
 
@@ -54,7 +54,7 @@ create_environment: pipx
 	poetry env use $(PYTHON_INTERPRETER)
 	poetry install
 	@echo ">>> Poetry virtual environment created. Activate with:\nsource $$(poetry env info --path)/bin/activate"
-	
+
 
 
 
