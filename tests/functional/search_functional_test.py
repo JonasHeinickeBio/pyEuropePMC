@@ -1,12 +1,15 @@
-import pytest
 import logging
-from aid_pais_knowledgegraph.py_europepmc.search import SearchClient
 import time
 from typing import Any, Dict, List
+
+import pytest
+
+from pyeuropepmc.search import SearchClient
 
 # Configure logging for debugging
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger(__name__)
+
 
 @pytest.mark.functional
 @pytest.mark.parametrize(
@@ -16,7 +19,7 @@ logger = logging.getLogger(__name__)
         ("cancer", 100),
         ("diabetes", 3),
         ("asthma", 2),
-    ]
+    ],
 )
 def test_search_json_functional(query: str, page_size: int) -> None:
     """
@@ -28,7 +31,7 @@ def test_search_json_functional(query: str, page_size: int) -> None:
     format = "json"
     client = SearchClient()
     logger.debug(f"Starting search for '{query}' with pageSize={page_size} and format='{format}'")
-    result: Dict[str, Any] = client.search(query, pageSize=page_size, format=format) # type: ignore
+    result: Dict[str, Any] = client.search(query, pageSize=page_size, format=format)  # type: ignore
     logger.debug(f"Search result: {result}")
     assert isinstance(result, dict), "search() should return a dict for JSON format"
     assert "resultList" in result, "Missing 'resultList' in response"
@@ -42,6 +45,7 @@ def test_search_json_functional(query: str, page_size: int) -> None:
         logger.debug("Closing client connection")
         client.close()
 
+
 @pytest.mark.functional
 @pytest.mark.parametrize(
     "query,page_size,max_results",
@@ -50,7 +54,7 @@ def test_search_json_functional(query: str, page_size: int) -> None:
         ("cancer", 100, 1000),
         ("diabetes", 3, 6),
         ("asthma", 2, 4),
-    ]
+    ],
 )
 def test_search_all_json(query: str, page_size: int, max_results: int) -> None:
     """
@@ -60,14 +64,21 @@ def test_search_all_json(query: str, page_size: int, max_results: int) -> None:
     """
     client = SearchClient()
 
-    logger.debug(f"Fetching all pages for '{query}' with page_size={page_size} and max_results={max_results}")
+    logger.debug(
+        f"Fetching pages for '{query}' with page_size={page_size} and max_results={max_results}"
+    )
     start_time = time.time()
-    all_results: List[Dict[str, Any]] = client.fetch_all_pages(query, page_size=page_size, max_results=max_results)
+    all_results: List[Dict[str, Any]] = client.fetch_all_pages(
+        query, page_size=page_size, max_results=max_results
+    )
     elapsed_time = time.time() - start_time
     time_per_item = elapsed_time / max(1, len(all_results))
     logger.debug(f"All results: {all_results}")
 
-    logger.info(f"Query '{query}': {len(all_results)} items in {elapsed_time:.3f}s ({time_per_item:.3f}s/item)")
+    logger.info(
+        f"Query '{query}': {len(all_results)} items in {elapsed_time:.3f}s "
+        f"({time_per_item:.3f}s/item)"
+    )
 
     assert isinstance(all_results, list), "fetch_all_pages() should return a list"
     assert len(all_results) <= max_results, "fetch_all_pages() returned more than max_results"
@@ -83,13 +94,13 @@ def test_search_all_json(query: str, page_size: int, max_results: int) -> None:
 @pytest.mark.parametrize(
     "user_inputs, expected_results_count",
     [
-        (["5"], 5),                # Normal input
-        (["fail", "3"], 3),        # Invalid then valid
-        (["0"], 0),                # User enters 0 to quit
-        (["q"], 0),                # User enters 'q' to quit
-        (["quit"], 0),             # User enters 'quit' to quit
-        (["-1", "11"], 11),    # Out of range then valid
-    ]
+        (["5"], 5),  # Normal input
+        (["fail", "3"], 3),  # Invalid then valid
+        (["0"], 0),  # User enters 0 to quit
+        (["q"], 0),  # User enters 'q' to quit
+        (["quit"], 0),  # User enters 'quit' to quit
+        (["-1", "11"], 11),  # Out of range then valid
+    ],
 )
 def test_interactive_search(
     monkeypatch: Any,
@@ -110,7 +121,9 @@ def test_interactive_search(
     inputs = iter(user_inputs)
     monkeypatch.setattr("builtins.input", lambda _: next(inputs))
 
-    results: List[Dict[str, Any]] = client.interactive_search(query, page_size=page_size, format=format)
+    results: List[Dict[str, Any]] = client.interactive_search(
+        query, page_size=page_size, format=format
+    )
 
     assert isinstance(results, list), "interactive_search should return a list"
     assert all(isinstance(r, dict) for r in results), "Each result should be a dict"

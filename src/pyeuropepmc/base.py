@@ -1,12 +1,16 @@
-import requests
-import time
 import logging
-from typing import Optional, Dict, Any
+import time
+from typing import Any, Dict, Optional
+
 import backoff
+import requests
+
 
 class APIClientError(Exception):
     """Custom exception for API client errors."""
+
     pass
+
 
 class BaseAPIClient:
     BASE_URL: str = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
@@ -24,17 +28,15 @@ class BaseAPIClient:
         jitter=None,
         on_backoff=lambda details: BaseAPIClient.logger.warning(
             f"Backing off {details.get('wait', 'unknown')}s after {details['tries']} tries "
-            f"calling {details['target'].__name__} with args {details['args']}, kwargs {details['kwargs']}"
+            f"calling {details['target'].__name__} with args {details['args']}, "
+            f"kwargs {details['kwargs']}"
         ),
         on_giveup=lambda details: BaseAPIClient.logger.error(
             f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
         ),
     )
     def _get(
-        self,
-        endpoint: str,
-        params: Optional[Dict[str, Any]] = None,
-        stream: bool = False
+        self, endpoint: str, params: Optional[Dict[str, Any]] = None, stream: bool = False
     ) -> requests.Response:
         """
         Robust GET request with retries and backoff.
@@ -55,7 +57,6 @@ class BaseAPIClient:
         finally:
             time.sleep(self.rate_limit_delay)
 
-
     @backoff.on_exception(
         backoff.expo,
         (requests.ConnectionError, requests.Timeout, requests.HTTPError),
@@ -63,17 +64,15 @@ class BaseAPIClient:
         jitter=None,
         on_backoff=lambda details: BaseAPIClient.logger.warning(
             f"Backing off {details.get('wait', 'unknown')}s after {details['tries']} tries "
-            f"calling {details['target'].__name__} with args {details['args']}, kwargs {details['kwargs']}"
+            f"calling {details['target'].__name__} with args {details['args']}, "
+            f"kwargs {details['kwargs']}"
         ),
         on_giveup=lambda details: BaseAPIClient.logger.error(
             f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
         ),
     )
     def _post(
-        self,
-        endpoint: str,
-        data: Dict[str, Any],
-        headers: Optional[Dict[str, str]] = None
+        self, endpoint: str, data: Dict[str, Any], headers: Optional[Dict[str, str]] = None
     ) -> requests.Response:
         """
         Robust POST request with retries and backoff.
@@ -93,7 +92,6 @@ class BaseAPIClient:
             raise APIClientError(f"POST request to {url} failed: {e}")
         finally:
             time.sleep(self.rate_limit_delay)
-
 
     def close(self) -> None:
         self.logger.debug("Closing session")
