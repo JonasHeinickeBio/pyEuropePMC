@@ -12,7 +12,7 @@ packages = [{ include = "pyeuropepmc", from = "src" }]
 "Bug Tracker" = "https://github.com/JonasHeinickeBio/pyEuropePMC/issues"
 
 [tool.poetry.dependencies]
-python = "3.10.13"
+python = ">=3.10,<3.11"
 ipython = ">=7.30"
 ipykernel = ">=6.7"
 ipywidgets = ">=7.6"
