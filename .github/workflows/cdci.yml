@@ -40,7 +40,7 @@ jobs:
 
       - name: Run Bandit (security checks)
         run: |
-          poetry run bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip B101 B303
+          poetry run bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip "B101,B303"
 
       - name: Run mypy (type checking)
         run: |
