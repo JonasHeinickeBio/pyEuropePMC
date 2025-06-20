@@ -14,14 +14,12 @@ requires-python = ">=3.10,<3.11"
 "Bug Tracker" = "https://github.com/JonasHeinickeBio/pyEuropePMC/issues"
 
 [tool.semantic_release]
-version_variable = [
-    "src/pyeuropepmc/__init__.py:__version__",
-    "pyproject.toml:project.version"
-]
+version_variable = ["src/pyeuropepmc/__init__.py:__version__"]
+version_toml = ["pyproject.toml:project.version"]
 branch = "main"
 upload_to_pypi = true
 upload_to_release = true
-build_command = "echo 'Building...'"
+build_command = "pip install poetry && poetry build"
 commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
 
 [tool.poetry.dependencies]
