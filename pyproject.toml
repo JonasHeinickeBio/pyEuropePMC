@@ -16,12 +16,12 @@ requires-python = ">=3.10,<3.11"
 [tool.semantic_release]
 version_variable = [
     "src/pyeuropepmc/__init__.py:__version__",
-    "pyproject.toml:version"
+    "pyproject.toml:project.version"
 ]
 branch = "main"
 upload_to_pypi = true
 upload_to_release = true
-build_command = "pip install poetry && poetry build"
+build_command = "echo 'Building...'"
 commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
 
 [tool.poetry.dependencies]
