@@ -1,15 +1,28 @@
-[tool.poetry]
+[project]
 name = "pyeuropepmc"
 version = "1.0.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
-authors = ["Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"]
-packages = [{ include = "pyeuropepmc", from = "src" }]
+authors = [
+  { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" }
+]
+requires-python = ">=3.10,<3.11"
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 "Bug Tracker" = "https://github.com/JonasHeinickeBio/pyEuropePMC/issues"
+
+[tool.semantic_release]
+version_variable = [
+    "src/pyeuropepmc/__init__.py:__version__",
+    "pyproject.toml:version"
+]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<3.11"
