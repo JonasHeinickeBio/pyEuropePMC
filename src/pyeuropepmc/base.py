@@ -19,7 +19,24 @@ class BaseAPIClient:
 
     def __init__(self, rate_limit_delay: float = 1.0) -> None:
         self.rate_limit_delay: float = rate_limit_delay
-        self.session: requests.Session = requests.Session()
+        self.session: Optional[requests.Session] = requests.Session()
+
+        self.session.headers.update(
+            {
+                "User-Agent": (
+                    "pyeuropepmc/1.0.0 "
+                    "(https://github.com/JonasHeinickeBio/pyEuropePMC; "
+                    "jonas.heinicke@helmholtz-hzi.de)"
+                )
+            }
+        )
+
+    def __repr__(self) -> str:
+        """Return a string representation of the client."""
+        status = "closed" if self.is_closed else "active"
+        return (
+            f"{self.__class__.__name__}(rate_limit_delay={self.rate_limit_delay}, status={status})"
+        )
 
     @backoff.on_exception(
         backoff.expo,
@@ -42,6 +59,9 @@ class BaseAPIClient:
         Robust GET request with retries and backoff.
         Raises APIClientError on failure.
         """
+        if self.is_closed or self.session is None:
+            raise APIClientError("Session is closed. Cannot make requests.")
+
         url: str = self.BASE_URL + endpoint
         try:
             self.logger.debug(f"GET request to {url} with params={params} and stream={stream}")
@@ -78,6 +98,9 @@ class BaseAPIClient:
         Robust POST request with retries and backoff.
         Raises APIClientError on failure.
         """
+        if self.is_closed or self.session is None:
+            raise APIClientError("Session is closed. Cannot make requests.")
+
         url: str = self.BASE_URL + endpoint
         try:
             self.logger.debug(f"POST request to {url} with data={data} and headers={headers}")
@@ -93,6 +116,24 @@ class BaseAPIClient:
         finally:
             time.sleep(self.rate_limit_delay)
 
+    def __enter__(self) -> "BaseAPIClient":
+        """Enter the runtime context for the context manager."""
+        return self
+
+    def __exit__(
+        self, exc_type: Optional[type], exc_val: Optional[BaseException], exc_tb: Optional[object]
+    ) -> None:
+        """Exit the runtime context and clean up resources."""
+        self.close()
+
     def close(self) -> None:
-        self.logger.debug("Closing session")
-        self.session.close()
+        """Close the HTTP session and clean up resources."""
+        if hasattr(self, "session") and self.session:
+            self.logger.debug("Closing session")
+            self.session.close()
+            self.session = None  # Mark as closed
+
+    @property
+    def is_closed(self) -> bool:
+        """Check if the session is closed."""
+        return not hasattr(self, "session") or self.session is None

@@ -1,18 +1,32 @@
+import logging
 from typing import Any, Dict, List
 
 import defusedxml.ElementTree as ET
 
 
 class EuropePMCParser:
+    logger = logging.getLogger("EuropePMCParser")
+
     @staticmethod
     def parse_json(data: Any) -> List[Dict[str, Any]]:
         """
         Parses Europe PMC JSON response and returns a list of result dicts.
         """
-        if isinstance(data, dict):
-            results = data.get("resultList", {}).get("result", [])
-            if isinstance(results, list) and all(isinstance(item, dict) for item in results):
-                return results
+        try:
+            if isinstance(data, dict):
+                results = data.get("resultList", {}).get("result", [])
+                if isinstance(results, list) and all(isinstance(item, dict) for item in results):
+                    return results
+            elif isinstance(data, list):
+                # If data is already a list of dicts
+                if all(isinstance(item, dict) for item in data):
+                    return data
+            else:
+                EuropePMCParser.logger.error("Invalid data format: expected dict or list of dicts")
+                raise ValueError("Invalid data format: expected dict or list of dicts")
+        except Exception as e:
+            EuropePMCParser.logger.error("Unexpected error while parsing JSON: %s", e)
+            raise
         return []
 
     @staticmethod
@@ -27,8 +41,12 @@ class EuropePMCParser:
             for result_elem in root.findall(".//resultList/result"):
                 result = {child.tag: child.text for child in result_elem}
                 results.append(result)
-        except ET.ParseError:
-            pass  # Optionally log error
+        except ET.ParseError as e:
+            EuropePMCParser.logger.error("XML parsing error: %s", e)
+            raise
+        except Exception as e:
+            EuropePMCParser.logger.error("Unexpected error while parsing XML: %s", e)
+            raise
         return results
 
     @staticmethod
@@ -61,6 +79,10 @@ class EuropePMCParser:
                     else:
                         result[tag] = child.text
                 results.append(result)
-        except ET.ParseError:
-            pass  # Optionally log error
+        except ET.ParseError as e:
+            EuropePMCParser.logger.error("DC XML parsing error: %s", e)
+            raise
+        except Exception as e:
+            EuropePMCParser.logger.error("Unexpected error while parsing DC XML: %s", e)
+            raise
         return results
