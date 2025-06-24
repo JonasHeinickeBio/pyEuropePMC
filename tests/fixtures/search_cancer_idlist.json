@@ -1,0 +1,197 @@
+{
+  "version": "6.9",
+  "hitCount": 5059039,
+  "nextCursorMark": "AoIIP4ZawSg1MzEyODI1MA==",
+  "nextPageUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=cancer&cursorMark=AoIIP4ZawSg1MzEyODI1MA==&resultType=idlist&format=json",
+  "request": {
+    "queryString": "cancer",
+    "resultType": "idlist",
+    "cursorMark": "%2A",
+    "pageSize": 25,
+    "sort": "",
+    "synonym": false
+  },
+  "resultList": {
+    "result": [
+      {
+        "id": "39709209",
+        "source": "MED",
+        "pmid": "39709209"
+      },
+      {
+        "id": "39709208",
+        "source": "MED",
+        "pmid": "39709208",
+        "pmcid": "PMC12124214",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12124214"
+          ]
+        }
+      },
+      {
+        "id": "40468710",
+        "source": "MED",
+        "pmid": "40468710"
+      },
+      {
+        "id": "40464630",
+        "source": "MED",
+        "pmid": "40464630"
+      },
+      {
+        "id": "40493882",
+        "source": "MED",
+        "pmid": "40493882"
+      },
+      {
+        "id": "40437959",
+        "source": "MED",
+        "pmid": "40437959",
+        "pmcid": "PMC12120539",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12120539"
+          ]
+        }
+      },
+      {
+        "id": "40377773",
+        "source": "MED",
+        "pmid": "40377773",
+        "pmcid": "PMC12174270",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12174270"
+          ]
+        }
+      },
+      {
+        "id": "40511629",
+        "source": "MED",
+        "pmid": "40511629"
+      },
+      {
+        "id": "40530674",
+        "source": "MED",
+        "pmid": "40530674"
+      },
+      {
+        "id": "40536418",
+        "source": "MED",
+        "pmid": "40536418"
+      },
+      {
+        "id": "40516981",
+        "source": "MED",
+        "pmid": "40516981"
+      },
+      {
+        "id": "40356016",
+        "source": "MED",
+        "pmid": "40356016",
+        "pmcid": "PMC12069736",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12069736"
+          ]
+        }
+      },
+      {
+        "id": "40536727",
+        "source": "MED",
+        "pmid": "40536727"
+      },
+      {
+        "id": "40528292",
+        "source": "MED",
+        "pmid": "40528292"
+      },
+      {
+        "id": "40420324",
+        "source": "MED",
+        "pmid": "40420324",
+        "pmcid": "PMC12106854",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12106854"
+          ]
+        }
+      },
+      {
+        "id": "39212676",
+        "source": "MED",
+        "pmid": "39212676",
+        "pmcid": "PMC12166167",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12166167"
+          ]
+        }
+      },
+      {
+        "id": "40506198",
+        "source": "MED",
+        "pmid": "40506198"
+      },
+      {
+        "id": "40524053",
+        "source": "MED",
+        "pmid": "40524053",
+        "pmcid": "PMC12170467",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12170467"
+          ]
+        }
+      },
+      {
+        "id": "40245290",
+        "source": "MED",
+        "pmid": "40245290",
+        "pmcid": "PMC12175802",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12175802"
+          ]
+        }
+      },
+      {
+        "id": "40518973",
+        "source": "MED",
+        "pmid": "40518973",
+        "pmcid": "PMC12175096",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12175096"
+          ]
+        }
+      },
+      {
+        "id": "40536077",
+        "source": "MED",
+        "pmid": "40536077"
+      },
+      {
+        "id": "39038316",
+        "source": "MED",
+        "pmid": "39038316"
+      },
+      {
+        "id": "40527231",
+        "source": "MED",
+        "pmid": "40527231"
+      },
+      {
+        "id": "40530769",
+        "source": "MED",
+        "pmid": "40530769"
+      },
+      {
+        "id": "40476859",
+        "source": "MED",
+        "pmid": "40476859"
+      }
+    ]
+  }
+}
