@@ -1,0 +1,893 @@
+{
+  "version": "6.9",
+  "hitCount": 5933343,
+  "nextCursorMark": "AoIIQM+luyg1MTc3NTM5Mw==",
+  "request": {
+    "queryString": "cancer",
+    "resultType": "lite",
+    "cursorMark": "*",
+    "pageSize": 25,
+    "sort": "",
+    "synonym": true
+  },
+  "resultList": {
+    "result": [
+      {
+        "id": "40353141",
+        "source": "MED",
+        "pmid": "40353141",
+        "pmcid": "PMC12062895",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12062895"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001529",
+        "title": "Aryl Hydrocarbon Receptor (AHR) is required for repopulation of decellularized intestinal colon scaffolds.",
+        "authorString": "Perez-Castro L, Alabi B, Nawas A, Lafita-Navarro MC, Shay J, Conacci-Sorrell M.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-05-13",
+        "firstPublicationDate": "2025-04-25"
+      },
+      {
+        "id": "40206462",
+        "source": "MED",
+        "pmid": "40206462",
+        "pmcid": "PMC11979717",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11979717"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001572",
+        "title": "Filamin A interacting protein 1-like (FILIP1L) has mitochondrial localization.",
+        "authorString": "Henretta S, Bockley K, Odell J, Lammerding J.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-04-10",
+        "firstPublicationDate": "2025-03-25"
+      },
+      {
+        "id": "40161439",
+        "source": "MED",
+        "pmid": "40161439",
+        "pmcid": "PMC11953741",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11953741"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001546",
+        "title": "Analysis of a cancer-associated mutation in the budding yeast Nuf2 kinetochore protein.",
+        "authorString": "Andrade Latino A, Biggins S.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "uniprot",
+            "pdb"
+          ]
+        },
+        "firstIndexDate": "2025-04-02",
+        "firstPublicationDate": "2025-03-11"
+      },
+      {
+        "id": "40191442",
+        "source": "MED",
+        "pmid": "40191442",
+        "pmcid": "PMC11971659",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11971659"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001557",
+        "title": "Regulation of MAP Kinase signaling by the insulin-like growth factor pathway during &lt;i&gt;C. elegans&lt;/i&gt; vulval development.",
+        "authorString": "Eroglu M, Derry WB.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-04-07",
+        "firstPublicationDate": "2025-03-21"
+      },
+      {
+        "id": "40297819",
+        "source": "MED",
+        "pmid": "40297819",
+        "pmcid": "PMC12035650",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12035650"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001418",
+        "title": "Human Structural Homologues of SARS-CoV-2 PL &lt;sup&gt;pro&lt;/sup&gt; as Anti-Targets: A Strategic Panel Analysis.",
+        "authorString": "Al-Homoudi AI, Engel J, Muczynski MD, Brunzelle JS, Gavande NS, Kovari LC.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "Y",
+        "dbCrossReferenceList": {
+          "dbName": [
+            "PDB"
+          ]
+        },
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "pdb"
+          ]
+        },
+        "firstIndexDate": "2025-04-29",
+        "firstPublicationDate": "2025-04-14"
+      },
+      {
+        "id": "40123991",
+        "source": "MED",
+        "pmid": "40123991",
+        "pmcid": "PMC11929957",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11929957"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001482",
+        "title": "Variable heteroplasmy of the Common 9-bp Deletion in the Human Mitochondrial Genome in Ancient and Present-Day Populations.",
+        "authorString": "Alc\u00e1ntar-Aguirre FC, Lozano-Flores C, Hern\u00e1ndez-Rosales M, Varela-Echavarr\u00eda A.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "bioproject"
+          ]
+        },
+        "firstIndexDate": "2025-03-26",
+        "firstPublicationDate": "2025-03-08"
+      },
+      {
+        "id": "40385370",
+        "source": "MED",
+        "pmid": "40385370",
+        "pmcid": "PMC12082346",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12082346"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001577",
+        "title": "Stu2 is required for plus-end directed chromosome transport along microtubules during metaphase in &lt;i&gt;Saccharomyces cerevisiae&lt;/i&gt;.",
+        "authorString": "Torvi JR, Wong J, Drubin DG, Barnes G.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-05-21",
+        "firstPublicationDate": "2025-04-28"
+      },
+      {
+        "id": "40177290",
+        "source": "MED",
+        "pmid": "40177290",
+        "pmcid": "PMC11962655",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11962655"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001558",
+        "title": "A commonly used anti-SOX15 antibody fails to demonstrate specificity in mouse embryos.",
+        "authorString": "Aziz F, Gu B, Ralston A.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-04-07",
+        "firstPublicationDate": "2025-03-18"
+      },
+      {
+        "id": "40061018",
+        "source": "MED",
+        "pmid": "40061018",
+        "pmcid": "PMC11886632",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11886632"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001376",
+        "title": "Targeting Autophagy and the Anticipatory Unfolded Protein Response Leads to Increased Breast Cancer Cell Death.",
+        "authorString": "Brooks J, Pizzo A, Fedraw C, Gojcaj F, Harris M, Proffett D, Anbari A, Tungol L, Livezey MR.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-03-11",
+        "firstPublicationDate": "2025-02-20"
+      },
+      {
+        "id": "40134942",
+        "source": "MED",
+        "pmid": "40134942",
+        "pmcid": "PMC11933925",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11933925"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001545",
+        "title": "Potential for micronuclear turnover through autophagy secretion pathway.",
+        "authorString": "Asami N, Yano S, Tsuruta F.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-03-26",
+        "firstPublicationDate": "2025-03-11"
+      },
+      {
+        "id": "40191444",
+        "source": "MED",
+        "pmid": "40191444",
+        "pmcid": "PMC11971658",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11971658"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001543",
+        "title": "Neopterin extends &lt;i&gt;C. elegans&lt;/i&gt; lifespan in an ATFS-1-dependent manner.",
+        "authorString": "Pitk\u00e4nen M, Monteuuis G, Jackson CB, Matilainen O.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-04-07",
+        "firstPublicationDate": "2025-03-21"
+      },
+      {
+        "id": "40110474",
+        "source": "MED",
+        "pmid": "40110474",
+        "pmcid": "PMC11920827",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11920827"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001553",
+        "title": "Proteasome condensates repeatedly \"contact and release\" at the nuclear periphery during dissolution.",
+        "authorString": "Butcher C, VanderVen K, Li J.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-03-20",
+        "firstPublicationDate": "2025-03-04"
+      },
+      {
+        "id": "40061016",
+        "source": "MED",
+        "pmid": "40061016",
+        "pmcid": "PMC11889464",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11889464"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001406",
+        "title": "Schwann cell deletion of &lt;i&gt;Tumor Susceptibility Gene 101&lt;/i&gt; ( &lt;i&gt;Tsg101&lt;/i&gt; ) in mice results in severe peripheral neuropathy.",
+        "authorString": "Silvius D, Hurley E, Poitelon Y, Wagner KU, Feltri ML, Gunn TM.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-03-11",
+        "firstPublicationDate": "2025-02-21"
+      },
+      {
+        "id": "40083394",
+        "source": "MED",
+        "pmid": "40083394",
+        "pmcid": "PMC11904613",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11904613"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001521",
+        "title": "Transcription Regulatory Protein &lt;i&gt;SIN3&lt;/i&gt; (YOL004W) Influences Mutation Rates in &lt;i&gt;Saccharomyces cerevisiae&lt;/i&gt;.",
+        "authorString": "Eftimie A, Meyer D.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-03-14",
+        "firstPublicationDate": "2025-02-26"
+      },
+      {
+        "id": "39967797",
+        "source": "MED",
+        "pmid": "39967797",
+        "pmcid": "PMC11833458",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11833458"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001415",
+        "title": "The specificity of CTBP dehydrogenase inhibitors MTOB and 4-Cl-HIPP.",
+        "authorString": "Stickland BA, Greulich F, Uhlenhaut NH.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-02-19",
+        "firstPublicationDate": "2025-02-03"
+      },
+      {
+        "id": "40052138",
+        "source": "MED",
+        "pmid": "40052138",
+        "pmcid": "PMC11883465",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11883465"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001502",
+        "title": "SMCT1 has a low affinity to PDZ domain containing 1 protein.",
+        "authorString": "Zhang Q, Clinton J, Westerlund K, Mim C.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "uniprot"
+          ]
+        },
+        "firstIndexDate": "2025-03-07",
+        "firstPublicationDate": "2025-02-19"
+      },
+      {
+        "id": "39897164",
+        "source": "MED",
+        "pmid": "39897164",
+        "pmcid": "PMC11787627",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11787627"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001451",
+        "title": "Endogenous SH2B1 protein localizes to lamellipodia and filopodia: platinum replica electron-microscopy study.",
+        "authorString": "Diakonova M, Carter-Su C, Svitkina T.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-02-04",
+        "firstPublicationDate": "2025-01-17"
+      },
+      {
+        "id": "39958910",
+        "source": "MED",
+        "pmid": "39958910",
+        "pmcid": "PMC11829213",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11829213"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001485",
+        "title": "Evaluation of two new antibodies for recognition of CldU in DNA fiber assay applications.",
+        "authorString": "Widjaja A, Sidorova JM.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "rrid"
+          ]
+        },
+        "firstIndexDate": "2025-02-17",
+        "firstPublicationDate": "2025-01-31"
+      },
+      {
+        "id": "39950089",
+        "source": "MED",
+        "pmid": "39950089",
+        "pmcid": "PMC11822469",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11822469"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001366",
+        "title": "Secreted autotransporter toxin produced by probiotic <i>Escherichia coli</i> Nissle 1917 enhances neurodegeneration in <i>Caenorhabditis elegans</i>.",
+        "authorString": "Redweik G, Xue D.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "bioproject"
+          ]
+        },
+        "firstIndexDate": "2025-02-14",
+        "firstPublicationDate": "2025-01-30"
+      },
+      {
+        "id": "39845269",
+        "source": "MED",
+        "pmid": "39845269",
+        "pmcid": "PMC11751728",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11751728"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001393",
+        "title": "CEP44 and CCDC15 label the spermatozoa proximal and atypical distal centrioles.",
+        "authorString": "Achinger L, Hehl B, Suh J, Schon SB, Nadiminty N, Shah TA, Sindhwani P, Avidor-Reiss T.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "hpa"
+          ]
+        },
+        "firstIndexDate": "2025-01-24",
+        "firstPublicationDate": "2025-01-07"
+      },
+      {
+        "id": "39677520",
+        "source": "MED",
+        "pmid": "39677520",
+        "pmcid": "PMC11638764",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11638764"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001372",
+        "title": "Proteomics analysis reveals the differential impact of the p97 inhibitor CB-5083 on protein levels in various cellular compartments of the HL-60 cell line.",
+        "authorString": "Huang W, Qiu Y, Huynh D, Wang TY, Chou TF.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2024",
+        "pubYear": "2024",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "Y",
+        "dbCrossReferenceList": {
+          "dbName": [
+            "PRIDE"
+          ]
+        },
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct",
+            "doi"
+          ]
+        },
+        "firstIndexDate": "2024-12-16",
+        "firstPublicationDate": "2024-11-27"
+      },
+      {
+        "id": "39634108",
+        "source": "MED",
+        "pmid": "39634108",
+        "pmcid": "PMC11615671",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11615671"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001332",
+        "title": "tRNA, yRNA, and rRNA fragment excisions do not involve canonical microRNA biogenesis machinery.",
+        "authorString": "Godang NL, Nguyen AD, DeMeis JD, Paudel SS, Campbell NJ, Barnes KJ, Jeon K, Roussell AS, Gregson KA, Borchert GM.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2024",
+        "pubYear": "2024",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "doi"
+          ]
+        },
+        "firstIndexDate": "2024-12-05",
+        "firstPublicationDate": "2024-11-19"
+      },
+      {
+        "id": "40475707",
+        "source": "MED",
+        "pmid": "40475707",
+        "doi": "10.17912/micropub.biology.001624",
+        "title": "Electron microscopy ascertains presence of centrioles in rectal epithelial cells of &lt;i&gt;C. elegans&lt;/i&gt; L1 larvae.",
+        "authorString": "Croisier M, Busso C, Kalbfuss N, Woglar A, Knott G, G\u00f6nczy P.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2025",
+        "pubYear": "2025",
+        "journalIssn": "2578-9430",
+        "pubType": "journal article",
+        "isOpenAccess": "N",
+        "inEPMC": "N",
+        "inPMC": "N",
+        "hasPDF": "N",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "N",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2025-06-11",
+        "firstPublicationDate": "2025-05-22"
+      },
+      {
+        "id": "39712934",
+        "source": "MED",
+        "pmid": "39712934",
+        "pmcid": "PMC11659881",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11659881"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001318",
+        "title": "The Effects of Perfluorooctanesulfonic acid (PFOS) on Human Umbilical Vein Endothelial Cells (HUVECs) Proliferation and Gene Expression and its Implications on Fetal Development.",
+        "authorString": "Ashby A, Murphy P, Jukosky J, Whipple CA.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2024",
+        "pubYear": "2024",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2024-12-23",
+        "firstPublicationDate": "2024-12-03"
+      },
+      {
+        "id": "39483961",
+        "source": "MED",
+        "pmid": "39483961",
+        "pmcid": "PMC11525482",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC11525482"
+          ]
+        },
+        "doi": "10.17912/micropub.biology.001355",
+        "title": "miR-127/3p Inhibits Cell Migration in Lung Adenocarcinoma Under Hypoxic and Normal Oxygen Conditions.",
+        "authorString": "Lipscomb J, Gray K, Melton T, Nelson P, Rye A, Pruett CL, Reyna NS.",
+        "journalTitle": "MicroPubl Biol",
+        "journalVolume": "2024",
+        "pubYear": "2024",
+        "journalIssn": "2578-9430",
+        "pubType": "brief-report; journal article",
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 0,
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "hasTMAccessionNumbers": "N",
+        "firstIndexDate": "2024-11-01",
+        "firstPublicationDate": "2024-10-16"
+      }
+    ]
+  }
+}

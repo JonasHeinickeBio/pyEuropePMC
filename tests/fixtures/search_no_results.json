@@ -1,0 +1,15 @@
+{
+  "version": "6.9",
+  "hitCount": 0,
+  "request": {
+    "queryString": "asdkfjhasdkfjhasdfasdasdasdfgsagsd",
+    "resultType": "lite",
+    "cursorMark": "%2A",
+    "pageSize": 25,
+    "sort": "",
+    "synonym": false
+  },
+  "resultList": {
+    "result": []
+  }
+}

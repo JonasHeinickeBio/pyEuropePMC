@@ -52,8 +52,8 @@ jobs:
           poetry run coverage report
           poetry run coverage xml
 
-      - name: Upload coverage to GitHub (optional, for PRs)
-        uses: actions/upload-artifact@v4
+      - name: Upload coverage to Coveralls
+        uses: coverallsapp/github-action@v2
         with:
-          name: coverage-report
-          path: coverage.xml
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          path-to-lcov: coverage.xml
