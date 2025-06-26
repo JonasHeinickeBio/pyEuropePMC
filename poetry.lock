@@ -731,6 +731,7 @@ description = "Backport of PEP 654 (exception groups)"
 optional = false
 python-versions = ">=3.7"
 groups = ["main", "dev"]
+markers = "python_version == \"3.10\""
 files = [
     {file = "exceptiongroup-1.2.2-py3-none-any.whl", hash = "sha256:3111b9d131c238bec2f8f516e123e14ba243563fb135d3fe885990585aa7795b"},
     {file = "exceptiongroup-1.2.2.tar.gz", hash = "sha256:47c2edf7c6738fafb49fd34290706d1a1a2f4d1c6df275526b62cbb4aa5393cc"},
@@ -1060,6 +1061,7 @@ description = "An ISO 8601 date/time/duration parser and formatter"
 optional = false
 python-versions = ">=3.7"
 groups = ["main"]
+markers = "python_version == \"3.10\""
 files = [
     {file = "isodate-0.7.2-py3-none-any.whl", hash = "sha256:28009937d8031054830160fce6d409ed342816b543597cece116d966c6d99e15"},
     {file = "isodate-0.7.2.tar.gz", hash = "sha256:4cd1aa0f43ca76f4a6c6c0292a85f40b35ec2e43e315b59f06e6d32171a953e6"},
@@ -1934,7 +1936,11 @@ files = [
 ]
 
 [package.dependencies]
-numpy = {version = ">=1.22.4", markers = "python_version < \"3.11\""}
+numpy = [
+    {version = ">=1.22.4", markers = "python_version < \"3.11\""},
+    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
+    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -3007,6 +3013,7 @@ description = "A lil' TOML parser"
 optional = false
 python-versions = ">=3.8"
 groups = ["main", "dev"]
+markers = "python_version == \"3.10\""
 files = [
     {file = "tomli-2.2.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:678e4fa69e4575eb77d103de3df8a895e1591b48e740211bd1067378c69e8249"},
     {file = "tomli-2.2.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:023aa114dd824ade0100497eb2318602af309e5a55595f76b626d6d9f3b7b0a6"},
@@ -3300,5 +3307,5 @@ files = [
 
 [metadata]
 lock-version = "2.1"
-python-versions = ">=3.10,<3.11"
-content-hash = "d82b08fd4c11247a5d4bea1ce752b1ce17ebd76e2ed5b675e03d9e3e9e4c8231"
+python-versions = ">=3.10,<4.0"
+content-hash = "5a62984194a796cd2773ef258c8b36150cb95d2edccd27cbe92687695622bf12"

@@ -7,7 +7,7 @@ readme = "README.md"
 authors = [
   { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" }
 ]
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.10,<4.0"
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/JonasHeinickeBio/pyEuropePMC"
@@ -23,7 +23,7 @@ build_command = "pip install poetry && poetry build"
 commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.10,<4.0"
 ipython = ">=7.30"
 ipykernel = ">=6.7"
 ipywidgets = ">=7.6"

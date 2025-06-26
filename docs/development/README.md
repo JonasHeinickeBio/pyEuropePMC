@@ -5,6 +5,7 @@ This guide covers development practices, contributing guidelines, and project se
 ## Table of Contents
 
 - [Development Setup](#development-setup)
+- [Python Version Compatibility](python-version-strategy.md)
 - [Project Structure](#project-structure)
 - [Contributing Guidelines](#contributing-guidelines)
 - [Testing](#testing)
@@ -19,6 +20,8 @@ This guide covers development practices, contributing guidelines, and project se
 - Python 3.10 or higher
 - Git
 - Poetry (recommended) or pip
+
+📋 **Note**: See our [Python Version Compatibility Strategy](python-version-strategy.md) for detailed information about supported Python versions and testing procedures.
 
 ### Quick Setup
 
