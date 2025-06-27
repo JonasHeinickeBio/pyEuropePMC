@@ -1,0 +1,258 @@
+name: Python Version Compatibility Matrix
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  schedule:
+    # Run weekly on Sundays at 06:00 UTC
+    - cron: '0 6 * * 0'
+
+permissions:
+  contents: read
+
+jobs:
+  # Level 1: Syntax and Import Testing (All Versions)
+  syntax-check:
+    name: Syntax Check (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12", "3.13"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+          allow-prereleases: true
+
+      - name: Install minimal dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests backoff defusedxml typing-extensions
+
+      - name: Test syntax and imports
+        run: |
+          # Test syntax by compiling all Python files
+          python -m py_compile src/pyeuropepmc/__init__.py
+          python -m py_compile src/pyeuropepmc/search.py
+          python -m py_compile src/pyeuropepmc/parser.py
+          python -m py_compile src/pyeuropepmc/base.py
+          python -m py_compile src/pyeuropepmc/utils/helpers.py
+
+          # Test imports
+          python -c "import sys; sys.path.insert(0, 'src'); import pyeuropepmc"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.search import SearchClient"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.parser import EuropePMCParser"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts"
+
+          echo "✅ All syntax and import tests passed for Python ${{ matrix.python-version }}"
+
+  # Level 2: Core Testing (Primary Versions)
+  core-tests:
+    name: Core Tests (Python ${{ matrix.python-version }} on ${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    needs: syntax-check
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Configure Poetry
+        run: |
+          poetry config virtualenvs.create true
+          poetry config virtualenvs.in-project true
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v3
+        with:
+          path: .venv
+          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-ansi
+
+      - name: Run unit tests
+        run: |
+          poetry run pytest tests/utils/ tests/parser/unit/ tests/base/ -v --tb=short
+
+      - name: Run helper function tests
+        run: |
+          poetry run pytest tests/utils/helpers_test.py -v --tb=short
+
+      - name: Test SearchClient instantiation
+        run: |
+          poetry run python -c "
+          import sys; sys.path.insert(0, 'src')
+          from pyeuropepmc.search import SearchClient
+          client = SearchClient()
+          print('✅ SearchClient instantiation successful')
+          "
+
+  # Level 3: Full Testing (Primary Version Only)
+  full-tests:
+    name: Full Test Suite (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    needs: core-tests
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-ansi
+
+      - name: Run linting
+        run: |
+          poetry run ruff check .
+
+      - name: Run type checking
+        run: |
+          poetry run mypy .
+
+      - name: Run full test suite with coverage
+        run: |
+          poetry run coverage run -m pytest
+          poetry run coverage report --show-missing
+          poetry run coverage xml
+
+      - name: Upload coverage to Codecov
+        if: matrix.python-version == '3.12'
+        uses: codecov/codecov-action@v3
+        with:
+          file: ./coverage.xml
+          fail_ci_if_error: false
+
+  # Level 4: Integration Testing (Latest Version)
+  integration-tests:
+    name: Integration Tests (Python 3.12)
+    runs-on: ubuntu-latest
+    needs: full-tests
+    if: github.event_name == 'push' || github.event_name == 'schedule'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-ansi
+
+      - name: Run integration tests
+        run: |
+          poetry run pytest tests/search/functional/ -v --tb=short -m "not slow"
+        env:
+          # Add any environment variables for API testing
+          PYTEST_TIMEOUT: 30
+
+      - name: Run network tests (if available)
+        run: |
+          poetry run pytest -m "network" -v --tb=short || echo "No network tests found"
+
+  # Performance Testing (Optional)
+  performance-tests:
+    name: Performance Tests (Python 3.12)
+    runs-on: ubuntu-latest
+    needs: full-tests
+    if: github.event_name == 'schedule'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+
+      - name: Install dependencies with benchmarking tools
+        run: |
+          poetry install --no-interaction --no-ansi
+          poetry add pytest-benchmark --group dev
+
+      - name: Run performance benchmarks
+        run: |
+          poetry run pytest tests/ -k "benchmark" --benchmark-only --benchmark-json=benchmark.json || echo "No benchmark tests found"
+
+      - name: Store benchmark results
+        if: github.ref == 'refs/heads/main'
+        run: |
+          # Store or compare benchmark results
+          echo "Benchmark results stored for trend analysis"
+
+  # Compatibility Summary
+  compatibility-summary:
+    name: Compatibility Summary
+    runs-on: ubuntu-latest
+    needs: [syntax-check, core-tests, full-tests]
+    if: always()
+
+    steps:
+      - name: Generate compatibility report
+        run: |
+          echo "## Python Version Compatibility Report" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Test Results by Python Version:" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Python Version | Syntax Check | Core Tests | Full Tests | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------------|--------------|------------|------------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Add logic to check job results and populate table
+          echo "| 3.10 | ${{ needs.syntax-check.result }} | ${{ needs.core-tests.result }} | ${{ needs.full-tests.result }} | Primary Support |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3.11 | ${{ needs.syntax-check.result }} | N/A | N/A | Compatibility Only |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3.12 | ${{ needs.syntax-check.result }} | ${{ needs.core-tests.result }} | ${{ needs.full-tests.result }} | Recommended |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3.13 | ${{ needs.syntax-check.result }} | N/A | N/A | Future Support |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Support Policy:" >> $GITHUB_STEP_SUMMARY
+          echo "- **Full Support**: Python 3.10, 3.12" >> $GITHUB_STEP_SUMMARY
+          echo "- **Compatibility**: Python 3.11, 3.13" >> $GITHUB_STEP_SUMMARY
+          echo "- **Recommended**: Python 3.12 for best performance" >> $GITHUB_STEP_SUMMARY

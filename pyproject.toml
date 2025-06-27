@@ -7,7 +7,7 @@ readme = "README.md"
 authors = [
   { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" }
 ]
-requires-python = ">=3.10,<3.11"
+requires-python = ">=3.10,<4.0"
 
 [tool.poetry.urls]
 "Homepage" = "https://github.com/JonasHeinickeBio/pyEuropePMC"
@@ -23,7 +23,7 @@ build_command = "pip install poetry && poetry build"
 commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.10,<4.0"
 ipython = ">=7.30"
 ipykernel = ">=6.7"
 ipywidgets = ">=7.6"
@@ -35,26 +35,28 @@ pandas = ">=1.4"
 rdflib-jsonld = ">=0.5"
 rdflib = ">=6.0"
 python-dotenv = ">=0.19"
-requests = ">=2.32.4"
+requests = "^2.32.4"
 typer = ">=0.12.5,<0.13.0"
 backoff = "^2.2.1"
 tornado = "^6.5.1"
 flask = "^3.1.1"
+defusedxml = "^0.7.1"
 
 
 [tool.poetry.group.dev.dependencies]
-pytest = "8.2.2"
+pytest = "^8.4.1"
 pre-commit = "^4.2.0"
-black = "24.4.2"
+black = "^25.1.0"
 mypy = "^1.16.1"
 types-PyYAML = "6.0.12.20240311"
 types-requests = "^2.31.0"
 flake8 = ">=4.0"
 pytest-benchmark = "^5.1.0"
 flake8-pyproject = "^1.2.3"
-coverage = "^7.8.2"
-bandit = {extras = ["toml"], version = "^1.8.3"}
-ruff = "^0.11.13"
+coverage = "^7.9.1"
+bandit = "^1.8.5"
+ruff = "^0.12.1"
+typing-extensions = "^4.14.0"
 
 [build-system]
 requires = ["poetry-core"]

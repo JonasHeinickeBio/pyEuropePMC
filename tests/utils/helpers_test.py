@@ -8,6 +8,9 @@ and error conditions.
 
 import json
 from pathlib import Path
+import platform
+import stat
+import subprocess
 
 import pytest
 
@@ -18,6 +21,64 @@ from pyeuropepmc.utils.helpers import (
     save_to_json,
     save_to_json_with_merge,
 )
+
+
+def is_writable(path):
+    """Test if a directory is writable by attempting to create a test file."""
+    try:
+        testfile = path / ".write_test"
+        with open(testfile, "w") as f:
+            f.write("test")
+        testfile.unlink()
+        return True
+    except (OSError, PermissionError):
+        return False
+
+
+def make_readonly(path):
+    """Make a directory read-only in a cross-platform way."""
+    if platform.system() == "Windows":
+        # On Windows, use attrib command or file attributes
+        try:
+            # Method 1: Use attrib command
+            subprocess.run(["attrib", "+R", str(path)], check=True, capture_output=True)
+            return True
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            # Method 2: Use stat flags (may not work on all Windows versions)
+            try:
+                current_mode = path.stat().st_mode
+                path.chmod(current_mode & ~stat.S_IWRITE)
+                return True
+            except Exception:
+                return False
+    else:
+        # Unix-like systems
+        try:
+            path.chmod(0o444)
+            return True
+        except Exception:
+            return False
+
+
+def restore_permissions(path):
+    """Restore write permissions in a cross-platform way."""
+    if platform.system() == "Windows":
+        try:
+            # Method 1: Use attrib command
+            subprocess.run(["attrib", "-R", str(path)], check=True, capture_output=True)
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            # Method 2: Use stat flags
+            try:
+                current_mode = path.stat().st_mode
+                path.chmod(current_mode | stat.S_IWRITE)
+            except Exception:
+                pass
+    else:
+        # Unix-like systems
+        try:
+            path.chmod(0o755)
+        except Exception:
+            pass
 
 
 class TestDeepMergeDicts:
@@ -277,21 +338,63 @@ class TestSaveToJson:
         # So the file might exist but be incomplete or invalid JSON
 
     def test_save_to_readonly_location(self, tmp_path):
-        """Test saving to a read-only location."""
+        """Test saving to a read-only location with cross-platform compatibility."""
         # Create a read-only directory
         readonly_dir = tmp_path / "readonly"
         readonly_dir.mkdir()
-        readonly_dir.chmod(0o444)  # Read-only
+
+        # Try to make directory read-only using cross-platform method
+        readonly_success = make_readonly(readonly_dir)
+
+        # If we couldn't make it read-only, skip the test
+        if not readonly_success or is_writable(readonly_dir):
+            pytest.skip(
+                f"Cannot make directory read-only on {platform.system()}. "
+                f"This test requires filesystem permission control."
+            )
 
         data = {"test": "data"}
         file_path = readonly_dir / "test.json"
 
         try:
             result = save_to_json(data, file_path)
-            assert result is False
+            assert result is False, "Expected save_to_json to return False for read-only directory"
         finally:
-            # Restore permissions to clean up
-            readonly_dir.chmod(0o755)
+            # Always restore permissions for cleanup
+            restore_permissions(readonly_dir)
+
+    def test_save_to_readonly_location_mock(self, tmp_path, monkeypatch):
+        """Alternative test using mocking to simulate permission errors consistently."""
+        import builtins
+        from pathlib import Path
+
+        readonly_dir = tmp_path / "readonly"
+        readonly_dir.mkdir()
+
+        original_open = builtins.open
+        original_mkdir = Path.mkdir
+
+        def mock_open(*args, **kwargs):
+            # Check if we're trying to open a file in our test directory
+            if len(args) > 0 and str(readonly_dir) in str(args[0]):
+                raise PermissionError("Permission denied")
+            return original_open(*args, **kwargs)
+
+        def mock_mkdir(self, mode=0o777, parents=False, exist_ok=False):
+            # Check if we're trying to create a directory in our test path
+            if str(readonly_dir) in str(self):
+                raise PermissionError("Permission denied")
+            return original_mkdir(self, mode, parents, exist_ok)
+
+        # Mock both open and mkdir to simulate permission errors
+        monkeypatch.setattr(builtins, "open", mock_open)
+        monkeypatch.setattr(Path, "mkdir", mock_mkdir)
+
+        data = {"test": "data"}
+        file_path = readonly_dir / "test.json"
+
+        result = save_to_json(data, file_path)
+        assert result is False, "Expected save_to_json to return False when permission denied"
 
 
 class TestLoadJson:
