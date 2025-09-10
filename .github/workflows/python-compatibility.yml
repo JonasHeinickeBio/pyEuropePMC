@@ -57,6 +57,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        shell: bash
         run: poetry install --no-interaction --no-ansi --only main
 
       - name: Test syntax and imports for all modules
@@ -158,9 +159,11 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        shell: bash
         run: poetry install --no-interaction --no-ansi
 
       - name: Run unit tests by module
+        shell: bash
         run: |
           echo "Running modular unit tests..."
 
@@ -186,6 +189,7 @@ jobs:
           poetry run pytest tests/ftp_downloader/ -v --tb=short --maxfail=5
 
       - name: Test cross-platform compatibility
+        shell: bash
         run: |
           echo "Testing cross-platform features..."
           poetry run python -c "
@@ -204,6 +208,7 @@ jobs:
           "
 
       - name: Test client context managers
+        shell: bash
         run: |
           echo "Testing context manager functionality..."
           poetry run python -c "
@@ -221,9 +226,7 @@ jobs:
               print('SUCCESS: FullTextClient context manager works')
 
           print('SUCCESS: All context managers working correctly')
-          "
-
-  # Level 3: Full Testing (Primary Version Only)
+          "  # Level 3: Full Testing (Primary Version Only)
   full-tests:
     name: Full Test Suite (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
@@ -260,6 +263,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        shell: bash
         run: poetry install --no-interaction --no-ansi
 
       - name: Run linting with detailed output
@@ -336,6 +340,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        shell: bash
         run: poetry install --no-interaction --no-ansi
 
       - name: Run integration tests
@@ -424,6 +429,7 @@ jobs:
 
       - name: Install dependencies with benchmarking tools
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        shell: bash
         run: |
           poetry install --no-interaction --no-ansi
           poetry add pytest-benchmark --group dev
