@@ -314,6 +314,21 @@ files = [
 ]
 
 [[package]]
+name = "bs4"
+version = "0.0.2"
+description = "Dummy package for Beautiful Soup (beautifulsoup4)"
+optional = false
+python-versions = "*"
+groups = ["main"]
+files = [
+    {file = "bs4-0.0.2-py2.py3-none-any.whl", hash = "sha256:abf8742c0805ef7f662dce4b51cca104cffe52b835238afc169142ab9b3fbccc"},
+    {file = "bs4-0.0.2.tar.gz", hash = "sha256:a48685c58f50fe127722417bae83fe6badf500d54b55f7e39ffe43b798653925"},
+]
+
+[package.dependencies]
+beautifulsoup4 = "*"
+
+[[package]]
 name = "certifi"
 version = "2025.6.15"
 description = "Python package for providing Mozilla's CA Bundle."
@@ -3362,4 +3377,4 @@ files = [
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "4672ce4e4520bd92969f9051c4e7e05f471ed647dddb41c936c2d4d1555fa24d"
+content-hash = "1a425f35c2c4c6269d571e5dbfce7969c79b4392fe49e37bb908a3b093bc3acc"
