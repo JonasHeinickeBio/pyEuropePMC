@@ -1548,7 +1548,6 @@ class FullTextClient(BaseAPIClient):
             self.logger.debug(f"Error during bulk XML download for PMC{pmcid}: {e}")
             return False
 
-
     def search_and_download_fulltext(
         self,
         query: str,
