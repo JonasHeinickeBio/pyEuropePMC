@@ -363,7 +363,7 @@ class FTPDownloader(BaseAPIClient):
         """
         # INPUT VALIDATION - Prevents "string indices must be integers" error
         if not isinstance(zip_info, dict):
-            raise TypeError(f"zip_info must be a dictionary, got {type(zip_info)}: {zip_info}")
+            raise TypeError(f"zip_info must be a dictionary, got {type(zip_info).__name__}")
 
         required_keys = ["filename", "directory", "pmcid", "size"]
         missing_keys = [key for key in required_keys if key not in zip_info]
