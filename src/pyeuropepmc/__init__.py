@@ -11,13 +11,15 @@ Example usage:
     >>> papers = client.search_and_parse("COVID-19", format="json")
 """
 
-__version__ = "1.0.0"
+__version__ = "1.2.0"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
 from .base import APIClientError, BaseAPIClient
+from .ftp_downloader import FTPDownloader
+from .fulltext import FullTextClient, FullTextError, ProgressInfo
 from .parser import EuropePMCParser
 from .search import EuropePMCError, SearchClient
 
@@ -33,10 +35,14 @@ __all__ = [
     "__url__",
     # Main classes
     "SearchClient",
+    "FullTextClient",
+    "FTPDownloader",
     "EuropePMCParser",
     "BaseAPIClient",
+    "ProgressInfo",
     # Exceptions
     "EuropePMCError",
+    "FullTextError",
     "APIClientError",
     # Aliases
     "Client",

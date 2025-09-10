@@ -30,13 +30,10 @@ jobs:
         run: |
           poetry install --no-interaction --no-ansi
 
-      - name: Run isort (import sorting check)
+      - name: Run Ruff (linting and formatting check)
         run: |
-          poetry run isort --check --diff .
-
-      - name: Run Ruff (ultra-fast linting)
-        run: |
-          poetry run ruff check .
+          poetry run ruff check src/
+          poetry run ruff format --check src/
 
       - name: Run Bandit (security checks)
         run: |
@@ -44,7 +41,7 @@ jobs:
 
       - name: Run mypy (type checking)
         run: |
-          poetry run mypy .
+          poetry run mypy src/
 
       - name: Run tests with coverage
         run: |

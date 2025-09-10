@@ -1,18 +1,16 @@
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, NoReturn
 
 import requests
 
 from pyeuropepmc.base import BaseAPIClient
+from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.exceptions import EuropePMCError, ParsingError, SearchError
 from pyeuropepmc.parser import EuropePMCParser
 from pyeuropepmc.utils.helpers import safe_int
 
 logger = BaseAPIClient.logger
 
-
-class EuropePMCError(Exception):
-    """Custom exception for Europe PMC API errors."""
-
-    pass
+__all__ = ["SearchClient", "EuropePMCError"]
 
 
 class SearchClient(BaseAPIClient):
@@ -46,7 +44,7 @@ class SearchClient(BaseAPIClient):
     def close(self) -> None:
         return super().close()
 
-    def _extract_search_params(self, query: str, kwargs: Dict[str, Any]) -> Dict[str, Any]:
+    def _extract_search_params(self, query: str, kwargs: dict[str, Any]) -> dict[str, Any]:
         """Extract and normalize search parameters from kwargs."""
         # Create a copy to avoid mutating the original
         params_dict = kwargs.copy()
@@ -58,6 +56,11 @@ class SearchClient(BaseAPIClient):
         else:
             # Remove pageSize if page_size was provided
             params_dict.pop("pageSize", None)
+
+        # Validate page_size
+        if page_size is not None and (page_size < 1 or page_size > 1000):
+            context = {"page_size": page_size}
+            raise SearchError(ErrorCodes.SEARCH002, context)
 
         # Build standardized parameters
         params = {
@@ -76,8 +79,8 @@ class SearchClient(BaseAPIClient):
         return params
 
     def _make_request(
-        self, endpoint: str, params: Dict[str, Any], method: str = "GET"
-    ) -> Union[Dict[str, Any], str]:
+        self, endpoint: str, params: dict[str, Any], method: str = "GET"
+    ) -> dict[str, Any] | str:
         """
         Make HTTP request and handle response processing.
 
@@ -97,29 +100,87 @@ class SearchClient(BaseAPIClient):
 
         Raises
         ------
-        EuropePMCError
+        SearchError
             If request fails or response is invalid
         """
+        # Validate format parameter
+        response_format = params.get("format", "json").lower()
+        valid_formats = {"json", "xml", "dc", "lite", "idlist"}
+        if response_format not in valid_formats:
+            context = {"format": response_format, "valid_formats": list(valid_formats)}
+            raise SearchError(ErrorCodes.SEARCH004, context)
+
         try:
-            if method.upper() == "POST":
-                headers = {"Content-Type": "application/x-www-form-urlencoded"}
-                response = self._post(endpoint, data=params, headers=headers)
-            else:
-                response = self._get(endpoint, params)
-
-            if not response:
-                raise EuropePMCError("No response from server")
-
-            response_format = params.get("format", "json").lower()
+            response = self._make_http_request(endpoint, params, method)
             logger.debug(f"Received {method} response with status code: {response.status_code}")
-
             return response.json() if response_format == "json" else str(response.text)
 
+        except requests.exceptions.HTTPError as e:
+            raise self._handle_http_error(e, method, endpoint) from e
+        except requests.exceptions.RequestException as e:
+            raise self._handle_request_exception(e, method, endpoint) from e
         except Exception as e:
-            logger.error(f"Error during {method} request: {e}")
-            raise EuropePMCError(f"Error during {method} request: {e}")
+            context = {"method": method.upper(), "endpoint": endpoint, "error": str(e)}
+            logger.error("Unexpected error in request")
+            raise SearchError(ErrorCodes.NET001, context) from e
 
-    def search(self, query: str, **kwargs: Any) -> Union[Dict[str, Any], str]:
+    def _make_http_request(
+        self, endpoint: str, params: dict[str, Any], method: str
+    ) -> requests.Response:
+        """Make the actual HTTP request."""
+        if method.upper() == "POST":
+            headers = {"Content-Type": "application/x-www-form-urlencoded"}
+            response = self._post(endpoint, data=params, headers=headers)
+        else:
+            response = self._get(endpoint, params)
+
+        if not response:
+            context = {"method": method.upper(), "endpoint": endpoint}
+            raise SearchError(ErrorCodes.NET002, context)
+        return response
+
+    def _handle_http_error(
+        self, error: requests.exceptions.HTTPError, method: str, endpoint: str
+    ) -> NoReturn:
+        """Handle HTTP errors and map to appropriate error codes."""
+        status_code = getattr(error.response, "status_code", 0) if error.response else 0
+
+        if status_code == 404:
+            error_code = ErrorCodes.HTTP404
+        elif status_code == 403:
+            error_code = ErrorCodes.HTTP403
+        elif status_code == 500:
+            error_code = ErrorCodes.HTTP500
+        else:
+            error_code = ErrorCodes.NET001
+
+        context = {
+            "method": method.upper(),
+            "endpoint": endpoint,
+            "status_code": status_code,
+            "error": str(error),
+        }
+        logger.error("HTTP error in request")
+        raise SearchError(error_code, context)
+
+    def _handle_request_exception(
+        self, error: requests.exceptions.RequestException, method: str, endpoint: str
+    ) -> NoReturn:
+        """Handle request exceptions and map to appropriate error codes."""
+        error_str = str(error).lower()
+
+        if isinstance(error, requests.exceptions.Timeout) or "timeout" in error_str:
+            error_code = ErrorCodes.NET002
+        elif "connection" in error_str:
+            error_code = ErrorCodes.NET001
+        else:
+            error_code = ErrorCodes.NET001
+
+        context = {"method": method.upper(), "endpoint": endpoint, "error": str(error)}
+        logger.error("Request failed")
+        raise SearchError(error_code, context)
+
+    def search(self, query: str, **kwargs: Any) -> dict[str, Any] | str:
         """
         Search the Europe PMC publication database.
 
@@ -167,20 +228,38 @@ class SearchClient(BaseAPIClient):
         """
         # Validate query
         if not self.validate_query(query):
-            raise EuropePMCError(f"Invalid query: '{query}'")
+            context = {"query": query}
+            raise SearchError(ErrorCodes.SEARCH001, context)
 
         try:
             params = self._extract_search_params(query, kwargs)
             logger.info(f"Performing search with params: {params}")
             return self._make_request("search", params, method="GET")
+        except SearchError:
+            # Re-raise SearchError as-is (from validation or other internal errors)
+            raise
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request failed during search: {e}")
-            raise EuropePMCError(f"Search request failed: {e}") from e
-        except Exception as e:
-            logger.error(f"Unexpected error during search: {e}")
-            raise EuropePMCError(f"Search failed: {e}") from e
+            # Map request exceptions to appropriate error codes
+            error_str = str(e).lower()
 
-    def search_post(self, query: str, **kwargs: Any) -> Union[Dict[str, Any], str]:
+            if isinstance(e, requests.exceptions.Timeout) or "timeout" in error_str:
+                error_code = ErrorCodes.NET002
+            elif "404" in error_str:
+                error_code = ErrorCodes.SEARCH006
+            elif "429" in error_str:
+                error_code = ErrorCodes.RATE429
+            else:
+                error_code = ErrorCodes.NET001
+
+            context = {"query": query, "error": str(e)}
+            logger.error("Search request failed")
+            raise SearchError(error_code, context) from e
+        except Exception as e:
+            context = {"query": query, "error": str(e)}
+            logger.error("Unexpected search error")
+            raise SearchError(ErrorCodes.SEARCH003, context) from e
+
+    def search_post(self, query: str, **kwargs: Any) -> dict[str, Any] | str:
         """
         Search the Europe PMC publication database using a POST request.
 
@@ -232,16 +311,21 @@ class SearchClient(BaseAPIClient):
             data = self._extract_search_params(query, kwargs)
             logger.info(f"Performing POST search with data: {data}")
             return self._make_request("searchPOST", data, method="POST")
+        except SearchError:
+            # Re-raise SearchError as-is (from validation or other internal errors)
+            raise
         except requests.exceptions.RequestException as e:
-            logger.error(f"Request failed during POST search: {e}")
-            raise EuropePMCError(f"POST search request failed: {e}") from e
+            context = {"query": query, "error": str(e)}
+            logger.error("POST search request failed")
+            raise SearchError(ErrorCodes.NET001, context) from e
         except Exception as e:
-            logger.error(f"Unexpected error during POST search: {e}")
-            raise EuropePMCError(f"POST search failed: {e}") from e
+            context = {"query": query, "error": str(e)}
+            logger.error("Unexpected POST search error")
+            raise SearchError(ErrorCodes.SEARCH003, context) from e
 
     def fetch_all_pages(
-        self, query: str, page_size: int = 100, max_results: Optional[int] = None, **kwargs: Any
-    ) -> List[Dict[str, Any]]:
+        self, query: str, page_size: int = 100, max_results: int | None = None, **kwargs: Any
+    ) -> list[dict[str, Any]]:
         """
         Fetch all results for a query, handling pagination automatically.
 
@@ -266,7 +350,7 @@ class SearchClient(BaseAPIClient):
         if max_results is not None and max_results <= 0:
             return []
 
-        results: List[Dict[str, Any]] = []
+        results: list[dict[str, Any]] = []
         cursor_mark = "*"
 
         while True:
@@ -323,7 +407,7 @@ class SearchClient(BaseAPIClient):
             and "result" in data["resultList"]
         )
 
-    def interactive_search(self, query: str, **kwargs: Any) -> List[Dict[str, Any]]:
+    def interactive_search(self, query: str, **kwargs: Any) -> list[dict[str, Any]]:
         """
         Interactive search: Show hit count, prompt user for number of results, fetch and return.
         This method performs an initial search to get the hit count,
@@ -393,15 +477,15 @@ class SearchClient(BaseAPIClient):
                 if 1 <= n <= hit_count:
                     return n
                 logger.info(f"Please enter a number between 1 and {hit_count}, or '0' to quit.")
-            except ValueError:
-                logger.info("Please enter a valid integer, or '0' to quit.")
+            except Exception as e:
+                logger.info(f"Please enter a valid integer, or '0' to quit. Error: {e}")
             except KeyboardInterrupt:
                 logger.info("\nOperation cancelled by user.")
                 return 0
 
     def _fetch_interactive_results(
         self, query: str, n: int, **kwargs: Any
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """Fetch the requested number of results for interactive search."""
         logger.info(f"Fetching {n} results for '{query}' ...")
         results = self.fetch_all_pages(query, max_results=n, **kwargs)
@@ -410,7 +494,7 @@ class SearchClient(BaseAPIClient):
 
     def search_and_parse(
         self, query: str, format: str = "json", **kwargs: Any
-    ) -> List[Dict[str, Any]]:
+    ) -> list[dict[str, Any]]:
         """
         Search and parse results from Europe PMC.
 
@@ -439,7 +523,8 @@ class SearchClient(BaseAPIClient):
         # Validate format early
         supported_formats = {"json", "xml", "dc"}
         if format.lower() not in supported_formats:
-            raise ValueError(f"Unsupported format '{format}'. Must be one of: {supported_formats}")
+            context = {"format": format, "supported_formats": list(supported_formats)}
+            raise SearchError(ErrorCodes.SEARCH004, context)
 
         format = format.lower()
 
@@ -449,28 +534,41 @@ class SearchClient(BaseAPIClient):
             # Type checking and parsing
             if format == "json":
                 if not isinstance(raw, dict):
-                    raise ValueError(f"Expected dict for JSON format, got {type(raw).__name__}")
+                    context = {
+                        "expected_type": "dict",
+                        "actual_type": type(raw).__name__,
+                        "format": format,
+                    }
+                    raise ParsingError(ErrorCodes.PARSE001, context)
                 return EuropePMCParser.parse_json(raw)
 
             elif format in ("xml", "dc"):
                 if not isinstance(raw, str):
-                    raise ValueError(
-                        f"Expected str for {format.upper()} format, got {type(raw).__name__}"
-                    )
+                    context = {
+                        "expected_type": "str",
+                        "actual_type": type(raw).__name__,
+                        "format": format,
+                    }
+                    raise ParsingError(ErrorCodes.PARSE004, context)
 
                 if format == "xml":
                     return EuropePMCParser.parse_xml(raw)
                 else:  # format == "dc"
                     return EuropePMCParser.parse_dc(raw)
 
+        except ParsingError:
+            # Re-raise ParsingError as-is (for type mismatches and parsing issues)
+            raise
         except EuropePMCError:
             # Re-raise EuropePMC errors as-is
             raise
         except Exception as e:
-            raise ValueError(f"Parsing error for format '{format}': {e}")
+            context = {"format": format, "error": str(e)}
+            raise SearchError(ErrorCodes.SEARCH005, context) from e
 
         # This should never be reached due to the format validation above
-        raise ValueError(f"Unknown format or parsing error for format '{format}'")
+        context = {"format": format}
+        raise SearchError(ErrorCodes.SEARCH005, context)
 
     def get_hit_count(self, query: str, **kwargs: Any) -> int:
         """
@@ -492,28 +590,34 @@ class SearchClient(BaseAPIClient):
 
         Raises
         ------
-        EuropePMCError
-            If the request fails.
+        SearchError
+            If the request fails or response is invalid.
         """
         try:
             # Use minimal page size for efficiency
             response = self.search(query, page_size=1, **kwargs)
 
             if isinstance(response, str):
-                logger.warning("Received string response when expecting JSON for hit count.")
-                return 0
+                context = {"query": query, "response_type": "string"}
+                logger.error("Received string response when expecting JSON for hit count.")
+                raise SearchError(ErrorCodes.SEARCH003, context)
 
             if not isinstance(response, dict) or "hitCount" not in response:
-                logger.warning("Invalid response structure for hit count.")
+                context = {"query": query, "response": str(response)[:100]}
+                logger.warning("Missing hitCount in response, returning 0.")
                 return 0
 
             return int(response["hitCount"])
 
+        except SearchError:
+            # Re-raise SearchError as-is
+            raise
         except Exception as e:
-            logger.error(f"Error getting hit count: {e}")
-            raise EuropePMCError(f"Error getting hit count: {e}")
+            context = {"query": query, "error": str(e)}
+            logger.error("Error getting hit count")
+            raise SearchError(ErrorCodes.SEARCH003, context) from e
 
-    def search_ids_only(self, query: str, **kwargs: Any) -> List[str]:
+    def search_ids_only(self, query: str, **kwargs: Any) -> list[str]:
         """
         Search and return only publication IDs (more efficient for large result sets).
 

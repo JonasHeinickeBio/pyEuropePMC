@@ -3,6 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.search import EuropePMCError, SearchClient
 
 logging.basicConfig(level=logging.INFO)
@@ -51,8 +52,16 @@ def test_get_hit_count_exception() -> None:
     with patch.object(client, "search") as mock_search:
         mock_search.side_effect = Exception("Search failed")
 
-        with pytest.raises(EuropePMCError, match="Error getting hit count"):
+        with pytest.raises(EuropePMCError) as exc_info:
             client.get_hit_count("test query")
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.SEARCH003
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[SEARCH003]" in error_str
+        assert "Query too complex" in error_str
 
     client.close()
 

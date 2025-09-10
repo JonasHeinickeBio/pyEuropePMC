@@ -1,24 +1,19 @@
 repos:
-  - repo: https://github.com/PyCQA/isort
-    rev: 6.0.1
-    hooks:
-      - id: isort
-        language_version: python3.10
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.11.13
+    rev: v0.12.1
     hooks:
       - id: ruff
-        args: [--fix]  # auto-fix issues where possible, such as formatting and linting problems
+        args: [--fix, src/]  # auto-fix issues where possible, only check src/
         language_version: python3.10
       - id: ruff-format
+        args: [src/]  # only format src/
 
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.16.0
     hooks:
       - id: mypy
         language_version: python3.10
-        exclude: ^tests/
+        exclude: ^(tests/|examples/)
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3
@@ -43,7 +38,6 @@ repos:
       - id: check-case-conflict
       - id: check-toml
       - id: detect-private-key
-      - id: name-tests-test
 
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.10.0

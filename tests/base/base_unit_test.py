@@ -3,7 +3,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from pyeuropepmc.base import APIClientError, BaseAPIClient
+from pyeuropepmc.base import BaseAPIClient
+from pyeuropepmc.exceptions import APIClientError
 
 
 @pytest.fixture
@@ -34,10 +35,12 @@ def test_get_success(mock_sleep, client):
 @pytest.mark.unit
 @patch("time.sleep")
 def test_get_failure(mock_sleep, client):
-    with patch.object(client.session, "get", side_effect=Exception("Network error")):
-        with pytest.raises(Exception) as exc_info:
+    from pyeuropepmc.error_codes import ErrorCodes
+
+    with patch.object(client.session, "get", side_effect=APIClientError(ErrorCodes.NET001)):
+        with pytest.raises(APIClientError) as exc_info:
             client._get("bad_endpoint")
-        assert str(exc_info.value) == "Network error"
+        assert "Network connection failed" in str(exc_info.value)
 
 
 @pytest.mark.unit
@@ -61,10 +64,12 @@ def test_post_success(mock_sleep, client):
 @pytest.mark.unit
 @patch("time.sleep")
 def test_post_failure(mock_sleep, client):
-    with patch.object(client.session, "post", side_effect=Exception("Network error")):
-        with pytest.raises(Exception) as exc_info:
+    from pyeuropepmc.error_codes import ErrorCodes
+
+    with patch.object(client.session, "post", side_effect=APIClientError(ErrorCodes.NET001)):
+        with pytest.raises(APIClientError) as exc_info:
             client._post("bad_endpoint", data={"fail": True})
-        assert str(exc_info.value) == "Network error"
+        assert "Network connection failed" in str(exc_info.value)
 
 
 @pytest.mark.unit
@@ -82,9 +87,20 @@ def test_get_request_exception_logs_and_raises(client, caplog):
         with caplog.at_level("ERROR"):
             with pytest.raises(APIClientError) as exc_info:
                 client._get("timeout_endpoint")
-            assert "GET request failed: Timeout error" in caplog.text
-            assert "GET request to" in str(exc_info.value)
-            assert "Timeout error" in str(exc_info.value)
+
+            # Check that the exception has the correct error code
+            assert exc_info.value.error_code.value == "NET001"
+
+            # Check that the error message contains the network error description
+            error_str = str(exc_info.value)
+            assert "[NET001]" in error_str
+            assert "Network connection failed" in error_str
+
+            # Check that the URL and error details are in the context
+            assert "timeout_endpoint" in error_str or exc_info.value.context.get(
+                "url", ""
+            ).endswith("timeout_endpoint")
+            assert "Timeout error" in str(exc_info.value.context.get("error", ""))
 
 
 @pytest.mark.unit
@@ -95,9 +111,20 @@ def test_post_request_exception_logs_and_raises(client, caplog):
         with caplog.at_level("ERROR"):
             with pytest.raises(APIClientError) as exc_info:
                 client._post("timeout_endpoint", data={"foo": "bar"})
-            assert "POST request failed: Timeout error" in caplog.text
-            assert "POST request to" in str(exc_info.value)
-            assert "Timeout error" in str(exc_info.value)
+
+            # Check that the exception has the correct error code
+            assert exc_info.value.error_code.value == "NET001"
+
+            # Check that the error message contains the network error description
+            error_str = str(exc_info.value)
+            assert "[NET001]" in error_str
+            assert "Network connection failed" in error_str
+
+            # Check that the URL and error details are in the context
+            assert "timeout_endpoint" in error_str or exc_info.value.context.get(
+                "url", ""
+            ).endswith("timeout_endpoint")
+            assert "Timeout error" in str(exc_info.value.context.get("error", ""))
 
 
 # Additional comprehensive unit tests for BaseAPIClient
@@ -203,7 +230,14 @@ def test_get_with_closed_session():
 
     with pytest.raises(APIClientError) as exc_info:
         client._get("test_endpoint")
-    assert "Session is closed" in str(exc_info.value)
+
+    # Check that the exception has the correct error code for session closed
+    assert exc_info.value.error_code.value == "FULL007"
+
+    # Check that the error message indicates session closure
+    error_str = str(exc_info.value)
+    assert "[FULL007]" in error_str
+    assert "Session closed" in error_str
 
 
 @pytest.mark.unit
@@ -214,7 +248,14 @@ def test_post_with_closed_session():
 
     with pytest.raises(APIClientError) as exc_info:
         client._post("test_endpoint", data={"test": "data"})
-    assert "Session is closed" in str(exc_info.value)
+
+    # Check that the exception has the correct error code for session closed
+    assert exc_info.value.error_code.value == "FULL007"
+
+    # Check that the error message indicates session closure
+    error_str = str(exc_info.value)
+    assert "[FULL007]" in error_str
+    assert "Session closed" in error_str
 
 
 @pytest.mark.unit
@@ -284,78 +325,132 @@ def test_post_logs_debug_and_info(mock_sleep, client, caplog):
 @patch("time.sleep")
 def test_get_http_error_handling(mock_sleep, client):
     """Test _get method handles HTTP errors correctly."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with patch.object(client.session, "get") as mock_get:
         mock_response = MagicMock()
-        mock_response.raise_for_status.side_effect = requests.HTTPError("404 Not Found")
+        mock_http_error = requests.HTTPError("404 Not Found")
+        mock_http_error.response = MagicMock()
+        mock_http_error.response.status_code = 404
+        mock_response.raise_for_status.side_effect = mock_http_error
         mock_get.return_value = mock_response
 
         with pytest.raises(APIClientError) as exc_info:
             client._get("not_found_endpoint")
-        assert "GET request to" in str(exc_info.value)
-        assert "404 Not Found" in str(exc_info.value)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.HTTP404
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[HTTP404]" in error_str
+        assert "not found" in error_str.lower()
 
 
 @pytest.mark.unit
 @patch("time.sleep")
 def test_post_http_error_handling(mock_sleep, client):
     """Test _post method handles HTTP errors correctly."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with patch.object(client.session, "post") as mock_post:
         mock_response = MagicMock()
-        mock_response.raise_for_status.side_effect = requests.HTTPError("400 Bad Request")
+        mock_http_error = requests.HTTPError("400 Bad Request")
+        mock_http_error.response = MagicMock()
+        mock_http_error.response.status_code = 400
+        mock_response.raise_for_status.side_effect = mock_http_error
         mock_post.return_value = mock_response
 
         with pytest.raises(APIClientError) as exc_info:
             client._post("bad_request_endpoint", data={"invalid": "data"})
-        assert "POST request to" in str(exc_info.value)
-        assert "400 Bad Request" in str(exc_info.value)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.NET001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
 
 @pytest.mark.unit
 @patch("time.sleep")
 def test_get_timeout_handling(mock_sleep, client):
     """Test _get method handles timeout errors."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with patch.object(client.session, "get", side_effect=requests.Timeout("Request timeout")):
         with pytest.raises(APIClientError) as exc_info:
             client._get("timeout_endpoint")
-        assert "GET request to" in str(exc_info.value)
-        assert "Request timeout" in str(exc_info.value)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.NET001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
 
 @pytest.mark.unit
 @patch("time.sleep")
 def test_post_timeout_handling(mock_sleep, client):
     """Test _post method handles timeout errors."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with patch.object(client.session, "post", side_effect=requests.Timeout("Request timeout")):
         with pytest.raises(APIClientError) as exc_info:
             client._post("timeout_endpoint", data={"test": "data"})
-        assert "POST request to" in str(exc_info.value)
-        assert "Request timeout" in str(exc_info.value)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.NET001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
 
 @pytest.mark.unit
 @patch("time.sleep")
 def test_get_connection_error_handling(mock_sleep, client):
     """Test _get method handles connection errors."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with patch.object(
         client.session, "get", side_effect=requests.ConnectionError("Connection failed")
     ):
         with pytest.raises(APIClientError) as exc_info:
             client._get("connection_error_endpoint")
-        assert "GET request to" in str(exc_info.value)
-        assert "Connection failed" in str(exc_info.value)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.NET001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
 
 @pytest.mark.unit
 @patch("time.sleep")
 def test_post_connection_error_handling(mock_sleep, client):
     """Test _post method handles connection errors."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with patch.object(
         client.session, "post", side_effect=requests.ConnectionError("Connection failed")
     ):
         with pytest.raises(APIClientError) as exc_info:
             client._post("connection_error_endpoint", data={"test": "data"})
-        assert "POST request to" in str(exc_info.value)
-        assert "Connection failed" in str(exc_info.value)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.NET001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
 
 @pytest.mark.unit
@@ -406,8 +501,10 @@ def test_constants():
 @pytest.mark.unit
 def test_api_client_error_exception():
     """Test APIClientError exception can be raised and caught."""
+    from pyeuropepmc.error_codes import ErrorCodes
+
     with pytest.raises(APIClientError):
-        raise APIClientError("Test error message")
+        raise APIClientError(ErrorCodes.NET001)
 
 
 # Test backoff functionality (challenging to test directly, but we can test the decorators exist)

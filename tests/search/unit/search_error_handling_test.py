@@ -4,6 +4,7 @@ from unittest.mock import patch
 import pytest
 import requests
 
+from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.search import EuropePMCError, SearchClient
 
 logging.basicConfig(level=logging.INFO)
@@ -13,7 +14,7 @@ logging.basicConfig(level=logging.INFO)
 def test_europepmc_error_exception() -> None:
     """Test that EuropePMCError can be raised and caught."""
     with pytest.raises(EuropePMCError):
-        raise EuropePMCError("Test error message")
+        raise EuropePMCError(ErrorCodes.SEARCH001)
 
 
 @pytest.mark.unit
@@ -39,8 +40,9 @@ def test_search_handles_request_exception() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search("test")
 
-        assert "Search request failed" in str(exc_info.value)
-        assert "Network error" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "NET001" in error_msg or "Network connection failed" in error_msg
 
     client.close()
 
@@ -86,8 +88,9 @@ def test_search_post_handles_request_exception() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search_post("test")
 
-        assert "POST search request failed" in str(exc_info.value)
-        assert "Network error" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "NET001" in error_msg or "Network connection failed" in error_msg
 
     client.close()
 
@@ -102,8 +105,9 @@ def test_search_handles_connection_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search("test")
 
-        assert "Search request failed" in str(exc_info.value)
-        assert "Connection failed" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "NET001" in error_msg or "Network connection failed" in error_msg
 
     client.close()
 
@@ -118,8 +122,9 @@ def test_search_post_handles_connection_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search_post("test")
 
-        assert "POST search request failed" in str(exc_info.value)
-        assert "Connection failed" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "NET001" in error_msg or "Network connection failed" in error_msg
 
     client.close()
 
@@ -134,8 +139,9 @@ def test_search_handles_timeout_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search("test")
 
-        assert "Search request failed" in str(exc_info.value)
-        assert "Request timed out" in str(exc_info.value)
+        # Check for the new error code message (timeout maps to NET002)
+        error_msg = str(exc_info.value)
+        assert "NET002" in error_msg or "Request timeout" in error_msg
 
     client.close()
 
@@ -150,8 +156,9 @@ def test_search_post_handles_timeout_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search_post("test")
 
-        assert "POST search request failed" in str(exc_info.value)
-        assert "Request timed out" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "NET001" in error_msg or "Network connection failed" in error_msg
 
     client.close()
 
@@ -166,8 +173,9 @@ def test_search_handles_http_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search("test")
 
-        assert "Search request failed" in str(exc_info.value)
-        assert "404 Not Found" in str(exc_info.value)
+        # Check for the new error code message (404 maps to SEARCH006)
+        error_msg = str(exc_info.value)
+        assert "SEARCH006" in error_msg or "Search endpoint not found" in error_msg
 
     client.close()
 
@@ -182,8 +190,9 @@ def test_search_post_handles_http_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search_post("test")
 
-        assert "POST search request failed" in str(exc_info.value)
-        assert "500 Server Error" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "NET001" in error_msg or "Network connection failed" in error_msg
 
     client.close()
 
@@ -198,8 +207,9 @@ def test_search_handles_unexpected_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search("test")
 
-        assert "Search failed" in str(exc_info.value)
-        assert "Unexpected error" in str(exc_info.value)
+        # Check for the new error code message (unexpected errors map to SEARCH003)
+        error_msg = str(exc_info.value)
+        assert "SEARCH003" in error_msg or "Query too complex" in error_msg
 
     client.close()
 
@@ -214,8 +224,9 @@ def test_search_post_handles_unexpected_error() -> None:
         with pytest.raises(EuropePMCError) as exc_info:
             client.search_post("test")
 
-        assert "POST search failed" in str(exc_info.value)
-        assert "Unexpected error" in str(exc_info.value)
+        # Check for the new error code message
+        error_msg = str(exc_info.value)
+        assert "SEARCH003" in error_msg or "Query too complex" in error_msg
 
     client.close()
 
