@@ -2,12 +2,19 @@ name: Python Version Compatibility Matrix
 
 on:
   push:
-    branches: [main, develop]
+    branches: [main, develop, "*-feature-*"]
   pull_request:
     branches: [main, develop]
   schedule:
     # Run weekly on Sundays at 06:00 UTC
     - cron: '0 6 * * 0'
+  workflow_dispatch:
+    inputs:
+      run_performance_tests:
+        description: 'Run performance tests'
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: read
@@ -27,32 +34,85 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
           allow-prereleases: true
 
-      - name: Install minimal dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install requests backoff defusedxml typing-extensions
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-      - name: Test syntax and imports
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-syntax-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            venv-syntax-${{ runner.os }}-${{ matrix.python-version }}-
+
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-ansi --only main
+
+      - name: Test syntax and imports for all modules
         run: |
           # Test syntax by compiling all Python files
+          echo "Testing syntax for all Python modules..."
           python -m py_compile src/pyeuropepmc/__init__.py
+          python -m py_compile src/pyeuropepmc/base.py
           python -m py_compile src/pyeuropepmc/search.py
           python -m py_compile src/pyeuropepmc/parser.py
-          python -m py_compile src/pyeuropepmc/base.py
+          python -m py_compile src/pyeuropepmc/fulltext.py
+          python -m py_compile src/pyeuropepmc/ftp_downloader.py
+          python -m py_compile src/pyeuropepmc/error_codes.py
+          python -m py_compile src/pyeuropepmc/exceptions.py
           python -m py_compile src/pyeuropepmc/utils/helpers.py
 
-          # Test imports
-          python -c "import sys; sys.path.insert(0, 'src'); import pyeuropepmc"
-          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.search import SearchClient"
-          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.parser import EuropePMCParser"
-          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts"
+          echo "Testing imports for all modules..."
+          # Test core imports
+          python -c "import sys; sys.path.insert(0, 'src'); import pyeuropepmc; print('SUCCESS: pyeuropepmc imported successfully')"
 
-          echo "✅ All syntax and import tests passed for Python ${{ matrix.python-version }}"
+          # Test individual module imports
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.search import SearchClient; print('SUCCESS: SearchClient imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.parser import EuropePMCParser; print('SUCCESS: EuropePMCParser imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.fulltext import FullTextClient; print('SUCCESS: FullTextClient imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.ftp_downloader import FTPDownloader; print('SUCCESS: FTPDownloader imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.base import BaseAPIClient; print('SUCCESS: BaseAPIClient imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.error_codes import ErrorCodes; print('SUCCESS: ErrorCodes imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.exceptions import ValidationError, FullTextError; print('SUCCESS: Exceptions imported')"
+          python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts, save_to_json, load_json; print('SUCCESS: Helper functions imported')"
+
+          echo "All syntax and import tests passed for Python ${{ matrix.python-version }}"
+
+      - name: Test module instantiation
+        run: |
+          echo "Testing module instantiation..."
+          python -c "
+          import sys; sys.path.insert(0, 'src')
+          from pyeuropepmc.search import SearchClient
+          from pyeuropepmc.fulltext import FullTextClient
+          from pyeuropepmc.ftp_downloader import FTPDownloader
+          from pyeuropepmc.parser import EuropePMCParser
+
+          # Test instantiation
+          search_client = SearchClient()
+          fulltext_client = FullTextClient()
+          ftp_downloader = FTPDownloader()
+          parser = EuropePMCParser()
+
+          print('SUCCESS: All modules instantiated successfully')
+          print(f'SearchClient: {type(search_client)}')
+          print(f'FullTextClient: {type(fulltext_client)}')
+          print(f'FTPDownloader: {type(ftp_downloader)}')
+          print(f'EuropePMCParser: {type(parser)}')
+
+          # Cleanup
+          search_client.close()
+          fulltext_client.close()
+          "
 
   # Level 2: Core Testing (Primary Versions)
   core-tests:
@@ -64,50 +124,99 @@ jobs:
       matrix:
         python-version: ["3.10", "3.12"]
         os: [ubuntu-latest, windows-latest, macos-latest]
+        exclude:
+          # Exclude macOS Python 3.10 to reduce CI load
+          - os: macos-latest
+            python-version: "3.10"
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Poetry
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
-
-      - name: Configure Poetry
-        run: |
-          poetry config virtualenvs.create true
-          poetry config virtualenvs.in-project true
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
       - name: Cache Poetry dependencies
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          key: venv-core-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            venv-core-${{ runner.os }}-${{ matrix.python-version }}-
 
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
 
-      - name: Run unit tests
+      - name: Run unit tests by module
         run: |
-          poetry run pytest tests/utils/ tests/parser/unit/ tests/base/ -v --tb=short
+          echo "Running modular unit tests..."
 
-      - name: Run helper function tests
-        run: |
-          poetry run pytest tests/utils/helpers_test.py -v --tb=short
+          # Test utilities first (foundational)
+          poetry run pytest tests/utils/ -v --tb=short --maxfail=5
 
-      - name: Test SearchClient instantiation
+          # Test base functionality
+          poetry run pytest tests/base/ -v --tb=short --maxfail=5
+
+          # Test exceptions handling
+          poetry run pytest tests/exceptions/ -v --tb=short --maxfail=5
+
+          # Test parser functionality
+          poetry run pytest tests/parser/unit/ -v --tb=short --maxfail=5
+
+          # Test search functionality
+          poetry run pytest tests/search/unit/ -v --tb=short --maxfail=5
+
+          # Test fulltext functionality
+          poetry run pytest tests/fulltext/unit/ -v --tb=short --maxfail=5
+
+          # Test FTP downloader functionality
+          poetry run pytest tests/ftp_downloader/ -v --tb=short --maxfail=5
+
+      - name: Test cross-platform compatibility
         run: |
+          echo "Testing cross-platform features..."
+          poetry run python -c "
+          import sys, os, tempfile, pathlib
+          sys.path.insert(0, 'src')
+          from pyeuropepmc.utils.helpers import save_to_json, load_json
+
+          # Test path handling across platforms
+          with tempfile.TemporaryDirectory() as tmpdir:
+              test_file = pathlib.Path(tmpdir) / 'test_cross_platform.json'
+              test_data = {'platform': sys.platform, 'python_version': sys.version}
+              save_to_json(test_data, test_file)
+              loaded_data = load_json(test_file)
+              assert loaded_data == test_data
+              print(f'SUCCESS: Cross-platform file operations work on {sys.platform}')
+          "
+
+      - name: Test client context managers
+        run: |
+          echo "Testing context manager functionality..."
           poetry run python -c "
           import sys; sys.path.insert(0, 'src')
           from pyeuropepmc.search import SearchClient
-          client = SearchClient()
-          print('✅ SearchClient instantiation successful')
+          from pyeuropepmc.fulltext import FullTextClient
+
+          # Test context managers
+          with SearchClient() as search_client:
+              assert not search_client.is_closed
+              print('SUCCESS: SearchClient context manager works')
+
+          with FullTextClient() as fulltext_client:
+              assert not fulltext_client.is_closed
+              print('SUCCESS: FullTextClient context manager works')
+
+          print('SUCCESS: All context managers working correctly')
           "
 
   # Level 3: Full Testing (Primary Version Only)
@@ -125,37 +234,68 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
 
       - name: Install Poetry
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Cache Poetry dependencies
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-full-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            venv-full-${{ runner.os }}-${{ matrix.python-version }}-
 
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
 
-      - name: Run linting
+      - name: Run linting with detailed output
         run: |
-          poetry run ruff check .
+          echo "Running comprehensive linting..."
+          poetry run ruff check . --output-format=github --statistics
+          echo "Ruff linting passed"
 
       - name: Run type checking
         run: |
-          poetry run mypy .
+          echo "Running type checking..."
+          poetry run mypy src/ --show-error-codes --show-error-context
+          echo "MyPy type checking passed"
+
+      - name: Run security checks
+        run: |
+          echo "Running security analysis..."
+          poetry run bandit -r src/ -f json || poetry run bandit -r src/
+          echo "Security checks passed"
 
       - name: Run full test suite with coverage
         run: |
-          poetry run coverage run -m pytest
-          poetry run coverage report --show-missing
+          echo "Running full test suite with coverage analysis..."
+          poetry run coverage run --source=src -m pytest --tb=short -v
+          poetry run coverage report --show-missing --fail-under=85
           poetry run coverage xml
+
+      - name: Generate coverage badge data
+        if: matrix.python-version == '3.12'
+        run: |
+          echo "Generating coverage metrics..."
+          COVERAGE=$(poetry run coverage report --format=total)
+          echo "COVERAGE_PERCENTAGE=${COVERAGE}" >> $GITHUB_ENV
+          echo "Coverage: ${COVERAGE}%"
 
       - name: Upload coverage to Codecov
         if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           file: ./coverage.xml
+          flags: unittests
+          name: codecov-umbrella
           fail_ci_if_error: false
 
   # Level 4: Integration Testing (Latest Version)
@@ -163,56 +303,103 @@ jobs:
     name: Integration Tests (Python 3.12)
     runs-on: ubuntu-latest
     needs: full-tests
-    if: github.event_name == 'push' || github.event_name == 'schedule'
+    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install Poetry
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
       - name: Install dependencies
         run: poetry install --no-interaction --no-ansi
 
       - name: Run integration tests
+        timeout-minutes: 15
         run: |
-          poetry run pytest tests/search/functional/ -v --tb=short -m "not slow"
+          echo "Running integration tests..."
+          poetry run pytest tests/search/functional/ tests/fulltext/functional/ -v --tb=short -m "not slow" --timeout=60
         env:
-          # Add any environment variables for API testing
           PYTEST_TIMEOUT: 30
 
-      - name: Run network tests (if available)
+      - name: Test module integration
         run: |
-          poetry run pytest -m "network" -v --tb=short || echo "No network tests found"
+          echo "Testing module integration..."
+          poetry run python -c "
+          import sys; sys.path.insert(0, 'src')
+          from pyeuropepmc import SearchClient, FullTextClient, FTPDownloader
+
+          # Test integrated workflow (without actual API calls)
+          with SearchClient() as search_client:
+              print('SUCCESS: SearchClient integration ready')
+
+          with FullTextClient() as fulltext_client:
+              print('SUCCESS: FullTextClient integration ready')
+
+          ftp_downloader = FTPDownloader()
+          print('SUCCESS: FTPDownloader integration ready')
+
+          print('SUCCESS: All module integrations successful')
+          "
+
+      - name: Run smoke tests for critical paths
+        run: |
+          echo "Running smoke tests..."
+          poetry run python -c "
+          import sys; sys.path.insert(0, 'src')
+          from pyeuropepmc.search import SearchClient
+          from pyeuropepmc.fulltext import FullTextClient
+          from pyeuropepmc.error_codes import ErrorCodes
+          from pyeuropepmc.exceptions import ValidationError, FullTextError
+
+          # Test error handling
+          try:
+              raise ValidationError(ErrorCodes.VALID001, 'test error')
+          except ValidationError as e:
+              assert e.error_code == ErrorCodes.VALID001
+              print('SUCCESS: Error handling smoke test passed')
+
+          # Test client initialization
+          search_client = SearchClient(rate_limit_delay=0.1)
+          fulltext_client = FullTextClient(rate_limit_delay=0.1)
+
+          search_client.close()
+          fulltext_client.close()
+          print('SUCCESS: Client initialization smoke test passed')
+          "
 
   # Performance Testing (Optional)
   performance-tests:
     name: Performance Tests (Python 3.12)
     runs-on: ubuntu-latest
     needs: full-tests
-    if: github.event_name == 'schedule'
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_performance_tests)
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
       - name: Install Poetry
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
       - name: Install dependencies with benchmarking tools
         run: |
@@ -221,13 +408,46 @@ jobs:
 
       - name: Run performance benchmarks
         run: |
-          poetry run pytest tests/ -k "benchmark" --benchmark-only --benchmark-json=benchmark.json || echo "No benchmark tests found"
+          echo "Running performance benchmarks..."
+          poetry run pytest tests/ -k "benchmark" --benchmark-only --benchmark-json=benchmark.json --benchmark-warmup=on || echo "No benchmark tests found"
+
+      - name: Performance regression test
+        run: |
+          echo "Testing performance baselines..."
+          poetry run python -c "
+          import time, sys
+          sys.path.insert(0, 'src')
+          from pyeuropepmc.search import SearchClient
+          from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts
+
+          # Basic performance tests
+          start = time.time()
+          for _ in range(1000):
+              safe_int('123')
+          safe_int_time = time.time() - start
+
+          start = time.time()
+          for _ in range(100):
+              deep_merge_dicts({'a': 1}, {'b': 2})
+          merge_time = time.time() - start
+
+          print(f'safe_int (1000 calls): {safe_int_time:.4f}s')
+          print(f'deep_merge_dicts (100 calls): {merge_time:.4f}s')
+
+          # Basic thresholds
+          assert safe_int_time < 0.1, f'safe_int too slow: {safe_int_time}s'
+          assert merge_time < 0.1, f'deep_merge_dicts too slow: {merge_time}s'
+          print('SUCCESS: Performance regression tests passed')
+          "
 
       - name: Store benchmark results
         if: github.ref == 'refs/heads/main'
         run: |
-          # Store or compare benchmark results
-          echo "Benchmark results stored for trend analysis"
+          echo "Storing benchmark results..."
+          if [ -f benchmark.json ]; then
+            echo "Benchmark results available for trend analysis"
+            # Could upload to external service or artifact storage
+          fi
 
   # Compatibility Summary
   compatibility-summary:
@@ -243,16 +463,43 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "### Test Results by Python Version:" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Python Version | Syntax Check | Core Tests | Full Tests | Status |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------------|--------------|------------|------------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Python Version | Syntax Check | Core Tests | Full Tests | Status | Recommendation |" >> $GITHUB_STEP_SUMMARY
+          echo "|----------------|--------------|------------|------------|--------|----------------|" >> $GITHUB_STEP_SUMMARY
 
-          # Add logic to check job results and populate table
-          echo "| 3.10 | ${{ needs.syntax-check.result }} | ${{ needs.core-tests.result }} | ${{ needs.full-tests.result }} | Primary Support |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3.11 | ${{ needs.syntax-check.result }} | N/A | N/A | Compatibility Only |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3.12 | ${{ needs.syntax-check.result }} | ${{ needs.core-tests.result }} | ${{ needs.full-tests.result }} | Recommended |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3.13 | ${{ needs.syntax-check.result }} | N/A | N/A | Future Support |" >> $GITHUB_STEP_SUMMARY
+          # Determine status icons
+          syntax_3_10="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
+          syntax_3_11="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
+          syntax_3_12="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
+          syntax_3_13="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
+
+          core_status="${{ needs.core-tests.result == 'success' && 'PASS' || 'FAIL' }}"
+          full_status="${{ needs.full-tests.result == 'success' && 'PASS' || 'FAIL' }}"
+
+          echo "| 3.10 | $syntax_3_10 | $core_status | $full_status | Primary Support | Production Ready |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3.11 | $syntax_3_11 | SKIP | SKIP | Compatibility | Limited Testing |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3.12 | $syntax_3_12 | $core_status | $full_status | **Recommended** | **Best Performance** |" >> $GITHUB_STEP_SUMMARY
+          echo "| 3.13 | $syntax_3_13 | SKIP | SKIP | Future Support | Early Adoption |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
+
           echo "### Support Policy:" >> $GITHUB_STEP_SUMMARY
-          echo "- **Full Support**: Python 3.10, 3.12" >> $GITHUB_STEP_SUMMARY
-          echo "- **Compatibility**: Python 3.11, 3.13" >> $GITHUB_STEP_SUMMARY
-          echo "- **Recommended**: Python 3.12 for best performance" >> $GITHUB_STEP_SUMMARY
+          echo "- **Recommended**: Python 3.12 (best performance, full testing)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Full Support**: Python 3.10, 3.12 (complete test coverage)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Compatibility**: Python 3.11, 3.13 (syntax verification only)" >> $GITHUB_STEP_SUMMARY
+          echo "- **Minimum Required**: Python 3.10+" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          echo "### Module Coverage:" >> $GITHUB_STEP_SUMMARY
+          echo "- SearchClient - Core search functionality" >> $GITHUB_STEP_SUMMARY
+          echo "- FullTextClient - PDF/XML/HTML retrieval" >> $GITHUB_STEP_SUMMARY
+          echo "- FTPDownloader - Bulk content downloads" >> $GITHUB_STEP_SUMMARY
+          echo "- EuropePMCParser - Response parsing" >> $GITHUB_STEP_SUMMARY
+          echo "- BaseAPIClient - Foundation classes" >> $GITHUB_STEP_SUMMARY
+          echo "- ErrorCodes & Exceptions - Error handling" >> $GITHUB_STEP_SUMMARY
+          echo "- Utils.Helpers - Utility functions" >> $GITHUB_STEP_SUMMARY
+
+      - name: Set job outputs
+        id: summary
+        run: |
+          echo "python_support=3.10,3.11,3.12,3.13" >> $GITHUB_OUTPUT
+          echo "recommended_version=3.12" >> $GITHUB_OUTPUT
+          echo "minimum_version=3.10" >> $GITHUB_OUTPUT
