@@ -61,6 +61,7 @@ jobs:
         run: |
           # Test syntax by compiling all Python files
           echo "Testing syntax for all Python modules..."
+          source .venv/bin/activate
           python -m py_compile src/pyeuropepmc/__init__.py
           python -m py_compile src/pyeuropepmc/base.py
           python -m py_compile src/pyeuropepmc/search.py
