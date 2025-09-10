@@ -479,6 +479,7 @@ class SearchClient(BaseAPIClient):
                 logger.info(f"Please enter a number between 1 and {hit_count}, or '0' to quit.")
             except Exception as e:
                 logger.info(f"Please enter a valid integer, or '0' to quit. Error: {e}")
+                continue
             except KeyboardInterrupt:
                 logger.info("\nOperation cancelled by user.")
                 return 0
