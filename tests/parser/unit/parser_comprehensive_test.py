@@ -7,6 +7,8 @@ covering JSON, XML, and Dublin Core parsing with various edge cases.
 
 import pytest
 
+from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.exceptions import ParsingError
 from pyeuropepmc.parser import EuropePMCParser
 
 
@@ -91,13 +93,29 @@ class TestParseJson:
 
     def test_parse_json_none_input(self):
         """Test parsing with None input."""
-        with pytest.raises(ValueError, match="Invalid data format"):
+        with pytest.raises(ParsingError) as exc_info:
             EuropePMCParser.parse_json(None)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.PARSE001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[PARSE001]" in error_str
+        assert "JSON parsing failed" in error_str
 
     def test_parse_json_string_input(self):
         """Test parsing with string input."""
-        with pytest.raises(ValueError, match="Invalid data format"):
+        with pytest.raises(ParsingError) as exc_info:
             EuropePMCParser.parse_json("invalid input")
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.PARSE001
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[PARSE001]" in error_str
+        assert "JSON parsing failed" in error_str
 
     def test_parse_json_complex_nested_data(self):
         """Test parsing complex nested JSON data."""

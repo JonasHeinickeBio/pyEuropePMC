@@ -71,4 +71,4 @@ def test_context_manager_closes_session() -> None:
 def test_europepmc_error_exception() -> None:
     """Test that EuropePMCError can be raised and caught."""
     with pytest.raises(EuropePMCError):
-        raise EuropePMCError("Test error message")
+        raise EuropePMCError(message="Test error message")

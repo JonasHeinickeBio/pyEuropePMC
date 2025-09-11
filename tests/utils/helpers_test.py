@@ -14,6 +14,8 @@ import subprocess
 
 import pytest
 
+from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.exceptions import ValidationError
 from pyeuropepmc.utils.helpers import (
     deep_merge_dicts,
     load_json,
@@ -148,19 +150,43 @@ class TestDeepMergeDicts:
         assert result == {"a": {"b": 1}}
 
     def test_type_error_non_dict_original(self):
-        """Test TypeError when original is not a dict."""
-        with pytest.raises(TypeError, match="Both arguments must be dictionaries"):
+        """Test ValidationError when original is not a dict."""
+        with pytest.raises(ValidationError) as exc_info:
             deep_merge_dicts("not a dict", {"a": 1})  # type: ignore
 
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID001
+
+        # Check that the error message indicates dictionary validation failure
+        error_str = str(exc_info.value)
+        assert "[VALID001]" in error_str
+        assert "Both arguments must be dictionaries" in error_str
+
     def test_type_error_non_dict_new(self):
-        """Test TypeError when new is not a dict."""
-        with pytest.raises(TypeError, match="Both arguments must be dictionaries"):
+        """Test ValidationError when new is not a dict."""
+        with pytest.raises(ValidationError) as exc_info:
             deep_merge_dicts({"a": 1}, "not a dict")  # type: ignore
 
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID001
+
+        # Check that the error message indicates dictionary validation failure
+        error_str = str(exc_info.value)
+        assert "[VALID001]" in error_str
+        assert "Both arguments must be dictionaries" in error_str
+
     def test_type_error_both_non_dict(self):
-        """Test TypeError when both arguments are not dicts."""
-        with pytest.raises(TypeError, match="Both arguments must be dictionaries"):
+        """Test ValidationError when both arguments are not dicts."""
+        with pytest.raises(ValidationError) as exc_info:
             deep_merge_dicts("not a dict", 42)  # type: ignore
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID001
+
+        # Check that the error message indicates dictionary validation failure
+        error_str = str(exc_info.value)
+        assert "[VALID001]" in error_str
+        assert "Both arguments must be dictionaries" in error_str
 
     def test_complex_types(self):
         """Test merging with complex data types."""
@@ -328,14 +354,20 @@ class TestSaveToJson:
         assert loaded_data == new_data
 
     def test_save_non_serializable_data(self, tmp_path):
-        """Test saving non-serializable data returns False."""
+        """Test saving non-serializable data raises ValidationError."""
         data = {"function": lambda x: x}  # Functions are not JSON serializable
         file_path = tmp_path / "non_serializable.json"
 
-        result = save_to_json(data, file_path)
-        assert result is False
-        # The current implementation creates the directory but fails during JSON serialization
-        # So the file might exist but be incomplete or invalid JSON
+        with pytest.raises(ValidationError) as exc_info:
+            save_to_json(data, file_path)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID007
+
+        # Check that the error message indicates JSON serialization failure
+        error_str = str(exc_info.value)
+        assert "[VALID007]" in error_str
+        assert "Failed to serialize data to JSON" in error_str
 
     def test_save_to_readonly_location(self, tmp_path):
         """Test saving to a read-only location with cross-platform compatibility."""
@@ -357,8 +389,16 @@ class TestSaveToJson:
         file_path = readonly_dir / "test.json"
 
         try:
-            result = save_to_json(data, file_path)
-            assert result is False, "Expected save_to_json to return False for read-only directory"
+            with pytest.raises(ValidationError) as exc_info:
+                save_to_json(data, file_path)
+
+            # Check that the exception has the correct error code for file save failure
+            assert exc_info.value.error_code == ErrorCodes.VALID006
+
+            # Check that the error message indicates save failure
+            error_str = str(exc_info.value)
+            assert "[VALID006]" in error_str
+            assert "Failed to save JSON file" in error_str
         finally:
             # Always restore permissions for cleanup
             restore_permissions(readonly_dir)
@@ -393,8 +433,16 @@ class TestSaveToJson:
         data = {"test": "data"}
         file_path = readonly_dir / "test.json"
 
-        result = save_to_json(data, file_path)
-        assert result is False, "Expected save_to_json to return False when permission denied"
+        with pytest.raises(ValidationError) as exc_info:
+            save_to_json(data, file_path)
+
+        # Check that the exception has the correct error code for file save failure
+        assert exc_info.value.error_code == ErrorCodes.VALID006
+
+        # Check that the error message indicates save failure
+        error_str = str(exc_info.value)
+        assert "[VALID006]" in error_str
+        assert "Failed to save JSON file" in error_str
 
 
 class TestLoadJson:
@@ -425,29 +473,53 @@ class TestLoadJson:
         assert loaded_data == data
 
     def test_load_nonexistent_file(self, tmp_path):
-        """Test loading from a non-existent file returns None."""
+        """Test loading from a non-existent file raises ValidationError."""
         file_path = tmp_path / "nonexistent.json"
-        result = load_json(file_path)
-        assert result is None
+        with pytest.raises(ValidationError) as exc_info:
+            load_json(file_path)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID004
+
+        # Check that the error message indicates file not found
+        error_str = str(exc_info.value)
+        assert "[VALID004]" in error_str
+        assert "JSON file not found" in error_str
 
     def test_load_invalid_json(self, tmp_path):
-        """Test loading invalid JSON returns None."""
+        """Test loading invalid JSON raises ValidationError."""
         file_path = tmp_path / "invalid.json"
 
         # Create file with invalid JSON
         with file_path.open("w", encoding="utf-8") as f:
             f.write("{ invalid json content")
 
-        result = load_json(file_path)
-        assert result is None
+        with pytest.raises(ValidationError) as exc_info:
+            load_json(file_path)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID005
+
+        # Check that the error message indicates JSON parse failure
+        error_str = str(exc_info.value)
+        assert "[VALID005]" in error_str
+        assert "Failed to parse JSON file" in error_str
 
     def test_load_empty_file(self, tmp_path):
-        """Test loading empty file returns None."""
+        """Test loading empty file raises ValidationError."""
         file_path = tmp_path / "empty.json"
         file_path.touch()  # Create empty file
 
-        result = load_json(file_path)
-        assert result is None
+        with pytest.raises(ValidationError) as exc_info:
+            load_json(file_path)
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.VALID005
+
+        # Check that the error message indicates JSON parse failure
+        error_str = str(exc_info.value)
+        assert "[VALID005]" in error_str
+        assert "Failed to parse JSON file" in error_str
 
     def test_load_complex_data(self, tmp_path):
         """Test loading complex nested data."""

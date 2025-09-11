@@ -3,6 +3,8 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.exceptions import ParsingError, SearchError
 from pyeuropepmc.parser import EuropePMCParser
 from pyeuropepmc.search import SearchClient
 
@@ -66,9 +68,9 @@ def test_search_and_parse_parametrized(
 @pytest.mark.parametrize(
     "format_type, expected_exception",
     [
-        ("invalid", ValueError),
-        ("pdf", ValueError),
-        ("html", ValueError),
+        ("invalid", SearchError),
+        ("pdf", SearchError),
+        ("html", SearchError),
     ],
 )
 def test_search_and_parse_format_validation(format_type, expected_exception) -> None:
@@ -90,9 +92,17 @@ def test_search_and_parse_type_mismatch() -> None:
         # Return JSON data but claim it's XML format
         mock_search.return_value = {"test": "data"}
 
-        # This should raise ValueError due to type mismatch (dict instead of str for XML)
-        with pytest.raises(ValueError, match="Expected str for XML format"):
+        # This should raise ParsingError due to type mismatch (dict instead of str for XML)
+        with pytest.raises(ParsingError) as exc_info:
             client.search_and_parse("test", format="xml")
+
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code == ErrorCodes.PARSE004
+
+        # Check that the error message contains the expected content
+        error_str = str(exc_info.value)
+        assert "[PARSE004]" in error_str
+        assert "Unsupported data format" in error_str
 
     client.close()
 
@@ -154,13 +164,17 @@ def test_search_and_parse_xml_format() -> None:
 
 @pytest.mark.unit
 def test_search_and_parse_unknown_format_error() -> None:
-    """Test search_and_parse raises ValueError for unknown format."""
+    """Test search_and_parse raises SearchError for unknown format."""
+    from pyeuropepmc.exceptions import SearchError
+
     client = SearchClient()
 
     # Test with completely unknown format
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(SearchError) as exc_info:
         client.search_and_parse("test", format="unknown")
 
-    assert "Unsupported format" in str(exc_info.value)
+    # Check for new error code message
+    error_msg = str(exc_info.value)
+    assert "SEARCH004" in error_msg or "Invalid format parameter" in error_msg
 
     client.close()

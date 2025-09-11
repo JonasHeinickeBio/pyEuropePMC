@@ -37,6 +37,9 @@ PyEuropePMC is a Python toolkit for automated search, extraction, entity annotat
 - **Testing:**
   - Write unit tests for all major functions using `pytest`.
   - Include example queries and expected outputs in the `examples/` directory.
+  - Test names should be descriptive and adhere to the format `test_<functionality>_<expected_behavior>`.
+  - Use fixtures for common test setups (e.g., mock API responses).
+  - Test files should be located in the `tests/` directory, organized by module and under unit or functional tests and they should follow the naming convention `<module_name>_test.py`.
 
 - **Documentation:**
   - Update `README.md` and API docs as features are added.

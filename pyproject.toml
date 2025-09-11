@@ -5,7 +5,7 @@ description = "A Python package for working with the Europe PMC API to search an
 license = "file:LICENSE"
 readme = "README.md"
 authors = [
-  { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" }
+  { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" },
 ]
 requires-python = ">=3.10,<4.0"
 
@@ -27,7 +27,6 @@ python = ">=3.10,<4.0"
 ipython = ">=7.30"
 ipykernel = ">=6.7"
 ipywidgets = ">=7.6"
-isort = ">=5.10"
 jupyterlab = ">=3.2"
 notebook = ">=6.4"
 numpy = ">=1.21"
@@ -41,6 +40,8 @@ backoff = "^2.2.1"
 tornado = "^6.5.1"
 flask = "^3.1.1"
 defusedxml = "^0.7.1"
+tqdm = "^4.67.1"
+beautifulsoup4 = "^4.13.5"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -50,9 +51,7 @@ black = "^25.1.0"
 mypy = "^1.16.1"
 types-PyYAML = "6.0.12.20240311"
 types-requests = "^2.31.0"
-flake8 = ">=4.0"
 pytest-benchmark = "^5.1.0"
-flake8-pyproject = "^1.2.3"
 coverage = "^7.9.1"
 bandit = "^1.8.5"
 ruff = "^0.12.1"
@@ -61,12 +60,6 @@ typing-extensions = "^4.14.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
-
-[tool.isort]
-profile = "black"
-known_first_party = ["pyeuropepmc"]
-force_sort_within_sections = true
-
 
 [tool.pytest.ini_options]
 addopts = "-ra -q"
@@ -78,33 +71,6 @@ markers = [
   "network: mark test that requires network access (use '-m \"not network\"' to skip)",
   "functional: mark test as functional (use '-m \"not functional\"' to skip)",
 ]
-[tool.flake8]
-ignore = ["E203", "E266", "E731"]
-
-# Allow lambda expressions (E731) as they are used in specific cases for concise, inline functions.
-# Allow line breaks before binary operators (W503) for compatibility with Black's formatting style.
-# Ignore whitespace before ':' (E203) due to conflicts with Black.
-max-line-length = 99
-max-complexity = 10
-count = true
-# Ignore F401 (unused imports) in __init__.py files.
-per-file-ignores = [
-  "__init__.py:F401"
-]
-# Exclude common build, cache, and IDE directories.
-exclude = [
-  ".git",
-  ".venv",
-  "dist",
-  "build",
-  "docs",
-  "__pycache__",
-  ".pytest_cache",
-  ".vscode",
-  ".github",
-  ".idea"
-]
-
 [tool.ruff]
 line-length = 99
 target-version = "py310"
@@ -118,12 +84,34 @@ exclude = [
   ".pytest_cache",
   ".vscode",
   ".github",
-  ".idea"
+  ".idea",
+  "examples",
+  "tests",
 ]
 
 [tool.ruff.lint]
-select = ["E", "F", "W", "C90"]
+select = [
+  "E",   # pycodestyle errors
+  "F",   # pyflakes
+  "W",   # pycodestyle warnings
+  "C90", # mccabe complexity
+  "I",   # isort
+  "UP",  # pyupgrade
+  "B",   # flake8-bugbear
+  "SIM", # flake8-simplify
+]
 ignore = ["E203", "E266", "E731"]
+
+[tool.ruff.lint.per-file-ignores]
+"__init__.py" = ["F401"]                       # Allow unused imports in __init__.py
+"src/pyeuropepmc/ftp_downloader.py" = ["C901"] # Allow complex FTP operations
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.isort]
+known-first-party = ["pyeuropepmc"]
+force-sort-within-sections = true
 
 [tool.black]
 line-length = 99
@@ -157,18 +145,30 @@ source = ["pyeuropepmc"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
-fail_under = 50  # Set your desired test coverage threshold
+fail_under = 50     # Set your desired test coverage threshold
 
 [tool.bandit]
 skips = ["B101", "B303"]
-exclude_dirs = ["tests", "docs", "examples", ".venv", "dist", "build",
-               ".git", "__pycache__", ".pytest_cache", ".vscode", ".github", ".idea"]
+exclude_dirs = [
+  "tests",
+  "docs",
+  "examples",
+  ".venv",
+  "dist",
+  "build",
+  ".git",
+  "__pycache__",
+  ".pytest_cache",
+  ".vscode",
+  ".github",
+  ".idea",
+]
 paths = ["src"]
 
 [tool.mypy]
 python_version = "3.10"
 strict = true
 ignore_missing_imports = true
-exclude = "tests/"
+exclude = "(tests/|examples/)"
 files = "src/"
 disable_error_code = ["misc", "import-untyped"]

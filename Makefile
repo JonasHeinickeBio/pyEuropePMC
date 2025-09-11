@@ -26,17 +26,41 @@ clean:
 	find . -type f -name "*.py[co]" -delete
 	find . -type d -name "__pycache__" -delete
 
-## Lint using flake8 and black (use `make format` to do formatting)
+## Lint using ruff
 .PHONY: lint
 lint:
-	flake8 pyEuropePMC
-	isort --check --diff --profile black pyEuropePMC
-	black --check --config pyproject.toml pyEuropePMC
+	ruff check .
 
-## Format source code with black
+## Format source code with ruff
 .PHONY: format
 format:
-	black --config pyproject.toml pyEuropePMC
+	ruff format .
+
+## Lint and format with ruff
+.PHONY: ruff
+ruff:
+	ruff check --fix .
+	ruff format .
+
+## Run all quality checks
+.PHONY: quality
+quality:
+	ruff check .
+	ruff format --check .
+	mypy .
+	bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip "B101,B303"
+
+## Run tests
+.PHONY: test
+test:
+	pytest
+
+## Run tests with coverage
+.PHONY: test-coverage
+test-coverage:
+	coverage run -m pytest
+	coverage report
+	coverage html
 
 
 

@@ -13,6 +13,7 @@ Welcome to the comprehensive documentation for PyEuropePMC - a robust Python too
 ### API Reference
 
 - [SearchClient API](api/search-client.md) - Complete SearchClient documentation
+- [FullTextClient API](api/fulltext-client.md) - Full text content retrieval
 - [Parser API](api/parser.md) - Response parsing utilities
 - [Base Client API](api/base-client.md) - Low-level API client
 - [Utilities](api/utilities.md) - Helper functions and utilities

@@ -10,11 +10,13 @@
 ## ✨ Key Features
 
 - 🔍 **Comprehensive Search API** - Query Europe PMC with advanced search options
-- 📊 **Multiple Output Formats** - JSON, XML, and Dublin Core support
-- 🔄 **Smart Pagination** - Automatic handling of large result sets
+- � **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
+- �📊 **Multiple Output Formats** - JSON, XML, and Dublin Core support
+- � **Bulk FTP Downloads** - Efficient bulk PDF downloads from Europe PMC FTP servers
+- �🔄 **Smart Pagination** - Automatic handling of large result sets
 - 🛡️ **Robust Error Handling** - Built-in retry logic and connection management
 - ⚡ **Rate Limiting** - Respectful API usage with configurable delays
-- 🧪 **Extensively Tested** - 174 tests with 90%+ code coverage
+- 🧪 **Extensively Tested** - 200+ tests with 90%+ code coverage
 
 ## 🚀 Quick Start
 
@@ -52,6 +54,30 @@ papers = client.search_and_parse(
 for paper in papers:
     print(f"Citations: {paper.get('citedByCount', 0)}")
     print(f"Title: {paper.get('title', 'N/A')}")
+```
+
+### Full-Text Content Retrieval
+
+```python
+from pyeuropepmc.fulltext import FullTextClient
+
+# Initialize full-text client
+fulltext_client = FullTextClient()
+
+# Download PDF
+pdf_path = fulltext_client.download_pdf_by_pmcid("PMC1234567", output_dir="./downloads")
+
+# Download XML
+xml_content = fulltext_client.download_xml_by_pmcid("PMC1234567")
+
+# Bulk FTP downloads
+from pyeuropepmc.ftp_downloader import FTPDownloader
+
+ftp_downloader = FTPDownloader()
+results = ftp_downloader.bulk_download_and_extract(
+    pmcids=["1234567", "2345678"],
+    output_dir="./bulk_downloads"
+)
 ```
 
 ## 📚 Documentation
