@@ -579,7 +579,7 @@ jobs:
         timeout-minutes: 15
         run: |
           echo "Running integration tests..."
-          poetry run pytest tests/search/functional/ tests/fulltext/functional/ -v --tb=short -m "not slow" --timeout=60
+          poetry run pytest tests/search/functional/ tests/fulltext/functional/ -v --tb=short -m "not slow"
         env:
           PYTEST_TIMEOUT: 30
 
