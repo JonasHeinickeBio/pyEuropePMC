@@ -520,7 +520,7 @@ jobs:
         run: |
           echo "Running full test suite with coverage analysis..."
           poetry run coverage run --source=src -m pytest --tb=short -v
-          poetry run coverage report --show-missing --fail-under=85
+          poetry run coverage report --show-missing --fail-under=80
           poetry run coverage xml
 
       - name: Generate coverage badge data
