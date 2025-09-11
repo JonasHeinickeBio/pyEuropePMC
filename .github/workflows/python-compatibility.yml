@@ -372,13 +372,6 @@ jobs:
             PYTEST_OPTS="$PYTEST_OPTS -s --capture=no"
           fi
 
-          # Windows-specific configuration
-          if [ "$RUNNER_OS" = "Windows" ]; then
-            echo "Configuring Windows-specific test settings..."
-            # Add Windows-specific pytest markers to skip problematic tests
-            PYTEST_OPTS="$PYTEST_OPTS -m 'not windows_skip'"
-          fi
-
           # Test utilities first (foundational)
           if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"utils"* ]]; then
             echo "Testing utilities module..."
