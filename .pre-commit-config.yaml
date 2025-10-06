@@ -53,3 +53,9 @@ repos:
         entry: bash -c 'poetry lock && git diff --exit-code poetry.lock'
         language: system
         pass_filenames: false
+      - id: codescene-check
+        name: CodeScene code health check
+        entry: bash -c 'find src/ -name "*.py" -exec cs check {} \;'
+        language: system
+        pass_filenames: false
+        verbose: true

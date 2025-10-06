@@ -1684,3 +1684,37 @@ class FullTextClient(BaseAPIClient):
                 self.logger.error(f"Failed to download HTML for PMC{pmcid}: {e}")
                 results[pmcid] = None
         return results
+
+    def export_results(
+        self,
+        results: list[dict[str, Any]],
+        format: str = "dataframe",
+        path: str | None = None,
+        **kwargs: Any,
+    ) -> Any:
+        """
+        Export fulltext results using the specified format.
+
+        Args:
+            results: List of result dicts to export
+            format: Export format ('dataframe', 'csv', 'excel', 'json', 'markdown')
+            path: Optional file path for file-based exports
+            **kwargs: Additional options for export (e.g., pretty for JSON)
+
+        Returns:
+            Exported data (DataFrame, str, bytes, etc.)
+        """
+        from pyeuropepmc.utils import export
+
+        if format == "dataframe":
+            return export.to_dataframe(results)
+        elif format == "csv":
+            return export.to_csv(results, path)
+        elif format == "excel":
+            return export.to_excel(results, path)
+        elif format == "json":
+            return export.to_json(results, path, **kwargs)
+        elif format == "markdown":
+            return export.to_markdown_table(results)
+        else:
+            raise ValueError(f"Unsupported export format: {format}")

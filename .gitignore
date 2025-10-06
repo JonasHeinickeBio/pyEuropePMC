@@ -182,3 +182,4 @@ cython_debug/
 coverage.xml
 coverage.json
 htmlcov/
+junit.xml

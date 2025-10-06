@@ -885,3 +885,292 @@ class TestFullTextClientCoverage:
 
                     result = self.client._try_bulk_xml_download("123456", Path("/tmp/test.xml"))
                     assert result is False
+
+    def test_progress_info_initialization(self):
+        """Test ProgressInfo initialization with all parameters."""
+        from pyeuropepmc.fulltext import ProgressInfo
+        import time
+
+        start_time = time.time()
+        progress = ProgressInfo(
+            total_items=100,
+            current_item=25,
+            current_pmcid="123456",
+            status="downloading",
+            successful_downloads=20,
+            failed_downloads=3,
+            cache_hits=2,
+            format_type="pdf",
+            start_time=start_time,
+            current_file_size=1024,
+            total_downloaded_bytes=50000
+        )
+
+        assert progress.total_items == 100
+        assert progress.current_item == 25
+        assert progress.current_pmcid == "123456"
+        assert progress.status == "downloading"
+
+    def test_progress_info_default_initialization(self):
+        """Test ProgressInfo initialization with minimal parameters."""
+        from pyeuropepmc.fulltext import ProgressInfo
+
+        progress = ProgressInfo(total_items=50)
+
+        assert progress.total_items == 50
+        assert progress.current_item == 0
+        assert progress.current_pmcid is None
+        assert progress.status == "starting"
+
+    def test_progress_percent_calculation(self):
+        """Test progress percentage calculation."""
+        from pyeuropepmc.fulltext import ProgressInfo
+
+        progress = ProgressInfo(total_items=100, current_item=25)
+        assert progress.progress_percent == 25.0
+
+        progress = ProgressInfo(total_items=0, current_item=5)
+        assert progress.progress_percent == 0.0
+
+    def test_estimated_times_calculation(self):
+        """Test estimated time calculations."""
+        from pyeuropepmc.fulltext import ProgressInfo
+        import time
+
+        start_time = time.time() - 10  # 10 seconds ago
+        progress = ProgressInfo(total_items=100, current_item=25, start_time=start_time)
+
+        # Should have estimates when progress > 0
+        assert progress.estimated_total_time is not None
+        assert progress.estimated_remaining_time is not None
+
+        # No estimates when no progress
+        progress_no_work = ProgressInfo(total_items=100, current_item=0, start_time=start_time)
+        assert progress_no_work.estimated_total_time is None
+        assert progress_no_work.estimated_remaining_time is None
+
+    def test_completion_rate_calculation(self):
+        """Test completion rate calculation."""
+        from pyeuropepmc.fulltext import ProgressInfo
+        from unittest.mock import patch
+        import time
+
+        # Test with actual elapsed time
+        start_time = time.time() - 10  # 10 seconds ago
+        progress = ProgressInfo(total_items=100, current_item=25, start_time=start_time)
+
+        rate = progress.completion_rate
+        # Rate should be approximately 2.5 items/second (25 items in ~10 seconds)
+        # Allow some tolerance for timing variations
+        assert 2.0 < rate < 4.0
+
+        # Test zero elapsed time by mocking time.time to return start_time
+        with patch('time.time') as mock_time:
+            fixed_time = 1000.0
+            mock_time.return_value = fixed_time
+            progress_new = ProgressInfo(total_items=100, current_item=25, start_time=fixed_time)
+            assert progress_new.completion_rate == 0.0
+
+    def test_progress_to_dict_conversion(self):
+        """Test conversion to dictionary."""
+        from pyeuropepmc.fulltext import ProgressInfo
+
+        progress = ProgressInfo(
+            total_items=100,
+            current_item=25,
+            current_pmcid="123456",
+            status="downloading"
+        )
+
+        result_dict = progress.to_dict()
+
+        required_keys = [
+            "total_items", "current_item", "current_pmcid", "status",
+            "progress_percent", "successful_downloads", "failed_downloads",
+            "cache_hits", "format_type", "elapsed_time", "estimated_remaining_time",
+            "completion_rate", "current_file_size", "total_downloaded_bytes"
+        ]
+
+        assert all(key in result_dict for key in required_keys)
+        assert result_dict["total_items"] == 100
+
+    def test_progress_string_representation(self):
+        """Test string representation."""
+        from pyeuropepmc.fulltext import ProgressInfo
+
+        progress = ProgressInfo(
+            total_items=100,
+            current_item=25,
+            current_pmcid="123456",
+            status="downloading"
+        )
+
+        string_repr = str(progress)
+        assert "25/100" in string_repr
+        assert "25.0%" in string_repr
+        assert "PMC123456" in string_repr
+        assert "downloading" in string_repr
+
+    def test_fulltext_client_cache_initialization_variations(self):
+        """Test FullTextClient cache initialization with different settings."""
+        # Test with custom cache directory
+        with tempfile.TemporaryDirectory() as temp_dir:
+            cache_dir = Path(temp_dir) / "custom_cache"
+
+            client = FullTextClient(
+                enable_cache=True,
+                cache_dir=cache_dir,
+                cache_max_age_days=7,
+                verify_cached_files=False
+            )
+
+            assert client.enable_cache is True
+            assert client.cache_dir == cache_dir
+            assert client.cache_max_age_days == 7
+            assert client.verify_cached_files is False
+            assert cache_dir.exists()
+
+            client.close()
+
+        # Test with cache disabled
+        client = FullTextClient(enable_cache=False)
+        assert client.enable_cache is False
+        assert client.cache_dir is None
+        client.close()
+
+        # Test with default cache directory
+        client = FullTextClient(enable_cache=True, cache_dir=None)
+        assert client.enable_cache is True
+        assert client.cache_dir is not None
+        assert "pyeuropepmc_cache" in str(client.cache_dir)
+        client.close()
+
+    def test_cache_path_operations(self):
+        """Test cache path operations."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            client = FullTextClient(enable_cache=True, cache_dir=temp_dir)
+
+            # Test get_cache_path
+            cache_path = client._get_cache_path("123456", "pdf")
+            assert cache_path is not None
+            assert cache_path.name == "PMC123456.pdf"
+            assert "pdf" in str(cache_path.parent)
+
+            client.close()
+
+        # Test with cache disabled
+        client = FullTextClient(enable_cache=False)
+        cache_path = client._get_cache_path("123456", "pdf")
+        assert cache_path is None
+        client.close()
+
+    def test_cached_file_validation_edge_cases(self):
+        """Test cached file validation edge cases."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            client = FullTextClient(enable_cache=True, cache_dir=temp_dir)
+
+            # Nonexistent file
+            nonexistent_path = Path(temp_dir) / "nonexistent.pdf"
+            assert not client._is_cached_file_valid(nonexistent_path)
+
+            # Empty file
+            empty_file = Path(temp_dir) / "empty.pdf"
+            empty_file.touch()
+            assert not client._is_cached_file_valid(empty_file)
+
+            # Stale file
+            client.cache_max_age_days = 1
+            stale_file = Path(temp_dir) / "stale.pdf"
+            stale_file.write_bytes(b"content")
+
+            # Make file old
+            import time, os
+            old_time = time.time() - (2 * 24 * 3600)  # 2 days ago
+            os.utime(stale_file, (old_time, old_time))
+            assert not client._is_cached_file_valid(stale_file)
+
+            client.close()
+
+    def test_file_format_verification(self):
+        """Test file format verification for different types."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            client = FullTextClient(enable_cache=True, cache_dir=temp_dir)
+
+            # Valid PDF
+            pdf_file = Path(temp_dir) / "valid.pdf"
+            pdf_file.write_bytes(b"%PDF-1.4\nrest of pdf content")
+            assert client._verify_file_format(pdf_file)
+
+            # Invalid PDF
+            invalid_pdf = Path(temp_dir) / "invalid.pdf"
+            invalid_pdf.write_bytes(b"Not a PDF file")
+            assert not client._verify_file_format(invalid_pdf)
+
+            # Valid XML
+            xml_file = Path(temp_dir) / "valid.xml"
+            xml_file.write_bytes(b"<?xml version='1.0'?><root></root>")
+            assert client._verify_file_format(xml_file)
+
+            # XML with BOM
+            xml_bom = Path(temp_dir) / "bom.xml"
+            xml_bom.write_bytes(b"\xef\xbb\xbf<root></root>")
+            assert client._verify_file_format(xml_bom)
+
+            # Valid HTML
+            html_file = Path(temp_dir) / "valid.html"
+            html_file.write_text("<!DOCTYPE html><html><body><p>Content</p></body></html>")
+            assert client._verify_file_format(html_file)
+
+            # Minimal HTML
+            minimal_html = Path(temp_dir) / "minimal.html"
+            minimal_html.write_text("<div>Some content</div>")
+            assert client._verify_file_format(minimal_html)
+
+            # Unknown extension (should return True)
+            unknown_file = Path(temp_dir) / "unknown.xyz"
+            unknown_file.write_bytes(b"Unknown content")
+            assert client._verify_file_format(unknown_file)
+
+            client.close()
+
+    def test_cache_file_operations(self):
+        """Test cache file check and save operations."""
+        with tempfile.TemporaryDirectory() as temp_dir:
+            client = FullTextClient(enable_cache=True, cache_dir=temp_dir)
+
+            # Test cache disabled scenario
+            client_no_cache = FullTextClient(enable_cache=False)
+            result = client_no_cache._check_cache_for_file("123456", "pdf")
+            assert result is None
+            client_no_cache.close()
+
+            # Test with valid cache file
+            cache_path = client._get_cache_path("123456", "pdf")
+            if cache_path:
+                cache_path.parent.mkdir(parents=True, exist_ok=True)
+                cache_path.write_bytes(b"%PDF-1.4\nPDF content")
+
+                result = client._check_cache_for_file("123456", "pdf")
+                assert result == cache_path
+
+                # Test with output path
+                output_path = Path(temp_dir) / "output" / "document.pdf"
+                result = client._check_cache_for_file("123456", "pdf", output_path)
+                assert result == output_path
+                assert output_path.exists()
+
+            client.close()
+
+    def test_url_generation_methods(self):
+        """Test URL generation methods."""
+        # Test fulltext URL generation (existing method)
+        xml_url = self.client._get_fulltext_url("123456", "xml")
+        expected_xml = "https://www.ebi.ac.uk/europepmc/webservices/rest/PMC123456/fullTextXML"
+        assert xml_url == expected_xml
+
+        # Test HTML article URL (existing method)
+        html_url_with_med = self.client.get_html_article_url("123456", "789012")
+        assert "MED/789012" in html_url_with_med
+
+        html_url_without_med = self.client.get_html_article_url("123456")
+        assert "PMC/123456" in html_url_without_med

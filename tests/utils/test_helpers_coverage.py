@@ -237,3 +237,53 @@ class TestHelpersCoverage:
         assert exc_info.value.field_name == "file_path"
         assert exc_info.value.expected_type == "readable JSON file"
         assert "field_name" in exc_info.value.details
+
+    def test_warn_if_empty_hitcount_zero(self):
+        """Test warning is issued when hitCount == 0."""
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+        import warnings
+        response = {"hitCount": 0}
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            warn_if_empty_hitcount(response)
+            assert any("No results found" in str(warn.message) for warn in w)
+
+    def test_warn_if_empty_hitcount_zero_with_context(self):
+        """Test warning includes context when hitCount == 0 and context is provided."""
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+        import warnings
+        response = {"hitCount": 0}
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            warn_if_empty_hitcount(response, context="citations")
+            assert any("for citations" in str(warn.message) for warn in w)
+
+    def test_warn_if_empty_hitcount_missing_key(self):
+        """Test warning is issued when 'hitCount' key is missing."""
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+        import warnings
+        response = {"other": 1}
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            warn_if_empty_hitcount(response)
+            assert any("'hitCount' key not found" in str(warn.message) for warn in w)
+
+    def test_warn_if_empty_hitcount_missing_key_with_context(self):
+        """Test warning includes context when 'hitCount' key is missing and context is provided."""
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+        import warnings
+        response = {"other": 1}
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            warn_if_empty_hitcount(response, context="references")
+            assert any("for references" in str(warn.message) for warn in w)
+
+    def test_warn_if_empty_hitcount_type_error(self):
+        """Test warning is issued when response is not a dict."""
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+        import warnings
+        response = None
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            warn_if_empty_hitcount(response)
+            assert any("Response is not a dictionary" in str(warn.message) for warn in w)
