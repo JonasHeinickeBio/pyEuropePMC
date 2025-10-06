@@ -55,8 +55,12 @@ jobs:
 
     steps:
 
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull
 
       - name: Pull Git LFS files
         run: git lfs pull
@@ -193,8 +197,12 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -473,8 +481,12 @@ jobs:
         python-version: ["3.10", "3.12"]
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull
 
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v5
@@ -552,8 +564,12 @@ jobs:
     if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
@@ -641,8 +657,12 @@ jobs:
     if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_performance_tests)
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull
 
       - name: Set up Python 3.12
         uses: actions/setup-python@v5
