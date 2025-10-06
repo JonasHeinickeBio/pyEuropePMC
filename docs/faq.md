@@ -72,11 +72,15 @@ page1 = client.search("query", pageSize=100, offset=0)
 page2 = client.search("query", pageSize=100, offset=100)
 ```
 
+dc_results = client.search("query", format="dc")
+
 ### What output formats are available?
 
 - **JSON** (default): Structured data, easy to process
 - **XML**: Full metadata, Europe PMC native format
 - **Dublin Core**: Standardized metadata format
+
+> **Note:** RIS and BibTeX support has been removed as of vX.Y.Z. Please use JSON, XML, or Dublin Core formats.
 
 ```python
 json_results = client.search("query", format="json")

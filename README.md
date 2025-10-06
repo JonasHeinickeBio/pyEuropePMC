@@ -5,16 +5,19 @@
 [![Tests](https://img.shields.io/badge/tests-200%2B%20passed-green.svg)](tests/)
 [![Coverage](https://img.shields.io/badge/coverage-90%2B%25-brightgreen.svg)](htmlcov/)
 
+
 **PyEuropePMC** is a robust Python toolkit for automated search, extraction, and analysis of scientific literature from [Europe PMC](https://europepmc.org/).
 
 ## ✨ Key Features
 
+
 - 🔍 **Comprehensive Search API** - Query Europe PMC with advanced search options
-- � **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
-- �📊 **Multiple Output Formats** - JSON, XML, and Dublin Core support
-- � **Bulk FTP Downloads** - Efficient bulk PDF downloads from Europe PMC FTP servers
-- �🔄 **Smart Pagination** - Automatic handling of large result sets
+- 📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
+- 📊 **Multiple Output Formats** - JSON, XML, Dublin Core (DC)
+- 📦 **Bulk FTP Downloads** - Efficient bulk PDF downloads from Europe PMC FTP servers
+- 🔄 **Smart Pagination** - Automatic handling of large result sets
 - 🛡️ **Robust Error Handling** - Built-in retry logic and connection management
+- 🧑‍💻 **Type Safety** - Extensive use of type annotations and validation
 - ⚡ **Rate Limiting** - Respectful API usage with configurable delays
 - 🧪 **Extensively Tested** - 200+ tests with 90%+ code coverage
 
@@ -41,6 +44,7 @@ with SearchClient() as client:
         print("---")
 ```
 
+
 ### Advanced Search with Parsing
 
 ```python
@@ -55,6 +59,7 @@ for paper in papers:
     print(f"Citations: {paper.get('citedByCount', 0)}")
     print(f"Title: {paper.get('title', 'N/A')}")
 ```
+
 
 ### Full-Text Content Retrieval
 

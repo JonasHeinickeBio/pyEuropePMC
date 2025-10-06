@@ -26,6 +26,7 @@ for article in results:
     print(article.title)
 ```
 
+
 ### Advanced Search
 
 ```python
@@ -46,6 +47,13 @@ for article in results:
     print(f"Publication Year: {article.pub_year}")
     print("---")
 ```
+
+## Supported Formats
+
+- JSON
+- XML
+- Dublin Core
+
 
 ### Using Context Manager
 

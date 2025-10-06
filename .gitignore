@@ -183,3 +183,4 @@ coverage.xml
 coverage.json
 htmlcov/
 junit.xml
+.benchmarks/

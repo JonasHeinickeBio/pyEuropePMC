@@ -1,6 +1,8 @@
+
 # FullTextClient API Reference
 
 The `FullTextClient` provides access to full-text content from Europe PMC articles in various formats (PDF, XML, HTML).
+
 
 ## Important: Europe PMC Endpoint Architecture
 

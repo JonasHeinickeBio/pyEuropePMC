@@ -1,10 +1,18 @@
+
 # API Reference
 
 This section provides detailed documentation for all PyEuropePMC classes and methods.
 
+
 ## Core Classes
 
 ### EuropePMC Client
+
+```python
+from pyeuropepmc import EuropePMC
+
+client = EuropePMC()
+```
 
 The main client class for interacting with the Europe PMC API.
 
@@ -53,12 +61,13 @@ search(
 - `sort`: Sort order (relevance, date, cited)
 - `format`: Response format (json, xml, dc)
 
+
 **Returns:** List of Article objects
 
 **Example:**
 
 ```python
-results = client.search("cancer therapy", limit=10, sort="date")
+results = client.search("cancer therapy", limit=10, sort="date", format="json")
 ```
 
 ##### fetch_by_id()
@@ -99,6 +108,7 @@ fetch_references(
     offset: int = 0
 ) -> List[Reference]
 ```
+
 
 ## Data Models
 
@@ -143,6 +153,7 @@ Represents a reference cited by an article.
 - `journal`: Journal of referenced article
 - `pub_year`: Publication year
 
+
 ## Error Handling
 
 ### Exception Classes
@@ -168,6 +179,10 @@ except RateLimitError as e:
 except Exception as e:
     print(f"Unexpected error: {e}")
 ```
+
+## Type Safety & Validation
+
+All public methods use type annotations and validate input parameters. Invalid arguments will raise exceptions with clear error messages.
 
 ## Configuration
 
