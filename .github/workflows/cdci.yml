@@ -46,7 +46,8 @@ jobs:
       - name: Run tests with coverage
         continue-on-error: true
         run: |
-          poetry run pytest --cov --cov-report=xml --cov-report=term --junitxml=junit.xml || true
+          mkdir -p coverage/reports
+          poetry run pytest --cov --cov-report=xml:coverage/reports/coverage.xml --cov-report=term --junitxml=coverage/reports/junit.xml || true
           poetry run coverage report || true
 
       - name: Upload coverage to Coveralls
@@ -63,10 +64,5 @@ jobs:
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-
-      - name: Upload test results to Codecov
-        continue-on-error: true
-        if: always()
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage/reports/
+          env_vars: OS,PYTHON

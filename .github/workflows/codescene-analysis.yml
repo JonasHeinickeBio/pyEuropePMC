@@ -1,5 +1,8 @@
 name: CodeScene Code Health Analysis
 
+permissions:
+  contents: read
+  pull-requests: write
 on:
   pull_request:
     branches: [ main, develop ]
@@ -31,7 +34,7 @@ jobs:
 
     - name: Install CodeScene CLI
       run: |
-        curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
+        echo | curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
         echo "$HOME/.local/bin" >> $GITHUB_PATH
 
     - name: Verify CodeScene CLI installation

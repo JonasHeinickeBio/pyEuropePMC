@@ -39,7 +39,15 @@ def test_parse_xml_fulltext(pmcid):
 def test_pdf_exists(pmcid):
     pdf_path = os.path.join(FIXTURE_DIR, f"{pmcid}.pdf")
     assert os.path.exists(pdf_path)
-    assert os.path.getsize(pdf_path) > 1000  # PDF should not be empty
+    # Check PDF magic number and minimal structure
+    with open(pdf_path, "rb") as f:
+        header = f.read(5)
+        assert header == b'%PDF-', f"{pdf_path} does not start with PDF magic number"
+        f.seek(-7, os.SEEK_END)
+        trailer = f.read(7)
+        assert b'%%EOF' in trailer, f"{pdf_path} does not end with PDF EOF marker"
+    # Optionally check file size is reasonable (e.g., >100 bytes)
+    assert os.path.getsize(pdf_path) > 100, f"{pdf_path} is unexpectedly small"
 
 # Additional error handling test: try parsing a broken XML file
 @pytest.mark.parametrize("bad_xml", ["<broken><xml>", "", "<resultList></resultList>"])
