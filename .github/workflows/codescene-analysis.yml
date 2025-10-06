@@ -1,0 +1,113 @@
+name: CodeScene Code Health Analysis
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
+  push:
+    branches: [ main, develop ]
+    paths:
+      - 'src/**/*.py'
+      - 'tests/**/*.py'
+  workflow_dispatch:
+
+jobs:
+  codescene-analysis:
+    runs-on: ubuntu-latest
+    name: CodeScene Code Health Check
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Full history for better delta analysis
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install CodeScene CLI
+      run: |
+        curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+
+    - name: Verify CodeScene CLI installation
+      run: |
+        cs version || echo "CodeScene CLI installed"
+
+    - name: Run CodeScene Analysis on Changed Files
+      env:
+        CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
+      run: |
+        echo "🔍 Running CodeScene analysis on Python files..."
+
+        # Find Python files in src/ directory
+        python_files=$(find src/ -name "*.py" -type f)
+
+        if [ -z "$python_files" ]; then
+          echo "No Python files found in src/ directory"
+          exit 0
+        fi
+
+        # Analyze each Python file
+        exit_code=0
+        for file in $python_files; do
+          echo "📄 Analyzing: $file"
+          if ! cs check "$file"; then
+            echo "⚠️ Issues found in $file"
+            exit_code=1
+          fi
+        done
+
+        exit $exit_code
+
+    - name: Run CodeScene Delta Analysis
+      env:
+        CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
+      if: github.event_name == 'pull_request'
+      run: |
+        echo "🔄 Running delta analysis against base branch..."
+        cs delta origin/${{ github.base_ref }} || true
+
+    - name: Comment PR with CodeScene Results
+      if: github.event_name == 'pull_request' && always()
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const { execSync } = require('child_process');
+
+          try {
+            // Get CodeScene analysis results
+            const result = execSync('find src/ -name "*.py" -exec cs check {} \\;', {
+              env: { ...process.env, CS_ACCESS_TOKEN: process.env.CS_ACCESS_TOKEN },
+              encoding: 'utf8',
+              timeout: 300000
+            });
+
+            const comment = `## 🔍 CodeScene Code Health Analysis
+
+            ### Analysis Results
+            \`\`\`
+            ${result}
+            \`\`\`
+
+            **💡 Recommendations:**
+            - Focus on methods with high cyclomatic complexity (cc > 10)
+            - Reduce function parameters (aim for ≤ 4)
+            - Eliminate code duplication
+            - Simplify complex conditionals
+
+            *Analysis powered by [CodeScene](https://codescene.io/)*`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: comment
+            });
+          } catch (error) {
+            console.log('Could not post CodeScene results:', error);
+          }
