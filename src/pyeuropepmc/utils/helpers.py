@@ -6,9 +6,39 @@ import os
 from pathlib import Path
 import tempfile
 from typing import Any
+import warnings
 
 from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import ValidationError
+
+
+def warn_if_empty_hitcount(response: dict[str, Any], context: str = "") -> None:
+    """
+    Log a warning if the response dict has hitCount == 0.
+
+    Parameters
+    ----------
+    response : dict
+        The API response dictionary to check.
+    context : str, optional
+        Additional context for the warning message (e.g., 'citations', 'references').
+    """
+    try:
+        hit_count = response["hitCount"]
+    except KeyError:
+        msg = "'hitCount' key not found in response dictionary"
+        if context:
+            msg += f" for {context}"
+        warnings.warn(msg, UserWarning, stacklevel=2)
+        return
+    except TypeError:
+        warnings.warn("Response is not a dictionary", UserWarning, stacklevel=2)
+        return
+    if hit_count == 0:
+        msg = "No results found (hitCount=0)"
+        if context:
+            msg += f" for {context}"
+        warnings.warn(msg, UserWarning, stacklevel=2)
 
 
 def deep_merge_dicts(original: dict[Any, Any], new: dict[Any, Any]) -> dict[Any, Any]:

@@ -1,9 +1,9 @@
+
 import logging
-
-import defusedxml.ElementTree as ET
 import pytest
-
 from pyeuropepmc.parser import EuropePMCParser
+from pyeuropepmc.exceptions import ParsingError
+from pyeuropepmc.error_codes import ErrorCodes
 
 logger = logging.getLogger("pyeuropepmc.parser")
 
@@ -88,19 +88,22 @@ def test_parse_json_with_fetch_10pages_cancer_json(fetch_10pages_cancer_json):
 @pytest.mark.unit
 def test_parse_dc_with_invalid_xml_raises_error():
     invalid_xml = "<root><invalid></root>"
-    with pytest.raises(ET.ParseError):
+    with pytest.raises(ParsingError) as exc_info:
         EuropePMCParser.parse_dc(invalid_xml)
+    assert exc_info.value.error_code == ErrorCodes.PARSE002
 
 
 @pytest.mark.unit
 def test_parse_xml_with_invalid_xml_raises_error():
     invalid_xml = "<root><invalid></root>"
-    with pytest.raises(ET.ParseError):
+    with pytest.raises(ParsingError) as exc_info:
         EuropePMCParser.parse_xml(invalid_xml)
+    assert exc_info.value.error_code == ErrorCodes.PARSE002
 
 
 @pytest.mark.unit
 def test_parse_json_with_invalid_data():
     invalid_data = "not a json"
-    with pytest.raises(Exception):
+    with pytest.raises(ParsingError) as exc_info:
         EuropePMCParser.parse_json(invalid_data)
+    assert exc_info.value.error_code == ErrorCodes.PARSE001

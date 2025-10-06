@@ -14,7 +14,7 @@ class ErrorCodes(Enum):
     # API Client Error Codes (NET/HTTP/AUTH)
     NET001 = "NET001"
     NET002 = "NET002"
-    HTTP404 = "HTTP404"
+    HTTP404 = "HTTP404"  # Resource not found (404)
     HTTP403 = "HTTP403"
     HTTP500 = "HTTP500"
     AUTH401 = "AUTH401"
@@ -77,7 +77,9 @@ ERROR_MESSAGES: dict[str, str] = {
     # API Client Error Codes (NET/HTTP/AUTH)
     ErrorCodes.NET001.value: "Network connection failed. Check internet connectivity.",
     ErrorCodes.NET002.value: "Request timeout. Server may be overloaded.",
-    ErrorCodes.HTTP404.value: "Resource not found at endpoint.",
+    ErrorCodes.HTTP404.value: (
+        "Resource not found at endpoint. The requested resource does not exist or is unavailable."
+    ),
     ErrorCodes.HTTP403.value: "Access forbidden. Check permissions.",
     ErrorCodes.HTTP500.value: "Server internal error. Try again later.",
     ErrorCodes.AUTH401.value: "Authentication failed. Check API credentials.",

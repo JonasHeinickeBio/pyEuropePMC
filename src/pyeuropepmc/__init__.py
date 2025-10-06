@@ -17,6 +17,7 @@ __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
+from .article import ArticleClient
 from .base import APIClientError, BaseAPIClient
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
@@ -34,6 +35,7 @@ __all__ = [
     "__email__",
     "__url__",
     # Main classes
+    "ArticleClient",
     "SearchClient",
     "FullTextClient",
     "FTPDownloader",

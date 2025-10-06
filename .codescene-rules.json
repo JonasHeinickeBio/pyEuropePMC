@@ -1,0 +1,53 @@
+{
+    "description": "Custom CodeScene rules for pyEuropePMC project",
+    "version": 2,
+    "rules": [
+        {
+            "name": "Python Source Files",
+            "description": "Main Python source code",
+            "file-matcher": {
+                "matches": [
+                    "src/**/*.py"
+                ]
+            },
+            "thresholds": {
+                "complex-method": 10,
+                "excess-number-of-function-arguments": 4,
+                "bumpy-road-ahead": 2,
+                "complex-conditional": 2
+            }
+        },
+        {
+            "name": "Test Files",
+            "description": "Python test files - slightly more relaxed rules",
+            "file-matcher": {
+                "matches": [
+                    "tests/**/*.py",
+                    "test_*.py"
+                ]
+            },
+            "thresholds": {
+                "complex-method": 12,
+                "excess-number-of-function-arguments": 5,
+                "bumpy-road-ahead": 3,
+                "complex-conditional": 3
+            }
+        },
+        {
+            "name": "Example Files",
+            "description": "Example and demo files - most relaxed rules",
+            "file-matcher": {
+                "matches": [
+                    "examples/**/*.py",
+                    "scripts/**/*.py"
+                ]
+            },
+            "thresholds": {
+                "complex-method": 15,
+                "excess-number-of-function-arguments": 6,
+                "bumpy-road-ahead": 4,
+                "complex-conditional": 4
+            }
+        }
+    ]
+}

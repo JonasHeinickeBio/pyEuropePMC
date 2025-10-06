@@ -62,6 +62,23 @@ test-coverage:
 	coverage report
 	coverage html
 
+## Run CodeScene code health analysis
+.PHONY: codescene
+codescene:
+	@echo "Running CodeScene analysis..."
+	@./scripts/codescene_analysis.sh
+
+## Run CodeScene delta analysis
+.PHONY: codescene-delta
+codescene-delta:
+	@echo "Running CodeScene delta analysis..."
+	@./scripts/codescene_analysis.sh delta
+
+## Run all code quality checks including CodeScene
+.PHONY: quality-full
+quality-full: quality codescene
+	@echo "All quality checks completed!"
+
 
 
 
