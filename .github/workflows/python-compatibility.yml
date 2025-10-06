@@ -54,8 +54,12 @@ jobs:
     if: github.event_name == 'workflow_dispatch' && inputs.test_level == 'dry-run'
 
     steps:
+
       - name: Checkout code
         uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull
 
       - name: Analyze workflow configuration
         run: |

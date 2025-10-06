@@ -42,6 +42,8 @@ def test_pdf_exists(pmcid):
     # Check PDF magic number and minimal structure
     with open(pdf_path, "rb") as f:
         header = f.read(5)
+        debug_head = f.read(27)  # Read next 27 bytes for debugging (total 32 bytes)
+        print(f"PDF head for {pmcid}: {header + debug_head}")
         assert header == b'%PDF-', f"{pdf_path} does not start with PDF magic number"
         f.seek(-7, os.SEEK_END)
         trailer = f.read(7)
