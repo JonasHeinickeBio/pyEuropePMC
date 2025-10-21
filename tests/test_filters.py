@@ -2,9 +2,24 @@
 Tests for Europe PMC filtering utilities.
 """
 
-import pytest
 
-from pyeuropepmc.filters import filter_pmc_papers
+import pytest
+from pyeuropepmc.filters import (
+    filter_pmc_papers,
+    filter_pmc_papers_or,
+    _meets_type_criteria,
+    _meets_access_criteria,
+    _extract_authors,
+    _extract_keywords,
+    _extract_mesh_terms,
+    _has_required_mesh,
+    _has_required_keywords,
+    _has_required_abstract_terms,
+    _has_any_required_mesh,
+    _has_any_required_keywords,
+    _has_any_required_abstract_terms,
+    _extract_paper_metadata,
+)
 
 
 @pytest.fixture
@@ -190,7 +205,7 @@ def test_filter_by_abstract_terms(sample_papers):
     assert filtered_multi[1]["id"] == "22222"
 
 
-def test_combined_filters(sample_papers):
+def test_combinedfilters(sample_papers):
     """Test combining multiple filters."""
     # Combine: min citations, year, open access, and keywords
     filtered = filter_pmc_papers(
@@ -230,7 +245,7 @@ def test_metadata_extraction(sample_papers):
         assert isinstance(paper["citedByCount"], int)
 
 
-def test_no_filters(sample_papers):
+def test_nofilters(sample_papers):
     """Test with no filters (should return all papers)."""
     filtered = filter_pmc_papers(sample_papers, min_citations=0, min_pub_year=2000, open_access=None)
 
@@ -323,3 +338,202 @@ def test_all_required_terms_must_match(sample_papers):
         sample_papers, required_keywords={"immunotherapy"}
     )
     assert len(filtered_single) == 1
+
+
+    def test_or_logic_mesh_keywords_abstract(sample_papers):
+        """Test OR logic high-level filter function."""
+        # Only one paper has "immunotherapy" (id 12345), one has "diabetes" (id 67890)
+        filtered = filter_pmc_papers_or(
+            sample_papers, required_keywords={"immunotherapy", "diabetes"}, open_access=None
+        )
+        # Should return both papers, since OR logic
+        ids = {p["id"] for p in filtered}
+        assert "12345" in ids
+        assert "67890" in ids
+        assert len(filtered) >= 2
+
+        # OR logic for MeSH terms
+        filtered_mesh = filter_pmc_papers_or(
+            sample_papers, required_mesh={"neoplasms", "diabetes"}, open_access=None
+        )
+        mesh_ids = {p["id"] for p in filtered_mesh}
+        assert "12345" in mesh_ids or "67890" in mesh_ids
+        assert len(filtered_mesh) >= 2
+
+        # OR logic for abstract terms
+        filtered_abs = filter_pmc_papers_or(
+            sample_papers, required_abstract_terms={"checkpoint", "efficacy"}, open_access=None
+        )
+        abs_ids = {p["id"] for p in filtered_abs}
+        assert "12345" in abs_ids
+        assert "67890" in abs_ids or "22222" in abs_ids
+        assert len(filtered_abs) >= 2
+
+
+    def test__has_any_required_mesh():
+        paper = {"meshHeadingList": {"meshHeading": ["foo", {"descriptorName": "bar"}]}}
+        assert _has_any_required_mesh(paper, {"foo"})
+        assert _has_any_required_mesh(paper, {"bar"})
+        assert _has_any_required_mesh(paper, {"ba"})
+        assert _has_any_required_mesh(paper, {"foo", "baz"})
+        assert not _has_any_required_mesh(paper, {"baz"})
+
+
+    def test__has_any_required_keywords():
+        paper = {"keywordList": {"keyword": ["foo", {"keyword": "bar"}]}}
+        assert _has_any_required_keywords(paper, {"foo"})
+        assert _has_any_required_keywords(paper, {"bar"})
+        assert _has_any_required_keywords(paper, {"ba"})
+        assert _has_any_required_keywords(paper, {"foo", "baz"})
+        assert not _has_any_required_keywords(paper, {"baz"})
+
+
+    def test__has_any_required_abstract_terms():
+        paper = {"abstractText": "foo bar baz"}
+        assert _has_any_required_abstract_terms(paper, {"foo"})
+        assert _has_any_required_abstract_terms(paper, {"bar"})
+        assert _has_any_required_abstract_terms(paper, {"baz"})
+        assert _has_any_required_abstract_terms(paper, {"foo", "qux"})
+        assert not _has_any_required_abstract_terms(paper, {"qux"})
+
+
+def test__meets_type_criteria_various_types():
+    # allowed_types empty/None disables filter
+    assert _meets_type_criteria({}, ()) is True
+    # Do not pass None (not allowed by type signature)
+    # pubType missing
+    assert _meets_type_criteria({}, ("A",)) is True
+    # pubType as string
+    assert _meets_type_criteria({"pubType": "Review"}, ("Review",)) is True
+    assert _meets_type_criteria({"pubType": "Other"}, ("Review",)) is False
+    # pubType as list
+    assert _meets_type_criteria({"pubType": ["Review", "Other"]}, ("Review",)) is True
+    assert _meets_type_criteria({"pubType": ["Other"]}, ("Review",)) is False
+    # pubType as int/unknown type
+    assert _meets_type_criteria({"pubType": 123}, ("Review",)) is False
+
+def test__meets_access_criteria_various():
+    # open_access None disables filter
+    assert _meets_access_criteria({}, None) is True
+    # isOpenAccess missing
+    assert _meets_access_criteria({}, "Y") is False
+    # isOpenAccess matches
+    assert _meets_access_criteria({"isOpenAccess": "Y"}, "Y") is True
+    assert _meets_access_criteria({"isOpenAccess": "N"}, "Y") is False
+    # isOpenAccess as bool (should not be used, but test for robustness)
+    # The function expects str|None, so skip this test for type safety
+
+def test__extract_authors_various():
+    # No authorList
+    assert _extract_authors({}) == []
+    # Empty author list
+    assert _extract_authors({"authorList": {"author": []}}) == []
+    # Dict with fullName
+    paper = {"authorList": {"author": [{"fullName": "A B"}, {"lastName": "C"}]}}
+    assert _extract_authors(paper) == ["A B", "C"]
+    # String author
+    paper = {"authorList": {"author": ["D E"]}}
+    assert _extract_authors(paper) == ["D E"]
+
+def test__extract_keywords_various():
+    # No keywordList
+    assert _extract_keywords({}) == []
+    # Empty keyword list
+    assert _extract_keywords({"keywordList": {"keyword": []}}) == []
+    # String keyword
+    paper = {"keywordList": {"keyword": ["foo"]}}
+    assert _extract_keywords(paper) == ["foo"]
+    # Dict keyword with various keys
+    paper = {"keywordList": {"keyword": [{"keyword": "bar"}, {"text": "baz"}, {"value": "qux"}]}}
+    assert _extract_keywords(paper) == ["bar", "baz", "qux"]
+
+def test__extract_mesh_terms_various():
+    # No meshHeadingList
+    assert _extract_mesh_terms({}) == []
+    # Empty meshHeading list
+    assert _extract_mesh_terms({"meshHeadingList": {"meshHeading": []}}) == []
+    # Dict meshHeading
+    paper = {"meshHeadingList": {"meshHeading": [{"descriptorName": "foo"}]}}
+    assert _extract_mesh_terms(paper) == ["foo"]
+    # String meshHeading
+    paper = {"meshHeadingList": {"meshHeading": ["bar"]}}
+    assert _extract_mesh_terms(paper) == ["bar"]
+
+def test__has_required_mesh_edge_cases():
+    # No meshHeadingList
+    assert not _has_required_mesh({}, {"foo"})
+    # meshHeading as string
+    paper = {"meshHeadingList": {"meshHeading": ["foo"]}}
+    assert _has_required_mesh(paper, {"foo"})
+    # meshHeading as dict
+    paper = {"meshHeadingList": {"meshHeading": [{"descriptorName": "bar"}]}}
+    assert _has_required_mesh(paper, {"bar"})
+    # partial match
+    assert _has_required_mesh(paper, {"ba"})
+    # required term not present
+    assert not _has_required_mesh(paper, {"baz"})
+
+def test__has_required_keywords_edge_cases():
+    # No keywordList
+    assert not _has_required_keywords({}, {"foo"})
+    # keyword as string
+    paper = {"keywordList": {"keyword": ["foo"]}}
+    assert _has_required_keywords(paper, {"foo"})
+    # keyword as dict
+    paper = {"keywordList": {"keyword": [{"keyword": "bar"}]}}
+    assert _has_required_keywords(paper, {"bar"})
+    # partial match
+    assert _has_required_keywords(paper, {"ba"})
+    # required kw not present
+    assert not _has_required_keywords(paper, {"baz"})
+
+def test__has_required_abstract_terms_edge_cases():
+    # No abstractText
+    assert not _has_required_abstract_terms({}, {"foo"})
+    # abstractText present
+    paper = {"abstractText": "foo bar baz"}
+    assert _has_required_abstract_terms(paper, {"foo"})
+    assert _has_required_abstract_terms(paper, {"bar"})
+    assert not _has_required_abstract_terms(paper, {"qux"})
+    # multiple required terms
+    assert _has_required_abstract_terms(paper, {"foo", "bar"})
+    assert not _has_required_abstract_terms(paper, {"foo", "qux"})
+
+
+def test_pubtypelist_meets_type_and_metadata():
+    # paper with only pubTypeList (no pubType)
+    paper = {
+        "id": "PMC_TEST",
+        "title": "Test paper",
+        "pubYear": "2021",
+        "pubTypeList": {"pubType": ["Journal Article", "Research Article"]},
+        "isOpenAccess": "Y",
+        "citedByCount": "5",
+    }
+
+    # allowed type includes 'Journal Article' -> should pass
+    assert _meets_type_criteria(paper, ("Journal Article",)) is True
+
+    # disallowed type -> should fail
+    assert _meets_type_criteria(paper, ("Review",)) is False
+
+    # metadata extraction should include pubType from pubTypeList
+    meta = _extract_paper_metadata(paper)
+    assert meta["pubType"] == ["Journal Article", "Research Article"]
+
+
+def test_filter_max_pub_year():
+    papers = [
+        {"id": "A", "pubYear": "2018", "pubTypeList": {"pubType": ["Journal Article"]}, "citedByCount": "0", "isOpenAccess": "Y"},
+        {"id": "B", "pubYear": "2022", "pubTypeList": {"pubType": ["Journal Article"]}, "citedByCount": "0", "isOpenAccess": "Y"},
+    ]
+
+    # set max_pub_year to 2020, only the 2018 paper should remain
+    filtered = filter_pmc_papers(papers, min_citations=0, min_pub_year=0, max_pub_year=2020, open_access=None)
+    ids = [p["id"] for p in filtered]
+    assert ids == ["A"]
+
+    # same with OR variant
+    filtered_or = filter_pmc_papers_or(papers, min_citations=0, min_pub_year=0, max_pub_year=2020, open_access=None)
+    ids_or = [p["id"] for p in filtered_or]
+    assert ids_or == ["A"]
