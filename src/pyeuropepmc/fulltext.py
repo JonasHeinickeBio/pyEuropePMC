@@ -9,6 +9,7 @@ from collections.abc import Callable
 import gzip
 from io import BytesIO
 import logging
+import os
 from pathlib import Path
 import tempfile
 import time
@@ -19,6 +20,7 @@ import zipfile
 import requests
 
 from pyeuropepmc.base import APIClientError, BaseAPIClient
+from pyeuropepmc.cache import CacheBackend, CacheConfig
 from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import FullTextError
 from pyeuropepmc.utils.helpers import atomic_download, atomic_write
@@ -139,12 +141,6 @@ class FullTextClient(BaseAPIClient):
     - XML: Uses REST API endpoint
     """
 
-    # Instance variables
-    enable_cache: bool
-    cache_dir: Path | None
-    cache_max_age_days: int
-    verify_cached_files: bool
-
     # Europe PMC endpoints
     FULLTEXT_BASE_URL = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
     XML_ENDPOINT = "PMC{pmcid}/fullTextXML"
@@ -171,6 +167,7 @@ class FullTextClient(BaseAPIClient):
         cache_dir: str | Path | None = None,
         cache_max_age_days: int = 30,
         verify_cached_files: bool = True,
+        cache_config: CacheConfig | None = None,
     ) -> None:
         """
         Initialize the FullTextClient.
@@ -189,27 +186,40 @@ class FullTextClient(BaseAPIClient):
             (default is 30).
         verify_cached_files : bool, optional
             Whether to verify that cached files are valid and complete (default is True).
+        cache_config : CacheConfig, optional
+            Configuration for API response caching. If None, response caching is disabled.
+            This is separate from file caching which is controlled by enable_cache.
         """
         super().__init__(rate_limit_delay=rate_limit_delay)
 
-        # Cache configuration
+        # File cache configuration (for downloaded PDF/XML files)
         self.enable_cache = enable_cache
         self.cache_max_age_days = cache_max_age_days
         self.verify_cached_files = verify_cached_files
 
+        self.cache_dir: Path | None
         if enable_cache:
             if cache_dir is None:
                 # Use a subdirectory in the system temp directory
                 self.cache_dir = Path(tempfile.gettempdir()) / "pyeuropepmc_cache"
+            elif isinstance(cache_dir, Path):
+                self.cache_dir = cache_dir
             else:
                 self.cache_dir = Path(cache_dir)
 
-            # Create cache directory if it doesn't exist
             self.cache_dir.mkdir(parents=True, exist_ok=True)
-            self.logger.info(f"Cache enabled: {self.cache_dir}")
+            self.logger.info(f"File cache enabled: {self.cache_dir}")
         else:
             self.cache_dir = None
-            self.logger.info("Cache disabled")
+            self.logger.info("File cache disabled")
+
+        # API response cache (for availability checks and metadata)
+        if cache_config is None:
+            cache_config = CacheConfig(enabled=False)
+
+        self._cache = CacheBackend(cache_config)
+        cache_status = "enabled" if cache_config.enabled else "disabled"
+        self.logger.info(f"API response cache {cache_status}")
 
     def __enter__(self) -> "FullTextClient":
         """Enter the runtime context for the context manager."""
@@ -497,6 +507,138 @@ class FullTextClient(BaseAPIClient):
 
         return stats
 
+    def get_file_cache_health(self) -> dict[str, Any]:
+        """
+        Get file cache health status.
+
+        Returns
+        -------
+        dict
+            Health status and metrics for file cache including disk space,
+            file age validation, and directory accessibility.
+
+        Example
+        -------
+        >>> client = FullTextClient(enable_cache=True)
+        >>> health = client.get_file_cache_health()
+        >>> print(f"Status: {health['status']}")
+        """
+        health: dict[str, Any] = {
+            "enabled": self.enable_cache,
+            "status": "unknown",
+            "available": False,
+            "disk_space_available": True,
+            "directory_writable": False,
+            "files_within_age_limit": True,
+            "warnings": [],
+        }
+
+        if not self.enable_cache:
+            health["status"] = "disabled"
+            return health
+
+        if not self.cache_dir:
+            health["status"] = "unavailable"
+            health["warnings"].append("Cache directory not set")
+            return health
+
+        # Check directory accessibility
+        if not self._check_cache_directory_access(health):
+            return health
+
+        # Check disk space
+        self._check_disk_space(health)
+
+        # Check file ages
+        self._check_file_ages(health)
+
+        # Determine overall status
+        self._determine_health_status(health)
+
+        return health
+
+    def _check_cache_directory_access(self, health: dict[str, Any]) -> bool:
+        """Check if cache directory exists and is writable."""
+        if self.cache_dir is None:
+            health["status"] = "error"
+            health["warnings"].append("Cache directory is not set")
+            return False
+
+        try:
+            if not self.cache_dir.exists():
+                health["status"] = "error"
+                health["warnings"].append("Cache directory does not exist")
+                return False
+
+            # Check if directory is writable
+            test_file = self.cache_dir / ".health_check"
+            test_file.write_text("test")
+            test_file.unlink()
+            health["directory_writable"] = True
+            return True
+        except (OSError, PermissionError) as e:
+            health["status"] = "error"
+            health["warnings"].append(f"Cache directory not writable: {e}")
+            return False
+
+    def _check_disk_space(self, health: dict[str, Any]) -> None:
+        """Check available disk space."""
+        if self.cache_dir is None:
+            health["warnings"].append("Cache directory is not set")
+            return
+
+        try:
+            stat = os.statvfs(self.cache_dir)
+            free_space_mb = (stat.f_bavail * stat.f_frsize) / (1024 * 1024)
+            if free_space_mb < 100:
+                health["disk_space_available"] = False
+                health["warnings"].append(f"Low disk space: {free_space_mb:.1f}MB available")
+        except (OSError, AttributeError):
+            # os.statvfs not available on Windows, skip this check
+            pass
+
+    def _check_file_ages(self, health: dict[str, Any]) -> None:
+        """Check if cached files are within age limits."""
+        if self.cache_dir is None:
+            health["warnings"].append("Cache directory is not set")
+            return
+
+        max_age_seconds = self.cache_max_age_days * 24 * 60 * 60
+        current_time = time.time()
+        stale_files = []
+
+        for format_type in ["pdf", "xml", "html"]:
+            format_dir = self.cache_dir / format_type
+            if format_dir.exists():
+                for file_path in format_dir.glob(f"*.{format_type}"):
+                    if file_path.is_file():
+                        file_age = current_time - file_path.stat().st_mtime
+                        if file_age > max_age_seconds:
+                            stale_files.append(str(file_path))
+
+        if stale_files:
+            health["files_within_age_limit"] = False
+            health["warnings"].append(f"Found {len(stale_files)} stale files")
+
+    def _determine_health_status(self, health: dict[str, Any]) -> None:
+        """Determine overall health status based on checks."""
+        try:
+            health["available"] = True
+            if not health["warnings"]:
+                health["status"] = "healthy"
+                return
+
+            if any("not writable" in w or "does not exist" in w for w in health["warnings"]):
+                health["status"] = "error"
+            elif not health["disk_space_available"]:
+                health["status"] = "critical"
+            else:
+                health["status"] = "warning"
+        except Exception as e:
+            health["status"] = "error"
+            health["warnings"].append(f"Health check failed: {e}")
+            self.logger.error(f"File cache health check error: {e}")
+
     def _validate_pmcid(self, pmcid: str) -> str:
         """
         Validate and normalize PMC ID.
@@ -600,7 +742,18 @@ class FullTextClient(BaseAPIClient):
         """
         self.logger.info(f"Checking fulltext availability for PMC ID: {pmcid}")
         normalized_pmcid = self._validate_pmcid(pmcid)
-        availability = {"pdf": False, "xml": False, "html": False}
+
+        # Check cache first
+        cache_key = f"fulltext_availability:{normalized_pmcid}"
+        try:
+            cached_result = self._cache.get(cache_key)
+            if cached_result is not None:
+                self.logger.info(f"Cache hit for fulltext availability: PMC{normalized_pmcid}")
+                return dict(cached_result)
+        except Exception as e:
+            self.logger.warning(f"Cache lookup failed: {e}. Proceeding with availability check.")
+
+        availability: dict[str, bool] = {"pdf": False, "xml": False, "html": False}
 
         # Check XML availability via REST API
         try:
@@ -648,6 +801,13 @@ class FullTextClient(BaseAPIClient):
             availability["html"] = False
 
         self.logger.info(f"Availability for PMC{normalized_pmcid}: {availability}")
+
+        # Cache the result
+        try:
+            self._cache.set(cache_key, availability, tag="fulltext_availability")
+        except Exception as e:
+            self.logger.warning(f"Failed to cache fulltext availability: {e}")
+
         return availability
 
     def _handle_pdf_http_error(self, e: requests.HTTPError, pmcid: str) -> None:
@@ -1684,6 +1844,89 @@ class FullTextClient(BaseAPIClient):
                 self.logger.error(f"Failed to download HTML for PMC{pmcid}: {e}")
                 results[pmcid] = None
         return results
+
+    # API Response Cache Management Methods
+
+    def get_api_cache_stats(self) -> dict[str, Any]:
+        """
+        Get API response cache statistics.
+
+        Note: This is for API response caching only. File caching statistics
+        are available via get_cache_stats().
+
+        Returns:
+            Dict containing API response cache stats (size, eviction stats, etc.)
+        """
+        try:
+            return self._cache.get_stats()
+        except Exception as e:
+            self.logger.warning(f"Failed to get API cache stats: {e}")
+            return {}
+
+    def get_api_cache_health(self) -> dict[str, Any]:
+        """
+        Get API response cache health status.
+
+        Returns:
+            Dict containing cache health metrics (hit rate, miss rate, errors)
+        """
+        try:
+            return self._cache.get_health()
+        except Exception as e:
+            self.logger.warning(f"Failed to get API cache health: {e}")
+            return {}
+
+    def clear_api_cache(self) -> bool:
+        """
+        Clear all API response cached data.
+
+        Note: This only clears API response cache. Downloaded files in the
+        file cache directory are not affected. Use clear_cache() to manage
+        file cache.
+
+        Returns:
+            True if cache was cleared successfully, False otherwise
+        """
+        try:
+            return self._cache.clear()
+        except Exception as e:
+            self.logger.warning(f"Failed to clear API cache: {e}")
+            return False
+
+    def invalidate_fulltext_cache(self, pmcid: str | None = None) -> int:
+        """
+        Invalidate cached fulltext availability data matching the pattern.
+
+        Args:
+            pmcid: Optional PMC ID filter
+
+        Returns:
+            Number of cache entries invalidated
+        """
+        try:
+            if pmcid:
+                # Normalize PMCID
+                normalized = pmcid.replace("PMC", "")
+                pattern = f"*:{normalized}*"
+            else:
+                pattern = "*"
+
+            return self._cache.invalidate_pattern(pattern)
+        except Exception as e:
+            self.logger.warning(f"Failed to invalidate fulltext cache: {e}")
+            return 0
+
+    def close(self) -> None:
+        """
+        Close the client and cleanup resources including API response cache.
+
+        Note: This doesn't remove downloaded files from the file cache directory.
+        """
+        try:
+            self._cache.close()
+        except Exception as e:
+            self.logger.warning(f"Error closing API response cache: {e}")
+        super().close()
 
     def export_results(
         self,

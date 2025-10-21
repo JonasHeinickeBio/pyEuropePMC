@@ -9,6 +9,7 @@ import logging
 from typing import Any
 
 from pyeuropepmc.base import BaseAPIClient
+from pyeuropepmc.cache import CacheBackend, CacheConfig
 from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import APIClientError, ValidationError
 from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
@@ -27,17 +28,32 @@ class ArticleClient(BaseAPIClient):
     - Database cross-references
     - Supplementary files
     - Lab links and data links
+
+    Supports optional response caching to improve performance.
     """
 
-    def __init__(self, rate_limit_delay: float = 1.0) -> None:
+    def __init__(
+        self,
+        rate_limit_delay: float = 1.0,
+        cache_config: CacheConfig | None = None,
+    ) -> None:
         """
         Initialize the ArticleClient.
 
         Args:
             rate_limit_delay: Delay between requests in seconds (default: 1.0)
+            cache_config: Optional cache configuration. If None, caching is disabled.
         """
         super().__init__(rate_limit_delay=rate_limit_delay)
         self.logger = logging.getLogger(__name__)
+
+        # Initialize cache (disabled by default for backward compatibility)
+        if cache_config is None:
+            cache_config = CacheConfig(enabled=False)
+
+        self._cache = CacheBackend(cache_config)
+        cache_status = "enabled" if cache_config.enabled else "disabled"
+        self.logger.info(f"ArticleClient initialized with cache {cache_status}")
 
     def get_article_details(
         self,
@@ -76,13 +92,31 @@ class ArticleClient(BaseAPIClient):
         endpoint = f"article/{source}/{article_id}"
         params = {"resultType": result_type, "format": format, **kwargs}
 
+        # Check cache first
+        cache_key = f"article_details:{source}:{article_id}:{result_type}:{format}"
+        try:
+            cached_result = self._cache.get(cache_key)
+            if cached_result is not None:
+                self.logger.info(f"Cache hit for article details: {source}:{article_id}")
+                return dict(cached_result)
+        except Exception as e:
+            self.logger.warning(f"Cache lookup failed: {e}. Proceeding with API request.")
+
         self.logger.info(f"Retrieving article details for {source}:{article_id}")
 
         try:
             response = self._get(endpoint, params=params)
             result = response.json()
             warn_if_empty_hitcount(result, context="article details")
-            return dict(result)
+            result_dict = dict(result)
+
+            # Cache the result
+            try:
+                self._cache.set(cache_key, result_dict, tag="article_details")
+            except Exception as e:
+                self.logger.warning(f"Failed to cache article details: {e}")
+
+            return result_dict
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve article details for {source}:{article_id}")
@@ -138,6 +172,17 @@ class ArticleClient(BaseAPIClient):
         if callback:
             params["callback"] = callback
 
+        # Check cache first (skip caching for JSONP responses)
+        cache_key = f"citations:{source}:{article_id}:{page}:{page_size}:{format}"
+        if not callback:
+            try:
+                cached_result = self._cache.get(cache_key)
+                if cached_result is not None:
+                    self.logger.info(f"Cache hit for citations: {source}:{article_id}")
+                    return dict(cached_result)
+            except Exception as e:
+                self.logger.warning(f"Cache lookup failed: {e}. Proceeding with API request.")
+
         # Detailed request logging
         full_url = f"{self.BASE_URL}{endpoint}"
         self.logger.info(f"Retrieving citations for {source}:{article_id}")
@@ -156,7 +201,15 @@ class ArticleClient(BaseAPIClient):
             else:
                 result = response.json()
                 warn_if_empty_hitcount(result, context="citations")
-                return dict(result)
+                result_dict = dict(result)
+
+                # Cache the result
+                try:
+                    self._cache.set(cache_key, result_dict, tag="citations")
+                except Exception as e:
+                    self.logger.warning(f"Failed to cache citations: {e}")
+
+                return result_dict
         except Exception as e:
             context = {
                 "source": source,
@@ -218,6 +271,17 @@ class ArticleClient(BaseAPIClient):
         if callback:
             params["callback"] = callback
 
+        # Check cache first (skip caching for JSONP responses)
+        cache_key = f"references:{source}:{article_id}:{page}:{page_size}:{format}"
+        if not callback:
+            try:
+                cached_result = self._cache.get(cache_key)
+                if cached_result is not None:
+                    self.logger.info(f"Cache hit for references: {source}:{article_id}")
+                    return dict(cached_result)
+            except Exception as e:
+                self.logger.warning(f"Cache lookup failed: {e}. Proceeding with API request.")
+
         self.logger.info(f"Retrieving references for {source}:{article_id}")
 
         try:
@@ -230,7 +294,15 @@ class ArticleClient(BaseAPIClient):
             else:
                 result = response.json()
                 warn_if_empty_hitcount(result, context="references")
-                return dict(result)
+                result_dict = dict(result)
+
+                # Cache the result
+                try:
+                    self._cache.set(cache_key, result_dict, tag="references")
+                except Exception as e:
+                    self.logger.warning(f"Failed to cache references: {e}")
+
+                return result_dict
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve references for {source}:{article_id}")
@@ -534,6 +606,113 @@ class ArticleClient(BaseAPIClient):
             raise ValidationError(
                 ErrorCodes.VALID001, field_name="article_id", actual_value=article_id
             )
+
+    # Cache Management Methods
+
+    def get_cache_stats(self) -> dict[str, Any]:
+        """
+        Get cache statistics.
+
+        Returns:
+            Dict containing cache stats (size, eviction stats, etc.)
+
+        Example:
+            >>> client = ArticleClient(cache_config=CacheConfig(enabled=True))
+            >>> stats = client.get_cache_stats()
+            >>> print(f"Cache size: {stats['size']} bytes")
+        """
+        try:
+            return self._cache.get_stats()
+        except Exception as e:
+            self.logger.warning(f"Failed to get cache stats: {e}")
+            return {}
+
+    def get_cache_health(self) -> dict[str, Any]:
+        """
+        Get cache health status.
+
+        Returns:
+            Dict containing cache health metrics (hit rate, miss rate, errors)
+
+        Example:
+            >>> client = ArticleClient(cache_config=CacheConfig(enabled=True))
+            >>> health = client.get_cache_health()
+            >>> print(f"Cache hit rate: {health['hit_rate']:.2%}")
+        """
+        try:
+            return self._cache.get_health()
+        except Exception as e:
+            self.logger.warning(f"Failed to get cache health: {e}")
+            return {}
+
+    def clear_cache(self) -> bool:
+        """
+        Clear all cached data.
+
+        Returns:
+            True if cache was cleared successfully, False otherwise
+
+        Example:
+            >>> client = ArticleClient(cache_config=CacheConfig(enabled=True))
+            >>> client.clear_cache()
+            True
+        """
+        try:
+            return self._cache.clear()
+        except Exception as e:
+            self.logger.warning(f"Failed to clear cache: {e}")
+            return False
+
+    def invalidate_article_cache(
+        self, source: str | None = None, article_id: str | None = None
+    ) -> int:
+        """
+        Invalidate cached article data matching the pattern.
+
+        Args:
+            source: Optional source filter (e.g., 'MED', 'PMC')
+            article_id: Optional article ID filter
+
+        Returns:
+            Number of cache entries invalidated
+
+        Example:
+            >>> client = ArticleClient(cache_config=CacheConfig(enabled=True))
+            >>> # Clear cache for specific article
+            >>> count = client.invalidate_article_cache(source='MED', article_id='12345')
+            >>> # Clear cache for all MED articles
+            >>> count = client.invalidate_article_cache(source='MED')
+            >>> # Clear all article cache
+            >>> count = client.invalidate_article_cache()
+        """
+        try:
+            if source and article_id:
+                pattern = f"*:{source}:{article_id}:*"
+            elif source:
+                pattern = f"*:{source}:*"
+            else:
+                pattern = "*"
+
+            return self._cache.invalidate_pattern(pattern)
+        except Exception as e:
+            self.logger.warning(f"Failed to invalidate article cache: {e}")
+            return 0
+
+    def close(self) -> None:
+        """
+        Close the client and cleanup resources including cache.
+
+        Example:
+            >>> client = ArticleClient(cache_config=CacheConfig(enabled=True))
+            >>> # ... use client ...
+            >>> client.close()
+        """
+        try:
+            self._cache.close()
+        except Exception as e:
+            self.logger.warning(f"Error closing cache: {e}")
+
+    # Validation Methods
 
     def _validate_result_type(self, result_type: str) -> None:
         """Validate result_type parameter."""
