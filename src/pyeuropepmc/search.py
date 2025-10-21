@@ -1,8 +1,9 @@
-from typing import Any, NoReturn
+from typing import Any, NoReturn, cast
 
 import requests
 
 from pyeuropepmc.base import BaseAPIClient
+from pyeuropepmc.cache import CacheBackend, CacheConfig
 from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import EuropePMCError, ParsingError, SearchError
 from pyeuropepmc.parser import EuropePMCParser
@@ -18,18 +19,49 @@ class SearchClient(BaseAPIClient):
     Client for searching the Europe PMC publication database.
     This client provides methods to search for publications using various parameters,
     including keywords, phrases, fielded searches, and specific publication identifiers.
+
+    Supports optional response caching to improve performance and reduce API load.
     """
 
-    def __init__(self, rate_limit_delay: float = 1.0) -> None:
+    def __init__(
+        self,
+        rate_limit_delay: float = 1.0,
+        cache_config: CacheConfig | None = None,
+    ) -> None:
         """
-        Initialize the SearchClient with an optional rate limit delay.
+        Initialize the SearchClient with optional rate limiting and caching.
 
         Parameters
         ----------
         rate_limit_delay : float, optional
             Delay in seconds between requests to avoid hitting API rate limits (default is 1.0).
+        cache_config : CacheConfig, optional
+            Configuration for response caching. If None, caching is disabled (default).
+            Pass CacheConfig(enabled=True) to enable caching with defaults, or customize
+            cache behavior with CacheConfig parameters (cache_dir, ttl, size_limit_mb, etc.).
+
+        Examples
+        --------
+        >>> # Without caching (backward compatible)
+        >>> client = SearchClient()
+
+        >>> # With default caching (24h TTL, 500MB limit)
+        >>> from pyeuropepmc.cache import CacheConfig
+        >>> client = SearchClient(cache_config=CacheConfig(enabled=True))
+
+        >>> # With custom cache settings
+        >>> config = CacheConfig(enabled=True, ttl=3600, size_limit_mb=100)
+        >>> client = SearchClient(cache_config=config)
         """
         super().__init__(rate_limit_delay=rate_limit_delay)
+
+        # Initialize cache backend (disabled by default for backward compatibility)
+        if cache_config is None:
+            cache_config = CacheConfig(enabled=False)
+
+        self._cache = CacheBackend(cache_config)
+        cache_status = "enabled" if cache_config.enabled else "disabled"
+        logger.info(f"SearchClient initialized with cache {cache_status}")
 
     def __enter__(self) -> "SearchClient":
         """
@@ -42,6 +74,9 @@ class SearchClient(BaseAPIClient):
         return super().__repr__()
 
     def close(self) -> None:
+        """Close the client and release resources including cache."""
+        if self._cache:
+            self._cache.close()
         return super().close()
 
     def _extract_search_params(self, query: str, kwargs: dict[str, Any]) -> dict[str, Any]:
@@ -113,8 +148,15 @@ class SearchClient(BaseAPIClient):
         try:
             response = self._make_http_request(endpoint, params, method)
             logger.debug(f"Received {method} response with status code: {response.status_code}")
-            return response.json() if response_format == "json" else str(response.text)
-
+            if response_format == "json":
+                try:
+                    json_data = response.json()
+                except ValueError as e:
+                    # JSON parse error -> wrap as SearchError
+                    context = {"method": method.upper(), "endpoint": endpoint, "error": str(e)}
+                    raise SearchError(ErrorCodes.SEARCH003, context) from e
+                return cast(dict[str, Any], json_data)
+            return str(response.text)
         except requests.exceptions.HTTPError as e:
             raise self._handle_http_error(e, method, endpoint) from e
         except requests.exceptions.RequestException as e:
@@ -180,7 +222,7 @@ class SearchClient(BaseAPIClient):
         logger.error("Request failed")
         raise SearchError(error_code, context)
 
-    def search(self, query: str, **kwargs: Any) -> dict[str, Any] | str:
+    def search(self, query: str, **kwargs: Any) -> dict[str, Any] | str:  # noqa: C901
         """
         Search the Europe PMC publication database.
 
@@ -233,8 +275,40 @@ class SearchClient(BaseAPIClient):
 
         try:
             params = self._extract_search_params(query, kwargs)
-            logger.info(f"Performing search with params: {params}")
-            return self._make_request("search", params, method="GET")
+            cache_key = None
+
+            # Try to get from cache first (with error handling)
+            try:
+                cache_key = self._cache._normalize_key("search", **params)
+                cached_result = self._cache.get(cache_key)
+
+                if cached_result is not None:
+                    logger.info(f"Cache hit for search query: {query[:50]}...")
+                    # Narrow the cached result's runtime type before returning to avoid
+                    # returning an untyped Any (mypy) from this function.
+                    if isinstance(cached_result, dict):
+                        return cast(dict[str, Any], cached_result)
+                    if isinstance(cached_result, str):
+                        return cached_result
+                    # Unexpected cached type - log and continue to fetch fresh result
+                    logger.warning("Cached result has unexpected type; ignoring cache entry")
+            except Exception as cache_error:
+                # Log cache error but don't fail the search
+                logger.warning(f"Cache lookup error (continuing): {cache_error}")
+
+            # Cache miss - make API request
+            logger.info(f"Cache miss - performing search with params: {params}")
+            result = self._make_request("search", params, method="GET")
+
+            # Cache the result (with error handling)
+            if cache_key is not None:
+                try:
+                    self._cache.set(cache_key, result, tag="search")
+                except Exception as cache_error:
+                    # Log cache error but don't fail the search
+                    logger.warning(f"Cache set error (continuing): {cache_error}")
+
+            return result
         except SearchError:
             # Re-raise SearchError as-is (from validation or other internal errors)
             raise
@@ -309,8 +383,31 @@ class SearchClient(BaseAPIClient):
         """
         try:
             data = self._extract_search_params(query, kwargs)
-            logger.info(f"Performing POST search with data: {data}")
-            return self._make_request("searchPOST", data, method="POST")
+            # Try to get from cache first (with error handling)
+            cache_key = None
+            try:
+                cache_key = self._cache._normalize_key("search_post", **data)
+                cached_result = self._cache.get(cache_key)
+                if cached_result is not None:
+                    logger.info(f"Cache hit for POST search query: {query[:50]}...")
+                    # Validate runtime type of cached value before returning
+                    if isinstance(cached_result, dict):
+                        return cast(dict[str, Any], cached_result)
+                    if isinstance(cached_result, str):
+                        return cached_result
+                    logger.warning("Cached result has unexpected type; ignoring cache entry")
+            except Exception as cache_error:
+                logger.warning(f"Cache lookup error (continuing): {cache_error}")
+            # Cache miss - make API request
+            logger.info(f"Cache miss - performing POST search with data: {data}")
+            result = self._make_request("searchPOST", data, method="POST")
+            # Cache the result (with error handling)
+            if cache_key is not None:
+                try:
+                    self._cache.set(cache_key, result, tag="search_post")
+                except Exception as cache_error:
+                    logger.warning(f"Cache set error (continuing): {cache_error}")
+            return result
         except SearchError:
             # Re-raise SearchError as-is (from validation or other internal errors)
             raise
@@ -722,3 +819,82 @@ class SearchClient(BaseAPIClient):
             return export.to_markdown_table(results)
         else:
             raise ValueError(f"Unsupported export format: {format}")
+
+    # Cache Management Methods
+
+    def clear_cache(self) -> bool:
+        """
+        Clear all cached search results.
+
+        Returns
+        -------
+        bool
+            True if cache was cleared successfully, False otherwise.
+
+        Examples
+        --------
+        >>> client = SearchClient(cache_config=CacheConfig(enabled=True))
+        >>> client.clear_cache()
+        True
+        """
+        return self._cache.clear()
+
+    def get_cache_stats(self) -> dict[str, Any]:
+        """
+        Get cache statistics including hits, misses, and size.
+
+        Returns
+        -------
+        dict
+            Dictionary containing cache statistics.
+
+        Examples
+        --------
+        >>> client = SearchClient(cache_config=CacheConfig(enabled=True))
+        >>> stats = client.get_cache_stats()
+        >>> print(f"Hit rate: {stats['hit_rate']:.2%}")
+        """
+        return self._cache.get_stats()
+
+    def get_cache_health(self) -> dict[str, Any]:
+        """
+        Get cache health status and warnings.
+
+        Returns
+        -------
+        dict
+            Dictionary containing cache health information including status,
+            utilization, error rate, and warnings.
+
+        Examples
+        --------
+        >>> client = SearchClient(cache_config=CacheConfig(enabled=True))
+        >>> health = client.get_cache_health()
+        >>> if health['status'] != 'healthy':
+        ...     print(f"Cache warnings: {health['warnings']}")
+        """
+        return self._cache.get_health()
+
+    def invalidate_search_cache(self, pattern: str = "search:*") -> int:
+        """
+        Invalidate cached search results matching a pattern.
+
+        Parameters
+        ----------
+        pattern : str, optional
+            Glob pattern to match cache keys (default: "search:*" for all searches).
+
+        Returns
+        -------
+        int
+            Number of cache entries invalidated.
+
+        Examples
+        --------
+        >>> # Clear all search caches
+        >>> client.invalidate_search_cache("search:*")
+
+        >>> # Clear specific query caches
+        >>> client.invalidate_search_cache("search:*cancer*")
+        """
+        return self._cache.invalidate_pattern(pattern)

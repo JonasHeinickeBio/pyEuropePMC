@@ -1,0 +1,75 @@
+name: Nightly Benchmarks
+
+on:
+  schedule:
+    # Runs daily at 02:00 UTC (adjust as needed)
+    - cron: '0 2 * * *'
+  workflow_dispatch: {}
+
+concurrency:
+  group: nightly-benchmarks
+  cancel-in-progress: true
+
+jobs:
+  run-benchmarks:
+    name: Run modular benchmarks (nightly)
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    permissions:
+      contents: read
+
+    env:
+      CI: 'true'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Pull Git LFS files
+        run: git lfs pull || true
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+
+      - name: Cache virtualenv (Poetry)
+        id: cache-venv
+        uses: actions/cache@v4
+        with:
+          path: .venv
+          key: venv-bench-${{ runner.os }}-py-3.10-${{ hashFiles('**/poetry.lock') }}
+          restore-keys: |
+            venv-bench-${{ runner.os }}-py-3.10-
+
+      - name: Install dependencies (Poetry if present, otherwise pip)
+        shell: bash
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f poetry.lock ]; then
+            python -m pip install --upgrade pip
+            python -m pip install snok/install-poetry@v1 >/dev/null 2>&1 || true
+            python -m pip install poetry || true
+            poetry config virtualenvs.in-project true || true
+            if [ "${{ steps.cache-venv.outputs.cache-hit }}" != 'true' ]; then
+              poetry install --no-interaction --no-ansi
+            fi
+          else
+            if [ -f requirements.txt ]; then
+              pip install -r requirements.txt
+            fi
+          fi
+
+      - name: Run modular benchmark test
+        run: |
+          pytest -q tests/benchmark_article_client.py::test_modular_benchmark_system -q
+
+      - name: Upload benchmark artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: modular-benchmark-results
+          path: |
+            MODULAR_BENCHMARK_RESULTS.json
+            MODULAR_PERFORMANCE_REPORT.md
+          retention-days: 30
