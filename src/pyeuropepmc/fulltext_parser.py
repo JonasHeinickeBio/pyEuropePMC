@@ -7,7 +7,6 @@ markdown, plaintext, and table extraction.
 """
 
 import logging
-import re
 from typing import Any
 from xml.etree import ElementTree as ET
 
@@ -129,7 +128,9 @@ class FullTextXMLParser:
 
             # Extract title
             title_elem = self.root.find(".//article-title")
-            metadata["title"] = self._get_text_content(title_elem) if title_elem is not None else None
+            metadata["title"] = (
+                self._get_text_content(title_elem) if title_elem is not None else None
+            )
 
             # Extract authors
             metadata["authors"] = self._extract_authors()
@@ -590,7 +591,8 @@ class FullTextXMLParser:
                 if citation is not None:
                     # Extract authors
                     authors = []
-                    for person in citation.findall(".//person-group[@person-group-type='author']//name"):
+                    person_group = ".//person-group[@person-group-type='author']//name"
+                    for person in citation.findall(person_group):
                         surname = person.find("surname")
                         given_names = person.find("given-names")
                         if surname is not None:

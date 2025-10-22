@@ -13,6 +13,7 @@
 
 - 🔍 **Comprehensive Search API** - Query Europe PMC with advanced search options
 - 📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
+- 🔬 **XML Parsing & Conversion** - Parse full text XML and convert to plaintext, markdown, extract tables and metadata
 - 📊 **Multiple Output Formats** - JSON, XML, Dublin Core (DC)
 - 📦 **Bulk FTP Downloads** - Efficient bulk PDF downloads from Europe PMC FTP servers
 - 🔄 **Smart Pagination** - Automatic handling of large result sets
@@ -83,6 +84,40 @@ results = ftp_downloader.bulk_download_and_extract(
     pmcids=["1234567", "2345678"],
     output_dir="./bulk_downloads"
 )
+```
+
+### Full-Text XML Parsing
+
+Parse full text XML files and extract structured information:
+
+```python
+from pyeuropepmc import FullTextClient, FullTextXMLParser
+
+# Download and parse XML
+with FullTextClient() as client:
+    xml_path = client.download_xml_by_pmcid("PMC3258128")
+
+# Parse the XML
+with open(xml_path, 'r') as f:
+    parser = FullTextXMLParser(f.read())
+
+# Extract metadata
+metadata = parser.extract_metadata()
+print(f"Title: {metadata['title']}")
+print(f"Authors: {', '.join(metadata['authors'])}")
+
+# Convert to different formats
+plaintext = parser.to_plaintext()  # Plain text
+markdown = parser.to_markdown()     # Markdown format
+
+# Extract tables
+tables = parser.extract_tables()
+for table in tables:
+    print(f"Table: {table['label']} - {len(table['rows'])} rows")
+
+# Extract references
+references = parser.extract_references()
+print(f"Found {len(references)} references")
 ```
 
 ## 📚 Documentation
