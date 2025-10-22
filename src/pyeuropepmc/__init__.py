@@ -21,6 +21,7 @@ from .article import ArticleClient
 from .base import APIClientError, BaseAPIClient
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
+from .fulltext_parser import FullTextXMLParser
 from .parser import EuropePMCParser
 from .search import EuropePMCError, SearchClient
 
@@ -40,6 +41,7 @@ __all__ = [
     "FullTextClient",
     "FTPDownloader",
     "EuropePMCParser",
+    "FullTextXMLParser",
     "BaseAPIClient",
     "ProgressInfo",
     # Exceptions
