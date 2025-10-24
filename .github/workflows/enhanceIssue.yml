@@ -39,15 +39,27 @@ jobs:
           ORIGINAL_TITLE: ${{ github.event.issue.title }}
         run: |
           echo "AI Response:"
-          echo '${{ steps.inference.outputs.response }}' > ai_response.json
+          
+          # Write AI response to file using here-document with single-quoted delimiter
+          # This prevents shell interpolation and handles special characters safely
+          cat > ai_response.json <<'AI_JSON'
+          ${{ steps.inference.outputs.response }}
+          AI_JSON
 
-          # Parse JSON fields using jq
-          IMPROVED_TITLE=$(jq -r '.improved_title' ai_response.json)
-          IMPROVED_BODY=$(jq -r '.improved_body' ai_response.json)
-          CHECKLIST=$(jq -r '.checklist' ai_response.json)
+          # Validate JSON before parsing
+          if ! jq empty ai_response.json 2>/dev/null; then
+            echo "Error: AI response is not valid JSON"
+            cat ai_response.json
+            exit 1
+          fi
 
-          # Fallback to original title if improved title is empty or null
-          if [ -z "$IMPROVED_TITLE" ] || [ "$IMPROVED_TITLE" == "null" ]; then
+          # Parse JSON fields using jq with quoted command substitutions and fallbacks
+          IMPROVED_TITLE="$(jq -r '.improved_title // empty' ai_response.json)"
+          IMPROVED_BODY="$(jq -r '.improved_body // empty' ai_response.json)"
+          CHECKLIST="$(jq -r '.checklist // empty' ai_response.json)"
+
+          # Fallback to original title if improved title is empty
+          if [ -z "$IMPROVED_TITLE" ]; then
             echo "Improved title is empty. Falling back to original title."
             IMPROVED_TITLE="$ORIGINAL_TITLE"
           fi
