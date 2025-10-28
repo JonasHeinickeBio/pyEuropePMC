@@ -19,6 +19,7 @@ __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 # Import main classes for convenient access
 from .article import ArticleClient
 from .base import APIClientError, BaseAPIClient
+from .filters import filter_pmc_papers, filter_pmc_papers_or
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
@@ -51,6 +52,9 @@ __all__ = [
     "EuropePMCError",
     "FullTextError",
     "APIClientError",
+    # Utilities
+    "filter_pmc_papers",
+    "filter_pmc_papers_or",
     # Aliases
     "Client",
     "Parser",
