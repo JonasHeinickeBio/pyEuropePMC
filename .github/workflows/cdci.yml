@@ -44,11 +44,14 @@ jobs:
           poetry run mypy src/
 
       - name: Run tests with coverage
-        continue-on-error: true
         run: |
           mkdir -p coverage/reports
-          poetry run pytest --cov --cov-report=xml:coverage/reports/coverage.xml --cov-report=term --junitxml=coverage/reports/junit.xml || true
-          poetry run coverage report || true
+          poetry run pytest --cov --cov-report=xml:coverage/reports/coverage.xml --cov-report=term --cov-report=html --junitxml=coverage/reports/junit.xml
+
+      - name: Enforce coverage threshold
+        run: |
+          poetry run coverage report --fail-under=75
+          echo "✅ Coverage threshold met (75%+)"
 
       - name: Upload coverage to Coveralls
         continue-on-error: true
@@ -66,3 +69,4 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./coverage/reports/
           env_vars: OS,PYTHON
+          fail_ci_if_error: false

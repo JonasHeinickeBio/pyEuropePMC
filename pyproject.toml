@@ -107,8 +107,11 @@ select = [
 ignore = ["E203", "E266", "E731"]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]                       # Allow unused imports in __init__.py
+"__init__.py" = ["F401"] # Allow unused imports in __init__.py
 "src/pyeuropepmc/ftp_downloader.py" = ["C901"] # Allow complex FTP operations
+"src/pyeuropepmc/fulltext_parser.py" = [
+  "C901",
+] # Allow complex XML parsing/analysis methods
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
