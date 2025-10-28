@@ -354,7 +354,7 @@ class TestFullTextXMLParserGetFullTextSections:
         sections = parser.get_full_text_sections()
 
         assert len(sections) >= 2
-        
+
         # Check Introduction section
         intro = next((s for s in sections if s["title"] == "Introduction"), None)
         assert intro is not None
@@ -398,7 +398,7 @@ class TestFullTextXMLParserRealFile:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
-        
+
         # Test metadata extraction
         metadata = parser.extract_metadata()
         assert metadata["pmcid"] == "3258128"
@@ -438,20 +438,298 @@ class TestFullTextXMLParserRealFile:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
-        
+
         # Test that basic operations work
         metadata = parser.extract_metadata()
         assert metadata["pmcid"] == "3359999"
-        
+
         plaintext = parser.to_plaintext()
         assert len(plaintext) > 0
-        
+
         markdown = parser.to_markdown()
         assert len(markdown) > 0
 
 
+class TestFullTextXMLParserGenericHelpers:
+    """Test generic helper functions."""
+
+    def test_extract_nested_texts(self):
+        """Test _extract_nested_texts helper."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        authors = parser._extract_nested_texts(
+            parser.root,
+            ".//contrib[@contrib-type='author']/name",
+            ["given-names", "surname"],
+            join=" ",
+        )
+        assert len(authors) == 2
+        assert "John Smith" in authors
+        assert "Jane Doe" in authors
+
+    def test_extract_flat_texts(self):
+        """Test _extract_flat_texts helper."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        keywords = parser._extract_flat_texts(parser.root, ".//kwd")
+        assert len(keywords) == 2
+        assert "keyword1" in keywords
+        assert "keyword2" in keywords
+
+    def test_extract_flat_texts_with_full_text(self):
+        """Test _extract_flat_texts with use_full_text=True."""
+        xml = '''<article>
+            <body>
+                <p>Text with <bold>nested</bold> elements</p>
+            </body>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        paragraphs = parser._extract_flat_texts(
+            parser.root, ".//p", use_full_text=True
+        )
+        assert len(paragraphs) == 1
+        assert "nested" in paragraphs[0]
+
+    def test_combine_page_range(self):
+        """Test _combine_page_range helper."""
+        parser = FullTextXMLParser()
+        assert parser._combine_page_range("10", "15") == "10-15"
+        assert parser._combine_page_range("10", None) == "10"
+        assert parser._combine_page_range(None, "15") is None
+        assert parser._combine_page_range(None, None) is None
+
+    def test_extract_structured_fields(self):
+        """Test _extract_structured_fields helper."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        citation = parser.root.find(".//element-citation")
+        fields = parser._extract_structured_fields(
+            citation,
+            {
+                "title": "article-title",
+                "year": "year",
+                "volume": "volume",
+            },
+        )
+        assert fields["title"] == "Reference Article Title"
+        assert fields["year"] == "2020"
+        assert fields["volume"] == "5"
+
+    def test_extract_section_structure(self):
+        """Test _extract_section_structure helper."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        section = parser.root.find(".//sec")
+        section_data = parser._extract_section_structure(section)
+        assert section_data["title"] == "Introduction"
+        assert "introduction section" in section_data["content"].lower()
+
+    def test_extract_reference_authors(self):
+        """Test _extract_reference_authors helper."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        citation = parser.root.find(".//element-citation")
+        authors = parser._extract_reference_authors(citation)
+        assert len(authors) == 1
+        assert "A Author" in authors
+
+
+class TestFullTextXMLParserExtractByPatterns:
+    """Test extract_elements_by_patterns functionality."""
+
+    def test_extract_by_patterns_text(self):
+        """Test extracting text with patterns."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        results = parser.extract_elements_by_patterns(
+            {"title": ".//article-title", "journal": ".//journal-title"}
+        )
+        assert results["title"][0] == "Sample Test Article Title"
+        assert results["journal"][0] == "Test Journal"
+
+    def test_extract_by_patterns_element(self):
+        """Test extracting elements with patterns."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        results = parser.extract_elements_by_patterns(
+            {"sections": ".//sec"}, return_type="element"
+        )
+        assert len(results["sections"]) == 3
+
+    def test_extract_by_patterns_attribute(self):
+        """Test extracting attributes with patterns."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        results = parser.extract_elements_by_patterns(
+            {"table_id": ".//table-wrap"},
+            return_type="attribute",
+            get_attribute={"table_id": "id"},
+        )
+        assert results["table_id"][0] == "t1"
+
+    def test_extract_by_patterns_first_only(self):
+        """Test extracting only first match."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        results = parser.extract_elements_by_patterns(
+            {"keyword": ".//kwd"}, first_only=True
+        )
+        assert len(results["keyword"]) == 1
+        assert results["keyword"][0] == "keyword1"
+
+    def test_extract_by_patterns_no_match(self):
+        """Test extracting with no matches."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        results = parser.extract_elements_by_patterns(
+            {"nonexistent": ".//nonexistent-tag"}
+        )
+        assert results["nonexistent"] == []
+
+
+class TestFullTextXMLParserPubDate:
+    """Test publication date extraction."""
+
+    def test_extract_pub_date_ppub(self):
+        """Test extracting ppub date."""
+        parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
+        pub_date = parser.extract_pub_date()
+        assert pub_date == "2021-12-15"
+
+    def test_extract_pub_date_epub_fallback(self):
+        """Test fallback to epub date."""
+        xml = '''<article>
+            <front>
+                <article-meta>
+                    <pub-date pub-type="epub">
+                        <year>2022</year>
+                        <month>6</month>
+                        <day>1</day>
+                    </pub-date>
+                </article-meta>
+            </front>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        pub_date = parser.extract_pub_date()
+        assert pub_date == "2022-06-01"
+
+    def test_extract_pub_date_year_only(self):
+        """Test extracting year-only date."""
+        xml = '''<article>
+            <front>
+                <article-meta>
+                    <pub-date pub-type="ppub">
+                        <year>2023</year>
+                    </pub-date>
+                </article-meta>
+            </front>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        pub_date = parser.extract_pub_date()
+        assert pub_date == "2023"
+
+    def test_extract_pub_date_none(self):
+        """Test extracting date when none exists."""
+        xml = "<article><front><article-meta></article-meta></front></article>"
+        parser = FullTextXMLParser(xml)
+        pub_date = parser.extract_pub_date()
+        assert pub_date is None
+
+
 class TestFullTextXMLParserEdgeCases:
     """Test edge cases and error handling."""
+
+    def test_empty_xml(self):
+        """Test parsing empty XML."""
+        parser = FullTextXMLParser("<article></article>")
+        assert parser.extract_metadata() is not None
+        assert parser.extract_authors() == []
+
+    def test_malformed_authors(self):
+        """Test parsing authors with missing fields."""
+        xml = '''<article>
+            <front>
+                <article-meta>
+                    <contrib-group>
+                        <contrib contrib-type="author">
+                            <name>
+                                <surname>OnlyLastName</surname>
+                            </name>
+                        </contrib>
+                    </contrib-group>
+                </article-meta>
+            </front>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        authors = parser.extract_authors()
+        assert len(authors) == 1
+        assert "OnlyLastName" in authors[0]
+
+    def test_empty_keywords(self):
+        """Test extracting empty keywords."""
+        xml = "<article><front><article-meta><kwd-group></kwd-group></article-meta></front></article>"
+        parser = FullTextXMLParser(xml)
+        keywords = parser.extract_keywords()
+        assert keywords == []
+
+    def test_empty_references(self):
+        """Test extracting empty references."""
+        xml = "<article><back><ref-list></ref-list></back></article>"
+        parser = FullTextXMLParser(xml)
+        refs = parser.extract_references()
+        assert refs == []
+
+    def test_empty_tables(self):
+        """Test extracting empty tables."""
+        xml = "<article><body></body></article>"
+        parser = FullTextXMLParser(xml)
+        tables = parser.extract_tables()
+        assert tables == []
+
+    def test_malformed_reference(self):
+        """Test extracting reference with missing fields."""
+        xml = '''<article>
+            <back>
+                <ref-list>
+                    <ref id="ref1">
+                        <element-citation>
+                            <article-title>Only Title</article-title>
+                        </element-citation>
+                    </ref>
+                </ref-list>
+            </back>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        refs = parser.extract_references()
+        assert len(refs) == 1
+        assert refs[0]["title"] == "Only Title"
+        assert refs[0]["authors"] is None
+        assert refs[0]["year"] is None
+
+    def test_table_without_caption(self):
+        """Test extracting table without caption."""
+        xml = '''<article>
+            <body>
+                <table-wrap id="t1">
+                    <table>
+                        <tbody>
+                            <tr>
+                                <td>Data</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </table-wrap>
+            </body>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        tables = parser.extract_tables()
+        assert len(tables) == 1
+        assert tables[0]["caption"] is None
+
+    def test_section_without_title(self):
+        """Test extracting section without title."""
+        xml = '''<article>
+            <body>
+                <sec>
+                    <p>Content without title</p>
+                </sec>
+            </body>
+        </article>'''
+        parser = FullTextXMLParser(xml)
+        sections = parser.get_full_text_sections()
+        assert len(sections) == 1
+        assert sections[0]["title"] == ""
+        assert "without title" in sections[0]["content"]
 
     def test_parse_xml_with_namespaces(self):
         """Test parsing XML with namespaces."""
@@ -461,7 +739,7 @@ class TestFullTextXMLParserEdgeCases:
         <article-id pub-id-type="pmcid">123</article-id>
         </article-meta></front>
         </article>'''
-        
+
         parser = FullTextXMLParser(xml_with_ns)
         metadata = parser.extract_metadata()
         assert metadata["pmcid"] == "123"
@@ -471,7 +749,7 @@ class TestFullTextXMLParserEdgeCases:
         xml = '''<article><front><article-meta>
         <article-title>Title with <italic>italic</italic> and <bold>bold</bold> text</article-title>
         </article-meta></front></article>'''
-        
+
         parser = FullTextXMLParser(xml)
         metadata = parser.extract_metadata()
         assert "italic" in metadata["title"]
@@ -482,7 +760,7 @@ class TestFullTextXMLParserEdgeCases:
         xml = '''<article><front><article-meta>
         <pub-date pub-type="ppub"><year>2021</year></pub-date>
         </article-meta></front></article>'''
-        
+
         parser = FullTextXMLParser(xml)
         metadata = parser.extract_metadata()
         assert metadata["pub_date"] == "2021"
@@ -496,7 +774,7 @@ class TestFullTextXMLParserEdgeCases:
         </tbody></table>
         </table-wrap>
         </body></article>'''
-        
+
         parser = FullTextXMLParser(xml)
         tables = parser.extract_tables()
         assert len(tables) == 1
