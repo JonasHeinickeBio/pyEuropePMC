@@ -92,7 +92,7 @@ class SemanticModel:
     """
 
     # In-process cache for loaded models: (backend, model_name, cache_folder) -> model_instance
-    _MODEL_CACHE: dict[tuple[Any, str, str | None], Any] = {}
+    _MODEL_CACHE: dict[tuple[int, str, str | None], Any] = {}
 
     def __init__(
         self,
@@ -136,7 +136,7 @@ class SemanticModel:
             backend = SentenceTransformer
 
         model_name = self._model_name or "all-MiniLM-L6-v2"
-        cache_key = (backend, model_name, self._cache_folder)
+        cache_key = (id(backend), model_name, self._cache_folder)
         if cache_key in self._MODEL_CACHE:
             self._model = self._MODEL_CACHE[cache_key]
             if self._show_load_logs:
@@ -296,24 +296,34 @@ def semantic_score(
     try:
         # Import lazily to avoid heavy import at module import time
         import numpy as _np
+        from numpy.typing import NDArray
 
         model = semantic_model or SemanticModel()
         logger.debug("semantic_score: using model %r", getattr(model, "__class__", model))
 
         # Try to obtain numpy arrays from the model output. Accept numpy or
         # torch tensors (user-provided models/tests may return either).
-        vecs_h = model.encode(list(hay_values), convert_to_numpy=True, normalize_embeddings=True)
-        vec_n = model.encode([needle], convert_to_numpy=True, normalize_embeddings=True)
-
-        vecs_h = _np.asarray(vecs_h)
-        vec_n = _np.asarray(vec_n)
+        vecs_h: NDArray[Any] = _np.asarray(
+            model.encode(
+                list(hay_values),
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+            )
+        )
+        vec_n: NDArray[Any] = _np.asarray(
+            model.encode(
+                [needle],
+                convert_to_numpy=True,
+                normalize_embeddings=True,
+            )
+        )
 
         # Ensure shapes: vecs_h -> (N, D), vec_n -> (1, D) or (D,)
         if vec_n.ndim == 1:
             vec_n = vec_n.reshape(1, -1)
 
         # Normalize to unit vectors (safety) unless already normalized
-        def _safe_normalize(x: _np.ndarray) -> _np.ndarray:
+        def _safe_normalize(x: NDArray[Any]) -> NDArray[Any]:
             norms = _np.linalg.norm(x, axis=1, keepdims=True)
             norms[norms == 0] = 1.0
             return x / norms

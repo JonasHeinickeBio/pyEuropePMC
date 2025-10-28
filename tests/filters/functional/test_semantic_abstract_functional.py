@@ -91,11 +91,6 @@ def test_semantic_abstract_with_real_model() -> None:
         from sentence_transformers import SentenceTransformer
     except Exception:
         pytest.skip("sentence-transformers not available")
-    # This test is intentionally skipped by default. To run it locally set the skip condition to False.
-    try:
-        from sentence_transformers import SentenceTransformer
-    except Exception:
-        pytest.skip("sentence-transformers not available")
 
     model = SentenceTransformer("all-MiniLM-L6-v2")
     papers: List[Dict[str, Any]] = make_sample_papers()

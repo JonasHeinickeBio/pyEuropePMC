@@ -179,7 +179,10 @@ class SearchClient(BaseAPIClient):
         if not response:
             context = {"method": method.upper(), "endpoint": endpoint}
             raise SearchError(ErrorCodes.NET002, context)
-        return response
+        # Cast to requests.Response for mypy compliance
+        import requests
+
+        return cast(requests.Response, response)
 
     def _handle_http_error(
         self, error: requests.exceptions.HTTPError, method: str, endpoint: str

@@ -444,8 +444,11 @@ def generate_private_key(
     )
     private_key_path = str(private_key_path)
     with open(private_key_path, "wb") as f:
-        # Write PEM comment as a separate line before the key
-        f.write(f"# {comment_str}\n".encode())
+        # Sanitize comment to remove newlines and special characters
+        sanitized_comment = (
+            comment_str.replace("\n", " ").replace("\r", " ").replace("#", "").strip()
+        )
+        f.write(f"# {sanitized_comment}\n".encode())
         f.write(private_key_bytes)
     logger.info(f"Generated new RSA private key at {private_key_path}")
 

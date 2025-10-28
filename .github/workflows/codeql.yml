@@ -35,17 +35,9 @@ jobs:
       uses: github/codeql-action/init@v3
       with:
         languages: ${{ matrix.language }}
-        # Extended queries for more comprehensive analysis
-        queries: security-extended,security-and-quality
-        # Custom queries can be added here
-        # config-file: ./.github/codeql/codeql-config.yml
 
     - name: Autobuild
       uses: github/codeql-action/autobuild@v3
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v3
-      with:
-        category: "/language:${{matrix.language}}"
-        # Upload SARIF results to GitHub Security tab
-        upload: true

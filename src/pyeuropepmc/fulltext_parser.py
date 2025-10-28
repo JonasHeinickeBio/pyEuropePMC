@@ -1238,10 +1238,6 @@ class FullTextXMLParser:
             # Remove each inline text using regex
             clean_text = full_text
             for inline_text in inline_texts:
-                # Remove inline text, optionally preserving spacing
-                # Pattern removes the text if followed by uppercase (like institution name)
-                clean_text = re.sub(rf"{re.escape(inline_text)}(?=[A-Z])", "", clean_text)
-                # Also remove if not followed by uppercase
                 clean_text = re.sub(rf"{re.escape(inline_text)}", "", clean_text)
 
             return clean_text.strip()
