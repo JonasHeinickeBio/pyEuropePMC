@@ -1,9 +1,20 @@
 # PyEuropePMC
 
+[![PyPI version](https://img.shields.io/pypi/v/pyeuropepmc.svg)](https://pypi.org/project/pyeuropepmc/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyeuropepmc)](https://pypi.org/project/pyeuropepmc/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://img.shields.io/badge/tests-200%2B%20passed-green.svg)](tests/)
 [![Coverage](https://img.shields.io/badge/coverage-90%2B%25-brightgreen.svg)](htmlcov/)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jonasheinickebio.github.io/pyEuropePMC/)
+
+## 🔄 Build Status
+
+[![CI/CD Pipeline](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/cdci.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/cdci.yml)
+[![Python Compatibility](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/python-compatibility.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/python-compatibility.yml)
+[![Documentation](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/deploy-docs.yml)
+[![CodeQL](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/codeql.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/codeql.yml)
+[![codecov](https://codecov.io/gh/JonasHeinickeBio/pyEuropePMC/branch/main/graph/badge.svg)](https://codecov.io/gh/JonasHeinickeBio/pyEuropePMC)
 
 
 **PyEuropePMC** is a robust Python toolkit for automated search, extraction, and analysis of scientific literature from [Europe PMC](https://europepmc.org/).
@@ -122,10 +133,27 @@ print(f"Found {len(references)} references")
 
 ## 📚 Documentation
 
-- **[Complete Documentation](docs/)** - Comprehensive guides and API reference
-- **[Quick Start Guide](docs/quickstart.md)** - Get started in minutes
-- **[API Reference](docs/api/)** - Detailed API documentation
-- **[Examples](docs/examples/)** - Code examples and use cases
+**📖 [Read the Full Documentation](https://jonasheinickebio.github.io/pyEuropePMC/)** ← Start Here!
+
+Quick Links:
+- 🚀 [Quick Start Guide](https://jonasheinickebio.github.io/pyEuropePMC/getting-started/quickstart.html) - Get started in 5 minutes
+- 📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
+- 💡 [Examples](https://jonasheinickebio.github.io/pyEuropePMC/examples/) - Code examples and use cases
+- ✨ [Features](https://jonasheinickebio.github.io/pyEuropePMC/features/) - Explore all features
+
+> **Note:** Enable GitHub Pages first! See [Setup Guide](.github/SETUP_GITHUB_PAGES.md) for instructions.
+
+## 📊 Performance
+
+> Benchmarks run weekly on Monday at 02:00 UTC. Last updated: *Pending first run*
+
+| Metric | Value |
+|--------|-------|
+| **Total Requests** | *Pending* |
+| **Average Response Time** | *Pending* |
+| **Success Rate** | *Pending* |
+
+*Benchmark results will be automatically updated weekly by GitHub Actions.*
 
 ## 🤝 Contributing
 
@@ -137,7 +165,7 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 
 ## 🌐 Links
 
-- **PyPI Package**: [pyeuropepmc](https://pypi.org/project/pyeuropepmc/)
-- **GitHub Repository**: [pyEuropePMC](https://github.com/JonasHeinickeBio/pyEuropePMC)
-- **Documentation**: [GitHub Wiki](https://github.com/JonasHeinickeBio/pyEuropePMC/wiki)
-- **Issue Tracker**: [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)
+- **📖 Documentation**: [GitHub Pages](https://jonasheinickebio.github.io/pyEuropePMC/) - Full documentation site
+- **📦 PyPI Package**: [pyeuropepmc](https://pypi.org/project/pyeuropepmc/) - Install with pip
+- **💻 GitHub Repository**: [pyEuropePMC](https://github.com/JonasHeinickeBio/pyEuropePMC) - Source code
+- **🐛 Issue Tracker**: [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues) - Report bugs or request features
