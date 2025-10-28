@@ -3,6 +3,7 @@ import logging
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 
 from pyeuropepmc.search import SearchClient
 
@@ -14,9 +15,10 @@ logging.basicConfig(level=logging.INFO)
 def test_search_json(search_cancer_json) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = search_cancer_json
         mock_response.text = json.dumps(search_cancer_json)
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer")
@@ -28,8 +30,9 @@ def test_search_json(search_cancer_json) -> None:
 def test_search_xml(search_cancer_xml) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.text = search_cancer_xml
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer", format="xml")
@@ -41,8 +44,9 @@ def test_search_xml(search_cancer_xml) -> None:
 def test_search_dc_xml(search_cancer_dc_xml) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.text = search_cancer_dc_xml
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer", format="dc")
@@ -54,9 +58,10 @@ def test_search_dc_xml(search_cancer_dc_xml) -> None:
 def test_search_core(search_cancer_core_json) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = search_cancer_core_json
         mock_response.text = json.dumps(search_cancer_core_json)
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer", resultType="core")
@@ -68,9 +73,10 @@ def test_search_core(search_cancer_core_json) -> None:
 def test_search_idlist(search_cancer_idlist_json) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = search_cancer_idlist_json
         mock_response.text = json.dumps(search_cancer_idlist_json)
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer", resultType="idlist")
@@ -82,9 +88,10 @@ def test_search_idlist(search_cancer_idlist_json) -> None:
 def test_search_large_result_set(search_1000results_cancer_json) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = search_1000results_cancer_json
         mock_response.text = json.dumps(search_1000results_cancer_json)
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer", page_size=1000)
@@ -96,9 +103,10 @@ def test_search_large_result_set(search_1000results_cancer_json) -> None:
 def test_search_no_results(search_no_results_json) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = search_no_results_json
         mock_response.text = json.dumps(search_no_results_json)
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("asdkfjhasdkfjhasdf")
@@ -112,9 +120,10 @@ def test_search_no_results(search_no_results_json) -> None:
 def test_search_sorted_cited(search_cancer_sorted_cited_json) -> None:
     client = SearchClient()
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = search_cancer_sorted_cited_json
         mock_response.text = json.dumps(search_cancer_sorted_cited_json)
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         result = client.search("cancer", sort="CITED")

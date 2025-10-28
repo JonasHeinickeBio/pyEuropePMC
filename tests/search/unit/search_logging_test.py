@@ -3,6 +3,7 @@ import logging
 from unittest.mock import MagicMock, patch
 
 import pytest
+import requests
 
 from pyeuropepmc.search import SearchClient
 
@@ -15,9 +16,10 @@ def test_search_logs_request_and_response(caplog) -> None:
     client = SearchClient()
 
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = {"test": "data"}
         mock_response.text = json.dumps({"test": "data"})
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         with caplog.at_level(logging.INFO):
@@ -36,9 +38,10 @@ def test_search_post_logs_request_and_response(caplog) -> None:
     client = SearchClient()
 
     with patch.object(client, "_post") as mock_post:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = {"test": "data"}
         mock_response.text = json.dumps({"test": "data"})
+        mock_response.status_code = 200
         mock_post.return_value = mock_response
 
         with caplog.at_level(logging.INFO):
@@ -56,9 +59,10 @@ def test_search_logs_debug_info(caplog) -> None:
     client = SearchClient()
 
     with patch.object(client, "_get") as mock_get:
-        mock_response = MagicMock()
+        mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = {"test": "data"}
         mock_response.text = json.dumps({"test": "data"})
+        mock_response.status_code = 200
         mock_get.return_value = mock_response
 
         with caplog.at_level(logging.DEBUG):
