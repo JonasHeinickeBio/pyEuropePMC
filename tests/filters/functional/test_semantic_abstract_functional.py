@@ -9,7 +9,6 @@ This file contains:
 
 import pytest
 from pyeuropepmc.filters import filter_pmc_papers
-from pyeuropepmc.utils import text_match as tm
 from pyeuropepmc.utils.text_match import as_semantic_model
 
 def make_sample_papers():
