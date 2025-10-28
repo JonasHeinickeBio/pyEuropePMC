@@ -38,12 +38,12 @@ jobs:
 
       - name: Install pdoc
         run: |
-          pip install pdoc3
+          poetry add --dev pdoc
 
       - name: Generate API documentation
         run: |
           mkdir -p docs/api
-          pdoc --html --output-dir docs/api src/pyeuropepmc --force
+          poetry run pdoc --html --output-dir docs/api src/pyeuropepmc --force
           # Move files up one level (pdoc creates pyeuropepmc subfolder)
           if [ -d "docs/api/pyeuropepmc" ]; then
             mv docs/api/pyeuropepmc/* docs/api/
