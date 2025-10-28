@@ -326,7 +326,8 @@ def semantic_score(
         def _safe_normalize(x: NDArray[Any]) -> NDArray[Any]:
             norms = _np.linalg.norm(x, axis=1, keepdims=True)
             norms[norms == 0] = 1.0
-            return x / norms
+            result: NDArray[Any] = x / norms
+            return result
 
         vecs_h = _safe_normalize(vecs_h)
         vec_n = _safe_normalize(vec_n)
