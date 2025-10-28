@@ -9,7 +9,9 @@
 - **Main entry point:** `src/pyeuropepmc/` (all public APIs are exposed here; see `__init__.py`).
 - **Clients:** `SearchClient`, `FullTextClient`, and `FTPDownloader` are the main user-facing classes. Use context managers for resource management.
 - **Caching:** Optional, via `CacheBackend` in `cache.py`. If `diskcache` is missing, fallback is safe and import will not break.
-- **Filtering:** Use `filter_pmc_papers` in `filters.py` for post-query result filtering (supports partial/case-insensitive/AND matching on MeSH, keywords, abstract).
+- **Filtering:** Two filtering functions in `filters.py` for post-query result filtering (supports partial/case-insensitive matching):
+  - `filter_pmc_papers`: AND logic - papers must match ALL criteria, and ALL terms within each criteria set (MeSH, keywords, abstract).
+  - `filter_pmc_papers_or`: OR logic - papers match if ANY criteria set matches, and ANY term within each set can match.
 - **Error handling:** Custom exceptions in each module; all API errors are wrapped in project-specific exceptions.
 - **Testing:** All new features require tests in `tests/` (mirroring module structure). Use pytest, with markers for `unit`, `integration`, `slow`, etc.
 
@@ -33,7 +35,10 @@
 ## Integration Points
 - **External dependencies:** `requests`, `diskcache` (optional), `pandas`, `numpy`, `rdflib`, `flask`, `tqdm`, etc. (see `pyproject.toml`).
 - **Bulk downloads:** Use `FTPDownloader` for FTP-based retrieval; see `examples/` for usage.
-- **Filtering:** Use `filter_pmc_papers` for advanced result filtering; see `examples/filtering_demo.py`.
+- **Filtering:** Two filtering approaches available:
+  - `filter_pmc_papers`: AND logic for precise, specific results (all criteria must match)
+  - `filter_pmc_papers_or`: OR logic for broad, exploratory results (any criteria can match)
+  - See `examples/filtering_demo.ipynb` for usage comparisons.
 
 ## Examples & Documentation
 - See `examples/` for usage patterns and advanced scenarios.

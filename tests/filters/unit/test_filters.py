@@ -344,18 +344,19 @@ def test_all_required_terms_must_match(sample_papers):
 
 
 def test_or_keywords_only(sample_papers):
-	"""Test OR logic for keywords only."""
+	"""Test OR logic for keywords only - matches if paper has ANY keyword."""
 	filtered = filter_pmc_papers_or(
 		sample_papers, required_keywords={"immunotherapy", "diabetes"}, open_access=None
 	)
 	ids = {p["id"] for p in filtered}
 	logger.info(f"OR keywords IDs: {ids}")
+	# Paper 12345 has "immunotherapy", paper 67890 has "diabetes"
 	assert "12345" in ids
 	assert "67890" in ids
 	assert len(filtered) == 2
 
 def test_and_keywords_mesh(sample_papers):
-	"""Test AND logic: must match at least one keyword and one mesh."""
+	"""Test OR across sets: must match at least one keyword OR at least one mesh."""
 	filtered_and = filter_pmc_papers_or(
 		sample_papers,
 		required_keywords={"immunotherapy", "diabetes"},
@@ -363,34 +364,40 @@ def test_and_keywords_mesh(sample_papers):
 		open_access=None,
 	)
 	ids_and = {p["id"] for p in filtered_and}
-	logger.info(f"AND keywords+mesh IDs: {ids_and}")
-	assert ids_and == {"12345"}
+	logger.info(f"OR keywords+mesh IDs: {ids_and}")
+	# Paper 12345 has both immunotherapy keyword AND neoplasms mesh
+	# Paper 67890 has diabetes keyword
+	assert "12345" in ids_and
+	assert "67890" in ids_and
+	assert len(ids_and) == 2
 
 def test_or_mesh_only(sample_papers):
-	"""Test OR logic for MeSH terms only."""
+	"""Test OR logic for MeSH terms only - matches if paper has ANY mesh term."""
 	filtered_mesh = filter_pmc_papers_or(
 		sample_papers, required_mesh={"neoplasms", "diabetes"}, open_access=None
 	)
 	mesh_ids = {p["id"] for p in filtered_mesh}
 	logger.info(f"OR mesh IDs: {mesh_ids}")
+	# Paper 12345 has "Neoplasms", paper 67890 has "Diabetes Mellitus"
 	assert "12345" in mesh_ids
 	assert "67890" in mesh_ids
 	assert len(filtered_mesh) == 2
 
 def test_or_abstract_only(sample_papers):
-	"""Test OR logic for abstract terms only."""
+	"""Test OR logic for abstract terms only - matches if abstract has ANY term."""
 	filtered_abs = filter_pmc_papers_or(
 		sample_papers, required_abstract_terms={"checkpoint", "efficacy"}, open_access=None
 	)
 	abs_ids = {p["id"] for p in filtered_abs}
 	logger.info(f"OR abstract IDs: {abs_ids}")
+	# Paper 12345 has "checkpoint", papers 67890 and 22222 have "efficacy"
 	assert "12345" in abs_ids
 	assert "67890" in abs_ids
 	assert "22222" in abs_ids
 	assert len(filtered_abs) == 3
 
 def test_and_keywords_abstract(sample_papers):
-	"""Test AND logic: must match at least one keyword and one abstract term."""
+	"""Test OR across sets: must match at least one keyword OR at least one abstract term."""
 	filtered_and2 = filter_pmc_papers_or(
 		sample_papers,
 		required_keywords={"immunotherapy", "diabetes"},
@@ -398,8 +405,12 @@ def test_and_keywords_abstract(sample_papers):
 		open_access=None,
 	)
 	ids_and2 = {p["id"] for p in filtered_and2}
-	logger.info(f"AND keywords+abstract IDs: {ids_and2}")
-	assert ids_and2 == {"12345"}
+	logger.info(f"OR keywords+abstract IDs: {ids_and2}")
+	# Paper 12345 has both immunotherapy keyword AND checkpoint in abstract
+	# Paper 67890 has diabetes keyword
+	assert "12345" in ids_and2
+	assert "67890" in ids_and2
+	assert len(ids_and2) == 2
 
 
 def test__has_any_required_mesh():

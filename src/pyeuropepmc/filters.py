@@ -36,12 +36,17 @@ def filter_pmc_papers(
     required_abstract_terms: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     """
-    Filter Europe PMC search results based on quality criteria.
+    Filter Europe PMC search results based on quality criteria using AND logic.
 
     This function filters papers based on various criteria including citations,
     publication year, article type, open access status, MeSH terms, keywords,
-    and abstract content. It supports partial (substring) matching for MeSH terms,
-    keywords, and abstract terms.
+    and abstract content. All provided criteria must be satisfied (AND logic across
+    criteria sets). Within each set (MeSH, keywords, abstract terms), ALL terms must
+    be present (AND within set). It supports partial (substring) matching for MeSH
+    terms, keywords, and abstract terms.
+
+    Use this for strict multi-criteria filtering. For broader results matching any
+    of several criteria, use filter_pmc_papers_or instead.
 
     Parameters
     ----------
@@ -50,7 +55,7 @@ def filter_pmc_papers(
         Expected to be from response['resultList']['result'].
     min_citations : int, default=0
         Minimum number of citations required.
-    min_pub_year : int, default=2010
+    min_pub_year : int, default=2000
         Minimum publication year.
     allowed_types : tuple[str, ...], optional
         Allowed study/article types. Default includes common high-quality types.
@@ -59,13 +64,13 @@ def filter_pmc_papers(
         "N" for non-open access, or None to disable this filter.
     required_mesh : set[str] | None, default=None
         Set of required MeSH terms (case-insensitive partial matching).
-        If None, no MeSH filtering is applied.
+        ALL terms must be present. If None, no MeSH filtering is applied.
     required_keywords : set[str] | None, default=None
         Set of required keywords (case-insensitive partial matching).
-        If None, no keyword filtering is applied.
+        ALL keywords must be present. If None, no keyword filtering is applied.
     required_abstract_terms : set[str] | None, default=None
         Set of required terms in the abstract (case-insensitive partial matching).
-        If None, no abstract filtering is applied.
+        ALL terms must be present. If None, no abstract filtering is applied.
 
     Returns
     -------
@@ -104,7 +109,7 @@ def filter_pmc_papers(
     ...     open_access="Y"
     ... )
     >>>
-    >>> # Filter with MeSH terms and keywords
+    >>> # Filter with MeSH terms AND keywords (both must be present)
     >>> filtered = filter_pmc_papers(
     ...     papers,
     ...     min_citations=5,
@@ -112,7 +117,7 @@ def filter_pmc_papers(
     ...     required_keywords={"checkpoint", "inhibitor"}
     ... )
     >>>
-    >>> # Filter with abstract terms
+    >>> # Filter with abstract terms (all terms must be present)
     >>> filtered = filter_pmc_papers(
     ...     papers,
     ...     required_abstract_terms={"efficacy", "safety", "clinical trial"}
@@ -163,11 +168,15 @@ def filter_pmc_papers_or(
     required_abstract_terms: set[str] | None = None,
 ) -> list[dict[str, Any]]:
     """
-    Filter Europe PMC search results using OR logic for MeSH, keywords, and abstract terms.
+    Filter Europe PMC search results using OR logic across criteria sets.
 
-    This function is similar to filter_pmc_papers, but a paper passes if it matches
-    at least one required MeSH term, keyword, or abstract term (if provided).
-    Other criteria (citations, year, type, open access) are still AND logic.
+    This function implements true OR logic: a paper passes if it matches ANY of the
+    provided criteria sets (MeSH, keywords, or abstract terms). Within each set,
+    at least one term must match (OR within set). Basic criteria (citations, year,
+    type, open access) are still AND logic.
+
+    Use this for broad inclusion when you want papers matching any of several topics.
+    For stricter filtering requiring all criteria, use filter_pmc_papers instead.
 
     Parameters
     ----------
@@ -175,7 +184,7 @@ def filter_pmc_papers_or(
         List of papers (dicts) from Europe PMC API response.
     min_citations : int, default=0
         Minimum number of citations required.
-    min_pub_year : int, default=2010
+    min_pub_year : int, default=2000
         Minimum publication year.
     allowed_types : tuple[str, ...], optional
         Allowed study/article types.
@@ -183,16 +192,34 @@ def filter_pmc_papers_or(
         Filter for Open Access papers. Use "Y" for open access only,
         "N" for non-open access, or None to disable this filter.
     required_mesh : set[str] | None, default=None
-        Set of required MeSH terms (case-insensitive partial matching, OR logic).
+        Set of MeSH terms (case-insensitive partial matching).
+        Paper matches if it has at least one of these terms.
     required_keywords : set[str] | None, default=None
-        Set of required keywords (case-insensitive partial matching, OR logic).
+        Set of keywords (case-insensitive partial matching).
+        Paper matches if it has at least one of these keywords.
     required_abstract_terms : set[str] | None, default=None
-        Set of required terms in the abstract (case-insensitive partial matching, OR logic).
+        Set of terms (case-insensitive partial matching).
+        Paper matches if abstract contains at least one of these terms.
 
     Returns
     -------
     list[dict[str, Any]]
         List of filtered papers with selected metadata.
+
+    Examples
+    --------
+    >>> # Papers about immunotherapy OR diabetes (broad inclusion)
+    >>> filtered = filter_pmc_papers_or(
+    ...     papers,
+    ...     required_keywords={"immunotherapy", "diabetes"}
+    ... )
+    >>>
+    >>> # Papers with checkpoint inhibitors (MeSH) OR efficacy (abstract)
+    >>> filtered = filter_pmc_papers_or(
+    ...     papers,
+    ...     required_mesh={"checkpoint inhibitors"},
+    ...     required_abstract_terms={"efficacy"}
+    ... )
     """
     filtered_papers = []
     for paper in papers:
@@ -201,6 +228,7 @@ def filter_pmc_papers_or(
                 paper, min_citations, min_pub_year, max_pub_year, allowed_types, open_access
             ):
                 continue
+            # If no content filters are provided, include all papers that meet basic criteria
             if (
                 required_mesh is None
                 and required_keywords is None
@@ -209,15 +237,19 @@ def filter_pmc_papers_or(
                 filtered_paper = _extract_paper_metadata(paper)
                 filtered_papers.append(filtered_paper)
                 continue
-            if required_mesh is not None and not _has_any_required_mesh(paper, required_mesh):
-                continue
-            if required_keywords is not None and not _has_any_required_keywords(
+            # OR logic: include if matches at least one of the provided criteria sets
+            criteria_matched = False
+            if required_mesh is not None and _has_any_required_mesh(paper, required_mesh):
+                criteria_matched = True
+            if required_keywords is not None and _has_any_required_keywords(
                 paper, required_keywords
             ):
-                continue
-            if required_abstract_terms is not None and not _has_any_required_abstract_terms(
+                criteria_matched = True
+            if required_abstract_terms is not None and _has_any_required_abstract_terms(
                 paper, required_abstract_terms
             ):
+                criteria_matched = True
+            if not criteria_matched:
                 continue
             filtered_paper = _extract_paper_metadata(paper)
             filtered_papers.append(filtered_paper)
