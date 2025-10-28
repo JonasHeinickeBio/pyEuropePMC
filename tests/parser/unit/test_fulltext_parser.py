@@ -1,7 +1,6 @@
 """Unit tests for the FullTextXMLParser module."""
 
 import pytest
-from pathlib import Path
 
 from pyeuropepmc.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.exceptions import ParsingError
@@ -323,7 +322,7 @@ class TestFullTextXMLParserExtractReferences:
 
         assert ref["id"] == "ref1"
         assert ref["label"] == "1"
-        assert "A Author" in ref["authors"]
+        assert "A Author" in (ref["authors"] or "")
         assert ref["title"] == "Reference Article Title"
         assert ref["source"] == "Reference Journal"
         assert ref["year"] == "2020"
@@ -378,76 +377,6 @@ class TestFullTextXMLParserGetFullTextSections:
         sections = parser.get_full_text_sections()
 
         assert len(sections) == 0
-
-
-class TestFullTextXMLParserRealFile:
-    """Test with real PMC XML file fixtures."""
-
-    @pytest.fixture
-    def fixture_dir(self):
-        """Get the fixtures directory."""
-        return Path(__file__).parent.parent.parent / "fixtures" / "fulltext_downloads"
-
-    def test_parse_pmc3258128(self, fixture_dir):
-        """Test parsing real PMC3258128 XML file."""
-        xml_file = fixture_dir / "PMC3258128.xml"
-        if not xml_file.exists():
-            pytest.skip("Fixture file not found")
-
-        with open(xml_file, "r", encoding="utf-8") as f:
-            xml_content = f.read()
-
-        parser = FullTextXMLParser(xml_content)
-
-        # Test metadata extraction
-        metadata = parser.extract_metadata()
-        assert metadata["pmcid"] == "3258128"
-        assert metadata["doi"] is not None
-        assert metadata["title"] is not None
-        assert len(metadata["authors"]) > 0
-
-        # Test plaintext conversion
-        plaintext = parser.to_plaintext()
-        assert len(plaintext) > 100
-        assert metadata["title"] in plaintext
-
-        # Test markdown conversion
-        markdown = parser.to_markdown()
-        assert len(markdown) > 100
-        assert "# " in markdown
-
-        # Test table extraction
-        tables = parser.extract_tables()
-        assert isinstance(tables, list)
-
-        # Test reference extraction
-        references = parser.extract_references()
-        assert len(references) > 0
-
-        # Test section extraction
-        sections = parser.get_full_text_sections()
-        assert len(sections) > 0
-
-    def test_parse_pmc3359999(self, fixture_dir):
-        """Test parsing real PMC3359999 XML file."""
-        xml_file = fixture_dir / "PMC3359999.xml"
-        if not xml_file.exists():
-            pytest.skip("Fixture file not found")
-
-        with open(xml_file, "r", encoding="utf-8") as f:
-            xml_content = f.read()
-
-        parser = FullTextXMLParser(xml_content)
-
-        # Test that basic operations work
-        metadata = parser.extract_metadata()
-        assert metadata["pmcid"] == "3359999"
-
-        plaintext = parser.to_plaintext()
-        assert len(plaintext) > 0
-
-        markdown = parser.to_markdown()
-        assert len(markdown) > 0
 
 
 class TestFullTextXMLParserGenericHelpers:

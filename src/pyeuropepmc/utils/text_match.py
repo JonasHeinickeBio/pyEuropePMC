@@ -303,14 +303,14 @@ def semantic_score(
 
         # Try to obtain numpy arrays from the model output. Accept numpy or
         # torch tensors (user-provided models/tests may return either).
-        vecs_h: NDArray[Any] = _np.asarray(
+        vecs_h = _np.asarray(
             model.encode(
                 list(hay_values),
                 convert_to_numpy=True,
                 normalize_embeddings=True,
             )
         )
-        vec_n: NDArray[Any] = _np.asarray(
+        vec_n = _np.asarray(
             model.encode(
                 [needle],
                 convert_to_numpy=True,
@@ -333,7 +333,11 @@ def semantic_score(
 
         sims = (vecs_h @ vec_n.T).ravel()
         max_sim = float(sims.max()) if sims.size else 0.0
-        logger.debug("semantic_score: needle=%r max_sim=%s", needle, max_sim)
+        logger.debug(
+            "semantic_score: needle=%r max_sim=%s",
+            needle,
+            max_sim,
+        )
         # Clamp to [0,1]
         max_sim = max(0.0, min(1.0, max_sim))
         return max_sim
