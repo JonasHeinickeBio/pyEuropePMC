@@ -54,7 +54,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          poetry install --no-interaction --no-ansi
+          poetry install --with dev --no-interaction --no-ansi
 
       - name: Run modular benchmark test
         run: |
