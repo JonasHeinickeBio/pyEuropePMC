@@ -41,7 +41,7 @@ jobs:
 
       - name: Install deps (no dev)
         if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: poetry install --no-dev --no-interaction --no-ansi
+        run: poetry install --no-interaction --no-ansi
 
       - name: Run unit tests (exclude integration/e2e)
         run: poetry run pytest -q -m "not integration and not e2e"
