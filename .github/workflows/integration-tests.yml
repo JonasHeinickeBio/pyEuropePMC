@@ -8,6 +8,9 @@ on:
     # Nightly at 03:00 UTC
     - cron: '0 3 * * *'
 
+permissions:
+  contents: read
+
 jobs:
   integration:
     name: Integration & E2E
@@ -93,6 +96,7 @@ jobs:
       - name: Install all dependencies (including dev)
         if: steps.cache-poetry-e2e.outputs.cache-hit != 'true'
         run: poetry install --with dev --no-interaction --no-ansi
-
+      - name: Run integration tests
+        run: poetry run pytest -q -m integration
       - name: Run e2e tests
         run: poetry run pytest -q -m e2e
