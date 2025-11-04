@@ -1,0 +1,191 @@
+#!/usr/bin/env python3
+"""
+Script to parse LLM suggestions and create GitHub issues.
+
+This script:
+1. Parses the LLM-generated suggestions from JSON
+2. Deduplicates against existing open issues
+3. Creates new issues via the gh CLI
+4. Logs all operations
+"""
+
+from datetime import datetime
+import json
+import os
+from pathlib import Path
+import subprocess
+import sys
+from typing import Any
+
+
+def log_message(message: str, log_file: Path) -> None:
+    """Log a message with timestamp."""
+    timestamp = datetime.now().astimezone().isoformat()
+    log_line = f"[{timestamp}] {message}\n"
+    print(log_line.strip())
+    with open(log_file, "a") as f:
+        f.write(log_line)
+
+
+def get_existing_issues() -> list[dict[str, Any]]:
+    """Fetch all open issues from the repository."""
+    try:
+        result = subprocess.run(
+            ["gh", "issue", "list", "--state", "open", "--json", "title,number,labels"],
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        return json.loads(result.stdout)
+    except subprocess.CalledProcessError as e:
+        print(f"Error fetching existing issues: {e.stderr}", file=sys.stderr)
+        return []
+    except json.JSONDecodeError as e:
+        print(f"Error parsing issue JSON: {e}", file=sys.stderr)
+        return []
+
+
+def is_duplicate(title: str, existing_issues: list[dict[str, Any]]) -> bool:
+    """Check if an issue with similar title already exists."""
+    title_lower = title.lower().strip()
+    for issue in existing_issues:
+        existing_title = issue["title"].lower().strip()
+        # Simple similarity check - could be enhanced with fuzzy matching
+        if title_lower == existing_title or title_lower in existing_title:
+            return True
+    return False
+
+
+def create_issue(title: str, body: str, labels: list[str], log_file: Path) -> tuple[bool, str]:
+    """Create a GitHub issue using gh CLI."""
+    try:
+        # Build the gh issue create command
+        cmd = ["gh", "issue", "create", "--title", title, "--body", body]
+
+        # Add labels if provided
+        for label in labels:
+            cmd.extend(["--label", label])
+
+        result = subprocess.run(
+            cmd,
+            capture_output=True,
+            text=True,
+            check=True,
+        )
+        issue_url = result.stdout.strip()
+        log_message(f"✓ Created issue: {title} ({issue_url})", log_file)
+        return True, issue_url
+    except subprocess.CalledProcessError as e:
+        error_msg = f"✗ Failed to create issue '{title}': {e.stderr}"
+        log_message(error_msg, log_file)
+        return False, error_msg
+
+
+def parse_suggestions(suggestions_file: Path) -> list[dict[str, Any]]:
+    """Parse the LLM suggestions JSON file."""
+    try:
+        with open(suggestions_file) as f:
+            data = json.load(f)
+
+        # Handle different possible JSON structures
+        if isinstance(data, list):
+            return data
+        elif isinstance(data, dict):
+            # If it's a dict, look for common keys
+            if "suggestions" in data:
+                return data["suggestions"]
+            elif "issues" in data:
+                return data["issues"]
+            else:
+                # Treat the dict itself as a single suggestion
+                return [data]
+        else:
+            print(f"Warning: Unexpected JSON structure: {type(data)}", file=sys.stderr)
+            return []
+    except json.JSONDecodeError as e:
+        print(f"Error parsing suggestions JSON: {e}", file=sys.stderr)
+        return []
+    except FileNotFoundError:
+        print(f"Suggestions file not found: {suggestions_file}", file=sys.stderr)
+        return []
+
+
+def main() -> int:
+    """Main execution function."""
+    # Setup paths
+    suggestions_file = Path(os.getenv("SUGGESTIONS_FILE", "suggestion_output.json"))
+    log_file = Path(os.getenv("LOG_FILE", "action.log"))
+
+    # Initialize log file
+    log_file.write_text("")
+    log_message("=== Feature Suggester - Issue Creation ===", log_file)
+
+    # Parse suggestions
+    log_message(f"Parsing suggestions from: {suggestions_file}", log_file)
+    suggestions = parse_suggestions(suggestions_file)
+    log_message(f"Found {len(suggestions)} suggestions", log_file)
+
+    if not suggestions:
+        log_message("No suggestions to process", log_file)
+        return 0
+
+    # Get existing issues for deduplication
+    log_message("Fetching existing open issues...", log_file)
+    existing_issues = get_existing_issues()
+    log_message(f"Found {len(existing_issues)} existing open issues", log_file)
+
+    # Process each suggestion
+    created_count = 0
+    skipped_count = 0
+    failed_count = 0
+
+    for idx, suggestion in enumerate(suggestions, 1):
+        try:
+            title = suggestion.get("title", "")
+            body = suggestion.get("body", suggestion.get("description", ""))
+            labels = suggestion.get("labels", ["suggestion"])
+
+            # Ensure labels is a list
+            if isinstance(labels, str):
+                labels = [labels]
+
+            # Always add the 'suggestion' label if not present
+            if "suggestion" not in labels:
+                labels.append("suggestion")
+
+            if not title:
+                log_message(f"⚠ Skipping suggestion {idx}: missing title", log_file)
+                skipped_count += 1
+                continue
+
+            log_message(f"\nProcessing suggestion {idx}/{len(suggestions)}: {title}", log_file)
+
+            # Check for duplicates
+            if is_duplicate(title, existing_issues):
+                log_message(f"⊘ Skipping duplicate: {title}", log_file)
+                skipped_count += 1
+                continue
+
+            # Create the issue
+            success, message = create_issue(title, body, labels, log_file)
+            if success:
+                created_count += 1
+            else:
+                failed_count += 1
+
+        except Exception as e:
+            log_message(f"✗ Error processing suggestion {idx}: {e}", log_file)
+            failed_count += 1
+
+    # Summary
+    log_message("\n=== Summary ===", log_file)
+    log_message(f"Total suggestions: {len(suggestions)}", log_file)
+    log_message(f"Created: {created_count}", log_file)
+    log_message(f"Skipped (duplicates): {skipped_count}", log_file)
+    log_message(f"Failed: {failed_count}", log_file)
+
+    return 0 if failed_count == 0 else 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
