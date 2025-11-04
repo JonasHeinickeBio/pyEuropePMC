@@ -1,0 +1,81 @@
+# Automatically label pull requests based on changed files
+
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'docs/**/*'
+      - '*.md'
+      - '**/*.md'
+      - 'examples/**/*.ipynb'
+
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'tests/**/*'
+      - '**/*test*.py'
+      - '**/conftest.py'
+
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'pyproject.toml'
+      - 'poetry.lock'
+      - 'requirements.txt'
+      - 'setup.py'
+      - 'setup.cfg'
+
+ci:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '.github/**/*'
+      - '.pre-commit-config.yaml'
+      - 'tox.ini'
+
+api:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/search.py'
+      - 'src/pyeuropepmc/fulltext.py'
+      - 'src/pyeuropepmc/article.py'
+
+parser:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/parser.py'
+      - 'tests/parser/**/*'
+
+ftp:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/ftp_downloader.py'
+      - 'tests/ftp_downloader/**/*'
+
+base:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/base.py'
+      - 'tests/base/**/*'
+
+exceptions:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/exceptions.py'
+      - 'src/pyeuropepmc/error_codes.py'
+
+utils:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/utils/**/*'
+
+examples:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'examples/**/*'
+
+breaking-change:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'src/pyeuropepmc/base.py'
+      - 'src/pyeuropepmc/exceptions.py'
+    - all-globs-to-all-files:
+      - '!tests/**'  # Only if not just test changes

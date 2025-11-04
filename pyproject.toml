@@ -46,10 +46,11 @@ tabulate = "^0.9.0"
 memory-profiler = "^0.61.0"
 xlsxwriter = "^3.2.9"
 diskcache = "^5.6.3"
-
+rapidfuzz = "^2.15.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
+pytest-cov = "^6.0.0"
 pre-commit = "^4.2.0"
 black = "^25.1.0"
 mypy = "^1.16.1"
@@ -60,6 +61,7 @@ coverage = "^7.9.1"
 bandit = "^1.8.5"
 ruff = "^0.12.1"
 typing-extensions = "^4.14.0"
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -74,6 +76,7 @@ markers = [
   "unit: mark test as unit (use '-m \"not unit\"' to skip)",
   "network: mark test that requires network access (use '-m \"not network\"' to skip)",
   "functional: mark test as functional (use '-m \"not functional\"' to skip)",
+  "model: mark tests that require ML model dependencies (sentence-transformers, rapidfuzz, etc.)",
 ]
 [tool.ruff]
 line-length = 99
@@ -107,8 +110,11 @@ select = [
 ignore = ["E203", "E266", "E731"]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"]                       # Allow unused imports in __init__.py
+"__init__.py" = ["F401"] # Allow unused imports in __init__.py
 "src/pyeuropepmc/ftp_downloader.py" = ["C901"] # Allow complex FTP operations
+"src/pyeuropepmc/fulltext_parser.py" = [
+  "C901",
+] # Allow complex XML parsing/analysis methods
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10

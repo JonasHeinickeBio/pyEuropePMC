@@ -1,22 +1,22 @@
-name: Nightly Benchmarks
+name: Weekly Benchmarks
 
 on:
   schedule:
-    # Runs daily at 02:00 UTC (adjust as needed)
-    - cron: '0 2 * * *'
+    # Runs weekly on Monday at 02:00 UTC
+    - cron: '0 2 * * 1'
   workflow_dispatch: {}
 
 concurrency:
-  group: nightly-benchmarks
+  group: weekly-benchmarks
   cancel-in-progress: true
 
 jobs:
   run-benchmarks:
-    name: Run modular benchmarks (nightly)
+    name: Run modular benchmarks (weekly)
     runs-on: ubuntu-latest
     timeout-minutes: 120
     permissions:
-      contents: read
+      contents: write
 
     env:
       CI: 'true'
@@ -28,48 +28,162 @@ jobs:
       - name: Pull Git LFS files
         run: git lfs pull || true
 
-      - name: Setup Python
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
-          cache: 'pip'
 
-      - name: Cache virtualenv (Poetry)
-        id: cache-venv
-        uses: actions/cache@v4
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
         with:
-          path: .venv
-          key: venv-bench-${{ runner.os }}-py-3.10-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-bench-${{ runner.os }}-py-3.10-
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
 
-      - name: Install dependencies (Poetry if present, otherwise pip)
-        shell: bash
-        run: |
-          python -m pip install --upgrade pip
-          if [ -f poetry.lock ]; then
-            python -m pip install --upgrade pip
-            python -m pip install snok/install-poetry@v1 >/dev/null 2>&1 || true
-            python -m pip install poetry || true
-            poetry config virtualenvs.in-project true || true
-            if [ "${{ steps.cache-venv.outputs.cache-hit }}" != 'true' ]; then
-              poetry install --no-interaction --no-ansi
-            fi
-          else
-            if [ -f requirements.txt ]; then
-              pip install -r requirements.txt
-            fi
-          fi
+      - name: Install dependencies
+        run: poetry install --with dev --no-interaction --no-ansi
 
       - name: Run modular benchmark test
         run: |
-          pytest -q tests/benchmark_article_client.py::test_modular_benchmark_system -q
+          poetry run pytest tests/benchmark_article_client.py::test_modular_benchmark_system -v
 
-      - name: Upload benchmark artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: modular-benchmark-results
-          path: |
-            MODULAR_BENCHMARK_RESULTS.json
-            MODULAR_PERFORMANCE_REPORT.md
-          retention-days: 30
+      - name: Check for performance regression
+        run: |
+          python << 'EOF'
+          import json
+          from pathlib import Path
+          from datetime import datetime
+
+          # Load current results
+          if not Path('MODULAR_BENCHMARK_RESULTS.json').exists():
+              print("⚠️ No benchmark results found")
+              exit(0)
+
+          with open('MODULAR_BENCHMARK_RESULTS.json') as f:
+              current = json.load(f)
+
+          # Check if historical results exist
+          history_file = Path('.github/benchmark-history.json')
+          history = []
+
+          if history_file.exists():
+              with open(history_file) as f:
+                  history = json.load(f)
+
+          # Get current metrics
+          current_avg = current.get('summary', {}).get('average_time', 0)
+          current_success = current.get('summary', {}).get('success_rate', 0)
+
+          print(f"📊 Current Benchmark Results:")
+          print(f"  Average Time: {current_avg:.2f}s")
+          print(f"  Success Rate: {current_success:.1f}%")
+
+          # Check for regression if we have history
+          if history:
+              last = history[-1]
+              last_avg = last.get('summary', {}).get('average_time', 0)
+              last_success = last.get('summary', {}).get('success_rate', 0)
+
+              print(f"\n📈 Comparison with Previous Run:")
+              print(f"  Previous Avg Time: {last_avg:.2f}s")
+              print(f"  Previous Success Rate: {last_success:.1f}%")
+
+              # Check for >20% performance regression
+              if current_avg > last_avg * 1.2:
+                  regression_pct = ((current_avg/last_avg - 1) * 100)
+                  print(f"\n⚠️ WARNING: Performance regression detected!")
+                  print(f"  Regression: {regression_pct:.1f}%")
+              elif current_avg < last_avg * 0.9:
+                  improvement_pct = ((1 - current_avg/last_avg) * 100)
+                  print(f"\n✨ Performance improvement: {improvement_pct:.1f}%")
+              else:
+                  print(f"\n✅ Performance stable")
+
+          # Add current result to history
+          current['timestamp'] = datetime.now().isoformat()
+          history.append(current)
+
+          # Keep only last 10 runs
+          history = history[-10:]
+
+          # Save updated history
+          history_file.parent.mkdir(parents=True, exist_ok=True)
+          with open(history_file, 'w') as f:
+              json.dump(history, f, indent=2)
+
+          print(f"\n💾 Benchmark history updated ({len(history)} runs stored)")
+          EOF
+
+      - name: Update README with benchmark results
+        run: |
+          # Check if performance report was generated
+          if [ -f "MODULAR_PERFORMANCE_REPORT.md" ]; then
+            # Extract key metrics from the report
+            python << 'EOF'
+          import re
+          import json
+          from datetime import datetime
+
+          # Read the performance report
+          with open('MODULAR_PERFORMANCE_REPORT.md', 'r') as f:
+              report = f.read()
+
+          # Read benchmark results JSON
+          with open('MODULAR_BENCHMARK_RESULTS.json', 'r') as f:
+              results = json.load(f)
+
+          # Extract key metrics
+          total_requests = results.get('summary', {}).get('total_requests', 0)
+          avg_time = results.get('summary', {}).get('average_time', 0)
+          success_rate = results.get('summary', {}).get('success_rate', 0)
+
+          # Read current README
+          with open('README.md', 'r') as f:
+              readme = f.read()
+
+          # Create performance badge section
+          perf_section = f"""
+          ## 📊 Performance
+
+          > Last updated: {datetime.now().strftime('%Y-%m-%d')}
+
+          | Metric | Value |
+          |--------|-------|
+          | **Total Requests** | {total_requests:,} |
+          | **Average Response Time** | {avg_time:.2f}s |
+          | **Success Rate** | {success_rate:.1f}% |
+
+          <details>
+          <summary>📈 View Full Benchmark Report</summary>
+
+          {report}
+
+          </details>
+          """
+
+          # Find or replace performance section
+          perf_pattern = r'## 📊 Performance.*?(?=##|\Z)'
+          if re.search(perf_pattern, readme, re.DOTALL):
+              readme = re.sub(perf_pattern, perf_section.strip() + '\n\n', readme, flags=re.DOTALL)
+          else:
+              # Insert before Contributing section or at the end
+              contrib_pattern = r'(## 🤝 Contributing)'
+              if re.search(contrib_pattern, readme):
+                  readme = re.sub(contrib_pattern, perf_section.strip() + '\n\n\\1', readme)
+              else:
+                  readme += '\n\n' + perf_section.strip()
+
+          # Write updated README
+          with open('README.md', 'w') as f:
+              f.write(readme)
+
+          print("✅ README updated with benchmark results")
+          EOF
+          fi
+
+      - name: Commit and push if changed
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add README.md .github/benchmark-history.json
+          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update benchmark results [skip ci]" && git push)

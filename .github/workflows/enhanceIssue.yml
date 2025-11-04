@@ -39,7 +39,7 @@ jobs:
           ORIGINAL_TITLE: ${{ github.event.issue.title }}
         run: |
           echo "AI Response:"
-          
+
           # Write AI response to file using here-document with single-quoted delimiter
           # This prevents shell interpolation and handles special characters safely
           cat > ai_response.json <<'AI_JSON'

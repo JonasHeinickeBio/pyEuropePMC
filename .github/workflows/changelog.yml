@@ -1,0 +1,105 @@
+name: Update Changelog
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to generate changelog for'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate Changelog
+        id: changelog
+        run: |
+          # Create changelog header if file doesn't exist
+          if [ ! -f CHANGELOG.md ]; then
+            cat > CHANGELOG.md << 'EOF'
+          # Changelog
+
+          All notable changes to PyEuropePMC will be documented in this file.
+
+          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+          EOF
+          fi
+
+          # Get the release tag
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            TAG="${{ inputs.version }}"
+          else
+            TAG="${{ github.event.release.tag_name }}"
+          fi
+
+          # Get release date
+          RELEASE_DATE=$(date +%Y-%m-%d)
+
+          # Get commits since last tag
+          PREVIOUS_TAG=$(git describe --abbrev=0 --tags ${TAG}^ 2>/dev/null || echo "")
+
+          if [ -z "$PREVIOUS_TAG" ]; then
+            COMMITS=$(git log --pretty=format:"- %s (%h)" ${TAG})
+          else
+            COMMITS=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${TAG})
+          fi
+
+          # Categorize commits
+          FEATURES=$(echo "$COMMITS" | grep -i "^- feat" || true)
+          FIXES=$(echo "$COMMITS" | grep -i "^- fix" || true)
+          DOCS=$(echo "$COMMITS" | grep -i "^- docs" || true)
+          CHORES=$(echo "$COMMITS" | grep -i "^- chore\|^- ci" || true)
+          BREAKING=$(echo "$COMMITS" | grep -i "BREAKING CHANGE" || true)
+
+          # Create new entry
+          NEW_ENTRY="## [${TAG}] - ${RELEASE_DATE}\n\n"
+
+          if [ -n "$BREAKING" ]; then
+            NEW_ENTRY="${NEW_ENTRY}### ⚠️ Breaking Changes\n\n${BREAKING}\n\n"
+          fi
+
+          if [ -n "$FEATURES" ]; then
+            NEW_ENTRY="${NEW_ENTRY}### ✨ Features\n\n${FEATURES}\n\n"
+          fi
+
+          if [ -n "$FIXES" ]; then
+            NEW_ENTRY="${NEW_ENTRY}### 🐛 Bug Fixes\n\n${FIXES}\n\n"
+          fi
+
+          if [ -n "$DOCS" ]; then
+            NEW_ENTRY="${NEW_ENTRY}### 📚 Documentation\n\n${DOCS}\n\n"
+          fi
+
+          if [ -n "$CHORES" ]; then
+            NEW_ENTRY="${NEW_ENTRY}### 🔧 Maintenance\n\n${CHORES}\n\n"
+          fi
+
+          # Insert new entry after header
+          awk -v new_entry="$NEW_ENTRY" '
+            /^All notable changes/ { print; print ""; print new_entry; next }
+            { print }
+          ' CHANGELOG.md > CHANGELOG.tmp
+
+          mv CHANGELOG.tmp CHANGELOG.md
+
+          echo "Changelog updated for ${TAG}"
+
+      - name: Commit Changelog
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email github-actions[bot]@users.noreply.github.com
+          git add CHANGELOG.md
+          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: update changelog for ${{ github.event.release.tag_name || inputs.version }} [skip ci]" && git push)
