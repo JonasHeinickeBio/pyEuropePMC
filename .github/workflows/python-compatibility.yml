@@ -224,7 +224,7 @@ jobs:
             venv-syntax-${{ runner.os }}-${{ matrix.python-version }}-
 
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
         run: poetry install --no-interaction --no-ansi --only main
 
@@ -590,7 +590,7 @@ jobs:
           key: venv-integration-${{ runner.os }}-3.12-${{ hashFiles('**/poetry.lock') }}
 
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
         run: poetry install --with dev --no-interaction --no-ansi
 
