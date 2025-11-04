@@ -226,7 +226,7 @@ jobs:
       - name: Install dependencies
         #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
-        run: poetry install --no-interaction --no-ansi --only main
+        run: poetry install --with dev --no-interaction --no-ansi
 
       - name: Test syntax and imports for all modules
         run: |
