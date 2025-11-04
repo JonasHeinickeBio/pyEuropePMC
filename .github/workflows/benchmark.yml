@@ -40,19 +40,8 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Cache virtualenv (Poetry)
-        id: cache-venv
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-bench-${{ runner.os }}-py-3.10-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-bench-${{ runner.os }}-py-3.10-
-
       - name: Install dependencies
-        if: steps.cache-venv.outputs.cache-hit != 'true'
-        run: |
-          poetry install --with dev --no-interaction --no-ansi
+        run: poetry install --with dev --no-interaction --no-ansi
 
       - name: Run modular benchmark test
         run: |

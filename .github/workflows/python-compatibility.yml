@@ -214,17 +214,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-syntax-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-syntax-${{ runner.os }}-${{ matrix.python-version }}-
-
       - name: Install dependencies
-        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
         run: poetry install --with dev --no-interaction --no-ansi
 
@@ -350,18 +340,8 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        if: steps.platform-check.outputs.skip != 'true'
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-core-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-core-${{ runner.os }}-${{ matrix.python-version }}-
-
       - name: Install dependencies
-        if: steps.platform-check.outputs.skip != 'true' && steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        if: steps.platform-check.outputs.skip != 'true'
         shell: bash
         run: poetry install --with dev --no-interaction --no-ansi
 
@@ -497,17 +477,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-full-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-full-${{ runner.os }}-${{ matrix.python-version }}-
-
       - name: Install dependencies
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
         run: poetry install --with dev --no-interaction --no-ansi
 
@@ -582,15 +552,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-integration-${{ runner.os }}-3.12-${{ hashFiles('**/poetry.lock') }}
-
       - name: Install dependencies
-        #if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
         run: poetry install --with dev --no-interaction --no-ansi
 
@@ -676,15 +638,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Load cached venv
-        id: cached-poetry-dependencies
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-performance-${{ runner.os }}-3.12-${{ hashFiles('**/poetry.lock') }}
-
       - name: Install dependencies with benchmarking tools
-        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         shell: bash
         run: |
           poetry install --with dev --no-interaction --no-ansi

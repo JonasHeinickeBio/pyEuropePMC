@@ -38,21 +38,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Configure Poetry (ensure in-project venv)
-        run: |
-          poetry config virtualenvs.in-project true
-
-      - name: Cache Poetry venv
-        id: cache-poetry
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-integration-${{ runner.os }}-py-3.10-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-integration-${{ runner.os }}-py-3.10-
-
-      - name: Install all dependencies (including dev)
-        if: steps.cache-poetry.outputs.cache-hit != 'true'
+      - name: Install dependencies
         run: poetry install --with dev --no-interaction --no-ansi
 
       - name: Run integration tests
@@ -84,17 +70,7 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
 
-      - name: Cache Poetry venv
-        id: cache-poetry-e2e
-        uses: actions/cache@v4
-        with:
-          path: .venv
-          key: venv-e2e-${{ runner.os }}-py-3.10-${{ hashFiles('**/poetry.lock') }}
-          restore-keys: |
-            venv-e2e-${{ runner.os }}-py-3.10-
-
-      - name: Install all dependencies (including dev)
-        if: steps.cache-poetry-e2e.outputs.cache-hit != 'true'
+      - name: Install dependencies
         run: poetry install --with dev --no-interaction --no-ansi
       - name: Run integration tests
         run: poetry run pytest -q -m integration
