@@ -2,10 +2,6 @@
 
 import json
 from pathlib import Path
-from unittest.mock import MagicMock, patch
-
-import pytest
-
 
 # Import the functions we want to test
 # We need to add scripts to the path
@@ -34,9 +30,7 @@ class TestIsDuplicate:
 
     def test_substring_match(self):
         """Test that substring is detected as duplicate."""
-        existing = [
-            {"title": "Fix memory leak in parser module", "number": 1, "labels": []}
-        ]
+        existing = [{"title": "Fix memory leak in parser module", "number": 1, "labels": []}]
         assert is_duplicate("Fix memory leak", existing) is True
 
     def test_no_match(self):
