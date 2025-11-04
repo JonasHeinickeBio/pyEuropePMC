@@ -43,9 +43,9 @@ jobs:
           restore-keys: |
             venv-unit-${{ runner.os }}-py-3.10-
 
-      - name: Install deps (no dev)
+      - name: Install deps (with dev for testing)
         if: steps.cache-poetry.outputs.cache-hit != 'true'
-        run: poetry install --no-interaction --no-ansi
+        run: poetry install --with dev --no-interaction --no-ansi
 
       - name: Run unit tests (exclude integration/e2e)
         run: poetry run pytest -q -m "not integration and not e2e"
