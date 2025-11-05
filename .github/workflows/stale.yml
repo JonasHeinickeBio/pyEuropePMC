@@ -1,0 +1,77 @@
+name: "Manage Stale Issues and PRs"
+
+on:
+  schedule:
+    # Run daily at 02:30 UTC
+    - cron: '30 2 * * *'
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  pull-requests: write
+
+jobs:
+  stale:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+
+          # Issues configuration
+          stale-issue-message: |
+            👋 This issue has been automatically marked as stale because it has not had recent activity.
+
+            It will be closed in **7 days** if no further activity occurs.
+
+            If this issue is still relevant, please:
+            - Add a comment with updates
+            - Remove the `stale` label
+
+            Thank you for your contributions to PyEuropePMC! 🙏
+
+          close-issue-message: |
+            🔒 This issue was automatically closed due to inactivity.
+
+            If you believe this issue is still relevant, please feel free to reopen it with updated information.
+
+            Thank you for your understanding!
+
+          days-before-issue-stale: 60
+          days-before-issue-close: 7
+          stale-issue-label: 'stale'
+          close-issue-label: 'closed-due-to-inactivity'
+          exempt-issue-labels: 'pinned,security,critical,enhancement,good-first-issue,help-wanted'
+
+          # Pull Request configuration
+          stale-pr-message: |
+            👋 This PR has been automatically marked as stale because it has not had recent activity.
+
+            It will be closed in **14 days** if no further activity occurs.
+
+            If you're still working on this PR, please:
+            - Push new commits
+            - Add a comment with an update
+            - Remove the `stale` label
+
+            Thank you for your contribution! 🙌
+
+          close-pr-message: |
+            🔒 This PR was automatically closed due to inactivity.
+
+            If you'd like to continue this work, please feel free to reopen it or create a new PR.
+
+            We appreciate your contribution!
+
+          days-before-pr-stale: 30
+          days-before-pr-close: 14
+          stale-pr-label: 'stale'
+          close-pr-label: 'closed-due-to-inactivity'
+          exempt-pr-labels: 'pinned,security,work-in-progress,blocked'
+
+          # Operations per run (to avoid API rate limits)
+          operations-per-run: 100
+
+          # Don't mark as stale if there are any comments
+          exempt-all-pr-assignees: true
+          exempt-all-issue-assignees: true

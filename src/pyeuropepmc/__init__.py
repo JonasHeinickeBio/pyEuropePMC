@@ -22,6 +22,7 @@ from .base import APIClientError, BaseAPIClient
 from .filters import filter_pmc_papers, filter_pmc_papers_or
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
+from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .parser import EuropePMCParser
 from .search import EuropePMCError, SearchClient
 
@@ -41,8 +42,12 @@ __all__ = [
     "FullTextClient",
     "FTPDownloader",
     "EuropePMCParser",
+    "FullTextXMLParser",
     "BaseAPIClient",
     "ProgressInfo",
+    # Parser configuration classes
+    "ElementPatterns",
+    "DocumentSchema",
     # Exceptions
     "EuropePMCError",
     "FullTextError",

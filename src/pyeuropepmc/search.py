@@ -170,13 +170,14 @@ class SearchClient(BaseAPIClient):
         self, endpoint: str, params: dict[str, Any], method: str
     ) -> requests.Response:
         """Make the actual HTTP request."""
+        response: requests.Response
         if method.upper() == "POST":
             headers = {"Content-Type": "application/x-www-form-urlencoded"}
             response = self._post(endpoint, data=params, headers=headers)
         else:
             response = self._get(endpoint, params)
 
-        if not response:
+        if not isinstance(response, requests.Response):
             context = {"method": method.upper(), "endpoint": endpoint}
             raise SearchError(ErrorCodes.NET002, context)
         return response
@@ -425,22 +426,6 @@ class SearchClient(BaseAPIClient):
     ) -> list[dict[str, Any]]:
         """
         Fetch all results for a query, handling pagination automatically.
-
-        Parameters
-        ----------
-        query : str
-            The search query.
-        page_size : int, optional
-            Number of results per page (default 100, max 1000).
-        max_results : int, optional
-            Maximum number of results to fetch. If None, fetch all available.
-        **kwargs
-            Additional parameters for the search.
-
-        Returns
-        -------
-        List[Dict[str, Any]]
-            List of result records.
         """
         # Validate inputs
         page_size = max(1, min(page_size, 1000))
@@ -467,27 +452,23 @@ class SearchClient(BaseAPIClient):
             except EuropePMCError:
                 break
 
-            # Validate response and extract results
-            if not self._is_valid_page_response(data):
-                break
-
-            page_results = data["resultList"]["result"]  # type: ignore
+            # Validate response and extract results using helper
+            page_results, next_cursor = self._extract_page_results(data)
             if not page_results:
                 break
 
             # Add results and check for completion
-            results.extend(page_results)  # type: ignore
+            results.extend(page_results)
 
-            # Check if we have more pages
-            next_cursor = data.get("nextCursorMark")  # type: ignore
-            has_more_pages = (
-                next_cursor
-                and next_cursor != cursor_mark
-                and len(page_results) >= current_page_size
-            )
-            if not has_more_pages:
+            # Stop if next cursor is missing, unchanged, or page wasn't full
+            if (
+                not next_cursor
+                or next_cursor == cursor_mark
+                or len(page_results) < current_page_size
+            ):
                 break
-            cursor_mark = str(next_cursor)
+
+            cursor_mark = next_cursor
 
         # Trim results if needed
         if max_results is not None and len(results) > max_results:
@@ -495,14 +476,44 @@ class SearchClient(BaseAPIClient):
 
         return results
 
+    def _extract_page_results(self, data: Any) -> tuple[list[dict[str, Any]], str | None]:
+        """Validate a single page response and extract the result list and next cursor.
+
+        Returns (page_results, next_cursor) where page_results is empty on invalid response.
+        """
+        # Use existing lightweight validator first
+        if not self._is_valid_page_response(data):
+            return [], None
+
+        # At this point data is a dict and resultList key exists
+        result_list = data.get("resultList")
+        if not isinstance(result_list, dict):
+            return [], None
+
+        page_results = result_list.get("result")
+        if not isinstance(page_results, list) or not page_results:
+            return [], None
+
+        next_cursor = data.get("nextCursorMark")
+        if not isinstance(next_cursor, str):
+            next_cursor = None
+
+        return page_results, next_cursor
+
     def _is_valid_page_response(self, data: Any) -> bool:
-        """Check if the response is valid for pagination."""
-        return (
-            isinstance(data, dict)
-            and data.get("hitCount", 0) > 0
-            and isinstance(data.get("resultList"), dict)
-            and "result" in data["resultList"]
-        )
+        """
+        Lightweight validation that data is a paged JSON response we can extract results from.
+        Returns True for a dict containing a 'resultList' dict with a 'result' list.
+        """
+        if not isinstance(data, dict):
+            return False
+
+        result_list = data.get("resultList")
+        if not isinstance(result_list, dict):
+            return False
+
+        results = result_list.get("result")
+        return isinstance(results, list)
 
     def interactive_search(self, query: str, **kwargs: Any) -> list[dict[str, Any]]:
         """
@@ -893,7 +904,6 @@ class SearchClient(BaseAPIClient):
         --------
         >>> # Clear all search caches
         >>> client.invalidate_search_cache("search:*")
-
         >>> # Clear specific query caches
         >>> client.invalidate_search_cache("search:*cancer*")
         """

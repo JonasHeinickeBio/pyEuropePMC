@@ -101,8 +101,9 @@ class TestSearchClientCoverage:
 
     def test_make_request_with_valid_formats(self):
         """Test _make_request with all valid formats."""
-        mock_response = Mock()
+        mock_response = Mock(spec=requests.Response)
         mock_response.text = '{"hitCount": 0, "resultList": {"result": []}}'
+        mock_response.status_code = 200
 
         valid_formats = ["json", "xml", "dc", "lite", "idlist"]
 
