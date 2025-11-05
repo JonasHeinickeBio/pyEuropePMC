@@ -1,15 +1,15 @@
 """Tests for the create_suggestions.py script."""
 
 import json
+import sys
 from pathlib import Path
 
-# Import the functions we want to test
-# We need to add scripts to the path
-import sys
+# Add project root to path to enable scripts import
+project_root = Path(__file__).parent.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
-sys.path.insert(0, str(Path(__file__).parent.parent.parent / "scripts"))
-
-from create_suggestions import is_duplicate, parse_suggestions
+from scripts.create_suggestions import is_duplicate, parse_suggestions
 
 
 class TestIsDuplicate:
