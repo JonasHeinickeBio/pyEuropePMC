@@ -59,7 +59,7 @@ types-requests = "^2.31.0"
 pytest-benchmark = "^5.1.0"
 coverage = "^7.9.1"
 bandit = "^1.8.5"
-ruff = "^0.12.1"
+ruff = "^0.14.3"
 typing-extensions = "^4.14.0"
 
 
