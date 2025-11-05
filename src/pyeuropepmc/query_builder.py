@@ -47,6 +47,10 @@ from pyeuropepmc.exceptions import QueryBuilderError
 
 __all__ = ["QueryBuilder", "QueryBuilderError"]
 
+# Constants
+MIN_VALID_YEAR = 1000  # Minimum valid publication year
+SPECIAL_QUERY_CHARS = [" ", ":", "(", ")", "[", "]", "{", "}", "AND", "OR", "NOT"]
+
 
 # Europe PMC searchable fields
 FieldType = Literal[
@@ -326,10 +330,10 @@ class QueryBuilder:
         """Add date range using year integers."""
         # Validate years
         current_year = datetime.now().year
-        if start_year and (start_year < 1000 or start_year > current_year + 1):
+        if start_year and (start_year < MIN_VALID_YEAR or start_year > current_year + 1):
             context = {"start_year": start_year}
             raise QueryBuilderError(ErrorCodes.QUERY002, context)
-        if end_year and (end_year < 1000 or end_year > current_year + 1):
+        if end_year and (end_year < MIN_VALID_YEAR or end_year > current_year + 1):
             context = {"end_year": end_year}
             raise QueryBuilderError(ErrorCodes.QUERY002, context)
         if start_year and end_year and start_year > end_year:
@@ -780,9 +784,7 @@ class QueryBuilder:
         term = term.strip()
 
         # If term contains spaces or special chars, wrap in quotes
-        special_chars = [" ", ":", "(", ")", "[", "]", "{", "}", "AND", "OR", "NOT"]
-
-        if any(char in term for char in special_chars):
+        if any(char in term for char in SPECIAL_QUERY_CHARS):
             # Escape internal quotes
             term = term.replace('"', '\\"')
             return f'"{term}"'

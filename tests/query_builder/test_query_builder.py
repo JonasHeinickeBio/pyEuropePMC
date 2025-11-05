@@ -487,7 +487,7 @@ class TestValidation:
     """Test query validation functionality."""
 
     def test_validation_disabled_by_default_if_no_package(self) -> None:
-        """Test that validation works when package is available."""
+        """Test that validation can be disabled even if package is available."""
         # This test will work whether or not search-query is installed
         qb = QueryBuilder(validate=True)
         # Should not raise even if search-query is not available
