@@ -1,0 +1,315 @@
+name: Feature Suggester
+
+on:
+  schedule:
+    - cron: "0 3 * * 1"  # Every Monday at 3 AM UTC
+  workflow_dispatch:      # Manual trigger option
+
+permissions:
+  contents: read
+  issues: write
+  models: read  # For GitHub AI inference action
+
+jobs:
+  analyze-and-suggest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Get full history for better analysis
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Poetry and dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install poetry
+          poetry install --no-interaction --no-ansi
+
+      - name: Install additional analysis tools
+        run: |
+          # Install scc for code counting
+          curl -L https://github.com/boyter/scc/releases/download/v3.1.0/scc_Linux_x86_64.tar.gz | tar xz
+          chmod +x scc
+          sudo mv scc /usr/local/bin/
+
+      - name: Run repository analysis
+        id: analysis
+        run: |
+          echo "=== Running Repository Analysis ===" | tee analysis.log
+
+          # Create output directory
+          mkdir -p analysis_output
+
+          # 1. Run linters and save results
+          echo "Running Ruff linter..." | tee -a analysis.log
+          poetry run ruff check src/ --output-format json > analysis_output/ruff_results.json 2>&1 || true
+          poetry run ruff check src/ > analysis_output/ruff_results.txt 2>&1 || true
+
+          # 2. Run Bandit security checks
+          echo "Running Bandit security checks..." | tee -a analysis.log
+          poetry run bandit -r ./src -f json -o analysis_output/bandit_results.json 2>&1 || true
+          poetry run bandit -r ./src > analysis_output/bandit_results.txt 2>&1 || true
+
+          # 3. Run mypy type checking
+          echo "Running mypy type checking..." | tee -a analysis.log
+          poetry run mypy src/ --json-report analysis_output/mypy_report 2>&1 || true
+          poetry run mypy src/ > analysis_output/mypy_results.txt 2>&1 || true
+
+          # 4. Generate test coverage report
+          echo "Generating test coverage..." | tee -a analysis.log
+          poetry run pytest --cov=src/pyeuropepmc --cov-report=json:analysis_output/coverage.json --cov-report=term > analysis_output/test_results.txt 2>&1 || true
+
+          # 5. Code structure analysis
+          echo "Analyzing code structure..." | tee -a analysis.log
+          scc --format json --output analysis_output/scc_results.json src/ || true
+          scc --output analysis_output/scc_results.txt src/ || true
+
+          # 6. Count TODO/FIXME comments
+          echo "Counting TODO/FIXME comments..." | tee -a analysis.log
+          grep -r "TODO\|FIXME\|XXX\|HACK" src/ > analysis_output/todos.txt 2>&1 || echo "No TODOs found" > analysis_output/todos.txt
+
+          # 7. List test files
+          echo "Listing test files..." | tee -a analysis.log
+          find tests -name "*.py" -type f > analysis_output/test_files.txt
+
+          # 8. Git statistics
+          echo "Gathering git statistics..." | tee -a analysis.log
+          git log --pretty=format:"%H|%an|%ae|%ad|%s" --date=iso --since="3 months ago" > analysis_output/recent_commits.txt || true
+
+          echo "Analysis complete!" | tee -a analysis.log
+
+      - name: Consolidate analysis results
+        id: consolidate
+        run: |
+          python3 << 'PYTHON_SCRIPT'
+          import json
+          import os
+          from pathlib import Path
+
+          # Read all analysis files
+          analysis_dir = Path("analysis_output")
+
+          # Build consolidated summary
+          summary = {
+              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+              "repository": "${{ github.repository }}",
+              "branch": "${{ github.ref_name }}",
+              "commit": "${{ github.sha }}",
+              "analysis": {}
+          }
+
+          # Load JSON results
+          json_files = [
+              "ruff_results.json",
+              "bandit_results.json",
+              "coverage.json",
+              "scc_results.json",
+              "existing_issues.json"
+          ]
+
+          for json_file in json_files:
+              file_path = analysis_dir / json_file
+              if file_path.exists():
+                  try:
+                      with open(file_path) as f:
+                          data = json.load(f)
+                      key = json_file.replace("_results.json", "").replace(".json", "")
+                      summary["analysis"][key] = data
+                  except json.JSONDecodeError:
+                      print(f"Warning: Could not parse {json_file}")
+
+          # Add text summaries
+          text_files = {
+              "ruff_summary": "ruff_results.txt",
+              "bandit_summary": "bandit_results.txt",
+              "mypy_summary": "mypy_results.txt",
+              "test_summary": "test_results.txt",
+              "scc_summary": "scc_results.txt",
+              "todos": "todos.txt",
+              "readme": "readme.txt",
+              "existing_issues": "existing_issues.txt"
+          }
+
+          for key, txt_file in text_files.items():
+              file_path = analysis_dir / txt_file
+              if file_path.exists():
+                  try:
+                      with open(file_path) as f:
+                          content = f.read()
+                      # Limit text length to avoid huge payloads
+                      summary["analysis"][key] = content[:5000] if len(content) > 5000 else content
+                  except Exception as e:
+                      print(f"Warning: Could not read {txt_file}: {e}")
+
+          # Count test files
+          test_files_path = analysis_dir / "test_files.txt"
+          if test_files_path.exists():
+              with open(test_files_path) as f:
+                  test_count = len(f.readlines())
+              summary["analysis"]["test_file_count"] = test_count
+
+          # Save consolidated summary
+          with open("analysis_summary.json", "w") as f:
+              json.dump(summary, f, indent=2)
+
+          print("Consolidated analysis summary created!")
+          PYTHON_SCRIPT
+
+      - name: Fetch README and existing issues
+        id: fetch_context
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          echo "=== Fetching Project Context ===" | tee -a analysis.log
+
+          # Read README
+          echo "Reading README..." | tee -a analysis.log
+          if [ -f README.md ]; then
+            cat README.md > analysis_output/readme.txt
+          else
+            echo "README not found" > analysis_output/readme.txt
+          fi
+
+          # Fetch existing open issues
+          echo "Fetching existing GitHub issues..." | tee -a analysis.log
+          gh issue list --state open --limit 100 --json number,title,body,labels,createdAt,updatedAt > analysis_output/existing_issues.json || echo '{"error": "Could not fetch issues"}' > analysis_output/existing_issues.json
+
+          # Create human-readable version of issues
+          gh issue list --state open --limit 100 > analysis_output/existing_issues.txt || echo "Could not fetch issues" > analysis_output/existing_issues.txt
+
+          echo "Project context fetched successfully!" | tee -a analysis.log
+
+      - name: Prepare LLM prompt
+        id: prepare_prompt
+        run: |
+          # Read the analysis summary
+          ANALYSIS_CONTENT=$(cat analysis_summary.json)
+
+          # Read README
+          README_CONTENT=$(cat analysis_output/readme.txt)
+
+          # Read existing issues
+          ISSUES_CONTENT=$(cat analysis_output/existing_issues.json)
+
+          # Create a structured prompt file
+          cat > llm_prompt.txt << 'PROMPT_EOF'
+          You are an expert code quality analyst for a Python bioinformatics project called pyEuropePMC.
+
+          Analyze the following repository analysis data and suggest concrete, actionable improvements.
+          Focus on:
+          1. Missing test coverage for important modules
+          2. Security vulnerabilities or issues found by linters
+          3. Code quality improvements (complexity, type safety, documentation)
+          4. Missing features that would benefit users
+          5. Technical debt or refactoring opportunities
+
+          IMPORTANT: Review the existing GitHub issues below to AVOID creating duplicate suggestions.
+          Only suggest new issues that are NOT already covered by existing issues.
+
+          Return your suggestions ONLY as valid JSON (no markdown, no code fences) in this exact format:
+          {
+            "suggestions": [
+              {
+                "title": "Brief, specific title",
+                "body": "Detailed description with context and rationale. Include specific file names and line numbers if available.",
+                "labels": ["suggestion", "additional-label"]
+              }
+            ]
+          }
+
+          Rules:
+          - Suggest 1-5 high-priority improvements
+          - Be specific: mention file names, functions, or modules
+          - Prioritize actionable items over general advice
+          - Each suggestion should be a separate, independent issue
+          - Use appropriate labels: enhancement, bug, security, documentation, testing, refactoring, performance
+          - DO NOT duplicate existing issues - check the existing issues list below first
+          - Align suggestions with the project goals described in the README
+
+          ===== PROJECT README =====
+          PROMPT_EOF
+
+          echo "$README_CONTENT" >> llm_prompt.txt
+
+          cat >> llm_prompt.txt << 'PROMPT_EOF'
+
+          ===== EXISTING OPEN ISSUES =====
+          PROMPT_EOF
+
+          echo "$ISSUES_CONTENT" >> llm_prompt.txt
+
+          cat >> llm_prompt.txt << 'PROMPT_EOF'
+
+          ===== REPOSITORY ANALYSIS DATA =====
+          PROMPT_EOF
+
+          echo "$ANALYSIS_CONTENT" >> llm_prompt.txt
+
+      - name: Run AI inference for suggestions
+        id: inference
+        uses: actions/ai-inference@v1
+        with:
+          prompt: ${{ steps.prepare_prompt.outputs.prompt || '' }}
+          prompt-file: llm_prompt.txt
+          max-tokens: 4000
+
+      - name: Save LLM response
+        run: |
+          # Save the AI response to a file
+          cat > suggestion_output.json << 'LLM_JSON'
+          ${{ steps.inference.outputs.response }}
+          LLM_JSON
+
+          echo "LLM response saved to suggestion_output.json"
+          cat suggestion_output.json
+
+      - name: Validate and create issues
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Make script executable
+          chmod +x scripts/create_suggestions.py
+
+          # Validate JSON first
+          if ! jq empty suggestion_output.json 2>/dev/null; then
+            echo "Error: LLM response is not valid JSON"
+            echo "Response content:"
+            cat suggestion_output.json
+            exit 1
+          fi
+
+          # Run the issue creation script
+          python3 scripts/create_suggestions.py
+
+      - name: Upload analysis artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: feature-suggester-analysis-${{ github.run_id }}
+          path: |
+            analysis_summary.json
+            suggestion_output.json
+            action.log
+            analysis_output/
+            llm_prompt.txt
+          retention-days: 30
+
+      - name: Comment on workflow run
+        if: always()
+        run: |
+          if [ -f action.log ]; then
+            echo "## Feature Suggester Run Summary" >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "### Results" >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            tail -20 action.log >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "Full logs available in artifacts." >> $GITHUB_STEP_SUMMARY
+          fi
