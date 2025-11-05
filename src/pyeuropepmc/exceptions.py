@@ -268,5 +268,30 @@ class ConfigurationError(PyEuropePMCError):
         self.config_section = config_section
 
 
+class QueryBuilderError(PyEuropePMCError):
+    """
+    Exception raised for query builder errors.
+
+    This exception covers query construction errors, validation failures,
+    and invalid query syntax issues.
+    """
+
+    def __init__(
+        self,
+        error_code: ErrorCodes | None = None,
+        context: dict[str, Any] | None = None,
+        message: str | None = None,
+        query_part: str | None = None,
+    ) -> None:
+        # Add query builder specific context
+        if context is None:
+            context = {}
+        if query_part:
+            context["query_part"] = query_part
+
+        super().__init__(error_code, context, message)
+        self.query_part = query_part
+
+
 # Convenience aliases for backward compatibility
 EuropePMCError = SearchError  # Legacy alias

@@ -24,6 +24,7 @@ from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .parser import EuropePMCParser
+from .query_builder import QueryBuilder
 from .search import EuropePMCError, SearchClient
 
 # Convenience imports for common usage patterns
@@ -45,6 +46,7 @@ __all__ = [
     "FullTextXMLParser",
     "BaseAPIClient",
     "ProgressInfo",
+    "QueryBuilder",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",
