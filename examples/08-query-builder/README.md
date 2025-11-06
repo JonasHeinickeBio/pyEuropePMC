@@ -129,25 +129,25 @@ query = qb.date_range(
 
 ```python
 # Author search
-query = qb.author("Smith J").build()
+query = qb.field("author", "Smith J").build()
 
 # Journal search
-query = qb.journal("Nature").build()
+query = qb.field("journal", "Nature").build()
 
 # MeSH term search
-query = qb.mesh_term("Neoplasms").build()
+query = qb.field("mesh", "Neoplasms").build()
 
 # Citation count filter
 query = qb.citation_count(min_count=10, max_count=100).build()
 
 # Open access filter
-query = qb.open_access(True).build()
+query = qb.field("open_access", True).build()
 
 # PDF availability
-query = qb.has_pdf(True).build()
+query = qb.field("has_pdf", True).build()
 
 # Full text availability
-query = qb.has_full_text(True).build()
+query = qb.field("has_text", True).build()
 ```
 
 ### Identifier Searches
@@ -157,10 +157,10 @@ query = qb.has_full_text(True).build()
 query = qb.pmcid("PMC1234567").build()
 
 # PubMed ID
-query = qb.pmid("12345678").build()
+query = qb.field("pmid", "12345678").build()
 
 # DOI
-query = qb.doi("10.1234/example.2023.001").build()
+query = qb.field("doi", "10.1234/example.2023.001").build()
 ```
 
 ### Query Grouping
@@ -176,7 +176,7 @@ disease_terms = (QueryBuilder(validate=False)
 query = (QueryBuilder(validate=False)
     .group(disease_terms)
     .and_()
-    .author("Smith J")
+    .field("author", "Smith J")
     .build())
 # Result: "(cancer OR tumor) AND \"Smith J\":AUTH"
 ```
@@ -201,7 +201,7 @@ query = (qb
     .and_()
     .date_range(start_year=2020)
     .and_()
-    .open_access(True)
+    .field("open_access", True)
     .and_()
     .citation_count(min_count=10)
     .build())
@@ -215,9 +215,9 @@ with SearchClient() as client:
 
 ```python
 query = (QueryBuilder(validate=False)
-    .author("Smith J")
+    .field("author", "Smith J")
     .and_()
-    .journal("Nature")
+    .field("journal", "Nature")
     .and_()
     .keyword("CRISPR", field="title")
     .build())
@@ -227,13 +227,13 @@ query = (QueryBuilder(validate=False)
 
 ```python
 query = (QueryBuilder(validate=False)
-    .mesh_term("Neoplasms")
+    .field("mesh", "Neoplasms")
     .and_()
-    .mesh_term("Drug Therapy")
+    .field("mesh", "Drug Therapy")
     .and_()
     .date_range(start_year=2018, end_year=2023)
     .and_()
-    .has_full_text(True)
+    .field("has_text", True)
     .build())
 ```
 
@@ -246,7 +246,7 @@ When the `search-query` package is installed, queries can be validated:
 qb = QueryBuilder(validate=True)
 
 try:
-    query = qb.keyword("cancer").and_().author("Smith J").build()
+    query = qb.keyword("cancer").and_().field("author", "Smith J").build()
 except QueryBuilderError as e:
     print(f"Query validation failed: {e}")
 ```

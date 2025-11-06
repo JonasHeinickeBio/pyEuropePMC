@@ -57,44 +57,44 @@ class TestQueryBuilderBasics:
         assert "cancer" in repr_str
 
 
-class TestFieldSpecificHelpers:
+class TestFieldMethod:
     """Test field-specific query helper methods."""
 
-    def test_author_search(self) -> None:
-        """Test author search helper."""
+    def test_field_author(self) -> None:
+        """Test field() with author."""
         qb = QueryBuilder(validate=False)
-        query = qb.author("Smith J").build()
+        query = qb.field("author", "Smith J").build()
         assert 'AUTH:"Smith J"' in query or "AUTH:Smith J" in query
 
-    def test_journal_search(self) -> None:
-        """Test journal search helper."""
+    def test_field_journal(self) -> None:
+        """Test field() with journal."""
         qb = QueryBuilder(validate=False)
-        query = qb.journal("Nature").build()
+        query = qb.field("journal", "Nature").build()
         assert query == "JOURNAL:Nature"
 
-    def test_mesh_term_search(self) -> None:
-        """Test MeSH term search helper."""
+    def test_field_mesh(self) -> None:
+        """Test field() with mesh."""
         qb = QueryBuilder(validate=False)
-        query = qb.mesh_term("Neoplasms").build()
+        query = qb.field("mesh", "Neoplasms").build()
         assert query == "MESH:Neoplasms"
 
-    def test_empty_author_raises_error(self) -> None:
+    def test_field_empty_author_raises_error(self) -> None:
         """Test that empty author raises an error."""
         qb = QueryBuilder(validate=False)
         with pytest.raises(QueryBuilderError):
-            qb.author("")
+            qb.field("author", "")
 
-    def test_empty_journal_raises_error(self) -> None:
+    def test_field_empty_journal_raises_error(self) -> None:
         """Test that empty journal raises an error."""
         qb = QueryBuilder(validate=False)
         with pytest.raises(QueryBuilderError):
-            qb.journal("")
+            qb.field("journal", "")
 
-    def test_empty_mesh_raises_error(self) -> None:
+    def test_field_empty_mesh_raises_error(self) -> None:
         """Test that empty MeSH term raises an error."""
         qb = QueryBuilder(validate=False)
         with pytest.raises(QueryBuilderError):
-            qb.mesh_term("")
+            qb.field("mesh", "")
 
 
 class TestDateRangeFilters:
@@ -110,13 +110,15 @@ class TestDateRangeFilters:
         """Test date range with only start year."""
         qb = QueryBuilder(validate=False)
         query = qb.date_range(start_year=2020).build()
-        assert "PUB_YEAR:[2020 TO *]" in query
+        # Uses current year (2025) instead of * for open-ended ranges
+        assert "PUB_YEAR:[2020 TO 2025]" in query
 
     def test_date_range_end_year_only(self) -> None:
         """Test date range with only end year."""
         qb = QueryBuilder(validate=False)
         query = qb.date_range(end_year=2023).build()
-        assert "PUB_YEAR:[* TO 2023]" in query
+        # Uses MIN_VALID_YEAR (1000) instead of * for start
+        assert "PUB_YEAR:[1000 TO 2023]" in query
 
     def test_date_range_with_dates(self) -> None:
         """Test date range with specific dates."""
@@ -189,25 +191,25 @@ class TestBooleanFilters:
     def test_open_access_true(self) -> None:
         """Test open access filter set to true."""
         qb = QueryBuilder(validate=False)
-        query = qb.open_access(True).build()
+        query = qb.field("open_access", True).build()
         assert query == "OPEN_ACCESS:y"
 
     def test_open_access_false(self) -> None:
         """Test open access filter set to false."""
         qb = QueryBuilder(validate=False)
-        query = qb.open_access(False).build()
+        query = qb.field("open_access", False).build()
         assert query == "OPEN_ACCESS:n"
 
     def test_has_pdf(self) -> None:
         """Test has PDF filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.has_pdf(True).build()
+        query = qb.field("has_pdf", True).build()
         assert query == "HAS_PDF:y"
 
     def test_has_full_text(self) -> None:
         """Test has full text filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.has_full_text(True).build()
+        query = qb.field("has_text", True).build()
         assert query == "HAS_TEXT:y"
 
 
@@ -229,19 +231,19 @@ class TestIdentifierSearch:
     def test_pmid_string(self) -> None:
         """Test PMID search with string."""
         qb = QueryBuilder(validate=False)
-        query = qb.pmid("12345678").build()
+        query = qb.field("pmid", "12345678").build()
         assert query == "PMID:12345678"
 
     def test_pmid_int(self) -> None:
         """Test PMID search with integer."""
         qb = QueryBuilder(validate=False)
-        query = qb.pmid(12345678).build()
+        query = qb.field("pmid", 12345678).build()
         assert query == "PMID:12345678"
 
     def test_doi_search(self) -> None:
         """Test DOI search."""
         qb = QueryBuilder(validate=False)
-        query = qb.doi("10.1234/example.2023.001").build()
+        query = qb.field("doi", "10.1234/example.2023.001").build()
         assert query == "DOI:10.1234/example.2023.001"
 
     def test_empty_pmcid_raises_error(self) -> None:
@@ -254,7 +256,7 @@ class TestIdentifierSearch:
         """Test that empty DOI raises an error."""
         qb = QueryBuilder(validate=False)
         with pytest.raises(QueryBuilderError):
-            qb.doi("")
+            qb.field("doi", "")
 
 
 class TestLogicalOperators:
@@ -329,7 +331,7 @@ class TestGrouping:
         """Test grouping a sub-query."""
         sub = QueryBuilder(validate=False).keyword("cancer").or_().keyword("tumor")
         qb = QueryBuilder(validate=False)
-        query = qb.group(sub).and_().author("Smith J").build()
+        query = qb.group(sub).and_().field("author", "Smith J").build()
         assert "(" in query
         assert ")" in query
         assert "cancer OR tumor" in query
@@ -366,13 +368,13 @@ class TestMethodChaining:
         """Test building a complex query with method chaining."""
         qb = QueryBuilder(validate=False)
         query = (
-            qb.author("Smith J")
+            qb.field("author", "Smith J")
             .and_()
             .keyword("CRISPR", field="title")
             .and_()
             .date_range(start_year=2020, end_year=2023)
             .and_()
-            .open_access(True)
+            .field("open_access", True)
             .build()
         )
 
@@ -396,11 +398,11 @@ class TestMethodChaining:
         """Test mixing field helpers and operators."""
         qb = QueryBuilder(validate=False)
         query = (
-            qb.journal("Nature")
+            qb.field("journal", "Nature")
             .and_()
-            .mesh_term("Neoplasms")
+            .field("mesh", "Neoplasms")
             .or_()
-            .mesh_term("Carcinoma")
+            .field("mesh", "Carcinoma")
             .build()
         )
         assert "JOURNAL:Nature" in query
@@ -421,7 +423,7 @@ class TestRealWorldScenarios:
             .and_()
             .date_range(start_year=2020)
             .and_()
-            .open_access(True)
+            .field("open_access", True)
             .and_()
             .citation_count(min_count=5)
             .build()
@@ -436,9 +438,9 @@ class TestRealWorldScenarios:
         """Test searching for papers by multiple authors."""
         qb = QueryBuilder(validate=False)
         query = (
-            qb.author("Smith J")
+            qb.field("author", "Smith J")
             .or_()
-            .author("Doe Jane")
+            .field("author", "Doe Jane")
             .and_()
             .keyword("genetics")
             .build()
@@ -452,11 +454,11 @@ class TestRealWorldScenarios:
         """Test searching MeSH terms with additional filters."""
         qb = QueryBuilder(validate=False)
         query = (
-            qb.mesh_term("Neoplasms")
+            qb.field("mesh", "Neoplasms")
             .and_()
-            .mesh_term("Drug Therapy")
+            .field("mesh", "Drug Therapy")
             .and_()
-            .has_full_text(True)
+            .field("has_text", True)
             .build()
         )
 
@@ -468,7 +470,7 @@ class TestRealWorldScenarios:
         """Test searching specific journal within date range."""
         qb = QueryBuilder(validate=False)
         query = (
-            qb.journal("Nature")
+            qb.field("journal", "Nature")
             .and_()
             .date_range(start_year=2018, end_year=2023)
             .and_()
@@ -488,44 +490,44 @@ class TestExtendedFieldMethods:
     def test_ext_id_search(self) -> None:
         """Test external ID search."""
         qb = QueryBuilder(validate=False)
-        query = qb.ext_id("10826746").build()
+        query = qb.field("ext_id", "10826746").build()
         assert query == "EXT_ID:10826746"
 
     def test_issn_search(self) -> None:
         """Test ISSN search."""
         qb = QueryBuilder(validate=False)
-        query = qb.issn("0028-0836").build()
+        query = qb.field("issn", "0028-0836").build()
         assert query == "ISSN:0028-0836"
 
     def test_affiliation_search(self) -> None:
         """Test author affiliation search."""
         qb = QueryBuilder(validate=False)
-        query = qb.affiliation("university of cambridge").build()
+        query = qb.field("affiliation", "university of cambridge").build()
         assert "university of cambridge" in query
         assert "AFF" in query
 
     def test_grant_agency_search(self) -> None:
         """Test grant agency search."""
         qb = QueryBuilder(validate=False)
-        query = qb.grant_agency("wellcome").build()
+        query = qb.field("grant_agency", "wellcome").build()
         assert "GRANT_AGENCY:wellcome" in query
 
     def test_grant_id_search(self) -> None:
         """Test grant ID search."""
         qb = QueryBuilder(validate=False)
-        query = qb.grant_id("100229").build()
+        query = qb.field("grant_id", "100229").build()
         assert query == "GRANT_ID:100229"
 
     def test_pub_type_search(self) -> None:
         """Test publication type search."""
         qb = QueryBuilder(validate=False)
-        query = qb.pub_type("review").build()
+        query = qb.field("pub_type", "review").build()
         assert query == "PUB_TYPE:review"
 
     def test_language_search(self) -> None:
         """Test language search."""
         qb = QueryBuilder(validate=False)
-        query = qb.language("eng").build()
+        query = qb.field("language", "eng").build()
         assert query == "LANG:eng"
 
     def test_source_search(self) -> None:
@@ -537,32 +539,32 @@ class TestExtendedFieldMethods:
     def test_isbn_search(self) -> None:
         """Test ISBN search for books."""
         qb = QueryBuilder(validate=False)
-        query = qb.isbn("9780815340720").build()
+        query = qb.field("isbn", "9780815340720").build()
         assert query == "ISBN:9780815340720"
 
     def test_disease_search(self) -> None:
         """Test disease term search."""
         qb = QueryBuilder(validate=False)
-        query = qb.disease("cancer").build()
+        query = qb.field("disease", "cancer").build()
         assert query == "DISEASE:cancer"
 
     def test_gene_protein_search(self) -> None:
         """Test gene/protein search."""
         qb = QueryBuilder(validate=False)
-        query = qb.gene_protein("TP53").build()
+        query = qb.field("gene_protein", "TP53").build()
         assert query == "GENE_PROTEIN:TP53"
 
     def test_organism_search(self) -> None:
         """Test organism search."""
         qb = QueryBuilder(validate=False)
-        query = qb.organism("homo sapiens").build()
+        query = qb.field("organism", "homo sapiens").build()
         assert "homo sapiens" in query
         assert "ORGANISM" in query
 
     def test_accession_id_search(self) -> None:
         """Test accession ID search."""
         qb = QueryBuilder(validate=False)
-        query = qb.accession_id("A12360").build()
+        query = qb.field("accession_id", "A12360").build()
         assert query == "ACCESSION_ID:A12360"
 
     def test_accession_type_search(self) -> None:
@@ -580,46 +582,46 @@ class TestExtendedFieldMethods:
     def test_has_abstract_filter(self) -> None:
         """Test abstract presence filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.has_abstract(True).build()
+        query = qb.field("has_abstract", True).build()
         assert query == "HAS_ABSTRACT:y"
 
     def test_has_references_filter(self) -> None:
         """Test reference list presence filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.has_references(True).build()
+        query = qb.field("has_reflist", True).build()
         assert query == "HAS_REFLIST:y"
 
     def test_has_supplementary_filter(self) -> None:
         """Test supplementary data presence filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.has_supplementary(True).build()
+        query = qb.field("has_suppl", True).build()
         assert query == "HAS_SUPPL:y"
 
     def test_in_pmc_filter(self) -> None:
         """Test PMC availability filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.in_pmc(True).build()
+        query = qb.field("in_pmc", True).build()
         assert query == "IN_PMC:y"
 
     def test_in_epmc_filter(self) -> None:
         """Test Europe PMC availability filter."""
         qb = QueryBuilder(validate=False)
-        query = qb.in_epmc(True).build()
+        query = qb.field("in_epmc", True).build()
         assert query == "IN_EPMC:y"
 
     def test_complex_query_with_extended_fields(self) -> None:
         """Test complex query combining multiple extended fields."""
         qb = QueryBuilder(validate=False)
         query = (
-            qb.disease("cancer")
+            qb.field("disease", "cancer")
             .and_()
-            .gene_protein("TP53")
+            .field("gene_protein", "TP53")
             .and_()
-            .organism("homo sapiens")
+            .field("organism", "homo sapiens")
             .and_()
-            .open_access(True)
+            .field("open_access", True)
             .and_()
-            .has_pdf(True)
+            .field("has_pdf", True)
             .build()
         )
         assert "DISEASE:cancer" in query
@@ -634,19 +636,19 @@ class TestExtendedFieldMethods:
         qb = QueryBuilder(validate=False)
 
         with pytest.raises(QueryBuilderError):
-            qb.ext_id("")
+            qb.field("ext_id", "")
 
         with pytest.raises(QueryBuilderError):
-            qb.issn("")
+            qb.field("issn", "")
 
         with pytest.raises(QueryBuilderError):
-            qb.affiliation("")
+            qb.field("affiliation", "")
 
         with pytest.raises(QueryBuilderError):
-            qb.grant_agency("")
+            qb.field("grant_agency", "")
 
         with pytest.raises(QueryBuilderError):
-            qb.disease("")
+            qb.field("disease", "")
 
 
 # Integration test with search-query package (if available)

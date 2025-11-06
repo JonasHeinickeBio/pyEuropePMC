@@ -34,17 +34,17 @@ def example_field_specific_searches():
 
     # Author search
     qb = QueryBuilder(validate=False)
-    query = qb.author("Smith J").build()
+    query = qb.field("author", "Smith J").build()
     print(f"1. Author search: {query}")
 
     # Journal search
     qb = QueryBuilder(validate=False)
-    query = qb.journal("Nature").build()
+    query = qb.field("journal", "Nature").build()
     print(f"2. Journal search: {query}")
 
     # MeSH term search
     qb = QueryBuilder(validate=False)
-    query = qb.mesh_term("Neoplasms").build()
+    query = qb.field("mesh", "Neoplasms").build()
     print(f"3. MeSH term search: {query}\n")
 
 
@@ -111,17 +111,17 @@ def example_advanced_filters():
 
     # Open access filter
     qb = QueryBuilder(validate=False)
-    query = qb.open_access(True).build()
+    query = qb.field("open_access", True).build()
     print(f"2. Open access only: {query}")
 
     # Has PDF filter
     qb = QueryBuilder(validate=False)
-    query = qb.has_pdf(True).build()
+    query = qb.field("has_pdf", True).build()
     print(f"3. Has PDF: {query}")
 
     # Has full text filter
     qb = QueryBuilder(validate=False)
-    query = qb.has_full_text(True).build()
+    query = qb.field("has_text", True).build()
     print(f"4. Has full text: {query}\n")
 
 
@@ -136,12 +136,12 @@ def example_identifier_searches():
 
     # PubMed ID search
     qb = QueryBuilder(validate=False)
-    query = qb.pmid("12345678").build()
+    query = qb.field("pmid", "12345678").build()
     print(f"2. PubMed ID: {query}")
 
     # DOI search
     qb = QueryBuilder(validate=False)
-    query = qb.doi("10.1234/example.2023.001").build()
+    query = qb.field("doi", "10.1234/example.2023.001").build()
     print(f"3. DOI: {query}\n")
 
 
@@ -156,7 +156,7 @@ def example_complex_queries():
         .and_()
         .date_range(start_year=2020)
         .and_()
-        .open_access(True)
+        .field("open_access", True)
         .and_()
         .citation_count(min_count=10)
         .build()
@@ -166,9 +166,9 @@ def example_complex_queries():
     # Example 2: CRISPR papers by specific author in Nature
     qb = QueryBuilder(validate=False)
     query = (
-        qb.author("Smith J")
+        qb.field("author", "Smith J")
         .and_()
-        .journal("Nature")
+        .field("journal", "Nature")
         .and_()
         .keyword("CRISPR", field="title")
         .build()
@@ -178,13 +178,13 @@ def example_complex_queries():
     # Example 3: Multiple MeSH terms with filters
     qb = QueryBuilder(validate=False)
     query = (
-        qb.mesh_term("Neoplasms")
+        qb.field("mesh", "Neoplasms")
         .and_()
-        .mesh_term("Drug Therapy")
+        .field("mesh", "Drug Therapy")
         .and_()
         .date_range(start_year=2018, end_year=2023)
         .and_()
-        .has_full_text(True)
+        .field("has_text", True)
         .build()
     )
     print(f"3. Cancer drug therapy with full text (2018-2023):\n   {query}\n")
@@ -192,9 +192,9 @@ def example_complex_queries():
     # Example 4: Searching by multiple authors (OR logic)
     qb = QueryBuilder(validate=False)
     query = (
-        qb.author("Smith J")
+        qb.field("author", "Smith J")
         .or_()
-        .author("Doe Jane")
+        .field("author", "Doe Jane")
         .and_()
         .keyword("genetics")
         .and_()
@@ -216,7 +216,7 @@ def example_with_grouping():
     query = (
         qb.group(disease_terms)
         .and_()
-        .author("Smith J")
+        .field("author", "Smith J")
         .and_()
         .date_range(start_year=2020)
         .build()
@@ -235,7 +235,7 @@ def example_with_search_client():
         .and_()
         .date_range(start_year=2020, end_year=2023)
         .and_()
-        .open_access(True)
+        .field("open_access", True)
         .build()
     )
 

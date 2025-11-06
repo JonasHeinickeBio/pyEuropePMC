@@ -57,14 +57,15 @@ Section-Level Search:
 
 Example usage:
     >>> from pyeuropepmc import QueryBuilder
+    >>> # Use the generic field() method for field-specific searches
     >>> query = (QueryBuilder()
-    ...     .author("Smith J")
+    ...     .field("author", "Smith J")
     ...     .and_()
     ...     .keyword("cancer", field="title")
     ...     .and_()
     ...     .date_range(start_year=2020, end_year=2023)
     ...     .and_()
-    ...     .open_access(True)
+    ...     .field("open_access", True)
     ...     .build())
     >>> client.search(query)
 """
@@ -481,7 +482,7 @@ class QueryBuilder:
     Complex query with multiple conditions:
         >>> qb = QueryBuilder()
         >>> query = (qb
-        ...     .author("Smith J")
+        ...     .field("author", "Smith J")
         ...     .and_()
         ...     .keyword("CRISPR", field="title")
         ...     .and_()
@@ -496,23 +497,23 @@ class QueryBuilder:
         ...     .keyword("tumor", field="title")
         ...     .build())
 
-    With MeSH terms:
+    With MeSH terms and filters:
         >>> qb = QueryBuilder()
         >>> query = (qb
-        ...     .mesh_term("Neoplasms")
+        ...     .field("mesh", "Neoplasms")
         ...     .and_()
-        ...     .open_access(True)
+        ...     .field("open_access", True)
         ...     .build())
     """
 
-    def __init__(self, validate: bool = True) -> None:
+    def __init__(self, validate: bool = False) -> None:
         """
         Initialize a new QueryBuilder.
 
         Parameters
         ----------
         validate : bool, optional
-            Whether to validate queries using search-query package (default: True).
+            Whether to validate queries using search-query package (default: False).
             If search-query is not installed, validation is automatically disabled.
         """
         self._parts: list[str] = []
@@ -566,73 +567,6 @@ class QueryBuilder:
 
         self._last_operator = None
         return self
-
-    def author(self, author_name: str) -> QueryBuilder:
-        """
-        Add an author search constraint.
-
-        Convenience wrapper for `field("author", ...)`.
-
-        Parameters
-        ----------
-        author_name : str
-            Author name to search for (e.g., "Smith J", "Doe John")
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.author("Smith J").build()
-        """
-        return self.field("author", author_name)
-
-    def journal(self, journal_name: str) -> QueryBuilder:
-        """
-        Add a journal name search constraint.
-
-        Convenience wrapper for `field("journal", ...)`.
-
-        Parameters
-        ----------
-        journal_name : str
-            Journal name to search for
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.journal("Nature").build()
-        """
-        return self.field("journal", journal_name)
-
-    def mesh_term(self, mesh: str) -> QueryBuilder:
-        """
-        Add a MeSH (Medical Subject Heading) term search.
-
-        Parameters
-        ----------
-        mesh : str
-            MeSH term to search for
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.mesh_term("Neoplasms").build()
-        """
-        return self.field("mesh", mesh)
 
     def date_range(
         self,
@@ -719,12 +653,14 @@ class QueryBuilder:
 
     def _build_year_range_query(self, start_year: int | None, end_year: int | None) -> str:
         """Build year range query string."""
+        current_year = datetime.now().year
         if start_year and end_year:
             return f"(PUB_YEAR:[{start_year} TO {end_year}])"
         elif start_year:
-            return f"(PUB_YEAR:[{start_year} TO *])"
+            # Use current year instead of * for open-ended ranges
+            return f"(PUB_YEAR:[{start_year} TO {current_year}])"
         elif end_year:
-            return f"(PUB_YEAR:[* TO {end_year}])"
+            return f"(PUB_YEAR:[{MIN_VALID_YEAR} TO {end_year}])"
         return ""
 
     def citation_count(
@@ -788,75 +724,6 @@ class QueryBuilder:
             return f"(CITED:[* TO {max_count}])"
         return ""
 
-    def open_access(self, is_open_access: bool = True) -> QueryBuilder:
-        """
-        Filter by open access status.
-
-        Convenience wrapper for `field("open_access", ...)`.
-
-        Parameters
-        ----------
-        is_open_access : bool, optional
-            True for open access only, False for non-open access (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.open_access(True).build()
-        """
-        return self.field("open_access", is_open_access)
-
-    def has_pdf(self, has_pdf: bool = True) -> QueryBuilder:
-        """
-        Filter by PDF availability.
-
-        Convenience wrapper for `field("has_pdf", ...)`.
-
-        Parameters
-        ----------
-        has_pdf : bool, optional
-            True for papers with PDF available (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.has_pdf(True).build()
-        """
-        return self.field("has_pdf", has_pdf)
-
-    def has_full_text(self, has_text: bool = True) -> QueryBuilder:
-        """
-        Filter by full text availability.
-
-        Convenience wrapper for `field("has_text", ...)`.
-
-        Parameters
-        ----------
-        has_text : bool, optional
-            True for papers with full text available (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.has_full_text(True).build()
-        """
-        return self.field("has_text", has_text)
-
     def pmcid(self, pmcid: str) -> QueryBuilder:
         """
         Search by PMC ID.
@@ -890,214 +757,6 @@ class QueryBuilder:
         self._last_operator = None
         return self
 
-    def pmid(self, pmid: str | int) -> QueryBuilder:
-        """
-        Search by PubMed ID.
-
-        Convenience wrapper for `field("pmid", ...)`.
-
-        Parameters
-        ----------
-        pmid : str or int
-            PubMed ID
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.pmid("12345678").build()
-        >>> query = qb.pmid(12345678).build()
-        """
-        return self.field("pmid", pmid, escape=False)
-
-    def doi(self, doi: str) -> QueryBuilder:
-        """
-        Search by DOI.
-
-        Convenience wrapper for `field("doi", ...)`.
-
-        Parameters
-        ----------
-        doi : str
-            Digital Object Identifier
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.doi("10.1234/example.2023.001").build()
-        """
-        return self.field("doi", doi, escape=False)
-
-    def ext_id(self, ext_id: str) -> QueryBuilder:
-        """
-        Search by external ID (repository-level ID).
-
-        Convenience wrapper for `field("ext_id", ...)`.
-
-        Parameters
-        ----------
-        ext_id : str
-            External identifier
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.ext_id("10826746").build()
-        """
-        return self.field("ext_id", ext_id, escape=False)
-
-    def issn(self, issn: str) -> QueryBuilder:
-        """
-        Search by journal ISSN.
-
-        Convenience wrapper for `field("issn", ...)`.
-
-        Parameters
-        ----------
-        issn : str
-            ISSN number
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.issn("0028-0836").build()
-        """
-        return self.field("issn", issn, escape=False)
-
-    def affiliation(self, affiliation: str) -> QueryBuilder:
-        """
-        Search by author affiliation.
-
-        Convenience wrapper for `field("affiliation", ...)`.
-
-        Parameters
-        ----------
-        affiliation : str
-            Author affiliation text
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.affiliation("university of cambridge").build()
-        """
-        return self.field("affiliation", affiliation)
-
-    def grant_agency(self, agency: str) -> QueryBuilder:
-        """
-        Search by funding agency.
-
-        Convenience wrapper for `field("grant_agency", ...)`.
-
-        Parameters
-        ----------
-        agency : str
-            Funding agency name
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.grant_agency("wellcome").build()
-        """
-        return self.field("grant_agency", agency)
-
-    def grant_id(self, grant_id: str) -> QueryBuilder:
-        """
-        Search by grant ID.
-
-        Convenience wrapper for `field("grant_id", ...)`.
-
-        Parameters
-        ----------
-        grant_id : str
-            Grant identifier
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.grant_id("100229").build()
-        """
-        return self.field("grant_id", grant_id, escape=False)
-
-    def pub_type(self, pub_type: str) -> QueryBuilder:
-        """
-        Search by publication type.
-
-        Convenience wrapper for `field("pub_type", ...)`.
-
-        Parameters
-        ----------
-        pub_type : str
-            Publication type (e.g., "review", "journal article")
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.pub_type("review").build()
-        """
-        return self.field("pub_type", pub_type)
-
-    def language(self, language: str) -> QueryBuilder:
-        """
-        Search by publication language.
-
-        Convenience wrapper for `field("language", ...)`.
-
-        Parameters
-        ----------
-        language : str
-            Language code (e.g., "eng", "fre")
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.language("eng").build()
-        """
-        return self.field("language", language, escape=False)
-
     def source(self, source: str) -> QueryBuilder:
         """
         Search by data source.
@@ -1124,121 +783,6 @@ class QueryBuilder:
         self._parts.append(f"SRC:{source.strip().upper()}")
         self._last_operator = None
         return self
-
-    def isbn(self, isbn: str) -> QueryBuilder:
-        """
-        Search by ISBN for books.
-
-        Convenience wrapper for `field("isbn", ...)`.
-
-        Parameters
-        ----------
-        isbn : str
-            ISBN number
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.isbn("9780815340720").build()
-        """
-        return self.field("isbn", isbn, escape=False)
-
-    def disease(self, disease: str) -> QueryBuilder:
-        """
-        Search for text-mined disease terms.
-
-        Convenience wrapper for `field("disease", ...)`.
-
-        Parameters
-        ----------
-        disease : str
-            Disease term
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.disease("cancer").build()
-        """
-        return self.field("disease", disease)
-
-    def gene_protein(self, gene_protein: str) -> QueryBuilder:
-        """
-        Search for text-mined gene/protein terms.
-
-        Convenience wrapper for `field("gene_protein", ...)`.
-
-        Parameters
-        ----------
-        gene_protein : str
-            Gene or protein term
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.gene_protein("TP53").build()
-        """
-        return self.field("gene_protein", gene_protein)
-
-    def organism(self, organism: str) -> QueryBuilder:
-        """
-        Search for organism terms.
-
-        Convenience wrapper for `field("organism", ...)`.
-
-        Parameters
-        ----------
-        organism : str
-            Organism name
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.organism("homo sapiens").build()
-        """
-        return self.field("organism", organism)
-
-    def accession_id(self, accession_id: str) -> QueryBuilder:
-        """
-        Search by accession number.
-
-        Convenience wrapper for `field("accession_id", ...)`.
-
-        Parameters
-        ----------
-        accession_id : str
-            Database accession number
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.accession_id("A12360").build()
-        """
-        return self.field("accession_id", accession_id, escape=False)
 
     def accession_type(self, accession_type: str) -> QueryBuilder:
         """
@@ -1301,121 +845,6 @@ class QueryBuilder:
         self._parts.append(f"CITES:{article_id}_{source.lower()}")
         self._last_operator = None
         return self
-
-    def has_abstract(self, has_abstract: bool = True) -> QueryBuilder:
-        """
-        Filter by abstract presence.
-
-        Convenience wrapper for `field("has_abstract", ...)`.
-
-        Parameters
-        ----------
-        has_abstract : bool, optional
-            True for papers with abstracts (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.has_abstract(True).build()
-        """
-        return self.field("has_abstract", has_abstract)
-
-    def has_references(self, has_references: bool = True) -> QueryBuilder:
-        """
-        Filter by reference list presence.
-
-        Convenience wrapper for `field("has_reflist", ...)`.
-
-        Parameters
-        ----------
-        has_references : bool, optional
-            True for papers with reference lists (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.has_references(True).build()
-        """
-        return self.field("has_reflist", has_references)
-
-    def has_supplementary(self, has_supplementary: bool = True) -> QueryBuilder:
-        """
-        Filter by supplementary data presence.
-
-        Convenience wrapper for `field("has_suppl", ...)`.
-
-        Parameters
-        ----------
-        has_supplementary : bool, optional
-            True for papers with supplementary data (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.has_supplementary(True).build()
-        """
-        return self.field("has_suppl", has_supplementary)
-
-    def in_pmc(self, in_pmc: bool = True) -> QueryBuilder:
-        """
-        Filter by PubMed Central availability.
-
-        Convenience wrapper for `field("in_pmc", ...)`.
-
-        Parameters
-        ----------
-        in_pmc : bool, optional
-            True for papers in PMC (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.in_pmc(True).build()
-        """
-        return self.field("in_pmc", in_pmc)
-
-    def in_epmc(self, in_epmc: bool = True) -> QueryBuilder:
-        """
-        Filter by Europe PMC full text availability.
-
-        Convenience wrapper for `field("in_epmc", ...)`.
-
-        Parameters
-        ----------
-        in_epmc : bool, optional
-            True for papers with full text in Europe PMC (default: True)
-
-        Returns
-        -------
-        QueryBuilder
-            Self for method chaining
-
-        Examples
-        --------
-        >>> qb = QueryBuilder()
-        >>> query = qb.in_epmc(True).build()
-        """
-        return self.field("in_epmc", in_epmc)
 
     def and_(self) -> QueryBuilder:
         """
