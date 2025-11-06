@@ -5,6 +5,16 @@ This module provides a fluent API for building complex search queries with
 type-safe field specifications, logical operators, and validation using the
 CoLRev search-query package.
 
+Key Features
+------------
+- **Fluent API**: Chain methods to build complex queries
+- **Type Safety**: Field names are type-checked at compile time
+- **Validation**: Optional query syntax validation (requires search-query package)
+- **Load/Save**: Import/export queries from/to JSON files in standard format
+- **Translation**: Convert queries between platforms (PubMed, Web of Science, etc.)
+- **Evaluation**: Assess search effectiveness with recall/precision metrics
+- **Systematic Review Tracking**: Log queries to SearchLog for PRISMA/Cochrane compliance
+
 Supported Search Fields (from Europe PMC Web Service Reference 6.9.0):
 -----------------------------------------------------------------------
 
@@ -57,8 +67,10 @@ Section-Level Search:
 
 Example usage:
     >>> from pyeuropepmc import QueryBuilder
-    >>> # Use the generic field() method for field-specific searches
-    >>> query = (QueryBuilder()
+    >>>
+    >>> # Building queries
+    >>> qb = QueryBuilder()
+    >>> query = (qb
     ...     .field("author", "Smith J")
     ...     .and_()
     ...     .keyword("cancer", field="title")
@@ -67,7 +79,36 @@ Example usage:
     ...     .and_()
     ...     .field("open_access", True)
     ...     .build())
-    >>> client.search(query)
+    >>>
+    >>> # Loading from string
+    >>> qb = QueryBuilder.from_string('cancer[ti] AND treatment[ab]', platform="pubmed")
+    >>>
+    >>> # Loading from file
+    >>> qb = QueryBuilder.from_file("my-search.json")
+    >>>
+    >>> # Saving to file
+    >>> qb.save("my-search.json", platform="pubmed",
+    ...         authors=[{"name": "John Doe"}])
+    >>>
+    >>> # Translating between platforms
+    >>> pubmed_query = qb.from_string('cancer[ti]', platform="pubmed")
+    >>> wos_query = pubmed_query.translate("wos")
+    >>> print(wos_query)  # TI=cancer
+    >>>
+    >>> # Evaluating search effectiveness
+    >>> records = {
+    ...     "r1": {"title": "Cancer research", "colrev_status": "rev_included"},
+    ...     "r2": {"title": "Other topic", "colrev_status": "rev_excluded"}
+    ... }
+    >>> results = qb.evaluate(records)
+    >>> print(f"Recall: {results['recall']}")
+    >>>
+    >>> # Systematic review tracking
+    >>> from pyeuropepmc.utils.search_logging import start_search
+    >>> log = start_search("Cancer Review", executed_by="Jane Doe")
+    >>> qb = QueryBuilder().keyword("cancer").and_().field("open_access", True)
+    >>> qb.log_to_search(log, filters={"open_access": True}, results_returned=100)
+    >>> log.save("review_searches.json")
 """
 
 from __future__ import annotations
@@ -77,21 +118,77 @@ import logging
 from typing import Any, Literal
 
 try:
-    from search_query import AndQuery, OrQuery, Query
+    from search_query import AndQuery, OrQuery, Query, SearchFile
     from search_query.parser import parse
+    from search_query.search_file import load_search_file
 
     SEARCH_QUERY_AVAILABLE = True
 except ImportError:
     SEARCH_QUERY_AVAILABLE = False
     # Provide fallback when search-query is not installed
-    Query = Any
-    AndQuery = Any
-    OrQuery = Any
+    from typing import Any as _Any
 
-    def parse(*args: Any, **kwargs: Any) -> Any:
+    Query = _Any
+    AndQuery = _Any
+    OrQuery = _Any
+
+    class SearchFile:  # type: ignore[no-redef]
+        """
+        Minimal typed stub for SearchFile to satisfy static checkers and
+        provide a simple save() implementation when search-query is missing.
+        This stub is only used to satisfy type-checking and basic JSON save in
+        environments where search-query is not installed. Runtime code paths
+        that require full search-query behaviour still raise ImportError.
+        """
+
+        def __init__(
+            self,
+            search_string: str,
+            platform: str,
+            version: dict[str, _Any] | None = None,
+            authors: list[dict[str, str]] | None = None,
+            record_info: dict[str, _Any] | None = None,
+            date: dict[str, str] | None = None,
+            database: dict[str, _Any] | None = None,
+            generic_query: dict[str, _Any] | None = None,
+        ) -> None:
+            self.search_string = search_string
+            self.platform = platform
+            self.version = version or {}
+            self.authors = authors or []
+            self.record_info = record_info or {}
+            self.date = date or {}
+            self.database = database or {}
+            self.generic_query = generic_query or {}
+
+        def save(self, file_path: str) -> None:
+            # Simple JSON dump compatible with the expected search-file format.
+            import json
+
+            payload = {
+                "search_string": self.search_string,
+                "platform": self.platform,
+                "version": self.version,
+                "authors": self.authors,
+                "record_info": self.record_info,
+                "date": self.date,
+                "database": self.database,
+                "generic_query": self.generic_query,
+            }
+            with open(file_path, "w", encoding="utf-8") as fh:
+                json.dump(payload, fh, ensure_ascii=False, indent=2)
+
+    def parse(*args: _Any, **kwargs: _Any) -> _Any:
         """Fallback parse function when search-query is not available."""
         raise ImportError(
             "search-query package is required for query validation. "
+            "Install it with: pip install search-query"
+        )
+
+    def load_search_file(*args: _Any, **kwargs: _Any) -> _Any:
+        """Fallback load_search_file function when search-query is not available."""
+        raise ImportError(
+            "search-query package is required for loading search files. "
             "Install it with: pip install search-query"
         )
 
@@ -519,6 +616,9 @@ class QueryBuilder:
         self._parts: list[str] = []
         self._last_operator: str | None = None
         self._validate = validate and SEARCH_QUERY_AVAILABLE
+        self._parsed_query: Any = None  # Cached Query object
+        self._search_file: Any = None  # Metadata from loaded file
+        self._platform: str = "pubmed"  # Default platform
 
         if validate and not SEARCH_QUERY_AVAILABLE:
             import warnings
@@ -1120,6 +1220,502 @@ class QueryBuilder:
         """Return string representation of the query builder."""
         parts_str = " ".join(self._parts) if self._parts else "<empty>"
         return f"QueryBuilder(parts={parts_str!r})"
+
+    @classmethod
+    def from_string(
+        cls, query_string: str, platform: str = "pubmed", validate: bool = False
+    ) -> QueryBuilder:
+        """
+        Load a query from a string by parsing it.
+
+        This method parses an existing query string and creates a QueryBuilder
+        instance that can be further modified or translated to other platforms.
+
+        Parameters
+        ----------
+        query_string : str
+            The query string to parse (e.g., '("cancer"[Title]) AND ("treatment"[Abstract])')
+        platform : str, optional
+            The platform syntax the query is written in (default: "pubmed")
+            Supported: "pubmed", "wos", "ebsco", "generic"
+        validate : bool, optional
+            Whether to validate the loaded query (default: False)
+
+        Returns
+        -------
+        QueryBuilder
+            A new QueryBuilder instance containing the parsed query
+
+        Examples
+        --------
+        >>> qb = QueryBuilder.from_string(
+        ...     '("cancer"[Title]) AND ("treatment"[Abstract])',
+        ...     platform="pubmed"
+        ... )
+        >>> query = qb.build()
+
+        Raises
+        ------
+        ImportError
+            If search-query package is not installed
+        QueryBuilderError
+            If query string is invalid or cannot be parsed
+        """
+        if not SEARCH_QUERY_AVAILABLE:
+            raise ImportError(
+                "search-query package is required for loading queries. "
+                "Install it with: pip install search-query"
+            )
+
+        if not query_string or not query_string.strip():
+            context = {"query_string": query_string}
+            raise QueryBuilderError(ErrorCodes.QUERY001, context)
+
+        try:
+            # Parse the query using search-query
+            parsed_query = parse(query_string, platform=platform)
+
+            # Create a new QueryBuilder and set the query
+            builder = cls(validate=validate)
+            builder._parsed_query = parsed_query
+            builder._parts = [query_string]  # Store original for build()
+            builder._last_operator = None
+
+            return builder
+        except Exception as e:
+            context = {"query_string": query_string, "platform": platform, "error": str(e)}
+            raise QueryBuilderError(ErrorCodes.QUERY004, context) from e
+
+    @classmethod
+    def from_file(cls, file_path: str, validate: bool = False) -> QueryBuilder:
+        """
+        Load a query from a JSON file in standard format.
+
+        The JSON file should follow the standard format (Haddaway et al. 2022):
+        {
+            "search_string": "TS=(quantum AND dot AND spin)",
+            "platform": "wos",
+            "version": "1",
+            "authors": [{"name": "Wagner, G.", "ORCID": "0000-0000-0000-1111"}],
+            "date": {"data_entry": "2019.07.01", "search_conducted": "2019.07.01"},
+            "database": ["SCI-EXPANDED", "SSCI", "A&HCI"],
+            "record_info": {}
+        }
+
+        Parameters
+        ----------
+        file_path : str
+            Path to the JSON file containing the search query
+        validate : bool, optional
+            Whether to validate the loaded query (default: False)
+
+        Returns
+        -------
+        QueryBuilder
+            A new QueryBuilder instance containing the loaded query
+
+        Examples
+        --------
+        >>> qb = QueryBuilder.from_file("my-search.json")
+        >>> query = qb.build()
+
+        Raises
+        ------
+        ImportError
+            If search-query package is not installed
+        FileNotFoundError
+            If the specified file does not exist
+        QueryBuilderError
+            If the file format is invalid
+        """
+        if not SEARCH_QUERY_AVAILABLE:
+            raise ImportError(
+                "search-query package is required for loading search files. "
+                "Install it with: pip install search-query"
+            )
+
+        try:
+            # Load the search file
+            search_file = load_search_file(file_path)
+
+            # Parse the query string
+            parsed_query = parse(search_file.search_string, platform=search_file.platform)
+
+            # Create a new QueryBuilder
+            builder = cls(validate=validate)
+            builder._parsed_query = parsed_query
+            builder._search_file = search_file  # Store metadata
+            builder._parts = [search_file.search_string]
+            builder._last_operator = None
+
+            return builder
+        except FileNotFoundError as e:
+            context = {"file_path": file_path}
+            raise FileNotFoundError(f"Search file not found: {file_path}") from e
+        except Exception as e:
+            context = {"file_path": file_path, "error": str(e)}
+            raise QueryBuilderError(ErrorCodes.QUERY004, context) from e
+
+    def save(
+        self,
+        file_path: str,
+        platform: str = "pubmed",
+        authors: list[dict[str, str]] | None = None,
+        record_info: dict[str, Any] | None = None,
+        date_info: dict[str, str] | None = None,
+        database: list[str] | None = None,
+        include_generic: bool = False,
+    ) -> None:
+        """
+        Save the query to a JSON file in standard format.
+
+        Parameters
+        ----------
+        file_path : str
+            Path where the JSON file should be saved
+        platform : str, optional
+            Platform syntax for the query (default: "pubmed")
+        authors : list[dict[str, str]], optional
+            List of author dictionaries with "name" and optionally "ORCID"
+        record_info : dict[str, Any], optional
+            Additional record metadata
+        date_info : dict[str, str], optional
+            Date information (e.g., {"data_entry": "2025-01-01", "search_conducted": "2025-01-01"})
+        database : list[str], optional
+            List of databases queried
+        include_generic : bool, optional
+            Whether to include a generic query representation (default: False)
+
+        Examples
+        --------
+        >>> qb = QueryBuilder()
+        >>> query = qb.keyword("cancer").and_().keyword("treatment")
+        >>> qb.save("my-search.json", platform="pubmed",
+        ...          authors=[{"name": "John Doe", "ORCID": "0000-0000-0000-0001"}])
+
+        Raises
+        ------
+        ImportError
+            If search-query package is not installed
+        QueryBuilderError
+            If query is empty or invalid
+        """
+        if not SEARCH_QUERY_AVAILABLE:
+            raise ImportError(
+                "search-query package is required for saving queries. "
+                "Install it with: pip install search-query"
+            )
+
+        # Build the query string
+        query_string = self.build(validate=False)
+
+        # Get or create parsed query
+        if self._parsed_query is not None:
+            parsed_query = self._parsed_query
+        else:
+            parsed_query = parse(query_string, platform=platform)
+
+        # Prepare generic query if requested
+        generic_query_str = None
+        if include_generic:
+            generic_query = parsed_query.translate(target_syntax="generic")
+            generic_query_str = generic_query.to_generic_string()
+
+        # Create SearchFile object
+        # Pass dict-typed values for fields that some search-file implementations
+        # expect as mappings (satisfies static type checkers).
+        search_file = SearchFile(
+            search_string=query_string,
+            platform=platform,
+            version={"version": "1"},
+            authors=authors or [],
+            record_info=record_info or {},
+            date=date_info or {},
+            database={"databases": database or []},
+            generic_query={"generic_query": generic_query_str}
+            if generic_query_str is not None
+            else {},
+        )
+
+        # Save to file
+        search_file.save(file_path)
+        logger.info("Query saved to %s", file_path)
+
+    def translate(self, target_platform: str) -> str:
+        """
+        Translate the query to another platform's syntax.
+
+        This converts the query from its current syntax (e.g., PubMed) to
+        another platform (e.g., Web of Science) while maintaining the same
+        search logic.
+
+        Parameters
+        ----------
+        target_platform : str
+            Target platform syntax: "pubmed", "wos", "ebsco", or "generic"
+
+        Returns
+        -------
+        str
+            The query in the target platform's syntax
+
+        Examples
+        --------
+        >>> qb = QueryBuilder.from_string(
+        ...     '("cancer"[Title]) AND ("treatment"[Abstract])',
+        ...     platform="pubmed"
+        ... )
+        >>> wos_query = qb.translate("wos")
+        >>> print(wos_query)
+        (TI="cancer") AND (AB="treatment")
+
+        Raises
+        ------
+        ImportError
+            If search-query package is not installed
+        QueryBuilderError
+            If translation fails
+        """
+        if not SEARCH_QUERY_AVAILABLE:
+            raise ImportError(
+                "search-query package is required for query translation. "
+                "Install it with: pip install search-query"
+            )
+
+        try:
+            # Build current query
+            query_string = self.build(validate=False)
+
+            # Get or create parsed query
+            if self._parsed_query is not None:
+                parsed_query = self._parsed_query
+            else:
+                # Try to infer platform or default to pubmed
+                platform = getattr(self, "_platform", "pubmed")
+                parsed_query = parse(query_string, platform=platform)
+
+            # Translate to target platform
+            translated_query = parsed_query.translate(target_syntax=target_platform)
+
+            # Return as string
+            result: str = translated_query.to_string()
+            return result
+        except Exception as e:
+            context = {
+                "target_platform": target_platform,
+                "error": str(e),
+            }
+            raise QueryBuilderError(ErrorCodes.QUERY004, context) from e
+
+    def to_query_object(self, platform: str = "pubmed") -> Any:
+        """
+        Convert the QueryBuilder to a search-query Query object.
+
+        This allows direct access to the search-query library's Query objects
+        for advanced manipulation, evaluation, or analysis.
+
+        Parameters
+        ----------
+        platform : str, optional
+            Platform syntax for parsing (default: "pubmed")
+
+        Returns
+        -------
+        Query
+            A search-query Query object (AndQuery, OrQuery, or TermQuery)
+
+        Examples
+        --------
+        >>> qb = QueryBuilder()
+        >>> query = qb.keyword("cancer").and_().keyword("treatment")
+        >>> query_obj = qb.to_query_object()
+        >>> print(type(query_obj))
+        <class 'search_query.query_and.AndQuery'>
+
+        Raises
+        ------
+        ImportError
+            If search-query package is not installed
+        """
+        if not SEARCH_QUERY_AVAILABLE:
+            raise ImportError(
+                "search-query package is required for Query objects. "
+                "Install it with: pip install search-query"
+            )
+
+        # Return cached if available
+        if self._parsed_query is not None:
+            return self._parsed_query
+
+        # Parse and cache
+        query_string = self.build(validate=False)
+        self._parsed_query = parse(query_string, platform=platform)
+        return self._parsed_query
+
+    def evaluate(
+        self, records: dict[str, dict[str, str]], platform: str = "pubmed"
+    ) -> dict[str, float]:
+        """
+        Evaluate search effectiveness against a set of records.
+
+        This calculates recall, precision, and F1 score by testing which records
+        the query matches. Records should have a 'colrev_status' field indicating
+        whether they should be included ('rev_included') or excluded ('rev_excluded').
+
+        Parameters
+        ----------
+        records : dict[str, dict[str, str]]
+            Dictionary of records with IDs as keys. Each record should have:
+            - 'title': The record title
+            - 'colrev_status': 'rev_included' or 'rev_excluded'
+        platform : str, optional
+            Platform syntax for evaluation (default: "pubmed")
+
+        Returns
+        -------
+        dict[str, float]
+            Dictionary with 'recall', 'precision', and 'f1_score'
+
+        Examples
+        --------
+        >>> records = {
+        ...     "r1": {"title": "Cancer treatment", "colrev_status": "rev_included"},
+        ...     "r2": {"title": "Cancer research", "colrev_status": "rev_included"},
+        ...     "r3": {"title": "Unrelated topic", "colrev_status": "rev_excluded"},
+        ... }
+        >>> qb = QueryBuilder().keyword("cancer")
+        >>> results = qb.evaluate(records)
+        >>> print(f"Recall: {results['recall']:.2f}")
+
+        Raises
+        ------
+        ImportError
+            If search-query package is not installed
+
+        References
+        ----------
+        Cooper C, Varley-Campbell J, Booth A, et al. (2018) Systematic review
+        identifies six metrics and one method for assessing literature search
+        effectiveness but no consensus on appropriate use. Journal of Clinical
+        Epidemiology 99: 53–63. DOI: 10.1016/J.JCLINEPI.2018.02.025.
+        """
+        if not SEARCH_QUERY_AVAILABLE:
+            raise ImportError(
+                "search-query package is required for query evaluation. "
+                "Install it with: pip install search-query"
+            )
+
+        # Get Query object
+        query_obj = self.to_query_object(platform=platform)
+
+        # Evaluate using search-query's evaluation
+        results: dict[str, float] = query_obj.evaluate(records)
+
+        return results
+
+    def log_to_search(
+        self,
+        search_log: Any,
+        database: str = "Europe PMC",
+        filters: dict[str, Any] | None = None,
+        results_returned: int | None = None,
+        notes: str | None = None,
+        raw_results: Any = None,
+        raw_results_dir: str | None = None,
+        platform: str | None = None,
+        export_path: str | None = None,
+    ) -> None:
+        """
+        Log this query to a SearchLog for systematic review tracking.
+
+        This method integrates with the systematic review tracking system to
+        maintain PRISMA/Cochrane-compliant records of all searches performed.
+        All queries, filters, and results are persisted for reproducibility.
+
+        Parameters
+        ----------
+        search_log : SearchLog
+            The SearchLog instance to record this query in
+        database : str, optional
+            Name of the database (default: "Europe PMC")
+        filters : dict[str, Any], optional
+            Additional filters applied (e.g., {"date_range": "2020-2023",
+            "open_access": True})
+        results_returned : int, optional
+            Number of results returned by this query
+        notes : str, optional
+            Additional notes about this search
+        raw_results : Any, optional
+            Raw API response to save for auditability
+        raw_results_dir : str, optional
+            Directory to save raw results JSON file
+        platform : str, optional
+            Search platform used (e.g., "API", "Web Interface")
+        export_path : str, optional
+            Path to exported results file
+
+        Examples
+        --------
+        >>> from pyeuropepmc import QueryBuilder
+        >>> from pyeuropepmc.utils.search_logging import start_search
+        >>>
+        >>> # Start a systematic review search log
+        >>> log = start_search(
+        ...     title="Cancer Immunotherapy Review",
+        ...     executed_by="Jane Doe"
+        ... )
+        >>>
+        >>> # Build and execute a query
+        >>> qb = QueryBuilder()
+        >>> query = (qb
+        ...     .keyword("cancer", field="title")
+        ...     .and_()
+        ...     .keyword("immunotherapy", field="abstract")
+        ...     .and_()
+        ...     .date_range(start_year=2020, end_year=2023)
+        ...     .build())
+        >>>
+        >>> # Log the query for systematic review tracking
+        >>> qb.log_to_search(
+        ...     search_log=log,
+        ...     filters={
+        ...         "date_range": "2020-2023",
+        ...         "open_access": True,
+        ...         "min_citations": 5
+        ...     },
+        ...     results_returned=150,
+        ...     notes="Initial broad search",
+        ...     platform="Europe PMC API v6.9"
+        ... )
+        >>>
+        >>> # Save the search log
+        >>> log.save("systematic_review_searches.json")
+
+        See Also
+        --------
+        pyeuropepmc.utils.search_logging : Full systematic review tracking utilities
+        """
+        from pyeuropepmc.utils.search_logging import record_query
+
+        # Build the query string if not already built
+        query_string = self.build(validate=False)
+
+        # Record the query in the search log
+        record_query(
+            log=search_log,
+            database=database,
+            query=query_string,
+            filters=filters or {},
+            results_returned=results_returned,
+            notes=notes,
+            raw_results=raw_results,
+            raw_results_dir=raw_results_dir,
+            platform=platform,
+            export_path=export_path,
+        )
+        logger.info(
+            f"Query logged to systematic review: database={database}, results={results_returned}"
+        )
 
     def field(
         self, field_name: FieldType, value: str | int | bool, escape: bool = True
