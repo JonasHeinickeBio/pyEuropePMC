@@ -248,7 +248,7 @@ def example_with_search_client():
         results = client.search(query, pageSize=10)
         hit_count = results.get("hitCount", 0)
         print(f"Found {hit_count} results")
-        
+
         # Print first few results
         if "resultList" in results and "result" in results["resultList"]:
             for i, paper in enumerate(results["resultList"]["result"][:3], 1):

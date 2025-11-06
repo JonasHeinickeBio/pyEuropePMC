@@ -3227,6 +3227,23 @@ files = [
 ]
 
 [[package]]
+name = "search-query"
+version = "0.13.0"
+description = "Package for managing literature search queries."
+optional = true
+python-versions = ">=3.8"
+groups = ["main"]
+markers = "extra == \"query-builder\""
+files = [
+    {file = "search_query-0.13.0-py3-none-any.whl", hash = "sha256:052f312e9eeb16408f000a201c70946aa407352255d456977a7ce654a8e4cb2f"},
+    {file = "search_query-0.13.0.tar.gz", hash = "sha256:9c3ea66132fa66ab2e8cf861a54053ab0250b34080d3045a4c2855d2da047bbb"},
+]
+
+[package.extras]
+dev = ["pre-commit (>=3.0.0)", "pylint (==3.0.1)", "pytest (>=7.2.1)"]
+docs = ["sphinx (>=5.2.3)", "sphinx-copybutton (>=0.5.2)", "sphinx-rtd-theme (>=1.1.1)", "sphinxcontrib-datatemplates (>=0.7)"]
+
+[[package]]
 name = "send2trash"
 version = "1.8.3"
 description = "Send file to trash natively under Mac OS X, Windows and Linux"
@@ -3732,7 +3749,10 @@ files = [
     {file = "xlsxwriter-3.2.9.tar.gz", hash = "sha256:254b1c37a368c444eac6e2f867405cc9e461b0ed97a3233b2ac1e574efb4140c"},
 ]
 
+[extras]
+query-builder = ["search-query"]
+
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "d08f7191cd6114307e71e50433e4b7dad74fbc09421b439b60a81ca315ea057a"
+content-hash = "a3411f54b0055cace36b789d972c7cba37af8a41cbe373bb03806ed849ae8746"

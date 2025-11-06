@@ -1,6 +1,30 @@
-# QueryBuilder - Advanced Query Construction for Europe PMC
+# QueryBuilder Examples
 
-The `QueryBuilder` class provides a fluent, type-safe API for constructing complex search queries for Europe PMC. It supports field-specific searches, logical operators, date ranges, citation filters, and validation through the CoLRev search-query package.
+This directory contains examples demonstrating the QueryBuilder class for constructing complex search queries.
+
+## 📚 Available Examples
+
+### 1. **query_builder_comprehensive_demo.ipynb** ⭐ **RECOMMENDED**
+Interactive Jupyter notebook with comprehensive examples covering:
+- Basic keyword searches
+- Field-specific searches (author, journal, MeSH terms)
+- Boolean logic (AND, OR, NOT)
+- Date and citation filters
+- Content availability filters (open access, PDF, full text)
+- Complex real-world queries
+- **Live search integration** with actual results
+- Generic `field()` method for advanced users
+- Tips, best practices, and step-by-step tutorials
+
+**🚀 Quick Start:**
+```bash
+jupyter notebook query_builder_comprehensive_demo.ipynb
+```
+
+### 2. **query_builder_demo.py**
+Python script version with all examples (no live searches)
+- Good for reference and copy-paste
+- Can be run directly: `python query_builder_demo.py`
 
 ## Features
 
