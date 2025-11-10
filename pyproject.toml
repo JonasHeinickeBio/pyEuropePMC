@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "1.8.1"
+version = "1.9.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
@@ -8,10 +8,20 @@ authors = [
   { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" },
 ]
 requires-python = ">=3.10,<4.0"
-
-[tool.poetry.urls]
-"Homepage" = "https://github.com/JonasHeinickeBio/pyEuropePMC"
-"Bug Tracker" = "https://github.com/JonasHeinickeBio/pyEuropePMC/issues"
+keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific"]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+urls = { Homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC", Repository = "https://github.com/JonasHeinickeBio/pyEuropePMC" }
+dynamic = ["dependencies"]
 
 [tool.semantic_release]
 version_variable = ["src/pyeuropepmc/__init__.py:__version__"]
@@ -21,6 +31,10 @@ upload_to_pypi = true
 upload_to_release = true
 build_command = "pip install poetry && poetry build"
 commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
+
+[[tool.poetry.packages]]
+include = "pyeuropepmc"
+from = "src"
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
@@ -43,10 +57,10 @@ defusedxml = "^0.7.1"
 tqdm = "^4.67.1"
 beautifulsoup4 = "^4.13.5"
 tabulate = "^0.9.0"
-memory-profiler = "^0.61.0"
 xlsxwriter = "^3.2.9"
 diskcache = "^5.6.3"
 rapidfuzz = "^2.15.0"
+search-query = "^0.13.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
@@ -61,6 +75,7 @@ coverage = "^7.9.1"
 bandit = "^1.8.5"
 ruff = "^0.12.1"
 typing-extensions = "^4.14.0"
+memory-profiler = "^0.61.0"
 
 
 [build-system]

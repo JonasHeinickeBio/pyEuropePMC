@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0  # Get full history for better analysis
 
@@ -38,8 +38,13 @@ jobs:
           chmod +x scc
           sudo mv scc /usr/local/bin/
 
+          # Install CodeScene CLI
+          curl https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
+
       - name: Run repository analysis
         id: analysis
+        env:
+          CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
         run: |
           echo "=== Running Repository Analysis ===" | tee analysis.log
 
@@ -82,6 +87,48 @@ jobs:
           echo "Gathering git statistics..." | tee -a analysis.log
           git log --pretty=format:"%H|%an|%ae|%ad|%s" --date=iso --since="3 months ago" > analysis_output/recent_commits.txt || true
 
+          # 9. CodeScene code health analysis
+          echo "Running CodeScene code health analysis..." | tee -a analysis.log
+          if command -v cs &> /dev/null && [ -n "$CS_ACCESS_TOKEN" ]; then
+            # Delta analysis - compares changes against baseline
+            cs delta --output-format json > analysis_output/codescene_delta.json 2>&1 || echo '{"error": "CodeScene delta analysis failed"}' > analysis_output/codescene_delta.json
+            cs delta > analysis_output/codescene_delta.txt 2>&1 || echo "CodeScene delta analysis failed" > analysis_output/codescene_delta.txt
+
+            # Check analysis - lint-like output for all Python files
+            echo "Running CodeScene check on all Python files..." | tee -a analysis.log
+            find src/ -name "*.py" -type f -exec cs check {} \; > analysis_output/codescene_check.txt 2>&1 || echo "CodeScene check analysis failed" > analysis_output/codescene_check.txt
+
+            # Review analysis - detailed JSON reviews for key files
+            echo "Running CodeScene review on key Python files..." | tee -a analysis.log
+            mkdir -p analysis_output/codescene_reviews
+            find src/ -name "*.py" -type f | head -20 | while read -r file; do
+              filename=$(basename "$file" .py)
+              cs review "$file" --output-format json > "analysis_output/codescene_reviews/${filename}_review.json" 2>&1 || echo '{"error": "CodeScene review failed"}' > "analysis_output/codescene_reviews/${filename}_review.json"
+            done
+
+            # Consolidate review results into a single JSON file
+            echo '{"reviews": {' > analysis_output/codescene_reviews.json
+            first=true
+            for review_file in analysis_output/codescene_reviews/*.json; do
+              if [ -f "$review_file" ]; then
+                filename=$(basename "$review_file" _review.json)
+                if [ "$first" = true ]; then
+                  first=false
+                else
+                  echo "," >> analysis_output/codescene_reviews.json
+                fi
+                echo "\"$filename\": " >> analysis_output/codescene_reviews.json
+                cat "$review_file" >> analysis_output/codescene_reviews.json
+              fi
+            done
+            echo '}}' >> analysis_output/codescene_reviews.json
+          else
+            echo '{"error": "CodeScene CLI not available or CS_ACCESS_TOKEN not set"}' > analysis_output/codescene_delta.json
+            echo "CodeScene CLI not available or CS_ACCESS_TOKEN not set" > analysis_output/codescene_delta.txt
+            echo "CodeScene CLI not available or CS_ACCESS_TOKEN not set" > analysis_output/codescene_check.txt
+            echo '{"error": "CodeScene CLI not available or CS_ACCESS_TOKEN not set"}' > analysis_output/codescene_reviews.json
+          fi
+
           echo "Analysis complete!" | tee -a analysis.log
 
       - name: Consolidate analysis results
@@ -110,6 +157,8 @@ jobs:
               "bandit_results.json",
               "coverage.json",
               "scc_results.json",
+              "codescene_delta.json",
+              "codescene_reviews.json",
               "existing_issues.json"
           ]
 
@@ -131,6 +180,8 @@ jobs:
               "mypy_summary": "mypy_results.txt",
               "test_summary": "test_results.txt",
               "scc_summary": "scc_results.txt",
+              "codescene_delta_summary": "codescene_delta.txt",
+              "codescene_check_summary": "codescene_check.txt",
               "todos": "todos.txt",
               "readme": "readme.txt",
               "existing_issues": "existing_issues.txt"
@@ -253,7 +304,7 @@ jobs:
 
       - name: Run AI inference for suggestions
         id: inference
-        uses: actions/ai-inference@v1
+        uses: actions/ai-inference@v2
         with:
           prompt: ${{ steps.prepare_prompt.outputs.prompt || '' }}
           prompt-file: llm_prompt.txt
@@ -289,7 +340,7 @@ jobs:
 
       - name: Upload analysis artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: feature-suggester-analysis-${{ github.run_id }}
           path: |
@@ -298,6 +349,7 @@ jobs:
             action.log
             analysis_output/
             llm_prompt.txt
+            codescene_reviews/
           retention-days: 30
 
       - name: Comment on workflow run

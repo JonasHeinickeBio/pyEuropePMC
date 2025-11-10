@@ -6,6 +6,29 @@ This section provides detailed documentation for all PyEuropePMC classes and met
 
 ## Core Classes
 
+### QueryBuilder
+
+```python
+from pyeuropepmc import QueryBuilder
+
+qb = QueryBuilder(validate=True)
+```
+
+The advanced fluent API for building complex search queries with type safety and validation.
+
+#### Key Features
+
+- **Fluent API**: Chain methods to build complex queries
+- **Type Safety**: Field names validated at compile time
+- **Validation**: Optional syntax validation with search-query package
+- **Persistence**: Save/load queries in standard JSON format
+- **Translation**: Convert between platform syntaxes
+- **Evaluation**: Assess search effectiveness metrics
+
+**[Complete QueryBuilder API →](query-builder.md)**
+
+---
+
 ### EuropePMC Client
 
 ```python
