@@ -34,6 +34,8 @@
 - ⚡ **Rate Limiting** - Respectful API usage with configurable delays
 - 🧪 **Extensively Tested** - 200+ tests with 90%+ code coverage
 - 📋 **Systematic Review Tracking** - PRISMA-compliant search logging and audit trails
+- 📈 **Advanced Analytics** - Publication trends, citation analysis, quality metrics, and duplicate detection
+- 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
 
 ## 🚀 Quick Start
 
@@ -152,6 +154,47 @@ for table in tables:
 # Extract references
 references = parser.extract_references()
 print(f"Found {len(references)} references")
+```
+
+### Advanced Analytics and Visualization
+
+Analyze search results with built-in analytics and create visualizations:
+
+```python
+from pyeuropepmc import (
+    SearchClient,
+    to_dataframe,
+    citation_statistics,
+    quality_metrics,
+    remove_duplicates,
+    plot_publication_years,
+    create_summary_dashboard,
+)
+
+# Search and convert to DataFrame
+with SearchClient() as client:
+    response = client.search("machine learning", pageSize=100)
+    papers = response.get("resultList", {}).get("result", [])
+
+# Convert to pandas DataFrame for analysis
+df = to_dataframe(papers)
+
+# Remove duplicates
+df = remove_duplicates(df, method="title", keep="most_cited")
+
+# Get citation statistics
+stats = citation_statistics(df)
+print(f"Mean citations: {stats['mean_citations']:.2f}")
+print(f"Highly cited (top 10%): {stats['citation_distribution']['90th_percentile']:.0f}")
+
+# Assess quality metrics
+metrics = quality_metrics(df)
+print(f"Open access: {metrics['open_access_percentage']:.1f}%")
+print(f"With PDF: {metrics['with_pdf_percentage']:.1f}%")
+
+# Create visualizations
+plot_publication_years(df, save_path="publications_by_year.png")
+create_summary_dashboard(df, save_path="analysis_dashboard.png")
 ```
 
 ## 📚 Documentation
