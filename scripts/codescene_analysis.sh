@@ -119,6 +119,44 @@ run_review_analysis() {
     echo
 }
 
+# Function to run delta analysis (compares changes)
+run_delta_analysis() {
+    echo -e "${BLUE}🔄 Running CodeScene delta analysis...${NC}"
+    echo
+
+    # Check if we're in a git repository
+    if ! git rev-parse --git-dir >/dev/null 2>&1; then
+        echo -e "${YELLOW}⚠️  Not in a git repository, skipping delta analysis${NC}"
+        return 1
+    fi
+
+    # Try to determine the base branch for comparison
+    local base_branch="main"
+    if git show-ref --verify --quiet "refs/remotes/origin/main"; then
+        base_branch="origin/main"
+    elif git show-ref --verify --quiet "refs/remotes/origin/master"; then
+        base_branch="origin/master"
+    fi
+
+    echo -e "${BLUE}📊 Comparing changes with: $base_branch${NC}"
+
+    # Run CodeScene delta analysis
+    if cs delta "$base_branch" 2>/dev/null; then
+        echo -e "${GREEN}✅ Delta analysis completed${NC}"
+    else
+        echo -e "${YELLOW}⚠️  Delta analysis found issues or failed${NC}"
+        # Try with staged changes only
+        echo -e "${BLUE}🔄 Trying delta analysis on staged changes only...${NC}"
+        if cs delta --staged 2>/dev/null; then
+            echo -e "${GREEN}✅ Staged delta analysis completed${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Staged delta analysis also failed${NC}"
+        fi
+    fi
+
+    echo
+}
+
 # Main analysis function
 main() {
     echo -e "${BLUE}📊 Analyzing Python source files...${NC}"
