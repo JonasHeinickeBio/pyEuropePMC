@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v5
 
       - name: Ensure Git LFS objects are present
         run: |
@@ -46,6 +46,17 @@ jobs:
       - name: Run mypy (type checking)
         run: |
           poetry run mypy src/
+
+      - name: Install CodeScene CLI
+        run: |
+          curl https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
+
+      - name: Run CodeScene Code Health Analysis
+        env:
+          CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
+        run: |
+          chmod +x scripts/codescene_analysis.sh
+          ./scripts/codescene_analysis.sh delta
 
       - name: Run tests with coverage
         run: |

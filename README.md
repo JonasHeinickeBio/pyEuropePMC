@@ -23,7 +23,8 @@
 
 
 - 🔍 **Comprehensive Search API** - Query Europe PMC with advanced search options
-- 📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
+- � **Advanced Query Builder** - Fluent API for building complex search queries with type safety
+- �📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
 - 🔬 **XML Parsing & Conversion** - Parse full text XML and convert to plaintext, markdown, extract tables and metadata
 - 📊 **Multiple Output Formats** - JSON, XML, Dublin Core (DC)
 - 📦 **Bulk FTP Downloads** - Efficient bulk PDF downloads from Europe PMC FTP servers
@@ -32,6 +33,7 @@
 - 🧑‍💻 **Type Safety** - Extensive use of type annotations and validation
 - ⚡ **Rate Limiting** - Respectful API usage with configurable delays
 - 🧪 **Extensively Tested** - 200+ tests with 90%+ code coverage
+- 📋 **Systematic Review Tracking** - PRISMA-compliant search logging and audit trails
 
 ## 🚀 Quick Start
 
@@ -56,6 +58,27 @@ with SearchClient() as client:
         print("---")
 ```
 
+
+### Advanced Search with QueryBuilder
+
+```python
+from pyeuropepmc import QueryBuilder
+
+# Build complex queries with fluent API
+qb = QueryBuilder()
+query = (qb
+    .keyword("cancer", field="title")
+    .and_()
+    .keyword("immunotherapy")
+    .and_()
+    .date_range(start_year=2020, end_year=2023)
+    .and_()
+    .citation_count(min_count=10)
+    .build())
+
+print(f"Generated query: {query}")
+# Output: (TITLE:cancer) AND immunotherapy AND (PUB_YEAR:[2020 TO 2023]) AND (CITED:[10 TO *])
+```
 
 ### Advanced Search with Parsing
 
@@ -137,7 +160,8 @@ print(f"Found {len(references)} references")
 
 Quick Links:
 - 🚀 [Quick Start Guide](https://jonasheinickebio.github.io/pyEuropePMC/getting-started/quickstart.html) - Get started in 5 minutes
-- 📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
+- � [Query Builder](https://jonasheinickebio.github.io/pyEuropePMC/features/query-builder-load-save-translate.html) - Advanced query building
+- �📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
 - 💡 [Examples](https://jonasheinickebio.github.io/pyEuropePMC/examples/) - Code examples and use cases
 - ✨ [Features](https://jonasheinickebio.github.io/pyEuropePMC/features/) - Explore all features
 

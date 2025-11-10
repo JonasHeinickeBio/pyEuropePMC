@@ -37,7 +37,15 @@ This documentation is organized into focused sections to help you find what you 
 - Filter, sort, and paginate results
 - Multiple output formats (JSON, XML, DC)
 
-#### [📄 Full-Text Retrieval](features/fulltext/)
+#### [� Query Builder](features/query-builder-load-save-translate.md)
+- Fluent API for building complex search queries
+- Type-safe field specifications (150+ fields)
+- Boolean logic with AND/OR/NOT operators
+- Citation count and date range filtering
+- Query validation and cross-platform translation
+- Load/save queries in standard JSON format
+
+#### [�📄 Full-Text Retrieval](features/fulltext/)
 - Download PDFs, XML, and HTML content
 - Bulk FTP downloads for large datasets
 - Progress tracking and callbacks
@@ -49,10 +57,11 @@ This documentation is organized into focused sections to help you find what you 
 - Schema coverage validation
 - Flexible configuration with custom patterns
 
-#### [💾 Caching](features/caching/)
-- Smart response caching
-- Configurable cache strategies
-- Performance optimization
+#### [� Systematic Review Tracking](features/systematic-review-tracking.md)
+- PRISMA/Cochrane-compliant search logging
+- Complete audit trails for systematic reviews
+- Raw results saving for reproducibility
+- Search log integration with `log_to_search()` method
 
 ---
 
@@ -130,6 +139,8 @@ This documentation is organized into focused sections to help you find what you 
 |--------------|----------|
 | Install the package | [Installation](getting-started/installation.md) |
 | Search for papers | [Search Features](features/search/) |
+| Build complex queries | [Query Builder](features/query-builder-load-save-translate.md) |
+| Track systematic reviews | [Systematic Review Tracking](features/systematic-review-tracking.md) |
 | Download PDFs | [Full-Text Retrieval](features/fulltext/) |
 | Parse XML files | [XML Parsing](features/parsing/) |
 | Extract metadata | [Metadata Extraction](features/parsing/metadata-extraction.md) |
@@ -143,13 +154,15 @@ This documentation is organized into focused sections to help you find what you 
 
 ## 📦 What's New
 
-### Version 1.3.0 (Latest)
+### Version 1.8.1 (Latest)
 
 **New Features:**
-- ✨ **Flexible XML Parsing Configuration** - Customize element extraction with `ElementPatterns`
-- ✨ **Schema Coverage Validation** - Analyze XML element recognition
-- ✨ **Enhanced Pattern Support** - Cross-references, media, and object IDs
-- 🎯 **Improved Coverage** - XML recognition improved from 59.7% to 68.1%
+- ✨ **Advanced Query Builder**: Complete fluent API for building complex Europe PMC search queries with type safety
+- 📋 **Systematic Review Tracking**: PRISMA/Cochrane-compliant search logging with audit trails
+- 🔍 **Field Coverage Validation**: API field synchronization tools for maintaining up-to-date field mappings
+- 🎯 **Enhanced Type Safety**: Comprehensive Literal types for all 150+ searchable fields
+- 🔄 **Query Translation**: Cross-platform query translation (PubMed, Web of Science, etc.)
+- 💾 **Load/Save Queries**: Standard JSON format for query persistence and sharing
 
 See [CHANGELOG](../CHANGELOG.md) for full version history.
 
