@@ -26,6 +26,32 @@ for article in results:
     print(article.title)
 ```
 
+### Advanced Search with QueryBuilder
+
+```python
+from pyeuropepmc import QueryBuilder
+
+# Build complex queries with type safety
+qb = QueryBuilder()
+
+# Simple query
+query = qb.keyword("machine learning").build()
+print(f"Query: {query}")  # "machine learning"
+
+# Complex query with multiple conditions
+complex_query = (qb
+    .keyword("cancer", field="title")
+    .and_()
+    .keyword("therapy")
+    .and_()
+    .date_range(start_year=2020, end_year=2023)
+    .and_()
+    .citation_count(min_count=10)
+    .build())
+
+print(f"Complex query: {complex_query}")
+# "(TITLE:cancer) AND therapy AND (PUB_YEAR:[2020 TO 2023]) AND (CITED:[10 TO *])"
+```
 
 ### Advanced Search
 
@@ -66,9 +92,10 @@ with EuropePMC() as client:
 
 ## Next Steps
 
-- Read the [API Reference](api/README.md) for detailed documentation
-- Check out [Examples](examples/README.md) for more use cases
-- See [Advanced Usage](advanced/README.md) for complex scenarios
+- Read the [API Reference](../api/) for detailed documentation
+- Learn about [Query Builder](../features/query-builder-load-save-translate.md) for advanced query construction
+- Check out [Examples](../examples/) for more use cases
+- See [Advanced Usage](../advanced/) for complex scenarios
 
 ## Getting Help
 
