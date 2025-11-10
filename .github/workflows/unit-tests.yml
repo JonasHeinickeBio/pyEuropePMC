@@ -33,5 +33,5 @@ jobs:
       - name: Install dependencies
         run: poetry install --with dev --no-interaction --no-ansi
 
-      - name: Run unit tests (exclude integration/e2e)
-        run: poetry run pytest -q -m "not integration and not e2e"
+      - name: Run unit tests (exclude integration/e2e/functional)
+        run: poetry run pytest -q -m "not integration and not e2e and not functional"

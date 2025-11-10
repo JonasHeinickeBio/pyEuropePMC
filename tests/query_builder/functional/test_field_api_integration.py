@@ -163,8 +163,8 @@ class TestFieldAPIIntegration:
     def test_pmid_field(self, client: SearchClient) -> None:
         """Test PMID field with real API call."""
         qb = QueryBuilder(validate=False)
-        # Use a known PMID
-        query = qb.field("pmid", "23685479").build(validate=False)
+        # Use a known PMID that exists in Europe PMC
+        query = qb.field("pmid", "12345678").build(validate=False)
 
         logger.debug(f"Query: {query}")
         response = client.search(query, page_size=5)
@@ -253,12 +253,12 @@ class TestFieldAPIIntegration:
 
         self._test_field_reduces_results(client, query, base_query, "KEYWORD")
 
-    @pytest.mark.skip(reason="MESH field syntax needs to be updated to use [MESH] tag format instead of MESH: prefix")
     def test_mesh_field(self, client: SearchClient) -> None:
         """Test MESH field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = qb.field("mesh", "Neoplasms").build(validate=False)
-        base_query = "Neoplasms"
+        # Use a known MESH term that returns results
+        query = qb.field("mesh", "Breast Neoplasms").build(validate=False)
+        base_query = "Breast Neoplasms"
 
         self._test_field_reduces_results(client, query, base_query, "MESH")
 

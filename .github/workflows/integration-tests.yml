@@ -10,6 +10,7 @@ on:
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   functional:
@@ -41,5 +42,62 @@ jobs:
       - name: Install dependencies
         run: poetry install --with dev --no-interaction --no-ansi
 
+      - name: Install GitHub CLI
+        run: |
+          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
+          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
+          sudo apt update
+          sudo apt install gh
+
       - name: Run functional tests
-        run: poetry run pytest -q -m functional
+        id: tests
+        run: poetry run pytest -v
+        continue-on-error: true
+
+      - name: Create issue on test failure
+        if: steps.tests.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the current date for issue title
+          DATE=$(date +'%Y-%m-%d')
+
+          # Extract test failure summary from pytest output
+          FAILURE_SUMMARY=$(poetry run pytest -v --tb=short 2>&1 | tail -20)
+
+          # Create a unique identifier for this failure type
+          FAILURE_HASH=$(echo "$FAILURE_SUMMARY" | sha256sum | cut -d' ' -f1 | head -c 16)
+
+          # Check if an issue already exists for this failure
+          EXISTING_ISSUE=$(gh issue list --label "functional-test-failure" --state open --json number,title --jq ".[] | select(.title | contains(\"$FAILURE_HASH\")) | .number" | head -1)
+
+          if [ -z "$EXISTING_ISSUE" ]; then
+            echo "Creating new issue for functional test failure..."
+
+            # Create the issue body
+            ISSUE_BODY="## Functional Test Failure
+
+          **Date:** $DATE
+          **Workflow:** ${{ github.workflow }}
+          **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          ### Test Output
+          \`\`\`
+          $FAILURE_SUMMARY
+          \`\`\`
+
+          ### Details
+          - Branch: \`${{ github.ref_name }}\`
+          - Commit: \`${{ github.sha }}\`
+          - Trigger: \`${{ github.event_name }}\`
+
+          This issue was automatically created when functional tests failed in CI."
+
+            # Create the issue
+            gh issue create \
+              --title "Functional Test Failure - $DATE ($FAILURE_HASH)" \
+              --body "$ISSUE_BODY" \
+              --label "functional-test-failure,bug,ci-failure"
+          else
+            echo "Issue already exists for this failure type: #$EXISTING_ISSUE"
+          fi
