@@ -55,7 +55,7 @@ jobs:
 
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Pull Git LFS files
         run: git lfs pull || true
@@ -194,7 +194,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Pull Git LFS files
         run: git lfs pull
@@ -322,7 +322,7 @@ jobs:
 
       - name: Checkout code
         if: steps.platform-check.outputs.skip != 'true'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Python ${{ matrix.python-version }}
         if: steps.platform-check.outputs.skip != 'true'
@@ -458,7 +458,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Pull Git LFS files
         run: git lfs pull
@@ -531,7 +531,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
 
       - name: Pull Git LFS files
@@ -618,7 +618,7 @@ jobs:
     steps:
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
 
       - name: Pull Git LFS files
