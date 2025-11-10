@@ -5,6 +5,15 @@
 
 set -e
 
+# Load environment variables from .env file if it exists
+if [ -f ".env" ]; then
+    echo "🔧 Loading environment variables from .env file..."
+    set -a
+    source .env
+    set +a
+    echo "✅ Environment variables loaded"
+fi
+
 echo "🔍 CodeScene Code Health Analysis"
 echo "================================="
 
@@ -18,7 +27,7 @@ NC='\033[0m' # No Color
 # Check if CodeScene CLI is installed
 if ! command -v cs &> /dev/null; then
     echo -e "${RED}❌ CodeScene CLI not found. Please install it first.${NC}"
-    echo "Installation: curl https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh"
+    echo "Installation: curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y"
     exit 1
 fi
 
@@ -48,17 +57,65 @@ analyze_file() {
     echo
 }
 
-# Function to run delta analysis
-run_delta_analysis() {
-    echo -e "${BLUE}🔄 Running delta analysis against main branch...${NC}"
+# Function to run check analysis on all files
+run_check_analysis() {
+    echo -e "${BLUE}� Running CodeScene check analysis on all Python files...${NC}"
+    echo
 
-    if git rev-parse --verify main >/dev/null 2>&1; then
-        echo "Comparing current changes against main branch:"
-        cs delta main || echo -e "${YELLOW}⚠️  Delta analysis completed with findings${NC}"
-    else
-        echo -e "${YELLOW}⚠️  Main branch not found, analyzing staged changes instead:${NC}"
-        cs delta --staged || echo -e "${YELLOW}⚠️  Delta analysis completed with findings${NC}"
-    fi
+    local total_files=$(find src/ -name "*.py" -type f | wc -l)
+    local processed=0
+
+    find src/ -name "*.py" -type f | while read -r file; do
+        processed=$((processed + 1))
+        local relative_path=${file#./}
+        echo -e "${BLUE}📄 [$processed/$total_files] Checking: $relative_path${NC}"
+
+        # Run CodeScene check and capture output
+        if cs check "$file" 2>/dev/null; then
+            echo -e "${GREEN}✅ Check completed${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Issues found${NC}"
+        fi
+        echo
+    done
+
+    echo -e "${GREEN}✅ CodeScene check analysis completed! ($total_files files processed)${NC}"
+    echo
+}
+
+# Function to run review analysis on key files
+run_review_analysis() {
+    echo -e "${BLUE}🔬 Running CodeScene review analysis on key Python files...${NC}"
+    echo
+
+    # Create reviews directory
+    mkdir -p reviews_output
+
+    # Get top 10 files by size (likely most complex)
+    echo "Selecting top files for detailed review..."
+    local files_to_review=$(find src/ -name "*.py" -type f -exec wc -l {} \; | sort -nr | head -10 | awk '{print $2}')
+
+    local processed=0
+    echo "$files_to_review" | while read -r file; do
+        if [ -n "$file" ] && [ -f "$file" ]; then
+            processed=$((processed + 1))
+            local relative_path=${file#./}
+            local filename=$(basename "$file" .py)
+
+            echo -e "${BLUE}📋 [$processed/10] Reviewing: $relative_path${NC}"
+
+            # Run CodeScene review and save output
+            if cs review "$file" --output-format json > "reviews_output/${filename}_review.json" 2>/dev/null; then
+                echo -e "${GREEN}✅ Review completed and saved${NC}"
+            else
+                echo -e "${YELLOW}⚠️  Review failed or found issues${NC}"
+                echo '{"error": "Review failed"}' > "reviews_output/${filename}_review.json"
+            fi
+        fi
+    done
+
+    echo -e "${GREEN}✅ CodeScene review analysis completed!${NC}"
+    echo -e "${BLUE}💡 Review results saved in: reviews_output/${NC}"
     echo
 }
 
@@ -86,7 +143,10 @@ main() {
     echo "   • Reduce function arguments (keep ≤ 4 parameters)"
     echo "   • Break down complex conditionals"
     echo "   • Eliminate code duplication"
-    echo "   • Use 'cs review <file>' for detailed analysis"
+    echo "   • Use '$0 check' for lint-like analysis"
+    echo "   • Use '$0 review' for detailed file reviews"
+    echo "   • Use '$0 delta' for change analysis"
+    echo "   • Use '$0 all' for complete analysis suite"
 }
 
 # Run with command line arguments
@@ -94,13 +154,29 @@ case "${1:-}" in
     "delta")
         run_delta_analysis
         ;;
+    "check")
+        run_check_analysis
+        ;;
+    "review")
+        run_review_analysis
+        ;;
+    "all")
+        echo -e "${BLUE}🚀 Running complete CodeScene analysis suite...${NC}"
+        echo
+        run_check_analysis
+        run_review_analysis
+        run_delta_analysis
+        ;;
     "help"|"-h"|"--help")
         echo "Usage: $0 [command]"
         echo ""
         echo "Commands:"
-        echo "  delta    Run only delta analysis"
+        echo "  delta    Run only delta analysis (compares changes)"
+        echo "  check    Run check analysis on all Python files"
+        echo "  review   Run detailed review analysis on key files"
+        echo "  all      Run complete analysis suite (check + review + delta)"
         echo "  help     Show this help message"
-        echo "  (none)   Run full analysis"
+        echo "  (none)   Run full analysis (legacy mode)"
         ;;
     *)
         main
