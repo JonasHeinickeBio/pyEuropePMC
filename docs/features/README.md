@@ -85,91 +85,147 @@ print(f"Coverage: {coverage['coverage_percentage']:.1f}%")
 
 ---
 
-### [Caching](caching/)
-**Smart response caching for improved performance**
+### [🔧 Query Builder](query-builder-load-save-translate.md)
+**Advanced fluent API for building complex search queries with type safety**
 
-- Automatic response caching
-- Configurable cache strategies
-- TTL (time-to-live) support
-- Cache invalidation
-- Disk-based persistent cache
-- Memory-efficient storage
+- Type-safe field specifications (150+ searchable fields)
+- Fluent method chaining with boolean logic (AND/OR/NOT)
+- Citation count and date range filtering
+- Query validation using CoLRev search-query package
+- Cross-platform query translation (PubMed, Web of Science, etc.)
+- Load/save queries in standard JSON format
+- Query evaluation with recall/precision metrics
+- Systematic review integration with PRISMA compliance
 
 **Quick Example:**
 ```python
-from pyeuropepmc import SearchClient
+from pyeuropepmc import QueryBuilder
 
-# Caching is enabled by default
-with SearchClient() as client:
-    results = client.search("CRISPR")  # First call - hits API
-    results = client.search("CRISPR")  # Second call - from cache
+qb = QueryBuilder()
+query = (qb
+    .keyword("cancer", field="title")
+    .and_()
+    .citation_count(min_count=50)
+    .and_()
+    .date_range(start_year=2020)
+    .build())
+# Result: "(TITLE:cancer) AND (CITED:[50 TO *]) AND (PUB_YEAR:[2020 TO *])"
 ```
 
-**[Learn More →](caching/)**
+**[Learn More →](query-builder-load-save-translate.md)**
 
 ---
 
-## 🎯 Feature Comparison
+### [📋 Systematic Review Tracking](systematic-review-tracking.md)
+**PRISMA/Cochrane-compliant search logging and audit trails**
 
-| Feature | SearchClient | FullTextClient | FullTextXMLParser | FTPDownloader |
-|---------|-------------|---------------|-------------------|---------------|
-| **Search Europe PMC** | ✅ | - | - | - |
-| **Download PDFs** | - | ✅ | - | ✅ |
-| **Download XML** | - | ✅ | - | - |
-| **Parse XML** | - | - | ✅ | - |
-| **Extract Metadata** | - | - | ✅ | - |
-| **Extract Tables** | - | - | ✅ | - |
-| **Bulk Downloads** | - | - | - | ✅ |
-| **Caching** | ✅ | ✅ | - | - |
+- Complete systematic review workflow support
+- Search log integration with `log_to_search()` method
+- Raw results saving for reproducibility
+- PRISMA flow diagram data generation
+- Audit trails for research transparency
+
+**Quick Example:**
+```python
+from pyeuropepmc import QueryBuilder
+from pyeuropepmc.utils.search_logging import start_search
+
+log = start_search("Cancer Review", executed_by="Researcher")
+qb = QueryBuilder().keyword("cancer").and_().field("open_access", True)
+qb.log_to_search(log, filters={"open_access": True}, results_returned=100)
+```
+
+**[Learn More →](systematic-review-tracking.md)**
+
+---
+
+## 📊 Feature Comparison
+
+| Feature | SearchClient | FullTextClient | FullTextXMLParser | FTPDownloader | QueryBuilder |
+|---------|-------------|---------------|-------------------|---------------|--------------|
+| **Search Europe PMC** | ✅ | - | - | - | ✅ |
+| **Build Complex Queries** | - | - | - | - | ✅ |
+| **Type-Safe Fields** | - | - | - | - | ✅ |
+| **Query Validation** | - | - | - | - | ✅ |
+| **Query Translation** | - | - | - | - | ✅ |
+| **Download PDFs** | - | ✅ | - | ✅ | - |
+| **Download XML** | - | ✅ | - | - | - |
+| **Parse XML** | - | - | ✅ | - | - |
+| **Extract Metadata** | - | - | ✅ | - | - |
+| **Extract Tables** | - | - | ✅ | - | - |
+| **Bulk Downloads** | - | - | - | ✅ | - |
+| **Systematic Review Logging** | - | - | - | - | ✅ |
+| **Caching** | ✅ | ✅ | - | - | - |
 | **Progress Tracking** | - | ✅ | - | ✅ |
 
 ---
 
 ## 🚀 Common Workflows
 
-### Workflow 1: Search → Download → Parse
+### Workflow 1: Advanced Query → Search → Parse
 
 ```python
-from pyeuropepmc import SearchClient, FullTextClient, FullTextXMLParser
+from pyeuropepmc import QueryBuilder, SearchClient, FullTextXMLParser
 
-# Step 1: Search for papers
-with SearchClient() as search_client:
-    results = search_client.search("machine learning in biology", pageSize=10)
-    pmcids = [paper.get('pmcid') for paper in results['resultList']['result']
-              if paper.get('pmcid')]
+# Step 1: Build complex query with QueryBuilder
+qb = QueryBuilder()
+query = (qb
+    .keyword("machine learning", field="title")
+    .and_()
+    .citation_count(min_count=25)
+    .and_()
+    .date_range(start_year=2020)
+    .build())
 
-# Step 2: Download XML
-with FullTextClient() as fulltext_client:
-    for pmcid in pmcids:
-        xml_path = fulltext_client.download_xml_by_pmcid(pmcid)
+# Step 2: Search with the query
+with SearchClient() as client:
+    results = client.search(query, pageSize=20, sort="CITED desc")
 
-        # Step 3: Parse and extract
-        with open(xml_path) as f:
-            parser = FullTextXMLParser(f.read())
+    # Step 3: Process results
+    for paper in results['resultList']['result']:
+        if paper.get('pmcid'):
+            # Download and parse XML
+            xml_content = client.get_fulltext_xml(paper['pmcid'])
+            parser = FullTextXMLParser(xml_content)
             metadata = parser.extract_metadata()
-            tables = parser.extract_tables()
-
-            print(f"Paper: {metadata['title']}")
-            print(f"Tables: {len(tables)}")
+            print(f"High-impact paper: {metadata['title']}")
 ```
 
-### Workflow 2: Bulk Download → Batch Process
+### Workflow 2: Systematic Review with Audit Trail
 
 ```python
-from pyeuropepmc import FTPDownloader, FullTextXMLParser
+from pyeuropepmc import QueryBuilder
+from pyeuropepmc.utils.search_logging import start_search
 
-# Bulk download PDFs
-downloader = FTPDownloader()
-results = downloader.bulk_download_and_extract(
-    pmcids=["1234567", "2345678", "3456789"],
-    output_dir="./papers"
-)
+# Start systematic review
+log = start_search("ML in Biology Review", executed_by="Researcher Name")
 
-# Batch process XML files
-for xml_file in results['xml_files']:
-    with open(xml_file) as f:
-        parser = FullTextXMLParser(f.read())
-        # Process each paper...
+# Build comprehensive search strategy
+qb = QueryBuilder()
+comprehensive_query = (qb
+    .keyword("machine learning")
+    .and_()
+    .keyword("biology")
+    .and_()
+    .field("open_access", True)
+    .and_()
+    .date_range(start_year=2019)
+    .build())
+
+# Execute and log search
+with SearchClient() as client:
+    results = client.search(comprehensive_query, pageSize=100)
+
+    # Log for systematic review compliance
+    qb.log_to_search(
+        search_log=log,
+        filters={"open_access": True, "date_range": "2019+"},
+        results_returned=len(results['resultList']['result']),
+        notes="Comprehensive ML in biology search"
+    )
+
+# Save review log
+log.save("systematic_review_log.json")
 ```
 
 ### Workflow 3: Advanced Search → Filter → Extract

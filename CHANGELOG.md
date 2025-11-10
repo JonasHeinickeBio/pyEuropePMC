@@ -2,6 +2,93 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [1.8.1] - 2025-11-06
+
+### Added
+
+- **Advanced Query Builder**: Complete fluent API for building complex Europe PMC search queries
+  - Type-safe field specifications with 150+ searchable fields
+  - Fluent method chaining for complex boolean logic (AND/OR/NOT)
+  - Optional query validation using CoLRev search-query package
+  - Load/save queries in standard JSON format
+  - Cross-platform query translation (PubMed, Web of Science, etc.)
+  - Query evaluation with recall/precision metrics
+
+- **Systematic Review Tracking**: PRISMA/Cochrane-compliant search logging
+  - `log_to_search()` method for tracking queries in systematic reviews
+  - Integration with search logging utilities for audit trails
+  - Raw results saving for reproducibility
+  - PRISMA flow diagram data generation
+  - Complete systematic review workflow support
+
+- **Field Coverage Validation**: API field synchronization tools
+  - `validate_field_coverage()` function to check API vs code field coverage
+  - `get_available_fields()` for fetching current API fields
+  - Automated field metadata validation
+
+### Improved
+
+- Enhanced type safety with comprehensive Literal types for all search fields
+- Better error handling with specific error codes and context
+- Improved documentation with extensive examples and API reference
+- Graceful fallback when optional dependencies are missing
+
+## [1.8.0] - 2025-10-15
+
+### Added
+
+- AI-powered Feature Suggester GitHub Action for automated feature suggestions
+
+## [1.7.0] - 2025-09-20
+
+### Added
+
+- **Full Text XML Parser**: Comprehensive XML parsing with metadata extraction
+  - Support for table and figure extraction from full-text XML
+  - Multiple output format conversions
+  - Enhanced metadata parsing capabilities
+
+## [1.6.0] - 2025-08-25
+
+### Added
+
+- **Advanced Filtering Utilities**: Powerful post-query result filtering
+  - `filter_pmc_papers()`: AND logic filtering with MeSH, keywords, and abstract matching
+  - `filter_pmc_papers_or()`: OR logic filtering for broader result sets
+  - Case-insensitive and partial matching support
+
+## [1.5.0] - 2025-08-10
+
+### Added
+
+- **Optional Disk Cache Integration**: Performance optimization with safe fallbacks
+  - Disk-based caching using diskcache library
+  - Backward compatibility when diskcache is not installed
+  - Type-safe implementation with proper error handling
+
+## [1.4.0] - 2025-07-28
+
+### Added
+
+- **Comprehensive Test Suite**: Expanded testing coverage
+  - Additional unit tests for all functionality
+  - Improved test organization and coverage reporting
+
+### Improved
+
+- Enhanced documentation with detailed usage examples
+- Better code organization and maintainability
+
+## [1.3.0] - 2025-07-22
+
+### Added
+
+- **Full-Text Content Retrieval**: Complete full-text access implementation
+  - `FullTextClient` for downloading PDF, XML, and HTML content
+  - Multiple fallback endpoints for robust retrieval
+  - Intelligent content availability checking
+  - Atomic download operations with proper error handling
+
 ## [1.2.0] - 2025-07-16
 
 ### Added
@@ -29,6 +116,35 @@ All notable changes to PyEuropePMC are documented here.
 - Updated documentation with full-text API reference
 - Improved type annotations throughout the codebase
 - Better rate limiting and respectful API usage
+
+## [1.1.0] - 2025-06-25
+
+### Added
+
+- **Enhanced BaseAPIClient**: Improved session management and context support
+- **Advanced Search Parameter Validation**: Better input validation and error handling
+- **Unit Tests**: Comprehensive test coverage for search functionality
+- **Copilot Instructions**: Coding standards and development guidelines
+
+### Improved
+
+- Enhanced EuropePMCParser error handling
+- Better CI/CD pipeline with coverage reporting
+- Improved documentation and usage examples
+
+## [1.0.2] - 2025-06-15
+
+### Fixed
+
+- Minor bug fixes and improvements
+- CI/CD pipeline refinements
+
+## [1.0.1] - 2025-06-12
+
+### Fixed
+
+- Python setup and dependency configuration fixes
+- Semantic release configuration updates
 
 ## [1.0.0] - 2025-06-10
 

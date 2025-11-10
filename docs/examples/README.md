@@ -5,29 +5,221 @@ This section contains practical examples of using PyEuropePMC for various tasks.
 ## Table of Contents
 
 - [Basic Examples](#basic-examples)
+- [Query Builder Examples](#query-builder-examples)
 - [Search Examples](#search-examples)
 - [Data Processing Examples](#data-processing-examples)
 - [Advanced Use Cases](#advanced-use-cases)
 
-## Basic Examples
+## Query Builder Examples
 
-### Simple Article Search
+### Basic Query Building
 
 ```python
-from pyeuropepmc import EuropePMC
+from pyeuropepmc import QueryBuilder
 
-# Initialize client
-client = EuropePMC()
+qb = QueryBuilder()
 
-# Search for articles about machine learning
-results = client.search("machine learning", limit=10)
+# Simple keyword search
+query1 = qb.keyword("machine learning").build()
+print(query1)  # "machine learning"
 
-# Print basic information
-for article in results:
-    print(f"Title: {article.title}")
-    print(f"Journal: {article.journal}")
-    print(f"Year: {article.pub_year}")
-    print("---")
+# Field-specific search
+query2 = qb.field("author", "Smith J").build()
+print(query2)  # "AUTH:Smith J"
+
+# Boolean operators
+query3 = qb.keyword("cancer").and_().keyword("therapy").build()
+print(query3)  # "cancer AND therapy"
+```
+
+### Advanced Query Patterns
+
+```python
+# Complex query with multiple conditions
+complex_query = (qb
+    .keyword("CRISPR", field="title")
+    .and_()
+    .keyword("gene editing")
+    .and_()
+    .date_range(start_year=2018, end_year=2023)
+    .and_()
+    .citation_count(min_count=50)
+    .build())
+
+print(complex_query)
+# "(TITLE:CRISPR) AND gene editing AND (PUB_YEAR:[2018 TO 2023]) AND (CITED:[50 TO *])"
+```
+
+### Citation and Date Filtering
+
+```python
+# High-impact papers from specific period
+high_impact_query = (qb
+    .keyword("artificial intelligence")
+    .and_()
+    .citation_count(min_count=100, max_count=1000)
+    .and_()
+    .date_range(start_year=2020)
+    .build())
+
+# Recent papers with open access
+recent_oa_query = (qb
+    .keyword("COVID-19")
+    .and_()
+    .field("open_access", True)
+    .and_()
+    .date_range(start_year=2020)
+    .build())
+```
+
+### OR Logic and Grouping
+
+```python
+# OR logic for synonyms
+synonym_query = (qb
+    .keyword("machine learning")
+    .or_()
+    .keyword("artificial intelligence")
+    .or_()
+    .keyword("deep learning")
+    .build())
+
+# Grouped sub-queries
+diseases = QueryBuilder().keyword("cancer").or_().keyword("tumor").or_().keyword("neoplasm")
+therapies = QueryBuilder().keyword("therapy").or_().keyword("treatment").or_().keyword("intervention")
+
+combined_query = (qb
+    .group(diseases)
+    .and_()
+    .group(therapies)
+    .and_()
+    .field("pub_year", 2023)
+    .build())
+```
+
+### Field-Specific Searches
+
+```python
+# Author and affiliation searches
+author_query = qb.field("author", "John Smith").build()
+affiliation_query = qb.field("affiliation", "Harvard University").build()
+
+# Journal and publication type
+journal_query = qb.field("journal", "Nature").build()
+review_query = qb.field("pub_type", "review").build()
+
+# MeSH terms and keywords
+mesh_query = qb.field("mesh", "Gene Therapy").build()
+keyword_query = qb.field("keyword", "CRISPR").build()
+```
+
+### PMC and DOI Searches
+
+```python
+# PMC ID search (automatically adds PMC prefix)
+pmc_query = qb.pmcid("1234567").build()  # "PMCID:PMC1234567"
+
+# DOI search
+doi_query = qb.field("doi", "10.1038/nature12345").build()
+
+# Accession type search (automatically lowercased)
+accession_query = qb.accession_type("PDB").build()  # "ACCESSION_TYPE:pdb"
+```
+
+### Citation Network Queries
+
+```python
+# Find papers that cite a specific article
+citing_query = qb.cites("8521067", source="med").build()
+
+# Find highly cited papers
+highly_cited = (qb
+    .keyword("neural networks")
+    .and_()
+    .citation_count(min_count=500)
+    .build())
+```
+
+### Query Persistence and Translation
+
+```python
+# Save query to file
+qb.save("my_search.json",
+        platform="pubmed",
+        authors=[{"name": "Researcher Name", "ORCID": "0000-0000-0000-0001"}])
+
+# Load query from file
+loaded_qb = QueryBuilder.from_file("my_search.json")
+
+# Translate to different platforms
+pubmed_query = loaded_qb.build()
+wos_query = loaded_qb.translate("wos")  # Web of Science syntax
+ebsco_query = loaded_qb.translate("ebsco")  # EBSCO syntax
+```
+
+### Systematic Review Integration
+
+```python
+from pyeuropepmc.utils.search_logging import start_search
+
+# Start systematic review log
+log = start_search("AI in Healthcare Review", executed_by="Dr. Smith")
+
+# Build comprehensive search
+comprehensive_search = (qb
+    .keyword("artificial intelligence")
+    .and_()
+    .keyword("healthcare")
+    .and_()
+    .date_range(start_year=2018)
+    .and_()
+    .field("open_access", True)
+    .build())
+
+# Log the search for systematic review
+qb.log_to_search(
+    search_log=log,
+    database="Europe PMC",
+    filters={
+        "date_range": "2018+",
+        "open_access": True,
+        "keywords": ["artificial intelligence", "healthcare"]
+    },
+    results_returned=250,
+    notes="Comprehensive search for AI in healthcare literature"
+)
+
+# Save the review log
+log.save("systematic_review_searches.json")
+```
+
+### Query Evaluation and Optimization
+
+```python
+# Evaluate search effectiveness
+test_records = {
+    "r1": {"title": "AI in cancer diagnosis", "colrev_status": "rev_included"},
+    "r2": {"title": "Machine learning for drug discovery", "colrev_status": "rev_included"},
+    "r3": {"title": "Weather prediction models", "colrev_status": "rev_excluded"}
+}
+
+evaluation = qb.evaluate(test_records)
+print(f"Recall: {evaluation['recall']:.2f}")
+print(f"Precision: {evaluation['precision']:.2f}")
+print(f"F1 Score: {evaluation['f1_score']:.2f}")
+```
+
+### Custom Field Transformations
+
+```python
+# Use transform parameter for custom value processing
+custom_query = (qb
+    .field("pmcid", "1234567", transform=lambda x: f"PMC{x}" if not str(x).startswith("PMC") else str(x))
+    .and_()
+    .field("accession_type", "GENBANK", transform=str.lower)
+    .build())
+
+print(custom_query)  # "PMCID:PMC1234567 AND ACCESSION_TYPE:genbank"
 ```
 
 ### Fetching Article by ID

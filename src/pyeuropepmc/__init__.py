@@ -11,7 +11,7 @@ Example usage:
     >>> papers = client.search_and_parse("COVID-19", format="json")
 """
 
-__version__ = "1.2.0"
+__version__ = "1.8.1"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
@@ -24,6 +24,7 @@ from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .parser import EuropePMCParser
+from .query_builder import QueryBuilder
 from .search import EuropePMCError, SearchClient
 
 # Convenience imports for common usage patterns
@@ -45,6 +46,7 @@ __all__ = [
     "FullTextXMLParser",
     "BaseAPIClient",
     "ProgressInfo",
+    "QueryBuilder",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",

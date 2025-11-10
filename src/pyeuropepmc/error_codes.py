@@ -62,6 +62,12 @@ class ErrorCodes(Enum):
     CONFIG002 = "CONFIG002"
     CONFIG003 = "CONFIG003"
 
+    # Query Builder Error Codes (QUERY)
+    QUERY001 = "QUERY001"
+    QUERY002 = "QUERY002"
+    QUERY003 = "QUERY003"
+    QUERY004 = "QUERY004"
+
     # Generic Error Codes (for auto-generated errors)
     GENERIC001 = "GENERIC001"  # Generic PyEuropePMCError
     GENERIC002 = "GENERIC002"  # Generic APIClientError
@@ -125,6 +131,11 @@ ERROR_MESSAGES: dict[str, str] = {
     ErrorCodes.CONFIG001.value: "Required configuration missing.",
     ErrorCodes.CONFIG002.value: "Invalid configuration value.",
     ErrorCodes.CONFIG003.value: "Dependency error or missing library.",
+    # Query Builder Error Codes (QUERY)
+    ErrorCodes.QUERY001.value: "Invalid or empty query term or field.",
+    ErrorCodes.QUERY002.value: "Invalid parameter value or range.",
+    ErrorCodes.QUERY003.value: "Invalid logical operator placement.",
+    ErrorCodes.QUERY004.value: "Query validation failed: {error}",
     # Generic Error Codes (for auto-generated errors)
     ErrorCodes.GENERIC001.value: "An error occurred in PyEuropePMC.",
     ErrorCodes.GENERIC002.value: "An API client error occurred.",
