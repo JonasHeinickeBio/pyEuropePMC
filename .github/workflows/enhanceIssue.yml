@@ -18,7 +18,7 @@ jobs:
 
       - name: Run AI inference
         id: inference
-        uses: actions/ai-inference@v1
+        uses: actions/ai-inference@v2
         with:
           prompt: |
             Please rewrite the following GitHub issue for clarity and structure.
