@@ -113,85 +113,15 @@ Example usage:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from datetime import datetime
+from json import JSONDecodeError
 import logging
 from typing import Any, Literal
 
-try:
-    from search_query import AndQuery, OrQuery, Query, SearchFile
-    from search_query.parser import parse
-    from search_query.search_file import load_search_file
-
-    SEARCH_QUERY_AVAILABLE = True
-except ImportError:
-    SEARCH_QUERY_AVAILABLE = False
-    # Provide fallback when search-query is not installed
-    from typing import Any as _Any
-
-    Query = _Any
-    AndQuery = _Any
-    OrQuery = _Any
-
-    class SearchFile:  # type: ignore[no-redef]
-        """
-        Minimal typed stub for SearchFile to satisfy static checkers and
-        provide a simple save() implementation when search-query is missing.
-        This stub is only used to satisfy type-checking and basic JSON save in
-        environments where search-query is not installed. Runtime code paths
-        that require full search-query behaviour still raise ImportError.
-        """
-
-        def __init__(
-            self,
-            search_string: str,
-            platform: str,
-            version: dict[str, _Any] | None = None,
-            authors: list[dict[str, str]] | None = None,
-            record_info: dict[str, _Any] | None = None,
-            date: dict[str, str] | None = None,
-            database: dict[str, _Any] | None = None,
-            generic_query: dict[str, _Any] | None = None,
-        ) -> None:
-            self.search_string = search_string
-            self.platform = platform
-            self.version = version or {}
-            self.authors = authors or []
-            self.record_info = record_info or {}
-            self.date = date or {}
-            self.database = database or {}
-            self.generic_query = generic_query or {}
-
-        def save(self, file_path: str) -> None:
-            # Simple JSON dump compatible with the expected search-file format.
-            import json
-
-            payload = {
-                "search_string": self.search_string,
-                "platform": self.platform,
-                "version": self.version,
-                "authors": self.authors,
-                "record_info": self.record_info,
-                "date": self.date,
-                "database": self.database,
-                "generic_query": self.generic_query,
-            }
-            with open(file_path, "w", encoding="utf-8") as fh:
-                json.dump(payload, fh, ensure_ascii=False, indent=2)
-
-    def parse(*args: _Any, **kwargs: _Any) -> _Any:
-        """Fallback parse function when search-query is not available."""
-        raise ImportError(
-            "search-query package is required for query validation. "
-            "Install it with: pip install search-query"
-        )
-
-    def load_search_file(*args: _Any, **kwargs: _Any) -> _Any:
-        """Fallback load_search_file function when search-query is not available."""
-        raise ImportError(
-            "search-query package is required for loading search files. "
-            "Install it with: pip install search-query"
-        )
-
+from search_query import SearchFile
+from search_query.parser import parse
+from search_query.search_file import load_search_file
 
 from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import QueryBuilderError
@@ -213,7 +143,7 @@ SPECIAL_QUERY_CHARS = [" ", ":", "(", ")", "[", "]", "{", "}", "AND", "OR", "NOT
 
 
 # Europe PMC searchable fields (from official API documentation)
-# Last updated: 2025-11-05 from https://www.ebi.ac.uk/europepmc/webservices/rest/fields
+# Last updated: 2025-11-07 from https://www.ebi.ac.uk/europepmc/webservices/rest/fields
 
 # Field metadata: Maps lowercase field names to (API_NAME, description)
 FIELD_METADATA: dict[str, tuple[str, str]] = {
@@ -231,7 +161,7 @@ FIELD_METADATA: dict[str, tuple[str, str]] = {
     "pub_year": ("PUB_YEAR", "Publication year"),
     "pub_type": ("PUB_TYPE", "Publication type (e.g., journal article, review)"),
     "doi": ("DOI", "Digital Object Identifier"),
-    "pmid": ("PMID", "PubMed identifier"),
+    "pmid": ("EXT_ID", "PubMed identifier"),
     "pmcid": ("PMCID", "PubMed Central identifier"),
     "ext_id": ("EXT_ID", "External repository-level identifier"),
     # Date fields
@@ -391,167 +321,6 @@ FIELD_METADATA: dict[str, tuple[str, str]] = {
     "text_synonyms": ("text_synonyms", "Text synonym expansion (internal use)"),
 }
 
-# Type hint for valid field names
-FieldType = Literal[
-    "title",
-    "abstract",
-    "author",
-    "auth",
-    "journal",
-    "issn",
-    "essn",
-    "volume",
-    "issue",
-    "page_info",
-    "pub_year",
-    "pub_type",
-    "doi",
-    "pmid",
-    "pmcid",
-    "ext_id",
-    "e_pdate",
-    "first_pdate",
-    "first_idate",
-    "first_idate_d",
-    "p_pdate",
-    "embargo_date",
-    "creation_date",
-    "update_date",
-    "index_date",
-    "ft_cdate",
-    "ft_cdate_d",
-    "affiliation",
-    "aff",
-    "investigator",
-    "authorid",
-    "authorid_type",
-    "auth_first",
-    "auth_last",
-    "auth_collective_list",
-    "author_roles",
-    "language",
-    "lang",
-    "grant_agency",
-    "grant_agency_id",
-    "grant_id",
-    "funder_initiative",
-    "keyword",
-    "kw",
-    "mesh",
-    "chemical",
-    "chem",
-    "disease",
-    "disease_id",
-    "gene_protein",
-    "goterm",
-    "goterm_id",
-    "organism",
-    "organism_id",
-    "chebiterm",
-    "chebiterm_id",
-    "experimental_method",
-    "experimental_method_id",
-    "auth_man",
-    "auth_man_id",
-    "epmc_auth_man",
-    "nih_auth_man",
-    "embargoed_man",
-    "has_abstract",
-    "has_pdf",
-    "has_text",
-    "has_ft",
-    "has_fulltext",
-    "has_fulltextdata",
-    "has_free_fulltext",
-    "has_reflist",
-    "has_tm",
-    "has_xrefs",
-    "has_suppl",
-    "has_labslinks",
-    "has_data",
-    "has_book",
-    "has_preprint",
-    "has_published_version",
-    "has_version_evaluations",
-    "open_access",
-    "in_pmc",
-    "in_epmc",
-    "has_uniprot",
-    "has_embl",
-    "has_pdb",
-    "has_intact",
-    "has_interpro",
-    "has_chebi",
-    "has_chembl",
-    "has_omim",
-    "has_arxpr",
-    "has_crd",
-    "has_doi",
-    "has_pride",
-    "uniprot_pubs",
-    "embl_pubs",
-    "pdb_pubs",
-    "intact_pubs",
-    "interpro_pubs",
-    "chebi_pubs",
-    "chembl_pubs",
-    "omim_pubs",
-    "arxpr_pubs",
-    "crd_links",
-    "labs_pubs",
-    "pride_pubs",
-    "accession_id",
-    "accession_type",
-    "ft_id",
-    "embl_ror_id",
-    "org_id",
-    "citation_count",
-    "cites",
-    "cited",
-    "reffed_by",
-    "source",
-    "src",
-    "license",
-    "subset",
-    "resource_name",
-    "isbn",
-    "book_id",
-    "editor",
-    "ed",
-    "publisher",
-    "parent_title",
-    "series_name",
-    "abbr",
-    "ack_fund",
-    "appendix",
-    "auth_con",
-    "case",
-    "comp_int",
-    "concl",
-    "discuss",
-    "fig",
-    "intro",
-    "methods",
-    "other",
-    "ref",
-    "results",
-    "suppl",
-    "table",
-    "body",
-    "back",
-    "back_noref",
-    "data_availability",
-    "title_abs",
-    "annotation_provider",
-    "annotation_type",
-    "shard",
-    "qn1",
-    "qn2",
-    "_version_",
-    "text_hl",
-    "text_synonyms",
-]
-
 
 class QueryBuilder:
     """
@@ -615,12 +384,12 @@ class QueryBuilder:
         """
         self._parts: list[str] = []
         self._last_operator: str | None = None
-        self._validate = validate and SEARCH_QUERY_AVAILABLE
+        self._validate = validate
         self._parsed_query: Any = None  # Cached Query object
         self._search_file: Any = None  # Metadata from loaded file
         self._platform: str = "pubmed"  # Default platform
 
-        if validate and not SEARCH_QUERY_AVAILABLE:
+        if validate:
             import warnings
 
             warnings.warn(
@@ -1131,7 +900,7 @@ class QueryBuilder:
         self._validate_query_parts()
         query = " ".join(self._parts)
 
-        if validate and self._validate and SEARCH_QUERY_AVAILABLE:
+        if validate and self._validate:
             query = self._validate_and_clean_query(query)
 
         return query
@@ -1261,12 +1030,6 @@ class QueryBuilder:
         QueryBuilderError
             If query string is invalid or cannot be parsed
         """
-        if not SEARCH_QUERY_AVAILABLE:
-            raise ImportError(
-                "search-query package is required for loading queries. "
-                "Install it with: pip install search-query"
-            )
-
         if not query_string or not query_string.strip():
             context = {"query_string": query_string}
             raise QueryBuilderError(ErrorCodes.QUERY001, context)
@@ -1282,6 +1045,15 @@ class QueryBuilder:
             builder._last_operator = None
 
             return builder
+        except ImportError as e:
+            if "search_query" in str(e):
+                raise QueryBuilderError(
+                    ErrorCodes.CONFIG003,
+                    {"dependency": "search-query"},
+                    message="search-query package is required",
+                ) from e
+            else:
+                raise
         except Exception as e:
             context = {"query_string": query_string, "platform": platform, "error": str(e)}
             raise QueryBuilderError(ErrorCodes.QUERY004, context) from e
@@ -1328,12 +1100,6 @@ class QueryBuilder:
         QueryBuilderError
             If the file format is invalid
         """
-        if not SEARCH_QUERY_AVAILABLE:
-            raise ImportError(
-                "search-query package is required for loading search files. "
-                "Install it with: pip install search-query"
-            )
-
         try:
             # Load the search file
             search_file = load_search_file(file_path)
@@ -1352,6 +1118,15 @@ class QueryBuilder:
         except FileNotFoundError as e:
             context = {"file_path": file_path}
             raise FileNotFoundError(f"Search file not found: {file_path}") from e
+        except ImportError as e:
+            if "search_query" in str(e):
+                raise QueryBuilderError(
+                    ErrorCodes.CONFIG003,
+                    {"dependency": "search-query"},
+                    message="search-query package is required",
+                ) from e
+            else:
+                raise
         except Exception as e:
             context = {"file_path": file_path, "error": str(e)}
             raise QueryBuilderError(ErrorCodes.QUERY004, context) from e
@@ -1400,46 +1175,53 @@ class QueryBuilder:
         QueryBuilderError
             If query is empty or invalid
         """
-        if not SEARCH_QUERY_AVAILABLE:
-            raise ImportError(
-                "search-query package is required for saving queries. "
-                "Install it with: pip install search-query"
-            )
-
         # Build the query string
         query_string = self.build(validate=False)
 
-        # Get or create parsed query
-        if self._parsed_query is not None:
-            parsed_query = self._parsed_query
-        else:
-            parsed_query = parse(query_string, platform=platform)
+        try:
+            # Get or create parsed query
+            if self._parsed_query is not None:
+                parsed_query = self._parsed_query
+            else:
+                parsed_query = parse(query_string, platform=platform)
 
-        # Prepare generic query if requested
-        generic_query_str = None
-        if include_generic:
-            generic_query = parsed_query.translate(target_syntax="generic")
-            generic_query_str = generic_query.to_generic_string()
+            # Prepare generic query if requested
+            generic_query_str = None
+            if include_generic:
+                generic_query = parsed_query.translate(target_syntax="generic")
+                generic_query_str = generic_query.to_generic_string()
 
-        # Create SearchFile object
-        # Pass dict-typed values for fields that some search-file implementations
-        # expect as mappings (satisfies static type checkers).
-        search_file = SearchFile(
-            search_string=query_string,
-            platform=platform,
-            version={"version": "1"},
-            authors=authors or [],
-            record_info=record_info or {},
-            date=date_info or {},
-            database={"databases": database or []},
-            generic_query={"generic_query": generic_query_str}
-            if generic_query_str is not None
-            else {},
-        )
+            # Create SearchFile object
+            # Pass dict-typed values for fields that some search-file implementations
+            # expect as mappings (satisfies static type checkers).
+            search_file = SearchFile(
+                search_string=query_string,
+                platform=platform,
+                version={"version": "1"},
+                authors=authors or [],
+                record_info=record_info or {},
+                date=date_info or {},
+                database={"databases": database or []},
+                generic_query={"generic_query": generic_query_str}
+                if generic_query_str is not None
+                else {},
+            )
 
-        # Save to file
-        search_file.save(file_path)
-        logger.info("Query saved to %s", file_path)
+            # Save to file
+            search_file.save(file_path)
+            logger.info("Query saved to %s", file_path)
+        except ImportError as e:
+            if "search_query" in str(e):
+                raise QueryBuilderError(
+                    ErrorCodes.CONFIG003,
+                    {"dependency": "search-query"},
+                    message="search-query package is required",
+                ) from e
+            else:
+                raise
+        except Exception as e:
+            context = {"file_path": file_path, "error": str(e)}
+            raise QueryBuilderError(ErrorCodes.QUERY004, context) from e
 
     def translate(self, target_platform: str) -> str:
         """
@@ -1476,12 +1258,6 @@ class QueryBuilder:
         QueryBuilderError
             If translation fails
         """
-        if not SEARCH_QUERY_AVAILABLE:
-            raise ImportError(
-                "search-query package is required for query translation. "
-                "Install it with: pip install search-query"
-            )
-
         try:
             # Build current query
             query_string = self.build(validate=False)
@@ -1500,6 +1276,15 @@ class QueryBuilder:
             # Return as string
             result: str = translated_query.to_string()
             return result
+        except ImportError as e:
+            if "search_query" in str(e):
+                raise QueryBuilderError(
+                    ErrorCodes.CONFIG003,
+                    {"dependency": "search-query"},
+                    message="search-query package is required",
+                ) from e
+            else:
+                raise
         except Exception as e:
             context = {
                 "target_platform": target_platform,
@@ -1537,20 +1322,24 @@ class QueryBuilder:
         ImportError
             If search-query package is not installed
         """
-        if not SEARCH_QUERY_AVAILABLE:
-            raise ImportError(
-                "search-query package is required for Query objects. "
-                "Install it with: pip install search-query"
-            )
-
         # Return cached if available
         if self._parsed_query is not None:
             return self._parsed_query
 
-        # Parse and cache
-        query_string = self.build(validate=False)
-        self._parsed_query = parse(query_string, platform=platform)
-        return self._parsed_query
+        try:
+            # Parse and cache
+            query_string = self.build(validate=False)
+            self._parsed_query = parse(query_string, platform=platform)
+            return self._parsed_query
+        except ImportError as e:
+            if "search_query" in str(e):
+                raise QueryBuilderError(
+                    ErrorCodes.CONFIG003,
+                    {"dependency": "search-query"},
+                    message="search-query package is required",
+                ) from e
+            else:
+                raise
 
     def evaluate(
         self, records: dict[str, dict[str, str]], platform: str = "pubmed"
@@ -1599,19 +1388,23 @@ class QueryBuilder:
         effectiveness but no consensus on appropriate use. Journal of Clinical
         Epidemiology 99: 53–63. DOI: 10.1016/J.JCLINEPI.2018.02.025.
         """
-        if not SEARCH_QUERY_AVAILABLE:
-            raise ImportError(
-                "search-query package is required for query evaluation. "
-                "Install it with: pip install search-query"
-            )
+        try:
+            # Get Query object
+            query_obj = self.to_query_object(platform=platform)
 
-        # Get Query object
-        query_obj = self.to_query_object(platform=platform)
+            # Evaluate using search-query's evaluation
+            results: dict[str, float] = query_obj.evaluate(records)
 
-        # Evaluate using search-query's evaluation
-        results: dict[str, float] = query_obj.evaluate(records)
-
-        return results
+            return results
+        except ImportError as e:
+            if "search_query" in str(e):
+                raise QueryBuilderError(
+                    ErrorCodes.CONFIG003,
+                    {"dependency": "search-query"},
+                    message="search-query package is required",
+                ) from e
+            else:
+                raise
 
     def log_to_search(
         self,
@@ -1718,7 +1511,11 @@ class QueryBuilder:
         )
 
     def field(
-        self, field_name: FieldType, value: str | int | bool, escape: bool = True
+        self,
+        field_name: FieldType,
+        value: str | int | bool,
+        escape: bool = True,
+        transform: Callable[[str | int | bool], str | int | bool] | None = None,
     ) -> QueryBuilder:
         """
         Generic field search method using FIELD_METADATA.
@@ -1734,6 +1531,8 @@ class QueryBuilder:
             The search value. For boolean fields, True='y', False='n'
         escape : bool, optional
             Whether to escape the value (default: True)
+        transform : callable, optional
+            Function to transform the value before formatting (default: None)
 
         Returns
         -------
@@ -1755,6 +1554,11 @@ class QueryBuilder:
             If field_name is not in FIELD_METADATA
         """
         self._validate_field_name(field_name)
+
+        # Apply transformation if provided
+        if transform:
+            value = transform(value)
+
         api_name = self._get_api_field_name(field_name)
         query_part = self._format_field_value(field_name, api_name, value, escape)
 
@@ -1886,7 +1690,7 @@ def get_available_fields(api_url: str | None = None) -> list[str]:
             field_count = len(data.get("searchTermList", {}).get("searchTerms", []))
             logger.info("Successfully fetched %d fields from API", field_count)
             return _extract_field_names(data)
-        except Exception as e:
+        except (APIClientError, JSONDecodeError) as e:
             logger.error("Failed to fetch fields from API: %s", str(e))
             raise
     finally:
@@ -2118,3 +1922,165 @@ def validate_field_coverage(verbose: bool = False) -> dict[str, Any]:
     except Exception as e:
         logger.error("Field coverage validation failed: %s", str(e))
         raise
+
+
+# Type hint for valid field names
+FieldType = Literal[
+    "title",
+    "abstract",
+    "author",
+    "auth",
+    "journal",
+    "issn",
+    "essn",
+    "volume",
+    "issue",
+    "page_info",
+    "pub_year",
+    "pub_type",
+    "doi",
+    "pmid",
+    "pmcid",
+    "ext_id",
+    "e_pdate",
+    "first_pdate",
+    "first_idate",
+    "first_idate_d",
+    "p_pdate",
+    "embargo_date",
+    "creation_date",
+    "update_date",
+    "index_date",
+    "ft_cdate",
+    "ft_cdate_d",
+    "affiliation",
+    "aff",
+    "investigator",
+    "authorid",
+    "authorid_type",
+    "auth_first",
+    "auth_last",
+    "auth_collective_list",
+    "author_roles",
+    "language",
+    "lang",
+    "grant_agency",
+    "grant_agency_id",
+    "grant_id",
+    "funder_initiative",
+    "keyword",
+    "kw",
+    "mesh",
+    "chemical",
+    "chem",
+    "disease",
+    "disease_id",
+    "gene_protein",
+    "goterm",
+    "goterm_id",
+    "organism",
+    "organism_id",
+    "chebiterm",
+    "chebiterm_id",
+    "experimental_method",
+    "experimental_method_id",
+    "auth_man",
+    "auth_man_id",
+    "epmc_auth_man",
+    "nih_auth_man",
+    "embargoed_man",
+    "has_abstract",
+    "has_pdf",
+    "has_text",
+    "has_ft",
+    "has_fulltext",
+    "has_fulltextdata",
+    "has_free_fulltext",
+    "has_reflist",
+    "has_tm",
+    "has_xrefs",
+    "has_suppl",
+    "has_labslinks",
+    "has_data",
+    "has_book",
+    "has_preprint",
+    "has_published_version",
+    "has_version_evaluations",
+    "open_access",
+    "in_pmc",
+    "in_epmc",
+    "has_uniprot",
+    "has_embl",
+    "has_pdb",
+    "has_intact",
+    "has_interpro",
+    "has_chebi",
+    "has_chembl",
+    "has_omim",
+    "has_arxpr",
+    "has_crd",
+    "has_doi",
+    "has_pride",
+    "uniprot_pubs",
+    "embl_pubs",
+    "pdb_pubs",
+    "intact_pubs",
+    "interpro_pubs",
+    "chebi_pubs",
+    "chembl_pubs",
+    "omim_pubs",
+    "arxpr_pubs",
+    "crd_links",
+    "labs_pubs",
+    "pride_pubs",
+    "accession_id",
+    "accession_type",
+    "ft_id",
+    "embl_ror_id",
+    "org_id",
+    "citation_count",
+    "cites",
+    "cited",
+    "reffed_by",
+    "source",
+    "src",
+    "license",
+    "subset",
+    "resource_name",
+    "isbn",
+    "book_id",
+    "editor",
+    "ed",
+    "publisher",
+    "parent_title",
+    "series_name",
+    "abbr",
+    "ack_fund",
+    "appendix",
+    "auth_con",
+    "case",
+    "comp_int",
+    "concl",
+    "discuss",
+    "fig",
+    "intro",
+    "methods",
+    "other",
+    "ref",
+    "results",
+    "suppl",
+    "table",
+    "body",
+    "back",
+    "back_noref",
+    "data_availability",
+    "title_abs",
+    "annotation_provider",
+    "annotation_type",
+    "shard",
+    "qn1",
+    "qn2",
+    "_version_",
+    "text_hl",
+    "text_synonyms",
+]

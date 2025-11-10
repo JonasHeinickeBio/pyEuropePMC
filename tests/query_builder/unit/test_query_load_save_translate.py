@@ -483,52 +483,52 @@ class TestIntegrationLoadSaveTranslate:
 class TestSearchQueryNotAvailable:
     """Test behavior when search-query package is not available."""
 
-    @patch("pyeuropepmc.query_builder.SEARCH_QUERY_AVAILABLE", False)
-    def test_from_string_raises_import_error(self) -> None:
+    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    def test_from_string_raises_import_error(self, mock_parse) -> None:
         """Test that from_string raises ImportError when package not available."""
-        with pytest.raises(ImportError, match="search-query package is required"):
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_string("cancer", platform="pubmed")
 
-    @patch("pyeuropepmc.query_builder.SEARCH_QUERY_AVAILABLE", False)
-    def test_from_file_raises_import_error(self) -> None:
+    @patch("pyeuropepmc.query_builder.load_search_file", side_effect=ImportError("No module named 'search_query'"))
+    def test_from_file_raises_import_error(self, mock_load) -> None:
         """Test that from_file raises ImportError when package not available."""
-        with pytest.raises(ImportError, match="search-query package is required"):
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_file("test.json")
 
-    @patch("pyeuropepmc.query_builder.SEARCH_QUERY_AVAILABLE", False)
-    def test_save_raises_import_error(self) -> None:
+    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    def test_save_raises_import_error(self, mock_parse) -> None:
         """Test that save raises ImportError when package not available."""
         qb = QueryBuilder()
         qb.keyword("cancer")
 
-        with pytest.raises(ImportError, match="search-query package is required"):
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.save("test.json")
 
-    @patch("pyeuropepmc.query_builder.SEARCH_QUERY_AVAILABLE", False)
-    def test_translate_raises_import_error(self) -> None:
+    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    def test_translate_raises_import_error(self, mock_parse) -> None:
         """Test that translate raises ImportError when package not available."""
         qb = QueryBuilder()
         qb.keyword("cancer")
 
-        with pytest.raises(ImportError, match="search-query package is required"):
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.translate("wos")
 
-    @patch("pyeuropepmc.query_builder.SEARCH_QUERY_AVAILABLE", False)
-    def test_to_query_object_raises_import_error(self) -> None:
+    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    def test_to_query_object_raises_import_error(self, mock_parse) -> None:
         """Test that to_query_object raises ImportError when package not available."""
         qb = QueryBuilder()
         qb.keyword("cancer")
 
-        with pytest.raises(ImportError, match="search-query package is required"):
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.to_query_object()
 
-    @patch("pyeuropepmc.query_builder.SEARCH_QUERY_AVAILABLE", False)
-    def test_evaluate_raises_import_error(self) -> None:
+    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    def test_evaluate_raises_import_error(self, mock_parse) -> None:
         """Test that evaluate raises ImportError when package not available."""
         qb = QueryBuilder()
         qb.keyword("cancer")
 
         records = {"r1": {"title": "test", "colrev_status": "rev_included"}}
 
-        with pytest.raises(ImportError, match="search-query package is required"):
+        with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.evaluate(records)

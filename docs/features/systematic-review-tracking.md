@@ -4,11 +4,44 @@
 
 The QueryBuilder now integrates with PyEuropePMC's systematic review tracking system to maintain PRISMA/Cochrane-compliant records of all searches performed. This enables researchers to:
 
-- Track all search queries with exact syntax and parameters
+- Track all search queries with **exact syntax and parameters used in API calls**
 - Record filters, platforms, and search dates automatically
 - Save raw results for auditability
 - Generate PRISMA flow diagram data
 - Export comprehensive search logs for methods sections
+
+## Key Principle: Exact API Query Logging
+
+**For full reproducibility, systematic review tracking logs the exact query string sent to the Europe PMC API.** This ensures that:
+
+- The logged query can be directly copied and pasted into API calls
+- Search results can be exactly replicated
+- All query parameters, operators, and field specifications are preserved
+- Raw API responses can be saved for complete audit trails
+
+### What Gets Logged
+
+When you call `qb.log_to_search()`, the system captures:
+
+1. **Exact API Query String**: The result of `qb.build()` - the literal string sent to Europe PMC
+2. **Query Components**: Individual parts that make up the query (keywords, fields, operators)
+3. **Search Parameters**: Page size, result limits, sort order
+4. **API Response**: Raw JSON response for complete auditability
+5. **Metadata**: Timestamps, platform versions, researcher information
+
+**Note**: Date ranges without an end year use the current year. For example, `date_range(start_year=2020)` becomes `(PUB_YEAR:[2020 TO 2025])` in 2025.
+
+### Example Logged Query
+
+```python
+qb = QueryBuilder()
+qb.keyword("cancer").and_().field("open_access", True).and_().citation_count(min_count=10)
+query = qb.build()
+# query = "cancer AND OPEN_ACCESS:y AND CITED:[10 TO *]"
+
+# This exact string gets logged and can be reused:
+# client.search("cancer AND OPEN_ACCESS:y AND CITED:[10 TO *]")
+```
 
 ## Installation
 
@@ -40,6 +73,9 @@ query = (qb
     .and_()
     .date_range(start_year=2020, end_year=2024)
     .build())
+
+# The query variable now contains: "TITLE:cancer AND ABSTRACT:immunotherapy AND (PUB_YEAR:[2020 TO 2024])"
+# This is the EXACT string sent to the Europe PMC API
 
 # 3. Log the query with metadata
 qb.log_to_search(
@@ -195,7 +231,7 @@ print(f"Raw results saved to: {log.entries[0].raw_results_path}")
 
 ## Search Log Structure
 
-The saved JSON file contains:
+The saved JSON file contains the **exact API query string** that was sent to Europe PMC:
 
 ```json
 {
@@ -222,6 +258,8 @@ The saved JSON file contains:
   "final_included": 67
 }
 ```
+
+**Important**: The `"query"` field contains the exact string that was passed to the Europe PMC search API. This ensures complete reproducibility - you can copy this query string directly into a new API call and get identical results.
 
 ## PRISMA Compliance
 
@@ -258,11 +296,14 @@ client = SearchClient()
 qb = QueryBuilder()
 query = qb.keyword("CRISPR").and_().date_range(start_year=2020).build()
 
+# query now contains: "CRISPR AND (PUB_YEAR:[2020 TO 2025])"
+# This exact string is sent to the API
+
 # Execute search
 response = client.search(query, pageSize=100)
 results_count = response.get("hitCount", 0)
 
-# Log the search
+# Log the search - captures the exact API query used
 qb.log_to_search(
     log,
     results_returned=results_count,
@@ -271,19 +312,39 @@ qb.log_to_search(
     filters={"page_size": 100}
 )
 
+# The log entry will contain:
+# "query": "CRISPR AND (PUB_YEAR:[2020 TO 2025])"
+
 # Save log
 log.save("review_searches.json")
 ```
 
+**Reproducibility Guarantee**: The logged query string can be directly reused:
+
+```python
+# Later, to replicate the exact same search:
+logged_query = log.entries[0]["query"]  # "CRISPR AND (PUB_YEAR:[2020 TO 2025])"
+new_response = client.search(logged_query, pageSize=100)
+# Results will be identical to the original search
+```
+
 ## Best Practices
 
-1. **Start Early**: Initialize the SearchLog at the beginning of your review
-2. **Be Detailed**: Record all filters and parameters used
-3. **Save Raw Results**: Enable auditability by saving raw API responses
-4. **Add Notes**: Document the purpose of each search
-5. **Version Tracking**: Record platform versions and API versions
-6. **Regular Saves**: Save the log after each search session
-7. **Peer Review**: Include the search log in protocol review
+1. **Log Exact API Queries**: Always use `qb.log_to_search()` after building queries to capture the precise API call
+2. **Save Raw Results**: Store complete API responses for full auditability
+3. **Document Parameters**: Record all search parameters (pageSize, sort, etc.) used with the query
+4. **Version Tracking**: Note API versions and platform details for reproducibility
+5. **Regular Saves**: Save the log after each search session
+6. **Peer Review**: Include the complete search log in protocol review
+7. **Test Reproducibility**: Verify that logged queries produce identical results when rerun
+
+### Reproducibility Checklist
+
+- ✅ Query string matches exact API call
+- ✅ All search parameters documented
+- ✅ Raw API response saved
+- ✅ Timestamps and versions recorded
+- ✅ Query can be directly copied and reused
 
 ## Example: Complete Systematic Review
 

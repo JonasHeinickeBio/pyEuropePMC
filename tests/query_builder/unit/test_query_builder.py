@@ -232,13 +232,13 @@ class TestIdentifierSearch:
         """Test PMID search with string."""
         qb = QueryBuilder(validate=False)
         query = qb.field("pmid", "12345678").build()
-        assert query == "PMID:12345678"
+        assert query == "EXT_ID:12345678"
 
     def test_pmid_int(self) -> None:
         """Test PMID search with integer."""
         qb = QueryBuilder(validate=False)
         query = qb.field("pmid", 12345678).build()
-        assert query == "PMID:12345678"
+        assert query == "EXT_ID:12345678"
 
     def test_doi_search(self) -> None:
         """Test DOI search."""
