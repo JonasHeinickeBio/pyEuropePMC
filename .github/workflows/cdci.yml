@@ -49,12 +49,22 @@ jobs:
 
       - name: Install CodeScene CLI
         run: |
-          curl https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
+          echo "Installing CodeScene CLI..."
+          curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y
 
       - name: Run CodeScene Code Health Analysis
         env:
           CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
         run: |
+          # Load environment variables from .env file if it exists
+          if [ -f ".env" ]; then
+            echo "🔧 Loading environment variables from .env file..."
+            set -a
+            source .env
+            set +a
+            echo "✅ Environment variables loaded"
+          fi
+
           chmod +x scripts/codescene_analysis.sh
           ./scripts/codescene_analysis.sh delta
 

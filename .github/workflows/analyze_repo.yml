@@ -39,13 +39,22 @@ jobs:
           sudo mv scc /usr/local/bin/
 
           # Install CodeScene CLI
-          curl https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | sh
+          curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y
 
       - name: Run repository analysis
         id: analysis
         env:
           CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
         run: |
+          # Load environment variables from .env file if it exists
+          if [ -f ".env" ]; then
+            echo "🔧 Loading environment variables from .env file..."
+            set -a
+            source .env
+            set +a
+            echo "✅ Environment variables loaded"
+          fi
+
           echo "=== Running Repository Analysis ===" | tee analysis.log
 
           # Create output directory

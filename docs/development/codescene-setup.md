@@ -24,11 +24,38 @@ CodeScene CLI has been successfully installed and configured for your project!
 - ✅ **Analysis script** at `scripts/codescene_analysis.sh`
 
 ### 4. **CI/CD Integration**
-- ✅ **GitHub Actions workflow** (`.github/workflows/codescene-analysis.yml`)
-- ✅ Automatic PR analysis with comments
-- ✅ Delta analysis on pull requests
+- ✅ **GitHub Actions workflows** (`.github/workflows/cdci.yml` and `analyze_repo.yml`)
+- ✅ Automatic CodeScene CLI installation in CI
+- ✅ Environment variable loading from `.env` file
+- ✅ Comprehensive analysis with check, review, and delta commands
 
-## 🚀 How to Use
+### 5. **Environment Management**
+- ✅ **`.env` file** for secure token storage
+- ✅ **`.env.example`** template for team setup
+- ✅ Automatic loading in scripts and workflows
+
+## � Environment Setup
+
+### CodeScene Access Token
+1. **Copy the template:**
+   ```bash
+   cp .env.example .env
+   ```
+
+2. **Get your CodeScene token:**
+   - Contact your CodeScene administrator
+   - Or check your CodeScene project settings
+
+3. **Configure the token:**
+   ```bash
+   # Edit .env file
+   CS_ACCESS_TOKEN=your_actual_token_here
+   ```
+
+### Security Notes
+- ✅ `.env` is in `.gitignore` (won't be committed)
+- ✅ Token is loaded automatically by scripts and CI/CD
+- ✅ No hardcoded secrets in code
 
 ### Command Line Usage
 ```bash
@@ -62,8 +89,14 @@ make quality-full
 
 ### Script Usage
 ```bash
-# Full analysis
+# Full analysis (check + review + delta)
 ./scripts/codescene_analysis.sh
+
+# Check analysis only
+./scripts/codescene_analysis.sh check
+
+# Review analysis only
+./scripts/codescene_analysis.sh review
 
 # Delta analysis only
 ./scripts/codescene_analysis.sh delta
@@ -114,15 +147,21 @@ make quality-full
 
 ## 🔄 Integration with Git Workflow
 
+### CI/CD Pipelines
+CodeScene analysis runs automatically in:
+- **Main CI/CD pipeline** (`.github/workflows/cdci.yml`)
+- **Repository analysis workflow** (`.github/workflows/analyze_repo.yml`)
+
+Both workflows:
+- Install CodeScene CLI automatically
+- Load environment variables from `.env`
+- Run comprehensive analysis (check + review + delta)
+- Report results in CI logs
+
 ### Pre-commit Hook
 - Automatically runs on `git commit`
 - Checks all staged Python files
 - Prevents commits with severe code health issues
-
-### Pull Request Analysis
-- Automatic analysis on PR creation/updates
-- Comments added to PR with findings
-- Delta analysis shows impact of changes
 
 ## 📈 Monitoring Code Health
 
@@ -143,10 +182,23 @@ Edit `.codescene-rules.json` to adjust:
 
 ## 🔗 Next Steps
 
-1. **Address high-priority issues** in `search.py`
-2. **Set up regular code health monitoring**
-3. **Train team** on CodeScene metrics and best practices
-4. **Consider** CodeScene enterprise features for more insights
+1. **Set up your environment:**
+   ```bash
+   cp .env.example .env
+   # Edit .env with your CodeScene token
+   ```
+
+2. **Test the integration:**
+   ```bash
+   make codescene  # Full analysis
+   make quality-full  # All quality checks
+   ```
+
+3. **Monitor CI/CD runs** to ensure CodeScene analysis works in automated pipelines
+
+4. **Address high-priority issues** identified by CodeScene analysis
+
+5. **Set up regular code health monitoring** in your development workflow
 
 ## 📚 Resources
 
