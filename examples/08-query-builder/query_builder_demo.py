@@ -5,7 +5,7 @@ This example demonstrates how to use the QueryBuilder class to construct
 complex search queries for Europe PMC with a fluent API.
 """
 
-from pyeuropepmc import QueryBuilder, SearchClient
+from pyeuropepmc import QueryBuilder
 
 
 def example_basic_queries():

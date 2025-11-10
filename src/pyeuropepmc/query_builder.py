@@ -15,7 +15,7 @@ Key Features
 - **Evaluation**: Assess search effectiveness with recall/precision metrics
 - **Systematic Review Tracking**: Log queries to SearchLog for PRISMA/Cochrane compliance
 
-Supported Search Fields (from Europe PMC Web Service Reference 6.9.0):
+Supported Search Fields (from Europe PMC Web Service Reference):
 -----------------------------------------------------------------------
 
 Core Bibliographic:
@@ -124,7 +124,7 @@ from search_query.parser import parse
 from search_query.search_file import load_search_file
 
 from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import QueryBuilderError
+from pyeuropepmc.exceptions import APIClientError, QueryBuilderError
 
 # Initialize logger
 logger = logging.getLogger(__name__)
@@ -1919,7 +1919,7 @@ def validate_field_coverage(verbose: bool = False) -> dict[str, Any]:
             _print_validation_report(result)
 
         return result
-    except Exception as e:
+    except (APIClientError, KeyError, ValueError) as e:
         logger.error("Field coverage validation failed: %s", str(e))
         raise
 
