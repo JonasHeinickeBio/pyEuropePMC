@@ -12,6 +12,7 @@ from pyeuropepmc.analytics import (
     quality_metrics,
     remove_duplicates,
     to_dataframe,
+    author_statistics,
 )
 
 
@@ -371,3 +372,52 @@ class TestJournalDistribution:
         df = to_dataframe(sample_papers)
         dist = journal_distribution(df)
         assert "Nature" in dist.index
+
+
+class TestAuthorStatistics:
+    """Tests for author_statistics function."""
+
+    def test_author_statistics_basic(self, sample_papers):
+        """Test basic author statistics."""
+        stats = author_statistics(sample_papers)
+        assert isinstance(stats, dict)
+        assert stats["total_authors"] == 6  # Smith J, Doe J, Jones A, Brown B, Green G, White W
+        assert stats["total_author_mentions"] == 6  # Total author instances
+        assert stats["avg_authors_per_paper"] == 1.5  # 6 mentions / 4 papers
+        assert stats["max_authors_per_paper"] == 2
+        assert stats["min_authors_per_paper"] == 1
+        assert stats["single_author_papers"] == 2  # Papers 2 and 4
+        assert stats["multi_author_papers"] == 2  # Papers 1 and 3
+
+    def test_author_statistics_empty(self):
+        """Test author statistics with empty data."""
+        stats = author_statistics([])
+        assert stats["total_authors"] == 0
+        assert stats["total_author_mentions"] == 0
+        assert stats["avg_authors_per_paper"] == 0.0
+
+    def test_author_statistics_top_authors(self, sample_papers):
+        """Test top authors extraction."""
+        stats = author_statistics(sample_papers, top_n=3)
+        top_authors = stats["top_authors"]
+        assert isinstance(top_authors, pd.Series)
+        assert len(top_authors) <= 3
+        # All authors appear once each
+        assert all(count == 1 for count in top_authors.values)
+
+    def test_author_statistics_collaboration_patterns(self, sample_papers):
+        """Test collaboration pattern analysis."""
+        stats = author_statistics(sample_papers)
+        patterns = stats["author_collaboration_patterns"]
+        assert isinstance(patterns, dict)
+        assert patterns["solo_authors"] == 2  # Papers 2 and 4
+        assert patterns["two_author_papers"] == 2  # Papers 1 and 3
+        assert patterns["three_author_papers"] == 0
+        assert patterns["four_or_more_author_papers"] == 0
+        assert patterns["avg_collaboration_size"] == 2.0  # (2+2)/2
+
+    def test_author_statistics_dataframe(self, sample_papers):
+        """Test author statistics from DataFrame."""
+        df = to_dataframe(sample_papers)
+        stats = author_statistics(df)
+        assert stats["total_authors"] == 6

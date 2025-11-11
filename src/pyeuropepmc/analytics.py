@@ -9,7 +9,7 @@ to pandas DataFrames for further analysis.
 
 from collections import Counter
 import logging
-from typing import Any
+from typing import Any, cast
 
 import pandas as pd
 
@@ -17,36 +17,73 @@ logger = logging.getLogger("pyeuropepmc.analytics")
 logger.addHandler(logging.NullHandler())
 
 
+def _extract_journal_title(paper: dict[str, Any]) -> str:
+    """Extract journal title from paper data."""
+    journal_title = paper.get("journalTitle", "")
+    if not journal_title:
+        # Try nested structure for core results
+        journal_info = paper.get("journalInfo", {})
+        if isinstance(journal_info, dict):
+            journal = journal_info.get("journal", {})
+            if isinstance(journal, dict):
+                journal_title = journal.get("title", "")
+    return str(journal_title) if journal_title else ""
+
+
+def _extract_publisher(paper: dict[str, Any]) -> str:
+    """Extract publisher information for preprints."""
+    book_details = paper.get("bookOrReportDetails", {})
+    return book_details.get("publisher", "") if book_details else ""
+
+
+def _extract_mesh_terms(paper: dict[str, Any]) -> str:
+    """Extract and flatten MeSH terms."""
+    mesh_terms = []
+    mesh_list = paper.get("meshHeadingList", {}).get("meshHeading", [])
+    if isinstance(mesh_list, list):
+        for mesh in mesh_list:
+            if isinstance(mesh, dict) and "descriptorName" in mesh:
+                term = mesh["descriptorName"]
+                if mesh.get("majorTopic_YN") == "Y":
+                    term += "*"  # Mark major topics
+                mesh_terms.append(term)
+    return "; ".join(mesh_terms) if mesh_terms else ""
+
+
+def _extract_grants(paper: dict[str, Any]) -> str:
+    """Extract and flatten grant information."""
+    grants = []
+    grant_list = paper.get("grantsList", {}).get("grant", [])
+    if isinstance(grant_list, list):
+        for grant in grant_list:
+            if isinstance(grant, dict) and "agency" in grant:
+                grants.append(grant["agency"])
+    return "; ".join(grants) if grants else ""
+
+
 def to_dataframe(papers: list[dict[str, Any]]) -> pd.DataFrame:
     """
-    Convert a list of papers to a pandas DataFrame.
+    Convert list of papers to pandas DataFrame.
 
     Parameters
     ----------
     papers : list[dict[str, Any]]
-        List of papers from Europe PMC API response or filtered results.
+        List of paper dictionaries from Europe PMC API.
 
     Returns
     -------
     pd.DataFrame
-        DataFrame with paper metadata including title, authors, pubYear,
-        citedByCount, isOpenAccess, doi, pmid, pmcid, etc.
+        DataFrame with paper information.
 
     Examples
     --------
-    >>> from pyeuropepmc import SearchClient
     >>> from pyeuropepmc.analytics import to_dataframe
-    >>>
-    >>> client = SearchClient()
-    >>> response = client.search("cancer", pageSize=10)
-    >>> papers = response.get("resultList", {}).get("result", [])
     >>> df = to_dataframe(papers)
-    >>> print(df.columns)
+    >>> print(df.head())
     """
     if not papers:
         return pd.DataFrame()
 
-    # Extract common fields
     df_data = []
     for paper in papers:
         try:
@@ -55,7 +92,7 @@ def to_dataframe(papers: list[dict[str, Any]]) -> pd.DataFrame:
                 "source": paper.get("source"),
                 "title": paper.get("title", ""),
                 "authorString": paper.get("authorString", ""),
-                "journalTitle": paper.get("journalTitle", ""),
+                "journalTitle": _extract_journal_title(paper),
                 "pubYear": paper.get("pubYear"),
                 "pubType": _flatten_pub_type(paper),
                 "isOpenAccess": paper.get("isOpenAccess", "N"),
@@ -68,6 +105,16 @@ def to_dataframe(papers: list[dict[str, Any]]) -> pd.DataFrame:
                 "hasPDF": paper.get("hasPDF", "N") == "Y",
                 "inPMC": paper.get("inPMC", "N") == "Y",
                 "inEPMC": paper.get("inEPMC", "N") == "Y",
+                "language": paper.get("language", ""),
+                "pageInfo": paper.get("pageInfo", ""),
+                "affiliation": paper.get("affiliation", ""),
+                "meshTerms": _extract_mesh_terms(paper),
+                "grants": _extract_grants(paper),
+                "publisher": _extract_publisher(paper),
+                "firstPublicationDate": paper.get("firstPublicationDate", ""),
+                "hasReferences": paper.get("hasReferences", "N") == "Y",
+                "hasTextMinedTerms": paper.get("hasTextMinedTerms", "N") == "Y",
+                "hasDbCrossReferences": paper.get("hasDbCrossReferences", "N") == "Y",
             }
             df_data.append(row)
         except Exception as e:
@@ -337,7 +384,9 @@ def remove_duplicates(
         df = df.drop_duplicates(subset=subset_col, keep="first")
         df = df.sort_index()
     else:
-        df = df.drop_duplicates(subset=subset_col, keep=keep)
+        # keep should be "first" or "last"
+        keep_value = "first" if keep not in ["first", "last"] else keep
+        df = df.drop_duplicates(subset=subset_col, keep=cast(Any, keep_value))
 
     # Clean up temporary column
     if method == "title" and "_normalized" in df.columns:
@@ -444,9 +493,7 @@ def quality_metrics(papers: list[dict[str, Any]] | pd.DataFrame) -> dict[str, An
         "with_pdf_count": with_pdf_count,
         "with_pdf_percentage": (with_pdf_count / total * 100) if total > 0 else 0.0,
         "peer_reviewed_estimate": peer_reviewed_count,
-        "peer_reviewed_percentage": (peer_reviewed_count / total * 100)
-        if total > 0
-        else 0.0,
+        "peer_reviewed_percentage": (peer_reviewed_count / total * 100) if total > 0 else 0.0,
     }
 
 
@@ -516,7 +563,368 @@ def journal_distribution(
     if df.empty or "journalTitle" not in df.columns:
         return pd.Series(dtype=int)
 
-    return df["journalTitle"].value_counts().head(top_n)
+    # Filter out empty, None, or invalid journal titles
+    valid_journals = df["journalTitle"].str.strip()
+    valid_journals = valid_journals[
+        (valid_journals != "")
+        & (valid_journals.notna())
+        & (valid_journals.str.lower() != "journaltitle")  # Filter out literal "journalTitle"
+        & (valid_journals.str.lower() != "journal title")  # Filter out variations
+        & (valid_journals.str.len() > 2)  # Filter out very short titles
+    ]
+
+    return valid_journals.value_counts().head(top_n)
+
+
+def author_statistics(
+    papers: list[dict[str, Any]] | pd.DataFrame, top_n: int = 10
+) -> dict[str, Any]:
+    """
+    Calculate author statistics from papers.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+    top_n : int, default=10
+        Number of top authors to return in statistics.
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing author statistics:
+        - total_authors: Total unique authors across all papers
+        - total_author_mentions: Total author mentions (including duplicates)
+        - avg_authors_per_paper: Average number of authors per paper
+        - max_authors_per_paper: Maximum authors on a single paper
+        - min_authors_per_paper: Minimum authors on a single paper
+        - single_author_papers: Number of single-author papers
+        - multi_author_papers: Number of multi-author papers
+        - top_authors: Series with top N most prolific authors
+        - author_collaboration_patterns: Dict with collaboration statistics
+
+    Examples
+    --------
+    >>> from pyeuropepmc.analytics import author_statistics
+    >>> stats = author_statistics(papers, top_n=15)
+    >>> print(f"Total authors: {stats['total_authors']}")
+    >>> print(f"Average authors per paper: {stats['avg_authors_per_paper']:.1f}")
+    >>> print("Top authors:")
+    >>> print(stats['top_authors'])
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    if df.empty or "authorString" not in df.columns:
+        return {
+            "total_authors": 0,
+            "total_author_mentions": 0,
+            "avg_authors_per_paper": 0.0,
+            "max_authors_per_paper": 0,
+            "min_authors_per_paper": 0,
+            "single_author_papers": 0,
+            "multi_author_papers": 0,
+            "top_authors": pd.Series(dtype=int),
+            "author_collaboration_patterns": {},
+        }
+
+    # Parse authors from authorString
+    all_authors = []
+    author_counts_per_paper = []
+
+    for author_str in df["authorString"].dropna():
+        if author_str and author_str.strip():
+            # Split by comma and clean up
+            authors = [author.strip() for author in str(author_str).split(",") if author.strip()]
+            all_authors.extend(authors)
+            author_counts_per_paper.append(len(authors))
+        else:
+            author_counts_per_paper.append(0)
+
+    if not all_authors:
+        return {
+            "total_authors": 0,
+            "total_author_mentions": 0,
+            "avg_authors_per_paper": 0.0,
+            "max_authors_per_paper": 0,
+            "min_authors_per_paper": 0,
+            "single_author_papers": 0,
+            "multi_author_papers": 0,
+            "top_authors": pd.Series(dtype=int),
+            "author_collaboration_patterns": {},
+        }
+
+    # Calculate basic statistics
+    total_author_mentions = len(all_authors)
+    unique_authors = len(set(all_authors))
+    avg_authors_per_paper = total_author_mentions / len(df) if len(df) > 0 else 0.0
+
+    author_counts = pd.Series(author_counts_per_paper)
+    max_authors = int(author_counts.max()) if not author_counts.empty else 0
+    min_authors = int(author_counts.min()) if not author_counts.empty else 0
+
+    single_author_papers = int((author_counts == 1).sum())
+    multi_author_papers = int((author_counts > 1).sum())
+
+    # Top authors
+    author_freq = pd.Series(Counter(all_authors)).sort_values(ascending=False)
+    top_authors = author_freq.head(top_n)
+
+    # Collaboration patterns
+    collaboration_patterns = {
+        "solo_authors": int((author_counts == 1).sum()),
+        "two_author_papers": int((author_counts == 2).sum()),
+        "three_author_papers": int((author_counts == 3).sum()),
+        "four_or_more_author_papers": int((author_counts >= 4).sum()),
+        "avg_collaboration_size": (
+            float(author_counts[author_counts > 1].mean()) if (author_counts > 1).any() else 0.0
+        ),
+    }
+
+    return {
+        "total_authors": unique_authors,
+        "total_author_mentions": total_author_mentions,
+        "avg_authors_per_paper": round(avg_authors_per_paper, 2),
+        "max_authors_per_paper": max_authors,
+        "min_authors_per_paper": min_authors,
+        "single_author_papers": single_author_papers,
+        "multi_author_papers": multi_author_papers,
+        "top_authors": top_authors,
+        "author_collaboration_patterns": collaboration_patterns,
+    }
+
+
+def geographic_analysis(
+    papers: list[dict[str, Any]] | pd.DataFrame, top_n: int = 10
+) -> dict[str, Any]:
+    """
+    Analyze geographic and institutional distributions from paper affiliations.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+    top_n : int, default=10
+        Number of top countries/institutions to return.
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing geographic and institutional statistics.
+
+    Examples
+    --------
+    >>> from pyeuropepmc.analytics import geographic_analysis
+    >>> geo_stats = geographic_analysis(papers, top_n=15)
+    >>> print(f"Top country: {geo_stats['top_countries'].index[0]}")
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    if df.empty:
+        return _empty_geographic_result()
+
+    total_papers = len(df)
+    papers_with_affiliation = int(df["affiliation"].notna().sum())
+
+    # Parse all affiliations
+    parsed_data = _parse_all_affiliations(df["affiliation"].dropna())
+
+    # Calculate distributions
+    country_distribution = pd.Series(Counter(parsed_data["countries"])).sort_values(
+        ascending=False
+    )
+    institution_distribution = pd.Series(Counter(parsed_data["institutions"])).sort_values(
+        ascending=False
+    )
+
+    # Calculate international collaboration rate
+    international_collaboration_rate = _calculate_collaboration_rate(
+        parsed_data["multi_country_count"], papers_with_affiliation
+    )
+
+    return {
+        "country_distribution": country_distribution,
+        "institution_distribution": institution_distribution,
+        "top_countries": country_distribution.head(top_n),
+        "top_institutions": institution_distribution.head(top_n),
+        "international_collaboration_rate": international_collaboration_rate,
+        "papers_with_affiliation": papers_with_affiliation,
+        "total_papers": total_papers,
+    }
+
+
+def _empty_geographic_result() -> dict[str, Any]:
+    """Return empty result structure for geographic analysis."""
+    empty_series = pd.Series(dtype=int)
+    return {
+        "country_distribution": empty_series,
+        "institution_distribution": empty_series,
+        "top_countries": empty_series,
+        "top_institutions": empty_series,
+        "international_collaboration_rate": 0.0,
+        "papers_with_affiliation": 0,
+        "total_papers": 0,
+    }
+
+
+def _parse_all_affiliations(affiliations: pd.Series) -> dict[str, Any]:
+    """Parse affiliation strings to extract countries and institutions."""
+    countries = []
+    institutions = []
+    multi_country_count = 0
+
+    for affiliation_str in affiliations:
+        if not affiliation_str or str(affiliation_str).strip() == "":
+            continue
+
+        paper_data = _parse_single_affiliation(affiliation_str)
+        countries.extend(paper_data["countries"])
+        institutions.extend(paper_data["institutions"])
+
+        if len(paper_data["countries"]) > 1:
+            multi_country_count += 1
+
+    return {
+        "countries": countries,
+        "institutions": institutions,
+        "multi_country_count": multi_country_count,
+    }
+
+
+def _parse_single_affiliation(affiliation_str: str) -> dict[str, list[str]]:
+    """Parse a single affiliation string."""
+    affiliations = _split_affiliations(affiliation_str)
+    countries = set()
+    institutions = []
+
+    for aff in affiliations:
+        country = _extract_country_from_affiliation(aff)
+        if country:
+            countries.add(country)
+
+        institution = _extract_institution_from_affiliation(aff)
+        if institution:
+            institutions.append(institution)
+
+    return {
+        "countries": list(countries),
+        "institutions": institutions,
+    }
+
+
+def _split_affiliations(affiliation_str: str) -> list[str]:
+    """Split affiliation string into individual affiliations."""
+    return [
+        aff.strip() for aff in str(affiliation_str).replace("\n", ";").split(";") if aff.strip()
+    ]
+
+
+def _extract_country_from_affiliation(affiliation: str) -> str:
+    """Extract country from a single affiliation string."""
+    parts = [part.strip() for part in affiliation.split(",")]
+    if len(parts) >= 2:
+        country = parts[-1]
+        return _normalize_country(country)
+    return ""
+
+
+def _extract_institution_from_affiliation(affiliation: str) -> str:
+    """Extract institution from a single affiliation string."""
+    # Remove email addresses
+    affiliation = " ".join(word for word in affiliation.split() if "@" not in word)
+
+    parts = [part.strip() for part in affiliation.split(",")]
+    if not parts:
+        return ""
+
+    institution = parts[0]
+    return _clean_institution_name(institution)
+
+
+def _clean_institution_name(institution: str) -> str:
+    """Clean and normalize institution name."""
+    if not institution or len(institution) < 3:
+        return ""
+
+    # Remove common prefixes
+    prefixes_to_remove = [
+        "Department of",
+        "Institute of",
+        "Center for",
+        "Centre for",
+        "Laboratory of",
+    ]
+    for prefix in prefixes_to_remove:
+        institution = institution.replace(prefix, "").strip()
+
+    # Skip if it looks like a department only
+    if institution.lower().startswith(("dept", "department", "lab")):
+        return ""
+
+    return institution
+
+
+def _calculate_collaboration_rate(multi_country_count: int, total_with_affiliation: int) -> float:
+    """Calculate international collaboration rate."""
+    if total_with_affiliation == 0:
+        return 0.0
+    return round((multi_country_count / total_with_affiliation * 100), 2)
+
+
+def _normalize_country(country: str) -> str:
+    """Normalize country names for consistent analysis."""
+    if not country:
+        return ""
+
+    country = country.strip().title()
+
+    # Common country name mappings
+    country_mappings = {
+        "Usa": "United States",
+        "Us": "United States",
+        "U.S.A.": "United States",
+        "U.S.": "United States",
+        "America": "United States",
+        "Uk": "United Kingdom",
+        "U.K.": "United Kingdom",
+        "England": "United Kingdom",
+        "Scotland": "United Kingdom",
+        "Wales": "United Kingdom",
+        "Northern Ireland": "United Kingdom",
+        "Deutschland": "Germany",
+        "Italia": "Italy",
+        "España": "Spain",
+        "France": "France",
+        "China": "China",
+        "Japan": "Japan",
+        "Canada": "Canada",
+        "Australia": "Australia",
+        "Netherlands": "Netherlands",
+        "Sweden": "Sweden",
+        "Norway": "Norway",
+        "Denmark": "Denmark",
+        "Finland": "Finland",
+        "Switzerland": "Switzerland",
+        "Austria": "Austria",
+        "Belgium": "Belgium",
+        "Portugal": "Portugal",
+        "Ireland": "Ireland",
+        "Poland": "Poland",
+        "Czech Republic": "Czech Republic",
+        "Hungary": "Hungary",
+        "Greece": "Greece",
+        "Turkey": "Turkey",
+        "Israel": "Israel",
+        "South Korea": "South Korea",
+        "Brazil": "Brazil",
+        "India": "India",
+        "Russia": "Russia",
+        "South Africa": "South Africa",
+        "Mexico": "Mexico",
+        "Argentina": "Argentina",
+        "Chile": "Chile",
+    }
+
+    return country_mappings.get(country, country)
 
 
 __all__ = [
@@ -528,4 +936,6 @@ __all__ = [
     "quality_metrics",
     "publication_type_distribution",
     "journal_distribution",
+    "author_statistics",
+    "geographic_analysis",
 ]

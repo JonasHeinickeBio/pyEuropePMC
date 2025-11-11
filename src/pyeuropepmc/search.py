@@ -421,11 +421,45 @@ class SearchClient(BaseAPIClient):
             logger.error("Unexpected POST search error")
             raise SearchError(ErrorCodes.SEARCH003, context) from e
 
-    def fetch_all_pages(
+    def search_all(
         self, query: str, page_size: int = 100, max_results: int | None = None, **kwargs: Any
     ) -> list[dict[str, Any]]:
         """
-        Fetch all results for a query, handling pagination automatically.
+        Search and fetch all results for a query, handling pagination automatically.
+
+        This method performs a search and automatically handles pagination to retrieve
+        all matching results (or up to max_results if specified).
+
+        Parameters
+        ----------
+        query : str
+            User query. Possible options are:
+            - a keyword or combination of keywords (e.g. HPV virus).
+            - a phrase with enclosing speech marks (e.g. "human malaria").
+            - a fielded search (e.g. auth:stoehr).
+            - a specific publication (e.g. ext_id:781840 src:med).
+        page_size : int, optional
+            Number of articles per page. Default is 100. Max is 1000.
+        max_results : int, optional
+            Maximum number of results to return. If None, returns all available results.
+        **kwargs
+            Additional search parameters (resultType, synonym, sort, etc.).
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            List of result dictionaries, each containing publication metadata.
+
+        Raises
+        ------
+        EuropePMCError
+            If the query is invalid or the request fails.
+
+        Examples
+        --------
+        >>> client = SearchClient()
+        >>> results = client.search_all("cancer", max_results=1000)
+        >>> print(f"Found {len(results)} publications")
         """
         # Validate inputs
         page_size = max(1, min(page_size, 1000))
@@ -475,6 +509,45 @@ class SearchClient(BaseAPIClient):
             results = results[:max_results]
 
         return results
+
+    def fetch_all_pages(
+        self, query: str, page_size: int = 100, max_results: int | None = None, **kwargs: Any
+    ) -> list[dict[str, Any]]:
+        """
+        Fetch all results for a query, handling pagination automatically.
+
+        .. deprecated::
+            Use :meth:`search_all` instead. This method is maintained for backwards compatibility.
+
+        Parameters
+        ----------
+        query : str
+            User query. Same options as search().
+        page_size : int, optional
+            Number of articles per page. Default is 100. Max is 1000.
+        max_results : int, optional
+            Maximum number of results to return. If None, returns all available results.
+        **kwargs
+            Additional search parameters.
+
+        Returns
+        -------
+        List[Dict[str, Any]]
+            List of result dictionaries.
+
+        Raises
+        ------
+        EuropePMCError
+            If the query is invalid or the request fails.
+        """
+        import warnings
+
+        warnings.warn(
+            "fetch_all_pages is deprecated, use search_all instead",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+        return self.search_all(query, page_size=page_size, max_results=max_results, **kwargs)
 
     def _extract_page_results(self, data: Any) -> tuple[list[dict[str, Any]], str | None]:
         """Validate a single page response and extract the result list and next cursor.
@@ -597,7 +670,7 @@ class SearchClient(BaseAPIClient):
     ) -> list[dict[str, Any]]:
         """Fetch the requested number of results for interactive search."""
         logger.info(f"Fetching {n} results for '{query}' ...")
-        results = self.fetch_all_pages(query, max_results=n, **kwargs)
+        results = self.search_all(query, max_results=n, **kwargs)
         logger.info(f"Fetched {len(results)} results.")
         return results
 

@@ -40,7 +40,7 @@ papers = response.get("resultList", {}).get("result", [])
 # Convert to DataFrame
 df = to_dataframe(papers)
 print(df.columns)
-# Output: ['id', 'source', 'title', 'authorString', 'journalTitle', 
+# Output: ['id', 'source', 'title', 'authorString', 'journalTitle',
 #          'pubYear', 'pubType', 'isOpenAccess', 'citedByCount', ...]
 ```
 

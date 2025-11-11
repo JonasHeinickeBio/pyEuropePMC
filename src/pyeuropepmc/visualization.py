@@ -129,9 +129,7 @@ def plot_citation_distribution(
     if df.empty or "citedByCount" not in df.columns:
         logger.warning("No citation data to plot")
         fig, ax = plt.subplots(figsize=figsize)
-        ax.text(
-            0.5, 0.5, "No citation data available", ha="center", va="center", fontsize=14
-        )
+        ax.text(0.5, 0.5, "No citation data available", ha="center", va="center", fontsize=14)
         return fig
 
     fig, ax = plt.subplots(figsize=figsize)
@@ -323,9 +321,7 @@ def plot_publication_types(
     top_types = pub_type_dist.head(top_n)
 
     fig, ax = plt.subplots(figsize=figsize)
-    top_types.plot(
-        kind="barh", ax=ax, color=sns.color_palette("viridis", len(top_types))
-    )
+    top_types.plot(kind="barh", ax=ax, color=sns.color_palette("viridis", len(top_types)))
     ax.set_title(title, fontsize=16, fontweight="bold")
     ax.set_xlabel("Number of Papers", fontsize=12)
     ax.set_ylabel("Publication Type", fontsize=12)
@@ -382,9 +378,7 @@ def plot_journals(
         return fig
 
     fig, ax = plt.subplots(figsize=figsize)
-    journal_dist.plot(
-        kind="barh", ax=ax, color=sns.color_palette("viridis", len(journal_dist))
-    )
+    journal_dist.plot(kind="barh", ax=ax, color=sns.color_palette("viridis", len(journal_dist)))
     ax.set_title(title, fontsize=16, fontweight="bold")
     ax.set_xlabel("Number of Papers", fontsize=12)
     ax.set_ylabel("Journal", fontsize=12)

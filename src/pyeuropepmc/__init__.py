@@ -18,8 +18,10 @@ __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
 from .analytics import (
+    author_statistics,
     citation_statistics,
     detect_duplicates,
+    geographic_analysis,
     journal_distribution,
     publication_type_distribution,
     publication_year_distribution,
@@ -85,6 +87,8 @@ __all__ = [
     "quality_metrics",
     "publication_type_distribution",
     "journal_distribution",
+    "author_statistics",
+    "geographic_analysis",
     # Visualization utilities
     "plot_publication_years",
     "plot_citation_distribution",
