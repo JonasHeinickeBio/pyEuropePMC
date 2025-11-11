@@ -12,6 +12,8 @@ This guide covers development practices, contributing guidelines, and project se
 - [Code Quality](#code-quality)
 - [Release Process](#release-process)
 - [Architecture](#architecture)
+- [Feature Planning](#feature-planning)
+  - [Citation Networks & Work Cooccurrences](citation-networks-implementation-advisory.md) - Comprehensive implementation advisory
 
 ## Development Setup
 
@@ -595,6 +597,20 @@ class RateLimitError(EuropePMCError):
 - **Caching**: Optional response caching
 - **Pagination**: Efficient handling of large result sets
 - **Memory Management**: Stream processing for large datasets
+
+## Feature Planning
+
+### Citation Networks & Work Cooccurrences
+
+Comprehensive guides for implementing advanced network analysis features:
+
+- **[Full Advisory](citation-networks-implementation-advisory.md)**: Detailed analysis of implementation options, architecture, and recommendations (20+ pages)
+- **[Quick Reference](citation-networks-quick-reference.md)**: TL;DR version with key decisions and timelines
+- **[Architecture Diagrams](citation-networks-architecture.md)**: Visual representation of proposed module structure
+
+**Summary**: Implement as new modules within the current repository, not as a separate package. Leverage existing infrastructure (ArticleClient, caching, rate limiting) with optional dependencies for network analysis.
+
+---
 
 ## Getting Help
 
