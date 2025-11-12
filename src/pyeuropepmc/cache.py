@@ -14,7 +14,9 @@ from collections.abc import Callable
 import hashlib
 import json
 import logging
+import os
 from pathlib import Path
+import sqlite3
 import tempfile
 from typing import Any, TypeVar
 
@@ -39,6 +41,116 @@ from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import ConfigurationError
 
 logger = logging.getLogger(__name__)
+
+
+def _validate_diskcache_schema(cache_dir: Path) -> bool:
+    """
+    Validate that a diskcache database has the required schema.
+
+    This function checks if an existing diskcache database has all required
+    columns, particularly the 'size' column which was added in later versions.
+    If the schema is incompatible, the old database should be removed to allow
+    diskcache to create a new one with the correct schema.
+
+    Parameters
+    ----------
+    cache_dir : Path
+        Directory containing the cache database
+
+    Returns
+    -------
+    bool
+        True if schema is valid or doesn't exist, False if schema is incompatible
+
+    Notes
+    -----
+    Required columns for diskcache 5.6.3+:
+    - rowid, key, raw, store_time, expire_time, access_time, access_count,
+      tag, size, mode, filename, value
+    """
+    db_path = cache_dir / "cache.db"
+
+    # If database doesn't exist, schema is "valid" (will be created)
+    if not db_path.exists():
+        return True
+
+    try:
+        # Connect and check schema
+        conn = sqlite3.connect(str(db_path))
+        cursor = conn.cursor()
+
+        # Get column names from Cache table
+        cursor.execute("PRAGMA table_info(Cache)")
+        columns = [col[1] for col in cursor.fetchall()]
+        conn.close()
+
+        # Check for required columns (especially 'size' which is often missing in old schemas)
+        required_columns = ["size", "mode", "filename"]  # Critical columns for newer diskcache
+        missing_columns = [col for col in required_columns if col not in columns]
+
+        if missing_columns:
+            logger.warning(
+                f"Incompatible diskcache schema detected. "
+                f"Missing columns: {missing_columns}. "
+                f"Old cache will be removed to allow schema migration."
+            )
+            return False
+
+        logger.debug(f"Valid diskcache schema detected with columns: {columns}")
+        return True
+
+    except sqlite3.Error as e:
+        logger.warning(f"Error checking diskcache schema: {e}. Treating as invalid.")
+        return False
+
+
+def _migrate_diskcache_schema(cache_dir: Path) -> None:
+    """
+    Migrate an old diskcache database by removing it.
+
+    This function removes an incompatible cache database, allowing diskcache
+    to create a new database with the correct schema. This is safer than
+    attempting to migrate data, as cache data is ephemeral by nature.
+
+    Parameters
+    ----------
+    cache_dir : Path
+        Directory containing the cache database
+
+    Notes
+    -----
+    This function will:
+    1. Remove cache.db (the SQLite database)
+    2. Remove any associated WAL/SHM files
+    3. Log the migration for user awareness
+    4. Preserve the cache directory itself
+
+    Warnings
+    --------
+    This will clear all cached data. This is acceptable behavior for a cache.
+    """
+    try:
+        # Remove main database file
+        db_path = cache_dir / "cache.db"
+        if db_path.exists():
+            os.remove(db_path)
+            logger.info(f"Removed incompatible cache database: {db_path}")
+
+        # Remove SQLite WAL and SHM files if they exist
+        for suffix in ["-wal", "-shm", "-journal"]:
+            wal_path = cache_dir / f"cache.db{suffix}"
+            if wal_path.exists():
+                os.remove(wal_path)
+                logger.debug(f"Removed cache auxiliary file: {wal_path}")
+
+        logger.info(
+            "Cache schema migration completed. "
+            "A new cache will be created with the correct schema."
+        )
+
+    except OSError as e:
+        logger.error(f"Error during cache schema migration: {e}")
+        # Don't raise - cache can be disabled if this fails
 
 
 class CacheConfig:
@@ -159,7 +271,19 @@ class CacheBackend:
             self._initialize_cache()
 
     def _initialize_cache(self) -> None:
-        """Initialize cache with cachetools.TTLCache."""
+        """
+        Initialize cache with cachetools.TTLCache.
+
+        This method currently uses cachetools for L1 in-memory caching.
+        Future implementations may add L2 persistent caching with diskcache.
+
+        Notes
+        -----
+        When using diskcache (future L2 implementation):
+        1. Validate schema compatibility with _validate_diskcache_schema()
+        2. Migrate incompatible schemas with _migrate_diskcache_schema()
+        3. Only then initialize diskcache.Cache()
+        """
         if not CACHETOOLS_AVAILABLE:
             logger.warning("cachetools not available, caching disabled")
             self.config.enabled = False
@@ -177,6 +301,14 @@ class CacheBackend:
             logger.info(
                 f"Cache initialized with cachetools: TTL={self.config.ttl}s, maxsize={maxsize}"
             )
+
+            # Future L2 diskcache integration example:
+            # if DISKCACHE_AVAILABLE:
+            #     cache_dir = Path(self.config.cache_dir)
+            #     if not _validate_diskcache_schema(cache_dir):
+            #         _migrate_diskcache_schema(cache_dir)
+            #     self.l2_cache = diskcache.Cache(str(cache_dir))
+
         except Exception as e:
             logger.error(f"Failed to initialize cache: {e}")
             self.config.enabled = False
