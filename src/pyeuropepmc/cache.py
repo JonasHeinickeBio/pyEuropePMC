@@ -11,6 +11,7 @@ This module provides a robust, thread-safe caching layer with:
 """
 
 from collections.abc import Callable
+from enum import Enum
 import hashlib
 import json
 import logging
@@ -18,6 +19,7 @@ import os
 from pathlib import Path
 import sqlite3
 import tempfile
+import threading
 from typing import Any, TypeVar
 
 try:
@@ -41,6 +43,24 @@ from pyeuropepmc.error_codes import ErrorCodes
 from pyeuropepmc.exceptions import ConfigurationError
 
 logger = logging.getLogger(__name__)
+
+
+class CacheDataType(Enum):
+    """
+    Types of data being cached with different characteristics.
+    
+    Each type has different volatility, access patterns, and optimal TTLs.
+    """
+    SEARCH = "search"  # Search result pages (volatile, paginated)
+    RECORD = "record"  # Individual article metadata (semi-stable)
+    FULLTEXT = "fulltext"  # PDF/XML/ZIP files (mostly immutable)
+    ERROR = "error"  # Error responses (very short-lived)
+
+
+class CacheLayer(Enum):
+    """Cache layer in multi-tier architecture."""
+    L1 = "l1"  # In-memory, per-process
+    L2 = "l2"  # Persistent, shared across processes
 
 
 def _validate_diskcache_schema(cache_dir: Path) -> bool:
@@ -155,7 +175,7 @@ def _migrate_diskcache_schema(cache_dir: Path) -> None:
 
 class CacheConfig:
     """
-    Configuration for cache behavior.
+    Configuration for multi-layer cache behavior.
 
     Attributes
     ----------
@@ -164,12 +184,26 @@ class CacheConfig:
     cache_dir : Path
         Directory for cache storage
     ttl : int
-        Time-to-live in seconds for cached entries
+        Default time-to-live in seconds for cached entries
     size_limit_mb : int
         Maximum cache size in megabytes
     eviction_policy : str
         Policy for cache eviction ('least-recently-used', 'least-frequently-used')
+    enable_l2 : bool
+        Whether to enable L2 persistent cache with diskcache
+    ttl_by_type : dict[CacheDataType, int]
+        TTL configuration per data type
+    namespace_version : int
+        Version number for namespace-based invalidation
     """
+
+    # Default TTLs per data type (in seconds)
+    DEFAULT_TTLS = {
+        CacheDataType.SEARCH: 300,  # 5 minutes - volatile
+        CacheDataType.RECORD: 86400,  # 1 day - semi-stable
+        CacheDataType.FULLTEXT: 2592000,  # 30 days - immutable
+        CacheDataType.ERROR: 30,  # 30 seconds - very short
+    }
 
     def __init__(
         self,
@@ -178,6 +212,10 @@ class CacheConfig:
         ttl: int = 86400,  # 24 hours default
         size_limit_mb: int = 500,  # 500MB default
         eviction_policy: str = "least-recently-used",
+        enable_l2: bool = False,  # L2 cache disabled by default
+        l2_size_limit_mb: int = 5000,  # 5GB for L2
+        ttl_by_type: dict[CacheDataType, int] | None = None,
+        namespace_version: int = 1,
     ):
         """
         Initialize cache configuration.
@@ -188,15 +226,20 @@ class CacheConfig:
             Whether caching is enabled (default: True)
         cache_dir : Path, optional
             Directory for cache storage (default: system temp/pyeuropepmc_cache)
-            Note: With cachetools, this is kept for API compatibility but not used
         ttl : int, optional
-            Time-to-live in seconds for cached entries (default: 86400 = 24 hours)
+            Default time-to-live in seconds for cached entries (default: 86400 = 24 hours)
         size_limit_mb : int, optional
-            Maximum cache size in megabytes (default: 500)
-            Note: With cachetools, this is converted to max number of items
+            Maximum L1 cache size in megabytes (default: 500)
         eviction_policy : str, optional
             Policy for cache eviction (default: 'least-recently-used')
-            Note: cachetools.TTLCache uses LRU by default
+        enable_l2 : bool, optional
+            Whether to enable L2 persistent cache (default: False)
+        l2_size_limit_mb : int, optional
+            Maximum L2 cache size in megabytes (default: 5000)
+        ttl_by_type : dict, optional
+            TTL configuration per data type (uses defaults if not provided)
+        namespace_version : int, optional
+            Version number for namespace-based cache invalidation (default: 1)
         """
         self.enabled = enabled and CACHETOOLS_AVAILABLE
 
@@ -214,7 +257,22 @@ class CacheConfig:
 
         self.ttl = ttl
         self.size_limit_mb = size_limit_mb
+        self.l2_size_limit_mb = l2_size_limit_mb
         self.eviction_policy = eviction_policy
+        self.enable_l2 = enable_l2 and DISKCACHE_AVAILABLE
+        self.namespace_version = namespace_version
+
+        # Set TTLs per data type
+        self.ttl_by_type = self.DEFAULT_TTLS.copy()
+        if ttl_by_type:
+            self.ttl_by_type.update(ttl_by_type)
+
+        if self.enable_l2 and not DISKCACHE_AVAILABLE:
+            logger.warning(
+                "L2 cache requested but diskcache not available. "
+                "Install with: pip install diskcache. L2 cache disabled."
+            )
+            self.enable_l2 = False
 
         # Validate parameters
         if self.ttl < 0:
@@ -233,18 +291,58 @@ class CacheConfig:
                 },
             )
 
+        if self.namespace_version < 1:
+            raise ConfigurationError(
+                ErrorCodes.CONFIG001,
+                context={
+                    "parameter": "namespace_version",
+                    "value": namespace_version,
+                    "reason": "must be >= 1",
+                },
+            )
+
+    def get_ttl(self, data_type: CacheDataType | None = None) -> int:
+        """
+        Get TTL for a specific data type.
+
+        Parameters
+        ----------
+        data_type : CacheDataType, optional
+            Type of data being cached
+
+        Returns
+        -------
+        int
+            TTL in seconds
+        """
+        if data_type and data_type in self.ttl_by_type:
+            return self.ttl_by_type[data_type]
+        return self.ttl
+
 
 class CacheBackend:
     """
-    Professional cache backend with cachetools integration.
+    Professional multi-layer cache backend.
 
-    This class provides a thread-safe, in-memory cache with:
-    - Automatic expiration based on TTL
+    This class provides a thread-safe, multi-tier caching system with:
+    - L1: In-memory cache using cachetools.TTLCache (hot data, ultra-fast)
+    - L2: Persistent cache using diskcache (warm/cold data, survives restarts)
+    - Automatic expiration based on TTL per data type
     - Size-based eviction (LRU)
     - Query normalization for consistent keys
-    - Statistics tracking
+    - Statistics tracking per layer
     - Manual cache control
     - Tag-based grouping for selective eviction
+    - Namespace versioning for broad invalidation
+
+    Attributes
+    ----------
+    config : CacheConfig
+        Cache configuration
+    l1_cache : TTLCache | None
+        L1 in-memory cache
+    l2_cache : diskcache.Cache | None
+        L2 persistent cache
     """
 
     def __init__(self, config: CacheConfig):
@@ -257,14 +355,27 @@ class CacheBackend:
             Cache configuration object
         """
         self.config = config
-        self.cache: Any | None = None  # cachetools.TTLCache type
+        self.l1_cache: Any | None = None  # cachetools.TTLCache type
+        self.l2_cache: Any | None = None  # diskcache.Cache type
         self._tags: dict[str, set[str]] = {}  # Map tags to cache keys
-        self._stats: dict[str, int | float] = {
-            "hits": 0,
-            "misses": 0,
-            "sets": 0,
-            "deletes": 0,
-            "errors": 0,
+        self._lock = threading.Lock()  # Single-flight lock for cache misses
+        
+        # Statistics per layer
+        self._stats: dict[str, dict[str, int | float]] = {
+            "l1": {
+                "hits": 0,
+                "misses": 0,
+                "sets": 0,
+                "deletes": 0,
+                "errors": 0,
+            },
+            "l2": {
+                "hits": 0,
+                "misses": 0,
+                "sets": 0,
+                "deletes": 0,
+                "errors": 0,
+            },
         }
 
         if self.config.enabled:
@@ -272,53 +383,79 @@ class CacheBackend:
 
     def _initialize_cache(self) -> None:
         """
-        Initialize cache with cachetools.TTLCache.
+        Initialize multi-layer cache system.
 
-        This method currently uses cachetools for L1 in-memory caching.
-        Future implementations may add L2 persistent caching with diskcache.
+        This method initializes:
+        - L1: cachetools.TTLCache for in-memory caching
+        - L2: diskcache.Cache for persistent caching (if enabled)
 
-        Notes
-        -----
-        When using diskcache (future L2 implementation):
-        1. Validate schema compatibility with _validate_diskcache_schema()
-        2. Migrate incompatible schemas with _migrate_diskcache_schema()
-        3. Only then initialize diskcache.Cache()
+        L2 cache includes schema validation and migration for compatibility.
         """
+        # Initialize L1 cache (in-memory)
         if not CACHETOOLS_AVAILABLE:
             logger.warning("cachetools not available, caching disabled")
             self.config.enabled = False
-            self.cache = None
+            self.l1_cache = None
             return
 
         try:
-            # Use cachetools.TTLCache for reliable in-memory caching
+            # L1: In-memory cache with short TTL for hot data
             # Convert MB to approximate max items (assume ~1KB per item)
-            maxsize = min(
-                self.config.size_limit_mb * 1024, 10000
-            )  # Rough size limit
-            self.cache = TTLCache(maxsize=maxsize, ttl=self.config.ttl)
+            l1_maxsize = min(self.config.size_limit_mb * 1024, 10000)
+            self.l1_cache = TTLCache(maxsize=l1_maxsize, ttl=self.config.ttl)
 
             logger.info(
-                f"Cache initialized with cachetools: TTL={self.config.ttl}s, maxsize={maxsize}"
+                f"L1 cache initialized: TTL={self.config.ttl}s, "
+                f"maxsize={l1_maxsize}, namespace=v{self.config.namespace_version}"
             )
 
-            # Future L2 diskcache integration example:
-            # if DISKCACHE_AVAILABLE:
-            #     cache_dir = Path(self.config.cache_dir)
-            #     if not _validate_diskcache_schema(cache_dir):
-            #         _migrate_diskcache_schema(cache_dir)
-            #     self.l2_cache = diskcache.Cache(str(cache_dir))
-
         except Exception as e:
-            logger.error(f"Failed to initialize cache: {e}")
+            logger.error(f"Failed to initialize L1 cache: {e}")
             self.config.enabled = False
-            self.cache = None
+            self.l1_cache = None
+            return
 
-    def _normalize_key(self, prefix: str, **kwargs: Any) -> str:
+        # Initialize L2 cache (persistent) if enabled
+        if self.config.enable_l2 and DISKCACHE_AVAILABLE:
+            try:
+                cache_dir = self.config.cache_dir
+                cache_dir.mkdir(parents=True, exist_ok=True)
+
+                # Validate and migrate schema if needed
+                if not _validate_diskcache_schema(cache_dir):
+                    logger.info("Migrating L2 cache schema...")
+                    _migrate_diskcache_schema(cache_dir)
+
+                # Initialize diskcache with size limit
+                size_limit_bytes = self.config.l2_size_limit_mb * 1024 * 1024
+                self.l2_cache = diskcache.Cache(
+                    str(cache_dir),
+                    size_limit=size_limit_bytes,
+                    eviction_policy="least-recently-used",
+                )
+
+                logger.info(
+                    f"L2 cache initialized: dir={cache_dir}, "
+                    f"size_limit={self.config.l2_size_limit_mb}MB"
+                )
+
+            except Exception as e:
+                logger.warning(f"Failed to initialize L2 cache: {e}. Continuing with L1 only.")
+                self.l2_cache = None
+                self.config.enable_l2 = False
+
+    def _normalize_key(
+        self, 
+        prefix: str, 
+        data_type: CacheDataType | None = None,
+        **kwargs: Any
+    ) -> str:
         """
-        Create normalized cache key from parameters with intelligent normalization.
+        Create normalized cache key with namespace versioning.
 
         This method ensures consistent cache keys by:
+        - Adding namespace version for broad invalidation
+        - Including data type in key structure
         - Sorting parameters alphabetically
         - Normalizing whitespace in string values
         - Converting equivalent boolean/None representations
@@ -328,21 +465,23 @@ class CacheBackend:
         Parameters
         ----------
         prefix : str
-            Key prefix (e.g., 'search', 'fulltext')
+            Key prefix (e.g., 'search', 'fulltext', 'record')
+        data_type : CacheDataType, optional
+            Type of data being cached (for versioning and TTL)
         **kwargs : Any
             Key-value pairs to include in the cache key
 
         Returns
         -------
         str
-            Normalized cache key
+            Normalized cache key with format: {data_type}:v{version}:{prefix}:{hash}
 
         Examples
         --------
-        >>> cache._normalize_key('search', query='COVID-19', pageSize=25)
-        'search:a1b2c3d4e5f6g7h8'
-        >>> cache._normalize_key('search', query='  COVID-19  ', pageSize=25)
-        'search:a1b2c3d4e5f6g7h8'  # Same key despite whitespace
+        >>> cache._normalize_key('query', data_type=CacheDataType.SEARCH, query='COVID-19')
+        'search:v1:query:a1b2c3d4e5f6g7h8'
+        >>> cache._normalize_key('article', data_type=CacheDataType.RECORD, id='PMC12345')
+        'record:v1:article:d9e8f7a6b5c4'
         """
         normalized = self._normalize_params(kwargs)
 
@@ -355,7 +494,14 @@ class CacheBackend:
         # Hash for compact key
         params_hash = hashlib.sha256(params_json.encode()).hexdigest()[:16]
 
-        return f"{prefix}:{params_hash}"
+        # Build key with namespace versioning
+        # Format: {data_type}:v{version}:{prefix}:{hash}
+        if data_type:
+            type_prefix = data_type.value
+        else:
+            type_prefix = "general"
+
+        return f"{type_prefix}:v{self.config.namespace_version}:{prefix}:{params_hash}"
 
     def _normalize_params(self, params: dict[str, Any]) -> dict[str, Any]:
         """
@@ -475,9 +621,12 @@ class CacheBackend:
 
         return self._normalize_key(prefix, **all_params)
 
-    def get(self, key: str, default: Any = None) -> Any:
+    def get(self, key: str, default: Any = None, layer: CacheLayer | None = None) -> Any:
         """
-        Retrieve value from cache.
+        Retrieve value from multi-layer cache.
+
+        Implements cache hierarchy: L1 -> L2 -> miss
+        On L2 hit, promotes to L1 for faster subsequent access.
 
         Parameters
         ----------
@@ -485,135 +634,243 @@ class CacheBackend:
             Cache key
         default : Any, optional
             Default value if key not found
+        layer : CacheLayer, optional
+            Specific layer to query (default: try both L1 then L2)
 
         Returns
         -------
         Any
             Cached value or default
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return default
 
         try:
-            # TTLCache supports dict-like access
-            if key in self.cache:
-                value = self.cache[key]
-                self._stats["hits"] += 1
-                logger.debug(f"Cache hit: {key}")
-                return value
-            else:
-                self._stats["misses"] += 1
-                logger.debug(f"Cache miss: {key}")
-                return default
-        except Exception as e:
-            logger.warning(f"Cache get error for key {key}: {e}")
-            self._stats["errors"] += 1
+            # Try L1 cache first (fastest)
+            if (layer is None or layer == CacheLayer.L1) and self.l1_cache is not None:
+                if key in self.l1_cache:
+                    value = self.l1_cache[key]
+                    self._stats["l1"]["hits"] += 1
+                    logger.debug(f"L1 cache hit: {key}")
+                    return value
+                else:
+                    self._stats["l1"]["misses"] += 1
+
+            # Try L2 cache if enabled and L1 missed
+            if (layer is None or layer == CacheLayer.L2) and self.config.enable_l2 and self.l2_cache is not None:
+                value = self.l2_cache.get(key)
+                if value is not None:
+                    self._stats["l2"]["hits"] += 1
+                    logger.debug(f"L2 cache hit: {key}")
+                    
+                    # Promote to L1 for faster access next time
+                    if self.l1_cache is not None:
+                        try:
+                            self.l1_cache[key] = value
+                            logger.debug(f"Promoted to L1: {key}")
+                        except Exception as e:
+                            logger.debug(f"L1 promotion failed: {e}")
+                    
+                    return value
+                else:
+                    self._stats["l2"]["misses"] += 1
+
+            logger.debug(f"Cache miss (all layers): {key}")
             return default
 
-    def set(self, key: str, value: Any, expire: int | None = None, tag: str | None = None) -> bool:
+        except Exception as e:
+            logger.warning(f"Cache get error for key {key}: {e}")
+            if layer == CacheLayer.L1 or (layer is None and self.l1_cache is not None):
+                self._stats["l1"]["errors"] += 1
+            if layer == CacheLayer.L2 or (layer is None and self.l2_cache is not None):
+                self._stats["l2"]["errors"] += 1
+            return default
+
+    def set(
+        self,
+        key: str,
+        value: Any,
+        expire: int | None = None,
+        tag: str | None = None,
+        data_type: CacheDataType | None = None,
+        layer: CacheLayer | None = None,
+    ) -> bool:
         """
-        Store value in cache.
+        Store value in multi-layer cache.
+
+        Implements write-through pattern: writes to both L1 and L2 simultaneously.
 
         Parameters
         ----------
         key : str
             Cache key
         value : Any
-            Value to cache (must be picklable)
+            Value to cache (must be picklable for L2)
         expire : int, optional
-            TTL in seconds (Note: With TTLCache, all entries use the same TTL from config)
+            TTL in seconds (overrides data_type default)
         tag : str, optional
             Tag for grouping related entries
+        data_type : CacheDataType, optional
+            Type of data (determines default TTL)
+        layer : CacheLayer, optional
+            Specific layer to write to (default: write to all layers)
 
         Returns
         -------
         bool
-            True if successful, False otherwise
+            True if successful in at least one layer, False otherwise
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return False
 
+        success = False
+        
+        # Determine TTL
+        if expire is not None:
+            ttl = expire
+        elif data_type is not None:
+            ttl = self.config.get_ttl(data_type)
+        else:
+            ttl = self.config.ttl
+
         try:
-            # TTLCache uses dict-like assignment
-            # Note: expire parameter is ignored as TTLCache uses a single TTL for all entries
-            self.cache[key] = value
+            # Write to L1 cache
+            if (layer is None or layer == CacheLayer.L1) and self.l1_cache is not None:
+                try:
+                    self.l1_cache[key] = value
+                    self._stats["l1"]["sets"] += 1
+                    logger.debug(f"L1 cache set: {key} (TTL: {ttl}s)")
+                    success = True
+                except Exception as e:
+                    logger.warning(f"L1 cache set error for key {key}: {e}")
+                    self._stats["l1"]["errors"] += 1
+
+            # Write to L2 cache if enabled (write-through)
+            if (layer is None or layer == CacheLayer.L2) and self.config.enable_l2 and self.l2_cache is not None:
+                try:
+                    self.l2_cache.set(key, value, expire=ttl)
+                    self._stats["l2"]["sets"] += 1
+                    logger.debug(f"L2 cache set: {key} (TTL: {ttl}s)")
+                    success = True
+                except Exception as e:
+                    logger.warning(f"L2 cache set error for key {key}: {e}")
+                    self._stats["l2"]["errors"] += 1
 
             # Track tag if provided
-            if tag:
+            if success and tag:
                 if tag not in self._tags:
                     self._tags[tag] = set()
                 self._tags[tag].add(key)
 
-            self._stats["sets"] += 1
-            ttl = expire or self.config.ttl
-            logger.debug(f"Cache set: {key} (TTL: {ttl}s)")
-            return True
+            return success
+
         except Exception as e:
             logger.warning(f"Cache set error for key {key}: {e}")
-            self._stats["errors"] += 1
             return False
 
-    def delete(self, key: str) -> bool:
+    def delete(self, key: str, layer: CacheLayer | None = None) -> bool:
         """
-        Delete value from cache.
+        Delete value from multi-layer cache.
 
         Parameters
         ----------
         key : str
             Cache key
+        layer : CacheLayer, optional
+            Specific layer to delete from (default: delete from all layers)
 
         Returns
         -------
         bool
-            True if deleted, False if not found or error
+            True if deleted from at least one layer, False if not found or error
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return False
 
-        try:
-            if key in self.cache:
-                del self.cache[key]
+        deleted = False
 
-                # Remove from tag tracking
+        try:
+            # Delete from L1 cache
+            if (layer is None or layer == CacheLayer.L1) and self.l1_cache is not None:
+                if key in self.l1_cache:
+                    del self.l1_cache[key]
+                    self._stats["l1"]["deletes"] += 1
+                    logger.debug(f"L1 cache delete: {key}")
+                    deleted = True
+
+            # Delete from L2 cache
+            if (layer is None or layer == CacheLayer.L2) and self.config.enable_l2 and self.l2_cache is not None:
+                if self.l2_cache.delete(key):
+                    self._stats["l2"]["deletes"] += 1
+                    logger.debug(f"L2 cache delete: {key}")
+                    deleted = True
+
+            # Remove from tag tracking if deleted
+            if deleted:
                 for tag, keys in list(self._tags.items()):
                     if key in keys:
                         keys.discard(key)
                         if not keys:
                             del self._tags[tag]
 
-                self._stats["deletes"] += 1
-                logger.debug(f"Cache delete: {key}")
-                return True
-            return False
+            return deleted
+
         except Exception as e:
             logger.warning(f"Cache delete error for key {key}: {e}")
-            self._stats["errors"] += 1
+            if layer == CacheLayer.L1 or (layer is None and self.l1_cache is not None):
+                self._stats["l1"]["errors"] += 1
+            if layer == CacheLayer.L2 or (layer is None and self.l2_cache is not None):
+                self._stats["l2"]["errors"] += 1
             return False
 
-    def clear(self) -> bool:
+    def clear(self, layer: CacheLayer | None = None) -> bool:
         """
-        Clear all cached entries.
+        Clear all cached entries from specified layer(s).
+
+        Parameters
+        ----------
+        layer : CacheLayer, optional
+            Specific layer to clear (default: clear all layers)
 
         Returns
         -------
         bool
             True if successful, False otherwise
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return False
 
+        success = False
+
         try:
-            self.cache.clear()
-            logger.info("Cache cleared")
-            return True
+            # Clear L1 cache
+            if (layer is None or layer == CacheLayer.L1) and self.l1_cache is not None:
+                self.l1_cache.clear()
+                logger.info("L1 cache cleared")
+                success = True
+
+            # Clear L2 cache
+            if (layer is None or layer == CacheLayer.L2) and self.config.enable_l2 and self.l2_cache is not None:
+                self.l2_cache.clear()
+                logger.info("L2 cache cleared")
+                success = True
+
+            # Clear tag tracking
+            self._tags.clear()
+
+            return success
+
         except Exception as e:
             logger.error(f"Cache clear error: {e}")
-            self._stats["errors"] += 1
+            if layer == CacheLayer.L1 or (layer is None and self.l1_cache is not None):
+                self._stats["l1"]["errors"] += 1
+            if layer == CacheLayer.L2 or (layer is None and self.l2_cache is not None):
+                self._stats["l2"]["errors"] += 1
             return False
 
     def evict(self, tag: str) -> int:
         """
-        Evict all entries with a specific tag.
+        Evict all entries with a specific tag from all layers.
 
         Parameters
         ----------
@@ -625,7 +882,7 @@ class CacheBackend:
         int
             Number of entries evicted
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return 0
 
         try:
@@ -633,57 +890,123 @@ class CacheBackend:
             if tag in self._tags:
                 keys_to_delete = list(self._tags[tag])
                 for key in keys_to_delete:
-                    if self.delete(key):
+                    if self.delete(key):  # Deletes from all layers
                         count += 1
 
-            logger.info(f"Evicted {count} entries with tag '{tag}'")
+            logger.info(f"Evicted {count} entries with tag '{tag}' from all layers")
             return count
         except Exception as e:
             logger.warning(f"Cache evict error for tag {tag}: {e}")
-            self._stats["errors"] += 1
             return 0
 
     def get_stats(self) -> dict[str, Any]:
         """
-        Get cache statistics.
+        Get multi-layer cache statistics.
 
         Returns
         -------
         dict
-            Statistics including hits, misses, size, and more
+            Statistics including hits, misses, size per layer, and overall metrics
         """
-        stats = self._stats.copy()
+        stats: dict[str, Any] = {
+            "namespace_version": self.config.namespace_version,
+            "layers": {},
+            "overall": {},
+        }
 
-        if self.config.enabled and self.cache is not None:
-            try:
-                # Add cachetools stats
-                stats["entry_count"] = len(self.cache)
-                stats["maxsize"] = self.cache.maxsize
-                stats["currsize"] = self.cache.currsize
-                stats["hit_rate"] = self._calculate_hit_rate()
-                # Estimate size in bytes (rough approximation)
-                stats["size_bytes"] = stats["currsize"] * 1024  # Assume ~1KB per entry
-                stats["size_mb"] = round(stats["size_bytes"] / (1024 * 1024), 2)
-            except Exception as e:
-                logger.warning(f"Error getting cache stats: {e}")
+        if not self.config.enabled:
+            return stats
+
+        try:
+            # L1 cache stats
+            if self.l1_cache is not None:
+                l1_stats = self._stats["l1"].copy()
+                l1_stats["entry_count"] = len(self.l1_cache)
+                l1_stats["maxsize"] = self.l1_cache.maxsize
+                l1_stats["currsize"] = self.l1_cache.currsize
+                l1_stats["hit_rate"] = self._calculate_hit_rate("l1")
+                l1_stats["size_bytes"] = l1_stats["currsize"] * 1024  # ~1KB per entry
+                l1_stats["size_mb"] = round(l1_stats["size_bytes"] / (1024 * 1024), 2)
+                stats["layers"]["l1"] = l1_stats
+
+            # L2 cache stats
+            if self.config.enable_l2 and self.l2_cache is not None:
+                l2_stats = self._stats["l2"].copy()
+                l2_stats["entry_count"] = len(self.l2_cache)
+                l2_stats["hit_rate"] = self._calculate_hit_rate("l2")
+                # Get disk usage from diskcache
+                l2_stats["size_bytes"] = self.l2_cache.volume()
+                l2_stats["size_mb"] = round(l2_stats["size_bytes"] / (1024 * 1024), 2)
+                l2_stats["size_limit_mb"] = self.config.l2_size_limit_mb
+                stats["layers"]["l2"] = l2_stats
+
+            # Overall stats (combined)
+            total_hits = sum(self._stats[layer]["hits"] for layer in ["l1", "l2"])
+            total_misses = sum(self._stats[layer]["misses"] for layer in ["l1", "l2"])
+            total_sets = sum(self._stats[layer]["sets"] for layer in ["l1", "l2"])
+            total_deletes = sum(self._stats[layer]["deletes"] for layer in ["l1", "l2"])
+            total_errors = sum(self._stats[layer]["errors"] for layer in ["l1", "l2"])
+
+            stats["overall"] = {
+                "hits": total_hits,
+                "misses": total_misses,
+                "sets": total_sets,
+                "deletes": total_deletes,
+                "errors": total_errors,
+                "hit_rate": round(total_hits / (total_hits + total_misses), 4) if (total_hits + total_misses) > 0 else 0.0,
+            }
+
+        except Exception as e:
+            logger.warning(f"Error getting cache stats: {e}")
 
         return stats
 
-    def _calculate_hit_rate(self) -> float:
-        """Calculate cache hit rate."""
-        total = self._stats["hits"] + self._stats["misses"]
+    def _calculate_hit_rate(self, layer: str) -> float:
+        """
+        Calculate cache hit rate for a specific layer.
+
+        Parameters
+        ----------
+        layer : str
+            Layer name ('l1' or 'l2')
+
+        Returns
+        -------
+        float
+            Hit rate as a decimal (0.0 to 1.0)
+        """
+        if layer not in self._stats:
+            return 0.0
+
+        layer_stats = self._stats[layer]
+        total = layer_stats["hits"] + layer_stats["misses"]
         if total == 0:
             return 0.0
-        return round(self._stats["hits"] / total, 4)
+        return round(layer_stats["hits"] / total, 4)
 
     def reset_stats(self) -> None:
-        """Reset statistics counters."""
-        self._stats = {"hits": 0, "misses": 0, "sets": 0, "deletes": 0, "errors": 0}
-        logger.debug("Cache statistics reset")
+        """Reset statistics counters for all layers."""
+        self._stats = {
+            "l1": {
+                "hits": 0,
+                "misses": 0,
+                "sets": 0,
+                "deletes": 0,
+                "errors": 0,
+            },
+            "l2": {
+                "hits": 0,
+                "misses": 0,
+                "sets": 0,
+                "deletes": 0,
+                "errors": 0,
+            },
+        }
+        logger.debug("Cache statistics reset for all layers")
 
-    def invalidate_pattern(self, pattern: str) -> int:
+    def invalidate_pattern(self, pattern: str, layer: CacheLayer | None = None) -> int:
         """
-        Invalidate cache entries matching a pattern.
+        Invalidate cache entries matching a pattern from specified layer(s).
 
         Uses glob-style pattern matching:
         - '*' matches any sequence of characters
@@ -694,6 +1017,8 @@ class CacheBackend:
         ----------
         pattern : str
             Glob pattern to match keys
+        layer : CacheLayer, optional
+            Specific layer to invalidate from (default: all layers)
 
         Returns
         -------
@@ -702,10 +1027,11 @@ class CacheBackend:
 
         Examples
         --------
-        >>> cache.invalidate_pattern('search:*')  # All search queries
-        >>> cache.invalidate_pattern('user:123:*')  # All data for user 123
+        >>> cache.invalidate_pattern('search:v1:*')  # All v1 search queries
+        >>> cache.invalidate_pattern('record:v2:*')  # All v2 records
+        >>> cache.invalidate_pattern('*:v1:*')  # All v1 entries across all types
         """
-        if not self.config.enabled or self.cache is None:
+        if not self.config.enabled:
             return 0
 
         try:
@@ -714,21 +1040,32 @@ class CacheBackend:
             count = 0
             keys_to_delete = []
 
-            # Collect matching keys (TTLCache is dict-like)
-            for key in list(self.cache.keys()):
-                if fnmatch.fnmatch(key, pattern):
-                    keys_to_delete.append(key)
+            # Collect matching keys from L1
+            if (layer is None or layer == CacheLayer.L1) and self.l1_cache is not None:
+                for key in list(self.l1_cache.keys()):
+                    if fnmatch.fnmatch(key, pattern):
+                        keys_to_delete.append(key)
 
-            # Delete in batch
+            # Collect matching keys from L2
+            if (layer is None or layer == CacheLayer.L2) and self.config.enable_l2 and self.l2_cache is not None:
+                # diskcache doesn't have direct key iteration, but we can use the internal index
+                try:
+                    for key in list(self.l2_cache):
+                        if fnmatch.fnmatch(str(key), pattern):
+                            if key not in keys_to_delete:
+                                keys_to_delete.append(key)
+                except Exception as e:
+                    logger.debug(f"L2 pattern matching error: {e}")
+
+            # Delete in batch from all layers
             for key in keys_to_delete:
-                if self.delete(key):
+                if self.delete(key, layer=layer):
                     count += 1
 
-            logger.info(f"Invalidated {count} entries matching pattern '{pattern}'")
+            logger.info(f"Invalidated {count} entries matching pattern '{pattern}' from {layer or 'all layers'}")
             return count
         except Exception as e:
             logger.warning(f"Pattern invalidation error for '{pattern}': {e}")
-            self._stats["errors"] += 1
             return 0
 
     def invalidate_older_than(self, seconds: int) -> int:
@@ -978,19 +1315,27 @@ class CacheBackend:
             return []
 
     def close(self) -> None:
-        """Close cache and release resources.
+        """Close cache and release resources for all layers."""
+        try:
+            # Close L1 cache (in-memory, minimal cleanup)
+            if self.l1_cache is not None:
+                self.l1_cache.clear()
+                self.l1_cache = None
+                logger.debug("L1 cache closed")
 
-        Note: With TTLCache (in-memory), no cleanup is needed.
-        This method is provided for API compatibility."""
-        if self.cache is not None:
-            try:
-                # TTLCache is in-memory and doesn't need explicit cleanup
-                logger.debug("Cache closed (in-memory cache, no cleanup needed)")
-            except Exception as e:
-                logger.warning(f"Error closing cache: {e}")
-            finally:
-                self.cache = None
-                self._tags.clear()
+            # Close L2 cache (persistent, needs proper cleanup)
+            if self.l2_cache is not None:
+                self.l2_cache.close()
+                self.l2_cache = None
+                logger.debug("L2 cache closed")
+
+            # Clear tag tracking
+            self._tags.clear()
+
+            logger.info("Multi-layer cache closed successfully")
+
+        except Exception as e:
+            logger.warning(f"Error closing cache: {e}")
 
 
 def cached(
