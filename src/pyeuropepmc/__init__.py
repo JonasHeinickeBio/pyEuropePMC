@@ -32,7 +32,21 @@ from .analytics import (
 from .article import ArticleClient
 from .artifact_store import ArtifactMetadata, ArtifactStore
 from .base import APIClientError, BaseAPIClient
+from .cache_health import (
+    CacheHealthMonitor,
+    HealthReport,
+    HealthStatus,
+    HealthThresholds,
+    create_default_alert_logger,
+)
+from .cache_metrics import CacheMetrics, LatencyStats, MetricsTimer
+from .error_cache import ErrorCache, ErrorType, should_cache_error, get_default_error_ttl
 from .filters import filter_pmc_papers, filter_pmc_papers_or
+from .pagination import (
+    CursorPaginator,
+    PaginationCheckpoint,
+    PaginationState,
+)
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
@@ -86,6 +100,24 @@ __all__ = [
     "conditional_get",
     "is_cached_response",
     "extract_cache_headers",
+    # Pagination
+    "PaginationState",
+    "PaginationCheckpoint",
+    "CursorPaginator",
+    # Error Caching
+    "ErrorCache",
+    "ErrorType",
+    "should_cache_error",
+    "get_default_error_ttl",
+    # Metrics and Monitoring
+    "CacheMetrics",
+    "LatencyStats",
+    "MetricsTimer",
+    "CacheHealthMonitor",
+    "HealthReport",
+    "HealthStatus",
+    "HealthThresholds",
+    "create_default_alert_logger",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",
