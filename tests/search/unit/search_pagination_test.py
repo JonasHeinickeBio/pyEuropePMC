@@ -28,7 +28,7 @@ def test_fetch_all_pages() -> None:
 
         mock_search.side_effect = [first_page, second_page]
 
-        results = client.fetch_all_pages("cancer", page_size=10, max_results=None)
+        results = client.search_all("cancer", page_size=10, max_results=None)
 
         # Should have combined results from both pages
         assert isinstance(results, list)
@@ -40,46 +40,46 @@ def test_fetch_all_pages() -> None:
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_empty_results() -> None:
-    """Test fetch_all_pages handles empty results correctly."""
+def test_search_all_empty_results() -> None:
+    """Test search_all handles empty results correctly."""
     client = SearchClient()
 
     with patch.object(client, "search") as mock_search:
         # Mock empty response
         mock_search.return_value = {"resultList": {"result": []}}
 
-        results = client.fetch_all_pages("nonexistent")
+        results = client.search_all("nonexistent")
         assert results == []
 
     client.close()
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_malformed_response() -> None:
-    """Test fetch_all_pages handles malformed response."""
+def test_search_all_malformed_response() -> None:
+    """Test search_all handles malformed response."""
     client = SearchClient()
 
     with patch.object(client, "search") as mock_search:
         # Mock malformed response (missing resultList)
         mock_search.return_value = {"error": "something went wrong"}
 
-        results = client.fetch_all_pages("test")
+        results = client.search_all("test")
         assert results == []
 
     client.close()
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_string_response() -> None:
-    """Test fetch_all_pages handles string response (XML format)."""
+def test_search_all_string_response() -> None:
+    """Test search_all handles string response (XML format)."""
     client = SearchClient()
 
     with patch.object(client, "search") as mock_search:
-        # Mock string response (XML format) - but fetch_all_pages expects dict format
+        # Mock string response (XML format) - but search_all expects dict format
         # This test should actually fail gracefully and return empty list
         mock_search.return_value = "<xml>test</xml>"
 
-        results = client.fetch_all_pages("test", format="xml")
+        results = client.search_all("test", format="xml")
         # String responses don't match the expected dict structure, so should return empty
         assert results == []
 
@@ -87,8 +87,8 @@ def test_fetch_all_pages_string_response() -> None:
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_with_max_results() -> None:
-    """Test fetch_all_pages with max_results limit."""
+def test_search_all_with_max_results() -> None:
+    """Test search_all with max_results limit."""
     client = SearchClient()
 
     # Create mock data with many results
@@ -105,7 +105,7 @@ def test_fetch_all_pages_with_max_results() -> None:
         mock_search.return_value = mock_response
 
         # Test with max_results smaller than available results
-        results = client.fetch_all_pages("test", max_results=50)
+        results = client.search_all("test", max_results=50)
 
         # Should only return the first 50 results
         assert len(results) == 50
@@ -116,8 +116,8 @@ def test_fetch_all_pages_with_max_results() -> None:
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_no_next_cursor() -> None:
-    """Test fetch_all_pages stops when no nextCursorMark."""
+def test_search_all_no_next_cursor() -> None:
+    """Test search_all stops when no nextCursorMark."""
     client = SearchClient()
 
     mock_response = {
@@ -131,7 +131,7 @@ def test_fetch_all_pages_no_next_cursor() -> None:
     with patch.object(client, "search") as mock_search:
         mock_search.return_value = mock_response
 
-        results = client.fetch_all_pages("test")
+        results = client.search_all("test")
 
         # Should call search only once (no next page)
         assert mock_search.call_count == 1
@@ -141,8 +141,8 @@ def test_fetch_all_pages_no_next_cursor() -> None:
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_repeated_cursor() -> None:
-    """Test fetch_all_pages handles repeated cursor (infinite loop protection)."""
+def test_search_all_repeated_cursor() -> None:
+    """Test search_all handles repeated cursor (infinite loop protection)."""
     client = SearchClient()
 
     # First response with nextCursorMark
@@ -165,7 +165,7 @@ def test_fetch_all_pages_repeated_cursor() -> None:
     with patch.object(client, "search") as mock_search:
         mock_search.side_effect = [first_response, second_response]
 
-        results = client.fetch_all_pages("test", page_size=100)
+        results = client.search_all("test", page_size=100)
 
         # Should call search twice, but stop after detecting repeated cursor
         assert mock_search.call_count == 2
@@ -175,8 +175,8 @@ def test_fetch_all_pages_repeated_cursor() -> None:
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_partial_last_page() -> None:
-    """Test fetch_all_pages with partial results on last page."""
+def test_search_all_partial_last_page() -> None:
+    """Test search_all with partial results on last page."""
     client = SearchClient()
 
     # Mock responses: first page full, second page partial
@@ -199,7 +199,7 @@ def test_fetch_all_pages_partial_last_page() -> None:
         mock_search.side_effect = [first_page, second_page]
 
         # Use page_size that matches the first page
-        results = client.fetch_all_pages("test", page_size=25)
+        results = client.search_all("test", page_size=25)
 
         # Should have all results from both pages
         assert len(results) == 30
@@ -210,8 +210,8 @@ def test_fetch_all_pages_partial_last_page() -> None:
 
 
 @pytest.mark.unit
-def test_fetch_all_pages_single_page() -> None:
-    """Test fetch_all_pages with single page of results."""
+def test_search_all_single_page() -> None:
+    """Test search_all with single page of results."""
     client = SearchClient()
 
     single_page_response = {
@@ -225,7 +225,7 @@ def test_fetch_all_pages_single_page() -> None:
     with patch.object(client, "search") as mock_search:
         mock_search.return_value = single_page_response
 
-        results = client.fetch_all_pages("test")
+        results = client.search_all("test")
 
         # Should call search only once
         assert mock_search.call_count == 1

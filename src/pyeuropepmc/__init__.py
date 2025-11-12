@@ -17,6 +17,18 @@ __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
+from .analytics import (
+    author_statistics,
+    citation_statistics,
+    detect_duplicates,
+    geographic_analysis,
+    journal_distribution,
+    publication_type_distribution,
+    publication_year_distribution,
+    quality_metrics,
+    remove_duplicates,
+    to_dataframe,
+)
 from .article import ArticleClient
 from .base import APIClientError, BaseAPIClient
 from .filters import filter_pmc_papers, filter_pmc_papers_or
@@ -26,6 +38,15 @@ from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .parser import EuropePMCParser
 from .query_builder import QueryBuilder
 from .search import EuropePMCError, SearchClient
+from .visualization import (
+    create_summary_dashboard,
+    plot_citation_distribution,
+    plot_journals,
+    plot_publication_types,
+    plot_publication_years,
+    plot_quality_metrics,
+    plot_trend_analysis,
+)
 
 # Convenience imports for common usage patterns
 Client = SearchClient  # Alias for backwards compatibility
@@ -54,9 +75,28 @@ __all__ = [
     "EuropePMCError",
     "FullTextError",
     "APIClientError",
-    # Utilities
+    # Filtering utilities
     "filter_pmc_papers",
     "filter_pmc_papers_or",
+    # Analytics utilities
+    "to_dataframe",
+    "publication_year_distribution",
+    "citation_statistics",
+    "detect_duplicates",
+    "remove_duplicates",
+    "quality_metrics",
+    "publication_type_distribution",
+    "journal_distribution",
+    "author_statistics",
+    "geographic_analysis",
+    # Visualization utilities
+    "plot_publication_years",
+    "plot_citation_distribution",
+    "plot_quality_metrics",
+    "plot_publication_types",
+    "plot_journals",
+    "plot_trend_analysis",
+    "create_summary_dashboard",
     # Aliases
     "Client",
     "Parser",
