@@ -90,7 +90,8 @@ class CacheConfig:
 
         if self.enabled and not CACHETOOLS_AVAILABLE:
             logger.warning(
-                "Cache requested but cachetools not available. Install with: pip install cachetools"
+                "Cache requested but cachetools not available. "
+                "Install with: pip install cachetools"
             )
             self.enabled = False
 
@@ -404,13 +405,13 @@ class CacheBackend:
             # TTLCache uses dict-like assignment
             # Note: expire parameter is ignored as TTLCache uses a single TTL for all entries
             self.cache[key] = value
-            
+
             # Track tag if provided
             if tag:
                 if tag not in self._tags:
                     self._tags[tag] = set()
                 self._tags[tag].add(key)
-            
+
             self._stats["sets"] += 1
             ttl = expire or self.config.ttl
             logger.debug(f"Cache set: {key} (TTL: {ttl}s)")
@@ -440,14 +441,14 @@ class CacheBackend:
         try:
             if key in self.cache:
                 del self.cache[key]
-                
+
                 # Remove from tag tracking
                 for tag, keys in list(self._tags.items()):
                     if key in keys:
                         keys.discard(key)
                         if not keys:
                             del self._tags[tag]
-                
+
                 self._stats["deletes"] += 1
                 logger.debug(f"Cache delete: {key}")
                 return True
@@ -502,7 +503,7 @@ class CacheBackend:
                 for key in keys_to_delete:
                     if self.delete(key):
                         count += 1
-                        
+
             logger.info(f"Evicted {count} entries with tag '{tag}'")
             return count
         except Exception as e:
@@ -624,7 +625,7 @@ class CacheBackend:
 
         # TTLCache automatically handles expiration based on TTL
         # No manual age-based invalidation is needed or possible
-        logger.info(f"Age-based invalidation not needed with TTLCache (automatic TTL expiration)")
+        logger.info("Age-based invalidation not needed with TTLCache (automatic TTL expiration)")
         return 0
 
     def warm_cache(
@@ -846,7 +847,7 @@ class CacheBackend:
 
     def close(self) -> None:
         """Close cache and release resources.
-        
+
         Note: With TTLCache (in-memory), no cleanup is needed.
         This method is provided for API compatibility."""
         if self.cache is not None:
@@ -1021,5 +1022,6 @@ __all__ = [
     "CacheBackend",
     "cached",
     "normalize_query_params",
-    "DISKCACHE_AVAILABLE",
+    "CACHETOOLS_AVAILABLE",
+    "DISKCACHE_AVAILABLE",  # Kept for backward compatibility
 ]
