@@ -30,6 +30,7 @@ from .analytics import (
     to_dataframe,
 )
 from .article import ArticleClient
+from .artifact_store import ArtifactMetadata, ArtifactStore
 from .base import APIClientError, BaseAPIClient
 from .filters import filter_pmc_papers, filter_pmc_papers_or
 from .ftp_downloader import FTPDownloader
@@ -68,6 +69,9 @@ __all__ = [
     "BaseAPIClient",
     "ProgressInfo",
     "QueryBuilder",
+    # Cache and Storage
+    "ArtifactStore",
+    "ArtifactMetadata",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",
