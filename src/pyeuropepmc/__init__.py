@@ -36,6 +36,14 @@ from .filters import filter_pmc_papers, filter_pmc_papers_or
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, FullTextError, ProgressInfo
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
+from .http_cache import (
+    HTTPCache,
+    HTTPCacheConfig,
+    create_cached_session,
+    conditional_get,
+    is_cached_response,
+    extract_cache_headers,
+)
 from .parser import EuropePMCParser
 from .query_builder import QueryBuilder
 from .search import EuropePMCError, SearchClient
@@ -72,6 +80,12 @@ __all__ = [
     # Cache and Storage
     "ArtifactStore",
     "ArtifactMetadata",
+    "HTTPCache",
+    "HTTPCacheConfig",
+    "create_cached_session",
+    "conditional_get",
+    "is_cached_response",
+    "extract_cache_headers",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",
