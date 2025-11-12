@@ -15,18 +15,18 @@ from pyeuropepmc.cache import CacheBackend, CacheConfig
 class TestImportHandling:
     """Test handling of missing diskcache dependency."""
 
-    def test_config_disabled_without_diskcache(self):
-        """Test that config is disabled when diskcache is not available."""
-        # Temporarily remove diskcache from modules
+    def test_config_disabled_without_cachetools(self):
+        """Test that config is disabled when cachetools is not available."""
+        # Temporarily remove cachetools from modules
         import pyeuropepmc.cache as cache_module
 
-        original_available = cache_module.DISKCACHE_AVAILABLE
-        original_diskcache = cache_module.diskcache
+        original_available = cache_module.CACHETOOLS_AVAILABLE
+        original_ttlcache = cache_module.TTLCache
 
         try:
-            # Simulate diskcache not being available
-            cache_module.DISKCACHE_AVAILABLE = False
-            cache_module.diskcache = None
+            # Simulate cachetools not being available
+            cache_module.CACHETOOLS_AVAILABLE = False
+            cache_module.TTLCache = None
 
             # Create config - should be disabled
             config = CacheConfig(enabled=True)
@@ -34,8 +34,8 @@ class TestImportHandling:
 
         finally:
             # Restore original state
-            cache_module.DISKCACHE_AVAILABLE = original_available
-            cache_module.diskcache = original_diskcache
+            cache_module.CACHETOOLS_AVAILABLE = original_available
+            cache_module.TTLCache = original_ttlcache
 
 
 class TestCacheNormalizationEdgeCases:
@@ -112,7 +112,6 @@ class TestCacheSetWithTags:
         backend.close()
         shutil.rmtree(tmpdir, ignore_errors=True)
 
-    @pytest.mark.skip(reason="Cache set operations failing due to diskcache SQL schema bug - 'size' column missing")
     def test_set_with_tag(self, cache_backend):
         """Test setting cache value with a tag."""
         result = cache_backend.set("key1", "value1", tag="my_tag")
