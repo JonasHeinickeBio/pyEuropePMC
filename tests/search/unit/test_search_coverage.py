@@ -145,13 +145,13 @@ class TestSearchClientCoverage:
             "SEARCH002" in error_message or "Page size must be between 1 and 1000" in error_message
         )
 
-    def test_fetch_all_pages_with_max_results_zero(self):
-        """Test fetch_all_pages with max_results of zero."""
-        result = self.client.fetch_all_pages("cancer", max_results=0)
+    def test_search_all_with_max_results_zero(self):
+        """Test search_all with max_results of zero."""
+        result = self.client.search_all("cancer", max_results=0)
         assert result == []
 
-    def test_fetch_all_pages_with_max_results_none(self):
-        """Test fetch_all_pages with max_results of None."""
+    def test_search_all_with_max_results_none(self):
+        """Test search_all with max_results of None."""
         # Mock the search method to return properly parsed JSON response
         # Simulate multiple pages by changing the nextCursorMark
         page_responses = [
@@ -183,12 +183,12 @@ class TestSearchClientCoverage:
         ]
 
         with patch.object(self.client, "search", side_effect=page_responses):
-            result = self.client.fetch_all_pages("cancer", max_results=None, page_size=1)
+            result = self.client.search_all("cancer", max_results=None, page_size=1)
             assert len(result) == 5  # Should fetch all available results
 
-    def test_fetch_all_pages_with_negative_max_results(self):
-        """Test fetch_all_pages with negative max_results."""
-        result = self.client.fetch_all_pages("cancer", max_results=-5)
+    def test_search_all_with_negative_max_results(self):
+        """Test search_all with negative max_results."""
+        result = self.client.search_all("cancer", max_results=-5)
         assert result == []
 
     def test_interactive_search_with_user_input_zero(self):
@@ -236,7 +236,7 @@ class TestSearchClientCoverage:
         """Test _fetch_interactive_results method."""
         mock_results = [{"id": "1"}, {"id": "2"}, {"id": "3"}]
 
-        with patch.object(self.client, "fetch_all_pages", return_value=mock_results):
+        with patch.object(self.client, "search_all", return_value=mock_results):
             result = self.client._fetch_interactive_results("cancer", 3)
             assert result == mock_results
             assert len(result) == 3

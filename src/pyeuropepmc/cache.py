@@ -19,6 +19,15 @@ import tempfile
 from typing import Any, TypeVar
 
 try:
+    from cachetools import TTLCache
+
+    CACHETOOLS_AVAILABLE = True
+except ImportError:
+    TTLCache = None
+    CACHETOOLS_AVAILABLE = False
+
+# Keep diskcache as fallback for now
+try:
     import diskcache
 
     DISKCACHE_AVAILABLE = True
@@ -144,39 +153,27 @@ class CacheBackend:
             self._initialize_cache()
 
     def _initialize_cache(self) -> None:
-        """Initialize diskcache with configuration."""
-        if not DISKCACHE_AVAILABLE:
-            logger.warning("Attempted to initialize cache but diskcache is not installed")
+        """Initialize cache with cachetools (diskcache fallback removed due to bugs)."""
+        if not CACHETOOLS_AVAILABLE:
+            logger.warning("cachetools not available, caching disabled")
             self.config.enabled = False
             self.cache = None
-            self._stats["errors"] += 1
             return
+
         try:
-            # Create cache directory
-            self.config.cache_dir.mkdir(parents=True, exist_ok=True)
-
-            # Initialize diskcache with configuration
-            size_limit = self.config.size_limit_mb * 1024 * 1024  # Convert MB to bytes
-
-            # Access Cache directly; use type-ignore for attribute checks because
-            # diskcache may be typed as Any when the dependency is missing.
-            CacheClass = diskcache.Cache
-            self.cache = CacheClass(
-                str(self.config.cache_dir),
-                size_limit=size_limit,
-                eviction_policy=self.config.eviction_policy,
-                statistics=True,  # Enable built-in statistics
-            )
+            # Use cachetools.TTLCache for reliable in-memory caching
+            maxsize = min(
+                self.config.size_limit_mb * 1024 * 1024 // 1024, 10000
+            )  # Rough size limit
+            self.cache = TTLCache(maxsize=maxsize, ttl=self.config.ttl)
 
             logger.info(
-                f"Cache initialized: {self.config.cache_dir} "
-                f"(TTL: {self.config.ttl}s, Size limit: {self.config.size_limit_mb}MB)"
+                f"Cache initialized with cachetools: TTL={self.config.ttl}s, maxsize={maxsize}"
             )
         except Exception as e:
             logger.error(f"Failed to initialize cache: {e}")
             self.config.enabled = False
             self.cache = None
-            self._stats["errors"] += 1
 
     def _normalize_key(self, prefix: str, **kwargs: Any) -> str:
         """
