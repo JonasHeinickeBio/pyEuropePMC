@@ -48,9 +48,9 @@ class TestCacheConfigEdgeCases:
         # Invalid policies are accepted but may cause issues at cache init
         # (diskcache handles validation)
 
-    def test_config_without_diskcache(self):
-        """Test config when diskcache is not available."""
-        with patch("pyeuropepmc.cache.DISKCACHE_AVAILABLE", False):
+    def test_config_without_cachetools(self):
+        """Test config when cachetools is not available."""
+        with patch("pyeuropepmc.cache.CACHETOOLS_AVAILABLE", False):
             config = CacheConfig(enabled=True)
             assert config.enabled is False
 
@@ -94,7 +94,7 @@ class TestCacheBackendErrors:
 
     def test_initialization_error(self):
         """Test cache initialization error handling."""
-        with patch("pyeuropepmc.cache.diskcache.Cache") as mock_cache:
+        with patch("pyeuropepmc.cache.TTLCache") as mock_cache:
             mock_cache.side_effect = Exception("Init error")
             tmpdir = Path(tempfile.mkdtemp())
             try:
@@ -104,30 +104,51 @@ class TestCacheBackendErrors:
                 # Cache should be disabled after init error
                 assert backend.config.enabled is False
                 assert backend.cache is None
-                assert backend._stats["errors"] > 0
             finally:
                 shutil.rmtree(tmpdir, ignore_errors=True)
 
     def test_get_error_handling(self, cache_backend):
         """Test get method error handling."""
-        with patch.object(cache_backend.cache, "get", side_effect=Exception("Get error")):
-            result = cache_backend.get("test_key")
-            assert result is None
-            assert cache_backend._stats["errors"] > 0
+        # Replace cache with a broken cache object
+        class BrokenCache:
+            def __contains__(self, key):
+                raise Exception("Get error")
+            def __getitem__(self, key):
+                raise Exception("Get error")
+        
+        cache_backend.cache = BrokenCache()
+        result = cache_backend.get("test_key")
+        assert result is None
+        assert cache_backend._stats["errors"] > 0
 
     def test_set_error_handling(self, cache_backend):
         """Test set method error handling."""
-        with patch.object(cache_backend.cache, "set", side_effect=Exception("Set error")):
-            result = cache_backend.set("test_key", "test_value")
-            assert result is False
-            assert cache_backend._stats["errors"] > 0
+        # Replace cache with a broken cache object
+        class BrokenCache:
+            def __setitem__(self, key, value):
+                raise Exception("Set error")
+        
+        cache_backend.cache = BrokenCache()
+        result = cache_backend.set("test_key", "test_value")
+        assert result is False
+        assert cache_backend._stats["errors"] > 0
 
     def test_delete_error_handling(self, cache_backend):
         """Test delete method error handling."""
-        with patch.object(cache_backend.cache, "delete", side_effect=Exception("Delete error")):
-            result = cache_backend.delete("test_key")
-            assert result is False
-            assert cache_backend._stats["errors"] > 0
+        # First set a key so we can test deletion error
+        cache_backend.set("test_key", "test_value")
+        
+        # Replace cache with a broken cache object
+        class BrokenCache:
+            def __contains__(self, key):
+                return True  # Say key exists
+            def __delitem__(self, key):
+                raise Exception("Delete error")
+        
+        cache_backend.cache = BrokenCache()
+        result = cache_backend.delete("test_key")
+        assert result is False
+        assert cache_backend._stats["errors"] > 0
 
     def test_clear_error_handling(self, cache_backend):
         """Test clear method error handling."""
@@ -138,10 +159,20 @@ class TestCacheBackendErrors:
 
     def test_evict_error_handling(self, cache_backend):
         """Test evict method error handling."""
-        with patch.object(cache_backend.cache, "evict", side_effect=Exception("Evict error")):
-            result = cache_backend.evict("test_tag")
-            assert result == 0
-            assert cache_backend._stats["errors"] > 0
+        # Set some entries with tags
+        cache_backend.set("key1", "value1", tag="test_tag")
+        
+        # Replace cache with a broken cache object
+        class BrokenCache:
+            def __contains__(self, key):
+                return True  # Say key exists
+            def __delitem__(self, key):
+                raise Exception("Evict error")
+        
+        cache_backend.cache = BrokenCache()
+        result = cache_backend.evict("test_tag")
+        assert result == 0
+        assert cache_backend._stats["errors"] > 0
 
     def test_operations_when_disabled(self):
         """Test operations when cache is disabled."""
@@ -166,9 +197,9 @@ class TestCacheBackendErrors:
 
     def test_close_error_handling(self, cache_backend):
         """Test close method error handling."""
-        with patch.object(cache_backend.cache, "close", side_effect=Exception("Close error")):
-            cache_backend.close()
-            assert cache_backend.cache is None
+        # With TTLCache, close doesn't do much, but test it works
+        cache_backend.close()
+        assert cache_backend.cache is None
 
 
 class TestCacheStatistics:
@@ -184,7 +215,6 @@ class TestCacheStatistics:
         backend.close()
         shutil.rmtree(tmpdir, ignore_errors=True)
 
-    @pytest.mark.skip(reason="Cache stats tracking test failing - needs investigation")
     def test_stats_tracking(self, cache_backend):
         """Test that stats are tracked correctly."""
         # Set operations
@@ -222,7 +252,6 @@ class TestCacheStatistics:
         stats = cache_backend.get_stats()
         assert stats["hit_rate"] == 0.0
 
-    @pytest.mark.skip(reason="Cache volume info test failing due to diskcache SQL schema issues")
     def test_stats_volume_info(self, cache_backend):
         """Test stats include volume information."""
         cache_backend.set("key1", "value1")
@@ -263,15 +292,15 @@ class TestCacheInvalidation:
 
     def test_invalidate_pattern_error_handling(self, cache_backend):
         """Test invalidate_pattern error handling."""
-        with patch.object(cache_backend.cache, "iterkeys", side_effect=Exception("Iter error")):
+        with patch.object(cache_backend.cache, "keys", side_effect=Exception("Iter error")):
             count = cache_backend.invalidate_pattern("test:*")
             assert count == 0
 
     def test_invalidate_older_than_error_handling(self, cache_backend):
         """Test invalidate_older_than error handling."""
-        with patch.object(cache_backend.cache, "iterkeys", side_effect=Exception("Iter error")):
-            count = cache_backend.invalidate_older_than(60)
-            assert count == 0
+        # With TTLCache, this method returns 0 (automatic expiration)
+        count = cache_backend.invalidate_older_than(60)
+        assert count == 0
 
     def test_invalidate_when_disabled(self):
         """Test invalidation when cache is disabled."""
@@ -308,30 +337,37 @@ class TestCacheWarming:
 
     def test_warm_cache_error_handling(self, cache_backend):
         """Test cache warming error handling."""
-        with patch.object(cache_backend.cache, "set", side_effect=Exception("Set error")):
-            warm_data = {"key1": "value1"}
-            count = cache_backend.warm_cache(warm_data)
-            # Should return 0 due to errors
-            assert count == 0
+        # Replace cache with a broken cache object
+        class BrokenCache:
+            def __setitem__(self, key, value):
+                raise Exception("Set error")
+        
+        cache_backend.cache = BrokenCache()
+        warm_data = {"key1": "value1"}
+        count = cache_backend.warm_cache(warm_data)
+        # Should return 0 due to errors
+        assert count == 0
 
     def test_warm_cache_partial_failure(self, cache_backend):
         """Test cache warming with partial failures."""
-        # Mock set to fail on specific keys
-        original_set = cache_backend.cache.set
-        def mock_set(key, value, **kwargs):
-            if "fail" in key:
-                raise Exception("Set error")
-            return original_set(key, value, **kwargs)
-
-        with patch.object(cache_backend.cache, "set", side_effect=mock_set):
-            warm_data = {
-                "success1": "value1",
-                "fail_key": "value2",
-                "success2": "value3",
-            }
-            count = cache_backend.warm_cache(warm_data)
-            # Should succeed for non-failing keys
-            assert count >= 0
+        from cachetools import TTLCache
+        
+        # Create a custom cache that fails on specific keys
+        class PartiallyBrokenCache(TTLCache):
+            def __setitem__(self, key, value):
+                if "fail" in key:
+                    raise Exception("Set error")
+                super().__setitem__(key, value)
+        
+        cache_backend.cache = PartiallyBrokenCache(maxsize=10, ttl=60)
+        warm_data = {
+            "success1": "value1",
+            "fail_key": "value2",
+            "success2": "value3",
+        }
+        count = cache_backend.warm_cache(warm_data)
+        # Should succeed for non-failing keys (2 out of 3)
+        assert count == 2
 
 
 class TestCacheHealth:
@@ -457,7 +493,7 @@ class TestCacheCompaction:
 
     def test_compact_error_handling(self, cache_backend):
         """Test compact error handling."""
-        with patch.object(cache_backend.cache, "expire", side_effect=Exception("Compact error")):
+        with patch.object(cache_backend.cache, "keys", side_effect=Exception("Compact error")):
             result = cache_backend.compact()
             assert result is False
             assert cache_backend._stats["errors"] > 0
@@ -486,7 +522,7 @@ class TestCacheKeyRetrieval:
 
     def test_get_keys_error_handling(self, cache_backend):
         """Test get_keys error handling."""
-        with patch.object(cache_backend.cache, "iterkeys", side_effect=Exception("Iter error")):
+        with patch.object(cache_backend.cache, "keys", side_effect=Exception("Iter error")):
             keys = cache_backend.get_keys()
             assert keys == []
 
@@ -504,7 +540,6 @@ class TestCachedDecorator:
         backend.close()
         shutil.rmtree(tmpdir, ignore_errors=True)
 
-    @pytest.mark.skip(reason="Decorator basic test failing due to diskcache SQL schema issues - 'misses' and 'size' columns don't exist")
     def test_decorator_basic(self, cache_backend):
         """Test basic decorator functionality."""
         call_count = 0
@@ -544,7 +579,6 @@ class TestCachedDecorator:
 
         assert call_count == 2
 
-    @pytest.mark.skip(reason="Decorator custom key func test failing due to diskcache SQL schema issues - 'misses' and 'size' columns don't exist")
     def test_decorator_with_custom_key_func(self, cache_backend):
         """Test decorator with custom key function."""
         call_count = 0

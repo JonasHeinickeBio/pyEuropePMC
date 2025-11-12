@@ -26,7 +26,7 @@ except ImportError:
     TTLCache = None
     CACHETOOLS_AVAILABLE = False
 
-# Keep diskcache as fallback for now
+# diskcache is kept as optional fallback (not currently used)
 try:
     import diskcache
 
@@ -76,18 +76,22 @@ class CacheConfig:
             Whether caching is enabled (default: True)
         cache_dir : Path, optional
             Directory for cache storage (default: system temp/pyeuropepmc_cache)
+            Note: With cachetools, this is kept for API compatibility but not used
         ttl : int, optional
             Time-to-live in seconds for cached entries (default: 86400 = 24 hours)
         size_limit_mb : int, optional
             Maximum cache size in megabytes (default: 500)
+            Note: With cachetools, this is converted to max number of items
         eviction_policy : str, optional
             Policy for cache eviction (default: 'least-recently-used')
+            Note: cachetools.TTLCache uses LRU by default
         """
-        self.enabled = enabled and DISKCACHE_AVAILABLE
+        self.enabled = enabled and CACHETOOLS_AVAILABLE
 
-        if self.enabled and not DISKCACHE_AVAILABLE:
+        if self.enabled and not CACHETOOLS_AVAILABLE:
             logger.warning(
-                "Cache requested but diskcache not available. Install with: pip install diskcache"
+                "Cache requested but cachetools not available. "
+                "Install with: pip install cachetools"
             )
             self.enabled = False
 
@@ -120,14 +124,15 @@ class CacheConfig:
 
 class CacheBackend:
     """
-    Professional cache backend with diskcache integration.
+    Professional cache backend with cachetools integration.
 
-    This class provides a thread-safe, persistent cache with:
+    This class provides a thread-safe, in-memory cache with:
     - Automatic expiration based on TTL
-    - Size-based eviction
+    - Size-based eviction (LRU)
     - Query normalization for consistent keys
     - Statistics tracking
     - Manual cache control
+    - Tag-based grouping for selective eviction
     """
 
     def __init__(self, config: CacheConfig):
@@ -140,7 +145,8 @@ class CacheBackend:
             Cache configuration object
         """
         self.config = config
-        self.cache: Any | None = None  # diskcache.Cache type
+        self.cache: Any | None = None  # cachetools.TTLCache type
+        self._tags: dict[str, set[str]] = {}  # Map tags to cache keys
         self._stats: dict[str, int | float] = {
             "hits": 0,
             "misses": 0,
@@ -153,7 +159,7 @@ class CacheBackend:
             self._initialize_cache()
 
     def _initialize_cache(self) -> None:
-        """Initialize cache with cachetools (diskcache fallback removed due to bugs)."""
+        """Initialize cache with cachetools.TTLCache."""
         if not CACHETOOLS_AVAILABLE:
             logger.warning("cachetools not available, caching disabled")
             self.config.enabled = False
@@ -162,8 +168,9 @@ class CacheBackend:
 
         try:
             # Use cachetools.TTLCache for reliable in-memory caching
+            # Convert MB to approximate max items (assume ~1KB per item)
             maxsize = min(
-                self.config.size_limit_mb * 1024 * 1024 // 1024, 10000
+                self.config.size_limit_mb * 1024, 10000
             )  # Rough size limit
             self.cache = TTLCache(maxsize=maxsize, ttl=self.config.ttl)
 
@@ -356,16 +363,16 @@ class CacheBackend:
             return default
 
         try:
-            value = self.cache.get(key, default=default, retry=True)
-
-            if value is default:
-                self._stats["misses"] += 1
-                logger.debug(f"Cache miss: {key}")
-            else:
+            # TTLCache supports dict-like access
+            if key in self.cache:
+                value = self.cache[key]
                 self._stats["hits"] += 1
                 logger.debug(f"Cache hit: {key}")
-
-            return value
+                return value
+            else:
+                self._stats["misses"] += 1
+                logger.debug(f"Cache miss: {key}")
+                return default
         except Exception as e:
             logger.warning(f"Cache get error for key {key}: {e}")
             self._stats["errors"] += 1
@@ -382,7 +389,7 @@ class CacheBackend:
         value : Any
             Value to cache (must be picklable)
         expire : int, optional
-            TTL in seconds (default: use config TTL)
+            TTL in seconds (Note: With TTLCache, all entries use the same TTL from config)
         tag : str, optional
             Tag for grouping related entries
 
@@ -395,12 +402,20 @@ class CacheBackend:
             return False
 
         try:
-            expire = expire or self.config.ttl
-            success = self.cache.set(key, value, expire=expire, tag=tag)
-            if success:
-                self._stats["sets"] += 1
-                logger.debug(f"Cache set: {key} (TTL: {expire}s)")
-            return bool(success)
+            # TTLCache uses dict-like assignment
+            # Note: expire parameter is ignored as TTLCache uses a single TTL for all entries
+            self.cache[key] = value
+
+            # Track tag if provided
+            if tag:
+                if tag not in self._tags:
+                    self._tags[tag] = set()
+                self._tags[tag].add(key)
+
+            self._stats["sets"] += 1
+            ttl = expire or self.config.ttl
+            logger.debug(f"Cache set: {key} (TTL: {ttl}s)")
+            return True
         except Exception as e:
             logger.warning(f"Cache set error for key {key}: {e}")
             self._stats["errors"] += 1
@@ -424,11 +439,20 @@ class CacheBackend:
             return False
 
         try:
-            success = self.cache.delete(key)
-            if success:
+            if key in self.cache:
+                del self.cache[key]
+
+                # Remove from tag tracking
+                for tag, keys in list(self._tags.items()):
+                    if key in keys:
+                        keys.discard(key)
+                        if not keys:
+                            del self._tags[tag]
+
                 self._stats["deletes"] += 1
                 logger.debug(f"Cache delete: {key}")
-            return bool(success)
+                return True
+            return False
         except Exception as e:
             logger.warning(f"Cache delete error for key {key}: {e}")
             self._stats["errors"] += 1
@@ -473,9 +497,15 @@ class CacheBackend:
             return 0
 
         try:
-            count = self.cache.evict(tag)
+            count = 0
+            if tag in self._tags:
+                keys_to_delete = list(self._tags[tag])
+                for key in keys_to_delete:
+                    if self.delete(key):
+                        count += 1
+
             logger.info(f"Evicted {count} entries with tag '{tag}'")
-            return int(count)
+            return count
         except Exception as e:
             logger.warning(f"Cache evict error for tag {tag}: {e}")
             self._stats["errors"] += 1
@@ -494,11 +524,14 @@ class CacheBackend:
 
         if self.config.enabled and self.cache is not None:
             try:
-                # Add diskcache built-in stats
-                stats["size_bytes"] = self.cache.volume()
-                stats["size_mb"] = round(self.cache.volume() / (1024 * 1024), 2)
+                # Add cachetools stats
                 stats["entry_count"] = len(self.cache)
+                stats["maxsize"] = self.cache.maxsize
+                stats["currsize"] = self.cache.currsize
                 stats["hit_rate"] = self._calculate_hit_rate()
+                # Estimate size in bytes (rough approximation)
+                stats["size_bytes"] = stats["currsize"] * 1024  # Assume ~1KB per entry
+                stats["size_mb"] = round(stats["size_bytes"] / (1024 * 1024), 2)
             except Exception as e:
                 logger.warning(f"Error getting cache stats: {e}")
 
@@ -549,8 +582,8 @@ class CacheBackend:
             count = 0
             keys_to_delete = []
 
-            # Collect matching keys
-            for key in self.cache.iterkeys():
+            # Collect matching keys (TTLCache is dict-like)
+            for key in list(self.cache.keys()):
                 if fnmatch.fnmatch(key, pattern):
                     keys_to_delete.append(key)
 
@@ -570,6 +603,9 @@ class CacheBackend:
         """
         Invalidate cache entries older than specified time.
 
+        Note: With TTLCache, entries are automatically expired based on TTL.
+        This method is provided for API compatibility but has limited functionality.
+
         Parameters
         ----------
         seconds : int
@@ -578,7 +614,7 @@ class CacheBackend:
         Returns
         -------
         int
-            Number of entries invalidated
+            Number of entries invalidated (always 0 with TTLCache as expiration is automatic)
 
         Examples
         --------
@@ -587,36 +623,10 @@ class CacheBackend:
         if not self.config.enabled or self.cache is None:
             return 0
 
-        try:
-            import time
-
-            count = 0
-            current_time = time.time()
-            keys_to_delete = []
-
-            # Check each entry's age
-            for key in self.cache.iterkeys():
-                # Get entry metadata
-                try:
-                    entry_time = self.cache.get(key, read=False, expire_time=True)
-                except Exception as e:
-                    logger.warning(f"Error reading cache entry for key {key}: {e}")
-                    self._stats["errors"] += 1
-                    continue
-                if entry_time and (current_time - entry_time) > seconds:
-                    keys_to_delete.append(key)
-
-            # Delete old entries
-            for key in keys_to_delete:
-                if self.delete(key):
-                    count += 1
-
-            logger.info(f"Invalidated {count} entries older than {seconds}s")
-            return count
-        except Exception as e:
-            logger.warning(f"Time-based invalidation error: {e}")
-            self._stats["errors"] += 1
-            return 0
+        # TTLCache automatically handles expiration based on TTL
+        # No manual age-based invalidation is needed or possible
+        logger.info("Age-based invalidation not needed with TTLCache (automatic TTL expiration)")
+        return 0
 
     def warm_cache(
         self, entries: dict[str, Any], ttl: int | None = None, tag: str | None = None
@@ -770,8 +780,8 @@ class CacheBackend:
         """
         Compact cache storage to reclaim space.
 
-        Removes expired entries and optimizes storage.
-        This can be resource-intensive and should be run during low-traffic periods.
+        Note: With TTLCache, compaction is automatic as expired entries
+        are removed on access. This method is provided for API compatibility.
 
         Returns
         -------
@@ -786,9 +796,10 @@ class CacheBackend:
             return False
 
         try:
-            # Trigger cache cleanup
-            self.cache.expire()
-            logger.info("Cache compacted successfully")
+            # TTLCache automatically removes expired entries on access
+            # Force iteration to trigger cleanup
+            _ = list(self.cache.keys())
+            logger.info("Cache compacted successfully (expired entries cleaned on access)")
             return True
         except Exception as e:
             logger.error(f"Cache compact error: {e}")
@@ -823,7 +834,7 @@ class CacheBackend:
             import fnmatch
 
             keys = []
-            for key in self.cache.iterkeys():
+            for key in list(self.cache.keys()):
                 if pattern is None or fnmatch.fnmatch(key, pattern):
                     keys.append(key)
                     if len(keys) >= limit:
@@ -835,15 +846,19 @@ class CacheBackend:
             return []
 
     def close(self) -> None:
-        """Close cache and release resources."""
+        """Close cache and release resources.
+
+        Note: With TTLCache (in-memory), no cleanup is needed.
+        This method is provided for API compatibility."""
         if self.cache is not None:
             try:
-                self.cache.close()
-                logger.debug("Cache closed")
+                # TTLCache is in-memory and doesn't need explicit cleanup
+                logger.debug("Cache closed (in-memory cache, no cleanup needed)")
             except Exception as e:
                 logger.warning(f"Error closing cache: {e}")
             finally:
                 self.cache = None
+                self._tags.clear()
 
 
 def cached(
@@ -1007,5 +1022,6 @@ __all__ = [
     "CacheBackend",
     "cached",
     "normalize_query_params",
-    "DISKCACHE_AVAILABLE",
+    "CACHETOOLS_AVAILABLE",
+    "DISKCACHE_AVAILABLE",  # Kept for backward compatibility
 ]
