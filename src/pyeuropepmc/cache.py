@@ -381,6 +381,30 @@ class CacheBackend:
         if self.config.enabled:
             self._initialize_cache()
 
+    @property
+    def cache(self) -> Any:
+        """
+        Backward compatibility property for accessing L1 cache.
+
+        Returns
+        -------
+        Any
+            L1 cache object (TTLCache)
+        """
+        return self.l1_cache
+
+    @cache.setter
+    def cache(self, value: Any) -> None:
+        """
+        Backward compatibility setter for L1 cache.
+
+        Parameters
+        ----------
+        value : Any
+            Value to set for L1 cache
+        """
+        self.l1_cache = value
+
     def _initialize_cache(self) -> None:
         """
         Initialize multi-layer cache system.
@@ -609,9 +633,9 @@ class CacheBackend:
         Examples
         --------
         >>> cache.normalize_query_key('COVID-19', pageSize=25, format='json')
-        'search:a1b2c3d4e5f6g7h8'
+        'search:v1:query:a1b2c3d4e5f6g7h8'
         >>> cache.normalize_query_key('  covid-19  ', pageSize=25, format='json')
-        'search:a1b2c3d4e5f6g7h8'  # Case-insensitive normalization
+        'search:v1:query:a1b2c3d4e5f6g7h8'  # Same key despite whitespace
         """
         # Normalize query string
         normalized_query = " ".join(query.split())  # Normalize whitespace
@@ -619,7 +643,8 @@ class CacheBackend:
         # Combine with other parameters
         all_params = {"query": normalized_query, **params}
 
-        return self._normalize_key(prefix, **all_params)
+        # Use SEARCH data type by default for query keys
+        return self._normalize_key(prefix, data_type=CacheDataType.SEARCH, **all_params)
 
     def get(self, key: str, default: Any = None, layer: CacheLayer | None = None) -> Any:
         """
@@ -906,7 +931,8 @@ class CacheBackend:
         Returns
         -------
         dict
-            Statistics including hits, misses, size per layer, and overall metrics
+            Statistics including hits, misses, size per layer, and overall metrics.
+            For backward compatibility, also includes flat stats at top level.
         """
         stats: dict[str, Any] = {
             "namespace_version": self.config.namespace_version,
@@ -955,6 +981,22 @@ class CacheBackend:
                 "errors": total_errors,
                 "hit_rate": round(total_hits / (total_hits + total_misses), 4) if (total_hits + total_misses) > 0 else 0.0,
             }
+
+            # Backward compatibility: Add flat stats at top level
+            stats["hits"] = total_hits
+            stats["misses"] = total_misses
+            stats["sets"] = total_sets
+            stats["deletes"] = total_deletes
+            stats["errors"] = total_errors
+            stats["hit_rate"] = stats["overall"]["hit_rate"]
+            
+            # Add L1-specific stats for backward compatibility
+            if self.l1_cache is not None:
+                stats["entry_count"] = len(self.l1_cache)
+                stats["maxsize"] = self.l1_cache.maxsize
+                stats["currsize"] = self.l1_cache.currsize
+                stats["size_bytes"] = stats["layers"]["l1"]["size_bytes"]
+                stats["size_mb"] = stats["layers"]["l1"]["size_mb"]
 
         except Exception as e:
             logger.warning(f"Error getting cache stats: {e}")
@@ -1272,7 +1314,7 @@ class CacheBackend:
             return True
         except Exception as e:
             logger.error(f"Cache compact error: {e}")
-            self._stats["errors"] += 1
+            self._stats["l1"]["errors"] += 1
             return False
 
     def get_keys(self, pattern: str | None = None, limit: int = 1000) -> list[str]:
