@@ -5,10 +5,7 @@ This example shows how to use caching with SearchClient, ArticleClient,
 and FullTextClient to improve performance and reduce API load.
 """
 import time
-from pyeuropepmc.search import SearchClient
-from pyeuropepmc.article import ArticleClient
-from pyeuropepmc.fulltext import FullTextClient
-from pyeuropepmc.cache import CacheConfig
+from pyeuropepmc import SearchClient, ArticleClient, FullTextClient, CacheConfig
 
 
 def demo_search_client_caching():

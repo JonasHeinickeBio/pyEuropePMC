@@ -17,7 +17,13 @@ __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
-from .cache.cache import CacheBackend, CacheConfig, CacheDataType, CacheLayer
+from .cache.cache import (
+    CacheBackend,
+    CacheConfig,
+    CacheDataType,
+    CacheLayer,
+    normalize_query_params,
+)
 from .clients.article import ArticleClient
 from .clients.ftp_downloader import FTPDownloader
 from .clients.fulltext import FullTextClient, ProgressInfo
@@ -53,7 +59,7 @@ from .query.pagination import (
     PaginationCheckpoint,
     PaginationState,
 )
-from .query.query_builder import QueryBuilder
+from .query.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
 from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
 # Convenience imports for common usage patterns
@@ -76,11 +82,14 @@ __all__ = [
     "BaseAPIClient",
     "ProgressInfo",
     "QueryBuilder",
+    "get_available_fields",
+    "validate_field_coverage",
     # Cache and Storage
     "CacheBackend",
     "CacheConfig",
     "CacheDataType",
     "CacheLayer",
+    "normalize_query_params",
     "ArtifactStore",
     "ArtifactMetadata",
     # Pagination

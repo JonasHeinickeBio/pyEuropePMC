@@ -6,8 +6,7 @@ This demo shows how to use the SearchClient with optional caching
 to improve performance and reduce API load.
 """
 
-from pyeuropepmc.search import SearchClient
-from pyeuropepmc.cache import CacheConfig
+from pyeuropepmc import SearchClient, CacheConfig
 
 
 def demo_without_cache():

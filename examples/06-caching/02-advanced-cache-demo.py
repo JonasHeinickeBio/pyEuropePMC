@@ -27,14 +27,14 @@ from pathlib import Path
 # Add the src directory to the path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from pyeuropepmc.cache.cache import (
+from pyeuropepmc import (
     CacheBackend,
     CacheConfig,
     CacheDataType,
     CacheLayer,
     normalize_query_params,
 )
-from pyeuropepmc.storage.artifact_store import ArtifactStore
+from pyeuropepmc import ArtifactStore
 
 # Set up logging to see cache operations
 logging.basicConfig(

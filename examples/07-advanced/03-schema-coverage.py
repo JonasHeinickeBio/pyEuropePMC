@@ -6,7 +6,7 @@ to analyze XML documents and identify unrecognized element types.
 """
 from pathlib import Path
 
-from pyeuropepmc.fulltext_parser import FullTextXMLParser
+from pyeuropepmc import FullTextXMLParser
 
 
 def main():

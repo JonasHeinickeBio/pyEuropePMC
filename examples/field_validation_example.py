@@ -6,7 +6,7 @@ This example demonstrates how to validate that the QueryBuilder's
 field definitions are up-to-date with the Europe PMC API.
 """
 
-from pyeuropepmc.query_builder import (
+from pyeuropepmc import (
     QueryBuilder,
     get_available_fields,
     validate_field_coverage,
