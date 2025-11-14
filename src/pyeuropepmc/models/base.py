@@ -12,8 +12,8 @@ import uuid
 from rdflib import Graph, Literal, Namespace, URIRef
 
 # RDF namespaces for ontology alignment
-AID = Namespace("http://aid-pais.org/ontology#")
-DATA = Namespace("http://aid-pais.org/data/")
+EX = Namespace("http://example.org/")
+DATA = Namespace("http://example.org/data/")
 DCT = Namespace("http://purl.org/dc/terms/")
 RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
 PROV = Namespace("http://www.w3.org/ns/prov#")
@@ -23,7 +23,7 @@ NIF = Namespace("http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#
 
 __all__ = [
     "BaseEntity",
-    "AID",
+    "EX",
     "DATA",
     "DCT",
     "RDFS",
@@ -61,7 +61,7 @@ class BaseEntity:
     >>> entity.validate()
     >>> uri = entity.mint_uri("entity")
     >>> print(uri)
-    http://aid-pais.org/data/entity/test-123
+    http://example.org/data/entity/test-123
     """
 
     id: str | None = None
@@ -89,7 +89,7 @@ class BaseEntity:
         >>> entity = BaseEntity(id="12345")
         >>> uri = entity.mint_uri("paper")
         >>> print(uri)
-        http://aid-pais.org/data/paper/12345
+        http://example.org/data/paper/12345
         """
         _id = self.id or str(uuid.uuid4())
         return URIRef(f"{DATA}{path}/{_id}")
@@ -186,6 +186,6 @@ class BaseEntity:
             g.add((subject, RDFS.label, Literal(self.label)))
 
         if self.confidence is not None:
-            g.add((subject, AID.confidence, Literal(self.confidence)))
+            g.add((subject, EX.confidence, Literal(self.confidence)))
 
         return subject

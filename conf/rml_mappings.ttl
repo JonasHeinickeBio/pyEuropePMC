@@ -7,8 +7,8 @@
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
-@prefix aid: <http://aid-pais.org/ontology#> .
-@prefix data: <http://aid-pais.org/data/> .
+@prefix ex: <http://example.org/> .
+@prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # RML Mappings for PyEuropePMC Data Models
@@ -23,7 +23,7 @@
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/paper/{pmcid}" ;
+        rr:template "http://example.org/data/paper/{pmcid}" ;
         rr:class bibo:AcademicArticle
     ] ;
     
@@ -92,7 +92,7 @@
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/author/{id}" ;
+        rr:template "http://example.org/data/author/{id}" ;
         rr:class foaf:Person
     ] ;
     
@@ -140,7 +140,7 @@
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/section/{id}" ;
+        rr:template "http://example.org/data/section/{id}" ;
         rr:class bibo:DocumentPart, nif:Context
     ] ;
     
@@ -178,7 +178,7 @@
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/table/{id}" ;
+        rr:template "http://example.org/data/table/{id}" ;
         rr:class bibo:Table
     ] ;
     
@@ -201,7 +201,7 @@
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/reference/{id}" ;
+        rr:template "http://example.org/data/reference/{id}" ;
         rr:class bibo:Document
     ] ;
     

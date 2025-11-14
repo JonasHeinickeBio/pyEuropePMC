@@ -105,7 +105,7 @@ Defines how JSON entities map to RDF triples:
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/paper/{pmcid}" ;
+        rr:template "http://example.org/data/paper/{pmcid}" ;
         rr:class bibo:AcademicArticle
     ] ;
     

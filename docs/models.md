@@ -54,7 +54,7 @@ entity = BaseEntity(
 )
 
 # Mint URI
-uri = entity.mint_uri("entity")  # http://aid-pais.org/data/entity/unique-id
+uri = entity.mint_uri("entity")  # http://example.org/data/entity/unique-id
 
 # Convert to dictionary
 data = entity.to_dict()
@@ -198,8 +198,8 @@ row = TableRowEntity(
 
 **RDF Mapping:**
 - `rdf:type` → `bibo:Row`
-- `headers` → `aid:hasHeader` (multi-value)
-- `cells` → `aid:hasCell` (multi-value)
+- `headers` → `ex:hasHeader` (multi-value)
+- `cells` → `ex:hasCell` (multi-value)
 
 ### ReferenceEntity
 
@@ -353,7 +353,7 @@ RML mappings are defined in `conf/rml_mappings.ttl` using Turtle syntax:
     ] ;
     
     rr:subjectMap [
-        rr:template "http://aid-pais.org/data/paper/{pmcid}" ;
+        rr:template "http://example.org/data/paper/{pmcid}" ;
         rr:class bibo:AcademicArticle
     ] ;
     
@@ -421,13 +421,13 @@ python scripts/xml_to_rdf_rml.py input.xml --output output.ttl \
 @prefix dct: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 
-<http://aid-pais.org/data/paperentity/PMC1234567> a bibo:AcademicArticle ;
+<http://example.org/data/paperentity/PMC1234567> a bibo:AcademicArticle ;
     dct:title "Example Article" ;
     dct:identifier "PMC1234567" ;
     bibo:doi "10.1234/example.2024.001" ;
     dct:issued "2024-01-15" .
 
-<http://aid-pais.org/data/authorentity/uuid-123> a foaf:Person ;
+<http://example.org/data/authorentity/uuid-123> a foaf:Person ;
     foaf:name "Jane Doe" ;
     foaf:givenName "Jane" ;
     foaf:familyName "Doe" .

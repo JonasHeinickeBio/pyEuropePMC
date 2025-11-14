@@ -300,7 +300,7 @@ All acceptance criteria from issue #15 have been met:
 - ✅ RDFMapper loads conf/rdf_map.yml, supports fields and links
 - ✅ to_rdf() yields triples with correct predicates and types
 - ✅ Multi-value fields emit multiple triples
-- ✅ URIs minted under http://aid-pais.org/data/<type>/<id>
+- ✅ URIs minted under http://example.org/data/<type>/<id>
 - ✅ builders/from_parser.py converts parser outputs
 - ✅ CLI script xml_to_rdf.py with --ttl and --json flags
 - ✅ SHACL shapes in shacl/pub.shacl.ttl
