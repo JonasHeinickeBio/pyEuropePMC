@@ -17,7 +17,14 @@ __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
-from .analytics import (
+from .cache.cache import CacheBackend, CacheConfig, CacheDataType, CacheLayer
+from .clients.article import ArticleClient
+from .clients.ftp_downloader import FTPDownloader
+from .clients.fulltext import FullTextClient, ProgressInfo
+from .clients.search import SearchClient
+from .core.base import BaseAPIClient
+from .core.exceptions import APIClientError, EuropePMCError, FullTextError
+from .processing.analytics import (
     author_statistics,
     citation_statistics,
     detect_duplicates,
@@ -29,16 +36,9 @@ from .analytics import (
     remove_duplicates,
     to_dataframe,
 )
-from .article import ArticleClient
-from .base import APIClientError, BaseAPIClient
-from .filters import filter_pmc_papers, filter_pmc_papers_or
-from .ftp_downloader import FTPDownloader
-from .fulltext import FullTextClient, FullTextError, ProgressInfo
-from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .parser import EuropePMCParser
-from .query_builder import QueryBuilder
-from .search import EuropePMCError, SearchClient
-from .visualization import (
+from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
+from .processing.parser import EuropePMCParser
+from .processing.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,
     plot_journals,
@@ -47,6 +47,14 @@ from .visualization import (
     plot_quality_metrics,
     plot_trend_analysis,
 )
+from .query.filters import filter_pmc_papers, filter_pmc_papers_or
+from .query.pagination import (
+    CursorPaginator,
+    PaginationCheckpoint,
+    PaginationState,
+)
+from .query.query_builder import QueryBuilder
+from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
 # Convenience imports for common usage patterns
 Client = SearchClient  # Alias for backwards compatibility
@@ -68,6 +76,17 @@ __all__ = [
     "BaseAPIClient",
     "ProgressInfo",
     "QueryBuilder",
+    # Cache and Storage
+    "CacheBackend",
+    "CacheConfig",
+    "CacheDataType",
+    "CacheLayer",
+    "ArtifactStore",
+    "ArtifactMetadata",
+    # Pagination
+    "PaginationState",
+    "PaginationCheckpoint",
+    "CursorPaginator",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",

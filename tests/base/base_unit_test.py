@@ -3,8 +3,8 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from pyeuropepmc.base import BaseAPIClient
-from pyeuropepmc.exceptions import APIClientError
+from pyeuropepmc.core.base import BaseAPIClient
+from pyeuropepmc.core.exceptions import APIClientError
 
 
 @pytest.fixture
@@ -35,7 +35,7 @@ def test_get_success(mock_sleep, client):
 @pytest.mark.unit
 @patch("time.sleep")
 def test_get_failure(mock_sleep, client):
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(client.session, "get", side_effect=APIClientError(ErrorCodes.NET001)):
         with pytest.raises(APIClientError) as exc_info:
@@ -64,7 +64,7 @@ def test_post_success(mock_sleep, client):
 @pytest.mark.unit
 @patch("time.sleep")
 def test_post_failure(mock_sleep, client):
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(client.session, "post", side_effect=APIClientError(ErrorCodes.NET001)):
         with pytest.raises(APIClientError) as exc_info:
@@ -325,7 +325,7 @@ def test_post_logs_debug_and_info(mock_sleep, client, caplog):
 @patch("time.sleep")
 def test_get_http_error_handling(mock_sleep, client):
     """Test _get method handles HTTP errors correctly."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(client.session, "get") as mock_get:
         mock_response = MagicMock()
@@ -351,7 +351,7 @@ def test_get_http_error_handling(mock_sleep, client):
 @patch("time.sleep")
 def test_post_http_error_handling(mock_sleep, client):
     """Test _post method handles HTTP errors correctly."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(client.session, "post") as mock_post:
         mock_response = MagicMock()
@@ -377,7 +377,7 @@ def test_post_http_error_handling(mock_sleep, client):
 @patch("time.sleep")
 def test_get_timeout_handling(mock_sleep, client):
     """Test _get method handles timeout errors."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(client.session, "get", side_effect=requests.Timeout("Request timeout")):
         with pytest.raises(APIClientError) as exc_info:
@@ -396,7 +396,7 @@ def test_get_timeout_handling(mock_sleep, client):
 @patch("time.sleep")
 def test_post_timeout_handling(mock_sleep, client):
     """Test _post method handles timeout errors."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(client.session, "post", side_effect=requests.Timeout("Request timeout")):
         with pytest.raises(APIClientError) as exc_info:
@@ -415,7 +415,7 @@ def test_post_timeout_handling(mock_sleep, client):
 @patch("time.sleep")
 def test_get_connection_error_handling(mock_sleep, client):
     """Test _get method handles connection errors."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(
         client.session, "get", side_effect=requests.ConnectionError("Connection failed")
@@ -436,7 +436,7 @@ def test_get_connection_error_handling(mock_sleep, client):
 @patch("time.sleep")
 def test_post_connection_error_handling(mock_sleep, client):
     """Test _post method handles connection errors."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with patch.object(
         client.session, "post", side_effect=requests.ConnectionError("Connection failed")
@@ -501,7 +501,7 @@ def test_constants():
 @pytest.mark.unit
 def test_api_client_error_exception():
     """Test APIClientError exception can be raised and caught."""
-    from pyeuropepmc.error_codes import ErrorCodes
+    from pyeuropepmc.core.error_codes import ErrorCodes
 
     with pytest.raises(APIClientError):
         raise APIClientError(ErrorCodes.NET001)

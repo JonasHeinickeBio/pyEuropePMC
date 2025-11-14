@@ -5,9 +5,9 @@ Comprehensive tests for all validation helper methods to maximize coverage.
 """
 
 import pytest
-from pyeuropepmc.article import ArticleClient
-from pyeuropepmc.exceptions import ValidationError
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.core.exceptions import ValidationError
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 
 class TestArticleClientValidation:

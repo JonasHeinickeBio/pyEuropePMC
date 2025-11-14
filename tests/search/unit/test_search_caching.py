@@ -10,8 +10,8 @@ import tempfile
 import shutil
 from pathlib import Path
 from unittest.mock import patch
-from pyeuropepmc.search import SearchClient
-from pyeuropepmc.cache import CacheConfig
+from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.cache.cache import CacheConfig
 
 
 class TestSearchClientCacheInitialization:
@@ -314,7 +314,7 @@ class TestBackwardCompatibility:
 
     def test_no_cache_impact_on_errors(self):
         """Test that caching doesn't affect error handling."""
-        from pyeuropepmc.exceptions import SearchError
+        from pyeuropepmc.core.exceptions import SearchError
 
         client = SearchClient()
 
@@ -351,7 +351,7 @@ class TestCacheErrorHandling:
 
     def test_search_error_not_cached(self, client_with_cache):
         """Test that search errors are not cached."""
-        from pyeuropepmc.exceptions import SearchError
+        from pyeuropepmc.core.exceptions import SearchError
 
         with patch.object(client_with_cache, '_make_request', side_effect=SearchError):
             # First call raises error

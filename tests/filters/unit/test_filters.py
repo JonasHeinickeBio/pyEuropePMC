@@ -8,7 +8,7 @@ import pytest
 import logging
 logger = logging.getLogger("test.filters")
 
-from pyeuropepmc.filters import (
+from pyeuropepmc.query.filters import (
 	filter_pmc_papers,
 	filter_pmc_papers_or,
 	_meets_type_criteria,

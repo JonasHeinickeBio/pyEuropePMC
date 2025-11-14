@@ -11,8 +11,8 @@ Tests cover:
 
 import pytest
 
-from pyeuropepmc.exceptions import QueryBuilderError
-from pyeuropepmc.query_builder import QueryBuilder
+from pyeuropepmc.core.exceptions import QueryBuilderError
+from pyeuropepmc.query.query_builder import QueryBuilder
 
 
 class TestQueryBuilderBasics:
@@ -677,7 +677,7 @@ class TestFieldValidation:
     def test_get_available_fields(self) -> None:
         """Test fetching available fields from API."""
         pytest.importorskip("requests")
-        from pyeuropepmc.query_builder import get_available_fields
+        from pyeuropepmc.query.query_builder import get_available_fields
 
         fields = get_available_fields()
         assert isinstance(fields, list)
@@ -696,14 +696,14 @@ class TestFieldValidation:
         # This test checks if ImportError is raised when requests is not available
         # We can't easily test this without uninstalling requests,
         # so we just verify the function exists
-        from pyeuropepmc.query_builder import get_available_fields
+        from pyeuropepmc.query.query_builder import get_available_fields
 
         assert callable(get_available_fields)
 
     def test_validate_field_coverage(self) -> None:
         """Test field coverage validation."""
         pytest.importorskip("requests")
-        from pyeuropepmc.query_builder import validate_field_coverage
+        from pyeuropepmc.query.query_builder import validate_field_coverage
 
         result = validate_field_coverage(verbose=False)
 
@@ -739,7 +739,7 @@ class TestFieldValidation:
     def test_validate_field_coverage_verbose(self) -> None:
         """Test field coverage validation with verbose output."""
         pytest.importorskip("requests")
-        from pyeuropepmc.query_builder import validate_field_coverage
+        from pyeuropepmc.query.query_builder import validate_field_coverage
 
         # Should not raise and should print output
         result = validate_field_coverage(verbose=True)
@@ -749,7 +749,7 @@ class TestFieldValidation:
         """Test that FieldType includes commonly used fields."""
         import typing
 
-        from pyeuropepmc.query_builder import FieldType
+        from pyeuropepmc.query.query_builder import FieldType
 
         field_type_args = typing.get_args(FieldType)
         fields = set(field_type_args)
@@ -776,7 +776,7 @@ class TestFieldValidation:
         """Test that FieldType includes both full and abbreviated field names."""
         import typing
 
-        from pyeuropepmc.query_builder import FieldType
+        from pyeuropepmc.query.query_builder import FieldType
 
         field_type_args = typing.get_args(FieldType)
         fields = set(field_type_args)

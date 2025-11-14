@@ -1,5 +1,5 @@
 import pytest
-from pyeuropepmc.fulltext import FullTextClient
+from pyeuropepmc.clients.fulltext import FullTextClient
 
 SAMPLE_RESULTS = [
     {"id": "1", "title": "First Article", "author": "Alice"},

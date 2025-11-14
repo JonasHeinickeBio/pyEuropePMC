@@ -9,9 +9,9 @@ to achieve higher test coverage for the parser module.
 import pytest
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
-from pyeuropepmc.parser import EuropePMCParser
-from pyeuropepmc.exceptions import ParsingError
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 
 pytestmark = pytest.mark.unit

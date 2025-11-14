@@ -9,9 +9,9 @@ from unittest.mock import Mock, patch
 import pytest
 import requests
 
-from pyeuropepmc.search import SearchClient
-from pyeuropepmc.exceptions import SearchError, APIClientError
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.core.exceptions import SearchError, APIClientError
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 
 pytestmark = pytest.mark.unit
@@ -255,7 +255,7 @@ class TestSearchClientCoverage:
         empty_response = {"hitCount": 0, "resultList": {"result": []}}
 
         with patch.object(self.client, "search", return_value=empty_response), patch(
-            "pyeuropepmc.parser.EuropePMCParser.parse_json", return_value=[]
+            "pyeuropepmc.processing.parser.EuropePMCParser.parse_json", return_value=[]
         ):
             result = self.client.search_and_parse("cancer", format="json")
             assert result == []
@@ -268,7 +268,7 @@ class TestSearchClientCoverage:
         with (
             patch.object(self.client, "search", return_value=mock_results),
             patch(
-                "pyeuropepmc.parser.EuropePMCParser.parse_json",
+                "pyeuropepmc.processing.parser.EuropePMCParser.parse_json",
                 side_effect=Exception("Parse error"),
             ),
         ):

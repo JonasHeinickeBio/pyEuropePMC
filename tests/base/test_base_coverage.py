@@ -8,9 +8,9 @@ to achieve higher test coverage for the base module.
 from unittest.mock import Mock, patch
 import pytest
 import requests
-from pyeuropepmc.base import BaseAPIClient
-from pyeuropepmc.exceptions import APIClientError
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.core.base import BaseAPIClient
+from pyeuropepmc.core.exceptions import APIClientError
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 
 pytestmark = pytest.mark.unit

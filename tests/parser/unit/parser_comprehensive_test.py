@@ -7,9 +7,9 @@ covering JSON, XML, and Dublin Core parsing with various edge cases.
 
 import pytest
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import ParsingError
-from pyeuropepmc.parser import EuropePMCParser
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.processing.parser import EuropePMCParser
 
 
 class TestParseJson:

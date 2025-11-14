@@ -7,8 +7,8 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
-from pyeuropepmc.analytics import to_dataframe
-from pyeuropepmc.visualization import (
+from pyeuropepmc.processing.analytics import to_dataframe
+from pyeuropepmc.processing.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,
     plot_journals,

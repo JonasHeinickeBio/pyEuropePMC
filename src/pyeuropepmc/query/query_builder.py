@@ -123,8 +123,8 @@ from search_query import SearchFile
 from search_query.parser import parse
 from search_query.search_file import load_search_file
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import APIClientError, QueryBuilderError
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import APIClientError, QueryBuilderError
 
 # Initialize logger
 logger = logging.getLogger(__name__)
@@ -1389,8 +1389,25 @@ class QueryBuilder:
         Epidemiology 99: 53–63. DOI: 10.1016/J.JCLINEPI.2018.02.025.
         """
         try:
-            # Get Query object
-            query_obj = self.to_query_object(platform=platform)
+            # For evaluation, we need to ensure queries have explicit field specifications
+            # since search-query package only supports [title] and [abstract] for evaluation
+            query_string = self.build(validate=False)
+
+            # Parse the query
+            query_obj = parse(query_string, platform=platform)
+
+            # The search-query package sets implicit fields to [all] for queries without
+            # explicit fields, but [all] is not supported for evaluation. We need to
+            # change any [all] fields to [title] for evaluation.
+            def fix_field_for_evaluation(query: Any) -> None:
+                """Recursively fix [all] fields to [title] in the query tree."""
+                if hasattr(query, "field") and query.field and query.field.value == "[all]":
+                    query.field.value = "title"  # Use the enum value without brackets
+                if hasattr(query, "children"):
+                    for child in query.children:
+                        fix_field_for_evaluation(child)
+
+            fix_field_for_evaluation(query_obj)
 
             # Evaluate using search-query's evaluation
             results: dict[str, float] = query_obj.evaluate(records)
@@ -1405,6 +1422,53 @@ class QueryBuilder:
                 ) from e
             else:
                 raise
+
+    def _prepare_query_for_evaluation(self, platform: str) -> str:
+        """
+        Prepare query string for evaluation by ensuring field specifications.
+
+        The search-query package only supports evaluation on queries with explicit
+        field specifications. For PubMed platform, we use the 'title' field
+        which is supported for evaluation.
+
+        Parameters
+        ----------
+        platform : str
+            Platform syntax for the query
+
+        Returns
+        -------
+        str
+            Query string suitable for evaluation
+        """
+        # Build the original query
+        original_query = self.build(validate=False)
+
+        # If the query already has field specifications, use it as-is
+        if "[" in original_query and "]" in original_query:
+            return original_query
+
+        # For queries without field specifications, we need to add field specs
+        # The search-query package only supports TITLE and ABSTRACT for evaluation
+        # We'll use TITLE as the default since it's commonly used
+        if platform == "pubmed":
+            # Convert terms without field specs to term[title]
+            # This is a simplified approach - for complex queries this might need refinement
+            terms = original_query.split()
+            expanded_terms = []
+            for term in terms:
+                if term in ["AND", "OR", "NOT", "(", ")"]:
+                    expanded_terms.append(term)
+                else:
+                    # Remove quotes if present for the field expansion
+                    clean_term = term.strip('"')
+                    expanded_terms.append(f"{clean_term}[title]")
+
+            return " ".join(expanded_terms)
+        else:
+            # For other platforms, try to use a similar approach
+            # This may need adjustment based on platform syntax
+            return original_query
 
     def log_to_search(
         self,
@@ -1653,8 +1717,8 @@ def get_available_fields(api_url: str | None = None) -> list[str]:
     APIClientError
         If API request fails or returns invalid data
     """
-    from pyeuropepmc.base import BaseAPIClient
-    from pyeuropepmc.exceptions import APIClientError
+    from pyeuropepmc.core.base import BaseAPIClient
+    from pyeuropepmc.core.exceptions import APIClientError
 
     url = api_url or "https://www.ebi.ac.uk/europepmc/webservices/rest/fields?format=json"
     logger.debug("Fetching available fields from: %s", url)
@@ -1717,8 +1781,8 @@ def _extract_field_names(data: dict[str, Any]) -> list[str]:
     APIClientError
         If response structure is invalid
     """
-    from pyeuropepmc.error_codes import ErrorCodes
-    from pyeuropepmc.exceptions import APIClientError
+    from pyeuropepmc.core.error_codes import ErrorCodes
+    from pyeuropepmc.core.exceptions import APIClientError
 
     try:
         terms = data.get("searchTermList", {}).get("searchTerms", [])

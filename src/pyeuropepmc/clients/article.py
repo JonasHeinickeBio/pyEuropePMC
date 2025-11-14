@@ -8,10 +8,10 @@ references, database links, and detailed article information.
 import logging
 from typing import Any
 
-from pyeuropepmc.base import BaseAPIClient
-from pyeuropepmc.cache import CacheBackend, CacheConfig
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import APIClientError, ValidationError
+from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
+from pyeuropepmc.core.base import BaseAPIClient
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import APIClientError, ValidationError
 from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
 
 __all__ = ["ArticleClient"]

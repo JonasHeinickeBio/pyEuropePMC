@@ -15,8 +15,8 @@ from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc import QueryBuilder
-from pyeuropepmc.exceptions import QueryBuilderError
+from pyeuropepmc.query.query_builder import QueryBuilder
+from pyeuropepmc.core.exceptions import QueryBuilderError
 
 
 class TestQueryBuilderFromString:
@@ -340,25 +340,17 @@ class TestQueryBuilderEvaluate:
         }
 
         # Create a query that can be evaluated
-        # The search-query package has limitations on field evaluation
-        # Let's skip this test for now and mark it as needing investigation
-        pytest.skip(
-            reason="Evaluation requires proper field mapping - search-query package "
-                   "only supports explicit [title] and [abstract] fields for evaluation, "
-                   "but QueryBuilder creates [all] field queries. Needs further investigation."
-        )
+        qb = QueryBuilder().keyword("cancer")
+        results = qb.evaluate(records, platform="pubmed")
 
-        # This would be the ideal test once field mapping is resolved:
-        # qb = QueryBuilder.from_string("cancer", platform="pubmed")
-        # results = qb.evaluate(records, platform="pubmed")
-        # assert "recall" in results
-        # assert results["recall"] == 1.0
+        # Should have recall, precision, and f1_score
+        assert "recall" in results
+        assert "precision" in results
+        assert "f1_score" in results
 
-    @pytest.mark.skip(
-        reason="Evaluation requires proper field mapping - search-query package "
-               "only supports explicit [title] and [abstract] fields for evaluation, "
-               "but 'generic' platform is not supported. Needs platform/field syntax investigation."
-    )
+        # Since "cancer" appears in both included titles, recall should be 1.0
+        assert results["recall"] == 1.0
+
     def test_evaluate_perfect_recall(self) -> None:
         """Test evaluation with perfect recall."""
         records = {
@@ -372,23 +364,17 @@ class TestQueryBuilderEvaluate:
             },
         }
 
-        # Use generic syntax for evaluation
-        qb = QueryBuilder.from_string("online[title]", platform="generic")
-
-        results = qb.evaluate(records, platform="generic")
+        # Use pubmed syntax for evaluation
+        qb = QueryBuilder().keyword("online")
+        results = qb.evaluate(records, platform="pubmed")
 
         # Should match all included records
         assert results["recall"] == 1.0
 
-    @pytest.mark.skip(
-        reason="Evaluation requires proper field mapping - search-query package "
-               "only supports explicit [title] and [abstract] fields for evaluation, "
-               "but 'generic' platform is not supported. Needs platform/field syntax investigation."
-    )
     def test_evaluate_uses_cached_query(self) -> None:
         """Test that evaluate uses cached Query object."""
-        # Use generic syntax to get a proper parsed query
-        qb = QueryBuilder.from_string("cancer[title]", platform="generic")
+        # Use pubmed syntax to get a proper parsed query
+        qb = QueryBuilder().keyword("cancer")
 
         # Pre-load query object
         query_obj = qb.to_query_object()
@@ -400,7 +386,7 @@ class TestQueryBuilderEvaluate:
             },
         }
 
-        results = qb.evaluate(records, platform="generic")
+        results = qb.evaluate(records, platform="pubmed")
 
         # Should use the same cached object
         assert qb._parsed_query is query_obj
@@ -480,19 +466,19 @@ class TestIntegrationLoadSaveTranslate:
 class TestSearchQueryNotAvailable:
     """Test behavior when search-query package is not available."""
 
-    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_from_string_raises_import_error(self, mock_parse) -> None:
         """Test that from_string raises ImportError when package not available."""
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_string("cancer", platform="pubmed")
 
-    @patch("pyeuropepmc.query_builder.load_search_file", side_effect=ImportError("No module named 'search_query'"))
+    @patch("pyeuropepmc.query.query_builder.load_search_file", side_effect=ImportError("No module named 'search_query'"))
     def test_from_file_raises_import_error(self, mock_load) -> None:
         """Test that from_file raises ImportError when package not available."""
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_file("test.json")
 
-    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_save_raises_import_error(self, mock_parse) -> None:
         """Test that save raises ImportError when package not available."""
         qb = QueryBuilder()
@@ -501,7 +487,7 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.save("test.json")
 
-    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_translate_raises_import_error(self, mock_parse) -> None:
         """Test that translate raises ImportError when package not available."""
         qb = QueryBuilder()
@@ -510,7 +496,7 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.translate("wos")
 
-    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_to_query_object_raises_import_error(self, mock_parse) -> None:
         """Test that to_query_object raises ImportError when package not available."""
         qb = QueryBuilder()
@@ -519,7 +505,7 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.to_query_object()
 
-    @patch("pyeuropepmc.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_evaluate_raises_import_error(self, mock_parse) -> None:
         """Test that evaluate raises ImportError when package not available."""
         qb = QueryBuilder()

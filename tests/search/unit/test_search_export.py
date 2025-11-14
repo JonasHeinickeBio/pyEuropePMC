@@ -1,5 +1,5 @@
 import pytest
-from pyeuropepmc.search import SearchClient
+from pyeuropepmc.clients.search import SearchClient
 
 SAMPLE_RESULTS = [
     {"id": "1", "title": "First Article", "author": "Alice"},

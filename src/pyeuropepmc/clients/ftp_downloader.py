@@ -15,9 +15,9 @@ import zipfile
 from bs4 import BeautifulSoup, Tag
 import requests
 
-from pyeuropepmc.base import BaseAPIClient
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import FullTextError
+from pyeuropepmc.core.base import BaseAPIClient
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import FullTextError
 
 logger = logging.getLogger(__name__)
 
@@ -157,63 +157,12 @@ class FTPDownloader(BaseAPIClient):
 
             # Parse ZIP file listing from HTML
             for row in soup.find_all("tr"):
-                if isinstance(row, Tag):
-                    cells = row.find_all("td")
-                    if len(cells) >= 3:
-                        # Try to find the link in either the first or second cell
-                        # Different HTML structures may have the link in different positions
-                        link = None
-                        filename = ""
+                if not isinstance(row, Tag):
+                    continue
 
-                        # Try first cell (some structures)
-                        first_cell = cells[0]
-                        if isinstance(first_cell, Tag):
-                            link_element = first_cell.find("a")
-                            if isinstance(link_element, Tag):
-                                link = link_element
-                                href = link.get("href", "")
-                                filename = href if isinstance(href, str) else ""
-
-                        # Try second cell (other structures) if first cell didn't work
-                        if not link and len(cells) > 1:
-                            second_cell = cells[1]
-                            if isinstance(second_cell, Tag):
-                                link_element = second_cell.find("a")
-                                if isinstance(link_element, Tag):
-                                    link = link_element
-                                    href = link.get("href", "")
-                                    filename = href if isinstance(href, str) else ""
-
-                        if (
-                            link
-                            and isinstance(filename, str)
-                            and filename.endswith(".zip")
-                            and filename.startswith("PMC")
-                        ):
-                            # Extract PMC ID from filename
-                            pmcid_match = re.search(r"PMC(\d+)\.zip", filename)
-                            if pmcid_match:
-                                pmcid = pmcid_match.group(1)
-
-                                # Parse file size - look for size in any of the cells
-                                size_bytes = 0
-                                for cell in cells:  # Check all cells for size
-                                    size_text = cell.get_text(strip=True)
-                                    if size_text and not size_text.isspace() and size_text != "-":
-                                        # Try to parse as file size
-                                        parsed_size = self._parse_file_size(size_text)
-                                        if parsed_size > 0:
-                                            size_bytes = parsed_size
-                                            break
-
-                                zip_files.append(
-                                    {
-                                        "filename": filename,
-                                        "pmcid": pmcid,
-                                        "size": size_bytes,
-                                        "directory": directory,
-                                    }
-                                )
+                zip_info = self._parse_zip_file_row(row, directory)
+                if zip_info:
+                    zip_files.append(zip_info)
 
             logger.info(f"Found {len(zip_files)} ZIP files in {directory}")
             return zip_files
@@ -221,6 +170,72 @@ class FTPDownloader(BaseAPIClient):
         except Exception as e:
             context = {"url": directory_url, "error": str(e)}
             raise FullTextError(ErrorCodes.FULL005, context) from e
+
+    def _parse_zip_file_row(self, row: Tag, directory: str) -> dict[str, str | int] | None:
+        """Parse a single table row for ZIP file information."""
+        cells = row.find_all("td")
+        if len(cells) < 3:
+            return None
+
+        filename = self._extract_filename_from_cells(cells)
+        if not filename or not filename.endswith(".zip") or not filename.startswith("PMC"):
+            return None
+
+        pmcid = self._extract_pmcid_from_filename(filename)
+        if not pmcid:
+            return None
+
+        size_bytes = self._extract_file_size_from_cells(cells)
+
+        return {
+            "filename": filename,
+            "pmcid": pmcid,
+            "size": size_bytes,
+            "directory": directory,
+        }
+
+    def _extract_filename_from_cells(self, cells: list[Tag]) -> str | None:
+        """Extract filename from table cells, trying different positions."""
+        # Try first cell
+        filename = self._get_link_href(cells[0])
+        if filename:
+            return filename
+
+        # Try second cell if first failed
+        if len(cells) > 1:
+            filename = self._get_link_href(cells[1])
+            if filename:
+                return filename
+
+        return None
+
+    def _get_link_href(self, cell: Tag) -> str | None:
+        """Extract href from the first link in a cell."""
+        if not isinstance(cell, Tag):
+            return None
+
+        link_element = cell.find("a")
+        if not isinstance(link_element, Tag):
+            return None
+
+        href = link_element.get("href")
+        return href if isinstance(href, str) else None
+
+    def _extract_pmcid_from_filename(self, filename: str) -> str | None:
+        """Extract PMC ID from filename like 'PMC11691200.zip'."""
+        pmcid_match = re.search(r"PMC(\d+)\.zip", filename)
+        return pmcid_match.group(1) if pmcid_match else None
+
+    def _extract_file_size_from_cells(self, cells: list[Tag]) -> int:
+        """Extract file size from any of the table cells."""
+        for cell in cells:
+            if isinstance(cell, Tag):
+                size_text = cell.get_text(strip=True)
+                if size_text and size_text != "-":
+                    parsed_size = self._parse_file_size(size_text)
+                    if parsed_size > 0:
+                        return parsed_size
+        return 0
 
     def query_pmcids_in_ftp(
         self, pmcids: list[str], max_directories: int = 100
@@ -256,32 +271,54 @@ class FTPDownloader(BaseAPIClient):
             # Return empty results if we can't get directories
             return {pmcid: None for pmcid in pmcids}
 
-        result: dict[str, dict[str, str | int] | None] = {}
-        for pmcid in pmcids:
-            result[pmcid] = None
+        result = self._initialize_result_dict(pmcids)
+        directories_list = self._prepare_directories_list(directories_to_check, pmcids)
 
-        # Convert to list and sort to check most likely directories first
+        search_stats = self._search_directories_for_pmcids(
+            directories_list, pmcids, result, max_directories
+        )
+
+        logger.info(
+            f"Search completed: found {search_stats['found_count']}/{len(pmcids)} PMC IDs "
+            f"in {search_stats['directories_checked']} directories"
+        )
+        return result
+
+    def _initialize_result_dict(self, pmcids: list[str]) -> dict[str, dict[str, str | int] | None]:
+        """Initialize result dictionary with None values for all PMC IDs."""
+        return {pmcid: None for pmcid in pmcids}
+
+    def _prepare_directories_list(
+        self, directories_to_check: set[str], pmcids: list[str]
+    ) -> list[str]:
+        """Convert directories set to sorted list prioritizing exact matches."""
         directories_list = list(directories_to_check)
+        directories_list.sort(key=lambda d: self._get_directory_priority(d, pmcids))
+        return directories_list
 
-        # Sort directories to prioritize exact matches
-        def directory_priority(directory: str) -> int:
-            # Extract the last 4 digits from directory name
-            match = re.search(r"PMCxxxx(\d{4})", directory)
-            if not match:
-                return 9999  # Low priority for non-standard names
+    def _get_directory_priority(self, directory: str, pmcids: list[str]) -> int:
+        """Get priority score for directory (lower = higher priority)."""
+        match = re.search(r"PMCxxxx(\d{4})", directory)
+        if not match:
+            return 9999  # Low priority for non-standard names
 
-            dir_suffix = match.group(1)
+        dir_suffix = match.group(1)
 
-            # Check if any PMC ID would map to this directory
-            for pmcid in pmcids:
-                if len(pmcid) >= 4 and pmcid[-4:] == dir_suffix:
-                    return 0  # High priority for exact match
+        # Check if any PMC ID would map to this directory
+        for pmcid in pmcids:
+            if len(pmcid) >= 4 and pmcid[-4:] == dir_suffix:
+                return 0  # High priority for exact match
 
-            return 1  # Medium priority for nearby directories
+        return 1  # Medium priority for nearby directories
 
-        directories_list.sort(key=directory_priority)
-
-        # Limit the number of directories to check to prevent infinite loops
+    def _search_directories_for_pmcids(
+        self,
+        directories_list: list[str],
+        pmcids: list[str],
+        result: dict[str, dict[str, str | int] | None],
+        max_directories: int,
+    ) -> dict[str, int]:
+        """Search directories for PMC IDs and return search statistics."""
         directories_checked = 0
         consecutive_failures = 0
         max_consecutive_failures = 10
@@ -294,49 +331,41 @@ class FTPDownloader(BaseAPIClient):
                 )
                 break
 
-            # FIXED: Remove early termination - search all directories to ensure we find
-            # PMC IDs in their optimal locations (highest priority directories)
-            # This prevents the race condition where PMC IDs in later directories
-            # are missed when other PMC IDs are found early
-
-            try:
-                zip_files = self.get_zip_files_in_directory(directory)
-                consecutive_failures = 0  # Reset failure counter on success
-
-                for zip_info in zip_files:
-                    pmcid = str(zip_info["pmcid"])
-                    if pmcid in pmcids:
-                        # Only update if we haven't found this PMC ID yet (value is None)
-                        # This prioritizes higher priority directories (earlier in sorted list)
-                        if result[pmcid] is None:
-                            result[pmcid] = zip_info
-                            found_count += 1
-                            logger.info(f"Found PMC{pmcid} in {directory}")
-                        else:
-                            logger.debug(
-                                f"PMC{pmcid} already found in higher priority directory, skipping"
-                            )
-
-            except FullTextError as e:
-                logger.warning(f"Failed to check directory {directory}: {e}")
+            success = self._check_directory_for_pmcids(directory, pmcids, result)
+            if success:
+                consecutive_failures = 0
+                found_count = sum(1 for v in result.values() if v is not None)
+            else:
                 consecutive_failures += 1
-
-                # If we have too many consecutive failures, likely server is down
                 if consecutive_failures >= max_consecutive_failures:
                     logger.error(
                         f"Too many consecutive failures ({consecutive_failures}), stopping search"
                     )
                     break
 
-                continue
-
             directories_checked += 1
 
-        logger.info(
-            f"Search completed: found {found_count}/{len(pmcids)} PMC IDs "
-            f"in {directories_checked} directories"
-        )
-        return result
+        return {"found_count": found_count, "directories_checked": directories_checked}
+
+    def _check_directory_for_pmcids(
+        self, directory: str, pmcids: list[str], result: dict[str, dict[str, str | int] | None]
+    ) -> bool:
+        """Check a single directory for PMC IDs. Returns True if successful."""
+        try:
+            zip_files = self.get_zip_files_in_directory(directory)
+
+            for zip_info in zip_files:
+                pmcid = str(zip_info["pmcid"])
+                if pmcid in pmcids and result[pmcid] is None:
+                    # Only update if we haven't found this PMC ID yet
+                    result[pmcid] = zip_info
+                    logger.info(f"Found PMC{pmcid} in {directory}")
+
+            return True
+
+        except FullTextError as e:
+            logger.warning(f"Failed to check directory {directory}: {e}")
+            return False
 
     def download_pdf_zip(self, zip_info: dict[str, str | int], output_dir: str | Path) -> Path:
         """
@@ -551,63 +580,79 @@ class FTPDownloader(BaseAPIClient):
         Always checks BOTH 3-digit and 4-digit patterns since the directory
         structure is not consistently predictable from PMC ID value alone.
         """
-        directories = set()
+        directories: set[str] = set()
 
         for pmcid in pmcids:
-            try:
-                # Always check BOTH patterns regardless of PMC ID value
-                if len(pmcid) >= 3:
-                    last_three = pmcid[-3:]
-                    last_three_int = int(last_three)
-
-                    # Add 3-digit pattern
-                    directories.add(f"PMCxxxx{last_three_int:03d}")
-
-                    # Also check nearby directories (±1) for 3-digit pattern
-                    for offset in [-1, 1]:
-                        adjusted = last_three_int + offset
-                        if 0 <= adjusted <= 999:
-                            directories.add(f"PMCxxxx{adjusted:03d}")
-
-                if len(pmcid) >= 4:
-                    last_four = pmcid[-4:]
-                    last_four_int = int(last_four)
-
-                    # Add 4-digit pattern if within reasonable range
-                    if 1000 <= last_four_int <= 1200:
-                        directories.add(f"PMCxxxx{last_four_int}")
-
-                        # Also check nearby directories (±1) for 4-digit pattern
-                        for offset in [-1, 1]:
-                            adjusted = last_four_int + offset
-                            if 1000 <= adjusted <= 1200:
-                                directories.add(f"PMCxxxx{adjusted}")
-
-            except ValueError:
-                logger.warning(f"PMC ID {pmcid} is not a valid integer: {pmcid}")
+            self._add_directories_for_pmcid(directories, pmcid)
 
         # If we couldn't determine any specific directories, fall back to getting all available
         if not directories:
-            try:
-                available_dirs = self.get_available_directories()
-                logger.info(
-                    f"Falling back to all available directories: {len(available_dirs)} directories"
-                )
-                return set(available_dirs)
-            except FullTextError:
-                # Final fallback to the known directory range
-                logger.info("Falling back to known directory range: PMCxxxx0 to PMCxxxx1200")
-                directories = set()
-                # Add directories for PMC IDs 0-999 (last 3 digits)
-                for i in range(1000):
-                    directories.add(f"PMCxxxx{i}")
-                # Add directories for PMC IDs 1000-1200 (last 4 digits)
-                for i in range(1000, 1201):
-                    directories.add(f"PMCxxxx{i}")
-                return directories
+            return self._get_fallback_directories()
 
         logger.info(f"Searching in targeted directories: {sorted(directories)}")
         return directories
+
+    def _add_directories_for_pmcid(self, directories: set[str], pmcid: str) -> None:
+        """Add relevant directories for a single PMC ID."""
+        try:
+            # Always check BOTH patterns regardless of PMC ID value
+            if len(pmcid) >= 3:
+                self._add_three_digit_patterns(directories, pmcid)
+
+            if len(pmcid) >= 4:
+                self._add_four_digit_patterns(directories, pmcid)
+
+        except ValueError:
+            logger.warning(f"PMC ID {pmcid} is not a valid integer: {pmcid}")
+
+    def _add_three_digit_patterns(self, directories: set[str], pmcid: str) -> None:
+        """Add 3-digit directory patterns for a PMC ID."""
+        last_three = pmcid[-3:]
+        last_three_int = int(last_three)
+
+        # Add 3-digit pattern
+        directories.add(f"PMCxxxx{last_three_int:03d}")
+
+        # Also check nearby directories (±1) for 3-digit pattern
+        for offset in [-1, 1]:
+            adjusted = last_three_int + offset
+            if 0 <= adjusted <= 999:
+                directories.add(f"PMCxxxx{adjusted:03d}")
+
+    def _add_four_digit_patterns(self, directories: set[str], pmcid: str) -> None:
+        """Add 4-digit directory patterns for a PMC ID."""
+        last_four = pmcid[-4:]
+        last_four_int = int(last_four)
+
+        # Add 4-digit pattern if within reasonable range
+        if 1000 <= last_four_int <= 1200:
+            directories.add(f"PMCxxxx{last_four_int}")
+
+            # Also check nearby directories (±1) for 4-digit pattern
+            for offset in [-1, 1]:
+                adjusted = last_four_int + offset
+                if 1000 <= adjusted <= 1200:
+                    directories.add(f"PMCxxxx{adjusted}")
+
+    def _get_fallback_directories(self) -> set[str]:
+        """Get fallback directories when specific ones can't be determined."""
+        try:
+            available_dirs = self.get_available_directories()
+            logger.info(
+                f"Falling back to all available directories: {len(available_dirs)} directories"
+            )
+            return set(available_dirs)
+        except FullTextError:
+            # Final fallback to the known directory range
+            logger.info("Falling back to known directory range: PMCxxxx0 to PMCxxxx1200")
+            directories: set[str] = set()
+            # Add directories for PMC IDs 0-999 (last 3 digits)
+            for i in range(1000):
+                directories.add(f"PMCxxxx{i}")
+            # Add directories for PMC IDs 1000-1200 (last 4 digits)
+            for i in range(1000, 1201):
+                directories.add(f"PMCxxxx{i}")
+            return directories
 
     def _parse_file_size(self, size_text: str) -> int:
         """

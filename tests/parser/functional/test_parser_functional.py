@@ -1,9 +1,9 @@
 import pytest
-from pyeuropepmc.parser import EuropePMCParser, ParsingError
+from pyeuropepmc.processing.parser import EuropePMCParser, ParsingError
 import os
 import json
 import logging
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("parser_functional_test")

@@ -17,10 +17,10 @@ import tracemalloc
 
 
 # Import all main client classes here
-from pyeuropepmc.article import ArticleClient
-from pyeuropepmc.search import SearchClient
-from pyeuropepmc.fulltext import FullTextClient
-from pyeuropepmc.cache import CacheConfig
+from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.clients.fulltext import FullTextClient
+from pyeuropepmc.cache.cache import CacheConfig
 
 
 # A tiny no-op benchmark fixture that mimics pytest-benchmark's minimal API

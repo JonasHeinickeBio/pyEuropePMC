@@ -2,8 +2,8 @@
 
 import pytest
 
-from pyeuropepmc.fulltext_parser import FullTextXMLParser
-from pyeuropepmc.exceptions import ParsingError
+from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.core.exceptions import ParsingError
 
 
 # Sample XML content for testing

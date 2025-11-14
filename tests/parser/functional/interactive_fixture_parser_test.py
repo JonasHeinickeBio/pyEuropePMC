@@ -1,5 +1,5 @@
 import os
-from pyeuropepmc.parser import EuropePMCParser, ParsingError
+from pyeuropepmc.processing.parser import EuropePMCParser, ParsingError
 
 def list_fixtures(fixture_dir):
     files = []

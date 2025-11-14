@@ -10,7 +10,7 @@ from pathlib import Path
 
 import pytest
 
-from pyeuropepmc.analytics import (
+from pyeuropepmc.processing.analytics import (
     citation_statistics,
     detect_duplicates,
     journal_distribution,
