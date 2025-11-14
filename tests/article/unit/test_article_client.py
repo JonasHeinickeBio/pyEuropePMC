@@ -11,8 +11,8 @@ Tests the ArticleClient class methods including:
 
 from unittest.mock import Mock, patch
 import pytest
-from pyeuropepmc.article import ArticleClient
-from pyeuropepmc.exceptions import ValidationError
+from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.core.exceptions import ValidationError
 
 
 class TestArticleClient:
@@ -46,7 +46,7 @@ class TestArticleClient:
         assert article_client.rate_limit_delay == 1.0
 
     # Test get_article_details method
-    @patch('pyeuropepmc.article.ArticleClient._get')
+    @patch('pyeuropepmc.clients.article.ArticleClient._get')
     def test_get_article_details_success(self, mock_get, article_client, mock_response):
         """Test successful article details retrieval."""
         mock_response_obj = Mock()
@@ -78,7 +78,7 @@ class TestArticleClient:
             article_client._validate_citations_format("invalid")
 
     # Additional comprehensive tests for coverage
-    @patch('pyeuropepmc.article.ArticleClient._get')
+    @patch('pyeuropepmc.clients.article.ArticleClient._get')
     def test_get_citations_with_all_params(self, mock_get, article_client):
         """Test citations with all parameters."""
         mock_response = Mock()
@@ -97,7 +97,7 @@ class TestArticleClient:
             params={"page": 2, "pageSize": 50, "format": "xml", "extra_param": "test"}
         )
 
-    @patch('pyeuropepmc.article.ArticleClient._get')
+    @patch('pyeuropepmc.clients.article.ArticleClient._get')
     def test_get_supplementary_files_basic(self, mock_get, article_client):
         """Test basic supplementary files retrieval."""
         mock_response = Mock()

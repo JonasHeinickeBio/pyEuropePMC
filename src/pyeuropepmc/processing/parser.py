@@ -3,8 +3,8 @@ from typing import Any
 
 import defusedxml.ElementTree as ET
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import ParsingError
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ParsingError
 
 # Type aliases for better readability
 ParsedResult = dict[str, str | list[str]]

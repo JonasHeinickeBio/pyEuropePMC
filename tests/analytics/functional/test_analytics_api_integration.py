@@ -7,7 +7,7 @@ live data from Europe PMC API. Marked as slow tests.
 
 import pytest
 
-from pyeuropepmc.analytics import (
+from pyeuropepmc.processing.analytics import (
     citation_statistics,
     detect_duplicates,
     journal_distribution,
@@ -17,7 +17,7 @@ from pyeuropepmc.analytics import (
     remove_duplicates,
     to_dataframe,
 )
-from pyeuropepmc.search import SearchClient
+from pyeuropepmc.clients.search import SearchClient
 
 
 @pytest.mark.slow

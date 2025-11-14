@@ -3,10 +3,10 @@ from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import ParsingError, SearchError
-from pyeuropepmc.parser import EuropePMCParser
-from pyeuropepmc.search import SearchClient
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ParsingError, SearchError
+from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.clients.search import SearchClient
 
 logging.basicConfig(level=logging.INFO)
 
@@ -165,7 +165,7 @@ def test_search_and_parse_xml_format() -> None:
 @pytest.mark.unit
 def test_search_and_parse_unknown_format_error() -> None:
     """Test search_and_parse raises SearchError for unknown format."""
-    from pyeuropepmc.exceptions import SearchError
+    from pyeuropepmc.core.exceptions import SearchError
 
     client = SearchClient()
 

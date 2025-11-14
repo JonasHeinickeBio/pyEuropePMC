@@ -14,8 +14,8 @@ import subprocess
 
 import pytest
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import ValidationError
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ValidationError
 from pyeuropepmc.utils.helpers import (
     deep_merge_dicts,
     load_json,

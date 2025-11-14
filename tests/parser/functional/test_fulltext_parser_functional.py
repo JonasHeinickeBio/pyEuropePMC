@@ -10,8 +10,8 @@ import pytest
 import logging
 from pathlib import Path
 
-from pyeuropepmc.fulltext_parser import FullTextXMLParser, ElementPatterns, DocumentSchema
-from pyeuropepmc.exceptions import ParsingError
+from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser, ElementPatterns, DocumentSchema
+from pyeuropepmc.core.exceptions import ParsingError
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("fulltext_parser_functional_test")

@@ -77,7 +77,7 @@ def to_dataframe(papers: list[dict[str, Any]]) -> pd.DataFrame:
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import to_dataframe
+    >>> from pyeuropepmc.processing.analytics import to_dataframe
     >>> df = to_dataframe(papers)
     >>> print(df.head())
     """
@@ -163,7 +163,7 @@ def publication_year_distribution(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import publication_year_distribution
+    >>> from pyeuropepmc.processing.analytics import publication_year_distribution
     >>> dist = publication_year_distribution(papers)
     >>> print(dist)
     """
@@ -205,7 +205,7 @@ def citation_statistics(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import citation_statistics
+    >>> from pyeuropepmc.processing.analytics import citation_statistics
     >>> stats = citation_statistics(papers)
     >>> print(f"Mean citations: {stats['mean_citations']:.2f}")
     """
@@ -272,7 +272,7 @@ def detect_duplicates(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import detect_duplicates
+    >>> from pyeuropepmc.processing.analytics import detect_duplicates
     >>> duplicates = detect_duplicates(papers, method="title")
     >>> print(f"Found {len(duplicates)} sets of duplicates")
     """
@@ -349,7 +349,7 @@ def remove_duplicates(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import remove_duplicates
+    >>> from pyeuropepmc.processing.analytics import remove_duplicates
     >>> unique_papers = remove_duplicates(papers, method="title", keep="most_cited")
     """
     df = to_dataframe(papers) if isinstance(papers, list) else papers.copy()
@@ -423,7 +423,7 @@ def quality_metrics(papers: list[dict[str, Any]] | pd.DataFrame) -> dict[str, An
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import quality_metrics
+    >>> from pyeuropepmc.processing.analytics import quality_metrics
     >>> metrics = quality_metrics(papers)
     >>> print(f"Open access: {metrics['open_access_percentage']:.1f}%")
     """
@@ -515,7 +515,7 @@ def publication_type_distribution(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import publication_type_distribution
+    >>> from pyeuropepmc.processing.analytics import publication_type_distribution
     >>> dist = publication_type_distribution(papers)
     >>> print(dist.head())
     """
@@ -554,7 +554,7 @@ def journal_distribution(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import journal_distribution
+    >>> from pyeuropepmc.processing.analytics import journal_distribution
     >>> dist = journal_distribution(papers, top_n=15)
     >>> print(dist)
     """
@@ -605,7 +605,7 @@ def author_statistics(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import author_statistics
+    >>> from pyeuropepmc.processing.analytics import author_statistics
     >>> stats = author_statistics(papers, top_n=15)
     >>> print(f"Total authors: {stats['total_authors']}")
     >>> print(f"Average authors per paper: {stats['avg_authors_per_paper']:.1f}")
@@ -713,7 +713,7 @@ def geographic_analysis(
 
     Examples
     --------
-    >>> from pyeuropepmc.analytics import geographic_analysis
+    >>> from pyeuropepmc.processing.analytics import geographic_analysis
     >>> geo_stats = geographic_analysis(papers, top_n=15)
     >>> print(f"Top country: {geo_stats['top_countries'].index[0]}")
     """

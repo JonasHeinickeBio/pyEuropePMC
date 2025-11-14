@@ -58,7 +58,7 @@ def plot_publication_years(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import plot_publication_years
+    >>> from pyeuropepmc.processing.visualization import plot_publication_years
     >>> fig = plot_publication_years(papers, save_path="pub_years.png")
     """
     year_dist = publication_year_distribution(papers)
@@ -121,7 +121,7 @@ def plot_citation_distribution(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import plot_citation_distribution
+    >>> from pyeuropepmc.processing.visualization import plot_citation_distribution
     >>> fig = plot_citation_distribution(papers, log_scale=True)
     """
     df = to_dataframe(papers) if isinstance(papers, list) else papers
@@ -201,7 +201,7 @@ def plot_quality_metrics(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import plot_quality_metrics
+    >>> from pyeuropepmc.processing.visualization import plot_quality_metrics
     >>> fig = plot_quality_metrics(papers)
     """
     metrics = quality_metrics(papers)
@@ -299,7 +299,7 @@ def plot_publication_types(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import plot_publication_types
+    >>> from pyeuropepmc.processing.visualization import plot_publication_types
     >>> fig = plot_publication_types(papers, top_n=15)
     """
     pub_type_dist = publication_type_distribution(papers)
@@ -366,7 +366,7 @@ def plot_journals(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import plot_journals
+    >>> from pyeuropepmc.processing.visualization import plot_journals
     >>> fig = plot_journals(papers, top_n=15)
     """
     journal_dist = journal_distribution(papers, top_n=top_n)
@@ -420,7 +420,7 @@ def plot_trend_analysis(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import plot_trend_analysis
+    >>> from pyeuropepmc.processing.visualization import plot_trend_analysis
     >>> fig = plot_trend_analysis(papers)
     """
     df = to_dataframe(papers) if isinstance(papers, list) else papers
@@ -528,7 +528,7 @@ def create_summary_dashboard(
 
     Examples
     --------
-    >>> from pyeuropepmc.visualization import create_summary_dashboard
+    >>> from pyeuropepmc.processing.visualization import create_summary_dashboard
     >>> fig = create_summary_dashboard(papers, save_path="dashboard.png")
     """
     df = to_dataframe(papers) if isinstance(papers, list) else papers

@@ -209,10 +209,10 @@ Enhance the current cachetools.TTLCache implementation with a comprehensive mult
   ```python
   # Index lookup (L1/L2)
   hash = cache.get(f"ft:index:{doc_id}:{format}")
-  
+
   # Content-addressed retrieval
   content = read_artifact(hash)
-  
+
   # If miss, download with conditional GET
   response = session.get(url, headers={"If-None-Match": etag})
   if response.status_code == 304:
@@ -227,7 +227,7 @@ Enhance the current cachetools.TTLCache implementation with a comprehensive mult
 
 #### Namespace Versioning Strategy
 - Bump `search:vN` on query logic changes
-- Bump `record:vN` on metadata schema changes  
+- Bump `record:vN` on metadata schema changes
 - Bump `ft:vN` on artifact handling changes
 - No cross-contamination between versions
 

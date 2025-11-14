@@ -94,7 +94,7 @@ def filter_pmc_papers(
     Examples
     --------
     >>> from pyeuropepmc import SearchClient
-    >>> from pyeuropepmc.filters import filter_pmc_papers
+    >>> from pyeuropepmc.query.filters import filter_pmc_papers
     >>>
     >>> client = SearchClient()
     >>> response = client.search("cancer AND therapy", resultType="core")

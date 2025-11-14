@@ -12,7 +12,7 @@ from unittest.mock import patch, mock_open
 import pytest
 
 from pyeuropepmc.utils.helpers import save_to_json_with_merge, save_to_json, load_json
-from pyeuropepmc.exceptions import ValidationError
+from pyeuropepmc.core.exceptions import ValidationError
 
 
 pytestmark = pytest.mark.unit

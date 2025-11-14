@@ -13,7 +13,6 @@ Features:
 - LRU-based eviction when disk limit reached
 """
 
-from collections.abc import Callable
 import hashlib
 import logging
 import os
@@ -404,7 +403,7 @@ class ArtifactStore:
             bytes_to_free = (current_usage["used_bytes"] + required_bytes) - target_bytes
 
             logger.info(
-                f"Disk usage exceeds limit. Freeing {bytes_to_free / (1024*1024):.1f}MB..."
+                f"Disk usage exceeds limit. Freeing {bytes_to_free / (1024 * 1024):.1f}MB..."
             )
             self._garbage_collect(bytes_to_free)
 
@@ -428,9 +427,7 @@ class ArtifactStore:
             try:
                 metadata = self._load_index(index_file.stem.replace("_", ":"))
                 if metadata:
-                    artifacts.append(
-                        (index_file.stem, metadata.last_accessed, metadata.size)
-                    )
+                    artifacts.append((index_file.stem, metadata.last_accessed, metadata.size))
             except Exception as e:
                 logger.debug(f"Error loading {index_file}: {e}")
                 continue
@@ -453,7 +450,7 @@ class ArtifactStore:
         # Clean up unreferenced content files
         self._clean_orphaned_artifacts()
 
-        logger.info(f"Garbage collection freed {bytes_freed / (1024*1024):.1f}MB")
+        logger.info(f"Garbage collection freed {bytes_freed / (1024 * 1024):.1f}MB")
         return bytes_freed
 
     def _clean_orphaned_artifacts(self) -> int:
@@ -472,7 +469,8 @@ class ArtifactStore:
                 metadata = self._load_index(index_file.stem.replace("_", ":"))
                 if metadata:
                     referenced_hashes.add(metadata.hash_value)
-            except Exception:
+            except (OSError, ValueError, KeyError) as e:
+                logger.warning(f"Skipping corrupted index file {index_file}: {e}")
                 continue
 
         # Find and remove unreferenced artifacts

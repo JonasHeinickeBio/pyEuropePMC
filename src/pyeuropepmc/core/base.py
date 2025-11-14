@@ -5,8 +5,8 @@ from typing import Any
 import backoff
 import requests
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import APIClientError, ValidationError
+from .error_codes import ErrorCodes
+from .exceptions import APIClientError, ValidationError
 
 __all__ = ["BaseAPIClient", "APIClientError"]
 

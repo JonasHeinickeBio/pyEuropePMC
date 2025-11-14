@@ -17,7 +17,14 @@ __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
-from .analytics import (
+from .cache.cache import CacheBackend, CacheConfig, CacheDataType, CacheLayer
+from .clients.article import ArticleClient
+from .clients.ftp_downloader import FTPDownloader
+from .clients.fulltext import FullTextClient, ProgressInfo
+from .clients.search import SearchClient
+from .core.base import BaseAPIClient
+from .core.exceptions import APIClientError, EuropePMCError, FullTextError
+from .processing.analytics import (
     author_statistics,
     citation_statistics,
     detect_duplicates,
@@ -29,39 +36,9 @@ from .analytics import (
     remove_duplicates,
     to_dataframe,
 )
-from .article import ArticleClient
-from .artifact_store import ArtifactMetadata, ArtifactStore
-from .base import APIClientError, BaseAPIClient
-from .cache_health import (
-    CacheHealthMonitor,
-    HealthReport,
-    HealthStatus,
-    HealthThresholds,
-    create_default_alert_logger,
-)
-from .cache_metrics import CacheMetrics, LatencyStats, MetricsTimer
-from .error_cache import ErrorCache, ErrorType, should_cache_error, get_default_error_ttl
-from .filters import filter_pmc_papers, filter_pmc_papers_or
-from .pagination import (
-    CursorPaginator,
-    PaginationCheckpoint,
-    PaginationState,
-)
-from .ftp_downloader import FTPDownloader
-from .fulltext import FullTextClient, FullTextError, ProgressInfo
-from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .http_cache import (
-    HTTPCache,
-    HTTPCacheConfig,
-    create_cached_session,
-    conditional_get,
-    is_cached_response,
-    extract_cache_headers,
-)
-from .parser import EuropePMCParser
-from .query_builder import QueryBuilder
-from .search import EuropePMCError, SearchClient
-from .visualization import (
+from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
+from .processing.parser import EuropePMCParser
+from .processing.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,
     plot_journals,
@@ -70,6 +47,14 @@ from .visualization import (
     plot_quality_metrics,
     plot_trend_analysis,
 )
+from .query.filters import filter_pmc_papers, filter_pmc_papers_or
+from .query.pagination import (
+    CursorPaginator,
+    PaginationCheckpoint,
+    PaginationState,
+)
+from .query.query_builder import QueryBuilder
+from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
 # Convenience imports for common usage patterns
 Client = SearchClient  # Alias for backwards compatibility
@@ -92,32 +77,16 @@ __all__ = [
     "ProgressInfo",
     "QueryBuilder",
     # Cache and Storage
+    "CacheBackend",
+    "CacheConfig",
+    "CacheDataType",
+    "CacheLayer",
     "ArtifactStore",
     "ArtifactMetadata",
-    "HTTPCache",
-    "HTTPCacheConfig",
-    "create_cached_session",
-    "conditional_get",
-    "is_cached_response",
-    "extract_cache_headers",
     # Pagination
     "PaginationState",
     "PaginationCheckpoint",
     "CursorPaginator",
-    # Error Caching
-    "ErrorCache",
-    "ErrorType",
-    "should_cache_error",
-    "get_default_error_ttl",
-    # Metrics and Monitoring
-    "CacheMetrics",
-    "LatencyStats",
-    "MetricsTimer",
-    "CacheHealthMonitor",
-    "HealthReport",
-    "HealthStatus",
-    "HealthThresholds",
-    "create_default_alert_logger",
     # Parser configuration classes
     "ElementPatterns",
     "DocumentSchema",

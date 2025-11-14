@@ -5,7 +5,7 @@ This module focuses on testing the new error code system and less common scenari
 to achieve higher test coverage for the exceptions module.
 """
 
-from pyeuropepmc.exceptions import (
+from pyeuropepmc.core.exceptions import (
     PyEuropePMCError,
     APIClientError,
     SearchError,
@@ -15,7 +15,7 @@ from pyeuropepmc.exceptions import (
     ConfigurationError,
     EuropePMCError,
 )
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 
 class TestExceptionsCoverage:

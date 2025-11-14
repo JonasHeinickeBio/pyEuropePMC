@@ -64,6 +64,7 @@ search-query = "^0.13.0"
 matplotlib = "^3.7.0"
 seaborn = "^0.12.0"
 cachetools = "^6.2.1"
+requests-cache = "^1.2.1"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"

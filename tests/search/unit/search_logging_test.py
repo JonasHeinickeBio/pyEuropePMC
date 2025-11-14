@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 import pytest
 import requests
 
-from pyeuropepmc.search import SearchClient
+from pyeuropepmc.clients.search import SearchClient
 
 logging.basicConfig(level=logging.INFO)
 

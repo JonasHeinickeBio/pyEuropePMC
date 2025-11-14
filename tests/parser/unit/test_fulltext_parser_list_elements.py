@@ -1,6 +1,6 @@
 import pytest
-from pyeuropepmc.fulltext_parser import FullTextXMLParser
-from pyeuropepmc.exceptions import ParsingError
+from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.core.exceptions import ParsingError
 
 SAMPLE_XML = '''<article><front><article-meta><article-id pub-id-type="pmcid">123</article-id></article-meta></front><body><sec><title>Intro</title><p>Text</p></sec><sec><title>Methods</title><p>Text</p></sec></body><back><custom/></back></article>'''
 

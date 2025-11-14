@@ -2,11 +2,11 @@ from typing import Any, NoReturn, cast
 
 import requests
 
-from pyeuropepmc.base import BaseAPIClient
-from pyeuropepmc.cache import CacheBackend, CacheConfig
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import EuropePMCError, ParsingError, SearchError
-from pyeuropepmc.parser import EuropePMCParser
+from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
+from pyeuropepmc.core.base import BaseAPIClient
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import EuropePMCError, ParsingError, SearchError
+from pyeuropepmc.processing.parser import EuropePMCParser
 from pyeuropepmc.utils.helpers import safe_int
 
 logger = BaseAPIClient.logger
@@ -46,7 +46,7 @@ class SearchClient(BaseAPIClient):
         >>> client = SearchClient()
 
         >>> # With default caching (24h TTL, 500MB limit)
-        >>> from pyeuropepmc.cache import CacheConfig
+        >>> from pyeuropepmc.cache.cache import CacheConfig
         >>> client = SearchClient(cache_config=CacheConfig(enabled=True))
 
         >>> # With custom cache settings

@@ -1,9 +1,9 @@
 
 import logging
 import pytest
-from pyeuropepmc.parser import EuropePMCParser
-from pyeuropepmc.exceptions import ParsingError
-from pyeuropepmc.error_codes import ErrorCodes
+from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 logger = logging.getLogger("pyeuropepmc.parser")
 

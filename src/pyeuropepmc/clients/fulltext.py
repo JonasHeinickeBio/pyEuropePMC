@@ -19,10 +19,10 @@ import zipfile
 
 import requests
 
-from pyeuropepmc.base import APIClientError, BaseAPIClient
-from pyeuropepmc.cache import CacheBackend, CacheConfig
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import FullTextError
+from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
+from pyeuropepmc.core.base import APIClientError, BaseAPIClient
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import FullTextError
 from pyeuropepmc.utils.helpers import atomic_download, atomic_write
 
 logger = logging.getLogger(__name__)
@@ -1777,7 +1777,7 @@ class FullTextClient(BaseAPIClient):
 
     def _search_for_pmcids(self, query: str, max_results: int) -> list[str]:
         """Search for papers and extract PMC IDs."""
-        from pyeuropepmc.search import SearchClient
+        from pyeuropepmc.clients.search import SearchClient
 
         self.logger.info(f"Starting search and download for query: '{query}'")
 

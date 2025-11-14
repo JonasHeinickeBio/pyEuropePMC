@@ -16,8 +16,8 @@ from xml.etree import (
 
 import defusedxml.ElementTree as DefusedET
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import ParsingError
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ParsingError
 
 logger = logging.getLogger(__name__)
 

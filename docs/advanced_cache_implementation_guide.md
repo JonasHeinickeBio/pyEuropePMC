@@ -45,13 +45,13 @@ def get(key):
     # Try L1 first (fastest)
     if key in l1_cache:
         return l1_cache[key]  # L1 hit
-    
+
     # Try L2 if L1 missed
     if key in l2_cache:
         value = l2_cache[key]
         l1_cache[key] = value  # Promote to L1
         return value  # L2 hit with promotion
-    
+
     return None  # Cache miss
 ```
 
@@ -78,7 +78,7 @@ def get(key):
            if not path.exists():
                path.write_bytes(content)
            return hash_value
-       
+
        def retrieve(self, hash_value: str) -> bytes:
            """Retrieve content by hash."""
            path = self._get_path(hash_value)
@@ -127,7 +127,7 @@ def get(key):
 1. **requests-cache Integration**
    ```python
    import requests_cache
-   
+
    session = requests_cache.CachedSession(
        cache_name='pyeuropepmc_http',
        backend='sqlite',
@@ -142,13 +142,13 @@ def get(key):
        headers = {}
        if etag:
            headers['If-None-Match'] = etag
-       
+
        response = session.get(url, headers=headers)
-       
+
        if response.status_code == 304:
            # Not modified, extend TTL
            return cached_content
-       
+
        return response.content
    ```
 
@@ -182,11 +182,11 @@ cache.set(state_key, state, data_type=CacheDataType.SEARCH)
 def crawl_with_checkpoints(query: str, checkpoint_interval: int = 100):
     checkpoint_key = f"crawl:checkpoint:v1:{query_hash}"
     checkpoint = cache.get(checkpoint_key) or {"page": 1, "count": 0}
-    
+
     for page in range(checkpoint["page"], max_pages):
         results = fetch_page(query, page)
         process_results(results)
-        
+
         checkpoint["page"] = page + 1
         checkpoint["count"] += len(results)
         cache.set(checkpoint_key, checkpoint, ttl=86400)
@@ -212,7 +212,7 @@ ERROR_TTL_MAP = {
 def cache_error(status_code: int, key: str, response: dict):
     min_ttl, max_ttl = ERROR_TTL_MAP.get(status_code, (30, 60))
     ttl = random.randint(min_ttl, max_ttl)  # Jitter
-    
+
     error_key = f"error:{status_code}:v1:{key}"
     cache.set(error_key, response, expire=ttl)
 ```
@@ -229,7 +229,7 @@ def cache_error(status_code: int, key: str, response: dict):
 ```python
 class CacheMetrics:
     """Comprehensive cache metrics."""
-    
+
     def get_metrics(self) -> dict:
         return {
             "l1": {
@@ -261,7 +261,7 @@ class CacheMetrics:
 def get_cache_health() -> dict:
     """Comprehensive health status."""
     metrics = cache.get_stats()
-    
+
     warnings = []
     if metrics["l2"]["disk_usage_percent"] > 90:
         warnings.append("L2 disk usage critical (>90%)")
@@ -269,10 +269,10 @@ def get_cache_health() -> dict:
         warnings.append("L2 hit rate low (<30%)")
     if metrics["overall"]["error_rate"] > 0.05:
         warnings.append("High error rate (>5%)")
-    
+
     status = "critical" if any("critical" in w for w in warnings) else \
              "warning" if warnings else "healthy"
-    
+
     return {
         "status": status,
         "warnings": warnings,

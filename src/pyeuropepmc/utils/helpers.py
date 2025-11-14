@@ -8,8 +8,8 @@ import tempfile
 from typing import Any
 import warnings
 
-from pyeuropepmc.error_codes import ErrorCodes
-from pyeuropepmc.exceptions import ValidationError
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ValidationError
 
 
 def warn_if_empty_hitcount(response: dict[str, Any], context: str = "") -> None:

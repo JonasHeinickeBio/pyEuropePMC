@@ -2,7 +2,7 @@ import logging
 
 import pytest
 
-from pyeuropepmc.search import EuropePMCError, SearchClient
+from pyeuropepmc.clients.search import EuropePMCError, SearchClient
 
 logging.basicConfig(level=logging.INFO)
 
