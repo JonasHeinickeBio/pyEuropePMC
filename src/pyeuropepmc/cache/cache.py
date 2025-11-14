@@ -20,7 +20,11 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import threading
+import types
 from typing import Any, TypeVar
+
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ConfigurationError
 
 try:
     from cachetools import TTLCache
@@ -32,16 +36,14 @@ except ImportError:
 
 # diskcache is kept as optional fallback (not currently used)
 # Type checking imports
+diskcache: types.ModuleType | None = None
 try:
     import diskcache
 
     DISKCACHE_AVAILABLE = True
 except ImportError:
-    diskcache = None  # type: ignore
+    diskcache = None
     DISKCACHE_AVAILABLE = False
-
-from pyeuropepmc.core.error_codes import ErrorCodes
-from pyeuropepmc.core.exceptions import ConfigurationError
 
 logger = logging.getLogger(__name__)
 

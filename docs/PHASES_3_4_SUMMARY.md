@@ -227,16 +227,16 @@ artifact_store = ArtifactStore(Path("/cache/pdfs"))
 
 def fetch_pdf(pmcid):
     artifact_id = f"pdf:{pmcid}"
-    
+
     # Check artifact store
     if artifact_store.exists(artifact_id):
         content, _ = artifact_store.retrieve(artifact_id)
         return content
-    
+
     # Download with HTTP caching
     url = f"https://europepmc.org/articles/{pmcid}/pdf"
     response = session.get(url)
-    
+
     if response.status_code == 200:
         # Store in artifact store
         headers = extract_cache_headers(response)
@@ -248,7 +248,7 @@ def fetch_pdf(pmcid):
             last_modified=headers["last_modified"]
         )
         return response.content
-    
+
     return None
 ```
 
@@ -271,23 +271,23 @@ def search_cached(query):
         data_type=CacheDataType.SEARCH,
         q=query
     )
-    
+
     cached = cache.get(cache_key)
     if cached:
         return cached
-    
+
     # Fetch with HTTP caching
     url = f"https://api.europepmc.org/rest/search?query={query}"
     response = session.get(url)
-    
+
     if response.status_code == 200:
         results = response.json()
-        
+
         # Store in L1/L2
         cache.set(cache_key, results, data_type=CacheDataType.SEARCH)
-        
+
         return results
-    
+
     return None
 ```
 
@@ -301,27 +301,27 @@ store = ArtifactStore(Path("/cache/bulk"), size_limit_mb=50000)
 def bulk_download(doc_ids):
     """Download many documents with automatic deduplication."""
     stats = {"downloaded": 0, "deduplicated": 0}
-    
+
     for doc_id in doc_ids:
         artifact_id = f"bulk:{doc_id}:xml"
-        
+
         # Download
         content = download_from_api(doc_id)
-        
+
         # Store (auto-dedup)
         metadata = store.store(artifact_id, content)
-        
+
         # Track if deduplicated
         if artifact_id_was_new(artifact_id):
             stats["downloaded"] += 1
         else:
             stats["deduplicated"] += 1
-    
+
     usage = store.get_disk_usage()
     print(f"Downloaded: {stats['downloaded']}")
     print(f"Deduplicated: {stats['deduplicated']}")
     print(f"Space saved: {calculate_savings(stats)}%")
-    
+
     return stats
 ```
 

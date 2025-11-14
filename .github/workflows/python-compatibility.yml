@@ -221,13 +221,13 @@ jobs:
           # Test syntax by compiling all Python files
           echo "Testing syntax for all Python modules..."
           poetry run python -m py_compile src/pyeuropepmc/__init__.py
-          poetry run python -m py_compile src/pyeuropepmc/base.py
-          poetry run python -m py_compile src/pyeuropepmc/search.py
-          poetry run python -m py_compile src/pyeuropepmc/parser.py
-          poetry run python -m py_compile src/pyeuropepmc/fulltext.py
-          poetry run python -m py_compile src/pyeuropepmc/ftp_downloader.py
-          poetry run python -m py_compile src/pyeuropepmc/error_codes.py
-          poetry run python -m py_compile src/pyeuropepmc/exceptions.py
+          poetry run python -m py_compile src/pyeuropepmc/core/base.py
+          poetry run python -m py_compile src/pyeuropepmc/clients/search.py
+          poetry run python -m py_compile src/pyeuropepmc/processing/parser.py
+          poetry run python -m py_compile src/pyeuropepmc/clients/fulltext.py
+          poetry run python -m py_compile src/pyeuropepmc/clients/ftp_downloader.py
+          poetry run python -m py_compile src/pyeuropepmc/core/error_codes.py
+          poetry run python -m py_compile src/pyeuropepmc/core/exceptions.py
           poetry run python -m py_compile src/pyeuropepmc/utils/helpers.py
 
           echo "Testing imports for all modules..."
@@ -235,13 +235,13 @@ jobs:
           poetry run python -c "import sys; sys.path.insert(0, 'src'); import pyeuropepmc; print('SUCCESS: pyeuropepmc imported successfully')"
 
           # Test individual module imports
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.search import SearchClient; print('SUCCESS: SearchClient imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.parser import EuropePMCParser; print('SUCCESS: EuropePMCParser imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.fulltext import FullTextClient; print('SUCCESS: FullTextClient imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.ftp_downloader import FTPDownloader; print('SUCCESS: FTPDownloader imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.base import BaseAPIClient; print('SUCCESS: BaseAPIClient imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.error_codes import ErrorCodes; print('SUCCESS: ErrorCodes imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.exceptions import ValidationError, FullTextError; print('SUCCESS: Exceptions imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import SearchClient; print('SUCCESS: SearchClient imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import EuropePMCParser; print('SUCCESS: EuropePMCParser imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import FullTextClient; print('SUCCESS: FullTextClient imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import FTPDownloader; print('SUCCESS: FTPDownloader imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import BaseAPIClient; print('SUCCESS: BaseAPIClient imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.core.error_codes import ErrorCodes; print('SUCCESS: ErrorCodes imported')"
+          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import FullTextError; print('SUCCESS: Exceptions imported')"
           poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts, save_to_json, load_json; print('SUCCESS: Helper functions imported')"
 
           echo "All syntax and import tests passed for Python ${{ matrix.python-version }}"
@@ -251,10 +251,10 @@ jobs:
           echo "Testing module instantiation..."
           poetry run python -c "
           import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc.search import SearchClient
-          from pyeuropepmc.fulltext import FullTextClient
-          from pyeuropepmc.ftp_downloader import FTPDownloader
-          from pyeuropepmc.parser import EuropePMCParser
+          from pyeuropepmc import SearchClient
+          from pyeuropepmc import FullTextClient
+          from pyeuropepmc import FTPDownloader
+          from pyeuropepmc import EuropePMCParser
 
           # Test instantiation
           search_client = SearchClient()

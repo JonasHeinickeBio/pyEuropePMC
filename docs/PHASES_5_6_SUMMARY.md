@@ -190,18 +190,18 @@ def resumable_crawl(query, resume=True):
         checkpoint_manager=checkpoint,
         resume=resume,
     )
-    
+
     results = []
     while not paginator.is_complete():
         # Check for cached errors
         if error_cache.is_error_cached(f"search:{query}", 429):
             time.sleep(60)
             continue
-        
+
         try:
             # Fetch page
             response = api.search(query, cursor=paginator.get_state().cursor)
-            
+
             if response.status_code == 429:
                 error_cache.cache_error(
                     f"search:{query}",
@@ -210,20 +210,20 @@ def resumable_crawl(query, resume=True):
                     retry_after=60,
                 )
                 continue
-            
+
             page_data = response.json()
             paginator.update_progress(
                 results=page_data["results"],
                 cursor=page_data.get("next_cursor"),
                 total_count=page_data.get("total"),
             )
-            
+
             results.extend(page_data["results"])
-            
+
         except Exception as e:
             logger.error(f"Fetch failed: {e}")
             break  # Can resume later
-    
+
     return results
 
 # First run - fetches 500 docs, then crashes
