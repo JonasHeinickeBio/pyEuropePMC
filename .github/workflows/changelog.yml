@@ -3,6 +3,9 @@ name: Update Changelog
 on:
   release:
     types: [published]
+  push:
+    tags:
+      - 'v*.*.*'
   workflow_dispatch:
     inputs:
       version:
@@ -57,12 +60,12 @@ jobs:
             COMMITS=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${TAG})
           fi
 
-          # Categorize commits
-          FEATURES=$(echo "$COMMITS" | grep -i "^- feat" || true)
-          FIXES=$(echo "$COMMITS" | grep -i "^- fix" || true)
-          DOCS=$(echo "$COMMITS" | grep -i "^- docs" || true)
-          CHORES=$(echo "$COMMITS" | grep -i "^- chore\|^- ci" || true)
-          BREAKING=$(echo "$COMMITS" | grep -i "BREAKING CHANGE" || true)
+          # Categorize commits (support both conventional and non-conventional formats)
+          FEATURES=$(echo "$COMMITS" | grep -i "^- feat\|^feat:" || echo "$COMMITS" | grep -i "add\|implement\|new\|feature" | head -10 || true)
+          FIXES=$(echo "$COMMITS" | grep -i "^- fix\|^fix:" || echo "$COMMITS" | grep -i "fix\|bug\|error\|issue" | head -5 || true)
+          DOCS=$(echo "$COMMITS" | grep -i "^- docs\|^docs:" || echo "$COMMITS" | grep -i "doc\|readme\|changelog\|documentation" | head -5 || true)
+          CHORES=$(echo "$COMMITS" | grep -i "^- chore\|^chore:\|^- ci\|^ci:" || echo "$COMMITS" | grep -i "refactor\|lint\|test\|ci\|build\|deps" | head -10 || true)
+          BREAKING=$(echo "$COMMITS" | grep -i "BREAKING CHANGE\|breaking" || true)
 
           # Create new entry
           NEW_ENTRY="## [${TAG}] - ${RELEASE_DATE}\n\n"
@@ -89,7 +92,7 @@ jobs:
 
           # Insert new entry after header
           awk -v new_entry="$NEW_ENTRY" '
-            /^All notable changes/ { print; print ""; print new_entry; next }
+            /^All notable changes to PyEuropePMC/ { print; print ""; print new_entry; next }
             { print }
           ' CHANGELOG.md > CHANGELOG.tmp
 

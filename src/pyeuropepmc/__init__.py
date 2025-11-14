@@ -11,7 +11,7 @@ Example usage:
     >>> papers = client.search_and_parse("COVID-19", format="json")
 """
 
-__version__ = "1.8.1"
+__version__ = "1.11.0"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
