@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "1.10.1"
+version = "1.11.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
