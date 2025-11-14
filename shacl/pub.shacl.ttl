@@ -1,0 +1,108 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+
+# SHACL Shapes for PyEuropePMC RDF Data Models
+
+# Shape for Academic Articles
+bibo:AcademicArticleShape a sh:NodeShape ;
+    sh:targetClass bibo:AcademicArticle ;
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype rdfs:Literal ;
+        sh:message "Academic article should have at most one title" ;
+    ] ;
+    sh:property [
+        sh:path dct:issued ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Academic article should have at most one publication date" ;
+    ] ;
+    sh:property [
+        sh:path dct:identifier ;
+        sh:minCount 0 ;
+        sh:message "Academic article may have identifiers (PMCID, etc.)" ;
+    ] ;
+    sh:property [
+        sh:path bibo:doi ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Academic article should have at most one DOI" ;
+    ] .
+
+# Shape for Person (Authors)
+foaf:PersonShape a sh:NodeShape ;
+    sh:targetClass foaf:Person ;
+    sh:property [
+        sh:path foaf:name ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype rdfs:Literal ;
+        sh:message "Person should have at most one full name" ;
+    ] ;
+    sh:property [
+        sh:path foaf:givenName ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Person should have at most one given name" ;
+    ] ;
+    sh:property [
+        sh:path foaf:familyName ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Person should have at most one family name" ;
+    ] .
+
+# Shape for Document Parts (Sections)
+bibo:DocumentPartShape a sh:NodeShape ;
+    sh:targetClass bibo:DocumentPart ;
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Document part should have at most one title" ;
+    ] ;
+    sh:property [
+        sh:path nif:isString ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:datatype rdfs:Literal ;
+        sh:message "Document part should have at most one content string" ;
+    ] .
+
+# Shape for Tables
+bibo:TableShape a sh:NodeShape ;
+    sh:targetClass bibo:Table ;
+    sh:property [
+        sh:path rdfs:label ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Table should have at most one label" ;
+    ] ;
+    sh:property [
+        sh:path dct:description ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Table should have at most one description/caption" ;
+    ] .
+
+# Shape for References/Documents
+bibo:DocumentShape a sh:NodeShape ;
+    sh:targetClass bibo:Document ;
+    sh:property [
+        sh:path dct:title ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Document should have at most one title" ;
+    ] ;
+    sh:property [
+        sh:path bibo:doi ;
+        sh:minCount 0 ;
+        sh:maxCount 1 ;
+        sh:message "Document should have at most one DOI" ;
+    ] .
