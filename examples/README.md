@@ -46,6 +46,13 @@ Welcome to the PyEuropePMC examples directory! This folder contains organized ex
 - Progress callbacks for long operations
 - Schema coverage analysis
 
+### [Data Models & RDF](./data_models_demo.ipynb) - Semantic Integration
+**2 notebooks** - Convert articles to RDF knowledge graphs
+- Typed entity models (Paper, Author, Section, etc.)
+- RDF serialization with ontology alignment
+- SPARQL queries on literature data
+- CLI tools for batch processing
+
 ## 🚀 Getting Started
 
 ### For New Users
