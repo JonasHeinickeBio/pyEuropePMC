@@ -3,7 +3,6 @@ Reference entity model for representing bibliographic references.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from pyeuropepmc.models.base import BaseEntity
 
@@ -43,13 +42,13 @@ class ReferenceEntity(BaseEntity):
     >>> ref.validate()
     """
 
-    title: Optional[str] = None
-    source: Optional[str] = None
-    year: Optional[str] = None
-    volume: Optional[str] = None
-    pages: Optional[str] = None
-    doi: Optional[str] = None
-    authors: Optional[str] = None
+    title: str | None = None
+    source: str | None = None
+    year: str | None = None
+    volume: str | None = None
+    pages: str | None = None
+    doi: str | None = None
+    authors: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""

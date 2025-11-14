@@ -44,9 +44,7 @@ Examples:
         type=str,
         help="Path to RDF mapping config YAML (optional)",
     )
-    parser.add_argument(
-        "-v", "--verbose", action="store_true", help="Enable verbose output"
-    )
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose output")
 
     return parser.parse_args()
 
@@ -69,9 +67,7 @@ def load_xml_file(file_path: str) -> str:
         return f.read()
 
 
-def entities_to_json(
-    paper, authors, sections, tables, references
-) -> dict:
+def entities_to_json(paper, authors, sections, tables, references) -> dict:
     """
     Convert entities to JSON-serializable dictionary.
 

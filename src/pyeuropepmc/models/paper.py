@@ -3,7 +3,6 @@ Paper entity model for representing academic articles.
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from pyeuropepmc.models.base import BaseEntity
 
@@ -47,14 +46,14 @@ class PaperEntity(BaseEntity):
     >>> paper.validate()
     """
 
-    pmcid: Optional[str] = None
-    doi: Optional[str] = None
-    title: Optional[str] = None
-    journal: Optional[str] = None
-    volume: Optional[str] = None
-    issue: Optional[str] = None
-    pages: Optional[str] = None
-    pub_date: Optional[str] = None
+    pmcid: str | None = None
+    doi: str | None = None
+    title: str | None = None
+    journal: str | None = None
+    volume: str | None = None
+    issue: str | None = None
+    pages: str | None = None
+    pub_date: str | None = None
     keywords: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:

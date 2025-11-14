@@ -5,9 +5,9 @@ This module provides the foundational BaseEntity class that all other entities i
 with support for RDF serialization, validation, and normalization.
 """
 
-import uuid
 from dataclasses import asdict, dataclass, field
-from typing import Any, Optional
+from typing import Any
+import uuid
 
 from rdflib import Graph, Literal, Namespace, URIRef
 
@@ -64,10 +64,10 @@ class BaseEntity:
     http://aid-pais.org/data/entity/test-123
     """
 
-    id: Optional[str] = None
-    label: Optional[str] = None
-    source_uri: Optional[str] = None
-    confidence: Optional[float] = None
+    id: str | None = None
+    label: str | None = None
+    source_uri: str | None = None
+    confidence: float | None = None
     types: list[str] = field(default_factory=list)
 
     def mint_uri(self, path: str) -> URIRef:
@@ -135,9 +135,7 @@ class BaseEntity:
         """
         return asdict(self)
 
-    def to_rdf(
-        self, g: Graph, uri: Optional[URIRef] = None, mapper: Optional[Any] = None
-    ) -> URIRef:
+    def to_rdf(self, g: Graph, uri: URIRef | None = None, mapper: Any | None = None) -> URIRef:
         """
         Serialize entity to RDF graph using a mapper.
 

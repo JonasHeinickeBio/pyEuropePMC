@@ -3,7 +3,6 @@ Table entity models for representing tables and their rows.
 """
 
 from dataclasses import dataclass, field
-from typing import Optional
 
 from pyeuropepmc.models.base import BaseEntity
 
@@ -31,8 +30,8 @@ class TableEntity(BaseEntity):
     >>> table.validate()
     """
 
-    caption: Optional[str] = None
-    table_label: Optional[str] = None
+    caption: str | None = None
+    table_label: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""

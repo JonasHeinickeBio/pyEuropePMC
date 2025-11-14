@@ -4,11 +4,11 @@ RDF Mapper for converting entities to RDF triples based on YAML configuration.
 
 import os
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any
 
-import yaml
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import RDF
+import yaml
 
 __all__ = ["RDFMapper"]
 
@@ -37,7 +37,7 @@ class RDFMapper:
     >>> uri = paper.to_rdf(g, mapper=mapper)
     """
 
-    def __init__(self, config_path: Optional[str] = None):
+    def __init__(self, config_path: str | None = None):
         """
         Initialize the RDF mapper with configuration.
 
@@ -78,8 +78,8 @@ class RDFMapper:
         if not os.path.exists(config_path):
             raise FileNotFoundError(f"RDF mapping config not found: {config_path}")
 
-        with open(config_path, "r", encoding="utf-8") as f:
-            config = yaml.safe_load(f)
+        with open(config_path, encoding="utf-8") as f:
+            config: dict[str, Any] = yaml.safe_load(f)
 
         return config
 
@@ -198,7 +198,7 @@ class RDFMapper:
                     g.add((subject, predicate, Literal(value)))
 
     def serialize_graph(
-        self, g: Graph, format: str = "turtle", destination: Optional[str] = None
+        self, g: Graph, format: str = "turtle", destination: str | None = None
     ) -> str:
         """
         Serialize RDF graph to string or file.

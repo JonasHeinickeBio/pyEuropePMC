@@ -3,7 +3,6 @@ Section entity model for representing article sections.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from pyeuropepmc.models.base import BaseEntity
 
@@ -35,10 +34,10 @@ class SectionEntity(BaseEntity):
     >>> section.validate()
     """
 
-    title: Optional[str] = None
-    content: Optional[str] = None
-    begin_index: Optional[int] = None
-    end_index: Optional[int] = None
+    title: str | None = None
+    content: str | None = None
+    begin_index: int | None = None
+    end_index: int | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""

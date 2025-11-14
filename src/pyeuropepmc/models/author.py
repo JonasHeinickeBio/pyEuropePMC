@@ -3,7 +3,6 @@ Author entity model for representing article authors.
 """
 
 from dataclasses import dataclass
-from typing import Optional
 
 from pyeuropepmc.models.base import BaseEntity
 
@@ -42,11 +41,11 @@ class AuthorEntity(BaseEntity):
     """
 
     full_name: str = ""
-    first_name: Optional[str] = None
-    last_name: Optional[str] = None
-    initials: Optional[str] = None
-    affiliation_text: Optional[str] = None
-    orcid: Optional[str] = None
+    first_name: str | None = None
+    last_name: str | None = None
+    initials: str | None = None
+    affiliation_text: str | None = None
+    orcid: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""
