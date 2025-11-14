@@ -306,9 +306,86 @@ xml = mapper.serialize_graph(g, format="xml")
 mapper.serialize_graph(g, format="turtle", destination="output.ttl")
 ```
 
-## CLI Tool
+### RML Mappings (W3C Standard)
 
-Convert PMC XML files to RDF and JSON:
+PyEuropePMC also supports RML (RDF Mapping Language), a W3C community standard for mapping heterogeneous data to RDF. RML is particularly useful for:
+
+- **Standards Compliance**: RML is a widely adopted standard
+- **Tool Interoperability**: Works with various RML processors
+- **Complex Mappings**: Supports joins, nested data, and multiple sources
+
+#### Using RML with SDM-RDFizer
+
+The `RMLRDFizer` wrapper integrates the SDM-RDFizer tool:
+
+```python
+from rdflib import Graph
+from pyeuropepmc.mappers import RMLRDFizer
+from pyeuropepmc.models import PaperEntity
+
+# Initialize RML RDFizer
+rdfizer = RMLRDFizer()
+
+# Convert entities to RDF using RML mappings
+paper = PaperEntity(pmcid="PMC123", title="Test Paper")
+g = rdfizer.entities_to_rdf([paper], entity_type="paper")
+
+# Serialize
+ttl = g.serialize(format="turtle")
+```
+
+#### RML Configuration
+
+RML mappings are defined in `conf/rml_mappings.ttl` using Turtle syntax:
+
+```turtle
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+
+<#PaperEntityMap>
+    rml:logicalSource [
+        rml:source "paper.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$"
+    ] ;
+    
+    rr:subjectMap [
+        rr:template "http://aid-pais.org/data/paper/{pmcid}" ;
+        rr:class bibo:AcademicArticle
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:title ;
+        rr:objectMap [ rml:reference "title" ]
+    ] .
+```
+
+The RDFizer configuration is in `conf/rdfizer_config.ini`.
+
+#### Direct JSON to RDF
+
+Convert JSON data directly without entity objects:
+
+```python
+rdfizer = RMLRDFizer()
+
+json_data = {
+    "pmcid": "PMC123",
+    "title": "Test Paper",
+    "doi": "10.1234/test"
+}
+
+g = rdfizer.convert_json_to_rdf(json_data, entity_type="paper")
+```
+
+## CLI Tools
+
+### Standard RDF Mapper
+
+Convert PMC XML files to RDF and JSON using the built-in RDFMapper:
 
 ```bash
 # Convert to both Turtle and JSON
@@ -319,6 +396,22 @@ python scripts/xml_to_rdf.py input.xml --ttl output.ttl
 
 # Use custom RDF mapping config
 python scripts/xml_to_rdf.py input.xml --ttl output.ttl --config custom_map.yml
+```
+
+### RML-based Conversion
+
+Convert PMC XML files to RDF using RML mappings and SDM-RDFizer:
+
+```bash
+# Convert using RML mappings
+python scripts/xml_to_rdf_rml.py input.xml --output output.ttl -v
+
+# Save intermediate JSON entities
+python scripts/xml_to_rdf_rml.py input.xml --output output.ttl --json entities.json
+
+# Use custom RML mappings and config
+python scripts/xml_to_rdf_rml.py input.xml --output output.ttl \
+    --mappings custom_rml.ttl --config custom_rdfizer.ini
 ```
 
 **Example Output (Turtle):**

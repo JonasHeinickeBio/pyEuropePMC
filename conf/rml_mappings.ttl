@@ -1,0 +1,246 @@
+@prefix rr: <http://www.w3.org/ns/r2rml#> .
+@prefix rml: <http://semweb.mmlab.be/ns/rml#> .
+@prefix ql: <http://semweb.mmlab.be/ns/ql#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dct: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix aid: <http://aid-pais.org/ontology#> .
+@prefix data: <http://aid-pais.org/data/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# RML Mappings for PyEuropePMC Data Models
+# These mappings convert JSON representations of entities to RDF
+
+# ===== PaperEntity Mapping =====
+<#PaperEntityMap>
+    rml:logicalSource [
+        rml:source "paper.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$"
+    ] ;
+    
+    rr:subjectMap [
+        rr:template "http://aid-pais.org/data/paper/{pmcid}" ;
+        rr:class bibo:AcademicArticle
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:identifier ;
+        rr:objectMap [ rml:reference "pmcid" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:doi ;
+        rr:objectMap [ rml:reference "doi" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:title ;
+        rr:objectMap [ rml:reference "title" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:journal ;
+        rr:objectMap [ rml:reference "journal" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:volume ;
+        rr:objectMap [ rml:reference "volume" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:issue ;
+        rr:objectMap [ rml:reference "issue" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:pages ;
+        rr:objectMap [ rml:reference "pages" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:issued ;
+        rr:objectMap [ rml:reference "pub_date" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate prov:wasDerivedFrom ;
+        rr:objectMap [ rml:reference "source_uri" ; rr:termType rr:IRI ]
+    ] ;
+    
+    # Multi-value field: keywords
+    rr:predicateObjectMap [
+        rr:predicate dct:subject ;
+        rr:objectMap [ rml:reference "keywords[*]" ]
+    ] .
+
+# ===== AuthorEntity Mapping =====
+<#AuthorEntityMap>
+    rml:logicalSource [
+        rml:source "authors.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+    
+    rr:subjectMap [
+        rr:template "http://aid-pais.org/data/author/{id}" ;
+        rr:class foaf:Person
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate foaf:name ;
+        rr:objectMap [ rml:reference "full_name" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate foaf:givenName ;
+        rr:objectMap [ rml:reference "first_name" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate foaf:familyName ;
+        rr:objectMap [ rml:reference "last_name" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:shortTitle ;
+        rr:objectMap [ rml:reference "initials" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:identifier ;
+        rr:objectMap [ rml:reference "orcid" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:publisher ;
+        rr:objectMap [ rml:reference "affiliation_text" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== SectionEntity Mapping =====
+<#SectionEntityMap>
+    rml:logicalSource [
+        rml:source "sections.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+    
+    rr:subjectMap [
+        rr:template "http://aid-pais.org/data/section/{id}" ;
+        rr:class bibo:DocumentPart, nif:Context
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:title ;
+        rr:objectMap [ rml:reference "title" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate nif:isString ;
+        rr:objectMap [ rml:reference "content" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate nif:beginIndex ;
+        rr:objectMap [ rml:reference "begin_index" ; rr:datatype xsd:integer ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate nif:endIndex ;
+        rr:objectMap [ rml:reference "end_index" ; rr:datatype xsd:integer ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== TableEntity Mapping =====
+<#TableEntityMap>
+    rml:logicalSource [
+        rml:source "tables.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+    
+    rr:subjectMap [
+        rr:template "http://aid-pais.org/data/table/{id}" ;
+        rr:class bibo:Table
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:description ;
+        rr:objectMap [ rml:reference "caption" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "table_label" ]
+    ] .
+
+# ===== ReferenceEntity Mapping =====
+<#ReferenceEntityMap>
+    rml:logicalSource [
+        rml:source "references.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+    
+    rr:subjectMap [
+        rr:template "http://aid-pais.org/data/reference/{id}" ;
+        rr:class bibo:Document
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:title ;
+        rr:objectMap [ rml:reference "title" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:isPartOf ;
+        rr:objectMap [ rml:reference "source" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:issued ;
+        rr:objectMap [ rml:reference "year" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:volume ;
+        rr:objectMap [ rml:reference "volume" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:pages ;
+        rr:objectMap [ rml:reference "pages" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate bibo:doi ;
+        rr:objectMap [ rml:reference "doi" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate dct:creator ;
+        rr:objectMap [ rml:reference "authors" ]
+    ] ;
+    
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
