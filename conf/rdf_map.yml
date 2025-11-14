@@ -1,0 +1,75 @@
+# RDF Mapping Configuration for PyEuropePMC Data Models
+# This file defines how entity fields map to RDF predicates
+
+# Namespace prefixes
+_@prefix:
+  aid: "http://aid-pais.org/ontology#"
+  dct: "http://purl.org/dc/terms/"
+  foaf: "http://xmlns.com/foaf/0.1/"
+  bibo: "http://purl.org/ontology/bibo/"
+  prov: "http://www.w3.org/ns/prov#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  nif: "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+
+# PaperEntity mapping
+PaperEntity:
+  rdf:type: ["bibo:AcademicArticle"]
+  fields:
+    pmcid: dct:identifier
+    doi: bibo:doi
+    title: dct:title
+    journal: bibo:journal
+    volume: bibo:volume
+    issue: bibo:issue
+    pages: bibo:pages
+    pub_date: dct:issued
+  # Multi-value fields (lists)
+  multi_value_fields:
+    keywords: dct:subject
+
+# AuthorEntity mapping
+AuthorEntity:
+  rdf:type: ["foaf:Person"]
+  fields:
+    full_name: foaf:name
+    first_name: foaf:givenName
+    last_name: foaf:familyName
+    initials: bibo:shortTitle
+    orcid: bibo:identifier
+    affiliation_text: dct:publisher
+
+# SectionEntity mapping
+SectionEntity:
+  rdf:type: ["bibo:DocumentPart", "nif:Context"]
+  fields:
+    title: dct:title
+    content: nif:isString
+    begin_index: nif:beginIndex
+    end_index: nif:endIndex
+
+# TableEntity mapping
+TableEntity:
+  rdf:type: ["bibo:Table"]
+  fields:
+    caption: dct:description
+    table_label: rdfs:label
+
+# TableRowEntity mapping
+TableRowEntity:
+  rdf:type: ["bibo:Row"]
+  multi_value_fields:
+    headers: aid:hasHeader
+    cells: aid:hasCell
+
+# ReferenceEntity mapping
+ReferenceEntity:
+  rdf:type: ["bibo:Document"]
+  fields:
+    title: dct:title
+    source: dct:isPartOf
+    year: dct:issued
+    volume: bibo:volume
+    pages: bibo:pages
+    doi: bibo:doi
+    authors: dct:creator
