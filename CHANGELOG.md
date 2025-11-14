@@ -2,6 +2,102 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+
+## [1.11.0] - 2025-11-14
+
+### ✨ Features
+
+- **Advanced Analytics and Visualization**: Comprehensive analytics suite with publication metrics, citation analysis, and interactive dashboards
+  - Author statistics and geographic analysis
+  - Journal distribution and publication type analysis
+  - Quality metrics and duplicate detection
+  - Interactive visualization plots for trends and distributions
+
+- **HTTP Caching System**: Robust caching with requests-cache and conditional GET support
+  - Configurable cache backends (memory, disk, Redis)
+  - Cache invalidation and TTL management
+  - Conditional requests to minimize API calls
+
+- **Content-Addressed Artifact Storage**: SHA-256 based storage with deduplication
+  - Efficient storage of large documents and metadata
+  - Automatic deduplication to save disk space
+  - Metadata tracking and artifact management
+
+- **Full Text XML Parser**: Advanced parsing for Europe PMC full-text XML documents
+  - Metadata extraction and table parsing
+  - Multiple output formats (JSON, Markdown, plain text)
+  - Configurable parsing schemas and element patterns
+
+- **Advanced Filtering Utilities**: Enhanced post-query result filtering
+  - `filter_pmc_papers`: AND logic for precise filtering
+  - `filter_pmc_papers_or`: OR logic for broad exploratory searches
+  - Support for MeSH terms, keywords, and abstract matching
+
+- **Full-Text Content Retrieval**: Comprehensive client for retrieving full-text articles
+  - Support for multiple formats (XML, PDF, plain text)
+  - Progress tracking and error handling
+  - Batch processing capabilities
+
+### 🔧 Maintenance
+
+- **Major Codebase Restructuring**: Complete architectural overhaul for better maintainability
+  - Modular design with clear separation of concerns
+  - Enhanced error handling and type safety
+  - Comprehensive test coverage improvements
+
+- **CI/CD Pipeline Enhancements**: Automated testing and quality assurance
+  - Pre-commit hooks for code quality
+  - Automated dependency updates
+  - Coverage reporting and benchmarking
+
+
+## [1.10.1] - 2025-11-10
+
+### Fixed
+
+- **CodeScene Integration**: Added missing `run_delta_analysis` function to CodeScene analysis script
+
+## [1.10.0] - 2025-11-10
+
+### ✨ Features
+
+- **Enhanced CodeScene Integration**: Secure environment management for code health analysis
+  - Improved CodeScene CLI integration with proper environment setup
+  - Enhanced code quality monitoring and analysis capabilities
+
+## [1.9.1] - 2025-11-10
+
+### 🔧 Maintenance
+
+- **Dependency Updates**: Updated multiple development and runtime dependencies
+  - Updated `requests` to 2.32.5 for security improvements
+  - Updated `notebook` to 7.4.7 for compatibility
+  - Updated `attrs` to 25.4.0 and `jupyterlab-widgets` to 3.0.16
+  - Updated CI actions: `actions/checkout` to v5, `actions/upload-artifact` to v5, `actions/labeler` to v6, `codecov/codecov-action` to v5, `actions/ai-inference` to v2
+
+## [1.9.0] - 2025-11-10
+
+### ✨ Features
+
+- **CodeScene CLI Integration**: Automated code health analysis and quality monitoring
+  - Integrated CodeScene CLI for comprehensive code analysis
+  - Enhanced CI workflows with code health tracking
+
+### 🔧 Maintenance
+
+- **Query Builder Refactoring**: Improved error handling and removed unnecessary flags
+  - Enhanced QueryBuilder with better validation and error handling
+  - Removed SEARCH_QUERY_AVAILABLE flag for cleaner implementation
+  - Added comprehensive unit tests for QueryBuilder functionality
+
+- **CI Workflow Improvements**: Enhanced testing and issue tracking automation
+  - Updated CI workflows for better test coverage and issue management
+  - Improved automated dependency management
+
+### Fixed
+
+- Code review fixes: documentation improvements, unused import removal, and exception handling enhancements
+
 ## [1.8.1] - 2025-11-06
 
 ### Added
