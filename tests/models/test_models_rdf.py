@@ -1,7 +1,7 @@
 """Unit tests for data models and RDF serialization."""
 
 import pytest
-from rdflib import Graph, Literal, Namespace
+from rdflib import Graph, Namespace
 
 from pyeuropepmc.mappers import RDFMapper
 from pyeuropepmc.models import (
@@ -112,9 +112,7 @@ class TestAuthorEntity:
         """Test author RDF serialization."""
         mapper = RDFMapper()
         g = Graph()
-        author = AuthorEntity(
-            full_name="John Smith", first_name="John", last_name="Smith"
-        )
+        author = AuthorEntity(full_name="John Smith", first_name="John", last_name="Smith")
         uri = author.to_rdf(g, mapper=mapper)
 
         # Check that triples were added

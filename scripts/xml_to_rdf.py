@@ -8,8 +8,8 @@ and serializes them to RDF and/or JSON formats.
 
 import argparse
 import json
-import sys
 from pathlib import Path
+import sys
 
 from rdflib import Graph
 
@@ -63,7 +63,7 @@ def load_xml_file(file_path: str) -> str:
     str
         XML content
     """
-    with open(file_path, "r", encoding="utf-8") as f:
+    with open(file_path, encoding="utf-8") as f:
         return f.read()
 
 
@@ -149,7 +149,7 @@ def main() -> int:
             g = Graph()
 
             # Add paper
-            paper_uri = paper.to_rdf(g, mapper=mapper)
+            paper.to_rdf(g, mapper=mapper)
 
             # Add authors
             for author in authors:

@@ -1,12 +1,10 @@
 """Integration tests for builder layer."""
 
-import pytest
-
 from pyeuropepmc.builders import build_paper_entities
 from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 # Sample XML for testing
-SAMPLE_XML = '''<?xml version="1.0"?>
+SAMPLE_XML = """<?xml version="1.0"?>
 <article xmlns:xlink="http://www.w3.org/1999/xlink">
 <front>
 <journal-meta>
@@ -83,7 +81,7 @@ SAMPLE_XML = '''<?xml version="1.0"?>
 </ref-list>
 </back>
 </article>
-'''
+"""
 
 
 class TestBuildPaperEntities:
@@ -171,7 +169,7 @@ class TestBuildPaperEntities:
 
     def test_build_entities_empty_sections(self):
         """Test building entities with minimal XML."""
-        minimal_xml = '''<?xml version="1.0"?>
+        minimal_xml = """<?xml version="1.0"?>
         <article>
         <front>
         <article-meta>
@@ -182,7 +180,7 @@ class TestBuildPaperEntities:
         </article-meta>
         </front>
         </article>
-        '''
+        """
         parser = FullTextXMLParser(minimal_xml)
         paper, authors, sections, tables, references = build_paper_entities(parser)
 

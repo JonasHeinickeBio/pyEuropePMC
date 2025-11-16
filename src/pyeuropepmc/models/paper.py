@@ -5,6 +5,7 @@ Paper entity model for representing academic articles.
 from dataclasses import dataclass, field
 
 from pyeuropepmc.models.base import BaseEntity
+from pyeuropepmc.models.utils import normalize_doi
 
 __all__ = ["PaperEntity"]
 
@@ -77,14 +78,7 @@ class PaperEntity(BaseEntity):
 
     def normalize(self) -> None:
         """Normalize paper data (DOI lowercase, trim whitespace)."""
-        if self.doi:
-            # Normalize DOI: lowercase and remove URL prefix
-            self.doi = (
-                self.doi.lower()
-                .replace("https://doi.org/", "")
-                .replace("http://dx.doi.org/", "")
-                .strip()
-            )
+        self.doi = normalize_doi(self.doi)
         if self.title:
             self.title = self.title.strip()
         if self.pmcid:

@@ -46,7 +46,8 @@ class TestRDFMapper:
         """Test predicate resolution without prefix."""
         mapper = RDFMapper()
         predicate = mapper._resolve_predicate("http://example.org/test")
-        assert "example.org" in str(predicate)
+        # Use startswith to properly validate URL structure
+        assert str(predicate).startswith("http://example.org/")
 
     def test_add_types(self):
         """Test adding RDF types."""
@@ -121,9 +122,7 @@ class TestRDFMapper:
         subject = URIRef("http://example.org/paper1")
         mapper.map_fields(g, subject, paper)
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", delete=False, suffix=".ttl"
-        ) as tmp:
+        with tempfile.NamedTemporaryFile(mode="w", delete=False, suffix=".ttl") as tmp:
             tmp_path = tmp.name
 
         try:
@@ -132,7 +131,7 @@ class TestRDFMapper:
             assert os.path.exists(tmp_path)
 
             # Read and check content
-            with open(tmp_path, "r") as f:
+            with open(tmp_path) as f:
                 content = f.read()
                 assert len(content) > 0
                 assert "Test Article" in content
