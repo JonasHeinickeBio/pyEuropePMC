@@ -1,8 +1,29 @@
 
 # API Reference
 
-This section provides detailed documentation for all PyEuropePMC classes and methods.
+<div align="center">
 
+**📚 Complete API documentation** - All classes, methods, and parameters
+
+[🔍 SearchClient](search-client.md) • [📄 FullTextClient](fulltext-client.md) • [🔬 XML Parser](xml-parser.md) • [⬅️ Back to Docs](../README.md)
+
+</div>
+
+---
+
+## 📋 API Overview
+
+This section provides detailed documentation for all PyEuropePMC classes and methods. The API is organized around several core clients:
+
+| Client | Purpose | Key Methods |
+|--------|---------|-------------|
+| **[SearchClient](search-client.md)** | Query Europe PMC database | `search()`, `get_by_id()` |
+| **[FullTextClient](fulltext-client.md)** | Download full-text content | `download_pdf()`, `get_xml()` |
+| **[ArticleClient](article-client.md)** | Article-specific operations | `get_citations()`, `get_references()` |
+| **[FullTextXMLParser](xml-parser.md)** | Parse XML documents | `extract_metadata()`, `extract_tables()` |
+| **[FTPDownloader](ftp-downloader.md)** | Bulk downloads via FTP | `download_bulk()` |
+
+---
 
 ## Core Classes
 
@@ -231,3 +252,22 @@ rate_limit = 1.0
 level = INFO
 format = %(asctime)s - %(name)s - %(levelname)s - %(message)s
 ```
+
+---
+
+## 📚 Related Sections
+
+| Section | Why Visit? |
+|---------|------------|
+| **[🚀 Getting Started](../../getting-started/)** | Installation and basics |
+| **[✨ Features](../../features/)** | What PyEuropePMC can do |
+| **[🎯 Examples](../../examples/)** | Working code samples |
+| **[⚙️ Advanced](../../advanced/)** | Power user features |
+
+---
+
+<div align="center">
+
+**[⬆ Back to Top](#api-reference)** • [⬅️ Back to Main Docs](../README.md)
+
+</div>

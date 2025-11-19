@@ -8,7 +8,7 @@
 
 **Complete documentation for PyEuropePMC** - A robust Python toolkit for scientific literature analysis from Europe PMC
 
-[Quick Start](getting-started/quickstart.md) • [API Reference](api/) • [Examples](examples/) • [GitHub](https://github.com/JonasHeinickeBio/pyEuropePMC)
+[🚀 Quick Start](getting-started/quickstart.md) • [📚 API Reference](api/) • [🎯 Examples](examples/) • [🗺️ Site Map](sitemap.md) • [GitHub](https://github.com/JonasHeinickeBio/pyEuropePMC)
 
 </div>
 
@@ -16,197 +16,243 @@
 
 ## 📖 Documentation Overview
 
-This documentation is organized into focused sections to help you find what you need quickly.
+Welcome to the PyEuropePMC documentation! This site is organized to help you find what you need quickly, whether you're new to the library or a power user.
 
-### 🚀 [Getting Started](getting-started/)
+### 🗂️ Site Structure
 
-**New to PyEuropePMC?** Start here!
-
-- **[Installation](getting-started/installation.md)** - Install PyEuropePMC and dependencies
-- **[Quick Start](getting-started/quickstart.md)** - Get running in 5 minutes
-- **[FAQ](getting-started/faq.md)** - Common questions and troubleshooting
-
----
-
-### ✨ [Features](features/)
-
-**Explore what PyEuropePMC can do**
-
-#### [🔍 Search](features/search/)
-- Search Europe PMC with advanced queries
-- Filter, sort, and paginate results
-- Multiple output formats (JSON, XML, DC)
-
-#### [� Query Builder](features/query-builder-load-save-translate.md)
-- Fluent API for building complex search queries
-- Type-safe field specifications (150+ fields)
-- Boolean logic with AND/OR/NOT operators
-- Citation count and date range filtering
-- Query validation and cross-platform translation
-- Load/save queries in standard JSON format
-
-#### [�📄 Full-Text Retrieval](features/fulltext/)
-- Download PDFs, XML, and HTML content
-- Bulk FTP downloads for large datasets
-- Progress tracking and callbacks
-
-#### [🔬 XML Parsing](features/parsing/)
-- Parse full-text XML documents
-- Extract metadata, tables, and references
-- Convert to plaintext and Markdown
-- Schema coverage validation
-- Flexible configuration with custom patterns
-
-#### [� Systematic Review Tracking](features/systematic-review-tracking.md)
-- PRISMA/Cochrane-compliant search logging
-- Complete audit trails for systematic reviews
-- Raw results saving for reproducibility
-- Search log integration with `log_to_search()` method
+```
+📚 PyEuropePMC Documentation
+├── 🚀 [Getting Started](getting-started/) - Installation & basics
+│   ├── 📦 [Installation](getting-started/installation.md)
+│   ├── ⚡ [Quick Start](getting-started/quickstart.md)
+│   └── ❓ [FAQ](getting-started/faq.md)
+├── ✨ [Features](features/) - What PyEuropePMC can do
+│   ├── 🔍 [Search](features/search/)
+│   ├── 🔧 [Query Builder](features/query-builder-load-save-translate.md)
+│   ├── 📄 [Full-Text](features/fulltext/)
+│   ├── 🔬 [XML Parsing](features/parsing/)
+│   └── 📋 [Systematic Reviews](features/systematic-review-tracking.md)
+├── 📚 [API Reference](api/) - Complete API docs
+│   ├── 🔍 [SearchClient](api/search-client.md)
+│   ├── 📄 [FullTextClient](api/fulltext-client.md)
+│   ├── 📄 [ArticleClient](api/article-client.md)
+│   ├── 🔬 [XML Parser](api/xml-parser.md)
+│   └── 📦 [FTP Downloader](api/ftp-downloader.md)
+├── 🎯 [Examples](examples/) - Code examples & use cases
+├── ⚙️ [Advanced](advanced/) - Power user features
+└── 🛠️ [Development](development/) - Contributing & development
+```
 
 ---
 
-### 📚 [API Reference](api/)
+## 🎯 Quick Navigation
 
-**Complete API documentation**
-
-- **[SearchClient](api/search-client.md)** - Search and query the Europe PMC API
-- **[FullTextClient](api/fulltext-client.md)** - Download full-text content
-- **[ArticleClient](api/article-client.md)** - Article-specific operations
-- **[FullTextXMLParser](api/xml-parser.md)** - Parse and extract from XML
-- **[FTPDownloader](api/ftp-downloader.md)** - Bulk downloads via FTP
-- **[Parser](api/parser.md)** - Response parsing utilities
-
----
-
-### 🎯 [Examples](examples/)
-
-**Learn by example**
-
-- **[Basic Examples](examples/basic-examples.md)** - Common use cases
-- **[Advanced Examples](examples/advanced-examples.md)** - Complex workflows
-- **[Use Cases](examples/use-cases.md)** - Real-world applications
-- **[Code Snippets](examples/snippets.md)** - Copy-paste solutions
+| I want to... | Go to... | Time |
+|--------------|----------|------|
+| **Install PyEuropePMC** | [Installation](getting-started/installation.md) | 2 min |
+| **Run my first search** | [Quick Start](getting-started/quickstart.md) | 5 min |
+| **Search for papers** | [Search Features](features/search/) | 10 min |
+| **Build complex queries** | [Query Builder](features/query-builder-load-save-translate.md) | 15 min |
+| **Download PDFs/XML** | [Full-Text Retrieval](features/fulltext/) | 10 min |
+| **Parse XML documents** | [XML Parsing](features/parsing/) | 15 min |
+| **Extract metadata/tables** | [XML Parser API](api/xml-parser.md) | 20 min |
+| **See working examples** | [Examples](examples/) | 10-30 min |
+| **Optimize performance** | [Advanced Features](advanced/) | 20 min |
+| **Contribute code** | [Development](development/) | 30 min |
 
 ---
 
-### ⚙️ [Advanced](advanced/)
+## 🚀 Getting Started (Recommended Path)
 
-**Power user features**
+<div class="getting-started-flow">
 
-- **[Configuration](advanced/configuration.md)** - Customize behavior
-- **[Error Handling](advanced/error-handling.md)** - Robust error management
-- **[Performance](advanced/performance.md)** - Optimization strategies
-- **[Custom Patterns](advanced/custom-patterns.md)** - XML parsing configuration
+1. **📦 [Install](getting-started/installation.md)** (2 min)
+   ```bash
+   pip install pyeuropepmc
+   ```
+
+2. **⚡ [Quick Start](getting-started/quickstart.md)** (5 min)
+   ```python
+   from pyeuropepmc.search import SearchClient
+   with SearchClient() as client:
+       results = client.search("CRISPR", pageSize=10)
+   ```
+
+3. **🔍 [Explore Features](features/)** (10-30 min)
+   - [Search](features/search/) - Query Europe PMC
+   - [Full-Text](features/fulltext/) - Download content
+   - [Parsing](features/parsing/) - Extract structured data
+
+4. **📚 [API Reference](api/)** (as needed)
+   - Complete method documentation
+   - Parameter details & examples
+
+</div>
 
 ---
 
-### 🛠️ [Development](development/)
+## 📋 Feature Overview
 
-**Contributing to PyEuropePMC**
+### 🔍 **Search & Query**
+- **Advanced Search**: Boolean operators, field-specific queries, date ranges
+- **Query Builder**: Type-safe fluent API for complex queries (150+ fields)
+- **Systematic Reviews**: PRISMA-compliant search logging and audit trails
+- **Multiple Formats**: JSON, XML, Dublin Core output
 
-- **[Contributing Guide](development/contributing.md)** - How to contribute
-- **[Testing](development/testing.md)** - Testing guidelines
-- **[Release Process](development/release-process.md)** - Version management
-- **[Architecture](development/architecture.md)** - Project structure
+### 📄 **Content Retrieval**
+- **Full-Text Downloads**: PDFs, XML, HTML from open access articles
+- **Bulk FTP**: Efficient large-scale downloads via FTP
+- **Progress Tracking**: Real-time callbacks and status updates
+
+### 🔬 **Data Extraction**
+- **XML Parsing**: Extract metadata, tables, references from full-text XML
+- **Format Conversion**: Convert to plaintext, Markdown, structured data
+- **Schema Validation**: Analyze XML element coverage and completeness
+- **Custom Patterns**: Flexible configuration for different XML schemas
+
+### 📊 **Analytics & Processing**
+- **Citation Analysis**: Publication metrics and citation statistics
+- **Quality Assessment**: Open access status, PDF availability, completeness
+- **Duplicate Detection**: Remove duplicate papers from result sets
+- **Geographic Analysis**: Author affiliation and location analysis
+
+### 🛠️ **Developer Features**
+- **Type Safety**: Comprehensive type annotations and validation
+- **Caching**: HTTP caching with configurable backends (memory, disk, Redis)
+- **Error Handling**: Robust retry logic and detailed error messages
+- **Rate Limiting**: Respectful API usage with configurable delays
 
 ---
 
 ## 🎓 Learning Paths
 
-### For Beginners
-1. Start with [Installation](getting-started/installation.md)
-2. Follow the [Quick Start](getting-started/quickstart.md)
-3. Try [Basic Examples](examples/basic-examples.md)
-4. Check the [FAQ](getting-started/faq.md) if stuck
+### 👨‍🎓 **For Beginners**
+```mermaid
+graph TD
+    A[Installation] --> B[Quick Start]
+    B --> C[Basic Search]
+    C --> D[Download Content]
+    D --> E[Parse XML]
+    E --> F[Examples]
+```
 
-### For Advanced Users
-1. Explore [Advanced Features](advanced/)
-2. Review [API Reference](api/)
-3. Study [Advanced Examples](examples/advanced-examples.md)
-4. Customize with [Configuration](advanced/configuration.md)
+1. [Installation](getting-started/installation.md) → [Quick Start](getting-started/quickstart.md)
+2. [Search Features](features/search/) → [Full-Text](features/fulltext/)
+3. [Examples](examples/) → [API Reference](api/)
 
-### For Contributors
-1. Read [Contributing Guide](development/contributing.md)
-2. Understand [Architecture](development/architecture.md)
-3. Follow [Testing Guidelines](development/testing.md)
-4. Submit PRs following [Release Process](development/release-process.md)
+### 👨‍💼 **For Researchers**
+```mermaid
+graph TD
+    A[Query Builder] --> B[Systematic Reviews]
+    B --> C[Advanced Search]
+    C --> D[Bulk Downloads]
+    D --> E[Analytics]
+```
+
+1. [Query Builder](features/query-builder-load-save-translate.md) → [Systematic Reviews](features/systematic-review-tracking.md)
+2. [Advanced Search](features/search/) → [Bulk Operations](features/fulltext/)
+3. [Analytics](api/analytics-visualization.md) → [Performance](advanced/)
+
+### 👨‍💻 **For Developers**
+```mermaid
+graph TD
+    A[API Reference] --> B[Advanced Features]
+    B --> C[Caching]
+    C --> D[Error Handling]
+    D --> E[Contributing]
+```
+
+1. [API Reference](api/) → [Advanced](advanced/)
+2. [Caching](advanced/caching.md) → [Performance](advanced/)
+3. [Development](development/) → [Contributing](development/)
 
 ---
 
-## 🔍 Quick Search
+## 🔍 Search & Discovery
 
-| I want to... | Go to... |
+### By Topic
+
+| Topic | Primary Location | Related |
+|-------|------------------|---------|
+| **Installation** | [Getting Started](getting-started/) | [FAQ](getting-started/faq.md) |
+| **Search Queries** | [Search](features/search/) | [Query Builder](features/query-builder-load-save-translate.md) |
+| **Full-Text** | [Full-Text](features/fulltext/) | [FTP Downloads](api/ftp-downloader.md) |
+| **XML Parsing** | [Parsing](features/parsing/) | [XML Parser](api/xml-parser.md) |
+| **Systematic Reviews** | [Reviews](features/systematic-review-tracking.md) | [Query Builder](features/query-builder-load-save-translate.md) |
+| **Analytics** | [Analytics](api/analytics-visualization.md) | [Examples](examples/) |
+| **Performance** | [Advanced](advanced/) | [Caching](advanced/caching.md) |
+| **Contributing** | [Development](development/) | [GitHub](https://github.com/JonasHeinickeBio/pyEuropePMC) |
+
+### By Task
+
+| I need to... | Solution |
 |--------------|----------|
-| Install the package | [Installation](getting-started/installation.md) |
-| Search for papers | [Search Features](features/search/) |
-| Build complex queries | [Query Builder](features/query-builder-load-save-translate.md) |
-| Track systematic reviews | [Systematic Review Tracking](features/systematic-review-tracking.md) |
-| Download PDFs | [Full-Text Retrieval](features/fulltext/) |
-| Parse XML files | [XML Parsing](features/parsing/) |
-| Extract metadata | [Metadata Extraction](features/parsing/metadata-extraction.md) |
-| Extract tables | [Table Extraction](features/parsing/table-extraction.md) |
-| Improve performance | [Performance Guide](advanced/performance.md) |
-| Handle errors | [Error Handling](advanced/error-handling.md) |
-| See code examples | [Examples](examples/) |
-| Contribute code | [Contributing](development/contributing.md) |
+| Find papers on a topic | [Search Features](features/search/) |
+| Download PDFs in bulk | [FTP Downloader](api/ftp-downloader.md) |
+| Extract tables from papers | [XML Parsing](features/parsing/) |
+| Build reproducible searches | [Systematic Reviews](features/systematic-review-tracking.md) |
+| Analyze citation patterns | [Analytics](api/analytics-visualization.md) |
+| Optimize API performance | [Caching](advanced/caching.md) |
+| Handle API errors | [Error Handling](advanced/error-handling.md) |
 
 ---
 
-## 📦 What's New
+## 📦 What's New in v1.11.3
 
-### Version 1.8.1 (Latest)
+### ✨ **Major Features**
+- **Advanced Analytics**: Citation analysis, quality metrics, duplicate detection
+- **HTTP Caching**: Configurable caching backends with conditional requests
+- **RDF Conversion**: Convert papers to knowledge graphs with RML mappings
+- **Type-Safe Query Builder**: 150+ searchable fields with validation
+- **Bulk Operations**: Efficient large-scale content retrieval
 
-**New Features:**
-- ✨ **Advanced Query Builder**: Complete fluent API for building complex Europe PMC search queries with type safety
-- 📋 **Systematic Review Tracking**: PRISMA/Cochrane-compliant search logging with audit trails
-- 🔍 **Field Coverage Validation**: API field synchronization tools for maintaining up-to-date field mappings
-- 🎯 **Enhanced Type Safety**: Comprehensive Literal types for all 150+ searchable fields
-- 🔄 **Query Translation**: Cross-platform query translation (PubMed, Web of Science, etc.)
-- 💾 **Load/Save Queries**: Standard JSON format for query persistence and sharing
+### 🔧 **Improvements**
+- **Modular Architecture**: Better code organization and maintainability
+- **Enhanced Testing**: 200+ tests with 90%+ coverage
+- **CI/CD Pipeline**: Automated quality assurance and deployment
+- **Documentation**: Comprehensive guides and examples
 
-See [CHANGELOG](../CHANGELOG.md) for full version history.
+See [CHANGELOG](../CHANGELOG.md) for complete version history.
 
 ---
 
 ## 🆘 Getting Help
 
-### Can't find what you're looking for?
+### Quick Help
+- **❓ [FAQ](getting-started/faq.md)** - Common questions answered
+- **💡 [Examples](examples/)** - Working code samples
+- **🐛 [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)** - Bug reports & support
 
-1. **Search this documentation** - Use your browser's search (Ctrl+F / Cmd+F)
-2. **Check the [FAQ](getting-started/faq.md)** - Common questions answered
-3. **Browse [Examples](examples/)** - See working code
-4. **Search [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)** - See if others had the same problem
-5. **Ask a Question** - [Create a new issue](https://github.com/JonasHeinickeBio/pyEuropePMC/issues/new)
+### Community Support
+- **📖 [Europe PMC API Docs](https://europepmc.org/RestfulWebService)** - Official API reference
+- **📦 [PyPI Package](https://pypi.org/project/pyeuropepmc/)** - Package details
+- **💻 [GitHub Repository](https://github.com/JonasHeinickeBio/pyEuropePMC)** - Source code
 
-### Found a Bug?
-
-Report it on [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues) with:
-- Python version
-- PyEuropePMC version
-- Minimal code to reproduce
-- Error message and stack trace
-
----
-
-## 🔗 External Resources
-
-- **[Europe PMC API Documentation](https://europepmc.org/RestfulWebService)** - Official API docs
-- **[PyPI Package](https://pypi.org/project/pyeuropepmc/)** - Package on PyPI
-- **[GitHub Repository](https://github.com/JonasHeinickeBio/pyEuropePMC)** - Source code
-- **[Issue Tracker](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)** - Bug reports and feature requests
+### Report Issues
+Found a bug or need help? [Create an issue](https://github.com/JonasHeinickeBio/pyEuropePMC/issues/new) with:
+- Python version and PyEuropePMC version
+- Minimal code to reproduce the issue
+- Error messages and stack traces
 
 ---
 
-## 📄 License
+## 🔗 External Links
 
-PyEuropePMC is licensed under the [MIT License](../LICENSE).
+- **[Europe PMC](https://europepmc.org/)** - The database PyEuropePMC accesses
+- **[REST API](https://europepmc.org/RestfulWebService)** - Official API documentation
+- **[GitHub](https://github.com/JonasHeinickeBio/pyEuropePMC)** - Source code and development
+- **[PyPI](https://pypi.org/project/pyeuropepmc/)** - Package distribution
 
 ---
 
 <div align="center">
 
+**📚 [Browse All Documentation](#) • 🚀 [Quick Start](getting-started/quickstart.md) • 💡 [Examples](examples/)**
+
+---
+
 **[⬆ Back to Top](#pyeuropepmc-documentation)**
 
-Made with ❤️ by the PyEuropePMC team
+*Made with ❤️ by the PyEuropePMC team • Licensed under [MIT](../LICENSE)*
 
 </div>

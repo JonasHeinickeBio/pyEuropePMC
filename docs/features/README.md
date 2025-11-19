@@ -1,6 +1,14 @@
 # PyEuropePMC Features
 
-PyEuropePMC provides a comprehensive suite of features for working with scientific literature from Europe PMC.
+<div align="center">
+
+**✨ Explore what PyEuropePMC can do** - Comprehensive feature overview and workflows
+
+[🔍 Search](search/) • [📄 Full-Text](fulltext/) • [🔬 Parsing](parsing/) • [⬅️ Back to Docs](../README.md)
+
+</div>
+
+---
 
 ## 🔍 Core Features
 
@@ -353,6 +361,25 @@ Explore each feature in detail:
 
 Or jump to:
 
-- **[API Reference](../api/)** for complete API documentation
-- **[Examples](../examples/)** for working code
-- **[Advanced Guide](../advanced/)** for power user features
+- **[📚 API Reference](../api/)** for complete API documentation
+- **[🎯 Examples](../examples/)** for working code
+- **[⚙️ Advanced Guide](../advanced/)** for power user features
+
+---
+
+## 📚 Related Sections
+
+| Section | Why Visit? |
+|---------|------------|
+| **[🚀 Getting Started](../getting-started/)** | Installation and basics |
+| **[📚 API Reference](../api/)** | Complete method documentation |
+| **[🎯 Examples](../examples/)** | Working code samples |
+| **[⚙️ Advanced](../advanced/)** | Power user features |
+
+---
+
+<div align="center">
+
+**[⬆ Back to Top](#pyeuropepmc-features)** • [⬅️ Back to Main Docs](../README.md)
+
+</div>

@@ -20,7 +20,6 @@ from pathlib import Path
 import sqlite3
 import tempfile
 import threading
-import types
 from typing import Any, TypeVar
 
 from pyeuropepmc.core.error_codes import ErrorCodes
@@ -36,7 +35,6 @@ except ImportError:
 
 # diskcache is kept as optional fallback (not currently used)
 # Type checking imports
-diskcache: types.ModuleType | None = None
 try:
     import diskcache
 

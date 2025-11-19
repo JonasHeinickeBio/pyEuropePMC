@@ -1,0 +1,133 @@
+# RDF Mapping Configuration for PyEuropePMC Data Models
+# This file defines how entity fields map to RDF predicates
+# TODO: Keep rml_mappings.ttl synchronized with this YAML file
+# TODO: Consider adding a script to auto-generate RML from YAML
+# NOTE: URI generation patterns are handled dynamically in RDFMapper._generate_entity_uri() (DOI-based for papers, normalized names for authors, etc.)
+
+# Namespace prefixes
+_@prefix:
+  ex: "http://example.org/"
+  dct: "http://purl.org/dc/terms/"
+  foaf: "http://xmlns.com/foaf/0.1/"
+  bibo: "http://purl.org/ontology/bibo/"
+  prov: "http://www.w3.org/ns/prov#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  nif: "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  owl: "http://www.w3.org/2002/07/owl#"
+  mesh: "http://id.nlm.nih.gov/mesh/"
+  obo: "http://purl.obolibrary.org/obo/"
+  org: "http://www.w3.org/ns/org#"
+  cito: "http://purl.org/spar/cito/"
+
+# PaperEntity mapping
+PaperEntity:
+  rdf:type: ["bibo:AcademicArticle"]
+  fields:
+    pmcid: dct:identifier
+    doi: bibo:doi
+    title: dct:title
+    journal: bibo:journal
+    volume: bibo:volume
+    issue: bibo:issue
+    pages: bibo:pages
+    pub_date: dct:issued
+    abstract: dct:abstract
+    citation_count: ex:citationCount
+  # Multi-value fields (lists)
+  multi_value_fields:
+    keywords: dct:subject
+  # Relationships
+  relationships:
+    authors:
+      predicate: dct:creator
+      inverse: foaf:made
+    sections:
+      predicate: dct:hasPart
+      inverse: dct:isPartOf
+    references:
+      predicate: cito:cites
+      inverse: cito:isCitedBy
+    tables:
+      predicate: dct:hasPart
+      inverse: dct:isPartOf
+
+# AuthorEntity mapping
+AuthorEntity:
+  rdf:type: ["foaf:Person"]
+  fields:
+    full_name: foaf:name
+    first_name: foaf:givenName
+    last_name: foaf:familyName
+    initials: foaf:initials
+    orcid: ex:orcid  # Changed from bibo:identifier for more specific ORCID predicate
+    affiliation_text: ex:affiliation  # Changed from org:memberOf (which expects URI, not literal)
+  # Relationships
+  relationships:
+    papers:
+      predicate: foaf:made
+      inverse: dct:creator
+
+# SectionEntity mapping
+SectionEntity:
+  rdf:type: ["bibo:DocumentPart", "nif:Context"]
+  fields:
+    title: dct:title
+    content: nif:isString
+    begin_index: nif:beginIndex
+    end_index: nif:endIndex
+  # Relationships
+  relationships:
+    paper:
+      predicate: dct:isPartOf
+      inverse: dct:hasPart
+    subsections:
+      predicate: dct:hasPart
+      inverse: dct:isPartOf  # TODO: Implement SubsectionEntity or remove if not needed
+
+# TableEntity mapping
+TableEntity:
+  rdf:type: ["bibo:Table"]
+  fields:
+    caption: dct:description
+    table_label: rdfs:label
+  # Relationships
+  relationships:
+    paper:
+      predicate: dct:isPartOf
+      inverse: dct:hasPart
+    rows:
+      predicate: dct:hasPart
+      inverse: dct:isPartOf
+
+# TableRowEntity mapping
+TableRowEntity:
+  rdf:type: ["bibo:Row"]
+  fields:
+    headers: ex:hasHeader  # Changed from multi_value_fields (headers are typically single string per row)
+  multi_value_fields:
+    cells: ex:hasCell
+  # Relationships
+  relationships:
+    table:
+      predicate: dct:isPartOf
+      inverse: dct:hasPart
+
+# ReferenceEntity mapping
+ReferenceEntity:
+  rdf:type: ["bibo:Document"]
+  fields:
+    title: dct:title
+    source: dct:isPartOf
+    year: dct:issued
+    volume: bibo:volume
+    pages: bibo:pages
+    doi: bibo:doi  # NOTE: DOI data often missing in XML (only PMID available)
+  # Multi-value fields
+  multi_value_fields:
+    authors: dct:creator
+  # Relationships
+  relationships:
+    citing_paper:
+      predicate: cito:isCitedBy
+      inverse: cito:cites
