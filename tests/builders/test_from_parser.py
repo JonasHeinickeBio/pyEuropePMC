@@ -90,7 +90,7 @@ class TestBuildPaperEntities:
     def test_build_paper_entities(self):
         """Test building entities from parser."""
         parser = FullTextXMLParser(SAMPLE_XML)
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         # Check paper entity
         assert paper.pmcid == "1234567"
@@ -120,7 +120,7 @@ class TestBuildPaperEntities:
     def test_build_entities_normalizes_data(self):
         """Test that built entities can be normalized."""
         parser = FullTextXMLParser(SAMPLE_XML)
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         # Normalize
         paper.normalize()
@@ -133,7 +133,7 @@ class TestBuildPaperEntities:
     def test_build_entities_validates(self):
         """Test that built entities can be validated."""
         parser = FullTextXMLParser(SAMPLE_XML)
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         # Validate - should not raise
         paper.validate()
@@ -149,7 +149,7 @@ class TestBuildPaperEntities:
         from pyeuropepmc.mappers import RDFMapper
 
         parser = FullTextXMLParser(SAMPLE_XML)
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         mapper = RDFMapper()
         g = Graph()
@@ -182,7 +182,7 @@ class TestBuildPaperEntities:
         </article>
         """
         parser = FullTextXMLParser(minimal_xml)
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         assert paper.pmcid == "TEST123"
         assert paper.title == "Minimal Article"

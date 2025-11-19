@@ -278,7 +278,7 @@ for xml_file in glob.glob("*.xml"):
     parser = FullTextXMLParser(open(xml_file).read())
     paper, *_ = build_paper_entities(parser)
     paper.normalize()
-    
+
     # Export
     output = xml_file.replace(".xml", ".ttl")
     mapper.serialize_graph(g, format="turtle", destination=output)

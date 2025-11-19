@@ -351,12 +351,12 @@ RML mappings are defined in `conf/rml_mappings.ttl` using Turtle syntax:
         rml:referenceFormulation ql:JSONPath ;
         rml:iterator "$"
     ] ;
-    
+
     rr:subjectMap [
         rr:template "http://example.org/data/paper/{pmcid}" ;
         rr:class bibo:AcademicArticle
     ] ;
-    
+
     rr:predicateObjectMap [
         rr:predicate dct:title ;
         rr:objectMap [ rml:reference "title" ]

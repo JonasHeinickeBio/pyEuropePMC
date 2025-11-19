@@ -13,23 +13,22 @@ pip install pyeuropepmc
 ### Simple Search
 
 ```python
-from pyeuropepmc import EuropePMC
+from pyeuropepmc.search import SearchClient
 
 # Initialize the client
-client = EuropePMC()
+with SearchClient() as client:
+    # Search for articles about cancer
+    results = client.search(query="cancer", limit=10)
 
-# Search for articles about cancer
-results = client.search(query="cancer", limit=10)
-
-# Print article titles
-for article in results:
-    print(article.title)
+    # Print article titles
+    for article in results["resultList"]["result"]:
+        print(article.get("title", "No title"))
 ```
 
 ### Advanced Search with QueryBuilder
 
 ```python
-from pyeuropepmc import QueryBuilder
+from pyeuropepmc.query.query_builder import QueryBuilder
 
 # Build complex queries with type safety
 qb = QueryBuilder()
@@ -57,21 +56,22 @@ print(f"Complex query: {complex_query}")
 
 ```python
 # Search with filters
-results = client.search(
-    query="machine learning",
-    source="MED",
-    sort="date",
-    limit=20,
-    format="json"
-)
+with SearchClient() as client:
+    results = client.search(
+        query="machine learning",
+        source="MED",
+        sort="date",
+        limit=20,
+        format="json"
+    )
 
-# Access article metadata
-for article in results:
-    print(f"Title: {article.title}")
-    print(f"Authors: {', '.join(article.authors)}")
-    print(f"DOI: {article.doi}")
-    print(f"Publication Year: {article.pub_year}")
-    print("---")
+    # Access article metadata
+    for article in results["resultList"]["result"]:
+        print(f"Title: {article.get('title', 'N/A')}")
+        print(f"Authors: {article.get('authorString', 'N/A')}")
+        print(f"DOI: {article.get('doi', 'N/A')}")
+        print(f"Publication Year: {article.get('pubYear', 'N/A')}")
+        print("---")
 ```
 
 ## Supported Formats
@@ -84,10 +84,10 @@ for article in results:
 ### Using Context Manager
 
 ```python
-with EuropePMC() as client:
+with SearchClient() as client:
     results = client.search("CRISPR", limit=5)
-    for article in results:
-        print(article.title)
+    for article in results["resultList"]["result"]:
+        print(article.get("title", "No title"))
 ```
 
 ## Next Steps

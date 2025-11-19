@@ -6,10 +6,12 @@ from typing import TYPE_CHECKING
 
 from pyeuropepmc.models import (
     AuthorEntity,
+    FigureEntity,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
     TableEntity,
+    TableRowEntity,
 )
 
 if TYPE_CHECKING:
@@ -25,6 +27,7 @@ def build_paper_entities(
     list[AuthorEntity],
     list[SectionEntity],
     list[TableEntity],
+    list[FigureEntity],
     list[ReferenceEntity],
 ]:
     """
@@ -64,7 +67,7 @@ def build_paper_entities(
         id=meta.get("pmcid") or meta.get("doi"),
         label=meta.get("title"),
         source_uri=f"urn:pmc:{meta.get('pmcid', '')}" if meta.get("pmcid") else None,
-        pmcid=meta.get("pmcid"),
+        pmcid=f"PMC{meta.get('pmcid')}" if meta.get("pmcid") else None,
         doi=meta.get("doi"),
         title=meta.get("title"),
         journal=meta.get("journal"),
@@ -94,12 +97,28 @@ def build_paper_entities(
     # Build TableEntity list
     tables = []
     for table_data in parser.extract_tables():
+        # Convert raw row data to TableRowEntity instances
+        rows = [TableRowEntity(cells=row_data) for row_data in (table_data.get("rows") or [])]
         table = TableEntity(
             label=table_data.get("label"),
             caption=table_data.get("caption"),
             table_label=table_data.get("label"),
+            headers=table_data.get("headers") or [],
+            rows=rows,
         )
         tables.append(table)
+
+    # Build FigureEntity list (placeholder - figure extraction not yet implemented)
+    figures: list[FigureEntity] = []
+    # TODO: Implement figure extraction in parser and add here
+    # for figure_data in parser.extract_figures():
+    #     figure = FigureEntity(
+    #         label=figure_data.get("label"),
+    #         caption=figure_data.get("caption"),
+    #         figure_label=figure_data.get("label"),
+    #         graphic_uri=figure_data.get("graphic_uri"),
+    #     )
+    #     figures.append(figure)
 
     # Build ReferenceEntity list
     references = []
@@ -115,4 +134,4 @@ def build_paper_entities(
         )
         references.append(reference)
 
-    return paper, authors, sections, tables, references
+    return paper, authors, sections, tables, figures, references

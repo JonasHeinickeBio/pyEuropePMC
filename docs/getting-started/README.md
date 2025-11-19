@@ -1,6 +1,14 @@
 # Getting Started with PyEuropePMC
 
-Welcome! This section will help you get up and running with PyEuropePMC quickly.
+<div align="center">
+
+**🚀 Welcome to PyEuropePMC!** Get up and running in minutes.
+
+[📦 Installation](installation.md) • [⚡ Quick Start](quickstart.md) • [❓ FAQ](faq.md) • [⬅️ Back to Docs](../README.md)
+
+</div>
+
+---
 
 ## 📋 Prerequisites
 
@@ -13,13 +21,15 @@ Before you begin, ensure you have:
 
 ## 🚀 Quick Navigation
 
-| Document | Description | Time |
-|----------|-------------|------|
-| **[Installation](installation.md)** | Install PyEuropePMC and dependencies | 2 min |
-| **[Quick Start](quickstart.md)** | Your first search and extraction | 5 min |
-| **[FAQ](faq.md)** | Common questions and troubleshooting | 10 min |
+| Document | Description | Time | Difficulty |
+|----------|-------------|------|------------|
+| **[📦 Installation](installation.md)** | Install PyEuropePMC and dependencies | 2 min | ⭐ Beginner |
+| **[⚡ Quick Start](quickstart.md)** | Your first search and extraction | 5 min | ⭐ Beginner |
+| **[❓ FAQ](faq.md)** | Common questions and troubleshooting | 10 min | ⭐ Beginner |
 
 ## 📖 Recommended Learning Path
+
+<div class="learning-path">
 
 ### Step 1: Installation (2 minutes)
 Start with the [Installation Guide](installation.md) to get PyEuropePMC installed on your system.
@@ -42,9 +52,11 @@ with SearchClient() as client:
 ### Step 3: Explore Features
 Once you've completed the quick start, explore specific features:
 
-- **[Search](../features/search/)** - Advanced search capabilities
-- **[Full-Text](../features/fulltext/)** - Download PDFs and XML
-- **[Parsing](../features/parsing/)** - Extract structured data from XML
+- **[🔍 Search](../features/search/)** - Advanced search capabilities
+- **[📄 Full-Text](../features/fulltext/)** - Download PDFs and XML
+- **[🔬 Parsing](../features/parsing/)** - Extract structured data from XML
+
+</div>
 
 ## 🎯 What You'll Learn
 
@@ -74,4 +86,21 @@ Once you're comfortable with the basics:
 
 ---
 
-**Ready to begin?** Start with [Installation →](installation.md)
+## 📚 Related Sections
+
+| Section | Why Visit? |
+|---------|------------|
+| **[Features](../features/)** | Learn what PyEuropePMC can do |
+| **[API Reference](../api/)** | Complete method documentation |
+| **[Examples](../examples/)** | Working code samples |
+| **[Advanced](../advanced/)** | Power user features |
+
+---
+
+<div align="center">
+
+**Ready to begin?** [📦 Start with Installation →](installation.md)
+
+**[⬆ Back to Top](#getting-started-with-pyeuropepmc)** • [⬅️ Back to Main Docs](../README.md)
+
+</div>

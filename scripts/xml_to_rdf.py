@@ -10,6 +10,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+from typing import Any
 
 from rdflib import Graph
 
@@ -67,7 +68,9 @@ def load_xml_file(file_path: str) -> str:
         return f.read()
 
 
-def entities_to_json(paper, authors, sections, tables, references) -> dict:
+def entities_to_json(
+    paper: Any, authors: list[Any], sections: list[Any], tables: list[Any], references: list[Any]
+) -> dict[str, Any]:
     """
     Convert entities to JSON-serializable dictionary.
 
@@ -98,19 +101,119 @@ def entities_to_json(paper, authors, sections, tables, references) -> dict:
     }
 
 
-def main() -> int:
-    """Main entry point for the script."""
-    args = parse_args()
-
-    # Validate arguments
+def validate_arguments(args: argparse.Namespace) -> None:
+    """Validate command line arguments."""
     if not args.ttl and not args.json:
         print("Error: At least one output format (--ttl or --json) must be specified")
-        return 1
+        sys.exit(1)
 
     input_path = Path(args.input)
     if not input_path.exists():
         print(f"Error: Input file not found: {args.input}")
-        return 1
+        sys.exit(1)
+
+
+def process_entities(
+    paper: Any, authors: list[Any], sections: list[Any], tables: list[Any], references: list[Any]
+) -> None:
+    """Normalize all entities."""
+    paper.normalize()
+    for author in authors:
+        author.normalize()
+    for section in sections:
+        section.normalize()
+    for table in tables:
+        table.normalize()
+    for ref in references:
+        ref.normalize()
+
+
+def generate_ttl_output(
+    args: argparse.Namespace,
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    references: list[Any],
+) -> None:
+    """Generate RDF/Turtle output."""
+    if args.verbose:
+        print(f"Generating RDF/Turtle output to {args.ttl}...")
+
+    # Initialize mapper
+    mapper = RDFMapper(config_path=args.config)
+
+    # Create RDF graph
+    g = Graph()
+
+    # Add paper
+    paper.to_rdf(g, mapper=mapper)
+
+    # Add authors
+    for author in authors:
+        author.to_rdf(g, mapper=mapper)
+
+    # Add sections
+    for section in sections:
+        section.to_rdf(g, mapper=mapper)
+
+    # Add tables
+    for table in tables:
+        table.to_rdf(g, mapper=mapper)
+
+    # Add references
+    for reference in references:
+        reference.to_rdf(g, mapper=mapper)
+
+    # Serialize to TTL
+    mapper.serialize_graph(g, format="turtle", destination=args.ttl)
+    if args.verbose:
+        print(f"RDF/Turtle written to {args.ttl}")
+
+
+def generate_json_output(
+    args: argparse.Namespace,
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    references: list[Any],
+) -> None:
+    """Generate JSON output."""
+    if args.verbose:
+        print(f"Generating JSON output to {args.json}...")
+
+    json_data = entities_to_json(paper, authors, sections, tables, references)
+
+    with open(args.json, "w", encoding="utf-8") as f:
+        json.dump(json_data, f, indent=2, ensure_ascii=False)
+
+    if args.verbose:
+        print(f"JSON written to {args.json}")
+
+
+def print_summary(
+    args: argparse.Namespace,
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    references: list[Any],
+) -> None:
+    """Print conversion summary if verbose."""
+    if args.verbose:
+        print("Conversion complete!")
+        print(f"  Paper: {paper.title or paper.pmcid or 'Unknown'}")
+        print(f"  Authors: {len(authors)}")
+        print(f"  Sections: {len(sections)}")
+        print(f"  Tables: {len(tables)}")
+        print(f"  References: {len(references)}")
+
+
+def main() -> int:
+    """Main entry point for the script."""
+    args = parse_args()
+    validate_arguments(args)
 
     try:
         # Load and parse XML
@@ -127,70 +230,16 @@ def main() -> int:
         paper, authors, sections, tables, references = build_paper_entities(parser)
 
         # Normalize entities
-        paper.normalize()
-        for author in authors:
-            author.normalize()
-        for section in sections:
-            section.normalize()
-        for table in tables:
-            table.normalize()
-        for ref in references:
-            ref.normalize()
+        process_entities(paper, authors, sections, tables, references)
 
         # Generate outputs
         if args.ttl:
-            if args.verbose:
-                print(f"Generating RDF/Turtle output to {args.ttl}...")
-
-            # Initialize mapper
-            mapper = RDFMapper(config_path=args.config)
-
-            # Create RDF graph
-            g = Graph()
-
-            # Add paper
-            paper.to_rdf(g, mapper=mapper)
-
-            # Add authors
-            for author in authors:
-                author.to_rdf(g, mapper=mapper)
-
-            # Add sections
-            for section in sections:
-                section.to_rdf(g, mapper=mapper)
-
-            # Add tables
-            for table in tables:
-                table.to_rdf(g, mapper=mapper)
-
-            # Add references
-            for reference in references:
-                reference.to_rdf(g, mapper=mapper)
-
-            # Serialize to TTL
-            mapper.serialize_graph(g, format="turtle", destination=args.ttl)
-            if args.verbose:
-                print(f"RDF/Turtle written to {args.ttl}")
+            generate_ttl_output(args, paper, authors, sections, tables, references)
 
         if args.json:
-            if args.verbose:
-                print(f"Generating JSON output to {args.json}...")
+            generate_json_output(args, paper, authors, sections, tables, references)
 
-            json_data = entities_to_json(paper, authors, sections, tables, references)
-
-            with open(args.json, "w", encoding="utf-8") as f:
-                json.dump(json_data, f, indent=2, ensure_ascii=False)
-
-            if args.verbose:
-                print(f"JSON written to {args.json}")
-
-        if args.verbose:
-            print("Conversion complete!")
-            print(f"  Paper: {paper.title or paper.pmcid or 'Unknown'}")
-            print(f"  Authors: {len(authors)}")
-            print(f"  Sections: {len(sections)}")
-            print(f"  Tables: {len(tables)}")
-            print(f"  References: {len(references)}")
+        print_summary(args, paper, authors, sections, tables, references)
 
         return 0
 

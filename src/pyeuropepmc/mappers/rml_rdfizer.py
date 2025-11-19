@@ -3,6 +3,18 @@ RML-based RDF mapping using SDM-RDFizer.
 
 This module provides a wrapper around the SDM-RDFizer tool to convert
 PyEuropePMC entities to RDF using RML (RDF Mapping Language) mappings.
+
+SDM-RDFizer is a tool for converting structured data to RDF using RML mappings.
+Repository: https://github.com/SDM-TIB/SDM-RDFizer
+
+Installation:
+    pip install rdfizer
+    # or
+    poetry add rdfizer
+
+Usage:
+    python3 -m rdfizer -c /path/to/config/file
+
 """
 
 import json
@@ -250,7 +262,7 @@ class RMLRDFizer:
 
     def convert_json_to_rdf(
         self,
-        json_data: dict | list,
+        json_data: dict[str, Any] | list[dict[str, Any]],
         entity_type: str,
         output_format: str = "turtle",
     ) -> Graph:

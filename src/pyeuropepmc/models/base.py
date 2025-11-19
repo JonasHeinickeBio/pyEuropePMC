@@ -135,7 +135,14 @@ class BaseEntity:
         """
         return asdict(self)
 
-    def to_rdf(self, g: Graph, uri: URIRef | None = None, mapper: Any | None = None) -> URIRef:
+    def to_rdf(
+        self,
+        g: Graph,
+        uri: URIRef | None = None,
+        mapper: Any | None = None,
+        related_entities: dict[str, list[Any]] | None = None,
+        extraction_info: dict[str, Any] | None = None,
+    ) -> URIRef:
         """
         Serialize entity to RDF graph using a mapper.
 
@@ -147,6 +154,10 @@ class BaseEntity:
             URI for this entity (if None, will be minted)
         mapper : Optional[Any]
             RDF mapper instance to use for serialization
+        related_entities : Optional[dict[str, list[Any]]]
+            Dictionary of related entities by relationship name
+        extraction_info : Optional[dict[str, Any]]
+            Additional extraction metadata for provenance
 
         Returns
         -------
@@ -170,7 +181,8 @@ class BaseEntity:
         if mapper is None:
             raise ValueError("RDF mapper required")
 
-        subject = uri or self.mint_uri(self.__class__.__name__.lower())
+        # Use mapper's URI generation logic for consistency
+        subject = uri or mapper._generate_entity_uri(self)
 
         # Add RDF types
         mapper.add_types(g, subject, self.types)
@@ -178,7 +190,17 @@ class BaseEntity:
         # Map dataclass fields using the mapper configuration
         mapper.map_fields(g, subject, self)
 
-        # Add common provenance and metadata
+        # Map relationships if provided
+        if related_entities:
+            mapper.map_relationships(g, subject, self, related_entities)
+
+        # Add provenance information
+        mapper.add_provenance(g, subject, self, extraction_info)
+
+        # Add ontology alignments and biomedical mappings
+        mapper.map_ontology_alignments(g, subject, self)
+
+        # Add common provenance and metadata (legacy support)
         if self.source_uri:
             g.add((subject, PROV.wasDerivedFrom, URIRef(self.source_uri)))
 

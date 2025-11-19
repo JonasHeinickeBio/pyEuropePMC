@@ -11,6 +11,7 @@ import argparse
 import json
 from pathlib import Path
 import sys
+from typing import Any
 
 from rdflib import Graph
 
@@ -79,20 +80,151 @@ def load_xml_file(file_path: str) -> str:
         return f.read()
 
 
-def main() -> int:
-    """Main entry point for the script."""
-    args = parse_args()
-
-    # Check if RDFizer is available
-    if not RDFIZER_AVAILABLE:
-        print("Error: rdfizer package not installed")
-        print("Install it with: pip install rdfizer")
-        return 1
-
+def validate_arguments(args: argparse.Namespace) -> None:
+    """Validate command line arguments."""
     input_path = Path(args.input)
     if not input_path.exists():
         print(f"Error: Input file not found: {args.input}")
-        return 1
+        sys.exit(1)
+
+
+def check_rdfizer_availability() -> None:
+    """Check if RDFizer is available."""
+    if not RDFIZER_AVAILABLE:
+        print("Error: rdfizer package not installed")
+        print("Install it with: pip install rdfizer")
+        sys.exit(1)
+
+
+def process_entities(
+    paper: Any, authors: list[Any], sections: list[Any], tables: list[Any], references: list[Any]
+) -> None:
+    """Normalize all entities."""
+    paper.normalize()
+    for author in authors:
+        author.normalize()
+    for section in sections:
+        section.normalize()
+    for table in tables:
+        table.normalize()
+    for ref in references:
+        ref.normalize()
+
+
+def save_json_entities(
+    args: argparse.Namespace,
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    references: list[Any],
+) -> None:
+    """Save intermediate JSON entities if requested."""
+    if args.json:
+        if args.verbose:
+            print(f"Saving JSON entities to {args.json}...")
+
+        json_data = {
+            "paper": paper.to_dict(),
+            "authors": [a.to_dict() for a in authors],
+            "sections": [s.to_dict() for s in sections],
+            "tables": [t.to_dict() for t in tables],
+            "references": [r.to_dict() for r in references],
+        }
+
+        with open(args.json, "w", encoding="utf-8") as f:
+            json.dump(json_data, f, indent=2, ensure_ascii=False)
+
+        if args.verbose:
+            print(f"JSON written to {args.json}")
+
+
+def convert_single_entity_type(
+    rdfizer: RMLRDFizer, entities: list[Any], entity_type: str, verbose: bool
+) -> Graph:
+    """Convert a single entity type to RDF."""
+    if not entities:
+        return Graph()
+
+    if verbose:
+        print(f"  - Converting {len(entities)} {entity_type}s...")
+
+    return rdfizer.entities_to_rdf(entities, entity_type=entity_type)
+
+
+def convert_entities_to_rdf(
+    args: argparse.Namespace,
+    rdfizer: RMLRDFizer,
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    references: list[Any],
+) -> Graph:
+    """Convert entities to RDF using RML mappings."""
+    if args.verbose:
+        print("Converting to RDF using RML mappings...")
+
+    # Create a combined graph
+    g = Graph()
+
+    # Convert each entity type separately and merge graphs
+    g += convert_single_entity_type(rdfizer, [paper], "paper", args.verbose)
+    g += convert_single_entity_type(rdfizer, authors, "author", args.verbose)
+    g += convert_single_entity_type(rdfizer, sections, "section", args.verbose)
+    g += convert_single_entity_type(rdfizer, tables, "table", args.verbose)
+    g += convert_single_entity_type(rdfizer, references, "reference", args.verbose)
+
+    return g
+
+
+def print_summary(
+    args: argparse.Namespace,
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    references: list[Any],
+    g: Graph,
+) -> None:
+    """Print conversion summary if verbose."""
+    if args.verbose:
+        print("Conversion complete!")
+        print(f"  Paper: {paper.title or paper.pmcid or 'Unknown'}")
+        print(f"  Authors: {len(authors)}")
+        print(f"  Sections: {len(sections)}")
+        print(f"  Tables: {len(tables)}")
+        print(f"  References: {len(references)}")
+        print(f"  Total RDF triples: {len(g)}")
+
+
+def initialize_rdfizer(args: argparse.Namespace) -> RMLRDFizer:
+    """Initialize RML RDFizer with configuration."""
+    if args.verbose:
+        print("Initializing RML RDFizer...")
+
+    rdfizer_kwargs = {}
+    if args.config:
+        rdfizer_kwargs["config_path"] = args.config
+    if args.mappings:
+        rdfizer_kwargs["mapping_path"] = args.mappings
+
+    return RMLRDFizer(**rdfizer_kwargs)
+
+
+def serialize_and_save_rdf(args: argparse.Namespace, g: Graph) -> None:
+    """Serialize and save RDF to output file."""
+    if args.verbose:
+        print(f"Writing RDF to {args.output}...")
+
+    g.serialize(destination=args.output, format="turtle")
+
+
+def main() -> int:
+    """Main entry point for the script."""
+    args = parse_args()
+    check_rdfizer_availability()
+    validate_arguments(args)
 
     try:
         # Load and parse XML
@@ -109,98 +241,21 @@ def main() -> int:
         paper, authors, sections, tables, references = build_paper_entities(parser)
 
         # Normalize entities
-        paper.normalize()
-        for author in authors:
-            author.normalize()
-        for section in sections:
-            section.normalize()
-        for table in tables:
-            table.normalize()
-        for ref in references:
-            ref.normalize()
+        process_entities(paper, authors, sections, tables, references)
 
         # Save intermediate JSON if requested
-        if args.json:
-            if args.verbose:
-                print(f"Saving JSON entities to {args.json}...")
-
-            json_data = {
-                "paper": paper.to_dict(),
-                "authors": [a.to_dict() for a in authors],
-                "sections": [s.to_dict() for s in sections],
-                "tables": [t.to_dict() for t in tables],
-                "references": [r.to_dict() for r in references],
-            }
-
-            with open(args.json, "w", encoding="utf-8") as f:
-                json.dump(json_data, f, indent=2, ensure_ascii=False)
-
-            if args.verbose:
-                print(f"JSON written to {args.json}")
+        save_json_entities(args, paper, authors, sections, tables, references)
 
         # Initialize RML RDFizer
-        if args.verbose:
-            print("Initializing RML RDFizer...")
-
-        rdfizer_kwargs = {}
-        if args.config:
-            rdfizer_kwargs["config_path"] = args.config
-        if args.mappings:
-            rdfizer_kwargs["mapping_path"] = args.mappings
-
-        rdfizer = RMLRDFizer(**rdfizer_kwargs)
+        rdfizer = initialize_rdfizer(args)
 
         # Convert entities to RDF using RML
-        if args.verbose:
-            print("Converting to RDF using RML mappings...")
-
-        # Create a combined graph
-        g = Graph()
-
-        # Convert each entity type separately and merge graphs
-        if args.verbose:
-            print("  - Converting paper...")
-        paper_graph = rdfizer.entities_to_rdf([paper], entity_type="paper")
-        g += paper_graph
-
-        if authors and args.verbose:
-            print(f"  - Converting {len(authors)} authors...")
-        if authors:
-            author_graph = rdfizer.entities_to_rdf(authors, entity_type="author")
-            g += author_graph
-
-        if sections and args.verbose:
-            print(f"  - Converting {len(sections)} sections...")
-        if sections:
-            section_graph = rdfizer.entities_to_rdf(sections, entity_type="section")
-            g += section_graph
-
-        if tables and args.verbose:
-            print(f"  - Converting {len(tables)} tables...")
-        if tables:
-            table_graph = rdfizer.entities_to_rdf(tables, entity_type="table")
-            g += table_graph
-
-        if references and args.verbose:
-            print(f"  - Converting {len(references)} references...")
-        if references:
-            ref_graph = rdfizer.entities_to_rdf(references, entity_type="reference")
-            g += ref_graph
+        g = convert_entities_to_rdf(args, rdfizer, paper, authors, sections, tables, references)
 
         # Serialize to output file
-        if args.verbose:
-            print(f"Writing RDF to {args.output}...")
+        serialize_and_save_rdf(args, g)
 
-        g.serialize(destination=args.output, format="turtle")
-
-        if args.verbose:
-            print("Conversion complete!")
-            print(f"  Paper: {paper.title or paper.pmcid or 'Unknown'}")
-            print(f"  Authors: {len(authors)}")
-            print(f"  Sections: {len(sections)}")
-            print(f"  Tables: {len(tables)}")
-            print(f"  References: {len(references)}")
-            print(f"  Total RDF triples: {len(g)}")
+        print_summary(args, paper, authors, sections, tables, references, g)
 
         return 0
 

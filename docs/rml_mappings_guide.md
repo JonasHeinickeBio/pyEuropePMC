@@ -103,17 +103,17 @@ Defines how JSON entities map to RDF triples:
         rml:referenceFormulation ql:JSONPath ;
         rml:iterator "$"
     ] ;
-    
+
     rr:subjectMap [
         rr:template "http://example.org/data/paper/{pmcid}" ;
         rr:class bibo:AcademicArticle
     ] ;
-    
+
     rr:predicateObjectMap [
         rr:predicate dct:title ;
         rr:objectMap [ rml:reference "title" ]
     ] ;
-    
+
     # Multi-value fields
     rr:predicateObjectMap [
         rr:predicate dct:subject ;
@@ -219,12 +219,12 @@ To add custom mappings:
         rml:referenceFormulation ql:JSONPath ;
         rml:iterator "$[*]"
     ] ;
-    
+
     rr:subjectMap [
         rr:template "http://example.org/custom/{id}" ;
         rr:class <http://example.org/CustomEntity>
     ] ;
-    
+
     rr:predicateObjectMap [
         rr:predicate <http://example.org/hasProperty> ;
         rr:objectMap [ rml:reference "property" ]

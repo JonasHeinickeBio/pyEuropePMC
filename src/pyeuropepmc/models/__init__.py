@@ -7,6 +7,7 @@ and enable RDF serialization aligned to ontologies (AID-PAIS, BIBO, FOAF, PROV, 
 
 from pyeuropepmc.models.author import AuthorEntity
 from pyeuropepmc.models.base import BaseEntity
+from pyeuropepmc.models.figure import FigureEntity
 from pyeuropepmc.models.paper import PaperEntity
 from pyeuropepmc.models.reference import ReferenceEntity
 from pyeuropepmc.models.section import SectionEntity
@@ -19,5 +20,6 @@ __all__ = [
     "SectionEntity",
     "TableEntity",
     "TableRowEntity",
+    "FigureEntity",
     "ReferenceEntity",
 ]
