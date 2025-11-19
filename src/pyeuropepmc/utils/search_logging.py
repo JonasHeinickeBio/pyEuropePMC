@@ -31,7 +31,7 @@ your review data.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import getpass
 import json
 import logging
@@ -68,7 +68,7 @@ class SearchLogEntry:
     database: str
     query: str
     filters: dict[str, Any]
-    date_run: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    date_run: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     results_returned: int | None = None
     notes: str | None = None
     raw_results_path: str | None = None
@@ -94,8 +94,8 @@ class SearchLog:
 
     title: str
     executed_by: str | None = None
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    last_updated: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    last_updated: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     entries: list[SearchLogEntry] = field(default_factory=list)
     deduplicated_total: int | None = None
     final_included: int | None = None
@@ -105,7 +105,7 @@ class SearchLog:
     def add_entry(self, entry: SearchLogEntry) -> None:
         """Add a SearchLogEntry to the log and update last_updated."""
         self.entries.append(entry)
-        self.last_updated = datetime.utcnow().isoformat()
+        self.last_updated = datetime.now(timezone.utc).isoformat()
 
     def to_dict(self) -> dict[str, Any]:
         """Convert the log to a serializable dictionary."""
@@ -212,7 +212,7 @@ def record_query(
             raw_results_dir.mkdir(parents=True, exist_ok=True)
             if raw_results_filename is None:
                 safe_db = database.replace(" ", "_").replace("/", "_")
-                safe_time = datetime.utcnow().strftime("%Y%m%dT%H%M%S")
+                safe_time = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%S")
                 raw_results_filename = f"{safe_db}_results_{safe_time}.json"
             raw_results_path = str(raw_results_dir / raw_results_filename)
             with open(raw_results_path, "w", encoding="utf8") as fh:
@@ -433,7 +433,7 @@ def generate_private_key(
         comments.append(f"Email: {email}")
     if info:
         comments.append(f"Info: {info}")
-    comments.append(f"Created: {datetime.utcnow().isoformat()}")
+    comments.append(f"Created: {datetime.now(timezone.utc).isoformat()}")
     comments.append(f"User: {getpass.getuser()}")
     comment_str = ", ".join(comments)
 

@@ -67,7 +67,7 @@ def build_paper_entities(
         id=meta.get("pmcid") or meta.get("doi"),
         label=meta.get("title"),
         source_uri=f"urn:pmc:{meta.get('pmcid', '')}" if meta.get("pmcid") else None,
-        pmcid=f"PMC{meta.get('pmcid')}" if meta.get("pmcid") else None,
+        pmcid=meta.get("pmcid"),
         doi=meta.get("doi"),
         title=meta.get("title"),
         journal=meta.get("journal"),

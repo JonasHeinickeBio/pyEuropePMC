@@ -138,8 +138,11 @@ class RMLRDFizer:
             # Convert entities to JSON
             self._entities_to_json(entities, entity_type, temp_dir)
 
+            # Create empty JSON files for other entity types to avoid RDFizer errors
+            self._create_empty_json_files(temp_dir)
+
             # Update config to point to temp directory
-            temp_config = self._create_temp_config(temp_dir)
+            temp_config = self._create_temp_config(temp_dir, entity_type)
 
             # Run RDFizer
             output_file = self._run_rdfizer(temp_config, temp_dir)
@@ -182,19 +185,53 @@ class RMLRDFizer:
         json_path = os.path.join(output_dir, filename)
 
         # Convert entities to dict and write JSON
-        if entity_type == "paper" and len(entities) == 1:
-            # Single paper entity
-            data = entities[0].to_dict()
+        if entity_type == "paper":
+            # Always use array format for consistency
+            data = [e.to_dict() for e in entities]
         else:
             # Multiple entities (list)
             data = [e.to_dict() for e in entities]
+
+        # Filter out None values to avoid invalid RDF
+        def filter_none(obj: Any) -> Any:
+            if isinstance(obj, dict):
+                return {k: filter_none(v) for k, v in obj.items() if v is not None}
+            elif isinstance(obj, list):
+                return [filter_none(item) for item in obj]
+            else:
+                return obj
+
+        data = filter_none(data)
 
         with open(json_path, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
 
         return json_path
 
-    def _create_temp_config(self, temp_dir: str) -> str:
+    def _create_empty_json_files(self, temp_dir: str) -> None:
+        """
+        Create empty JSON files for all entity types to avoid RDFizer errors.
+
+        Parameters
+        ----------
+        temp_dir : str
+            Temporary directory path
+        """
+        filenames = [
+            "paper.json",
+            "authors.json",
+            "sections.json",
+            "tables.json",
+            "references.json",
+        ]
+
+        for filename in filenames:
+            json_path = os.path.join(temp_dir, filename)
+            if not os.path.exists(json_path):
+                with open(json_path, "w", encoding="utf-8") as f:
+                    json.dump([], f)  # Empty array
+
+    def _create_temp_config(self, temp_dir: str, entity_type: str | None = None) -> str:
         """
         Create a temporary config file pointing to temp directory.
 
@@ -202,6 +239,8 @@ class RMLRDFizer:
         ----------
         temp_dir : str
             Temporary directory path
+        entity_type : str, optional
+            Type of entity being processed (for filtering mappings)
 
         Returns
         -------
@@ -209,15 +248,45 @@ class RMLRDFizer:
             Path to temporary config file
         """
         temp_config_path = os.path.join(temp_dir, "rdfizer_config.ini")
+        temp_mapping_path = os.path.join(temp_dir, "rml_mappings.ttl")
 
         # Read original config
         with open(self.config_path, encoding="utf-8") as f:
             config_content = f.read()
 
+        # Read original mapping
+        with open(self.mapping_path, encoding="utf-8") as f:
+            mapping_content = f.read()
+
+        # Update mapping sources to use temp directory
+        mapping_content = mapping_content.replace(
+            '"paper.json"', f'"{os.path.join(temp_dir, "paper.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"authors.json"', f'"{os.path.join(temp_dir, "authors.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"sections.json"', f'"{os.path.join(temp_dir, "sections.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"tables.json"', f'"{os.path.join(temp_dir, "tables.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"references.json"', f'"{os.path.join(temp_dir, "references.json")}"'
+        )
+
+        # Write temp mapping
+        with open(temp_mapping_path, "w", encoding="utf-8") as f:
+            f.write(mapping_content)
+
         # Update paths to use temp directory
         config_content = config_content.replace("main_directory: .", f"main_directory: {temp_dir}")
         config_content = config_content.replace(
             "output_folder: output", f"output_folder: {temp_dir}/output"
+        )
+        # Update mapping path to temp mapping
+        config_content = config_content.replace(
+            "mapping: conf/rml_mappings.ttl", f"mapping: {temp_mapping_path}"
         )
 
         # Write temp config
@@ -302,11 +371,22 @@ class RMLRDFizer:
             filename = filename_map.get(entity_type, f"{entity_type}.json")
             json_path = os.path.join(temp_dir, filename)
 
+            # Ensure correct JSON structure
+            if isinstance(json_data, dict):
+                # Wrap single dict in array
+                json_to_write: list[dict[str, Any]] = [json_data]
+            else:
+                # Already a list
+                json_to_write = json_data
+
             with open(json_path, "w", encoding="utf-8") as f:
-                json.dump(json_data, f, indent=2, ensure_ascii=False)
+                json.dump(json_to_write, f, indent=2, ensure_ascii=False)
+
+            # Create empty JSON files for other entity types
+            self._create_empty_json_files(temp_dir)
 
             # Create temp config
-            temp_config = self._create_temp_config(temp_dir)
+            temp_config = self._create_temp_config(temp_dir, entity_type)
 
             # Run RDFizer
             output_file = self._run_rdfizer(temp_config, temp_dir)

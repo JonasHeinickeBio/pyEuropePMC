@@ -188,6 +188,16 @@ class RDFMapper:
                 predicate = self._resolve_predicate(predicate_str)
                 g.add((subject, predicate, Literal(value)))
 
+        # Map multi-value fields
+        multi_value_mapping = mapping.get("multi_value_fields", {})
+        for field_name, predicate_str in multi_value_mapping.items():
+            values = getattr(entity, field_name, None)
+            if values is not None and isinstance(values, list):
+                predicate = self._resolve_predicate(predicate_str)
+                for value in values:
+                    if value is not None:
+                        g.add((subject, predicate, Literal(value)))
+
     def map_relationships(
         self,
         g: Graph,
@@ -318,7 +328,7 @@ class RDFMapper:
 
         # Fallback to internal URIs
         if hasattr(entity, "mint_uri"):
-            return entity.mint_uri(entity_class.lower().replace("entity", ""))
+            return URIRef(entity.mint_uri(entity_class.lower().replace("entity", "")))
         else:
             # Generate UUID-based URI
             import uuid

@@ -21,7 +21,7 @@
     rml:logicalSource [
         rml:source "paper.json" ;
         rml:referenceFormulation ql:JSONPath ;
-        rml:iterator "$"
+        rml:iterator "$[*]"
     ] ;
 
     rr:subjectMap [

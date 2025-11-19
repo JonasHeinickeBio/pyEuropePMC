@@ -276,10 +276,8 @@ class TestTableRowEntity:
     def test_row_creation(self):
         """Test table row entity creation."""
         row = TableRowEntity(
-            headers=["Col1", "Col2"],
             cells=["Val1", "Val2"],
         )
-        assert row.headers == ["Col1", "Col2"]
         assert row.cells == ["Val1", "Val2"]
 
     def test_row_post_init(self):
@@ -295,17 +293,15 @@ class TestTableRowEntity:
     def test_row_validate_failure(self):
         """Test row validation with invalid data."""
         row = TableRowEntity()
-        with pytest.raises(ValueError, match="must have headers or cells"):
+        with pytest.raises(ValueError, match="must have cells"):
             row.validate()
 
     def test_row_normalize(self):
         """Test row normalization."""
         row = TableRowEntity(
-            headers=["  Col1  ", "  Col2  "],
             cells=["  Val1  ", "  Val2  "],
         )
         row.normalize()
-        assert row.headers == ["Col1", "Col2"]
         assert row.cells == ["Val1", "Val2"]
 
 

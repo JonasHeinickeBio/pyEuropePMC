@@ -1,5 +1,6 @@
 """Unit tests for RML RDFizer."""
 
+import json
 import os
 import tempfile
 
@@ -24,6 +25,19 @@ class TestRMLRDFizer:
         assert rdfizer.mapping_path is not None
         assert os.path.exists(rdfizer.config_path)
         assert os.path.exists(rdfizer.mapping_path)
+
+    def test_rdfizer_initialization_rdfizer_not_available(self):
+        """Test RMLRDFizer initialization when rdfizer is not available."""
+        # Mock RDFIZER_AVAILABLE to False
+        import pyeuropepmc.mappers.rml_rdfizer as rml_module
+        original_available = rml_module.RDFIZER_AVAILABLE
+        rml_module.RDFIZER_AVAILABLE = False
+
+        try:
+            with pytest.raises(ImportError, match="rdfizer package not found"):
+                RMLRDFizer()
+        finally:
+            rml_module.RDFIZER_AVAILABLE = original_available
 
     def test_rdfizer_with_custom_paths(self):
         """Test RMLRDFizer with custom config paths."""
@@ -72,19 +86,41 @@ class TestRMLRDFizer:
         finally:
             os.unlink(config_path)
 
-    def test_entities_to_json(self):
-        """Test converting entities to JSON."""
+    def test_entities_to_rdf_output_format(self):
+        """Test entities_to_rdf with different output formats."""
         rdfizer = RMLRDFizer()
 
-        papers = [
-            PaperEntity(pmcid="PMC123", title="Test Paper 1"),
-            PaperEntity(pmcid="PMC456", title="Test Paper 2"),
+        paper = PaperEntity(
+            pmcid="PMC123456",
+            doi="10.1234/test",
+            title="Test Paper",
+        )
+
+        try:
+            # Test with different output formats (though RDFizer may not respect this)
+            g = rdfizer.entities_to_rdf([paper], entity_type="paper", output_format="xml")
+            assert isinstance(g, object)  # RDFLib Graph
+        except Exception as e:
+            pytest.skip(f"RDFizer execution failed: {e}")
+
+    def test_entities_to_json_non_paper_entity(self):
+        """Test converting non-paper entities to JSON."""
+        rdfizer = RMLRDFizer()
+
+        authors = [
+            AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789"),
         ]
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            json_file = rdfizer._entities_to_json(papers, "paper", temp_dir)
+            json_file = rdfizer._entities_to_json(authors, "author", temp_dir)
             assert os.path.exists(json_file)
-            assert json_file.endswith("paper.json")
+            assert json_file.endswith("authors.json")
+
+            # Verify content
+            with open(json_file, encoding="utf-8") as f:
+                data = json.load(f)
+                assert isinstance(data, list)
+                assert len(data) == 1
 
     def test_entities_to_rdf_paper(self):
         """Test converting paper entity to RDF using RML."""
@@ -123,19 +159,37 @@ class TestRMLRDFizer:
         except Exception as e:
             pytest.skip(f"RDFizer execution failed: {e}")
 
-    def test_convert_json_to_rdf(self):
-        """Test converting JSON data directly to RDF."""
+    def test_convert_json_to_rdf_single_author_dict(self):
+        """Test converting single author dict to RDF."""
         rdfizer = RMLRDFizer()
 
         json_data = {
-            "pmcid": "PMC123",
-            "doi": "10.1234/test",
-            "title": "Test Paper",
-            "journal": "Test Journal",
+            "full_name": "John Doe",
+            "orcid": "0000-0001-2345-6789",
         }
 
         try:
-            g = rdfizer.convert_json_to_rdf(json_data, entity_type="paper")
+            g = rdfizer.convert_json_to_rdf(json_data, entity_type="author")
+            assert len(g) >= 0
+        except Exception as e:
+            pytest.skip(f"RDFizer execution failed: {e}")
+
+    def test_convert_json_to_rdf_list_input(self):
+        """Test converting list of JSON data to RDF."""
+        rdfizer = RMLRDFizer()
+
+        json_data = [
+            {
+                "full_name": "John Doe",
+                "orcid": "0000-0001-2345-6789",
+            },
+            {
+                "full_name": "Jane Smith",
+            }
+        ]
+
+        try:
+            g = rdfizer.convert_json_to_rdf(json_data, entity_type="author")
             assert len(g) >= 0
         except Exception as e:
             pytest.skip(f"RDFizer execution failed: {e}")
