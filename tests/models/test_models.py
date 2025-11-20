@@ -6,6 +6,7 @@ from pyeuropepmc.models import (
     AuthorEntity,
     BaseEntity,
     FigureEntity,
+    InstitutionEntity,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
@@ -502,3 +503,124 @@ class TestTableRowEntity:
         row = TableRowEntity(cells=["  Value 1  ", "  Value 2  "])
         row.normalize()
         assert row.cells == ["Value 1", "Value 2"]
+
+
+class TestInstitutionEntity:
+    """Tests for InstitutionEntity."""
+
+    def test_creation_with_all_fields(self):
+        """Test creating InstitutionEntity with all fields."""
+        institution = InstitutionEntity(
+            display_name="University of Example",
+            ror_id="https://ror.org/abc123",
+            openalex_id="https://openalex.org/I123",
+            country="United States",
+            country_code="US",
+            city="Example City",
+            latitude=40.7128,
+            longitude=-74.0060,
+            institution_type="education",
+            grid_id="grid.1234.5",
+            isni="0000 0001 2345 6789",
+            wikidata_id="Q12345",
+            fundref_id="501100000001",
+            website="https://example.edu",
+            established=1850,
+            domains=["example.edu"]
+        )
+        assert institution.display_name == "University of Example"
+        assert institution.ror_id == "https://ror.org/abc123"
+        assert institution.openalex_id == "https://openalex.org/I123"
+        assert institution.country == "United States"
+        assert institution.city == "Example City"
+        assert institution.latitude == 40.7128
+        assert institution.longitude == -74.0060
+        assert institution.institution_type == "education"
+
+    def test_creation_minimal(self):
+        """Test creating InstitutionEntity with minimal data."""
+        institution = InstitutionEntity(display_name="Test University")
+        assert institution.display_name == "Test University"
+        assert institution.ror_id is None
+        assert institution.domains == []
+
+    def test_post_init_sets_types_and_label(self):
+        """Test post-init sets correct types and label."""
+        institution = InstitutionEntity(display_name="Test University")
+        assert "org:Organization" in institution.types
+        assert institution.label == "Test University"
+
+    def test_validate_success(self):
+        """Test validation passes with display_name."""
+        institution = InstitutionEntity(display_name="Test University")
+        institution.validate()  # Should not raise
+
+    def test_validate_failure_no_name(self):
+        """Test validation fails without display_name."""
+        institution = InstitutionEntity()
+        with pytest.raises(ValueError, match="must have a display_name"):
+            institution.validate()
+
+    def test_validate_failure_empty_name(self):
+        """Test validation fails with empty display_name."""
+        institution = InstitutionEntity(display_name="   ")
+        with pytest.raises(ValueError, match="must have a display_name"):
+            institution.validate()
+
+    def test_normalize_trims_whitespace(self):
+        """Test normalization trims whitespace."""
+        institution = InstitutionEntity(
+            display_name="  Test University  ",
+            ror_id="  https://ror.org/abc  ",
+            city="  Test City  "
+        )
+        institution.normalize()
+        assert institution.display_name == "Test University"
+        assert institution.ror_id == "https://ror.org/abc"
+        assert institution.city == "Test City"
+
+    def test_from_enrichment_dict_full(self):
+        """Test creating InstitutionEntity from enrichment dict with full data."""
+        inst_dict = {
+            "display_name": "Jiangnan University",
+            "id": "https://openalex.org/I111599522",
+            "ror_id": "https://ror.org/04mkzax54",
+            "country": "China",
+            "country_code": "CN",
+            "city": "Wuxi",
+            "latitude": 31.56887,
+            "longitude": 120.28857,
+            "type": "education",
+            "types": ["education", "funder"],
+            "website": "https://www.jiangnan.edu.cn",
+            "established": 1958,
+            "external_ids": [
+                {"type": "grid", "preferred": "grid.258151.a", "all": ["grid.258151.a"]},
+                {"type": "isni", "all": ["0000 0001 0708 1323"]},
+                {"type": "wikidata", "all": ["Q6191676"]},
+                {"type": "fundref", "all": ["501100004028"]}
+            ],
+            "domains": ["jiangnan.edu.cn"]
+        }
+        institution = InstitutionEntity.from_enrichment_dict(inst_dict)
+        assert institution.display_name == "Jiangnan University"
+        assert institution.ror_id == "https://ror.org/04mkzax54"
+        assert institution.openalex_id == "https://openalex.org/I111599522"
+        assert institution.country == "China"
+        assert institution.city == "Wuxi"
+        assert institution.institution_type == "education"
+        assert institution.grid_id == "grid.258151.a"
+        assert institution.isni == "0000 0001 0708 1323"
+        assert institution.wikidata_id == "Q6191676"
+        assert institution.fundref_id == "501100004028"
+        assert institution.domains == ["jiangnan.edu.cn"]
+
+    def test_from_enrichment_dict_minimal(self):
+        """Test creating InstitutionEntity from minimal enrichment dict."""
+        inst_dict = {
+            "display_name": "Test University"
+        }
+        institution = InstitutionEntity.from_enrichment_dict(inst_dict)
+        assert institution.display_name == "Test University"
+        assert institution.ror_id is None
+        assert institution.grid_id is None
