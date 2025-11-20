@@ -19,6 +19,10 @@ _@prefix:
   obo: "http://purl.obolibrary.org/obo/"
   org: "http://www.w3.org/ns/org#"
   cito: "http://purl.org/spar/cito/"
+  datacite: "http://purl.org/spar/datacite/"
+  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  ror: "https://ror.org/vocab#"
+  skos: "http://www.w3.org/2004/02/skos/core#"
 
 # PaperEntity mapping
 PaperEntity:
@@ -32,11 +36,18 @@ PaperEntity:
     issue: bibo:issue
     pages: bibo:pages
     pub_date: dct:issued
+    publication_date: dct:date
+    publication_year: dct:date
     abstract: dct:abstract
     citation_count: ex:citationCount
+    influential_citation_count: ex:influentialCitationCount
+    is_oa: ex:isOpenAccess
+    oa_status: ex:openAccessStatus
+    oa_url: ex:openAccessUrl
   # Multi-value fields (lists)
   multi_value_fields:
     keywords: dct:subject
+    fields_of_study: dct:subject
   # Relationships
   relationships:
     authors:
@@ -57,16 +68,23 @@ AuthorEntity:
   rdf:type: ["foaf:Person"]
   fields:
     full_name: foaf:name
+    name: foaf:name
     first_name: foaf:givenName
     last_name: foaf:familyName
     initials: foaf:initials
-    orcid: ex:orcid  # Changed from bibo:identifier for more specific ORCID predicate
-    affiliation_text: ex:affiliation  # Changed from org:memberOf (which expects URI, not literal)
+    orcid: datacite:orcid
+    openalex_id: ex:openAlexId
+    affiliation_text: ex:affiliation
+    position: ex:authorPosition
+    email: foaf:mbox
   # Relationships
   relationships:
     papers:
       predicate: foaf:made
       inverse: dct:creator
+    institutions:
+      predicate: org:memberOf
+      inverse: org:hasMember
 
 # SectionEntity mapping
 SectionEntity:
@@ -131,3 +149,31 @@ ReferenceEntity:
     citing_paper:
       predicate: cito:isCitedBy
       inverse: cito:cites
+
+# InstitutionEntity mapping
+InstitutionEntity:
+  rdf:type: ["org:Organization"]
+  fields:
+    display_name: skos:prefLabel
+    ror_id: ror:rorId
+    openalex_id: ex:openAlexId
+    country: ex:country
+    country_code: ex:countryCode
+    city: ex:city
+    latitude: geo:lat
+    longitude: geo:long
+    institution_type: org:classification
+    grid_id: ex:gridId
+    isni: ex:isni
+    wikidata_id: ex:wikidataId
+    fundref_id: ex:fundrefId
+    website: foaf:homepage
+    established: ex:establishedYear
+  # Multi-value fields
+  multi_value_fields:
+    domains: ex:domain
+  # Relationships
+  relationships:
+    members:
+      predicate: org:hasMember
+      inverse: org:memberOf

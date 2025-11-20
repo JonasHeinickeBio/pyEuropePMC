@@ -39,6 +39,8 @@ class AuthorEntity(BaseEntity):
         Author position/role
     sources : Optional[list[str]]
         Data sources for this author information
+    email : Optional[str]
+        Email address
 
     Examples
     --------
@@ -62,6 +64,7 @@ class AuthorEntity(BaseEntity):
     institutions: list[dict[str, Any]] | None = None
     position: str | None = None
     sources: list[str] | None = None
+    email: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""

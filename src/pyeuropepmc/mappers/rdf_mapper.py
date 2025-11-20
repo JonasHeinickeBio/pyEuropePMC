@@ -317,10 +317,25 @@ class RDFMapper:
         if entity_class == "AuthorEntity":
             if getattr(entity, "orcid", None):
                 return URIRef(f"https://orcid.org/{entity.orcid}")
+            elif getattr(entity, "openalex_id", None):
+                return URIRef(entity.openalex_id)
             else:
-                normalized_name = self._normalize_name(getattr(entity, "full_name", ""))
+                normalized_name = self._normalize_name(
+                    getattr(entity, "full_name", "") or getattr(entity, "name", "")
+                )
                 if normalized_name:
                     return URIRef(f"http://example.org/data/author/{normalized_name}")
+
+        # Institution URIs
+        if entity_class == "InstitutionEntity":
+            if getattr(entity, "ror_id", None):
+                return URIRef(entity.ror_id)
+            elif getattr(entity, "openalex_id", None):
+                return URIRef(entity.openalex_id)
+            elif getattr(entity, "display_name", None):
+                normalized_name = self._normalize_name(entity.display_name)
+                if normalized_name:
+                    return URIRef(f"http://example.org/data/institution/{normalized_name}")
 
         # DOI-based URIs for references
         if entity_class == "ReferenceEntity" and getattr(entity, "doi", None):
@@ -388,6 +403,11 @@ class RDFMapper:
                 )
             )
 
+        # Add enrichment sources if available (from AuthorEntity or PaperEntity)
+        if hasattr(entity, "sources") and entity.sources:
+            for source in entity.sources:
+                g.add((subject, self._resolve_predicate("prov:hadPrimarySource"), Literal(source)))
+
         # Add confidence score if available
         if hasattr(entity, "confidence") and entity.confidence is not None:
             g.add((subject, self._resolve_predicate("ex:confidence"), Literal(entity.confidence)))
@@ -434,6 +454,8 @@ class RDFMapper:
             self._map_paper_ontology_alignments(g, subject, entity)
         elif entity_class_name == "AuthorEntity":
             self._map_author_ontology_alignments(g, subject, entity)
+        elif entity_class_name == "InstitutionEntity":
+            self._map_institution_ontology_alignments(g, subject, entity)
         elif entity_class_name == "ReferenceEntity":
             self._map_reference_ontology_alignments(g, subject, entity)
 
@@ -459,15 +481,18 @@ class RDFMapper:
 
     def _map_author_ontology_alignments(self, g: Graph, subject: URIRef, entity: Any) -> None:
         """Map ontology alignments for author entities."""
-        # Affiliation to organization (placeholder)
-        if hasattr(entity, "affiliation_text") and entity.affiliation_text:
-            g.add(
-                (
-                    subject,
-                    self._resolve_predicate("org:memberOf"),
-                    Literal(entity.affiliation_text),
-                )
-            )
+        # Note: Institutions are now handled via relationships instead of literal affiliations
+        pass
+
+    def _map_institution_ontology_alignments(
+        self, g: Graph, subject: URIRef, entity: Any
+    ) -> None:
+        """Map ontology alignments for institution entities."""
+        # Add geographic coordinates if available
+        if hasattr(entity, "latitude") and hasattr(entity, "longitude"):
+            if entity.latitude is not None and entity.longitude is not None:
+                # Already handled in fields mapping, but can add geo:SpatialThing type
+                g.add((subject, self._resolve_predicate("rdf:type"), URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing")))
 
     def _map_reference_ontology_alignments(self, g: Graph, subject: URIRef, entity: Any) -> None:
         """Map ontology alignments for reference entities."""
@@ -503,6 +528,40 @@ class RDFMapper:
                         subject,
                         self._resolve_predicate("owl:sameAs"),
                         URIRef(f"https://orcid.org/{entity.orcid}"),
+                    )
+                )
+            if hasattr(entity, "openalex_id") and entity.openalex_id:
+                g.add(
+                    (
+                        subject,
+                        self._resolve_predicate("owl:sameAs"),
+                        URIRef(entity.openalex_id),
+                    )
+                )
+
+        elif entity_class_name == "InstitutionEntity":
+            if hasattr(entity, "ror_id") and entity.ror_id:
+                g.add(
+                    (
+                        subject,
+                        self._resolve_predicate("owl:sameAs"),
+                        URIRef(entity.ror_id),
+                    )
+                )
+            if hasattr(entity, "openalex_id") and entity.openalex_id:
+                g.add(
+                    (
+                        subject,
+                        self._resolve_predicate("owl:sameAs"),
+                        URIRef(entity.openalex_id),
+                    )
+                )
+            if hasattr(entity, "wikidata_id") and entity.wikidata_id:
+                g.add(
+                    (
+                        subject,
+                        self._resolve_predicate("owl:sameAs"),
+                        URIRef(f"https://www.wikidata.org/wiki/{entity.wikidata_id}"),
                     )
                 )
 
