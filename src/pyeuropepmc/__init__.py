@@ -30,6 +30,7 @@ from .clients.fulltext import FullTextClient, ProgressInfo
 from .clients.search import SearchClient
 from .core.base import BaseAPIClient
 from .core.exceptions import APIClientError, EuropePMCError, FullTextError
+from .enrichment.enricher import EnrichmentConfig, PaperEnricher
 from .processing.analytics import (
     author_statistics,
     citation_statistics,
@@ -70,7 +71,6 @@ __all__ = [
     # Version info
     "__version__",
     "__author__",
-    "__email__",
     "__url__",
     # Main classes
     "ArticleClient",
@@ -106,6 +106,9 @@ __all__ = [
     # Filtering utilities
     "filter_pmc_papers",
     "filter_pmc_papers_or",
+    # Enrichment utilities
+    "PaperEnricher",
+    "EnrichmentConfig",
     # Analytics utilities
     "to_dataframe",
     "publication_year_distribution",

@@ -21,13 +21,7 @@ class BaseAPIClient:
         self.session: requests.Session | None = requests.Session()
 
         self.session.headers.update(
-            {
-                "User-Agent": (
-                    "pyeuropepmc/1.0.0 "
-                    "(https://github.com/JonasHeinickeBio/pyEuropePMC; "
-                    "jonas.heinicke@helmholtz-hzi.de)"
-                )
-            }
+            {"User-Agent": ("pyeuropepmc/1.0.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)")}
         )
 
     def __repr__(self) -> str:

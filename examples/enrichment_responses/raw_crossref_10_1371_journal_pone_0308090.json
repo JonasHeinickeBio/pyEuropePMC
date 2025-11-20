@@ -1,0 +1,36 @@
+{
+  "source": "crossref",
+  "title": "Associations of dietary pattern, insulin resistance and risk of developing metabolic syndrome among Chinese population",
+  "authors": [
+    "Liyong Kou",
+    "Jing Sun",
+    "Ping Wu",
+    "Zhou Cheng",
+    "Ping Zhou",
+    "Nana Li",
+    "Liang Cheng",
+    "Pengfei Xu",
+    "Yunzhuo Xue",
+    "Jiamin Tian",
+    "Wei Chen"
+  ],
+  "abstract": "<jats:p>Evidence regarding the role of dietary patterns in metabolic syndrome (MetS) is limited. The mechanistic links between dietary patterns, insulin resistance, and MetS are not fully understood. This study aimed to evaluate the associations between dietary patterns and the risk of MetS in a Chinese population using a longitudinal design. Data from the China Health and Nutrition Survey, a nationally representative survey, were analyzed. MetS cases were identified based on biomarker data collected in 2009. Factor analysis was employed to identify dietary patterns, while logistic regression models were utilized to examine the association between dietary patterns and MetS. Mediation models were applied to assess multiple mediation effects. Two dietary patterns were revealed by factor analysis. Participants in the higher quartiles of the traditional Chinese dietary pattern had lower odds of MetS than those in the lowest quartile (Q1) (OR = 0.58, 95%CI: 0.48, 0.69 for Q4; OR = 0.75, 95%CI: 0.63, 0.89 for Q3). Conversely, participants in the higher quartiles of the modern Chinese dietary pattern had higher odds of MetS compared to those in the lowest quartile (Q1) (OR = 1.40, 95%CI: 1.17, 1.68 for Q4; OR = 1.27, 95%CI: 1.06, 1.52 for Q3). Significant associations between dietary patterns and MetS were mediated by insulin resistance. Therefore, dietary patterns in Chinese adults are associated with MetS, and these associations appear to be mediated through insulin resistance. These findings underscore the critical role of dietary patterns in the development of MetS and establish a foundation for culturally tailored dietary interventions aimed at reducing rates the prevalence of MetS among Chinese adults.</jats:p>",
+  "journal": "PLOS ONE",
+  "publication_date": "2024-08-06",
+  "citation_count": 3,
+  "references_count": 48,
+  "license": {
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "start": "2024-08-06T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": null,
+  "type": "journal-article",
+  "issn": [
+    "1932-6203"
+  ],
+  "volume": "19",
+  "issue": "8",
+  "page": "e0308090",
+  "publisher": "Public Library of Science (PLoS)"
+}

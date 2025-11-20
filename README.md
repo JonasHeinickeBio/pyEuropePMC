@@ -36,6 +36,7 @@
 - 📋 **Systematic Review Tracking** - PRISMA-compliant search logging and audit trails
 - 📈 **Advanced Analytics** - Publication trends, citation analysis, quality metrics, and duplicate detection
 - 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
+- 🔗 **External API Enrichment** - Enhance metadata with CrossRef, Unpaywall, Semantic Scholar, and OpenAlex
 
 ## 🚀 Quick Start
 
@@ -196,6 +197,50 @@ print(f"With PDF: {metrics['with_pdf_percentage']:.1f}%")
 plot_publication_years(df, save_path="publications_by_year.png")
 create_summary_dashboard(df, save_path="analysis_dashboard.png")
 ```
+
+### External API Enrichment
+
+Enhance paper metadata with data from CrossRef, Unpaywall, Semantic Scholar, and OpenAlex:
+
+```python
+from pyeuropepmc import PaperEnricher, EnrichmentConfig
+
+# Configure enrichment with multiple APIs
+config = EnrichmentConfig(
+    enable_crossref=True,
+    enable_semantic_scholar=True,
+    enable_openalex=True,
+    enable_unpaywall=True,
+    unpaywall_email="your@email.com"  # Required for Unpaywall
+)
+
+# Enrich paper metadata
+with PaperEnricher(config) as enricher:
+    result = enricher.enrich_paper(doi="10.1371/journal.pone.0308090")
+
+    # Access merged data from all sources
+    merged = result["merged"]
+    print(f"Title: {merged['title']}")
+    print(f"Citations: {merged['citation_count']}")
+    print(f"Open Access: {merged['is_oa']}")
+
+    # Access individual source data
+    if "crossref" in result["sources"]:
+        print(f"Funders: {result['crossref']['funders']}")
+
+    if "semantic_scholar" in result["sources"]:
+        print(f"Influential Citations: {result['semantic_scholar']['influential_citation_count']}")
+```
+
+**Features:**
+- 🔄 Automatic data merging from multiple sources
+- 📊 Citation metrics from multiple databases
+- 🔓 Open access status and full-text URLs
+- 💰 Funding information
+- 🏷️ Topic classifications and fields of study
+- ⚡ Optional caching for performance
+
+See [examples/09-enrichment](examples/09-enrichment/) for more details.
 
 ## 📚 Documentation
 

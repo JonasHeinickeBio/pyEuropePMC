@@ -1,0 +1,5067 @@
+{
+  "source": "openalex",
+  "openalex_id": "https://openalex.org/W4401361300",
+  "title": "Associations of dietary pattern, insulin resistance and risk of developing metabolic syndrome among Chinese population",
+  "publication_year": 2024,
+  "publication_date": "2024-08-06",
+  "type": "article",
+  "citation_count": 3,
+  "cited_by_count": 3,
+  "is_oa": true,
+  "oa_status": "gold",
+  "oa_url": "https://doi.org/10.1371/journal.pone.0308090",
+  "authors": [
+    {
+      "id": "https://openalex.org/A5113322668",
+      "display_name": "Liyong Kou",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "first"
+    },
+    {
+      "id": "https://openalex.org/A5058673686",
+      "display_name": "Jing Ping Sun",
+      "orcid": "https://orcid.org/0000-0003-2110-5189",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5111281865",
+      "display_name": "Ping Wu",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5103003652",
+      "display_name": "Cheng Zhou",
+      "orcid": "https://orcid.org/0000-0003-4806-265X",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5101698620",
+      "display_name": "Ping Zhou",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5039911217",
+      "display_name": "Nana Li",
+      "orcid": "https://orcid.org/0000-0002-5096-9915",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5028364292",
+      "display_name": "Liang Cheng",
+      "orcid": "https://orcid.org/0000-0001-5324-9094",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5101774415",
+      "display_name": "Pengfei Xu",
+      "orcid": "https://orcid.org/0000-0003-4770-4374",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5108965949",
+      "display_name": "Yunzhuo Xue",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5101591375",
+      "display_name": "Jiamin Tian",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5100529583",
+      "display_name": "Wei Chen",
+      "orcid": "https://orcid.org/0009-0007-1010-7484",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111599522",
+          "display_name": "Jiangnan University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/04mkzax54",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1958,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "JU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Jiangnan University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Jiāngnán Dàxué"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Southern Yangtze University"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "江南大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.jiangnan.edu.cn"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+            }
+          ],
+          "website": "https://www.jiangnan.edu.cn",
+          "external_ids": [
+            {
+              "all": [
+                "501100004028"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.258151.a"
+              ],
+              "preferred": "grid.258151.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 0708 1323"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q6191676"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.258151.a",
+          "relationships": [
+            {
+              "label": "State Key Laboratory of Food Science and Technology",
+              "type": "child",
+              "id": "https://ror.org/04zgj7914"
+            }
+          ],
+          "domains": [
+            "jiangnan.edu.cn"
+          ]
+        },
+        {
+          "id": "https://openalex.org/I4210114781",
+          "display_name": "Wuxi Fourth People's Hospital",
+          "country": "China",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/02ar02c28",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": 1976,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Affiliated Hospital of Jiangnan University"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Wuxi Fourth People's Hospital"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "JS",
+                "country_subdivision_name": "Jiangsu",
+                "lat": 31.56887,
+                "lng": 120.28857,
+                "name": "Wuxi"
+              },
+              "geonames_id": 1790923
+            }
+          ],
+          "country_code": "CN",
+          "city": "Wuxi",
+          "latitude": 31.56887,
+          "longitude": 120.28857,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://wmdw.jswmw.com/wmdw.asp"
+            }
+          ],
+          "website": "http://wmdw.jswmw.com/wmdw.asp",
+          "external_ids": [
+            {
+              "all": [
+                "grid.459328.1"
+              ],
+              "preferred": "grid.459328.1",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1758 9149"
+              ],
+              "preferred": null,
+              "type": "isni"
+            }
+          ],
+          "grid_id": "grid.459328.1",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "last"
+    }
+  ],
+  "institutions": [
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111599522",
+      "display_name": "Jiangnan University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/04mkzax54",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1958,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "JU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Jiangnan University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Jiāngnán Dàxué"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Southern Yangtze University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "江南大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.jiangnan.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+        }
+      ],
+      "website": "https://www.jiangnan.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100004028"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.258151.a"
+          ],
+          "preferred": "grid.258151.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0708 1323"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q6191676"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.258151.a",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of Food Science and Technology",
+          "type": "child",
+          "id": "https://ror.org/04zgj7914"
+        }
+      ],
+      "domains": [
+        "jiangnan.edu.cn"
+      ]
+    },
+    {
+      "id": "https://openalex.org/I4210114781",
+      "display_name": "Wuxi Fourth People's Hospital",
+      "country": "China",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/02ar02c28",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": 1976,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Affiliated Hospital of Jiangnan University"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Wuxi Fourth People's Hospital"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "JS",
+            "country_subdivision_name": "Jiangsu",
+            "lat": 31.56887,
+            "lng": 120.28857,
+            "name": "Wuxi"
+          },
+          "geonames_id": 1790923
+        }
+      ],
+      "country_code": "CN",
+      "city": "Wuxi",
+      "latitude": 31.56887,
+      "longitude": 120.28857,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://wmdw.jswmw.com/wmdw.asp"
+        }
+      ],
+      "website": "http://wmdw.jswmw.com/wmdw.asp",
+      "external_ids": [
+        {
+          "all": [
+            "grid.459328.1"
+          ],
+          "preferred": "grid.459328.1",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1758 9149"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.459328.1",
+      "relationships": [],
+      "domains": []
+    }
+  ],
+  "topics": [
+    {
+      "id": "https://openalex.org/T10866",
+      "display_name": "Nutritional Studies and Diet",
+      "score": 0.9941999912261963
+    },
+    {
+      "id": "https://openalex.org/T10836",
+      "display_name": "Metabolomics and Mass Spectrometry Studies",
+      "score": 0.9934999942779541
+    },
+    {
+      "id": "https://openalex.org/T12267",
+      "display_name": "Diet and metabolism studies",
+      "score": 0.9864000082015991
+    }
+  ],
+  "venue": {
+    "id": "https://openalex.org/S202381698",
+    "display_name": "PLoS ONE",
+    "issn": [
+      "1932-6203"
+    ],
+    "type": "journal",
+    "is_oa": true
+  },
+  "biblio": {
+    "volume": "19",
+    "issue": "8",
+    "first_page": "e0308090",
+    "last_page": "e0308090"
+  },
+  "doi": "https://doi.org/10.1371/journal.pone.0308090",
+  "ids": {
+    "openalex": "https://openalex.org/W4401361300",
+    "doi": "https://doi.org/10.1371/journal.pone.0308090",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/39106225"
+  },
+  "abstract_inverted_index": {
+    "Evidence": [
+      0
+    ],
+    "regarding": [
+      1
+    ],
+    "the": [
+      2,
+      32,
+      38,
+      52,
+      91,
+      117,
+      121,
+      134,
+      157,
+      161,
+      175,
+      230,
+      237,
+      254
+    ],
+    "role": [
+      3,
+      232
+    ],
+    "of": [
+      4,
+      40,
+      120,
+      129,
+      160,
+      169,
+      233,
+      239,
+      256
+    ],
+    "dietary": [
+      5,
+      17,
+      35,
+      81,
+      94,
+      108,
+      124,
+      164,
+      198,
+      208,
+      234,
+      248
+    ],
+    "patterns": [
+      6,
+      36,
+      95,
+      109,
+      199,
+      209,
+      235
+    ],
+    "in": [
+      7,
+      42,
+      73,
+      116,
+      133,
+      156,
+      174,
+      210,
+      236
+    ],
+    "metabolic": [
+      8
+    ],
+    "syndrome": [
+      9
+    ],
+    "(MetS)": [
+      10
+    ],
+    "is": [
+      11
+    ],
+    "limited.": [
+      12
+    ],
+    "The": [
+      13
+    ],
+    "mechanistic": [
+      14
+    ],
+    "links": [
+      15
+    ],
+    "between": [
+      16,
+      34,
+      93,
+      197
+    ],
+    "patterns,": [
+      18,
+      82
+    ],
+    "insulin": [
+      19,
+      205,
+      225
+    ],
+    "resistance,": [
+      20
+    ],
+    "and": [
+      21,
+      37,
+      55,
+      96,
+      200,
+      217,
+      241
+    ],
+    "MetS": [
+      22,
+      41,
+      64,
+      130,
+      170,
+      201,
+      240,
+      257
+    ],
+    "are": [
+      23,
+      213
+    ],
+    "not": [
+      24
+    ],
+    "fully": [
+      25
+    ],
+    "understood.": [
+      26
+    ],
+    "This": [
+      27
+    ],
+    "study": [
+      28
+    ],
+    "aimed": [
+      29,
+      250
+    ],
+    "to": [
+      30,
+      79,
+      89,
+      102,
+      172,
+      221
+    ],
+    "evaluate": [
+      31
+    ],
+    "associations": [
+      33,
+      196,
+      219
+    ],
+    "risk": [
+      39
+    ],
+    "a": [
+      43,
+      47,
+      58,
+      243
+    ],
+    "Chinese": [
+      44,
+      123,
+      163,
+      211,
+      259
+    ],
+    "population": [
+      45
+    ],
+    "using": [
+      46
+    ],
+    "longitudinal": [
+      48
+    ],
+    "design.": [
+      49
+    ],
+    "Data": [
+      50
+    ],
+    "from": [
+      51
+    ],
+    "China": [
+      53
+    ],
+    "Health": [
+      54
+    ],
+    "Nutrition": [
+      56
+    ],
+    "Survey,": [
+      57
+    ],
+    "nationally": [
+      59
+    ],
+    "representative": [
+      60
+    ],
+    "survey,": [
+      61
+    ],
+    "were": [
+      62,
+      66,
+      87,
+      100,
+      110,
+      202
+    ],
+    "analyzed.": [
+      63
+    ],
+    "cases": [
+      65
+    ],
+    "identified": [
+      67
+    ],
+    "based": [
+      68
+    ],
+    "on": [
+      69
+    ],
+    "biomarker": [
+      70
+    ],
+    "data": [
+      71
+    ],
+    "collected": [
+      72
+    ],
+    "2009.": [
+      74
+    ],
+    "Factor": [
+      75
+    ],
+    "analysis": [
+      76
+    ],
+    "was": [
+      77
+    ],
+    "employed": [
+      78
+    ],
+    "identify": [
+      80
+    ],
+    "while": [
+      83
+    ],
+    "logistic": [
+      84
+    ],
+    "regression": [
+      85
+    ],
+    "models": [
+      86,
+      99
+    ],
+    "utilized": [
+      88
+    ],
+    "examine": [
+      90
+    ],
+    "association": [
+      92
+    ],
+    "MetS.": [
+      97
+    ],
+    "Mediation": [
+      98
+    ],
+    "applied": [
+      101
+    ],
+    "assess": [
+      103
+    ],
+    "multiple": [
+      104
+    ],
+    "mediation": [
+      105
+    ],
+    "effects.": [
+      106
+    ],
+    "Two": [
+      107
+    ],
+    "revealed": [
+      111
+    ],
+    "by": [
+      112,
+      204
+    ],
+    "factor": [
+      113
+    ],
+    "analysis.": [
+      114
+    ],
+    "Participants": [
+      115
+    ],
+    "higher": [
+      118,
+      158,
+      167
+    ],
+    "quartiles": [
+      119,
+      159
+    ],
+    "traditional": [
+      122
+    ],
+    "pattern": [
+      125,
+      165
+    ],
+    "had": [
+      126,
+      166
+    ],
+    "lower": [
+      127
+    ],
+    "odds": [
+      128,
+      168
+    ],
+    "than": [
+      131
+    ],
+    "those": [
+      132,
+      173
+    ],
+    "lowest": [
+      135,
+      176
+    ],
+    "quartile": [
+      136,
+      177
+    ],
+    "(Q1)": [
+      137,
+      178
+    ],
+    "(OR": [
+      138,
+      179
+    ],
+    "=": [
+      139,
+      147,
+      180,
+      188
+    ],
+    "0.58,": [
+      140
+    ],
+    "95%CI:": [
+      141,
+      149,
+      182,
+      190
+    ],
+    "0.48,": [
+      142
+    ],
+    "0.69": [
+      143
+    ],
+    "for": [
+      144,
+      152,
+      185,
+      193,
+      245
+    ],
+    "Q4;": [
+      145,
+      186
+    ],
+    "OR": [
+      146,
+      187
+    ],
+    "0.75,": [
+      148
+    ],
+    "0.63,": [
+      150
+    ],
+    "0.89": [
+      151
+    ],
+    "Q3).": [
+      153,
+      194
+    ],
+    "Conversely,": [
+      154
+    ],
+    "participants": [
+      155
+    ],
+    "modern": [
+      162
+    ],
+    "compared": [
+      171
+    ],
+    "1.40,": [
+      181
+    ],
+    "1.17,": [
+      183
+    ],
+    "1.68": [
+      184
+    ],
+    "1.27,": [
+      189
+    ],
+    "1.06,": [
+      191
+    ],
+    "1.52": [
+      192
+    ],
+    "Significant": [
+      195
+    ],
+    "mediated": [
+      203,
+      223
+    ],
+    "resistance.": [
+      206,
+      226
+    ],
+    "Therefore,": [
+      207
+    ],
+    "adults": [
+      212
+    ],
+    "associated": [
+      214
+    ],
+    "with": [
+      215
+    ],
+    "MetS,": [
+      216
+    ],
+    "these": [
+      218
+    ],
+    "appear": [
+      220
+    ],
+    "be": [
+      222
+    ],
+    "through": [
+      224
+    ],
+    "These": [
+      227
+    ],
+    "findings": [
+      228
+    ],
+    "underscore": [
+      229
+    ],
+    "critical": [
+      231
+    ],
+    "development": [
+      238
+    ],
+    "establish": [
+      242
+    ],
+    "foundation": [
+      244
+    ],
+    "culturally": [
+      246
+    ],
+    "tailored": [
+      247
+    ],
+    "interventions": [
+      249
+    ],
+    "at": [
+      251
+    ],
+    "reducing": [
+      252
+    ],
+    "rates": [
+      253
+    ],
+    "prevalence": [
+      255
+    ],
+    "among": [
+      258
+    ],
+    "adults.": [
+      260
+    ]
+  },
+  "referenced_works_count": 49,
+  "related_works": [
+    "https://openalex.org/W4297998612",
+    "https://openalex.org/W1604849300",
+    "https://openalex.org/W4231328776",
+    "https://openalex.org/W2766061861",
+    "https://openalex.org/W2028667143",
+    "https://openalex.org/W2475280487",
+    "https://openalex.org/W3122878625",
+    "https://openalex.org/W2593732884",
+    "https://openalex.org/W3081623545",
+    "https://openalex.org/W3002194832"
+  ]
+}
