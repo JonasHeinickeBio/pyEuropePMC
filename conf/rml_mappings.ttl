@@ -10,6 +10,11 @@
 @prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix ror: <https://ror.org/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 # RML Mappings for PyEuropePMC Data Models
 # These mappings convert JSON representations of entities to RDF
@@ -70,8 +75,43 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate dct:date ;
+        rr:objectMap [ rml:reference "publication_date" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dct:date ;
+        rr:objectMap [ rml:reference "publication_year" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dct:abstract ;
+        rr:objectMap [ rml:reference "abstract" ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate ex:citationCount ;
         rr:objectMap [ rml:reference "citation_count" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:influentialCitationCount ;
+        rr:objectMap [ rml:reference "influential_citation_count" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:isOpenAccess ;
+        rr:objectMap [ rml:reference "is_oa" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:openAccessStatus ;
+        rr:objectMap [ rml:reference "oa_status" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:openAccessUrl ;
+        rr:objectMap [ rml:reference "oa_url" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -88,6 +128,12 @@
     rr:predicateObjectMap [
         rr:predicate dct:subject ;
         rr:objectMap [ rml:reference "keywords[*]" ]
+    ] ;
+
+    # Multi-value field: fields_of_study
+    rr:predicateObjectMap [
+        rr:predicate dct:subject ;
+        rr:objectMap [ rml:reference "fields_of_study[*]" ]
     ] .
 
 # ===== AuthorEntity Mapping =====
@@ -109,6 +155,11 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate foaf:name ;
+        rr:objectMap [ rml:reference "name" ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate foaf:givenName ;
         rr:objectMap [ rml:reference "first_name" ]
     ] ;
@@ -124,13 +175,28 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:orcid ;
+        rr:predicate datacite:orcid ;
         rr:objectMap [ rml:reference "orcid" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:openAlexId ;
+        rr:objectMap [ rml:reference "openalex_id" ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate ex:affiliation ;
         rr:objectMap [ rml:reference "affiliation_text" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:authorPosition ;
+        rr:objectMap [ rml:reference "position" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:mbox ;
+        rr:objectMap [ rml:reference "email" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -250,4 +316,103 @@
     rr:predicateObjectMap [
         rr:predicate rdfs:label ;
         rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== InstitutionEntity Mapping =====
+<#InstitutionEntityMap>
+    rml:logicalSource [
+        rml:source "institutions.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/institution/{id}" ;
+        rr:class org:Organization
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate skos:prefLabel ;
+        rr:objectMap [ rml:reference "display_name" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ror:rorId ;
+        rr:objectMap [ rml:reference "ror_id" ; rr:termType rr:IRI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:openAlexId ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:country ;
+        rr:objectMap [ rml:reference "country" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:countryCode ;
+        rr:objectMap [ rml:reference "country_code" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:city ;
+        rr:objectMap [ rml:reference "city" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate geo:lat ;
+        rr:objectMap [ rml:reference "latitude" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate geo:long ;
+        rr:objectMap [ rml:reference "longitude" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate org:classification ;
+        rr:objectMap [ rml:reference "institution_type" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:gridId ;
+        rr:objectMap [ rml:reference "grid_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:isni ;
+        rr:objectMap [ rml:reference "isni" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:wikidataId ;
+        rr:objectMap [ rml:reference "wikidata_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:fundrefId ;
+        rr:objectMap [ rml:reference "fundref_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:homepage ;
+        rr:objectMap [ rml:reference "website" ; rr:termType rr:IRI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:establishedYear ;
+        rr:objectMap [ rml:reference "established" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] ;
+
+    # Multi-value field: domains
+    rr:predicateObjectMap [
+        rr:predicate ex:domain ;
+        rr:objectMap [ rml:reference "domains[*]" ]
     ] .
