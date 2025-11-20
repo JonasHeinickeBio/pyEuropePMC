@@ -1,25 +1,30 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix rml: <http://semweb.mmlab.be/ns/rml#> .
 @prefix ql: <http://semweb.mmlab.be/ns/ql#> .
-@prefix bibo: <http://purl.org/ontology/bibo/> .
-@prefix dct: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix mesh: <http://id.nlm.nih.gov/mesh/> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix ror: <https://ror.org/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-@prefix datacite: <http://purl.org/spar/datacite/> .
-@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
-@prefix org: <http://www.w3.org/ns/org#> .
-@prefix ror: <https://ror.org/vocab#> .
-@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 
 # RML Mappings for PyEuropePMC Data Models
-# These mappings convert JSON representations of entities to RDF
-# TODO: URI templates here use simple patterns, but RDFMapper uses dynamic URIs (DOI-based for papers, etc.)
-# TODO: Keep synchronized with rdf_map.yml - consider auto-generation script
+# Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY
+# Run 'python scripts/sync_rdf_mappings.py' to regenerate
 
 # ===== PaperEntity Mapping =====
 <#PaperEntityMap>
@@ -30,12 +35,12 @@
     ] ;
 
     rr:subjectMap [
-        rr:template "http://example.org/data/paper/{pmcid}" ;
+        rr:template "http://example.org/data/paper/{id}" ;
         rr:class bibo:AcademicArticle
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:identifier ;
+        rr:predicate dcterms:identifier ;
         rr:objectMap [ rml:reference "pmcid" ]
     ] ;
 
@@ -45,7 +50,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:title ;
+        rr:predicate dcterms:title ;
         rr:objectMap [ rml:reference "title" ]
     ] ;
 
@@ -70,22 +75,22 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:issued ;
+        rr:predicate dcterms:issued ;
         rr:objectMap [ rml:reference "pub_date" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:date ;
+        rr:predicate dcterms:date ;
         rr:objectMap [ rml:reference "publication_date" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:date ;
+        rr:predicate dcterms:date ;
         rr:objectMap [ rml:reference "publication_year" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:abstract ;
+        rr:predicate dcterms:abstract ;
         rr:objectMap [ rml:reference "abstract" ]
     ] ;
 
@@ -115,25 +120,18 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate rdfs:label ;
-        rr:objectMap [ rml:reference "label" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate prov:wasDerivedFrom ;
-        rr:objectMap [ rml:reference "source_uri" ; rr:termType rr:IRI ]
-    ] ;
-
-    # Multi-value field: keywords
-    rr:predicateObjectMap [
-        rr:predicate dct:subject ;
+        rr:predicate dcterms:subject ;
         rr:objectMap [ rml:reference "keywords[*]" ]
     ] ;
 
-    # Multi-value field: fields_of_study
     rr:predicateObjectMap [
-        rr:predicate dct:subject ;
+        rr:predicate dcterms:subject ;
         rr:objectMap [ rml:reference "fields_of_study[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
     ] .
 
 # ===== AuthorEntity Mapping =====
@@ -176,12 +174,12 @@
 
     rr:predicateObjectMap [
         rr:predicate datacite:orcid ;
-        rr:objectMap [ rml:reference "orcid" ]
+        rr:objectMap [ rml:reference "orcid" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate ex:openAlexId ;
-        rr:objectMap [ rml:reference "openalex_id" ]
+        rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
@@ -214,11 +212,11 @@
 
     rr:subjectMap [
         rr:template "http://example.org/data/section/{id}" ;
-        rr:class bibo:DocumentPart, nif:Context
+        rr:class bibo:DocumentPart
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:title ;
+        rr:predicate dcterms:title ;
         rr:objectMap [ rml:reference "title" ]
     ] ;
 
@@ -229,12 +227,12 @@
 
     rr:predicateObjectMap [
         rr:predicate nif:beginIndex ;
-        rr:objectMap [ rml:reference "begin_index" ; rr:datatype xsd:integer ]
+        rr:objectMap [ rml:reference "begin_index" ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate nif:endIndex ;
-        rr:objectMap [ rml:reference "end_index" ; rr:datatype xsd:integer ]
+        rr:objectMap [ rml:reference "end_index" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -256,13 +254,46 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:description ;
+        rr:predicate dcterms:description ;
         rr:objectMap [ rml:reference "caption" ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate rdfs:label ;
         rr:objectMap [ rml:reference "table_label" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== TableRowEntity Mapping =====
+<#TableRowEntityMap>
+    rml:logicalSource [
+        rml:source "table_rows.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/tablerow/{id}" ;
+        rr:class bibo:Row
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:hasHeader ;
+        rr:objectMap [ rml:reference "headers" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:hasCell ;
+        rr:objectMap [ rml:reference "cells[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
     ] .
 
 # ===== ReferenceEntity Mapping =====
@@ -279,17 +310,17 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:title ;
+        rr:predicate dcterms:title ;
         rr:objectMap [ rml:reference "title" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:isPartOf ;
+        rr:predicate dcterms:isPartOf ;
         rr:objectMap [ rml:reference "source" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:issued ;
+        rr:predicate dcterms:issued ;
         rr:objectMap [ rml:reference "year" ]
     ] ;
 
@@ -309,7 +340,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:creator ;
+        rr:predicate dcterms:creator ;
         rr:objectMap [ rml:reference "authors[*]" ]
     ] ;
 
@@ -407,12 +438,11 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate rdfs:label ;
-        rr:objectMap [ rml:reference "label" ]
-    ] ;
-
-    # Multi-value field: domains
-    rr:predicateObjectMap [
         rr:predicate ex:domain ;
         rr:objectMap [ rml:reference "domains[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
     ] .

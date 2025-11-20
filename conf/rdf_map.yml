@@ -1,8 +1,13 @@
 # RDF Mapping Configuration for PyEuropePMC Data Models
-# This file defines how entity fields map to RDF predicates
-# TODO: Keep rml_mappings.ttl synchronized with this YAML file
-# TODO: Consider adding a script to auto-generate RML from YAML
-# NOTE: URI generation patterns are handled dynamically in RDFMapper._generate_entity_uri() (DOI-based for papers, normalized names for authors, etc.)
+# 
+# This file is the SOURCE OF TRUTH for all RDF mappings.
+# The RML file (rml_mappings.ttl) is auto-generated from this YAML.
+#
+# After editing this file, run: python scripts/sync_rdf_mappings.py
+#
+# This file defines how entity fields map to RDF predicates.
+# URI generation patterns are handled dynamically in RDFMapper._generate_entity_uri()
+# (DOI-based for papers, ORCID-based for authors, ROR-based for institutions, etc.)
 
 # Namespace prefixes
 _@prefix:
