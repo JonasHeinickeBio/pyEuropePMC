@@ -97,7 +97,7 @@ config = EnrichmentConfig(
 # Enrich a paper
 with PaperEnricher(config) as enricher:
     result = enricher.enrich_paper(doi="10.1371/journal.pone.0308090")
-    
+
     # Access merged data
     print(result["merged"]["title"])
     print(result["merged"]["citation_count"])
@@ -116,13 +116,13 @@ config = EnrichmentConfig(
     enable_unpaywall=True,
     enable_semantic_scholar=True,
     enable_openalex=True,
-    
+
     # API-specific settings
     unpaywall_email="your@email.com",
     crossref_email="your@email.com",
     semantic_scholar_api_key="your-api-key",
     openalex_email="your@email.com",
-    
+
     # Performance settings
     cache_config=CacheConfig(enabled=True, ttl=86400),
     rate_limit_delay=1.0
@@ -240,7 +240,42 @@ pytest tests/enrichment/
 See [examples/09-enrichment/](../examples/09-enrichment/) for:
 - `basic_enrichment.py` - Simple enrichment example
 - `advanced_enrichment.py` - Advanced with caching and all APIs
+- `enrichment_demo.ipynb` - Interactive Jupyter notebook demo
 - `README.md` - Detailed usage guide
+
+### Enrichment Demo Notebook
+
+The `enrichment_demo.ipynb` notebook provides an interactive demonstration of enrichment capabilities with detailed data analysis:
+
+#### Basic Enrichment Example
+- Simple configuration with CrossRef, Semantic Scholar, and OpenAlex
+- Displays merged metadata in organized sections:
+  - Title and authors
+  - Citation metrics
+  - Open access status
+
+#### Advanced Enrichment Example
+- Full configuration with all APIs enabled
+- Caching and rate limiting
+- Multiple DOI processing
+- Error handling
+
+#### Detailed Data Analysis
+The notebook includes comprehensive data exploration sections:
+
+##### Available Fields per Service
+Lists all top-level fields available from each service and shows data types for each field. This helps understand the complete data structure returned by each API.
+
+##### Service Comparison Summary
+A clean comparison table showing what each service provides:
+
+| Service | Fields | Title | Authors | Citations | Abstract | OA | Topics | License | Funding |
+|---------|--------|-------|---------|-----------|----------|----|--------|---------|---------|
+| **CROSSREF** | 16 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ✅ | None |
+| **SEMANTIC_SCHOLAR** | 13 | ✅ | ✅ | ✅ | ✅ | ❌ | ❌ | ❌ | ❌ |
+| **OPENALEX** | 20 | ✅ | ✅ | ✅ | ❌ | ✅ | ✅ | ❌ | ❌ |
+
+This comparison helps users understand the strengths of each API and plan their enrichment strategy accordingly.
 
 ## API Documentation
 

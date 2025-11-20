@@ -486,7 +486,6 @@ def test_user_agent_header_set():
     assert isinstance(user_agent, str)
     assert "pyeuropepmc/1.0.0" in user_agent
     assert "https://github.com/JonasHeinickeBio/pyEuropePMC" in user_agent
-    assert "jonas.heinicke@helmholtz-hzi.de" in user_agent
     client.close()
 
 

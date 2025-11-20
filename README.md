@@ -217,17 +217,17 @@ config = EnrichmentConfig(
 # Enrich paper metadata
 with PaperEnricher(config) as enricher:
     result = enricher.enrich_paper(doi="10.1371/journal.pone.0308090")
-    
+
     # Access merged data from all sources
     merged = result["merged"]
     print(f"Title: {merged['title']}")
     print(f"Citations: {merged['citation_count']}")
     print(f"Open Access: {merged['is_oa']}")
-    
+
     # Access individual source data
     if "crossref" in result["sources"]:
         print(f"Funders: {result['crossref']['funders']}")
-    
+
     if "semantic_scholar" in result["sources"]:
         print(f"Influential Citations: {result['semantic_scholar']['influential_citation_count']}")
 ```

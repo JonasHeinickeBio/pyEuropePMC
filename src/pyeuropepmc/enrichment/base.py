@@ -12,7 +12,7 @@ from typing import Any
 import backoff
 import requests
 
-from pyeuropepmc.cache.cache import CacheBackend, CacheConfig, CacheDataType
+from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.exceptions import APIClientError
 
 logger = logging.getLogger(__name__)
@@ -71,11 +71,7 @@ class BaseEnrichmentClient:
 
         # Set default user agent
         if user_agent is None:
-            user_agent = (
-                "pyeuropepmc/1.12.0 "
-                "(https://github.com/JonasHeinickeBio/pyEuropePMC; "
-                "jonas.heinicke@helmholtz-hzi.de)"
-            )
+            user_agent = "pyeuropepmc/1.12.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)"
         self.session.headers.update({"User-Agent": user_agent})
 
         # Initialize cache
@@ -117,6 +113,7 @@ class BaseEnrichmentClient:
         endpoint: str,
         params: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
+        use_cache: bool = True,
     ) -> dict[str, Any] | None:
         """
         Make HTTP GET request with retries and caching.
@@ -129,6 +126,8 @@ class BaseEnrichmentClient:
             Query parameters
         headers : dict, optional
             Additional headers
+        use_cache : bool, optional
+            Whether to use caching for this request (default: True)
 
         Returns
         -------
@@ -143,7 +142,8 @@ class BaseEnrichmentClient:
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
 
         # Check cache first
-        if self._cache.config.enabled:
+        cache_key = ""
+        if use_cache and self._cache.config.enabled:
             cache_key = f"{url}:{str(params)}"
             cached = self._cache.get(cache_key)
             if cached is not None:
@@ -151,7 +151,7 @@ class BaseEnrichmentClient:
                 return cached  # type: ignore[no-any-return]
 
         # Prepare headers
-        request_headers = self.session.headers.copy()
+        request_headers = dict(self.session.headers)
         if headers:
             request_headers.update(headers)
 
@@ -172,7 +172,7 @@ class BaseEnrichmentClient:
             data = response.json()
 
             # Cache successful response
-            if self._cache.config.enabled:
+            if use_cache and self._cache.config.enabled:
                 self._cache.set(cache_key, data)
 
             logger.info(f"GET request to {url} succeeded")
@@ -193,7 +193,9 @@ class BaseEnrichmentClient:
         finally:
             time.sleep(self.rate_limit_delay)
 
-    def enrich(self, doi: str | None = None, **kwargs: Any) -> dict[str, Any] | None:
+    def enrich(
+        self, identifier: str | None = None, use_cache: bool = True, **kwargs: Any
+    ) -> dict[str, Any] | None:
         """
         Enrich paper metadata using the external API.
 
@@ -201,8 +203,10 @@ class BaseEnrichmentClient:
 
         Parameters
         ----------
-        doi : str, optional
-            Paper DOI
+        identifier : str, optional
+            Paper identifier (DOI, PMCID, or other)
+        use_cache : bool, optional
+            Whether to use cached results (default: True)
         **kwargs
             Additional parameters specific to the API
 

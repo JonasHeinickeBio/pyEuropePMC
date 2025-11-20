@@ -25,7 +25,7 @@ class TestUnpaywallClient:
     def test_enrich_without_doi_raises(self, mock_request):
         """Test that enrich without DOI raises ValueError."""
         client = UnpaywallClient(email="test@example.com")
-        with pytest.raises(ValueError, match="DOI is required"):
+        with pytest.raises(ValueError, match="Identifier is required"):
             client.enrich()
 
     @patch.object(UnpaywallClient, "_make_request")
@@ -61,7 +61,7 @@ class TestUnpaywallClient:
         mock_request.return_value = mock_response
 
         client = UnpaywallClient(email="test@example.com")
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is not None
         assert result["source"] == "unpaywall"
@@ -88,7 +88,7 @@ class TestUnpaywallClient:
         mock_request.return_value = mock_response
 
         client = UnpaywallClient(email="test@example.com")
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is not None
         assert result["is_oa"] is False
@@ -116,7 +116,7 @@ class TestUnpaywallClient:
         mock_request.return_value = mock_response
 
         client = UnpaywallClient(email="test@example.com")
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is not None
         assert result["oa_locations_embargoed"] is not None
@@ -128,7 +128,7 @@ class TestUnpaywallClient:
         mock_request.return_value = None
 
         client = UnpaywallClient(email="test@example.com")
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is None
 
@@ -138,7 +138,7 @@ class TestUnpaywallClient:
         mock_request.return_value = {"is_oa": False, "oa_status": "closed"}
 
         client = UnpaywallClient(email="test@example.com")
-        client.enrich(doi="10.1234/test")
+        client.enrich(identifier="10.1234/test")
 
         # Check that email was passed as parameter
         call_args = mock_request.call_args

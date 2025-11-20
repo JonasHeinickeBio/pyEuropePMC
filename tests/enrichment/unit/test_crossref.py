@@ -1,7 +1,7 @@
 """Unit tests for CrossRef enrichment client."""
 
 import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
 from pyeuropepmc.enrichment.crossref import CrossRefClient
 
@@ -26,7 +26,7 @@ class TestCrossRefClient:
     def test_enrich_without_doi_raises(self, mock_request):
         """Test that enrich without DOI raises ValueError."""
         client = CrossRefClient()
-        with pytest.raises(ValueError, match="DOI is required"):
+        with pytest.raises(ValueError, match="Identifier is required"):
             client.enrich()
 
     @patch.object(CrossRefClient, "_make_request")
@@ -56,7 +56,7 @@ class TestCrossRefClient:
         mock_request.return_value = mock_response
 
         client = CrossRefClient()
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is not None
         assert result["source"] == "crossref"
@@ -75,7 +75,7 @@ class TestCrossRefClient:
         mock_request.return_value = None
 
         client = CrossRefClient()
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is None
 
@@ -85,7 +85,7 @@ class TestCrossRefClient:
         mock_request.return_value = {"message": {}}
 
         client = CrossRefClient()
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is None
 
@@ -107,7 +107,7 @@ class TestCrossRefClient:
         mock_request.return_value = mock_response
 
         client = CrossRefClient()
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is not None
         assert result["license"] is not None
@@ -131,7 +131,7 @@ class TestCrossRefClient:
         mock_request.return_value = mock_response
 
         client = CrossRefClient()
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
 
         assert result is not None
         assert result["funders"] is not None
@@ -151,11 +151,11 @@ class TestCrossRefClient:
         mock_request.return_value = mock_response
 
         client = CrossRefClient()
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
         assert result["publication_date"] == "2021"
 
         # Test year and month
         mock_response["message"]["published"]["date-parts"] = [[2021, 6]]
         mock_request.return_value = mock_response
-        result = client.enrich(doi="10.1234/test")
+        result = client.enrich(identifier="10.1234/test")
         assert result["publication_date"] == "2021-06"

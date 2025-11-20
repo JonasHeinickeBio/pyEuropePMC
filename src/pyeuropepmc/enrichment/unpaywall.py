@@ -77,13 +77,15 @@ class UnpaywallClient(BaseEnrichmentClient):
         self.email = email
         logger.info(f"Unpaywall client initialized with email: {email}")
 
-    def enrich(self, doi: str | None = None, **kwargs: Any) -> dict[str, Any] | None:
+    def enrich(
+        self, identifier: str | None = None, use_cache: bool = True, **kwargs: Any
+    ) -> dict[str, Any] | None:
         """
         Enrich paper metadata using Unpaywall API.
 
         Parameters
         ----------
-        doi : str
+        identifier : str
             Paper DOI (required)
         **kwargs
             Additional parameters (unused)
@@ -105,32 +107,32 @@ class UnpaywallClient(BaseEnrichmentClient):
         Raises
         ------
         ValueError
-            If DOI is not provided
+            If identifier is not provided
         """
-        if not doi:
-            raise ValueError("DOI is required for Unpaywall enrichment")
+        if not identifier:
+            raise ValueError("Identifier is required for Unpaywall enrichment")
 
-        logger.debug(f"Checking OA status for DOI: {doi}")
+        logger.debug(f"Checking OA status for identifier: {identifier}")
 
         # Make request with email parameter
-        endpoint = f"{doi}"
+        endpoint = f"{identifier}"
         params = {"email": self.email}
 
-        response = self._make_request(endpoint=endpoint, params=params)
+        response = self._make_request(endpoint=endpoint, params=params, use_cache=use_cache)
         if response is None:
-            logger.warning(f"No OA data found for DOI: {doi}")
+            logger.warning(f"No OA data found for identifier: {identifier}")
             return None
 
         try:
             enriched = self._parse_unpaywall_response(response)
             logger.info(
-                f"Successfully retrieved OA info for DOI: {doi} "
+                f"Successfully retrieved OA info for identifier: {identifier} "
                 f"(OA: {enriched.get('is_oa', False)})"
             )
             return enriched
 
         except Exception as e:
-            logger.error(f"Error parsing Unpaywall response for {doi}: {e}")
+            logger.error(f"Error parsing Unpaywall response for {identifier}: {e}")
             return None
 
     def _parse_unpaywall_response(self, response: dict[str, Any]) -> dict[str, Any]:

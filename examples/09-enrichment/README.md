@@ -86,13 +86,13 @@ config = EnrichmentConfig(
     enable_unpaywall=False,  # Requires email
     enable_semantic_scholar=True,
     enable_openalex=True,
-    
+
     # API-specific settings
     unpaywall_email="your@email.com",  # Required for Unpaywall
     crossref_email="your@email.com",   # Optional, for polite pool
     semantic_scholar_api_key="key",    # Optional, for higher limits
     openalex_email="your@email.com",   # Optional, for polite pool
-    
+
     # Performance settings
     cache_config=CacheConfig(enabled=True, ttl=86400),
     rate_limit_delay=1.0,  # Delay between requests in seconds

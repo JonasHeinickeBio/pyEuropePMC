@@ -74,13 +74,15 @@ class CrossRefClient(BaseEnrichmentClient):
             self.session.headers.update({"mailto": email})
             logger.info(f"CrossRef polite pool enabled with email: {email}")
 
-    def enrich(self, doi: str | None = None, **kwargs: Any) -> dict[str, Any] | None:
+    def enrich(
+        self, identifier: str | None = None, use_cache: bool = True, **kwargs: Any
+    ) -> dict[str, Any] | None:
         """
         Enrich paper metadata using CrossRef API.
 
         Parameters
         ----------
-        doi : str
+        identifier : str
             Paper DOI (required)
         **kwargs
             Additional parameters (unused)
@@ -103,33 +105,33 @@ class CrossRefClient(BaseEnrichmentClient):
         Raises
         ------
         ValueError
-            If DOI is not provided
+            If identifier is not provided
         """
-        if not doi:
-            raise ValueError("DOI is required for CrossRef enrichment")
+        if not identifier:
+            raise ValueError("Identifier is required for CrossRef enrichment")
 
-        logger.debug(f"Enriching metadata for DOI: {doi}")
+        logger.debug(f"Enriching metadata for identifier: {identifier}")
 
         # Make request to CrossRef API
-        response = self._make_request(endpoint=doi)
+        response = self._make_request(endpoint=identifier, use_cache=use_cache)
         if response is None:
-            logger.warning(f"No data found for DOI: {doi}")
+            logger.warning(f"No data found for identifier: {identifier}")
             return None
 
         # Extract metadata from response
         try:
             message = response.get("message", {})
             if not message:
-                logger.warning(f"Empty response from CrossRef for DOI: {doi}")
+                logger.warning(f"Empty response from CrossRef for identifier: {identifier}")
                 return None
 
             # Parse and normalize metadata
             enriched = self._parse_crossref_response(message)
-            logger.info(f"Successfully enriched metadata for DOI: {doi}")
+            logger.info(f"Successfully enriched metadata for identifier: {identifier}")
             return enriched
 
         except Exception as e:
-            logger.error(f"Error parsing CrossRef response for {doi}: {e}")
+            logger.error(f"Error parsing CrossRef response for {identifier}: {e}")
             return None
 
     def _parse_crossref_response(self, message: dict[str, Any]) -> dict[str, Any]:

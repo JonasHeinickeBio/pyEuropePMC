@@ -10,6 +10,7 @@ from typing import Any
 
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.enrichment.base import BaseEnrichmentClient
+from pyeuropepmc.enrichment.ror import RorClient
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,8 @@ class OpenAlexClient(BaseEnrichmentClient):
     - Citation counts and cited-by information
     - Open access status
 
+    Enhanced with ROR integration for detailed institutional metadata.
+
     Examples
     --------
     >>> client = OpenAlexClient(email="your@email.com")
@@ -46,6 +49,7 @@ class OpenAlexClient(BaseEnrichmentClient):
         timeout: int = 15,
         cache_config: CacheConfig | None = None,
         email: str | None = None,
+        enable_ror_enrichment: bool = True,
     ) -> None:
         """
         Initialize OpenAlex client.
@@ -60,6 +64,8 @@ class OpenAlexClient(BaseEnrichmentClient):
             Cache configuration
         email : str, optional
             Email for polite pool (gets into polite pool for faster, more consistent response)
+        enable_ror_enrichment : bool, optional
+            Whether to enrich institutional data with ROR (default: True)
         """
         super().__init__(
             base_url=self.BASE_URL,
@@ -68,6 +74,18 @@ class OpenAlexClient(BaseEnrichmentClient):
             cache_config=cache_config,
         )
         self.email = email
+        self.enable_ror_enrichment = enable_ror_enrichment
+
+        # Initialize ROR client for institutional enrichment
+        self.ror_client: RorClient | None
+        if enable_ror_enrichment:
+            self.ror_client = RorClient(
+                email=email,
+                cache_config=cache_config,
+                rate_limit_delay=rate_limit_delay,
+            )
+        else:
+            self.ror_client = None
 
         # Add email to user agent for polite pool if provided
         if email:
@@ -79,18 +97,28 @@ class OpenAlexClient(BaseEnrichmentClient):
             self.session.headers.update({"User-Agent": user_agent})
             logger.info(f"OpenAlex polite pool enabled with email: {email}")
 
-    def enrich(
-        self, doi: str | None = None, openalex_id: str | None = None, **kwargs: Any
-    ) -> dict[str, Any] | None:
+        if enable_ror_enrichment:
+            logger.info("ROR enrichment enabled for institutional data")
+
+    def enrich(  # type: ignore[override]
+        self,
+        identifier: str | None = None,
+        openalex_id: str | None = None,
+        use_cache: bool = True,
+        **kwargs: Any,
+    ) -> dict[str, Any] | None:  # noqa: E501
         """
         Enrich paper metadata using OpenAlex API.
 
+        When a DOI is provided as identifier, it first searches OpenAlex for the work,
+        then enriches institutional data with ROR information if available.
+
         Parameters
         ----------
-        doi : str, optional
-            Paper DOI
+        identifier : str, optional
+            Paper DOI (recommended for comprehensive enrichment with ROR)
         openalex_id : str, optional
-            OpenAlex work ID (alternative to DOI)
+            OpenAlex work ID (alternative to identifier)
         **kwargs
             Additional parameters (unused)
 
@@ -109,7 +137,7 @@ class OpenAlexClient(BaseEnrichmentClient):
             - oa_status: OA status (gold, green, hybrid, bronze, closed)
             - oa_url: URL to OA version
             - authors: List of authors with affiliations
-            - institutions: List of institutions
+            - institutions: List of institutions (enriched with ROR data when available)
             - topics: List of topics/concepts
             - venue: Venue information
             - biblio: Bibliographic information
@@ -118,10 +146,10 @@ class OpenAlexClient(BaseEnrichmentClient):
         Raises
         ------
         ValueError
-            If neither DOI nor OpenAlex ID is provided
+            If neither identifier nor OpenAlex ID is provided
         """
-        if not doi and not openalex_id:
-            raise ValueError("Either DOI or OpenAlex ID is required")
+        if not identifier and not openalex_id:
+            raise ValueError("Either identifier or OpenAlex ID is required")
 
         # Construct endpoint
         if openalex_id:
@@ -133,10 +161,10 @@ class OpenAlexClient(BaseEnrichmentClient):
             logger.debug(f"Enriching metadata for OpenAlex ID: {openalex_id}")
         else:
             # Use DOI filter
-            endpoint = f"doi:{doi}"
-            logger.debug(f"Enriching metadata for DOI: {doi}")
+            endpoint = f"doi:{identifier}"
+            logger.debug(f"Enriching metadata for identifier: {identifier}")
 
-        response = self._make_request(endpoint=endpoint)
+        response = self._make_request(endpoint=endpoint, use_cache=use_cache)
         if response is None:
             logger.warning(f"No data found for: {endpoint}")
             return None
@@ -166,28 +194,47 @@ class OpenAlexClient(BaseEnrichmentClient):
         """
         # Extract authors with affiliations
         authors = []
+        institutions = []  # Collect unique institutions for potential ROR enrichment
+
         for authorship in response.get("authorships", []):
             author_info = authorship.get("author", {})
-            institutions = []
+            author_institutions = []
+
             for inst in authorship.get("institutions", []):
-                institutions.append(
-                    {
-                        "id": inst.get("id"),
-                        "display_name": inst.get("display_name"),
-                        "country_code": inst.get("country_code"),
-                        "type": inst.get("type"),
-                    }
-                )
+                inst_data = {
+                    "id": inst.get("id"),
+                    "display_name": inst.get("display_name"),
+                    "country": inst.get("country_code"),  # Map to 'country' for consistency
+                    "type": inst.get("type"),
+                    "ror_id": inst.get("ror"),  # ROR ID if available
+                }
+
+                # Collect for ROR enrichment if enabled
+                if self.enable_ror_enrichment and inst.get("ror"):
+                    institutions.append(inst_data)
+
+                author_institutions.append(inst_data)
 
             authors.append(
                 {
                     "id": author_info.get("id"),
                     "display_name": author_info.get("display_name"),
                     "orcid": author_info.get("orcid"),
-                    "institutions": institutions if institutions else None,
+                    "institutions": author_institutions if author_institutions else None,
                     "position": authorship.get("author_position"),
                 }
             )
+
+        # Enrich institutions with ROR data if enabled
+        enriched_institutions = []
+        if self.enable_ror_enrichment and self.ror_client and institutions:
+            enriched_institutions = self._enrich_institutions_with_ror(institutions)
+        else:
+            enriched_institutions = institutions
+
+        # Update authors with enriched institutional data
+        if enriched_institutions:
+            authors = self._update_authors_with_ror_data(authors, enriched_institutions)
 
         # Extract topics
         topics = []
@@ -236,6 +283,7 @@ class OpenAlexClient(BaseEnrichmentClient):
             "oa_status": oa_status,
             "oa_url": oa_url,
             "authors": authors if authors else None,
+            "institutions": enriched_institutions if enriched_institutions else None,
             "topics": topics if topics else None,
             "venue": venue_info,
             "biblio": biblio if biblio else None,
@@ -245,3 +293,86 @@ class OpenAlexClient(BaseEnrichmentClient):
             "referenced_works_count": response.get("referenced_works_count", 0),
             "related_works": response.get("related_works"),
         }
+
+    def _enrich_institutions_with_ror(
+        self, institutions: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        """
+        Enrich institution data with ROR information.
+
+        Parameters
+        ----------
+        institutions : list[dict]
+            List of institutions from OpenAlex
+
+        Returns
+        -------
+        list[dict]
+            Institutions enriched with ROR data
+        """
+        enriched = []
+
+        for inst in institutions:
+            ror_id = inst.get("ror_id")
+            if ror_id and self.ror_client:
+                # Validate ROR ID format to avoid passing invalid IDs like DOIs
+                if "/" in ror_id and "ror.org" not in ror_id:
+                    logger.debug(f"Skipping invalid ROR ID format: {ror_id}")
+                    enriched.append(inst)
+                    continue
+
+                logger.debug(f"Enriching institution with ROR: {ror_id}")
+                ror_data = self.ror_client.enrich(ror_id)
+                if ror_data:
+                    # Merge ROR data with OpenAlex institution data
+                    enriched_inst = {**inst, **ror_data}
+                    enriched.append(enriched_inst)
+                else:
+                    # Keep original data if ROR enrichment fails
+                    enriched.append(inst)
+            else:
+                # No ROR ID available, keep original data
+                enriched.append(inst)
+
+        return enriched
+
+    def _update_authors_with_ror_data(
+        self, authors: list[dict[str, Any]], enriched_institutions: list[dict[str, Any]]
+    ) -> list[dict[str, Any]]:
+        """
+        Update author institutions with enriched ROR data.
+
+        Parameters
+        ----------
+        authors : list[dict]
+            List of authors with institution data
+        enriched_institutions : list[dict]
+            Institutions enriched with ROR data
+
+        Returns
+        -------
+        list[dict]
+            Authors with updated institution data
+        """
+        # Create lookup map for enriched institutions by ROR ID
+        inst_lookup = {
+            inst.get("ror_id"): inst for inst in enriched_institutions if inst.get("ror_id")
+        }
+
+        updated_authors = []
+        for author in authors:
+            author_insts = author.get("institutions", [])
+            if author_insts:
+                updated_insts = []
+                for inst in author_insts:
+                    ror_id = inst.get("ror_id")
+                    if ror_id and ror_id in inst_lookup:
+                        # Replace with enriched data
+                        updated_insts.append(inst_lookup[ror_id])
+                    else:
+                        # Keep original data
+                        updated_insts.append(inst)
+                author = {**author, "institutions": updated_insts}
+            updated_authors.append(author)
+
+        return updated_authors

@@ -79,7 +79,7 @@ class TestPaperEnricher:
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
 
-        with pytest.raises(ValueError, match="DOI is required"):
+        with pytest.raises(ValueError, match="Identifier \\(DOI or PMCID\\) is required"):
             enricher.enrich_paper()
 
     @patch("pyeuropepmc.enrichment.crossref.CrossRefClient.enrich")
@@ -106,7 +106,7 @@ class TestPaperEnricher:
 
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
-        result = enricher.enrich_paper(doi="10.1234/test")
+        result = enricher.enrich_paper(identifier="10.1234/test")
 
         assert result is not None
         assert result["doi"] == "10.1234/test"
@@ -132,7 +132,7 @@ class TestPaperEnricher:
         # Mock other clients to return None
         with patch.object(enricher.clients["semantic_scholar"], "enrich", return_value=None):
             with patch.object(enricher.clients["openalex"], "enrich", return_value=None):
-                result = enricher.enrich_paper(doi="10.1234/test")
+                result = enricher.enrich_paper(identifier="10.1234/test")
 
                 assert result is not None
                 assert len(result["sources"]) == 1
@@ -147,7 +147,7 @@ class TestPaperEnricher:
         for client in enricher.clients.values():
             client.enrich = Mock(return_value=None)
 
-        result = enricher.enrich_paper(doi="10.1234/test")
+        result = enricher.enrich_paper(identifier="10.1234/test")
 
         assert result is not None
         assert len(result["sources"]) == 0
@@ -168,7 +168,7 @@ class TestPaperEnricher:
 
         config = EnrichmentConfig(enable_openalex=False)
         enricher = PaperEnricher(config)
-        result = enricher.enrich_paper(doi="10.1234/test")
+        result = enricher.enrich_paper(identifier="10.1234/test")
 
         # Should use the maximum citation count
         assert result["merged"]["citation_count"] == 42
@@ -191,7 +191,7 @@ class TestPaperEnricher:
 
         config = EnrichmentConfig(enable_semantic_scholar=False)
         enricher = PaperEnricher(config)
-        result = enricher.enrich_paper(doi="10.1234/test")
+        result = enricher.enrich_paper(identifier="10.1234/test")
 
         assert result["merged"]["is_oa"] is True
         assert result["merged"]["oa_status"] == "gold"
