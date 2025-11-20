@@ -77,9 +77,9 @@ class AuthorEntity(BaseEntity):
         Raises
         ------
         ValueError
-            If neither full_name nor name is provided
+            If neither full_name nor name is provided or empty
         """
-        if not (self.full_name or self.name):
+        if not (self.full_name.strip() or self.name and self.name.strip()):
             raise ValueError("AuthorEntity must have either full_name or name")
 
     def normalize(self) -> None:

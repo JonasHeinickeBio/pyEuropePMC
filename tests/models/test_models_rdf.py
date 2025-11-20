@@ -93,7 +93,7 @@ class TestAuthorEntity:
     def test_author_validate_failure(self):
         """Test author validation with invalid data."""
         author = AuthorEntity(full_name="")
-        with pytest.raises(ValueError, match="must have a full_name"):
+        with pytest.raises(ValueError, match="AuthorEntity must have either full_name or name"):
             author.validate()
 
     def test_author_normalize(self):

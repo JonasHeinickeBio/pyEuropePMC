@@ -116,13 +116,13 @@ class TestAuthorEntity:
     def test_validate_failure_empty_name(self):
         """Test validation fails with empty name."""
         author = AuthorEntity(full_name="")
-        with pytest.raises(ValueError, match="must have a full_name"):
+        with pytest.raises(ValueError, match="AuthorEntity must have either full_name or name"):
             author.validate()
 
     def test_validate_failure_whitespace_name(self):
-        """Test validation fails with empty name."""
-        author = AuthorEntity(full_name="")
-        with pytest.raises(ValueError, match="must have a full_name"):
+        """Test validation fails with whitespace name."""
+        author = AuthorEntity(full_name="   ")
+        with pytest.raises(ValueError, match="AuthorEntity must have either full_name or name"):
             author.validate()
 
     def test_normalize_trims_whitespace(self):
@@ -137,7 +137,7 @@ class TestAuthorEntity:
         assert author.full_name == "John Smith"
         assert author.first_name == "John"
         assert author.last_name == "Smith"
-        assert author.affiliation_text == "  University  "  # affiliation_text not normalized
+        assert author.affiliation_text == "University"
 
 
 class TestFigureEntity:
