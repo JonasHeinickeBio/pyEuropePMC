@@ -19,6 +19,9 @@ __all__ = [
 
 logger = logging.getLogger(__name__)
 
+# Constants
+UNKNOWN_PROVIDER = "Unknown"
+
 
 class AnnotationParser:
     """
@@ -37,7 +40,8 @@ class AnnotationParser:
             response: Raw JSON-LD response from the Annotations API
 
         Returns:
-            Parsed annotation data with structured entities, sentences, and relationships
+            Parsed annotation data with structured entities, sentences, and relationships.
+            Returns empty lists for invalid responses with raw data set to None.
 
         Examples:
             >>> parser = AnnotationParser()
@@ -46,7 +50,13 @@ class AnnotationParser:
         """
         if not isinstance(response, dict):
             logger.warning("Invalid annotation response: expected dict")
-            return {"entities": [], "sentences": [], "relationships": [], "raw": response}
+            return {
+                "entities": [],
+                "sentences": [],
+                "relationships": [],
+                "raw": None,
+                "valid": False,
+            }
 
         # Handle both single annotation and annotation lists
         annotations = response.get("annotations", [])
@@ -64,6 +74,7 @@ class AnnotationParser:
             "relationships": relationships,
             "metadata": AnnotationParser._extract_metadata(response),
             "raw": response,
+            "valid": True,
         }
 
     @staticmethod
@@ -250,18 +261,18 @@ class AnnotationParser:
         # Check various possible fields for provider
         provider = annotation.get("provider", {})
         if isinstance(provider, dict):
-            return provider.get("name", "Unknown")
+            return provider.get("name", UNKNOWN_PROVIDER)
         elif isinstance(provider, str):
             return provider
 
         # Check annotator field as fallback
         annotator = annotation.get("annotator", {})
         if isinstance(annotator, dict):
-            return annotator.get("name", "Unknown")
+            return annotator.get("name", UNKNOWN_PROVIDER)
         elif isinstance(annotator, str):
             return annotator
 
-        return "Unknown"
+        return UNKNOWN_PROVIDER
 
     @staticmethod
     def _extract_metadata(response: dict[str, Any]) -> dict[str, Any]:
