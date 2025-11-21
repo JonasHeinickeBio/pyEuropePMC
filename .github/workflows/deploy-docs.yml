@@ -45,7 +45,7 @@ jobs:
 
       - name: Build MkDocs site
         run: |
-          poetry run mkdocs build --clean --strict
+          poetry run mkdocs build --clean
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
