@@ -26,6 +26,7 @@
 - � **Advanced Query Builder** - Fluent API for building complex search queries with type safety
 - �📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
 - 🔬 **XML Parsing & Conversion** - Parse full text XML and convert to plaintext, markdown, extract tables and metadata
+- 🏷️ **Text-Mining Annotations** - Retrieve and parse entity annotations, sentences, and relationships (genes, diseases, chemicals)
 - 📊 **Multiple Output Formats** - JSON, XML, Dublin Core (DC)
 - 📦 **Bulk FTP Downloads** - Efficient bulk PDF downloads from Europe PMC FTP servers
 - 🔄 **Smart Pagination** - Automatic handling of large result sets
@@ -156,6 +157,55 @@ for table in tables:
 references = parser.extract_references()
 print(f"Found {len(references)} references")
 ```
+
+### Text-Mining Annotations
+
+Retrieve and parse entity annotations, sentences, and relationships from scientific literature:
+
+```python
+from pyeuropepmc import AnnotationsClient, parse_annotations
+
+# Initialize annotations client
+with AnnotationsClient() as client:
+    # Get annotations for specific articles
+    annotations = client.get_annotations_by_article_ids(
+        article_ids=["PMC3359311"],
+        section="abstract"  # or "fulltext", "all"
+    )
+    
+    # Parse annotations to extract structured data
+    parsed = parse_annotations(annotations)
+    
+    print(f"Found {len(parsed['entities'])} entities")
+    print(f"Found {len(parsed['relationships'])} relationships")
+    
+    # Display entities by type
+    for entity in parsed['entities'][:5]:
+        print(f"{entity['name']} ({entity['type']})")
+    
+    # Search for specific entities (e.g., chemicals)
+    entity_annotations = client.get_annotations_by_entity(
+        entity_id="CHEBI:16236",  # Ethanol
+        entity_type="CHEBI",
+        page_size=20
+    )
+    
+    # Filter by annotation provider
+    provider_annotations = client.get_annotations_by_provider(
+        provider="Europe PMC",
+        annotation_type="Disease"
+    )
+```
+
+**Supported Entity Types:**
+- 🧬 Genes and proteins
+- 🦠 Diseases and conditions  
+- 🧪 Chemicals and drugs (CHEBI)
+- 🔬 Gene Ontology terms
+- 🌱 Organisms and species
+- 🔗 Entity relationships
+
+See [examples/10-annotations](examples/10-annotations/) for detailed examples.
 
 ### Advanced Analytics and Visualization
 
