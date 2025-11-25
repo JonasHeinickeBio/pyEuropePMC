@@ -74,18 +74,18 @@ class TestEnrichmentRDFMapping:
         uri = enriched_paper.to_rdf(g, mapper=mapper)
 
         # Check basic paper properties
-        assert (uri, mapper._resolve_predicate("dct:title"), None) in g
-        assert (uri, mapper._resolve_predicate("dct:abstract"), None) in g
+        assert (uri, mapper._resolve_predicate("dcterms:title"), None) in g
+        assert (uri, mapper._resolve_predicate("dcterms:abstract"), None) in g
 
         # Check enrichment properties
-        assert (uri, mapper._resolve_predicate("ex:citationCount"), None) in g
+        assert (uri, mapper._resolve_predicate("cito:citationCount"), None) in g
         assert (uri, mapper._resolve_predicate("ex:influentialCitationCount"), None) in g
         assert (uri, mapper._resolve_predicate("ex:isOpenAccess"), None) in g
         assert (uri, mapper._resolve_predicate("ex:openAccessStatus"), None) in g
-        assert (uri, mapper._resolve_predicate("dct:date"), None) in g
+        assert (uri, mapper._resolve_predicate("dcterms:date"), None) in g
 
         # Check multi-value fields
-        assert (uri, mapper._resolve_predicate("dct:subject"), None) in g
+        assert (uri, mapper._resolve_predicate("dcterms:subject"), None) in g
 
         # Verify URI is DOI-based
         assert str(uri) == "https://doi.org/10.1371/journal.pone.0308090"
@@ -143,7 +143,7 @@ class TestEnrichmentRDFMapping:
         """Test RDF mapping of author-institution relationship."""
         g = Graph()
         author_uri = enriched_author.to_rdf(g, mapper=mapper)
-        
+
         # Map relationship to institution
         related = {"institutions": [enriched_institution]}
         mapper.map_relationships(g, author_uri, enriched_author, related)
@@ -156,7 +156,7 @@ class TestEnrichmentRDFMapping:
         """Test RDF mapping of paper-author relationship."""
         g = Graph()
         paper_uri = enriched_paper.to_rdf(g, mapper=mapper)
-        
+
         # Map relationship to authors
         related = {"authors": [enriched_author]}
         mapper.map_relationships(g, paper_uri, enriched_paper, related)
@@ -168,29 +168,29 @@ class TestEnrichmentRDFMapping:
     def test_full_enriched_graph(self, mapper, enriched_paper, enriched_author, enriched_institution):
         """Test creating a complete enriched RDF graph with all entities."""
         g = Graph()
-        
+
         # Add all entities
         paper_uri = enriched_paper.to_rdf(g, mapper=mapper)
         author_uri = enriched_author.to_rdf(g, mapper=mapper)
         inst_uri = enriched_institution.to_rdf(g, mapper=mapper)
-        
+
         # Add relationships
         mapper.map_relationships(g, paper_uri, enriched_paper, {"authors": [enriched_author]})
         mapper.map_relationships(g, author_uri, enriched_author, {"institutions": [enriched_institution]})
-        
+
         # Verify the graph has all entities
         assert (paper_uri, None, None) in g
         assert (author_uri, None, None) in g
         assert (inst_uri, None, None) in g
-        
+
         # Verify graph size (should have many triples)
         assert len(g) > 30  # Expect at least 30 triples for this complete graph
-        
+
     def test_rdf_serialization_turtle(self, mapper, enriched_paper):
         """Test serializing enriched RDF to Turtle format."""
         g = Graph()
         enriched_paper.to_rdf(g, mapper=mapper)
-        
+
         ttl = mapper.serialize_graph(g, format="turtle")
         # Check for key predicates (actual URIs in serialization)
         assert "purl.org/ontology/bibo/AcademicArticle" in ttl or "AcademicArticle" in ttl

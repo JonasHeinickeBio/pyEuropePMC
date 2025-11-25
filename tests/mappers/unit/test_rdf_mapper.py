@@ -31,14 +31,14 @@ class TestRDFMapper:
     def test_build_namespaces(self):
         """Test namespace building."""
         mapper = RDFMapper()
-        assert "dct" in mapper.namespaces
+        assert "dcterms" in mapper.namespaces
         assert "bibo" in mapper.namespaces
         assert "foaf" in mapper.namespaces
 
     def test_resolve_predicate_with_prefix(self):
         """Test predicate resolution with prefix."""
         mapper = RDFMapper()
-        predicate = mapper._resolve_predicate("dct:title")
+        predicate = mapper._resolve_predicate("dcterms:title")
         assert "title" in str(predicate)
         assert "purl.org/dc/terms" in str(predicate)
 

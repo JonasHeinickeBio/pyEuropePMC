@@ -115,7 +115,7 @@ class TestBuildPaperEntities:
 
         # Check references
         assert len(references) >= 1
-        assert references[0].source == "Nature"
+        assert references[0].journal == "Nature"
 
     def test_build_entities_normalizes_data(self):
         """Test that built entities can be normalized."""

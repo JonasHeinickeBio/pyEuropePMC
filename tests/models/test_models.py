@@ -275,16 +275,16 @@ class TestReferenceEntity:
         """Test creating ReferenceEntity with all fields."""
         ref = ReferenceEntity(
             title="Cited Article",
-            source="Nature",
-            year="2021",
+            journal="Nature",
+            publication_year=2021,
             volume="590",
             pages="123-456",
             doi="10.1038/nature12345",
             authors="Smith J, Doe J"
         )
         assert ref.title == "Cited Article"
-        assert ref.source == "Nature"
-        assert ref.year == "2021"
+        assert ref.journal == "Nature"
+        assert ref.publication_year == 2021
         assert ref.volume == "590"
         assert ref.pages == "123-456"
         assert ref.doi == "10.1038/nature12345"
@@ -311,14 +311,14 @@ class TestReferenceEntity:
         ref = ReferenceEntity(
             doi="HTTPS://DOI.ORG/10.1038/NATURE12345",
             title="  Cited Article  ",
-            source="  Nature  ",
+            journal="  Nature  ",
             authors="  Smith J  "
         )
         ref.normalize()
         assert ref.doi == "10.1038/nature12345"
         assert ref.title == "Cited Article"
-        assert ref.source == "Nature"
-        assert ref.authors == "  Smith J  "  # authors not normalized
+        assert ref.journal == "Nature"
+        assert ref.authors == "Smith J"  # authors normalized
 
 
 class TestSectionEntity:
