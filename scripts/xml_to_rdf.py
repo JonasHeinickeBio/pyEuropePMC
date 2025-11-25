@@ -69,7 +69,12 @@ def load_xml_file(file_path: str) -> str:
 
 
 def entities_to_json(
-    paper: Any, authors: list[Any], sections: list[Any], tables: list[Any], references: list[Any]
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    figures: list[Any],
+    references: list[Any],
 ) -> dict[str, Any]:
     """
     Convert entities to JSON-serializable dictionary.
@@ -84,6 +89,8 @@ def entities_to_json(
         List of section entities
     tables : list[TableEntity]
         List of table entities
+    figures : list[FigureEntity]
+        List of figure entities
     references : list[ReferenceEntity]
         List of reference entities
 
@@ -97,6 +104,7 @@ def entities_to_json(
         "authors": [a.to_dict() for a in authors],
         "sections": [s.to_dict() for s in sections],
         "tables": [t.to_dict() for t in tables],
+        "figures": [f.to_dict() for f in figures],
         "references": [r.to_dict() for r in references],
     }
 
@@ -114,7 +122,12 @@ def validate_arguments(args: argparse.Namespace) -> None:
 
 
 def process_entities(
-    paper: Any, authors: list[Any], sections: list[Any], tables: list[Any], references: list[Any]
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    figures: list[Any],
+    references: list[Any],
 ) -> None:
     """Normalize all entities."""
     paper.normalize()
@@ -124,6 +137,8 @@ def process_entities(
         section.normalize()
     for table in tables:
         table.normalize()
+    for figure in figures:
+        figure.normalize()
     for ref in references:
         ref.normalize()
 
@@ -134,6 +149,7 @@ def generate_ttl_output(
     authors: list[Any],
     sections: list[Any],
     tables: list[Any],
+    figures: list[Any],
     references: list[Any],
 ) -> None:
     """Generate RDF/Turtle output."""
@@ -161,6 +177,10 @@ def generate_ttl_output(
     for table in tables:
         table.to_rdf(g, mapper=mapper)
 
+    # Add figures
+    for figure in figures:
+        figure.to_rdf(g, mapper=mapper)
+
     # Add references
     for reference in references:
         reference.to_rdf(g, mapper=mapper)
@@ -177,13 +197,14 @@ def generate_json_output(
     authors: list[Any],
     sections: list[Any],
     tables: list[Any],
+    figures: list[Any],
     references: list[Any],
 ) -> None:
     """Generate JSON output."""
     if args.verbose:
         print(f"Generating JSON output to {args.json}...")
 
-    json_data = entities_to_json(paper, authors, sections, tables, references)
+    json_data = entities_to_json(paper, authors, sections, tables, figures, references)
 
     with open(args.json, "w", encoding="utf-8") as f:
         json.dump(json_data, f, indent=2, ensure_ascii=False)
@@ -198,6 +219,7 @@ def print_summary(
     authors: list[Any],
     sections: list[Any],
     tables: list[Any],
+    figures: list[Any],
     references: list[Any],
 ) -> None:
     """Print conversion summary if verbose."""
@@ -207,6 +229,7 @@ def print_summary(
         print(f"  Authors: {len(authors)}")
         print(f"  Sections: {len(sections)}")
         print(f"  Tables: {len(tables)}")
+        print(f"  Figures: {len(figures)}")
         print(f"  References: {len(references)}")
 
 
@@ -227,19 +250,19 @@ def main() -> int:
 
         if args.verbose:
             print("Building entities...")
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         # Normalize entities
-        process_entities(paper, authors, sections, tables, references)
+        process_entities(paper, authors, sections, tables, figures, references)
 
         # Generate outputs
         if args.ttl:
-            generate_ttl_output(args, paper, authors, sections, tables, references)
+            generate_ttl_output(args, paper, authors, sections, tables, figures, references)
 
         if args.json:
-            generate_json_output(args, paper, authors, sections, tables, references)
+            generate_json_output(args, paper, authors, sections, tables, figures, references)
 
-        print_summary(args, paper, authors, sections, tables, references)
+        print_summary(args, paper, authors, sections, tables, figures, references)
 
         return 0
 

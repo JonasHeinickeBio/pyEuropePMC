@@ -1,5 +1,5 @@
 # RDF Mapping Configuration for PyEuropePMC Data Models
-# 
+#
 # This file is the SOURCE OF TRUTH for all RDF mappings.
 # The RML file (rml_mappings.ttl) is auto-generated from this YAML.
 #
@@ -12,7 +12,7 @@
 # Namespace prefixes
 _@prefix:
   ex: "http://example.org/"
-  dct: "http://purl.org/dc/terms/"
+  dcterms: "http://purl.org/dc/terms/"
   foaf: "http://xmlns.com/foaf/0.1/"
   bibo: "http://purl.org/ontology/bibo/"
   prov: "http://www.w3.org/ns/prov#"
@@ -29,64 +29,97 @@ _@prefix:
   ror: "https://ror.org/vocab#"
   skos: "http://www.w3.org/2004/02/skos/core#"
 
+# Knowledge Graph Structure Configuration
+# Controls how entities are organized in RDF graphs
+_kg_structure:
+  # Default behavior for including content entities (sections, references, tables, figures)
+  # Set to false for metadata-only graphs, true for complete graphs
+  include_content: true
+  # Default KG type: "complete" (all entities), "metadata" (papers/authors/institutions only), "content" (sections/references/tables/figures only)
+  default_type: "complete"
+
+# ScholarlyWorkEntity mapping (base class)
+ScholarlyWorkEntity:
+  rdf:type: ["bibo:Document"]
+  fields:
+    title: dcterms:title
+    doi: bibo:doi
+    volume: bibo:volume
+    pages: bibo:pages
+    publication_year: dcterms:issued  # More specific than dcterms:date for year
+    publication_date: dcterms:date    # Full date gets dcterms:date
+    pmcid: dcterms:identifier
+    pmid: ex:pmid
+    semantic_scholar_id: ex:semanticScholarId
+    journal: bibo:journalTitle
+  # Multi-value fields (authors can be list or string)
+  multi_value_fields:
+    authors: dcterms:creator
+
 # PaperEntity mapping
 PaperEntity:
   rdf:type: ["bibo:AcademicArticle"]
   fields:
-    pmcid: dct:identifier
-    doi: bibo:doi
-    title: dct:title
-    journal: bibo:journal
-    volume: bibo:volume
     issue: bibo:issue
-    pages: bibo:pages
-    pub_date: dct:issued
-    publication_date: dct:date
-    publication_year: dct:date
-    abstract: dct:abstract
-    citation_count: ex:citationCount
+    pub_date: dcterms:issued  # Legacy field, use dcterms:issued for consistency
+    abstract: dcterms:abstract
+    citation_count: cito:citationCount  # Use CiTO ontology for citations
     influential_citation_count: ex:influentialCitationCount
     is_oa: ex:isOpenAccess
     oa_status: ex:openAccessStatus
     oa_url: ex:openAccessUrl
+    reference_count: ex:referenceCount
+    cited_by_count: ex:citedByCount
+    publisher: dcterms:publisher  # Use dcterms:publisher instead of bibo:publisher for consistency
+    issn: bibo:issn
+    publication_type: bibo:DocumentType
+    first_page: bibo:pageStart
+    last_page: bibo:pageEnd
+    semantic_scholar_corpus_id: ex:semanticScholarCorpusId
+    openalex_id: ex:openAlexId
   # Multi-value fields (lists)
   multi_value_fields:
-    keywords: dct:subject
-    fields_of_study: dct:subject
+    keywords: dcterms:subject
+    fields_of_study: dcterms:subject
+    funders: foaf:fundedBy  # Use FOAF vocabulary for funding relationships
+    related_works: ex:relatedWork
   # Relationships
   relationships:
     authors:
-      predicate: dct:creator
+      predicate: dcterms:creator
       inverse: foaf:made
     sections:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf
+      predicate: dcterms:hasPart
+      inverse: dcterms:isPartOf
     references:
       predicate: cito:cites
       inverse: cito:isCitedBy
     tables:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf
+      predicate: dcterms:hasPart
+      inverse: dcterms:isPartOf
 
 # AuthorEntity mapping
 AuthorEntity:
   rdf:type: ["foaf:Person"]
   fields:
     full_name: foaf:name
-    name: foaf:name
     first_name: foaf:givenName
     last_name: foaf:familyName
     initials: foaf:initials
     orcid: datacite:orcid
     openalex_id: ex:openAlexId
+    semantic_scholar_id: ex:semanticScholarId
     affiliation_text: ex:affiliation
     position: ex:authorPosition
     email: foaf:mbox
+  # Multi-value fields
+  multi_value_fields:
+    sources: prov:hadPrimarySource
   # Relationships
   relationships:
     papers:
       predicate: foaf:made
-      inverse: dct:creator
+      inverse: dcterms:creator
     institutions:
       predicate: org:memberOf
       inverse: org:hasMember
@@ -95,33 +128,33 @@ AuthorEntity:
 SectionEntity:
   rdf:type: ["bibo:DocumentPart", "nif:Context"]
   fields:
-    title: dct:title
+    title: dcterms:title
     content: nif:isString
     begin_index: nif:beginIndex
     end_index: nif:endIndex
   # Relationships
   relationships:
     paper:
-      predicate: dct:isPartOf
-      inverse: dct:hasPart
+      predicate: dcterms:isPartOf
+      inverse: dcterms:hasPart
     subsections:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf  # TODO: Implement SubsectionEntity or remove if not needed
+      predicate: dcterms:hasPart
+      inverse: dcterms:isPartOf  # TODO: Implement SubsectionEntity or remove if not needed
 
 # TableEntity mapping
 TableEntity:
   rdf:type: ["bibo:Table"]
   fields:
-    caption: dct:description
+    caption: dcterms:description
     table_label: rdfs:label
   # Relationships
   relationships:
     paper:
-      predicate: dct:isPartOf
-      inverse: dct:hasPart
+      predicate: dcterms:isPartOf
+      inverse: dcterms:hasPart
     rows:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf
+      predicate: dcterms:hasPart
+      inverse: dcterms:isPartOf
 
 # TableRowEntity mapping
 TableRowEntity:
@@ -133,22 +166,14 @@ TableRowEntity:
   # Relationships
   relationships:
     table:
-      predicate: dct:isPartOf
-      inverse: dct:hasPart
+      predicate: dcterms:isPartOf
+      inverse: dcterms:hasPart
 
 # ReferenceEntity mapping
 ReferenceEntity:
-  rdf:type: ["bibo:Document"]
-  fields:
-    title: dct:title
-    source: dct:isPartOf
-    year: dct:issued
-    volume: bibo:volume
-    pages: bibo:pages
-    doi: bibo:doi  # NOTE: DOI data often missing in XML (only PMID available)
-  # Multi-value fields
-  multi_value_fields:
-    authors: dct:creator
+  rdf:type: ["bibo:Article"]  # More specific than bibo:Document
+  # Inherits all fields from ScholarlyWorkEntity
+  # No additional fields specific to references
   # Relationships
   relationships:
     citing_paper:

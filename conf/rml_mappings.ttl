@@ -18,13 +18,85 @@
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix ror: <https://ror.org/vocab#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
-@prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # RML Mappings for PyEuropePMC Data Models
 # Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY
 # Run 'python scripts/sync_rdf_mappings.py' to regenerate
+
+# ===== ScholarlyWorkEntity Mapping =====
+<#ScholarlyWorkEntityMap>
+    rml:logicalSource [
+        rml:source "scholarlywork.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/scholarlywork/{id}" ;
+        rr:class bibo:Document
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:title ;
+        rr:objectMap [ rml:reference "title" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:doi ;
+        rr:objectMap [ rml:reference "doi" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:volume ;
+        rr:objectMap [ rml:reference "volume" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:pages ;
+        rr:objectMap [ rml:reference "pages" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:issued ;
+        rr:objectMap [ rml:reference "publication_year" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:date ;
+        rr:objectMap [ rml:reference "publication_date" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:identifier ;
+        rr:objectMap [ rml:reference "pmcid" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:pmid ;
+        rr:objectMap [ rml:reference "pmid" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:semanticScholarId ;
+        rr:objectMap [ rml:reference "semantic_scholar_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:journal ;
+        rr:objectMap [ rml:reference "journal" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:creator ;
+        rr:objectMap [ rml:reference "authors[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
 
 # ===== PaperEntity Mapping =====
 <#PaperEntityMap>
@@ -40,38 +112,8 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dcterms:identifier ;
-        rr:objectMap [ rml:reference "pmcid" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:doi ;
-        rr:objectMap [ rml:reference "doi" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:title ;
-        rr:objectMap [ rml:reference "title" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:journal ;
-        rr:objectMap [ rml:reference "journal" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:volume ;
-        rr:objectMap [ rml:reference "volume" ]
-    ] ;
-
-    rr:predicateObjectMap [
         rr:predicate bibo:issue ;
         rr:objectMap [ rml:reference "issue" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:pages ;
-        rr:objectMap [ rml:reference "pages" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -80,22 +122,12 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dcterms:date ;
-        rr:objectMap [ rml:reference "publication_date" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:date ;
-        rr:objectMap [ rml:reference "publication_year" ]
-    ] ;
-
-    rr:predicateObjectMap [
         rr:predicate dcterms:abstract ;
         rr:objectMap [ rml:reference "abstract" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:citationCount ;
+        rr:predicate cito:citationCount ;
         rr:objectMap [ rml:reference "citation_count" ]
     ] ;
 
@@ -120,6 +152,51 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate ex:referenceCount ;
+        rr:objectMap [ rml:reference "reference_count" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:citedByCount ;
+        rr:objectMap [ rml:reference "cited_by_count" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:publisher ;
+        rr:objectMap [ rml:reference "publisher" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:issn ;
+        rr:objectMap [ rml:reference "issn" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:DocumentType ;
+        rr:objectMap [ rml:reference "publication_type" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:pageStart ;
+        rr:objectMap [ rml:reference "first_page" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:pageEnd ;
+        rr:objectMap [ rml:reference "last_page" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:semanticScholarCorpusId ;
+        rr:objectMap [ rml:reference "semantic_scholar_corpus_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:openAlexId ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate dcterms:subject ;
         rr:objectMap [ rml:reference "keywords[*]" ]
     ] ;
@@ -127,6 +204,16 @@
     rr:predicateObjectMap [
         rr:predicate dcterms:subject ;
         rr:objectMap [ rml:reference "fields_of_study[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:fundedBy ;
+        rr:objectMap [ rml:reference "funders[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:relatedWork ;
+        rr:objectMap [ rml:reference "related_works[*]" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -150,11 +237,6 @@
     rr:predicateObjectMap [
         rr:predicate foaf:name ;
         rr:objectMap [ rml:reference "full_name" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate foaf:name ;
-        rr:objectMap [ rml:reference "name" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -183,6 +265,11 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate ex:semanticScholarId ;
+        rr:objectMap [ rml:reference "semantic_scholar_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate ex:affiliation ;
         rr:objectMap [ rml:reference "affiliation_text" ]
     ] ;
@@ -195,6 +282,11 @@
     rr:predicateObjectMap [
         rr:predicate foaf:mbox ;
         rr:objectMap [ rml:reference "email" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate prov:hadPrimarySource ;
+        rr:objectMap [ rml:reference "sources[*]" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -306,42 +398,7 @@
 
     rr:subjectMap [
         rr:template "http://example.org/data/reference/{id}" ;
-        rr:class bibo:Document
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:title ;
-        rr:objectMap [ rml:reference "title" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:isPartOf ;
-        rr:objectMap [ rml:reference "source" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:issued ;
-        rr:objectMap [ rml:reference "year" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:volume ;
-        rr:objectMap [ rml:reference "volume" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:pages ;
-        rr:objectMap [ rml:reference "pages" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:doi ;
-        rr:objectMap [ rml:reference "doi" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:creator ;
-        rr:objectMap [ rml:reference "authors[*]" ]
+        rr:class bibo:Article
     ] ;
 
     rr:predicateObjectMap [

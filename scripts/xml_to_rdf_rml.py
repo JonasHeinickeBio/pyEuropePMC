@@ -97,7 +97,12 @@ def check_rdfizer_availability() -> None:
 
 
 def process_entities(
-    paper: Any, authors: list[Any], sections: list[Any], tables: list[Any], references: list[Any]
+    paper: Any,
+    authors: list[Any],
+    sections: list[Any],
+    tables: list[Any],
+    figures: list[Any],
+    references: list[Any],
 ) -> None:
     """Normalize all entities."""
     paper.normalize()
@@ -107,6 +112,8 @@ def process_entities(
         section.normalize()
     for table in tables:
         table.normalize()
+    for figure in figures:
+        figure.normalize()
     for ref in references:
         ref.normalize()
 
@@ -117,6 +124,7 @@ def save_json_entities(
     authors: list[Any],
     sections: list[Any],
     tables: list[Any],
+    figures: list[Any],
     references: list[Any],
 ) -> None:
     """Save intermediate JSON entities if requested."""
@@ -129,6 +137,7 @@ def save_json_entities(
             "authors": [a.to_dict() for a in authors],
             "sections": [s.to_dict() for s in sections],
             "tables": [t.to_dict() for t in tables],
+            "figures": [f.to_dict() for f in figures],
             "references": [r.to_dict() for r in references],
         }
 
@@ -159,6 +168,7 @@ def convert_entities_to_rdf(
     authors: list[Any],
     sections: list[Any],
     tables: list[Any],
+    figures: list[Any],
     references: list[Any],
 ) -> Graph:
     """Convert entities to RDF using RML mappings."""
@@ -173,6 +183,7 @@ def convert_entities_to_rdf(
     g += convert_single_entity_type(rdfizer, authors, "author", args.verbose)
     g += convert_single_entity_type(rdfizer, sections, "section", args.verbose)
     g += convert_single_entity_type(rdfizer, tables, "table", args.verbose)
+    g += convert_single_entity_type(rdfizer, figures, "figure", args.verbose)
     g += convert_single_entity_type(rdfizer, references, "reference", args.verbose)
 
     return g
@@ -184,6 +195,7 @@ def print_summary(
     authors: list[Any],
     sections: list[Any],
     tables: list[Any],
+    figures: list[Any],
     references: list[Any],
     g: Graph,
 ) -> None:
@@ -194,6 +206,7 @@ def print_summary(
         print(f"  Authors: {len(authors)}")
         print(f"  Sections: {len(sections)}")
         print(f"  Tables: {len(tables)}")
+        print(f"  Figures: {len(figures)}")
         print(f"  References: {len(references)}")
         print(f"  Total RDF triples: {len(g)}")
 
@@ -238,24 +251,26 @@ def main() -> int:
 
         if args.verbose:
             print("Building entities...")
-        paper, authors, sections, tables, references = build_paper_entities(parser)
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
 
         # Normalize entities
-        process_entities(paper, authors, sections, tables, references)
+        process_entities(paper, authors, sections, tables, figures, references)
 
         # Save intermediate JSON if requested
-        save_json_entities(args, paper, authors, sections, tables, references)
+        save_json_entities(args, paper, authors, sections, tables, figures, references)
 
         # Initialize RML RDFizer
         rdfizer = initialize_rdfizer(args)
 
         # Convert entities to RDF using RML
-        g = convert_entities_to_rdf(args, rdfizer, paper, authors, sections, tables, references)
+        g = convert_entities_to_rdf(
+            args, rdfizer, paper, authors, sections, tables, figures, references
+        )
 
         # Serialize to output file
         serialize_and_save_rdf(args, g)
 
-        print_summary(args, paper, authors, sections, tables, references, g)
+        print_summary(args, paper, authors, sections, tables, figures, references, g)
 
         return 0
 
