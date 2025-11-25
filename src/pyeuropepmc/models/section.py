@@ -55,12 +55,32 @@ class SectionEntity(BaseEntity):
         ValueError
             If content is missing
         """
+        from pyeuropepmc.models.utils import validate_positive_integer
+
         if self.content is None:
             raise ValueError("SectionEntity must have content")
 
+        # Validate indices if provided
+        if self.begin_index is not None:
+            self.begin_index = validate_positive_integer(self.begin_index)
+        if self.end_index is not None:
+            self.end_index = validate_positive_integer(self.end_index)
+
+        # Validate index relationship
+        if (
+            self.begin_index is not None
+            and self.end_index is not None
+            and self.begin_index >= self.end_index
+        ):
+            raise ValueError("begin_index must be less than end_index")
+
+        super().validate()
+
     def normalize(self) -> None:
         """Normalize section data (trim whitespace)."""
-        if self.title:
-            self.title = self.title.strip()
-        if self.content:
-            self.content = self.content.strip()
+        from pyeuropepmc.models.utils import normalize_string_field
+
+        self.title = normalize_string_field(self.title)
+        self.content = normalize_string_field(self.content)
+
+        super().normalize()

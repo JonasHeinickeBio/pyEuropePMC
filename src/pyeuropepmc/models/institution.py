@@ -96,25 +96,54 @@ class InstitutionEntity(BaseEntity):
         ValueError
             If display_name is not provided or empty
         """
+        from pyeuropepmc.models.utils import (
+            validate_and_normalize_uri,
+            validate_latitude_longitude,
+            validate_positive_integer,
+        )
+
         if not self.display_name or not self.display_name.strip():
             raise ValueError("InstitutionEntity must have a display_name")
 
-    def normalize(self) -> None:
-        """Normalize institution data (trim whitespace)."""
-        if self.display_name:
-            self.display_name = self.display_name.strip()
+        # Validate and normalize URIs
         if self.ror_id:
-            self.ror_id = self.ror_id.strip()
-        if self.openalex_id:
-            self.openalex_id = self.openalex_id.strip()
-        if self.country:
-            self.country = self.country.strip()
-        if self.country_code:
-            self.country_code = self.country_code.strip()
-        if self.city:
-            self.city = self.city.strip()
+            self.ror_id = validate_and_normalize_uri(self.ror_id)
         if self.website:
-            self.website = self.website.strip()
+            self.website = validate_and_normalize_uri(self.website)
+
+        # Validate coordinates
+        if self.latitude is not None or self.longitude is not None:
+            self.latitude, self.longitude = validate_latitude_longitude(
+                self.latitude, self.longitude
+            )
+
+        # Validate established year
+        if self.established is not None:
+            self.established = validate_positive_integer(self.established)
+
+        super().validate()
+
+    def normalize(self) -> None:
+        """Normalize institution data (trim whitespace, validate URIs)."""
+        from pyeuropepmc.models.utils import (
+            normalize_string_field,
+            validate_and_normalize_uri,
+        )
+
+        self.display_name = normalize_string_field(self.display_name) or ""
+        self.ror_id = validate_and_normalize_uri(self.ror_id)
+        self.openalex_id = validate_and_normalize_uri(self.openalex_id)
+        self.country = normalize_string_field(self.country)
+        self.country_code = normalize_string_field(self.country_code)
+        self.city = normalize_string_field(self.city)
+        self.institution_type = normalize_string_field(self.institution_type)
+        self.grid_id = normalize_string_field(self.grid_id)
+        self.isni = normalize_string_field(self.isni)
+        self.wikidata_id = normalize_string_field(self.wikidata_id)
+        self.fundref_id = normalize_string_field(self.fundref_id)
+        self.website = validate_and_normalize_uri(self.website)
+
+        super().normalize()
 
     @classmethod
     def from_enrichment_dict(cls, inst_dict: dict[str, Any]) -> "InstitutionEntity":

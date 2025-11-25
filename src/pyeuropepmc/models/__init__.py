@@ -11,11 +11,13 @@ from pyeuropepmc.models.figure import FigureEntity
 from pyeuropepmc.models.institution import InstitutionEntity
 from pyeuropepmc.models.paper import PaperEntity
 from pyeuropepmc.models.reference import ReferenceEntity
+from pyeuropepmc.models.scholarly_work import ScholarlyWorkEntity
 from pyeuropepmc.models.section import SectionEntity
 from pyeuropepmc.models.table import TableEntity, TableRowEntity
 
 __all__ = [
     "BaseEntity",
+    "ScholarlyWorkEntity",
     "AuthorEntity",
     "InstitutionEntity",
     "PaperEntity",
