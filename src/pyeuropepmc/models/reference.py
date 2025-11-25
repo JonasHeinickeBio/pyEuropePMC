@@ -4,31 +4,18 @@ Reference entity model for representing bibliographic references.
 
 from dataclasses import dataclass
 
-from pyeuropepmc.models.base import BaseEntity
-from pyeuropepmc.models.utils import normalize_doi
+from pyeuropepmc.models.scholarly_work import ScholarlyWorkEntity
 
 __all__ = ["ReferenceEntity"]
 
 
 @dataclass
-class ReferenceEntity(BaseEntity):
+class ReferenceEntity(ScholarlyWorkEntity):
     """
     Entity representing a bibliographic reference with BIBO alignment.
 
     Attributes
     ----------
-    title : Optional[str]
-        Reference title
-    source : Optional[str]
-        Journal/book source
-    year : Optional[str]
-        Publication year
-    volume : Optional[str]
-        Journal volume
-    pages : Optional[str]
-        Page range
-    doi : Optional[str]
-        Digital Object Identifier
     authors : Optional[str]
         Author list (comma-separated)
 
@@ -36,20 +23,12 @@ class ReferenceEntity(BaseEntity):
     --------
     >>> ref = ReferenceEntity(
     ...     title="Sample Article",
-    ...     source="Nature",
-    ...     year="2021",
+    ...     journal="Nature",
+    ...     publication_year=2021,
     ...     doi="10.1038/nature12345"
     ... )
     >>> ref.validate()
     """
-
-    title: str | None = None
-    source: str | None = None
-    year: str | None = None
-    volume: str | None = None
-    pages: str | None = None
-    doi: str | None = None
-    authors: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""
@@ -60,13 +39,18 @@ class ReferenceEntity(BaseEntity):
 
     def validate(self) -> None:
         """Validate reference data."""
-        # References can exist with minimal information
-        pass
+        # References can exist with minimal information, but validate what we have
+        from pyeuropepmc.models.utils import validate_and_normalize_year
+
+        if self.publication_year is not None:
+            self.publication_year = validate_and_normalize_year(self.publication_year)
+
+        super().validate()
 
     def normalize(self) -> None:
-        """Normalize reference data (DOI lowercase, trim whitespace)."""
-        self.doi = normalize_doi(self.doi)
-        if self.title:
-            self.title = self.title.strip()
-        if self.source:
-            self.source = self.source.strip()
+        """Normalize reference data (trim whitespace, validate types)."""
+        from pyeuropepmc.models.utils import normalize_string_field
+
+        if isinstance(self.authors, str):
+            self.authors = normalize_string_field(self.authors)
+        super().normalize()

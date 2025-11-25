@@ -9,7 +9,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any
 import uuid
 
-from rdflib import Graph, Literal, Namespace, URIRef
+from rdflib import Graph, Namespace, URIRef
 
 # RDF namespaces for ontology alignment
 EX = Namespace("http://example.org/")
@@ -69,6 +69,8 @@ class BaseEntity:
     source_uri: str | None = None
     confidence: float | None = None
     types: list[str] = field(default_factory=list)
+    data_sources: list[str] = field(default_factory=list)
+    last_updated: str | None = None
 
     def mint_uri(self, path: str) -> URIRef:
         """
@@ -91,8 +93,9 @@ class BaseEntity:
         >>> print(uri)
         http://example.org/data/paper/12345
         """
-        _id = self.id or str(uuid.uuid4())
-        return URIRef(f"{DATA}{path}/{_id}")
+        if self.id is None:
+            self.id = str(uuid.uuid4())
+        return URIRef(f"{DATA}{path}/{self.id}")
 
     def validate(self) -> None:
         """
@@ -135,11 +138,77 @@ class BaseEntity:
         """
         return asdict(self)
 
+    def merge_from_source(self, source_data: dict[str, Any], source_name: str) -> None:
+        """
+        Merge data from a source into this entity, tracking provenance.
+
+        Parameters
+        ----------
+        source_data : dict[str, Any]
+            Data from the source to merge
+        source_name : str
+            Name of the data source
+
+        Examples
+        --------
+        >>> entity = BaseEntity()
+        >>> entity.merge_from_source({"label": "Test"}, "search_api")
+        >>> print(entity.data_sources)
+        ['search_api']
+        """
+        from datetime import datetime
+
+        # Track data source
+        if source_name not in self.data_sources:
+            self.data_sources.append(source_name)
+
+        # Update last_updated timestamp
+        self.last_updated = datetime.now().isoformat() + "Z"
+
+        # Merge data (subclasses should override for specific logic)
+        for key, value in source_data.items():
+            if hasattr(self, key) and value is not None:
+                current_value = getattr(self, key)
+                # Only update if current value is None or empty
+                if current_value is None or (
+                    isinstance(current_value, str) and not current_value.strip()
+                ):
+                    setattr(self, key, value)
+
+    @staticmethod
+    def _is_valid_uri(uri_string: str) -> bool:
+        """
+        Check if a string looks like a valid URI.
+
+        Parameters
+        ----------
+        uri_string : str
+            String to validate as URI
+
+        Returns
+        -------
+        bool
+            True if string appears to be a valid URI
+
+        Examples
+        --------
+        >>> BaseEntity._is_valid_uri("http://example.com")
+        True
+        >>> BaseEntity._is_valid_uri("BMJ Open Respir Res")
+        False
+        """
+        if not uri_string or not isinstance(uri_string, str):
+            return False
+
+        # Basic URI validation - must have scheme (protocol) like http://, https://, ftp://, etc.
+        # This is a simple check - rdflib's URIRef will do more thorough validation
+        return "://" in uri_string and len(uri_string.split("://", 1)[0]) > 0
+
     def to_rdf(
         self,
         g: Graph,
         uri: URIRef | None = None,
-        mapper: Any | None = None,
+        mapper: Any = None,
         related_entities: dict[str, list[Any]] | None = None,
         extraction_info: dict[str, Any] | None = None,
     ) -> URIRef:
@@ -190,24 +259,14 @@ class BaseEntity:
         # Map dataclass fields using the mapper configuration
         mapper.map_fields(g, subject, self)
 
-        # Map relationships if provided
-        if related_entities:
-            mapper.map_relationships(g, subject, self, related_entities)
+        # Map relationships (always call, even if no related_entities provided)
+        # This allows entities to have relationships defined as attributes
+        mapper.map_relationships(g, subject, self, related_entities, extraction_info)
 
         # Add provenance information
         mapper.add_provenance(g, subject, self, extraction_info)
 
         # Add ontology alignments and biomedical mappings
         mapper.map_ontology_alignments(g, subject, self)
-
-        # Add common provenance and metadata (legacy support)
-        if self.source_uri:
-            g.add((subject, PROV.wasDerivedFrom, URIRef(self.source_uri)))
-
-        if self.label:
-            g.add((subject, RDFS.label, Literal(self.label)))
-
-        if self.confidence is not None:
-            g.add((subject, EX.confidence, Literal(self.confidence)))
 
         return subject

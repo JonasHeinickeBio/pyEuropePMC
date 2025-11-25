@@ -10,6 +10,14 @@ from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import RDF
 import yaml
 
+from pyeuropepmc.mappers.rdf_utils import (
+    generate_entity_uri,
+    map_multi_value_fields,
+    map_ontology_alignments,
+    map_single_value_fields,
+    normalize_name,
+)
+
 __all__ = ["RDFMapper"]
 
 
@@ -53,6 +61,13 @@ class RDFMapper:
 
         self.config = self._load_config(config_path)
         self.namespaces = self._build_namespaces()
+
+        # Configuration options for KG structure
+        self.kg_config = self.config.get("_kg_structure", {})
+        self.default_include_content = self.kg_config.get("include_content", True)
+        self.default_kg_type = self.kg_config.get(
+            "default_type", "complete"
+        )  # "complete", "metadata", "content"
 
     def _load_config(self, config_path: str) -> dict[str, Any]:
         """
@@ -99,6 +114,35 @@ class RDFMapper:
             namespaces[prefix] = Namespace(uri)
 
         return namespaces
+
+    @staticmethod
+    def _is_valid_uri(uri_string: str) -> bool:
+        """
+        Check if a string looks like a valid URI.
+
+        Parameters
+        ----------
+        uri_string : str
+            String to validate as URI
+
+        Returns
+        -------
+        bool
+            True if string appears to be a valid URI
+
+        Examples
+        --------
+        >>> RDFMapper._is_valid_uri("http://example.com")
+        True
+        >>> RDFMapper._is_valid_uri("BMJ Open Respir Res")
+        False
+        """
+        if not uri_string or not isinstance(uri_string, str):
+            return False
+
+        # Basic URI validation - must have scheme (protocol) like http://, https://, ftp://, etc.
+        # This is a simple check - rdflib's URIRef will do more thorough validation
+        return "://" in uri_string and len(uri_string.split("://", 1)[0]) > 0
 
     def _resolve_predicate(self, predicate_str: str) -> URIRef:
         """
@@ -177,26 +221,45 @@ class RDFMapper:
         >>> subject = URIRef("http://example.org/paper1")
         >>> mapper.map_fields(g, subject, paper)
         """
-        entity_class_name = entity.__class__.__name__
-        mapping = self.config.get(entity_class_name, {})
+        # Get mappings for this class and all parent classes
+        all_mappings = self._get_entity_mappings(entity)
 
-        # Map single-value fields
+        for mapping in all_mappings:
+            # Map single-value fields
+            self._map_single_value_fields(g, subject, entity, mapping)
+
+            # Map multi-value fields
+            self._map_multi_value_fields(g, subject, entity, mapping)
+
+    def _get_entity_mappings(self, entity: Any) -> list[dict[str, Any]]:
+        """Get mappings for entity class and parent classes."""
+        all_mappings = []
+        for cls in entity.__class__.__mro__:
+            if cls.__name__.endswith("Entity"):
+                mapping = self.config.get(cls.__name__, {})
+                if mapping:
+                    all_mappings.append(mapping)
+
+        # If no mappings found, try direct class name lookup as fallback
+        if not all_mappings:
+            mapping = self.config.get(entity.__class__.__name__, {})
+            all_mappings = [mapping] if mapping else []
+
+        return all_mappings
+
+    def _map_single_value_fields(
+        self, g: Graph, subject: URIRef, entity: Any, mapping: dict[str, Any]
+    ) -> None:
+        """Map single-value fields to RDF triples."""
         fields_mapping = mapping.get("fields", {})
-        for field_name, predicate_str in fields_mapping.items():
-            value = getattr(entity, field_name, None)
-            if value is not None:
-                predicate = self._resolve_predicate(predicate_str)
-                g.add((subject, predicate, Literal(value)))
+        map_single_value_fields(g, subject, entity, fields_mapping, self._resolve_predicate)
 
-        # Map multi-value fields
+    def _map_multi_value_fields(
+        self, g: Graph, subject: URIRef, entity: Any, mapping: dict[str, Any]
+    ) -> None:
+        """Map multi-value fields to RDF triples."""
         multi_value_mapping = mapping.get("multi_value_fields", {})
-        for field_name, predicate_str in multi_value_mapping.items():
-            values = getattr(entity, field_name, None)
-            if values is not None and isinstance(values, list):
-                predicate = self._resolve_predicate(predicate_str)
-                for value in values:
-                    if value is not None:
-                        g.add((subject, predicate, Literal(value)))
+        map_multi_value_fields(g, subject, entity, multi_value_mapping, self._resolve_predicate)
 
     def map_relationships(
         self,
@@ -204,6 +267,7 @@ class RDFMapper:
         subject: URIRef,
         entity: Any,
         related_entities: dict[str, list[Any]] | None = None,
+        extraction_info: dict[str, Any] | None = None,
     ) -> None:
         """
         Map entity relationships to RDF triples based on configuration.
@@ -218,6 +282,8 @@ class RDFMapper:
             Entity instance to map
         related_entities : Optional[dict[str, list[Any]]]
             Dictionary of related entities by relationship name
+        extraction_info : Optional[dict[str, Any]]
+            Additional extraction metadata for provenance
 
         Examples
         --------
@@ -241,21 +307,40 @@ class RDFMapper:
             predicate_str = rel_config.get("predicate")
             inverse_predicate = rel_config.get("inverse")
 
-            if predicate_str and rel_name in related_entities:
-                predicate = self._resolve_predicate(predicate_str)
-                related_objs = related_entities[rel_name]
+            if predicate_str:
+                # Check if related objects are provided in related_entities dict
+                related_objs = related_entities.get(rel_name) if related_entities else None
 
-                for related_obj in related_objs:
-                    # Generate URI for related object
-                    related_uri = self._generate_entity_uri(related_obj)
+                # If not in related_entities, check if it's an attribute of the entity
+                if related_objs is None and hasattr(entity, rel_name):
+                    attr_value = getattr(entity, rel_name)
+                    if attr_value is not None:
+                        related_objs = attr_value if isinstance(attr_value, list) else [attr_value]
 
-                    # Add relationship triple
-                    g.add((subject, predicate, related_uri))
+                if related_objs:
+                    predicate = self._resolve_predicate(predicate_str)
 
-                    # Add inverse relationship if specified
-                    if inverse_predicate:
-                        inv_predicate = self._resolve_predicate(inverse_predicate)
-                        g.add((related_uri, inv_predicate, subject))
+                    for related_obj in related_objs:
+                        if related_obj is not None:
+                            # Generate URI for related object
+                            related_uri = self._generate_entity_uri(related_obj)
+
+                            # Add relationship triple
+                            g.add((subject, predicate, related_uri))
+
+                            # Add inverse relationship if specified
+                            if inverse_predicate:
+                                inv_predicate = self._resolve_predicate(inverse_predicate)
+                                g.add((related_uri, inv_predicate, subject))
+
+                            # Generate detailed RDF for the related entity
+                            if hasattr(related_obj, "to_rdf"):
+                                related_obj.to_rdf(
+                                    g,
+                                    uri=related_uri,
+                                    mapper=self,
+                                    extraction_info=extraction_info,
+                                )
 
     def _normalize_name(self, name: str) -> str | None:
         """
@@ -271,14 +356,7 @@ class RDFMapper:
         str | None
             Normalized name suitable for URIs, or None if empty
         """
-        if not name:
-            return None
-        import re
-
-        # Remove non-alphanumeric except spaces, lowercase, replace spaces with hyphens
-        normalized = re.sub(r"[^a-zA-Z0-9\s]", "", name).lower().strip()
-        normalized = re.sub(r"\s+", "-", normalized)
-        return normalized if normalized else None
+        return normalize_name(name)
 
     def _generate_entity_uri(self, entity: Any) -> URIRef:
         """
@@ -303,55 +381,7 @@ class RDFMapper:
         >>> print(uri)
         https://doi.org/10.1234/test.2021.001
         """
-        entity_class = entity.__class__.__name__
-
-        # DOI-based URIs for papers
-        if entity_class == "PaperEntity" and entity.doi:
-            return URIRef(f"https://doi.org/{entity.doi}")
-
-        # PMC-based URIs for papers
-        if entity_class == "PaperEntity" and entity.pmcid:
-            return URIRef(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{entity.pmcid}/")
-
-        # Author URIs
-        if entity_class == "AuthorEntity":
-            if getattr(entity, "orcid", None):
-                return URIRef(f"https://orcid.org/{entity.orcid}")
-            elif getattr(entity, "openalex_id", None):
-                return URIRef(entity.openalex_id)
-            else:
-                normalized_name = self._normalize_name(
-                    getattr(entity, "full_name", "") or getattr(entity, "name", "")
-                )
-                if normalized_name:
-                    return URIRef(f"http://example.org/data/author/{normalized_name}")
-
-        # Institution URIs
-        if entity_class == "InstitutionEntity":
-            if getattr(entity, "ror_id", None):
-                return URIRef(entity.ror_id)
-            elif getattr(entity, "openalex_id", None):
-                return URIRef(entity.openalex_id)
-            elif getattr(entity, "display_name", None):
-                normalized_name = self._normalize_name(entity.display_name)
-                if normalized_name:
-                    return URIRef(f"http://example.org/data/institution/{normalized_name}")
-
-        # DOI-based URIs for references
-        if entity_class == "ReferenceEntity" and getattr(entity, "doi", None):
-            return URIRef(f"https://doi.org/{entity.doi}")
-
-        # Fallback to internal URIs
-        if hasattr(entity, "mint_uri"):
-            return URIRef(entity.mint_uri(entity_class.lower().replace("entity", "")))
-        else:
-            # Generate UUID-based URI
-            import uuid
-
-            entity_id = getattr(entity, "id", None) or str(uuid.uuid4())
-            return URIRef(
-                f"http://example.org/data/{entity_class.lower().replace('entity', '')}/{entity_id}"
-            )
+        return generate_entity_uri(entity)
 
     def add_provenance(
         self, g: Graph, subject: URIRef, entity: Any, extraction_info: dict[str, Any] | None = None
@@ -394,7 +424,7 @@ class RDFMapper:
         g.add((subject, self._resolve_predicate("prov:wasGeneratedBy"), Literal(method)))
 
         # Add source information
-        if entity.source_uri:
+        if entity.source_uri and self._is_valid_uri(entity.source_uri):
             g.add(
                 (
                     subject,
@@ -448,132 +478,19 @@ class RDFMapper:
         >>> subject = URIRef("http://example.org/paper1")
         >>> mapper.map_ontology_alignments(g, subject, paper)
         """
-        entity_class_name = entity.__class__.__name__
+        map_ontology_alignments(g, subject, entity, self._resolve_predicate)
 
-        if entity_class_name == "PaperEntity":
-            self._map_paper_ontology_alignments(g, subject, entity)
-        elif entity_class_name == "AuthorEntity":
-            self._map_author_ontology_alignments(g, subject, entity)
-        elif entity_class_name == "InstitutionEntity":
-            self._map_institution_ontology_alignments(g, subject, entity)
-        elif entity_class_name == "ReferenceEntity":
-            self._map_reference_ontology_alignments(g, subject, entity)
+    def _bind_namespaces(self, g: Graph) -> None:
+        """
+        Bind namespaces to the graph for proper serialization.
 
-        # Add owl:sameAs links for external identifiers
-        self._add_external_identifiers(g, subject, entity)
-
-    def _map_paper_ontology_alignments(self, g: Graph, subject: URIRef, entity: Any) -> None:
-        """Map ontology alignments for paper entities."""
-        # MeSH terms alignment (placeholder)
-        if hasattr(entity, "keywords") and entity.keywords:
-            for keyword in entity.keywords:
-                g.add((subject, self._resolve_predicate("mesh:hasSubject"), Literal(keyword)))
-
-        # Research domain classification (placeholder)
-        if hasattr(entity, "research_domain"):
-            g.add(
-                (
-                    subject,
-                    self._resolve_predicate("obo:RO_0000053"),
-                    Literal(entity.research_domain),
-                )
-            )
-
-    def _map_author_ontology_alignments(self, g: Graph, subject: URIRef, entity: Any) -> None:
-        """Map ontology alignments for author entities."""
-        # Note: Institutions are now handled via relationships instead of literal affiliations
-        pass
-
-    def _map_institution_ontology_alignments(
-        self, g: Graph, subject: URIRef, entity: Any
-    ) -> None:
-        """Map ontology alignments for institution entities."""
-        # Add geographic coordinates if available
-        if hasattr(entity, "latitude") and hasattr(entity, "longitude"):
-            if entity.latitude is not None and entity.longitude is not None:
-                # Already handled in fields mapping, but can add geo:SpatialThing type
-                g.add((subject, self._resolve_predicate("rdf:type"), URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing")))
-
-    def _map_reference_ontology_alignments(self, g: Graph, subject: URIRef, entity: Any) -> None:
-        """Map ontology alignments for reference entities."""
-        # Currently no specific alignments for references
-        pass
-
-    def _add_external_identifiers(self, g: Graph, subject: URIRef, entity: Any) -> None:
-        """Add owl:sameAs links for external identifiers."""
-        entity_class_name = entity.__class__.__name__
-
-        if entity_class_name == "PaperEntity":
-            if entity.doi:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(f"https://doi.org/{entity.doi}"),
-                    )
-                )
-            if entity.pmcid:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{entity.pmcid}/"),
-                    )
-                )
-
-        elif entity_class_name == "AuthorEntity":
-            if hasattr(entity, "orcid") and entity.orcid:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(f"https://orcid.org/{entity.orcid}"),
-                    )
-                )
-            if hasattr(entity, "openalex_id") and entity.openalex_id:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(entity.openalex_id),
-                    )
-                )
-
-        elif entity_class_name == "InstitutionEntity":
-            if hasattr(entity, "ror_id") and entity.ror_id:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(entity.ror_id),
-                    )
-                )
-            if hasattr(entity, "openalex_id") and entity.openalex_id:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(entity.openalex_id),
-                    )
-                )
-            if hasattr(entity, "wikidata_id") and entity.wikidata_id:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(f"https://www.wikidata.org/wiki/{entity.wikidata_id}"),
-                    )
-                )
-
-        elif entity_class_name == "ReferenceEntity":
-            if hasattr(entity, "doi") and entity.doi:
-                g.add(
-                    (
-                        subject,
-                        self._resolve_predicate("owl:sameAs"),
-                        URIRef(f"https://doi.org/{entity.doi}"),
-                    )
-                )
+        Parameters
+        ----------
+        g : Graph
+            RDF graph to bind namespaces to
+        """
+        for prefix, namespace in self.namespaces.items():
+            g.bind(prefix, namespace)
 
     def serialize_graph(
         self, g: Graph, format: str = "turtle", destination: str | None = None
@@ -603,8 +520,446 @@ class RDFMapper:
         >>> # ... add triples to g ...
         >>> ttl = mapper.serialize_graph(g, format="turtle")
         """
+        # Bind namespaces from configuration to ensure proper prefixes
+        self._bind_namespaces(g)
+
         if destination:
             g.serialize(destination=destination, format=format)
             return ""
         else:
             return str(g.serialize(format=format))
+
+    def convert_and_save_entities_to_rdf(
+        self,
+        entities_data: dict[str, dict[str, Any]],
+        output_dir: str = "rdf_output",
+        prefix: str = "",
+        extraction_info: dict[str, Any] | None = None,
+        filename_template: str | None = None,
+        include_content: bool = True,
+    ) -> dict[str, Graph]:
+        """
+        Convert a dictionary of entities to RDF graphs and save them to files.
+
+        This method is modular and reusable for any type of entity that has a to_rdf method.
+
+        Parameters
+        ----------
+        entities_data : dict
+            Dictionary mapping identifier to entity data. Each value should be a dict
+            containing at least 'entity' key, and optionally 'related_entities' key.
+            Example: {
+                "doi1": {
+                    "entity": paper_obj,
+                    "related_entities": {"authors": [...], "references": [...]}
+                },
+                "doi2": {"entity": paper_obj2, "related_entities": {...}}
+            }
+        output_dir : str
+            Directory to save RDF files
+        prefix : str
+            Prefix for filename (e.g., "enriched_")
+        extraction_info : Optional[dict]
+            Extraction metadata for provenance
+        filename_template : Optional[str]
+            Template for filename generation. Can use {prefix}, {identifier}, {entity_type}.
+            Default: "{prefix}{entity_type}_{identifier}.ttl"
+        include_content : bool
+            Whether to include content entities (sections, references, tables, figures).
+            If False, only metadata entities (papers, authors, institutions) are included.
+
+        Returns
+        -------
+        dict
+            Dictionary mapping identifier to RDF Graph objects
+        """
+        from datetime import datetime
+
+        # Ensure output directory exists
+        os.makedirs(output_dir, exist_ok=True)
+
+        rdf_graphs = {}
+
+        for identifier, entity_data in entities_data.items():
+            try:
+                entity = entity_data["entity"]
+                related_entities = entity_data.get("related_entities", {})
+
+                # Filter related entities based on include_content flag
+                if not include_content:
+                    related_entities = self._filter_metadata_entities(related_entities)
+
+                entity_type = entity.__class__.__name__.lower().replace("entity", "")
+                print(f"Converting to RDF: {identifier} ({entity_type})")
+
+                # Create RDF graph
+                g = Graph()
+
+                # Bind namespaces immediately to ensure proper prefixes during serialization
+                self._bind_namespaces(g)
+
+                # Prepare extraction info for provenance
+                current_extraction_info = extraction_info or {
+                    "timestamp": datetime.now().isoformat() + "Z",
+                    "method": "pyeuropepmc_parser",
+                    "quality": {"validation_passed": True, "completeness_score": 0.95},
+                }
+
+                # Convert entity to RDF with relationships
+                entity.to_rdf(
+                    g,
+                    mapper=self,
+                    related_entities=related_entities,
+                    extraction_info=current_extraction_info,
+                )
+
+                if g:
+                    rdf_graphs[identifier] = g
+                    # Count triples in the graph
+                    triple_count = len(list(g))
+                    print(f"  [OK] Successfully converted to RDF ({triple_count} triples)")
+
+                    # Generate filename
+                    if filename_template is None:
+                        safe_identifier = identifier.replace("/", "_").replace(".", "_")
+                        filename = f"{output_dir}/{prefix}{entity_type}_{safe_identifier}.ttl"
+                    else:
+                        safe_identifier = identifier.replace("/", "_").replace(".", "_")
+                        filename = filename_template.format(
+                            prefix=prefix, identifier=safe_identifier, entity_type=entity_type
+                        )
+
+                    try:
+                        self.serialize_graph(g, format="turtle", destination=filename)
+                        print(f"  [OK] Saved to: {filename}")
+                    except Exception as e:
+                        print(f"  [ERROR] Error saving {filename}: {str(e)}")
+                else:
+                    print(f"  [ERROR] Failed to convert {identifier} to RDF")
+
+            except Exception as e:
+                print(f"  [ERROR] Error converting {identifier}: {str(e)}")
+
+        print(f"Successfully converted {len(rdf_graphs)} entities to RDF")
+        return rdf_graphs
+
+    def convert_and_save_papers_to_rdf(
+        self,
+        papers_dict: dict[str, tuple[Any, list[Any], list[Any], list[Any], list[Any], list[Any]]],
+        output_dir: str = "rdf_output",
+        prefix: str = "",
+        extraction_info: dict[str, Any] | None = None,
+        include_content: bool | None = None,
+    ) -> dict[str, Graph]:
+        """
+        Convert a dictionary of papers to RDF graphs and save them to files.
+
+        This is a convenience method for paper-specific conversion that maintains
+        backward compatibility.
+
+        Parameters
+        ----------
+        papers_dict : dict
+            Dictionary mapping DOI to (paper, authors, sections, tables, figures, references)
+        output_dir : str
+            Directory to save RDF files
+        prefix : str
+            Prefix for filename (e.g., "enriched_")
+        extraction_info : Optional[dict]
+            Extraction metadata for provenance
+        include_content : Optional[bool]
+            Whether to include content entities. If None, uses default from config.
+
+        Returns
+        -------
+        dict
+            Dictionary mapping DOI to RDF Graph objects
+        """
+        # Convert the tuple format to the new dict format
+        entities_data = {}
+        for doi, (paper, authors, sections, tables, _figures, references) in papers_dict.items():
+            entities_data[doi] = {
+                "entity": paper,
+                "related_entities": {
+                    "authors": authors,
+                    "sections": sections,
+                    "tables": tables,
+                    "references": references,
+                },
+            }
+
+        # Use configured default if include_content is not specified
+        if include_content is None:
+            include_content = self.default_include_content
+
+        return self.convert_and_save_entities_to_rdf(
+            entities_data, output_dir, prefix, extraction_info, include_content=include_content
+        )
+
+    def save_rdf(
+        self,
+        entities_data: dict[str, dict[str, Any]],
+        output_dir: str = "rdf_output",
+        kg_type: str | None = None,
+        extraction_info: dict[str, Any] | None = None,
+    ) -> dict[str, Graph]:
+        """
+        Convert entities to RDF graphs based on configured KG type and save them.
+
+        This is a convenience method that uses the configured default KG structure.
+
+        Parameters
+        ----------
+        entities_data : dict
+            Dictionary mapping identifier to entity data
+        output_dir : str
+            Directory to save RDF files
+        kg_type : Optional[str]
+            Type of knowledge graph: "complete", "metadata", "content".
+            If None, uses default from config.
+        extraction_info : Optional[dict]
+            Extraction metadata for provenance
+
+        Returns
+        -------
+        dict
+            Dictionary mapping identifier to RDF Graph objects
+        """
+        if kg_type is None:
+            kg_type = self.default_kg_type
+
+        if kg_type == "metadata":
+            return self.save_metadata_rdf(
+                entities_data, output_dir, extraction_info=extraction_info
+            )
+        elif kg_type == "content":
+            return self.save_content_rdf(
+                entities_data, output_dir, extraction_info=extraction_info
+            )
+        else:  # "complete" or any other value
+            return self.save_complete_rdf(
+                entities_data, output_dir, extraction_info=extraction_info
+            )
+
+    def _filter_metadata_entities(
+        self, related_entities: dict[str, list[Any]]
+    ) -> dict[str, list[Any]]:
+        """
+        Filter related entities to include only metadata entities.
+
+        Metadata entities include: papers, authors, institutions.
+        Content entities (sections, references, tables, figures) are excluded.
+
+        Parameters
+        ----------
+        related_entities : dict[str, list[Any]]
+            Dictionary of related entities by relationship name
+
+        Returns
+        -------
+        dict[str, list[Any]]
+            Filtered dictionary containing only metadata entities
+        """
+        # Define metadata entity types (exclude content entities)
+        metadata_entity_types = {"PaperEntity", "AuthorEntity", "InstitutionEntity"}
+
+        filtered_entities = {}
+        for rel_name, entities in related_entities.items():
+            if entities:
+                # Filter entities by type
+                filtered_list = [
+                    entity
+                    for entity in entities
+                    if entity.__class__.__name__ in metadata_entity_types
+                ]
+                if filtered_list:  # Only include non-empty lists
+                    filtered_entities[rel_name] = filtered_list
+
+        return filtered_entities
+
+    def save_metadata_rdf(
+        self,
+        entities_data: dict[str, dict[str, Any]],
+        output_dir: str = "rdf_output",
+        prefix: str = "metadata_",
+        extraction_info: dict[str, Any] | None = None,
+        filename_template: str | None = None,
+    ) -> dict[str, Graph]:
+        """
+        Convert entities to RDF graphs containing only metadata entities and save them.
+
+        This creates knowledge graphs focused on bibliographic metadata:
+        - Papers (with basic metadata)
+        - Authors and their affiliations
+        - Institutions
+        - Excludes content entities like sections, references, tables, figures
+
+        Parameters
+        ----------
+        entities_data : dict
+            Dictionary mapping identifier to entity data
+        output_dir : str
+            Directory to save RDF files
+        prefix : str
+            Prefix for filename (default: "metadata_")
+        extraction_info : Optional[dict]
+            Extraction metadata for provenance
+        filename_template : Optional[str]
+            Template for filename generation
+
+        Returns
+        -------
+        dict
+            Dictionary mapping identifier to RDF Graph objects
+        """
+        return self.convert_and_save_entities_to_rdf(
+            entities_data=entities_data,
+            output_dir=output_dir,
+            prefix=prefix,
+            extraction_info=extraction_info,
+            filename_template=filename_template,
+            include_content=False,
+        )
+
+    def save_content_rdf(
+        self,
+        entities_data: dict[str, dict[str, Any]],
+        output_dir: str = "rdf_output",
+        prefix: str = "content_",
+        extraction_info: dict[str, Any] | None = None,
+        filename_template: str | None = None,
+    ) -> dict[str, Graph]:
+        """
+        Convert entities to RDF graphs containing content-focused entities and save them.
+
+        This creates knowledge graphs focused on document content:
+        - Papers (as containers for content)
+        - Sections and subsections
+        - References and citations
+        - Tables and table rows
+        - Figures
+        - Excludes detailed author/institution metadata
+
+        Parameters
+        ----------
+        entities_data : dict
+            Dictionary mapping identifier to entity data
+        output_dir : str
+            Directory to save RDF files
+        prefix : str
+            Prefix for filename (default: "content_")
+        extraction_info : Optional[dict]
+            Extraction metadata for provenance
+        filename_template : Optional[str]
+            Template for filename generation
+
+        Returns
+        -------
+        dict
+            Dictionary mapping identifier to RDF Graph objects
+        """
+        # For content KG, include papers but filter their related entities to content-only
+        content_entities_data = {}
+        for identifier, entity_data in entities_data.items():
+            entity = entity_data["entity"]
+            related_entities = entity_data.get("related_entities", {})
+
+            # Filter to include only content-related entities
+            content_related = self._filter_content_entities_from_related(related_entities)
+
+            # Only include if there are content entities or if it's a content entity itself
+            if (
+                entity.__class__.__name__
+                in {
+                    "SectionEntity",
+                    "ReferenceEntity",
+                    "TableEntity",
+                    "TableRowEntity",
+                    "FigureEntity",
+                }
+                or content_related
+            ):
+                content_entities_data[identifier] = {
+                    "entity": entity,
+                    "related_entities": content_related,
+                }
+
+        return self.convert_and_save_entities_to_rdf(
+            entities_data=content_entities_data,
+            output_dir=output_dir,
+            prefix=prefix,
+            extraction_info=extraction_info,
+            filename_template=filename_template,
+            include_content=True,
+        )
+
+    def _filter_content_entities_from_related(
+        self, related_entities: dict[str, list[Any]]
+    ) -> dict[str, list[Any]]:
+        """
+        Filter related entities to include only content-related entities.
+
+        Content-related entities include: sections, references, tables, figures.
+        Metadata entities (authors, institutions) are excluded.
+
+        Parameters
+        ----------
+        related_entities : dict[str, list[Any]]
+            Dictionary of related entities by relationship name
+
+        Returns
+        -------
+        dict[str, list[Any]]
+            Filtered dictionary containing only content-related entities
+        """
+        # Define content relationship names (exclude metadata relationships)
+        content_relationships = {"sections", "references", "tables", "figures", "rows"}
+
+        filtered_entities = {}
+        for rel_name, entities in related_entities.items():
+            if rel_name in content_relationships and entities:
+                filtered_entities[rel_name] = entities
+
+        return filtered_entities
+
+    def save_complete_rdf(
+        self,
+        entities_data: dict[str, dict[str, Any]],
+        output_dir: str = "rdf_output",
+        prefix: str = "",
+        extraction_info: dict[str, Any] | None = None,
+        filename_template: str | None = None,
+    ) -> dict[str, Graph]:
+        """
+        Convert entities to complete RDF graphs containing all entities and save them.
+
+        This creates full knowledge graphs including both metadata and content entities:
+        - Papers, authors, institutions (metadata)
+        - Sections, references, tables, figures (content)
+
+        Parameters
+        ----------
+        entities_data : dict
+            Dictionary mapping identifier to entity data
+        output_dir : str
+            Directory to save RDF files
+        prefix : str
+            Prefix for filename (default: "")
+        extraction_info : Optional[dict]
+            Extraction metadata for provenance
+        filename_template : Optional[str]
+            Template for filename generation
+
+        Returns
+        -------
+        dict
+            Dictionary mapping identifier to RDF Graph objects
+        """
+        return self.convert_and_save_entities_to_rdf(
+            entities_data=entities_data,
+            output_dir=output_dir,
+            prefix=prefix,
+            extraction_info=extraction_info,
+            filename_template=filename_template,
+            include_content=True,
+        )

@@ -2,7 +2,7 @@
 Builder functions to convert FullTextXMLParser outputs to entity models.
 """
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from pyeuropepmc.models import (
     AuthorEntity,
@@ -20,8 +20,67 @@ if TYPE_CHECKING:
 __all__ = ["build_paper_entities"]
 
 
+def _build_author_entity(
+    author_data: str | dict[str, Any], affiliations: list[dict[str, Any]]
+) -> AuthorEntity:
+    """Build a single AuthorEntity from author data and affiliations."""
+    from pyeuropepmc.models.institution import InstitutionEntity
+
+    if isinstance(author_data, str):
+        # Backward compatibility: handle string names
+        return AuthorEntity(full_name=author_data)
+
+    # New format: detailed author data
+    full_name = author_data.get("full_name", "")
+    if not full_name:
+        raise ValueError("Author data must contain full_name")
+
+    # Get affiliation text from referenced affiliations
+    affiliation_text = None
+    institution_entities = []
+    affiliation_refs = author_data.get("affiliation_refs", [])
+
+    if affiliation_refs:
+        # Create a lookup dict for affiliations by ID
+        aff_lookup = {aff["id"]: aff for aff in affiliations if aff.get("id")}
+
+        # Combine text from all referenced affiliations
+        aff_texts = []
+        for ref_id in affiliation_refs:
+            if ref_id in aff_lookup:
+                aff_data = aff_lookup[ref_id]
+                # Prefer clean institution text, fallback to full text
+                text = aff_data.get("institution_text") or aff_data.get("text") or ""
+                if text:
+                    aff_texts.append(text.strip())
+
+                # Create InstitutionEntity from affiliation data
+                institution = InstitutionEntity(
+                    display_name=aff_data.get("institution")
+                    or aff_data.get("institution_text")
+                    or aff_data.get("text", ""),
+                    city=aff_data.get("city"),
+                    country=aff_data.get("country"),
+                    source_uri=f"urn:pmc-affiliation:{ref_id}",
+                )
+                institution_entities.append(institution)
+
+        if aff_texts:
+            affiliation_text = "; ".join(aff_texts)
+
+    return AuthorEntity(
+        full_name=full_name,
+        first_name=author_data.get("given_names", ""),
+        last_name=author_data.get("surname", ""),
+        orcid=author_data.get("orcid"),
+        affiliation_text=affiliation_text,
+        institutions=institution_entities if institution_entities else None,
+    )
+
+
 def build_paper_entities(
     parser: "FullTextXMLParser",
+    search_data: dict[str, Any] | None = None,
 ) -> tuple[
     PaperEntity,
     list[AuthorEntity],
@@ -78,11 +137,44 @@ def build_paper_entities(
         keywords=meta.get("keywords") or [],
     )
 
+    # Merge search API data if provided
+    if search_data:
+        search_paper_data = {
+            "pmid": search_data.get("pmid"),
+            "cited_by_count": search_data.get("citedByCount"),
+            "pub_type": search_data.get("pubType"),
+            "issn": search_data.get("journalIssn"),  # Map journalIssn to issn field
+            "page_info": search_data.get("pageInfo"),
+            "is_oa": search_data.get("isOpenAccess") == "Y",
+            "in_epmc": search_data.get("inEPMC") == "Y",
+            "in_pmc": search_data.get("inPMC") == "Y",
+            "has_pdf": search_data.get("hasPDF") == "Y",
+            "has_supplementary": search_data.get("hasSuppl") == "Y",
+            "has_references": search_data.get("hasReferences") == "Y",
+            "has_text_mined_terms": search_data.get("hasTextMinedTerms") == "Y",
+            "has_db_cross_references": (
+                search_data.get("hasDbCrossReferences") == "N"
+            ),  # API uses "N" for no
+            "has_labs_links": search_data.get("hasLabsLinks") == "Y",
+            "has_tm_accession_numbers": search_data.get("hasTMAccessionNumbers") == "Y",
+            "first_index_date": search_data.get("firstIndexDate"),
+            "first_publication_date": search_data.get("firstPublicationDate"),
+            "publication_year": int(search_data["pubYear"]) if "pubYear" in search_data else None,
+        }
+        paper.merge_from_source(search_paper_data, "europe_pmc_search")
+
     # Build AuthorEntity list
     authors = []
-    for author_name in meta.get("authors") or []:
-        author = AuthorEntity(full_name=author_name)
-        authors.append(author)
+    author_details = parser.extract_authors_detailed()
+    affiliations = parser.extract_affiliations()
+
+    for author_data in author_details:
+        try:
+            author = _build_author_entity(author_data, affiliations)
+            authors.append(author)
+        except ValueError:
+            # Skip invalid author data
+            continue
 
     # Build SectionEntity list
     sections = []
@@ -123,13 +215,15 @@ def build_paper_entities(
     # Build ReferenceEntity list
     references = []
     for ref_data in parser.extract_references():
+        year = ref_data.get("year")
         reference = ReferenceEntity(
             title=ref_data.get("title"),
-            source=ref_data.get("source"),
-            year=ref_data.get("year"),
+            journal=ref_data.get("source"),
+            publication_year=int(year) if year is not None else None,
             volume=ref_data.get("volume"),
             pages=ref_data.get("pages"),
             doi=ref_data.get("doi"),
+            pmid=ref_data.get("pmid"),
             authors=ref_data.get("authors"),
         )
         references.append(reference)
