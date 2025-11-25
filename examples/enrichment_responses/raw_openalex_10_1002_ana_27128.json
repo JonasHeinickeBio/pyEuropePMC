@@ -1,0 +1,5155 @@
+{
+  "source": "openalex",
+  "openalex_id": "https://openalex.org/W4404615720",
+  "title": "Neurologic Manifestations of Long <scp>COVID</scp> Disproportionately Affect Young and Middle‐Age Adults",
+  "publication_year": 2024,
+  "publication_date": "2024-11-22",
+  "type": "article",
+  "citation_count": 20,
+  "cited_by_count": 20,
+  "is_oa": true,
+  "oa_status": "hybrid",
+  "oa_url": "https://doi.org/10.1002/ana.27128",
+  "authors": [
+    {
+      "id": "https://openalex.org/A5081467867",
+      "display_name": "Natasha A. Choudhury",
+      "orcid": "https://orcid.org/0000-0002-4321-7344",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "first"
+    },
+    {
+      "id": "https://openalex.org/A5031553245",
+      "display_name": "Shreya Mukherjee",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5034921142",
+      "display_name": "Tracey Singer",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5062301202",
+      "display_name": "Aditi Venkatesh",
+      "orcid": "https://orcid.org/0000-0001-6933-6504",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5079602369",
+      "display_name": "Gina S. Perez Giraldo",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5077307453",
+      "display_name": "Millenia Jimenez",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5048419654",
+      "display_name": "Janet L. Miller",
+      "orcid": "https://orcid.org/0000-0002-2292-5501",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5102258904",
+      "display_name": "Melissa Lopez",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5113510968",
+      "display_name": "Barbara A. Hanson",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5095537010",
+      "display_name": "Aasheeta Parikh Bawa",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210147348",
+          "display_name": "Northwestern Medicine",
+          "country": "United States",
+          "type": "healthcare",
+          "ror_id": "https://ror.org/04fzwnh64",
+          "status": "active",
+          "types": [
+            "healthcare"
+          ],
+          "established": null,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern Medicine"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "alias"
+              ],
+              "value": "Northwestern Memorial HealthCare"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 41.85003,
+                "lng": -87.65005,
+                "name": "Chicago"
+              },
+              "geonames_id": 4887398
+            }
+          ],
+          "country_code": "US",
+          "city": "Chicago",
+          "latitude": 41.85003,
+          "longitude": -87.65005,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.nm.org/"
+            }
+          ],
+          "website": "https://www.nm.org/",
+          "external_ids": [
+            {
+              "all": [
+                "grid.490348.2"
+              ],
+              "preferred": "grid.490348.2",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 4683 9645"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q50036890"
+              ],
+              "preferred": "Q50036890",
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.490348.2",
+          "wikidata_id": "Q50036890",
+          "relationships": [
+            {
+              "label": "Central DuPage Hospital",
+              "type": "child",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "LivingWell Cancer Resource Center",
+              "type": "child",
+              "id": "https://ror.org/007nfvg13"
+            },
+            {
+              "label": "Marianjoy Rehabilitation Hospital",
+              "type": "child",
+              "id": "https://ror.org/03m5bv793"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "child",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "child",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "child",
+              "id": "https://ror.org/02p4far57"
+            },
+            {
+              "label": "Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/000e0be47"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5012236043",
+      "display_name": "Ayush Batra",
+      "orcid": "https://orcid.org/0000-0002-4783-5801",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5048339843",
+      "display_name": "Eric M. Liotta",
+      "orcid": "https://orcid.org/0000-0003-3182-585X",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5034232033",
+      "display_name": "Igor J. Koralnik",
+      "orcid": "https://orcid.org/0000-0001-6836-1468",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I111979921",
+          "display_name": "Northwestern University",
+          "country": "United States",
+          "type": "education",
+          "ror_id": "https://ror.org/000e0be47",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1851,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NU"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Northwestern University"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "IL",
+                "country_subdivision_name": "Illinois",
+                "lat": 42.04114,
+                "lng": -87.69006,
+                "name": "Evanston"
+              },
+              "geonames_id": 4891382
+            }
+          ],
+          "country_code": "US",
+          "city": "Evanston",
+          "latitude": 42.04114,
+          "longitude": -87.69006,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.northwestern.edu/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+            }
+          ],
+          "website": "http://www.northwestern.edu/",
+          "external_ids": [
+            {
+              "all": [
+                "100007059",
+                "100008250",
+                "100013826",
+                "100011755",
+                "100011764",
+                "100017796"
+              ],
+              "preferred": "100007059",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.16753.36"
+              ],
+              "preferred": "grid.16753.36",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0001 2299 3507"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q309350"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100007059",
+          "grid_id": "grid.16753.36",
+          "relationships": [
+            {
+              "label": "Center for Light Energy Activated Redox Processes",
+              "type": "child",
+              "id": "https://ror.org/004x7d471"
+            },
+            {
+              "label": "International Institute for Nanotechnology",
+              "type": "child",
+              "id": "https://ror.org/00rncr820"
+            },
+            {
+              "label": "Chan Zuckerberg Biohub Chicago",
+              "type": "child",
+              "id": "https://ror.org/014nxkk19"
+            },
+            {
+              "label": "Central DuPage Hospital",
+              "type": "related",
+              "id": "https://ror.org/00g1rc256"
+            },
+            {
+              "label": "Jesse Brown VA Medical Center",
+              "type": "related",
+              "id": "https://ror.org/049qtwc86"
+            },
+            {
+              "label": "John H. Stroger, Jr. Hospital of Cook County",
+              "type": "related",
+              "id": "https://ror.org/05626m728"
+            },
+            {
+              "label": "Lurie Children's Hospital",
+              "type": "related",
+              "id": "https://ror.org/03a6zw892"
+            },
+            {
+              "label": "Northwestern Medicine Lake Forest Hospital",
+              "type": "related",
+              "id": "https://ror.org/03fhrtz10"
+            },
+            {
+              "label": "Northwestern Memorial Hospital",
+              "type": "related",
+              "id": "https://ror.org/009543z50"
+            },
+            {
+              "label": "Shirley Ryan AbilityLab",
+              "type": "related",
+              "id": "https://ror.org/02ja0m249"
+            },
+            {
+              "label": "Northwestern University in Qatar",
+              "type": "related",
+              "id": "https://ror.org/006m74d95"
+            },
+            {
+              "label": "Northwestern Medicine",
+              "type": "related",
+              "id": "https://ror.org/04fzwnh64"
+            },
+            {
+              "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+              "type": "related",
+              "id": "https://ror.org/02p4far57"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "last"
+    }
+  ],
+  "institutions": [
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I4210147348",
+      "display_name": "Northwestern Medicine",
+      "country": "United States",
+      "type": "healthcare",
+      "ror_id": "https://ror.org/04fzwnh64",
+      "status": "active",
+      "types": [
+        "healthcare"
+      ],
+      "established": null,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern Medicine"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "alias"
+          ],
+          "value": "Northwestern Memorial HealthCare"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 41.85003,
+            "lng": -87.65005,
+            "name": "Chicago"
+          },
+          "geonames_id": 4887398
+        }
+      ],
+      "country_code": "US",
+      "city": "Chicago",
+      "latitude": 41.85003,
+      "longitude": -87.65005,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.nm.org/"
+        }
+      ],
+      "website": "https://www.nm.org/",
+      "external_ids": [
+        {
+          "all": [
+            "grid.490348.2"
+          ],
+          "preferred": "grid.490348.2",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 4683 9645"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q50036890"
+          ],
+          "preferred": "Q50036890",
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.490348.2",
+      "wikidata_id": "Q50036890",
+      "relationships": [
+        {
+          "label": "Central DuPage Hospital",
+          "type": "child",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "LivingWell Cancer Resource Center",
+          "type": "child",
+          "id": "https://ror.org/007nfvg13"
+        },
+        {
+          "label": "Marianjoy Rehabilitation Hospital",
+          "type": "child",
+          "id": "https://ror.org/03m5bv793"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "child",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "child",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "child",
+          "id": "https://ror.org/02p4far57"
+        },
+        {
+          "label": "Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/000e0be47"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I111979921",
+      "display_name": "Northwestern University",
+      "country": "United States",
+      "type": "education",
+      "ror_id": "https://ror.org/000e0be47",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1851,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Northwestern University"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "IL",
+            "country_subdivision_name": "Illinois",
+            "lat": 42.04114,
+            "lng": -87.69006,
+            "name": "Evanston"
+          },
+          "geonames_id": 4891382
+        }
+      ],
+      "country_code": "US",
+      "city": "Evanston",
+      "latitude": 42.04114,
+      "longitude": -87.69006,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.northwestern.edu/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Northwestern_University"
+        }
+      ],
+      "website": "http://www.northwestern.edu/",
+      "external_ids": [
+        {
+          "all": [
+            "100007059",
+            "100008250",
+            "100013826",
+            "100011755",
+            "100011764",
+            "100017796"
+          ],
+          "preferred": "100007059",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.16753.36"
+          ],
+          "preferred": "grid.16753.36",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 2299 3507"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q309350"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100007059",
+      "grid_id": "grid.16753.36",
+      "relationships": [
+        {
+          "label": "Center for Light Energy Activated Redox Processes",
+          "type": "child",
+          "id": "https://ror.org/004x7d471"
+        },
+        {
+          "label": "International Institute for Nanotechnology",
+          "type": "child",
+          "id": "https://ror.org/00rncr820"
+        },
+        {
+          "label": "Chan Zuckerberg Biohub Chicago",
+          "type": "child",
+          "id": "https://ror.org/014nxkk19"
+        },
+        {
+          "label": "Central DuPage Hospital",
+          "type": "related",
+          "id": "https://ror.org/00g1rc256"
+        },
+        {
+          "label": "Jesse Brown VA Medical Center",
+          "type": "related",
+          "id": "https://ror.org/049qtwc86"
+        },
+        {
+          "label": "John H. Stroger, Jr. Hospital of Cook County",
+          "type": "related",
+          "id": "https://ror.org/05626m728"
+        },
+        {
+          "label": "Lurie Children's Hospital",
+          "type": "related",
+          "id": "https://ror.org/03a6zw892"
+        },
+        {
+          "label": "Northwestern Medicine Lake Forest Hospital",
+          "type": "related",
+          "id": "https://ror.org/03fhrtz10"
+        },
+        {
+          "label": "Northwestern Memorial Hospital",
+          "type": "related",
+          "id": "https://ror.org/009543z50"
+        },
+        {
+          "label": "Shirley Ryan AbilityLab",
+          "type": "related",
+          "id": "https://ror.org/02ja0m249"
+        },
+        {
+          "label": "Northwestern University in Qatar",
+          "type": "related",
+          "id": "https://ror.org/006m74d95"
+        },
+        {
+          "label": "Northwestern Medicine",
+          "type": "related",
+          "id": "https://ror.org/04fzwnh64"
+        },
+        {
+          "label": "Robert H. Lurie Comprehensive Cancer Center of Northwestern University",
+          "type": "related",
+          "id": "https://ror.org/02p4far57"
+        }
+      ],
+      "domains": []
+    }
+  ],
+  "topics": [
+    {
+      "id": "https://openalex.org/T11368",
+      "display_name": "Long-Term Effects of COVID-19",
+      "score": 1.0
+    },
+    {
+      "id": "https://openalex.org/T10867",
+      "display_name": "Intensive Care Unit Cognitive Disorders",
+      "score": 0.9983000159263611
+    },
+    {
+      "id": "https://openalex.org/T11266",
+      "display_name": "Neuroinflammation and Neurodegeneration Mechanisms",
+      "score": 0.9980999827384949
+    }
+  ],
+  "venue": {
+    "id": "https://openalex.org/S114530997",
+    "display_name": "Annals of Neurology",
+    "issn": [
+      "0364-5134",
+      "1531-8249"
+    ],
+    "type": "journal",
+    "is_oa": false
+  },
+  "biblio": {
+    "volume": "97",
+    "issue": "2",
+    "first_page": "369",
+    "last_page": "383"
+  },
+  "doi": "https://doi.org/10.1002/ana.27128",
+  "ids": {
+    "openalex": "https://openalex.org/W4404615720",
+    "doi": "https://doi.org/10.1002/ana.27128",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/39575583"
+  },
+  "abstract_inverted_index": {
+    "Objective": [
+      0
+    ],
+    "To": [
+      1
+    ],
+    "investigate": [
+      2
+    ],
+    "neurologic": [
+      3,
+      99,
+      285
+    ],
+    "manifestations": [
+      4
+    ],
+    "of": [
+      5,
+      8,
+      28,
+      76,
+      79,
+      83,
+      86,
+      95,
+      140,
+      194,
+      214,
+      274,
+      298
+    ],
+    "post‐acute": [
+      6
+    ],
+    "sequelae": [
+      7
+    ],
+    "SARS‐CoV‐2": [
+      9
+    ],
+    "infection": [
+      10
+    ],
+    "(Neuro‐PASC)": [
+      11
+    ],
+    "in": [
+      12,
+      92,
+      104,
+      118,
+      128,
+      137,
+      184,
+      192,
+      206,
+      251,
+      312
+    ],
+    "post‐hospitalization": [
+      13
+    ],
+    "Neuro‐PASC": [
+      14,
+      18,
+      119,
+      272,
+      299,
+      308
+    ],
+    "(PNP)": [
+      15
+    ],
+    "and": [
+      16,
+      34,
+      49,
+      62,
+      70,
+      81,
+      97,
+      124,
+      165,
+      231,
+      265,
+      287,
+      290,
+      301,
+      320,
+      329
+    ],
+    "non‐hospitalized": [
+      17
+    ],
+    "(NNP)": [
+      19
+    ],
+    "patients": [
+      20,
+      37,
+      292
+    ],
+    "across": [
+      21
+    ],
+    "the": [
+      22,
+      29,
+      93,
+      185,
+      255,
+      260
+    ],
+    "adult": [
+      23
+    ],
+    "lifespan.": [
+      24
+    ],
+    "Methods": [
+      25
+    ],
+    "Cross‐sectional": [
+      26
+    ],
+    "study": [
+      27
+    ],
+    "first": [
+      30
+    ],
+    "consecutive": [
+      31
+    ],
+    "200": [
+      32,
+      77
+    ],
+    "PNP": [
+      33,
+      80
+    ],
+    "1,100": [
+      35
+    ],
+    "NNP": [
+      36,
+      87,
+      186,
+      252
+    ],
+    "evaluated": [
+      38
+    ],
+    "at": [
+      39
+    ],
+    "a": [
+      40,
+      295
+    ],
+    "Neuro‐coronavirus": [
+      41
+    ],
+    "disease": [
+      42
+    ],
+    "2019": [
+      43
+    ],
+    "(COVID‐19)": [
+      44
+    ],
+    "clinic": [
+      45
+    ],
+    "between": [
+      46
+    ],
+    "May": [
+      47
+    ],
+    "2020": [
+      48
+    ],
+    "March": [
+      50
+    ],
+    "2023.": [
+      51
+    ],
+    "Patients": [
+      52
+    ],
+    "were": [
+      53,
+      133,
+      202
+    ],
+    "divided": [
+      54
+    ],
+    "into": [
+      55
+    ],
+    "younger": [
+      56,
+      153,
+      172,
+      198,
+      219,
+      239,
+      261,
+      289
+    ],
+    "(18–44": [
+      57
+    ],
+    "years),": [
+      58,
+      61
+    ],
+    "middle‐age": [
+      59,
+      71,
+      156,
+      175,
+      222,
+      242,
+      266,
+      291
+    ],
+    "(45–64": [
+      60
+    ],
+    "older": [
+      63,
+      105,
+      129,
+      159,
+      178,
+      225,
+      245,
+      279
+    ],
+    "(65+": [
+      64
+    ],
+    "years)": [
+      65
+    ],
+    "age": [
+      66
+    ],
+    "groups.": [
+      67
+    ],
+    "Results": [
+      68
+    ],
+    "Younger": [
+      69,
+      264
+    ],
+    "individuals": [
+      72,
+      267
+    ],
+    "accounted": [
+      73
+    ],
+    "for": [
+      74,
+      326
+    ],
+    "142": [
+      75
+    ],
+    "(71%)": [
+      78
+    ],
+    "995": [
+      82
+    ],
+    "1100": [
+      84
+    ],
+    "(90.5%)": [
+      85
+    ],
+    "patients.": [
+      88,
+      106,
+      199
+    ],
+    "Significant": [
+      89
+    ],
+    "age‐related": [
+      90,
+      116,
+      135,
+      204
+    ],
+    "differences": [
+      91,
+      117,
+      136,
+      205
+    ],
+    "frequencies": [
+      94
+    ],
+    "comorbidities": [
+      96
+    ],
+    "abnormal": [
+      98,
+      284
+    ],
+    "findings": [
+      100,
+      286
+    ],
+    "demonstrated": [
+      101
+    ],
+    "higher": [
+      102,
+      190,
+      296
+    ],
+    "prevalence": [
+      103
+    ],
+    "Conversely,": [
+      107
+    ],
+    "10": [
+      108
+    ],
+    "months": [
+      109
+    ],
+    "from": [
+      110,
+      259,
+      294
+    ],
+    "COVID‐19": [
+      111,
+      276
+    ],
+    "onset,": [
+      112
+    ],
+    "we": [
+      113
+    ],
+    "found": [
+      114
+    ],
+    "significant": [
+      115,
+      134,
+      203
+    ],
+    "symptoms": [
+      120,
+      300
+    ],
+    "indicating": [
+      121
+    ],
+    "lower": [
+      122
+    ],
+    "prevalence,": [
+      123
+    ],
+    "therefore,": [
+      125
+    ],
+    "symptom": [
+      126
+    ],
+    "burden,": [
+      127
+    ],
+    "individuals.": [
+      130
+    ],
+    "Moreover,": [
+      131
+    ],
+    "there": [
+      132,
+      201
+    ],
+    "subjective": [
+      138
+    ],
+    "impression": [
+      139
+    ],
+    "fatigue": [
+      141
+    ],
+    "(median": [
+      142,
+      168,
+      210,
+      234
+    ],
+    "[interquartile": [
+      143
+    ],
+    "range": [
+      144
+    ],
+    "(IQR)]": [
+      145
+    ],
+    "patient‐reported": [
+      146
+    ],
+    "outcomes": [
+      147
+    ],
+    "measurement": [
+      148
+    ],
+    "information": [
+      149
+    ],
+    "system": [
+      150
+    ],
+    "[PROMIS]": [
+      151
+    ],
+    "score:": [
+      152,
+      171,
+      218,
+      238
+    ],
+    "64": [
+      154
+    ],
+    "[57–69],": [
+      155
+    ],
+    "63": [
+      157
+    ],
+    "[57–68],": [
+      158
+    ],
+    "60.5": [
+      160
+    ],
+    "[50.8–68.3];": [
+      161
+    ],
+    "p": [
+      162,
+      181,
+      228,
+      248
+    ],
+    "=": [
+      163,
+      182,
+      229,
+      249
+    ],
+    "0.04)": [
+      164
+    ],
+    "sleep": [
+      166
+    ],
+    "disturbance": [
+      167
+    ],
+    "[IQR]": [
+      169,
+      211,
+      235
+    ],
+    "PROMIS": [
+      170
+    ],
+    "57": [
+      173
+    ],
+    "[51–63],": [
+      174
+    ],
+    "56": [
+      176
+    ],
+    "[53–63],": [
+      177
+    ],
+    "54": [
+      179
+    ],
+    "[46.8–58];": [
+      180
+    ],
+    "0.002)": [
+      183
+    ],
+    "group,": [
+      187
+    ],
+    "commensurate": [
+      188
+    ],
+    "with": [
+      189,
+      254
+    ],
+    "impairment": [
+      191
+    ],
+    "quality": [
+      193
+    ],
+    "life": [
+      195
+    ],
+    "(QoL)": [
+      196
+    ],
+    "among": [
+      197
+    ],
+    "Finally,": [
+      200
+    ],
+    "objective": [
+      207
+    ],
+    "executive": [
+      208
+    ],
+    "function": [
+      209
+    ],
+    "National": [
+      212
+    ],
+    "Institutes": [
+      213
+    ],
+    "Health": [
+      215
+    ],
+    "[NIH]": [
+      216
+    ],
+    "toolbox": [
+      217,
+      237
+    ],
+    "48": [
+      220,
+      246
+    ],
+    "[35–63],": [
+      221
+    ],
+    "49": [
+      223
+    ],
+    "[38–63],": [
+      224
+    ],
+    "54.5": [
+      226
+    ],
+    "[45–66.3];": [
+      227
+    ],
+    "0.01),": [
+      230
+    ],
+    "working": [
+      232
+    ],
+    "memory": [
+      233
+    ],
+    "NIH": [
+      236
+    ],
+    "47": [
+      240
+    ],
+    "[40–53],": [
+      241
+    ],
+    "50": [
+      243
+    ],
+    "[44–57],": [
+      244
+    ],
+    "[43–58];": [
+      247
+    ],
+    "0.0002)": [
+      250
+    ],
+    "patients,": [
+      253
+    ],
+    "worst": [
+      256
+    ],
+    "performance": [
+      257
+    ],
+    "coming": [
+      258
+    ],
+    "group.": [
+      262
+    ],
+    "Interpretation": [
+      263
+    ],
+    "are": [
+      268
+    ],
+    "disproportionally": [
+      269
+    ],
+    "affected": [
+      270
+    ],
+    "by": [
+      271
+    ],
+    "regardless": [
+      273
+    ],
+    "acute": [
+      275
+    ],
+    "severity.": [
+      277
+    ],
+    "Although": [
+      278
+    ],
+    "people": [
+      280
+    ],
+    "more": [
+      281
+    ],
+    "frequently": [
+      282
+    ],
+    "have": [
+      283
+    ],
+    "comorbidities,": [
+      288
+    ],
+    "suffer": [
+      293
+    ],
+    "burden": [
+      297
+    ],
+    "cognitive": [
+      302
+    ],
+    "dysfunction": [
+      303
+    ],
+    "contributing": [
+      304,
+      315
+    ],
+    "to": [
+      305,
+      316
+    ],
+    "decreased": [
+      306
+    ],
+    "QoL.": [
+      307
+    ],
+    "principally": [
+      309
+    ],
+    "affects": [
+      310
+    ],
+    "adults": [
+      311
+    ],
+    "their": [
+      313
+    ],
+    "prime,": [
+      314
+    ],
+    "profound": [
+      317
+    ],
+    "public": [
+      318
+    ],
+    "health": [
+      319
+    ],
+    "socioeconomic": [
+      321
+    ],
+    "impacts": [
+      322
+    ],
+    "warranting": [
+      323
+    ],
+    "dedicated": [
+      324
+    ],
+    "resources": [
+      325
+    ],
+    "prevention,": [
+      327
+    ],
+    "diagnosis": [
+      328
+    ],
+    "interventions.": [
+      330
+    ],
+    "ANN": [
+      331
+    ],
+    "NEUROL": [
+      332
+    ],
+    "2025;97:369–383": [
+      333
+    ]
+  },
+  "referenced_works_count": 43,
+  "related_works": [
+    "https://openalex.org/W3009669391",
+    "https://openalex.org/W3127156785",
+    "https://openalex.org/W3005417802",
+    "https://openalex.org/W3043486364",
+    "https://openalex.org/W4220712676",
+    "https://openalex.org/W4290085574",
+    "https://openalex.org/W3006642361",
+    "https://openalex.org/W4280491013",
+    "https://openalex.org/W3124487864",
+    "https://openalex.org/W3031607536"
+  ]
+}

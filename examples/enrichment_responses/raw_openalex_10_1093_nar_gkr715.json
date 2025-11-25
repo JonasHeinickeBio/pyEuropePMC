@@ -1,0 +1,3634 @@
+{
+  "source": "openalex",
+  "openalex_id": "https://openalex.org/W2003074093",
+  "title": "Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA",
+  "publication_year": 2011,
+  "publication_date": "2011-09-21",
+  "type": "article",
+  "citation_count": 35,
+  "cited_by_count": 35,
+  "is_oa": true,
+  "oa_status": "gold",
+  "oa_url": "https://academic.oup.com/nar/article-pdf/40/2/884/16957911/gkr715.pdf",
+  "authors": [
+    {
+      "id": "https://openalex.org/A5100424089",
+      "display_name": "Shuai Li",
+      "orcid": "https://orcid.org/0000-0002-3492-7176",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210132047",
+          "display_name": "Beijing Radiation Center",
+          "country": "China",
+          "type": "facility",
+          "ror_id": "https://ror.org/030t7nd77",
+          "status": "active",
+          "types": [
+            "facility"
+          ],
+          "established": 1979,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "BRC"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Beijing Radiation Center"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "北京市辐射中心"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "BJ",
+                "country_subdivision_name": "Beijing",
+                "lat": 39.9075,
+                "lng": 116.39723,
+                "name": "Beijing"
+              },
+              "geonames_id": 1816670
+            }
+          ],
+          "country_code": "CN",
+          "city": "Beijing",
+          "latitude": 39.9075,
+          "longitude": 116.39723,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.brc.ac.cn/cn/index.html"
+            }
+          ],
+          "website": "http://www.brc.ac.cn/cn/index.html",
+          "external_ids": [
+            {
+              "all": [
+                "grid.482800.6"
+              ],
+              "preferred": "grid.482800.6",
+              "type": "grid"
+            }
+          ],
+          "grid_id": "grid.482800.6",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "first"
+    },
+    {
+      "id": "https://openalex.org/A5101879718",
+      "display_name": "Juanjuan Zhu",
+      "orcid": "https://orcid.org/0000-0002-8753-6953",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5032953597",
+      "display_name": "Hanjiang Fu",
+      "orcid": "https://orcid.org/0000-0002-4352-1178",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5106634427",
+      "display_name": "Jing Wan",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5020090228",
+      "display_name": "Wang Jian-hu",
+      "orcid": "https://orcid.org/0000-0002-3323-0369",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5100417140",
+      "display_name": "Shanshan Liu",
+      "orcid": "https://orcid.org/0000-0002-7301-5196",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5100454136",
+      "display_name": "Jie Li",
+      "orcid": "https://orcid.org/0000-0002-7368-8665",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5103871586",
+      "display_name": "Yi Tie",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5112118272",
+      "display_name": "Ruiyun Xing",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5044911914",
+      "display_name": "Jie Zhu",
+      "orcid": "https://orcid.org/0000-0002-9836-8035",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5029557558",
+      "display_name": "Zhixian Sun",
+      "orcid": null,
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5028809089",
+      "display_name": "Xiaofei Zheng",
+      "orcid": "https://orcid.org/0000-0001-6032-729X",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I197869895",
+          "display_name": "Anhui Medical University",
+          "country": "China",
+          "type": "education",
+          "ror_id": "https://ror.org/03xb04968",
+          "status": "active",
+          "types": [
+            "education",
+            "funder"
+          ],
+          "established": 1926,
+          "names": [
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Anhui Medical University"
+            },
+            {
+              "lang": null,
+              "types": [
+                "alias"
+              ],
+              "value": "Ānhuī Yīkē Dàxué"
+            },
+            {
+              "lang": "zh",
+              "types": [
+                "label"
+              ],
+              "value": "安徽医科大学"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "AS",
+                "continent_name": "Asia",
+                "country_code": "CN",
+                "country_name": "China",
+                "country_subdivision_code": "AH",
+                "country_subdivision_name": "Anhui",
+                "lat": 31.86389,
+                "lng": 117.28083,
+                "name": "Hefei"
+              },
+              "geonames_id": 1808722
+            }
+          ],
+          "country_code": "CN",
+          "city": "Hefei",
+          "latitude": 31.86389,
+          "longitude": 117.28083,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.ahmu.edu.cn/english/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+            }
+          ],
+          "website": "http://www.ahmu.edu.cn/english/",
+          "external_ids": [
+            {
+              "all": [
+                "501100002947"
+              ],
+              "preferred": null,
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.186775.a"
+              ],
+              "preferred": "grid.186775.a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9490 772X"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q4764372"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.186775.a",
+          "relationships": [
+            {
+              "label": "Anqing City Hospital",
+              "type": "related",
+              "id": "https://ror.org/049q0vg17"
+            },
+            {
+              "label": "First Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/03t1yn780"
+            },
+            {
+              "label": "Fourth Affiliated Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/05x9zm716"
+            },
+            {
+              "label": "Hefei First People's Hospital",
+              "type": "related",
+              "id": "https://ror.org/05qwgjd68"
+            },
+            {
+              "label": "Second Hospital of Anhui Medical University",
+              "type": "related",
+              "id": "https://ror.org/047aw1y82"
+            },
+            {
+              "label": "Third People's Hospital of Hangzhou",
+              "type": "related",
+              "id": "https://ror.org/02sysn258"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "last"
+    }
+  ],
+  "institutions": [
+    {
+      "id": "https://openalex.org/I4210132047",
+      "display_name": "Beijing Radiation Center",
+      "country": "China",
+      "type": "facility",
+      "ror_id": "https://ror.org/030t7nd77",
+      "status": "active",
+      "types": [
+        "facility"
+      ],
+      "established": 1979,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "BRC"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Beijing Radiation Center"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "北京市辐射中心"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "BJ",
+            "country_subdivision_name": "Beijing",
+            "lat": 39.9075,
+            "lng": 116.39723,
+            "name": "Beijing"
+          },
+          "geonames_id": 1816670
+        }
+      ],
+      "country_code": "CN",
+      "city": "Beijing",
+      "latitude": 39.9075,
+      "longitude": 116.39723,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.brc.ac.cn/cn/index.html"
+        }
+      ],
+      "website": "http://www.brc.ac.cn/cn/index.html",
+      "external_ids": [
+        {
+          "all": [
+            "grid.482800.6"
+          ],
+          "preferred": "grid.482800.6",
+          "type": "grid"
+        }
+      ],
+      "grid_id": "grid.482800.6",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I197869895",
+      "display_name": "Anhui Medical University",
+      "country": "China",
+      "type": "education",
+      "ror_id": "https://ror.org/03xb04968",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 1926,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Anhui Medical University"
+        },
+        {
+          "lang": null,
+          "types": [
+            "alias"
+          ],
+          "value": "Ānhuī Yīkē Dàxué"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "安徽医科大学"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "AH",
+            "country_subdivision_name": "Anhui",
+            "lat": 31.86389,
+            "lng": 117.28083,
+            "name": "Hefei"
+          },
+          "geonames_id": 1808722
+        }
+      ],
+      "country_code": "CN",
+      "city": "Hefei",
+      "latitude": 31.86389,
+      "longitude": 117.28083,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.ahmu.edu.cn/english/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+        }
+      ],
+      "website": "http://www.ahmu.edu.cn/english/",
+      "external_ids": [
+        {
+          "all": [
+            "501100002947"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.186775.a"
+          ],
+          "preferred": "grid.186775.a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9490 772X"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q4764372"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.186775.a",
+      "relationships": [
+        {
+          "label": "Anqing City Hospital",
+          "type": "related",
+          "id": "https://ror.org/049q0vg17"
+        },
+        {
+          "label": "First Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/03t1yn780"
+        },
+        {
+          "label": "Fourth Affiliated Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/05x9zm716"
+        },
+        {
+          "label": "Hefei First People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/05qwgjd68"
+        },
+        {
+          "label": "Second Hospital of Anhui Medical University",
+          "type": "related",
+          "id": "https://ror.org/047aw1y82"
+        },
+        {
+          "label": "Third People's Hospital of Hangzhou",
+          "type": "related",
+          "id": "https://ror.org/02sysn258"
+        }
+      ],
+      "domains": []
+    }
+  ],
+  "topics": [
+    {
+      "id": "https://openalex.org/T10062",
+      "display_name": "MicroRNA in disease regulation",
+      "score": 1.0
+    },
+    {
+      "id": "https://openalex.org/T11765",
+      "display_name": "Circular RNAs in diseases",
+      "score": 0.9998000264167786
+    },
+    {
+      "id": "https://openalex.org/T10604",
+      "display_name": "RNA Research and Splicing",
+      "score": 0.9998000264167786
+    }
+  ],
+  "venue": {
+    "id": "https://openalex.org/S134668137",
+    "display_name": "Nucleic Acids Research",
+    "issn": [
+      "0305-1048",
+      "1362-4954",
+      "1362-4962"
+    ],
+    "type": "journal",
+    "is_oa": true
+  },
+  "biblio": {
+    "volume": "40",
+    "issue": "2",
+    "first_page": "884",
+    "last_page": "891"
+  },
+  "doi": "https://doi.org/10.1093/nar/gkr715",
+  "ids": {
+    "openalex": "https://openalex.org/W2003074093",
+    "doi": "https://doi.org/10.1093/nar/gkr715",
+    "mag": "2003074093",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/21937511"
+  },
+  "abstract_inverted_index": {
+    "microRNAs": [
+      0
+    ],
+    "(miRNAs)": [
+      1
+    ],
+    "are": [
+      2
+    ],
+    "a": [
+      3,
+      52,
+      98,
+      102
+    ],
+    "versatile": [
+      4
+    ],
+    "class": [
+      5
+    ],
+    "of": [
+      6,
+      12,
+      46,
+      55,
+      72,
+      83,
+      106,
+      124,
+      143,
+      146,
+      161
+    ],
+    "non-coding": [
+      7
+    ],
+    "RNAs": [
+      8,
+      50
+    ],
+    "involved": [
+      9
+    ],
+    "in": [
+      10,
+      23
+    ],
+    "regulation": [
+      11
+    ],
+    "various": [
+      13
+    ],
+    "biological": [
+      14
+    ],
+    "processes.": [
+      15
+    ],
+    "miRNA-122": [
+      16
+    ],
+    "(miR-122)": [
+      17
+    ],
+    "is": [
+      18,
+      101
+    ],
+    "specifically": [
+      19
+    ],
+    "and": [
+      20,
+      67,
+      114,
+      158
+    ],
+    "abundantly": [
+      21
+    ],
+    "expressed": [
+      22
+    ],
+    "human": [
+      24
+    ],
+    "liver.": [
+      25
+    ],
+    "In": [
+      26
+    ],
+    "this": [
+      27,
+      147
+    ],
+    "study,": [
+      28
+    ],
+    "we": [
+      29,
+      76,
+      88
+    ],
+    "employed": [
+      30
+    ],
+    "3'-end": [
+      31
+    ],
+    "biotinylated": [
+      32
+    ],
+    "synthetic": [
+      33
+    ],
+    "miR-122": [
+      34,
+      58,
+      113,
+      153
+    ],
+    "to": [
+      35,
+      140
+    ],
+    "identify": [
+      36
+    ],
+    "its": [
+      37
+    ],
+    "targets": [
+      38,
+      59
+    ],
+    "based": [
+      39
+    ],
+    "on": [
+      40
+    ],
+    "affinity": [
+      41,
+      48,
+      73
+    ],
+    "purification.": [
+      42
+    ],
+    "Quantitative": [
+      43
+    ],
+    "RT-PCR": [
+      44
+    ],
+    "analysis": [
+      45,
+      71
+    ],
+    "the": [
+      47,
+      122
+    ],
+    "purified": [
+      49,
+      74
+    ],
+    "demonstrated": [
+      51
+    ],
+    "specific": [
+      53
+    ],
+    "enrichment": [
+      54
+    ],
+    "several": [
+      56
+    ],
+    "known": [
+      57
+    ],
+    "such": [
+      60
+    ],
+    "as": [
+      61
+    ],
+    "CAT-1": [
+      62
+    ],
+    "(also": [
+      63
+    ],
+    "called": [
+      64
+    ],
+    "SLC7A1),": [
+      65
+    ],
+    "ADAM17": [
+      66
+    ],
+    "BCL-w.": [
+      68
+    ],
+    "Using": [
+      69
+    ],
+    "microarray": [
+      70
+    ],
+    "RNAs,": [
+      75
+    ],
+    "also": [
+      77
+    ],
+    "discovered": [
+      78
+    ],
+    "many": [
+      79
+    ],
+    "candidate": [
+      80
+    ],
+    "target": [
+      81,
+      104
+    ],
+    "genes": [
+      82
+    ],
+    "miR-122.": [
+      84,
+      107
+    ],
+    "Among": [
+      85
+    ],
+    "these": [
+      86
+    ],
+    "candidates,": [
+      87
+    ],
+    "confirmed": [
+      89
+    ],
+    "that": [
+      90,
+      112,
+      152
+    ],
+    "protein": [
+      91
+    ],
+    "kinase,": [
+      92
+    ],
+    "interferon-inducible": [
+      93
+    ],
+    "double-stranded": [
+      94
+    ],
+    "RNA-dependent": [
+      95
+    ],
+    "activator": [
+      96
+    ],
+    "(PRKRA),": [
+      97
+    ],
+    "Dicer-interacting": [
+      99
+    ],
+    "protein,": [
+      100
+    ],
+    "direct": [
+      103
+    ],
+    "gene": [
+      105
+    ],
+    "miRNA": [
+      108
+    ],
+    "quantitative-RT-PCR": [
+      109
+    ],
+    "results": [
+      110
+    ],
+    "indicated": [
+      111
+    ],
+    "small": [
+      115
+    ],
+    "interfering": [
+      116
+    ],
+    "RNA": [
+      117
+    ],
+    "against": [
+      118
+    ],
+    "PRKRA": [
+      119,
+      156
+    ],
+    "may": [
+      120
+    ],
+    "facilitate": [
+      121,
+      159
+    ],
+    "accumulation": [
+      123,
+      160
+    ],
+    "newly": [
+      125,
+      162
+    ],
+    "synthesized": [
+      126,
+      163
+    ],
+    "miRNAs": [
+      127,
+      134
+    ],
+    "but": [
+      128
+    ],
+    "did": [
+      129
+    ],
+    "not": [
+      130
+    ],
+    "detectably": [
+      131
+    ],
+    "affect": [
+      132
+    ],
+    "endogenous": [
+      133
+    ],
+    "levels.": [
+      135
+    ],
+    "Our": [
+      136
+    ],
+    "findings": [
+      137
+    ],
+    "will": [
+      138
+    ],
+    "lead": [
+      139
+    ],
+    "further": [
+      141
+    ],
+    "understanding": [
+      142
+    ],
+    "multiple": [
+      144
+    ],
+    "functions": [
+      145
+    ],
+    "hepato-specific": [
+      148
+    ],
+    "miRNA.": [
+      149
+    ],
+    "We": [
+      150
+    ],
+    "conclude": [
+      151
+    ],
+    "could": [
+      154
+    ],
+    "repress": [
+      155
+    ],
+    "expression": [
+      157
+    ],
+    "miRNAs.": [
+      164
+    ]
+  },
+  "referenced_works_count": 47,
+  "related_works": [
+    "https://openalex.org/W2352626077",
+    "https://openalex.org/W3159461211",
+    "https://openalex.org/W1205814677",
+    "https://openalex.org/W2979508935",
+    "https://openalex.org/W2320478459",
+    "https://openalex.org/W3143026950",
+    "https://openalex.org/W1556217503",
+    "https://openalex.org/W819328480",
+    "https://openalex.org/W2952117239",
+    "https://openalex.org/W2270468432"
+  ]
+}

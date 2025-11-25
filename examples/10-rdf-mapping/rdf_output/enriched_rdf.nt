@@ -1,0 +1,426 @@
+<https://openalex.org/A2331896408> <http://example.org/openAlexId> "https://openalex.org/A2331896408" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/2000/01/rdf-schema#label> "Guanghui Wang" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/2000/01/rdf-schema#label> "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/2000/01/rdf-schema#label> "Immunotherapeutics in metastatic cancer management" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://xmlns.com/foaf/0.1/name> "Guanghui Wang" .
+<https://ror.org/02tbvhh96> <http://xmlns.com/foaf/0.1/homepage> "http://www.dyyy.xjtu.edu.cn/" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/issue> "1" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/2000/01/rdf-schema#label> "Diane Ng" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/issn> "['1179-1322']" .
+<https://openalex.org/A5102086970> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.010152" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/issn> "['2730-6011']" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0001-8551-6468> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/subject> "Medicine" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0001-5218-6001> .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://xmlns.com/foaf/0.1/name> "Tong Zhang" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/subject> "Medicine" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/ns/org#memberOf> <https://ror.org/00wt7xg39> .
+<https://ror.org/040gcmg81> <http://example.org/establishedYear> "1937"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> "{'name': 'Chao Yin', 'orcid': None, 'openalex_id': 'https://openalex.org/A5102086970', 'institutions': [{'id': 'https://openalex.org/I37802460', 'display_name': 'Northwest University', 'country': 'China', 'type': 'education', 'ror_id': 'https://ror.org/00z3td547', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://english.nwu.edu.cn/', 'established': 1902, 'external_ids': [{'type': 'grid', 'preferred': 'grid.412262.1', 'all': ['grid.412262.1']}], 'relationships': [{'label': 'State Key Laboratory of Continental Dynamics', 'type': 'child', 'id': 'https://ror.org/01t2m0x06'}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0009-0006-9661-8615> .
+<https://ror.org/00z3td547> <http://www.w3.org/ns/org#classification> "education" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/journal> "Cancer Management and Research" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0002-7709-3191> .
+<https://ror.org/040gcmg81> <http://example.org/countryCode> "US" .
+<https://ror.org/00wt7xg39> <http://xmlns.com/foaf/0.1/homepage> "https://www.westat.com/" .
+<https://openalex.org/A5102086970> <http://xmlns.com/foaf/0.1/name> "Chao Yin" .
+<https://ror.org/00wt7xg39> <http://example.org/gridId> "grid.280561.8" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.007889" .
+<https://ror.org/040gcmg81> <http://example.org/openAlexId> "https://openalex.org/I4210140884" .
+<https://ror.org/00wt7xg39> <http://example.org/openAlexId> "https://openalex.org/I1333523220" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/spar/cito/citationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/2000/01/rdf-schema#label> "Tong Zhang" .
+<https://openalex.org/A2331896408> <http://example.org/authorPosition> "first" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/issn> "['2590-017X', '2666-2345']" .
+<https://openalex.org/A5104153506> <http://example.org/authorPosition> "first" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/title> "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> "{'name': 'Sandra A. Mitchell', 'orcid': 'https://orcid.org/0000-0002-4153-9972', 'openalex_id': 'https://openalex.org/A5016587367', 'institutions': [{'id': 'https://openalex.org/I4210140884', 'display_name': 'National Cancer Institute', 'country': 'United States', 'type': 'government', 'ror_id': 'https://ror.org/040gcmg81', 'country_code': 'US', 'city': 'Bethesda', 'latitude': 38.98067, 'longitude': -77.10026, 'website': 'http://www.cancer.gov/', 'established': 1937, 'external_ids': [{'type': 'fundref', 'preferred': '100000054', 'all': ['100000054', '100008637', '100007316']}, {'type': 'grid', 'preferred': 'grid.48336.3a', 'all': ['grid.48336.3a']}], 'relationships': [{'label': 'Center for Cancer Research', 'type': 'child', 'id': 'https://ror.org/05bjen692'}, {'label': 'Frederick National Laboratory for Cancer Research', 'type': 'child', 'id': 'https://ror.org/03v6m3209'}, {'label': 'SWOG Cancer Research Network', 'type': 'child', 'id': 'https://ror.org/05n6zrm60'}, {'label': 'Division of Cancer Epidemiology and Genetics', 'type': 'child', 'id': 'https://ror.org/00vkwep27'}, {'label': 'National Institutes of Health', 'type': 'parent', 'id': 'https://ror.org/01cwqze88'}, {'label': 'MUSC Hollings Cancer Center', 'type': 'related', 'id': 'https://ror.org/00w52vt71'}, {'label': 'The Cancer Imaging Archive', 'type': 'related', 'id': 'https://ror.org/02qyzaf42'}], 'ror_enriched': True}], 'position': 'last', 'sources': ['openalex']}" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/pageStart> "2785" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/ns/org#classification> "education" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/DocumentType> "journal-article" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/volume> "Volume 17" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/DocumentType> "journal-article" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/openAlexId> "https://openalex.org/W7105651041" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> "{'name': 'Poorna Shri', 'orcid': None, 'openalex_id': 'https://openalex.org/A5094388357', 'institutions': [{'id': 'https://openalex.org/I2802359691', 'display_name': 'Ganesh Shankar Vidyarthi Memorial Medical College', 'country': 'IN', 'type': 'education', 'ror_id': 'https://ror.org/https://ror.org/002ztb251'}], 'position': 'middle', 'sources': ['openalex']}" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0001-9995-4485> .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://example.org/openAlexId> "https://openalex.org/A1973384194" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.36401/jipo-25-15> .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.007980" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009448" .
+<https://ror.org/040gcmg81> <https://ror.org/vocab#rorId> "https://ror.org/040gcmg81" .
+<https://openalex.org/A5104153506> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.21037/tcr-2025-996> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://example.org/authorPosition> "last" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://openalex.org/A5094388357> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://openalex.org/A2331896408> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A2331896408> .
+<https://ror.org/00z3td547> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "34.25833"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://openalex.org/A5102086970> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.21037/tcr-2025-996> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/openAlexId> "https://openalex.org/W7105673248" .
+<https://openalex.org/A2331896408> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.011125" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://openalex.org/A2331896408> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/2004/02/skos/core#prefLabel> "Westat (United States)" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://xmlns.com/foaf/0.1/name> "Beth Slotman" .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/pmid> "41143138" .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/openAccessUrl> "https://doi.org/10.36401/jipo-25-15" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "108.92861"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://openalex.org/A4295798812> <http://example.org/authorPosition> "middle" .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/referenceCount> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://ror.org/02tbvhh96> <http://example.org/countryCode> "CN" .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/semanticScholarCorpusId> "282710855"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/2000/01/rdf-schema#label> "Robin C. Vanderpool" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/journal> "Translational Cancer Research" .
+<https://ror.org/00z3td547> <http://example.org/countryCode> "CN" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/I4210121771> .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://example.org/openAlexId> "https://openalex.org/A5004546681" .
+<https://openalex.org/A5102086970> <http://www.w3.org/2000/01/rdf-schema#label> "Chao Yin" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/abstract> "Background Alpha-fetoprotein-positive gastric cancer (AFPGC) is a rare subtype of gastric cancer characterized by high invasiveness and extremely poor prognosis. According to relevant studies, the median overall survival of such patients is significantly shorter than that of AFP-negative gastric cancer patients (14 months vs 40 months). Small cell lung cancer (SCLC), the most malignant type of lung cancer, has a median survival time of only 8–12 months in patients with extensive disease. To date, there have been no reported cases of dual primary cancers involving both AFPGC and SCLC, and the therapeutic role of immunotherapy in such dual primary tumors remains unclear. Case Presentation This paper reports a case of a 72-year-old male patient who was diagnosed via imaging and pathology as having concurrent AFPGC (moderately to poorly differentiated adenocarcinoma, PD-L1 positive, Tumor mutation burden(TMB) 10.03Muts/Mb, PD-L1 Combined Positive Score (CPS)<1) combined with primary extensive-stage SCLC. The patient received CAPEOX regimen (capecitabine plus oxaliplatin) combined with tislelizumab therapy. After 4 cycles, partial response (PR) was observed in the gastric lymph nodes, and stable disease (SD) was noted in the pulmonary lesions. Following pathological confirmation of dual primary cancers, treatment continued with the original regimen, followed by maintenance therapy with tegafur gimeracil oteracil potassium capsule (teysuno) plus tislelizumab. During treatment, serum AFP levels decreased from baseline 502 μg/L to 1.56 μg/L. Both primary tumor lesions remained stably controlled for over 33 months, and the patient currently tolerates treatment well with an Eastern Cooperative Oncology Group (ECOG) performance status of 0. Conclusion Through the long-term treatment course of this case, we validated the therapeutic efficacy of chemotherapy combined with immunotherapy (CAPEOX plus tislelizumab) for the rare aggressive dual primary tumors AFPGC and SCLC, demonstrating significant long-term maintenance benefits from the immunotherapy. Concurrently, this case confirmed the efficacy and safety of tislelizumab during the maintenance therapy phase for both tumors, offering a new treatment option for managing such complex clinical presentations." .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/issue> "10" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-77.15276"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://openalex.org/A5094388357> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/pmid> "41267890" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/semanticScholarCorpusId> "283051141"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5000714509> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/DocumentType> "journal-article" .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/openAccessStatus> "gold" .
+<https://openalex.org/A2331896408> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0003-3324-563X> .
+<https://openalex.org/A5104153506> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://openalex.org/A4295798812> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A4295798812> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/ns/org#memberOf> <https://ror.org/040gcmg81> .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.1007/s12672-025-03561-5> .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/ns/org#memberOf> <https://ror.org/02tbvhh96> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0001-8551-6468> .
+<https://openalex.org/A5104153506> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009990" .
+<https://openalex.org/A5102086970> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5102086970> .
+<https://ror.org/00z3td547> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A1973384194> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/date> "2025-10-20" .
+<https://openalex.org/A4295798812> <http://xmlns.com/foaf/0.1/name> "Sunil Kumar Mahobiya" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/pmid> "41239147" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> <https://openalex.org/A4295798812> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://xmlns.com/foaf/0.1/name> "Sandra A. Mitchell" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.36401/jipo-25-15> .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/2000/01/rdf-schema#label> "Westat (United States)" .
+<https://openalex.org/A5102086970> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/pages> "2785-2791" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/2000/01/rdf-schema#label> "Beth Slotman" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://xmlns.com/foaf/0.1/name> "Robin C. Vanderpool" .
+<https://openalex.org/A5094388357> <http://www.w3.org/2000/01/rdf-schema#label> "Poorna Shri" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/ns/org#memberOf> <https://ror.org/02tbvhh96> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://openalex.org/A5094388357> <http://xmlns.com/foaf/0.1/name> "Poorna Shri" .
+<https://openalex.org/A5104153506> <http://example.org/openAlexId> "https://openalex.org/A5104153506" .
+<https://openalex.org/A4295798812> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009264" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/doi> "10.1007/s12672-025-03561-5" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> <https://openalex.org/A5094388357> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://openalex.org/A4295798812> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.1007/s12672-025-03561-5> .
+<https://doi.org/10.36401/jipo-25-15> <http://www.w3.org/2000/01/rdf-schema#label> "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" .
+<https://openalex.org/A5104153506> <http://www.w3.org/2000/01/rdf-schema#label> "Kunqin Wang" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> <https://openalex.org/A5104153506> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> "{'name': 'Laura A. Dwyer', 'orcid': 'https://orcid.org/0000-0003-3324-563X', 'openalex_id': 'https://openalex.org/A5000714509', 'institutions': [], 'position': 'middle', 'sources': ['openalex']}" .
+<https://openalex.org/A2095950045> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.011200" .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0009-0006-9661-8615> .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0002-7709-3191" .
+<https://openalex.org/A5094388357> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.1007/s12672-025-03561-5> .
+<https://openalex.org/A2331896408> <http://xmlns.com/foaf/0.1/name> "Jiang-yu Bian" .
+<https://ror.org/040gcmg81> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/I4210140884> .
+<https://ror.org/00wt7xg39> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/I1333523220> .
+<https://openalex.org/A4295798812> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> "{'name': 'Kunqin Wang', 'orcid': None, 'openalex_id': 'https://openalex.org/A5104153506', 'institutions': [{'id': 'https://openalex.org/I4210121771', 'display_name': \"First Affiliated Hospital of Xi'an Jiaotong University\", 'country': 'China', 'type': 'healthcare', 'ror_id': 'https://ror.org/02tbvhh96', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://www.dyyy.xjtu.edu.cn/', 'established': 1956, 'external_ids': [{'type': 'grid', 'preferred': 'grid.452438.c', 'all': ['grid.452438.c']}], 'ror_enriched': True}], 'position': 'first', 'sources': ['openalex']}" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> "{'name': 'Beth Slotman', 'orcid': 'https://orcid.org/0000-0002-7709-3191', 'openalex_id': 'https://openalex.org/A5008220095', 'institutions': [{'id': 'https://openalex.org/I1333523220', 'display_name': 'Westat (United States)', 'country': 'United States', 'type': 'company', 'ror_id': 'https://ror.org/00wt7xg39', 'country_code': 'US', 'city': 'Rockville', 'latitude': 39.084, 'longitude': -77.15276, 'website': 'https://www.westat.com/', 'established': 1963, 'external_ids': [{'type': 'grid', 'preferred': 'grid.280561.8', 'all': ['grid.280561.8']}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/ns/org#hasMember> <https://openalex.org/A5094388357> .
+<https://ror.org/040gcmg81> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0002-4153-9972" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> .
+<https://ror.org/02tbvhh96> <http://www.w3.org/ns/org#hasMember> <https://orcid.org/https://orcid.org/0000-0001-8551-6468> .
+<https://openalex.org/A5094388357> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://ror.org/00z3td547> <http://www.w3.org/ns/org#hasMember> <https://openalex.org/A5102086970> .
+<https://doi.org/10.2147/cmar.s548762> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.2147/cmar.s548762> .
+<https://ror.org/00wt7xg39> <http://example.org/establishedYear> "1963"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/pmid> "41234876" .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://example.org/openAlexId> "https://openalex.org/A5016587367" .
+<https://doi.org/10.36401/jipo-25-15> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.36401/jipo-25-15> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/abstract> "Metastatic cancer remains the leading cause of cancer-related mortality, largely owing to the limitations of conventional treatments such as chemotherapy, radiotherapy, and targeted agents that are challenged by tumor heterogeneity, acquired resistance, and systemic toxicity. In contrast, immunotherapy has emerged as a transformative modality, harnessing the power of the immune system to selectively target and eradicate tumor cells. This review systematically examines key immunotherapeutic strategies ranging from immune checkpoint inhibitors (ICIs) and monoclonal antibodies to cancer vaccines, oncolytic viruses, and adoptive cell therapies (such as CAR-T and TCR-engineered T cells). Of particular interest are personalized approaches, including neoantigen-based vaccines and tumor-infiltrating lymphocyte (TIL) therapies, which hold promise for tailored treatment but also present significant logistical and translational challenges. Central to therapeutic outcomes are factors like immune resistance, the suppressive tumor microenvironment, and the identification of predictive biomarkers including PD-L1 expression and tumor mutational burden (TMB) that can guide patient selection and efficacy. As the field progresses, future breakthroughs will hinge on deepening our understanding of metastasis immunobiology, refining biomarker-driven precision approaches, and developing novel immunological targets and delivery platforms to improve outcomes and accessibility." .
+<https://ror.org/02tbvhh96> <http://www.w3.org/2002/07/owl#sameAs> <https://ror.org/02tbvhh96> .
+<https://openalex.org/A5102086970> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://ror.org/02tbvhh96> <http://example.org/gridId> "grid.452438.c" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/issn> "['2218-676X', '2219-6803']" .
+<https://openalex.org/A5104153506> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/ns/org#hasMember> <https://orcid.org/https://orcid.org/0000-0002-8429-4194> .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/isOpenAccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.1007/s12672-025-03561-5> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/publisher> "Springer Science and Business Media LLC" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0002-8429-4194> .
+<https://ror.org/02tbvhh96> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing> .
+<https://ror.org/00z3td547> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "108.92861"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://openalex.org/A5094388357> <http://example.org/openAlexId> "https://openalex.org/A5094388357" .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0001-5218-6001" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/title> "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/ns/org#hasMember> <https://openalex.org/A5104153506> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/title> "Immunotherapeutics in metastatic cancer management" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://xmlns.com/foaf/0.1/name> "Manisha Shukla" .
+<https://openalex.org/A4295798812> <http://www.w3.org/2000/01/rdf-schema#label> "Sunil Kumar Mahobiya" .
+<https://ror.org/00z3td547> <http://example.org/openAlexId> "https://openalex.org/I37802460" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization> .
+<https://ror.org/00z3td547> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/creator> <https://openalex.org/A2095950045> .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://ror.org/040gcmg81> <http://www.w3.org/ns/org#classification> "government" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0002-4122-9202" .
+<https://ror.org/040gcmg81> <http://www.w3.org/2004/02/skos/core#prefLabel> "National Cancer Institute" .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/influentialCitationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://ror.org/00wt7xg39> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.008460" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> "{'name': 'Rohit Kumar Vishwakarma', 'orcid': 'https://orcid.org/0009-0006-9661-8615', 'openalex_id': 'https://openalex.org/A2954764049', 'institutions': [], 'position': 'last', 'sources': ['openalex']}" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/2002/07/owl#sameAs> <https://ror.org/https://ror.org/002ztb251> .
+<https://ror.org/040gcmg81> <http://xmlns.com/foaf/0.1/homepage> "http://www.cancer.gov/" .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> "{'name': 'Diane Ng', 'orcid': 'https://orcid.org/0000-0002-8429-4194', 'openalex_id': 'https://openalex.org/A5004546681', 'institutions': [{'id': 'https://openalex.org/I1333523220', 'display_name': 'Westat (United States)', 'country': 'United States', 'type': 'company', 'ror_id': 'https://ror.org/00wt7xg39', 'country_code': 'US', 'city': 'Rockville', 'latitude': 39.084, 'longitude': -77.15276, 'website': 'https://www.westat.com/', 'established': 1963, 'external_ids': [{'type': 'grid', 'preferred': 'grid.280561.8', 'all': ['grid.280561.8']}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}" .
+<https://ror.org/https://ror.org/002ztb251> <http://example.org/openAlexId> "https://openalex.org/I2802359691" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> "{'name': 'Xue Dong', 'orcid': 'https://orcid.org/0000-0001-9017-4503', 'openalex_id': 'https://openalex.org/A5101941977', 'institutions': [{'id': 'https://openalex.org/I4210121771', 'display_name': \"First Affiliated Hospital of Xi'an Jiaotong University\", 'country': 'China', 'type': 'healthcare', 'ror_id': 'https://ror.org/02tbvhh96', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://www.dyyy.xjtu.edu.cn/', 'established': 1956, 'external_ids': [{'type': 'grid', 'preferred': 'grid.452438.c', 'all': ['grid.452438.c']}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/pageEnd> "253" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/date> "2025-10" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/volume> "8" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://example.org/openAlexId> "https://openalex.org/A5010907089" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5004546681> .
+<https://openalex.org/A2095950045> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/ns/org#hasMember> <https://orcid.org/https://orcid.org/0000-0002-7709-3191> .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/creator> "{'name': 'Jiang-yu Bian', 'orcid': None, 'openalex_id': 'https://openalex.org/A2331896408', 'institutions': [], 'position': 'first', 'sources': ['openalex']}" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://openalex.org/A2095950045> <http://example.org/openAlexId> "https://openalex.org/A2095950045" .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5016587367> .
+<https://ror.org/040gcmg81> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0001-9017-4503" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009016" .
+<https://ror.org/00z3td547> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.010616" .
+<https://ror.org/040gcmg81> <http://example.org/city> "Bethesda" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/semanticScholarCorpusId> "283022096"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://openalex.org/A5102086970> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://example.org/openAlexId> "https://openalex.org/A5101941977" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/pages> "249-253" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.007699" .
+<https://ror.org/02tbvhh96> <https://ror.org/vocab#rorId> "https://ror.org/02tbvhh96" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/journal> "Discover Oncology" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://example.org/authorPosition> "middle" .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.011279" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.1007/s12672-025-03561-5> .
+<https://doi.org/10.2147/cmar.s548762> <http://www.w3.org/2000/01/rdf-schema#label> "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0001-9017-4503> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://example.org/openAlexId> "https://openalex.org/A2954764049" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://example.org/openAlexId> "https://openalex.org/A5100399474" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/influentialCitationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://ror.org/040gcmg81> <http://example.org/fundrefId> "100000054" .
+<https://ror.org/00z3td547> <http://www.w3.org/2002/07/owl#sameAs> <https://ror.org/00z3td547> .
+<https://ror.org/00wt7xg39> <http://www.w3.org/ns/org#classification> "company" .
+<https://openalex.org/A5094388357> <http://example.org/authorPosition> "middle" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/2002/07/owl#sameAs> <https://ror.org/00wt7xg39> .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://ror.org/00z3td547> <http://example.org/establishedYear> "1902"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://ror.org/https://ror.org/002ztb251> <http://example.org/country> "IN" .
+<https://ror.org/00z3td547> <http://www.w3.org/2000/01/rdf-schema#label> "Northwest University" .
+<https://ror.org/040gcmg81> <http://www.w3.org/2000/01/rdf-schema#label> "National Cancer Institute" .
+<https://openalex.org/A2095950045> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.36401/jipo-25-15> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.007572" .
+<https://ror.org/00z3td547> <http://www.w3.org/2004/02/skos/core#prefLabel> "Northwest University" .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://openalex.org/A5104153506> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5104153506> .
+<https://openalex.org/A5102086970> <http://example.org/authorPosition> "middle" .
+<https://ror.org/00z3td547> <http://example.org/gridId> "grid.412262.1" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0001-9017-4503> .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> "{'name': 'Robin C. Vanderpool', 'orcid': 'https://orcid.org/0000-0001-9995-4485', 'openalex_id': 'https://openalex.org/A5010907089', 'institutions': [{'id': 'https://openalex.org/I4210140884', 'display_name': 'National Cancer Institute', 'country': 'United States', 'type': 'government', 'ror_id': 'https://ror.org/040gcmg81', 'country_code': 'US', 'city': 'Bethesda', 'latitude': 38.98067, 'longitude': -77.10026, 'website': 'http://www.cancer.gov/', 'established': 1937, 'external_ids': [{'type': 'fundref', 'preferred': '100000054', 'all': ['100000054', '100008637', '100007316']}, {'type': 'grid', 'preferred': 'grid.48336.3a', 'all': ['grid.48336.3a']}], 'relationships': [{'label': 'Center for Cancer Research', 'type': 'child', 'id': 'https://ror.org/05bjen692'}, {'label': 'Frederick National Laboratory for Cancer Research', 'type': 'child', 'id': 'https://ror.org/03v6m3209'}, {'label': 'SWOG Cancer Research Network', 'type': 'child', 'id': 'https://ror.org/05n6zrm60'}, {'label': 'Division of Cancer Epidemiology and Genetics', 'type': 'child', 'id': 'https://ror.org/00vkwep27'}, {'label': 'National Institutes of Health', 'type': 'parent', 'id': 'https://ror.org/01cwqze88'}, {'label': 'MUSC Hollings Cancer Center', 'type': 'related', 'id': 'https://ror.org/00w52vt71'}, {'label': 'The Cancer Imaging Archive', 'type': 'related', 'id': 'https://ror.org/02qyzaf42'}], 'ror_enriched': True}], 'position': 'first', 'sources': ['openalex']}" .
+<https://doi.org/10.36401/jipo-25-15> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/pageStart> "249" .
+<https://doi.org/10.2147/cmar.s548762> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0001-5218-6001> .
+<https://ror.org/https://ror.org/002ztb251> <https://ror.org/vocab#rorId> "https://ror.org/https://ror.org/002ztb251" .
+<https://openalex.org/A5104153506> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.007796" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://ror.org/00wt7xg39> <http://example.org/country> "United States" .
+<https://openalex.org/A5102086970> <http://www.w3.org/ns/org#memberOf> <https://ror.org/00z3td547> .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://example.org/authorPosition> "middle" .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0002-4153-9972> .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/creator> "{'name': 'Tong Zhang', 'orcid': 'https://orcid.org/0000-0001-5218-6001', 'openalex_id': 'https://openalex.org/A1973384194', 'institutions': [], 'position': 'last', 'sources': ['openalex']}" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/doi> "10.21037/tcr-2025-996" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/date> "2025-11" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "39.084"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/2000/01/rdf-schema#label> "Sandra A. Mitchell" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://example.org/openAlexId> "https://openalex.org/A2144144467" .
+<https://openalex.org/A2331896408> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.2147/cmar.s548762> .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.008070" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.21037/tcr-2025-996> .
+<https://ror.org/040gcmg81> <http://www.w3.org/ns/org#hasMember> <https://orcid.org/https://orcid.org/0000-0001-9995-4485> .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/publisher> "Informa UK Limited" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/pageEnd> "2106" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/ns/org#hasMember> <https://orcid.org/https://orcid.org/0000-0001-9017-4503> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/pageStart> "2106" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.010418" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/subject> "Medicine" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/referenceCount> "16"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0002-4122-9202> .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "Medicine" .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://xmlns.com/foaf/0.1/name> "Rohit Kumar Vishwakarma" .
+<https://ror.org/00wt7xg39> <http://example.org/city> "Rockville" .
+<https://doi.org/10.36401/jipo-25-15> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://ror.org/00z3td547> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/I37802460> .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://example.org/openAlexId> "https://openalex.org/A5008220095" .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/openAccessStatus> "diamond" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://example.org/authorPosition> "last" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009103" .
+<https://doi.org/10.2147/cmar.s548762> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/doi> "10.36401/jipo-25-15" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://example.org/authorPosition> "first" .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/openAlexId> "https://openalex.org/W4415342390" .
+<https://openalex.org/A2095950045> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://openalex.org/A2331896408> <http://www.w3.org/2000/01/rdf-schema#label> "Jiang-yu Bian" .
+<https://ror.org/040gcmg81> <http://www.w3.org/ns/org#hasMember> <https://orcid.org/https://orcid.org/0000-0002-4153-9972> .
+<https://ror.org/00z3td547> <http://xmlns.com/foaf/0.1/homepage> "http://english.nwu.edu.cn/" .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://ror.org/00z3td547> <https://ror.org/vocab#rorId> "https://ror.org/00z3td547" .
+<https://ror.org/040gcmg81> <http://example.org/gridId> "grid.48336.3a" .
+<https://ror.org/00wt7xg39> <https://ror.org/vocab#rorId> "https://ror.org/00wt7xg39" .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.2147/cmar.s548762> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/openAccessStatus> "gold" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/isOpenAccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://xmlns.com/foaf/0.1/name> "Xue Dong" .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://example.org/authorPosition> "middle" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/openAccessStatus> "gold" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/isOpenAccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/publisher> "AME Publishing Company" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://xmlns.com/foaf/0.1/name> "Laura A. Dwyer" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/2000/01/rdf-schema#label> "Ganesh Shankar Vidyarthi Memorial Medical College" .
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.36401/jipo-25-15> .
+<https://openalex.org/A4295798812> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://openalex.org/A2331896408> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://ror.org/040gcmg81> <http://example.org/country> "United States" .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/2004/02/skos/core#prefLabel> "Ganesh Shankar Vidyarthi Memorial Medical College" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0002-7709-3191> .
+<https://openalex.org/A5104153506> <http://www.w3.org/ns/org#memberOf> <https://ror.org/02tbvhh96> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/pageEnd> "6329" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://doi.org/10.2147/cmar.s548762> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.011049" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A2144144467> .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0002-8429-4194" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/2000/01/rdf-schema#label> "Manisha Shukla" .
+<https://ror.org/040gcmg81> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "38.98067"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/issue> "4" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5101941977> .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0003-3324-563X> .
+<https://openalex.org/A5094388357> <http://www.w3.org/ns/org#memberOf> <https://ror.org/https://ror.org/002ztb251> .
+<https://openalex.org/A5094388357> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009189" .
+<https://ror.org/040gcmg81> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.008258" .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/ns/org#memberOf> <https://ror.org/040gcmg81> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/abstract> "Background Cancer-associated fibroblasts (CAFs) are thought to contribute to malignant tumor progression. Although it has been reported that signatures based on CAFs-specific genes could be used to evaluate the prognosis of gastric cancer (GC), as a heterogeneous subgroup, the CAFs subpopulations and their characteristics in the GC microenvironment were still ambiguous. This study aimed to identify CAFs subgroups in GC and evaluate their prognostic and immunotherapy relevance. Methods We utilized the Gene Expression Omnibus (GEO) database to acquire single-cell sequencing data of CAFs associated with GC, and The Cancer Genome Atlas (TCGA) database to obtain GC patient messenger RNA (mRNA) expression profiles. All CAFs were classified using unsupervised clustering based on the expression of 235 characteristic genes. The unsupervised clustering results indicated that the CAFs in the GC microenvironment were divided into four clusters. Kyoto Encyclopedia of Genes and Genomes (KEGG) pathway enrichment analysis revealed the intrinsic differences of these clusters and the CIBERSORT algorithm was used to perform immune cell infiltration analysis. Results Cluster1, Cluster2 and Cluster4 were partly related to extracellular matrix production, while Cluster3 was mainly related to the TGF-β pathway. In addition, the CAF-related score based on Cluster3 (CRS3) could significantly distinguish the prognosis of patients. Moreover, patients with low CRS3 scores had a higher tumor mutation burden and higher levels of immune checkpoints (CTLA-4, LAG3, MAGE-A3, PD-1 and PD-L1), which might indicate a higher immunotherapy response. Conclusions All in all, our study revealed four heterogeneous subpopulations of CAFs in the GC microenvironment, and highlighted that Cluster3 was associated with prognosis and response to immunotherapy." .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> "{'name': 'Guanghui Wang', 'orcid': 'https://orcid.org/0000-0001-8551-6468', 'openalex_id': 'https://openalex.org/A5100399474', 'institutions': [{'id': 'https://openalex.org/I4210121771', 'display_name': \"First Affiliated Hospital of Xi'an Jiaotong University\", 'country': 'China', 'type': 'healthcare', 'ror_id': 'https://ror.org/02tbvhh96', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://www.dyyy.xjtu.edu.cn/', 'established': 1956, 'external_ids': [{'type': 'grid', 'preferred': 'grid.452438.c', 'all': ['grid.452438.c']}], 'ror_enriched': True}], 'position': 'last', 'sources': ['openalex']}" .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009345" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/publisher> "Innovative Healthcare Institute" .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/influentialCitationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://www.w3.org/2002/07/owl#sameAs> <https://orcid.org/https://orcid.org/0000-0002-4122-9202> .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5100399474> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A2954764049> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0009-0006-9661-8615" .
+<https://ror.org/040gcmg81> <http://www.w3.org/2003/01/geo/wgs84_pos#long> "-77.10026"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/openAccessUrl> "https://link.springer.com/content/pdf/10.1007/s12672-025-03561-5.pdf" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/pageStart> "6316" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/creator> "{'name': 'Yuxing Sun', 'orcid': None, 'openalex_id': 'https://openalex.org/A2095950045', 'institutions': [], 'position': 'middle', 'sources': ['openalex']}" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/ns/org#memberOf> <https://ror.org/00wt7xg39> .
+<https://ror.org/02tbvhh96> <http://example.org/establishedYear> "1956"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0003-3324-563X" .
+<https://ror.org/00z3td547> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/date> "2025-11-14" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/DocumentType> "journal-article" .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/isOpenAccess> "true"^^<http://www.w3.org/2001/XMLSchema#boolean> .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/2000/01/rdf-schema#label> "Xue Dong" .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/openAccessUrl> "https://doi.org/10.21037/tcr-2025-996" .
+<https://doi.org/10.36401/jipo-25-15> <http://example.org/semanticScholarCorpusId> "282261186"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://www.w3.org/2000/01/rdf-schema#label> "Laura A. Dwyer" .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://example.org/authorPosition> "middle" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0001-9995-4485> .
+<https://ror.org/02tbvhh96> <http://example.org/country> "China" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/creator> <https://openalex.org/A5102086970> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> "{'name': 'Sunil Kumar Mahobiya', 'orcid': None, 'openalex_id': 'https://openalex.org/A4295798812', 'institutions': [], 'position': 'middle', 'sources': ['openalex']}" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/doi> "10.2147/cmar.s548762" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.009918" .
+<https://openalex.org/A2095950045> <http://example.org/authorPosition> "middle" .
+<https://openalex.org/A5094388357> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5094388357> .
+<https://ror.org/00z3td547> <http://example.org/country> "China" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/creator> <https://openalex.org/A2331896408> .
+<https://ror.org/02tbvhh96> <http://www.w3.org/2003/01/geo/wgs84_pos#lat> "34.25833"^^<http://www.w3.org/2001/XMLSchema#double> .
+<https://openalex.org/A2095950045> <http://www.w3.org/2000/01/rdf-schema#label> "Yuxing Sun" .
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> <http://example.org/authorPosition> "last" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/ns/prov#hadPrimarySource> "openalex" .
+<https://openalex.org/A2095950045> <http://xmlns.com/foaf/0.1/name> "Yuxing Sun" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/ns/org#classification> "healthcare" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://example.org/referenceCount> "94"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/influentialCitationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/spar/cito/citationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> <http://www.w3.org/2000/01/rdf-schema#label> "Rohit Kumar Vishwakarma" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/ontology/bibo/journal> "Journal of Immunotherapy and Precision Oncology" .
+<https://ror.org/02tbvhh96> <http://example.org/openAlexId> "https://openalex.org/I4210121771" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0002-4153-9972> .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.010233" .
+<https://ror.org/040gcmg81> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization> .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:45.010075" .
+<https://ror.org/00wt7xg39> <http://example.org/countryCode> "US" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/spar/cito/citationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/dc/terms/title> "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" .
+<https://ror.org/00wt7xg39> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization> .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0001-9995-4485" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/volume> "16" .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/spar/cito/citationCount> "0"^^<http://www.w3.org/2001/XMLSchema#integer> .
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5008220095> .
+<https://ror.org/https://ror.org/002ztb251> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/I2802359691> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/volume> "14" .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.36401/jipo-25-15> .
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A5010907089> .
+<https://doi.org/10.2147/cmar.s548762> <http://purl.org/ontology/bibo/pageEnd> "2791" .
+<https://openalex.org/A5104153506> <http://xmlns.com/foaf/0.1/name> "Kunqin Wang" .
+<https://ror.org/040gcmg81> <http://www.w3.org/2002/07/owl#sameAs> <https://ror.org/040gcmg81> .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://purl.org/spar/datacite/orcid> "https://orcid.org/0000-0001-8551-6468" .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.36401/jipo-25-15> .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.21037/tcr-2025-996> .
+<https://openalex.org/A2095950045> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.2147/cmar.s548762> .
+<https://openalex.org/A2095950045> <http://www.w3.org/2002/07/owl#sameAs> <https://openalex.org/A2095950045> .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> <http://example.org/openAlexId> "https://openalex.org/A5000714509" .
+<https://doi.org/10.36401/jipo-25-15> <http://purl.org/dc/terms/creator> <https://orcid.org/https://orcid.org/0000-0002-8429-4194> .
+<https://ror.org/02tbvhh96> <http://example.org/city> "Xi'an" .
+<https://openalex.org/A4295798812> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://xmlns.com/foaf/0.1/Person> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/pages> "6316-6329" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/2000/01/rdf-schema#label> "First Affiliated Hospital of Xi'an Jiaotong University" .
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> <http://example.org/authorPosition> "first" .
+<https://doi.org/10.2147/cmar.s548762> <http://example.org/openAccessUrl> "https://www.dovepress.com/article/download/108931" .
+<https://doi.org/10.21037/tcr-2025-996> <http://example.org/openAlexId> "https://openalex.org/W4415738814" .
+<https://openalex.org/A4295798812> <http://example.org/openAlexId> "https://openalex.org/A4295798812" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/creator> "{'name': 'Manisha Shukla', 'orcid': 'https://orcid.org/0000-0002-4122-9202', 'openalex_id': 'https://openalex.org/A2144144467', 'institutions': [], 'position': 'first', 'sources': ['openalex']}" .
+<https://ror.org/00z3td547> <http://example.org/city> "Xi'an" .
+<https://ror.org/02tbvhh96> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://www.w3.org/ns/org#Organization> .
+<https://ror.org/02tbvhh96> <http://www.w3.org/2004/02/skos/core#prefLabel> "First Affiliated Hospital of Xi'an Jiaotong University" .
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> <http://xmlns.com/foaf/0.1/made> <https://doi.org/10.21037/tcr-2025-996> .
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> <http://xmlns.com/foaf/0.1/name> "Diane Ng" .
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> <http://example.org/authorPosition> "last" .
+<https://openalex.org/A5102086970> <http://example.org/openAlexId> "https://openalex.org/A5102086970" .

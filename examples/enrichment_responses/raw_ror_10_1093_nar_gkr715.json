@@ -1,0 +1,205 @@
+{
+  "03xb04968": {
+    "ror_id": "https://ror.org/03xb04968",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1926,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Anhui Medical University"
+      },
+      {
+        "lang": null,
+        "types": [
+          "alias"
+        ],
+        "value": "Ānhuī Yīkē Dàxué"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "安徽医科大学"
+      }
+    ],
+    "display_name": "Anhui Medical University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "AH",
+          "country_subdivision_name": "Anhui",
+          "lat": 31.86389,
+          "lng": 117.28083,
+          "name": "Hefei"
+        },
+        "geonames_id": 1808722
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Hefei",
+    "latitude": 31.86389,
+    "longitude": 117.28083,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.ahmu.edu.cn/english/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Anhui_Medical_University"
+      }
+    ],
+    "website": "http://www.ahmu.edu.cn/english/",
+    "external_ids": [
+      {
+        "all": [
+          "501100002947"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.186775.a"
+        ],
+        "preferred": "grid.186775.a",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0000 9490 772X"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q4764372"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.186775.a",
+    "relationships": [
+      {
+        "label": "Anqing City Hospital",
+        "type": "related",
+        "id": "https://ror.org/049q0vg17"
+      },
+      {
+        "label": "First Affiliated Hospital of Anhui Medical University",
+        "type": "related",
+        "id": "https://ror.org/03t1yn780"
+      },
+      {
+        "label": "Fourth Affiliated Hospital of Anhui Medical University",
+        "type": "related",
+        "id": "https://ror.org/05x9zm716"
+      },
+      {
+        "label": "Hefei First People's Hospital",
+        "type": "related",
+        "id": "https://ror.org/05qwgjd68"
+      },
+      {
+        "label": "Second Hospital of Anhui Medical University",
+        "type": "related",
+        "id": "https://ror.org/047aw1y82"
+      },
+      {
+        "label": "Third People's Hospital of Hangzhou",
+        "type": "related",
+        "id": "https://ror.org/02sysn258"
+      }
+    ],
+    "domains": []
+  },
+  "030t7nd77": {
+    "ror_id": "https://ror.org/030t7nd77",
+    "status": "active",
+    "types": [
+      "facility"
+    ],
+    "established": 1979,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "BRC"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Beijing Radiation Center"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "北京市辐射中心"
+      }
+    ],
+    "display_name": "Beijing Radiation Center",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "BJ",
+          "country_subdivision_name": "Beijing",
+          "lat": 39.9075,
+          "lng": 116.39723,
+          "name": "Beijing"
+        },
+        "geonames_id": 1816670
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Beijing",
+    "latitude": 39.9075,
+    "longitude": 116.39723,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.brc.ac.cn/cn/index.html"
+      }
+    ],
+    "website": "http://www.brc.ac.cn/cn/index.html",
+    "external_ids": [
+      {
+        "all": [
+          "grid.482800.6"
+        ],
+        "preferred": "grid.482800.6",
+        "type": "grid"
+      }
+    ],
+    "grid_id": "grid.482800.6",
+    "relationships": [],
+    "domains": []
+  }
+}

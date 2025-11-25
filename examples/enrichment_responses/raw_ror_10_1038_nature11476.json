@@ -1,0 +1,691 @@
+{
+  "02c2kyt77": {
+    "ror_id": "https://ror.org/02c2kyt77",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1956,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Eindhoven University of Technology"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "TU/e"
+      },
+      {
+        "lang": "nl",
+        "types": [
+          "alias"
+        ],
+        "value": "Technische Hogeschool Eindhoven"
+      },
+      {
+        "lang": "nl",
+        "types": [
+          "label"
+        ],
+        "value": "Technische Universiteit Eindhoven"
+      }
+    ],
+    "display_name": "Eindhoven University of Technology",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "EU",
+          "continent_name": "Europe",
+          "country_code": "NL",
+          "country_name": "The Netherlands",
+          "country_subdivision_code": "NB",
+          "country_subdivision_name": "North Brabant",
+          "lat": 51.44083,
+          "lng": 5.47778,
+          "name": "Eindhoven"
+        },
+        "geonames_id": 2756253
+      }
+    ],
+    "country": "The Netherlands",
+    "country_code": "NL",
+    "city": "Eindhoven",
+    "latitude": 51.44083,
+    "longitude": 5.47778,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.tue.nl"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Eindhoven_University_of_Technology"
+      }
+    ],
+    "website": "https://www.tue.nl",
+    "external_ids": [
+      {
+        "all": [
+          "501100003005"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.6852.9"
+        ],
+        "preferred": "grid.6852.9",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0398 8763"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q280824"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.6852.9",
+    "relationships": [
+      {
+        "label": "TIAS School for Business and Society",
+        "type": "related",
+        "id": "https://ror.org/03q7ay915"
+      },
+      {
+        "label": "4TU",
+        "type": "related",
+        "id": "https://ror.org/03rsncr94"
+      },
+      {
+        "label": "Máxima Medisch Centrum",
+        "type": "related",
+        "id": "https://ror.org/02x6rcb77"
+      }
+    ],
+    "domains": [
+      "tue.nl"
+    ]
+  },
+  "03dbr7087": {
+    "ror_id": "https://ror.org/03dbr7087",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1827,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "University of Toronto"
+      },
+      {
+        "lang": "fr",
+        "types": [
+          "label"
+        ],
+        "value": "Université de Toronto"
+      }
+    ],
+    "display_name": "University of Toronto",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "CA",
+          "country_name": "Canada",
+          "country_subdivision_code": "ON",
+          "country_subdivision_name": "Ontario",
+          "lat": 43.70643,
+          "lng": -79.39864,
+          "name": "Toronto"
+        },
+        "geonames_id": 6167865
+      }
+    ],
+    "country": "Canada",
+    "country_code": "CA",
+    "city": "Toronto",
+    "latitude": 43.70643,
+    "longitude": -79.39864,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.utoronto.ca"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/University_of_Toronto"
+      }
+    ],
+    "website": "https://www.utoronto.ca",
+    "external_ids": [
+      {
+        "all": [
+          "501100003579",
+          "501100000154",
+          "501100000086",
+          "501100000064",
+          "100008386",
+          "501100007921",
+          "501100008097",
+          "501100007224",
+          "501100000181",
+          "501100002323",
+          "501100002827",
+          "501100003474",
+          "501100004730",
+          "501100006151",
+          "501100022101"
+        ],
+        "preferred": "501100003579",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.17063.33"
+        ],
+        "preferred": "grid.17063.33",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 2157 2938"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q180865",
+          "Q6120110",
+          "Q3551675"
+        ],
+        "preferred": "Q180865",
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100003579",
+    "grid_id": "grid.17063.33",
+    "wikidata_id": "Q180865",
+    "relationships": [
+      {
+        "label": "Canadian Institute for Theoretical Astrophysics",
+        "type": "child",
+        "id": "https://ror.org/0265wc016"
+      },
+      {
+        "label": "Fields Institute for Research in Mathematical Sciences",
+        "type": "child",
+        "id": "https://ror.org/03zzj3f20"
+      },
+      {
+        "label": "Ted Rogers Centre for Heart Research",
+        "type": "child",
+        "id": "https://ror.org/00cgnj660"
+      },
+      {
+        "label": "AGE-WELL",
+        "type": "child",
+        "id": "https://ror.org/037dt7852"
+      },
+      {
+        "label": "Sunnybrook Research Institute",
+        "type": "child",
+        "id": "https://ror.org/05n0tzs53"
+      },
+      {
+        "label": "Baycrest Hospital",
+        "type": "related",
+        "id": "https://ror.org/03gp5b411"
+      },
+      {
+        "label": "Campbellford Memorial Hospital",
+        "type": "related",
+        "id": "https://ror.org/022ave037"
+      },
+      {
+        "label": "Centre for Addiction and Mental Health",
+        "type": "related",
+        "id": "https://ror.org/03e71c577"
+      },
+      {
+        "label": "Creative Destruction Lab",
+        "type": "related",
+        "id": "https://ror.org/02p6a3b37"
+      },
+      {
+        "label": "Holland Bloorview Kids Rehabilitation Hospital",
+        "type": "related",
+        "id": "https://ror.org/03qea8398"
+      },
+      {
+        "label": "Hospital for Sick Children",
+        "type": "related",
+        "id": "https://ror.org/057q4rt57"
+      },
+      {
+        "label": "Humber River Regional Hospital",
+        "type": "related",
+        "id": "https://ror.org/02gj19t78"
+      },
+      {
+        "label": "Institute for Circumpolar Health Research",
+        "type": "related",
+        "id": "https://ror.org/0390kp681"
+      },
+      {
+        "label": "Lunenfeld-Tanenbaum Research Institute",
+        "type": "related",
+        "id": "https://ror.org/01s5axj25"
+      },
+      {
+        "label": "Mount Sinai Hospital",
+        "type": "related",
+        "id": "https://ror.org/05deks119"
+      },
+      {
+        "label": "North York General Hospital",
+        "type": "related",
+        "id": "https://ror.org/05b3hqn14"
+      },
+      {
+        "label": "St. Michael's Hospital",
+        "type": "related",
+        "id": "https://ror.org/04skqfp25"
+      },
+      {
+        "label": "Sunnybrook Health Science Centre",
+        "type": "related",
+        "id": "https://ror.org/03wefcv03"
+      },
+      {
+        "label": "Sunnybrook Hospital",
+        "type": "related",
+        "id": "https://ror.org/008kn1a71"
+      },
+      {
+        "label": "Surrey Place Centre",
+        "type": "related",
+        "id": "https://ror.org/01tw7ew41"
+      },
+      {
+        "label": "The Scarborough Hospital",
+        "type": "related",
+        "id": "https://ror.org/04pzgb662"
+      },
+      {
+        "label": "Toronto East General Hospital",
+        "type": "related",
+        "id": "https://ror.org/03sm16s30"
+      },
+      {
+        "label": "Trillium Health Centre",
+        "type": "related",
+        "id": "https://ror.org/03v6a2j28"
+      },
+      {
+        "label": "University Health Network",
+        "type": "related",
+        "id": "https://ror.org/042xt5161"
+      },
+      {
+        "label": "Waypoint Centre for Mental Health Care",
+        "type": "related",
+        "id": "https://ror.org/0548x8e24"
+      },
+      {
+        "label": "West Park Healthcare Centre",
+        "type": "related",
+        "id": "https://ror.org/037y13578"
+      },
+      {
+        "label": "Women's College Hospital",
+        "type": "related",
+        "id": "https://ror.org/03cw63y62"
+      },
+      {
+        "label": "Beaufort Lagoon Ecosystems Long Term Ecological Research Network",
+        "type": "related",
+        "id": "https://ror.org/055a54548"
+      }
+    ],
+    "domains": [
+      "utoronto.ca"
+    ]
+  },
+  "05hh8d621": {
+    "ror_id": "https://ror.org/05hh8d621",
+    "status": "active",
+    "types": [
+      "company",
+      "funder"
+    ],
+    "established": 1911,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "IBM (United States)"
+      },
+      {
+        "lang": null,
+        "types": [
+          "alias"
+        ],
+        "value": "International Business Machines"
+      }
+    ],
+    "display_name": "IBM (United States)",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "NY",
+          "country_subdivision_name": "New York",
+          "lat": 41.12648,
+          "lng": -73.71402,
+          "name": "Armonk"
+        },
+        "geonames_id": 5107346
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "Armonk",
+    "latitude": 41.12648,
+    "longitude": -73.71402,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.ibm.com/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/IBM"
+      }
+    ],
+    "website": "http://www.ibm.com/",
+    "external_ids": [
+      {
+        "all": [
+          "100004316",
+          "100005990"
+        ],
+        "preferred": "100004316",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.410484.d"
+        ],
+        "preferred": "grid.410484.d",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0400 2468"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q37156"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "100004316",
+    "grid_id": "grid.410484.d",
+    "relationships": [
+      {
+        "label": "IBM (Belgium)",
+        "type": "child",
+        "id": "https://ror.org/03bjbem32"
+      },
+      {
+        "label": "IBM (Brazil)",
+        "type": "child",
+        "id": "https://ror.org/05thm6q88"
+      },
+      {
+        "label": "IBM (Canada)",
+        "type": "child",
+        "id": "https://ror.org/025sxka56"
+      },
+      {
+        "label": "IBM (Czechia)",
+        "type": "child",
+        "id": "https://ror.org/04dzqh472"
+      },
+      {
+        "label": "IBM (Denmark)",
+        "type": "child",
+        "id": "https://ror.org/043ncwv78"
+      },
+      {
+        "label": "IBM (Egypt)",
+        "type": "child",
+        "id": "https://ror.org/04zpt4h82"
+      },
+      {
+        "label": "IBM (France)",
+        "type": "child",
+        "id": "https://ror.org/02wnbr922"
+      },
+      {
+        "label": "IBM (Germany)",
+        "type": "child",
+        "id": "https://ror.org/00pm7rm97"
+      },
+      {
+        "label": "IBM (India)",
+        "type": "child",
+        "id": "https://ror.org/034ahpr11"
+      },
+      {
+        "label": "IBM (Ireland)",
+        "type": "child",
+        "id": "https://ror.org/0146h2h75"
+      },
+      {
+        "label": "IBM (Italy)",
+        "type": "child",
+        "id": "https://ror.org/02nc81e13"
+      },
+      {
+        "label": "IBM (Netherlands)",
+        "type": "child",
+        "id": "https://ror.org/055yb9v95"
+      },
+      {
+        "label": "IBM (Portugal)",
+        "type": "child",
+        "id": "https://ror.org/03kv3z486"
+      },
+      {
+        "label": "IBM (Slovakia)",
+        "type": "child",
+        "id": "https://ror.org/055c63105"
+      },
+      {
+        "label": "IBM (Spain)",
+        "type": "child",
+        "id": "https://ror.org/04wam6707"
+      },
+      {
+        "label": "IBM (United Kingdom)",
+        "type": "child",
+        "id": "https://ror.org/02wat9f69"
+      },
+      {
+        "label": "IBM Research - Thomas J. Watson Research Center",
+        "type": "child",
+        "id": "https://ror.org/0265w5591"
+      }
+    ],
+    "domains": []
+  },
+  "02s376052": {
+    "ror_id": "https://ror.org/02s376052",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1853,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "EPFL"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "label"
+        ],
+        "value": "Swiss Federal Institute of Technology in Lausanne"
+      },
+      {
+        "lang": "fr",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "École Polytechnique Fédérale de Lausanne"
+      }
+    ],
+    "display_name": "École Polytechnique Fédérale de Lausanne",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "EU",
+          "continent_name": "Europe",
+          "country_code": "CH",
+          "country_name": "Switzerland",
+          "country_subdivision_code": "VD",
+          "country_subdivision_name": "Vaud",
+          "lat": 46.516,
+          "lng": 6.63282,
+          "name": "Lausanne"
+        },
+        "geonames_id": 2659994
+      }
+    ],
+    "country": "Switzerland",
+    "country_code": "CH",
+    "city": "Lausanne",
+    "latitude": 46.516,
+    "longitude": 6.63282,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.epfl.ch"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/%C3%89cole_Polytechnique_F%C3%A9d%C3%A9rale_de_Lausanne"
+      }
+    ],
+    "website": "http://www.epfl.ch",
+    "external_ids": [
+      {
+        "all": [
+          "501100001703",
+          "501100001709"
+        ],
+        "preferred": "501100001703",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.5333.6"
+        ],
+        "preferred": "grid.5333.6",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 2183 9049"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q262760"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100001703",
+    "grid_id": "grid.5333.6",
+    "relationships": [
+      {
+        "label": "NCCR Chemical Biology - Visualisation and Control of Biological Processes Using Chemistry",
+        "type": "child",
+        "id": "https://ror.org/033f9yy33"
+      },
+      {
+        "label": "Swiss Data Science Center",
+        "type": "child",
+        "id": "https://ror.org/02hdt9m26"
+      },
+      {
+        "label": "Board of the Swiss Federal Institutes of Technology",
+        "type": "parent",
+        "id": "https://ror.org/01rvn4p91"
+      },
+      {
+        "label": "Idiap Research Institute",
+        "type": "related",
+        "id": "https://ror.org/05932h694"
+      },
+      {
+        "label": "Swiss Polar Institute",
+        "type": "related",
+        "id": "https://ror.org/02z9ca723"
+      },
+      {
+        "label": "NCCR Catalysis",
+        "type": "related",
+        "id": "https://ror.org/03qf6ek79"
+      }
+    ],
+    "domains": []
+  }
+}
