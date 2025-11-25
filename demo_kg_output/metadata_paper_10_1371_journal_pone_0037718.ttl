@@ -1,0 +1,183 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<http://example.org/data/institution/1-department-of-research-ross-university-school-of-veterinary-medicine-rusvm-basseterre-st-kitts-west-indies> a org:Organization ;
+    skos:prefLabel """1
+Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts, West Indies""" ;
+    org:hasMember <http://example.org/data/author/rosina-claudia-krecek> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/2-department-of-zoology-university-of-johannesburg-auckland-park-south-africa> a org:Organization ;
+    skos:prefLabel """2
+Department of Zoology, University of Johannesburg, Auckland Park, South Africa""" ;
+    org:hasMember <http://example.org/data/author/rosina-claudia-krecek> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/3-university-of-trinidad-and-tobago-arima-trinidad> a org:Organization ;
+    skos:prefLabel """3
+University of Trinidad and Tobago, Arima, Trinidad""" ;
+    org:hasMember <http://example.org/data/author/hamish-mohammed> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/4-animal-health-division-bayer-pty-ltd-isando-south-africa> a org:Organization ;
+    skos:prefLabel """4
+Animal Health Division, Bayer Pty Ltd, Isando, South Africa""" ;
+    org:hasMember <http://example.org/data/author/lynne-margaret-michael> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/5-department-of-global-health-rollins-school-of-public-health-emory-university-atlanta-georgia-united-states-of-america> a org:Organization ;
+    skos:prefLabel """5
+Department of Global Health, Rollins School of Public Health, Emory University, Atlanta, Georgia, United States of America""" ;
+    org:hasMember <http://example.org/data/author/peter-mullineaux-schantz> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/6-department-of-agriculture-veterinary-services-eastern-cape-province-bhisho-eastern-cape-south-africa> a org:Organization ;
+    skos:prefLabel """6
+Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape, South Africa""" ;
+    org:hasMember <http://example.org/data/author/lulama-ntanjana> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/7-biometry-unit-agricultural-research-council-silverton-pretoria-south-africa> a org:Organization ;
+    skos:prefLabel """7
+Biometry Unit, Agricultural Research Council, Silverton, Pretoria, South Africa""" ;
+    org:hasMember <http://example.org/data/author/liesl-morey> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/8-laboratory-for-study-design-and-statistical-analysis-virginiamaryland-regional-college-of-veterinary-medicine-virginia-tech-blacksburg-virginia-united-states-of-america> a org:Organization ;
+    skos:prefLabel """8
+Laboratory for Study Design and Statistical Analysis, Virginia-Maryland Regional College of Veterinary Medicine, Virginia Tech, Blacksburg, Virginia, United States of America""" ;
+    org:hasMember <http://example.org/data/author/stephen-rakem-werre> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/institution/9-stewardship-for-research-on-infectious-diseases-of-poverty-ste-unicefundpworld-bankwho-special-programme-for-research-and-training-in-tropical-diseases-tdr-geneva-switzerland> a org:Organization ;
+    skos:prefLabel """9
+Stewardship for Research on Infectious Diseases of Poverty (STE), UNICEF/UNDP/World Bank/WHO Special Programme for Research and Training in Tropical Diseases (TDR), Geneva, Switzerland""" ;
+    org:hasMember <http://example.org/data/author/arve-lee-willingham> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/author/arve-lee-willingham> a foaf:Person ;
+    ex:affiliation """9
+Stewardship for Research on Infectious Diseases of Poverty (STE), UNICEF/UNDP/World Bank/WHO Special Programme for Research and Training in Tropical Diseases (TDR), Geneva, Switzerland""" ;
+    org:memberOf <http://example.org/data/institution/9-stewardship-for-research-on-infectious-diseases-of-poverty-ste-unicefundpworld-bankwho-special-programme-for-research-and-training-in-tropical-diseases-tdr-geneva-switzerland> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Willingham" ;
+    foaf:givenName "Arve Lee" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Arve Lee Willingham" .
+
+<http://example.org/data/author/hamish-mohammed> a foaf:Person ;
+    ex:affiliation """3
+University of Trinidad and Tobago, Arima, Trinidad""" ;
+    org:memberOf <http://example.org/data/institution/3-university-of-trinidad-and-tobago-arima-trinidad> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Mohammed" ;
+    foaf:givenName "Hamish" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Hamish Mohammed" .
+
+<http://example.org/data/author/liesl-morey> a foaf:Person ;
+    ex:affiliation """7
+Biometry Unit, Agricultural Research Council, Silverton, Pretoria, South Africa""" ;
+    org:memberOf <http://example.org/data/institution/7-biometry-unit-agricultural-research-council-silverton-pretoria-south-africa> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Morey" ;
+    foaf:givenName "Liesl" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Liesl Morey" .
+
+<http://example.org/data/author/lulama-ntanjana> a foaf:Person ;
+    ex:affiliation """6
+Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape, South Africa""" ;
+    org:memberOf <http://example.org/data/institution/6-department-of-agriculture-veterinary-services-eastern-cape-province-bhisho-eastern-cape-south-africa> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Ntanjana" ;
+    foaf:givenName "Lulama" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Lulama Ntanjana" .
+
+<http://example.org/data/author/lynne-margaret-michael> a foaf:Person ;
+    ex:affiliation """4
+Animal Health Division, Bayer Pty Ltd, Isando, South Africa""" ;
+    org:memberOf <http://example.org/data/institution/4-animal-health-division-bayer-pty-ltd-isando-south-africa> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Michael" ;
+    foaf:givenName "Lynne Margaret" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Lynne Margaret Michael" .
+
+<http://example.org/data/author/peter-mullineaux-schantz> a foaf:Person ;
+    ex:affiliation """5
+Department of Global Health, Rollins School of Public Health, Emory University, Atlanta, Georgia, United States of America""" ;
+    org:memberOf <http://example.org/data/institution/5-department-of-global-health-rollins-school-of-public-health-emory-university-atlanta-georgia-united-states-of-america> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Schantz" ;
+    foaf:givenName "Peter Mullineaux" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Peter Mullineaux Schantz" .
+
+<http://example.org/data/author/stephen-rakem-werre> a foaf:Person ;
+    ex:affiliation """8
+Laboratory for Study Design and Statistical Analysis, Virginia-Maryland Regional College of Veterinary Medicine, Virginia Tech, Blacksburg, Virginia, United States of America""" ;
+    org:memberOf <http://example.org/data/institution/8-laboratory-for-study-design-and-statistical-analysis-virginiamaryland-regional-college-of-veterinary-medicine-virginia-tech-blacksburg-virginia-united-states-of-america> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Werre" ;
+    foaf:givenName "Stephen Rakem" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Stephen Rakem Werre" .
+
+<http://example.org/data/author/rosina-claudia-krecek> a foaf:Person ;
+    ex:affiliation """1
+Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts, West Indies; 2
+Department of Zoology, University of Johannesburg, Auckland Park, South Africa""" ;
+    org:memberOf <http://example.org/data/institution/1-department-of-research-ross-university-school-of-veterinary-medicine-rusvm-basseterre-st-kitts-west-indies>,
+        <http://example.org/data/institution/2-department-of-zoology-university-of-johannesburg-auckland-park-south-africa> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" ;
+    foaf:familyName "Krecek" ;
+    foaf:givenName "Rosina Claudia" ;
+    foaf:made <https://doi.org/10.1371/journal.pone.0037718> ;
+    foaf:name "Rosina Claudia Krecek" .
+
+<https://doi.org/10.1371/journal.pone.0037718> a bibo:AcademicArticle ;
+    dcterms:creator <http://example.org/data/author/arve-lee-willingham>,
+        <http://example.org/data/author/hamish-mohammed>,
+        <http://example.org/data/author/liesl-morey>,
+        <http://example.org/data/author/lulama-ntanjana>,
+        <http://example.org/data/author/lynne-margaret-michael>,
+        <http://example.org/data/author/peter-mullineaux-schantz>,
+        <http://example.org/data/author/rosina-claudia-krecek>,
+        <http://example.org/data/author/stephen-rakem-werre> ;
+    dcterms:identifier "3359999" ;
+    dcterms:issued "2012-05-24" ;
+    dcterms:title "Risk Factors of Porcine Cysticercosis in the Eastern Cape Province, South Africa" ;
+    bibo:doi "10.1371/journal.pone.0037718" ;
+    bibo:issue "5" ;
+    bibo:journalTitle "PLoS ONE" ;
+    bibo:pages "13-23" ;
+    bibo:volume "7" ;
+    owl:sameAs <https://doi.org/10.1371/journal.pone.0037718>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/3359999/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .

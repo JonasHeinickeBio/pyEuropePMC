@@ -1,0 +1,1023 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix mesh: <http://id.nlm.nih.gov/mesh/> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/data/author/david-warburton> a foaf:Person ;
+    ex:affiliation "2Department of Pediatrics, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Warburton" ;
+    foaf:givenName "David" ;
+    foaf:made <https://doi.org/10.3389/fped.2025.1640747> ;
+    foaf:name "David Warburton" .
+
+<http://example.org/data/author/dina-kamel> a foaf:Person ;
+    ex:affiliation "1Division of Infectious Diseases, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States; 2Department of Pediatrics, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Kamel" ;
+    foaf:givenName "Dina" ;
+    foaf:made <https://doi.org/10.3389/fped.2025.1640747> ;
+    foaf:name "Dina Kamel" .
+
+<http://example.org/data/author/jeffery-bender> a foaf:Person ;
+    ex:affiliation "1Division of Infectious Diseases, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States; 2Department of Pediatrics, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Bender" ;
+    foaf:givenName "Jeffery" ;
+    foaf:made <https://doi.org/10.3389/fped.2025.1640747> ;
+    foaf:name "Jeffery Bender" .
+
+<http://example.org/data/author/john-c-wood> a foaf:Person ;
+    ex:affiliation "2Department of Pediatrics, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States; 4Department of Radiology, Children's Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Wood" ;
+    foaf:givenName "John C." ;
+    foaf:made <https://doi.org/10.3389/fped.2025.1640747> ;
+    foaf:name "John C. Wood" .
+
+<http://example.org/data/author/my-h-vu> a foaf:Person ;
+    ex:affiliation "3Biostatistics and Data Management Core, The Saban Research Institute, Children's Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Vu" ;
+    foaf:givenName "My H." ;
+    foaf:made <https://doi.org/10.3389/fped.2025.1640747> ;
+    foaf:name "My H. Vu" .
+
+<http://example.org/data/author/sindhu-mohandas> a foaf:Person ;
+    ex:affiliation "1Division of Infectious Diseases, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States; 2Department of Pediatrics, Children’s Hospital Los Angeles, University of Southern California, Los Angeles, CA, United States" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Mohandas" ;
+    foaf:givenName "Sindhu" ;
+    foaf:made <https://doi.org/10.3389/fped.2025.1640747> ;
+    foaf:name "Sindhu Mohandas" .
+
+<http://example.org/data/reference/3163614f-1ffb-4430-b9c7-618a5863816a> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "DHARMa: residual diagnostics for hierarchical (multi-level/mixed) regression models. R package version 0.4.7" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/584d151e-40dc-48a9-8954-bc16ee7f1275> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2021 ;
+    dcterms:title "A Clinical Case Definition of Post COVID-19 Condition by a Delphi Consensus, 6 October 2021" ;
+    bibo:journalTitle "A Clinical Case Definition of Post COVID-19 Condition by a Delphi Consensus, 6 October 2021" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/83e0e7d4-a26d-4efd-a1d3-f0553c017f96> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "A Long COVID Definition: A Chronic, Systemic Disease State with Profound Consequences" ;
+    bibo:journalTitle "A Long COVID Definition: A Chronic, Systemic Disease State with Profound Consequences" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/e40e5fa0-1ff0-48e9-a76a-4500d2c55015> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "Post-COVID Conditions: Information for Healthcare Providers" ;
+    bibo:journalTitle "Post-COVID Conditions: Information for Healthcare Providers" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/09c06c2f-430a-42ae-a469-b20d6cd4b2d9> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """We performed a retrospective electronic medical record (EMR) review and data analysis of all patients aged 0–21 years evaluated at the COVID Recovery Clinic at Children's Hospital Los Angeles between August 2021 and November 2023. Institutional Review Board (IRB) approval was obtained prior to study initiation. The COVID Recovery Clinic operates within the Division of Infectious Diseases and is staffed by pediatric infectious diseases specialists.
+
+Patients were eligible for inclusion if they presented with persistent or newly emerging symptoms at least four weeks following SARS-CoV-2 infection that significantly impacted their quality of life. We used the 4-week time frame in our study, as defined by the NIH and CDC at the time of enrollment ( 2 , 6 ). Individuals with alternative diagnoses explaining their symptoms were excluded. Symptom documentation varied by age group: in younger children, symptoms were typically reported by caregivers; in older children and adolescents, symptoms were reported by patients themselves and parents; and in some cases, clinician interpretation was used.
+
+During the study period, 123 children met eligibility criteria and all of them were included in the analysis. Alternative diagnoses which would have constituted exclusion criteria, were not observed among those presenting to the clinic, likely because these patients had already been evaluated by their primary pediatricians and other sub specialists prior to referral. Patients seen in our clinic were either self-referred or referred by their primary pediatricians, with the majority of cases resulting from self-referral. As this study was based on retrospective chart review, variability in clinic attendance resulted in incomplete longitudinal data, with not all patients represented at each follow-up interval.
+
+Data extraction was conducted by a single trained reviewer using a pre-designed Excel template with standardized variable definitions. To ensure data accuracy and reliability, a second independent reviewer randomly verified approximately 10% of abstracted records. Any discrepancies identified during verification were resolved through discussion between the two reviewers, with consultation of the original EMR when necessary.
+
+Demographics and characteristics were summarized using mean and standard deviation (SD) for continuous variables, and frequency and percentage for categorical variables. Differences in the prevalence of each symptom at presentation between males and females, overall and by age groups, were assessed by Fisher's Exact tests, as well as logistic regression models. Although a total of 43 symptoms were recorded, only those reported by more than five patients were included in these comparisons. A penalized likelihood-based method, Firth's bias-reduced logistic regression (R package “logistf”), was fit to accommodate the low prevalence rates ( 17 ). As a supplementary analysis, symptoms were grouped into 12 domains, and the same comparisons of prevalence between males and females were repeated at the domain level. The number of recorded symptoms for each patient was summarized at onset, 6-, 12-, 18-, and 18+ months. If a patient had more than one visit in the same time period, the average number of recorded symptoms across the visits was used as the outcome. To examine the rate of change in the number of recorded symptoms, a linear mixed-effects (LME) model with a random participant effect was fit with time as a categorical variable to assess changes at each follow-up time point compared to onset. As a sensitivity analysis, the model above was repeated using the maximum symptom count within each interval to assess robustness to different summarization strategies. All patients with at least one follow-up were included in analyses as mixed effects models are generally robust for unbalanced data across study time points ( 18 ). Model assumptions were assessed using diagnostic plots, including residual-vs.-fitted and Q-Q plots using R package “DHARMa” ( 19 ). As sensitivity analyses, Poisson and negative binomial mixed-effects models were also fit. No formal adjustments for multiple comparisons were applied as analyses were exploratory in nature. We defined statistical significance using a two-sided p -values <0.05. All statistical analyses were conducted in R Studio 4.5.0.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Methods" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/0e54d284-1b5a-4eab-9048-9f0d4f3b7044> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "The raw data supporting the conclusions of this article will be made available by the authors, without undue reservation." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Data availability statement" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/0e67bc99-3de5-495b-830a-aa28096af862> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "The Supplementary Material for this article can be found online at: https://www.frontiersin.org/articles/10.3389/fped.2025.1640747/full#supplementary-material" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Supplementary material" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/17ddf7c8-0bff-433d-91f4-adae68008784> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """The author(s) declare that no Generative AI was used in the creation of this manuscript.
+
+Any alternative text (alt text) provided alongside figures in this article has been generated by Frontiers with the support of artificial intelligence and reasonable efforts have been made to ensure accuracy, including review by the authors wherever possible. If you identify any issues, please contact us.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Generative AI statement" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/22fee3d1-3f60-47f8-b2f8-ca7ce7008260> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """With the rising cumulative incidence of severe acute respiratory syndrome coronavirus 2 ( SARS-CoV-2) infection, increasing attention has has focused on the persistence of multi-organ symptoms beyond the acute phase, termed “long COVID”. This refers to signs and symptoms that either persist or emerge following the initial COVID-19 illness and cannot be attributed to another diagnosis ( 1 ). Various terms exist in the literature, but in this article, we use “long COVID”.
+
+Persistent symptoms have been observed following SARS-CoV-2 infection across all ages and severities, often impairing daily functioning and health-related quality of life ( 2 , 3 ). In children, long COVID typically follows a mild acute infection and resolves within several months, but many continue to experience symptoms lasting for months or even beyond a year, causing disability and requiring ongoing medical care and follow-up. These symptoms may persist from the initial illness or newly emerge after recovery, often fluctuating with periods of improvement and relapse ( 3 – 5 ).
+
+The definition of long COVID has evolved since its identification ( 1 ). In mid-2021, both the Centers for Disease Control and Prevention (CDC) and the National Institutes of Health (NIH) provided early definitions of long COVID/post-acute sequelae of SARS-CoV-2 infection (PASC), using a time frame of four weeks after acute infection. The NIH defined long COVID as post-acute symptoms beyond four weeks ( 2 ). The CDC used the umbrella term “Post-COVID Conditions” (PCC) for health consequences persisting or emerging four or more weeks after infection ( 6 ).
+
+In October 2021, the WHO proposed a Delphi-based clinical definition: Post COVID-19 condition occurs in individuals with a history of probable or confirmed SARS-CoV-2 infection, usually 3 months from the onset of COVID-19, with symptoms and that last for at least 2 months and cannot be explained by an alternative diagnosis ( 4 ). On February 2, 2022, the National Institute for Health and Care Excellence (NICE) defined long COVID as symptoms persisting or emerging after acute illness, including ongoing illness (4–12 weeks) and post-COVID-19 syndrome (≥12 weeks) ( 7 ).
+
+In 2024, the National Academies of Sciences, Engineering, and Medicine (NASEM) defined long COVID as an infection-associated chronic condition (IACC) occurring after SARS-CoV-2 infection, present for ≥3 months as continuous, relapsing-remitting, or progressive disease affecting one or more organ systems ( 8 ).
+
+Long COVID can affect multiple organ systems with varied symptoms. Common manifestations include fatigue, shortness of breath, cough, chest discomfort, diarrhea, headaches, difficulty with balance or walking, sleep disturbances, joint and muscle pain, generalized weakness, cognitive impairments, heart palpitations, paresthesia, skin rashes, and hair loss ( 9 ).
+
+Similar to adults, adolescents and children also report “brain fog”, a term encompassing a range of cognitive impairments. Fatigue is among the most consistently reported symptoms across all ages in multiple studies ( 5 , 10 , 11 ).
+
+Most pediatric studies to date have examined individual symptoms of long COVID, often combining data across broad age ranges or concentrating primarily on adolescents. Consequently, there is limited understanding of how symptoms differ between school-aged children (6–11 years) and adolescents (12–17 years) ( 11 ).
+
+A large longitudinal cohort within the Researching COVID to Enhance Recovery RECOVER in Pediatrics study highlighted distinct symptom patterns between these groups, emphasizing the need to evaluate and define long COVID independently within each of these age groups. While some symptoms overlapped, gastrointestinal issues and sleep problems were more common in younger children, whereas anosmia and smell changes predominated in adolescents ( 12 ). Key developmental changes in children likely also impact the phenotype of long COVID at various ages, making the identification of long COVID much more challenging.
+
+Currently, there is no established diagnostic biomarker for long COVID, and distinguishing it from other conditions remains a clinical challenge ( 3 ).
+
+The underlying mechanisms of long COVID and the impact of COVID-19 vaccination are poorly understood. Potential contributors include varying degrees of organ damage, ongoing low-grade inflammation, and immune dysregulation, such as the production of autoantibodies ( 13 ).
+
+Patients often show persistently elevated levels of inflammatory markers ( 14 ). The theory that SARS-CoV-2 may persist in a hidden form within the body has been suggested and supported by the detection of viral particles found in various organs post- infection. Vaccination may reduce the risk of long COVID by boosting antibody levels, clearing residual viral reservoirs ( 15 )., and lessening acute illness severity, thereby reducing the likelihood of subsequent organ damage or systemic complications ( 16 ).
+
+Management of long COVID involves supportive therapies through both non-pharmacological and pharmacological interventions ( 3 ). Management focuses on the most burdensome symptoms, with integrated, multidisciplinary strategies employed for complex or severe cases ( 3 ).
+
+Long COVID remains under recognized in Pediatrics. This study aims to characterize the clinical spectrum of long COVID in children at a dedicated long COVID clinic and to explore the impact of vaccination on its development and course.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Introduction" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/2774ee15-4eb4-4ea0-9c8c-6f0eb779b749> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "This study highlights the broad clinical spectrum of long COVID in children and adolescents, with fatigue and headache emerging as the most common and persistent symptoms across all age groups. While many patients experienced gradual symptom improvement over time, a subset continued to report significant impairment well beyond the acute illness. No clear association was observed between COVID-19 vaccination status and symptom duration at initial presentation, though the potential for symptom improvement following vaccination warrants further investigation. The observed age and gender differences in symptom profiles underscore the importance of individualized assessment and multidisciplinary care. Overall, these findings emphasize the need for continued research and long-term follow-up to better understand the natural history of pediatric long COVID and to inform effective management strategies." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Conclusion" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/33fe79a9-3c6b-43c7-befd-2b0d00631f7a> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "All claims expressed in this article are solely those of the authors and do not necessarily represent those of their affiliated organizations, or those of the publisher, the editors and the reviewers. Any product that may be evaluated in this article, or claim that may be made by its manufacturer, is not guaranteed or endorsed by the publisher." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Publisher's note" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/3560640e-5d01-4f51-8012-15c406dd1d1d> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "A total of 123 patients were enrolled. The mean age was 13.1 years, and 51% were male. Symptom onset occurred a mean of 5 weeks after infection. At presentation, 56% of patients reported symptoms lasting 0–24 weeks, 28% for 25–52 weeks, and 16% for >52 weeks. Fatigue (93%) and headache (70%) were the most prevalent symptoms in both younger (<12 years) and older (>12 years) cohorts. Female patients more frequently reported brain fog, dizziness, palpitations, and postural orthostatic tachycardia syndrome. Overall symptom burden decreased significantly over time ( p < 0.001). Vaccination status at baseline was not associated with difference in symptom duration on initial presentation ( p = 0.4). However, among those vaccinated after developing long COVID, 41% reported subjective improvement in the following weeks." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Results" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/3d2064c2-2f83-4036-bed3-5da0b56bef7b> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "The authors declare that the research was conducted in the absence of any commercial or financial relationships that could be construed as a potential conflict of interest." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Conflict of interest" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/4c35b657-a908-469c-ad53-3d9fb7539e75> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """There was no difference between males and females in symptom duration at presentation ( p = 0.8). However, females were significantly more likely to experience dizziness [ p < 0.001; OR (95% CI): 3.7 (1.8, 7.8)], brain fog [ p = 0.04; OR (95% CI): 2.1 (1.0, 4.4)], palpitations [ p < 0.001; OR (95% CI): 4.4 (1.9, 11.1)], and a diagnosis of postural orthostatic tachycardia syndrome (POTS) [ p = 0.05; OR (95% CI): 4.0 (1.0, 21.8)]. In contrast, females were significantly less likely to report loss of appetite [ p = 0.012; OR (95% CI): 0.2 (0.1, 0.7)] ( Table 2 ). Upon stratification by age, chest pain was significantly more prevalent among females in the younger group [50% vs. 4.5%, p = 0.003; OR (95% CI): 14.3 (2.5, 153.5)] ( Table 3 ). In the adolescent group, females reported higher frequencies of dizziness [65% vs. 34%, p = 0.005; OR (95% CI): 3.5 (1.5, 8.6)] and palpitations [43% vs. 15%, p = 0.005; OR (95% CI): 4.2 (1.6, 12.5)] compared to males. In contrast, females were significantly less likely to report loss of appetite [ p = 0.01; OR (95% CI): 0.2 (0.0, 0.6)] ( Table 4 ).
+
+Clinical characteristics of long COVID and sex differences among patients under 12 years of age.
+
+n (%).
+
+Fisher's exact test.
+
+1 participant with missing data; missing data is excluded from the denominator.
+
+Clinical characteristics of long COVID and sex differences among patients 12 years of age or older.
+
+n (%).
+
+Fisher's exact test.
+
+1 participant with missing data; missing data is excluded from the denominator.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Sex differences in symptoms" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/4e09e412-9752-4dde-9393-c34ca205ae55> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "We performed a retrospective electronic medical record (EMR) review and data analysis of all patients aged 0–21 years evaluated at the COVID Recovery Clinic at Children's Hospital Los Angeles between August 2021 and November 2023. Institutional Review Board (IRB) approval was obtained prior to study initiation. The COVID Recovery Clinic operates within the Division of Infectious Diseases and is staffed by pediatric infectious diseases specialists." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Study design and setting" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/5254844c-d013-412f-859a-3ccaca70d911> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Demographics and characteristics were summarized using mean and standard deviation (SD) for continuous variables, and frequency and percentage for categorical variables. Differences in the prevalence of each symptom at presentation between males and females, overall and by age groups, were assessed by Fisher's Exact tests, as well as logistic regression models. Although a total of 43 symptoms were recorded, only those reported by more than five patients were included in these comparisons. A penalized likelihood-based method, Firth's bias-reduced logistic regression (R package “logistf”), was fit to accommodate the low prevalence rates ( 17 ). As a supplementary analysis, symptoms were grouped into 12 domains, and the same comparisons of prevalence between males and females were repeated at the domain level. The number of recorded symptoms for each patient was summarized at onset, 6-, 12-, 18-, and 18+ months. If a patient had more than one visit in the same time period, the average number of recorded symptoms across the visits was used as the outcome. To examine the rate of change in the number of recorded symptoms, a linear mixed-effects (LME) model with a random participant effect was fit with time as a categorical variable to assess changes at each follow-up time point compared to onset. As a sensitivity analysis, the model above was repeated using the maximum symptom count within each interval to assess robustness to different summarization strategies. All patients with at least one follow-up were included in analyses as mixed effects models are generally robust for unbalanced data across study time points ( 18 ). Model assumptions were assessed using diagnostic plots, including residual-vs.-fitted and Q-Q plots using R package “DHARMa” ( 19 ). As sensitivity analyses, Poisson and negative binomial mixed-effects models were also fit. No formal adjustments for multiple comparisons were applied as analyses were exploratory in nature. We defined statistical significance using a two-sided p -values <0.05. All statistical analyses were conducted in R Studio 4.5.0." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Statistical analysis" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/5887d411-33b2-4544-9555-d029d96157d4> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Long COVID describes the persistence or recurrence of symptoms beyond the acute phase of SARS-CoV-2 infection and is increasingly recognized in children and adolescents. Despite its prevalence, understanding of symptom patterns and the influence of vaccination on disease trajectory in pediatric populations remains limited." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Background" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/68d516a2-382b-4f23-a3b2-32aec8edeba2> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """The most commonly reported symptoms were fatigue (93%), headache (70%), exercise intolerance (53%), dizziness (44%), brain fog (41%), musculoskeletal pain (29%), shortness of breath and abdominal pain (28%), palpitations (26%), and chest pain and nausea (23%) ( Table 2 ). Fatigue was the most frequently reported and persistent symptom, with prevalence rates of 33% at 6 months ( N = 24), 42% between 6 and 12 months ( N = 33), and 62% between 12 and 24 months ( N = 26) after symptom onset.
+
+Clinical characteristics of long COVID and sex differences among the study population.
+
+n (%).
+
+Fisher's exact test.
+
+1–2 participants with missing data; missing data is excluded from the denominator.
+
+Patients were stratified into two age groups: a younger group (<12 years; n = 36, 29%) and an adolescent group (>12 years; n = 87, 71%). Fatigue and headache remained the most frequently reported symptoms across both groups, with no statistically significant difference observed between males and females. Fatigue was reported by 81% of the younger group and 98% of the adolescent group, while headaches were reported by 58% of the younger children and 75% of the adolescents.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Symptom prevalence at presentation" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/7800139e-d202-4aae-8015-e3e6126f10cd> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "We conducted a retrospective study of patients aged 0–21 years evaluated at the Long COVID Clinic at Children's Hospital Los Angeles between August 2021 and November 2023. Patients were included if they reported persistent or new symptoms ≥4 weeks after SARS-CoV-2 infection." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Methods" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/7dd97b24-d0ad-4d3f-bc94-6e5939777107> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Of the 123 patients, 74 patients had at least one follow-up clinic visit; the overall trend in reported symptoms over time is shown in Figure 1 . No significant differences in demographics and characteristics were found between patients with and without follow-up ( Supplementary Table S1 ). The residuals from the primary linear mixed-effects (LME) model were approximately normally distributed, with no substantial deviations from homoscedasticity or linearity observed ( Supplementary Figure S1 ). As sensitivity analyses, Poisson and negative binomial mixed-effects models were also fit. The Poisson model exhibited significant deviations from uniformity and dispersion, indicating poor fit. In contrast, the negative binomial mixed-effects model showed residual patterns similar to the LME model, with no evidence of significant deviation from assumptions. Results were consistent across the LME and negative binomial approaches. Given comparable fit, the LME model was retained as the primary analytic model. Among the 74 patients, the estimated mean number of symptoms at the onset of long COVID from the LME model was 8.6 (95% CI: 7.8–9.4). When compared to symptom onset, the mean number of symptoms decreased by 5.3 (95% CI: −6.5 to −4.0) at 6 months, by 5.8 (95% CI: −6.9 to −4.7) at 6–12 months, by 4.7 (95% CI: −6.1 to −3.3) at 12–18 months, and by 3.9 (95% CI: −5.4 to −2.2) at 18 months and beyond ( p < 0.001) ( Figure 2 ). Results from the sensitivity analysis using the maximum symptom count were largely consistent with the primary analysis. Estimates differed by only one decimal place across intervals, except for the 18+ month interval (3.9 vs. 2.9), supporting the robustness of the primary findings across different symptom summary methods.
+
+Individual symptom trajectories over time with model-based mean estimates. Each gray line represents an individual participant's number of reported symptoms at each follow-up interval. Overlapping points occur when multiple participants reported the same number of symptoms at a given timepoint. The red line with error bars represents the estimated mean symptom trajectory from the linear mixed-effects model, with 95% confidence intervals.
+
+Model-based estimates of change in number of symptoms over time since onset. The red line with error bars represents the estimated mean change in symptom count from onset at key time intervals from the linear mixed-effects model, with 95% confidence intervals.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Longitudinal symptom trajectories" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/7e3e8e38-bb66-4b6d-bc48-86f7df0e7eca> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Patients were eligible for inclusion if they presented with persistent or newly emerging symptoms at least four weeks following SARS-CoV-2 infection that significantly impacted their quality of life. We used the 4-week time frame in our study, as defined by the NIH and CDC at the time of enrollment ( 2 , 6 ). Individuals with alternative diagnoses explaining their symptoms were excluded. Symptom documentation varied by age group: in younger children, symptoms were typically reported by caregivers; in older children and adolescents, symptoms were reported by patients themselves and parents; and in some cases, clinician interpretation was used.
+
+During the study period, 123 children met eligibility criteria and all of them were included in the analysis. Alternative diagnoses which would have constituted exclusion criteria, were not observed among those presenting to the clinic, likely because these patients had already been evaluated by their primary pediatricians and other sub specialists prior to referral. Patients seen in our clinic were either self-referred or referred by their primary pediatricians, with the majority of cases resulting from self-referral. As this study was based on retrospective chart review, variability in clinic attendance resulted in incomplete longitudinal data, with not all patients represented at each follow-up interval.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Study population" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/aa81a880-ca3d-486d-b05d-48b825baa112> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """During the study period, 123 children met eligibility criteria and all of them were included in the analysis. Alternative diagnoses which would have constituted exclusion criteria, were not observed among those presenting to the clinic. Mean age is 13.1 years (SD 3.9); 63 patients (51%) were males. Data about race and ethnicity were limited in our study ( Table 1 ). Symptoms developed, on average, 5.1 weeks (SD 13.8) following SARS-CoV-2 infection. At the time of presentation to the clinic, 67 patients (56%) had experienced long COVID symptoms for 0–24 weeks, 34 patients (28%) for 25–52 weeks, and 19 patients (16%) for more than 52 weeks. The exact duration of symptoms at presentation was unknown for 3 patients.
+
+Demographic and vaccination data among the study population.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Demographics and baseline characteristics" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/bebb1d70-41a2-436a-8a1f-ebc76553f38e> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """During the study period, 123 children met eligibility criteria and all of them were included in the analysis. Alternative diagnoses which would have constituted exclusion criteria, were not observed among those presenting to the clinic. Mean age is 13.1 years (SD 3.9); 63 patients (51%) were males. Data about race and ethnicity were limited in our study ( Table 1 ). Symptoms developed, on average, 5.1 weeks (SD 13.8) following SARS-CoV-2 infection. At the time of presentation to the clinic, 67 patients (56%) had experienced long COVID symptoms for 0–24 weeks, 34 patients (28%) for 25–52 weeks, and 19 patients (16%) for more than 52 weeks. The exact duration of symptoms at presentation was unknown for 3 patients.
+
+Demographic and vaccination data among the study population.
+
+The most commonly reported symptoms were fatigue (93%), headache (70%), exercise intolerance (53%), dizziness (44%), brain fog (41%), musculoskeletal pain (29%), shortness of breath and abdominal pain (28%), palpitations (26%), and chest pain and nausea (23%) ( Table 2 ). Fatigue was the most frequently reported and persistent symptom, with prevalence rates of 33% at 6 months ( N = 24), 42% between 6 and 12 months ( N = 33), and 62% between 12 and 24 months ( N = 26) after symptom onset.
+
+Clinical characteristics of long COVID and sex differences among the study population.
+
+n (%).
+
+Fisher's exact test.
+
+1–2 participants with missing data; missing data is excluded from the denominator.
+
+Patients were stratified into two age groups: a younger group (<12 years; n = 36, 29%) and an adolescent group (>12 years; n = 87, 71%). Fatigue and headache remained the most frequently reported symptoms across both groups, with no statistically significant difference observed between males and females. Fatigue was reported by 81% of the younger group and 98% of the adolescent group, while headaches were reported by 58% of the younger children and 75% of the adolescents.
+
+There was no difference between males and females in symptom duration at presentation ( p = 0.8). However, females were significantly more likely to experience dizziness [ p < 0.001; OR (95% CI): 3.7 (1.8, 7.8)], brain fog [ p = 0.04; OR (95% CI): 2.1 (1.0, 4.4)], palpitations [ p < 0.001; OR (95% CI): 4.4 (1.9, 11.1)], and a diagnosis of postural orthostatic tachycardia syndrome (POTS) [ p = 0.05; OR (95% CI): 4.0 (1.0, 21.8)]. In contrast, females were significantly less likely to report loss of appetite [ p = 0.012; OR (95% CI): 0.2 (0.1, 0.7)] ( Table 2 ). Upon stratification by age, chest pain was significantly more prevalent among females in the younger group [50% vs. 4.5%, p = 0.003; OR (95% CI): 14.3 (2.5, 153.5)] ( Table 3 ). In the adolescent group, females reported higher frequencies of dizziness [65% vs. 34%, p = 0.005; OR (95% CI): 3.5 (1.5, 8.6)] and palpitations [43% vs. 15%, p = 0.005; OR (95% CI): 4.2 (1.6, 12.5)] compared to males. In contrast, females were significantly less likely to report loss of appetite [ p = 0.01; OR (95% CI): 0.2 (0.0, 0.6)] ( Table 4 ).
+
+Clinical characteristics of long COVID and sex differences among patients under 12 years of age.
+
+n (%).
+
+Fisher's exact test.
+
+1 participant with missing data; missing data is excluded from the denominator.
+
+Clinical characteristics of long COVID and sex differences among patients 12 years of age or older.
+
+n (%).
+
+Fisher's exact test.
+
+1 participant with missing data; missing data is excluded from the denominator.
+
+Of the 123 patients, 74 patients had at least one follow-up clinic visit; the overall trend in reported symptoms over time is shown in Figure 1 . No significant differences in demographics and characteristics were found between patients with and without follow-up ( Supplementary Table S1 ). The residuals from the primary linear mixed-effects (LME) model were approximately normally distributed, with no substantial deviations from homoscedasticity or linearity observed ( Supplementary Figure S1 ). As sensitivity analyses, Poisson and negative binomial mixed-effects models were also fit. The Poisson model exhibited significant deviations from uniformity and dispersion, indicating poor fit. In contrast, the negative binomial mixed-effects model showed residual patterns similar to the LME model, with no evidence of significant deviation from assumptions. Results were consistent across the LME and negative binomial approaches. Given comparable fit, the LME model was retained as the primary analytic model. Among the 74 patients, the estimated mean number of symptoms at the onset of long COVID from the LME model was 8.6 (95% CI: 7.8–9.4). When compared to symptom onset, the mean number of symptoms decreased by 5.3 (95% CI: −6.5 to −4.0) at 6 months, by 5.8 (95% CI: −6.9 to −4.7) at 6–12 months, by 4.7 (95% CI: −6.1 to −3.3) at 12–18 months, and by 3.9 (95% CI: −5.4 to −2.2) at 18 months and beyond ( p < 0.001) ( Figure 2 ). Results from the sensitivity analysis using the maximum symptom count were largely consistent with the primary analysis. Estimates differed by only one decimal place across intervals, except for the 18+ month interval (3.9 vs. 2.9), supporting the robustness of the primary findings across different symptom summary methods.
+
+Individual symptom trajectories over time with model-based mean estimates. Each gray line represents an individual participant's number of reported symptoms at each follow-up interval. Overlapping points occur when multiple participants reported the same number of symptoms at a given timepoint. The red line with error bars represents the estimated mean symptom trajectory from the linear mixed-effects model, with 95% confidence intervals.
+
+Model-based estimates of change in number of symptoms over time since onset. The red line with error bars represents the estimated mean change in symptom count from onset at key time intervals from the linear mixed-effects model, with 95% confidence intervals.
+
+Fatigue/exercise intolerance (94%) and neurologic symptoms (77%) were the most frequently reported domains ( Supplementary Table S2 ). Cardiovascular symptoms were significantly more common in females than males [68% vs. 30%, p < 0.001; OR (95% CI): 4.9 (2.3, 10.6)]. Other domains—including musculoskeletal, gastrointestinal, respiratory, sleep disturbance, ENT, psychological, and dermatologic symptoms—did not differ significantly by sex. When stratified by age, patterns were similar. In children <12 years, fatigue (83%) and neurologic symptoms (72%) predominated, with no significant sex differences. Among those ≥12 years, fatigue (97%) and neurologic symptoms (80%) remained most common, and cardiovascular symptoms continued to show a strong female predominance [ p < 0.001; OR (95% CI): 4.7 (2.0, 12.0)].
+
+Of the 123 patients included in the study, 82 (80%) had received at least the primary COVID-19 vaccine series, 21 (20%) were unvaccinated, and vaccination status was unknown for 20 patients ( Table 1 ). Among those who completed the primary vaccine series, 31 patients (38%) had not received any booster doses, while 51 (62%) had received at least one booster. There was no association between COVID-19 vaccination status and long COVID symptom duration ( p = 0.4) on their initial presentation to the clinic as shown in Supplementary Table S3 .
+
+Among the 82 vaccinated patients in our study, 53 (67%) received the COVID-19 vaccine before the onset of long COVID symptoms and 26 (33%) developed long COVID symptoms prior to receiving the COVID-19 vaccine ( Table 1 ). Of the 26 patients who received the COVID-19 vaccine after the onset of long COVID symptoms, 7 (41%) reported subjective improvement at subsequent follow-up visits, 10 (59%) reported no change in their symptoms at the time of reassessment, and 9 had no documentation regarding symptom progression in their medical records ( Table 1 ).
+
+Some preliminary findings from this study have been previously presented in abstract form at Open Forum Infectious Diseases ( 20 ). It was based on preliminary data that included a smaller subset of patients (with data only through April 2023). The current manuscript expands upon that preliminary report by including a larger sample size, extended data collection through November 2023, detailed analyses of follow-up visits, and comprehensive vaccination data.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Results" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/c0435d19-f2df-4fe5-a043-f634a8e133aa> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Pediatric long COVID is marked by prolonged, multisystem symptoms. Vaccination may offer symptomatic benefit for some patients, though larger prospective studies are necessary to better define its role." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Conclusion" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/cf227c6e-cef6-475f-b8cd-dc4872649615> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Of the 123 patients included in the study, 82 (80%) had received at least the primary COVID-19 vaccine series, 21 (20%) were unvaccinated, and vaccination status was unknown for 20 patients ( Table 1 ). Among those who completed the primary vaccine series, 31 patients (38%) had not received any booster doses, while 51 (62%) had received at least one booster. There was no association between COVID-19 vaccination status and long COVID symptom duration ( p = 0.4) on their initial presentation to the clinic as shown in Supplementary Table S3 .
+
+Among the 82 vaccinated patients in our study, 53 (67%) received the COVID-19 vaccine before the onset of long COVID symptoms and 26 (33%) developed long COVID symptoms prior to receiving the COVID-19 vaccine ( Table 1 ). Of the 26 patients who received the COVID-19 vaccine after the onset of long COVID symptoms, 7 (41%) reported subjective improvement at subsequent follow-up visits, 10 (59%) reported no change in their symptoms at the time of reassessment, and 9 had no documentation regarding symptom progression in their medical records ( Table 1 ).
+
+Some preliminary findings from this study have been previously presented in abstract form at Open Forum Infectious Diseases ( 20 ). It was based on preliminary data that included a smaller subset of patients (with data only through April 2023). The current manuscript expands upon that preliminary report by including a larger sample size, extended data collection through November 2023, detailed analyses of follow-up visits, and comprehensive vaccination data.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "COVID-19 vaccination and long COVID" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/d3553a43-c131-47bd-afc6-f2cc69e69adc> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "DK: Writing – original draft. MV: Writing – review & editing. JB: Writing – review & editing. DW: Writing – review & editing. JW: Writing – review & editing. SM: Writing – review & editing." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Author contributions" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/db5acb5f-ba56-449a-bd27-546bd0f4eb67> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Fatigue/exercise intolerance (94%) and neurologic symptoms (77%) were the most frequently reported domains ( Supplementary Table S2 ). Cardiovascular symptoms were significantly more common in females than males [68% vs. 30%, p < 0.001; OR (95% CI): 4.9 (2.3, 10.6)]. Other domains—including musculoskeletal, gastrointestinal, respiratory, sleep disturbance, ENT, psychological, and dermatologic symptoms—did not differ significantly by sex. When stratified by age, patterns were similar. In children <12 years, fatigue (83%) and neurologic symptoms (72%) predominated, with no significant sex differences. Among those ≥12 years, fatigue (97%) and neurologic symptoms (80%) remained most common, and cardiovascular symptoms continued to show a strong female predominance [ p < 0.001; OR (95% CI): 4.7 (2.0, 12.0)]." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Symptom domains" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/e347ec74-46f3-4d7f-831e-495321e9987f> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "The studies involving humans were approved by the Institutional Review Board of Children's Hospital Los Angeles (IRB #CHLA-22-00010). The studies were conducted in accordance with the local legislation and institutional requirements. Written informed consent for participation was not required from the participants or the participants' legal guardians/next of kin because this was a retrospective chart review with minimal risk to participants, the requirement for informed consent was waived by the IRB." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Ethics statement" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/e8a991d5-b2ec-4e10-9cf2-022194d44cf3> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Data extraction was conducted by a single trained reviewer using a pre-designed Excel template with standardized variable definitions. To ensure data accuracy and reliability, a second independent reviewer randomly verified approximately 10% of abstracted records. Any discrepancies identified during verification were resolved through discussion between the two reviewers, with consultation of the original EMR when necessary." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Data collection" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/f19165fb-a2f9-4a52-a485-d64286f4289e> a nif:Context,
+        bibo:DocumentPart ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Long COVID is now increasingly recognized as a significant long-term health concern in the pediatric population. In this study, we describe the clinical characteristics of children with long COVID, based on a substantial number of patients evaluated at a dedicated long COVID clinic. Adolescents represented the majority of affected individuals, with fatigue and headache identified as the most prevalent symptoms.
+
+Symptom profiles in our study are comparable to prior reports published on pediatric long COVID. A nationwide cohort study by Borch et al. ( 1 ) showed that between 4% and 66% of children experienced lingering symptoms following acute COVID-19. Reported symptoms included fatigue, sleep disturbances, respiratory issues, nasal congestion, musculoskeletal pain, cognitive difficulties, and changes in smell or taste ( 1 ).
+
+A systematic review conducted by Jiang et al. ( 21 ) noted over 20 persistent symptoms and clinical features in children and adolescents following SARS-CoV-2 infection. Approximately 16.2% of the pediatric population experienced at least one lingering symptom three months after infection ( 21 ).
+
+A meta-analysis conducted by Behnood et al. ( 11 ) examined the prevalence and duration of long COVID symptoms in a cohort of 23,141 children and adolescents and found that fatigue (47%), shortness of breath (43%), and headache (35%) emerged as the most commonly reported symptoms. Furthermore, when compared to control groups, the incidence of cognitive difficulties, headache, anosmia, sore throat, and sore eyes was significantly higher in those with a history of COVID-19 ( 5 , 11 ). A large national case-control study from Denmark reported that children with a history of SARS-CoV-2 infection were more likely than controls to experience at least one symptom persisting beyond two months. While this association was statistically significant across all age groups, the differences in overall somatic symptom burden were small and not considered clinically relevant ( 22 ). Our study did not include a control group for comparative analysis.
+
+Sex based differences in the severity of symptoms have been seen in adults with long COVID but not reported in children. In the NIH RECOVER-Adult prospective cohort study, female sex was linked to a higher risk of developing long COVID compared to males ( 23 ). Also, a study by Onieva et al. ( 24 ) found that females exhibited a higher risk of persistent symptoms and displayed distinct patterns in symptom clusters and functional status compared to males We did not find differences in the duration of symptoms; however, females were more likely to report symptoms like brain fog, dizziness, palpitations, and receive a diagnosis of POTS. A systematic review conducted by Jiang et al. ( 21 ) also suggested a potential association between female sex and an increased likelihood of developing certain long COVID symptoms ( 21 ).
+
+The LongCOVIDKidsDK study is a national cross-sectional investigation of SARS-CoV-2-positive children aged 0–14 years and matched controls in Denmark had interesting findings. No significant sex-based differences in the prevalence of persistent symptoms were observed among children aged 0–3 and 4–11 years. However, in the 12–14-year age group, both cases and controls showed that girls reported more symptoms than boys. Adolescent girls are generally known to report a greater burden of symptoms and health-related complaints compared to boys, a pattern that typically emerges during puberty and may be influenced by hormonal factors ( 22 ). These findings are consistent with our study, which demonstrated a higher prevalence of symptoms among adolescent females.
+
+Long-term follow-up studies in children are limited; few that had follow-up found that most symptoms improved after 6–8 months; however, fatigue and decline in school performance persisted ( 25 ). Few pediatric studies have examined outcomes beyond 12 months ( 26 ).
+
+Our study addressed the trend of symptoms for 74 patients who had at least one follow-up visit up to ≥18 months. We noted a trend for symptom reduction over time in this patient population, however, there was a subset that continues to struggle with persistent symptoms. These findings are in line with a prior study that included 1,243 children and found that 11.5% remained symptomatic at six months, 3% at 12 months, and 1.2% at 18 months ( 27 ).
+
+The relationship between COVID-19 vaccination and long COVID in children is an emerging research area. Our study provided descriptive data on long COVID symptomatology and the potential impact of COVID-19 vaccination. However, given the observational nature of the design, definitive conclusions and clinical recommendations could not be established. At initial clinic presentation, no association was found between COVID-19 vaccination status and long COVID symptom duration ( p = 0.4). This may be attributed to variations in the timing of patient presentation, differences in vaccination schedules, and the number of booster doses received.
+
+A systematic review by Gao et al. ( 16 ) explored the relationship between vaccination and long COVID. The study showed that the COVID-19 vaccines had an effect of reducing the risk of long COVID in individuals vaccinated either before or after SARS-CoV-2 infection. The effect was seen in participants vaccinated with two doses, but not one dose. Of note, the patient population included in this systematic review included both adults and children ( 16 ). In a large retrospective study, Razzaghi et al. ( 28 ) evaluated the effectiveness of COVID-19 vaccination in preventing long COVID among children, indicating a moderate protective benefit, particularly in adolescents, who are at greater risk for developing long COVID. However, the protective effect appeared to diminish over time ( 28 ).
+
+Another study by Yousaf et al. ( 29 ) in Children Aged 5–17 Years found that COVID-19 vaccination was associated with significantly reduced odds of developing post-COVID condition (PCC) symptoms in children. Adjusted odds ratios indicated a 57% reduction in the likelihood of having at least one PCC symptom and a 73% reduction for two or more symptoms among vaccinated compared to unvaccinated children.
+
+These results highlight potential additional benefits of vaccination that extend beyond protection from acute illness and may support broader pediatric vaccine uptake. When we analyzed the potential impact of the COVID-19 vaccine on children who received the vaccine after the onset of long COVID, we found that almost 41% reported symptom improvement over the few weeks following vaccination. While this is an interesting observation, it must be noted that data is subjective and based on patient and caregiver responses on follow-up in clinic, and not based on a validated questionnaire, and our study was not designed to study the vaccine impact.
+
+Some studies in adults have also evaluated the impact of the vaccine on long COVID symptoms, and a meta-analysis reported that 20% of the adults with long COVID who received the COVID-19 vaccine reported improvement post-vaccine ( 30 ). Our study population is too small to conclude that there are notable differences in response to the vaccine in children compared to adults, but this is an important question that should be addressed in larger, prospective studies.
+
+Our study has several limitations. It is a single-center study, predominantly involving self-referred patients, which may lead to an overrepresentation of more severely affected individuals or those with better access to healthcare. Additionally, our study is constrained by limited epidemiological data, which precluded meaningful analysis of potential associations with long COVID outcomes and prevented us from assessing whether long COVID outcomes vary across demographic groups. We also recognize that differences in follow-up rates may reflect selection bias and residual confounding effects from uncollected socio-economic factors that were unavailable in our chart review. The absence of a control group limits our ability to draw comparative conclusions. The lack of validated questionnaires for symptom assessment and quality of life evaluation is another limitation. Also, the absence of standardized tools for symptom severity measurement hindered us from conducting a quantitative analysis of symptom burden and comparing outcomes across patients. Furthermore, the assessment of “symptom improvement” following post- vaccination relied on retrospective chart documentation from only 26 children. As such, these findings are subject to both recall bias and reporting bias, since they depend on caregiver and clinician interpretation rather than standardized symptom assessment so no firm conclusions regarding vaccine impact can be drawn from this data. Future research should focus on more structured, well-designed studies with prospective follow-up on larger sample sizes to validate our findings. To better understand the effect of vaccines on long COVID symptoms, a systematic assessment that accounts for confounding factors and other interventions will be necessary to accurately determine the vaccine's contribution.
+
+While our study has limitations, strengths include a uniform approach to the diagnosis as it is a single-site, single-clinic study, longitudinal follow-up data in patients who presented for follow-up, and long COVID diagnosis made by physicians after considering and eliminating other potential reasons for presentation. Many of the large multisite electronic health record-based studies that rely on a computable phenotype may capture patients with long COVID-like symptoms and thus may be more widely inclusive of other conditions, and therefore likely less reliable.
+
+While our study is confined to a single center, its findings emphasize the critical need for continued research into the symptomatology of pediatric long COVID. Understanding the potential therapeutic impact of vaccines is particularly important as we seek to identify effective interventions. Comprehensive studies will be essential to inform the development of targeted support strategies, ensuring that children affected by this condition receive the care and resources they need to manage and recover from long COVID.""" ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    dcterms:title "Discussion" ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/table/099d5fac-084d-4baa-b0bc-9d12ad6df14b> a bibo:Table ;
+    rdfs:label "Table 4" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:description "Clinical characteristics of long COVID and sex differences among patients 12 years of age or older." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/table/32719b1e-7c45-4467-ae99-4802c0f2fc75> a bibo:Table ;
+    rdfs:label "Table 2" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:description "Clinical characteristics of long COVID and sex differences among the study population." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/table/4943f326-8e89-4436-9024-6754357ea242> a bibo:Table ;
+    rdfs:label "Table 1" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:description "Demographic and vaccination data among the study population." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/table/fc628d7a-4ddd-4cec-bcfe-bdc2e331e765> a bibo:Table ;
+    rdfs:label "Table 3" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:description "Clinical characteristics of long COVID and sex differences among patients under 12 years of age." ;
+    dcterms:isPartOf <https://doi.org/10.3389/fped.2025.1640747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1001/jama.2024.12747> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "Characterizing long COVID in children and adolescents" ;
+    bibo:doi "10.1001/jama.2024.12747" ;
+    bibo:journalTitle "JAMA" ;
+    bibo:pages "1174-88" ;
+    bibo:volume "332" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1001/jama.2024.12747> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1001/jamanetworkopen.2024.55430> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2025 ;
+    dcterms:title "Sex differences in long COVID" ;
+    bibo:doi "10.1001/jamanetworkopen.2024.55430" ;
+    bibo:journalTitle "JAMA Netw Open" ;
+    bibo:pages "e2455430" ;
+    bibo:volume "8" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1001/jamanetworkopen.2024.55430> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1001/jamanetworkopen.2024.59672> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2025 ;
+    dcterms:title "COVID-19 vaccination and odds of post-COVID-19 condition symptoms in children aged 5–17 years" ;
+    bibo:doi "10.1001/jamanetworkopen.2024.59672" ;
+    bibo:journalTitle "JAMA Netw Open" ;
+    bibo:pages "e2459672" ;
+    bibo:volume "8" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1001/jamanetworkopen.2024.59672> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1007/s00270-021-02832-2> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2021 ;
+    dcterms:title "UK NICE guidelines for EVAR: cost implications for post-COVID Australian public health" ;
+    bibo:doi "10.1007/s00270-021-02832-2" ;
+    bibo:journalTitle "Cardiovasc Intervent Radiol" ;
+    bibo:pages "1286-8" ;
+    bibo:volume "44" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1007/s00270-021-02832-2> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1007/s00431-021-04345-z> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Long COVID symptoms and duration in SARS-CoV-2 positive children: a nationwide cohort study" ;
+    bibo:doi "10.1007/s00431-021-04345-z" ;
+    bibo:journalTitle "Eur J Pediatr" ;
+    bibo:pages "1597-607" ;
+    bibo:volume "181" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1007/s00431-021-04345-z> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1007/s00431-023-05360-y> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "Long COVID in pediatrics: epidemiology, diagnosis, and management" ;
+    bibo:doi "10.1007/s00431-023-05360-y" ;
+    bibo:journalTitle "Eur J Pediatr" ;
+    bibo:pages "1543-53" ;
+    bibo:volume "183" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1007/s00431-023-05360-y> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1007/s11845-022-03072-0> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "The presence of symptoms within 6 months after COVID-19: a single-center longitudinal study" ;
+    bibo:doi "10.1007/s11845-022-03072-0" ;
+    bibo:journalTitle "Ir J Med Sci" ;
+    bibo:pages "741-50" ;
+    bibo:volume "192" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1007/s11845-022-03072-0> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1016/S2352-4642(22)00154-7> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Long COVID symptoms in SARS-CoV-2-positive children aged 0–14 years and matched controls in Denmark (LongCOVIDKidsDK): a national, cross-sectional study" ;
+    bibo:doi "10.1016/S2352-4642(22)00154-7" ;
+    bibo:journalTitle "Lancet Child Adolesc Health" ;
+    bibo:pages "614-23" ;
+    bibo:volume "6" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1016/S2352-4642(22)00154-7> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1016/j.dsx.2021.04.007> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2021 ;
+    dcterms:title "Long COVID: an overview" ;
+    bibo:doi "10.1016/j.dsx.2021.04.007" ;
+    bibo:journalTitle "Diabetes Metab Syndr" ;
+    bibo:pages "869-75" ;
+    bibo:volume "15" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1016/j.dsx.2021.04.007> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1016/j.eclinm.2023.101961> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "Risk factors for post-COVID-19 condition (long COVID) in children: a prospective cohort study" ;
+    bibo:doi "10.1016/j.eclinm.2023.101961" ;
+    bibo:journalTitle "EClinicalMedicine" ;
+    bibo:pages "102978" ;
+    bibo:volume "59" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1016/j.eclinm.2023.101961> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1016/j.jinf.2021.11.011> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Persistent symptoms following SARS-CoV-2 infection among children and young people: a meta-analysis of controlled and uncontrolled studies" ;
+    bibo:doi "10.1016/j.jinf.2021.11.011" ;
+    bibo:journalTitle "J Infect" ;
+    bibo:pages "158-70" ;
+    bibo:volume "84" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1016/j.jinf.2021.11.011> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1016/j.semerg.2024.102208> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "Long COVID: factors influencing persistent symptoms and the impact of gender" ;
+    bibo:doi "10.1016/j.semerg.2024.102208" ;
+    bibo:journalTitle "Semergen" ;
+    bibo:pages "102208" ;
+    bibo:volume "50" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1016/j.semerg.2024.102208> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1016/j.vaccine.2023.02.008> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "Protective effect of COVID-19 vaccination against long COVID syndrome: a systematic review and meta-analysis" ;
+    bibo:doi "10.1016/j.vaccine.2023.02.008" ;
+    bibo:journalTitle "Vaccine" ;
+    bibo:pages "1783-90" ;
+    bibo:volume "41" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1016/j.vaccine.2023.02.008> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1038/s41591-021-01283-z> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2021 ;
+    dcterms:title "Post-acute COVID-19 syndrome" ;
+    bibo:doi "10.1038/s41591-021-01283-z" ;
+    bibo:journalTitle "Nat Med" ;
+    bibo:pages "601-15" ;
+    bibo:volume "27" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1038/s41591-021-01283-z> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1038/s41598-022-13495-5> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Long-COVID in children and adolescents: a systematic review and meta-analysis" ;
+    bibo:doi "10.1038/s41598-022-13495-5" ;
+    bibo:journalTitle "Sci Rep" ;
+    bibo:pages "9950" ;
+    bibo:volume "12" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1038/s41598-022-13495-5> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1081/BIP-120019265> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2003 ;
+    dcterms:title "Assessing response profiles from incomplete longitudinal clinical trial data under regulatory considerations" ;
+    bibo:doi "10.1081/BIP-120019265" ;
+    bibo:journalTitle "J Biopharm Stat" ;
+    bibo:pages "179-90" ;
+    bibo:volume "13" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1081/BIP-120019265> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1093/biomet/80.1.27> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 1993 ;
+    dcterms:title "Bias reduction of maximum likelihood estimates" ;
+    bibo:doi "10.1093/biomet/80.1.27" ;
+    bibo:journalTitle "Biometrika" ;
+    bibo:pages "27-38" ;
+    bibo:volume "80" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1093/biomet/80.1.27> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1093/ofid/ofad500.478> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "Clinical spectrum of pediatric long COVID and impact of COVID-19 vaccines on the clinical course" ;
+    bibo:doi "10.1093/ofid/ofad500.478" ;
+    bibo:journalTitle "Open Forum Infect Dis" ;
+    bibo:pages "ofad500.478" ;
+    bibo:volume "10" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1093/ofid/ofad500.478> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1097/PHM.0000000000001896> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2021 ;
+    dcterms:title "Postacute/long COVID in pediatrics: development of a multidisciplinary rehabilitation clinic and preliminary case series" ;
+    bibo:doi "10.1097/PHM.0000000000001896" ;
+    bibo:journalTitle "Am J Phys Med Rehabil" ;
+    bibo:pages "1140-7" ;
+    bibo:volume "100" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1097/PHM.0000000000001896> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1136/bmj.o988> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Are vaccines a potential treatment for long COVID?" ;
+    bibo:doi "10.1136/bmj.o988" ;
+    bibo:journalTitle "Br Med J" ;
+    bibo:pages "e069112" ;
+    bibo:volume "377" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1136/bmj.o988> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1542/peds.2022-060351> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "A systematic review of persistent clinical features after SARS-CoV-2 in the pediatric population" ;
+    bibo:doi "10.1542/peds.2022-060351" ;
+    bibo:journalTitle "Pediatrics" ;
+    bibo:pages "e2023062780" ;
+    bibo:volume "152" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1542/peds.2022-060351> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1542/peds.2023-062570> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "Postacute sequelae of SARS-CoV-2 in children" ;
+    bibo:doi "10.1542/peds.2023-062570" ;
+    bibo:journalTitle "Pediatrics" ;
+    bibo:pages "e2023060298" ;
+    bibo:volume "153" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1542/peds.2023-062570> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1542/peds.2023-064446> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "Vaccine effectiveness against long COVID in children" ;
+    bibo:doi "10.1542/peds.2023-064446" ;
+    bibo:journalTitle "Pediatrics" ;
+    bibo:pages "e2023064446" ;
+    bibo:volume "153" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.1542/peds.2023-064446> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.3345/cep.2023.00472> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "Long COVID in children and adolescents: prevalence, clinical manifestations, and management strategies" ;
+    bibo:doi "10.3345/cep.2023.00472" ;
+    bibo:journalTitle "Clin Exp Pediatr" ;
+    bibo:pages "465-74" ;
+    bibo:volume "66" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.3345/cep.2023.00472> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.3390/ijerph191912422> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Effect of COVID-19 vaccines on reducing the risk of long COVID in the real world: a systematic review and meta-analysis" ;
+    bibo:doi "10.3390/ijerph191912422" ;
+    bibo:journalTitle "Int J Environ Res Public Health" ;
+    bibo:pages "12422" ;
+    bibo:volume "19" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.3390/ijerph191912422> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.3390/life12040517> a bibo:Document ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Post-COVID-19 condition: where are we now?" ;
+    bibo:doi "10.3390/life12040517" ;
+    bibo:journalTitle "Life" ;
+    bibo:pages "517" ;
+    bibo:volume "12" ;
+    cito:isCitedBy <https://doi.org/10.3389/fped.2025.1640747> ;
+    owl:sameAs <https://doi.org/10.3390/life12040517> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.3389/fped.2025.1640747> a bibo:AcademicArticle ;
+    ex:citedByCount 0 ;
+    ex:completenessScore 9.5e-01 ;
+    ex:isOpenAccess true ;
+    ex:pmid "41169891" ;
+    ex:validationStatus "passed" ;
+    mesh:hasSubject "COVID 19 vaccine",
+        "COVID-19",
+        "PASC",
+        "long COVID",
+        "post COVID" ;
+    dcterms:creator <http://example.org/data/author/david-warburton>,
+        <http://example.org/data/author/dina-kamel>,
+        <http://example.org/data/author/jeffery-bender>,
+        <http://example.org/data/author/john-c-wood>,
+        <http://example.org/data/author/my-h-vu>,
+        <http://example.org/data/author/sindhu-mohandas> ;
+    dcterms:hasPart <http://example.org/data/section/09c06c2f-430a-42ae-a469-b20d6cd4b2d9>,
+        <http://example.org/data/section/0e54d284-1b5a-4eab-9048-9f0d4f3b7044>,
+        <http://example.org/data/section/0e67bc99-3de5-495b-830a-aa28096af862>,
+        <http://example.org/data/section/17ddf7c8-0bff-433d-91f4-adae68008784>,
+        <http://example.org/data/section/22fee3d1-3f60-47f8-b2f8-ca7ce7008260>,
+        <http://example.org/data/section/2774ee15-4eb4-4ea0-9c8c-6f0eb779b749>,
+        <http://example.org/data/section/33fe79a9-3c6b-43c7-befd-2b0d00631f7a>,
+        <http://example.org/data/section/3560640e-5d01-4f51-8012-15c406dd1d1d>,
+        <http://example.org/data/section/3d2064c2-2f83-4036-bed3-5da0b56bef7b>,
+        <http://example.org/data/section/4c35b657-a908-469c-ad53-3d9fb7539e75>,
+        <http://example.org/data/section/4e09e412-9752-4dde-9393-c34ca205ae55>,
+        <http://example.org/data/section/5254844c-d013-412f-859a-3ccaca70d911>,
+        <http://example.org/data/section/5887d411-33b2-4544-9555-d029d96157d4>,
+        <http://example.org/data/section/68d516a2-382b-4f23-a3b2-32aec8edeba2>,
+        <http://example.org/data/section/7800139e-d202-4aae-8015-e3e6126f10cd>,
+        <http://example.org/data/section/7dd97b24-d0ad-4d3f-bc94-6e5939777107>,
+        <http://example.org/data/section/7e3e8e38-bb66-4b6d-bc48-86f7df0e7eca>,
+        <http://example.org/data/section/aa81a880-ca3d-486d-b05d-48b825baa112>,
+        <http://example.org/data/section/bebb1d70-41a2-436a-8a1f-ebc76553f38e>,
+        <http://example.org/data/section/c0435d19-f2df-4fe5-a043-f634a8e133aa>,
+        <http://example.org/data/section/cf227c6e-cef6-475f-b8cd-dc4872649615>,
+        <http://example.org/data/section/d3553a43-c131-47bd-afc6-f2cc69e69adc>,
+        <http://example.org/data/section/db5acb5f-ba56-449a-bd27-546bd0f4eb67>,
+        <http://example.org/data/section/e347ec74-46f3-4d7f-831e-495321e9987f>,
+        <http://example.org/data/section/e8a991d5-b2ec-4e10-9cf2-022194d44cf3>,
+        <http://example.org/data/section/f19165fb-a2f9-4a52-a485-d64286f4289e>,
+        <http://example.org/data/table/099d5fac-084d-4baa-b0bc-9d12ad6df14b>,
+        <http://example.org/data/table/32719b1e-7c45-4467-ae99-4802c0f2fc75>,
+        <http://example.org/data/table/4943f326-8e89-4436-9024-6754357ea242>,
+        <http://example.org/data/table/fc628d7a-4ddd-4cec-bcfe-bdc2e331e765> ;
+    dcterms:identifier "PMC12568432" ;
+    dcterms:issued 2025,
+        "2025-10-15" ;
+    dcterms:subject "COVID 19 vaccine",
+        "COVID-19",
+        "PASC",
+        "long COVID",
+        "post COVID" ;
+    dcterms:title "Exploring long COVID in pediatric patients: clinical insights from a long COVID clinic" ;
+    bibo:doi "10.3389/fped.2025.1640747" ;
+    bibo:issn "2296-2360" ;
+    bibo:issue "Suppl 2" ;
+    bibo:journalTitle "Frontiers in Pediatrics" ;
+    bibo:pages "1597-607" ;
+    bibo:volume "13" ;
+    cito:cites <http://example.org/data/reference/3163614f-1ffb-4430-b9c7-618a5863816a>,
+        <http://example.org/data/reference/584d151e-40dc-48a9-8954-bc16ee7f1275>,
+        <http://example.org/data/reference/83e0e7d4-a26d-4efd-a1d3-f0553c017f96>,
+        <http://example.org/data/reference/e40e5fa0-1ff0-48e9-a76a-4500d2c55015>,
+        <https://doi.org/10.1001/jama.2024.12747>,
+        <https://doi.org/10.1001/jamanetworkopen.2024.55430>,
+        <https://doi.org/10.1001/jamanetworkopen.2024.59672>,
+        <https://doi.org/10.1007/s00270-021-02832-2>,
+        <https://doi.org/10.1007/s00431-021-04345-z>,
+        <https://doi.org/10.1007/s00431-023-05360-y>,
+        <https://doi.org/10.1007/s11845-022-03072-0>,
+        <https://doi.org/10.1016/S2352-4642(22)00154-7>,
+        <https://doi.org/10.1016/j.dsx.2021.04.007>,
+        <https://doi.org/10.1016/j.eclinm.2023.101961>,
+        <https://doi.org/10.1016/j.jinf.2021.11.011>,
+        <https://doi.org/10.1016/j.semerg.2024.102208>,
+        <https://doi.org/10.1016/j.vaccine.2023.02.008>,
+        <https://doi.org/10.1038/s41591-021-01283-z>,
+        <https://doi.org/10.1038/s41598-022-13495-5>,
+        <https://doi.org/10.1081/BIP-120019265>,
+        <https://doi.org/10.1093/biomet/80.1.27>,
+        <https://doi.org/10.1093/ofid/ofad500.478>,
+        <https://doi.org/10.1097/PHM.0000000000001896>,
+        <https://doi.org/10.1136/bmj.o988>,
+        <https://doi.org/10.1542/peds.2022-060351>,
+        <https://doi.org/10.1542/peds.2023-062570>,
+        <https://doi.org/10.1542/peds.2023-064446>,
+        <https://doi.org/10.3345/cep.2023.00472>,
+        <https://doi.org/10.3390/ijerph191912422>,
+        <https://doi.org/10.3390/life12040517> ;
+    owl:sameAs <https://doi.org/10.3389/fped.2025.1640747>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12568432/> ;
+    prov:generatedAtTime "2025-11-25T10:18:11.992472Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .

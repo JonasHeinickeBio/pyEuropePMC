@@ -1,0 +1,931 @@
+<!DOCTYPE article PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.3 20210610//EN" "JATS-archivearticle1-3-mathml3.dtd">
+<article xmlns:mml="http://www.w3.org/1998/Math/MathML" xmlns:xlink="http://www.w3.org/1999/xlink" dtd-version="1.3" xml:lang="en" article-type="review-article"><?DTDIdentifier.IdentifierValue -//NLM//DTD JATS (Z39.96) Journal Publishing DTD v1.3 20210610//EN?><?DTDIdentifier.IdentifierType public?><?SourceDTD.DTDName JATS-journalpublishing1-3.dtd?><?SourceDTD.Version 1.3?><?ConverterInfo.XSLTName jats2jats3.xsl?><?ConverterInfo.Version 1?><?properties open_access?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Biochem Soc Trans</journal-id><journal-id journal-id-type="iso-abbrev">Biochem Soc Trans</journal-id><journal-id journal-id-type="publisher-id">BST</journal-id><journal-title-group><journal-title>Biochemical Society Transactions</journal-title></journal-title-group><issn pub-type="ppub">0300-5127</issn><issn pub-type="epub">1470-8752</issn><publisher><publisher-name>Portland Press Limited</publisher-name></publisher></journal-meta>
+<article-meta><article-id pub-id-type="pmcid">12599256</article-id><article-id pub-id-type="pmid">41032705</article-id>
+<article-id pub-id-type="publisher-id">BST-2025-3065</article-id><article-id pub-id-type="doi">10.1042/BST20253065</article-id><article-categories><subj-group subj-group-type="heading"><subject>Review Article</subject></subj-group><subj-group><subject>Cancer</subject><subject>Immunology &#x00026; Inflammation</subject><subject>Therapeutics &#x00026; Molecular Medicine</subject></subj-group></article-categories><title-group><article-title>PROTACs in cancer immunotherapy: a minireview</article-title></title-group><contrib-group><contrib contrib-type="author"><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-8707-9054</contrib-id><name><surname>J. E.</surname><given-names>K&#x000f6;ckenberger</given-names></name><xref rid="aff1" ref-type="aff">1</xref><email>jkoeckenberger@ucsd.edu</email></contrib><contrib contrib-type="author"><name><surname>E. S.</surname><given-names>Cardenas Alcoser</given-names></name><xref rid="aff2" ref-type="aff">2</xref><xref rid="aff3" ref-type="aff">3</xref><email>ecardenasalcoser@health.ucsd.edu</email></contrib><contrib contrib-type="author"><name><surname>E. T.</surname><given-names>Chang</given-names></name><xref rid="aff1" ref-type="aff">1</xref><email>etchang@ucsd.edu</email></contrib><contrib contrib-type="author"><name><surname>J. S.</surname><given-names>Gutkind</given-names></name><xref rid="aff2" ref-type="aff">2</xref><xref rid="aff3" ref-type="aff">3</xref><email>sgutkind@health.ucsd.edu</email></contrib><contrib contrib-type="author" corresp="yes"><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-4091-7617</contrib-id><name><surname>F. M.</surname><given-names>Ferguson</given-names></name><xref rid="aff1" ref-type="aff">1</xref><xref rid="aff4" ref-type="aff">4</xref><xref rid="cor1" ref-type="corresp"/><email>fmferguson@ucsd.edu</email></contrib></contrib-group><aff id="aff1">
+<label>1</label>Department of Chemistry and Biochemistry, University of California San Diego, La Jolla, CA, 92093, U.S.A.</aff><aff id="aff2">
+<label>2</label>Moores Cancer Center, University of California San Diego Health, La Jolla, CA, 92037, U.S.A.</aff><aff id="aff3">
+<label>3</label>Department of Pharmacology, University of California San Diego, School of Medicine, La Jolla, CA, 92093, U.S.A.</aff><aff id="aff4">
+<label>4</label>Skaggs School of Pharmacy and Pharmaceutical Sciences, University of California San Diego, La Jolla, CA, 92093, U.S.A.</aff><author-notes><corresp id="cor1">
+<bold>Correspondence:</bold> Ferguson F. M. (<email>fmferguson@ucsd.edu</email>)</corresp></author-notes><pub-date pub-type="collection"><month>10</month><year>2025</year></pub-date><pub-date pub-type="epub"><day>01</day><month>10</month><year>2025</year></pub-date><elocation-id>BST20253065</elocation-id><history><date date-type="received"><day>18</day><month>3</month><year>2025</year></date><date date-type="rev-recd"><day>19</day><month>8</month><year>2025</year></date><date date-type="accepted"><day>26</day><month>8</month><year>2025</year></date></history><permissions><copyright-statement>&#x000a9; 2025 The Author(s).</copyright-statement><copyright-year>2025</copyright-year><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article published by Portland Press Limited on behalf of the Biochemical Society and distributed under the <ext-link ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution License 4.0 (CC BY)</ext-link>.</license-p></license></permissions><self-uri xlink:href="bst-BST20253065.pdf"/><abstract><p>The discovery of immune checkpoint blockade as a therapeutic strategy to induce immunogenic cancer cell elimination has shown great success in the treatment of various cancers. However, limited response rates highlight the need for further development in this field. Promising new preclinical developments include the discoveries of proteolysis-targeting chimeras (PROTACs) to interfere with tumor immune escape signaling. Pharmacological induction of targeted protein degradation by these chimeras has shown advantages in inhibiting non-enzymatic protein functions and difficult to target protein&#x02013;protein interactions. Furthermore, the induced degradation was shown to promote changes in the major histocompatibility complex I ligandome, which can be leveraged for an immune stimulus, increasing the cancer immune response. In this minireview, we highlight the research efforts ongoing towards employing PROTACs in immunotherapy for cancer treatment. Specifically, we outline how the unique mechanism of action can be leveraged to enhance the immune response or inhibit immune suppression.</p></abstract><kwd-group><kwd>cancer</kwd><kwd>immune response</kwd><kwd>ubiquitin ligases</kwd><kwd>ubiquitin proteasome system</kwd><kwd>ubiquitin signaling</kwd></kwd-group></article-meta></front><body><sec sec-type="intro" id="s1"><title>Introduction</title><p>The development of immune checkpoint blockade (ICB) therapies has revolutionized the landscape of oncological treatment options. Immune checkpoint proteins are frequently expressed by antigen-presenting cells and prevent the development of autoimmunity by limiting the excessive activation of lymphocytes, such as CD8<sup>+</sup> T cells, by binding to cognate receptors on these immune cells. Cancers exploit this signaling pathway by expressing immune checkpoint ligands (e.g. programmed death ligand 1, PD-L1). PD-L1 binds its cognate receptor programmed cell death protein 1 (PD-1), expressed in activated CD8<sup>+</sup> T cells, to prevent cancer cell targeting by the immune system. Blocking these immune checkpoints with therapeutic antibodies, for example, anti-PD-1 or anti-PD-L1, inhibits this immune suppression process and facilitates CD8<sup>+</sup> T cell-induced tumor cell killing [<xref rid="BST-2025-3065C1" ref-type="bibr">1</xref>,<xref rid="BST-2025-3065C2" ref-type="bibr">2</xref>]. Based on this approach, eight monoclonal antibodies were approved by the FDA to treat various solid tumors, including melanoma, Hodgkin&#x02019;s disease, non-small cell lung cancer, and renal cell carcinoma [<xref rid="BST-2025-3065C3" ref-type="bibr">3</xref>,<xref rid="BST-2025-3065C4" ref-type="bibr">4</xref>]. For example, in melanoma patients, the response to ICB treatment has increased the progression-free and overall survival rates, and the effects are more durable than with targeted agents, such as specific BRAF and MEK inhibitors, often achieving complete cancer remission [<xref rid="BST-2025-3065C5" ref-type="bibr">5&#x02013;8</xref>]. However, primary and acquired resistance restricts the efficacy of ICB. For example, the non-response rate in melanoma is approximately 60% [<xref rid="BST-2025-3065C3" ref-type="bibr">3</xref>,<xref rid="BST-2025-3065C9" ref-type="bibr">9</xref>], and this is even higher in multiple other solid tumors like uveal melanoma at about 88% [<xref rid="BST-2025-3065C10" ref-type="bibr">10</xref>]. The mechanisms and reasons for ICB therapy failure are complex and not fully understood yet. Some studies show that change of immunopeptidome in the tumor environment correlates with higher efficacy in anti-CTLA-4 treatment [<xref rid="BST-2025-3065C11" ref-type="bibr">11</xref>]. Others correlate mutations of signaling components like JAK1/2 [<xref rid="BST-2025-3065C12" ref-type="bibr">12</xref>] and antigen presentation machinery, like B2M [<xref rid="BST-2025-3065C12" ref-type="bibr">12</xref>,<xref rid="BST-2025-3065C13" ref-type="bibr">13</xref>], or aberrant G&#x003b1;s signaling and T cell exhaustion [<xref rid="BST-2025-3065C14" ref-type="bibr">14</xref>] to ICB therapy failure. Generally, combination therapy (anti-PD-L1 and anti-CTLA-4) has proven to be more effective, inhibiting multiple immune checkpoints at once [<xref rid="BST-2025-3065C3" ref-type="bibr">3</xref>,<xref rid="BST-2025-3065C7" ref-type="bibr">7</xref>,<xref rid="BST-2025-3065C15" ref-type="bibr">15</xref>]. This data demonstrates the potential of ICB but also highlights the need for further development of immunotherapy options for non-responding patients.</p><p>To address these challenges, it is now possible to use small molecules, even in difficult-to-target protein&#x02013;protein interactions. Specifically, targeted protein degradation is a new modality in drug discovery research to target signaling processes previously considered undruggable. In this approach, compounds hijack the ubiquitin-proteasome system to deplete the protein of interest (POI). At present, the two major groups of target protein degrading drugs are bivalent molecules called proteolysis-targeting chimeras (PROTACs) or monovalent molecules called molecular glues. Their mechanism of action is to induce and stabilize a ternary complex of a POI with an E3-ligase by binding at their interface. Formation of such a ternary complex leads to the ubiquitination and proteasomal degradation of the POI. The stability of ternary complexes is a key factor for protein degradation efficiency. It is mainly influenced by co-operativity based on protein&#x02013;protein interactions as well as ligand dissociation kinetics. The latter can be manipulated by incorporating electrophilic warheads to render ligand binding irreversible and has found recent attention. However, due to the event-driven mechanism of action, slow off rates might also render the protein turnover inefficient [<xref rid="BST-2025-3065C16" ref-type="bibr">16</xref>,<xref rid="BST-2025-3065C17" ref-type="bibr">17</xref>]. So far, more than 25 PROTACs have reached clinical trials in a variety of cancer types, including prostate cancer and non-small cell lung cancer, and at least one is already under evaluation in a Phase III trial in ER+/HER2&#x02212; breast cancer [<xref rid="BST-2025-3065C18" ref-type="bibr">18</xref>,<xref rid="BST-2025-3065C19" ref-type="bibr">19</xref>].</p><p>With this work, we highlight how due to their unique mechanism of action PROTACs deplete enzymatic and non-enzymatic roles of immune suppressive proteins and influence the antigen presentation by augmenting intracellular peptide concentrations. Hence, they are addressing key immunotherapy challenges like lack of neoantigen presentation and increased immune suppression (<xref rid="BST-2025-3065F1" ref-type="fig">Figure&#x000a0;1</xref>).</p><fig position="float" id="BST-2025-3065F1" fig-type="model"><label>Figure 1</label><caption><title>PROTACs and covalent strategies can introduce neoantigens targetable with antibodies.</title><p>(<bold>A</bold>) Jensen et al. [<xref rid="BST-2025-3065C20" ref-type="bibr">20</xref>] and Moser et al. [<xref rid="BST-2025-3065C21" ref-type="bibr">21</xref>] find degradation products enhanced presentation on MHC-I but these effects are too transient to induce T cell activation alone. (<bold>B</bold>) Massafara et al. [<xref rid="BST-2025-3065C22" ref-type="bibr">22</xref>] target degradation products by using bifunctional antibodies to recruit and activate T cells. (<bold>C</bold>) Covalent immune recruiters (CIR) directly recruit and activate T cells by forming covalent ternary complexes on their cell surfaces [<xref rid="BST-2025-3065C23" ref-type="bibr">23&#x02013;25</xref>]. (<bold>D</bold>) Covalent ligands can form neo-haptens which are targetable by bispecific antibodies [<xref rid="BST-2025-3065C26" ref-type="bibr">26</xref>,<xref rid="BST-2025-3065C27" ref-type="bibr">27</xref>]. Figure created with Biorender.</p></caption><graphic xlink:href="bst-BST20253065-g001" position="float"/></fig></sec><sec id="s2"><title>Increased and guided immune responses</title><p>T-lymphocytes recognize peptide antigens presented by cancer cells on the major histocompatibility complex I (MHC-I) via T cell receptors (TCRs). Once activated, CD8<sup>+</sup> T cells will induce tumor cell killing and secretion of cytokines such as interferon &#x003b3; (IFN&#x003b3;) and tumor necrosis factor &#x003b1; [<xref rid="BST-2025-3065C28" ref-type="bibr">28</xref>,<xref rid="BST-2025-3065C29" ref-type="bibr">29</xref>]. These cytokines will activate other immune cells and enhance T cell migration, further enhancing the tumor cell killing. The peptides presented on the MHC-I are generally derived from self-protein or defective ribosomal products (DRiPs) degradation [<xref rid="BST-2025-3065C30" ref-type="bibr">30&#x02013;32</xref>]. After ubiquitin and proteasome-dependent degradation, the peptides are transported to the endoplasmic reticulum by the transporter for antigen processing, where they are further processed and loaded on the MHC-I [<xref rid="BST-2025-3065C33" ref-type="bibr">33&#x02013;35</xref>]. Targeted protein degraders not only produce but also enhance neo-peptide abundances by induced degradation, leaving the question of whether this part of the mechanism could be leveraged in immunotherapy [<xref rid="BST-2025-3065C20" ref-type="bibr">20&#x02013;22</xref>].</p><p>To tackle this question, Jensen et al. [<xref rid="BST-2025-3065C20" ref-type="bibr">20</xref>] studied the peptide abundance on the MHC-I by LC-MS/MS following the treatment with PROTAC degrading BET-family proteins. They identified four peptides linked to BRD3 and BRD4 increasingly presented on the MHC-I when the cells were treated with degrader compounds. The timeline of enhanced presentation matched the degradation kinetics, tying the enhanced presentation to the induced degradation. A further highly interesting finding is that while the same four peptides were detected for CRBN- and VHL-dependent degradation, only two of these peptides were detected when treating with the MDM-2 recruiting PROTAC. This study shows that not only is the MHC-I ligandome highly influenced by proteasome-dependent degradation, but also by the E3 ligase involved. However, no general enhancement of MHC-I on the cell surface was detected, rendering an immune response based on this effect unlikely (<xref rid="BST-2025-3065F1" ref-type="fig">Figure&#x000a0;1A</xref>).</p><p>Moser et al. [<xref rid="BST-2025-3065C21" ref-type="bibr">21</xref>] developed a model antigen construct (GFP-S8L-F12), which can be degraded using the dTAG system previously described in literature [<xref rid="BST-2025-3065C36" ref-type="bibr">36</xref>]. In this system, FKBP12<sup>F36V</sup> fusion proteins can be degraded with PROTACs (dTAG compounds) composed of Ortho AP linked to either a CRBN or VHL recruiter [<xref rid="BST-2025-3065C36" ref-type="bibr">36</xref>]. The generated peptide antigen and its presentation on the MHC-I were traced using antibodies and flow cytometry studies. Similar findings to Jensen et al. [<xref rid="BST-2025-3065C20" ref-type="bibr">20</xref>] were made, showing that the contribution of DRiPs was lower than proteasome-dependent antigens to the presentation on MHC-I, which is further strongly influenced by the degradation kinetics. However, the authors point out that the effect is transient since the protein abundance is quickly lowered, which in turn will lead to lower antigen abundance and presentation. These findings again show that specific peptides can be targeted for MHC-I presentation using targeted protein degradation. However, in contrast with regular PROTAC optimization, to increase an immune response, a slower and steadier degradation kinetic is desirable (<xref rid="BST-2025-3065F1" ref-type="fig">Figure&#x000a0;1A</xref>).</p><p>To address these challenges, Massafra et al. [<xref rid="BST-2025-3065C22" ref-type="bibr">22</xref>] combined the use of PROTACs with T cell bispecific antibodies. These T cell bispecific antibodies recognize a specific peptide derived from Wilms tumor protein 1 (WT1) and further harbor a TCR binding/recognition site. In their study, they found that combining a WT1-degrading PROTAC with a bispecific antibody enhanced T cell activation markers. Further, enhanced tumor cell killing in a primary T cell coculture with cancer cells was found when cells were pretreated with the WT1-degrading PROTAC (<xref rid="BST-2025-3065F1" ref-type="fig">Figure&#x000a0;1B</xref>).</p><p>Aside from PROTACs, covalent inhibitors were found to influence the immunopeptidome, as covalently modified peptides are presented as a neo-hapten, inducing cell death to resistant cancer cells or offering novel antibody targets [<xref rid="BST-2025-3065C26" ref-type="bibr">26</xref>,<xref rid="BST-2025-3065C27" ref-type="bibr">27</xref>]. However, novel peptides induced by PROTACs or covalent inhibitors face the challenge of transient presentation, increasing the need for very high affinity immune complexes to induce productive &#x02018;cell&#x02013;cell&#x02019; proximity. Stabilization of immune complexes has been achieved by Serniuck et al. and Kapcan et al. using electrophilic warheads to covalently link a bifunctional molecule to antibodies or immune cell receptors, recruiting them to surface proteins on cancer cells [<xref rid="BST-2025-3065C23" ref-type="bibr">23&#x02013;25</xref>] (<xref rid="BST-2025-3065F1" ref-type="fig">Figure&#x000a0;1C and D</xref>).</p><p>The general advantage of such strategies is that any protein specific to any cancer could be targeted for degradation since ultimately CD8<sup>+</sup> T cells would facilitate cancer cell killing. This would enable cancer-specific non-essential proteins to be leveraged for immune system activation. Combining PROTACs with ICB therapy might overcome the lack of neoantigens. The combination of PROTACs with a covalent immune recruiter strategy could enable targeting of non-essential proteins for degradation to facilitate immune tumor lysis through induced cell&#x02013;cell proximity based on the targeted protein degradation peptide products.</p></sec><sec id="s3"><title>Overcoming tumor immune suppression</title><p>Due to evolutionary pressure, many cancers have developed different strategies to undermine the function of the immune system, which would usually kill mutated dysregulated growing cells. Many such mechanisms include the expression of immune suppressive proteins. These proteins include PD-L1 and immune suppressive pathway components, such as indoleamine 2,3-dioxygenase 1 (IDO-1) or cyclooxygenase-1/2 (COX-1/2). Their effect varies from direct inactivation of CD8<sup>+</sup> T cells (PD-L1) to enhanced concentration of metabolites, such as kynurenine (IDO-1) or prostaglandin E<sub>2</sub> (PGE<sub>2</sub>) (COX-1/2), which cause immune suppression. However, these proteins can be tough to target pharmacologically since they function through protein&#x02013;protein interactions (PD-1/PD-L1) or their immune suppressive role extends beyond the enzymatic function (e.g. IDO-1 [<xref rid="BST-2025-3065C37" ref-type="bibr">37</xref>]). To overcome these signaling and immunosuppressive roles, targeted protein degradation can be leveraged.</p><sec id="s3-1"><title>PD-L1-PROTACs</title><p>In general, PD-L1 is a challenging target for PROTACs since only very few small molecule PD-L1 binders are known [<xref rid="BST-2025-3065C38" ref-type="bibr">38</xref>]. Cheng et al. [<xref rid="BST-2025-3065C39" ref-type="bibr">39</xref>] linked the PD-L1 binders BMS-8 or BMS-1198 to lenalidomide [<xref rid="BST-2025-3065C38" ref-type="bibr">38</xref>,<xref rid="BST-2025-3065C39" ref-type="bibr">39</xref>]. After linker optimization efforts, the authors found that compound P22 showed the most efficient inhibition of PD-1/PD-L1 interaction (IC<sub>50</sub>=39.2 nM) but only minor degradation of PD-L1 (14% by flow cytometry and 35% by Western blot at 10 &#x000b5;M). This degradation was rescued by bafilomycin, indicating a lysosomal degradation. However, the minor degradation of PD-L1 by P22 and a strong PD-L1 enrichment by bafilomycin treatment alone restrict the conclusiveness of this experiment. Functionally, P22 restored interferon &#x003b3; (IFN &#x003b3;) secretion in a T cell co-culture experiment with slightly better efficacy than the anti-PD-1 antibody pembrolizumab. Wang et al. [<xref rid="BST-2025-3065C40" ref-type="bibr">40</xref>] further optimized PROTACs targeting PD-L1 and highlighted their potential by discovering compound 21a based on the PD-L1 binder BMS-37 and a thalidomide analogue joined by a short linker (<xref rid="BST-2025-3065F2" ref-type="fig">Figure&#x000a0;2</xref>). Compound 21a was found to degrade more than 50% PD-L1 at 5 &#x000b5;M in MC-38 cells, a colon adenocarcinoma cell line with high expression levels of PD-L1. Compound 21a was further tested in seven other cell lines, showing the best degradation in SKNO-1 (leukemia) and PC-3 (prostate cancer) cells. The authors confirmed, in contrast with P22, that the degradation effect of 21a is rescued by proteasome and NAE inhibition, as well as CRBN and PD-L1 binding competition. Since PD-L1 is a membrane-bound protein and the binding site for BMS-37 is located on the extracellular part, the authors argue that induced degradation of PD-L1 must happen with internalized and newly synthesized PD-L1. To test this hypothesis, confocal microscopy was used to validate that mainly cytosolic PD-L1 is degraded. Finally, 21a was further proven to inhibit tumor growth, enhance gene expression levels of immune markers such as IFN&#x003b3; and improve intratumoral CD8<sup>+</sup> T cell invasion <italic toggle="yes">in vivo</italic>. Liu et al. [<xref rid="BST-2025-3065C41" ref-type="bibr">41</xref>] expanded the scope of PD-L1 degraders, including recruitment of different E3 ligases (VHL and MDM2) in combination with different PD-L1 binders, using a combinatorial copper-assisted alkyne-azide cycloaddition (CuAAC) approach. Even though some activity was shown for the VH032-linked BMS-37 PROTACs, the thalidomide-conjugated BMS-37 analogs (e.g. BMS-37-C3) similar to P22 or 21a were the most efficient degraders (-50% PD-L1 at 3 &#x003bc;M).</p><fig position="float" id="BST-2025-3065F2" fig-type="model"><label>Figure 2</label><caption><title>Chemical structures of PROTACs to overcome tumor immune escape by targeted degradation of immunosuppressive protein.COX-1/2, cyclooxygenase-1/2; IDO-1, indoleamine 2,3-dioxygenase 1; PD-L1, programmed death ligand 1.</title></caption><graphic xlink:href="bst-BST20253065-g002" position="float"/></fig><p>These studies prove the promising benefits of targeting PD-L1 with a PROTAC approach, with promising immunostimulatory data <italic toggle="yes">in vitro</italic> and <italic toggle="yes">in vivo</italic>. However, a highly effective chemical probe matching the criteria of DC<sub>50&#x02009;</sub>&#x0003c;&#x02009;1 &#x003bc;M, D<sub>max&#x02009;</sub>&#x0003e;&#x02009;80% and unbiased proteomics off-target profiling is yet to be published.</p></sec><sec id="s3-2"><title>SHP-2 PROTACs</title><p>Src homology region 2 domain-containing phosphatase-2 (SHP-2) acts downstream of many receptor tyrosine kinases and is involved in MAPK-ERK activation. SHP-2 was found to be central to PD-1 intracellular signal transduction causing immunosuppressive effects. Therefore, SHP-2 inhibition or degradation is a potential therapeutic strategy for cancer immunotherapy in combination with other immunomodulatory drugs. The SHP-2 PROTAC SHP2-D26 was discovered by Wang et al. [<xref rid="BST-2025-3065C42" ref-type="bibr">42</xref>] linking a known allosteric SHP2 inhibitor (SHP099) to VH032. SHP-D26 showed strong degradation potency and efficacy, with DC<sub>50</sub> values of 6.0 and 2.6 nM in esophageal cancer (KYSE-520) and acute myeloid leukemia (MV-4&#x02013;11) cells, and a D<sub>max</sub> of &#x0003e;95%. The degradation of SHP-2 led to enhanced inhibition of ERK phosphorylation and cell growth compared with the parental allosteric inhibitor SHP099. Vemulapalli et al. [<xref rid="BST-2025-3065C43" ref-type="bibr">43</xref>] discovered the SHP2 degrader R1-5C by linking RMC-4550 to a thalidomide analogue. R1-5C was evaluated for its activity by western blotting (&#x0003c;&#x02212;90% at 10 nM) and its selectivity by proteomics (no off-targets at 4 h and 8 h incubation) in MV-4&#x02013;11 cells. However, the authors did not find any benefit of SHP-2 degradation over inhibition in growth suppression of esophageal cancer (KYSE-520) and myeloid leukemia (MV-4&#x02013;11) cells. Zheng et al. [<xref rid="BST-2025-3065C44" ref-type="bibr">44</xref>] combined SHP099 with pomalidomide via different PEG-linkers using CuAAC leading to the discovery of SP4. SP4 induced SHP2 degradation in HeLa cells at 4.6 nM after 24 h (~&#x02212;50%) and 48 h (~&#x02212;70%). SP4 was found to induce apoptosis and inhibit HeLa cell growth (IC<sub>50</sub>=4.3 nM) better than the parental inhibitor SHP099 (IC<sub>50</sub>=566 nM). Finally, Yang et al. [<xref rid="BST-2025-3065C45" ref-type="bibr">45</xref>] introduced compound 11 (DC<sub>50</sub>=6.02 nM in MV-4&#x02013;11), composed of TNO155, a SHP2 allosteric inhibitor analogue, and pomalidomide, joined by a PEG3-linker. Compound 11 was also found to decrease cell viability of leukemia MV-4&#x02013;11 cells. PROTAC P9, developed by Miao et al. [<xref rid="BST-2025-3065C46" ref-type="bibr">46</xref>] in 2023, degraded SHP-2 with a DC<sub>50</sub> of 35.2 &#x000b1; 1.5 nM and showed remarkable <italic toggle="yes">in vivo</italic> efficacy with almost complete tumor regression in a KYSE520 esophageal cancer xenograft mouse model while being well tolerated over 18 days (<xref rid="BST-2025-3065F2" ref-type="fig">Figure&#x000a0;2</xref>). While these remarkable effects in cancer cell growth and survival can be explained by the ability of SHP2 PROTACs inhibiting cancer signaling, such as ERK, an exciting possibility exists to evaluate their potential to increase ICB response.</p></sec><sec id="s3-3"><title>IDO-1-PROTACs</title><p>The IDO-1 enzyme converts tryptophan to downstream metabolites called kynurenines. Since the discovery of IDO-1 overexpression and its immunosuppressive role in different cancers, inhibitors have been developed. However, the inhibitors failed in clinical trials due to a lack of efficacy [<xref rid="BST-2025-3065C47" ref-type="bibr">47</xref>,<xref rid="BST-2025-3065C48" ref-type="bibr">48</xref>]. Further studies have indicated that non-enzymatic functions of IDO-1 involving up-regulation of expression levels (e.g. complement factor H) may be the reason for therapy failure, especially in glioblastoma treatment [<xref rid="BST-2025-3065C37" ref-type="bibr">37</xref>]. Targeted protein degradation is an ideal alternative approach to target and investigate these non-enzymatic effects of IDO-1 in tumor immune escape. PROTACs to degrade IDO-1 by Hu et al. [<xref rid="BST-2025-3065C49" ref-type="bibr">49</xref>] were based on the potent inhibitor epacadostat linked to thalidomide using various length PEG linkers, which identified the compound 2c (PEG<sub>8</sub>) as a moderately potent but effective IDO-1 degrader (DC<sub>50</sub>=2.5 &#x000b5;M, D<sub>max</sub> 93%). However, when excessive IFN-&#x003b3; is used to induce more overexpression of IDO-1, the degraders&#x02019; capacity of degradation was exceeded. Further, 2c was investigated in an HER2 CAR-T cell coculture model, moderately enhancing the tumor-killing activity. Bollu et al. [<xref rid="BST-2025-3065C50" ref-type="bibr">50</xref>] investigated IDO-1 degradation in glioblastoma models. To design this PROTAC, an analogue of the IDO-1 inhibitor linrodostat (BMS-986205) was linked to either VH032 or thalidomide analogs via aromatic ether formation. Their efforts led to the discovery of NU223612, a potent degrader of IDO-1 in glioblastoma cells (DC<sub>50</sub>=0.3&#x02013;0.5 &#x000b5;M, <xref rid="BST-2025-3065F2" ref-type="fig">Figure&#x000a0;2</xref>). Mechanistically, the CRBN and proteasome dependency of NU223612-induced degradation was proven by rescue experiments as well as negative control probes. NU223612 was shown to reduce non-enzymatic functions of IDO-1, such as NF-&#x003ba;B and p65 phosphorylation. Finally, the PROTAC was found to be blood-brain-barrier penetrative, to effectively reduce IDO-1 concentrations and to lead to a survival benefit over vehicle control in glioma mouse models. In summary, these studies highlight IDO-1 as a promising target for PROTAC development to overcome immune suppression in IDO-1 overexpressing cancers.</p></sec></sec><sec id="s4"><title>COX-1/2 PROTACs</title><p>COX enzyme acts on the arachidonic acid pathway, catalyzing the biosynthesis of prostanoids like PGE<sub>2</sub>, and exists in two distinct isoforms, COX-1 and COX-2. While COX-1 serves essential functions such as in hemostasis, COX-2 is associated with pain, inflammation, and renal function. In various animal models of colon, lung, and breast cancer, inhibition or genetic deletion of COX-2 was found to reduce tumor burden [<xref rid="BST-2025-3065C51" ref-type="bibr">51</xref>,<xref rid="BST-2025-3065C52" ref-type="bibr">52</xref>]. PGE<sub>2</sub> was found to promote immunosuppressive cells like regulatory T cells or M2-type macrophages [<xref rid="BST-2025-3065C53" ref-type="bibr">53</xref>] and is further involved in CD8<sup>+</sup> T cell exhaustion [<xref rid="BST-2025-3065C14" ref-type="bibr">14</xref>]. To target COX-1/2 specifically in the tumor microenvironment, while preserving its essential functions in the rest of the organism, Zhang et al. [<xref rid="BST-2025-3065C54" ref-type="bibr">54</xref>] developed a smart nano-PROTAC (SPN<sub>COX</sub>) bearing COX-1/2 binder linked to a VHL-recruiting peptide. SPN<sub>COX</sub> is activated by cathepsin B overexpression specific to the tumor microenvironment (<xref rid="BST-2025-3065F2" ref-type="fig">Figure&#x000a0;2</xref>). Further, the SPN<sub>COX</sub> nanoparticle polymer can generate <sup>1</sup>O<sub>2</sub> under near-infrared photoirradiation eliminating tumor cells and leading to immunogenic cell death. This phototherapy effect synergizes with COX-2 degradation as tumor-associated antigens are released, thereby stimulating effector T cells and enhancing tumor immunogenicity. Treatment with SPN<sub>COX</sub> resulted in COX-2 depletion and was rescued by NAE and proteasome inhibition, confirming the ubiquitin-proteasome degradation mechanism. The combination of SPN<sub>COX</sub> with focused near-infrared irradiation led to tumor growth suppression and a survival benefit for treated and irradiated breast cancer (4T1)-bearing mice. Alongside these findings, up-regulated effector T cells and down-regulated regulatory T cells were detected with flow cytometry, confirming the immunomodulatory effect of the PROTAC SPN<sub>COX</sub>. In this study, COX-2 was validated as a potential target for cancer immunotherapy. Especially, the synergy of phototherapy as immune stimuli combined with the inhibition of immune suppression by COX-2 depletion was highlighted.</p></sec><sec sec-type="conclusions" id="s5"><title>Conclusion</title><p>Since many immune reactions are reliant on protein&#x02013;protein interactions and immunosuppressive protein functions might extend beyond their canonical enzymatic role, the use of targeted protein degraders provides a real advantage for future cancer immunotherapy development. Furthermore, targeted protein degradation introduces changes to the immunopeptidome, which can be targeted with bi-functional T cell engagers. Future development could also include specific covalent functionalization of presented peptides (neo-haptenization) to induce and stabilize complexes with antibodies or TCRs for augmented immune reactions.</p><p>We summarize preclinical advances in PROTAC development against promising immunosuppressive targets and their advantages in immunotherapy. However, advancing such strategies into <italic toggle="yes">in vivo</italic> and clinical pipelines as part of novel therapeutic options to increase the response to ICB therapies faces challenges. PROTACs have distinct characteristics from traditional small molecules, including ADME properties and clinical risk profiles. Some challenges include inherent toxicity of certain constituents (e.g. thalidomide), varying effects based on audience and application, high and non-specific binding as well as solubility<sc>.</sc> Thus, establishing a framework and guidelines for developing and testing PROTACs should be based on <italic toggle="yes">in silico</italic>, <italic toggle="yes">in vitro</italic>, and <italic toggle="yes">in vivo</italic> methods is a potential solution [<xref rid="BST-2025-3065C55" ref-type="bibr">55</xref>,<xref rid="BST-2025-3065C56" ref-type="bibr">56</xref>]. Next-generation PROTACs mitigate toxicity with novel CRBN binders excluding the molecular glue activities [<xref rid="BST-2025-3065C57" ref-type="bibr">57</xref>] and solubility as well as ADME issues with highly ordered rigid linkers and thorough lead optimization [<xref rid="BST-2025-3065C56" ref-type="bibr">56</xref>,<xref rid="BST-2025-3065C58" ref-type="bibr">58</xref>]. These optimizations even enable orally bioavailable PROTACs [<xref rid="BST-2025-3065C59" ref-type="bibr">59</xref>,<xref rid="BST-2025-3065C60" ref-type="bibr">60</xref>]. Though their large molecule sizes compared with traditional small molecule drugs, PROTACs are an exciting new therapeutic modality soon to enter the market and could show great benefit in overcoming some of the big challenges in immunotherapy and overcoming ICB therapy failure (<xref rid="BST-2025-3065F3" ref-type="fig">Figure&#x000a0;3</xref>).</p><fig position="float" id="BST-2025-3065F3" fig-type="model"><label>Figure 3</label><caption><title>Schematic illustration of how the degradation character of PROTACs can dually benefit immunotherapy through proteolysis of immunosuppressive proteins and neoantigen creation. Figure created with Biorender.</title></caption><graphic xlink:href="bst-BST20253065-g003" position="float"/></fig><boxed-text id="BST-2025-3065B1" position="float"><caption><title>Perspectives</title></caption><list list-type="bullet"><list-item><p>Targeted protein degradation as well as immunotherapy are fast-developing fields of high interest in cancer drug discovery. The promising preclinical data described here and elsewhere suggest that their combination in future clinical investigations could lead to new treatment options for non-responding cancer patients.</p></list-item><list-item><p>PROTACs offer exciting new possibilities in immuno-oncology ranging from new targets to totally new mechanisms of action. However, clinical advancement can be challenging due to pharmacokinetic restrictions and needs to be carefully investigated.</p></list-item><list-item><p>New and highly advanced molecular designs of PROTACs could facilitate moving some of these molecules into the clinic, where finally their effectiveness will be evaluated. Emerging possible combination treatments for ICB non-responder patients represent the most exciting avenues for future investigation.</p></list-item></list></boxed-text></sec></body><back><sec sec-type="COI-statement" id="s6"><title>Competing Interests</title><p>The authors declare that there are no competing interests associated with the manuscript.</p></sec><sec sec-type="author-contribution" id="s7"><title>CRediT Author Contribution</title><p>K.J.E.: writing &#x02013; original draft, review &#x00026; editing; C.A.E.S.: writing &#x02013; review &#x00026; editing; C.E.T.: writing &#x02013; original draft, review &#x00026; editing; G.J.S.: writing &#x02013; review &#x00026; editing; F.F.M.: writing &#x02013; review &#x00026; editing;</p></sec><glossary><title>Abbreviations</title><def-list list-content="abbreviations"><def-item><term id="uid1">ADME</term><def><p>Absorption, Distribution, Metabolism, Excretion</p></def></def-item><def-item><term id="uid2">B2M</term><def><p>Beta-2 Microglobulin</p></def></def-item><def-item><term id="uid3">CIR</term><def><p>covalent immune recruiters</p></def></def-item><def-item><term id="uid4">COX-1/2</term><def><p>cyclooxygenase-1/2</p></def></def-item><def-item><term id="uid5">CRN</term><def><p>cereblon</p></def></def-item><def-item><term id="uid6">CuAAC</term><def><p>copper-assisted alkyne-azide cycloaddition</p></def></def-item><def-item><term id="uid7">DRiPs</term><def><p>defective ribosomal products</p></def></def-item><def-item><term id="uid8">ER</term><def><p>endoplasmic reticulum</p></def></def-item><def-item><term id="uid9">ICB</term><def><p>immune checkpoint blockade</p></def></def-item><def-item><term id="uid10">IDO-1</term><def><p>indoleamine 2,3-dioxygenase 1</p></def></def-item><def-item><term id="uid11">IFN&#x003b3;</term><def><p>interferon &#x003b3;</p></def></def-item><def-item><term id="uid12">MHC-I</term><def><p>major histocompatibility complex I</p></def></def-item><def-item><term id="uid13">PD-L1</term><def><p>programmed death ligand 1</p></def></def-item><def-item><term id="uid14">PGE2</term><def><p>prostaglandin E2</p></def></def-item><def-item><term id="uid15">POI</term><def><p>protein of interest</p></def></def-item><def-item><term id="uid16">PROTACs</term><def><p>proteolysis-targeting chimeras</p></def></def-item><def-item><term id="uid17">TCRs</term><def><p>T cell receptors</p></def></def-item><def-item><term id="uid18">VHL</term><def><p>von hippel lindau</p></def></def-item><def-item><term id="uid19">WT1</term><def><p>Wilms tumor protein 1.</p></def></def-item></def-list></glossary><ref-list><title>References</title><ref id="BST-2025-3065C1"><label>1</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Ribas</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Wolchok</surname><given-names>JD</given-names>
+</string-name>
+</person-group><year>2018</year><article-title>Cancer immunotherapy using checkpoint blockade</article-title><source>Science</source><volume>359</volume><fpage>1350</fpage><lpage>1355</lpage><pub-id pub-id-type="doi">10.1126/science.aar4060</pub-id>
+<?supplied-pmid 29567705?><pub-id pub-id-type="pmid">29567705</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C2"><label>2</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Pardoll</surname><given-names>DM</given-names>
+</string-name>
+</person-group><year>2012</year><article-title>The blockade of immune checkpoints in cancer immunotherapy</article-title><source>Nat. Rev. Cancer</source><volume>12</volume><fpage>252</fpage><lpage>264</lpage><pub-id pub-id-type="doi">10.1038/nrc3239</pub-id>
+<?supplied-pmid 22437870?><pub-id pub-id-type="pmid">22437870</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C3"><label>3</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Larkin</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Chiarion-Sileni</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Gonzalez</surname><given-names>R.</given-names>
+</string-name><string-name>
+<surname>Grob</surname><given-names>J.J.</given-names>
+</string-name><string-name>
+<surname>Cowey</surname><given-names>C.L.</given-names>
+</string-name><string-name>
+<surname>Lao</surname><given-names>C.D.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2015</year><article-title>Combined nivolumab and ipilimumab or monotherapy in untreated melanoma</article-title><source>N. Engl. J. Med.</source><volume>373</volume><fpage>23</fpage><lpage>34</lpage><pub-id pub-id-type="doi">10.1056/NEJMoa1504030</pub-id>
+<?supplied-pmid 26027431?><pub-id pub-id-type="pmid">26027431</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C4"><label>4</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Mellman</surname><given-names>I.</given-names>
+</string-name><string-name>
+<surname>Coukos</surname><given-names>G.</given-names>
+</string-name><string-name>
+<surname>Dranoff</surname><given-names>G</given-names>
+</string-name>
+</person-group><year>2011</year><article-title>Cancer immunotherapy comes of age</article-title><source>Nature</source><volume>480</volume><fpage>480</fpage><lpage>489</lpage><pub-id pub-id-type="doi">10.1038/nature10673</pub-id>
+<?supplied-pmid 22193102?><pub-id pub-id-type="pmid">22193102</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C5"><label>5</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Long</surname><given-names>G.V.</given-names>
+</string-name><string-name>
+<surname>Eroglu</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Infante</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Patel</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Daud</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Johnson</surname><given-names>D.B.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2018</year><article-title>Long-term outcomes in patients with BRAF V600-mutant metastatic melanoma who received dabrafenib combined with trametinib</article-title><source>J. Clin. Oncol.</source><volume>36</volume><fpage>667</fpage><lpage>673</lpage><pub-id pub-id-type="doi">10.1200/JCO.2017.74.1025</pub-id>
+<?supplied-pmid 28991513?><pub-id pub-id-type="pmid">28991513</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C6"><label>6</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Robert</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>Grob</surname><given-names>J.J.</given-names>
+</string-name><string-name>
+<surname>Stroyakovskiy</surname><given-names>D.</given-names>
+</string-name><string-name>
+<surname>Karaszewska</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Hauschild</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Levchenko</surname><given-names>E.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2019</year><article-title>Five-year outcomes with dabrafenib plus trametinib in metastatic melanoma</article-title><source>N. Engl. J. Med.</source><volume>381</volume><fpage>626</fpage><lpage>636</lpage><pub-id pub-id-type="doi">10.1056/NEJMoa1904059</pub-id>
+<?supplied-pmid 31166680?><pub-id pub-id-type="pmid">31166680</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C7"><label>7</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wolchok</surname><given-names>J.D.</given-names>
+</string-name><string-name>
+<surname>Chiarion-Sileni</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Gonzalez</surname><given-names>R.</given-names>
+</string-name><string-name>
+<surname>Grob</surname><given-names>J.-J.</given-names>
+</string-name><string-name>
+<surname>Rutkowski</surname><given-names>P.</given-names>
+</string-name><string-name>
+<surname>Lao</surname><given-names>C.D.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>CheckMate 067: 6.5-year outcomes in patients (pts) with advanced melanoma</article-title><source>J. Clin. Oncol.</source><volume>39</volume><fpage>9506</fpage><lpage>9506</lpage><pub-id pub-id-type="doi">10.1200/JCO.2021.39.15_suppl.9506</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C8"><label>8</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wolchok</surname><given-names>J.D.</given-names>
+</string-name><string-name>
+<surname>Chiarion-Sileni</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Gonzalez</surname><given-names>R.</given-names>
+</string-name><string-name>
+<surname>Rutkowski</surname><given-names>P.</given-names>
+</string-name><string-name>
+<surname>Grob</surname><given-names>J.-J.</given-names>
+</string-name><string-name>
+<surname>Cowey</surname><given-names>C.L.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2017</year><article-title>Overall survival with combined nivolumab and ipilimumab in advanced melanoma</article-title><source>N. Engl. J. Med.</source><volume>377</volume><fpage>1345</fpage><lpage>1356</lpage><pub-id pub-id-type="doi">10.1056/NEJMoa1709684</pub-id>
+<?supplied-pmid 28889792?><pub-id pub-id-type="pmid">28889792</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C9"><label>9</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Haslam</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Prasad</surname><given-names>V</given-names>
+</string-name>
+</person-group><year>2019</year><article-title>Estimation of the percentage of us patients with cancer who are eligible for and respond to checkpoint inhibitor immunotherapy drugs</article-title><source>JAMA Netw. Open</source><volume>2</volume><elocation-id>e192535</elocation-id><pub-id pub-id-type="doi">10.1001/jamanetworkopen.2019.2535</pub-id>
+<?supplied-pmid 31050774?><pub-id pub-id-type="pmid">31050774</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C10"><label>10</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Yamada</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Takeuchi</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Fukumoto</surname><given-names>T.</given-names>
+</string-name><string-name>
+<surname>Suzuki</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Kato</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Mizuki</surname><given-names>Y.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2024</year><article-title>Immune checkpoint inhibitors for metastatic uveal melanoma: a meta-analysis</article-title><source>Sci. Rep.</source><volume>14</volume><elocation-id>7887</elocation-id><pub-id pub-id-type="doi">10.1038/s41598-024-55675-5</pub-id>
+<?supplied-pmid 38570507?><pub-id pub-id-type="pmid">38570507</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C11"><label>11</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Snyder</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Makarov</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Merghoub</surname><given-names>T.</given-names>
+</string-name><string-name>
+<surname>Yuan</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Zaretsky</surname><given-names>J.M.</given-names>
+</string-name><string-name>
+<surname>Desrichard</surname><given-names>A.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2014</year><article-title>Genetic basis for clinical response to CTLA-4 blockade in melanoma</article-title><source>N. Engl. J. Med.</source><volume>371</volume><fpage>2189</fpage><lpage>2199</lpage><pub-id pub-id-type="doi">10.1056/NEJMoa1406498</pub-id>
+<?supplied-pmid 25409260?><pub-id pub-id-type="pmid">25409260</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C12"><label>12</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zaretsky</surname><given-names>J.M.</given-names>
+</string-name><string-name>
+<surname>Garcia-Diaz</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Shin</surname><given-names>D.S.</given-names>
+</string-name><string-name>
+<surname>Escuin-Ordinas</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Hugo</surname><given-names>W.</given-names>
+</string-name><string-name>
+<surname>Hu-Lieskovan</surname><given-names>S.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2016</year><article-title>mutations associated with acquired resistance to PD-1 Blockade in Melanoma</article-title><source>N. Engl. J. Med.</source><volume>375</volume><fpage>819</fpage><lpage>829</lpage><pub-id pub-id-type="doi">10.1056/NEJMoa1604958</pub-id>
+<?supplied-pmid 27433843?><pub-id pub-id-type="pmid">27433843</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C13"><label>13</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Yang</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Halima</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Chan</surname><given-names>TA</given-names>
+</string-name>
+</person-group><year>2023</year><article-title>Antigen presentation in cancer - mechanisms and clinical implications for immunotherapy</article-title><source>Nat. Rev. Clin. Oncol.</source><volume>20</volume><fpage>604</fpage><lpage>623</lpage><pub-id pub-id-type="doi">10.1038/s41571-023-00789-4</pub-id>
+<?supplied-pmid 37328642?><pub-id pub-id-type="pmid">37328642</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C14"><label>14</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wu</surname><given-names>V.H.</given-names>
+</string-name><string-name>
+<surname>Yung</surname><given-names>B.S.</given-names>
+</string-name><string-name>
+<surname>Faraji</surname><given-names>F.</given-names>
+</string-name><string-name>
+<surname>Saddawi-Konefka</surname><given-names>R.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Wenzel</surname><given-names>A.T.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>The GPCR-G&#x003b1;<sub>s</sub>-PKA signaling axis promotes T cell dysfunction and cancer immunotherapy failure</article-title><source>Nat. Immunol.</source><volume>24</volume><fpage>1318</fpage><lpage>1330</lpage><pub-id pub-id-type="doi">10.1038/s41590-023-01529-7</pub-id>
+<?supplied-pmid 37308665?><pub-id pub-id-type="pmid">37308665</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C15"><label>15</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Larkin</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Chiarion-Sileni</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Gonzalez</surname><given-names>R.</given-names>
+</string-name><string-name>
+<surname>Grob</surname><given-names>J.-J.</given-names>
+</string-name><string-name>
+<surname>Rutkowski</surname><given-names>P.</given-names>
+</string-name><string-name>
+<surname>Lao</surname><given-names>C.D.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2019</year><article-title>Five-year survival with combined nivolumab and ipilimumab in advanced melanoma</article-title><source>N. Engl. J. Med.</source><volume>381</volume><fpage>1535</fpage><lpage>1546</lpage><pub-id pub-id-type="doi">10.1056/NEJMoa1910836</pub-id>
+<?supplied-pmid 31562797?><pub-id pub-id-type="pmid">31562797</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C16"><label>16</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Fan</surname><given-names>A.T.</given-names>
+</string-name><string-name>
+<surname>Gadbois</surname><given-names>G.E.</given-names>
+</string-name><string-name>
+<surname>Huang</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Chaudhry</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>Jiang</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Sigua</surname><given-names>L.H.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2025</year><article-title>A kinetic scout approach accelerates targeted protein degrader development</article-title><source>Angew. Chem. Int. Ed.</source><volume>64</volume><elocation-id>e202417272</elocation-id><pub-id pub-id-type="doi">10.1002/anie.202417272</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C17"><label>17</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Kiely-Collins</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Winter</surname><given-names>G.E.</given-names>
+</string-name><string-name>
+<surname>Bernardes</surname><given-names>G.J.L</given-names>
+</string-name>
+</person-group><year>2021</year><article-title>The role of reversible and irreversible covalent chemistry in targeted protein degradation</article-title><source>Cell Chem. Biol</source><volume>28</volume><fpage>952</fpage><lpage>968</lpage><pub-id pub-id-type="doi">10.1016/j.chembiol.2021.03.005</pub-id>
+<?supplied-pmid 33789091?><pub-id pub-id-type="pmid">33789091</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C18"><label>18</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Cai</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Yang</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Li</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Fang</surname><given-names>Y</given-names>
+</string-name>
+</person-group><year>2024</year><article-title>Research progress of PROTACs for neurodegenerative diseases therapy</article-title><source>Bioorg. Chem</source><volume>147</volume><fpage>107386</fpage>
+<pub-id pub-id-type="doi">10.1016/j.bioorg.2024.107386</pub-id>
+<?supplied-pmid 38643565?><pub-id pub-id-type="pmid">38643565</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C19"><label>19</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Hamilton</surname><given-names>E.P.</given-names>
+</string-name><string-name>
+<surname>Ma</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>De Laurentiis</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Iwata</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Hurvitz</surname><given-names>S.A.</given-names>
+</string-name><string-name>
+<surname>Wander</surname><given-names>S.A.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2024</year><article-title>VERITAC-2: a Phase III study of vepdegestrant, a PROTAC ER degrader, versus fulvestrant in ER+/HER2- advanced breast cancer</article-title><source>Future Oncol.</source><volume>20</volume><fpage>2447</fpage><lpage>2455</lpage><pub-id pub-id-type="doi">10.1080/14796694.2024.2377530</pub-id>
+<?supplied-pmid 39072356?><pub-id pub-id-type="pmid">39072356</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C20"><label>20</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Jensen</surname><given-names>S.M.</given-names>
+</string-name><string-name>
+<surname>Potts</surname><given-names>G.K.</given-names>
+</string-name><string-name>
+<surname>Ready</surname><given-names>D.B.</given-names>
+</string-name><string-name>
+<surname>Patterson</surname><given-names>MJ</given-names>
+</string-name>
+</person-group><year>2018</year><article-title>Specific MHC-I Peptides Are Induced Using PROTACs</article-title><source>Front. Immunol.</source><volume>9</volume><elocation-id>2697</elocation-id><pub-id pub-id-type="doi">10.3389/fimmu.2018.02697</pub-id>
+<?supplied-pmid 30524438?><pub-id pub-id-type="pmid">30524438</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C21"><label>21</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Moser</surname><given-names>S.C.</given-names>
+</string-name><string-name>
+<surname>Voerman</surname><given-names>J.S.A.</given-names>
+</string-name><string-name>
+<surname>Buckley</surname><given-names>D.L.</given-names>
+</string-name><string-name>
+<surname>Winter</surname><given-names>G.E.</given-names>
+</string-name><string-name>
+<surname>Schliehe</surname><given-names>C</given-names>
+</string-name>
+</person-group><year>2017</year><article-title>Acute pharmacologic degradation of a stable antigen enhances its direct presentation on MHC Class I Molecules</article-title><source>Front. Immunol.</source><volume>8</volume><elocation-id>1920</elocation-id><pub-id pub-id-type="doi">10.3389/fimmu.2017.01920</pub-id>
+<?supplied-pmid 29358938?><pub-id pub-id-type="pmid">29358938</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C22"><label>22</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Massafra</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Tundo</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Dietzig</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Ducret</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Jost</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>Klein</surname><given-names>C.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>Proteolysis-targeting chimeras enhance t cell bispecific antibody-driven t cell activation and effector function through increased mhc class i antigen presentation in cancer cells</article-title><source>J. Immunol.</source><volume>207</volume><fpage>493</fpage><lpage>504</lpage><pub-id pub-id-type="doi">10.4049/jimmunol.2000252</pub-id>
+<?supplied-pmid 34215653?><pub-id pub-id-type="pmid">34215653</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C23"><label>23</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Kapcan</surname><given-names>E.</given-names>
+</string-name><string-name>
+<surname>Krygier</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Da Luz</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Serniuck</surname><given-names>N.J.</given-names>
+</string-name><string-name>
+<surname>Zhang</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Bramson</surname><given-names>J</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2025</year><article-title>Mimicry of molecular glues using dual covalent chimeras</article-title><source>Nat. Commun</source><volume>16</volume><elocation-id>2855</elocation-id><pub-id pub-id-type="doi">10.1038/s41467-025-58083-z</pub-id>
+<?supplied-pmid 40128528?><pub-id pub-id-type="pmid">40128528</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C24"><label>24</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Kapcan</surname><given-names>E.</given-names>
+</string-name><string-name>
+<surname>Lake</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Yang</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Zhang</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Miller</surname><given-names>M.S.</given-names>
+</string-name><string-name>
+<surname>Rullo</surname><given-names>AF</given-names>
+</string-name>
+</person-group><year>2021</year><article-title>Covalent Stabilization of antibody recruitment enhances immune recognition of cancer targets</article-title><source>Biochemistry</source><volume>60</volume><fpage>1447</fpage><lpage>1458</lpage><pub-id pub-id-type="doi">10.1021/acs.biochem.1c00127</pub-id>
+<?supplied-pmid 33930269?><pub-id pub-id-type="pmid">33930269</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C25"><label>25</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Lake</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Serniuck</surname><given-names>N.</given-names>
+</string-name><string-name>
+<surname>Kapcan</surname><given-names>E.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Rullo</surname><given-names>AF</given-names>
+</string-name>
+</person-group><year>2020</year><article-title>Covalent immune recruiters: tools to gain chemical control over immune recognition</article-title><source>ACS Chem. Biol.</source><volume>15</volume><fpage>1089</fpage><lpage>1095</lpage><pub-id pub-id-type="doi">10.1021/acschembio.0c00112</pub-id>
+<?supplied-pmid 32100991?><pub-id pub-id-type="pmid">32100991</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C26"><label>26</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Hattori</surname><given-names>T.</given-names>
+</string-name><string-name>
+<surname>Maso</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Araki</surname><given-names>K.Y.</given-names>
+</string-name><string-name>
+<surname>Koide</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Hayman</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Akkapeddi</surname><given-names>P.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>Creating MHC-Restricted Neoantigens with Covalent Inhibitors That Can Be Targeted by Immune Therapy</article-title><source>Cancer Discov.</source><volume>13</volume><fpage>132</fpage><lpage>145</lpage><pub-id pub-id-type="doi">10.1158/2159-8290.CD-22-1074</pub-id>
+<?supplied-pmid 36250888?><pub-id pub-id-type="pmid">36250888</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C27"><label>27</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zhang</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Rohweder</surname><given-names>P.J.</given-names>
+</string-name><string-name>
+<surname>Ongpipattanakul</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>Basu</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Bohn</surname><given-names>M.-F.</given-names>
+</string-name><string-name>
+<surname>Dugan</surname><given-names>E.J</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2022</year><article-title>A covalent inhibitor of K-Ras(G12C) induces MHC class I presentation of haptenated peptide neoepitopes targetable by immunotherapy</article-title><source>Cancer Cell</source><volume>40</volume><fpage>1060</fpage><lpage>1069</lpage><pub-id pub-id-type="doi">10.1016/j.ccell.2022.07.005</pub-id>
+<?supplied-pmid 36099883?><pub-id pub-id-type="pmid">36099883</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C28"><label>28</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Samelson</surname><given-names>LE</given-names>
+</string-name>
+</person-group><year>2002</year><article-title>Signal Transduction Mediated by the T Cell Antigen Receptor: The Role of Adapter Proteins*</article-title><source>Annu. Rev. Immunol.</source><volume>20</volume><fpage>371</fpage><lpage>394</lpage><pub-id pub-id-type="doi">10.1146/annurev.immunol.20.092601.111357</pub-id>
+<pub-id pub-id-type="pmid">11861607</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C29"><label>29</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Kuhns</surname><given-names>M.S.</given-names>
+</string-name><string-name>
+<surname>Davis</surname><given-names>M.M.</given-names>
+</string-name><string-name>
+<surname>Garcia</surname><given-names>KC</given-names>
+</string-name>
+</person-group><year>2006</year><article-title>Deconstructing the form and function of the TCR/CD3 complex</article-title><source>Immunity</source><volume>24</volume><fpage>133</fpage><lpage>139</lpage><pub-id pub-id-type="doi">10.1016/j.immuni.2006.01.006</pub-id>
+<?supplied-pmid 16473826?><pub-id pub-id-type="pmid">16473826</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C30"><label>30</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Reits</surname><given-names>E.A.</given-names>
+</string-name><string-name>
+<surname>Vos</surname><given-names>J.C.</given-names>
+</string-name><string-name>
+<surname>Gromm&#x000e9;</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Neefjes</surname><given-names>J</given-names>
+</string-name>
+</person-group><year>2000</year><article-title>The major substrates for TAP in vivo are derived from newly synthesized proteins</article-title><source>Nature</source><volume>404</volume><fpage>774</fpage><lpage>778</lpage><pub-id pub-id-type="doi">10.1038/35008103</pub-id>
+<?supplied-pmid 10783892?><pub-id pub-id-type="pmid">10783892</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C31"><label>31</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Princiotta</surname><given-names>M.F.</given-names>
+</string-name><string-name>
+<surname>Finzi</surname><given-names>D.</given-names>
+</string-name><string-name>
+<surname>Qian</surname><given-names>S.-B.</given-names>
+</string-name><string-name>
+<surname>Gibbs</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Schuchmann</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Buttgereit</surname><given-names>F.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2003</year><article-title>Quantitating protein synthesis, degradation, and endogenous antigen processing</article-title><source>Immunity</source><volume>18</volume><fpage>343</fpage><lpage>354</lpage><pub-id pub-id-type="doi">10.1016/s1074-7613(03)00051-7</pub-id>
+<?supplied-pmid 12648452?><pub-id pub-id-type="pmid">12648452</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C32"><label>32</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Bourdetsky</surname><given-names>D.</given-names>
+</string-name><string-name>
+<surname>Schmelzer</surname><given-names>C.E.H.</given-names>
+</string-name><string-name>
+<surname>Admon</surname><given-names>A</given-names>
+</string-name>
+</person-group><year>2014</year><article-title>The nature and extent of contributions by defective ribosome products to the HLA peptidome</article-title><source>Proc. Natl. Acad. Sci. U.S.A</source><volume>111</volume><fpage>E1591</fpage><lpage>E1599</lpage><pub-id pub-id-type="doi">10.1073/pnas.1321902111</pub-id>
+<pub-id pub-id-type="pmid">24715725</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C33"><label>33</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Cresswell</surname><given-names>P.</given-names>
+</string-name><string-name>
+<surname>Ackerman</surname><given-names>A.L.</given-names>
+</string-name><string-name>
+<surname>Giodini</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Peaper</surname><given-names>D.R.</given-names>
+</string-name><string-name>
+<surname>Wearsch</surname><given-names>PA</given-names>
+</string-name>
+</person-group><year>2005</year><article-title>Mechanisms of MHC class I-restricted antigen processing and cross-presentation</article-title><source>Immunol. Rev.</source><volume>207</volume><fpage>145</fpage><lpage>157</lpage><pub-id pub-id-type="doi">10.1111/j.0105-2896.2005.00316.x</pub-id>
+<?supplied-pmid 16181333?><pub-id pub-id-type="pmid">16181333</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C34"><label>34</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Rock</surname><given-names>K.L.</given-names>
+</string-name><string-name>
+<surname>Gramm</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>Rothstein</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Clark</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Stein</surname><given-names>R.</given-names>
+</string-name><string-name>
+<surname>Dick</surname><given-names>L.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>1994</year><article-title>Inhibitors of the proteasome block the degradation of most cell proteins and the generation of peptides presented on MHC class I molecules</article-title><source>Cell</source><volume>78</volume><fpage>761</fpage><lpage>771</lpage><pub-id pub-id-type="doi">10.1016/s0092-8674(94)90462-6</pub-id>
+<?supplied-pmid 8087844?><pub-id pub-id-type="pmid">8087844</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C35"><label>35</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wei</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Zanker</surname><given-names>D.</given-names>
+</string-name><string-name>
+<surname>Di Carluccio</surname><given-names>A.R.</given-names>
+</string-name><string-name>
+<surname>Smelkinson</surname><given-names>M.G.</given-names>
+</string-name><string-name>
+<surname>Takeda</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Seedhom</surname><given-names>M.O.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2017</year><article-title>Varied role of ubiquitylation in generating MHC Class I Peptide Ligands</article-title><source>J. Immunol.</source><volume>198</volume><fpage>3835</fpage><lpage>3845</lpage><pub-id pub-id-type="doi">10.4049/jimmunol.1602122</pub-id>
+<?supplied-pmid 28363906?><pub-id pub-id-type="pmid">28363906</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C36"><label>36</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Nabet</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Roberts</surname><given-names>J.M.</given-names>
+</string-name><string-name>
+<surname>Buckley</surname><given-names>D.L.</given-names>
+</string-name><string-name>
+<surname>Paulk</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Dastjerdi</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Yang</surname><given-names>A.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2018</year><article-title>The dTAG system for immediate and target-specific protein degradation</article-title><source>Nat. Chem. Biol.</source><volume>14</volume><fpage>431</fpage><lpage>441</lpage><pub-id pub-id-type="doi">10.1038/s41589-018-0021-8</pub-id>
+<?supplied-pmid 29581585?><pub-id pub-id-type="pmid">29581585</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C37"><label>37</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zhai</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Bell</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Ladomersky</surname><given-names>E.</given-names>
+</string-name><string-name>
+<surname>Lauing</surname><given-names>K.L.</given-names>
+</string-name><string-name>
+<surname>Bollu</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Nguyen</surname><given-names>B.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>Tumor cell ido enhances immune suppression and decreases survival independent of tryptophan metabolism in glioblastoma</article-title><source>Clin. Cancer Res.</source><volume>27</volume><fpage>6514</fpage><lpage>6528</lpage><pub-id pub-id-type="doi">10.1158/1078-0432.CCR-21-1392</pub-id>
+<?supplied-pmid 34479957?><pub-id pub-id-type="pmid">34479957</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C38"><label>38</label><mixed-citation publication-type="book">
+<person-group person-group-type="author">
+<string-name>
+<surname>Chupak</surname><given-names>L.D.</given-names>
+</string-name><string-name>
+<surname>Martin</surname><given-names>S.W.</given-names>
+</string-name><string-name>
+<surname>Zheng</surname><given-names>X.</given-names>
+</string-name><string-name>
+<surname>Hewawasam</surname><given-names>P.</given-names>
+</string-name><string-name>
+<surname>Connoly</surname><given-names>T.P.</given-names>
+</string-name><string-name>
+<surname>Xu</surname><given-names>N.</given-names>
+</string-name><etal>et al</etal>
+</person-group><source>inventorCompounds Useful as Immunemodulators2015</source>
+</mixed-citation></ref><ref id="BST-2025-3065C39"><label>39</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Cheng</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Ren</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Cao</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Chen</surname><given-names>J</given-names>
+</string-name>
+</person-group><year>2020</year><article-title>Discovery of novel resorcinol diphenyl ether-based PROTAC-like molecules as dual inhibitors and degraders of PD-L1</article-title><source>Eur. J. Med. Chem.</source><volume>199</volume><fpage>112377</fpage>
+<pub-id pub-id-type="doi">10.1016/j.ejmech.2020.112377</pub-id>
+<pub-id pub-id-type="pmid">32388281</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C40"><label>40</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wang</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Zhou</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Cao</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Sun</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Dong</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Li</surname><given-names>C.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>In vitro and in vivo degradation of programmed cell death ligand 1 (PD-L1) by a proteolysis targeting chimera (PROTAC)</article-title><source>Bioorg. Chem.</source><volume>111</volume><fpage>104833</fpage>
+<pub-id pub-id-type="doi">10.1016/j.bioorg.2021.104833</pub-id>
+<pub-id pub-id-type="pmid">33839580</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C41"><label>41</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Liu</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Zheng</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Ma</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Zhou</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Huo</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Zhang</surname><given-names>W.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>Design, synthesis, and evaluation of PD-L1 degraders to enhance T cell killing activity against melanoma</article-title><source>Chinese Chemical Letters</source><volume>34</volume><fpage>107762</fpage>
+<pub-id pub-id-type="doi">10.1016/j.cclet.2022.107762</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C42"><label>42</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wang</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Lu</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Yang</surname><given-names>C.-Y.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>S</given-names>
+</string-name>
+</person-group><year>2020</year><article-title>Discovery of SHP2-D26 as a First, Potent, and Effective PROTAC Degrader of SHP2 Protein</article-title><source>J. Med. Chem.</source><volume>63</volume><fpage>7510</fpage><lpage>7528</lpage><pub-id pub-id-type="doi">10.1021/acs.jmedchem.0c00471</pub-id>
+<?supplied-pmid 32437146?><pub-id pub-id-type="pmid">32437146</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C43"><label>43</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Vemulapalli</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Donovan</surname><given-names>K.A.</given-names>
+</string-name><string-name>
+<surname>Seegar</surname><given-names>T.C.M.</given-names>
+</string-name><string-name>
+<surname>Rogers</surname><given-names>J.M.</given-names>
+</string-name><string-name>
+<surname>Bae</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Lumpkin</surname><given-names>R.J.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>Targeted degradation of the oncogenic phosphatase SHP2</article-title><source>Biochemistry</source><volume>60</volume><fpage>2593</fpage><lpage>2609</lpage><pub-id pub-id-type="doi">10.1021/acs.biochem.1c00377</pub-id>
+<?supplied-pmid 34411482?><pub-id pub-id-type="pmid">34411482</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C44"><label>44</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zheng</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Liu</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Wu</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>Yang</surname><given-names>K.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>Q.</given-names>
+</string-name><string-name>
+<surname>Zhou</surname><given-names>Y</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>Novel PROTACs for degradation of SHP2 protein</article-title><source>Bioorg. Chem</source><volume>110</volume><fpage>104788</fpage>
+<pub-id pub-id-type="doi">10.1016/j.bioorg.2021.104788</pub-id>
+<?supplied-pmid 33706076?><pub-id pub-id-type="pmid">33706076</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C45"><label>45</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Yang</surname><given-names>X.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Pei</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Song</surname><given-names>N.</given-names>
+</string-name><string-name>
+<surname>Xu</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Feng</surname><given-names>B.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2021</year><article-title>Discovery of thalidomide-based PROTAC small molecules as the highly efficient SHP2 degraders</article-title><source>Eur. J. Med. Chem.</source><volume>218</volume><fpage>113341</fpage>
+<pub-id pub-id-type="doi">10.1016/j.ejmech.2021.113341</pub-id>
+<pub-id pub-id-type="pmid">33780898</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C46"><label>46</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Miao</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Bai</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Miao</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Qu</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Dong</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Zhang</surname><given-names>R.-Y.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>Discovery of a SHP2 Degrader with In Vivo Anti-Tumor Activity</article-title><source>Molecules</source><volume>28</volume><elocation-id>6947</elocation-id><pub-id pub-id-type="doi">10.3390/molecules28196947</pub-id>
+<?supplied-pmid 37836790?><pub-id pub-id-type="pmid">37836790</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C47"><label>47</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Pires</surname><given-names>A.S.</given-names>
+</string-name><string-name>
+<surname>Sundaram</surname><given-names>G.</given-names>
+</string-name><string-name>
+<surname>Heng</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Krishnamurthy</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Brew</surname><given-names>B.J.</given-names>
+</string-name><string-name>
+<surname>Guillemin</surname><given-names>GJ</given-names>
+</string-name>
+</person-group><year>2022</year><article-title>Recent advances in clinical trials targeting the kynurenine pathway</article-title><source>Pharmacol. Ther.</source><volume>236</volume><fpage>108055</fpage>
+<pub-id pub-id-type="doi">10.1016/j.pharmthera.2021.108055</pub-id>
+<pub-id pub-id-type="pmid">34929198</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C48"><label>48</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Kelly</surname><given-names>C.M.</given-names>
+</string-name><string-name>
+<surname>Qin</surname><given-names>L.-X.</given-names>
+</string-name><string-name>
+<surname>Whiting</surname><given-names>K.A.</given-names>
+</string-name><string-name>
+<surname>Richards</surname><given-names>A.L.</given-names>
+</string-name><string-name>
+<surname>Avutu</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Chan</surname><given-names>J.E.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>A Phase II Study of Epacadostat and Pembrolizumab in Patients with Advanced Sarcoma</article-title><source>Clin. Cancer Res.</source><volume>29</volume><fpage>2043</fpage><lpage>2051</lpage><pub-id pub-id-type="doi">10.1158/1078-0432.CCR-22-3911</pub-id>
+<?supplied-pmid 36971773?><pub-id pub-id-type="pmid">36971773</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C49"><label>49</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Hu</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Zhou</surname><given-names>W.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Yao</surname><given-names>D.</given-names>
+</string-name><string-name>
+<surname>Ye</surname><given-names>T.</given-names>
+</string-name><string-name>
+<surname>Yao</surname><given-names>Y.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2020</year><article-title>Discovery of the first potent proteolysis targeting chimera (PROTAC) degrader of indoleamine 2,3-dioxygenase 1</article-title><source>Acta Pharm. Sin. B</source><volume>10</volume><fpage>1943</fpage><lpage>1953</lpage><pub-id pub-id-type="doi">10.1016/j.apsb.2020.02.010</pub-id>
+<?supplied-pmid 33163345?><pub-id pub-id-type="pmid">33163345</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C50"><label>50</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Bollu</surname><given-names>L.R.</given-names>
+</string-name><string-name>
+<surname>Bommi</surname><given-names>P.V.</given-names>
+</string-name><string-name>
+<surname>Monsen</surname><given-names>P.J.</given-names>
+</string-name><string-name>
+<surname>Zhai</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Lauing</surname><given-names>K.L.</given-names>
+</string-name><string-name>
+<surname>Bell</surname><given-names>A.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2022</year><article-title>Identification and Characterization of a Novel Indoleamine 2,3-Dioxygenase 1 Protein Degrader for Glioblastoma</article-title><source>J. Med. Chem.</source><volume>65</volume><fpage>15642</fpage><lpage>15662</lpage><pub-id pub-id-type="doi">10.1021/acs.jmedchem.2c00771</pub-id>
+<?supplied-pmid 36410047?><pub-id pub-id-type="pmid">36410047</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C51"><label>51</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Smyth</surname><given-names>E.M.</given-names>
+</string-name><string-name>
+<surname>Grosser</surname><given-names>T.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Yu</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>FitzGerald</surname><given-names>GA</given-names>
+</string-name>
+</person-group><year>2009</year><article-title>Prostanoids in health and disease</article-title><source>J. Lipid Res.</source><volume>50 Suppl</volume><fpage>S423</fpage><lpage>8</lpage><pub-id pub-id-type="doi">10.1194/jlr.R800094-JLR200</pub-id>
+<?supplied-pmid 19095631?><pub-id pub-id-type="pmid">19095631</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C52"><label>52</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Wang</surname><given-names>M.-T.</given-names>
+</string-name><string-name>
+<surname>Honn</surname><given-names>K.V.</given-names>
+</string-name><string-name>
+<surname>Nie</surname><given-names>D</given-names>
+</string-name>
+</person-group><year>2007</year><article-title>Cyclooxygenases, prostanoids, and tumor progression</article-title><source>Cancer Metastasis Rev.</source><volume>26</volume><fpage>525</fpage><lpage>534</lpage><pub-id pub-id-type="doi">10.1007/s10555-007-9096-5</pub-id>
+<?supplied-pmid 17763971?><pub-id pub-id-type="pmid">17763971</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C53"><label>53</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zelenay</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Van der Veen</surname><given-names>A.G.</given-names>
+</string-name><string-name>
+<surname>B&#x000f6;ttcher</surname><given-names>J.P.</given-names>
+</string-name><string-name>
+<surname>Snelgrove</surname><given-names>K.J.</given-names>
+</string-name><string-name>
+<surname>Rogers</surname><given-names>N.</given-names>
+</string-name><string-name>
+<surname>Acton</surname><given-names>S.E</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2015</year><article-title>Cyclooxygenase-dependent tumor growth through evasion of Immunity</article-title><source>Cell</source><volume>162</volume><fpage>1257</fpage><lpage>1270</lpage><pub-id pub-id-type="doi">10.1016/j.cell.2015.08.015</pub-id>
+<?supplied-pmid 26343581?><pub-id pub-id-type="pmid">26343581</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C54"><label>54</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zhang</surname><given-names>C.</given-names>
+</string-name><string-name>
+<surname>He</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Zeng</surname><given-names>Z.</given-names>
+</string-name><string-name>
+<surname>Cheng</surname><given-names>P.</given-names>
+</string-name><string-name>
+<surname>Pu</surname><given-names>K</given-names>
+</string-name>
+</person-group><year>2022</year><article-title>Smart Nano&#x02010;PROTACs Reprogram Tumor Microenvironment for Activatable Photo&#x02010;metabolic Cancer Immunotherapy</article-title><source>Angew. Chem. Int. Ed.</source><volume>61</volume><elocation-id>e202114957</elocation-id><pub-id pub-id-type="doi">10.1002/anie.202114957</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C55"><label>55</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Jones</surname><given-names>L.H.</given-names>
+</string-name><string-name>
+<surname>Mitchell</surname><given-names>C.A.</given-names>
+</string-name><string-name>
+<surname>Loberg</surname><given-names>L.</given-names>
+</string-name><string-name>
+<surname>Pavkovic</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Rao</surname><given-names>M.</given-names>
+</string-name><string-name>
+<surname>Roberts</surname><given-names>R.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2022</year><article-title>Targeted protein degraders: a call for collective action to advance safety assessment</article-title><source>Nat. Rev. Drug Discov.</source><volume>21</volume><fpage>401</fpage><lpage>402</lpage><pub-id pub-id-type="doi">10.1038/d41573-022-00055-9</pub-id>
+<?supplied-pmid 35322806?><pub-id pub-id-type="pmid">35322806</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C56"><label>56</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Pike</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Williamson</surname><given-names>B.</given-names>
+</string-name><string-name>
+<surname>Harlfinger</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Martin</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>McGinnity</surname><given-names>D.F</given-names>
+</string-name>
+</person-group><year>2020</year><article-title>Optimising proteolysis-targeting chimeras (PROTACs) for oral drug delivery: a drug metabolism and pharmacokinetics perspective</article-title><source>Drug Discov. Today</source><volume>25</volume><fpage>1793</fpage><lpage>1800</lpage><pub-id pub-id-type="doi">10.1016/j.drudis.2020.07.013</pub-id>
+<?supplied-pmid 32693163?><pub-id pub-id-type="pmid">32693163</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C57"><label>57</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Norris</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Ba</surname><given-names>X.</given-names>
+</string-name><string-name>
+<surname>Rhodes</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Huang</surname><given-names>D.</given-names>
+</string-name><string-name>
+<surname>Khambatta</surname><given-names>G.</given-names>
+</string-name><string-name>
+<surname>Buenviaje</surname><given-names>J.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>Design and synthesis of novel cereblon binders for use in targeted protein degradation</article-title><source>J. Med. Chem.</source><volume>66</volume><fpage>16388</fpage><lpage>16409</lpage><pub-id pub-id-type="doi">10.1021/acs.jmedchem.3c01848</pub-id>
+<?supplied-pmid 37991844?><pub-id pub-id-type="pmid">37991844</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C58"><label>58</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zheng</surname><given-names>X.</given-names>
+</string-name><string-name>
+<surname>Ji</surname><given-names>N.</given-names>
+</string-name><string-name>
+<surname>Campbell</surname><given-names>V.</given-names>
+</string-name><string-name>
+<surname>Slavin</surname><given-names>A.</given-names>
+</string-name><string-name>
+<surname>Zhu</surname><given-names>X.</given-names>
+</string-name><string-name>
+<surname>Chen</surname><given-names>D.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2024</year><article-title>Discovery of KT-474&#x02500;a Potent, selective, and orally bioavailable irak4 degrader for the treatment of autoimmune diseases</article-title><source>J. Med. Chem.</source><volume>67</volume><fpage>18022</fpage><lpage>18037</lpage><pub-id pub-id-type="doi">10.1021/acs.jmedchem.4c01305</pub-id>
+<?supplied-pmid 39151120?><pub-id pub-id-type="pmid">39151120</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C59"><label>59</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Rej</surname><given-names>R.K.</given-names>
+</string-name><string-name>
+<surname>Allu</surname><given-names>S.R.</given-names>
+</string-name><string-name>
+<surname>Roy</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Acharyya</surname><given-names>R.K.</given-names>
+</string-name><string-name>
+<surname>Kiran</surname><given-names>I.N.C.</given-names>
+</string-name><string-name>
+<surname>Addepalli</surname><given-names>Y.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2024</year><article-title>Orally bioavailable proteolysis-targeting chimeras: an innovative approach in the golden era of discovering small-molecule cancer drugs</article-title><source>Pharmaceuticals (Basel).</source><volume>17</volume><fpage>494</fpage>
+<pub-id pub-id-type="doi">10.3390/ph17040494</pub-id>
+<pub-id pub-id-type="pmid">38675453</pub-id>
+</mixed-citation></ref><ref id="BST-2025-3065C60"><label>60</label><mixed-citation publication-type="journal">
+<person-group person-group-type="author">
+<string-name>
+<surname>Zeng</surname><given-names>S.</given-names>
+</string-name><string-name>
+<surname>Ye</surname><given-names>Y.</given-names>
+</string-name><string-name>
+<surname>Xia</surname><given-names>H.</given-names>
+</string-name><string-name>
+<surname>Min</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Xu</surname><given-names>J.</given-names>
+</string-name><string-name>
+<surname>Wang</surname><given-names>Z.</given-names>
+</string-name><etal>et al</etal>
+</person-group><year>2023</year><article-title>Current advances and development strategies of orally bioavailable PROTACs</article-title><source>Eur. J. Med. Chem.</source><volume>261</volume><fpage>115793</fpage>
+<pub-id pub-id-type="doi">10.1016/j.ejmech.2023.115793</pub-id>
+<pub-id pub-id-type="pmid">37708797</pub-id>
+</mixed-citation></ref></ref-list></back></article>

@@ -1,0 +1,193 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/data/author/hanjiang-fu> a foaf:Person ;
+    rdfs:label "Hanjiang Fu" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Fu" ;
+    foaf:givenName "Hanjiang" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Hanjiang Fu" .
+
+<http://example.org/data/author/jie-li> a foaf:Person ;
+    rdfs:label "Jie Li" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Li" ;
+    foaf:givenName "Jie" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Jie Li" .
+
+<http://example.org/data/author/jie-zhu> a foaf:Person ;
+    rdfs:label "Jie Zhu" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Zhu" ;
+    foaf:givenName "Jie" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Jie Zhu" .
+
+<http://example.org/data/author/jing-wan> a foaf:Person ;
+    rdfs:label "Jing Wan" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Wan" ;
+    foaf:givenName "Jing" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Jing Wan" .
+
+<http://example.org/data/author/juanjuan-zhu> a foaf:Person ;
+    rdfs:label "Juanjuan Zhu" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Zhu" ;
+    foaf:givenName "Juanjuan" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Juanjuan Zhu" .
+
+<http://example.org/data/author/ruiyun-xing> a foaf:Person ;
+    rdfs:label "Ruiyun Xing" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Xing" ;
+    foaf:givenName "Ruiyun" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Ruiyun Xing" .
+
+<http://example.org/data/author/shanshan-liu> a foaf:Person ;
+    rdfs:label "Shanshan Liu" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Liu" ;
+    foaf:givenName "Shanshan" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Shanshan Liu" .
+
+<http://example.org/data/author/shuai-li> a foaf:Person ;
+    rdfs:label "Shuai Li" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Li" ;
+    foaf:givenName "Shuai" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Shuai Li" .
+
+<http://example.org/data/author/xiaofei-zheng> a foaf:Person ;
+    rdfs:label "Xiaofei Zheng" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Zheng" ;
+    foaf:givenName "Xiaofei" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Xiaofei Zheng" .
+
+<http://example.org/data/author/yi-tie> a foaf:Person ;
+    rdfs:label "Yi Tie" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Tie" ;
+    foaf:givenName "Yi" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Yi Tie" .
+
+<http://example.org/data/author/zheng-hu> a foaf:Person ;
+    rdfs:label "Zheng Hu" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Hu" ;
+    foaf:givenName "Zheng" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Zheng Hu" .
+
+<http://example.org/data/author/zhixian-sun> a foaf:Person ;
+    rdfs:label "Zhixian Sun" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Sun" ;
+    foaf:givenName "Zhixian" ;
+    foaf:made <https://doi.org/10.1093/nar/gkr715> ;
+    foaf:name "Zhixian Sun" .
+
+<http://example.org/data/reference/0434983a-bb11-4903-83db-b3b50d31939d> a bibo:Document ;
+    rdfs:label "MicroRNA-122, a tumor suppressor microRNA that regulates intrahepatic metastasis of hepatocellular carcinoma" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2009 ;
+    dcterms:title "MicroRNA-122, a tumor suppressor microRNA that regulates intrahepatic metastasis of hepatocellular carcinoma" ;
+    bibo:pages "1571-1582" ;
+    bibo:volume "49" ;
+    cito:isCitedBy <https://doi.org/10.1093/nar/gkr715> ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasDerivedFrom <Hepatology> ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/0628f7af-e203-48a3-abcf-6087737e5c52> a bibo:Document ;
+    rdfs:label "Isolation of microRNA targets using biotinylated synthetic microRNAs" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2007 ;
+    dcterms:title "Isolation of microRNA targets using biotinylated synthetic microRNAs" ;
+    bibo:pages "162-165" ;
+    bibo:volume "43" ;
+    cito:isCitedBy <https://doi.org/10.1093/nar/gkr715> ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasDerivedFrom <Methods> ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/156fe56a-15f4-455d-8b29-cf9b3bf106d0> a bibo:Document ;
+    rdfs:label "Regulation by let-7 and lin-4 miRNAs results in target mRNA degradation" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2005 ;
+    dcterms:title "Regulation by let-7 and lin-4 miRNAs results in target mRNA degradation" ;
+    bibo:pages "553-563" ;
+    bibo:volume "122" ;
+    cito:isCitedBy <https://doi.org/10.1093/nar/gkr715> ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasDerivedFrom <Cell> ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/171a49ce-a669-400d-a358-e5ffa4a2f159> a bibo:Document ;
+    rdfs:label "miR-122 targets an anti-apoptotic gene, Bcl-w, in human hepatocellular carcinoma cell lines" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2008 ;
+    dcterms:title "miR-122 targets an anti-apoptotic gene, Bcl-w, in human hepatocellular carcinoma cell lines" ;
+    bibo:pages "315-320" ;
+    bibo:volume "375" ;
+    cito:isCitedBy <https://doi.org/10.1093/nar/gkr715> ;
+    prov:generatedAtTime "2025-11-24T14:02:00.131996Z" ;
+    prov:wasDerivedFrom

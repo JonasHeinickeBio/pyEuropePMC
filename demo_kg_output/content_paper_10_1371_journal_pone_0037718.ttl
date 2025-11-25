@@ -1,0 +1,868 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/data/reference/1ac5175d-f21a-4a69-a249-74fdc5d1cf2e> a bibo:Document ;
+    dcterms:issued 2011 ;
+    dcterms:title "Corrigendum to Prevalence of Taenia solium cysticercosis in swine from a community-based study in 21 villages of the Eastern Cape Province, South Africa. [Vet Parasitol 154: 38–47]." ;
+    bibo:journalTitle "Vet Parasitol" ;
+    bibo:pages "198-200" ;
+    bibo:volume "183" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/22faed17-1579-4196-b82c-532792f57793> a bibo:Document ;
+    dcterms:issued 2003 ;
+    dcterms:title "Control of Neurocysticercosis." ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/2552c46d-788d-4c48-99d0-f15760c09325> a bibo:Document ;
+    dcterms:issued 2006 ;
+    dcterms:title "Estimation of the cost of Taenia solium cysticercosis in the Eastern Cape, South Africa." ;
+    bibo:journalTitle "Trop Med Intl Health" ;
+    bibo:pages "906-916" ;
+    bibo:volume "11" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/59008593-d81d-4e89-8041-b2decd11cf9b> a bibo:Document ;
+    dcterms:issued 2001 ;
+    dcterms:title "Census 2007. Community Survey 2007." ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/69f9cff3-4655-4b20-8a80-861e21360cfa> a bibo:Document ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/ad572e44-cf81-4a72-88cc-89ddd6f4bb6b> a bibo:Document ;
+    dcterms:issued 2004 ;
+    dcterms:title "Questionnaire results from a community-based project on porcine cysticercosis in the Eastern Cape Province of South Africa." ;
+    bibo:journalTitle "Southeast Asian J Trop Med Pub Health" ;
+    bibo:pages "271-274" ;
+    bibo:volume "35" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/c16a8616-8551-451b-9b57-05c222352146> a bibo:Document ;
+    dcterms:issued 1991 ;
+    dcterms:title "The zoonotic Taeniae of Africa." ;
+    bibo:journalTitle "Parasitic helminths and zoonoses in Africa" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/d41e0d22-992b-46de-a8c6-ee9d15b4e430> a bibo:Document ;
+    dcterms:issued 2000 ;
+    dcterms:title "Livestock Strategy to 2010: Making the Livestock Revolution work for the poor." ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/d8cd8066-275a-46fd-a51f-012a516758e1> a bibo:Document ;
+    dcterms:title "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States." ;
+    bibo:journalTitle "Emerg Infect Dis" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/eb046e11-e660-4475-890e-37bf17fc0293> a bibo:Document ;
+    dcterms:issued 2001 ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/reference/fc7729f9-d2c4-446a-8a17-1695aeb0269f> a bibo:Document ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/00e7c979-c32d-469e-b4dc-be6064bfab18> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """A definitive account of the results for the true prevalence of porcine cysticercosis as well as operating characteristics of the laboratory tests used can be found in the previous papers [10] , [21] . A total of 261 pigs, belonging to 217 owners (1∶1 owners to households), were sampled throughout the 21 study villages in the six veterinary districts. However, questionnaire data were available for only 256 pigs (98%); this was the sample size used for data analysis.
+
+Of the pig owners interviewed, 73% were female; 50% were under 51 years of age; and 79% had less than or equal to standard 8 level of education. Only a few owners (12%) confined their pigs while the remainder (88%) utilized a free range system or semi-intensive system; 90% kept pigs for home consumption. Twenty percent of households obtained drinking water from taps, while 73% obtained their water from rivers, tanks, and boreholes. Forty-eight percent of households had no latrines, and their members defecated in the fields outside the homes.
+
+The majority (93%) of households reported consumption of pork, 98% slaughtered pigs at home and almost all (99%) indicated that meat inspection services were not available. Most owners (74%) had observed cysts in pork, 78% did not know what the cysts were and 83% did not know how pigs acquired cysticercosis. The majority of respondents (69%) had heard of tapeworm infection in humans, though 74% did not know how to recognize a tapeworm if they were individually infected and 87% did not know how infection with a tapeworm occurred. The majority (86%) had heard of persons in their village complaining of epilepsy, 44% of headache and 62% of madness. Seventy-one percent reported that they did not know about the disease or how to treat, prevent or manage the disease.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Description of pig owners" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/045c0ee8-2768-4748-9370-42c82d723186> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """A definitive account of the results for the true prevalence of porcine cysticercosis as well as operating characteristics of the laboratory tests used can be found in the previous papers [10] , [21] . A total of 261 pigs, belonging to 217 owners (1∶1 owners to households), were sampled throughout the 21 study villages in the six veterinary districts. However, questionnaire data were available for only 256 pigs (98%); this was the sample size used for data analysis.
+
+Of the pig owners interviewed, 73% were female; 50% were under 51 years of age; and 79% had less than or equal to standard 8 level of education. Only a few owners (12%) confined their pigs while the remainder (88%) utilized a free range system or semi-intensive system; 90% kept pigs for home consumption. Twenty percent of households obtained drinking water from taps, while 73% obtained their water from rivers, tanks, and boreholes. Forty-eight percent of households had no latrines, and their members defecated in the fields outside the homes.
+
+The majority (93%) of households reported consumption of pork, 98% slaughtered pigs at home and almost all (99%) indicated that meat inspection services were not available. Most owners (74%) had observed cysts in pork, 78% did not know what the cysts were and 83% did not know how pigs acquired cysticercosis. The majority of respondents (69%) had heard of tapeworm infection in humans, though 74% did not know how to recognize a tapeworm if they were individually infected and 87% did not know how infection with a tapeworm occurred. The majority (86%) had heard of persons in their village complaining of epilepsy, 44% of headache and 62% of madness. Seventy-one percent reported that they did not know about the disease or how to treat, prevent or manage the disease.
+
+Overall, the prevalence (95% CI) of porcine infection was 57% (51%, 63%); 41% (35%, 47%) and 54% (48%, 60%) were positive by B158/B60 Ag-ELISA and HP10 Ag-ELISA, respectively. There was some variation between districts, with the prevalence of porcine infection ranging from 29% to 73% ( Table 1 ). On bivariable analysis ( Table 1 ), there was a significant association between infection and district ( p = 0.003, type 3 wald statistic), breed ( p = 0.041), and the absence of a latrine ( p = 0.006). The multivariable model assessed included breed, absence of a latrine, and the interaction between breed and latrine as fixed effects; and owner and district as cluster level factors. In the final model, the absence of a latrine was the only variable significantly associated with infection (aOR = 1.89; 95% CI = 1.07, 3.35) ( Table 2 ).
+
+- not determined, due to cells with zero counts.
+
+Determined using two enzyme-linked immunosorbent assays (B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] ). Infection was defined as a positive result on either of these two ELISA tests.
+
+Analyses were performed using the survey logistic procedure of the SAS/STAT® software to adjust for clusters of pigs within one owner.
+
+(%) refers to row percentages.
+
+CI = Confidence interval.
+
+Type 3 wald statistic had a p -value of 0.003.
+
+Type 3 wald statistic had a p -value of 0.041. Had missing values for n = 7. Other includes other pure bred breeds.
+
+Had missing values for n = 2.
+
+Had missing values for n = 1.
+
+Had missing values for n = 3. Measles are cysts, from the larvae of Taenia solium , observed in pig meat.
+
+Had missing values for n = 2.
+
+Had missing values for n = 8.
+
+Had missing values for n = 2.
+
+Had missing values for n = 2.
+
+Note: no significant associations ( p ≥0.10) were found between porcine infection and owner or household variables (sex, age, education, years of experience managing pigs, keeping pigs for home consumption), or with awareness questions (knowing what cysts in pork were, knowing how pigs acquired tapeworm, knowing how humans were infected with tapeworm or how to recognize infection, or had heard of persons in the village suffering with epilepsy, headache, or madness).
+
+Determined using two enzyme-linked immunosorbent assays (B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] ). Infection was defined as a positive result on either of these two ELISA tests.
+
+Analyses were performed using the surveylogistic procedure of the SAS/STAT® software to simultaneously adjust for clusters of pigs within one owner and for clusters of owners within district of residence.
+
+CI = Confidence interval.
+
+Had missing values for n = 7.
+
+Had missing values n = 2. Other includes other pure bred breeds.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Results" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/150f040c-8199-45cf-b409-a569a103d7ec> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """Data from the hardcopy questionnaires were entered into Microsoft Excel [16] and then exported to SAS/STAT ® software v9.2 [17] for analysis. Frequencies of both owner- and pig-level characteristics were determined. For pig-level analysis, all bivariable and multivariable associations were determined using the surveylogistic procedure.
+
+Bivariable models were adjusted for clusters of pigs within owner, while the multivariable model was simultaneously adjusted for clusters of pigs within owner and clusters of owners within district. Porcine infection with cysticercosis was determined using two ELISA tests. B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] . The outcome for all analyses was porcine infection, defined as a positive result on either of the two ELISA tests. All variables with a p -value less than or equal to 0.10 on bivariable analysis were considered for inclusion in the final multivariable model, and tests for significant interaction between the terms in this model were performed. All tests for significance were performed at the α = 0.05 level, and both unadjusted and adjusted odds ratios (aOR) and 95% confidence intervals (CI) were determined.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Statistical analysis" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/1bceaa5e-07f5-4c09-a970-3e5f46ec7008> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """This study was carried out from February to June 2003, in the six veterinary districts of the Alfred Nzo and Oliver R. Tambo Districts of the ECP. These districts included 124 villages and are served by animal health officers (AHO) and state veterinarians. The role of AHOs is to serve specific villages in a district. Therefore they contacted pig owners and invited them to participate in this study. The criteria for owners to be invited to participate in the study were that they were emerging pig producers, would be available during the days that the research team was scheduled to conduct the survey, and that the villages were accessible by road. All owners who agreed to participate were scheduled to meet on specific days with the research team. Details of the numbers of pigs and the village sampling are reported elsewhere [10] .
+
+Data were collected from a standard hardcopy questionnaire that included 42 questions on household identification, information and respondent details, pig breed (South African hut breed, cross bred or other pure breed), pig management and husbandry, possible transmission factors (e.g. source of drinking water, absence of a latrine or toilet) and awareness of taeniosis/cysticercosis in humans and of cysticercosis in pigs. The questionnaire methodology followed [12] – [15] and I. Phiri (personal communication, 2003). The questionnaire underwent pilot testing in the field and then was administered to the pig owners during an interview by an AHO fluent in Xhosa (a local language) and concurrent with examination of the pigs. Due to the high level of illiteracy among villagers, informed verbal consent was obtained from pig owners by the AHOs.
+
+Data from the hardcopy questionnaires were entered into Microsoft Excel [16] and then exported to SAS/STAT ® software v9.2 [17] for analysis. Frequencies of both owner- and pig-level characteristics were determined. For pig-level analysis, all bivariable and multivariable associations were determined using the surveylogistic procedure.
+
+Bivariable models were adjusted for clusters of pigs within owner, while the multivariable model was simultaneously adjusted for clusters of pigs within owner and clusters of owners within district. Porcine infection with cysticercosis was determined using two ELISA tests. B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] . The outcome for all analyses was porcine infection, defined as a positive result on either of the two ELISA tests. All variables with a p -value less than or equal to 0.10 on bivariable analysis were considered for inclusion in the final multivariable model, and tests for significant interaction between the terms in this model were performed. All tests for significance were performed at the α = 0.05 level, and both unadjusted and adjusted odds ratios (aOR) and 95% confidence intervals (CI) were determined.
+
+The study protocol was approved by the National Department of Agriculture Directorate, South Africa and Animal Ethics Committee of Veterinary Services Eastern Cape Province, Department of Agriculture, ECP, South Africa, village leaders and pig owners. Collection of blood specimens from pigs was performed by a licensed veterinarian according to South African guidelines for animal care.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Materials and Methods" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/3b3c8cc0-6b50-4f4c-b60b-1870aa0961e2> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """A high prevalence of Taenia solium taeniosis/cysticercosis is reported from some countries in Africa whereas limited or no information is available from others [1] – [2] . Cysticercois is a disease caused by infection with the larval stages of pork tapeworm, T. solium . [3] . Humans and pigs acquire cysticercosis by ingesting T. solium eggs. Neurocysticercosis (NCC) in humans occurs when cysts develop within the central nervous system. South Africa has the largest number of pigs (most being raised under commercial conditions) in southern Africa, and human and porcine cysticercosis has been recognized as a problem in the country for many decades [2] , [4] – [7] . An extensive national abattoir study in 1937 reported a prevalence of 25% of porcine cysticercosis and an incidence of 10% in the Eastern Cape Province (ECP) of South Africa [1] , [2] . The number of pigs continues to increase throughout southern Africa [3] – [7] . Approximately 25% of the pigs in South Africa are free-ranging and are owned by emerging pig producers (i.e. pig owners striving to increase production above subsistence) in resource-poor areas of the country. Additionally, projections for pork consumption in the developing regions of the world for the period 1993–2020 are anticipated to double (39 to 81 million tonnes) compared to a marginal increase in developed regions (38 to 41 million tonnes) [8] .
+
+The ECP reported high levels (28–50%) of human juvenile NCC (which occurs in children) and limited current data for porcine cysticercosis [5] , [9] – [11] . In 2003, the prevalence of porcine cysticercosis was studied in these same districts by testing 261 pigs [10] . The diagnostic tests used in the study included lingual examination, two enzyme-linked immunosorbent tests (ELISA) and an enzyme immunoelectrotransfer (EITB) test [10] . Previously, when we employed a Bayesian approach to estimate the true prevalence of porcine cysticercosis in the ECP, we found the level to be very high [10] . In this study, using the same dataset, we determine risk factors of porcine cysticercosis, while accounting for the clustering effects of more than one pig belonging to the same owner and of more than one owner in a district.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Introduction" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/5737281e-3acb-4a94-8032-ada9458a8ea1> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString "Data were collected from a standard hardcopy questionnaire that included 42 questions on household identification, information and respondent details, pig breed (South African hut breed, cross bred or other pure breed), pig management and husbandry, possible transmission factors (e.g. source of drinking water, absence of a latrine or toilet) and awareness of taeniosis/cysticercosis in humans and of cysticercosis in pigs. The questionnaire methodology followed [12] – [15] and I. Phiri (personal communication, 2003). The questionnaire underwent pilot testing in the field and then was administered to the pig owners during an interview by an AHO fluent in Xhosa (a local language) and concurrent with examination of the pigs. Due to the high level of illiteracy among villagers, informed verbal consent was obtained from pig owners by the AHOs." ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Household questionnaire" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/91e52540-2a4e-4c70-bb25-b647c29ed527> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """Overall, the prevalence (95% CI) of porcine infection was 57% (51%, 63%); 41% (35%, 47%) and 54% (48%, 60%) were positive by B158/B60 Ag-ELISA and HP10 Ag-ELISA, respectively. There was some variation between districts, with the prevalence of porcine infection ranging from 29% to 73% ( Table 1 ). On bivariable analysis ( Table 1 ), there was a significant association between infection and district ( p = 0.003, type 3 wald statistic), breed ( p = 0.041), and the absence of a latrine ( p = 0.006). The multivariable model assessed included breed, absence of a latrine, and the interaction between breed and latrine as fixed effects; and owner and district as cluster level factors. In the final model, the absence of a latrine was the only variable significantly associated with infection (aOR = 1.89; 95% CI = 1.07, 3.35) ( Table 2 ).
+
+- not determined, due to cells with zero counts.
+
+Determined using two enzyme-linked immunosorbent assays (B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] ). Infection was defined as a positive result on either of these two ELISA tests.
+
+Analyses were performed using the survey logistic procedure of the SAS/STAT® software to adjust for clusters of pigs within one owner.
+
+(%) refers to row percentages.
+
+CI = Confidence interval.
+
+Type 3 wald statistic had a p -value of 0.003.
+
+Type 3 wald statistic had a p -value of 0.041. Had missing values for n = 7. Other includes other pure bred breeds.
+
+Had missing values for n = 2.
+
+Had missing values for n = 1.
+
+Had missing values for n = 3. Measles are cysts, from the larvae of Taenia solium , observed in pig meat.
+
+Had missing values for n = 2.
+
+Had missing values for n = 8.
+
+Had missing values for n = 2.
+
+Had missing values for n = 2.
+
+Note: no significant associations ( p ≥0.10) were found between porcine infection and owner or household variables (sex, age, education, years of experience managing pigs, keeping pigs for home consumption), or with awareness questions (knowing what cysts in pork were, knowing how pigs acquired tapeworm, knowing how humans were infected with tapeworm or how to recognize infection, or had heard of persons in the village suffering with epilepsy, headache, or madness).
+
+Determined using two enzyme-linked immunosorbent assays (B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] ). Infection was defined as a positive result on either of these two ELISA tests.
+
+Analyses were performed using the surveylogistic procedure of the SAS/STAT® software to simultaneously adjust for clusters of pigs within one owner and for clusters of owners within district of residence.
+
+CI = Confidence interval.
+
+Had missing values for n = 7.
+
+Had missing values n = 2. Other includes other pure bred breeds.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Risk factors and prevalence of infection" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/b95405fe-b7f5-4226-8feb-e0ebecb509fa> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString """This is the first community-based survey in an emerging pig producing and endemic area in South Africa. The objective of this study was to identify risk factors for porcine cysticercosis. As mentioned earlier in this paper, the true prevalence of porcine cysticercosis in the ECP was previously estimated, using Bayesian analysis, as 64.6% [10] . However, apparent prevalence estimates by each of the two ELISAs were inadvertently reversed in Table 1 of that paper; B158/B60 Ag-ELISA should have read 40.6% and HP10 Ag-ELISA as 54.8%. Similarly, the sequence of column headings in Table 4 of the prevalence paper [10] should have been “Number of pigs examined”, “Lingual examination”, “HP10 Ag-ELISA”, “B158/B60 Ag-ELISA” and “EITB”. These errors affected the outcome of the Bayesian analysis by overestimating the true prevalence. We re-ran the model, and it yielded a true prevalence of 56.7% [21] .
+
+Both the Bayesian and frequentist methods suggest a very high prevalence of this disease, especially when compared to other prevalence studies, using Ag-ELISA, in Zambia (30–52%) and Tanzania (3–48%) [22] – [23] . Some limitations to be borne in mind with this study include the lack of accessibility by road to all villages which may have influenced the representativeness of the sample to the target population and, though well validated Ag-ELISA tests were used, there may have been possible underestimation of the overall prevalences. Sensitivities' estimates for the B158/B60 and the Ag-ELISA tests were 63.3% and 70.4%, respectively [21] .
+
+Households lacking a latrine (or toilet) were associated with an 89% increase in the odds of porcine infection, and this contributes to our understanding of the transmission of this parasite in this study area. Our study agrees with those carried out in Zambia and Tanzania where the prevalence of porcine cysticercosis was considerably higher in pigs reared in households lacking latrines [22] , [23] . In our study this may be explained by the easy access to human feces for the pigs in these areas. Though latrines and toilets were directly observed in the vicinity of homes, they were often a distance of 20–50 m from the house or were not in working order (R.C. Krecek, personal observation). In contrast, in Cameroon there was no association of infection in pigs in households without a latrine when compared to those with a latrine [24] . Another study in Mexico showed that latrines were available in the majority of households (91%) and none of the 53 pigs studied showed cysts in the tongue or antibodies against T. solium in western blot assays [25] .
+
+It is essential to consider the results of the current study in the context of the socioeconomic characteristics of the study population. Of the nine provinces in South Africa, the ECP continues to be the most challenged in terms of infrastructure. For example, when 2007 provincial and national figures are compared, the ECP reported the highest proportion (48%) of households with no toilets (or latrines) as compared to the provincial and national figures of 25% and 9% , respectively. This province also has the lowest proportion of homes with access to piped water (70% vs 89%). In addition, unemployment is second highest with 25% as compared to the national average of 21%. Levels of unemployment, the proportion of households without toilets and homes with access to piped water have improved across the country, but little has changed in this province since 2003 [10] . In addition, efforts to improve sanitary conditions throughout other provinces have been successful but there has been very little change in the ECP. This highlights the setting in which the transmission of porcine cysticercosis currently occurs [26] .
+
+The presence of T. solium limits pork production and is a serious threat to public health in this province [9] – [10] . The current study reports, though the majority of pig owners observe tapeworm infections in humans, they have a very poor understanding of the transmission of this parasite between humans and pigs. There is no access to formal meat inspection or availability of information about transmission, treatment and prevention of these diseases. Though these were not identified as risk factors the statistical analysis reported very high percentages. This is coupled with the high levels of porcine infection and human juvenile cysticercosis throughout the Alfred Nzo and Oliver R. Tambo Districts of ECP [2] , [4] – [6] . An overarching goal of the Cysticercosis Working Group of Eastern and Southern Africa is to identify appropriate recommendations for prevention and management in endemic areas of these countries [2] , [5] , [10] , [11] . In addition to the need for improvement of infrastructure is the need to provide appropriate information to communities. Education in combination with other interventions has been shown to have the greatest impact on lowering levels of these diseases [27] with one of the earliest reported examples in a rural community in Mexico [25] , [27] . A more recent example tested the efficacy of teaching methods in Kenyan farmers to prevent human epilepsy caused by neurocysticercosis [28] . This training enhanced knowledge acquisition and behavior change which are first steps to prevention of this disease. Understanding the risk factors which lead to T. solium infection together with applying educational interventions to increase awareness and knowledge of this disease can potentially lower the very high prevalence in humans and pigs in endemic areas such as the ECP.""" ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Discussion" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/da70d05f-1dd6-40fe-87b3-1b9ae5b3a897> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString "This study was carried out from February to June 2003, in the six veterinary districts of the Alfred Nzo and Oliver R. Tambo Districts of the ECP. These districts included 124 villages and are served by animal health officers (AHO) and state veterinarians. The role of AHOs is to serve specific villages in a district. Therefore they contacted pig owners and invited them to participate in this study. The criteria for owners to be invited to participate in the study were that they were emerging pig producers, would be available during the days that the research team was scheduled to conduct the survey, and that the villages were accessible by road. All owners who agreed to participate were scheduled to meet on specific days with the research team. Details of the numbers of pigs and the village sampling are reported elsewhere [10] ." ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Study design and population" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/section/f4e53435-b51e-4a6f-98fe-6d98d6a5c8c4> a nif:Context,
+        bibo:DocumentPart ;
+    nif:isString "The study protocol was approved by the National Department of Agriculture Directorate, South Africa and Animal Ethics Committee of Veterinary Services Eastern Cape Province, Department of Agriculture, ECP, South Africa, village leaders and pig owners. Collection of blood specimens from pigs was performed by a licensed veterinarian according to South African guidelines for animal care." ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    dcterms:title "Ethical approval" ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/0af87cee-5a7d-42d2-bdff-3fb026f1c300> a bibo:Row ;
+    ex:hasCell "",
+        "123 (57)",
+        "91 (43)",
+        "Free-ranging/semi-intensive",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/0ba47e0b-f4f9-4700-b282-d20d7efe2fa5> a bibo:Row ;
+    ex:hasCell "",
+        "0.868",
+        "1 (33)",
+        "1.27 ( 0.08 , 20.97 )",
+        "2 (67)",
+        "Other" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/0cdd922a-b939-42d2-aceb-b8c8e6bf570c> a bibo:Row ;
+    ex:hasCell "-",
+        "0 (0)",
+        "Meat inspected by a meat inspector 12",
+        "Yes",
+        "§" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/0da74adc-22fb-4648-8c8e-2d55cc43b195> a bibo:Row ;
+    ex:hasCell "",
+        "118 (58)",
+        "86 (42)",
+        "Natural sources or boreholes",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/17bdd63f-0bae-4ac8-8f7c-79948e486cf2> a bibo:Row ;
+    ex:hasCell "0.131",
+        "0.67 ( 0.4 , 1.13 )",
+        "53 (48)",
+        "57 (52)",
+        "Measles given as a main problem with pig rearing 9",
+        "Yes" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/213dde72-65f3-4f4d-a9d2-ea7fbc813d23> a bibo:Row ;
+    ex:hasCell "",
+        "26 (46)",
+        "31 (54)",
+        "Mt. Frere",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/22e0ffa0-bf04-4912-9c32-111ecc448fdd> a bibo:Row ;
+    ex:hasCell "0.099",
+        "0.54 (0.26, 1.12)",
+        "Breed 4",
+        "Cross bred" ;
+    dcterms:isPartOf <http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/2d0925d6-007c-48b6-9fb5-ce4720d93ab2> a bibo:Row ;
+    ex:hasCell "0.500",
+        "104 (44)",
+        "135 (56)",
+        "Consumption of pork at home 11",
+        "Reference",
+        "Yes" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/32c7d199-bbe4-4848-9921-cfbd570649a9> a bibo:Row ;
+    ex:hasCell "",
+        "63 (48)",
+        "67 (52)",
+        "Present",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/5212f4d9-5b3b-4f00-a6cf-bbde960dd0ef> a bibo:Row ;
+    ex:hasCell "0.635",
+        "0.86 ( 0.45 , 1.63 )",
+        "23 (46)",
+        "27 (54)",
+        "Source of drinking water 10",
+        "Tap water" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/6ec809e3-5634-480b-a1f7-96063c1de28b> a bibo:Row ;
+    ex:hasCell "",
+        "123 (61)",
+        "78 (39)",
+        "Hut pig",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/746d879f-ae7e-46c1-8ba9-df788d25a386> a bibo:Row ;
+    ex:hasCell "",
+        "0.590",
+        "0.79 ( 0.34 , 1.85 )",
+        "17 (49)",
+        "18 (51)",
+        "Maluti" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/7621d9c7-2957-41ed-ab48-49c7d93a396c> a bibo:Row ;
+    ex:hasCell "",
+        "Hut pig",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/7b3003dd-25e7-495c-9b05-1d4fd2e502f6> a bibo:Row ;
+    ex:hasCell "0.028",
+        "1.89 (1.07, 3.35)",
+        "Absent",
+        "Latrine 5" ;
+    dcterms:isPartOf <http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/8005b6b7-77b1-4ac8-89bc-a7ab5f55157c> a bibo:Row ;
+    ex:hasCell "0.012",
+        "0.42 ( 0.22 , 0.83 )",
+        "18 (40)",
+        "27 (60)",
+        "Breed 6",
+        "Cross bred" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/83d83852-5222-43e7-a1d9-28ebdc734edf> a bibo:Row ;
+    ex:hasCell "",
+        "-",
+        "0 (0)",
+        "3 (100)",
+        "No",
+        "§" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/86f5d1e8-4e2f-4bde-b3f7-8b78f263e239> a bibo:Row ;
+    ex:hasCell "",
+        "0.075",
+        "11 (28)",
+        "2.21 ( 0.92 , 5.29 )",
+        "29 (73)",
+        "Qumbu" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/90356064-3cb2-4402-8080-00b9268bafaf> a bibo:Row ;
+    ex:hasCell "0.691",
+        "1.17 ( 0.53 , 2.59 )",
+        "20 (42)",
+        "28 (58)",
+        "Umzimukulu",
+        "Veterinary district 5" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/99442c6e-5147-4839-b824-7ac1aceb34aa> a bibo:Row ;
+    ex:hasCell "",
+        "0.091",
+        "13 (29)",
+        "2.06 ( 0.89 , 4.78 )",
+        "32 (71)",
+        "Tsolo" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/99eca906-eac4-4853-aad0-e4cd1a2b8ab6> a bibo:Row ;
+    ex:hasCell "",
+        "55 (38)",
+        "88 (62)",
+        "No",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/9a8a24c9-5155-4d0a-baef-a60e1b93e1b5> a bibo:Row ;
+    ex:hasCell "",
+        "1.54 ( 0.44 , 5.42 )",
+        "3 (33)",
+        "6 (67)",
+        "No" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/b69d2d34-d153-4530-810e-24c15775bec7> a bibo:Row ;
+    ex:hasCell "",
+        "109 (43)",
+        "142 (57)",
+        "Pigs slaughtered at home 13",
+        "Reference",
+        "Yes" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/b9db2470-696d-4741-9c1c-8c208ed36104> a bibo:Row ;
+    ex:hasCell "",
+        "109 (43)",
+        "145 (57)",
+        "No",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/ba1bc0dd-9ea6-489b-b81f-2561fb4834b4> a bibo:Row ;
+    ex:hasCell "",
+        "0.022",
+        "0.34 ( 0.14 , 0.86 )",
+        "22 (71)",
+        "9 (29)",
+        "Lusikisiki" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/c45b2039-b20d-4e27-81b7-dde61be431b0> a bibo:Row ;
+    ex:hasCell "0.870",
+        "0.95 ( 0.48 , 1.85 )",
+        "18 (44)",
+        "23 (56)",
+        "Confined",
+        "Husbandry system 8" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/c67b7b18-85a8-43f6-bba3-b4d4bacf8732> a bibo:Row ;
+    ex:hasCell "",
+        "Present",
+        "Reference" ;
+    dcterms:isPartOf <http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/e238b567-8e77-4321-bd0c-4b9bfdc9c290> a bibo:Row ;
+    ex:hasCell "",
+        "0.687",
+        "1.80 (0.10, 31.38)",
+        "Other" ;
+    dcterms:isPartOf <http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/tablerow/f87c77c3-22e7-494c-93d3-6ab7ba0ab1cf> a bibo:Row ;
+    ex:hasCell "0.006",
+        "2.08 ( 1.24 , 3.49 )",
+        "42 (34)",
+        "82 (66)",
+        "Absent",
+        "Latrine 7" ;
+    dcterms:isPartOf <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/10681021/> a bibo:Document ;
+    ex:pmid "10681021" ;
+    dcterms:issued 2000 ;
+    dcterms:title "Sero-epidemiological study of Taenia saginata cysticercosis in Belgian cattle." ;
+    bibo:journalTitle "Vet Parasitol" ;
+    bibo:pages "43-49" ;
+    bibo:volume "88" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/10681021/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/10855829/> a bibo:Document ;
+    ex:pmid "10855829" ;
+    dcterms:issued 1999 ;
+    dcterms:title "Helminth parasites of dogs from two resource-limited communities in South Africa." ;
+    bibo:journalTitle "J S Afr Vet Assoc" ;
+    bibo:pages "92-94" ;
+    bibo:volume "70" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/10855829/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/11030358/> a bibo:Document ;
+    ex:pmid "11030358" ;
+    dcterms:issued 2000 ;
+    dcterms:title "Animal husbandry in Moretele 1 of North-West Province: implications for veterinary training and research." ;
+    bibo:journalTitle "J S Afr Vet Assoc" ;
+    bibo:pages "92-96" ;
+    bibo:volume "71" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/11030358/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/11563717/> a bibo:Document ;
+    ex:pmid "11563717" ;
+    dcterms:issued 2001 ;
+    dcterms:title "Socioeconomic, health and management aspects of working donkeys in Moretele 1, North West Province, South Africa." ;
+    bibo:journalTitle "J S Afr Vet Assoc" ;
+    bibo:pages "37-43" ;
+    bibo:volume "72" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/11563717/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/11816233/> a bibo:Document ;
+    ex:pmid "11816233" ;
+    dcterms:issued 2001 ;
+    dcterms:title "Hygiene and restraint of pigs associated with absence of Taenia solium cysticercosis in a rural community of Mexico." ;
+    bibo:journalTitle "Salud Publica de Mexico" ;
+    bibo:pages "574-576" ;
+    bibo:volume "43" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/11816233/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/12781374/> a bibo:Document ;
+    ex:pmid "12781374" ;
+    dcterms:issued 2003 ;
+    dcterms:title "The emergence of Taenia solium Cysticercosis in Eastern and Southern Africa as a serious agricultural problem and public health risk." ;
+    bibo:journalTitle "Acta Trop" ;
+    bibo:pages "13-23" ;
+    bibo:volume "87" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/12781374/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/12781375/> a bibo:Document ;
+    ex:pmid "12781375" ;
+    dcterms:issued 2003 ;
+    dcterms:title "The current status of neurocysticercosis in Eastern and Southern Africa." ;
+    bibo:journalTitle "Acta Trop" ;
+    bibo:pages "25-33" ;
+    bibo:volume "87" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/12781375/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/15063938/> a bibo:Document ;
+    ex:pmid "15063938" ;
+    dcterms:issued 2004 ;
+    dcterms:title "Risk factors for the prevalence of porcine cysticercosis in Mbulu District, Tanzania." ;
+    bibo:journalTitle "Vet Parasitol" ;
+    bibo:pages "275-283" ;
+    bibo:volume "120" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/15063938/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/15214691/> a bibo:Document ;
+    ex:pmid "15214691" ;
+    dcterms:issued 2004 ;
+    dcterms:title "An analysis of opinions from veterinarians in South Africa regarding business management skills." ;
+    bibo:journalTitle "J S Afr Vet Assoc" ;
+    bibo:pages "24-29" ;
+    bibo:volume "75" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/15214691/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/15900892/> a bibo:Document ;
+    ex:pmid "15900892" ;
+    dcterms:issued 2005 ;
+    dcterms:title "Third meeting of the Cysticercosis Working Group in Eastern and Southern Africa takes place in Maputo." ;
+    bibo:journalTitle "J S Afr Vet Assoc" ;
+    bibo:pages "2-3" ;
+    bibo:volume "76" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/15900892/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/16956727/> a bibo:Document ;
+    ex:pmid "16956727" ;
+    dcterms:issued 2007 ;
+    dcterms:title "Risk factors associated with porcine cysticercosis in selected districts of Eastern and Southern provinces of Zambia." ;
+    bibo:journalTitle "Vet Parasitol" ;
+    bibo:pages "59-66" ;
+    bibo:volume "143" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/16956727/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/18440704/> a bibo:Document ;
+    ex:pmid "18440704" ;
+    dcterms:issued 2008 ;
+    dcterms:title "Prevalence of Taenia solium cysticercosis in swine from a community-based study in 21 villages of the Eastern Cape Province, South Africa." ;
+    bibo:journalTitle "Vet Parasitol" ;
+    bibo:pages "38-47" ;
+    bibo:volume "154" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/18440704/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/19997629/> a bibo:Document ;
+    ex:pmid "19997629" ;
+    dcterms:issued 2009 ;
+    dcterms:title "Accuracy of Serological Testing for the Diagnosis of Prevalent Neurocysticercosis in Outpatients with Epilepsy, Eastern Cape Province, South Africa." ;
+    bibo:journalTitle "PLoS Negl Trop Dis" ;
+    bibo:pages "e562" ;
+    bibo:volume "3" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/19997629/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/20126403/> a bibo:Document ;
+    ex:pmid "20126403" ;
+    dcterms:issued 2010 ;
+    dcterms:title "Prevalence and risk factors of porcine cysticercosis in Angónia District, Mozambique." ;
+    bibo:journalTitle "PLoS Negl Trop Dis" ;
+    bibo:pages "e594" ;
+    bibo:volume "4" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/20126403/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/20348512/> a bibo:Document ;
+    ex:pmid "20348512" ;
+    dcterms:issued 2010 ;
+    dcterms:title "Evaluating the efficacy of teaching methods regarding prevention of human epilepsy caused by Taenia solium neurocysticercosis in Western Kenya." ;
+    bibo:journalTitle "Am J Trop Med Hyg" ;
+    bibo:pages "634-642" ;
+    bibo:volume "82" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/20348512/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/2674862/> a bibo:Document ;
+    ex:pmid "2674862" ;
+    dcterms:issued 1989 ;
+    dcterms:title "Specific detection of circulating surface/secreted glycoproteins of viable cysticerci in Taenia saginata cysticercosis." ;
+    bibo:journalTitle "Parasite Immunol" ;
+    bibo:pages "351-370" ;
+    bibo:volume "11" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/2674862/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://pubmed.ncbi.nlm.nih.gov/9080868/> a bibo:Document ;
+    ex:pmid "9080868" ;
+    dcterms:issued 1997 ;
+    dcterms:title "Development and evaluation of a health education intervention against Taenia solium in a rural community in Mexico." ;
+    bibo:journalTitle "Am J Trop Med Hyg" ;
+    bibo:pages "127-132" ;
+    bibo:volume "56" ;
+    cito:isCitedBy <https://doi.org/10.1371/journal.pone.0037718> ;
+    owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/9080868/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc> a bibo:Table ;
+    rdfs:label "Table 2" ;
+    dcterms:description "Final multivariable model for the association between owner/pig characteristics and cysticercosis 1 infection in pigs from Eastern Cape Province (South Africa) (N = 256) 2 ." ;
+    dcterms:hasPart <http://example.org/data/tablerow/22e0ffa0-bf04-4912-9c32-111ecc448fdd>,
+        <http://example.org/data/tablerow/7621d9c7-2957-41ed-ab48-49c7d93a396c>,
+        <http://example.org/data/tablerow/7b3003dd-25e7-495c-9b05-1d4fd2e502f6>,
+        <http://example.org/data/tablerow/c67b7b18-85a8-43f6-bba3-b4d4bacf8732>,
+        <http://example.org/data/tablerow/e238b567-8e77-4321-bd0c-4b9bfdc9c290> ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> a bibo:Table ;
+    rdfs:label "Table 1" ;
+    dcterms:description "Bivariable associations between owner/pig characteristics and cysticercosis 1 infection in pigs from Eastern Cape Province (South Africa) (N = 256) 2 ." ;
+    dcterms:hasPart <http://example.org/data/tablerow/0af87cee-5a7d-42d2-bdff-3fb026f1c300>,
+        <http://example.org/data/tablerow/0ba47e0b-f4f9-4700-b282-d20d7efe2fa5>,
+        <http://example.org/data/tablerow/0cdd922a-b939-42d2-aceb-b8c8e6bf570c>,
+        <http://example.org/data/tablerow/0da74adc-22fb-4648-8c8e-2d55cc43b195>,
+        <http://example.org/data/tablerow/17bdd63f-0bae-4ac8-8f7c-79948e486cf2>,
+        <http://example.org/data/tablerow/213dde72-65f3-4f4d-a9d2-ea7fbc813d23>,
+        <http://example.org/data/tablerow/2d0925d6-007c-48b6-9fb5-ce4720d93ab2>,
+        <http://example.org/data/tablerow/32c7d199-bbe4-4848-9921-cfbd570649a9>,
+        <http://example.org/data/tablerow/5212f4d9-5b3b-4f00-a6cf-bbde960dd0ef>,
+        <http://example.org/data/tablerow/6ec809e3-5634-480b-a1f7-96063c1de28b>,
+        <http://example.org/data/tablerow/746d879f-ae7e-46c1-8ba9-df788d25a386>,
+        <http://example.org/data/tablerow/8005b6b7-77b1-4ac8-89bc-a7ab5f55157c>,
+        <http://example.org/data/tablerow/83d83852-5222-43e7-a1d9-28ebdc734edf>,
+        <http://example.org/data/tablerow/86f5d1e8-4e2f-4bde-b3f7-8b78f263e239>,
+        <http://example.org/data/tablerow/90356064-3cb2-4402-8080-00b9268bafaf>,
+        <http://example.org/data/tablerow/99442c6e-5147-4839-b824-7ac1aceb34aa>,
+        <http://example.org/data/tablerow/99eca906-eac4-4853-aad0-e4cd1a2b8ab6>,
+        <http://example.org/data/tablerow/9a8a24c9-5155-4d0a-baef-a60e1b93e1b5>,
+        <http://example.org/data/tablerow/b69d2d34-d153-4530-810e-24c15775bec7>,
+        <http://example.org/data/tablerow/b9db2470-696d-4741-9c1c-8c208ed36104>,
+        <http://example.org/data/tablerow/ba1bc0dd-9ea6-489b-b81f-2561fb4834b4>,
+        <http://example.org/data/tablerow/c45b2039-b20d-4e27-81b7-dde61be431b0>,
+        <http://example.org/data/tablerow/f87c77c3-22e7-494c-93d3-6ab7ba0ab1cf> ;
+    dcterms:isPartOf <https://doi.org/10.1371/journal.pone.0037718> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .
+
+<https://doi.org/10.1371/journal.pone.0037718> a bibo:AcademicArticle ;
+    dcterms:hasPart <http://example.org/data/section/00e7c979-c32d-469e-b4dc-be6064bfab18>,
+        <http://example.org/data/section/045c0ee8-2768-4748-9370-42c82d723186>,
+        <http://example.org/data/section/150f040c-8199-45cf-b409-a569a103d7ec>,
+        <http://example.org/data/section/1bceaa5e-07f5-4c09-a970-3e5f46ec7008>,
+        <http://example.org/data/section/3b3c8cc0-6b50-4f4c-b60b-1870aa0961e2>,
+        <http://example.org/data/section/5737281e-3acb-4a94-8032-ada9458a8ea1>,
+        <http://example.org/data/section/91e52540-2a4e-4c70-bb25-b647c29ed527>,
+        <http://example.org/data/section/b95405fe-b7f5-4226-8feb-e0ebecb509fa>,
+        <http://example.org/data/section/da70d05f-1dd6-40fe-87b3-1b9ae5b3a897>,
+        <http://example.org/data/section/f4e53435-b51e-4a6f-98fe-6d98d6a5c8c4>,
+        <http://example.org/data/table/31439a94-99a5-457b-9e46-8a9de7de6edc>,
+        <http://example.org/data/table/bea6e9f2-10d9-4b0a-89d9-f52219a881be> ;
+    dcterms:identifier "3359999" ;
+    dcterms:issued "2012-05-24" ;
+    dcterms:title "Risk Factors of Porcine Cysticercosis in the Eastern Cape Province, South Africa" ;
+    bibo:doi "10.1371/journal.pone.0037718" ;
+    bibo:issue "5" ;
+    bibo:journalTitle "PLoS ONE" ;
+    bibo:pages "13-23" ;
+    bibo:volume "7" ;
+    cito:cites <http://example.org/data/reference/1ac5175d-f21a-4a69-a249-74fdc5d1cf2e>,
+        <http://example.org/data/reference/22faed17-1579-4196-b82c-532792f57793>,
+        <http://example.org/data/reference/2552c46d-788d-4c48-99d0-f15760c09325>,
+        <http://example.org/data/reference/59008593-d81d-4e89-8041-b2decd11cf9b>,
+        <http://example.org/data/reference/69f9cff3-4655-4b20-8a80-861e21360cfa>,
+        <http://example.org/data/reference/ad572e44-cf81-4a72-88cc-89ddd6f4bb6b>,
+        <http://example.org/data/reference/c16a8616-8551-451b-9b57-05c222352146>,
+        <http://example.org/data/reference/d41e0d22-992b-46de-a8c6-ee9d15b4e430>,
+        <http://example.org/data/reference/d8cd8066-275a-46fd-a51f-012a516758e1>,
+        <http://example.org/data/reference/eb046e11-e660-4475-890e-37bf17fc0293>,
+        <http://example.org/data/reference/fc7729f9-d2c4-446a-8a17-1695aeb0269f>,
+        <https://pubmed.ncbi.nlm.nih.gov/10681021/>,
+        <https://pubmed.ncbi.nlm.nih.gov/10855829/>,
+        <https://pubmed.ncbi.nlm.nih.gov/11030358/>,
+        <https://pubmed.ncbi.nlm.nih.gov/11563717/>,
+        <https://pubmed.ncbi.nlm.nih.gov/11816233/>,
+        <https://pubmed.ncbi.nlm.nih.gov/12781374/>,
+        <https://pubmed.ncbi.nlm.nih.gov/12781375/>,
+        <https://pubmed.ncbi.nlm.nih.gov/15063938/>,
+        <https://pubmed.ncbi.nlm.nih.gov/15214691/>,
+        <https://pubmed.ncbi.nlm.nih.gov/15900892/>,
+        <https://pubmed.ncbi.nlm.nih.gov/16956727/>,
+        <https://pubmed.ncbi.nlm.nih.gov/18440704/>,
+        <https://pubmed.ncbi.nlm.nih.gov/19997629/>,
+        <https://pubmed.ncbi.nlm.nih.gov/20126403/>,
+        <https://pubmed.ncbi.nlm.nih.gov/20348512/>,
+        <https://pubmed.ncbi.nlm.nih.gov/2674862/>,
+        <https://pubmed.ncbi.nlm.nih.gov/9080868/> ;
+    owl:sameAs <https://doi.org/10.1371/journal.pone.0037718>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/3359999/> ;
+    prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+    prov:wasGeneratedBy "kg_demo" .

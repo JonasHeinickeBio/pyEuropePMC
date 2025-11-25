@@ -1,0 +1,984 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix mesh: <http://id.nlm.nih.gov/mesh/> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/data/author/ahmed-chenna> a foaf:Person ;
+    rdfs:label "Ahmed Chenna" ;
+    ex:affiliation "8grid.419316.80000 0004 0550 1859LabCorp - Monogram Biosciences, South San Francisco, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Chenna" ;
+    foaf:givenName "Ahmed" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Ahmed Chenna" .
+
+<http://example.org/data/author/aidan-donovan> a foaf:Person ;
+    rdfs:label "Aidan Donovan" ;
+    ex:affiliation "3grid.266102.10000 0001 2297 6811Division of HIV, Infectious Diseases, and Global Medicine, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Donovan" ;
+    foaf:givenName "Aidan" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Aidan Donovan" .
+
+<http://example.org/data/author/amethyst-zhang> a foaf:Person ;
+    rdfs:label "Amethyst Zhang" ;
+    ex:affiliation "5grid.266102.10000 0001 2297 6811Department of Microbiology and Immunology, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Zhang" ;
+    foaf:givenName "Amethyst" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Amethyst Zhang" .
+
+<http://example.org/data/author/ana-martinez> a foaf:Person ;
+    rdfs:label "Ana Martinez" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Martinez" ;
+    foaf:givenName "Ana" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Ana Martinez" .
+
+<http://example.org/data/author/badri-viswanathan> a foaf:Person ;
+    rdfs:label "Badri Viswanathan" ;
+    ex:affiliation "2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Viswanathan" ;
+    foaf:givenName "Badri" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Badri Viswanathan" .
+
+<http://example.org/data/author/brandon-c-yee> a foaf:Person ;
+    rdfs:label "Brandon C. Yee" ;
+    ex:affiliation "8grid.419316.80000 0004 0550 1859LabCorp - Monogram Biosciences, South San Francisco, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Yee" ;
+    foaf:givenName "Brandon C." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Brandon C. Yee" .
+
+<http://example.org/data/author/brice-gaudiliere> a foaf:Person ;
+    rdfs:label "Brice Gaudiliere" ;
+    ex:affiliation "7grid.168010.e0000000419368956Department of Microbiology and Immunology, Stanford, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Gaudiliere" ;
+    foaf:givenName "Brice" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Brice Gaudiliere" .
+
+<http://example.org/data/author/christos-j-petropoulos> a foaf:Person ;
+    rdfs:label "Christos J. Petropoulos" ;
+    ex:affiliation "8grid.419316.80000 0004 0550 1859LabCorp - Monogram Biosciences, South San Francisco, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Petropoulos" ;
+    foaf:givenName "Christos J." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Christos J. Petropoulos" .
+
+<http://example.org/data/author/claire-m-midgley> a foaf:Person ;
+    rdfs:label "Claire M. Midgley" ;
+    ex:affiliation "9grid.416738.f0000 0001 2163 0069Division of Respiratory Viral Pathogens, CDC, Atlanta, USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Midgley" ;
+    foaf:givenName "Claire M." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Claire M. Midgley" .
+
+<http://example.org/data/author/david-r-mcilwain> a foaf:Person ;
+    rdfs:label "David R. McIlwain" ;
+    ex:affiliation "7grid.168010.e0000000419368956Department of Microbiology and Immunology, Stanford, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "McIlwain" ;
+    foaf:givenName "David R." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "David R. McIlwain" .
+
+<http://example.org/data/author/david-v-glidden> a foaf:Person ;
+    rdfs:label "David V. Glidden" ;
+    ex:affiliation "2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Glidden" ;
+    foaf:givenName "David V." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "David V. Glidden" .
+
+<http://example.org/data/author/j-daniel-kelly> a foaf:Person ;
+    rdfs:label "J. Daniel Kelly" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA; 2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA; 4https://ror.org/02ets8c940000 0001 2296 1126School of Medicine, UCSF, San Francisco, CA USA; 10grid.266102.10000 0001 2297 6811F.I. Proctor Foundation, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Kelly" ;
+    foaf:givenName "J. Daniel" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "J. Daniel Kelly" .
+
+<http://example.org/data/author/jeffrey-n-martin> a foaf:Person ;
+    rdfs:label "Jeffrey N. Martin" ;
+    ex:affiliation "2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Martin" ;
+    foaf:givenName "Jeffrey N." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Jeffrey N. Martin" .
+
+<http://example.org/data/author/jessica-y-chen> a foaf:Person ;
+    rdfs:label "Jessica Y. Chen" ;
+    ex:affiliation "2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Chen" ;
+    foaf:givenName "Jessica Y." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Jessica Y. Chen" .
+
+<http://example.org/data/author/jesus-pinedaramirez> a foaf:Person ;
+    rdfs:label "Jesus Pineda-Ramirez" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Pineda-Ramirez" ;
+    foaf:givenName "Jesus" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Jesus Pineda-Ramirez" .
+
+<http://example.org/data/author/john-w-winslow> a foaf:Person ;
+    rdfs:label "John W. Winslow" ;
+    ex:affiliation "8grid.419316.80000 0004 0550 1859LabCorp - Monogram Biosciences, South San Francisco, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Winslow" ;
+    foaf:givenName "John W." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "John W. Winslow" .
+
+<http://example.org/data/author/kara-lugtu> a foaf:Person ;
+    rdfs:label "Kara Lugtu" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Lugtu" ;
+    foaf:givenName "Kara" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Kara Lugtu" .
+
+<http://example.org/data/author/kevin-donohue> a foaf:Person ;
+    rdfs:label "Kevin Donohue" ;
+    ex:affiliation "4https://ror.org/02ets8c940000 0001 2296 1126School of Medicine, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Donohue" ;
+    foaf:givenName "Kevin" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Kevin Donohue" .
+
+<http://example.org/data/author/khamal-anglin> a foaf:Person ;
+    rdfs:label "Khamal Anglin" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Anglin" ;
+    foaf:givenName "Khamal" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Khamal Anglin" .
+
+<http://example.org/data/author/matthew-so> a foaf:Person ;
+    rdfs:label "Matthew So" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "So" ;
+    foaf:givenName "Matthew" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Matthew So" .
+
+<http://example.org/data/author/maya-fortescobby> a foaf:Person ;
+    rdfs:label "Maya Fortes-Cobby" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Fortes-Cobby" ;
+    foaf:givenName "Maya" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Maya Fortes-Cobby" .
+
+<http://example.org/data/author/melissa-briggshagen> a foaf:Person ;
+    rdfs:label "Melissa Briggs-Hagen" ;
+    ex:affiliation "9grid.416738.f0000 0001 2163 0069Division of Respiratory Viral Pathogens, CDC, Atlanta, USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Briggs-Hagen" ;
+    foaf:givenName "Melissa" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Melissa Briggs-Hagen" .
+
+<http://example.org/data/author/michael-j-peluso> a foaf:Person ;
+    rdfs:label "Michael J. Peluso" ;
+    ex:affiliation "3grid.266102.10000 0001 2297 6811Division of HIV, Infectious Diseases, and Global Medicine, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Peluso" ;
+    foaf:givenName "Michael J." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Michael J. Peluso" .
+
+<http://example.org/data/author/michel-tassetto> a foaf:Person ;
+    rdfs:label "Michel Tassetto" ;
+    ex:affiliation "5grid.266102.10000 0001 2297 6811Department of Microbiology and Immunology, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Tassetto" ;
+    foaf:givenName "Michel" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Michel Tassetto" .
+
+<http://example.org/data/author/michelle-c-davidson> a foaf:Person ;
+    rdfs:label "Michelle C. Davidson" ;
+    ex:affiliation "4https://ror.org/02ets8c940000 0001 2296 1126School of Medicine, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Davidson" ;
+    foaf:givenName "Michelle C." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Michelle C. Davidson" .
+
+<http://example.org/data/author/miguel-garciaknight> a foaf:Person ;
+    rdfs:label "Miguel Garcia-Knight" ;
+    ex:affiliation "5grid.266102.10000 0001 2297 6811Department of Microbiology and Immunology, UCSF, San Francisco, CA USA; 6https://ror.org/01tmp8f25grid.9486.30000 0001 2159 0001Departamento de Inmunologia, Instituto de Investigaciones Biomedicas, Universidad Nacional Autónoma de Mexico, Mexico City, Mexico" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Garcia-Knight" ;
+    foaf:givenName "Miguel" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Miguel Garcia-Knight" .
+
+<http://example.org/data/author/raul-andino> a foaf:Person ;
+    rdfs:label "Raul Andino" ;
+    ex:affiliation "5grid.266102.10000 0001 2297 6811Department of Microbiology and Immunology, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Andino" ;
+    foaf:givenName "Raul" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Raul Andino" .
+
+<http://example.org/data/author/rebecca-hoh> a foaf:Person ;
+    rdfs:label "Rebecca Hoh" ;
+    ex:affiliation "3grid.266102.10000 0001 2297 6811Division of HIV, Infectious Diseases, and Global Medicine, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Hoh" ;
+    foaf:givenName "Rebecca" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Rebecca Hoh" .
+
+<http://example.org/data/author/sara-park> a foaf:Person ;
+    rdfs:label "Sara Park" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Park" ;
+    foaf:givenName "Sara" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Sara Park" .
+
+<http://example.org/data/author/sarah-a-goldberg> a foaf:Person ;
+    rdfs:label "Sarah A. Goldberg" ;
+    ex:affiliation "2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Goldberg" ;
+    foaf:givenName "Sarah A." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Sarah A. Goldberg" .
+
+<http://example.org/data/author/scott-lu> a foaf:Person ;
+    rdfs:label "Scott Lu" ;
+    ex:affiliation "1grid.266102.10000 0001 2297 6811Institute for Global Health Sciences, University of California, San Francisco (UCSF), San Francisco, CA USA; 2grid.266102.10000 0001 2297 6811Department of Epidemiology and Biostatistics, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Lu" ;
+    foaf:givenName "Scott" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Scott Lu" .
+
+<http://example.org/data/author/sharon-saydah> a foaf:Person ;
+    rdfs:label "Sharon Saydah" ;
+    ex:affiliation "9grid.416738.f0000 0001 2163 0069Division of Respiratory Viral Pathogens, CDC, Atlanta, USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Saydah" ;
+    foaf:givenName "Sharon" ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Sharon Saydah" .
+
+<http://example.org/data/author/steven-g-deeks> a foaf:Person ;
+    rdfs:label "Steven G. Deeks" ;
+    ex:affiliation "3grid.266102.10000 0001 2297 6811Division of HIV, Infectious Diseases, and Global Medicine, UCSF, San Francisco, CA USA" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" ;
+    foaf:familyName "Deeks" ;
+    foaf:givenName "Steven G." ;
+    foaf:made <https://doi.org/10.1038/s41467-024-51893-7> ;
+    foaf:name "Steven G. Deeks" .
+
+<http://example.org/data/reference/0fc10e9c-b1b0-43ff-add7-ecc82f70e1bb> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/55a502ab-d1af-4cd5-b66a-9ca3b784ac90> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/63dd6316-6946-4b2b-abfe-fbeca5b7bfa9> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/7398d957-91eb-4027-9e1b-e661f102f11d> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/749b7ca0-b549-4185-85dd-dc29ba995d64> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/97cb1746-88b2-4320-923e-970b9efb21e7> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/b5ed661c-e4ce-4752-a739-38512018533e> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/bf134579-0d41-4086-95f1-28200f605a57> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/c0425595-69d5-4233-9b6a-5a072ade758f> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/c8563b6b-d0b1-4035-9249-089a31cc20c0> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/d0ad48c8-4a37-4ee2-8873-d88accf7db15> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/d5fcc5cf-ab30-4309-8bf0-e1bac4ccc32e> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/eb780694-8912-4df5-876a-974eba143079> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/reference/f22da2c7-b74d-41f5-9552-1ebf1abda0cd> a bibo:Document ;
+    rdfs:label "Untitled Reference" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/05f4d9ba-b185-44a3-b6d1-d3cfcf336bdd> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Study participants" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """From September 2020 to May 2022, we enrolled 136 SARS-CoV-2 infected participants during the acute phase of their illness (Fig. 1 ). Among these participants, 104 completed at least one post-acute visit and contributed at least one nasal sample for infectious viral and RNA testing (87% of participants had 10 or more nasal specimens). These participants were all enrolled during their first confirmed case of COVID-19. Among these 104 participants, 80 participants also contributed blood for viral N-antigen and inflammatory marker testing. Fig. 1 Flow diagram of participants evaluated for post-acute sequelae of SARS-CoV-2 infection (PASC) at month 4. Flow diagram showing number of enrolled participants, COVID-19 and uninfected participants, and final number of participants who completed follow-up.
+
+Flow diagram showing number of enrolled participants, COVID-19 and uninfected participants, and final number of participants who completed follow-up.
+
+Participants had a median age of 35.5 years (IQR: 27 to 44) (Table 1 ), were 51% ( n = 53) self-identified females and were generally healthy with most (77%) reporting no pre-existing comorbid medical conditions; the most common comorbidities were lung disease (14%), hypertension (10%), and diabetes (5%). The majority of participants (93%) were infected with pre-Omicron strains of SARS-CoV-2 and most (65%) had not received a SARS-CoV-2 vaccine prior to their infection. Over the course of their acute illness, 96 of 104 (92%) participants reported the presence of at least one symptom with a median of 9 symptoms (IQR: 4 to 13). The most common acute symptoms were fatigue (76%), rhinorrhea (74%), cough (71%), headache (54%), and sore throat (46%). See Supplemental Tables 1 – 2 for characteristics of the subgroup of participants who had viral N-antigen and cytokine testing. These participants had similar characteristics as those in the overall cohort, except that all participants in the subgroup were infected with a pre-Omicron variant. Table 1 Baseline characteristics of the cohort Total N = 104 Age (years), median (IQR) 35.5 (27 to 43.5) Sex, n (%) Female 53 (51%) Male 51 (49%) Race/Ethnicity, n (%) Hispanic or Latino Ethnicity 21 (21%) White 59 (58%) Black or African American 4 (4%) Asian 14 (14%) Prefer not to answer 4 (4%) Vaccination status, n (%) Unvaccinated 68 (65%) Fully vaccinated a 36 (35%) BMI, n (%) <25 51 (51%) 25 to 29.9 27 (27%) >=30 22 (22%) Education, n (%) Less than HS 6 (7%) At least some HS 9 (11%) At least some college 42 (49%) At least some graduate school 28 (33%) Variant b , n (%) Pre-Delta 61 (59%) Delta 36 (35%) Omicron 7 (7%) Any comorbidity c , n (%) No 80 (77%) Yes 24 (23%) Number of symptoms in acute illness, median (IQR) 9 (4 to 13) Maximum RNA viral load (N viral target), median (IQR) d 9.2 (7.0 to 10.5) Maximum RNA viral load (E viral target), median (IQR) 8.7 (6.8 to 10.0) Duration of RNA viral shedding in days, median (IQR) 9 (6 to 12) Maximum infectious viral load, median (IQR) e 8.2 (6.0 to 9.8) Duration of infectious viral shedding in days, median (IQR) 5 (0 to 7) a Fully vaccinated was defined as completion of primary vaccination series greater than 2 weeks before enrollment. b Variant status was defined by viral sequencing results for 70 (67%) participants and by calendar time for the remaining 34 (33%) participants. c Any comorbidity was defined from the following list: history of autoimmune disease, cancer in the past 2 years, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, or kidney disease. d RNA viral load measurements reported as log-transformed copies/mL. e Among participants with a viral measurement, there were 52 (50%) who had maximum infectious viral load assessed, measured in plaque forming units. BMI body mass index, HS high school.
+
+Baseline characteristics of the cohort
+
+a Fully vaccinated was defined as completion of primary vaccination series greater than 2 weeks before enrollment.
+
+b Variant status was defined by viral sequencing results for 70 (67%) participants and by calendar time for the remaining 34 (33%) participants.
+
+c Any comorbidity was defined from the following list: history of autoimmune disease, cancer in the past 2 years, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, or kidney disease.
+
+d RNA viral load measurements reported as log-transformed copies/mL.
+
+e Among participants with a viral measurement, there were 52 (50%) who had maximum infectious viral load assessed, measured in plaque forming units.
+
+BMI body mass index, HS high school.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Study participants" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/0c7f2176-fde7-48d5-a211-7c4ec83d1278> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Discussion" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """In this non-hospitalized, household-based cohort of outpatients followed prospectively from the time of SARS-CoV-2 symptom onset through the post-acute period, we identified several early biological determinants of PASC. Specifically, we found a relationship between early viral dynamics, antibody responses, and the later development of PASC. These findings suggest that an individual’s ability to control viral replication may play an important role in recovery from SARS-CoV-2 infection and that the dynamics of the immune responses during the acute and early post-acute phase may determine who goes on to experience post-acute symptoms. Our observations also provide additional rationale for the evaluation of early antiviral therapy as one potential approach for mitigating the development of PASC.
+
+The etiology of PASC remains incompletely understood and there are no specific treatments available beyond symptom management. To date, most biological assessments of PASC have focused on the post-acute phase of infection 5 , 7 – 10 , 19 – 25 . Only a few studies have assessed the relationship between biomarkers in the acute phase of SARS-CoV-2 infection and the later development of PASC 16 – 18 , 26 – 28 . Such efforts have identified the presence of SARS-CoV-2 RNA in blood at the time of diagnosis 26 , prolonged duration of viral RNA shedding from the upper respiratory tract 16 , and higher respiratory burden of SARS-CoV-2 17 as correlates of PASC. Overall, these efforts to understand the relationship between acute-phase biology and post-acute symptomatology have been limited by the considerable challenges related to collecting specimens during the earliest days following COVID-19 symptom onset. As a result, many studies have been limited to individuals hospitalized with COVID-19, who do not represent most individuals experiencing PASC, the majority of whom were never hospitalized 29 .
+
+Using orthogonal virologic assessments, we observed a relationship between the early viral burden and the development of PASC in a non-hospitalized population. Those who went on to develop PASC had higher maximum levels of nasal SARS-CoV-2 RNA and plasma N-antigen during acute infection, suggesting that higher peak viral load is related to the later development of PASC. Furthermore, we found that those who later developed PASC exhibited a greater burden of RNA and infectious viral shedding over time and had a less robust humoral immune response in the first 9 days following infection, potentially tied to more sluggish viral clearance. Taken together, these findings suggest that the total amount of virus present, the immunologic response that results in control of that virus, and the efficiency of clearing replicating virus might all drive the development of post-acute symptoms.
+
+A number of demographic and clinical risk factors for PASC have been identified. While prior SARS-CoV-2 vaccination appears to be protective against the development of PASC 30 , it remains unclear whether antiviral treatment during the acute phase of illness might reduce the incidence of this condition. Two studies suggest a benefit among those meeting the criteria for antiviral therapy 31 , 32 , but other evaluations have not shown an effect 33 , 34 . Our findings suggest that interventions that alter the duration of RNA and/or infectious virus shedding and the associated immune response during the acute phase might have the potential to affect the development of PASC. These could include antivirals (e.g., protease or RNA polymerase inhibitors) to reduce viral replication and/or monoclonal antibodies or therapeutic vaccination to enhance the immune response needed to neutralize the virus. Our observation of a delayed anti-RBD antibody response demonstrates some evidence towards the role of host immune response in the pathologic mechanisms that lead to PASC. As our comparison of immune responses was limited to a strictly unvaccinated sub-group, further assessment of the impact of interventions during the acute phase of infection is needed in a vaccinated population.
+
+Acute COVID-19 is a highly inflammatory condition 14 , 15 . While prior cross-sectional and longitudinal analyzes in the post-acute phase have demonstrated that PASC is associated with differences in markers of immune activation 8 – 10 , 19 , 21 , 26 , we did not identify significant differences in levels of these markers during the acute phase between those who did and did not go on to develop PASC. There are several possible explanations for this. First, our cohort was likely to be more homogeneous in terms of disease severity than those included in other studies; participants had to be well enough to complete numerous visits during the first few weeks of illness. Second, the number of individuals developing PASC was relatively small, limiting our statistical power to observe clear differences even when trends were present. Third, it is possible that differences in levels of inflammation develop over time during the post-acute phase, in response to ongoing immunologic activity, and for that reason may not be present during the acute and early post-acute timepoints in this analysis.
+
+Strengths of our study include the high degree of adherence to the biospecimen collection protocol and the collection of biospecimens in close proximity to initial symptom onset in a cohort of outpatients, who comprise the vast majority of individuals with PASC. The inclusion of a large proportion of individuals from earlier waves of the pandemic, prior to the widespread availability of vaccination, SARS-CoV-2 treatment, or reinfection allowed us to study the natural history of this condition in the absence of these confounding factors. However, this analysis has several limitations. Due to relatively small cohort size, we were unable to evaluate whether early markers were associated with specific symptomatic phenotypes of PASC, each of which may be driven by different biology. We defined PASC as the presence of any symptom new or worse since SARS-CoV-2 infection present during the post-acute period, without requiring that the same symptom be present during the acute period; it is possible that this could result in misattribution of some unrelated symptoms to SARS-CoV-2 infection. This is mitigated somewhat by specific training for study staff to interrogate for the presence of any reported symptom prior to SARS-CoV-2 infection. We applied a relatively broad time window in which PASC could be defined (2 to 6 months), which although consistent with accepted case definitions might be subject to variability by time since infection (either waxing and waning or resolving symptoms). Future assessment of individuals during later timepoints (e.g., 6 months or beyond) following infection may be warranted. The current analysis focuses on the binary presence or absence of symptoms and does not include consideration of symptom severity or impact. Such assessment could lead to further insight into whether different viral titers and immune responses can affect the severity of symptoms rather than simply their presence or absence. Finally, although mitigated through use of multiple imputation, missing data from declined blood sample collection could be a source of error.
+
+In summary, maximum viral RNA and N-antigen levels, burden of RNA and infectious virus shedding, and timing of antibody development may be important factors in the pathogenesis of PASC. These early biological markers may be part of a larger cascade of events during the earliest days of SARS-CoV-2 infection that warrant consideration in the larger efforts to develop a mechanistic understanding of this condition. Further research during the acute phase of SARS-CoV-2 infection, including trials that seek to alter the factors identified in this study, is required to elucidate causal mechanisms of PASC. Such efforts can eventually lead to the development of therapeutics to prevent or treat this condition.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Discussion" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/19f9b99b-c6a3-497c-ba03-5e7fd7bd0eac> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Untitled Section" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Supplementary Information  Peer Review File  Reporting Summary
+
+Supplementary Information
+
+Peer Review File
+
+Reporting Summary
+
+Source Data
+
+Source Data""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/26b90072-fb6a-4e04-bb87-a3cded774f97> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Virology" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """As cited elsewhere 39 , 40 , acute viral RNA levels in nasal specimens were assessed using quantitative real time reverse transcription polymerase chain reaction (PCR) to target nucleocapsid (N) and envelope (E) gene regions. Used RNAseP as a control for RNA extraction. We used 4 μL of RNA sample mixed with 5 μL 2x Luna Universal Probe One-Step Reaction Mix, 0.5 μL 20x WarmStart RT Enzyme Mix, 0.5 μL of target gene specific forward and reverse primers and probe mix (Supplemental Table 4 ) for each PCR reaction. Using 96-well plates, we ran PCR reactions using the following primers and probe (IDT): 5.6 μM forward/reverse each and 1.4 μM probe for N 8 μM forward/reverse each and 4 μM probe for E, 4 μM forward/reverse each and 1 μM probe for RNaseP. For each RT-qPCR plate, we ran a 10-fold serial dilution of an equal mixture of plasmids containing a full copy of nucleocapsid (N) and envelope (E) genes as the absolute standard for RNA copies calculation and primer efficiency assessment. We used the CFX Connect Real-Time PCR detection system (Biorad) with these settings: 55 °C for 10 min, 95 °C for 1 min, and then cycled 40 times at 95 °C for 10 s followed by 60 °C for 30 s. The limit of detection and the limit of quantification for the assay were established at 100 copies/mL and 1000 copies/mL, respectively. We defined a SARS-CoV-2 RNA-positive result as any level with a cycle threshold value less than or equal to 40 in the N and E gene regions. To control for the quality of self-sampling, we repeated or excluded any samples where the RNAseP cycle threshold was more than 2 standard deviations from the mean of all samples.
+
+We assessed the presence of infectious virus through evaluation of the cytopathic effect (CPE) in Vero-hACE2-TMPRSS2 cells (BEI Resources (NR-54970)). To do so, we serially diluted 200uL of nasal specimen 1:1 with DMEM supplemented with 1x penicillin/streptomycin, then added 100uL of freshly trypsinized cells, resuspended in infection media (made as above but with 2x penicillin/streptomycin, 5ug/mL amphotericin B [Bioworld] and no puromycin) at 2.5×10 5 cells/mL. We cultured cells at 37 °C and 5% CO2 and then performed visual evaluation from day 2 to day 5. For all specimens with visible CPE, we confirmed the presence of infectious SARS-CoV-2 by RT-qPCR. To do so, 200 uL of supernatant from one well from each dilution series was mixed 1:1 with 2x RNA/DNA Shield (Zymo) for viral inactivation and RNA extraction. Two researchers. All virologic testing was performed by two individuals (MGK, MT).
+
+Collected blood specimens were also used to measure nucleocapsid antigen (N-Ag) at all available time points using the Quanterix automated paramagnetic microbead-based immunoassay (Simoa) 41 . Compared to traditional immunoassays, this technology offers a 1000-fold greater sensitivity than the traditional immunoassay 42 , 43 .""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Virology" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/2d2ffd4a-b542-4c06-8ddd-bf58d2206739> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Reporting summary" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Further information on research design is available in the Nature Portfolio Reporting Summary linked to this article." ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Reporting summary" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/2df2e599-2843-451c-9ae5-6a26efad6a8c> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Statistical analysis" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """We describe the distribution of virologic and host immune factors at baseline and through follow-up among those with PASC compared to those without PASC. Individual-level viral shedding dynamics have been described previously 39 . Virologic factors included maximum viral RNA and infectious load, RNA decay rates (defined as the linear rate of RNA decline from maximum RNA load), the proportion with viral RNA and infectious viral shedding, and N-antigen levels.
+
+We described the association of PCR and CPE positivity by day with the development of PASC using pooled logistic regression. Maximum viral RNA and infectious viral loads and RNA decay rates for both N- and E- targets were compared using generalized estimating equations (GEE) with an independent working correlation matrix controlling for age, sex (by self-report), vaccination status (unvaccinated versus completed primary series), and SARS-CoV-2 variant (Delta versus pre-Delta) to estimate incidence ratios, 95% confidence intervals, and p-values. Sensitivity analyzes included corrections for multiple comparisons (Supplementary Table 4 ).
+
+Subgroup analyzes were conducted on participants with available blood specimens and included viral N-antigen and host immune factors, using GEEs model and controlling for the same potential confounders as the virologic analysis. Among the 5 planned specimen collection times for host immune factor measurement, 39% were not completed. Missing data were further assessed and managed using multiple imputations by chained equations assuming missingness at random 44 . We used the imputed data for the final analyzes in this report; preliminary results using non-imputed data can be found in the Supplement. The distribution and magnitude of difference of each analyte are summarized graphically. For antibody analysis we further restricted our model to unvaccinated participants to compare antibody responses. Given the nonlinear presentation of viral load and antibody results we log transformed the data for comparison.
+
+All estimates were calculated using Stata (version 16.1; StataCorp, College Station, TX) and R including the package ‘qvalue’ 45 .""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Statistical analysis" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/41013b45-45b0-477e-bb5c-dfc7dd25101c> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Survey-based" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """We piloted a questionnaire containing items with key sociodemographic, medical history, symptomatology, quality-of-life, and later vaccination information. This instrument was developed with infectious disease specialists and epidemiologists who had managed COVID-19 and PASC patients. The form was iteratively developed over time and continues to be developed during our ongoing study. Symptom items included a checklist of 32 selected symptoms followed by a free response option. The surveys were designed to assess symptom status from the time of the last interview to the current one. All symptoms reported as new, worsened or persistent since SARS-CoV-2 infection were captured; the presence of symptoms prior to acute COVID-19 illness were assessed for exclusion from later analyzes. Comorbid conditions include history of autoimmune disease, cancer, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, and kidney disease.
+
+The primary outcome of PASC was defined by the presence of any symptom reported between 2 to 6 months after the initial illness. For participants whose first follow-up visit occurred beyond 6 months after the initial illness, we assessed symptom presence within the 2 to 6-month PASC ascertainment window, aligning with definitions developed by the CDC, WHO, and, more recently, the National Academies of Science, Engineering, and Medicine 37 , 38 .
+
+Information on the type and number of SARS-CoV-2 vaccinations was collected at baseline and updated with each interview. Fully vaccinated participants were defined as having received a complete primary vaccine series at least 14 days prior to study enrollment.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Survey-based" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/56a7ee1a-48d4-487f-8af4-5658dc3bb3d0> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Study population and procedures" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "This was a longitudinal cohort study enrolling individuals acutely infected with SARS-CoV-2 and their household contacts in the San Francisco Bay area between September 2020 and May 2022. Details on the protocol and procedures for enrollment have been described in detail elsewhere 35 . In brief, we enrolled participants who were recently diagnosed with nucleic acid-confirmed SARS-CoV-2 infection within 5 days of symptom onset. Molecular testing results from UCSF-affiliated sites were used by research staff to screen and recruit participants via in-person and telephone interviews. A study field team visited participants in their areas of isolation a total of 5 times during acute infection at the following timepoints: day of enrollment (ranging between day 0 and day 5 following self-reported symptom onset), and day 9, 14, 21, and 28 following symptom onset. At each study visit, blood and nasal specimens were collected. In addition, participants self-collected swabs of the anterior nares for the first 14 days post-infection, and at d17, 19, 21, and 28. Research coordinators administered phone interviews on the same day as the field visit within the acute period, then at 4 and 8 ( + /- 2 months) months post-infection, using identical instruments developed in conjunction with a study of the post-acute phase 36 ." ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Study population and procedures" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/5bb3ccc8-4aad-49b5-a472-f2ce6bd0dfdd> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Description of PASC" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Among 104 SARS-CoV-2 infected participants with a post-acute follow-up visit, 32 (31%) reported new, worsened or persistent symptoms since the time of SARS-CoV-2 infection, consistent with PASC. We did not identify a difference between those with and without PASC in terms of vaccination status (32% vs 36%). All participants with PASC had been symptomatic during acute illness with a median of 12 (IQR: 9 to 14) symptoms noted; among those without PASC the median number of symptoms in the acute period was 7 (IQR: 3 to 12). No participants reported any reinfection at the time of PASC status ascertainment.
+
+Those meeting criteria for PASC reported a median of 2 (IQR: 1 to 5) symptoms during the post-acute period 2 to 6 months after SARS-CoV-2 infection. The most commonly reported PASC symptoms were trouble with concentration/memory (44%), trouble with sleep (28%), fatigue (25%), and rhinorrhea (25%) (Supplemental Table 3 ).""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Description of PASC" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/5d5eb976-6416-410a-966b-e8f30c40eeff> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Measurements" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """We piloted a questionnaire containing items with key sociodemographic, medical history, symptomatology, quality-of-life, and later vaccination information. This instrument was developed with infectious disease specialists and epidemiologists who had managed COVID-19 and PASC patients. The form was iteratively developed over time and continues to be developed during our ongoing study. Symptom items included a checklist of 32 selected symptoms followed by a free response option. The surveys were designed to assess symptom status from the time of the last interview to the current one. All symptoms reported as new, worsened or persistent since SARS-CoV-2 infection were captured; the presence of symptoms prior to acute COVID-19 illness were assessed for exclusion from later analyzes. Comorbid conditions include history of autoimmune disease, cancer, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, and kidney disease.
+
+The primary outcome of PASC was defined by the presence of any symptom reported between 2 to 6 months after the initial illness. For participants whose first follow-up visit occurred beyond 6 months after the initial illness, we assessed symptom presence within the 2 to 6-month PASC ascertainment window, aligning with definitions developed by the CDC, WHO, and, more recently, the National Academies of Science, Engineering, and Medicine 37 , 38 .
+
+Information on the type and number of SARS-CoV-2 vaccinations was collected at baseline and updated with each interview. Fully vaccinated participants were defined as having received a complete primary vaccine series at least 14 days prior to study enrollment.
+
+As cited elsewhere 39 , 40 , acute viral RNA levels in nasal specimens were assessed using quantitative real time reverse transcription polymerase chain reaction (PCR) to target nucleocapsid (N) and envelope (E) gene regions. Used RNAseP as a control for RNA extraction. We used 4 μL of RNA sample mixed with 5 μL 2x Luna Universal Probe One-Step Reaction Mix, 0.5 μL 20x WarmStart RT Enzyme Mix, 0.5 μL of target gene specific forward and reverse primers and probe mix (Supplemental Table 4 ) for each PCR reaction. Using 96-well plates, we ran PCR reactions using the following primers and probe (IDT): 5.6 μM forward/reverse each and 1.4 μM probe for N 8 μM forward/reverse each and 4 μM probe for E, 4 μM forward/reverse each and 1 μM probe for RNaseP. For each RT-qPCR plate, we ran a 10-fold serial dilution of an equal mixture of plasmids containing a full copy of nucleocapsid (N) and envelope (E) genes as the absolute standard for RNA copies calculation and primer efficiency assessment. We used the CFX Connect Real-Time PCR detection system (Biorad) with these settings: 55 °C for 10 min, 95 °C for 1 min, and then cycled 40 times at 95 °C for 10 s followed by 60 °C for 30 s. The limit of detection and the limit of quantification for the assay were established at 100 copies/mL and 1000 copies/mL, respectively. We defined a SARS-CoV-2 RNA-positive result as any level with a cycle threshold value less than or equal to 40 in the N and E gene regions. To control for the quality of self-sampling, we repeated or excluded any samples where the RNAseP cycle threshold was more than 2 standard deviations from the mean of all samples.
+
+We assessed the presence of infectious virus through evaluation of the cytopathic effect (CPE) in Vero-hACE2-TMPRSS2 cells (BEI Resources (NR-54970)). To do so, we serially diluted 200uL of nasal specimen 1:1 with DMEM supplemented with 1x penicillin/streptomycin, then added 100uL of freshly trypsinized cells, resuspended in infection media (made as above but with 2x penicillin/streptomycin, 5ug/mL amphotericin B [Bioworld] and no puromycin) at 2.5×10 5 cells/mL. We cultured cells at 37 °C and 5% CO2 and then performed visual evaluation from day 2 to day 5. For all specimens with visible CPE, we confirmed the presence of infectious SARS-CoV-2 by RT-qPCR. To do so, 200 uL of supernatant from one well from each dilution series was mixed 1:1 with 2x RNA/DNA Shield (Zymo) for viral inactivation and RNA extraction. Two researchers. All virologic testing was performed by two individuals (MGK, MT).
+
+Collected blood specimens were also used to measure nucleocapsid antigen (N-Ag) at all available time points using the Quanterix automated paramagnetic microbead-based immunoassay (Simoa) 41 . Compared to traditional immunoassays, this technology offers a 1000-fold greater sensitivity than the traditional immunoassay 42 , 43 .
+
+Plasma biomarker measurements were performed using the automated HD-X Simoa platform. Analytes included plasma SARS-CoV-2 Spike receptor binding domain (RBD) IgG and the following inflammatory markers: IL-6, IL-10, TNF-α, IFN-α, IFN-γ, IP-10, and MCP-1.
+
+All assays were performed according to the manufacturer’s instructions and assay performance was consistent with the manufacturer’s specifications.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Measurements" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/5ed38c24-fcb2-4797-87eb-32262f197734> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Introduction" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Post-acute sequelae of SARS-CoV-2 infection (PASC) include ongoing symptoms in the months following acute COVID-19. Estimates of the occurrence of PASC can vary, but as of 2024, estimates suggest that 6.9% of U.S. adults have ever had PASC 1 , 2 . Despite a growing understanding of its epidemiology and natural history, the pathogenesis of PASC remains incompletely understood 3 . Multiple mechanisms that could contribute to this condition are now under investigation 3 , 4 .
+
+Viral antigen persistence and immune dysregulation are two mechanisms that might drive PASC 5 – 10 . For example, recent work has suggested that a high proportion of individuals with PASC demonstrate detectable SARS-CoV-2 antigen in blood plasma during the post-acute phase 5 , 7 , 11 , subgenomic RNA has been identified in widespread tissue sites at autopsy for up to 6 months post-COVID 6 , and RNA has been found in gut and other tissues in living individuals 12 , 13 . Furthermore, studies comparing individuals with PASC with those who report complete recovery from SARS-CoV-2 infection have demonstrated increased levels of certain inflammatory markers including IL-6, TNF- α, and IL-1B, among others, for at least a year following infection 8 – 10 .
+
+Biological samples to assess predictors of PASC from the acute and early post-acute phases are limited. Most studies from early infection have focused on shorter-term outcomes in hospitalized individuals 14 , 15 , although more recently some studies have suggested that prolonged viral clearance 16 , 17 or distinct early immune signatures 18 could be associated with PASC. While informative, these studies have been limited by relatively small study populations, an abundance of hospitalized individuals, and/or infrequent biospecimen collection timepoints.
+
+Here, we leverage a household-based cohort of individuals intensively sampled during the acute phase of SARS-CoV-2 infection and followed prospectively to assess for early biological determinants of PASC by comparing those known to develop PASC to those who recovered. We hypothesized that selected biological processes measured during early infection play a role in the pathogenesis of persistent symptomatology following the acute period of illness.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Introduction" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/63c1c7d7-4640-407a-a787-65f537b57535> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Methods" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """This was a longitudinal cohort study enrolling individuals acutely infected with SARS-CoV-2 and their household contacts in the San Francisco Bay area between September 2020 and May 2022. Details on the protocol and procedures for enrollment have been described in detail elsewhere 35 . In brief, we enrolled participants who were recently diagnosed with nucleic acid-confirmed SARS-CoV-2 infection within 5 days of symptom onset. Molecular testing results from UCSF-affiliated sites were used by research staff to screen and recruit participants via in-person and telephone interviews. A study field team visited participants in their areas of isolation a total of 5 times during acute infection at the following timepoints: day of enrollment (ranging between day 0 and day 5 following self-reported symptom onset), and day 9, 14, 21, and 28 following symptom onset. At each study visit, blood and nasal specimens were collected. In addition, participants self-collected swabs of the anterior nares for the first 14 days post-infection, and at d17, 19, 21, and 28. Research coordinators administered phone interviews on the same day as the field visit within the acute period, then at 4 and 8 ( + /- 2 months) months post-infection, using identical instruments developed in conjunction with a study of the post-acute phase 36 .
+
+We piloted a questionnaire containing items with key sociodemographic, medical history, symptomatology, quality-of-life, and later vaccination information. This instrument was developed with infectious disease specialists and epidemiologists who had managed COVID-19 and PASC patients. The form was iteratively developed over time and continues to be developed during our ongoing study. Symptom items included a checklist of 32 selected symptoms followed by a free response option. The surveys were designed to assess symptom status from the time of the last interview to the current one. All symptoms reported as new, worsened or persistent since SARS-CoV-2 infection were captured; the presence of symptoms prior to acute COVID-19 illness were assessed for exclusion from later analyzes. Comorbid conditions include history of autoimmune disease, cancer, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, and kidney disease.
+
+The primary outcome of PASC was defined by the presence of any symptom reported between 2 to 6 months after the initial illness. For participants whose first follow-up visit occurred beyond 6 months after the initial illness, we assessed symptom presence within the 2 to 6-month PASC ascertainment window, aligning with definitions developed by the CDC, WHO, and, more recently, the National Academies of Science, Engineering, and Medicine 37 , 38 .
+
+Information on the type and number of SARS-CoV-2 vaccinations was collected at baseline and updated with each interview. Fully vaccinated participants were defined as having received a complete primary vaccine series at least 14 days prior to study enrollment.
+
+As cited elsewhere 39 , 40 , acute viral RNA levels in nasal specimens were assessed using quantitative real time reverse transcription polymerase chain reaction (PCR) to target nucleocapsid (N) and envelope (E) gene regions. Used RNAseP as a control for RNA extraction. We used 4 μL of RNA sample mixed with 5 μL 2x Luna Universal Probe One-Step Reaction Mix, 0.5 μL 20x WarmStart RT Enzyme Mix, 0.5 μL of target gene specific forward and reverse primers and probe mix (Supplemental Table 4 ) for each PCR reaction. Using 96-well plates, we ran PCR reactions using the following primers and probe (IDT): 5.6 μM forward/reverse each and 1.4 μM probe for N 8 μM forward/reverse each and 4 μM probe for E, 4 μM forward/reverse each and 1 μM probe for RNaseP. For each RT-qPCR plate, we ran a 10-fold serial dilution of an equal mixture of plasmids containing a full copy of nucleocapsid (N) and envelope (E) genes as the absolute standard for RNA copies calculation and primer efficiency assessment. We used the CFX Connect Real-Time PCR detection system (Biorad) with these settings: 55 °C for 10 min, 95 °C for 1 min, and then cycled 40 times at 95 °C for 10 s followed by 60 °C for 30 s. The limit of detection and the limit of quantification for the assay were established at 100 copies/mL and 1000 copies/mL, respectively. We defined a SARS-CoV-2 RNA-positive result as any level with a cycle threshold value less than or equal to 40 in the N and E gene regions. To control for the quality of self-sampling, we repeated or excluded any samples where the RNAseP cycle threshold was more than 2 standard deviations from the mean of all samples.
+
+We assessed the presence of infectious virus through evaluation of the cytopathic effect (CPE) in Vero-hACE2-TMPRSS2 cells (BEI Resources (NR-54970)). To do so, we serially diluted 200uL of nasal specimen 1:1 with DMEM supplemented with 1x penicillin/streptomycin, then added 100uL of freshly trypsinized cells, resuspended in infection media (made as above but with 2x penicillin/streptomycin, 5ug/mL amphotericin B [Bioworld] and no puromycin) at 2.5×10 5 cells/mL. We cultured cells at 37 °C and 5% CO2 and then performed visual evaluation from day 2 to day 5. For all specimens with visible CPE, we confirmed the presence of infectious SARS-CoV-2 by RT-qPCR. To do so, 200 uL of supernatant from one well from each dilution series was mixed 1:1 with 2x RNA/DNA Shield (Zymo) for viral inactivation and RNA extraction. Two researchers. All virologic testing was performed by two individuals (MGK, MT).
+
+Collected blood specimens were also used to measure nucleocapsid antigen (N-Ag) at all available time points using the Quanterix automated paramagnetic microbead-based immunoassay (Simoa) 41 . Compared to traditional immunoassays, this technology offers a 1000-fold greater sensitivity than the traditional immunoassay 42 , 43 .
+
+Plasma biomarker measurements were performed using the automated HD-X Simoa platform. Analytes included plasma SARS-CoV-2 Spike receptor binding domain (RBD) IgG and the following inflammatory markers: IL-6, IL-10, TNF-α, IFN-α, IFN-γ, IP-10, and MCP-1.
+
+All assays were performed according to the manufacturer’s instructions and assay performance was consistent with the manufacturer’s specifications.
+
+We describe the distribution of virologic and host immune factors at baseline and through follow-up among those with PASC compared to those without PASC. Individual-level viral shedding dynamics have been described previously 39 . Virologic factors included maximum viral RNA and infectious load, RNA decay rates (defined as the linear rate of RNA decline from maximum RNA load), the proportion with viral RNA and infectious viral shedding, and N-antigen levels.
+
+We described the association of PCR and CPE positivity by day with the development of PASC using pooled logistic regression. Maximum viral RNA and infectious viral loads and RNA decay rates for both N- and E- targets were compared using generalized estimating equations (GEE) with an independent working correlation matrix controlling for age, sex (by self-report), vaccination status (unvaccinated versus completed primary series), and SARS-CoV-2 variant (Delta versus pre-Delta) to estimate incidence ratios, 95% confidence intervals, and p-values. Sensitivity analyzes included corrections for multiple comparisons (Supplementary Table 4 ).
+
+Subgroup analyzes were conducted on participants with available blood specimens and included viral N-antigen and host immune factors, using GEEs model and controlling for the same potential confounders as the virologic analysis. Among the 5 planned specimen collection times for host immune factor measurement, 39% were not completed. Missing data were further assessed and managed using multiple imputations by chained equations assuming missingness at random 44 . We used the imputed data for the final analyzes in this report; preliminary results using non-imputed data can be found in the Supplement. The distribution and magnitude of difference of each analyte are summarized graphically. For antibody analysis we further restricted our model to unvaccinated participants to compare antibody responses. Given the nonlinear presentation of viral load and antibody results we log transformed the data for comparison.
+
+All estimates were calculated using Stata (version 16.1; StataCorp, College Station, TX) and R including the package ‘qvalue’ 45 .
+
+The study was approved by the University of California, San Francisco (UCSF) Institutional Review Board and given a designation of public health surveillance according to federal regulations as summarized in 45 CFR 46.102(d)(1)(2). Written informed consent was obtained from all participants; for participants younger than 18 years old, written informed consent was obtained from parents/legal guardians. Participants were compensated $80 over the course of the study. This activity was reviewed by CDC and was conducted consistent with applicable federal law and CDC policy (see e.g., 45 C.F.R. part 46.102(I)(2), 21 C.F.R. part 56; 42 U.S.C. §241(d); 5 U.S.C. §552a; 44 U.S.C. §3501 et seq).
+
+Further information on research design is available in the Nature Portfolio Reporting Summary linked to this article.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Methods" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/67baae12-c3a6-4f41-8803-9beec874e4dd> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Source data" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Source Data
+
+Source Data""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Source data" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/6ae22708-5bcb-41cb-90e9-7e1ddfda9a26> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Human participants" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "The study was approved by the University of California, San Francisco (UCSF) Institutional Review Board and given a designation of public health surveillance according to federal regulations as summarized in 45 CFR 46.102(d)(1)(2). Written informed consent was obtained from all participants; for participants younger than 18 years old, written informed consent was obtained from parents/legal guardians. Participants were compensated $80 over the course of the study. This activity was reviewed by CDC and was conducted consistent with applicable federal law and CDC policy (see e.g., 45 C.F.R. part 46.102(I)(2), 21 C.F.R. part 56; 42 U.S.C. §241(d); 5 U.S.C. §552a; 44 U.S.C. §3501 et seq)." ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Human participants" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/7173cafc-117b-4f69-962f-ed6faa924a7a> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Supplementary information" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Supplementary Information  Peer Review File  Reporting Summary
+
+Supplementary Information
+
+Peer Review File
+
+Reporting Summary""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Supplementary information" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/857d31b7-c78e-457d-b9bf-3f319eff8147> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Peer review information" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "Nature Communications thanks Yukari Manabe, Ahbishek Verma and the other, anonymous, reviewer for their contribution to the peer review of this work. A peer review file is available." ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Peer review information" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/b93e6896-3e59-4a90-8155-83517cdb3cf1> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Supplementary information" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString "The online version contains supplementary material available at 10.1038/s41467-024-51893-7." ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Supplementary information" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/c4722aae-02db-4067-ba59-7dd42e4a6204> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Associations of host immune factors with PASC" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Anti-RBD IgG levels among unvaccinated participants exhibited an increasing trajectory during the 28 days following symptom onset. Notably, those who developed PASC exhibited lower levels of Spike IgG at day 5 ( p = 0.03) and day 9 ( p = 0.03) post-symptom onset compared to those who did not develop PASC (Fig. 2b ). These differences attenuated after day 14 and both groups had similar Spike IgG levels by day 28.
+
+Inflammatory biomarkers exhibited a decreasing trajectory during the 28 days following symptom onset (Fig. 4 ). Those who developed PASC had non-significant trends toward higher initial levels of MCP, IL-10, IFN-α, and IFN-γ that attenuated over the observation period. Overall, there were no strong associations between starting levels or trajectories of inflammatory markers (IL-6, IL-10, TNF-α, MCP, IP-10, IFN-α, and TFN-γ) during the acute phase and the later development of PASC within this outpatient cohort. Fig. 4 Inflammatory marker levels among those with and without post-acute sequelae of SARS-CoV-2 infection (PASC) over a 28-day period after symptom onset. a – g Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21 and 28 for ( a ) IL-6, ( b ) IL-10, ( c ) TNF-alpha, ( d ) MCP, ( e ) IP-10, ( f ) IFN-alpha, and ( g ) IFN-gamma, using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. All statistics are derived from imputed data from 80 participants. Statistical significance was assessed using two-tailed tests. No statistically significant differences in estimated values were found when comparing PASC vs. non-PASC at each time point.
+
+a – g Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21 and 28 for ( a ) IL-6, ( b ) IL-10, ( c ) TNF-alpha, ( d ) MCP, ( e ) IP-10, ( f ) IFN-alpha, and ( g ) IFN-gamma, using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. All statistics are derived from imputed data from 80 participants. Statistical significance was assessed using two-tailed tests. No statistically significant differences in estimated values were found when comparing PASC vs. non-PASC at each time point.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Associations of host immune factors with PASC" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/dbbb1dbb-d69c-415b-a3b3-fd9ed1cf3b73> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Associations of virologic factors with PASC" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """We compared the magnitude, decay rates, and duration of nasal RNA and infectious viral shedding and plasma N-antigen levels between participants who did and did not develop PASC (Table 2 ). Compared to those who did not develop PASC, those who developed PASC had higher maximum nasal RNA viral load and plasma N-antigen levels (Table 2 ; Fig. 2a ). After adjustment, plasma N-antigen at day 5 ( p = 0.01) and nasal maximum RNA viral loads demonstrated statistical significance (Maximum RNA N viral load: p = 0.02; Maximum RNA E viral load: p = 0.03). The development of PASC was associated with a higher proportion of nasal RNA positivity ( p < 0.001) and infectious viral shedding ( p = 0.02; Fig. 3 ) during the 28 days following symptom onset. Viral RNA decay rates did not significantly differ by PASC status. In sensitivity analyzes with and without correction for multiple comparisons, we found similar results (Supplemental Table 4 ). Table 2 Association of virologic factors with post-acute sequelae of SARS-CoV-2 infection (PASC) ( N = 104) Non-PASC N = 72, median (IQR) PASC N = 32, median (IQR) Incidence Ratios c (95% CI) p -value Maximum RNA N viral load a 6.7 (4.8 to 8.3) 8.3 (7.2 to 9.5) 1.21 (1.03 to 1.43) p = 0.02 Maximum RNA E viral load 6.3 (4.7 to 7.9) 7.6 (6.7 to 8.6) 1.18 (1.01 to 1.39) p = 0.03 Maximum infectious viral load a,b 5.3 (3.0 to 6.1) 5.2 (4.2 to 5.9) 1.08 (0.90 to 1.32) p = 0.43 Rate of RNA N viral decay −0.3 (−0.5 to −0.1) −0.4 (−0.5 to −0.2) 0.66 (0.26 to 1.70) p = 0.39 Rate of RNA E viral decay −0.4 (−0.6 to −0.2) −0.5 (−0.7 to −0.3) 0.73 (0.46 to 1.16) p = 0.19 a Viral load measurements were log-transformed copies/mL. b Among 104 participants with a viral measurement, there were 53 (25 PASC, 28 non-PASC) who had maximum infectious viral load assessed. c Incidence ratios calculated with delta-method standard errors using generalized estimating equations controlling for sex, age, vaccination status, and SARS-CoV-2 variant. Fig. 2 Comparison of plasma N-antigen and IgG Spike antibody levels among those with and without post-acute sequelae of SARS-CoV-2 (PASC) over a 28-day period after symptom onset. a , b Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21, and 28 for N-antigen ( a ) and IgG ( b ) using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. Statistics are derived from 80 participants with N-antigen measurements and 48 unvaccinated participants with IgG measurements. Statistical significance was assessed using two-tailed tests. Statistically significant distributions include N-Ag at day 5 ( p = 0.01), IgG spike antibody at day 5 ( p = 0.04), and IgG spike antibody at day 9 ( p = 0.03). Fig. 3 Proportion of RNA and infectious viral shedding for each day after symptom onset among those with and without PASC. a , b Bar graphs demonstrating proportion of nasal samples positive for ( a ) viral shedding and ( b ) infectious virus by day post-symptom onset from day 3 to day 18 among 32 PASC and 72 non-PASC participants. Two-sided pooled logistic regression demonstrated statistically significant difference in the proportion of positive viral shedding ( p < 0.001) and infectious virus ( p = 0.02).
+
+Association of virologic factors with post-acute sequelae of SARS-CoV-2 infection (PASC) ( N = 104)
+
+a Viral load measurements were log-transformed copies/mL.
+
+b Among 104 participants with a viral measurement, there were 53 (25 PASC, 28 non-PASC) who had maximum infectious viral load assessed.
+
+c Incidence ratios calculated with delta-method standard errors using generalized estimating equations controlling for sex, age, vaccination status, and SARS-CoV-2 variant.
+
+a , b Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21, and 28 for N-antigen ( a ) and IgG ( b ) using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. Statistics are derived from 80 participants with N-antigen measurements and 48 unvaccinated participants with IgG measurements. Statistical significance was assessed using two-tailed tests. Statistically significant distributions include N-Ag at day 5 ( p = 0.01), IgG spike antibody at day 5 ( p = 0.04), and IgG spike antibody at day 9 ( p = 0.03).
+
+a , b Bar graphs demonstrating proportion of nasal samples positive for ( a ) viral shedding and ( b ) infectious virus by day post-symptom onset from day 3 to day 18 among 32 PASC and 72 non-PASC participants. Two-sided pooled logistic regression demonstrated statistically significant difference in the proportion of positive viral shedding ( p < 0.001) and infectious virus ( p = 0.02).""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Associations of virologic factors with PASC" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/e3f0ecea-8e22-4969-98ce-30ac9825b632> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Results" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """From September 2020 to May 2022, we enrolled 136 SARS-CoV-2 infected participants during the acute phase of their illness (Fig. 1 ). Among these participants, 104 completed at least one post-acute visit and contributed at least one nasal sample for infectious viral and RNA testing (87% of participants had 10 or more nasal specimens). These participants were all enrolled during their first confirmed case of COVID-19. Among these 104 participants, 80 participants also contributed blood for viral N-antigen and inflammatory marker testing. Fig. 1 Flow diagram of participants evaluated for post-acute sequelae of SARS-CoV-2 infection (PASC) at month 4. Flow diagram showing number of enrolled participants, COVID-19 and uninfected participants, and final number of participants who completed follow-up.
+
+Flow diagram showing number of enrolled participants, COVID-19 and uninfected participants, and final number of participants who completed follow-up.
+
+Participants had a median age of 35.5 years (IQR: 27 to 44) (Table 1 ), were 51% ( n = 53) self-identified females and were generally healthy with most (77%) reporting no pre-existing comorbid medical conditions; the most common comorbidities were lung disease (14%), hypertension (10%), and diabetes (5%). The majority of participants (93%) were infected with pre-Omicron strains of SARS-CoV-2 and most (65%) had not received a SARS-CoV-2 vaccine prior to their infection. Over the course of their acute illness, 96 of 104 (92%) participants reported the presence of at least one symptom with a median of 9 symptoms (IQR: 4 to 13). The most common acute symptoms were fatigue (76%), rhinorrhea (74%), cough (71%), headache (54%), and sore throat (46%). See Supplemental Tables 1 – 2 for characteristics of the subgroup of participants who had viral N-antigen and cytokine testing. These participants had similar characteristics as those in the overall cohort, except that all participants in the subgroup were infected with a pre-Omicron variant. Table 1 Baseline characteristics of the cohort Total N = 104 Age (years), median (IQR) 35.5 (27 to 43.5) Sex, n (%) Female 53 (51%) Male 51 (49%) Race/Ethnicity, n (%) Hispanic or Latino Ethnicity 21 (21%) White 59 (58%) Black or African American 4 (4%) Asian 14 (14%) Prefer not to answer 4 (4%) Vaccination status, n (%) Unvaccinated 68 (65%) Fully vaccinated a 36 (35%) BMI, n (%) <25 51 (51%) 25 to 29.9 27 (27%) >=30 22 (22%) Education, n (%) Less than HS 6 (7%) At least some HS 9 (11%) At least some college 42 (49%) At least some graduate school 28 (33%) Variant b , n (%) Pre-Delta 61 (59%) Delta 36 (35%) Omicron 7 (7%) Any comorbidity c , n (%) No 80 (77%) Yes 24 (23%) Number of symptoms in acute illness, median (IQR) 9 (4 to 13) Maximum RNA viral load (N viral target), median (IQR) d 9.2 (7.0 to 10.5) Maximum RNA viral load (E viral target), median (IQR) 8.7 (6.8 to 10.0) Duration of RNA viral shedding in days, median (IQR) 9 (6 to 12) Maximum infectious viral load, median (IQR) e 8.2 (6.0 to 9.8) Duration of infectious viral shedding in days, median (IQR) 5 (0 to 7) a Fully vaccinated was defined as completion of primary vaccination series greater than 2 weeks before enrollment. b Variant status was defined by viral sequencing results for 70 (67%) participants and by calendar time for the remaining 34 (33%) participants. c Any comorbidity was defined from the following list: history of autoimmune disease, cancer in the past 2 years, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, or kidney disease. d RNA viral load measurements reported as log-transformed copies/mL. e Among participants with a viral measurement, there were 52 (50%) who had maximum infectious viral load assessed, measured in plaque forming units. BMI body mass index, HS high school.
+
+Baseline characteristics of the cohort
+
+a Fully vaccinated was defined as completion of primary vaccination series greater than 2 weeks before enrollment.
+
+b Variant status was defined by viral sequencing results for 70 (67%) participants and by calendar time for the remaining 34 (33%) participants.
+
+c Any comorbidity was defined from the following list: history of autoimmune disease, cancer in the past 2 years, diabetes, HIV/AIDS, heart disease, hypertension, lung disease, or kidney disease.
+
+d RNA viral load measurements reported as log-transformed copies/mL.
+
+e Among participants with a viral measurement, there were 52 (50%) who had maximum infectious viral load assessed, measured in plaque forming units.
+
+BMI body mass index, HS high school.
+
+Among 104 SARS-CoV-2 infected participants with a post-acute follow-up visit, 32 (31%) reported new, worsened or persistent symptoms since the time of SARS-CoV-2 infection, consistent with PASC. We did not identify a difference between those with and without PASC in terms of vaccination status (32% vs 36%). All participants with PASC had been symptomatic during acute illness with a median of 12 (IQR: 9 to 14) symptoms noted; among those without PASC the median number of symptoms in the acute period was 7 (IQR: 3 to 12). No participants reported any reinfection at the time of PASC status ascertainment.
+
+Those meeting criteria for PASC reported a median of 2 (IQR: 1 to 5) symptoms during the post-acute period 2 to 6 months after SARS-CoV-2 infection. The most commonly reported PASC symptoms were trouble with concentration/memory (44%), trouble with sleep (28%), fatigue (25%), and rhinorrhea (25%) (Supplemental Table 3 ).
+
+We compared the magnitude, decay rates, and duration of nasal RNA and infectious viral shedding and plasma N-antigen levels between participants who did and did not develop PASC (Table 2 ). Compared to those who did not develop PASC, those who developed PASC had higher maximum nasal RNA viral load and plasma N-antigen levels (Table 2 ; Fig. 2a ). After adjustment, plasma N-antigen at day 5 ( p = 0.01) and nasal maximum RNA viral loads demonstrated statistical significance (Maximum RNA N viral load: p = 0.02; Maximum RNA E viral load: p = 0.03). The development of PASC was associated with a higher proportion of nasal RNA positivity ( p < 0.001) and infectious viral shedding ( p = 0.02; Fig. 3 ) during the 28 days following symptom onset. Viral RNA decay rates did not significantly differ by PASC status. In sensitivity analyzes with and without correction for multiple comparisons, we found similar results (Supplemental Table 4 ). Table 2 Association of virologic factors with post-acute sequelae of SARS-CoV-2 infection (PASC) ( N = 104) Non-PASC N = 72, median (IQR) PASC N = 32, median (IQR) Incidence Ratios c (95% CI) p -value Maximum RNA N viral load a 6.7 (4.8 to 8.3) 8.3 (7.2 to 9.5) 1.21 (1.03 to 1.43) p = 0.02 Maximum RNA E viral load 6.3 (4.7 to 7.9) 7.6 (6.7 to 8.6) 1.18 (1.01 to 1.39) p = 0.03 Maximum infectious viral load a,b 5.3 (3.0 to 6.1) 5.2 (4.2 to 5.9) 1.08 (0.90 to 1.32) p = 0.43 Rate of RNA N viral decay −0.3 (−0.5 to −0.1) −0.4 (−0.5 to −0.2) 0.66 (0.26 to 1.70) p = 0.39 Rate of RNA E viral decay −0.4 (−0.6 to −0.2) −0.5 (−0.7 to −0.3) 0.73 (0.46 to 1.16) p = 0.19 a Viral load measurements were log-transformed copies/mL. b Among 104 participants with a viral measurement, there were 53 (25 PASC, 28 non-PASC) who had maximum infectious viral load assessed. c Incidence ratios calculated with delta-method standard errors using generalized estimating equations controlling for sex, age, vaccination status, and SARS-CoV-2 variant. Fig. 2 Comparison of plasma N-antigen and IgG Spike antibody levels among those with and without post-acute sequelae of SARS-CoV-2 (PASC) over a 28-day period after symptom onset. a , b Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21, and 28 for N-antigen ( a ) and IgG ( b ) using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. Statistics are derived from 80 participants with N-antigen measurements and 48 unvaccinated participants with IgG measurements. Statistical significance was assessed using two-tailed tests. Statistically significant distributions include N-Ag at day 5 ( p = 0.01), IgG spike antibody at day 5 ( p = 0.04), and IgG spike antibody at day 9 ( p = 0.03). Fig. 3 Proportion of RNA and infectious viral shedding for each day after symptom onset among those with and without PASC. a , b Bar graphs demonstrating proportion of nasal samples positive for ( a ) viral shedding and ( b ) infectious virus by day post-symptom onset from day 3 to day 18 among 32 PASC and 72 non-PASC participants. Two-sided pooled logistic regression demonstrated statistically significant difference in the proportion of positive viral shedding ( p < 0.001) and infectious virus ( p = 0.02).
+
+Association of virologic factors with post-acute sequelae of SARS-CoV-2 infection (PASC) ( N = 104)
+
+a Viral load measurements were log-transformed copies/mL.
+
+b Among 104 participants with a viral measurement, there were 53 (25 PASC, 28 non-PASC) who had maximum infectious viral load assessed.
+
+c Incidence ratios calculated with delta-method standard errors using generalized estimating equations controlling for sex, age, vaccination status, and SARS-CoV-2 variant.
+
+a , b Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21, and 28 for N-antigen ( a ) and IgG ( b ) using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. Statistics are derived from 80 participants with N-antigen measurements and 48 unvaccinated participants with IgG measurements. Statistical significance was assessed using two-tailed tests. Statistically significant distributions include N-Ag at day 5 ( p = 0.01), IgG spike antibody at day 5 ( p = 0.04), and IgG spike antibody at day 9 ( p = 0.03).
+
+a , b Bar graphs demonstrating proportion of nasal samples positive for ( a ) viral shedding and ( b ) infectious virus by day post-symptom onset from day 3 to day 18 among 32 PASC and 72 non-PASC participants. Two-sided pooled logistic regression demonstrated statistically significant difference in the proportion of positive viral shedding ( p < 0.001) and infectious virus ( p = 0.02).
+
+Anti-RBD IgG levels among unvaccinated participants exhibited an increasing trajectory during the 28 days following symptom onset. Notably, those who developed PASC exhibited lower levels of Spike IgG at day 5 ( p = 0.03) and day 9 ( p = 0.03) post-symptom onset compared to those who did not develop PASC (Fig. 2b ). These differences attenuated after day 14 and both groups had similar Spike IgG levels by day 28.
+
+Inflammatory biomarkers exhibited a decreasing trajectory during the 28 days following symptom onset (Fig. 4 ). Those who developed PASC had non-significant trends toward higher initial levels of MCP, IL-10, IFN-α, and IFN-γ that attenuated over the observation period. Overall, there were no strong associations between starting levels or trajectories of inflammatory markers (IL-6, IL-10, TNF-α, MCP, IP-10, IFN-α, and TFN-γ) during the acute phase and the later development of PASC within this outpatient cohort. Fig. 4 Inflammatory marker levels among those with and without post-acute sequelae of SARS-CoV-2 infection (PASC) over a 28-day period after symptom onset. a – g Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21 and 28 for ( a ) IL-6, ( b ) IL-10, ( c ) TNF-alpha, ( d ) MCP, ( e ) IP-10, ( f ) IFN-alpha, and ( g ) IFN-gamma, using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. All statistics are derived from imputed data from 80 participants. Statistical significance was assessed using two-tailed tests. No statistically significant differences in estimated values were found when comparing PASC vs. non-PASC at each time point.
+
+a – g Estimated mean values and 95% confidence intervals are plotted for biological specimen among PASC and non-PASC groups at days 5, 9, 14, 21 and 28 for ( a ) IL-6, ( b ) IL-10, ( c ) TNF-alpha, ( d ) MCP, ( e ) IP-10, ( f ) IFN-alpha, and ( g ) IFN-gamma, using generalized estimating equations fit with independent correlation, identity linkage, and Gaussian distribution. Covariates included sex, age, vaccination status, and SARS-CoV-2 variant. All statistics are derived from imputed data from 80 participants. Statistical significance was assessed using two-tailed tests. No statistically significant differences in estimated values were found when comparing PASC vs. non-PASC at each time point.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Results" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/section/f076eab2-2b99-429d-8817-9ca3ebc4c928> a nif:Context,
+        bibo:DocumentPart ;
+    rdfs:label "Host immune factors" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    nif:isString """Plasma biomarker measurements were performed using the automated HD-X Simoa platform. Analytes included plasma SARS-CoV-2 Spike receptor binding domain (RBD) IgG and the following inflammatory markers: IL-6, IL-10, TNF-α, IFN-α, IFN-γ, IP-10, and MCP-1.
+
+All assays were performed according to the manufacturer’s instructions and assay performance was consistent with the manufacturer’s specifications.""" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    dcterms:title "Host immune factors" ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/table/3523725d-c111-478e-96fa-c2fba8465017> a bibo:Table ;
+    rdfs:label "Table 1" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:description "Baseline characteristics of the cohort" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<http://example.org/data/table/ace5178d-5840-4ce9-ba8d-bc1401a5a37b> a bibo:Table ;
+    rdfs:label "Table 2" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:description "Association of virologic factors with post-acute sequelae of SARS-CoV-2 infection (PASC) ( N = 104)" ;
+    dcterms:isPartOf <https://doi.org/10.1038/s41467-024-51893-7> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1001/jama.2022.18931> a bibo:Document ;
+    rdfs:label "Estimated global proportions of individuals with persistent fatigue, cognitive, and respiratory symptom clusters following symptomatic COVID-19 in 2020 and 2021" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2022 ;
+    dcterms:title "Estimated global proportions of individuals with persistent fatigue, cognitive, and respiratory symptom clusters following symptomatic COVID-19 in 2020 and 2021" ;
+    bibo:doi "10.1001/jama.2022.18931" ;
+    bibo:pages "1604-1615" ;
+    bibo:volume "328" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    owl:sameAs <https://doi.org/10.1001/jama.2022.18931> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasDerivedFrom <JAMA> ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1001/jama.2024.11370> a bibo:Document ;
+    rdfs:label "Evidence mounts that about 7% of us adults have had long COVID" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2024 ;
+    dcterms:title "Evidence mounts that about 7% of us adults have had long COVID" ;
+    bibo:doi "10.1001/jama.2024.11370" ;
+    bibo:pages "5-6" ;
+    bibo:volume "332" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    owl:sameAs <https://doi.org/10.1001/jama.2024.11370> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasDerivedFrom <JAMA> ;
+    prov:wasGeneratedBy "pyeuropepmc_unified_pipeline" .
+
+<https://doi.org/10.1001/jamainternmed.2023.0743> a bibo:Document ;
+    rdfs:label "Association of Treatment With Nirmatrelvir and the Risk of Post-COVID-19 Condition" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    dcterms:issued 2023 ;
+    dcterms:title "Association of Treatment With Nirmatrelvir and the Risk of Post-COVID-19 Condition" ;
+    bibo:doi "10.1001/jamainternmed.2023.0743" ;
+    bibo:pages "554-564" ;
+    bibo:volume "183" ;
+    cito:isCitedBy <https://doi.org/10.1038/s41467-024-51893-7> ;
+    owl:sameAs <https://doi.org/10.1001/jamainternmed.2023.0743> ;
+    prov:generatedAtTime "2025-11-24T14:19:16.736496Z" ;
+    prov:wasDerivedFrom
