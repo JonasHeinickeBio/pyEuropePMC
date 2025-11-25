@@ -66,56 +66,80 @@ class PaperEnricher:
 
         # Initialize enabled clients
         if config.enable_crossref:
-            self.clients["crossref"] = CrossRefClient(
-                rate_limit_delay=config.rate_limit_delay,
-                cache_config=config.cache_config,
-                email=config.crossref_email,
-            )
-            logger.info("CrossRef client initialized")
+            try:
+                self.clients["crossref"] = CrossRefClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                    email=config.crossref_email,
+                )
+                logger.info("CrossRef client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize CrossRef client: {e}")
+                raise
 
         if config.enable_datacite:
-            self.clients["datacite"] = DataCiteClient(
-                rate_limit_delay=config.rate_limit_delay,
-                cache_config=config.cache_config,
-                email=config.datacite_email,
-            )
-            logger.info("DataCite client initialized")
+            try:
+                self.clients["datacite"] = DataCiteClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                    email=config.datacite_email,
+                )
+                logger.info("DataCite client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize DataCite client: {e}")
+                raise
 
         if config.enable_unpaywall:
             if config.unpaywall_email:  # Type guard
-                self.clients["unpaywall"] = UnpaywallClient(
-                    email=config.unpaywall_email,
-                    rate_limit_delay=config.rate_limit_delay,
-                    cache_config=config.cache_config,
-                )
-                logger.info("Unpaywall client initialized")
+                try:
+                    self.clients["unpaywall"] = UnpaywallClient(
+                        email=config.unpaywall_email,
+                        rate_limit_delay=config.rate_limit_delay,
+                        cache_config=config.cache_config,
+                    )
+                    logger.info("Unpaywall client initialized")
+                except Exception as e:
+                    logger.error(f"Failed to initialize Unpaywall client: {e}")
+                    raise
             else:
                 logger.warning("Unpaywall enabled but email not provided, skipping initialization")
 
         if config.enable_semantic_scholar:
-            self.clients["semantic_scholar"] = SemanticScholarClient(
-                rate_limit_delay=config.rate_limit_delay,
-                cache_config=config.cache_config,
-                api_key=config.semantic_scholar_api_key,
-            )
-            logger.info("Semantic Scholar client initialized")
+            try:
+                self.clients["semantic_scholar"] = SemanticScholarClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                    api_key=config.semantic_scholar_api_key,
+                )
+                logger.info("Semantic Scholar client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize Semantic Scholar client: {e}")
+                raise
 
         if config.enable_openalex:
-            self.clients["openalex"] = OpenAlexClient(
-                rate_limit_delay=config.rate_limit_delay,
-                cache_config=config.cache_config,
-                email=config.openalex_email,
-            )
-            logger.info("OpenAlex client initialized")
+            try:
+                self.clients["openalex"] = OpenAlexClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                    email=config.openalex_email,
+                )
+                logger.info("OpenAlex client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize OpenAlex client: {e}")
+                raise
 
         if config.enable_ror:
-            self.clients["ror"] = RorClient(
-                rate_limit_delay=config.rate_limit_delay,
-                cache_config=config.cache_config,
-                email=config.ror_email,
-                client_id=config.ror_client_id,
-            )
-            logger.info("ROR client initialized")
+            try:
+                self.clients["ror"] = RorClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                    email=config.ror_email,
+                    client_id=config.ror_client_id,
+                )
+                logger.info("ROR client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize ROR client: {e}")
+                raise
 
         logger.info(f"PaperEnricher initialized with {len(self.clients)} clients")
 
@@ -139,7 +163,7 @@ class PaperEnricher:
     def enrich_paper(
         self,
         identifier: str | None = None,
-        save_responses: bool = False,
+        save_responses: bool = True,
         save_dir: str | Path | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
@@ -151,7 +175,7 @@ class PaperEnricher:
         identifier : str, optional
             Paper identifier (DOI or PMCID)
         save_responses : bool, optional
-            Whether to save raw API responses and merged result to files (default: False)
+            Whether to save raw API responses and merged result to files (default: True)
         save_dir : str or Path, optional
             Directory to save response files (default: examples/enrichment_responses)
         **kwargs
@@ -192,8 +216,11 @@ class PaperEnricher:
             "ror": None,
         }
 
-        # Enrich from each source
+        # Enrich from each source (excluding ROR which is handled separately)
         for source_name, client in self.clients.items():
+            if source_name == "ror":
+                continue  # ROR is handled separately for institutions
+
             try:
                 logger.debug(f"Enriching from {source_name}")
                 data = client.enrich(identifier=doi, **kwargs)
@@ -215,12 +242,28 @@ class PaperEnricher:
             logger.warning(f"No enrichment data found for identifier: {identifier}")
             results["merged"] = {}
 
-        # Save responses if requested
-        if save_responses:
+        # Enrich institutions with ROR data if ROR is enabled and we have author data
+        if self.config.enable_ror and results.get("merged", {}).get("authors"):
             try:
-                self._save_responses(results, save_dir)
+                ror_enriched_institutions = self._enrich_institutions_with_ror(results["merged"])
+                if ror_enriched_institutions:
+                    results["ror"] = ror_enriched_institutions
+                    results["sources"].append("ror")
+                    # Re-merge with ROR data to update author institutions
+                    results["merged"] = self.merger.merge_results(results)
+                    logger.info(
+                        f"Added ROR enrichment for {len(ror_enriched_institutions)} institutions"
+                    )
+                else:
+                    logger.debug("No additional ROR enrichment needed")
             except Exception as e:
-                logger.error(f"Failed to save responses: {e}")
+                logger.error(f"Error enriching institutions with ROR: {e}")
+
+        # Always save responses to the default directory
+        try:
+            self._save_responses(results, save_dir)
+        except Exception as e:
+            logger.error(f"Failed to save responses: {e}")
 
         return results
 
@@ -234,12 +277,12 @@ class PaperEnricher:
             Enrichment results
         save_dir : str or Path, optional
             Directory to save files
+            (default: examples/enrichment_responses relative to project root)
         """
         if save_dir is None:
-            # Default to examples/enrichment_responses in the project
-            save_dir = (
-                Path(__file__).parent.parent.parent.parent / "examples" / "enrichment_responses"
-            )
+            # Default to the enrichment_responses directory relative to project root
+            project_root = Path(__file__).parent.parent.parent.parent
+            save_dir = project_root / "examples" / "enrichment_responses"
         else:
             save_dir = Path(save_dir)
 
@@ -294,48 +337,54 @@ class PaperEnricher:
         ValueError
             If identifier is not a valid DOI, DOI URL, or PMCID, or DOI cannot be found
         """
-        # Check if it's a DOI URL (https://doi.org/...)
-        if identifier.startswith("https://doi.org/"):
-            doi = identifier[len("https://doi.org/") :]
-            logger.info(f"Extracted DOI from URL: {doi}")
-            return doi
+        try:
+            # Check if it's a DOI URL (https://doi.org/...)
+            if identifier.startswith("https://doi.org/"):
+                doi = identifier[len("https://doi.org/") :]
+                logger.info(f"Extracted DOI from URL: {doi}")
+                return doi
 
-        # Check if it's already a DOI (starts with 10.)
-        if identifier.startswith("10."):
-            return identifier
+            # Check if it's already a DOI (starts with 10.)
+            if identifier.startswith("10."):
+                logger.debug(f"Identifier is already a DOI: {identifier}")
+                return identifier
 
-        # Check if it's a PMCID (starts with PMC)
-        if identifier.upper().startswith("PMC"):
-            logger.info(f"Resolving PMCID {identifier} to DOI")
-            try:
-                with SearchClient() as search_client:
-                    results = search_client.search(query=f"PMCID:{identifier}", limit=1)
-                    if isinstance(results, dict):
-                        papers = results.get("resultList", {}).get("result", [])
-                        if papers and len(papers) > 0:
-                            doi = papers[0].get("doi")
-                            if doi:
-                                logger.info(f"Found DOI {doi} for PMCID {identifier}")
-                                return cast(str, doi)
+            # Check if it's a PMCID (starts with PMC)
+            if identifier.upper().startswith("PMC"):
+                logger.info(f"Resolving PMCID {identifier} to DOI")
+                try:
+                    with SearchClient() as search_client:
+                        results = search_client.search(query=f"PMCID:{identifier}", limit=1)
+                        if isinstance(results, dict):
+                            papers = results.get("resultList", {}).get("result", [])
+                            if papers and len(papers) > 0:
+                                doi = papers[0].get("doi")
+                                if doi:
+                                    logger.info(f"Found DOI {doi} for PMCID {identifier}")
+                                    return cast(str, doi)
+                                else:
+                                    raise ValueError(f"No DOI found for PMCID {identifier}")
                             else:
-                                raise ValueError(f"No DOI found for PMCID {identifier}")
+                                raise ValueError(f"No results found for PMCID {identifier}")
                         else:
-                            raise ValueError(f"No results found for PMCID {identifier}")
-                    else:
-                        raise ValueError("Invalid response format from SearchClient")
-            except Exception as e:
-                logger.error(f"Error resolving PMCID {identifier}: {e}")
-                raise ValueError(f"Could not resolve PMCID {identifier} to DOI") from e
-        else:
-            raise ValueError(
-                f"Invalid identifier: {identifier}. Must be DOI "
-                "(starting with 10.), DOI URL (https://doi.org/...), or PMCID (starting with PMC)"
-            )
+                            raise ValueError("Invalid response format from SearchClient")
+                except Exception as e:
+                    logger.error(f"Error resolving PMCID {identifier}: {e}")
+                    raise ValueError(f"Could not resolve PMCID {identifier} to DOI") from e
+            else:
+                raise ValueError(
+                    f"Invalid identifier: {identifier}. Must be DOI "
+                    "(starting with 10.), DOI URL (https://doi.org/...), "
+                    "or PMCID (starting with PMC)"
+                )
+        except Exception as e:
+            logger.error(f"Error resolving identifier {identifier}: {e}")
+            raise
 
     def enrich_papers_batch(
         self,
         identifiers: list[str],
-        save_responses: bool = False,
+        save_responses: bool = True,
         save_dir: str | Path | None = None,
         **kwargs: Any,
     ) -> dict[str, dict[str, Any]]:
@@ -347,7 +396,7 @@ class PaperEnricher:
         identifiers : list[str]
             List of identifiers (DOIs or PMCIDs) to enrich
         save_responses : bool, optional
-            Whether to save raw API responses and merged result to files (default: False)
+            Whether to save raw API responses and merged result to files (default: True)
         save_dir : str or Path, optional
             Directory to save response files (default: examples/enrichment_responses)
         **kwargs
@@ -358,9 +407,15 @@ class PaperEnricher:
         dict[str, dict[str, Any]]
             Dictionary mapping identifier to enrichment results
         """
-        batch_enricher = BatchEnricher(self.config)
-        with batch_enricher:
-            return batch_enricher.enrich_papers_with_progress(identifiers, **kwargs)
+        try:
+            batch_enricher = BatchEnricher(self.config)
+            with batch_enricher:
+                return batch_enricher.enrich_papers_with_progress(
+                    identifiers, save_responses=save_responses, save_dir=save_dir, **kwargs
+                )
+        except Exception as e:
+            logger.error(f"Error in batch enrichment: {e}", exc_info=True)
+            raise
 
     def enrich_from_metadata_files(
         self, metadata_files: list[str | Path], **kwargs: Any
@@ -380,11 +435,15 @@ class PaperEnricher:
         dict[str, dict[str, Any]]
             Dictionary mapping file path to enrichment results
         """
-        file_enricher = FileEnricher(self.config)
-        with file_enricher:
-            # Convert Path objects to strings
-            file_paths = [str(f) for f in metadata_files]
-            return file_enricher.enrich_from_files(file_paths, **kwargs)
+        try:
+            file_enricher = FileEnricher(self.config)
+            with file_enricher:
+                # Convert Path objects to strings
+                file_paths = [str(f) for f in metadata_files]
+                return file_enricher.enrich_from_files(file_paths, **kwargs)
+        except Exception as e:
+            logger.error(f"Error enriching from metadata files: {e}", exc_info=True)
+            raise
 
     def generate_enrichment_report(self, enrichment_result: dict[str, Any]) -> str:
         """
@@ -400,4 +459,70 @@ class PaperEnricher:
         str
             Formatted report string
         """
-        return self.reporter.generate_report(enrichment_result)
+        try:
+            return self.reporter.generate_report(enrichment_result)
+        except Exception as e:
+            logger.error(f"Error generating enrichment report: {e}", exc_info=True)
+            raise
+
+    def _enrich_institutions_with_ror(self, merged_data: dict[str, Any]) -> dict[str, Any]:
+        """
+        Enrich institutions in author data with detailed ROR information.
+
+        Only enriches institutions that don't already have ROR enrichment data.
+
+        Parameters
+        ----------
+        merged_data : dict
+            Merged enrichment data containing authors
+
+        Returns
+        -------
+        dict
+            Dictionary mapping ROR IDs to enriched institution data
+        """
+        ror_client = self.clients.get("ror")
+        if not ror_client:
+            return {}
+
+        # Collect unique ROR IDs from author institutions that need enrichment
+        ror_ids_to_enrich = set()
+        authors = merged_data.get("authors", [])
+
+        for author in authors:
+            if isinstance(author, dict):
+                institutions = author.get("institutions", [])
+                for inst in institutions:
+                    if isinstance(inst, dict):
+                        # Skip institutions that are already ROR-enriched
+                        if inst.get("ror_enriched"):
+                            inst_name = inst.get("display_name", "Unknown")
+                            logger.debug(f"Institution {inst_name} already ROR-enriched, skipping")
+                            continue
+
+                        ror_id = inst.get("ror_id")
+                        if ror_id:
+                            # Normalize ROR ID
+                            normalized_id = ror_client._normalize_ror_id(ror_id)
+                            if normalized_id:
+                                ror_ids_to_enrich.add(normalized_id)
+
+        if not ror_ids_to_enrich:
+            logger.debug("No ROR IDs found that need enrichment")
+            return {}
+
+        # Enrich each ROR ID
+        enriched_institutions = {}
+        for ror_id in ror_ids_to_enrich:
+            try:
+                logger.debug(f"Enriching institution with ROR ID: {ror_id}")
+                ror_data = ror_client.enrich(identifier=ror_id)
+                if ror_data:
+                    enriched_institutions[ror_id] = ror_data
+                    logger.info(f"Successfully enriched institution: {ror_id}")
+                else:
+                    logger.warning(f"No ROR data found for: {ror_id}")
+            except Exception as e:
+                logger.error(f"Error enriching ROR ID {ror_id}: {e}")
+
+        return enriched_institutions
