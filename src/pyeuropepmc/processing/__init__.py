@@ -18,7 +18,7 @@ from .analytics import (
     to_dataframe,
 )
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .parser import EuropePMCParser
+from .search_parser import EuropePMCParser
 from .visualization import (
     create_summary_dashboard,
     plot_citation_distribution,

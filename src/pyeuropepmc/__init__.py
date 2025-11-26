@@ -45,7 +45,7 @@ from .processing.analytics import (
     to_dataframe,
 )
 from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .processing.parser import EuropePMCParser
+from .processing.search_parser import EuropePMCParser
 from .processing.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,

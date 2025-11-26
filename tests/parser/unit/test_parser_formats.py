@@ -1,4 +1,4 @@
-from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.processing.search_parser import EuropePMCParser
 
 class TestEuropePMCParserFormats:
 

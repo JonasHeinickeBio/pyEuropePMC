@@ -36,6 +36,84 @@ def normalize_name(name: str) -> str | None:
     return normalized if normalized else None
 
 
+def generate_compact_institution_id(display_name: str) -> str:
+    """
+    Generate a compact, meaningful identifier for institutions.
+
+    This function creates shorter URIs by extracting key components from institution names,
+    avoiding overly long URIs while maintaining meaningful identifiers.
+
+    Parameters
+    ----------
+    display_name : str
+        Full institution display name
+
+    Returns
+    -------
+    str
+        Compact identifier suitable for URIs
+
+    Examples
+    --------
+    >>> generate_compact_institution_id("BC Cancer - Victoria, Victoria, BC V8R 6V5")
+    'bc-cancer-victoria'
+    >>> generate_compact_institution_id(
+    ...     "Brigham and Women's Hospital, Dana-Farber Cancer Institute and "
+    ...     "Harvard Medical School, Boston, MA"
+    ... )
+    'brigham-womens-hospital'
+    """
+    if not display_name:
+        return str(uuid.uuid4())[:8]
+
+    # Clean the name
+    name = display_name.strip()
+
+    # Remove common suffixes that don't add meaning
+    name = re.sub(
+        r",\s*(?:USA|United States|UK|United Kingdom|Canada|Australia|"
+        r"Germany|France|Italy|Spain|Japan|China|India)(?:\..*)?$",
+        "",
+        name,
+        flags=re.IGNORECASE,
+    )
+
+    # Split by commas and take the first meaningful part
+    parts = [part.strip() for part in name.split(",") if part.strip()]
+
+    if not parts:
+        return str(uuid.uuid4())[:8]
+
+    # Take the first part as the main institution name
+    main_name = parts[0]
+
+    # Remove common prefixes/suffixes that make names longer
+    main_name = re.sub(r"^(?:the\s+)?", "", main_name, flags=re.IGNORECASE)
+    main_name = re.sub(
+        r"(?:\s+(?:university|college|institute|center|centre|hospital|school|department|division|program|unit|group|laboratory|lab|clinic))$",
+        "",
+        main_name,
+        flags=re.IGNORECASE,
+    )
+
+    # If the main name is still too long, take first few words
+    words = main_name.split()
+    if len(words) > 4:
+        main_name = " ".join(words[:4])
+
+    # Normalize the result
+    normalized = normalize_name(main_name)
+
+    if normalized and len(normalized) <= 50:  # Reasonable length limit
+        return normalized
+
+    # If still too long or empty, create a hash-based identifier
+    import hashlib
+
+    hash_obj = hashlib.md5(display_name.encode("utf-8"))  # nosec B324
+    return hash_obj.hexdigest()[:12]
+
+
 def generate_paper_uri(entity: Any) -> URIRef:
     """Generate URI for paper entity."""
     if entity.doi:
@@ -66,9 +144,9 @@ def generate_institution_uri(entity: Any) -> URIRef:
     if getattr(entity, "openalex_id", None):
         return URIRef(entity.openalex_id)
     if getattr(entity, "display_name", None):
-        normalized_name = normalize_name(entity.display_name)
-        if normalized_name:
-            return URIRef(f"http://example.org/data/institution/{normalized_name}")
+        # Create a more compact URI by extracting key institution name
+        compact_id = generate_compact_institution_id(entity.display_name)
+        return URIRef(f"http://example.org/data/institution/{compact_id}")
     return generate_fallback_uri(entity)
 
 

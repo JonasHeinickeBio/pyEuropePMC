@@ -6,7 +6,7 @@ from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import EuropePMCError, ParsingError, SearchError
-from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.processing.search_parser import EuropePMCParser
 from pyeuropepmc.utils.helpers import safe_int
 
 logger = BaseAPIClient.logger
