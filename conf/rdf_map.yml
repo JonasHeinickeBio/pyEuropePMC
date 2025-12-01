@@ -58,22 +58,22 @@ _named_graphs:
   authors:
     title: "Author Entities and Relationships"
     description: "Contains all author entities, their affiliations, collaborations, and quality metrics"
-    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#authors"
+    uri_base: "https://w3id.org/pyeuropepmc#authors"
     enabled: true
   institutions:
     title: "Institutional Entities and Hierarchies"
     description: "Contains institutional entities, hierarchies, and organizational relationships"
-    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#institutions"
+    uri_base: "https://w3id.org/pyeuropepmc#institutions"
     enabled: true
   publications:
     title: "Publication Entities and Citations"
     description: "Contains publication entities, citation networks, and bibliographic relationships"
-    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#publications"
+    uri_base: "https://w3id.org/pyeuropepmc#publications"
     enabled: true
   provenance:
     title: "Provenance and Quality Metrics"
     description: "Contains provenance information, quality scores, and temporal metadata"
-    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#provenance"
+    uri_base: "https://w3id.org/pyeuropepmc#provenance"
     enabled: true
 
 # ScholarlyWorkEntity mapping (base class)
