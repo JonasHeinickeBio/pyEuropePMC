@@ -18,6 +18,7 @@
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix ror: <https://ror.org/vocab#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
@@ -81,16 +82,6 @@
     rr:predicateObjectMap [
         rr:predicate ex:semanticScholarId ;
         rr:objectMap [ rml:reference "semantic_scholar_id" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate bibo:journal ;
-        rr:objectMap [ rml:reference "journal" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate dcterms:creator ;
-        rr:objectMap [ rml:reference "authors[*]" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -255,7 +246,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate datacite:orcid ;
+        rr:predicate ex:orcid ;
         rr:objectMap [ rml:reference "orcid" ; rr:termType rr:IRI ]
     ] ;
 
@@ -497,6 +488,109 @@
     rr:predicateObjectMap [
         rr:predicate ex:domain ;
         rr:objectMap [ rml:reference "domains[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== JournalEntity Mapping =====
+<#JournalEntityMap>
+    rml:logicalSource [
+        rml:source "journal.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/journal/{id}" ;
+        rr:class bibo:Journal
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:title ;
+        rr:objectMap [ rml:reference "title" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:shortTitle ;
+        rr:objectMap [ rml:reference "medline_abbreviation" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:shortTitle ;
+        rr:objectMap [ rml:reference "iso_abbreviation" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:nlmid ;
+        rr:objectMap [ rml:reference "nlmid" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:issn ;
+        rr:objectMap [ rml:reference "issn" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:eissn ;
+        rr:objectMap [ rml:reference "essn" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:publisher ;
+        rr:objectMap [ rml:reference "publisher" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:country ;
+        rr:objectMap [ rml:reference "country" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:language ;
+        rr:objectMap [ rml:reference "language" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:journalIssueId ;
+        rr:objectMap [ rml:reference "journal_issue_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:openAlexId ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:wikidataId ;
+        rr:objectMap [ rml:reference "wikidata_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:scopusSourceId ;
+        rr:objectMap [ rml:reference "scopus_source_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:impactFactor ;
+        rr:objectMap [ rml:reference "impact_factor" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:sjr ;
+        rr:objectMap [ rml:reference "sjr" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate ex:hIndex ;
+        rr:objectMap [ rml:reference "h_index" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:subject ;
+        rr:objectMap [ rml:reference "subject_areas[*]" ]
     ] ;
 
     rr:predicateObjectMap [

@@ -29,6 +29,9 @@ _@prefix:
   ror: "https://ror.org/vocab#"
   skos: "http://www.w3.org/2004/02/skos/core#"
 
+# Base URI for generated data URIs (fallback URIs when no external identifiers available)
+_base_uri: "https://w3id.org/pyeuropepmc/"
+
 # Knowledge Graph Structure Configuration
 # Controls how entities are organized in RDF graphs
 _kg_structure:
@@ -37,6 +40,41 @@ _kg_structure:
   include_content: true
   # Default KG type: "complete" (all entities), "metadata" (papers/authors/institutions only), "content" (sections/references/tables/figures only)
   default_type: "complete"
+  # Enable semantic networks by default
+  enable_citation_networks: true
+  enable_collaboration_networks: true
+  enable_institutional_hierarchies: true
+  enable_quality_metrics: true
+  enable_shacl_validation: false
+  # Quality scoring thresholds
+  quality_thresholds:
+    high: 0.8
+    medium: 0.6
+    low: 0.0
+
+# Named Graphs Configuration
+# Defines the structure and organization of named graphs for enhanced RDF
+_named_graphs:
+  authors:
+    title: "Author Entities and Relationships"
+    description: "Contains all author entities, their affiliations, collaborations, and quality metrics"
+    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#authors"
+    enabled: true
+  institutions:
+    title: "Institutional Entities and Hierarchies"
+    description: "Contains institutional entities, hierarchies, and organizational relationships"
+    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#institutions"
+    enabled: true
+  publications:
+    title: "Publication Entities and Citations"
+    description: "Contains publication entities, citation networks, and bibliographic relationships"
+    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#publications"
+    enabled: true
+  provenance:
+    title: "Provenance and Quality Metrics"
+    description: "Contains provenance information, quality scores, and temporal metadata"
+    uri_base: "https://github.com/JonasHeinickeBio/pyeuropepmc#provenance"
+    enabled: true
 
 # ScholarlyWorkEntity mapping (base class)
 ScholarlyWorkEntity:
@@ -46,15 +84,13 @@ ScholarlyWorkEntity:
     doi: bibo:doi
     volume: bibo:volume
     pages: bibo:pages
-    publication_year: dcterms:issued  # More specific than dcterms:date for year
+    publication_year: dcterms:issued  # More specific than dcterms:issued for year
     publication_date: dcterms:date    # Full date gets dcterms:date
     pmcid: dcterms:identifier
     pmid: ex:pmid
     semantic_scholar_id: ex:semanticScholarId
-    journal: bibo:journalTitle
-  # Multi-value fields (authors can be list or string)
-  multi_value_fields:
-    authors: dcterms:creator
+  # Multi-value fields (authors handled as relationships in subclasses)
+  multi_value_fields: {}
 
 # PaperEntity mapping
 PaperEntity:
@@ -88,6 +124,9 @@ PaperEntity:
     authors:
       predicate: dcterms:creator
       inverse: foaf:made
+    journal:
+      predicate: bibo:journal
+      inverse: bibo:article
     sections:
       predicate: dcterms:hasPart
       inverse: dcterms:isPartOf
@@ -106,7 +145,7 @@ AuthorEntity:
     first_name: foaf:givenName
     last_name: foaf:familyName
     initials: foaf:initials
-    orcid: datacite:orcid
+    orcid: ex:orcid
     openalex_id: ex:openAlexId
     semantic_scholar_id: ex:semanticScholarId
     affiliation_text: ex:affiliation
@@ -207,3 +246,32 @@ InstitutionEntity:
     members:
       predicate: org:hasMember
       inverse: org:memberOf
+
+# JournalEntity mapping
+JournalEntity:
+  rdf:type: ["bibo:Journal"]
+  fields:
+    title: dcterms:title
+    medline_abbreviation: bibo:shortTitle
+    iso_abbreviation: bibo:shortTitle
+    nlmid: ex:nlmid
+    issn: bibo:issn
+    essn: bibo:eissn
+    publisher: dcterms:publisher
+    country: ex:country
+    language: dcterms:language
+    journal_issue_id: ex:journalIssueId
+    openalex_id: ex:openAlexId
+    wikidata_id: ex:wikidataId
+    scopus_source_id: ex:scopusSourceId
+    impact_factor: ex:impactFactor
+    sjr: ex:sjr
+    h_index: ex:hIndex
+  # Multi-value fields
+  multi_value_fields:
+    subject_areas: dcterms:subject
+  # Relationships
+  relationships:
+    papers:
+      predicate: bibo:article
+      inverse: bibo:journal
