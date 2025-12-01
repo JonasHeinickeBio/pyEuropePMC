@@ -11,7 +11,6 @@
 
 # Namespace prefixes
 _@prefix:
-  ex: "http://example.org/"
   dcterms: "http://purl.org/dc/terms/"
   foaf: "http://xmlns.com/foaf/0.1/"
   bibo: "http://purl.org/ontology/bibo/"
@@ -28,6 +27,7 @@ _@prefix:
   geo: "http://www.w3.org/2003/01/geo/wgs84_pos#"
   ror: "https://ror.org/vocab#"
   skos: "http://www.w3.org/2004/02/skos/core#"
+  pyeuropepmc: "https://w3id.org/pyeuropepmc/vocab#"
 
 # Base URI for generated data URIs (fallback URIs when no external identifiers available)
 _base_uri: "https://w3id.org/pyeuropepmc/"
@@ -87,8 +87,8 @@ ScholarlyWorkEntity:
     publication_year: dcterms:issued  # More specific than dcterms:issued for year
     publication_date: dcterms:date    # Full date gets dcterms:date
     pmcid: dcterms:identifier
-    pmid: ex:pmid
-    semantic_scholar_id: ex:semanticScholarId
+    pmid: bibo:pmid
+    semantic_scholar_id: pyeuropepmc:semanticScholarId
   # Multi-value fields (authors handled as relationships in subclasses)
   multi_value_fields: {}
 
@@ -99,26 +99,26 @@ PaperEntity:
     issue: bibo:issue
     pub_date: dcterms:issued  # Legacy field, use dcterms:issued for consistency
     abstract: dcterms:abstract
-    citation_count: cito:citationCount  # Use CiTO ontology for citations
-    influential_citation_count: ex:influentialCitationCount
-    is_oa: ex:isOpenAccess
-    oa_status: ex:openAccessStatus
-    oa_url: ex:openAccessUrl
-    reference_count: ex:referenceCount
-    cited_by_count: ex:citedByCount
+    citation_count: pyeuropepmc:citationCount  # Use CiTO ontology for citations
+    influential_citation_count: pyeuropepmc:influentialCitationCount
+    is_oa: dcterms:accessRights
+    oa_status: dcterms:accessRights
+    oa_url: bibo:uri
+    reference_count: bibo:numPages
+    cited_by_count: pyeuropepmc:citationCount
     publisher: dcterms:publisher  # Use dcterms:publisher instead of bibo:publisher for consistency
     issn: bibo:issn
     publication_type: bibo:DocumentType
     first_page: bibo:pageStart
     last_page: bibo:pageEnd
-    semantic_scholar_corpus_id: ex:semanticScholarCorpusId
-    openalex_id: ex:openAlexId
+    semantic_scholar_corpus_id: pyeuropepmc:semanticScholarCorpusId
+    openalex_id: pyeuropepmc:openAlexId
   # Multi-value fields (lists)
   multi_value_fields:
     keywords: dcterms:subject
     fields_of_study: dcterms:subject
     funders: foaf:fundedBy  # Use FOAF vocabulary for funding relationships
-    related_works: ex:relatedWork
+    related_works: dcterms:related
   # Relationships
   relationships:
     authors:
@@ -145,11 +145,11 @@ AuthorEntity:
     first_name: foaf:givenName
     last_name: foaf:familyName
     initials: foaf:initials
-    orcid: ex:orcid
-    openalex_id: ex:openAlexId
-    semantic_scholar_id: ex:semanticScholarId
-    affiliation_text: ex:affiliation
-    position: ex:authorPosition
+    orcid: foaf:account
+    openalex_id: pyeuropepmc:openAlexAuthorId
+    semantic_scholar_id: datacite:semanticScholarId
+    affiliation_text: org:memberOf
+    position: org:role
     email: foaf:mbox
   # Multi-value fields
   multi_value_fields:
@@ -199,9 +199,9 @@ TableEntity:
 TableRowEntity:
   rdf:type: ["bibo:Row"]
   fields:
-    headers: ex:hasHeader  # Changed from multi_value_fields (headers are typically single string per row)
+    headers: rdfs:label  # Changed from multi_value_fields (headers are typically single string per row)
   multi_value_fields:
-    cells: ex:hasCell
+    cells: rdfs:member
   # Relationships
   relationships:
     table:
@@ -224,23 +224,23 @@ InstitutionEntity:
   rdf:type: ["org:Organization"]
   fields:
     display_name: skos:prefLabel
-    ror_id: ror:rorId
-    openalex_id: ex:openAlexId
-    country: ex:country
-    country_code: ex:countryCode
-    city: ex:city
+    ror_id: pyeuropepmc:rorId
+    openalex_id: pyeuropepmc:openAlexInstitutionId
+    country: geo:country
+    country_code: geo:countryCode
+    city: geo:city
     latitude: geo:lat
     longitude: geo:long
     institution_type: org:classification
-    grid_id: ex:gridId
-    isni: ex:isni
-    wikidata_id: ex:wikidataId
-    fundref_id: ex:fundrefId
+    grid_id: pyeuropepmc:gridId
+    isni: pyeuropepmc:isni
+    wikidata_id: owl:sameAs
+    fundref_id: pyeuropepmc:fundrefId
     website: foaf:homepage
-    established: ex:establishedYear
+    established: dcterms:created
   # Multi-value fields
   multi_value_fields:
-    domains: ex:domain
+    domains: dcterms:subject
   # Relationships
   relationships:
     members:
@@ -254,19 +254,19 @@ JournalEntity:
     title: dcterms:title
     medline_abbreviation: bibo:shortTitle
     iso_abbreviation: bibo:shortTitle
-    nlmid: ex:nlmid
+    nlmid: bibo:nlmid
     issn: bibo:issn
     essn: bibo:eissn
     publisher: dcterms:publisher
-    country: ex:country
+    country: geo:country
     language: dcterms:language
-    journal_issue_id: ex:journalIssueId
-    openalex_id: ex:openAlexId
-    wikidata_id: ex:wikidataId
-    scopus_source_id: ex:scopusSourceId
-    impact_factor: ex:impactFactor
-    sjr: ex:sjr
-    h_index: ex:hIndex
+    journal_issue_id: bibo:issue
+    openalex_id: datacite:openAlexId
+    wikidata_id: owl:sameAs
+    scopus_source_id: pyeuropepmc:scopusSourceId
+    impact_factor: pyeuropepmc:impactFactor
+    sjr: pyeuropepmc:sjr
+    h_index: pyeuropepmc:hIndex
   # Multi-value fields
   multi_value_fields:
     subject_areas: dcterms:subject

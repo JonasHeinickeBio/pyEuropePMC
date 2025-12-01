@@ -1,7 +1,6 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix rml: <http://semweb.mmlab.be/ns/rml#> .
 @prefix ql: <http://semweb.mmlab.be/ns/ql#> .
-@prefix ex: <http://example.org/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix bibo: <http://purl.org/ontology/bibo/> .
@@ -18,6 +17,7 @@
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix ror: <https://ror.org/vocab#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
 @prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -75,12 +75,12 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:pmid ;
+        rr:predicate bibo:pmid ;
         rr:objectMap [ rml:reference "pmid" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:semanticScholarId ;
+        rr:predicate pyeuropepmc:semanticScholarId ;
         rr:objectMap [ rml:reference "semantic_scholar_id" ]
     ] ;
 
@@ -118,37 +118,37 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate cito:citationCount ;
+        rr:predicate pyeuropepmc:citationCount ;
         rr:objectMap [ rml:reference "citation_count" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:influentialCitationCount ;
+        rr:predicate pyeuropepmc:influentialCitationCount ;
         rr:objectMap [ rml:reference "influential_citation_count" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:isOpenAccess ;
+        rr:predicate dcterms:accessRights ;
         rr:objectMap [ rml:reference "is_oa" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:openAccessStatus ;
+        rr:predicate dcterms:accessRights ;
         rr:objectMap [ rml:reference "oa_status" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:openAccessUrl ;
+        rr:predicate bibo:uri ;
         rr:objectMap [ rml:reference "oa_url" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:referenceCount ;
+        rr:predicate bibo:numPages ;
         rr:objectMap [ rml:reference "reference_count" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:citedByCount ;
+        rr:predicate pyeuropepmc:citationCount ;
         rr:objectMap [ rml:reference "cited_by_count" ]
     ] ;
 
@@ -178,12 +178,12 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:semanticScholarCorpusId ;
+        rr:predicate pyeuropepmc:semanticScholarCorpusId ;
         rr:objectMap [ rml:reference "semantic_scholar_corpus_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:openAlexId ;
+        rr:predicate pyeuropepmc:openAlexId ;
         rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
     ] ;
 
@@ -203,7 +203,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:relatedWork ;
+        rr:predicate dcterms:related ;
         rr:objectMap [ rml:reference "related_works[*]" ]
     ] ;
 
@@ -246,27 +246,27 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:orcid ;
+        rr:predicate foaf:account ;
         rr:objectMap [ rml:reference "orcid" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:openAlexId ;
+        rr:predicate pyeuropepmc:openAlexAuthorId ;
         rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:semanticScholarId ;
+        rr:predicate datacite:semanticScholarId ;
         rr:objectMap [ rml:reference "semantic_scholar_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:affiliation ;
+        rr:predicate org:memberOf ;
         rr:objectMap [ rml:reference "affiliation_text" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:authorPosition ;
+        rr:predicate org:role ;
         rr:objectMap [ rml:reference "position" ]
     ] ;
 
@@ -365,12 +365,12 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:hasHeader ;
+        rr:predicate rdfs:label ;
         rr:objectMap [ rml:reference "headers" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:hasCell ;
+        rr:predicate rdfs:member ;
         rr:objectMap [ rml:reference "cells[*]" ]
     ] ;
 
@@ -416,27 +416,27 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ror:rorId ;
+        rr:predicate pyeuropepmc:rorId ;
         rr:objectMap [ rml:reference "ror_id" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:openAlexId ;
+        rr:predicate pyeuropepmc:openAlexInstitutionId ;
         rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:country ;
+        rr:predicate geo:country ;
         rr:objectMap [ rml:reference "country" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:countryCode ;
+        rr:predicate geo:countryCode ;
         rr:objectMap [ rml:reference "country_code" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:city ;
+        rr:predicate geo:city ;
         rr:objectMap [ rml:reference "city" ]
     ] ;
 
@@ -456,22 +456,22 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:gridId ;
+        rr:predicate pyeuropepmc:gridId ;
         rr:objectMap [ rml:reference "grid_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:isni ;
+        rr:predicate pyeuropepmc:isni ;
         rr:objectMap [ rml:reference "isni" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:wikidataId ;
+        rr:predicate owl:sameAs ;
         rr:objectMap [ rml:reference "wikidata_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:fundrefId ;
+        rr:predicate pyeuropepmc:fundrefId ;
         rr:objectMap [ rml:reference "fundref_id" ]
     ] ;
 
@@ -481,12 +481,12 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:establishedYear ;
+        rr:predicate dcterms:created ;
         rr:objectMap [ rml:reference "established" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:domain ;
+        rr:predicate dcterms:subject ;
         rr:objectMap [ rml:reference "domains[*]" ]
     ] ;
 
@@ -524,7 +524,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:nlmid ;
+        rr:predicate bibo:nlmid ;
         rr:objectMap [ rml:reference "nlmid" ]
     ] ;
 
@@ -544,7 +544,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:country ;
+        rr:predicate geo:country ;
         rr:objectMap [ rml:reference "country" ]
     ] ;
 
@@ -554,37 +554,37 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:journalIssueId ;
+        rr:predicate bibo:issue ;
         rr:objectMap [ rml:reference "journal_issue_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:openAlexId ;
+        rr:predicate datacite:openAlexId ;
         rr:objectMap [ rml:reference "openalex_id" ; rr:termType rr:IRI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:wikidataId ;
+        rr:predicate owl:sameAs ;
         rr:objectMap [ rml:reference "wikidata_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:scopusSourceId ;
+        rr:predicate pyeuropepmc:scopusSourceId ;
         rr:objectMap [ rml:reference "scopus_source_id" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:impactFactor ;
+        rr:predicate pyeuropepmc:impactFactor ;
         rr:objectMap [ rml:reference "impact_factor" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:sjr ;
+        rr:predicate pyeuropepmc:sjr ;
         rr:objectMap [ rml:reference "sjr" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:hIndex ;
+        rr:predicate pyeuropepmc:hIndex ;
         rr:objectMap [ rml:reference "h_index" ]
     ] ;
 
