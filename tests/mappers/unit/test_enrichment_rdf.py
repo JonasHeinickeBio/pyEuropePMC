@@ -78,10 +78,12 @@ class TestEnrichmentRDFMapping:
         assert (uri, mapper._resolve_predicate("dcterms:abstract"), None) in g
 
         # Check enrichment properties
-        assert (uri, mapper._resolve_predicate("cito:citationCount"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:influentialCitationCount"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:isOpenAccess"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:openAccessStatus"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:citationCount"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:influentialCitationCount"), None) in g
+        # is_oa and oa_status both map to dcterms:accessRights
+        assert (uri, mapper._resolve_predicate("dcterms:accessRights"), None) in g
+        # oa_url maps to bibo:uri
+        assert (uri, mapper._resolve_predicate("bibo:uri"), None) in g
         assert (uri, mapper._resolve_predicate("dcterms:date"), None) in g
 
         # Check multi-value fields
@@ -101,16 +103,16 @@ class TestEnrichmentRDFMapping:
         assert (uri, mapper._resolve_predicate("foaf:familyName"), None) in g
 
         # Check enrichment properties
-        assert (uri, mapper._resolve_predicate("ex:orcid"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:openAlexId"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:authorPosition"), None) in g
+        assert (uri, mapper._resolve_predicate("datacite:orcid"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:openAlexAuthorId"), None) in g
+        assert (uri, mapper._resolve_predicate("org:role"), None) in g
         assert (uri, mapper._resolve_predicate("foaf:mbox"), None) in g
 
         # Check provenance
         assert (uri, mapper._resolve_predicate("prov:hadPrimarySource"), None) in g
 
         # Verify URI is name-based (prioritized over ORCID)
-        assert str(uri) == "http://example.org/data/author/john-doe"
+        assert str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"
 
     def test_enriched_institution_to_rdf(self, mapper, enriched_institution):
         """Test converting enriched institution to RDF."""
@@ -119,18 +121,18 @@ class TestEnrichmentRDFMapping:
 
         # Check basic institution properties
         assert (uri, mapper._resolve_predicate("skos:prefLabel"), None) in g
-        assert (uri, mapper._resolve_predicate("ror:rorId"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:openAlexId"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:rorId"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:openAlexInstitutionId"), None) in g
 
         # Check geographic properties
-        assert (uri, mapper._resolve_predicate("ex:country"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:city"), None) in g
+        assert (uri, mapper._resolve_predicate("geo:country"), None) in g
+        assert (uri, mapper._resolve_predicate("geo:city"), None) in g
         assert (uri, mapper._resolve_predicate("geo:lat"), None) in g
         assert (uri, mapper._resolve_predicate("geo:long"), None) in g
 
         # Check external identifiers
-        assert (uri, mapper._resolve_predicate("ex:gridId"), None) in g
-        assert (uri, mapper._resolve_predicate("ex:wikidataId"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:gridId"), None) in g
+        # wikidata_id maps to owl:sameAs (checked below)
         assert (uri, mapper._resolve_predicate("foaf:homepage"), None) in g
 
         # Check owl:sameAs links

@@ -7,7 +7,7 @@ This module provides generic XML extraction and manipulation helper functions.
 import logging
 import re
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 logger = logging.getLogger(__name__)
 
@@ -260,9 +260,7 @@ class XMLHelper:
         for key, pattern in field_patterns.items():
             matches = parent.findall(pattern)
             if not first_only:
-                result[key] = (
-                    [XMLHelper.get_text_content(m) for m in matches] if matches else []
-                )
+                result[key] = [XMLHelper.get_text_content(m) for m in matches] if matches else []
             else:
                 if matches:
                     text = XMLHelper.get_text_content(matches[0])

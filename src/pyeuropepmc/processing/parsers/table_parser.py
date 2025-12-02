@@ -6,7 +6,7 @@ This module provides specialized parsing for tables.
 
 import logging
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.base_parser import BaseParser
@@ -56,9 +56,7 @@ class TableParser(BaseParser):
         label_patterns = {"label": "label"}
         caption_patterns = {"caption": "caption"}
         table_data["label"] = self._extract_first_text_from_element(table_wrap, label_patterns)
-        table_data["caption"] = self._extract_first_text_from_element(
-            table_wrap, caption_patterns
-        )
+        table_data["caption"] = self._extract_first_text_from_element(table_wrap, caption_patterns)
 
         # Find table element
         table_elem = None

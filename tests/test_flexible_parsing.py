@@ -370,9 +370,10 @@ class TestFlexibleExtractMetadata:
         assert metadata["pmcid"] == "3258128"
         assert metadata["doi"] == "10.1234/test"
         assert metadata["title"] == "Test Article Title"
-        assert metadata["journal"] == "Test Journal"
-        assert metadata["volume"] == "10"
-        assert metadata["issue"] == "2"
+        # Journal is now a dict with nested structure including volume/issue
+        assert metadata["journal"]["title"] == "Test Journal"
+        assert metadata["journal"]["volume"] == "10"
+        assert metadata["journal"]["issue"] == "2"
         assert metadata["pages"] == "100-110"
 
     def test_extract_with_alternative_patterns(self):
@@ -395,7 +396,8 @@ class TestFlexibleExtractMetadata:
 
         # Should fall back to alternative patterns
         assert metadata["title"] == "Alternative Title Element"
-        assert metadata["journal"] == "Journal Source"
+        # Journal is now a dict with nested structure
+        assert metadata["journal"]["title"] == "Journal Source"
 
 
 class TestFlexibleExtractAuthors:

@@ -5,7 +5,7 @@ This module provides specialized parsing for references and citations.
 """
 
 import logging
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.base_parser import BaseParser
@@ -61,9 +61,7 @@ class ReferenceParser(BaseParser):
 
         return ref_data
 
-    def _find_citation_element(
-        self, ref: ET.Element
-    ) -> tuple[ET.Element | None, str | None]:
+    def _find_citation_element(self, ref: ET.Element) -> tuple[ET.Element | None, str | None]:
         """Find the citation element within a reference."""
         for citation_type in self.config.citation_types:
             for elem in ref.iter():

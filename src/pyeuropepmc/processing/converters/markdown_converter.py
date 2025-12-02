@@ -6,7 +6,7 @@ This module provides conversion of parsed XML to markdown format.
 
 import logging
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.author_parser import AuthorParser
@@ -94,19 +94,14 @@ class MarkdownConverter(BaseParser):
             logger.error(f"Error converting to markdown: {e}")
             raise
 
-    def _add_metadata_to_markdown(
-        self, metadata: dict[str, Any], md_parts: list[str]
-    ) -> None:
+    def _add_metadata_to_markdown(self, metadata: dict[str, Any], md_parts: list[str]) -> None:
         """Add metadata fields to markdown parts."""
         journal = metadata.get("journal")
-        if journal:
-            # journal is a dict with title, volume, issue
-            if isinstance(journal, dict):
-                journal_title = journal.get("title", "")
-                if journal_title:
-                    md_parts.append(f"**Journal:** {journal_title}\n\n")
-            else:
-                md_parts.append(f"**Journal:** {journal}\n\n")
+        if journal and isinstance(journal, dict):
+            # Journal metadata is always a dict with title, volume, issue
+            journal_title = journal.get("title", "")
+            if journal_title:
+                md_parts.append(f"**Journal:** {journal_title}\n\n")
         if metadata.get("doi"):
             md_parts.append(f"**DOI:** {metadata['doi']}\n\n")
 

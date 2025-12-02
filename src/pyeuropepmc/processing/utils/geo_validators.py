@@ -21,17 +21,74 @@ class GeoValidator:
 
     # US state abbreviations (2-letter codes)
     US_STATES = {
-        "AL", "AK", "AZ", "AR", "CA", "CO", "CT", "DE", "FL", "GA",
-        "HI", "ID", "IL", "IN", "IA", "KS", "KY", "LA", "ME", "MD",
-        "MA", "MI", "MN", "MS", "MO", "MT", "NE", "NV", "NH", "NJ",
-        "NM", "NY", "NC", "ND", "OH", "OK", "OR", "PA", "RI", "SC",
-        "SD", "TN", "TX", "UT", "VT", "VA", "WA", "WV", "WI", "WY",
+        "AL",
+        "AK",
+        "AZ",
+        "AR",
+        "CA",
+        "CO",
+        "CT",
+        "DE",
+        "FL",
+        "GA",
+        "HI",
+        "ID",
+        "IL",
+        "IN",
+        "IA",
+        "KS",
+        "KY",
+        "LA",
+        "ME",
+        "MD",
+        "MA",
+        "MI",
+        "MN",
+        "MS",
+        "MO",
+        "MT",
+        "NE",
+        "NV",
+        "NH",
+        "NJ",
+        "NM",
+        "NY",
+        "NC",
+        "ND",
+        "OH",
+        "OK",
+        "OR",
+        "PA",
+        "RI",
+        "SC",
+        "SD",
+        "TN",
+        "TX",
+        "UT",
+        "VT",
+        "VA",
+        "WA",
+        "WV",
+        "WI",
+        "WY",
         "DC",  # District of Columbia
     }
 
     # Canadian province/territory abbreviations
     CANADIAN_PROVINCES = {
-        "AB", "BC", "MB", "NB", "NL", "NS", "NT", "NU", "ON", "PE", "QC", "SK", "YT",
+        "AB",
+        "BC",
+        "MB",
+        "NB",
+        "NL",
+        "NS",
+        "NT",
+        "NU",
+        "ON",
+        "PE",
+        "QC",
+        "SK",
+        "YT",
     }
 
     # Australian state abbreviations
@@ -39,16 +96,41 @@ class GeoValidator:
 
     # UK country abbreviations (sometimes used as states)
     UK_COUNTRIES = {
-        "ENG", "SCO", "WAL", "NIR",  # England, Scotland, Wales, Northern Ireland
+        "ENG",
+        "SCO",
+        "WAL",
+        "NIR",  # England, Scotland, Wales, Northern Ireland
     }
 
     # Known countries and abbreviations
     KNOWN_COUNTRIES = {
-        "USA", "US", "UNITED STATES", "UK", "UNITED KINGDOM", "CANADA",
-        "CHINA", "JAPAN", "GERMANY", "FRANCE", "ITALY", "SPAIN",
-        "AUSTRALIA", "INDIA", "BRAZIL", "MEXICO", "RUSSIA", "SOUTH KOREA",
-        "NETHERLANDS", "SWEDEN", "NORWAY", "DENMARK", "FINLAND", "POLAND",
-        "BELGIUM", "AUSTRIA", "SWITZERLAND",
+        "USA",
+        "US",
+        "UNITED STATES",
+        "UK",
+        "UNITED KINGDOM",
+        "CANADA",
+        "CHINA",
+        "JAPAN",
+        "GERMANY",
+        "FRANCE",
+        "ITALY",
+        "SPAIN",
+        "AUSTRALIA",
+        "INDIA",
+        "BRAZIL",
+        "MEXICO",
+        "RUSSIA",
+        "SOUTH KOREA",
+        "NETHERLANDS",
+        "SWEDEN",
+        "NORWAY",
+        "DENMARK",
+        "FINLAND",
+        "POLAND",
+        "BELGIUM",
+        "AUSTRIA",
+        "SWITZERLAND",
     }
 
     # Country indicators
@@ -237,9 +319,7 @@ class GeoValidator:
             if postal_match:
                 postal_code = postal_match.group(1)
                 # Remove postal code from the component
-                remaining = re.sub(
-                    r"\b(?:\w\d\w\s*\d\w\d|\d{5}(?:-\d{4})?)\b", "", comp
-                ).strip()
+                remaining = re.sub(r"\b(?:\w\d\w\s*\d\w\d|\d{5}(?:-\d{4})?)\b", "", comp).strip()
                 if remaining:
                     components[i] = remaining
                 else:

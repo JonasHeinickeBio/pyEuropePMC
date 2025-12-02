@@ -5,7 +5,7 @@ This module provides specialized parsing for article sections.
 """
 
 import logging
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.base_parser import BaseParser
@@ -35,11 +35,9 @@ class SectionParser(BaseParser):
             patterns = {"body": ".//body"}
             bodies = self.extract_elements_by_patterns(patterns, return_type="element")["body"]
             sections = []
-            for _body_elem in bodies:
-                sec_patterns = {"sec": ".//sec"}
-                secs = self.extract_elements_by_patterns(sec_patterns, return_type="element")[
-                    "sec"
-                ]
+            for body_elem in bodies:
+                # Find sections within this specific body element
+                secs = body_elem.findall(".//sec")
                 for sec in secs:
                     section_data = self._extract_section_structure(sec)
                     if section_data:

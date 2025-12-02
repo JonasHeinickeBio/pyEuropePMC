@@ -3,6 +3,7 @@ Element patterns configuration for XML parsing.
 
 This module contains the ElementPatterns dataclass that defines flexible patterns
 for extracting various elements from different XML schema variations (JATS, NLM, custom).
+
 """
 
 from dataclasses import dataclass, field

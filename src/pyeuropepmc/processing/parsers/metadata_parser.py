@@ -6,7 +6,7 @@ This module provides specialized parsing for article metadata.
 
 import logging
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.author_parser import AuthorParser
@@ -62,16 +62,15 @@ class MetadataParser(BaseParser):
 
     def _extract_basic_metadata(self) -> dict[str, Any]:
         """Extract basic article metadata (pmcid, doi, title, abstract)."""
+        root = self.root if self.root is not None else ET.Element("empty")
         return {
-            "pmcid": self._extract_with_fallbacks(
-                self.root, self.config.article_patterns["pmcid"]
-            ),
-            "doi": self._extract_with_fallbacks(self.root, self.config.article_patterns["doi"]),
+            "pmcid": self._extract_with_fallbacks(root, self.config.article_patterns["pmcid"]),
+            "doi": self._extract_with_fallbacks(root, self.config.article_patterns["doi"]),
             "title": self._extract_with_fallbacks(
-                self.root, self.config.article_patterns["title"], use_full_text=True
+                root, self.config.article_patterns["title"], use_full_text=True
             ),
             "abstract": self._extract_with_fallbacks(
-                self.root, self.config.article_patterns["abstract"], use_full_text=True
+                root, self.config.article_patterns["abstract"], use_full_text=True
             ),
         }
 
@@ -89,16 +88,11 @@ class MetadataParser(BaseParser):
 
     def _extract_journal_metadata(self) -> dict[str, Any]:
         """Extract journal information including IDs and ISSNs."""
+        root = self.root if self.root is not None else ET.Element("empty")
         journal_info: dict[str, Any] = {
-            "title": self._extract_with_fallbacks(
-                self.root, self.config.journal_patterns["title"]
-            ),
-            "volume": self._extract_with_fallbacks(
-                self.root, self.config.journal_patterns["volume"]
-            ),
-            "issue": self._extract_with_fallbacks(
-                self.root, self.config.journal_patterns["issue"]
-            ),
+            "title": self._extract_with_fallbacks(root, self.config.journal_patterns["title"]),
+            "volume": self._extract_with_fallbacks(root, self.config.journal_patterns["volume"]),
+            "issue": self._extract_with_fallbacks(root, self.config.journal_patterns["issue"]),
         }
         self._add_journal_ids_and_issns(journal_info)
         return journal_info
@@ -125,9 +119,7 @@ class MetadataParser(BaseParser):
                 journal_info["iso_abbrev"] = iso_abbrev
 
             # Extract ISSNs
-            issn_print = self._extract_with_fallbacks(
-                journal_meta, [".//issn[@pub-type='ppub']"]
-            )
+            issn_print = self._extract_with_fallbacks(journal_meta, [".//issn[@pub-type='ppub']"])
             if issn_print:
                 journal_info["issn_print"] = issn_print
 
@@ -140,8 +132,9 @@ class MetadataParser(BaseParser):
 
     def _extract_page_range(self) -> str | None:
         """Extract page range from first and last page."""
-        fpage = self._extract_with_fallbacks(self.root, [".//fpage", ".//first-page"])
-        lpage = self._extract_with_fallbacks(self.root, [".//lpage", ".//last-page"])
+        root = self.root if self.root is not None else ET.Element("empty")
+        fpage = self._extract_with_fallbacks(root, [".//fpage", ".//first-page"])
+        lpage = self._extract_with_fallbacks(root, [".//lpage", ".//last-page"])
         return XMLHelper.combine_page_range(fpage, lpage)
 
     def _add_optional_metadata(self, metadata: dict[str, Any]) -> None:
@@ -190,7 +183,8 @@ class MetadataParser(BaseParser):
     def extract_keywords(self) -> list[str]:
         """Extract keywords from XML."""
         self._require_root()
-        keywords = self._extract_flat_texts(self.root, ".//kwd")
+        root = self.root if self.root is not None else ET.Element("empty")
+        keywords = self._extract_flat_texts(root, ".//kwd")
         logger.debug(f"Extracted keywords: {keywords}")
         return keywords
 

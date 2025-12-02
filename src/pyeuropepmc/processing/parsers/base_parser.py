@@ -6,7 +6,7 @@ This module provides the base class that all specialized parsers inherit from.
 
 import logging
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
@@ -101,7 +101,7 @@ class BaseParser:
 
         results: dict[str, list[Any]] = {}
         for key, pattern in patterns.items():
-            matches = self.root.findall(pattern)
+            matches = self.root.findall(pattern) if self.root is not None else []
             if not matches:
                 results[key] = []
                 continue

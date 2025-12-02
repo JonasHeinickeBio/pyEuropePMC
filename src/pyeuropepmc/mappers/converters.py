@@ -51,6 +51,16 @@ from pyeuropepmc.mappers.validators import (
     validate_xml_data,
 )
 
+__all__ = [
+    "RDFConversionError",
+    "convert_search_to_rdf",
+    "convert_xml_to_rdf",
+    "convert_enrichment_to_rdf",
+    "convert_pipeline_to_rdf",
+    "convert_incremental_to_rdf",
+    "convert_to_rdf",
+]
+
 logger = logging.getLogger(__name__)
 
 
@@ -515,7 +525,7 @@ def create_named_graph(name: str, title: str, description: str) -> Graph:
     return ng
 
 
-def convert_to_rdf(
+def convert_to_rdf(  # noqa: C901
     search_results: list[dict[str, Any]] | dict[str, Any] | None = None,
     xml_data: dict[str, Any] | None = None,
     enrichment_data: dict[str, Any] | None = None,

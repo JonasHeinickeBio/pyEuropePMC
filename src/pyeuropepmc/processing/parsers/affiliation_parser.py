@@ -7,7 +7,7 @@ This module provides specialized parsing for author affiliations and institution
 import logging
 import re
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.base_parser import BaseParser
@@ -101,9 +101,10 @@ class AffiliationParser(BaseParser):
                 elif len(parsed_institutions) == 1:
                     self._apply_parsed_institution(parsed_institutions[0], aff_data)
         else:
-            clean_text = "".join(aff_elem.itertext()).strip()
-            if clean_text:
-                parsed = self._parse_single_institution(clean_text, [], 0)
+            # Reuse the full_text already extracted in the parent method
+            full_text = aff_data.get("text", "")
+            if full_text:
+                parsed = self._parse_single_institution(full_text, [], 0)
                 self._apply_parsed_institution(parsed, aff_data)
 
     def _apply_parsed_institution(

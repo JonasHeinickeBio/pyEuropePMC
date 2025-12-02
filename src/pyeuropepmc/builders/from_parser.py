@@ -126,9 +126,25 @@ def build_paper_entities(
 
     # Build PaperEntity
     journal_entity = None
-    journal_title = meta.get("journal")
-    if journal_title:
-        journal_entity = JournalEntity(title=journal_title)
+    journal_data = meta.get("journal")
+    # Volume and issue are now nested in journal data but belong to the Paper, not Journal
+    volume = None
+    issue = None
+
+    if journal_data:
+        # Journal data is now a dict with nested structure
+        if isinstance(journal_data, dict):
+            journal_entity = JournalEntity(title=journal_data.get("title", ""))
+            # Extract volume/issue from journal dict (they belong to Paper, not Journal)
+            volume = journal_data.get("volume")
+            issue = journal_data.get("issue")
+        else:
+            # Fallback for simple string format (backward compatibility)
+            journal_entity = JournalEntity(title=str(journal_data))
+
+    # Allow top-level metadata to override (backward compatibility)
+    volume = meta.get("volume") or volume
+    issue = meta.get("issue") or issue
 
     paper = PaperEntity(
         id=meta.get("pmcid") or meta.get("doi"),
@@ -138,8 +154,8 @@ def build_paper_entities(
         doi=meta.get("doi"),
         title=meta.get("title"),
         journal=journal_entity,
-        volume=meta.get("volume"),
-        issue=meta.get("issue"),
+        volume=volume,
+        issue=issue,
         pages=meta.get("pages"),
         pub_date=meta.get("pub_date"),
         keywords=meta.get("keywords") or [],

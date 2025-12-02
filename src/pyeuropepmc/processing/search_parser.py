@@ -549,7 +549,7 @@ class EuropePMCParser:
         return keywords
 
     @staticmethod
-    def extract_mesh_headings(result: dict[str, Any]) -> list:
+    def extract_mesh_headings(result: dict[str, Any]) -> list[Any]:
         """
         Extract structured MeSH headings from search result.
 

@@ -5,7 +5,7 @@ This module provides conversion of parsed XML to plain text format.
 """
 
 import logging
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.author_parser import AuthorParser

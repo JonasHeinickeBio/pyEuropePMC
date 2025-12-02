@@ -70,7 +70,7 @@ Extract journal and publication information.
 - `paper_dict` (dict): Paper data containing journal information
 
 **Returns:**
-- Dictionary with journal metadata
+- Dictionary with journal metadata including 'title', 'volume', and 'issue' keys
 
 ## Static Methods
 

@@ -49,22 +49,60 @@ __all__ = ["FullTextXMLParser", "ElementPatterns", "DocumentSchema"]
 
 class FullTextXMLParser:
     """
-    Parser for Europe PMC full text XML files with flexible configuration support.
+    Orchestrator for parsing Europe PMC full text XML files.
 
-    This is the main orchestrator class that coordinates specialized parsers
-    for different aspects of XML parsing (authors, affiliations, metadata,
-    references, tables, sections) and converters for output formats.
+    This class serves as the main entry point and coordinator for XML parsing operations.
+    It delegates specialized parsing tasks to dedicated parser modules while maintaining
+    a consistent API for users.
+
+    Architecture
+    ------------
+    The parser uses a lazy-loading pattern where specialized parsers and converters are
+    instantiated on-demand through property accessors. This provides:
+    - Reduced memory footprint: Only requested components are created
+    - Improved performance: No overhead from unused parsers
+    - Clean separation: Each parser focuses on a single responsibility
+
+    Delegated Components
+    --------------------
+    - AuthorParser: Author and contributor extraction
+    - AffiliationParser: Institution and affiliation parsing
+    - MetadataParser: Article metadata extraction (title, DOI, dates, journal info)
+    - ReferenceParser: Bibliography and citation parsing
+    - TableParser: Table extraction and structuring
+    - SectionParser: Body section and content parsing
+    - PlaintextConverter: XML to plaintext conversion
+    - MarkdownConverter: XML to markdown conversion
+
+    Parameters
+    ----------
+    xml_content : str or ET.Element, optional
+        XML content string or Element to parse. If provided, parsing begins immediately.
+    config : ElementPatterns, optional
+        Configuration for element patterns. If None, uses default JATS patterns.
 
     Examples
     --------
-    >>> # Basic usage
+    >>> # Basic usage with automatic parsing
     >>> parser = FullTextXMLParser(xml_content)
     >>> metadata = parser.extract_metadata()
     >>> authors = parser.extract_authors()
     >>>
-    >>> # With custom configuration
+    >>> # Custom configuration for non-standard XML
     >>> config = ElementPatterns(citation_types=["element-citation", "mixed-citation"])
     >>> parser = FullTextXMLParser(xml_content, config=config)
+    >>>
+    >>> # Lazy initialization - parsers created only when needed
+    >>> parser = FullTextXMLParser()
+    >>> parser.parse(xml_content)  # Parse later
+    >>> metadata = parser.extract_metadata()  # MetadataParser created here
+
+    Notes
+    -----
+    - All specialized parsers share the same root element and configuration
+    - Parsers are cached after first access for performance
+    - Calling parse() with new content resets all cached parsers
+    - The class is thread-safe for read operations after initialization
     """
 
     # XML namespaces commonly used in PMC articles
@@ -439,34 +477,37 @@ class FullTextXMLParser:
             return self._schema
 
         schema = DocumentSchema()
+        root = self.root
 
         # Detect table structures
         for table_pattern in self.config.table_patterns["wrapper"]:
-            if self.root.find(f".//{table_pattern}") is not None:
+            if root is not None and root.find(f".//{table_pattern}") is not None:
                 schema.has_tables = True
                 schema.table_structure = "jats"
                 break
 
-        if not schema.has_tables and self.root.find(".//table") is not None:
+        if not schema.has_tables and root is not None and root.find(".//table") is not None:
             schema.has_tables = True
             schema.table_structure = "html"
 
         # Detect citation types present
         for citation_type in self.config.citation_types:
-            if self.root.find(f".//{citation_type}") is not None:
+            if root is not None and root.find(f".//{citation_type}") is not None:
                 schema.citation_types.append(citation_type)
 
         # Detect figures
-        schema.has_figures = self.root.find(".//fig") is not None
+        schema.has_figures = root is not None and root.find(".//fig") is not None
 
         # Detect supplementary materials
-        schema.has_supplementary = self.root.find(".//supplementary-material") is not None
+        schema.has_supplementary = (
+            root is not None and root.find(".//supplementary-material") is not None
+        )
 
         # Detect acknowledgments
-        schema.has_acknowledgments = self.root.find(".//ack") is not None
+        schema.has_acknowledgments = root is not None and root.find(".//ack") is not None
 
         # Detect funding information
-        schema.has_funding = self.root.find(".//funding-group") is not None
+        schema.has_funding = root is not None and root.find(".//funding-group") is not None
 
         logger.debug(f"Detected schema: {schema}")
         self._schema = schema
@@ -484,7 +525,10 @@ class FullTextXMLParser:
         self._require_root()
 
         element_types = set()
-        for elem in self.root.iter():
+        root = self.root
+        if root is None:
+            return []
+        for elem in root.iter():
             tag = elem.tag
             if tag.startswith("{"):
                 tag = tag.split("}", 1)[1]
@@ -505,8 +549,16 @@ class FullTextXMLParser:
         # Get all element types in the document
         all_elements = set()
         element_frequency: dict[str, int] = {}
+        root = self.root
+        if root is None:
+            return {
+                "total_elements": 0,
+                "unique_element_types": 0,
+                "element_frequency": {},
+                "element_types": [],
+            }
 
-        for elem in self.root.iter():
+        for elem in root.iter():
             tag = elem.tag
             if tag.startswith("{"):
                 tag = tag.split("}", 1)[1]
@@ -623,12 +675,37 @@ class FullTextXMLParser:
     def _get_common_structural_elements() -> set[str]:
         """Get common structural elements that are implicitly recognized."""
         return {
-            "article", "front", "body", "back", "sec", "p", "title",
-            "ref-list", "ref", "fig", "graphic", "label", "caption",
-            "supplementary-material", "ack", "funding-group", "aff",
-            "name", "contrib", "contrib-group", "author-notes", "pub-date",
-            "addr-line", "xref", "person-group", "etal", "media",
-            "underline", "month", "day", "object-id",
+            "article",
+            "front",
+            "body",
+            "back",
+            "sec",
+            "p",
+            "title",
+            "ref-list",
+            "ref",
+            "fig",
+            "graphic",
+            "label",
+            "caption",
+            "supplementary-material",
+            "ack",
+            "funding-group",
+            "aff",
+            "name",
+            "contrib",
+            "contrib-group",
+            "author-notes",
+            "pub-date",
+            "addr-line",
+            "xref",
+            "person-group",
+            "etal",
+            "media",
+            "underline",
+            "month",
+            "day",
+            "object-id",
         }
 
     # =========================================================================
@@ -665,7 +742,7 @@ class FullTextXMLParser:
 
         results: dict[str, list[Any]] = {}
         for key, pattern in patterns.items():
-            matches = self.root.findall(pattern)
+            matches = self.root.findall(pattern) if self.root is not None else []
             if not matches:
                 results[key] = []
                 continue

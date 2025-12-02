@@ -6,7 +6,7 @@ This module provides specialized parsing for author and contributor data.
 
 import logging
 from typing import Any
-from xml.etree import ElementTree as ET
+from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 from pyeuropepmc.processing.parsers.base_parser import BaseParser
@@ -50,7 +50,7 @@ class AuthorParser(BaseParser):
 
         # Try each author element pattern in config
         for author_pattern in self.config.author_element_patterns:
-            author_elems = self.root.findall(author_pattern)
+            author_elems = self.root.findall(author_pattern) if self.root is not None else []
             if author_elems:
                 logger.debug(f"Found {len(author_elems)} authors using pattern: {author_pattern}")
                 authors = []

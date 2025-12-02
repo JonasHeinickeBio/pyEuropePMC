@@ -175,7 +175,7 @@ def build_citation_networks(dataset: Any, named_graph_uris: dict[str, Any]) -> N
             dataset.graph(publications_context).add((citing_pub, CITO.cites, cited_pub))
 
 
-def build_collaboration_networks(dataset: Any, named_graph_uris: dict[str, Any]) -> None:
+def build_collaboration_networks(dataset: Any, named_graph_uris: dict[str, Any]) -> None:  # noqa: C901
     """Build author collaboration networks using VIVO ontology."""
     authors_context = named_graph_uris["authors"]
     publications_context = named_graph_uris["publications"]
@@ -186,7 +186,7 @@ def build_collaboration_networks(dataset: Any, named_graph_uris: dict[str, Any])
     VIVO = get_namespace_from_config(config, "vivo")
 
     # Build author-publication mapping
-    author_publications = {}
+    author_publications: dict[str, list[str]] = {}
 
     for s, p, o in dataset.graph(publications_context):
         if p == DCTERMS.creator and isinstance(o, URIRef):
@@ -229,7 +229,7 @@ def build_institutional_hierarchies(dataset: Any, named_graph_uris: dict[str, An
     ORG = get_namespace_from_config(config, "org")
 
     # Extract institution information from authors
-    institution_members = {}
+    institution_members: dict[str, list[str]] = {}
 
     for s, p, o in dataset.graph(authors_context):
         if p == EX.affiliation:

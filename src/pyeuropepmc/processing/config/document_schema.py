@@ -3,6 +3,7 @@ Document schema configuration for fulltext parser.
 
 This module contains the DocumentSchema dataclass that stores information about
 the XML document structure to enable adaptive parsing strategies.
+
 """
 
 from dataclasses import dataclass, field

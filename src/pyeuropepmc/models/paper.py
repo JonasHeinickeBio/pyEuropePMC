@@ -179,9 +179,8 @@ class PaperEntity(ScholarlyWorkEntity):
             self.oa_url = validate_and_normalize_uri(self.oa_url)
 
         # Validate journal entity if present
-        if self.journal:
-            if hasattr(self.journal, "validate"):
-                self.journal.validate()
+        if self.journal and hasattr(self.journal, "validate"):
+            self.journal.validate()
 
         super().validate()
 

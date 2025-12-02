@@ -49,7 +49,7 @@ class TestRDFUtils:
         author = AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789")
 
         uri = generate_entity_uri(author)
-        assert str(uri) == "http://example.org/data/author/john-doe"
+        assert str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"
 
     def test_generate_entity_uri_author_name(self):
         """Test URI generation for author with name only."""
