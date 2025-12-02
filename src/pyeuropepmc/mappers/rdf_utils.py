@@ -48,6 +48,8 @@ class URIFactory:
             "InstitutionEntity": self._generate_institution_uri,
             "ReferenceEntity": self._generate_reference_uri,
             "JournalEntity": self._generate_journal_uri,
+            "SectionEntity": self._generate_section_uri,
+            "TableEntity": self._generate_table_uri,
         }
 
     @property
@@ -141,6 +143,97 @@ class URIFactory:
         if getattr(entity, "nlmid", None):
             return URIRef(f"{self.base_uri}journal/{entity.nlmid.lower()}")
         return self._generate_fallback_uri(entity)
+
+    def _generate_section_uri(self, entity: Any) -> URIRef:
+        """Generate URI for section entity using title-based identifier."""
+        title = getattr(entity, "title", None)
+        if title:
+            # Normalize the title for URI use
+            normalized_title = self._normalize_name(title)
+            if normalized_title:
+                return URIRef(f"{self.base_uri}section/{normalized_title}")
+        # Fallback to label
+        label = getattr(entity, "label", None)
+        if label:
+            normalized_label = self._normalize_name(label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}section/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def _generate_table_uri(self, entity: Any) -> URIRef:
+        """Generate URI for table entity using label-based identifier."""
+        # First try table_label (e.g., "Table 1")
+        table_label = getattr(entity, "table_label", None)
+        if table_label:
+            normalized_label = self._normalize_name(table_label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}table/{normalized_label}")
+        # Fallback to caption
+        caption = getattr(entity, "caption", None)
+        if caption:
+            # Take first 50 chars of caption for URI
+            short_caption = caption[:50] if len(caption) > 50 else caption
+            normalized_caption = self._normalize_name(short_caption)
+            if normalized_caption:
+                return URIRef(f"{self.base_uri}table/{normalized_caption}")
+        # Fallback to label
+        label = getattr(entity, "label", None)
+        if label and label != "Untitled Table":
+            normalized_label = self._normalize_name(label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}table/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def generate_grant_uri(self, funder_dict: dict[str, Any]) -> URIRef:
+        """
+        Generate a meaningful URI for a grant/funding record.
+
+        Parameters
+        ----------
+        funder_dict : dict
+            Dictionary containing funder information with keys like:
+            - fundref_doi: FundRef DOI (e.g., "https://doi.org/10.13039/501100001809")
+            - award_id: Award/grant identifier (e.g., "82170974")
+            - source: Funding source name
+
+        Returns
+        -------
+        URIRef
+            Generated URI for the grant
+        """
+        award_id = funder_dict.get("award_id")
+        fundref_doi = funder_dict.get("fundref_doi")
+        source = funder_dict.get("source")
+
+        # Build a meaningful identifier
+        parts = []
+        if fundref_doi:
+            # Extract the funder ID from the FundRef DOI
+            # e.g., "https://doi.org/10.13039/501100001809" -> "501100001809"
+            funder_id = fundref_doi.split("/")[-1] if "/" in fundref_doi else fundref_doi
+            # Clean up any URL parts
+            funder_id = funder_id.replace("https://doi.org/10.13039/", "").replace(
+                "http://doi.org/10.13039/", ""
+            )
+            if funder_id:
+                parts.append(funder_id)
+        if award_id:
+            # Normalize award ID for URI use
+            normalized_award = re.sub(r"[^a-zA-Z0-9-]", "-", str(award_id)).lower()
+            parts.append(normalized_award)
+
+        if parts:
+            grant_id = "-".join(parts)
+            return URIRef(f"{self.base_uri}grant/{grant_id}")
+
+        # Fallback: use source if available
+        if source:
+            normalized_source = self._normalize_name(source)
+            if normalized_source:
+                return URIRef(f"{self.base_uri}grant/{normalized_source}")
+
+        # Final fallback to UUID
+        return URIRef(f"{self.base_uri}grant/{uuid.uuid4()}")
 
     def _normalize_journal_abbr(self, abbreviation: str) -> str | None:
         """Normalize journal abbreviation for URI use."""

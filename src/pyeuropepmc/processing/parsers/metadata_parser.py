@@ -98,7 +98,7 @@ class MetadataParser(BaseParser):
         return journal_info
 
     def _add_journal_ids_and_issns(self, journal_info: dict[str, Any]) -> None:
-        """Add journal IDs and ISSNs to journal info."""
+        """Add journal IDs, ISSNs, publisher and location to journal info."""
         journal_meta_result = self.extract_elements_by_patterns(
             {"journal_meta": ".//journal-meta"}, return_type="element"
         )
@@ -128,6 +128,19 @@ class MetadataParser(BaseParser):
             )
             if issn_electronic:
                 journal_info["issn_electronic"] = issn_electronic
+
+            # Extract publisher name and location from journal-meta
+            publisher_name = self._extract_with_fallbacks(
+                journal_meta, [".//publisher/publisher-name", ".//publisher-name"]
+            )
+            if publisher_name:
+                journal_info["publisher"] = publisher_name
+
+            publisher_loc = self._extract_with_fallbacks(
+                journal_meta, [".//publisher/publisher-loc", ".//publisher-loc"]
+            )
+            if publisher_loc:
+                journal_info["country"] = publisher_loc
             break
 
     def _extract_page_range(self) -> str | None:

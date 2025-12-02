@@ -63,9 +63,7 @@ class XMLDataLoader(DataLoader):
     def __init__(self, search_results: list[dict[str, Any]]):
         self.search_results = search_results
         self.client: FullTextClient | None = None
-        self.cache_dir = Path(
-            "/home/jhe24/AID-PAIS/pyEuropePMC_project/tests/fixtures/fulltext_downloads"
-        )
+        self.cache_dir = Path("tests/fixtures/fulltext_downloads")
         self.cache_dir.mkdir(parents=True, exist_ok=True)
 
     def load(self) -> dict[str, Any]:

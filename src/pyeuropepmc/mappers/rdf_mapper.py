@@ -393,72 +393,105 @@ class RDFMapper:
             elif field_name == "funders" and isinstance(value, list):
                 for funder in value:
                     if isinstance(funder, dict):
-                        # Create blank node for grant/funding
-                        grant_node = BNode()
-                        g.add(
-                            (subject, predicate, grant_node, context)
-                            if context
-                            else (subject, predicate, grant_node)
-                        )
-                        g.add(
-                            (grant_node, RDF.type, self._resolve_predicate("frapo:Grant"), context)
-                            if context
-                            else (grant_node, RDF.type, self._resolve_predicate("frapo:Grant"))
-                        )
+                        # Generate meaningful URI for grant using URIFactory
+                        from pyeuropepmc.mappers.rdf_utils import uri_factory
+
+                        grant_uri = uri_factory.generate_grant_uri(funder)
+
+                        # Add grant type
+                        if context:
+                            g.graph(context).add(
+                                (grant_uri, RDF.type, self._resolve_predicate("frapo:Grant"))
+                            )
+                        else:
+                            g.add((grant_uri, RDF.type, self._resolve_predicate("frapo:Grant")))
+
+                        # Add frapo:funds relationship (grant funds paper)
+                        if context:
+                            g.graph(context).add(
+                                (grant_uri, self._resolve_predicate("frapo:funds"), subject)
+                            )
+                        else:
+                            g.add((grant_uri, self._resolve_predicate("frapo:funds"), subject))
 
                         # Add funder DOI/FundRef
                         fundref_doi = funder.get("fundref_doi")
                         if fundref_doi:
-                            g.add(
-                                (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:doi"),
-                                    URIRef(fundref_doi),
-                                    context,
-                                )
-                                if context
-                                else (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:doi"),
-                                    URIRef(fundref_doi),
-                                )
+                            # Ensure proper URI format for FundRef DOI
+                            fundref_uri = (
+                                URIRef(f"https://doi.org/10.13039/{fundref_doi}")
+                                if not fundref_doi.startswith("http")
+                                else URIRef(fundref_doi)
                             )
+                            doi_pred = self._resolve_predicate("datacite:doi")
+                            if context:
+                                g.graph(context).add((grant_uri, doi_pred, fundref_uri))
+                            else:
+                                g.add((grant_uri, doi_pred, fundref_uri))
 
                         # Add award ID
                         award_id = funder.get("award_id")
                         if award_id:
-                            g.add(
-                                (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:identifier"),
-                                    Literal(award_id),
-                                    context,
+                            if context:
+                                g.graph(context).add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("datacite:identifier"),
+                                        Literal(award_id),
+                                    )
                                 )
-                                if context
-                                else (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:identifier"),
-                                    Literal(award_id),
+                            else:
+                                g.add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("datacite:identifier"),
+                                        Literal(award_id),
+                                    )
                                 )
-                            )
+
+                        # Add funding source name
+                        source = funder.get("source")
+                        if source:
+                            if context:
+                                g.graph(context).add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("dcterms:title"),
+                                        Literal(source),
+                                    )
+                                )
+                            else:
+                                g.add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("dcterms:title"),
+                                        Literal(source),
+                                    )
+                                )
 
                         # Add recipient
-                        recipient = funder.get("recipient_full") or funder.get("recipient_name")
+                        recipient = (
+                            funder.get("recipient_full")
+                            or funder.get("recipient_name")
+                            or funder.get("recipient")
+                        )
                         if recipient:
-                            g.add(
-                                (
-                                    grant_node,
-                                    self._resolve_predicate("foaf:fundedBy"),
-                                    Literal(recipient),
-                                    context,
+                            if context:
+                                g.graph(context).add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("frapo:hasRecipient"),
+                                        Literal(recipient),
+                                    )
                                 )
-                                if context
-                                else (
-                                    grant_node,
-                                    self._resolve_predicate("foaf:fundedBy"),
-                                    Literal(recipient),
+                            else:
+                                g.add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("frapo:hasRecipient"),
+                                        Literal(recipient),
+                                    )
                                 )
-                            )
 
     def map_relationships(  # noqa: C901
         self,

@@ -14,6 +14,8 @@ from pyeuropepmc.models import (
     PaperEntity,
     ReferenceEntity,
 )
+from pyeuropepmc.models.section import SectionEntity
+from pyeuropepmc.models.table import TableEntity
 
 
 def _convert_search_author_to_entity(author_dict: dict[str, Any]) -> AuthorEntity:
@@ -273,13 +275,21 @@ def process_enrichment_data(enrichment_data: dict[str, Any]) -> list[dict[str, A
 def _create_journal_entity(journal_info: dict[str, Any] | str) -> JournalEntity | None:
     """Create a JournalEntity from journal information."""
     if isinstance(journal_info, dict):
+        # Look for title in multiple possible keys
+        title = (
+            journal_info.get("title")
+            or journal_info.get("name")
+            or journal_info.get("journal_title")
+            or ""
+        )
         return JournalEntity(
-            title=journal_info.get("name") or "",
+            title=title,
             issn=journal_info.get("issn") or journal_info.get("issn_print"),
             essn=journal_info.get("issn_electronic"),
             medline_abbreviation=journal_info.get("nlm_ta"),
             iso_abbreviation=journal_info.get("iso_abbrev"),
             publisher=journal_info.get("publisher"),
+            country=journal_info.get("country"),
         )
     elif isinstance(journal_info, str):
         return JournalEntity(title=journal_info)
@@ -445,6 +455,62 @@ def _create_institution_entities(affiliations_data: list[Any]) -> list[Instituti
     return institution_entities
 
 
+def _create_section_entities(sections_data: list[Any]) -> list[SectionEntity]:
+    """Create SectionEntity objects from section data."""
+    section_entities = []
+
+    for section_data in sections_data:
+        try:
+            if isinstance(section_data, dict):
+                # Extract section title and content
+                title = section_data.get("title") or section_data.get("heading", "")
+                content = section_data.get("content") or section_data.get("text", "")
+
+                # Skip sections with no content
+                if not content:
+                    continue
+
+                section_entity = SectionEntity(
+                    title=title,
+                    content=content,
+                )
+                section_entities.append(section_entity)
+            elif isinstance(section_data, SectionEntity):
+                # Already a SectionEntity
+                section_entities.append(section_data)
+        except Exception as e:
+            print(f"Error creating section entity: {e}")
+            continue
+
+    return section_entities
+
+
+def _create_table_entities(tables_data: list[Any]) -> list[TableEntity]:
+    """Create TableEntity objects from table data."""
+    table_entities = []
+
+    for table_data in tables_data:
+        try:
+            if isinstance(table_data, dict):
+                # Extract table label and caption
+                table_label = table_data.get("label") or table_data.get("table_label")
+                caption = table_data.get("caption") or table_data.get("title")
+
+                table_entity = TableEntity(
+                    table_label=table_label,
+                    caption=caption,
+                )
+                table_entities.append(table_entity)
+            elif isinstance(table_data, TableEntity):
+                # Already a TableEntity
+                table_entities.append(table_data)
+        except Exception as e:
+            print(f"Error creating table entity: {e}")
+            continue
+
+    return table_entities
+
+
 def _extract_entities_from_xml(
     xml_data: dict[str, Any], include_content: bool
 ) -> list[dict[str, Any]]:
@@ -486,14 +552,24 @@ def _extract_entities_from_xml(
         # Convert reference dicts to ReferenceEntity objects
         reference_entities = _create_reference_entities(xml_data.get("references", []))
 
+        # Convert section dicts to SectionEntity objects
+        section_entities = (
+            _create_section_entities(xml_data.get("sections", [])) if include_content else []
+        )
+
+        # Convert table dicts to TableEntity objects
+        table_entities = (
+            _create_table_entities(xml_data.get("tables", [])) if include_content else []
+        )
+
         entities_data.append(
             {
                 "entity": paper_entity,
                 "related_entities": {
                     "authors": author_entities,
                     "institutions": institution_entities,
-                    "sections": xml_data.get("sections", []) if include_content else [],
-                    "tables": xml_data.get("tables", []) if include_content else [],
+                    "sections": section_entities,
+                    "tables": table_entities,
                     "figures": xml_data.get("figures", []) if include_content else [],
                     "references": reference_entities if include_content else [],
                 },
