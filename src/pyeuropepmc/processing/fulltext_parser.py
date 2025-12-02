@@ -544,75 +544,85 @@ class FullTextXMLParser:
 
         return result
 
-    def _build_recognized_patterns(self) -> set[str]:  # noqa: C901
+    def _build_recognized_patterns(self) -> set[str]:
         """Build set of recognized element patterns from config."""
         recognized_patterns: set[str] = set()
 
-        def extract_element_from_pattern(pattern: str) -> set[str]:
-            """Extract element names from XPath pattern."""
-            elements: set[str] = set()
-            pattern = pattern.lstrip("./")
-            parts = pattern.split("/")
-            for part in parts:
-                elem_name = part.split("[")[0].strip()
-                if elem_name and not elem_name.startswith("@"):
-                    elements.add(elem_name)
-            return elements
+        # Add citation types directly
+        recognized_patterns.update(self.config.citation_types)
 
-        # Process citation types
-        for citation_type in self.config.citation_types:
-            recognized_patterns.add(citation_type)
-
-        # Process author patterns
-        for pattern in self.config.author_element_patterns:
-            recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process author field patterns
-        for patterns_list in self.config.author_field_patterns.values():
-            for pattern in patterns_list:
-                recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process journal patterns
-        for patterns_list in self.config.journal_patterns.values():
-            for pattern in patterns_list:
-                recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process article patterns
-        for patterns_list in self.config.article_patterns.values():
-            for pattern in patterns_list:
-                recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process table patterns
-        for patterns_list in self.config.table_patterns.values():
-            if isinstance(patterns_list, list):
-                for pattern in patterns_list:
-                    recognized_patterns.add(pattern)
-
-        # Process reference patterns
-        for patterns_list in self.config.reference_patterns.values():
-            for pattern in patterns_list:
-                recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process inline element patterns
-        for pattern in self.config.inline_element_patterns:
-            recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process xref patterns
-        for patterns_list in self.config.xref_patterns.values():
-            for pattern in patterns_list:
-                recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process media patterns
-        for patterns_list in self.config.media_patterns.values():
-            for pattern in patterns_list:
-                recognized_patterns.update(extract_element_from_pattern(pattern))
-
-        # Process object_id patterns
-        for pattern in self.config.object_id_patterns:
-            recognized_patterns.update(extract_element_from_pattern(pattern))
+        # Add patterns from all config pattern lists
+        recognized_patterns.update(
+            self._extract_elements_from_patterns(self.config.author_element_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.author_field_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.journal_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.article_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.table_patterns, simple=True)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.reference_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_patterns(self.config.inline_element_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.xref_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_dict_patterns(self.config.media_patterns)
+        )
+        recognized_patterns.update(
+            self._extract_elements_from_patterns(self.config.object_id_patterns)
+        )
 
         # Add common structural elements
-        common_structural = {
+        recognized_patterns.update(self._get_common_structural_elements())
+
+        return recognized_patterns
+
+    def _extract_element_from_pattern(self, pattern: str) -> set[str]:
+        """Extract element names from XPath pattern."""
+        elements: set[str] = set()
+        pattern = pattern.lstrip("./")
+        parts = pattern.split("/")
+        for part in parts:
+            elem_name = part.split("[")[0].strip()
+            if elem_name and not elem_name.startswith("@"):
+                elements.add(elem_name)
+        return elements
+
+    def _extract_elements_from_patterns(self, patterns: list[str]) -> set[str]:
+        """Extract elements from a list of XPath patterns."""
+        result: set[str] = set()
+        for pattern in patterns:
+            result.update(self._extract_element_from_pattern(pattern))
+        return result
+
+    def _extract_elements_from_dict_patterns(
+        self, patterns_dict: dict[str, list[str]], simple: bool = False
+    ) -> set[str]:
+        """Extract elements from a dict of pattern lists."""
+        result: set[str] = set()
+        for patterns_list in patterns_dict.values():
+            if isinstance(patterns_list, list):
+                if simple:
+                    result.update(patterns_list)
+                else:
+                    result.update(self._extract_elements_from_patterns(patterns_list))
+        return result
+
+    @staticmethod
+    def _get_common_structural_elements() -> set[str]:
+        """Get common structural elements that are implicitly recognized."""
+        return {
             "article", "front", "body", "back", "sec", "p", "title",
             "ref-list", "ref", "fig", "graphic", "label", "caption",
             "supplementary-material", "ack", "funding-group", "aff",
@@ -620,9 +630,6 @@ class FullTextXMLParser:
             "addr-line", "xref", "person-group", "etal", "media",
             "underline", "month", "day", "object-id",
         }
-        recognized_patterns.update(common_structural)
-
-        return recognized_patterns
 
     # =========================================================================
     # Generic extraction methods (kept for backward compatibility)

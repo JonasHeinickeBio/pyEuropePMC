@@ -9,6 +9,13 @@ from collections.abc import Callable
 import re
 
 
+def _clean_country_name_simple(country: str) -> str:
+    """Simple country name cleaning - removes trailing punctuation."""
+    if not country:
+        return country
+    return re.sub(r"[.,;:!?]+$", "", country).strip()
+
+
 class GeoValidator:
     """Helper class for geographic validation operations."""
 
@@ -88,13 +95,11 @@ class GeoValidator:
         bool
             True if text looks like a country
         """
-        from pyeuropepmc.processing.utils.text_cleaners import TextCleaner
-
         # Clean the text first
         if clean_country_fn:
             cleaned = clean_country_fn(text).upper()
         else:
-            cleaned = TextCleaner.clean_country_name(text).upper()
+            cleaned = _clean_country_name_simple(text).upper()
 
         # Check if the cleaned text starts with a known country
         for country in GeoValidator.KNOWN_COUNTRIES:
@@ -162,14 +167,12 @@ class GeoValidator:
         str or None
             Extracted country name
         """
-        from pyeuropepmc.processing.utils.text_cleaners import TextCleaner
-
         if not components:
             return None
 
         last_comp = components[-1]
         if GeoValidator.is_likely_country(last_comp):
-            country = TextCleaner.clean_country_name(last_comp)
+            country = _clean_country_name_simple(last_comp)
             components.pop()
             return country
         return None

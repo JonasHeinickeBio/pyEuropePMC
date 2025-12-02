@@ -98,8 +98,15 @@ class MarkdownConverter(BaseParser):
         self, metadata: dict[str, Any], md_parts: list[str]
     ) -> None:
         """Add metadata fields to markdown parts."""
-        if metadata.get("journal"):
-            md_parts.append(f"**Journal:** {metadata['journal']}\n\n")
+        journal = metadata.get("journal")
+        if journal:
+            # journal is a dict with title, volume, issue
+            if isinstance(journal, dict):
+                journal_title = journal.get("title", "")
+                if journal_title:
+                    md_parts.append(f"**Journal:** {journal_title}\n\n")
+            else:
+                md_parts.append(f"**Journal:** {journal}\n\n")
         if metadata.get("doi"):
             md_parts.append(f"**DOI:** {metadata['doi']}\n\n")
 

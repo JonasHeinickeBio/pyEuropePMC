@@ -89,43 +89,46 @@ class TableParser(BaseParser):
                 return texts[0]
         return None
 
-    def _parse_table(self, table_elem: ET.Element) -> tuple[list[str], list[list[str]]]:  # noqa: C901
+    def _parse_table(self, table_elem: ET.Element) -> tuple[list[str], list[list[str]]]:
         """Parse a table element into headers and rows."""
-        headers: list[str] = []
-        rows: list[list[str]] = []
-
-        # Extract headers from thead
-        thead = None
-        for elem in table_elem.iter():
-            if elem.tag == "thead":
-                thead = elem
-                break
-
-        if thead is not None:
-            header_row = None
-            for elem in thead.iter():
-                if elem.tag == "tr":
-                    header_row = elem
-                    break
-            if header_row is not None:
-                headers = self._extract_flat_texts(
-                    header_row, ".//th", filter_empty=False, use_full_text=True
-                )
-
-        # Extract rows from tbody
-        tbody = None
-        for elem in table_elem.iter():
-            if elem.tag == "tbody":
-                tbody = elem
-                break
-
-        if tbody is not None:
-            for tr in tbody.iter():
-                if tr.tag == "tr":
-                    row_data = self._extract_flat_texts(
-                        tr, "td", filter_empty=False, use_full_text=True
-                    )
-                    if row_data:
-                        rows.append(row_data)
-
+        headers = self._extract_table_headers(table_elem)
+        rows = self._extract_table_rows(table_elem)
         return headers, rows
+
+    def _find_element_by_tag(self, parent: ET.Element, tag: str) -> ET.Element | None:
+        """Find the first element with a specific tag."""
+        for elem in parent.iter():
+            if elem.tag == tag:
+                return elem
+        return None
+
+    def _extract_table_headers(self, table_elem: ET.Element) -> list[str]:
+        """Extract headers from table's thead element."""
+        thead = self._find_element_by_tag(table_elem, "thead")
+        if thead is None:
+            return []
+
+        header_row = self._find_element_by_tag(thead, "tr")
+        if header_row is None:
+            return []
+
+        return self._extract_flat_texts(
+            header_row, ".//th", filter_empty=False, use_full_text=True
+        )
+
+    def _extract_table_rows(self, table_elem: ET.Element) -> list[list[str]]:
+        """Extract rows from table's tbody element."""
+        rows: list[list[str]] = []
+        tbody = self._find_element_by_tag(table_elem, "tbody")
+        if tbody is None:
+            return rows
+
+        for tr in tbody.iter():
+            if tr.tag == "tr":
+                row_data = self._extract_flat_texts(
+                    tr, "td", filter_empty=False, use_full_text=True
+                )
+                if row_data:
+                    rows.append(row_data)
+
+        return rows
