@@ -316,7 +316,7 @@ class RDFMapper:
             g, subject, entity, multi_value_mapping, self._resolve_predicate, context
         )
 
-    def _map_complex_fields(
+    def _map_complex_fields(  # noqa: C901
         self,
         g: Any,
         subject: URIRef,
@@ -460,7 +460,7 @@ class RDFMapper:
                                 )
                             )
 
-    def map_relationships(
+    def map_relationships(  # noqa: C901
         self,
         g: Any,
         subject: URIRef,

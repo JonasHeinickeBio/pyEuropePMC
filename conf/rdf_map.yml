@@ -90,41 +90,41 @@ _required_named_graphs:
 
 # ScholarlyWorkEntity mapping (base class)
 ScholarlyWorkEntity:
-  rdf:type: ["bibo:Document"]
+  "rdf:type": ["bibo:Document"]
   fields:
-    title: {predicate: dcterms:title, datatype: xsd:string}
-    doi: {predicate: bibo:doi, datatype: xsd:anyURI}
-    volume: {predicate: bibo:volume, datatype: xsd:string}
-    pages: {predicate: bibo:pages, datatype: xsd:string}
-    publication_year: {predicate: dcterms:issued, datatype: xsd:gYear}
-    publication_date: {predicate: dcterms:date, datatype: xsd:date}
-    pmcid: {predicate: datacite:pmcid, datatype: xsd:string}
-    pmid: {predicate: bibo:pmid, datatype: xsd:string}
-    semantic_scholar_id: {predicate: pyeuropepmc:semanticScholarId, datatype: xsd:string}
+    title: {predicate: "dcterms:title", datatype: "xsd:string"}
+    doi: {predicate: "bibo:doi", datatype: "xsd:anyURI"}
+    volume: {predicate: "bibo:volume", datatype: "xsd:string"}
+    pages: {predicate: "bibo:pages", datatype: "xsd:string"}
+    publication_year: {predicate: "dcterms:issued", datatype: "xsd:gYear"}
+    publication_date: {predicate: "dcterms:date", datatype: "xsd:date"}
+    pmcid: {predicate: "datacite:pmcid", datatype: "xsd:string"}
+    pmid: {predicate: "bibo:pmid", datatype: "xsd:string"}
+    semantic_scholar_id: {predicate: "pyeuropepmc:semanticScholarId", datatype: "xsd:string"}
   # Multi-value fields (authors handled as relationships in subclasses)
   multi_value_fields: {}
 
 # PaperEntity mapping
 PaperEntity:
-  rdf:type: ["bibo:AcademicArticle"]
+  "rdf:type": ["bibo:AcademicArticle"]
   fields:
-    issue: {predicate: bibo:issue, datatype: xsd:string}
-    pub_date: {predicate: dcterms:issued, datatype: xsd:date}
-    abstract: {predicate: dcterms:abstract, datatype: xsd:string}
-    citation_count: {predicate: pyeuropepmc:citationCount, datatype: xsd:integer}
-    influential_citation_count: {predicate: pyeuropepmc:influentialCitationCount, datatype: xsd:integer}
-    is_oa: {predicate: dcterms:accessRights, datatype: xsd:boolean}
-    oa_status: {predicate: dcterms:accessRights, datatype: xsd:string}
-    oa_url: {predicate: bibo:uri, datatype: xsd:anyURI}
-    reference_count: {predicate: bibo:numPages, datatype: xsd:integer}
-    cited_by_count: {predicate: pyeuropepmc:citationCount, datatype: xsd:integer}
-    publisher: {predicate: dcterms:publisher, datatype: xsd:string}
-    issn: {predicate: bibo:issn, datatype: xsd:string}
-    publication_type: {predicate: bibo:DocumentType, datatype: xsd:string}
-    first_page: {predicate: bibo:pageStart, datatype: xsd:string}
-    last_page: {predicate: bibo:pageEnd, datatype: xsd:string}
-    semantic_scholar_corpus_id: {predicate: pyeuropepmc:semanticScholarCorpusId, datatype: xsd:string}
-    openalex_id: {predicate: datacite:openalex, datatype: xsd:string}
+    issue: {predicate: "bibo:issue", datatype: "xsd:string"}
+    pub_date: {predicate: "dcterms:issued", datatype: "xsd:date"}
+    abstract: {predicate: "dcterms:abstract", datatype: "xsd:string"}
+    citation_count: {predicate: "pyeuropepmc:citationCount", datatype: "xsd:integer"}
+    influential_citation_count: {predicate: "pyeuropepmc:influentialCitationCount", datatype: "xsd:integer"}
+    is_oa: {predicate: "dcterms:accessRights", datatype: "xsd:boolean"}
+    oa_status: {predicate: "dcterms:accessRights", datatype: "xsd:string"}
+    oa_url: {predicate: "bibo:uri", datatype: "xsd:anyURI"}
+    reference_count: {predicate: "bibo:numPages", datatype: "xsd:integer"}
+    cited_by_count: {predicate: "pyeuropepmc:citationCount", datatype: "xsd:integer"}
+    publisher: {predicate: "dcterms:publisher", datatype: "xsd:string"}
+    issn: {predicate: "bibo:issn", datatype: "xsd:string"}
+    publication_type: {predicate: "bibo:DocumentType", datatype: "xsd:string"}
+    first_page: {predicate: "bibo:pageStart", datatype: "xsd:string"}
+    last_page: {predicate: "bibo:pageEnd", datatype: "xsd:string"}
+    semantic_scholar_corpus_id: {predicate: "pyeuropepmc:semanticScholarCorpusId", datatype: "xsd:string"}
+    openalex_id: {predicate: "datacite:openalex", datatype: "xsd:string"}
   # Complex fields (dicts/nested structures) - handled specially in code
   complex_fields:
     external_ids: pyeuropepmc:hasIdentifier  # Dict of ID types -> values
@@ -138,159 +138,159 @@ PaperEntity:
   # Relationships
   relationships:
     authors:
-      predicate: dcterms:creator
+      predicate: "dcterms:creator"
       inverse: foaf:made
     institutions:
-      predicate: pyeuropepmc:affiliatedWith
+      predicate: "pyeuropepmc:affiliatedWith"
       inverse: pyeuropepmc:hasAffiliation
     journal:
-      predicate: bibo:journal
+      predicate: "bibo:journal"
       inverse: bibo:article
     sections:
-      predicate: dcterms:hasPart
+      predicate: "dcterms:hasPart"
       inverse: dcterms:isPartOf
     references:
-      predicate: cito:cites
+      predicate: "cito:cites"
       inverse: cito:isCitedBy
     tables:
-      predicate: dcterms:hasPart
+      predicate: "dcterms:hasPart"
       inverse: dcterms:isPartOf
 
 # AuthorEntity mapping
 AuthorEntity:
-  rdf:type: ["foaf:Person"]
+  "rdf:type": ["foaf:Person"]
   fields:
-    full_name: {predicate: foaf:name, datatype: xsd:string}
-    first_name: {predicate: foaf:givenName, datatype: xsd:string}
-    last_name: {predicate: foaf:familyName, datatype: xsd:string}
-    initials: {predicate: foaf:initials, datatype: xsd:string}
-    orcid: {predicate: datacite:orcid, datatype: xsd:string}
-    openalex_id: {predicate: pyeuropepmc:openAlexAuthorId, datatype: xsd:string}
-    semantic_scholar_id: {predicate: datacite:semanticScholarId, datatype: xsd:string}
-    affiliation_text: {predicate: org:memberOf, datatype: xsd:string}
-    position: {predicate: org:role, datatype: xsd:string}
-    email: {predicate: foaf:mbox, datatype: xsd:string}
+    full_name: {predicate: "foaf:name", datatype: "xsd:string"}
+    first_name: {predicate: "foaf:givenName", datatype: "xsd:string"}
+    last_name: {predicate: "foaf:familyName", datatype: "xsd:string"}
+    initials: {predicate: "foaf:initials", datatype: "xsd:string"}
+    orcid: {predicate: "datacite:orcid", datatype: "xsd:string"}
+    openalex_id: {predicate: "pyeuropepmc:openAlexAuthorId", datatype: "xsd:string"}
+    semantic_scholar_id: {predicate: "datacite:semanticScholarId", datatype: "xsd:string"}
+    affiliation_text: {predicate: "org:memberOf", datatype: "xsd:string"}
+    position: {predicate: "org:role", datatype: "xsd:string"}
+    email: {predicate: "foaf:mbox", datatype: "xsd:string"}
   # Multi-value fields
   multi_value_fields:
     sources: prov:hadPrimarySource
   # Relationships
   relationships:
     papers:
-      predicate: foaf:made
+      predicate: "foaf:made"
       inverse: dcterms:creator
     institutions:
-      predicate: org:memberOf
+      predicate: "org:memberOf"
       inverse: org:hasMember
 
 # SectionEntity mapping
 SectionEntity:
-  rdf:type: ["bibo:DocumentPart", "nif:Context"]
+  "rdf:type": ["bibo:DocumentPart", "nif:Context"]
   fields:
-    title: {predicate: dcterms:title, datatype: xsd:string}
-    content: {predicate: nif:isString, datatype: xsd:string}
-    begin_index: {predicate: nif:beginIndex, datatype: xsd:integer}
-    end_index: {predicate: nif:endIndex, datatype: xsd:integer}
+    title: {predicate: "dcterms:title", datatype: "xsd:string"}
+    content: {predicate: "nif:isString", datatype: "xsd:string"}
+    begin_index: {predicate: "nif:beginIndex", datatype: "xsd:integer"}
+    end_index: {predicate: "nif:endIndex", datatype: "xsd:integer"}
   # Relationships
   relationships:
     paper:
-      predicate: dcterms:isPartOf
+      predicate: "dcterms:isPartOf"
       inverse: dcterms:hasPart
     subsections:
-      predicate: dcterms:hasPart
+      predicate: "dcterms:hasPart"
       inverse: dcterms:isPartOf  # TODO: Implement SubsectionEntity or remove if not needed
 
 # TableEntity mapping
 TableEntity:
-  rdf:type: ["bibo:Table"]
+  "rdf:type": ["bibo:Table"]
   fields:
-    caption: {predicate: dcterms:description, datatype: xsd:string}
-    table_label: {predicate: rdfs:label, datatype: xsd:string}
+    caption: {predicate: "dcterms:description", datatype: "xsd:string"}
+    table_label: {predicate: "rdfs:label", datatype: "xsd:string"}
   # Relationships
   relationships:
     paper:
-      predicate: dcterms:isPartOf
+      predicate: "dcterms:isPartOf"
       inverse: dcterms:hasPart
     rows:
-      predicate: dcterms:hasPart
+      predicate: "dcterms:hasPart"
       inverse: dcterms:isPartOf
 
 # TableRowEntity mapping
 TableRowEntity:
-  rdf:type: ["bibo:Row"]
+  "rdf:type": ["bibo:Row"]
   fields:
-    headers: {predicate: rdfs:label, datatype: xsd:string}
+    headers: {predicate: "rdfs:label", datatype: "xsd:string"}
   multi_value_fields:
     cells: rdfs:member
   # Relationships
   relationships:
     table:
-      predicate: dcterms:isPartOf
+      predicate: "dcterms:isPartOf"
       inverse: dcterms:hasPart
 
 # ReferenceEntity mapping
 ReferenceEntity:
-  rdf:type: ["bibo:Article"]  # More specific than bibo:Document
+  "rdf:type": ["bibo:Article"]  # More specific than bibo:Document
   # Inherits all fields from ScholarlyWorkEntity
   # No additional fields specific to references
   # Relationships
   relationships:
     citing_paper:
-      predicate: cito:isCitedBy
+      predicate: "cito:isCitedBy"
       inverse: cito:cites
 
 # InstitutionEntity mapping
 InstitutionEntity:
-  rdf:type: ["org:Organization"]
+  "rdf:type": ["org:Organization"]
   fields:
-    display_name: {predicate: skos:prefLabel, datatype: xsd:string}
-    ror_id: {predicate: pyeuropepmc:rorId, datatype: xsd:string}
-    openalex_id: {predicate: pyeuropepmc:openAlexInstitutionId, datatype: xsd:string}
-    country: {predicate: geo:country, datatype: xsd:string}
-    country_code: {predicate: geo:countryCode, datatype: xsd:string}
-    city: {predicate: geo:city, datatype: xsd:string}
-    latitude: {predicate: geo:lat, datatype: xsd:decimal}
-    longitude: {predicate: geo:long, datatype: xsd:decimal}
-    institution_type: {predicate: org:classification, datatype: xsd:string}
-    grid_id: {predicate: pyeuropepmc:gridId, datatype: xsd:string}
-    isni: {predicate: pyeuropepmc:isni, datatype: xsd:string}
-    wikidata_id: {predicate: owl:sameAs, datatype: xsd:anyURI}
-    fundref_id: {predicate: pyeuropepmc:fundrefId, datatype: xsd:string}
-    website: {predicate: foaf:homepage, datatype: xsd:anyURI}
-    established: {predicate: dcterms:created, datatype: xsd:gYear}
+    display_name: {predicate: "skos:prefLabel", datatype: "xsd:string"}
+    ror_id: {predicate: "pyeuropepmc:rorId", datatype: "xsd:string"}
+    openalex_id: {predicate: "pyeuropepmc:openAlexInstitutionId", datatype: "xsd:string"}
+    country: {predicate: "geo:country", datatype: "xsd:string"}
+    country_code: {predicate: "geo:countryCode", datatype: "xsd:string"}
+    city: {predicate: "geo:city", datatype: "xsd:string"}
+    latitude: {predicate: "geo:lat", datatype: "xsd:decimal"}
+    longitude: {predicate: "geo:long", datatype: "xsd:decimal"}
+    institution_type: {predicate: "org:classification", datatype: "xsd:string"}
+    grid_id: {predicate: "pyeuropepmc:gridId", datatype: "xsd:string"}
+    isni: {predicate: "pyeuropepmc:isni", datatype: "xsd:string"}
+    wikidata_id: {predicate: "owl:sameAs", datatype: "xsd:anyURI"}
+    fundref_id: {predicate: "pyeuropepmc:fundrefId", datatype: "xsd:string"}
+    website: {predicate: "foaf:homepage", datatype: "xsd:anyURI"}
+    established: {predicate: "dcterms:created", datatype: "xsd:gYear"}
   # Multi-value fields
   multi_value_fields:
     domains: dcterms:subject
   # Relationships
   relationships:
     members:
-      predicate: org:hasMember
+      predicate: "org:hasMember"
       inverse: org:memberOf
 
 # JournalEntity mapping
 JournalEntity:
-  rdf:type: ["bibo:Journal"]
+  "rdf:type": ["bibo:Journal"]
   fields:
-    title: {predicate: dcterms:title, datatype: xsd:string}
-    medline_abbreviation: {predicate: bibo:shortTitle, datatype: xsd:string}
-    iso_abbreviation: {predicate: bibo:shortTitle, datatype: xsd:string}
-    nlmid: {predicate: bibo:nlmid, datatype: xsd:string}
-    issn: {predicate: bibo:issn, datatype: xsd:string}
-    essn: {predicate: bibo:eissn, datatype: xsd:string}
-    publisher: {predicate: dcterms:publisher, datatype: xsd:string}
-    country: {predicate: geo:country, datatype: xsd:string}
-    language: {predicate: dcterms:language, datatype: xsd:string}
-    journal_issue_id: {predicate: bibo:issue, datatype: xsd:string}
-    openalex_id: {predicate: datacite:openAlexId, datatype: xsd:string}
-    wikidata_id: {predicate: owl:sameAs, datatype: xsd:anyURI}
-    scopus_source_id: {predicate: pyeuropepmc:scopusSourceId, datatype: xsd:string}
-    impact_factor: {predicate: pyeuropepmc:impactFactor, datatype: xsd:decimal}
-    sjr: {predicate: pyeuropepmc:sjr, datatype: xsd:decimal}
-    h_index: {predicate: pyeuropepmc:hIndex, datatype: xsd:integer}
+    title: {predicate: "dcterms:title", datatype: "xsd:string"}
+    medline_abbreviation: {predicate: "bibo:shortTitle", datatype: "xsd:string"}
+    iso_abbreviation: {predicate: "bibo:shortTitle", datatype: "xsd:string"}
+    nlmid: {predicate: "bibo:nlmid", datatype: "xsd:string"}
+    issn: {predicate: "bibo:issn", datatype: "xsd:string"}
+    essn: {predicate: "bibo:eissn", datatype: "xsd:string"}
+    publisher: {predicate: "dcterms:publisher", datatype: "xsd:string"}
+    country: {predicate: "geo:country", datatype: "xsd:string"}
+    language: {predicate: "dcterms:language", datatype: "xsd:string"}
+    journal_issue_id: {predicate: "bibo:issue", datatype: "xsd:string"}
+    openalex_id: {predicate: "datacite:openAlexId", datatype: "xsd:string"}
+    wikidata_id: {predicate: "owl:sameAs", datatype: "xsd:anyURI"}
+    scopus_source_id: {predicate: "pyeuropepmc:scopusSourceId", datatype: "xsd:string"}
+    impact_factor: {predicate: "pyeuropepmc:impactFactor", datatype: "xsd:decimal"}
+    sjr: {predicate: "pyeuropepmc:sjr", datatype: "xsd:decimal"}
+    h_index: {predicate: "pyeuropepmc:hIndex", datatype: "xsd:integer"}
   # Multi-value fields
   multi_value_fields:
     subject_areas: dcterms:subject
   # Relationships
   relationships:
     papers:
-      predicate: bibo:article
+      predicate: "bibo:article"
       inverse: bibo:journal

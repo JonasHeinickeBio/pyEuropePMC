@@ -193,14 +193,14 @@ class TestConvertersGeneric:
     """Tests for the generic _convert_to_rdf function."""
 
     @patch("pyeuropepmc.mappers.converters._get_default_mapper")
-    @patch("pyeuropepmc.mappers.converters.setup_graph")
-    def test_convert_to_rdf_success(self, mock_setup_graph, mock_get_mapper):
+    @patch("pyeuropepmc.mappers.converters.setup_dataset")
+    def test_convert_to_rdf_success(self, mock_setup_dataset, mock_get_mapper):
         """Test successful conversion with generic function."""
         # Setup mocks
         mock_mapper = Mock()
         mock_graph = Mock()
         mock_get_mapper.return_value = mock_mapper
-        mock_setup_graph.return_value = mock_graph
+        mock_setup_dataset.return_value = mock_graph
 
         # Mock entity with to_rdf method
         mock_entity = Mock()
@@ -223,7 +223,7 @@ class TestConvertersGeneric:
         validator.assert_called_once_with(data)
         processor.assert_called_once_with(data)
         mock_get_mapper.assert_called_once()
-        mock_setup_graph.assert_called_once()
+        mock_setup_dataset.assert_called_once()
         mock_entity.to_rdf.assert_called_once()
         assert result == mock_graph
 
@@ -255,15 +255,15 @@ class TestConvertersGeneric:
             )
 
     @patch("pyeuropepmc.mappers.converters._get_default_mapper")
-    @patch("pyeuropepmc.mappers.converters.setup_graph")
-    def test_convert_to_rdf_with_caching(self, mock_setup_graph, mock_get_mapper):
+    @patch("pyeuropepmc.mappers.converters.setup_dataset")
+    def test_convert_to_rdf_with_caching(self, mock_setup_dataset, mock_get_mapper):
         """Test conversion with cache backend."""
         # Setup mocks
         mock_mapper = Mock()
         mock_graph = Mock()
         mock_cache = Mock()
         mock_get_mapper.return_value = mock_mapper
-        mock_setup_graph.return_value = mock_graph
+        mock_setup_dataset.return_value = mock_graph
 
         mock_entity = Mock()
         mock_entity.to_rdf.return_value = None

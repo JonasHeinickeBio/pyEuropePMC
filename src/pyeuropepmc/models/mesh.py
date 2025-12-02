@@ -6,6 +6,7 @@ qualifiers, major topic indicators, and other metadata from Europe PMC.
 """
 
 from dataclasses import dataclass, field
+from typing import Any
 
 __all__ = ["MeSHQualifierEntity", "MeSHHeadingEntity"]
 
@@ -41,13 +42,13 @@ class MeSHQualifierEntity:
     major_topic: bool = False
 
     @classmethod
-    def from_dict(cls, data: dict) -> "MeSHQualifierEntity":
+    def from_dict(cls, data: dict[str, Any]) -> "MeSHQualifierEntity":
         """
         Create MeSHQualifierEntity from Europe PMC API response dict.
 
         Parameters
         ----------
-        data : dict
+        data : dict[str, Any]
             Raw qualifier data with keys: qualifierName, abbreviation, majorTopic_YN
 
         Returns
@@ -109,13 +110,13 @@ class MeSHHeadingEntity:
     descriptor_ui: str | None = None
 
     @classmethod
-    def from_dict(cls, data: dict) -> "MeSHHeadingEntity":
+    def from_dict(cls, data: dict[str, Any]) -> "MeSHHeadingEntity":
         """
         Create MeSHHeadingEntity from Europe PMC API response dict.
 
         Parameters
         ----------
-        data : dict
+        data : dict[str, Any]
             Raw MeSH heading data with keys: descriptorName, majorTopic_YN,
             meshQualifierList, etc.
 
@@ -176,13 +177,13 @@ class MeSHHeadingEntity:
         qualifier_names = [q.qualifier_name for q in self.qualifiers]
         return f"{self.descriptor_name}/{'/'.join(qualifier_names)}"
 
-    def to_dict(self) -> dict:
+    def to_dict(self) -> dict[str, Any]:
         """
         Convert to dictionary representation.
 
         Returns
         -------
-        dict
+        dict[str, Any]
             Dictionary with descriptor, major_topic, and qualifiers
         """
         return {

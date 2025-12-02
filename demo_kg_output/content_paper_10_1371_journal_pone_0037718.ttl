@@ -896,4 +896,3 @@ Bivariable models were adjusted for clusters of pigs within owner, while the mul
         prov:generatedAtTime "2024-01-01T00:00:00Z" ;
         prov:wasGeneratedBy "kg_demo" .
 }
-

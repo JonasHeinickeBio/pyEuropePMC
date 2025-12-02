@@ -116,7 +116,7 @@ def _extract_mesh_terms(result: dict[str, Any]) -> list[str]:
     return mesh_terms
 
 
-def _extract_mesh_headings(result: dict[str, Any]) -> list:
+def _extract_mesh_headings(result: dict[str, Any]) -> list[Any]:
     """
     Extract structured MeSH headings with qualifiers from search result.
 

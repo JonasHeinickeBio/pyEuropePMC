@@ -98,6 +98,7 @@ class TestBuildPaperEntities:
         assert paper.doi == "10.1234/test.2021.001"
         assert paper.title == "Sample Test Article Title"
         assert isinstance(paper.journal, JournalEntity)
+        # Journal entity stores title as a string
         assert paper.journal.title == "Test Journal"
         assert paper.volume == "10"
         assert paper.issue == "5"
@@ -128,6 +129,9 @@ class TestBuildPaperEntities:
         paper.normalize()
         for author in authors:
             author.normalize()
+        # Normalize journal if it exists
+        if paper.journal and hasattr(paper.journal, "normalize"):
+            paper.journal.normalize()
 
         # Check normalization worked
         assert paper.doi == "10.1234/test.2021.001"  # Should be lowercase
@@ -136,6 +140,10 @@ class TestBuildPaperEntities:
         """Test that built entities can be validated."""
         parser = FullTextXMLParser(SAMPLE_XML)
         paper, authors, sections, tables, figures, references = build_paper_entities(parser)
+
+        # Validate journal first if it exists
+        if paper.journal and hasattr(paper.journal, "validate"):
+            paper.journal.validate()
 
         # Validate - should not raise
         paper.validate()

@@ -24,8 +24,10 @@ class URIFactory:
     making URIs predictable, resolvable, and interoperable across different data sources.
 
     URI Schemes:
-    - Papers: https://pubmed.ncbi.nlm.nih.gov/{pmid}/ (preferred), https://doi.org/{doi}, or fallback to first-author-year-journal
-    - Authors: {base_uri}author/{normalized_name} (preferred), with ORCID/OpenAlex as owl:sameAs
+    - Papers: https://pubmed.ncbi.nlm.nih.gov/{pmid}/ (preferred),
+      https://doi.org/{doi}, or fallback to first-author-year-journal
+    - Authors: {base_uri}author/{normalized_name} (preferred),
+      with ORCID/OpenAlex as owl:sameAs
     - Institutions: {ror_id} (preferred), or {base_uri}institution/{compact_id}
     - References: https://doi.org/{doi} (preferred), or https://pubmed.ncbi.nlm.nih.gov/{pmid}/
     - Other entities: {base_uri}{entity_type}/{entity_id}
@@ -52,7 +54,7 @@ class URIFactory:
     def base_uri(self) -> str:
         """Get the base URI from configuration, loading it fresh each time."""
         config = load_rdf_config()
-        return config.get("base_uri", "http://example.org/data/")
+        return str(config.get("base_uri", "http://example.org/data/"))
 
     def generate_uri(self, entity: Any) -> URIRef:
         """
@@ -152,7 +154,7 @@ class URIFactory:
         normalized = re.sub(r"[^a-z0-9-]", "", normalized)
         return normalized if normalized else None
 
-    def _generate_paper_fallback_uri(self, entity: Any) -> URIRef:
+    def _generate_paper_fallback_uri(self, entity: Any) -> URIRef:  # noqa: C901
         """Generate fallback URI for paper using first author + year + short journal."""
         # Extract first author last name
         first_author_last_name = None
@@ -356,7 +358,7 @@ def map_single_value_fields(
     g: Any,
     subject: URIRef,
     entity: Any,
-    fields_mapping: dict[str, str | dict],
+    fields_mapping: dict[str, str | dict[str, Any]],
     resolve_predicate: Callable[[str], URIRef],
     context: URIRef | None = None,
 ) -> None:
@@ -367,7 +369,8 @@ def map_single_value_fields(
         g: RDF graph
         subject: Subject URI
         entity: Entity object
-        fields_mapping: Mapping of field names to predicates (string) or dicts with predicate and datatype
+        fields_mapping: Mapping of field names to predicates (string) or dicts
+            with predicate and datatype
         resolve_predicate: Function to resolve predicate strings to URIRefs
         context: Optional named graph context
     """
@@ -460,7 +463,7 @@ def _infer_datatype(field_name: str, value: Any) -> URIRef | None:
     # Special handling for publication year - combine conditions
     if (
         field_name == "publication_year"
-        and isinstance(value, (int, str))
+        and isinstance(value, int | str)
         and str(value).isdigit()
         and len(str(value)) == 4
     ):

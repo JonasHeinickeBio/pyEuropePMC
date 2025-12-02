@@ -84,7 +84,7 @@ print(f"PMC ID: {metadata['pmcid']}")
 print(f"DOI: {metadata['doi']}")
 print(f"Title: {metadata['title']}")
 print(f"Authors: {', '.join(metadata['authors'])}")
-print(f"Journal: {metadata['journal']}")
+print(f"Journal: {metadata['journal']['title']}")
 print(f"Date: {metadata['pub_date']}")
 ```
 
