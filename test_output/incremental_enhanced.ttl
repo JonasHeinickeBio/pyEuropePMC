@@ -8,7 +8,7 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://w3id.org/pyeuropepmc/author/aghaei-m> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.698044" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.404474" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Aghaei"^^xsd:string ;
     foaf:givenName "Mojtaba"^^xsd:string ;
@@ -17,7 +17,7 @@
     foaf:name "Aghaei M"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/aghebatimaleki-l> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.719509" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.425714" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Aghebati-Maleki"^^xsd:string ;
     foaf:givenName "Leili"^^xsd:string ;
@@ -28,7 +28,7 @@
 <https://w3id.org/pyeuropepmc/author/alexeyev-mf> a foaf:Person ;
     datacite:orcid "0000-0002-5942-0099"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-5942-0099> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.097502" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.803851" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Alexeyev"^^xsd:string ;
     foaf:givenName "Mikhail F"^^xsd:string ;
@@ -37,7 +37,7 @@
     foaf:name "Alexeyev MF"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/andrews-jf> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.075941" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.782285" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Andrews"^^xsd:string ;
     foaf:givenName "Joel F"^^xsd:string ;
@@ -48,7 +48,7 @@
 <https://w3id.org/pyeuropepmc/author/ayala-g> a foaf:Person ;
     datacite:orcid "0000-0002-5288-0244"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-5288-0244> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.227253" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.932464" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Ayala"^^xsd:string ;
     foaf:givenName "Gustavo"^^xsd:string ;
@@ -57,7 +57,7 @@
     foaf:name "Ayala G"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/bai-h> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.680199" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.376040" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Bai"^^xsd:string ;
     foaf:givenName "Hao"^^xsd:string ;
@@ -66,7 +66,7 @@
     foaf:name "Bai H"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/behbod-f> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.161734" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.867915" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Behbod"^^xsd:string ;
     foaf:givenName "Fariba"^^xsd:string ;
@@ -75,7 +75,7 @@
     foaf:name "Behbod F"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/bu-p> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.140379" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.846317" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Bu"^^xsd:string ;
     foaf:givenName "Ping"^^xsd:string ;
@@ -86,7 +86,7 @@
 <https://w3id.org/pyeuropepmc/author/chang-jt> a foaf:Person ;
     datacite:orcid "0000-0002-4578-5636"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-4578-5636> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.205311" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.911024" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Chang"^^xsd:string ;
     foaf:givenName "Jeffrey T"^^xsd:string ;
@@ -95,7 +95,7 @@
     foaf:name "Chang JT"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/chen-c> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.616160" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.311216" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Chen"^^xsd:string ;
     foaf:givenName "Canting"^^xsd:string ;
@@ -106,7 +106,7 @@
 <https://w3id.org/pyeuropepmc/author/clendenin-c> a foaf:Person ;
     datacite:orcid "0000-0003-4535-2088"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-4535-2088> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.105508" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.808744" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Clendenin"^^xsd:string ;
     foaf:givenName "Cynthia"^^xsd:string ;
@@ -115,7 +115,7 @@
     foaf:name "Clendenin C"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/curley-o> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.968458" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.675266" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Curley"^^xsd:string ;
     foaf:givenName "Olivia"^^xsd:string ;
@@ -124,7 +124,7 @@
     foaf:name "Curley O"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/ding-w> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.637509" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.332706" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Ding"^^xsd:string ;
     foaf:givenName "Weiqun"^^xsd:string ;
@@ -133,7 +133,7 @@
     foaf:name "Ding W"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/ding-y> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.118873" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.825101" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Ding"^^xsd:string ;
     foaf:givenName "Yi"^^xsd:string ;
@@ -142,7 +142,7 @@
     foaf:name "Ding Y"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/gilbert-s> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.946901" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.653957" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Gilbert"^^xsd:string ;
     foaf:givenName "Shila"^^xsd:string ;
@@ -153,7 +153,7 @@
 <https://w3id.org/pyeuropepmc/author/grelet-s> a foaf:Person ;
     datacite:orcid "0000-0001-6805-7925"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0001-6805-7925> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.248787" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.953824" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Grelet"^^xsd:string ;
     foaf:givenName "Simon"^^xsd:string ;
@@ -162,7 +162,7 @@
     foaf:name "Grelet S"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/hixson-w> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.033196" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.739423" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Hixson"^^xsd:string ;
     foaf:givenName "William"^^xsd:string ;
@@ -171,7 +171,7 @@
     foaf:name "Hixson W"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/hoover-g> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.925257" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.632695" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Hoover"^^xsd:string ;
     foaf:givenName "Gregory"^^xsd:string ;
@@ -180,7 +180,7 @@
     foaf:name "Hoover G"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/jiang-ch> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.466161" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.158939" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Jiang"^^xsd:string ;
     foaf:givenName "Can-Hua"^^xsd:string ;
@@ -191,7 +191,7 @@
 <https://w3id.org/pyeuropepmc/author/kemp-sb> a foaf:Person ;
     datacite:orcid "0000-0002-1505-4015"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-1505-4015> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.998130" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.702640" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Kemp"^^xsd:string ;
     foaf:givenName "Samantha B"^^xsd:string ;
@@ -200,7 +200,7 @@
     foaf:name "Kemp SB"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/keshavarz-a> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.633631" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.340137" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Keshavarz"^^xsd:string ;
     foaf:givenName "Ali"^^xsd:string ;
@@ -211,7 +211,7 @@
 <https://w3id.org/pyeuropepmc/author/kim-ik> a foaf:Person ;
     datacite:orcid "0000-0002-4661-0133"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-4661-0133> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.019442" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.723835" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Kim"^^xsd:string ;
     foaf:givenName "Il-Kyu"^^xsd:string ;
@@ -222,7 +222,7 @@
 <https://w3id.org/pyeuropepmc/author/kramer-ab> a foaf:Person ;
     datacite:orcid "0000-0001-7818-3837"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0001-7818-3837> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.040918" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.745044" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Kramer"^^xsd:string ;
     foaf:givenName "Adam B"^^xsd:string ;
@@ -231,7 +231,7 @@
     foaf:name "Kramer AB"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/li-n> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.487486" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.180925" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Li"^^xsd:string ;
     foaf:givenName "Ning"^^xsd:string ;
@@ -240,7 +240,7 @@
     foaf:name "Li N"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/lin-mt> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.011554" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.718050" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Lin"^^xsd:string ;
     foaf:givenName "Mike T"^^xsd:string ;
@@ -249,7 +249,7 @@
     foaf:name "Lin MT"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/mardi-a> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.655230" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.361557" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Mardi"^^xsd:string ;
     foaf:givenName "Amirhossein"^^xsd:string ;
@@ -260,7 +260,7 @@
 <https://w3id.org/pyeuropepmc/author/markosyan-n> a foaf:Person ;
     datacite:orcid "0000-0003-4618-9454"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-4618-9454> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.083958" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.787404" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Markosyan"^^xsd:string ;
     foaf:givenName "Nune"^^xsd:string ;
@@ -271,7 +271,7 @@
 <https://w3id.org/pyeuropepmc/author/mcdevitt-jc> a foaf:Person ;
     datacite:orcid "0000-0001-5261-394X"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0001-5261-394X> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.976648" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.681445" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "McDevitt"^^xsd:string ;
     foaf:givenName "Jayne C"^^xsd:string ;
@@ -280,7 +280,7 @@
     foaf:name "McDevitt JC"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/medina-d> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.183433" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.889674" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Medina"^^xsd:string ;
     foaf:givenName "Daniel"^^xsd:string ;
@@ -291,7 +291,7 @@
 <https://w3id.org/pyeuropepmc/author/menard-m> a foaf:Person ;
     datacite:orcid "0000-0003-1511-4361"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-1511-4361> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.169997" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.872579" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Menard"^^xsd:string ;
     foaf:givenName "Marie"^^xsd:string ;
@@ -300,7 +300,7 @@
     foaf:name "Menard M"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/mohammadi-mh> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.741082" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.447020" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Mohammadi"^^xsd:string ;
     foaf:givenName "Mohammad Hossein"^^xsd:string ;
@@ -309,7 +309,7 @@
     foaf:name "Mohammadi MH"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/mohammadiara-a> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.676598" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.382884" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Mohammadiara"^^xsd:string ;
     foaf:givenName "Amirmohammad"^^xsd:string ;
@@ -320,7 +320,7 @@
 <https://w3id.org/pyeuropepmc/author/obellianne-c> a foaf:Person ;
     datacite:orcid "0009-0008-2329-0764"^^xsd:string ;
     owl:sameAs <https://orcid.org/0009-0008-2329-0764> ;
-    prov:generatedAtTime "2025-12-02T19:18:27.989904" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.696595" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Obellianne"^^xsd:string ;
     foaf:givenName "Clémence"^^xsd:string ;
@@ -331,7 +331,7 @@
 <https://w3id.org/pyeuropepmc/author/orlen-m> a foaf:Person ;
     datacite:orcid "0000-0002-9834-6282"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-9834-6282> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.912554" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.617692" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Orlen"^^xsd:string ;
     foaf:givenName "Margo"^^xsd:string ;
@@ -340,7 +340,7 @@
     foaf:name "Orlen M"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/pierce-tw> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.054538" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.760757" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Pierce"^^xsd:string ;
     foaf:givenName "Terry W"^^xsd:string ;
@@ -351,7 +351,7 @@
 <https://w3id.org/pyeuropepmc/author/quintana-e> a foaf:Person ;
     datacite:orcid "0000-0002-4123-1695"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-4123-1695> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.148537" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.851383" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Quintana"^^xsd:string ;
     foaf:givenName "Elsa"^^xsd:string ;
@@ -360,7 +360,7 @@
     foaf:name "Quintana E"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/sherafat-ns> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:28.612306" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.318820" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Sherafat"^^xsd:string ;
     foaf:givenName "Negar Sadat"^^xsd:string ;
@@ -371,7 +371,7 @@
 <https://w3id.org/pyeuropepmc/author/singh-m> a foaf:Person ;
     datacite:orcid "0009-0003-0234-1589"^^xsd:string ;
     owl:sameAs <https://orcid.org/0009-0003-0234-1589> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.127082" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.830137" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Singh"^^xsd:string ;
     foaf:givenName "Mallika"^^xsd:string ;
@@ -380,7 +380,7 @@
     foaf:name "Singh M"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/song-j> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.573532" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.268009" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Song"^^xsd:string ;
     foaf:givenName "Jiawei"^^xsd:string ;
@@ -391,7 +391,7 @@
 <https://w3id.org/pyeuropepmc/author/sor-r> a foaf:Person ;
     datacite:orcid "0000-0003-2042-5746"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-2042-5746> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.955322" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.660256" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Sor"^^xsd:string ;
     foaf:givenName "Rina"^^xsd:string ;
@@ -402,7 +402,7 @@
 <https://w3id.org/pyeuropepmc/author/stanger-bz> a foaf:Person ;
     datacite:orcid "0000-0003-0410-4037"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-0410-4037> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.212825" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.915082" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Stanger"^^xsd:string ;
     foaf:givenName "Ben Z"^^xsd:string ;
@@ -411,7 +411,7 @@
     foaf:name "Stanger BZ"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/tillement-o> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.658856" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.354421" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Tillement"^^xsd:string ;
     foaf:givenName "Olivier"^^xsd:string ;
@@ -422,7 +422,7 @@
 <https://w3id.org/pyeuropepmc/author/tovbis-shifrin-n> a foaf:Person ;
     datacite:orcid "0000-0002-4312-0606"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-4312-0606> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.062612" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.766305" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Tovbis Shifrin"^^xsd:string ;
     foaf:givenName "Nataliya"^^xsd:string ;
@@ -433,7 +433,7 @@
 <https://w3id.org/pyeuropepmc/author/tufail-m> a foaf:Person ;
     datacite:orcid "0000-0003-3442-7216"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-3442-7216> ;
-    prov:generatedAtTime "2025-12-02T19:18:27.444509" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.137325" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Tufail"^^xsd:string ;
     foaf:givenName "Muhammad"^^xsd:string ;
@@ -444,7 +444,7 @@
 <https://w3id.org/pyeuropepmc/author/vonderheide-rh> a foaf:Person ;
     datacite:orcid "0000-0002-7252-954X"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-7252-954X> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.191370" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.893828" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Vonderheide"^^xsd:string ;
     foaf:givenName "Robert H"^^xsd:string ;
@@ -455,7 +455,7 @@
 <https://w3id.org/pyeuropepmc/author/vostrejs-wp> a foaf:Person ;
     datacite:orcid "0000-0002-1659-0186"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0002-1659-0186> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.933897" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.638895" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Vostrejs"^^xsd:string ;
     foaf:givenName "William P"^^xsd:string ;
@@ -464,7 +464,7 @@
     foaf:name "Vostrejs WP"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/author/yang-p> a foaf:Person ;
-    prov:generatedAtTime "2025-12-02T19:18:27.594804" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.289404" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Yang"^^xsd:string ;
     foaf:givenName "Ping"^^xsd:string ;
@@ -475,7 +475,7 @@
 <https://w3id.org/pyeuropepmc/author/zhang-s> a foaf:Person ;
     datacite:orcid "0000-0003-1419-3635"^^xsd:string ;
     owl:sameAs <https://orcid.org/0000-0003-1419-3635> ;
-    prov:generatedAtTime "2025-12-02T19:18:27.701675" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.397565" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Zhang"^^xsd:string ;
     foaf:givenName "Shuyu"^^xsd:string ;
@@ -505,7 +505,7 @@
         <https://europepmc.org/article/PMC/12311175/>,
         <https://pubmed.ncbi.nlm.nih.gov/40739089/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12311175/> ;
-    prov:generatedAtTime "2025-12-02T19:18:27.487541" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.180989" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://pubmed.ncbi.nlm.nih.gov/40629032/> a bibo:AcademicArticle ;
@@ -533,7 +533,7 @@
         <https://europepmc.org/article/PMC/12238221/>,
         <https://pubmed.ncbi.nlm.nih.gov/40629032/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12238221/> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.741136" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.447079" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://pubmed.ncbi.nlm.nih.gov/40675967/> a bibo:AcademicArticle ;
@@ -563,7 +563,7 @@
         <https://europepmc.org/article/PMC/12271501/>,
         <https://pubmed.ncbi.nlm.nih.gov/40675967/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12271501/> ;
-    prov:generatedAtTime "2025-12-02T19:18:27.701741" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.397643" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://pubmed.ncbi.nlm.nih.gov/40057911/> a bibo:AcademicArticle ;
@@ -615,7 +615,7 @@
         <https://europepmc.org/article/PMC/12319402/>,
         <https://pubmed.ncbi.nlm.nih.gov/40057911/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12319402/> ;
-    prov:generatedAtTime "2025-12-02T19:18:29.212892" ;
+    prov:generatedAtTime "2025-12-02T19:39:37.915154" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://pubmed.ncbi.nlm.nih.gov/40562940/> a bibo:AcademicArticle ;
@@ -659,6 +659,6 @@
         <https://europepmc.org/article/PMC/12328229/>,
         <https://pubmed.ncbi.nlm.nih.gov/40562940/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12328229/> ;
-    prov:generatedAtTime "2025-12-02T19:18:28.248860" ;
+    prov:generatedAtTime "2025-12-02T19:39:36.953900" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 

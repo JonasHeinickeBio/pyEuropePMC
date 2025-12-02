@@ -211,10 +211,6 @@ class URIFactory:
             # Extract the funder ID from the FundRef DOI
             # e.g., "https://doi.org/10.13039/501100001809" -> "501100001809"
             funder_id = fundref_doi.split("/")[-1] if "/" in fundref_doi else fundref_doi
-            # Clean up any URL parts
-            funder_id = funder_id.replace("https://doi.org/10.13039/", "").replace(
-                "http://doi.org/10.13039/", ""
-            )
             if funder_id:
                 parts.append(funder_id)
         if award_id:
