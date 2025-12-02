@@ -127,13 +127,14 @@ class InstitutionEntity(BaseEntity):
         """Normalize institution data (trim whitespace, validate URIs)."""
         from pyeuropepmc.models.utils import (
             normalize_string_field,
+            validate_and_normalize_country,
             validate_and_normalize_uri,
         )
 
         self.display_name = normalize_string_field(self.display_name) or ""
         self.ror_id = validate_and_normalize_uri(self.ror_id)
         self.openalex_id = validate_and_normalize_uri(self.openalex_id)
-        self.country = normalize_string_field(self.country)
+        self.country = validate_and_normalize_country(self.country)
         self.country_code = normalize_string_field(self.country_code)
         self.city = normalize_string_field(self.city)
         self.institution_type = normalize_string_field(self.institution_type)

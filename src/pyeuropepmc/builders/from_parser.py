@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from pyeuropepmc.models import (
     AuthorEntity,
     FigureEntity,
+    JournalEntity,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
@@ -63,6 +64,8 @@ def _build_author_entity(
                     country=aff_data.get("country"),
                     source_uri=f"urn:pmc-affiliation:{ref_id}",
                 )
+                # Normalize the institution data, including country
+                institution.normalize()
                 institution_entities.append(institution)
 
         if aff_texts:
@@ -122,6 +125,11 @@ def build_paper_entities(
     meta = parser.extract_metadata()
 
     # Build PaperEntity
+    journal_entity = None
+    journal_title = meta.get("journal")
+    if journal_title:
+        journal_entity = JournalEntity(title=journal_title)
+
     paper = PaperEntity(
         id=meta.get("pmcid") or meta.get("doi"),
         label=meta.get("title"),
@@ -129,7 +137,7 @@ def build_paper_entities(
         pmcid=meta.get("pmcid"),
         doi=meta.get("doi"),
         title=meta.get("title"),
-        journal=meta.get("journal"),
+        journal=journal_entity,
         volume=meta.get("volume"),
         issue=meta.get("issue"),
         pages=meta.get("pages"),

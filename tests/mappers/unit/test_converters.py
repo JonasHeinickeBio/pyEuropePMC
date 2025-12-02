@@ -8,19 +8,23 @@ from pyeuropepmc.cache.cache import CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
     _convert_to_rdf,
-    _validate_search_results,
-    _validate_xml_data,
-    _validate_enrichment_data,
-    _process_search_results,
-    _process_xml_data,
-    _process_enrichment_data,
     convert_search_to_rdf,
     convert_xml_to_rdf,
     convert_enrichment_to_rdf,
     convert_pipeline_to_rdf,
     convert_incremental_to_rdf,
 )
-from pyeuropepmc.models import PaperEntity
+from pyeuropepmc.mappers.validators import (
+    validate_search_results,
+    validate_xml_data,
+    validate_enrichment_data,
+)
+from pyeuropepmc.mappers.processors import (
+    process_search_results,
+    process_xml_data,
+    process_enrichment_data,
+)
+from pyeuropepmc.models import PaperEntity, AuthorEntity, JournalEntity
 
 
 class TestConvertersValidation:
@@ -29,37 +33,37 @@ class TestConvertersValidation:
     def test_validate_search_results_valid(self):
         """Test validation of valid search results."""
         valid_data = [{"doi": "10.1234/test", "title": "Test"}]
-        _validate_search_results(valid_data)  # Should not raise
+        validate_search_results(valid_data)  # Should not raise
 
     def test_validate_search_results_empty(self):
         """Test validation of empty search results."""
         with pytest.raises(RDFConversionError, match="Search results cannot be empty"):
-            _validate_search_results([])
+            validate_search_results([])
 
     def test_validate_search_results_invalid_type(self):
         """Test validation of invalid search results type."""
         with pytest.raises(RDFConversionError, match="Search results must be a list or dict"):
-            _validate_search_results("invalid")
+            validate_search_results("invalid")
 
     def test_validate_xml_data_valid(self):
         """Test validation of valid XML data."""
         valid_data = {"paper": {"title": "Test"}}
-        _validate_xml_data(valid_data)  # Should not raise
+        validate_xml_data(valid_data)  # Should not raise
 
     def test_validate_xml_data_empty(self):
         """Test validation of empty XML data."""
         with pytest.raises(RDFConversionError, match="XML data cannot be empty"):
-            _validate_xml_data({})
+            validate_xml_data({})
 
     def test_validate_enrichment_data_valid(self):
         """Test validation of valid enrichment data."""
         valid_data = {"paper": {"title": "Test"}}
-        _validate_enrichment_data(valid_data)  # Should not raise
+        validate_enrichment_data(valid_data)  # Should not raise
 
     def test_validate_enrichment_data_empty(self):
         """Test validation of empty enrichment data."""
         with pytest.raises(RDFConversionError, match="Enrichment data cannot be empty"):
-            _validate_enrichment_data({})
+            validate_enrichment_data({})
 
 
 class TestConvertersProcessing:
@@ -74,14 +78,15 @@ class TestConvertersProcessing:
             "pubYear": 2024,
         }
 
-        entities_data = _process_search_results(search_data)
+        entities_data = process_search_results(search_data)
 
         assert len(entities_data) == 1
         entity_data = entities_data[0]
         assert isinstance(entity_data["entity"], PaperEntity)
         assert entity_data["entity"].doi == "10.1234/test"
         assert entity_data["entity"].title == "Test Paper"
-        assert entity_data["entity"].journal == "Test Journal"
+        assert isinstance(entity_data["entity"].journal, JournalEntity)
+        assert entity_data["entity"].journal.title == "Test Journal"
         assert entity_data["entity"].publication_year == 2024
 
     def test_process_search_results_list(self):
@@ -91,7 +96,7 @@ class TestConvertersProcessing:
             {"doi": "10.1234/test2", "title": "Paper 2"},
         ]
 
-        entities_data = _process_search_results(search_data)
+        entities_data = process_search_results(search_data)
 
         assert len(entities_data) == 2
         assert all(isinstance(ed["entity"], PaperEntity) for ed in entities_data)
@@ -102,7 +107,7 @@ class TestConvertersProcessing:
         """Test processing search results with missing optional fields."""
         search_data = {"title": "Test Paper"}  # Missing DOI, journal, etc.
 
-        entities_data = _process_search_results(search_data)
+        entities_data = process_search_results(search_data)
 
         assert len(entities_data) == 1
         entity = entities_data[0]["entity"]
@@ -123,7 +128,7 @@ class TestConvertersProcessing:
             "sections": [{"title": "Introduction"}],
         }
 
-        entities_data = _process_xml_data(xml_data, include_content=True)
+        entities_data = process_xml_data(xml_data, include_content=True)
 
         assert len(entities_data) == 1
         entity_data = entities_data[0]
@@ -144,7 +149,7 @@ class TestConvertersProcessing:
             "tables": [{"caption": "Table 1"}],
         }
 
-        entities_data = _process_xml_data(xml_data, include_content=False)
+        entities_data = process_xml_data(xml_data, include_content=False)
 
         assert len(entities_data) == 1
         related = entities_data[0]["related_entities"]
@@ -162,7 +167,7 @@ class TestConvertersProcessing:
             "authors": [{"full_name": "John Doe"}],
         }
 
-        entities_data = _process_enrichment_data(enrichment_data)
+        entities_data = process_enrichment_data(enrichment_data)
 
         assert len(entities_data) == 1
         entity_data = entities_data[0]
@@ -178,17 +183,17 @@ class TestConvertersProcessing:
             ]
         }
 
-        entities_data = _process_enrichment_data(enrichment_data)
+        entities_data = process_enrichment_data(enrichment_data)
 
         assert len(entities_data) == 2
-        assert all(isinstance(ed["entity"], dict) for ed in entities_data)  # Raw author data
+        assert all(isinstance(ed["entity"], AuthorEntity) for ed in entities_data)  # AuthorEntity objects
 
 
 class TestConvertersGeneric:
     """Tests for the generic _convert_to_rdf function."""
 
     @patch("pyeuropepmc.mappers.converters._get_default_mapper")
-    @patch("pyeuropepmc.mappers.converters._setup_graph")
+    @patch("pyeuropepmc.mappers.converters.setup_graph")
     def test_convert_to_rdf_success(self, mock_setup_graph, mock_get_mapper):
         """Test successful conversion with generic function."""
         # Setup mocks
@@ -250,7 +255,7 @@ class TestConvertersGeneric:
             )
 
     @patch("pyeuropepmc.mappers.converters._get_default_mapper")
-    @patch("pyeuropepmc.mappers.converters._setup_graph")
+    @patch("pyeuropepmc.mappers.converters.setup_graph")
     def test_convert_to_rdf_with_caching(self, mock_setup_graph, mock_get_mapper):
         """Test conversion with cache backend."""
         # Setup mocks

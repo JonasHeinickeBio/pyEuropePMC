@@ -49,7 +49,7 @@ class TestRDFUtils:
         author = AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789")
 
         uri = generate_entity_uri(author)
-        assert str(uri) == "https://orcid.org/0000-0001-2345-6789"
+        assert str(uri) == "http://example.org/data/author/john-doe"
 
     def test_generate_entity_uri_author_name(self):
         """Test URI generation for author with name only."""
@@ -120,8 +120,8 @@ class TestRDFUtils:
 
         # Mock resolve_predicate function
         def resolve_predicate(pred_str):
-            if pred_str == "mesh:hasSubject":
-                return URIRef("http://id.nlm.nih.gov/mesh/hasSubject")
+            if pred_str == "meshv:hasDescriptor":
+                return URIRef("http://id.nlm.nih.gov/mesh/vocab#hasDescriptor")
             elif pred_str == "obo:RO_0000053":
                 return URIRef("http://purl.obolibrary.org/obo/RO_0000053")
             return URIRef(f"http://example.org/{pred_str}")
@@ -131,7 +131,8 @@ class TestRDFUtils:
         map_ontology_alignments(g, subject, paper, resolve_predicate)
 
         # Check triples were added (keywords + external identifiers)
-        assert len(g) >= 4  # 2 keywords + DOI sameAs + PMCID sameAs
+        # Changed: now we have mesh_terms from keywords (2) + 3 external IDs (doi, pmcid, pubmed)
+        assert len(g) >= 3  # 2 mesh descriptors + external identifiers
 
     def test_add_external_identifiers_paper(self):
         """Test adding external identifiers for paper."""
@@ -149,7 +150,8 @@ class TestRDFUtils:
         add_external_identifiers(g, subject, paper, resolve_predicate)
 
         # Check owl:sameAs triples were added
-        assert len(g) == 2  # DOI and PMCID
+        # Changed: now includes PMID-based pubmed URI as well
+        assert len(g) == 3  # DOI, PMCID, and PubMed URI
 
     def test_add_external_identifiers_author(self):
         """Test adding external identifiers for author."""

@@ -101,7 +101,7 @@ class TestEnrichmentRDFMapping:
         assert (uri, mapper._resolve_predicate("foaf:familyName"), None) in g
 
         # Check enrichment properties
-        assert (uri, mapper._resolve_predicate("datacite:orcid"), None) in g
+        assert (uri, mapper._resolve_predicate("ex:orcid"), None) in g
         assert (uri, mapper._resolve_predicate("ex:openAlexId"), None) in g
         assert (uri, mapper._resolve_predicate("ex:authorPosition"), None) in g
         assert (uri, mapper._resolve_predicate("foaf:mbox"), None) in g
@@ -109,8 +109,8 @@ class TestEnrichmentRDFMapping:
         # Check provenance
         assert (uri, mapper._resolve_predicate("prov:hadPrimarySource"), None) in g
 
-        # Verify URI is ORCID-based
-        assert str(uri) == "https://orcid.org/0000-0001-2345-6789"
+        # Verify URI is name-based (prioritized over ORCID)
+        assert str(uri) == "http://example.org/data/author/john-doe"
 
     def test_enriched_institution_to_rdf(self, mapper, enriched_institution):
         """Test converting enriched institution to RDF."""

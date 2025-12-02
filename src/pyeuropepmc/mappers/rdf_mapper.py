@@ -6,12 +6,11 @@ import os
 from pathlib import Path
 from typing import Any
 
-from rdflib import Graph, Literal, Namespace, URIRef
-from rdflib.namespace import RDF
+from rdflib import BNode, Dataset, Graph, Literal, Namespace, URIRef
+from rdflib.namespace import DCTERMS, RDF
 import yaml
 
 from pyeuropepmc.mappers.rdf_utils import (
-    generate_entity_uri,
     map_multi_value_fields,
     map_ontology_alignments,
     map_single_value_fields,
@@ -45,7 +44,7 @@ class RDFMapper:
     >>> uri = paper.to_rdf(g, mapper=mapper)
     """
 
-    def __init__(self, config_path: str | None = None):
+    def __init__(self, config_path: str | None = None, enable_named_graphs: bool = True):
         """
         Initialize the RDF mapper with configuration.
 
@@ -53,6 +52,8 @@ class RDFMapper:
         ----------
         config_path : Optional[str]
             Path to the YAML configuration file. If None, uses default.
+        enable_named_graphs : bool
+            Whether to enable named graphs for entity organization. Default True.
         """
         if config_path is None:
             # Default to conf/rdf_map.yml in project root
@@ -60,6 +61,7 @@ class RDFMapper:
             config_path = str(base_path / "conf" / "rdf_map.yml")
 
         self.config = self._load_config(config_path)
+        self.enable_named_graphs = enable_named_graphs
         self.namespaces = self._build_namespaces()
 
         # Configuration options for KG structure
@@ -114,6 +116,33 @@ class RDFMapper:
             namespaces[prefix] = Namespace(uri)
 
         return namespaces
+
+    def _get_named_graph_uri(self, entity_type: str) -> URIRef | None:
+        """
+        Get the named graph URI for a given entity type.
+
+        Parameters
+        ----------
+        entity_type : str
+            The entity type (e.g., 'author', 'institution', 'paper', 'provenance')
+
+        Returns
+        -------
+        URIRef or None
+            The named graph URI if configured and enabled, None otherwise
+        """
+        if not self.enable_named_graphs:
+            return None
+
+        named_graphs = self.config.get("_named_graphs", {})
+        graph_config = named_graphs.get(entity_type)
+
+        if graph_config and graph_config.get("enabled", False):
+            uri_base = graph_config.get("uri_base")
+            if uri_base:
+                return URIRef(uri_base)
+
+        return None
 
     @staticmethod
     def _is_valid_uri(uri_string: str) -> bool:
@@ -173,7 +202,9 @@ class RDFMapper:
         # If no prefix or unknown prefix, return as-is wrapped in URIRef
         return URIRef(predicate_str)
 
-    def add_types(self, g: Graph, subject: URIRef, types: list[str]) -> None:
+    def add_types(
+        self, g: Any, subject: URIRef, types: list[str], context: URIRef | None = None
+    ) -> None:
         """
         Add RDF type triples to the graph.
 
@@ -185,6 +216,8 @@ class RDFMapper:
             Subject URI
         types : list[str]
             List of type CURIEs or URIs
+        context : Optional[URIRef]
+            Named graph context to add triples to (for ConjunctiveGraph)
 
         Examples
         --------
@@ -196,9 +229,14 @@ class RDFMapper:
         """
         for type_str in types:
             type_uri = self._resolve_predicate(type_str)
-            g.add((subject, RDF.type, type_uri))
+            if context:
+                g.graph(context).add((subject, RDF.type, type_uri))
+            else:
+                g.add((subject, RDF.type, type_uri))
 
-    def map_fields(self, g: Graph, subject: URIRef, entity: Any) -> None:
+    def map_fields(
+        self, g: Any, subject: URIRef, entity: Any, context: URIRef | None = None
+    ) -> None:
         """
         Map entity fields to RDF triples based on configuration.
 
@@ -226,10 +264,13 @@ class RDFMapper:
 
         for mapping in all_mappings:
             # Map single-value fields
-            self._map_single_value_fields(g, subject, entity, mapping)
+            self._map_single_value_fields(g, subject, entity, mapping, context)
 
             # Map multi-value fields
-            self._map_multi_value_fields(g, subject, entity, mapping)
+            self._map_multi_value_fields(g, subject, entity, mapping, context)
+
+            # Map complex fields (dicts, nested structures)
+            self._map_complex_fields(g, subject, entity, mapping, context)
 
     def _get_entity_mappings(self, entity: Any) -> list[dict[str, Any]]:
         """Get mappings for entity class and parent classes."""
@@ -248,26 +289,185 @@ class RDFMapper:
         return all_mappings
 
     def _map_single_value_fields(
-        self, g: Graph, subject: URIRef, entity: Any, mapping: dict[str, Any]
+        self,
+        g: Any,
+        subject: URIRef,
+        entity: Any,
+        mapping: dict[str, Any],
+        context: URIRef | None = None,
     ) -> None:
         """Map single-value fields to RDF triples."""
         fields_mapping = mapping.get("fields", {})
-        map_single_value_fields(g, subject, entity, fields_mapping, self._resolve_predicate)
+        map_single_value_fields(
+            g, subject, entity, fields_mapping, self._resolve_predicate, context
+        )
 
     def _map_multi_value_fields(
-        self, g: Graph, subject: URIRef, entity: Any, mapping: dict[str, Any]
+        self,
+        g: Any,
+        subject: URIRef,
+        entity: Any,
+        mapping: dict[str, Any],
+        context: URIRef | None = None,
     ) -> None:
         """Map multi-value fields to RDF triples."""
         multi_value_mapping = mapping.get("multi_value_fields", {})
-        map_multi_value_fields(g, subject, entity, multi_value_mapping, self._resolve_predicate)
+        map_multi_value_fields(
+            g, subject, entity, multi_value_mapping, self._resolve_predicate, context
+        )
+
+    def _map_complex_fields(
+        self,
+        g: Any,
+        subject: URIRef,
+        entity: Any,
+        mapping: dict[str, Any],
+        context: URIRef | None = None,
+    ) -> None:
+        """Map complex fields (dicts, nested structures) to RDF triples."""
+        from rdflib import XSD, Literal
+
+        complex_mapping = mapping.get("complex_fields", {})
+
+        for field_name, predicate_str in complex_mapping.items():
+            value = getattr(entity, field_name, None)
+            if value is None:
+                continue
+
+            predicate = self._resolve_predicate(predicate_str)
+
+            # Handle external_ids dict (e.g., {'pmcid': '12311175', 'doi': '10.1038/...'})
+            if field_name == "external_ids" and isinstance(value, dict):
+                for id_type, id_value in value.items():
+                    if id_value:
+                        # Create a blank node for each identifier
+                        id_node = BNode()
+                        g.add(
+                            (subject, predicate, id_node, context)
+                            if context
+                            else (subject, predicate, id_node)
+                        )
+                        g.add(
+                            (id_node, DCTERMS.type, Literal(id_type), context)
+                            if context
+                            else (id_node, DCTERMS.type, Literal(id_type))
+                        )
+                        g.add(
+                            (id_node, RDF.value, Literal(id_value), context)
+                            if context
+                            else (id_node, RDF.value, Literal(id_value))
+                        )
+
+            # Handle license dict (e.g., {'url': 'https://...', 'text': '...'})
+            elif field_name == "license" and isinstance(value, dict):
+                license_url = value.get("url")
+                license_text = value.get("text")
+
+                if license_url:
+                    # License URL as direct object
+                    g.add(
+                        (subject, predicate, URIRef(license_url), context)
+                        if context
+                        else (subject, predicate, URIRef(license_url))
+                    )
+
+                if license_text:
+                    # License text as additional property
+                    license_text_pred = self._resolve_predicate("dcterms:rights")
+                    g.add(
+                        (
+                            subject,
+                            license_text_pred,
+                            Literal(license_text, datatype=XSD.string),
+                            context,
+                        )
+                        if context
+                        else (
+                            subject,
+                            license_text_pred,
+                            Literal(license_text, datatype=XSD.string),
+                        )
+                    )
+
+            # Handle funders list (list of dicts with fundref_doi, award_id, etc.)
+            elif field_name == "funders" and isinstance(value, list):
+                for funder in value:
+                    if isinstance(funder, dict):
+                        # Create blank node for grant/funding
+                        grant_node = BNode()
+                        g.add(
+                            (subject, predicate, grant_node, context)
+                            if context
+                            else (subject, predicate, grant_node)
+                        )
+                        g.add(
+                            (grant_node, RDF.type, self._resolve_predicate("frapo:Grant"), context)
+                            if context
+                            else (grant_node, RDF.type, self._resolve_predicate("frapo:Grant"))
+                        )
+
+                        # Add funder DOI/FundRef
+                        fundref_doi = funder.get("fundref_doi")
+                        if fundref_doi:
+                            g.add(
+                                (
+                                    grant_node,
+                                    self._resolve_predicate("datacite:doi"),
+                                    URIRef(fundref_doi),
+                                    context,
+                                )
+                                if context
+                                else (
+                                    grant_node,
+                                    self._resolve_predicate("datacite:doi"),
+                                    URIRef(fundref_doi),
+                                )
+                            )
+
+                        # Add award ID
+                        award_id = funder.get("award_id")
+                        if award_id:
+                            g.add(
+                                (
+                                    grant_node,
+                                    self._resolve_predicate("datacite:identifier"),
+                                    Literal(award_id),
+                                    context,
+                                )
+                                if context
+                                else (
+                                    grant_node,
+                                    self._resolve_predicate("datacite:identifier"),
+                                    Literal(award_id),
+                                )
+                            )
+
+                        # Add recipient
+                        recipient = funder.get("recipient_full") or funder.get("recipient_name")
+                        if recipient:
+                            g.add(
+                                (
+                                    grant_node,
+                                    self._resolve_predicate("foaf:fundedBy"),
+                                    Literal(recipient),
+                                    context,
+                                )
+                                if context
+                                else (
+                                    grant_node,
+                                    self._resolve_predicate("foaf:fundedBy"),
+                                    Literal(recipient),
+                                )
+                            )
 
     def map_relationships(
         self,
-        g: Graph,
+        g: Any,
         subject: URIRef,
         entity: Any,
         related_entities: dict[str, list[Any]] | None = None,
         extraction_info: dict[str, Any] | None = None,
+        context: URIRef | None = None,
     ) -> None:
         """
         Map entity relationships to RDF triples based on configuration.
@@ -326,12 +526,18 @@ class RDFMapper:
                             related_uri = self._generate_entity_uri(related_obj)
 
                             # Add relationship triple
-                            g.add((subject, predicate, related_uri))
+                            if context:
+                                g.graph(context).add((subject, predicate, related_uri))
+                            else:
+                                g.add((subject, predicate, related_uri))
 
                             # Add inverse relationship if specified
                             if inverse_predicate:
                                 inv_predicate = self._resolve_predicate(inverse_predicate)
-                                g.add((related_uri, inv_predicate, subject))
+                                if context:
+                                    g.graph(context).add((related_uri, inv_predicate, subject))
+                                else:
+                                    g.add((related_uri, inv_predicate, subject))
 
                             # Generate detailed RDF for the related entity
                             if hasattr(related_obj, "to_rdf"):
@@ -360,7 +566,7 @@ class RDFMapper:
 
     def _generate_entity_uri(self, entity: Any) -> URIRef:
         """
-        Generate a resolvable URI for an entity based on its identifiers.
+        Generate a URI for an entity using the centralized URI factory.
 
         Parameters
         ----------
@@ -381,13 +587,52 @@ class RDFMapper:
         >>> print(uri)
         https://doi.org/10.1234/test.2021.001
         """
-        return generate_entity_uri(entity)
+        from pyeuropepmc.mappers.rdf_utils import uri_factory
+
+        return uri_factory.generate_uri(entity)
+
+    def generate_uri(self, entity_type: str, entity: Any) -> URIRef:
+        """
+        Generate a URI for an entity of a specific type.
+
+        This is a convenience method that allows generating URIs by specifying
+        the entity type as a string.
+
+        Parameters
+        ----------
+        entity_type : str
+            Type of entity ("paper", "author", "institution", etc.)
+        entity : Any
+            Entity instance
+
+        Returns
+        -------
+        URIRef
+            Generated URI for the entity
+
+        Examples
+        --------
+        >>> from pyeuropepmc.models import PaperEntity
+        >>> mapper = RDFMapper()
+        >>> paper = PaperEntity(doi="10.1234/test.2021.001")
+        >>> uri = mapper.generate_uri("paper", paper)
+        >>> print(uri)
+        https://doi.org/10.1234/test.2021.001
+        """
+        return self._generate_entity_uri(entity)
 
     def add_provenance(
-        self, g: Graph, subject: URIRef, entity: Any, extraction_info: dict[str, Any] | None = None
+        self,
+        g: Any,
+        subject: URIRef,
+        entity: Any,
+        extraction_info: dict[str, Any] | None = None,
+        context: URIRef | None = None,
     ) -> None:
         """
         Add provenance information to the RDF graph.
+
+        Only adds provenance if it hasn't been added already for this subject.
 
         Parameters
         ----------
@@ -415,17 +660,27 @@ class RDFMapper:
 
         extraction_info = extraction_info or {}
 
+        # Check if provenance has already been added for this subject
+        prov_predicate = self._resolve_predicate("prov:generatedAtTime")
+        target_graph = g.graph(context) if context else g
+
+        # If provenance already exists, don't add it again
+        if (subject, prov_predicate, None) in target_graph:
+            return
+
         # Add extraction timestamp
         timestamp = extraction_info.get("timestamp") or datetime.now().isoformat()
-        g.add((subject, self._resolve_predicate("prov:generatedAtTime"), Literal(timestamp)))
+        target_graph.add((subject, prov_predicate, Literal(timestamp)))
 
         # Add extraction method
         method = extraction_info.get("method", "pyeuropepmc_parser")
-        g.add((subject, self._resolve_predicate("prov:wasGeneratedBy"), Literal(method)))
+        target_graph.add(
+            (subject, self._resolve_predicate("prov:wasGeneratedBy"), Literal(method))
+        )
 
         # Add source information
         if entity.source_uri and self._is_valid_uri(entity.source_uri):
-            g.add(
+            target_graph.add(
                 (
                     subject,
                     self._resolve_predicate("prov:wasDerivedFrom"),
@@ -436,18 +691,32 @@ class RDFMapper:
         # Add enrichment sources if available (from AuthorEntity or PaperEntity)
         if hasattr(entity, "sources") and entity.sources:
             for source in entity.sources:
-                g.add((subject, self._resolve_predicate("prov:hadPrimarySource"), Literal(source)))
+                target_graph.add(
+                    (
+                        subject,
+                        self._resolve_predicate("prov:hadPrimarySource"),
+                        Literal(source),
+                    )
+                )
 
         # Add confidence score if available
         if hasattr(entity, "confidence") and entity.confidence is not None:
-            g.add((subject, self._resolve_predicate("ex:confidence"), Literal(entity.confidence)))
+            target_graph.add(
+                (
+                    subject,
+                    self._resolve_predicate("ex:confidence"),
+                    Literal(entity.confidence),
+                )
+            )
 
         # Add data quality indicators
         quality_info = extraction_info.get("quality", {})
         if quality_info.get("validation_passed"):
-            g.add((subject, self._resolve_predicate("ex:validationStatus"), Literal("passed")))
+            target_graph.add(
+                (subject, self._resolve_predicate("ex:validationStatus"), Literal("passed"))
+            )
         if quality_info.get("completeness_score"):
-            g.add(
+            target_graph.add(
                 (
                     subject,
                     self._resolve_predicate("ex:completenessScore"),
@@ -455,7 +724,9 @@ class RDFMapper:
                 )
             )
 
-    def map_ontology_alignments(self, g: Graph, subject: URIRef, entity: Any) -> None:
+    def map_ontology_alignments(
+        self, g: Any, subject: URIRef, entity: Any, context: URIRef | None = None
+    ) -> None:
         """
         Add ontology alignment placeholders and biomedical mappings.
 
@@ -478,9 +749,9 @@ class RDFMapper:
         >>> subject = URIRef("http://example.org/paper1")
         >>> mapper.map_ontology_alignments(g, subject, paper)
         """
-        map_ontology_alignments(g, subject, entity, self._resolve_predicate)
+        map_ontology_alignments(g, subject, entity, self._resolve_predicate, context)
 
-    def _bind_namespaces(self, g: Graph) -> None:
+    def _bind_namespaces(self, g: Any) -> None:
         """
         Bind namespaces to the graph for proper serialization.
 
@@ -493,7 +764,7 @@ class RDFMapper:
             g.bind(prefix, namespace)
 
     def serialize_graph(
-        self, g: Graph, format: str = "turtle", destination: str | None = None
+        self, g: Any, format: str = "turtle", destination: str | None = None
     ) -> str:
         """
         Serialize RDF graph to string or file.
@@ -523,11 +794,14 @@ class RDFMapper:
         # Bind namespaces from configuration to ensure proper prefixes
         self._bind_namespaces(g)
 
+        # Use TriG format for Dataset (named graphs), Turtle for regular Graph
+        actual_format = "trig" if hasattr(g, "graphs") else format
+
         if destination:
-            g.serialize(destination=destination, format=format)
+            g.serialize(destination=destination, format=actual_format)
             return ""
         else:
-            return str(g.serialize(format=format))
+            return str(g.serialize(format=actual_format))
 
     def convert_and_save_entities_to_rdf(
         self,
@@ -537,7 +811,7 @@ class RDFMapper:
         extraction_info: dict[str, Any] | None = None,
         filename_template: str | None = None,
         include_content: bool = True,
-    ) -> dict[str, Graph]:
+    ) -> dict[str, Any]:
         """
         Convert a dictionary of entities to RDF graphs and save them to files.
 
@@ -593,7 +867,7 @@ class RDFMapper:
                 print(f"Converting to RDF: {identifier} ({entity_type})")
 
                 # Create RDF graph
-                g = Graph()
+                g = Dataset()
 
                 # Bind namespaces immediately to ensure proper prefixes during serialization
                 self._bind_namespaces(g)

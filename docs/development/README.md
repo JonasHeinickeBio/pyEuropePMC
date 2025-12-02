@@ -70,7 +70,7 @@ pyEuropePMC/
 │   ├── __init__.py          # Package initialization
 │   ├── base.py             # Base API client
 │   ├── search.py           # Search functionality
-│   ├── parser.py           # Response parsing
+│   ├── search_parser.py    # Response parsing
 │   └── utils/
 │       └── helpers.py      # Utility functions
 ├── tests/                   # Test suite
@@ -556,7 +556,7 @@ class SearchClient(BaseClient):
         return self._parse_response(response)
 ```
 
-#### Parser (`parser.py`)
+#### Parser (`search_parser.py`)
 
 ```python
 class ResponseParser:

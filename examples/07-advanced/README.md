@@ -1,8 +1,8 @@
 # Advanced Examples
 
 **Level**: ⭐⭐⭐ Advanced
-**Examples**: 3 scripts
-**Time**: 30-45 minutes
+**Examples**: 7 files (4 notebooks + 3 scripts)
+**Time**: 45-60 minutes
 
 ## Overview
 

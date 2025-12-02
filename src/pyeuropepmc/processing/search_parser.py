@@ -5,7 +5,7 @@ import defusedxml.ElementTree as ET
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, InstitutionEntity, JournalEntity, PaperEntity
 
 # Type aliases for better readability
 ParsedResult = dict[str, str | list[str]]
@@ -380,6 +380,39 @@ class EuropePMCParser:
         else:
             remaining_parts = parts
 
+        # Try to extract city from remaining parts (often the second-to-last part)
+        if len(remaining_parts) >= 2:
+            # Check if second-to-last part looks like a city (not containing department keywords)
+            potential_city = remaining_parts[-1]
+            dept_keywords = [
+                "department",
+                "school",
+                "faculty",
+                "institute",
+                "center",
+                "program",
+                "division",
+                "section",
+                "unit",
+                "group",
+                "laboratory",
+                "lab",
+                "college",
+                "university",
+                "hospital",
+                "clinic",
+                "foundation",
+                "association",
+            ]
+            # If the potential city doesn't contain department keywords and is reasonably short,
+            # treat it as a city
+            if (
+                not any(dept in potential_city.lower() for dept in dept_keywords)
+                and len(potential_city.split()) <= 3
+            ):  # Cities are usually 1-3 words
+                city = potential_city
+                remaining_parts = remaining_parts[:-1]
+
         # The remaining parts are likely institution name and possibly department
         if remaining_parts:
             first_part = remaining_parts[0]
@@ -430,16 +463,32 @@ class EuropePMCParser:
         author_entities = []
         institution_entities = []
         author_list = result.get("authorList", {}).get("author", [])
+
+        # Extract ORCIDs from authorIdList as fallback
+        author_id_list = result.get("authorIdList", {}).get("authorId", [])
+        available_orcids = [
+            aid.get("value") for aid in author_id_list if aid.get("type") == "ORCID"
+        ]
+
         if isinstance(author_list, list):
             for author in author_list:
+                # Extract ORCID from author object first
+                orcid = (
+                    author.get("authorId", {}).get("value")
+                    if author.get("authorId", {}).get("type") == "ORCID"
+                    else None
+                )
+
+                # If no ORCID in author object, try to assign from available ORCIDs
+                if not orcid and available_orcids:
+                    orcid = available_orcids.pop(0)
+
                 author_dict = {
                     "full_name": author.get("fullName"),
                     "first_name": author.get("firstName"),
                     "last_name": author.get("lastName"),
                     "initials": author.get("initials"),
-                    "orcid": author.get("authorId", {}).get("value")
-                    if author.get("authorId", {}).get("type") == "ORCID"
-                    else None,
+                    "orcid": orcid,
                 }
                 # Add affiliations if available
                 affiliations = []
@@ -470,9 +519,7 @@ class EuropePMCParser:
                     first_name=author.get("firstName"),
                     last_name=author.get("lastName"),
                     initials=author.get("initials"),
-                    orcid=author.get("authorId", {}).get("value")
-                    if author.get("authorId", {}).get("type") == "ORCID"
-                    else None,
+                    orcid=orcid,
                     affiliation_text=", ".join(affiliations) if affiliations else None,
                     institutions=author_institutions if author_institutions else None,
                 )
@@ -491,7 +538,7 @@ class EuropePMCParser:
         elif isinstance(keyword_list, str):
             keywords.append(keyword_list)
 
-        # Add MeSH descriptors as keywords
+        # Add MeSH descriptors as keywords for backward compatibility
         mesh_headings = result.get("meshHeadingList", {}).get("meshHeading", [])
         if isinstance(mesh_headings, list):
             for mesh in mesh_headings:
@@ -500,6 +547,38 @@ class EuropePMCParser:
                     keywords.append(f"MeSH:{descriptor}")
 
         return keywords
+
+    @staticmethod
+    def extract_mesh_headings(result: dict[str, Any]) -> list:
+        """
+        Extract structured MeSH headings from search result.
+
+        Parameters
+        ----------
+        result : dict
+            Search result dictionary from Europe PMC API
+
+        Returns
+        -------
+        list[MeSHHeadingEntity]
+            List of structured MeSH heading entities with qualifiers
+        """
+        from pyeuropepmc.models.mesh import MeSHHeadingEntity
+
+        mesh_headings = []
+        mesh_heading_list = result.get("meshHeadingList", {}).get("meshHeading", [])
+
+        if isinstance(mesh_heading_list, list):
+            for mesh_data in mesh_heading_list:
+                try:
+                    heading = MeSHHeadingEntity.from_dict(mesh_data)
+                    mesh_headings.append(heading)
+                except (KeyError, ValueError) as e:
+                    # Log warning but continue processing
+                    descriptor = mesh_data.get("descriptorName", "unknown")
+                    print(f"Warning: Failed to parse MeSH heading '{descriptor}': {e}")
+
+        return mesh_headings
 
     @staticmethod
     def extract_open_access_info(
@@ -587,6 +666,16 @@ class EuropePMCParser:
         issue = journal_info.get("issue")
         page_info = result.get("pageInfo")
 
+        # Create JournalEntity if journal information is available
+        journal_entity = None
+        if journal_title or journal_issn:
+            journal_entity = JournalEntity.from_search_result(
+                {
+                    "title": journal_title,
+                    "issn": journal_issn,
+                }
+            )
+
         # Extract publication dates
         pub_year = result.get("pubYear")
         first_publication_date = result.get("firstPublicationDate")
@@ -619,7 +708,7 @@ class EuropePMCParser:
             title=result.get("title"),
             abstract=result.get("abstractText"),
             # Publication metadata
-            journal=journal_title,
+            journal=journal_entity,
             volume=volume,
             issue=issue,
             pages=page_info,

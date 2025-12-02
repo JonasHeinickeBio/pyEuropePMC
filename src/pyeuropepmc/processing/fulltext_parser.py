@@ -799,7 +799,7 @@ class FullTextXMLParser:
 
     def extract_metadata(self) -> dict[str, Any]:
         """
-        Extract metadata from the full text XML.
+        Extract comprehensive metadata from the full text XML.
 
         Uses configuration-based fallback patterns for flexible extraction
         across different XML schemas and article types.
@@ -810,15 +810,18 @@ class FullTextXMLParser:
             Dictionary containing extracted metadata including:
             - pmcid: PMC ID
             - doi: DOI
+            - identifiers: Dict of all article IDs (pmcid, pmid, doi, publisher-id, etc.)
             - title: Article title
             - authors: List of author names
-            - journal: Journal name
+            - journal: Dict with title, volume, issue, IDs (nlm-ta, iso-abbrev), ISSNs
             - pub_date: Publication date
-            - volume: Journal volume
-            - issue: Journal issue
             - pages: Page range
             - abstract: Article abstract
             - keywords: List of keywords
+            - funding: List of funding information (if available)
+            - license: License information (if available)
+            - publisher: Publisher name and location (if available)
+            - categories: Article categories and subjects (if available)
 
         Raises
         ------
@@ -832,40 +835,25 @@ class FullTextXMLParser:
             )
 
         try:
-            # Use flexible extraction with fallback patterns
-            metadata: dict[str, Any] = {
-                "pmcid": self._extract_with_fallbacks(
-                    self.root, self.config.article_patterns["pmcid"]
-                ),
-                "doi": self._extract_with_fallbacks(
-                    self.root, self.config.article_patterns["doi"]
-                ),
-                "title": self._extract_with_fallbacks(
-                    self.root, self.config.article_patterns["title"], use_full_text=True
-                ),
-                "journal": self._extract_with_fallbacks(
-                    self.root, self.config.journal_patterns["title"]
-                ),
-                "volume": self._extract_with_fallbacks(
-                    self.root, self.config.journal_patterns["volume"]
-                ),
-                "issue": self._extract_with_fallbacks(
-                    self.root, self.config.journal_patterns["issue"]
-                ),
-                "abstract": self._extract_with_fallbacks(
-                    self.root, self.config.article_patterns["abstract"], use_full_text=True
-                ),
-            }
+            # Extract basic metadata
+            metadata = self._extract_basic_metadata()
 
-            # Pages: try multiple patterns for first and last page
-            fpage = self._extract_with_fallbacks(self.root, [".//fpage", ".//first-page"])
-            lpage = self._extract_with_fallbacks(self.root, [".//lpage", ".//last-page"])
-            metadata["pages"] = self._combine_page_range(fpage, lpage)
+            # Extract article identifiers
+            self._add_article_identifiers(metadata)
 
-            # Authors, publication date, and keywords (use specialized methods)
+            # Extract journal information
+            metadata["journal"] = self._extract_journal_metadata()
+
+            # Extract page range
+            metadata["pages"] = self._extract_page_range()
+
+            # Extract standard metadata using specialized methods
             metadata["authors"] = self.extract_authors()
             metadata["pub_date"] = self.extract_pub_date()
             metadata["keywords"] = self.extract_keywords()
+
+            # Extract optional metadata fields
+            self._add_optional_metadata(metadata)
 
             logger.debug(
                 f"Extracted metadata for PMC{metadata.get('pmcid', 'Unknown')}: {metadata}"
@@ -877,6 +865,113 @@ class FullTextXMLParser:
                 ErrorCodes.PARSE003,
                 {"error": str(e), "message": "Failed to extract metadata from XML"},
             ) from e
+
+    def _extract_basic_metadata(self) -> dict[str, Any]:
+        """Extract basic article metadata (pmcid, doi, title, abstract)."""
+        return {
+            "pmcid": self._extract_with_fallbacks(
+                self.root, self.config.article_patterns["pmcid"]
+            ),
+            "doi": self._extract_with_fallbacks(self.root, self.config.article_patterns["doi"]),
+            "title": self._extract_with_fallbacks(
+                self.root, self.config.article_patterns["title"], use_full_text=True
+            ),
+            "abstract": self._extract_with_fallbacks(
+                self.root, self.config.article_patterns["abstract"], use_full_text=True
+            ),
+        }
+
+    def _add_article_identifiers(self, metadata: dict[str, Any]) -> None:
+        """Add article identifiers to metadata dict."""
+        article_meta_result = self.extract_elements_by_patterns(
+            {"article_meta": ".//article-meta"}, return_type="element"
+        )
+
+        for article_meta in article_meta_result.get("article_meta", []):
+            identifiers = self._extract_all_pub_ids(article_meta, "article-id")
+            if identifiers:
+                metadata["identifiers"] = identifiers
+            break
+
+    def _extract_journal_metadata(self) -> dict[str, Any]:
+        """Extract journal information including IDs and ISSNs."""
+        journal_info: dict[str, Any] = {
+            "title": self._extract_with_fallbacks(
+                self.root, self.config.journal_patterns["title"]
+            ),
+            "volume": self._extract_with_fallbacks(
+                self.root, self.config.journal_patterns["volume"]
+            ),
+            "issue": self._extract_with_fallbacks(
+                self.root, self.config.journal_patterns["issue"]
+            ),
+        }
+
+        # Extract journal IDs and ISSNs using helper
+        self._add_journal_ids_and_issns(journal_info)
+
+        return journal_info
+
+    def _add_journal_ids_and_issns(self, journal_info: dict[str, Any]) -> None:
+        """Add journal IDs (nlm-ta, iso-abbrev) and ISSNs to journal info."""
+        journal_meta_result = self.extract_elements_by_patterns(
+            {"journal_meta": ".//journal-meta"}, return_type="element"
+        )
+
+        for journal_meta in journal_meta_result.get("journal_meta", []):
+            # Extract journal IDs using helper
+            temp_parser = FullTextXMLParser()
+            temp_parser.root = journal_meta
+            nlm_ta_result = temp_parser.extract_elements_by_patterns(
+                {"nlm_ta": ".//journal-id[@journal-id-type='nlm-ta']"}, return_type="text"
+            )
+            if nlm_ta_result.get("nlm_ta"):
+                journal_info["nlm_ta"] = nlm_ta_result["nlm_ta"][0]
+
+            iso_abbrev_result = temp_parser.extract_elements_by_patterns(
+                {"iso_abbrev": ".//journal-id[@journal-id-type='iso-abbrev']"},
+                return_type="text",
+            )
+            if iso_abbrev_result.get("iso_abbrev"):
+                journal_info["iso_abbrev"] = iso_abbrev_result["iso_abbrev"][0]
+
+            # Extract ISSNs using helper
+            issn_print_result = temp_parser.extract_elements_by_patterns(
+                {"issn_print": ".//issn[@pub-type='ppub']"}, return_type="text"
+            )
+            if issn_print_result.get("issn_print"):
+                journal_info["issn_print"] = issn_print_result["issn_print"][0]
+
+            issn_epub_result = temp_parser.extract_elements_by_patterns(
+                {"issn_electronic": ".//issn[@pub-type='epub']"}, return_type="text"
+            )
+            if issn_epub_result.get("issn_electronic"):
+                journal_info["issn_electronic"] = issn_epub_result["issn_electronic"][0]
+            break
+
+    def _extract_page_range(self) -> str | None:
+        """Extract page range from first and last page."""
+        fpage = self._extract_with_fallbacks(self.root, [".//fpage", ".//first-page"])
+        lpage = self._extract_with_fallbacks(self.root, [".//lpage", ".//last-page"])
+        return self._combine_page_range(fpage, lpage)
+
+    def _add_optional_metadata(self, metadata: dict[str, Any]) -> None:
+        """Add optional metadata fields (funding, license, publisher, categories)."""
+        funding = self.extract_funding()
+        if funding:
+            metadata["funding"] = funding
+
+        license_info = self.extract_license()
+        if license_info:
+            metadata["license"] = license_info
+
+        publisher_info = self.extract_publisher()
+        if publisher_info:
+            metadata["publisher"] = publisher_info
+
+        categories = self.extract_article_categories()
+        if categories:
+            metadata["categories"] = categories
 
     def extract_authors(self) -> list[str]:
         """
@@ -1005,21 +1100,16 @@ class FullTextXMLParser:
         return affiliation_refs
 
     def _extract_author_orcid(self, elem: ET.Element) -> str | None:
-        """Extract ORCID identifier from an author element."""
-        orcid = self._extract_with_fallbacks(
-            elem, [".//ext-link[@ext-link-type='orcid']", ".//orcid"]
-        )
-        if orcid:
-            # Clean up ORCID format
-            orcid = orcid.strip()
-            if "orcid.org" in orcid:
-                # Extract ID from URL
-                import re
-
-                match = re.search(r"orcid\.org/(\d{4}-\d{4}-\d{4}-\d{3}[\dX])", orcid)
-                if match:
-                    orcid = match.group(1)
-            return orcid
+        """Extract and clean ORCID identifier from an author element."""
+        # Try multiple patterns for ORCID
+        for pattern in [
+            ".//contrib-id[@contrib-id-type='orcid']",
+            ".//ext-link[@ext-link-type='orcid']",
+            ".//orcid",
+        ]:
+            orcid_elem = elem.find(pattern)
+            if orcid_elem is not None and orcid_elem.text:
+                return self._clean_orcid(orcid_elem.text)
         return None
 
     def extract_pub_date(self) -> str | None:
@@ -1067,6 +1157,7 @@ class FullTextXMLParser:
 
         Handles both structured affiliations (with institution/city/country tags)
         and mixed-content affiliations (with superscript markers and multiple institutions).
+        Now also extracts institution IDs (ROR, GRID, ISNI).
 
         Returns
         -------
@@ -1076,6 +1167,7 @@ class FullTextXMLParser:
             - institution: Institution name (if structured)
             - city: City (if structured)
             - country: Country (if structured)
+            - institution_ids: Dict of institution identifiers (ROR, GRID, ISNI, etc.)
             - text: Full text of affiliation
             - markers: Superscript markers (e.g., "1, 2")
             - institution_text: Clean institution text without markers
@@ -1107,13 +1199,18 @@ class FullTextXMLParser:
             full_text = "".join(aff_elem.itertext()).strip()
             aff_data["text"] = full_text
 
+            # Extract institution IDs (ROR, GRID, ISNI, etc.)
+            institution_ids = self._extract_institution_ids(aff_elem)
+            if institution_ids:
+                aff_data["institution_ids"] = institution_ids
+
             # Try structured extraction first
             structured = self._extract_structured_fields(
                 aff_elem,
                 {
-                    "institution": "institution",
-                    "city": "addr-line/named-content[@content-type='city']",
-                    "country": "country",
+                    "institution": ".//institution",
+                    "city": ".//city",
+                    "country": ".//country",
                 },
             )
 
@@ -1139,6 +1236,32 @@ class FullTextXMLParser:
                         )
                         if len(parsed_institutions) > 1:
                             aff_data["parsed_institutions"] = parsed_institutions
+                        elif len(parsed_institutions) == 1:
+                            # Single institution - extract fields from parsed data
+                            inst = parsed_institutions[0]
+                            if inst.get("name"):
+                                aff_data["institution"] = inst["name"]
+                            if inst.get("city"):
+                                aff_data["city"] = inst["city"]
+                            if inst.get("postal_code"):
+                                aff_data["postal_code"] = inst["postal_code"]
+                            if inst.get("country"):
+                                aff_data["country"] = inst["country"]
+                else:
+                    # No markers - try to parse the text directly
+                    clean_text = "".join(aff_elem.itertext()).strip()
+                    if clean_text:
+                        # Try to parse as single institution
+                        parsed = self._parse_single_institution(clean_text, [], 0)
+                        if parsed.get("name") or parsed.get("city") or parsed.get("country"):
+                            if parsed.get("name"):
+                                aff_data["institution"] = parsed["name"]
+                            if parsed.get("city"):
+                                aff_data["city"] = parsed["city"]
+                            if parsed.get("postal_code"):
+                                aff_data["postal_code"] = parsed["postal_code"]
+                            if parsed.get("country"):
+                                aff_data["country"] = parsed["country"]
 
             affiliations.append(aff_data)
 
@@ -1179,24 +1302,416 @@ class FullTextXMLParser:
             if not part:
                 continue
 
-            # Try to extract components using patterns
-            # Pattern: Institution, City PostalCode, Country
-            match = re.search(r"([^,]+),\s*([^,]+?)\s+(\d+)(?:,\s*(.+))?", part)
-            if match:
-                institution = {
-                    "marker": markers[i] if i < len(markers) else None,
-                    "name": match.group(1).strip(),
-                    "city": match.group(2).strip(),
-                    "postal_code": match.group(3).strip(),
-                    "country": match.group(4).strip() if match.group(4) else None,
-                }
-            else:
-                # Simple fallback - just store the text
-                institution = {"marker": markers[i] if i < len(markers) else None, "text": part}
+            # Clean the part by removing emails and other non-geographic data
+            part = self._clean_affiliation_text(part)
 
+            # Try to extract components using improved patterns
+            institution = self._parse_single_institution(part, markers, i)
             institutions.append(institution)
 
         return institutions
+
+    def _clean_affiliation_text(self, text: str) -> str:
+        """
+        Clean affiliation text by removing emails and other non-geographic data.
+
+        Parameters
+        ----------
+        text : str
+            Raw affiliation text
+
+        Returns
+        -------
+        str
+            Cleaned text with non-geographic data removed
+        """
+        # Remove email addresses
+        text = re.sub(r"\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b", "", text)
+
+        # Remove URLs
+        text = re.sub(
+            r"http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\\(\\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+",
+            "",
+            text,
+        )
+
+        # Remove phone numbers (basic pattern)
+        text = re.sub(r"\b\d{3}[-.]?\d{3}[-.]?\d{4}\b", "", text)
+
+        # Remove common contact prefixes and trailing text after country
+        text = re.sub(
+            r"\.?\s*(?:Contact|Email|Tel|Phone|Fax)[:.]?\s*.*$", "", text, flags=re.IGNORECASE
+        )
+
+        # Remove extra whitespace
+        text = re.sub(r"\s+", " ", text).strip()
+
+        return text
+
+    def _parse_single_institution(
+        self, part: str, markers: list[str], index: int
+    ) -> dict[str, str | None]:
+        """
+        Parse a single institution from affiliation text.
+
+        Parameters
+        ----------
+        part : str
+            Single institution text to parse
+        markers : list[str]
+            List of superscript markers
+        index : int
+            Index of this institution in the markers list
+
+        Returns
+        -------
+        dict[str, str | None]
+            Parsed institution data
+        """
+        # Split by commas to get components
+        components = [comp.strip() for comp in part.split(",") if comp.strip()]
+
+        if not components:
+            return {
+                "marker": markers[index] if index < len(markers) else None,
+                "text": part,
+            }
+
+        # Initialize variables
+        country = None
+        state_province = None
+        postal_code = None
+        city = None
+        remaining_components = components[:]
+
+        # Extract country (last component if it matches)
+        country = self._extract_country(remaining_components)
+
+        # Extract postal code first (can be before or after state)
+        postal_code = self._extract_postal_code(remaining_components)
+
+        # Extract state/province
+        state_province = self._extract_state_province(remaining_components)
+
+        # Extract city (what's left before the institution name)
+        city = self._extract_city(remaining_components)
+
+        # Everything else is the institution name
+        name = ", ".join(remaining_components)
+
+        return {
+            "marker": markers[index] if index < len(markers) else None,
+            "name": name if name else None,
+            "city": city,
+            "state_province": state_province,
+            "postal_code": postal_code,
+            "country": country,
+        }
+
+    def _is_likely_state_province(self, text: str) -> bool:
+        """
+        Check if text is likely a state or province abbreviation.
+
+        Parameters
+        ----------
+        text : str
+            Text to check
+
+        Returns
+        -------
+        bool
+            True if likely a state/province
+        """
+        # US state abbreviations (2-letter codes)
+        us_states = {
+            "AL",
+            "AK",
+            "AZ",
+            "AR",
+            "CA",
+            "CO",
+            "CT",
+            "DE",
+            "FL",
+            "GA",
+            "HI",
+            "ID",
+            "IL",
+            "IN",
+            "IA",
+            "KS",
+            "KY",
+            "LA",
+            "ME",
+            "MD",
+            "MA",
+            "MI",
+            "MN",
+            "MS",
+            "MO",
+            "MT",
+            "NE",
+            "NV",
+            "NH",
+            "NJ",
+            "NM",
+            "NY",
+            "NC",
+            "ND",
+            "OH",
+            "OK",
+            "OR",
+            "PA",
+            "RI",
+            "SC",
+            "SD",
+            "TN",
+            "TX",
+            "UT",
+            "VT",
+            "VA",
+            "WA",
+            "WV",
+            "WI",
+            "WY",
+            "DC",  # District of Columbia
+        }
+
+        # Canadian province/territory abbreviations
+        canadian_provinces = {
+            "AB",
+            "BC",
+            "MB",
+            "NB",
+            "NL",
+            "NS",
+            "NT",
+            "NU",
+            "ON",
+            "PE",
+            "QC",
+            "SK",
+            "YT",
+        }
+
+        # Australian state abbreviations
+        australian_states = {"NSW", "VIC", "QLD", "WA", "SA", "TAS", "ACT", "NT"}
+
+        # UK country abbreviations (sometimes used as states)
+        uk_countries = {
+            "ENG",
+            "SCO",
+            "WAL",
+            "NIR",  # England, Scotland, Wales, Northern Ireland
+        }
+
+        text_upper = text.upper().strip()
+
+        return (
+            text_upper in us_states
+            or text_upper in canadian_provinces
+            or text_upper in australian_states
+            or text_upper in uk_countries
+        )
+
+    def _is_likely_country(self, text: str) -> bool:
+        """
+        Check if text is likely a country name.
+
+        Parameters
+        ----------
+        text : str
+            Text to check
+
+        Returns
+        -------
+        bool
+            True if text looks like a country
+        """
+        # Clean the text first
+        cleaned = self._clean_country_name(text).upper()
+
+        # Check against known countries and abbreviations
+        known_countries = {
+            "USA",
+            "US",
+            "UNITED STATES",
+            "UK",
+            "UNITED KINGDOM",
+            "CANADA",
+            "CHINA",
+            "JAPAN",
+            "GERMANY",
+            "FRANCE",
+            "ITALY",
+            "SPAIN",
+            "AUSTRALIA",
+            "INDIA",
+            "BRAZIL",
+            "MEXICO",
+            "RUSSIA",
+            "SOUTH KOREA",
+            "NETHERLANDS",
+            "SWEDEN",
+            "NORWAY",
+            "DENMARK",
+            "FINLAND",
+            "POLAND",
+            "BELGIUM",
+            "AUSTRIA",
+            "SWITZERLAND",
+        }
+
+        # Check if the cleaned text starts with a known country
+        for country in known_countries:
+            if cleaned.startswith(country):
+                return True
+
+        # Check if it's an ISO code
+        if len(cleaned) in (2, 3) and cleaned.isalpha():
+            # Import here to avoid circular imports
+            from pyeuropepmc.models.utils import ISO_COUNTRY_CODES
+
+            return cleaned in ISO_COUNTRY_CODES
+
+        # Check if it contains country-like words
+        country_indicators = ["REPUBLIC", "FEDERATION", "KINGDOM", "EMIRATES", "STATES"]
+        return any(indicator in cleaned for indicator in country_indicators)
+
+    def _extract_country(self, components: list[str]) -> str | None:
+        """Extract country from components, modifying components in place."""
+        if not components:
+            return None
+
+        last_comp = components[-1]
+        if self._is_likely_country(last_comp):
+            country = self._clean_country_name(last_comp)
+            components.pop()
+            return country
+        return None
+
+    def _extract_state_province(self, components: list[str]) -> str | None:
+        """Extract state/province from components, modifying components in place."""
+        if not components:
+            return None
+
+        potential_state = components[-1]
+        if self._is_likely_state_province(potential_state):
+            components.pop()
+            return potential_state
+        return None
+
+    def _extract_postal_code(self, components: list[str]) -> str | None:
+        """Extract postal code from components, modifying components in place."""
+        if not components:
+            return None
+
+        # First, look for standalone postal codes
+        postal_candidates = []
+        for i, comp in enumerate(components):
+            if self._is_postal_code(comp):
+                postal_candidates.append((i, comp))
+
+        if postal_candidates:
+            # Take the last postal code found
+            postal_idx, postal_code = postal_candidates[-1]
+            components.pop(postal_idx)
+            return postal_code
+
+        # If no standalone postal codes, check if any component contains a postal code
+        # that needs to be split out
+        for i, comp in enumerate(components):
+            postal_match = re.search(r"\b(\w\d\w\s*\d\w\d|\d{5}(?:-\d{4})?)\b", comp)
+            if postal_match:
+                postal_code = postal_match.group(1)
+                # Remove postal code from the component
+                remaining = re.sub(r"\b(?:\w\d\w\s*\d\w\d|\d{5}(?:-\d{4})?)\b", "", comp).strip()
+                if remaining:
+                    # Replace the component with the cleaned version
+                    components[i] = remaining
+                else:
+                    # Remove the component entirely if it was just the postal code
+                    components.pop(i)
+                return postal_code
+
+        return None
+
+    def _extract_city(self, components: list[str]) -> str | None:
+        """Extract city from components, modifying components in place."""
+        if not components:
+            return None
+
+        # If we have components left, the last one before the institution name is likely the city
+        # But only if we have more than one component (institution name + city)
+        if len(components) >= 2:
+            city = components.pop()
+            return city
+
+        return None
+
+    def _clean_country_name(self, country: str) -> str:
+        """
+        Clean country name by removing trailing punctuation and normalizing.
+
+        Parameters
+        ----------
+        country : str
+            Raw country name
+
+        Returns
+        -------
+        str
+            Cleaned country name
+        """
+        if not country:
+            return country
+
+        # Remove trailing dots and other punctuation
+        country = re.sub(r"[.,;:!?]+$", "", country).strip()
+
+        return country
+
+    def _is_postal_code(self, text: str) -> bool:
+        """
+        Check if text looks like a postal code.
+
+        Parameters
+        ----------
+        text : str
+            Text to check
+
+        Returns
+        -------
+        bool
+            True if text matches postal code patterns
+        """
+        # Remove spaces for checking
+        clean_text = text.replace(" ", "").upper()
+
+        # US ZIP codes: 5 digits or 5+4
+        if re.match(r"^\d{5}(-\d{4})?$", clean_text):
+            return True
+
+        # Canadian postal codes: ANA NAN pattern (with or without space)
+        # e.g., "A1B 2C3" -> "A1B2C3" or "A1B2C3"
+        if re.match(r"^\w\d\w\d\w\d$", clean_text):
+            return True
+
+        # Also check for postal codes within longer strings (e.g., "V5Z 1L3" in "BC V5Z 1L3")
+        # Look for the pattern within the text
+        if re.search(r"\b\w\d\w\s*\d\w\d\b", text):
+            return True
+
+        # UK postal codes: various patterns like SW1A 1AA, M1 1AA, etc.
+        if re.match(r"^\w{1,2}\d{1,2}\w?\s*\d\w{2}$", text.upper()):
+            return True
+
+        # Other common postal code patterns (4-6 digits)
+        if re.match(r"^\d{4,6}$", clean_text):
+            return True
+
+        # European postal codes (5 digits for many countries)
+        return bool(re.match(r"^\d{4,6}$", clean_text))
 
     def _get_text_content(self, element: ET.Element | None) -> str:
         """
@@ -1850,6 +2365,342 @@ class FullTextXMLParser:
                 ErrorCodes.PARSE003,
                 {"error": str(e), "message": "Failed to extract sections from XML"},
             ) from e
+
+    def _extract_institution_ids(self, element: ET.Element) -> dict[str, str]:
+        """
+        Extract institution identifiers (ROR, GRID, ISNI, etc.) from element.
+
+        Parameters
+        ----------
+        element : ET.Element
+            The XML element to extract institution IDs from
+
+        Returns
+        -------
+        dict[str, str]
+            Dictionary mapping ID type to ID value
+        """
+        institution_ids = {}
+        # Use extract_elements_by_patterns helper
+        temp_parser = FullTextXMLParser()
+        temp_parser.root = element
+        id_elems_result = temp_parser.extract_elements_by_patterns(
+            {"institution_ids": ".//institution-id"}, return_type="element"
+        )
+
+        for inst_id_elem in id_elems_result.get("institution_ids", []):
+            id_type = inst_id_elem.get("institution-id-type")
+            id_value = inst_id_elem.text
+            if id_type and id_value:
+                institution_ids[id_type] = id_value.strip()
+        return institution_ids
+
+    def _extract_all_pub_ids(
+        self, element: ET.Element, id_tag: str = "article-id"
+    ) -> dict[str, str]:
+        """
+        Extract all publication IDs from element.
+
+        Parameters
+        ----------
+        element : ET.Element
+            The XML element to extract IDs from
+        id_tag : str
+            The tag name for ID elements (default: "article-id")
+
+        Returns
+        -------
+        dict[str, str]
+            Dictionary mapping ID type to ID value (pmcid, pmid, doi, publisher-id, etc.)
+        """
+        pub_ids = {}
+        # Use extract_elements_by_patterns helper
+        temp_parser = FullTextXMLParser()
+        temp_parser.root = element
+        id_elems_result = temp_parser.extract_elements_by_patterns(
+            {"pub_ids": f".//{id_tag}"}, return_type="element"
+        )
+
+        for id_elem in id_elems_result.get("pub_ids", []):
+            id_type = id_elem.get("pub-id-type")
+            id_value = id_elem.text
+            if id_type and id_value:
+                pub_ids[id_type] = id_value.strip()
+        return pub_ids
+
+    def _clean_orcid(self, orcid: str | None) -> str | None:
+        """
+        Clean ORCID ID by removing URL prefix.
+
+        Parameters
+        ----------
+        orcid : str | None
+            ORCID URL or ID
+
+        Returns
+        -------
+        str | None
+            Clean ORCID ID (e.g., "0000-0003-3442-7216")
+        """
+        if not orcid:
+            return None
+        # Remove common URL prefixes
+        orcid = orcid.strip()
+        for prefix in ["http://orcid.org/", "https://orcid.org/", "orcid.org/"]:
+            if orcid.startswith(prefix):
+                return orcid[len(prefix) :]
+        return orcid
+
+    def extract_funding(self) -> list[dict[str, Any]]:
+        """
+        Extract funding information from the full text XML.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of funding dictionaries, each containing:
+            - source: Funding source name
+            - fundref_doi: FundRef DOI (if available)
+            - award_id: Award/grant ID
+            - recipient: Award recipient name
+            - recipient_full: Full recipient name (given + surname)
+
+        Raises
+        ------
+        ParsingError
+            If no XML has been parsed
+        """
+        if self.root is None:
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"message": "No XML content has been parsed. Call parse() first."},
+            )
+
+        funding_results = []
+        # Use extract_elements_by_patterns helper
+        award_groups_result = self.extract_elements_by_patterns(
+            {"award_groups": ".//award-group"}, return_type="element"
+        )
+
+        for award_group in award_groups_result.get("award_groups", []):
+            funding_data = self._extract_funding_from_group(award_group)
+            if funding_data:  # Only add if we extracted something
+                funding_results.append(funding_data)
+
+        logger.debug(f"Extracted {len(funding_results)} funding entries")
+        return funding_results
+
+    def _extract_funding_from_group(self, award_group: ET.Element) -> dict[str, Any]:
+        """Extract funding data from a single award-group element."""
+        funding_data: dict[str, Any] = {}
+
+        # Extract funding source using _extract_flat_texts helper
+        source_texts = self._extract_flat_texts(
+            award_group, ".//funding-source//institution", filter_empty=True
+        )
+        if source_texts:
+            funding_data["source"] = " ".join(source_texts)
+
+        # Extract FundRef DOI using extract_elements_by_patterns
+        temp_parser = FullTextXMLParser()
+        temp_parser.root = award_group
+        inst_ids_result = temp_parser.extract_elements_by_patterns(
+            {"institution_ids": ".//institution-id"}, return_type="element"
+        )
+
+        for inst_id in inst_ids_result.get("institution_ids", []):
+            if inst_id.get("institution-id-type") == "FundRef" and inst_id.text:
+                funding_data["fundref_doi"] = inst_id.text.strip()
+                break
+
+        # Extract award ID using _extract_with_fallbacks helper
+        award_id = self._extract_with_fallbacks(award_group, [".//award-id"])
+        if award_id:
+            funding_data["award_id"] = award_id
+
+        # Extract recipient
+        recipient_info = self._extract_recipient(award_group)
+        if recipient_info:
+            funding_data.update(recipient_info)
+
+        return funding_data
+
+    def _extract_recipient(self, award_group: ET.Element) -> dict[str, str]:
+        """Extract recipient information from award group."""
+        recipient_info = {}
+        # Use extract_elements_by_patterns helper
+        temp_parser = FullTextXMLParser()
+        temp_parser.root = award_group
+        recipients_result = temp_parser.extract_elements_by_patterns(
+            {"recipients": ".//principal-award-recipient"}, return_type="element"
+        )
+
+        for recipient_elem in recipients_result.get("recipients", []):
+            # Use _extract_with_fallbacks for name parts
+            surname = self._extract_with_fallbacks(recipient_elem, [".//surname"])
+            given_names = self._extract_with_fallbacks(recipient_elem, [".//given-names"])
+
+            if surname:
+                recipient_info["recipient"] = surname
+                if given_names:
+                    recipient_info["recipient_full"] = f"{given_names} {surname}"
+            break
+        return recipient_info
+
+    def extract_license(self) -> dict[str, str | None]:
+        """
+        Extract license information from the full text XML.
+
+        Returns
+        -------
+        dict[str, str | None]
+            Dictionary containing:
+            - type: License type attribute
+            - url: License URL (from ext-link)
+            - text: License text content
+
+        Raises
+        ------
+        ParsingError
+            If no XML has been parsed
+        """
+        if self.root is None:
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"message": "No XML content has been parsed. Call parse() first."},
+            )
+
+        license_info: dict[str, str | None] = {}
+        # Use extract_elements_by_patterns helper
+        license_result = self.extract_elements_by_patterns(
+            {"licenses": ".//license"}, return_type="element"
+        )
+
+        for license_elem in license_result.get("licenses", []):
+            # Extract license type
+            license_type = license_elem.get("license-type")
+            if license_type:
+                license_info["type"] = license_type
+
+            # Extract license URL using extract_elements_by_patterns
+            temp_parser = FullTextXMLParser()
+            temp_parser.root = license_elem
+            ext_links_result = temp_parser.extract_elements_by_patterns(
+                {"ext_links": ".//ext-link"}, return_type="element"
+            )
+
+            for ext_link in ext_links_result.get("ext_links", []):
+                url = ext_link.get("{http://www.w3.org/1999/xlink}href")
+                if url:
+                    license_info["url"] = url
+                break
+
+            # Extract license text using _extract_with_fallbacks helper
+            text = self._extract_with_fallbacks(license_elem, [".//license-p"])
+            if text:
+                license_info["text"] = text
+            break
+
+        return license_info if license_info else {}
+
+    def extract_publisher(self) -> dict[str, str | None]:
+        """
+        Extract publisher information from the full text XML.
+
+        Returns
+        -------
+        dict[str, str | None]
+            Dictionary containing:
+            - name: Publisher name
+            - location: Publisher location
+
+        Raises
+        ------
+        ParsingError
+            If no XML has been parsed
+        """
+        if self.root is None:
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"message": "No XML content has been parsed. Call parse() first."},
+            )
+
+        publisher_info: dict[str, str | None] = {}
+        # Use extract_elements_by_patterns helper
+        publisher_result = self.extract_elements_by_patterns(
+            {"publishers": ".//publisher"}, return_type="element"
+        )
+
+        for publisher_elem in publisher_result.get("publishers", []):
+            # Extract publisher name using helper
+            name = self._extract_with_fallbacks(publisher_elem, [".//publisher-name"])
+            if name:
+                publisher_info["name"] = name
+
+            # Extract publisher location using helper
+            location = self._extract_with_fallbacks(publisher_elem, [".//publisher-loc"])
+            if location:
+                publisher_info["location"] = location
+            break
+
+        return publisher_info
+
+    def extract_article_categories(self) -> dict[str, Any]:
+        """
+        Extract article categories and subjects from the full text XML.
+
+        Returns
+        -------
+        dict[str, Any]
+            Dictionary containing:
+            - article_type: Article type attribute from root element
+            - subject_groups: List of subject group dicts with type and subjects
+
+        Raises
+        ------
+        ParsingError
+            If no XML has been parsed
+        """
+        if self.root is None:
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"message": "No XML content has been parsed. Call parse() first."},
+            )
+
+        categories: dict[str, Any] = {}
+
+        # Get article type from root element using extract_elements_by_patterns
+        article_result = self.extract_elements_by_patterns(
+            {"articles": ".//article"}, return_type="element"
+        )
+
+        for article_elem in article_result.get("articles", []):
+            article_type = article_elem.get("article-type")
+            if article_type:
+                categories["article_type"] = article_type
+            break
+
+        # Extract subject groups using extract_elements_by_patterns
+        subject_groups = []
+        subj_groups_result = self.extract_elements_by_patterns(
+            {"subj_groups": ".//subj-group"}, return_type="element"
+        )
+
+        for subj_group in subj_groups_result.get("subj_groups", []):
+            group_type = subj_group.get("subj-group-type")
+            # Use _extract_flat_texts helper instead of manual list comprehension
+            subjects = self._extract_flat_texts(subj_group, ".//subject", filter_empty=True)
+
+            if subjects:
+                group_data: dict[str, Any] = {"subjects": subjects}
+                if group_type:
+                    group_data["type"] = group_type
+                subject_groups.append(group_data)
+
+        if subject_groups:
+            categories["subject_groups"] = subject_groups
+
+        return categories
 
     def _extract_section_data(self, section: ET.Element) -> dict[str, str]:
         """Extract title and content from a section element using generic helper."""

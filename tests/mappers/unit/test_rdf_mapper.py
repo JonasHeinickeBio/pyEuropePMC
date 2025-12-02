@@ -218,7 +218,7 @@ class TestRDFMapper:
         author = AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789")
 
         uri = mapper._generate_entity_uri(author)
-        assert str(uri) == "https://orcid.org/0000-0001-2345-6789"
+        assert str(uri) == "http://example.org/data/author/john-doe"  # Prioritizes name over ORCID
 
     def test_generate_entity_uri_author_name(self):
         """Test URI generation for author with name only."""

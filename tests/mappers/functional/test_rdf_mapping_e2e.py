@@ -235,9 +235,9 @@ class TestRDFMappingEndToEnd:
         author_uri = sample_author.to_rdf(g, mapper=mapper)
         inst_uri = sample_institution.to_rdf(g, mapper=mapper)
 
-        # Check paper ontology alignments (MeSH terms for keywords)
-        mesh_triples = list(g.triples((paper_uri, mapper._resolve_predicate("mesh:hasSubject"), None)))
-        assert len(mesh_triples) == 3  # 3 keywords
+        # Check paper ontology alignments (MeSH terms using official vocabulary)
+        mesh_triples = list(g.triples((paper_uri, mapper._resolve_predicate("meshv:hasDescriptor"), None)))
+        assert len(mesh_triples) == 3  # 3 keywords mapped to meshv:hasDescriptor
 
         # Check external identifiers for all entities
         paper_sameas = list(g.triples((paper_uri, mapper._resolve_predicate("owl:sameAs"), None)))

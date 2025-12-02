@@ -44,8 +44,8 @@ class ScholarlyWorkEntity(BaseEntity):
         PubMed ID (xsd:string, numeric identifier)
     semantic_scholar_id : Optional[str]
         Semantic Scholar paper ID (xsd:string)
-    journal : Optional[str]
-        Journal or publication venue name (xsd:string)
+    journal : Optional[str | Any]
+        Journal or publication venue name (xsd:string) or JournalEntity
     """
 
     title: str | None = None
@@ -58,7 +58,7 @@ class ScholarlyWorkEntity(BaseEntity):
     pmcid: str | None = None
     pmid: str | None = None
     semantic_scholar_id: str | None = None
-    journal: str | None = None
+    journal: str | Any | None = None
 
     def normalize(self) -> None:
         """Normalize scholarly work data (DOI lowercase, trim fields)."""
@@ -79,7 +79,9 @@ class ScholarlyWorkEntity(BaseEntity):
         self.pmcid = validate_and_normalize_pmcid(self.pmcid)
         self.pmid = validate_and_normalize_pmid(self.pmid)
         self.semantic_scholar_id = normalize_string_field(self.semantic_scholar_id)
-        self.journal = normalize_string_field(self.journal)
+        # Normalize journal only if it's a string (not JournalEntity)
+        if isinstance(self.journal, str):
+            self.journal = normalize_string_field(self.journal)
         # Note: authors normalization is handled in subclasses due to different types
         super().normalize()
 

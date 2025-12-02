@@ -29,7 +29,7 @@ class TestRDFPipelineIntegration:
             abstract="This study presents a comprehensive computational analysis...",
             keywords=["protein-protein interaction", "network analysis", "bioinformatics"],
             publication_year=2024,
-            journal="PLOS Computational Biology",
+            journal=None,  # Use None instead of string for proper typing
             volume="20",
             issue="1",
             citation_count=25,

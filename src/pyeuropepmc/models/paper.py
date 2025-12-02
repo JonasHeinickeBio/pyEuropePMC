@@ -5,6 +5,7 @@ Paper entity model for representing academic articles.
 from dataclasses import dataclass, field
 from typing import Any
 
+from pyeuropepmc.models.journal import JournalEntity
 from pyeuropepmc.models.scholarly_work import ScholarlyWorkEntity
 
 __all__ = ["PaperEntity"]
@@ -49,10 +50,12 @@ class PaperEntity(ScholarlyWorkEntity):
         Number of references cited
     cited_by_count : Optional[int]
         Number of papers citing this work
+    journal : Optional[JournalEntity]
+        Journal entity containing journal metadata
     publisher : Optional[str]
-        Publisher name
+        Publisher name (legacy field, use journal.publisher instead)
     issn : Optional[str]
-        ISSN identifier
+        ISSN identifier (legacy field, use journal.issn instead)
     publication_type : Optional[str]
         Type of publication
     first_page : Optional[str]
@@ -76,6 +79,9 @@ class PaperEntity(ScholarlyWorkEntity):
     issue: str | None = None
     pub_date: str | None = None
     keywords: list[str] = field(default_factory=list)
+    mesh_terms: list[str | Any] = field(
+        default_factory=list
+    )  # MeSH terms (str or MeSHHeadingEntity)
     abstract: str | None = None
     citation_count: int | None = None
     influential_citation_count: int | None = None
@@ -100,6 +106,7 @@ class PaperEntity(ScholarlyWorkEntity):
     page_info: str | None = None
     first_page: str | None = None
     last_page: str | None = None
+    journal: JournalEntity | None = None
     publisher: str | None = None
     issn: str | None = None
     publication_type: str | None = None
@@ -171,6 +178,11 @@ class PaperEntity(ScholarlyWorkEntity):
         if self.oa_url:
             self.oa_url = validate_and_normalize_uri(self.oa_url)
 
+        # Validate journal entity if present
+        if self.journal:
+            if hasattr(self.journal, "validate"):
+                self.journal.validate()
+
         super().validate()
 
     def normalize(self) -> None:
@@ -192,6 +204,13 @@ class PaperEntity(ScholarlyWorkEntity):
         self.last_page = normalize_string_field(self.last_page)
         self.semantic_scholar_corpus_id = normalize_string_field(self.semantic_scholar_corpus_id)
         self.openalex_id = normalize_string_field(self.openalex_id)
+
+        # Normalize journal entity if present
+        if self.journal:
+            if isinstance(self.journal, str):
+                self.journal = normalize_string_field(self.journal)
+            else:
+                self.journal.normalize()
 
         super().normalize()
 
@@ -238,12 +257,20 @@ class PaperEntity(ScholarlyWorkEntity):
             license=merged.get("license"),
             publication_year=merged.get("publication_year"),
             publication_date=merged.get("publication_date"),
-            journal=merged.get("journal"),
+            journal=JournalEntity.from_enrichment_dict(
+                {
+                    "title": merged.get("journal"),
+                    "issn": biblio.get("issn"),
+                    "publisher": biblio.get("publisher"),
+                }
+            )
+            if merged.get("journal") or biblio.get("issn") or biblio.get("publisher")
+            else None,
             volume=biblio.get("volume"),
             pages=biblio.get("pages"),
             issue=biblio.get("issue"),
-            publisher=biblio.get("publisher"),
-            issn=biblio.get("issn"),
+            publisher=biblio.get("publisher"),  # Keep for backward compatibility
+            issn=biblio.get("issn"),  # Keep for backward compatibility
             publication_type=biblio.get("type"),
             first_page=biblio.get("first_page"),
             last_page=biblio.get("last_page"),

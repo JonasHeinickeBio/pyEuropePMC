@@ -1,6 +1,7 @@
 """Integration tests for builder layer."""
 
 from pyeuropepmc.builders import build_paper_entities
+from pyeuropepmc.models import JournalEntity
 from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 # Sample XML for testing
@@ -96,7 +97,8 @@ class TestBuildPaperEntities:
         assert paper.pmcid == "1234567"
         assert paper.doi == "10.1234/test.2021.001"
         assert paper.title == "Sample Test Article Title"
-        assert paper.journal == "Test Journal"
+        assert isinstance(paper.journal, JournalEntity)
+        assert paper.journal.title == "Test Journal"
         assert paper.volume == "10"
         assert paper.issue == "5"
         assert paper.pages == "100-110"

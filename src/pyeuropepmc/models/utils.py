@@ -716,3 +716,391 @@ def validate_latitude_longitude(
         validate_range(lon_val, -180, 180, "Longitude must be between -180 and 180")
 
     return lat_val, lon_val
+
+
+# ===== COUNTRY NORMALIZATION =====
+
+# Country name mappings for standardization
+COUNTRY_NAME_MAPPINGS = {
+    # Common abbreviations and variations
+    "USA": "United States",
+    "US": "United States",
+    "U.S.A.": "United States",
+    "U.S.": "United States",
+    "UK": "United Kingdom",
+    "GB": "United Kingdom",
+    "GREAT BRITAIN": "United Kingdom",
+    "ENGLAND": "United Kingdom",
+    "UAE": "United Arab Emirates",
+    "PRC": "China",
+    "P.R. CHINA": "China",
+    "P.R.C.": "China",
+    "ROC": "Taiwan",
+    "REPUBLIC OF CHINA": "Taiwan",
+    "SOUTH KOREA": "Korea, Republic of",
+    "NORTH KOREA": "Korea, Democratic People's Republic of",
+    "RUSSIA": "Russian Federation",
+    "IRAN": "Iran, Islamic Republic of",
+    "VIETNAM": "Viet Nam",
+    "VENEZUELA": "Venezuela, Bolivarian Republic of",
+    "BOLIVIA": "Bolivia, Plurinational State of",
+    "MOLDOVA": "Moldova, Republic of",
+    "TANZANIA": "Tanzania, United Republic of",
+    "SYRIA": "Syrian Arab Republic",
+    "LAOS": "Lao People's Democratic Republic",
+    "BRUNEI": "Brunei Darussalam",
+    "IVORY COAST": "Côte d'Ivoire",
+    "COTE D'IVOIRE": "Côte d'Ivoire",
+    "CAPE VERDE": "Cabo Verde",
+    "MICRONESIA": "Micronesia, Federated States of",
+    "PALESTINE": "Palestine, State of",
+    "VATICAN CITY": "Holy See",
+    "VATICAN": "Holy See",
+    "EAST TIMOR": "Timor-Leste",
+    "SÃO TOMÉ AND PRÍNCIPE": "Sao Tome and Principe",
+    "SÃO TOMÉ": "Sao Tome and Principe",
+    "PRÍNCIPE": "Sao Tome and Principe",
+}
+
+# ISO country codes (alpha-2 to full name)
+ISO_COUNTRY_CODES = {
+    "AF": "Afghanistan",
+    "AX": "Åland Islands",
+    "AL": "Albania",
+    "DZ": "Algeria",
+    "AS": "American Samoa",
+    "AD": "Andorra",
+    "AO": "Angola",
+    "AI": "Anguilla",
+    "AQ": "Antarctica",
+    "AG": "Antigua and Barbuda",
+    "AR": "Argentina",
+    "AM": "Armenia",
+    "AW": "Aruba",
+    "AU": "Australia",
+    "AT": "Austria",
+    "AZ": "Azerbaijan",
+    "BS": "Bahamas",
+    "BH": "Bahrain",
+    "BD": "Bangladesh",
+    "BB": "Barbados",
+    "BY": "Belarus",
+    "BE": "Belgium",
+    "BZ": "Belize",
+    "BJ": "Benin",
+    "BM": "Bermuda",
+    "BT": "Bhutan",
+    "BO": "Bolivia, Plurinational State of",
+    "BQ": "Bonaire, Sint Eustatius and Saba",
+    "BA": "Bosnia and Herzegovina",
+    "BW": "Botswana",
+    "BV": "Bouvet Island",
+    "BR": "Brazil",
+    "IO": "British Indian Ocean Territory",
+    "BN": "Brunei Darussalam",
+    "BG": "Bulgaria",
+    "BF": "Burkina Faso",
+    "BI": "Burundi",
+    "KH": "Cambodia",
+    "CM": "Cameroon",
+    "CA": "Canada",
+    "CV": "Cabo Verde",
+    "KY": "Cayman Islands",
+    "CF": "Central African Republic",
+    "TD": "Chad",
+    "CL": "Chile",
+    "CN": "China",
+    "CX": "Christmas Island",
+    "CC": "Cocos (Keeling) Islands",
+    "CO": "Colombia",
+    "KM": "Comoros",
+    "CG": "Congo",
+    "CD": "Congo, Democratic Republic of the",
+    "CK": "Cook Islands",
+    "CR": "Costa Rica",
+    "CI": "Côte d'Ivoire",
+    "HR": "Croatia",
+    "CU": "Cuba",
+    "CW": "Curaçao",
+    "CY": "Cyprus",
+    "CZ": "Czechia",
+    "DK": "Denmark",
+    "DJ": "Djibouti",
+    "DM": "Dominica",
+    "DO": "Dominican Republic",
+    "EC": "Ecuador",
+    "EG": "Egypt",
+    "SV": "El Salvador",
+    "GQ": "Equatorial Guinea",
+    "ER": "Eritrea",
+    "EE": "Estonia",
+    "SZ": "Eswatini",
+    "ET": "Ethiopia",
+    "FK": "Falkland Islands (Malvinas)",
+    "FO": "Faroe Islands",
+    "FJ": "Fiji",
+    "FI": "Finland",
+    "FR": "France",
+    "GF": "French Guiana",
+    "PF": "French Polynesia",
+    "TF": "French Southern Territories",
+    "GA": "Gabon",
+    "GM": "Gambia",
+    "GE": "Georgia",
+    "DE": "Germany",
+    "GH": "Ghana",
+    "GI": "Gibraltar",
+    "GR": "Greece",
+    "GL": "Greenland",
+    "GD": "Grenada",
+    "GP": "Guadeloupe",
+    "GU": "Guam",
+    "GT": "Guatemala",
+    "GG": "Guernsey",
+    "GN": "Guinea",
+    "GW": "Guinea-Bissau",
+    "GY": "Guyana",
+    "HT": "Haiti",
+    "HM": "Heard Island and McDonald Islands",
+    "VA": "Holy See",
+    "HN": "Honduras",
+    "HK": "Hong Kong",
+    "HU": "Hungary",
+    "IS": "Iceland",
+    "IN": "India",
+    "ID": "Indonesia",
+    "IR": "Iran, Islamic Republic of",
+    "IQ": "Iraq",
+    "IE": "Ireland",
+    "IM": "Isle of Man",
+    "IL": "Israel",
+    "IT": "Italy",
+    "JM": "Jamaica",
+    "JP": "Japan",
+    "JE": "Jersey",
+    "JO": "Jordan",
+    "KZ": "Kazakhstan",
+    "KE": "Kenya",
+    "KI": "Kiribati",
+    "KP": "Korea, Democratic People's Republic of",
+    "KR": "Korea, Republic of",
+    "KW": "Kuwait",
+    "KG": "Kyrgyzstan",
+    "LA": "Lao People's Democratic Republic",
+    "LV": "Latvia",
+    "LB": "Lebanon",
+    "LS": "Lesotho",
+    "LR": "Liberia",
+    "LY": "Libya",
+    "LI": "Liechtenstein",
+    "LT": "Lithuania",
+    "LU": "Luxembourg",
+    "MO": "Macao",
+    "MK": "North Macedonia",
+    "MG": "Madagascar",
+    "MW": "Malawi",
+    "MY": "Malaysia",
+    "MV": "Maldives",
+    "ML": "Mali",
+    "MT": "Malta",
+    "MH": "Marshall Islands",
+    "MQ": "Martinique",
+    "MR": "Mauritania",
+    "MU": "Mauritius",
+    "YT": "Mayotte",
+    "MX": "Mexico",
+    "FM": "Micronesia, Federated States of",
+    "MD": "Moldova, Republic of",
+    "MC": "Monaco",
+    "MN": "Mongolia",
+    "ME": "Montenegro",
+    "MS": "Montserrat",
+    "MA": "Morocco",
+    "MZ": "Mozambique",
+    "MM": "Myanmar",
+    "NA": "Namibia",
+    "NR": "Nauru",
+    "NP": "Nepal",
+    "NL": "Netherlands",
+    "NC": "New Caledonia",
+    "NZ": "New Zealand",
+    "NI": "Nicaragua",
+    "NE": "Niger",
+    "NG": "Nigeria",
+    "NU": "Niue",
+    "NF": "Norfolk Island",
+    "MP": "Northern Mariana Islands",
+    "NO": "Norway",
+    "OM": "Oman",
+    "PK": "Pakistan",
+    "PW": "Palau",
+    "PS": "Palestine, State of",
+    "PA": "Panama",
+    "PG": "Papua New Guinea",
+    "PY": "Paraguay",
+    "PE": "Peru",
+    "PH": "Philippines",
+    "PN": "Pitcairn",
+    "PL": "Poland",
+    "PT": "Portugal",
+    "PR": "Puerto Rico",
+    "QA": "Qatar",
+    "RE": "Réunion",
+    "RO": "Romania",
+    "RU": "Russian Federation",
+    "RW": "Rwanda",
+    "BL": "Saint Barthélemy",
+    "SH": "Saint Helena, Ascension and Tristan da Cunha",
+    "KN": "Saint Kitts and Nevis",
+    "LC": "Saint Lucia",
+    "MF": "Saint Martin (French part)",
+    "PM": "Saint Pierre and Miquelon",
+    "VC": "Saint Vincent and the Grenadines",
+    "WS": "Samoa",
+    "SM": "San Marino",
+    "ST": "Sao Tome and Principe",
+    "SA": "Saudi Arabia",
+    "SN": "Senegal",
+    "RS": "Serbia",
+    "SC": "Seychelles",
+    "SL": "Sierra Leone",
+    "SG": "Singapore",
+    "SX": "Sint Maarten (Dutch part)",
+    "SK": "Slovakia",
+    "SI": "Slovenia",
+    "SB": "Solomon Islands",
+    "SO": "Somalia",
+    "ZA": "South Africa",
+    "GS": "South Georgia and the South Sandwich Islands",
+    "SS": "South Sudan",
+    "ES": "Spain",
+    "LK": "Sri Lanka",
+    "SD": "Sudan",
+    "SR": "Suriname",
+    "SJ": "Svalbard and Jan Mayen",
+    "SE": "Sweden",
+    "CH": "Switzerland",
+    "SY": "Syrian Arab Republic",
+    "TW": "Taiwan",
+    "TJ": "Tajikistan",
+    "TZ": "Tanzania, United Republic of",
+    "TH": "Thailand",
+    "TL": "Timor-Leste",
+    "TG": "Togo",
+    "TK": "Tokelau",
+    "TO": "Tonga",
+    "TT": "Trinidad and Tobago",
+    "TN": "Tunisia",
+    "TR": "Türkiye",
+    "TM": "Turkmenistan",
+    "TC": "Turks and Caicos Islands",
+    "TV": "Tuvalu",
+    "UG": "Uganda",
+    "UA": "Ukraine",
+    "AE": "United Arab Emirates",
+    "GB": "United Kingdom",
+    "US": "United States",
+    "UM": "United States Minor Outlying Islands",
+    "UY": "Uruguay",
+    "UZ": "Uzbekistan",
+    "VU": "Vanuatu",
+    "VE": "Venezuela, Bolivarian Republic of",
+    "VN": "Viet Nam",
+    "VG": "Virgin Islands, British",
+    "VI": "Virgin Islands, U.S.",
+    "WF": "Wallis and Futuna",
+    "EH": "Western Sahara",
+    "YE": "Yemen",
+    "ZM": "Zambia",
+    "ZW": "Zimbabwe",
+}
+
+
+def normalize_country(country: str | None) -> str | None:
+    """
+    Normalize country names to standard forms.
+
+    Handles common abbreviations, variations, and ISO codes.
+
+    Parameters
+    ----------
+    country : str or None
+        Country name, abbreviation, or ISO code to normalize
+
+    Returns
+    -------
+    str or None
+        Normalized country name, or None if input is None or empty
+
+    Examples
+    --------
+    >>> normalize_country("USA")
+    'United States'
+    >>> normalize_country("UK")
+    'United Kingdom'
+    >>> normalize_country("US")
+    'United States'
+    >>> normalize_country("CN")
+    'China'
+    >>> normalize_country("Canada.")
+    'Canada'
+    """
+    if country is None:
+        return None
+
+    country = normalize_string(country, allow_empty=False)
+    if country is None:
+        return None
+
+    # Remove trailing punctuation that might remain
+    country = re.sub(r"[.,;:!?]+$", "", country).strip()
+
+    # Check mappings first (case-insensitive)
+    country_upper = country.upper()
+    if country_upper in COUNTRY_NAME_MAPPINGS:
+        return COUNTRY_NAME_MAPPINGS[country_upper]
+
+    # Check if it's an ISO code (2-3 letters, all caps)
+    if (
+        len(country) in (2, 3)
+        and country.isalpha()
+        and country.isupper()
+        and country in ISO_COUNTRY_CODES
+    ):
+        return ISO_COUNTRY_CODES[country]
+
+    # Return as-is if already a standard name or no mapping found
+    return country
+
+
+def validate_and_normalize_country(country: str | None) -> str | None:
+    """
+    Validate and normalize country information.
+
+    Parameters
+    ----------
+    country : str or None
+        Country name to validate and normalize
+
+    Returns
+    -------
+    str or None
+        Normalized country name, or None if invalid
+
+    Raises
+    ------
+    ValueError
+        If country format is invalid
+    """
+    if country is None:
+        return None
+
+    normalized = normalize_country(country)
+    if normalized is None:
+        return None
+
+    # Basic validation - ensure it's not just numbers or too short
+    if len(normalized) < 2 or normalized.isdigit():
+        raise ValueError(f"Invalid country name: {country}")
+
+    return normalized

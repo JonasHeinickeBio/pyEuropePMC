@@ -18,6 +18,7 @@
 @prefix ror: <https://ror.org/vocab#> .
 @prefix skos: <http://www.w3.org/2004/02/skos/core#> .
 @prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix pyeuropepmcdata: <https://w3id.org/pyeuropepmc/data#> .
 @prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -70,7 +71,7 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dcterms:identifier ;
+        rr:predicate pyeuropepmcdata:pmcid ;
         rr:objectMap [ rml:reference "pmcid" ]
     ] ;
 
