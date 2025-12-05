@@ -24,6 +24,7 @@ from .cache.cache import (
     CacheLayer,
     normalize_query_params,
 )
+from .clients.annotations import AnnotationsClient
 from .clients.article import ArticleClient
 from .clients.ftp_downloader import FTPDownloader
 from .clients.fulltext import FullTextClient, ProgressInfo
@@ -43,6 +44,13 @@ from .processing.analytics import (
     quality_metrics,
     remove_duplicates,
     to_dataframe,
+)
+from .processing.annotation_parser import (
+    AnnotationParser,
+    extract_entities,
+    extract_relationships,
+    extract_sentences,
+    parse_annotations,
 )
 from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .processing.search_parser import EuropePMCParser
@@ -74,12 +82,14 @@ __all__ = [
     "__author__",
     "__url__",
     # Main classes
+    "AnnotationsClient",
     "ArticleClient",
     "SearchClient",
     "FullTextClient",
     "FTPDownloader",
     "EuropePMCParser",
     "FullTextXMLParser",
+    "AnnotationParser",
     "BaseAPIClient",
     "ProgressInfo",
     "QueryBuilder",
@@ -107,6 +117,11 @@ __all__ = [
     # Filtering utilities
     "filter_pmc_papers",
     "filter_pmc_papers_or",
+    # Annotation parsing utilities
+    "parse_annotations",
+    "extract_entities",
+    "extract_sentences",
+    "extract_relationships",
     # Enrichment utilities
     "PaperEnricher",
     "EnrichmentConfig",

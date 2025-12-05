@@ -17,6 +17,13 @@ from .analytics import (
     remove_duplicates,
     to_dataframe,
 )
+from .annotation_parser import (
+    AnnotationParser,
+    extract_entities,
+    extract_relationships,
+    extract_sentences,
+    parse_annotations,
+)
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .search_parser import EuropePMCParser
 from .visualization import (
@@ -40,6 +47,11 @@ __all__ = [
     "quality_metrics",
     "remove_duplicates",
     "to_dataframe",
+    "AnnotationParser",
+    "parse_annotations",
+    "extract_entities",
+    "extract_sentences",
+    "extract_relationships",
     "DocumentSchema",
     "ElementPatterns",
     "FullTextXMLParser",
