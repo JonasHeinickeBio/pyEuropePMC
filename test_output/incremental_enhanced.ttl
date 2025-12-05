@@ -1,0 +1,101 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix meshv: <http://id.nlm.nih.gov/mesh/vocab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/pyeuropepmc/author/canhua-jiang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-8133-1981"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-8133-1981> ;
+    prov:generatedAtTime "2025-12-05T18:55:02.471728" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    foaf:name "Can-Hua Jiang"^^xsd:string,
+        "Canhua Jiang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/jiang-ch> a foaf:Person ;
+    prov:generatedAtTime "2025-12-05T18:54:52.716342" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Jiang"^^xsd:string ;
+    foaf:givenName "Can-Hua"^^xsd:string ;
+    foaf:initials "CH"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    foaf:name "Jiang CH"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/li-n> a foaf:Person ;
+    prov:generatedAtTime "2025-12-05T18:54:52.730846" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Li"^^xsd:string ;
+    foaf:givenName "Ning"^^xsd:string ;
+    foaf:initials "N"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    foaf:name "Li N"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/muhammad-tufail> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0003-3442-7216"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0003-3442-7216> ;
+    prov:generatedAtTime "2025-12-05T18:55:02.442231" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    foaf:name "Muhammad Tufail"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/ning-li> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-6518-2541"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-6518-2541> ;
+    prov:generatedAtTime "2025-12-05T18:55:02.457435" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    foaf:name "Ning Li"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/tufail-m> a foaf:Person ;
+    datacite:orcid "0000-0003-3442-7216"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-3442-7216> ;
+    prov:generatedAtTime "2025-12-05T18:54:52.701752" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Tufail"^^xsd:string ;
+    foaf:givenName "Muhammad"^^xsd:string ;
+    foaf:initials "M"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    foaf:name "Tufail M"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/journal/signal-transduction-and-targeted-therapy> a bibo:Journal ;
+    dcterms:title "Signal Transduction and Targeted Therapy"^^xsd:string ;
+    bibo:article <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
+    prov:generatedAtTime "2025-12-05T18:55:02.427031" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://pubmed.ncbi.nlm.nih.gov/40739089/> a bibo:AcademicArticle ;
+    meshv:hasDescriptor "Humans",
+        "Immune Evasion",
+        "Immunotherapy",
+        "Neoplasms",
+        "Signal Transduction",
+        "Tumor Escape",
+        "Tumor Microenvironment" ;
+    dcterms:abstract """<jats:title>Abstract</jats:title>
+          <jats:p>Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.</jats:p>"""^^xsd:string,
+        "Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte-associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS-STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/author/canhua-jiang>,
+        <https://w3id.org/pyeuropepmc/author/jiang-ch>,
+        <https://w3id.org/pyeuropepmc/author/li-n>,
+        <https://w3id.org/pyeuropepmc/author/muhammad-tufail>,
+        <https://w3id.org/pyeuropepmc/author/ning-li>,
+        <https://w3id.org/pyeuropepmc/author/tufail-m> ;
+    dcterms:issued "2025"^^xsd:gYear ;
+    dcterms:title "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches"^^xsd:string,
+        "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches."^^xsd:string ;
+    bibo:doi "10.1038/s41392-025-02280-1"^^xsd:anyURI ;
+    bibo:journal <https://w3id.org/pyeuropepmc/journal/signal-transduction-and-targeted-therapy> ;
+    owl:sameAs <https://doi.org/10.1038/s41392-025-02280-1>,
+        <https://europepmc.org/article/MED/40739089>,
+        <https://europepmc.org/article/PMC/12311175/>,
+        <https://pubmed.ncbi.nlm.nih.gov/40739089/>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12311175/> ;
+    prov:generatedAtTime "2025-12-05T18:54:52.730894" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:pmcid "PMC12311175"^^xsd:string ;
+    pyeuropepmc:pmid "40739089"^^xsd:string .

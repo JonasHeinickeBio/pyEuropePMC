@@ -16,8 +16,8 @@
 - **Testing:** All new features require tests in `tests/` (mirroring module structure). Use pytest, with markers for `unit`, `integration`, `slow`, etc.
 
 ## Developer Workflow
-- **Install:** Use Poetry (`poetry install`) or pip (`pip install -e .[dev]`).
-- **Run tests:** `pytest` (all), `pytest -k <pattern>` (subset), `pytest --cov=src/pyeuropepmc` (coverage).
+- **Install:** Use Poetry (`poetry install`).
+- **Run tests:** poetry run pytest (all), poetry run pytest -k <pattern> (subset), poetry run pytest --cov=src/pyeuropepmc (coverage).
 - **Static checks:** `pre-commit run --all-files` (runs ruff, mypy, bandit, etc.).
 - **Linting:** `ruff check .` and `ruff format .` (see `pyproject.toml` for config).
 - **Type checking:** `mypy src/` (strict mode, see `pyproject.toml`).

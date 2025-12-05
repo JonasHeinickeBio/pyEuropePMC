@@ -1,0 +1,2819 @@
+{
+  "identifier": "10.1038/s41392-025-02280-1",
+  "doi": "10.1038/s41392-025-02280-1",
+  "sources": [
+    "crossref",
+    "semantic_scholar",
+    "openalex",
+    "ror"
+  ],
+  "crossref": {
+    "source": "crossref",
+    "title": "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches",
+    "authors": [
+      {
+        "name": "Muhammad Tufail",
+        "given": "Muhammad",
+        "family": "Tufail",
+        "orcid": "https://orcid.org/0000-0003-3442-7216",
+        "affiliation": [],
+        "sequence": "first",
+        "ORCID": "https://orcid.org/0000-0003-3442-7216"
+      },
+      {
+        "name": "Can-Hua Jiang",
+        "given": "Can-Hua",
+        "family": "Jiang",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "name": "Ning Li",
+        "given": "Ning",
+        "family": "Li",
+        "affiliation": [],
+        "sequence": "additional"
+      }
+    ],
+    "abstract": "<jats:title>Abstract</jats:title>\n          <jats:p>Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.</jats:p>",
+    "journal": "Signal Transduction and Targeted Therapy",
+    "publication_date": "2025-07-31",
+    "citation_count": 37,
+    "references_count": 640,
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0",
+      "start": "2025-07-31T00:00:00Z",
+      "delay_in_days": 0
+    },
+    "funders": [
+      {
+        "name": "National Natural Science Foundation of China",
+        "doi": "10.13039/501100001809",
+        "award": [
+          "82170974"
+        ]
+      },
+      {
+        "name": "Central South University",
+        "doi": "10.13039/501100002822",
+        "award": [
+          "2023QYJC038"
+        ]
+      }
+    ],
+    "type": "journal-article",
+    "issn": [
+      "2059-3635"
+    ],
+    "volume": "10",
+    "issue": "1",
+    "publisher": "Springer Science and Business Media LLC"
+  },
+  "datacite": null,
+  "unpaywall": null,
+  "semantic_scholar": {
+    "source": "semantic_scholar",
+    "s2_paper_id": "5b9bd056fe3296a46c5f79e0e0f8c410fd536528",
+    "corpus_id": 280399026,
+    "title": "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches",
+    "abstract": "Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.",
+    "venue": "Signal Transduction and Targeted Therapy",
+    "year": 2025,
+    "publication_date": "2025-07-31",
+    "citation_count": 31,
+    "influential_citation_count": 0,
+    "reference_count": 457,
+    "authors": [
+      {
+        "name": null,
+        "author_id": "2254444271",
+        "url": "https://www.semanticscholar.org/author/2254444271"
+      },
+      {
+        "name": null,
+        "author_id": "2277776094",
+        "url": "https://www.semanticscholar.org/author/2277776094"
+      },
+      {
+        "name": null,
+        "author_id": "2277689291",
+        "url": "https://www.semanticscholar.org/author/2277689291"
+      }
+    ],
+    "fields_of_study": [
+      "Medicine"
+    ],
+    "s2_fields_of_study": [
+      {
+        "category": "Medicine",
+        "source": "external"
+      },
+      {
+        "category": "Medicine",
+        "source": "s2-fos-model"
+      },
+      {
+        "category": "Biology",
+        "source": "s2-fos-model"
+      }
+    ],
+    "publication_types": [
+      "Review",
+      "JournalArticle"
+    ],
+    "journal": {
+      "name": "Signal Transduction and Targeted Therapy",
+      "volume": "10",
+      "pages": null
+    },
+    "external_ids": {
+      "PubMedCentral": "12311175",
+      "DOI": "10.1038/s41392-025-02280-1",
+      "CorpusId": 280399026,
+      "PubMed": "40739089"
+    },
+    "open_access_pdf_url": "",
+    "tldr": "This review aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences, and discusses the limitations of current immunotherapies."
+  },
+  "openalex": {
+    "source": "openalex",
+    "openalex_id": "https://openalex.org/W4412745982",
+    "title": "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches",
+    "publication_year": 2025,
+    "publication_date": "2025-07-30",
+    "type": "review",
+    "citation_count": 36,
+    "cited_by_count": 36,
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.nature.com/articles/s41392-025-02280-1.pdf",
+    "authors": [
+      {
+        "id": "https://openalex.org/A5102792062",
+        "display_name": "Muhammad Tufail",
+        "orcid": "https://orcid.org/0000-0003-3442-7216",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I139660479",
+            "display_name": "Central South University",
+            "country": "China",
+            "type": "education",
+            "ror_id": "https://ror.org/00f1zfq44",
+            "status": "active",
+            "types": [
+              "education",
+              "funder"
+            ],
+            "established": 2000,
+            "names": [
+              {
+                "lang": null,
+                "types": [
+                  "acronym"
+                ],
+                "value": "CSU"
+              },
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Central South University"
+              },
+              {
+                "lang": "zh",
+                "types": [
+                  "label"
+                ],
+                "value": "中南大学"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "AS",
+                  "continent_name": "Asia",
+                  "country_code": "CN",
+                  "country_name": "China",
+                  "country_subdivision_code": "HN",
+                  "country_subdivision_name": "Hunan",
+                  "lat": 28.19874,
+                  "lng": 112.97087,
+                  "name": "Changsha"
+                },
+                "geonames_id": 1815577
+              }
+            ],
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "links": [
+              {
+                "type": "website",
+                "value": "https://www.csu.edu.cn"
+              },
+              {
+                "type": "wikipedia",
+                "value": "http://en.wikipedia.org/wiki/Central_South_University"
+              }
+            ],
+            "website": "https://www.csu.edu.cn",
+            "external_ids": [
+              {
+                "all": [
+                  "501100002822",
+                  "501100012476",
+                  "501100012486"
+                ],
+                "preferred": null,
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.216417.7"
+                ],
+                "preferred": "grid.216417.7",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0001 0379 7164"
+                ],
+                "preferred": null,
+                "type": "isni"
+              },
+              {
+                "all": [
+                  "Q5061828"
+                ],
+                "preferred": null,
+                "type": "wikidata"
+              }
+            ],
+            "grid_id": "grid.216417.7",
+            "relationships": [
+              {
+                "label": "State Key Laboratory of High Performance Complex Manufacturing",
+                "type": "child",
+                "id": "https://ror.org/04xjtqb36"
+              },
+              {
+                "label": "State Key Laboratory of Powder Metallurgy",
+                "type": "child",
+                "id": "https://ror.org/04r12t513"
+              },
+              {
+                "label": "Haikou City People's Hospital",
+                "type": "related",
+                "id": "https://ror.org/00ha5jx35"
+              },
+              {
+                "label": "Second Xiangya Hospital of Central South University",
+                "type": "related",
+                "id": "https://ror.org/053v2gh09"
+              },
+              {
+                "label": "Xiangya Hospital Central South University",
+                "type": "related",
+                "id": "https://ror.org/05c1yfj14"
+              },
+              {
+                "label": "Zhuzhou Central Hospital",
+                "type": "related",
+                "id": "https://ror.org/03prq2784"
+              }
+            ],
+            "domains": [
+              "csu.edu.cn"
+            ]
+          },
+          {
+            "id": "https://openalex.org/I4210159865",
+            "display_name": "Xiangya Hospital Central South University",
+            "country": "China",
+            "type": "healthcare",
+            "ror_id": "https://ror.org/05c1yfj14",
+            "status": "active",
+            "types": [
+              "funder",
+              "healthcare"
+            ],
+            "established": 1906,
+            "names": [
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Xiangya Hospital Central South University"
+              },
+              {
+                "lang": "zh",
+                "types": [
+                  "label"
+                ],
+                "value": "中南大学湘雅医院"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "AS",
+                  "continent_name": "Asia",
+                  "country_code": "CN",
+                  "country_name": "China",
+                  "country_subdivision_code": "HN",
+                  "country_subdivision_name": "Hunan",
+                  "lat": 28.19874,
+                  "lng": 112.97087,
+                  "name": "Changsha"
+                },
+                "geonames_id": 1815577
+              }
+            ],
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "links": [
+              {
+                "type": "website",
+                "value": "http://www.xiangya.com.cn/web/#"
+              }
+            ],
+            "website": "http://www.xiangya.com.cn/web/#",
+            "external_ids": [
+              {
+                "all": [
+                  "501100011790"
+                ],
+                "preferred": "501100011790",
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.452223.0"
+                ],
+                "preferred": "grid.452223.0",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0004 1757 7615"
+                ],
+                "preferred": null,
+                "type": "isni"
+              }
+            ],
+            "fundref_id": "501100011790",
+            "grid_id": "grid.452223.0",
+            "relationships": [
+              {
+                "label": "Central South University",
+                "type": "related",
+                "id": "https://ror.org/00f1zfq44"
+              }
+            ],
+            "domains": []
+          }
+        ],
+        "position": "first"
+      },
+      {
+        "id": "https://openalex.org/A5070383983",
+        "display_name": "Canhua Jiang",
+        "orcid": "https://orcid.org/0000-0002-8133-1981",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I139660479",
+            "display_name": "Central South University",
+            "country": "China",
+            "type": "education",
+            "ror_id": "https://ror.org/00f1zfq44",
+            "status": "active",
+            "types": [
+              "education",
+              "funder"
+            ],
+            "established": 2000,
+            "names": [
+              {
+                "lang": null,
+                "types": [
+                  "acronym"
+                ],
+                "value": "CSU"
+              },
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Central South University"
+              },
+              {
+                "lang": "zh",
+                "types": [
+                  "label"
+                ],
+                "value": "中南大学"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "AS",
+                  "continent_name": "Asia",
+                  "country_code": "CN",
+                  "country_name": "China",
+                  "country_subdivision_code": "HN",
+                  "country_subdivision_name": "Hunan",
+                  "lat": 28.19874,
+                  "lng": 112.97087,
+                  "name": "Changsha"
+                },
+                "geonames_id": 1815577
+              }
+            ],
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "links": [
+              {
+                "type": "website",
+                "value": "https://www.csu.edu.cn"
+              },
+              {
+                "type": "wikipedia",
+                "value": "http://en.wikipedia.org/wiki/Central_South_University"
+              }
+            ],
+            "website": "https://www.csu.edu.cn",
+            "external_ids": [
+              {
+                "all": [
+                  "501100002822",
+                  "501100012476",
+                  "501100012486"
+                ],
+                "preferred": null,
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.216417.7"
+                ],
+                "preferred": "grid.216417.7",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0001 0379 7164"
+                ],
+                "preferred": null,
+                "type": "isni"
+              },
+              {
+                "all": [
+                  "Q5061828"
+                ],
+                "preferred": null,
+                "type": "wikidata"
+              }
+            ],
+            "grid_id": "grid.216417.7",
+            "relationships": [
+              {
+                "label": "State Key Laboratory of High Performance Complex Manufacturing",
+                "type": "child",
+                "id": "https://ror.org/04xjtqb36"
+              },
+              {
+                "label": "State Key Laboratory of Powder Metallurgy",
+                "type": "child",
+                "id": "https://ror.org/04r12t513"
+              },
+              {
+                "label": "Haikou City People's Hospital",
+                "type": "related",
+                "id": "https://ror.org/00ha5jx35"
+              },
+              {
+                "label": "Second Xiangya Hospital of Central South University",
+                "type": "related",
+                "id": "https://ror.org/053v2gh09"
+              },
+              {
+                "label": "Xiangya Hospital Central South University",
+                "type": "related",
+                "id": "https://ror.org/05c1yfj14"
+              },
+              {
+                "label": "Zhuzhou Central Hospital",
+                "type": "related",
+                "id": "https://ror.org/03prq2784"
+              }
+            ],
+            "domains": [
+              "csu.edu.cn"
+            ]
+          },
+          {
+            "id": "https://openalex.org/I4210159865",
+            "display_name": "Xiangya Hospital Central South University",
+            "country": "China",
+            "type": "healthcare",
+            "ror_id": "https://ror.org/05c1yfj14",
+            "status": "active",
+            "types": [
+              "funder",
+              "healthcare"
+            ],
+            "established": 1906,
+            "names": [
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Xiangya Hospital Central South University"
+              },
+              {
+                "lang": "zh",
+                "types": [
+                  "label"
+                ],
+                "value": "中南大学湘雅医院"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "AS",
+                  "continent_name": "Asia",
+                  "country_code": "CN",
+                  "country_name": "China",
+                  "country_subdivision_code": "HN",
+                  "country_subdivision_name": "Hunan",
+                  "lat": 28.19874,
+                  "lng": 112.97087,
+                  "name": "Changsha"
+                },
+                "geonames_id": 1815577
+              }
+            ],
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "links": [
+              {
+                "type": "website",
+                "value": "http://www.xiangya.com.cn/web/#"
+              }
+            ],
+            "website": "http://www.xiangya.com.cn/web/#",
+            "external_ids": [
+              {
+                "all": [
+                  "501100011790"
+                ],
+                "preferred": "501100011790",
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.452223.0"
+                ],
+                "preferred": "grid.452223.0",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0004 1757 7615"
+                ],
+                "preferred": null,
+                "type": "isni"
+              }
+            ],
+            "fundref_id": "501100011790",
+            "grid_id": "grid.452223.0",
+            "relationships": [
+              {
+                "label": "Central South University",
+                "type": "related",
+                "id": "https://ror.org/00f1zfq44"
+              }
+            ],
+            "domains": []
+          }
+        ],
+        "position": "middle"
+      },
+      {
+        "id": "https://openalex.org/A5100369038",
+        "display_name": "Ning Li",
+        "orcid": "https://orcid.org/0000-0002-6518-2541",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I139660479",
+            "display_name": "Central South University",
+            "country": "China",
+            "type": "education",
+            "ror_id": "https://ror.org/00f1zfq44",
+            "status": "active",
+            "types": [
+              "education",
+              "funder"
+            ],
+            "established": 2000,
+            "names": [
+              {
+                "lang": null,
+                "types": [
+                  "acronym"
+                ],
+                "value": "CSU"
+              },
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Central South University"
+              },
+              {
+                "lang": "zh",
+                "types": [
+                  "label"
+                ],
+                "value": "中南大学"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "AS",
+                  "continent_name": "Asia",
+                  "country_code": "CN",
+                  "country_name": "China",
+                  "country_subdivision_code": "HN",
+                  "country_subdivision_name": "Hunan",
+                  "lat": 28.19874,
+                  "lng": 112.97087,
+                  "name": "Changsha"
+                },
+                "geonames_id": 1815577
+              }
+            ],
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "links": [
+              {
+                "type": "website",
+                "value": "https://www.csu.edu.cn"
+              },
+              {
+                "type": "wikipedia",
+                "value": "http://en.wikipedia.org/wiki/Central_South_University"
+              }
+            ],
+            "website": "https://www.csu.edu.cn",
+            "external_ids": [
+              {
+                "all": [
+                  "501100002822",
+                  "501100012476",
+                  "501100012486"
+                ],
+                "preferred": null,
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.216417.7"
+                ],
+                "preferred": "grid.216417.7",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0001 0379 7164"
+                ],
+                "preferred": null,
+                "type": "isni"
+              },
+              {
+                "all": [
+                  "Q5061828"
+                ],
+                "preferred": null,
+                "type": "wikidata"
+              }
+            ],
+            "grid_id": "grid.216417.7",
+            "relationships": [
+              {
+                "label": "State Key Laboratory of High Performance Complex Manufacturing",
+                "type": "child",
+                "id": "https://ror.org/04xjtqb36"
+              },
+              {
+                "label": "State Key Laboratory of Powder Metallurgy",
+                "type": "child",
+                "id": "https://ror.org/04r12t513"
+              },
+              {
+                "label": "Haikou City People's Hospital",
+                "type": "related",
+                "id": "https://ror.org/00ha5jx35"
+              },
+              {
+                "label": "Second Xiangya Hospital of Central South University",
+                "type": "related",
+                "id": "https://ror.org/053v2gh09"
+              },
+              {
+                "label": "Xiangya Hospital Central South University",
+                "type": "related",
+                "id": "https://ror.org/05c1yfj14"
+              },
+              {
+                "label": "Zhuzhou Central Hospital",
+                "type": "related",
+                "id": "https://ror.org/03prq2784"
+              }
+            ],
+            "domains": [
+              "csu.edu.cn"
+            ]
+          },
+          {
+            "id": "https://openalex.org/I4210159865",
+            "display_name": "Xiangya Hospital Central South University",
+            "country": "China",
+            "type": "healthcare",
+            "ror_id": "https://ror.org/05c1yfj14",
+            "status": "active",
+            "types": [
+              "funder",
+              "healthcare"
+            ],
+            "established": 1906,
+            "names": [
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Xiangya Hospital Central South University"
+              },
+              {
+                "lang": "zh",
+                "types": [
+                  "label"
+                ],
+                "value": "中南大学湘雅医院"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "AS",
+                  "continent_name": "Asia",
+                  "country_code": "CN",
+                  "country_name": "China",
+                  "country_subdivision_code": "HN",
+                  "country_subdivision_name": "Hunan",
+                  "lat": 28.19874,
+                  "lng": 112.97087,
+                  "name": "Changsha"
+                },
+                "geonames_id": 1815577
+              }
+            ],
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "links": [
+              {
+                "type": "website",
+                "value": "http://www.xiangya.com.cn/web/#"
+              }
+            ],
+            "website": "http://www.xiangya.com.cn/web/#",
+            "external_ids": [
+              {
+                "all": [
+                  "501100011790"
+                ],
+                "preferred": "501100011790",
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.452223.0"
+                ],
+                "preferred": "grid.452223.0",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0004 1757 7615"
+                ],
+                "preferred": null,
+                "type": "isni"
+              }
+            ],
+            "fundref_id": "501100011790",
+            "grid_id": "grid.452223.0",
+            "relationships": [
+              {
+                "label": "Central South University",
+                "type": "related",
+                "id": "https://ror.org/00f1zfq44"
+              }
+            ],
+            "domains": []
+          }
+        ],
+        "position": "last"
+      }
+    ],
+    "institutions": [
+      {
+        "id": "https://openalex.org/I139660479",
+        "display_name": "Central South University",
+        "country": "China",
+        "type": "education",
+        "ror_id": "https://ror.org/00f1zfq44",
+        "status": "active",
+        "types": [
+          "education",
+          "funder"
+        ],
+        "established": 2000,
+        "names": [
+          {
+            "lang": null,
+            "types": [
+              "acronym"
+            ],
+            "value": "CSU"
+          },
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Central South University"
+          },
+          {
+            "lang": "zh",
+            "types": [
+              "label"
+            ],
+            "value": "中南大学"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "AS",
+              "continent_name": "Asia",
+              "country_code": "CN",
+              "country_name": "China",
+              "country_subdivision_code": "HN",
+              "country_subdivision_name": "Hunan",
+              "lat": 28.19874,
+              "lng": 112.97087,
+              "name": "Changsha"
+            },
+            "geonames_id": 1815577
+          }
+        ],
+        "country_code": "CN",
+        "city": "Changsha",
+        "latitude": 28.19874,
+        "longitude": 112.97087,
+        "links": [
+          {
+            "type": "website",
+            "value": "https://www.csu.edu.cn"
+          },
+          {
+            "type": "wikipedia",
+            "value": "http://en.wikipedia.org/wiki/Central_South_University"
+          }
+        ],
+        "website": "https://www.csu.edu.cn",
+        "external_ids": [
+          {
+            "all": [
+              "501100002822",
+              "501100012476",
+              "501100012486"
+            ],
+            "preferred": null,
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.216417.7"
+            ],
+            "preferred": "grid.216417.7",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0001 0379 7164"
+            ],
+            "preferred": null,
+            "type": "isni"
+          },
+          {
+            "all": [
+              "Q5061828"
+            ],
+            "preferred": null,
+            "type": "wikidata"
+          }
+        ],
+        "grid_id": "grid.216417.7",
+        "relationships": [
+          {
+            "label": "State Key Laboratory of High Performance Complex Manufacturing",
+            "type": "child",
+            "id": "https://ror.org/04xjtqb36"
+          },
+          {
+            "label": "State Key Laboratory of Powder Metallurgy",
+            "type": "child",
+            "id": "https://ror.org/04r12t513"
+          },
+          {
+            "label": "Haikou City People's Hospital",
+            "type": "related",
+            "id": "https://ror.org/00ha5jx35"
+          },
+          {
+            "label": "Second Xiangya Hospital of Central South University",
+            "type": "related",
+            "id": "https://ror.org/053v2gh09"
+          },
+          {
+            "label": "Xiangya Hospital Central South University",
+            "type": "related",
+            "id": "https://ror.org/05c1yfj14"
+          },
+          {
+            "label": "Zhuzhou Central Hospital",
+            "type": "related",
+            "id": "https://ror.org/03prq2784"
+          }
+        ],
+        "domains": [
+          "csu.edu.cn"
+        ]
+      },
+      {
+        "id": "https://openalex.org/I4210159865",
+        "display_name": "Xiangya Hospital Central South University",
+        "country": "China",
+        "type": "healthcare",
+        "ror_id": "https://ror.org/05c1yfj14",
+        "status": "active",
+        "types": [
+          "funder",
+          "healthcare"
+        ],
+        "established": 1906,
+        "names": [
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Xiangya Hospital Central South University"
+          },
+          {
+            "lang": "zh",
+            "types": [
+              "label"
+            ],
+            "value": "中南大学湘雅医院"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "AS",
+              "continent_name": "Asia",
+              "country_code": "CN",
+              "country_name": "China",
+              "country_subdivision_code": "HN",
+              "country_subdivision_name": "Hunan",
+              "lat": 28.19874,
+              "lng": 112.97087,
+              "name": "Changsha"
+            },
+            "geonames_id": 1815577
+          }
+        ],
+        "country_code": "CN",
+        "city": "Changsha",
+        "latitude": 28.19874,
+        "longitude": 112.97087,
+        "links": [
+          {
+            "type": "website",
+            "value": "http://www.xiangya.com.cn/web/#"
+          }
+        ],
+        "website": "http://www.xiangya.com.cn/web/#",
+        "external_ids": [
+          {
+            "all": [
+              "501100011790"
+            ],
+            "preferred": "501100011790",
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.452223.0"
+            ],
+            "preferred": "grid.452223.0",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0004 1757 7615"
+            ],
+            "preferred": null,
+            "type": "isni"
+          }
+        ],
+        "fundref_id": "501100011790",
+        "grid_id": "grid.452223.0",
+        "relationships": [
+          {
+            "label": "Central South University",
+            "type": "related",
+            "id": "https://ror.org/00f1zfq44"
+          }
+        ],
+        "domains": []
+      },
+      {
+        "id": "https://openalex.org/I139660479",
+        "display_name": "Central South University",
+        "country": "China",
+        "type": "education",
+        "ror_id": "https://ror.org/00f1zfq44",
+        "status": "active",
+        "types": [
+          "education",
+          "funder"
+        ],
+        "established": 2000,
+        "names": [
+          {
+            "lang": null,
+            "types": [
+              "acronym"
+            ],
+            "value": "CSU"
+          },
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Central South University"
+          },
+          {
+            "lang": "zh",
+            "types": [
+              "label"
+            ],
+            "value": "中南大学"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "AS",
+              "continent_name": "Asia",
+              "country_code": "CN",
+              "country_name": "China",
+              "country_subdivision_code": "HN",
+              "country_subdivision_name": "Hunan",
+              "lat": 28.19874,
+              "lng": 112.97087,
+              "name": "Changsha"
+            },
+            "geonames_id": 1815577
+          }
+        ],
+        "country_code": "CN",
+        "city": "Changsha",
+        "latitude": 28.19874,
+        "longitude": 112.97087,
+        "links": [
+          {
+            "type": "website",
+            "value": "https://www.csu.edu.cn"
+          },
+          {
+            "type": "wikipedia",
+            "value": "http://en.wikipedia.org/wiki/Central_South_University"
+          }
+        ],
+        "website": "https://www.csu.edu.cn",
+        "external_ids": [
+          {
+            "all": [
+              "501100002822",
+              "501100012476",
+              "501100012486"
+            ],
+            "preferred": null,
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.216417.7"
+            ],
+            "preferred": "grid.216417.7",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0001 0379 7164"
+            ],
+            "preferred": null,
+            "type": "isni"
+          },
+          {
+            "all": [
+              "Q5061828"
+            ],
+            "preferred": null,
+            "type": "wikidata"
+          }
+        ],
+        "grid_id": "grid.216417.7",
+        "relationships": [
+          {
+            "label": "State Key Laboratory of High Performance Complex Manufacturing",
+            "type": "child",
+            "id": "https://ror.org/04xjtqb36"
+          },
+          {
+            "label": "State Key Laboratory of Powder Metallurgy",
+            "type": "child",
+            "id": "https://ror.org/04r12t513"
+          },
+          {
+            "label": "Haikou City People's Hospital",
+            "type": "related",
+            "id": "https://ror.org/00ha5jx35"
+          },
+          {
+            "label": "Second Xiangya Hospital of Central South University",
+            "type": "related",
+            "id": "https://ror.org/053v2gh09"
+          },
+          {
+            "label": "Xiangya Hospital Central South University",
+            "type": "related",
+            "id": "https://ror.org/05c1yfj14"
+          },
+          {
+            "label": "Zhuzhou Central Hospital",
+            "type": "related",
+            "id": "https://ror.org/03prq2784"
+          }
+        ],
+        "domains": [
+          "csu.edu.cn"
+        ]
+      },
+      {
+        "id": "https://openalex.org/I4210159865",
+        "display_name": "Xiangya Hospital Central South University",
+        "country": "China",
+        "type": "healthcare",
+        "ror_id": "https://ror.org/05c1yfj14",
+        "status": "active",
+        "types": [
+          "funder",
+          "healthcare"
+        ],
+        "established": 1906,
+        "names": [
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Xiangya Hospital Central South University"
+          },
+          {
+            "lang": "zh",
+            "types": [
+              "label"
+            ],
+            "value": "中南大学湘雅医院"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "AS",
+              "continent_name": "Asia",
+              "country_code": "CN",
+              "country_name": "China",
+              "country_subdivision_code": "HN",
+              "country_subdivision_name": "Hunan",
+              "lat": 28.19874,
+              "lng": 112.97087,
+              "name": "Changsha"
+            },
+            "geonames_id": 1815577
+          }
+        ],
+        "country_code": "CN",
+        "city": "Changsha",
+        "latitude": 28.19874,
+        "longitude": 112.97087,
+        "links": [
+          {
+            "type": "website",
+            "value": "http://www.xiangya.com.cn/web/#"
+          }
+        ],
+        "website": "http://www.xiangya.com.cn/web/#",
+        "external_ids": [
+          {
+            "all": [
+              "501100011790"
+            ],
+            "preferred": "501100011790",
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.452223.0"
+            ],
+            "preferred": "grid.452223.0",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0004 1757 7615"
+            ],
+            "preferred": null,
+            "type": "isni"
+          }
+        ],
+        "fundref_id": "501100011790",
+        "grid_id": "grid.452223.0",
+        "relationships": [
+          {
+            "label": "Central South University",
+            "type": "related",
+            "id": "https://ror.org/00f1zfq44"
+          }
+        ],
+        "domains": []
+      },
+      {
+        "id": "https://openalex.org/I139660479",
+        "display_name": "Central South University",
+        "country": "China",
+        "type": "education",
+        "ror_id": "https://ror.org/00f1zfq44",
+        "status": "active",
+        "types": [
+          "education",
+          "funder"
+        ],
+        "established": 2000,
+        "names": [
+          {
+            "lang": null,
+            "types": [
+              "acronym"
+            ],
+            "value": "CSU"
+          },
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Central South University"
+          },
+          {
+            "lang": "zh",
+            "types": [
+              "label"
+            ],
+            "value": "中南大学"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "AS",
+              "continent_name": "Asia",
+              "country_code": "CN",
+              "country_name": "China",
+              "country_subdivision_code": "HN",
+              "country_subdivision_name": "Hunan",
+              "lat": 28.19874,
+              "lng": 112.97087,
+              "name": "Changsha"
+            },
+            "geonames_id": 1815577
+          }
+        ],
+        "country_code": "CN",
+        "city": "Changsha",
+        "latitude": 28.19874,
+        "longitude": 112.97087,
+        "links": [
+          {
+            "type": "website",
+            "value": "https://www.csu.edu.cn"
+          },
+          {
+            "type": "wikipedia",
+            "value": "http://en.wikipedia.org/wiki/Central_South_University"
+          }
+        ],
+        "website": "https://www.csu.edu.cn",
+        "external_ids": [
+          {
+            "all": [
+              "501100002822",
+              "501100012476",
+              "501100012486"
+            ],
+            "preferred": null,
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.216417.7"
+            ],
+            "preferred": "grid.216417.7",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0001 0379 7164"
+            ],
+            "preferred": null,
+            "type": "isni"
+          },
+          {
+            "all": [
+              "Q5061828"
+            ],
+            "preferred": null,
+            "type": "wikidata"
+          }
+        ],
+        "grid_id": "grid.216417.7",
+        "relationships": [
+          {
+            "label": "State Key Laboratory of High Performance Complex Manufacturing",
+            "type": "child",
+            "id": "https://ror.org/04xjtqb36"
+          },
+          {
+            "label": "State Key Laboratory of Powder Metallurgy",
+            "type": "child",
+            "id": "https://ror.org/04r12t513"
+          },
+          {
+            "label": "Haikou City People's Hospital",
+            "type": "related",
+            "id": "https://ror.org/00ha5jx35"
+          },
+          {
+            "label": "Second Xiangya Hospital of Central South University",
+            "type": "related",
+            "id": "https://ror.org/053v2gh09"
+          },
+          {
+            "label": "Xiangya Hospital Central South University",
+            "type": "related",
+            "id": "https://ror.org/05c1yfj14"
+          },
+          {
+            "label": "Zhuzhou Central Hospital",
+            "type": "related",
+            "id": "https://ror.org/03prq2784"
+          }
+        ],
+        "domains": [
+          "csu.edu.cn"
+        ]
+      },
+      {
+        "id": "https://openalex.org/I4210159865",
+        "display_name": "Xiangya Hospital Central South University",
+        "country": "China",
+        "type": "healthcare",
+        "ror_id": "https://ror.org/05c1yfj14",
+        "status": "active",
+        "types": [
+          "funder",
+          "healthcare"
+        ],
+        "established": 1906,
+        "names": [
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Xiangya Hospital Central South University"
+          },
+          {
+            "lang": "zh",
+            "types": [
+              "label"
+            ],
+            "value": "中南大学湘雅医院"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "AS",
+              "continent_name": "Asia",
+              "country_code": "CN",
+              "country_name": "China",
+              "country_subdivision_code": "HN",
+              "country_subdivision_name": "Hunan",
+              "lat": 28.19874,
+              "lng": 112.97087,
+              "name": "Changsha"
+            },
+            "geonames_id": 1815577
+          }
+        ],
+        "country_code": "CN",
+        "city": "Changsha",
+        "latitude": 28.19874,
+        "longitude": 112.97087,
+        "links": [
+          {
+            "type": "website",
+            "value": "http://www.xiangya.com.cn/web/#"
+          }
+        ],
+        "website": "http://www.xiangya.com.cn/web/#",
+        "external_ids": [
+          {
+            "all": [
+              "501100011790"
+            ],
+            "preferred": "501100011790",
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.452223.0"
+            ],
+            "preferred": "grid.452223.0",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0004 1757 7615"
+            ],
+            "preferred": null,
+            "type": "isni"
+          }
+        ],
+        "fundref_id": "501100011790",
+        "grid_id": "grid.452223.0",
+        "relationships": [
+          {
+            "label": "Central South University",
+            "type": "related",
+            "id": "https://ror.org/00f1zfq44"
+          }
+        ],
+        "domains": []
+      }
+    ],
+    "topics": [
+      {
+        "id": "https://openalex.org/T10158",
+        "display_name": "Cancer Immunotherapy and Biomarkers",
+        "score": 0.9993000030517578
+      },
+      {
+        "id": "https://openalex.org/T11491",
+        "display_name": "CAR-T cell therapy research",
+        "score": 0.9991999864578247
+      },
+      {
+        "id": "https://openalex.org/T10613",
+        "display_name": "Virus-based gene therapy research",
+        "score": 0.9984999895095825
+      }
+    ],
+    "venue": {
+      "id": "https://openalex.org/S2739142469",
+      "display_name": "Signal Transduction and Targeted Therapy",
+      "issn": [
+        "2059-3635",
+        "2095-9907"
+      ],
+      "type": "journal",
+      "is_oa": true
+    },
+    "biblio": {
+      "volume": "10",
+      "issue": "1",
+      "first_page": "227",
+      "last_page": "227"
+    },
+    "doi": "https://doi.org/10.1038/s41392-025-02280-1",
+    "ids": {
+      "openalex": "https://openalex.org/W4412745982",
+      "doi": "https://doi.org/10.1038/s41392-025-02280-1",
+      "pmid": "https://pubmed.ncbi.nlm.nih.gov/40739089"
+    },
+    "abstract_inverted_index": {
+      "Abstract": [
+        0
+      ],
+      "Immune": [
+        1
+      ],
+      "evasion": [
+        2,
+        104
+      ],
+      "represents": [
+        3
+      ],
+      "a": [
+        4,
+        45
+      ],
+      "significant": [
+        5
+      ],
+      "challenge": [
+        6
+      ],
+      "in": [
+        7,
+        80,
+        207,
+        216,
+        225
+      ],
+      "oncology.": [
+        8
+      ],
+      "It": [
+        9,
+        41
+      ],
+      "allows": [
+        10
+      ],
+      "tumors": [
+        11,
+        51
+      ],
+      "to": [
+        12,
+        24,
+        34,
+        43,
+        52,
+        156,
+        160,
+        183,
+        219
+      ],
+      "evade": [
+        13,
+        38
+      ],
+      "immune": [
+        14,
+        39,
+        54,
+        59,
+        61,
+        82,
+        92,
+        103,
+        161,
+        167
+      ],
+      "surveillance": [
+        15
+      ],
+      "and": [
+        16,
+        22,
+        64,
+        66,
+        84,
+        105,
+        146,
+        177,
+        191,
+        201,
+        223,
+        231
+      ],
+      "destruction,": [
+        17
+      ],
+      "thereby": [
+        18
+      ],
+      "complicating": [
+        19
+      ],
+      "therapeutic": [
+        20,
+        185,
+        193
+      ],
+      "interventions": [
+        21
+      ],
+      "contributing": [
+        23
+      ],
+      "suboptimal": [
+        25
+      ],
+      "patient": [
+        26,
+        229
+      ],
+      "outcomes.": [
+        27
+      ],
+      "This": [
+        28
+      ],
+      "review": [
+        29,
+        96,
+        170,
+        214
+      ],
+      "addresses": [
+        30
+      ],
+      "the": [
+        31,
+        72,
+        76,
+        86,
+        107,
+        164,
+        172,
+        178
+      ],
+      "critical": [
+        32
+      ],
+      "need": [
+        33
+      ],
+      "understand": [
+        35
+      ],
+      "how": [
+        36,
+        99
+      ],
+      "cancers": [
+        37
+      ],
+      "surveillance.": [
+        40
+      ],
+      "aims": [
+        42
+      ],
+      "provide": [
+        44
+      ],
+      "comprehensive": [
+        46
+      ],
+      "overview": [
+        47
+      ],
+      "of": [
+        48,
+        50,
+        75,
+        88,
+        109,
+        114,
+        141,
+        150,
+        166,
+        174,
+        180,
+        212,
+        235
+      ],
+      "strategies": [
+        49
+      ],
+      "escape": [
+        53
+      ],
+      "detection": [
+        55
+      ],
+      "by": [
+        56
+      ],
+      "examining": [
+        57
+      ],
+      "tumor-induced": [
+        58
+      ],
+      "suppression,": [
+        60
+      ],
+      "checkpoint": [
+        62
+      ],
+      "regulation,": [
+        63
+      ],
+      "genetic": [
+        65
+      ],
+      "epigenetic": [
+        67
+      ],
+      "influences.": [
+        68
+      ],
+      "Moreover,": [
+        69
+      ],
+      "it": [
+        70,
+        188
+      ],
+      "explores": [
+        71
+      ],
+      "dynamic": [
+        73
+      ],
+      "role": [
+        74,
+        113
+      ],
+      "tumor": [
+        77,
+        100
+      ],
+      "microenvironment": [
+        78
+      ],
+      "(TME)": [
+        79
+      ],
+      "fostering": [
+        81
+      ],
+      "resistance": [
+        83
+      ],
+      "highlights": [
+        85
+      ],
+      "impact": [
+        87
+      ],
+      "metabolic": [
+        89
+      ],
+      "reprogramming": [
+        90
+      ],
+      "on": [
+        91,
+        98
+      ],
+      "suppression.": [
+        93
+      ],
+      "Additionally,": [
+        94
+      ],
+      "this": [
+        95,
+        169,
+        213
+      ],
+      "focuses": [
+        97
+      ],
+      "heterogeneity": [
+        101
+      ],
+      "influences": [
+        102
+      ],
+      "discusses": [
+        106,
+        189
+      ],
+      "limitations": [
+        108
+      ],
+      "current": [
+        110
+      ],
+      "immunotherapies.": [
+        111
+      ],
+      "The": [
+        112,
+        210
+      ],
+      "key": [
+        115
+      ],
+      "signaling": [
+        116
+      ],
+      "pathways,": [
+        117
+      ],
+      "including": [
+        118
+      ],
+      "programmed": [
+        119
+      ],
+      "cell": [
+        120,
+        124
+      ],
+      "death": [
+        121,
+        125
+      ],
+      "protein": [
+        122
+      ],
+      "1/programmed": [
+        123
+      ],
+      "ligand": [
+        126
+      ],
+      "1": [
+        127
+      ],
+      "(PD-1/PD-L1),": [
+        128
+      ],
+      "cytotoxic": [
+        129
+      ],
+      "T-lymphocyte–associated": [
+        130
+      ],
+      "antigen": [
+        131
+      ],
+      "4": [
+        132
+      ],
+      "(CTLA-4),": [
+        133
+      ],
+      "transforming": [
+        134
+      ],
+      "growth": [
+        135
+      ],
+      "factor-β": [
+        136
+      ],
+      "(TGF-β),": [
+        137
+      ],
+      "nuclear": [
+        138
+      ],
+      "factor": [
+        139
+      ],
+      "kappa-light-chain-enhancer": [
+        140
+      ],
+      "activated": [
+        142
+      ],
+      "B": [
+        143
+      ],
+      "cells": [
+        144
+      ],
+      "(NF-κB),": [
+        145
+      ],
+      "cyclic": [
+        147
+      ],
+      "GMP-AMP": [
+        148
+      ],
+      "synthase-stimulator": [
+        149
+      ],
+      "interferon": [
+        151
+      ],
+      "genes": [
+        152
+      ],
+      "(cGAS–STING)": [
+        153
+      ],
+      "is": [
+        154
+      ],
+      "analyzed": [
+        155
+      ],
+      "elucidate": [
+        157
+      ],
+      "their": [
+        158
+      ],
+      "contributions": [
+        159
+      ],
+      "escape.": [
+        162
+      ],
+      "Emphasizing": [
+        163
+      ],
+      "complexities": [
+        165
+      ],
+      "evasion,": [
+        168
+      ],
+      "underscores": [
+        171
+      ],
+      "importance": [
+        173
+      ],
+      "personalized": [
+        175
+      ],
+      "approaches": [
+        176
+      ],
+      "integration": [
+        179
+      ],
+      "multi-omics": [
+        181
+      ],
+      "data": [
+        182
+      ],
+      "combat": [
+        184
+      ],
+      "resistance.": [
+        186
+      ],
+      "Furthermore,": [
+        187
+      ],
+      "novel": [
+        190
+      ],
+      "emerging": [
+        192
+      ],
+      "strategies,": [
+        194
+      ],
+      "such": [
+        195
+      ],
+      "as": [
+        196
+      ],
+      "bispecific": [
+        197
+      ],
+      "antibodies,": [
+        198
+      ],
+      "oncolytic": [
+        199
+      ],
+      "viruses,": [
+        200
+      ],
+      "nanotechnology-driven": [
+        202
+      ],
+      "immunotherapies,": [
+        203
+      ],
+      "showcasing": [
+        204
+      ],
+      "innovative": [
+        205
+      ],
+      "avenues": [
+        206
+      ],
+      "cancer": [
+        208,
+        236
+      ],
+      "treatment.": [
+        209
+      ],
+      "significance": [
+        211
+      ],
+      "lies": [
+        215
+      ],
+      "its": [
+        217
+      ],
+      "potential": [
+        218
+      ],
+      "guide": [
+        220
+      ],
+      "future": [
+        221
+      ],
+      "research": [
+        222
+      ],
+      "innovations": [
+        224
+      ],
+      "immunotherapy,": [
+        226
+      ],
+      "ultimately": [
+        227
+      ],
+      "improving": [
+        228
+      ],
+      "outcomes": [
+        230
+      ],
+      "advancing": [
+        232
+      ],
+      "our": [
+        233
+      ],
+      "understanding": [
+        234
+      ],
+      "immunology.": [
+        237
+      ]
+    },
+    "referenced_works_count": 651,
+    "related_works": [
+      "https://openalex.org/W2912064558",
+      "https://openalex.org/W4316927247",
+      "https://openalex.org/W2789344762",
+      "https://openalex.org/W3128318804",
+      "https://openalex.org/W4388112172",
+      "https://openalex.org/W38803104",
+      "https://openalex.org/W2783288907",
+      "https://openalex.org/W2902626376",
+      "https://openalex.org/W3095731313",
+      "https://openalex.org/W4410076710"
+    ]
+  },
+  "ror": {
+    "00f1zfq44": {
+      "ror_id": "https://ror.org/00f1zfq44",
+      "status": "active",
+      "types": [
+        "education",
+        "funder"
+      ],
+      "established": 2000,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "CSU"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Central South University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "中南大学"
+        }
+      ],
+      "display_name": "Central South University",
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "HN",
+            "country_subdivision_name": "Hunan",
+            "lat": 28.19874,
+            "lng": 112.97087,
+            "name": "Changsha"
+          },
+          "geonames_id": 1815577
+        }
+      ],
+      "country": "China",
+      "country_code": "CN",
+      "city": "Changsha",
+      "latitude": 28.19874,
+      "longitude": 112.97087,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.csu.edu.cn"
+        },
+        {
+          "type": "wikipedia",
+          "value": "http://en.wikipedia.org/wiki/Central_South_University"
+        }
+      ],
+      "website": "https://www.csu.edu.cn",
+      "external_ids": [
+        {
+          "all": [
+            "501100002822",
+            "501100012476",
+            "501100012486"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.216417.7"
+          ],
+          "preferred": "grid.216417.7",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0001 0379 7164"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q5061828"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.216417.7",
+      "relationships": [
+        {
+          "label": "State Key Laboratory of High Performance Complex Manufacturing",
+          "type": "child",
+          "id": "https://ror.org/04xjtqb36"
+        },
+        {
+          "label": "State Key Laboratory of Powder Metallurgy",
+          "type": "child",
+          "id": "https://ror.org/04r12t513"
+        },
+        {
+          "label": "Haikou City People's Hospital",
+          "type": "related",
+          "id": "https://ror.org/00ha5jx35"
+        },
+        {
+          "label": "Second Xiangya Hospital of Central South University",
+          "type": "related",
+          "id": "https://ror.org/053v2gh09"
+        },
+        {
+          "label": "Xiangya Hospital Central South University",
+          "type": "related",
+          "id": "https://ror.org/05c1yfj14"
+        },
+        {
+          "label": "Zhuzhou Central Hospital",
+          "type": "related",
+          "id": "https://ror.org/03prq2784"
+        }
+      ],
+      "domains": [
+        "csu.edu.cn"
+      ]
+    },
+    "05c1yfj14": {
+      "ror_id": "https://ror.org/05c1yfj14",
+      "status": "active",
+      "types": [
+        "funder",
+        "healthcare"
+      ],
+      "established": 1906,
+      "names": [
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Xiangya Hospital Central South University"
+        },
+        {
+          "lang": "zh",
+          "types": [
+            "label"
+          ],
+          "value": "中南大学湘雅医院"
+        }
+      ],
+      "display_name": "Xiangya Hospital Central South University",
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "AS",
+            "continent_name": "Asia",
+            "country_code": "CN",
+            "country_name": "China",
+            "country_subdivision_code": "HN",
+            "country_subdivision_name": "Hunan",
+            "lat": 28.19874,
+            "lng": 112.97087,
+            "name": "Changsha"
+          },
+          "geonames_id": 1815577
+        }
+      ],
+      "country": "China",
+      "country_code": "CN",
+      "city": "Changsha",
+      "latitude": 28.19874,
+      "longitude": 112.97087,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.xiangya.com.cn/web/#"
+        }
+      ],
+      "website": "http://www.xiangya.com.cn/web/#",
+      "external_ids": [
+        {
+          "all": [
+            "501100011790"
+          ],
+          "preferred": "501100011790",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.452223.0"
+          ],
+          "preferred": "grid.452223.0",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1757 7615"
+          ],
+          "preferred": null,
+          "type": "isni"
+        }
+      ],
+      "fundref_id": "501100011790",
+      "grid_id": "grid.452223.0",
+      "relationships": [
+        {
+          "label": "Central South University",
+          "type": "related",
+          "id": "https://ror.org/00f1zfq44"
+        }
+      ],
+      "domains": []
+    }
+  },
+  "merged": {
+    "title": "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches",
+    "authors": [
+      {
+        "name": "Muhammad Tufail",
+        "given_name": "Muhammad",
+        "family_name": "Tufail",
+        "orcid": "https://orcid.org/0000-0003-3442-7216",
+        "affiliations": [],
+        "sequence": "first",
+        "sources": [
+          "crossref",
+          "openalex"
+        ],
+        "openalex_id": "https://openalex.org/A5102792062",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I139660479",
+            "display_name": "Central South University",
+            "country": "China",
+            "type": "education",
+            "ror_id": "https://ror.org/00f1zfq44",
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "website": "https://www.csu.edu.cn",
+            "established": 2000,
+            "external_ids": [
+              {
+                "type": "grid",
+                "preferred": "grid.216417.7",
+                "all": [
+                  "grid.216417.7"
+                ]
+              }
+            ],
+            "relationships": [
+              {
+                "label": "State Key Laboratory of High Performance Complex Manufacturing",
+                "type": "child",
+                "id": "https://ror.org/04xjtqb36"
+              },
+              {
+                "label": "State Key Laboratory of Powder Metallurgy",
+                "type": "child",
+                "id": "https://ror.org/04r12t513"
+              },
+              {
+                "label": "Haikou City People's Hospital",
+                "type": "related",
+                "id": "https://ror.org/00ha5jx35"
+              },
+              {
+                "label": "Second Xiangya Hospital of Central South University",
+                "type": "related",
+                "id": "https://ror.org/053v2gh09"
+              },
+              {
+                "label": "Xiangya Hospital Central South University",
+                "type": "related",
+                "id": "https://ror.org/05c1yfj14"
+              },
+              {
+                "label": "Zhuzhou Central Hospital",
+                "type": "related",
+                "id": "https://ror.org/03prq2784"
+              }
+            ],
+            "domains": [
+              "csu.edu.cn"
+            ],
+            "ror_enriched": true
+          },
+          {
+            "id": "https://openalex.org/I4210159865",
+            "display_name": "Xiangya Hospital Central South University",
+            "country": "China",
+            "type": "healthcare",
+            "ror_id": "https://ror.org/05c1yfj14",
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "website": "http://www.xiangya.com.cn/web/#",
+            "established": 1906,
+            "external_ids": [
+              {
+                "type": "fundref",
+                "preferred": "501100011790",
+                "all": [
+                  "501100011790"
+                ]
+              },
+              {
+                "type": "grid",
+                "preferred": "grid.452223.0",
+                "all": [
+                  "grid.452223.0"
+                ]
+              }
+            ],
+            "relationships": [
+              {
+                "label": "Central South University",
+                "type": "related",
+                "id": "https://ror.org/00f1zfq44"
+              }
+            ],
+            "ror_enriched": true
+          }
+        ],
+        "position": "first"
+      },
+      {
+        "name": "Ning Li",
+        "given_name": "Ning",
+        "family_name": "Li",
+        "orcid": "https://orcid.org/0000-0002-6518-2541",
+        "affiliations": [],
+        "sequence": "additional",
+        "sources": [
+          "crossref",
+          "openalex"
+        ],
+        "openalex_id": "https://openalex.org/A5100369038",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I139660479",
+            "display_name": "Central South University",
+            "country": "China",
+            "type": "education",
+            "ror_id": "https://ror.org/00f1zfq44",
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "website": "https://www.csu.edu.cn",
+            "established": 2000,
+            "external_ids": [
+              {
+                "type": "grid",
+                "preferred": "grid.216417.7",
+                "all": [
+                  "grid.216417.7"
+                ]
+              }
+            ],
+            "relationships": [
+              {
+                "label": "State Key Laboratory of High Performance Complex Manufacturing",
+                "type": "child",
+                "id": "https://ror.org/04xjtqb36"
+              },
+              {
+                "label": "State Key Laboratory of Powder Metallurgy",
+                "type": "child",
+                "id": "https://ror.org/04r12t513"
+              },
+              {
+                "label": "Haikou City People's Hospital",
+                "type": "related",
+                "id": "https://ror.org/00ha5jx35"
+              },
+              {
+                "label": "Second Xiangya Hospital of Central South University",
+                "type": "related",
+                "id": "https://ror.org/053v2gh09"
+              },
+              {
+                "label": "Xiangya Hospital Central South University",
+                "type": "related",
+                "id": "https://ror.org/05c1yfj14"
+              },
+              {
+                "label": "Zhuzhou Central Hospital",
+                "type": "related",
+                "id": "https://ror.org/03prq2784"
+              }
+            ],
+            "domains": [
+              "csu.edu.cn"
+            ],
+            "ror_enriched": true
+          },
+          {
+            "id": "https://openalex.org/I4210159865",
+            "display_name": "Xiangya Hospital Central South University",
+            "country": "China",
+            "type": "healthcare",
+            "ror_id": "https://ror.org/05c1yfj14",
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "website": "http://www.xiangya.com.cn/web/#",
+            "established": 1906,
+            "external_ids": [
+              {
+                "type": "fundref",
+                "preferred": "501100011790",
+                "all": [
+                  "501100011790"
+                ]
+              },
+              {
+                "type": "grid",
+                "preferred": "grid.452223.0",
+                "all": [
+                  "grid.452223.0"
+                ]
+              }
+            ],
+            "relationships": [
+              {
+                "label": "Central South University",
+                "type": "related",
+                "id": "https://ror.org/00f1zfq44"
+              }
+            ],
+            "ror_enriched": true
+          }
+        ],
+        "position": "last"
+      },
+      {
+        "name": "Can-Hua Jiang",
+        "given_name": "Can-Hua",
+        "family_name": "Jiang",
+        "orcid": null,
+        "affiliations": [],
+        "sequence": "additional",
+        "sources": [
+          "crossref"
+        ]
+      },
+      {
+        "name": "Canhua Jiang",
+        "orcid": "https://orcid.org/0000-0002-8133-1981",
+        "openalex_id": "https://openalex.org/A5070383983",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I139660479",
+            "display_name": "Central South University",
+            "country": "China",
+            "type": "education",
+            "ror_id": "https://ror.org/00f1zfq44",
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "website": "https://www.csu.edu.cn",
+            "established": 2000,
+            "external_ids": [
+              {
+                "type": "grid",
+                "preferred": "grid.216417.7",
+                "all": [
+                  "grid.216417.7"
+                ]
+              }
+            ],
+            "relationships": [
+              {
+                "label": "State Key Laboratory of High Performance Complex Manufacturing",
+                "type": "child",
+                "id": "https://ror.org/04xjtqb36"
+              },
+              {
+                "label": "State Key Laboratory of Powder Metallurgy",
+                "type": "child",
+                "id": "https://ror.org/04r12t513"
+              },
+              {
+                "label": "Haikou City People's Hospital",
+                "type": "related",
+                "id": "https://ror.org/00ha5jx35"
+              },
+              {
+                "label": "Second Xiangya Hospital of Central South University",
+                "type": "related",
+                "id": "https://ror.org/053v2gh09"
+              },
+              {
+                "label": "Xiangya Hospital Central South University",
+                "type": "related",
+                "id": "https://ror.org/05c1yfj14"
+              },
+              {
+                "label": "Zhuzhou Central Hospital",
+                "type": "related",
+                "id": "https://ror.org/03prq2784"
+              }
+            ],
+            "domains": [
+              "csu.edu.cn"
+            ],
+            "ror_enriched": true
+          },
+          {
+            "id": "https://openalex.org/I4210159865",
+            "display_name": "Xiangya Hospital Central South University",
+            "country": "China",
+            "type": "healthcare",
+            "ror_id": "https://ror.org/05c1yfj14",
+            "country_code": "CN",
+            "city": "Changsha",
+            "latitude": 28.19874,
+            "longitude": 112.97087,
+            "website": "http://www.xiangya.com.cn/web/#",
+            "established": 1906,
+            "external_ids": [
+              {
+                "type": "fundref",
+                "preferred": "501100011790",
+                "all": [
+                  "501100011790"
+                ]
+              },
+              {
+                "type": "grid",
+                "preferred": "grid.452223.0",
+                "all": [
+                  "grid.452223.0"
+                ]
+              }
+            ],
+            "relationships": [
+              {
+                "label": "Central South University",
+                "type": "related",
+                "id": "https://ror.org/00f1zfq44"
+              }
+            ],
+            "ror_enriched": true
+          }
+        ],
+        "position": "middle",
+        "sources": [
+          "openalex"
+        ]
+      }
+    ],
+    "abstract": "<jats:title>Abstract</jats:title>\n          <jats:p>Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.</jats:p>",
+    "journal": "Signal Transduction and Targeted Therapy",
+    "publication_date": "2025-07-31",
+    "citation_counts": [
+      {
+        "source": "crossref",
+        "count": 37
+      },
+      {
+        "source": "semantic_scholar",
+        "count": 31
+      },
+      {
+        "source": "openalex",
+        "count": 36
+      }
+    ],
+    "citation_count": 37,
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://www.nature.com/articles/s41392-025-02280-1.pdf",
+    "influential_citation_count": 0,
+    "fields_of_study": [
+      "Medicine"
+    ],
+    "topics": [
+      {
+        "id": "https://openalex.org/T10158",
+        "display_name": "Cancer Immunotherapy and Biomarkers",
+        "score": 0.9993000030517578
+      },
+      {
+        "id": "https://openalex.org/T11491",
+        "display_name": "CAR-T cell therapy research",
+        "score": 0.9991999864578247
+      },
+      {
+        "id": "https://openalex.org/T10613",
+        "display_name": "Virus-based gene therapy research",
+        "score": 0.9984999895095825
+      }
+    ],
+    "license": {
+      "url": "https://creativecommons.org/licenses/by/4.0",
+      "start": "2025-07-31T00:00:00Z",
+      "delay_in_days": 0
+    },
+    "funding": [
+      {
+        "name": "National Natural Science Foundation of China",
+        "doi": "10.13039/501100001809",
+        "award": [
+          "82170974"
+        ]
+      },
+      {
+        "name": "Central South University",
+        "doi": "10.13039/501100002822",
+        "award": [
+          "2023QYJC038"
+        ]
+      }
+    ],
+    "external_ids": {
+      "semantic_scholar_corpus_id": 280399026,
+      "pmid": "40739089",
+      "openalex_id": "https://openalex.org/W4412745982",
+      "doi": "10.1038/s41392-025-02280-1"
+    },
+    "biblio": {
+      "volume": "10",
+      "issue": "1",
+      "publisher": "Springer Science and Business Media LLC",
+      "issn": [
+        "2059-3635"
+      ],
+      "type": "journal-article",
+      "first_page": "227",
+      "last_page": "227"
+    },
+    "references": {
+      "count": 651,
+      "cited_by_count": 36,
+      "related_works": [
+        "https://openalex.org/W2912064558",
+        "https://openalex.org/W4316927247",
+        "https://openalex.org/W2789344762",
+        "https://openalex.org/W3128318804",
+        "https://openalex.org/W4388112172",
+        "https://openalex.org/W38803104",
+        "https://openalex.org/W2783288907",
+        "https://openalex.org/W2902626376",
+        "https://openalex.org/W3095731313",
+        "https://openalex.org/W4410076710"
+      ]
+    }
+  }
+}

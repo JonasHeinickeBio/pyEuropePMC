@@ -1,0 +1,136 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix mesh: <http://id.nlm.nih.gov/mesh/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://doi.org/10.1007/s12672-025-03561-5> a bibo:AcademicArticle ;
+    rdfs:label "Immunotherapeutics in metastatic cancer management" ;
+    mesh:hasSubject "CAR-T cells",
+        "Cancer vaccines",
+        "Immune checkpoint inhibitors",
+        "Immunotherapy",
+        "Metastatic cancer",
+        "Tumor microenvironment" ;
+    dcterms:identifier "12618787" ;
+    dcterms:issued "2025-11-14" ;
+    dcterms:subject "CAR-T cells",
+        "Cancer vaccines",
+        "Immune checkpoint inhibitors",
+        "Immunotherapy",
+        "Metastatic cancer",
+        "Tumor microenvironment" ;
+    dcterms:title "Immunotherapeutics in metastatic cancer management" ;
+    bibo:doi "10.1007/s12672-025-03561-5" ;
+    bibo:issue "1" ;
+    bibo:journal "Discover Oncology" ;
+    bibo:pages "17-48" ;
+    bibo:volume "16" ;
+    owl:sameAs <https://doi.org/10.1007/s12672-025-03561-5>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/12618787/> ;
+    prov:generatedAtTime "2025-11-24T11:19:00.616046" ;
+    prov:wasDerivedFrom <urn:pmc:12618787> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://doi.org/10.1016/j.mtbio.2025.102530> a bibo:AcademicArticle ;
+    rdfs:label "Overcoming barriers in primary bone cancer: Nanomaterial-enabled immunotherapy" ;
+    mesh:hasSubject "Combination therapy",
+        "Immunotherapy",
+        "Multifunctional nanoparticles",
+        "Nanomaterial",
+        "Primary bone neoplasms" ;
+    dcterms:identifier "12639873" ;
+    dcterms:issued "2025-11-07" ;
+    dcterms:subject "Combination therapy",
+        "Immunotherapy",
+        "Multifunctional nanoparticles",
+        "Nanomaterial",
+        "Primary bone neoplasms" ;
+    dcterms:title "Overcoming barriers in primary bone cancer: Nanomaterial-enabled immunotherapy" ;
+    bibo:doi "10.1016/j.mtbio.2025.102530" ;
+    bibo:issue "1" ;
+    bibo:journal "Materials Today Bio" ;
+    bibo:pages "2037-2043" ;
+    bibo:volume "35" ;
+    owl:sameAs <https://doi.org/10.1016/j.mtbio.2025.102530>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/12639873/> ;
+    prov:generatedAtTime "2025-11-24T11:19:00.675798" ;
+    prov:wasDerivedFrom <urn:pmc:12639873> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://doi.org/10.21037/tcr-2025-996> a bibo:AcademicArticle ;
+    rdfs:label "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" ;
+    mesh:hasSubject "Heterogeneous subpopulation",
+        "immunotherapy response",
+        "prognosis",
+        "tumor microenvironment" ;
+    dcterms:identifier "12605440" ;
+    dcterms:issued "2025-10-31" ;
+    dcterms:subject "Heterogeneous subpopulation",
+        "immunotherapy response",
+        "prognosis",
+        "tumor microenvironment" ;
+    dcterms:title "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" ;
+    bibo:doi "10.21037/tcr-2025-996" ;
+    bibo:issue "10" ;
+    bibo:journal "Translational Cancer Research" ;
+    bibo:pages "6316-6329" ;
+    bibo:volume "14" ;
+    owl:sameAs <https://doi.org/10.21037/tcr-2025-996>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/12605440/> ;
+    prov:generatedAtTime "2025-11-24T11:19:00.621257" ;
+    prov:wasDerivedFrom <urn:pmc:12605440> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://doi.org/10.2147/CMAR.S548762> a bibo:AcademicArticle ;
+    rdfs:label "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" ;
+    mesh:hasSubject "AFPGC",
+        "SCLC",
+        "case report",
+        "immunotherapy",
+        "tislelizumab" ;
+    dcterms:identifier "12628704" ;
+    dcterms:issued "2025-11-15" ;
+    dcterms:subject "AFPGC",
+        "SCLC",
+        "case report",
+        "immunotherapy",
+        "tislelizumab" ;
+    dcterms:title "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" ;
+    bibo:doi "10.2147/CMAR.S548762" ;
+    bibo:issue "11" ;
+    bibo:journal "Cancer Management and Research" ;
+    bibo:pages "2785-2791" ;
+    bibo:volume "17" ;
+    owl:sameAs <https://doi.org/10.2147/CMAR.S548762>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/12628704/> ;
+    prov:generatedAtTime "2025-11-24T11:19:00.623900" ;
+    prov:wasDerivedFrom <urn:pmc:12628704> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://doi.org/10.36401/JIPO-25-15> a bibo:AcademicArticle ;
+    rdfs:label "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" ;
+    mesh:hasSubject "health communication",
+        "immunotherapy",
+        "patient education",
+        "stem cell transplantation",
+        "targeted therapy" ;
+    dcterms:identifier "12550823" ;
+    dcterms:issued "2025-10-20" ;
+    dcterms:subject "health communication",
+        "immunotherapy",
+        "patient education",
+        "stem cell transplantation",
+        "targeted therapy" ;
+    dcterms:title "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" ;
+    bibo:doi "10.36401/JIPO-25-15" ;
+    bibo:issue "4" ;
+    bibo:journal "Journal of Immunotherapy and Precision Oncology" ;
+    bibo:pages "249-253" ;
+    bibo:volume "8" ;
+    owl:sameAs <https://doi.org/10.36401/JIPO-25-15>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/12550823/> ;
+    prov:generatedAtTime "2025-11-24T11:19:00.607725" ;
+    prov:wasDerivedFrom <urn:pmc:12550823> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .

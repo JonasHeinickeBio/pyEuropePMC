@@ -312,13 +312,13 @@ class TestReferenceEntity:
         """Test reference entity creation."""
         ref = ReferenceEntity(
             title="Sample Article",
-            source="Nature",
-            year="2021",
+            journal="Nature",
+            publication_year=2021,
             doi="10.1038/nature12345",
         )
         assert ref.title == "Sample Article"
-        assert ref.source == "Nature"
-        assert ref.year == "2021"
+        assert ref.journal == "Nature"
+        assert ref.publication_year == 2021
         assert ref.doi == "10.1038/nature12345"
 
     def test_reference_post_init(self):

@@ -1,13 +1,17 @@
 # RDF Mapping Configuration for PyEuropePMC Data Models
-# This file defines how entity fields map to RDF predicates
-# TODO: Keep rml_mappings.ttl synchronized with this YAML file
-# TODO: Consider adding a script to auto-generate RML from YAML
-# NOTE: URI generation patterns are handled dynamically in RDFMapper._generate_entity_uri() (DOI-based for papers, normalized names for authors, etc.)
+#
+# This file is the SOURCE OF TRUTH for all RDF mappings.
+# The RML file (rml_mappings.ttl) is auto-generated from this YAML.
+#
+# After editing this file, run: python scripts/sync_rdf_mappings.py
+#
+# This file defines how entity fields map to RDF predicates.
+# URI generation patterns are handled dynamically in RDFMapper._generate_entity_uri()
+# (DOI-based for papers, ORCID-based for authors, ROR-based for institutions, etc.)
 
 # Namespace prefixes
 _@prefix:
-  ex: "http://example.org/"
-  dct: "http://purl.org/dc/terms/"
+  dcterms: "http://purl.org/dc/terms/"
   foaf: "http://xmlns.com/foaf/0.1/"
   bibo: "http://purl.org/ontology/bibo/"
   prov: "http://www.w3.org/ns/prov#"
@@ -16,118 +20,326 @@ _@prefix:
   rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
   owl: "http://www.w3.org/2002/07/owl#"
   mesh: "http://id.nlm.nih.gov/mesh/"
+  meshv: "http://id.nlm.nih.gov/mesh/vocab#"
   obo: "http://purl.obolibrary.org/obo/"
   org: "http://www.w3.org/ns/org#"
   cito: "http://purl.org/spar/cito/"
+  datacite: "http://purl.org/spar/datacite/"
+  frapo: "http://purl.org/cerif/frapo/"
+  geo: "http://www.w3.org/2003/01/geo/wgs84_pos#"
+  ror: "https://ror.org/vocab#"
+  skos: "http://www.w3.org/2004/02/skos/core#"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  pyeuropepmc: "https://w3id.org/pyeuropepmc/vocab#"
+  pyeuropepmcdata: "https://w3id.org/pyeuropepmc/data#"
+
+# Base URI for generated data URIs (fallback URIs when no external identifiers available)
+_base_uri: "https://w3id.org/pyeuropepmc/"
+
+# Knowledge Graph Structure Configuration
+# Controls how entities are organized in RDF graphs
+_kg_structure:
+  # Default behavior for including content entities (sections, references, tables, figures)
+  # Set to false for metadata-only graphs, true for complete graphs
+  include_content: true
+  # Default KG type: "complete" (all entities), "metadata" (papers/authors/institutions only), "content" (sections/references/tables/figures only)
+  default_type: "complete"
+  # Enable semantic networks by default
+  enable_citation_networks: true
+  enable_collaboration_networks: true
+  enable_institutional_hierarchies: true
+  enable_quality_metrics: true
+  enable_shacl_validation: false
+  # Quality scoring thresholds
+  quality_thresholds:
+    high: 0.8
+    medium: 0.6
+    low: 0.0
+
+# Named Graphs Configuration
+# Defines the structure and organization of named graphs for enhanced RDF
+_named_graphs:
+  publications:
+    title: "Publication Entities and Citations"
+    description: "Contains publication entities, citation networks, and bibliographic relationships"
+    uri_base: "https://w3id.org/pyeuropepmc#publications"
+    enabled: true
+  authors:
+    title: "Author Entities and Relationships"
+    description: "Contains all author entities, their affiliations, collaborations, and quality metrics"
+    uri_base: "https://w3id.org/pyeuropepmc#authors"
+    enabled: true
+  institutions:
+    title: "Institutional Entities and Hierarchies"
+    description: "Contains institutional entities, hierarchies, and organizational relationships"
+    uri_base: "https://w3id.org/pyeuropepmc#institutions"
+    enabled: true
+  provenance:
+    title: "Provenance and Quality Metrics"
+    description: "Contains provenance information, quality scores, and temporal metadata"
+    uri_base: "https://w3id.org/pyeuropepmc#provenance"
+    enabled: true
+
+# Required Named Graphs
+# List of named graphs that must be present and enabled
+_required_named_graphs:
+  - publications
+  - authors
+  - institutions
+  - provenance
+
+# ScholarlyWorkEntity mapping (base class)
+ScholarlyWorkEntity:
+  "rdf:type": ["bibo:Document"]
+  fields:
+    title: {predicate: "dcterms:title", datatype: "xsd:string"}
+    doi: {predicate: "bibo:doi", datatype: "xsd:anyURI"}
+    volume: {predicate: "bibo:volume", datatype: "xsd:string"}
+    pages: {predicate: "bibo:pages", datatype: "xsd:string"}
+    publication_year: {predicate: "dcterms:issued", datatype: "xsd:gYear"}
+    publication_date: {predicate: "dcterms:date", datatype: "xsd:date"}
+    pmcid: {predicate: "pyeuropepmc:pmcid", datatype: "xsd:string"}
+    pmid: {predicate: "pyeuropepmc:pmid", datatype: "xsd:string"}
+    semantic_scholar_id: {predicate: "pyeuropepmc:semanticScholarId", datatype: "xsd:string"}
+  # Multi-value fields (authors handled as relationships in subclasses)
+  multi_value_fields: {}
 
 # PaperEntity mapping
 PaperEntity:
-  rdf:type: ["bibo:AcademicArticle"]
+  "rdf:type": ["bibo:AcademicArticle"]
   fields:
-    pmcid: dct:identifier
-    doi: bibo:doi
-    title: dct:title
-    journal: bibo:journal
-    volume: bibo:volume
-    issue: bibo:issue
-    pages: bibo:pages
-    pub_date: dct:issued
-    abstract: dct:abstract
-    citation_count: ex:citationCount
+    issue: {predicate: "bibo:issue", datatype: "xsd:string"}
+    pub_date: {predicate: "dcterms:issued", datatype: "xsd:date"}
+    abstract: {predicate: "dcterms:abstract", datatype: "xsd:string"}
+    citation_count: {predicate: "pyeuropepmc:citationCount", datatype: "xsd:integer"}
+    influential_citation_count: {predicate: "pyeuropepmc:influentialCitationCount", datatype: "xsd:integer"}
+    is_oa: {predicate: "dcterms:accessRights", datatype: "xsd:boolean"}
+    oa_status: {predicate: "dcterms:accessRights", datatype: "xsd:string"}
+    oa_url: {predicate: "bibo:uri", datatype: "xsd:anyURI"}
+    reference_count: {predicate: "bibo:numPages", datatype: "xsd:integer"}
+    cited_by_count: {predicate: "pyeuropepmc:citationCount", datatype: "xsd:integer"}
+    publisher: {predicate: "dcterms:publisher", datatype: "xsd:string"}
+    issn: {predicate: "bibo:issn", datatype: "xsd:string"}
+    publication_type: {predicate: "bibo:DocumentType", datatype: "xsd:string"}
+    first_page: {predicate: "bibo:pageStart", datatype: "xsd:string"}
+    last_page: {predicate: "bibo:pageEnd", datatype: "xsd:string"}
+    semantic_scholar_corpus_id: {predicate: "pyeuropepmc:semanticScholarCorpusId", datatype: "xsd:string"}
+    openalex_id: {predicate: "datacite:openalex", datatype: "xsd:string"}
+    # Direct identifier fields
+    doi: {predicate: "bibo:doi", datatype: "xsd:anyURI"}
+    pmcid: {predicate: "pyeuropepmc:pmcid", datatype: "xsd:string"}
+    pmid: {predicate: "pyeuropepmc:pmid", datatype: "xsd:string"}
+    publisher_id: {predicate: "pyeuropepmc:publisherId", datatype: "xsd:string"}
+    # Flattened license fields (no complex dicts)
+    license_url: {predicate: "dcterms:license", datatype: "xsd:anyURI"}
+    license_text: {predicate: "dcterms:rights", datatype: "xsd:string"}
   # Multi-value fields (lists)
   multi_value_fields:
-    keywords: dct:subject
+    keywords: dcterms:subject
+    fields_of_study: dcterms:subject
+    related_works: dcterms:related
   # Relationships
   relationships:
     authors:
-      predicate: dct:creator
+      predicate: "dcterms:creator"
       inverse: foaf:made
+    institutions:
+      predicate: "pyeuropepmc:affiliatedWith"
+      inverse: pyeuropepmc:hasAffiliation
+    journal:
+      predicate: "bibo:journal"
+      inverse: bibo:article
     sections:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf
+      predicate: "dcterms:hasPart"
+      inverse: dcterms:isPartOf
     references:
-      predicate: cito:cites
+      predicate: "cito:cites"
       inverse: cito:isCitedBy
     tables:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf
+      predicate: "dcterms:hasPart"
+      inverse: dcterms:isPartOf
+    figures:
+      predicate: "dcterms:hasPart"
+      inverse: dcterms:isPartOf
+    grants:
+      predicate: "foaf:fundedBy"
+      inverse: frapo:funds
 
 # AuthorEntity mapping
 AuthorEntity:
-  rdf:type: ["foaf:Person"]
+  "rdf:type": ["foaf:Person"]
   fields:
-    full_name: foaf:name
-    first_name: foaf:givenName
-    last_name: foaf:familyName
-    initials: foaf:initials
-    orcid: ex:orcid  # Changed from bibo:identifier for more specific ORCID predicate
-    affiliation_text: ex:affiliation  # Changed from org:memberOf (which expects URI, not literal)
+    full_name: {predicate: "foaf:name", datatype: "xsd:string"}
+    first_name: {predicate: "foaf:givenName", datatype: "xsd:string"}
+    last_name: {predicate: "foaf:familyName", datatype: "xsd:string"}
+    initials: {predicate: "foaf:initials", datatype: "xsd:string"}
+    orcid: {predicate: "datacite:orcid", datatype: "xsd:string"}
+    openalex_id: {predicate: "pyeuropepmc:openAlexAuthorId", datatype: "xsd:string"}
+    semantic_scholar_id: {predicate: "datacite:semanticScholarId", datatype: "xsd:string"}
+    position: {predicate: "org:role", datatype: "xsd:string"}
+    email: {predicate: "foaf:mbox", datatype: "xsd:string"}
+  # Multi-value fields
+  multi_value_fields:
+    sources: prov:hadPrimarySource
   # Relationships
   relationships:
     papers:
-      predicate: foaf:made
-      inverse: dct:creator
+      predicate: "foaf:made"
+      inverse: dcterms:creator
+    institutions:
+      predicate: "pyeuropepmc:affiliatedWith"
+      inverse: pyeuropepmc:hasAffiliate
 
 # SectionEntity mapping
 SectionEntity:
-  rdf:type: ["bibo:DocumentPart", "nif:Context"]
+  "rdf:type": ["bibo:DocumentPart", "nif:Context"]
   fields:
-    title: dct:title
-    content: nif:isString
-    begin_index: nif:beginIndex
-    end_index: nif:endIndex
+    title: {predicate: "dcterms:title", datatype: "xsd:string"}
+    content: {predicate: "nif:isString", datatype: "xsd:string"}
+    begin_index: {predicate: "nif:beginIndex", datatype: "xsd:integer"}
+    end_index: {predicate: "nif:endIndex", datatype: "xsd:integer"}
   # Relationships
   relationships:
     paper:
-      predicate: dct:isPartOf
-      inverse: dct:hasPart
+      predicate: "dcterms:isPartOf"
+      inverse: dcterms:hasPart
     subsections:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf  # TODO: Implement SubsectionEntity or remove if not needed
+      predicate: "dcterms:hasPart"
+      inverse: dcterms:isPartOf
 
 # TableEntity mapping
 TableEntity:
-  rdf:type: ["bibo:Table"]
+  "rdf:type": ["bibo:Table"]
   fields:
-    caption: dct:description
-    table_label: rdfs:label
+    caption: {predicate: "dcterms:description", datatype: "xsd:string"}
+    table_label: {predicate: "rdfs:label", datatype: "xsd:string"}
   # Relationships
   relationships:
     paper:
-      predicate: dct:isPartOf
-      inverse: dct:hasPart
+      predicate: "dcterms:isPartOf"
+      inverse: dcterms:hasPart
     rows:
-      predicate: dct:hasPart
-      inverse: dct:isPartOf
+      predicate: "dcterms:hasPart"
+      inverse: dcterms:isPartOf
 
 # TableRowEntity mapping
 TableRowEntity:
-  rdf:type: ["bibo:Row"]
+  "rdf:type": ["bibo:Row"]
   fields:
-    headers: ex:hasHeader  # Changed from multi_value_fields (headers are typically single string per row)
+    headers: {predicate: "rdfs:label", datatype: "xsd:string"}
   multi_value_fields:
-    cells: ex:hasCell
+    cells: rdfs:member
   # Relationships
   relationships:
     table:
-      predicate: dct:isPartOf
-      inverse: dct:hasPart
+      predicate: "dcterms:isPartOf"
+      inverse: dcterms:hasPart
 
 # ReferenceEntity mapping
 ReferenceEntity:
-  rdf:type: ["bibo:Document"]
+  "rdf:type": ["bibo:Article"]  # More specific than bibo:Document
   fields:
-    title: dct:title
-    source: dct:isPartOf
-    year: dct:issued
-    volume: bibo:volume
-    pages: bibo:pages
-    doi: bibo:doi  # NOTE: DOI data often missing in XML (only PMID available)
-  # Multi-value fields
-  multi_value_fields:
-    authors: dct:creator
+    authors: {predicate: "bibo:authorList", datatype: "xsd:string"}
+    raw_citation: {predicate: "dcterms:description", datatype: "xsd:string"}
+  # Inherits all fields from ScholarlyWorkEntity (including doi, pmid, pmcid, title, etc.)
+  # Identifiers (inherited but documented here for clarity):
+  #   - doi: bibo:doi (xsd:string)
+  #   - pmid: datacite:pmid (xsd:string)
+  #   - pmcid: datacite:pmcid (xsd:string)
   # Relationships
   relationships:
     citing_paper:
-      predicate: cito:isCitedBy
+      predicate: "cito:isCitedBy"
       inverse: cito:cites
+
+# InstitutionEntity mapping
+InstitutionEntity:
+  "rdf:type": ["org:Organization"]
+  fields:
+    display_name: {predicate: "skos:prefLabel", datatype: "xsd:string"}
+    ror_id: {predicate: "pyeuropepmc:rorId", datatype: "xsd:string"}
+    openalex_id: {predicate: "pyeuropepmc:openAlexInstitutionId", datatype: "xsd:string"}
+    country: {predicate: "geo:country", datatype: "xsd:string"}
+    country_code: {predicate: "geo:countryCode", datatype: "xsd:string"}
+    city: {predicate: "geo:city", datatype: "xsd:string"}
+    latitude: {predicate: "geo:lat", datatype: "xsd:decimal"}
+    longitude: {predicate: "geo:long", datatype: "xsd:decimal"}
+    institution_type: {predicate: "org:classification", datatype: "xsd:string"}
+    grid_id: {predicate: "pyeuropepmc:gridId", datatype: "xsd:string"}
+    isni: {predicate: "pyeuropepmc:isni", datatype: "xsd:string"}
+    wikidata_id: {predicate: "owl:sameAs", datatype: "xsd:anyURI"}
+    fundref_id: {predicate: "pyeuropepmc:fundrefId", datatype: "xsd:string"}
+    website: {predicate: "foaf:homepage", datatype: "xsd:anyURI"}
+    established: {predicate: "dcterms:created", datatype: "xsd:gYear"}
+  # Multi-value fields
+  multi_value_fields:
+    domains: dcterms:subject
+  # Relationships
+  relationships:
+    members:
+      predicate: "org:hasMember"
+      inverse: org:memberOf
+
+# JournalEntity mapping
+JournalEntity:
+  "rdf:type": ["bibo:Journal"]
+  fields:
+    title: {predicate: "dcterms:title", datatype: "xsd:string"}
+    medline_abbreviation: {predicate: "bibo:shortTitle", datatype: "xsd:string"}
+    iso_abbreviation: {predicate: "bibo:shortTitle", datatype: "xsd:string"}
+    nlmid: {predicate: "bibo:nlmid", datatype: "xsd:string"}
+    issn: {predicate: "bibo:issn", datatype: "xsd:string"}
+    essn: {predicate: "bibo:eissn", datatype: "xsd:string"}
+    publisher: {predicate: "dcterms:publisher", datatype: "xsd:string"}
+    country: {predicate: "pyeuropepmc:publisherLocation", datatype: "xsd:string"}
+    language: {predicate: "dcterms:language", datatype: "xsd:string"}
+    journal_issue_id: {predicate: "bibo:issue", datatype: "xsd:string"}
+    openalex_id: {predicate: "datacite:openAlexId", datatype: "xsd:string"}
+    wikidata_id: {predicate: "owl:sameAs", datatype: "xsd:anyURI"}
+    scopus_source_id: {predicate: "pyeuropepmc:scopusSourceId", datatype: "xsd:string"}
+    impact_factor: {predicate: "pyeuropepmc:impactFactor", datatype: "xsd:decimal"}
+    sjr: {predicate: "pyeuropepmc:sjr", datatype: "xsd:decimal"}
+    h_index: {predicate: "pyeuropepmc:hIndex", datatype: "xsd:integer"}
+    # Flattened journal identifier fields
+    nlm_ta: {predicate: "bibo:nlmTA", datatype: "xsd:string"}
+    iso_abbrev: {predicate: "bibo:isoAbbrev", datatype: "xsd:string"}
+    publisher_id: {predicate: "pyeuropepmc:publisherId", datatype: "xsd:string"}
+  # Multi-value fields
+  multi_value_fields:
+    subject_areas: dcterms:subject
+  # Relationships
+  relationships:
+    papers:
+      predicate: "bibo:article"
+      inverse: bibo:journal
+
+# GrantEntity mapping
+GrantEntity:
+  "rdf:type": ["frapo:Grant"]
+  fields:
+    fundref_doi: {predicate: "datacite:doi", datatype: "xsd:anyURI"}
+    funding_source: {predicate: "frapo:hasFundingAgency", datatype: "xsd:string"}
+    award_id: {predicate: "datacite:identifier", datatype: "xsd:string"}
+    recipient: {predicate: "frapo:hasRecipient", datatype: "xsd:string"}  # DEPRECATED: Use recipients relationship instead
+  # Relationships
+  relationships:
+    recipients:
+      predicate: "frapo:hasRecipient"
+      inverse: "frapo:isRecipientOf"
+      comment: "Principal investigators or researchers who receive this grant funding"
+    papers:
+      predicate: "frapo:funds"
+      inverse: "foaf:fundedBy"
+
+# FigureEntity mapping
+FigureEntity:
+  "rdf:type": ["bibo:Image"]
+  fields:
+    caption: {predicate: "dcterms:description", datatype: "xsd:string"}
+    figure_label: {predicate: "rdfs:label", datatype: "xsd:string"}
+    graphic_uri: {predicate: "foaf:depiction", datatype: "xsd:anyURI"}
+  # Relationships
+  relationships:
+    paper:
+      predicate: "dcterms:isPartOf"
+      inverse: dcterms:hasPart

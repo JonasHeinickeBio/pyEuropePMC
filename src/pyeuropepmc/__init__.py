@@ -11,7 +11,7 @@ Example usage:
     >>> papers = client.search_and_parse("COVID-19", format="json")
 """
 
-__version__ = "1.11.3"
+__version__ = "1.14.0"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
@@ -31,6 +31,7 @@ from .clients.search import SearchClient
 from .core.base import BaseAPIClient
 from .core.exceptions import APIClientError, EuropePMCError, FullTextError
 from .enrichment.enricher import EnrichmentConfig, PaperEnricher
+from .pipeline import PaperProcessingPipeline, PipelineConfig
 from .processing.analytics import (
     author_statistics,
     citation_statistics,
@@ -44,7 +45,7 @@ from .processing.analytics import (
     to_dataframe,
 )
 from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .processing.parser import EuropePMCParser
+from .processing.search_parser import EuropePMCParser
 from .processing.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,
@@ -109,6 +110,9 @@ __all__ = [
     # Enrichment utilities
     "PaperEnricher",
     "EnrichmentConfig",
+    # Pipeline utilities
+    "PaperProcessingPipeline",
+    "PipelineConfig",
     # Analytics utilities
     "to_dataframe",
     "publication_year_distribution",

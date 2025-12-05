@@ -178,10 +178,11 @@ class TestFullTextXMLParserExtractMetadata:
         assert len(metadata["authors"]) == 2
         assert "John Smith" in metadata["authors"]
         assert "Jane Doe" in metadata["authors"]
-        assert metadata["journal"] == "Test Journal"
+        # Journal is now a dict with nested structure including volume/issue
+        assert metadata["journal"]["title"] == "Test Journal"
         assert metadata["pub_date"] == "2021-12-15"
-        assert metadata["volume"] == "10"
-        assert metadata["issue"] == "5"
+        assert metadata["journal"]["volume"] == "10"
+        assert metadata["journal"]["issue"] == "5"
         assert metadata["pages"] == "100-110"
         assert "sample abstract" in metadata["abstract"].lower()
         assert len(metadata["keywords"]) == 2
@@ -322,7 +323,7 @@ class TestFullTextXMLParserExtractReferences:
 
         assert ref["id"] == "ref1"
         assert ref["label"] == "1"
-        assert "A Author" in (ref["authors"] or "")
+        assert "Author, A" in (ref["authors"] or "")
         assert ref["title"] == "Reference Article Title"
         assert ref["source"] == "Reference Journal"
         assert ref["year"] == "2020"

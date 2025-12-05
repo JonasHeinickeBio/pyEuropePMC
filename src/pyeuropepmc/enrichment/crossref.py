@@ -148,28 +148,103 @@ class CrossRefClient(BaseEnrichmentClient):
         dict
             Normalized metadata
         """
-        # Extract title
-        title_list = message.get("title", [])
-        title = title_list[0] if title_list else None
+        # Extract basic metadata
+        title = self._extract_title(message)
+        authors = self._extract_authors(message)
+        abstract = message.get("abstract")
+        journal = self._extract_journal(message)
+        publication_date = self._extract_publication_date(message)
+        citation_count = message.get("is-referenced-by-count", 0)
+        references_count = message.get("references-count", 0)
+        license_info = self._extract_license(message)
+        funders = self._extract_funders(message)
 
-        # Extract authors
+        # Extract bibliographic information
+        biblio = {
+            "type": message.get("type"),
+            "issn": message.get("ISSN"),
+            "volume": message.get("volume"),
+            "issue": message.get("issue"),
+            "page": message.get("page"),
+            "publisher": message.get("publisher"),
+        }
+        # Remove None values from biblio
+        biblio = {k: v for k, v in biblio.items() if v is not None}
+
+        return {
+            "source": "crossref",
+            "title": title,
+            "authors": authors,
+            "abstract": abstract,
+            "journal": journal,
+            "publication_date": publication_date,
+            "citation_count": citation_count,
+            "references_count": references_count,
+            "license": license_info,
+            "funders": funders if funders else None,
+            **biblio,
+        }
+
+    def _extract_title(self, message: dict[str, Any]) -> str | None:
+        """Extract title from CrossRef message."""
+        title_list = message.get("title", [])
+        return title_list[0] if title_list else None
+
+    def _extract_authors(self, message: dict[str, Any]) -> list[dict[str, Any]]:
+        """Extract detailed author information from CrossRef message."""
         authors = []
         for author in message.get("author", []):
+            if not isinstance(author, dict):
+                continue
+
+            # Extract name components
             given = author.get("given", "")
             family = author.get("family", "")
-            if given and family:
-                authors.append(f"{given} {family}")
-            elif family:
-                authors.append(family)
+            name = author.get("name", "")
 
-        # Extract abstract
-        abstract = message.get("abstract")
+            # Build full name if not provided
+            if not name and (given or family):
+                name = f"{given} {family}".strip()
 
-        # Extract journal/container title
+            # Extract ORCID
+            orcid = author.get("ORCID")
+            if orcid and not orcid.startswith("https://orcid.org/"):
+                orcid = f"https://orcid.org/{orcid}"
+
+            # Extract affiliations
+            affiliations = []
+            author_affiliations = author.get("affiliation", [])
+            if isinstance(author_affiliations, list):
+                for aff in author_affiliations:
+                    if isinstance(aff, dict) and aff.get("name"):
+                        affiliations.append(aff["name"])
+
+            # Extract sequence information
+            sequence = author.get("sequence")
+
+            author_data = {
+                "name": name,
+                "given": given,
+                "family": family,
+                "orcid": orcid,
+                "affiliation": affiliations,
+                "sequence": sequence,
+                "ORCID": orcid,  # Keep original key for compatibility
+            }
+
+            # Remove None values
+            author_data = {k: v for k, v in author_data.items() if v is not None}
+            authors.append(author_data)
+
+        return authors
+
+    def _extract_journal(self, message: dict[str, Any]) -> str | None:
+        """Extract journal/container title."""
         container_title = message.get("container-title", [])
-        journal = container_title[0] if container_title else None
+        return container_title[0] if container_title else None
 
-        # Extract publication date
+    def _extract_publication_date(self, message: dict[str, Any]) -> str | None:
+        """Extract publication date."""
         pub_date_parts = message.get("published", {}).get("date-parts", [[]])
         pub_date = None
         if pub_date_parts and pub_date_parts[0]:
@@ -180,22 +255,21 @@ class CrossRefClient(BaseEnrichmentClient):
                 pub_date = f"{date_parts[0]}-{date_parts[1]:02d}"
             elif len(date_parts) >= 1:
                 pub_date = str(date_parts[0])
+        return pub_date
 
-        # Extract citation metrics
-        citation_count = message.get("is-referenced-by-count", 0)
-        references_count = message.get("references-count", 0)
-
-        # Extract license information
+    def _extract_license(self, message: dict[str, Any]) -> dict[str, Any] | None:
+        """Extract license information."""
         licenses = message.get("license", [])
-        license_info = None
         if licenses:
-            license_info = {
+            return {
                 "url": licenses[0].get("URL"),
                 "start": licenses[0].get("start", {}).get("date-time"),
                 "delay_in_days": licenses[0].get("delay-in-days"),
             }
+        return None
 
-        # Extract funder information
+    def _extract_funders(self, message: dict[str, Any]) -> list[dict[str, Any]]:
+        """Extract funder information."""
         funders = []
         for funder in message.get("funder", []):
             funders.append(
@@ -205,22 +279,4 @@ class CrossRefClient(BaseEnrichmentClient):
                     "award": funder.get("award", []),
                 }
             )
-
-        return {
-            "source": "crossref",
-            "title": title,
-            "authors": authors,
-            "abstract": abstract,
-            "journal": journal,
-            "publication_date": pub_date,
-            "citation_count": citation_count,
-            "references_count": references_count,
-            "license": license_info,
-            "funders": funders if funders else None,
-            "type": message.get("type"),
-            "issn": message.get("ISSN"),
-            "volume": message.get("volume"),
-            "issue": message.get("issue"),
-            "page": message.get("page"),
-            "publisher": message.get("publisher"),
-        }
+        return funders

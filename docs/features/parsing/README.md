@@ -50,7 +50,7 @@ metadata = parser.extract_metadata()
 # Available metadata fields
 title = metadata['title']                    # Article title
 authors = metadata['authors']                # List of author dicts
-journal = metadata['journal']                # Journal name
+journal = metadata['journal']                # Journal info dict (title, volume, issue)
 pub_date = metadata['publication_date']      # Publication date
 doi = metadata['doi']                        # Digital Object Identifier
 pmid = metadata['pmid']                      # PubMed ID
@@ -72,7 +72,7 @@ for author in authors:
 |-------|------|-------------|
 | `title` | str | Article title |
 | `authors` | list[dict] | Author information |
-| `journal` | str | Journal name |
+| `journal` | dict | Journal info with 'title', 'volume', 'issue' keys |
 | `publication_date` | str | Publication date (ISO format) |
 | `doi` | str | DOI identifier |
 | `pmid` | str | PubMed ID |
@@ -81,8 +81,6 @@ for author in authors:
 | `keywords` | list[str] | Article keywords |
 | `affiliations` | list[str] | Author affiliations |
 | `article_type` | str | Article type |
-| `volume` | str | Journal volume |
-| `issue` | str | Journal issue |
 | `pages` | str | Page range |
 | `copyright` | str | Copyright statement |
 | `license` | str | License information |

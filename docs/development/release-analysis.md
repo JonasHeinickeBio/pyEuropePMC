@@ -15,7 +15,7 @@
 | Module | Tests | Coverage | Status |
 |--------|-------|----------|--------|
 | helpers.py | 47 | 91% | ✅ |
-| parser.py | 34 | 95% | ✅ |
+| search_parser.py | 34 | 95% | ✅ |
 | search.py | 80+ | 85% | ✅ |
 | base.py | 30+ | 90% | ✅ |
 | **Total** | **208+** | **90%+** | **✅** |
@@ -27,7 +27,7 @@ src/pyeuropepmc/
 ├── __init__.py      # ✅ Clean API exports
 ├── base.py          # ✅ Robust HTTP client
 ├── search.py        # ✅ Full search functionality
-├── parser.py        # ✅ Multi-format parsing
+├── search_parser.py # ✅ Multi-format parsing
 └── utils/helpers.py # ✅ Utilities (91% tested)
 ```
 

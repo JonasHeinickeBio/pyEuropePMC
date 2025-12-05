@@ -1,0 +1,29 @@
+{
+  "identifier": "10.1234/test",
+  "doi": "10.1234/test",
+  "sources": [
+    "crossref",
+    "openalex"
+  ],
+  "crossref": {
+    "source": "crossref",
+    "title": "Test"
+  },
+  "datacite": null,
+  "unpaywall": null,
+  "semantic_scholar": null,
+  "openalex": {
+    "source": "openalex",
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://example.com/paper.pdf"
+  },
+  "ror": null,
+  "merged": {
+    "title": "Test",
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://example.com/paper.pdf",
+    "topics": null
+  }
+}

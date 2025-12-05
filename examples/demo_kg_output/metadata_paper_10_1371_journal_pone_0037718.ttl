@@ -1,0 +1,216 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+
+<https://w3id.org/pyeuropepmc#institutions> {
+    <https://w3id.org/pyeuropepmc/institution/1-department-of-research> a org:Organization ;
+        skos:prefLabel """1
+Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts, West Indies""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/2-department-of-zoology> a org:Organization ;
+        skos:prefLabel """2
+Department of Zoology, University of Johannesburg, Auckland Park, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/3-university-of-trinidad> a org:Organization ;
+        skos:prefLabel """3
+University of Trinidad and Tobago, Arima, Trinidad""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/4-animal-health> a org:Organization ;
+        skos:prefLabel """4
+Animal Health Division, Bayer Pty Ltd, Isando, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/5-department-of-global> a org:Organization ;
+        skos:prefLabel """5
+Department of Global Health, Rollins School of Public Health, Emory University, Atlanta, Georgia, United States of America""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/6-department-of-agriculture> a org:Organization ;
+        skos:prefLabel """6
+Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/7-biometry> a org:Organization ;
+        skos:prefLabel """7
+Biometry Unit, Agricultural Research Council, Silverton, Pretoria, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/8-laboratory-for-study> a org:Organization ;
+        skos:prefLabel """8
+Laboratory for Study Design and Statistical Analysis, Virginia-Maryland Regional College of Veterinary Medicine, Virginia Tech, Blacksburg, Virginia, United States of America""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://w3id.org/pyeuropepmc/institution/9-stewardship-for-research> a org:Organization ;
+        skos:prefLabel """9
+Stewardship for Research on Infectious Diseases of Poverty (STE), UNICEF/UNDP/World Bank/WHO Special Programme for Research and Training in Tropical Diseases (TDR), Geneva, Switzerland""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+}
+
+<https://w3id.org/pyeuropepmc#authors> {
+    <https://w3id.org/pyeuropepmc/author/arve-lee-willingham> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/9-stewardship-for-research>,
+            """9
+Stewardship for Research on Infectious Diseases of Poverty (STE), UNICEF/UNDP/World Bank/WHO Special Programme for Research and Training in Tropical Diseases (TDR), Geneva, Switzerland""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Willingham" ;
+        foaf:givenName "Arve Lee" ;
+        foaf:name "Arve Lee Willingham" .
+
+    <https://w3id.org/pyeuropepmc/author/hamish-mohammed> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/3-university-of-trinidad>,
+            """3
+University of Trinidad and Tobago, Arima, Trinidad""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Mohammed" ;
+        foaf:givenName "Hamish" ;
+        foaf:name "Hamish Mohammed" .
+
+    <https://w3id.org/pyeuropepmc/author/liesl-morey> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/7-biometry>,
+            """7
+Biometry Unit, Agricultural Research Council, Silverton, Pretoria, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Morey" ;
+        foaf:givenName "Liesl" ;
+        foaf:name "Liesl Morey" .
+
+    <https://w3id.org/pyeuropepmc/author/lulama-ntanjana> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/6-department-of-agriculture>,
+            """6
+Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Ntanjana" ;
+        foaf:givenName "Lulama" ;
+        foaf:name "Lulama Ntanjana" .
+
+    <https://w3id.org/pyeuropepmc/author/lynne-margaret-michael> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/4-animal-health>,
+            """4
+Animal Health Division, Bayer Pty Ltd, Isando, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Michael" ;
+        foaf:givenName "Lynne Margaret" ;
+        foaf:name "Lynne Margaret Michael" .
+
+    <https://w3id.org/pyeuropepmc/author/peter-mullineaux-schantz> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/5-department-of-global>,
+            """5
+Department of Global Health, Rollins School of Public Health, Emory University, Atlanta, Georgia, United States of America""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Schantz" ;
+        foaf:givenName "Peter Mullineaux" ;
+        foaf:name "Peter Mullineaux Schantz" .
+
+    <https://w3id.org/pyeuropepmc/author/stephen-rakem-werre> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/8-laboratory-for-study>,
+            """8
+Laboratory for Study Design and Statistical Analysis, Virginia-Maryland Regional College of Veterinary Medicine, Virginia Tech, Blacksburg, Virginia, United States of America""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Werre" ;
+        foaf:givenName "Stephen Rakem" ;
+        foaf:name "Stephen Rakem Werre" .
+
+    <https://w3id.org/pyeuropepmc/author/rosina-claudia-krecek> a foaf:Person ;
+        org:memberOf <https://w3id.org/pyeuropepmc/institution/1-department-of-research>,
+            <https://w3id.org/pyeuropepmc/institution/2-department-of-zoology>,
+            """1
+Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts, West Indies; 2
+Department of Zoology, University of Johannesburg, Auckland Park, South Africa""" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" ;
+        foaf:familyName "Krecek" ;
+        foaf:givenName "Rosina Claudia" ;
+        foaf:name "Rosina Claudia Krecek" .
+
+    <https://w3id.org/pyeuropepmc/institution/1-department-of-research> org:hasMember <https://w3id.org/pyeuropepmc/author/rosina-claudia-krecek> .
+
+    <https://w3id.org/pyeuropepmc/institution/2-department-of-zoology> org:hasMember <https://w3id.org/pyeuropepmc/author/rosina-claudia-krecek> .
+
+    <https://w3id.org/pyeuropepmc/institution/3-university-of-trinidad> org:hasMember <https://w3id.org/pyeuropepmc/author/hamish-mohammed> .
+
+    <https://w3id.org/pyeuropepmc/institution/4-animal-health> org:hasMember <https://w3id.org/pyeuropepmc/author/lynne-margaret-michael> .
+
+    <https://w3id.org/pyeuropepmc/institution/5-department-of-global> org:hasMember <https://w3id.org/pyeuropepmc/author/peter-mullineaux-schantz> .
+
+    <https://w3id.org/pyeuropepmc/institution/6-department-of-agriculture> org:hasMember <https://w3id.org/pyeuropepmc/author/lulama-ntanjana> .
+
+    <https://w3id.org/pyeuropepmc/institution/7-biometry> org:hasMember <https://w3id.org/pyeuropepmc/author/liesl-morey> .
+
+    <https://w3id.org/pyeuropepmc/institution/8-laboratory-for-study> org:hasMember <https://w3id.org/pyeuropepmc/author/stephen-rakem-werre> .
+
+    <https://w3id.org/pyeuropepmc/institution/9-stewardship-for-research> org:hasMember <https://w3id.org/pyeuropepmc/author/arve-lee-willingham> .
+}
+
+<https://w3id.org/pyeuropepmc#publications> {
+    <https://w3id.org/pyeuropepmc/journal/25810f8c-d6b7-4609-b4a3-3023662c8371> bibo:article <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/arve-lee-willingham> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/hamish-mohammed> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/liesl-morey> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/lulama-ntanjana> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/lynne-margaret-michael> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/peter-mullineaux-schantz> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/stephen-rakem-werre> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://w3id.org/pyeuropepmc/author/rosina-claudia-krecek> foaf:made <https://doi.org/10.1371/journal.pone.0037718> .
+
+    <https://doi.org/10.1371/journal.pone.0037718> a bibo:AcademicArticle ;
+        dcterms:creator <https://w3id.org/pyeuropepmc/author/arve-lee-willingham>,
+            <https://w3id.org/pyeuropepmc/author/hamish-mohammed>,
+            <https://w3id.org/pyeuropepmc/author/liesl-morey>,
+            <https://w3id.org/pyeuropepmc/author/lulama-ntanjana>,
+            <https://w3id.org/pyeuropepmc/author/lynne-margaret-michael>,
+            <https://w3id.org/pyeuropepmc/author/peter-mullineaux-schantz>,
+            <https://w3id.org/pyeuropepmc/author/rosina-claudia-krecek>,
+            <https://w3id.org/pyeuropepmc/author/stephen-rakem-werre> ;
+        dcterms:identifier "3359999" ;
+        dcterms:issued "2012-05-24" ;
+        dcterms:title "Risk Factors of Porcine Cysticercosis in the Eastern Cape Province, South Africa" ;
+        bibo:doi "10.1371/journal.pone.0037718" ;
+        bibo:issue "5" ;
+        bibo:journal <https://w3id.org/pyeuropepmc/journal/25810f8c-d6b7-4609-b4a3-3023662c8371> ;
+        bibo:pages "13-23" ;
+        bibo:volume "7" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+}
+
+{
+    <https://w3id.org/pyeuropepmc/journal/25810f8c-d6b7-4609-b4a3-3023662c8371> a bibo:Journal ;
+        dcterms:title "PLoS ONE" ;
+        prov:generatedAtTime "2024-01-01T00:00:00Z" ;
+        prov:wasGeneratedBy "kg_demo" .
+
+    <https://doi.org/10.1371/journal.pone.0037718> owl:sameAs <https://doi.org/10.1371/journal.pone.0037718>,
+            <https://europepmc.org/article/PMC/3359999/>,
+            <https://www.ncbi.nlm.nih.gov/pmc/articles/3359999/> .
+}

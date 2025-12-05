@@ -1,0 +1,54 @@
+{
+  "source": "crossref",
+  "title": "Materials interface engineering for solution-processed photovoltaics",
+  "authors": [
+    {
+      "name": "Michael Graetzel",
+      "given": "Michael",
+      "family": "Graetzel",
+      "affiliation": [],
+      "sequence": "first"
+    },
+    {
+      "name": "René A. J. Janssen",
+      "given": "René A. J.",
+      "family": "Janssen",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "David B. Mitzi",
+      "given": "David B.",
+      "family": "Mitzi",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Edward H. Sargent",
+      "given": "Edward H.",
+      "family": "Sargent",
+      "affiliation": [],
+      "sequence": "additional"
+    }
+  ],
+  "abstract": null,
+  "journal": "Nature",
+  "publication_date": "2012-08-15",
+  "citation_count": 1043,
+  "references_count": 96,
+  "license": {
+    "url": "https://www.springer.com/tdm",
+    "start": "2012-08-15T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": null,
+  "type": "journal-article",
+  "issn": [
+    "0028-0836",
+    "1476-4687"
+  ],
+  "volume": "488",
+  "issue": "7411",
+  "page": "304-312",
+  "publisher": "Springer Science and Business Media LLC"
+}

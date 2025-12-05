@@ -38,6 +38,17 @@
 - 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
 - 🔗 **External API Enrichment** - Enhance metadata with CrossRef, Unpaywall, Semantic Scholar, and OpenAlex
 
+## 📁 Project Structure
+
+The repository is organized as follows:
+- `src/pyeuropepmc/` - Main package source code
+- `tests/` - Unit and integration tests
+- `docs/` - Documentation and guides
+- `examples/` - Example scripts and usage demonstrations
+- `benchmarks/` - Performance benchmarking scripts and results
+- `data/` - Downloads, outputs, and generated data files
+- `conf/` - Configuration files for RDF mapping and other settings
+
 ## 🚀 Quick Start
 
 ### Installation
@@ -242,6 +253,114 @@ with PaperEnricher(config) as enricher:
 
 See [examples/09-enrichment](examples/09-enrichment/) for more details.
 
+### Knowledge Graph Structure Options 🕸️
+
+PyEuropePMC supports flexible knowledge graph structures for different use cases:
+
+```python
+from pyeuropepmc.mappers import RDFMapper
+
+mapper = RDFMapper()
+
+# Metadata-only KG (for citation networks and bibliometrics)
+metadata_graphs = mapper.save_metadata_rdf(
+    entities_data,
+    output_dir="rdf_output"
+)  # Papers + authors + institutions
+
+# Content-only KG (for text analysis and document processing)
+content_graphs = mapper.save_content_rdf(
+    entities_data,
+    output_dir="rdf_output"
+)  # Papers + sections + references + tables
+
+# Complete KG (for comprehensive analysis)
+complete_graphs = mapper.save_complete_rdf(
+    entities_data,
+    output_dir="rdf_output"
+)  # All entities and relationships
+
+# Use configured default from conf/rdf_map.yml
+graphs = mapper.save_rdf(entities_data, output_dir="rdf_output")
+```
+
+**Use Cases:**
+- **📊 Citation Networks**: Use metadata-only KGs for bibliometric analysis
+- **📝 Text Mining**: Use content-only KGs for NLP and information extraction
+- **🔬 Full Analysis**: Use complete KGs for comprehensive research workflows
+
+See [examples/kg_structure_demo.py](examples/kg_structure_demo.py) for a complete working example.
+
+### Unified Processing Pipeline 🏗️
+
+The new unified pipeline dramatically simplifies the complex workflow of XML parsing → enrichment → RDF conversion:
+
+```python
+from pyeuropepmc import PaperProcessingPipeline, PipelineConfig
+
+# Simple configuration
+config = PipelineConfig(
+    enable_enrichment=True,      # Enable metadata enrichment
+    enable_crossref=True,        # CrossRef API
+    enable_semantic_scholar=True, # Semantic Scholar API
+    enable_openalex=True,        # OpenAlex API
+    enable_ror=True,             # ROR institution data
+    crossref_email="your@email.com",  # Required for higher CrossRef rate limits
+    output_format="turtle",      # RDF output format
+    output_dir="output"          # Where to save RDF files
+)
+
+# Create unified pipeline
+pipeline = PaperProcessingPipeline(config)
+
+# Process single paper - replaces 8+ separate steps!
+result = pipeline.process_paper(
+    xml_content=xml_string,
+    doi="10.1038/nature11476",
+    save_rdf=True
+)
+
+print(f"Generated {result['triple_count']} RDF triples")
+print(f"Output saved to: {result['output_file']}")
+
+# Process multiple papers in batch
+xml_contents = {
+    "10.1038/nature11476": xml_content_1,
+    "10.1038/nature11477": xml_content_2,
+}
+
+batch_results = pipeline.process_papers(xml_contents)
+for doi, result in batch_results.items():
+    print(f"{doi}: {result['triple_count']} triples")
+```
+
+**What it does automatically:**
+- ✅ Parses XML and extracts entities (paper, authors, sections, tables, figures, references)
+- ✅ Enriches metadata from external APIs (citations, fields of study, etc.)
+- ✅ Converts everything to RDF with proper relationships
+- ✅ Saves structured output files
+- ✅ Handles errors gracefully
+
+**Before vs After:**
+```python
+# OLD: Complex multi-step workflow (8+ steps)
+parser = FullTextXMLParser()
+parser.parse(xml_content)
+paper, authors, sections, tables, figures, references = build_paper_entities(parser)
+enricher = PaperEnricher(config)
+enrichment_data = enricher.enrich_paper(doi)
+rdf_mapper = RDFMapper()
+paper.to_rdf(graph, related_entities=...)
+rdf_mapper.serialize_graph(graph, format='turtle')
+
+# NEW: Single pipeline call (3 steps)
+config = PipelineConfig(...)
+pipeline = PaperProcessingPipeline(config)
+result = pipeline.process_paper(xml_content, doi=doi)
+```
+
+See [examples/pipeline_demo.py](examples/pipeline_demo.py) for a complete working example.
+
 ## 📚 Documentation
 
 **📖 [Read the Full Documentation](https://jonasheinickebio.github.io/pyEuropePMC/)** ← Start Here!
@@ -252,6 +371,7 @@ Quick Links:
 - �📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
 - 💡 [Examples](https://jonasheinickebio.github.io/pyEuropePMC/examples/) - Code examples and use cases
 - ✨ [Features](https://jonasheinickebio.github.io/pyEuropePMC/features/) - Explore all features
+- 📊 [XML Coverage Analysis](docs/xml_element_coverage_analysis.md) - Parser coverage and benchmark results
 
 > **Note:** Enable GitHub Pages first! See [Setup Guide](.github/SETUP_GITHUB_PAGES.md) for instructions.
 

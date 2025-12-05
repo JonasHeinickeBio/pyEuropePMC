@@ -4,7 +4,7 @@ repos:
     hooks:
       - id: ruff
         args: [--fix, src/]  # auto-fix issues where possible, only check src/
-        language_version: python3.10
+        language_version: python3.12
       - id: ruff-format
         args: [src/]  # only format src/
 
@@ -12,7 +12,7 @@ repos:
     rev: v1.16.0
     hooks:
       - id: mypy
-        language_version: python3.10
+        language_version: python3.12
         exclude: ^(tests/|examples/)
 
   - repo: https://github.com/PyCQA/bandit
@@ -22,7 +22,7 @@ repos:
         name: bandit (security linter)
         types: [python]
         pass_filenames: false
-        language_version: python3.10
+        language_version: python3.12
         args: [-r, ./src, --exclude, "tests,.venv,.git,.mypy_cache,.pytest_cache"]
 
   - repo: https://github.com/pre-commit/pre-commit-hooks

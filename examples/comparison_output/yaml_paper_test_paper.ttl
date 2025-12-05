@@ -1,0 +1,35 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://example.org/data/author/john-doe> a foaf:Person ;
+    rdfs:label "John Doe" ;
+    ex:affiliation "Test University" ;
+    ex:completenessScore 9.5e-01 ;
+    ex:validationStatus "passed" ;
+    prov:generatedAtTime "2025-11-24T14:53:11.451940Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.1038/test.123> ;
+    foaf:name "John Doe" .
+
+<https://doi.org/10.1038/test.123> a bibo:AcademicArticle ;
+    rdfs:label "Test Paper for Mapper Comparison" ;
+    ex:citedByCount 42 ;
+    ex:completenessScore 9.5e-01 ;
+    ex:isOpenAccess true ;
+    ex:validationStatus "passed" ;
+    dcterms:creator <http://example.org/data/author/john-doe> ;
+    dcterms:identifier "PMC3258128" ;
+    dcterms:title "Test Paper for Mapper Comparison" ;
+    bibo:doi "10.1038/test.123" ;
+    bibo:issn "1234-5678" ;
+    bibo:journal "Test Journal" ;
+    owl:sameAs <https://doi.org/10.1038/test.123>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3258128/> ;
+    prov:generatedAtTime "2025-11-24T14:53:11.451940Z" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .

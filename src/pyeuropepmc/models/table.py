@@ -46,9 +46,15 @@ class TableRowEntity(BaseEntity):
         if not self.cells:
             raise ValueError("TableRowEntity must have cells")
 
+        super().validate()
+
     def normalize(self) -> None:
         """Normalize table row data (trim whitespace)."""
-        self.cells = [c.strip() for c in self.cells if c]
+        from pyeuropepmc.models.utils import normalize_string_field
+
+        self.cells = [normalize_string_field(c) for c in self.cells if c]
+
+        super().normalize()
 
 
 @dataclass
@@ -95,6 +101,8 @@ class TableEntity(BaseEntity):
 
     def validate(self) -> None:
         """Validate table data."""
+        from pyeuropepmc.models.utils import validate_positive_integer
+
         # Tables can exist with minimal information
         # But if rows exist, they should be consistent
         if self.rows:
@@ -104,14 +112,28 @@ class TableEntity(BaseEntity):
             if self.headers and len(self.headers) != row_lengths[0]:
                 raise ValueError("Number of headers must match number of columns in rows")
 
+            # Validate row indices if they exist
+            for row in self.rows:
+                if hasattr(row, "begin_index") and row.begin_index is not None:
+                    row.begin_index = validate_positive_integer(row.begin_index)
+                if hasattr(row, "end_index") and row.end_index is not None:
+                    row.end_index = validate_positive_integer(row.end_index)
+
+        super().validate()
+
     def normalize(self) -> None:
         """Normalize table data (trim whitespace)."""
-        if self.caption:
-            self.caption = self.caption.strip()
-        if self.table_label:
-            self.table_label = self.table_label.strip()
+        from pyeuropepmc.models.utils import normalize_string_field
+
+        self.caption = normalize_string_field(self.caption)
+        self.table_label = normalize_string_field(self.table_label)
+
         # Normalize headers
-        self.headers = [h.strip() for h in self.headers if h]
+        if self.headers:
+            self.headers = [normalize_string_field(h) for h in self.headers if h]
+
         # Normalize rows
         for row in self.rows:
             row.normalize()
+
+        super().normalize()

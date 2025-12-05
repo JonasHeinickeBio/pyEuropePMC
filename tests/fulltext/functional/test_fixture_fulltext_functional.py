@@ -1,5 +1,5 @@
 import pytest
-from pyeuropepmc.processing.parser import EuropePMCParser, ParsingError
+from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
 import os
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "../../fixtures/fulltext_downloads")

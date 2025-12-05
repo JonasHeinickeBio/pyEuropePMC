@@ -1,0 +1,68 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "c0a0891f4bd1490919a40d02f80fd2e4fea4d5e4",
+  "corpus_id": 205230661,
+  "title": "Materials interface engineering for solution-processed photovoltaics",
+  "abstract": null,
+  "venue": "Nature",
+  "year": 2012,
+  "publication_date": "2012-08-15",
+  "citation_count": 1039,
+  "influential_citation_count": 5,
+  "reference_count": 98,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "93007721",
+      "url": "https://www.semanticscholar.org/author/93007721"
+    },
+    {
+      "name": null,
+      "author_id": "144578395",
+      "url": "https://www.semanticscholar.org/author/144578395"
+    },
+    {
+      "name": null,
+      "author_id": "2987977",
+      "url": "https://www.semanticscholar.org/author/2987977"
+    },
+    {
+      "name": null,
+      "author_id": "1799992",
+      "url": "https://www.semanticscholar.org/author/1799992"
+    }
+  ],
+  "fields_of_study": [
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Materials Science",
+      "source": "s2-fos-model"
+    },
+    {
+      "category": "Engineering",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "Nature",
+    "volume": "488",
+    "pages": "304-312"
+  },
+  "external_ids": {
+    "MAG": "1995977395",
+    "DOI": "10.1038/nature11476",
+    "CorpusId": 205230661,
+    "PubMed": "22895335"
+  },
+  "open_access_pdf_url": "",
+  "tldr": "The nanometre and micrometre scale interfaces between the crystalline domains that make up solution-processed solar cells are crucial for efficient charge transport and controlling the collection and minimizing the trapping of charge carriers at these boundaries is crucial to efficiency."
+}

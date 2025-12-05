@@ -1,0 +1,121 @@
+{
+  "ror_id": "https://ror.org/04mkzax54",
+  "status": "active",
+  "types": [
+    "education",
+    "funder"
+  ],
+  "established": 1958,
+  "names": [
+    {
+      "lang": null,
+      "types": [
+        "acronym"
+      ],
+      "value": "JU"
+    },
+    {
+      "lang": "en",
+      "types": [
+        "ror_display",
+        "label"
+      ],
+      "value": "Jiangnan University"
+    },
+    {
+      "lang": null,
+      "types": [
+        "alias"
+      ],
+      "value": "Jiāngnán Dàxué"
+    },
+    {
+      "lang": "en",
+      "types": [
+        "alias"
+      ],
+      "value": "Southern Yangtze University"
+    },
+    {
+      "lang": "zh",
+      "types": [
+        "label"
+      ],
+      "value": "江南大学"
+    }
+  ],
+  "display_name": "Jiangnan University",
+  "locations": [
+    {
+      "geonames_details": {
+        "continent_code": "AS",
+        "continent_name": "Asia",
+        "country_code": "CN",
+        "country_name": "China",
+        "country_subdivision_code": "JS",
+        "country_subdivision_name": "Jiangsu",
+        "lat": 31.56887,
+        "lng": 120.28857,
+        "name": "Wuxi"
+      },
+      "geonames_id": 1790923
+    }
+  ],
+  "country": "China",
+  "country_code": "CN",
+  "city": "Wuxi",
+  "latitude": 31.56887,
+  "longitude": 120.28857,
+  "links": [
+    {
+      "type": "website",
+      "value": "https://www.jiangnan.edu.cn"
+    },
+    {
+      "type": "wikipedia",
+      "value": "https://en.wikipedia.org/wiki/Jiangnan_University"
+    }
+  ],
+  "website": "https://www.jiangnan.edu.cn",
+  "external_ids": [
+    {
+      "all": [
+        "501100004028"
+      ],
+      "preferred": null,
+      "type": "fundref"
+    },
+    {
+      "all": [
+        "grid.258151.a"
+      ],
+      "preferred": "grid.258151.a",
+      "type": "grid"
+    },
+    {
+      "all": [
+        "0000 0001 0708 1323"
+      ],
+      "preferred": null,
+      "type": "isni"
+    },
+    {
+      "all": [
+        "Q6191676"
+      ],
+      "preferred": null,
+      "type": "wikidata"
+    }
+  ],
+  "grid_id": "grid.258151.a",
+  "relationships": [
+    {
+      "label": "State Key Laboratory of Food Science and Technology",
+      "type": "child",
+      "id": "https://ror.org/04zgj7914"
+    }
+  ],
+  "domains": [
+    "jiangnan.edu.cn"
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "config": {
+    "query": "(OPEN_ACCESS:y) AND \"cancer\" AND (CITED:[5 TO *])",
+    "target_paper_count": 50,
+    "timestamp": 1764798032.334626,
+    "version": "1.0"
+  },
+  "metrics": {
+    "timing": {
+      "search_time_seconds": 3.176621675491333,
+      "download_time_seconds": 0.0010066032409667969,
+      "parse_time_seconds": 5.135363578796387,
+      "rdf_conversion_time_seconds": 47.26728105545044,
+      "total_time_seconds": 55.58271908760071
+    },
+    "data_sizes": {
+      "papers_found": 50,
+      "papers_with_pmcid": 50,
+      "xml_files_downloaded": 50,
+      "xml_total_size_mb": 15.976512908935547,
+      "xml_avg_size_kb": 327.198984375,
+      "unique_xml_tags": 167,
+      "rdf_triples_generated": 5501,
+      "rdf_file_size_mb": 0.2181081771850586
+    },
+    "performance": {
+      "search_rate_papers_per_sec": 15.739992075784858,
+      "download_rate_mb_per_sec": 15871.708195168167,
+      "parse_rate_papers_per_sec": 9.736408967506614,
+      "rdf_conversion_rate_triples_per_sec": 116.38071573329209
+    },
+    "errors": [],
+    "warnings": []
+  }
+}

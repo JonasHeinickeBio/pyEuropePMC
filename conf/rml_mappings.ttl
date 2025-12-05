@@ -1,20 +1,97 @@
 @prefix rr: <http://www.w3.org/ns/r2rml#> .
 @prefix rml: <http://semweb.mmlab.be/ns/rml#> .
 @prefix ql: <http://semweb.mmlab.be/ns/ql#> .
-@prefix bibo: <http://purl.org/ontology/bibo/> .
-@prefix dct: <http://purl.org/dc/terms/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix mesh: <http://id.nlm.nih.gov/mesh/> .
+@prefix meshv: <http://id.nlm.nih.gov/mesh/vocab#> .
+@prefix obo: <http://purl.obolibrary.org/obo/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix frapo: <http://purl.org/cerif/frapo/> .
+@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix ror: <https://ror.org/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix pyeuropepmcdata: <https://w3id.org/pyeuropepmc/data#> .
 @prefix ex: <http://example.org/> .
 @prefix data: <http://example.org/data/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # RML Mappings for PyEuropePMC Data Models
-# These mappings convert JSON representations of entities to RDF
-# TODO: URI templates here use simple patterns, but RDFMapper uses dynamic URIs (DOI-based for papers, etc.)
-# TODO: Keep synchronized with rdf_map.yml - consider auto-generation script
+# Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY
+# Run 'python scripts/sync_rdf_mappings.py' to regenerate
+
+# ===== ScholarlyWorkEntity Mapping =====
+<#ScholarlyWorkEntityMap>
+    rml:logicalSource [
+        rml:source "scholarlywork.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/scholarlywork/{id}" ;
+        rr:class bibo:Document
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:title ;
+        rr:objectMap [ rml:reference "title" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:doi ;
+        rr:objectMap [ rml:reference "doi" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:volume ;
+        rr:objectMap [ rml:reference "volume" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:pages ;
+        rr:objectMap [ rml:reference "pages" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:issued ;
+        rr:objectMap [ rml:reference "publication_year" ; rr:datatype xsd:gYear ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:date ;
+        rr:objectMap [ rml:reference "publication_date" ; rr:datatype xsd:date ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:pmcid ;
+        rr:objectMap [ rml:reference "pmcid" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:pmid ;
+        rr:objectMap [ rml:reference "pmid" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:semanticScholarId ;
+        rr:objectMap [ rml:reference "semantic_scholar_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
 
 # ===== PaperEntity Mapping =====
 <#PaperEntityMap>
@@ -25,69 +102,143 @@
     ] ;
 
     rr:subjectMap [
-        rr:template "http://example.org/data/paper/{pmcid}" ;
+        rr:template "http://example.org/data/paper/{id}" ;
         rr:class bibo:AcademicArticle
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:identifier ;
-        rr:objectMap [ rml:reference "pmcid" ]
+        rr:predicate bibo:issue ;
+        rr:objectMap [ rml:reference "issue" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:issued ;
+        rr:objectMap [ rml:reference "pub_date" ; rr:datatype xsd:date ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:abstract ;
+        rr:objectMap [ rml:reference "abstract" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:citationCount ;
+        rr:objectMap [ rml:reference "citation_count" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:influentialCitationCount ;
+        rr:objectMap [ rml:reference "influential_citation_count" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:accessRights ;
+        rr:objectMap [ rml:reference "is_oa" ; rr:datatype xsd:boolean ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:accessRights ;
+        rr:objectMap [ rml:reference "oa_status" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:uri ;
+        rr:objectMap [ rml:reference "oa_url" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:numPages ;
+        rr:objectMap [ rml:reference "reference_count" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:citationCount ;
+        rr:objectMap [ rml:reference "cited_by_count" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:publisher ;
+        rr:objectMap [ rml:reference "publisher" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:issn ;
+        rr:objectMap [ rml:reference "issn" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:DocumentType ;
+        rr:objectMap [ rml:reference "publication_type" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:pageStart ;
+        rr:objectMap [ rml:reference "first_page" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:pageEnd ;
+        rr:objectMap [ rml:reference "last_page" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:semanticScholarCorpusId ;
+        rr:objectMap [ rml:reference "semantic_scholar_corpus_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate datacite:openalex ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate bibo:doi ;
-        rr:objectMap [ rml:reference "doi" ]
+        rr:objectMap [ rml:reference "doi" ; rr:datatype xsd:anyURI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:title ;
-        rr:objectMap [ rml:reference "title" ]
+        rr:predicate pyeuropepmc:pmcid ;
+        rr:objectMap [ rml:reference "pmcid" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:journal ;
-        rr:objectMap [ rml:reference "journal" ]
+        rr:predicate pyeuropepmc:pmid ;
+        rr:objectMap [ rml:reference "pmid" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:volume ;
-        rr:objectMap [ rml:reference "volume" ]
+        rr:predicate pyeuropepmc:publisherId ;
+        rr:objectMap [ rml:reference "publisher_id" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:issue ;
-        rr:objectMap [ rml:reference "issue" ]
+        rr:predicate dcterms:license ;
+        rr:objectMap [ rml:reference "license_url" ; rr:datatype xsd:anyURI ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:pages ;
-        rr:objectMap [ rml:reference "pages" ]
+        rr:predicate dcterms:rights ;
+        rr:objectMap [ rml:reference "license_text" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:issued ;
-        rr:objectMap [ rml:reference "pub_date" ]
+        rr:predicate dcterms:subject ;
+        rr:objectMap [ rml:reference "keywords[*]" ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:citationCount ;
-        rr:objectMap [ rml:reference "citation_count" ]
+        rr:predicate dcterms:subject ;
+        rr:objectMap [ rml:reference "fields_of_study[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:related ;
+        rr:objectMap [ rml:reference "related_works[*]" ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate rdfs:label ;
         rr:objectMap [ rml:reference "label" ]
-    ] ;
-
-    rr:predicateObjectMap [
-        rr:predicate prov:wasDerivedFrom ;
-        rr:objectMap [ rml:reference "source_uri" ; rr:termType rr:IRI ]
-    ] ;
-
-    # Multi-value field: keywords
-    rr:predicateObjectMap [
-        rr:predicate dct:subject ;
-        rr:objectMap [ rml:reference "keywords[*]" ]
     ] .
 
 # ===== AuthorEntity Mapping =====
@@ -105,32 +256,52 @@
 
     rr:predicateObjectMap [
         rr:predicate foaf:name ;
-        rr:objectMap [ rml:reference "full_name" ]
+        rr:objectMap [ rml:reference "full_name" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate foaf:givenName ;
-        rr:objectMap [ rml:reference "first_name" ]
+        rr:objectMap [ rml:reference "first_name" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate foaf:familyName ;
-        rr:objectMap [ rml:reference "last_name" ]
+        rr:objectMap [ rml:reference "last_name" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate foaf:initials ;
-        rr:objectMap [ rml:reference "initials" ]
+        rr:objectMap [ rml:reference "initials" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:orcid ;
-        rr:objectMap [ rml:reference "orcid" ]
+        rr:predicate datacite:orcid ;
+        rr:objectMap [ rml:reference "orcid" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate ex:affiliation ;
-        rr:objectMap [ rml:reference "affiliation_text" ]
+        rr:predicate pyeuropepmc:openAlexAuthorId ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate datacite:semanticScholarId ;
+        rr:objectMap [ rml:reference "semantic_scholar_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate org:role ;
+        rr:objectMap [ rml:reference "position" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:mbox ;
+        rr:objectMap [ rml:reference "email" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate prov:hadPrimarySource ;
+        rr:objectMap [ rml:reference "sources[*]" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -148,17 +319,17 @@
 
     rr:subjectMap [
         rr:template "http://example.org/data/section/{id}" ;
-        rr:class bibo:DocumentPart, nif:Context
+        rr:class bibo:DocumentPart
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:title ;
-        rr:objectMap [ rml:reference "title" ]
+        rr:predicate dcterms:title ;
+        rr:objectMap [ rml:reference "title" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate nif:isString ;
-        rr:objectMap [ rml:reference "content" ]
+        rr:objectMap [ rml:reference "content" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
@@ -190,13 +361,46 @@
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:description ;
-        rr:objectMap [ rml:reference "caption" ]
+        rr:predicate dcterms:description ;
+        rr:objectMap [ rml:reference "caption" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate rdfs:label ;
-        rr:objectMap [ rml:reference "table_label" ]
+        rr:objectMap [ rml:reference "table_label" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== TableRowEntity Mapping =====
+<#TableRowEntityMap>
+    rml:logicalSource [
+        rml:source "table_rows.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/tablerow/{id}" ;
+        rr:class bibo:Row
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "headers" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:member ;
+        rr:objectMap [ rml:reference "cells[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
     ] .
 
 # ===== ReferenceEntity Mapping =====
@@ -209,42 +413,266 @@
 
     rr:subjectMap [
         rr:template "http://example.org/data/reference/{id}" ;
-        rr:class bibo:Document
+        rr:class bibo:Article
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:title ;
-        rr:objectMap [ rml:reference "title" ]
+        rr:predicate bibo:authorList ;
+        rr:objectMap [ rml:reference "authors" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:isPartOf ;
-        rr:objectMap [ rml:reference "source" ]
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== InstitutionEntity Mapping =====
+<#InstitutionEntityMap>
+    rml:logicalSource [
+        rml:source "institutions.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/institution/{id}" ;
+        rr:class org:Organization
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:issued ;
-        rr:objectMap [ rml:reference "year" ]
+        rr:predicate skos:prefLabel ;
+        rr:objectMap [ rml:reference "display_name" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:volume ;
-        rr:objectMap [ rml:reference "volume" ]
+        rr:predicate pyeuropepmc:rorId ;
+        rr:objectMap [ rml:reference "ror_id" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:pages ;
-        rr:objectMap [ rml:reference "pages" ]
+        rr:predicate pyeuropepmc:openAlexInstitutionId ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate bibo:doi ;
-        rr:objectMap [ rml:reference "doi" ]
+        rr:predicate geo:country ;
+        rr:objectMap [ rml:reference "country" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
-        rr:predicate dct:creator ;
-        rr:objectMap [ rml:reference "authors[*]" ]
+        rr:predicate geo:countryCode ;
+        rr:objectMap [ rml:reference "country_code" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate geo:city ;
+        rr:objectMap [ rml:reference "city" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate geo:lat ;
+        rr:objectMap [ rml:reference "latitude" ; rr:datatype xsd:decimal ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate geo:long ;
+        rr:objectMap [ rml:reference "longitude" ; rr:datatype xsd:decimal ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate org:classification ;
+        rr:objectMap [ rml:reference "institution_type" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:gridId ;
+        rr:objectMap [ rml:reference "grid_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:isni ;
+        rr:objectMap [ rml:reference "isni" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate owl:sameAs ;
+        rr:objectMap [ rml:reference "wikidata_id" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:fundrefId ;
+        rr:objectMap [ rml:reference "fundref_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:homepage ;
+        rr:objectMap [ rml:reference "website" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:created ;
+        rr:objectMap [ rml:reference "established" ; rr:datatype xsd:gYear ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:subject ;
+        rr:objectMap [ rml:reference "domains[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== JournalEntity Mapping =====
+<#JournalEntityMap>
+    rml:logicalSource [
+        rml:source "journal.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/journal/{id}" ;
+        rr:class bibo:Journal
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:title ;
+        rr:objectMap [ rml:reference "title" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:shortTitle ;
+        rr:objectMap [ rml:reference "medline_abbreviation" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:shortTitle ;
+        rr:objectMap [ rml:reference "iso_abbreviation" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:nlmid ;
+        rr:objectMap [ rml:reference "nlmid" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:issn ;
+        rr:objectMap [ rml:reference "issn" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:eissn ;
+        rr:objectMap [ rml:reference "essn" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:publisher ;
+        rr:objectMap [ rml:reference "publisher" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:publisherLocation ;
+        rr:objectMap [ rml:reference "country" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:language ;
+        rr:objectMap [ rml:reference "language" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:issue ;
+        rr:objectMap [ rml:reference "journal_issue_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate datacite:openAlexId ;
+        rr:objectMap [ rml:reference "openalex_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate owl:sameAs ;
+        rr:objectMap [ rml:reference "wikidata_id" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:scopusSourceId ;
+        rr:objectMap [ rml:reference "scopus_source_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:impactFactor ;
+        rr:objectMap [ rml:reference "impact_factor" ; rr:datatype xsd:decimal ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:sjr ;
+        rr:objectMap [ rml:reference "sjr" ; rr:datatype xsd:decimal ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:hIndex ;
+        rr:objectMap [ rml:reference "h_index" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:nlmTA ;
+        rr:objectMap [ rml:reference "nlm_ta" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate bibo:isoAbbrev ;
+        rr:objectMap [ rml:reference "iso_abbrev" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:publisherId ;
+        rr:objectMap [ rml:reference "publisher_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:subject ;
+        rr:objectMap [ rml:reference "subject_areas[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== GrantEntity Mapping =====
+<#GrantEntityMap>
+    rml:logicalSource [
+        rml:source "grant.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/grant/{id}" ;
+        rr:class frapo:Grant
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate datacite:doi ;
+        rr:objectMap [ rml:reference "fundref_doi" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate frapo:hasFundingAgency ;
+        rr:objectMap [ rml:reference "funding_source" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate datacite:identifier ;
+        rr:objectMap [ rml:reference "award_id" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate frapo:hasRecipient ;
+        rr:objectMap [ rml:reference "recipient" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
