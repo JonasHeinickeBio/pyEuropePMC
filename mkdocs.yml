@@ -1,0 +1,198 @@
+# MkDocs Configuration for PyEuropePMC Documentation
+site_name: PyEuropePMC Documentation
+site_description: Robust Python toolkit for scientific literature analysis from Europe PMC
+site_author: Jonas Heinicke (HZI)
+site_url: https://jonasheinickebio.github.io/pyEuropePMC/
+
+# Repository
+repo_name: JonasHeinickeBio/pyEuropePMC
+repo_url: https://github.com/JonasHeinickeBio/pyEuropePMC
+edit_uri: edit/main/docs/
+
+# Copyright
+copyright: Copyright &copy; 2024 PyEuropePMC Team
+
+# Theme Configuration
+theme:
+  name: material
+  palette:
+    # Palette toggle for light mode
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    # Palette toggle for dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+  features:
+    - navigation.instant      # Instant loading
+    - navigation.tracking     # URL tracking
+    - navigation.tabs         # Top-level tabs
+    - navigation.tabs.sticky  # Sticky tabs
+    - navigation.sections     # Section navigation
+    - navigation.expand       # Expand sections by default
+    - navigation.path         # Breadcrumb navigation
+    - navigation.indexes      # Section index pages
+    - navigation.top          # Back to top button
+    - search.suggest          # Search suggestions
+    - search.highlight        # Highlight search results
+    - search.share            # Share search results
+    - toc.follow              # TOC follows scrolling
+    - toc.integrate           # Integrate TOC with navigation
+    - content.code.copy       # Copy code blocks
+    - content.code.annotate   # Annotate code blocks
+  icon:
+    repo: fontawesome/brands/github
+    logo: material/book-open-page-variant
+
+# Plugins
+plugins:
+  - search:
+      lang: en
+      separator: '[\s\-,:!=\[\]()"`/]+|\.(?!\d)|&[lg]t;|(?!\b)(?=[A-Z][a-z])'
+
+# Extensions
+markdown_extensions:
+  # Python Markdown
+  - abbr
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - meta
+  - tables
+  - toc:
+      permalink: true
+      toc_depth: 3
+
+  # Python Markdown Extensions
+  - pymdownx.arithmatex:
+      generic: true
+  - pymdownx.betterem:
+      smart_enable: all
+  - pymdownx.caret
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.keys
+  - pymdownx.mark
+  - pymdownx.smartsymbols
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+  - pymdownx.tilde
+
+# Extra CSS and JavaScript
+extra_css:
+  - stylesheets/extra.css
+
+# Extra configuration
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/JonasHeinickeBio/pyEuropePMC
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/pyeuropepmc/
+  version:
+    provider: mike
+  analytics:
+    feedback:
+      title: Was this page helpful?
+      ratings:
+        - icon: material/emoticon-happy-outline
+          name: This page was helpful
+          data: 1
+          note: >-
+            Thanks for your feedback!
+        - icon: material/emoticon-sad-outline
+          name: This page could be improved
+          data: 0
+          note: >-
+            Thanks for your feedback! Help us improve by
+            <a href="https://github.com/JonasHeinickeBio/pyEuropePMC/issues/new" target="_blank" rel="noopener">opening an issue</a>.
+
+# Navigation Structure
+nav:
+  - Home: README.md
+  - Getting Started:
+    - Overview: getting-started/README.md
+    - Installation: getting-started/installation.md
+    - Quick Start: getting-started/quickstart.md
+    - FAQ: getting-started/faq.md
+  - Features:
+    - Overview: features/README.md
+    - Search:
+      - Search Overview: features/search/README.md
+    - Full-Text:
+      - Full-Text Overview: features/fulltext/README.md
+    - Parsing:
+      - Parsing Overview: features/parsing/README.md
+      - XML Parser Guide: features/parsing/xml-parser-guide.md
+      - Full-Text Parser: features/parsing/fulltext_parser.md
+      - Schema Coverage: features/parsing/schema-coverage-improvements.md
+    - Query Builder: features/query-builder-load-save-translate.md
+    - Systematic Reviews: features/systematic-review-tracking.md
+    - Caching:
+      - Caching Overview: features/caching/README.md
+  - API Reference:
+    - Overview: api/README.md
+    - SearchClient: api/search-client.md
+    - FullTextClient: api/fulltext-client.md
+    - ArticleClient: api/article-client.md
+    - XML Parser: api/xml-parser.md
+    - Parser: api/parser.md
+    - Query Builder: api/query-builder.md
+    - FTP Downloader: api/ftp-downloader.md
+    - Field Metadata: api/field-metadata-structure.md
+    - Field Validation: api/field-validation.md
+    - Analytics & Visualization: api/analytics-visualization.md
+  - Examples:
+    - Overview: examples/README.md
+  - Advanced:
+    - Overview: advanced/README.md
+    - Caching: advanced/caching.md
+    - Search Logging: advanced/search-logging.md
+    - Progress Callbacks: advanced/progress-callbacks.md
+    - Schema Coverage: advanced/schema-coverage-validation.md
+    - Standards Compliant Logging: advanced/standards_compliant_search_logging.md
+    - All Clients Caching: advanced/all-clients-caching-implementation.md
+    - Search Client Caching: advanced/search-client-caching-integration.md
+  - Development:
+    - Overview: development/README.md
+    - Python Version Strategy: development/python-version-strategy.md
+    - Query Builder Refactoring: development/query-builder-refactoring.md
+    - Testing Improvements: development/testing-improvements.md
+    - Release Analysis: development/release-analysis.md
+    - CodeScene Setup: development/codescene-setup.md
+  - Additional Resources:
+    - Models: models.md
+    - Data Models Quickstart: data_models_quickstart.md
+    - Data Models Summary: data_models_implementation_summary.md
+    - Cache Schema Migration: cache_schema_migration.md
+    - Advanced Cache Guide: advanced_cache_implementation_guide.md
+    - RML Mappings Guide: rml_mappings_guide.md
+    - Enrichment: enrichment.md
+    - Feature Suggester: feature-suggester.md
+    - Site Map: sitemap.md

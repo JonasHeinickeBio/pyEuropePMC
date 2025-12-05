@@ -1,0 +1,82 @@
+/* Custom styles for PyEuropePMC documentation */
+
+/* Improve code block readability */
+.highlight {
+  border-radius: 4px;
+}
+
+/* Better table styling */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1em 0;
+}
+
+table th {
+  background-color: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  font-weight: 600;
+  padding: 0.8em;
+}
+
+table td {
+  padding: 0.8em;
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+/* Improve admonition styling */
+.admonition {
+  margin: 1.5em 0;
+}
+
+/* Better link styling in navigation */
+.md-nav__link--active {
+  font-weight: 600;
+}
+
+/* Improve spacing for lists */
+.md-typeset ul, .md-typeset ol {
+  margin: 1em 0;
+}
+
+/* Code in headings */
+.md-typeset h1 code,
+.md-typeset h2 code,
+.md-typeset h3 code {
+  background-color: transparent;
+  box-shadow: none;
+  font-weight: 600;
+}
+
+/* Better mobile navigation */
+@media screen and (max-width: 76.1875em) {
+  .md-nav--primary .md-nav__title {
+    background-color: var(--md-primary-fg-color);
+    color: var(--md-primary-bg-color);
+  }
+}
+
+/* Improve badge styling */
+img[src*="shields.io"] {
+  display: inline-block;
+  margin: 0 0.2em;
+}
+
+/* Center aligned content */
+.center {
+  text-align: center;
+}
+
+/* Highlight boxes for quick reference */
+.quick-reference {
+  background-color: var(--md-code-bg-color);
+  border-left: 4px solid var(--md-primary-fg-color);
+  padding: 1em;
+  margin: 1em 0;
+  border-radius: 4px;
+}
+
+/* Improve emoji rendering */
+.twemoji {
+  vertical-align: text-bottom;
+}
