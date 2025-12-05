@@ -48,6 +48,10 @@ class URIFactory:
             "InstitutionEntity": self._generate_institution_uri,
             "ReferenceEntity": self._generate_reference_uri,
             "JournalEntity": self._generate_journal_uri,
+            "GrantEntity": self._generate_grant_uri,
+            "SectionEntity": self._generate_section_uri,
+            "TableEntity": self._generate_table_uri,
+            "FigureEntity": self._generate_figure_uri,
         }
 
     @property
@@ -56,7 +60,7 @@ class URIFactory:
         config = load_rdf_config()
         return str(config.get("base_uri", "http://example.org/data/"))
 
-    def generate_uri(self, entity: Any) -> URIRef:
+    def generate_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """
         Generate a URI for the given entity using the appropriate scheme.
 
@@ -64,6 +68,8 @@ class URIFactory:
         ----------
         entity : Any
             Entity instance to generate URI for
+        parent_uri : Optional[URIRef | str]
+            URI of the parent entity (e.g., paper URI for sections/figures/tables)
 
         Returns
         -------
@@ -72,9 +78,9 @@ class URIFactory:
         """
         entity_class = entity.__class__.__name__
         generator = self.generators.get(entity_class, self._generate_fallback_uri)
-        return generator(entity)
+        return generator(entity, parent_uri)
 
-    def _generate_paper_uri(self, entity: Any) -> URIRef:
+    def _generate_paper_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for paper entity."""
         # Prioritize PMID for PubMed resolvable URIs
         if getattr(entity, "pmid", None):
@@ -86,7 +92,7 @@ class URIFactory:
         # Fallback: first author last name + year + short journal
         return self._generate_paper_fallback_uri(entity)
 
-    def _generate_author_uri(self, entity: Any) -> URIRef:
+    def _generate_author_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for author entity."""
         # Prioritize normalized name for consistent URIs
         normalized_name = self._normalize_name(
@@ -102,7 +108,9 @@ class URIFactory:
             return URIRef(entity.openalex_id)
         return self._generate_fallback_uri(entity)
 
-    def _generate_institution_uri(self, entity: Any) -> URIRef:
+    def _generate_institution_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
         """Generate URI for institution entity."""
         if getattr(entity, "ror_id", None):
             return URIRef(entity.ror_id)
@@ -113,15 +121,82 @@ class URIFactory:
             return URIRef(f"{self.base_uri}institution/{compact_id}")
         return self._generate_fallback_uri(entity)
 
-    def _generate_reference_uri(self, entity: Any) -> URIRef:
-        """Generate URI for reference entity."""
-        if getattr(entity, "doi", None):
-            return URIRef(f"https://doi.org/{entity.doi}")
+    def _generate_reference_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
+        """Generate URI for reference entity using resolvable identifiers."""
+        # Prioritize PMID for PubMed resolvable URIs (most specific for biomedical literature)
         if getattr(entity, "pmid", None):
             return URIRef(f"https://pubmed.ncbi.nlm.nih.gov/{entity.pmid}/")
-        return self._generate_fallback_uri(entity)
+        # Then PMCID for PMC-specific articles
+        if getattr(entity, "pmcid", None):
+            pmcid = entity.pmcid
+            # Ensure PMCID has PMC prefix
+            if not pmcid.upper().startswith("PMC"):
+                pmcid = f"PMC{pmcid}"
+            return URIRef(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{pmcid}/")
+        # Finally DOI as universal identifier
+        if getattr(entity, "doi", None):
+            return URIRef(f"https://doi.org/{entity.doi}")
+        # Fallback: use author name + year + sequential number
+        return self._generate_reference_fallback_uri(entity)
 
-    def _generate_journal_uri(self, entity: Any) -> URIRef:
+    def _generate_reference_fallback_uri(self, entity: Any) -> URIRef:
+        """Generate fallback URI for reference using first author + year + hash."""
+        first_author_last_name = self._extract_reference_first_author(entity)
+        year = getattr(entity, "year", None) or getattr(entity, "publication_year", None)
+
+        # Build the identifier parts
+        parts = []
+        if first_author_last_name:
+            normalized_name = re.sub(r"[^a-zA-Z0-9]", "", first_author_last_name.lower())
+            if normalized_name:
+                parts.append(normalized_name)
+
+        if year:
+            parts.append(str(year))
+
+        if not parts:
+            # Final fallback to UUID if no components available
+            return URIRef(f"{self.base_uri}reference/{uuid.uuid4()}")
+
+        base_identifier = "-".join(parts)
+
+        # Add uniqueness suffix from title hash
+        title_hash = self._get_title_hash(entity)
+        identifier = f"{base_identifier}-{title_hash}" if title_hash else base_identifier
+
+        return URIRef(f"{self.base_uri}reference/{identifier}")
+
+    def _extract_reference_first_author(self, entity: Any) -> str | None:
+        """Extract first author last name from reference entity."""
+        authors = getattr(entity, "authors", None)
+        if not authors:
+            return None
+
+        if isinstance(authors, str):
+            # Authors is comma-separated string like "Smith J, Jones A"
+            author_parts = authors.split(",")[0].strip().split()
+            return author_parts[0] if author_parts else None
+
+        if isinstance(authors, list) and authors:
+            first_author = authors[0]
+            if isinstance(first_author, dict):
+                return first_author.get("last_name")
+            if isinstance(first_author, str):
+                return first_author.split()[-1] if first_author else None
+
+        return None
+
+    def _get_title_hash(self, entity: Any) -> str:
+        """Get hash from title for uniqueness, or UUID as fallback."""
+        if hasattr(entity, "title") and entity.title:
+            import hashlib
+
+            return hashlib.md5(entity.title.encode()).hexdigest()[:8]  # nosec B324
+        return uuid.uuid4().hex[:8]
+
+    def _generate_journal_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for journal entity using abbreviation."""
         # Prioritize medline abbreviation, then ISO abbreviation
         abbreviation = getattr(entity, "medline_abbreviation", None) or getattr(
@@ -142,6 +217,27 @@ class URIFactory:
             return URIRef(f"{self.base_uri}journal/{entity.nlmid.lower()}")
         return self._generate_fallback_uri(entity)
 
+    def _generate_grant_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for grant entity using award ID or fundref DOI."""
+        # Prioritize award ID for meaningful URIs
+        if getattr(entity, "award_id", None):
+            # Normalize award ID for URI use
+            normalized_award = self._normalize_grant_id(entity.award_id)
+            if normalized_award:
+                return URIRef(f"{self.base_uri}grant/{normalized_award}")
+        # Fallback to fundref DOI
+        if getattr(entity, "fundref_doi", None):
+            # Extract identifier from DOI
+            doi_id = (
+                entity.fundref_doi.split("/")[-1]
+                if "/" in entity.fundref_doi
+                else entity.fundref_doi
+            )
+            normalized_doi = self._normalize_grant_id(doi_id)
+            if normalized_doi:
+                return URIRef(f"{self.base_uri}grant/{normalized_doi}")
+        return self._generate_fallback_uri(entity)
+
     def _normalize_journal_abbr(self, abbreviation: str) -> str | None:
         """Normalize journal abbreviation for URI use."""
         if not abbreviation:
@@ -154,60 +250,154 @@ class URIFactory:
         normalized = re.sub(r"[^a-z0-9-]", "", normalized)
         return normalized if normalized else None
 
-    def _generate_paper_fallback_uri(self, entity: Any) -> URIRef:  # noqa: C901
+    def _normalize_grant_id(self, grant_id: str) -> str | None:
+        """Normalize grant ID for URI use."""
+        if not grant_id:
+            return None
+        # Remove spaces and convert to lowercase
+        normalized = grant_id.replace(" ", "").strip().lower()
+        # Replace slashes and other separators with hyphens
+        normalized = re.sub(r"[/\\|]", "-", normalized)
+        # Remove any remaining non-alphanumeric characters except hyphens
+        normalized = re.sub(r"[^a-z0-9-]", "", normalized)
+        return normalized if normalized else None
+
+    def _generate_paper_fallback_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
         """Generate fallback URI for paper using first author + year + short journal."""
-        # Extract first author last name
-        first_author_last_name = None
-        authors = getattr(entity, "authors", None)
-        if authors and isinstance(authors, list) and authors:
-            first_author = authors[0]
-            if isinstance(first_author, dict):
-                first_author_last_name = first_author.get("last_name")
-            elif isinstance(first_author, str):
-                # If authors is a string, try to extract last name
-                first_author_last_name = first_author.split()[-1] if first_author else None
-
-        # Extract publication year
+        first_author_last_name = self._extract_first_author_last_name(entity)
         year = getattr(entity, "publication_year", None)
+        short_journal = self._extract_short_journal_name(entity)
 
-        # Extract short journal name
-        short_journal = None
-        journal = getattr(entity, "journal", None)
-        if journal:
-            if isinstance(journal, str):
-                short_journal = journal
-            else:
-                # Try abbreviations first, then title
-                short_journal = (
-                    getattr(journal, "medline_abbreviation", None)
-                    or getattr(journal, "iso_abbreviation", None)
-                    or getattr(journal, "title", None)
-                )
-
-        # Build the identifier
-        parts = []
-        if first_author_last_name:
-            parts.append(first_author_last_name.lower())
-        if year:
-            parts.append(str(year))
-        if short_journal:
-            # Shorten journal name: take first word or up to first comma/space
-            journal_short = short_journal.split()[0].split(",")[0].lower()
-            # Remove non-alphanumeric characters
-            journal_short = re.sub(r"[^a-zA-Z0-9]", "", journal_short)
-            if journal_short:
-                parts.append(journal_short)
-
-        if parts:
-            identifier = "-".join(parts)
+        identifier = self._build_paper_identifier(first_author_last_name, year, short_journal)
+        if identifier:
             return URIRef(f"{self.base_uri}paper/{identifier}")
         else:
             # Final fallback to UUID if no components available
             return self._generate_fallback_uri(entity)
 
-    def _generate_fallback_uri(self, entity: Any) -> URIRef:
+    def _extract_first_author_last_name(self, entity: Any) -> str | None:
+        """Extract the last name of the first author."""
+        authors = getattr(entity, "authors", None)
+        if not authors or not isinstance(authors, list) or not authors:
+            return None
+
+        first_author = authors[0]
+        if isinstance(first_author, dict):
+            return first_author.get("last_name")
+        elif isinstance(first_author, str):
+            return first_author.split()[-1] if first_author else None
+        return None
+
+    def _extract_short_journal_name(self, entity: Any) -> str | None:
+        """Extract a short journal name for URI generation."""
+        journal = getattr(entity, "journal", None)
+        if not journal:
+            return None
+
+        if isinstance(journal, str):
+            return journal
+
+        # Try abbreviations first, then title
+        return (
+            getattr(journal, "medline_abbreviation", None)
+            or getattr(journal, "iso_abbreviation", None)
+            or getattr(journal, "title", None)
+        )
+
+    def _build_paper_identifier(
+        self, author: str | None, year: int | None, journal: str | None
+    ) -> str | None:
+        """Build a paper identifier from components."""
+        import re
+
+        parts = []
+        if author:
+            parts.append(author.lower())
+        if year:
+            parts.append(str(year))
+        if journal:
+            # Shorten journal name: take first word or up to first comma/space
+            journal_short = journal.split()[0].split(",")[0].lower()
+            # Remove non-alphanumeric characters
+            journal_short = re.sub(r"[^a-zA-Z0-9]", "", journal_short)
+            if journal_short:
+                parts.append(journal_short)
+
+        return "-".join(parts) if parts else None
+
+    def _generate_section_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for section entity using title or fallback."""
+        # Use title to create meaningful slug
+        title = getattr(entity, "title", None)
+        if title and parent_uri:
+            # Create a slug from the title
+            slug = self._normalize_name(title)
+            if slug:
+                parent_str = str(parent_uri).rstrip("/")
+                return URIRef(f"{parent_str}/section/{slug}")
+        elif title:
+            # Fallback to base URI if no parent
+            slug = self._normalize_name(title)
+            if slug:
+                return URIRef(f"{self.base_uri}section/{slug}")
+        return self._generate_fallback_uri(entity)
+
+    def _generate_table_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for table entity using label or fallback."""
+        # Use table_label to create meaningful identifier
+        label = getattr(entity, "table_label", None)
+        if label and parent_uri:
+            # Normalize the label for URI use
+            normalized_label = label.lower().replace(" ", "-").replace(".", "")
+            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
+            if normalized_label:
+                parent_str = str(parent_uri).rstrip("/")
+                return URIRef(f"{parent_str}/table/{normalized_label}")
+        elif label:
+            # Fallback to base URI if no parent
+            normalized_label = label.lower().replace(" ", "-").replace(".", "")
+            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}table/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def _generate_figure_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for figure entity using label or fallback."""
+        # Use figure_label to create meaningful identifier
+        label = getattr(entity, "figure_label", None)
+        if label and parent_uri:
+            # Normalize the label for URI use
+            normalized_label = label.lower().replace(" ", "-").replace(".", "")
+            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
+            if normalized_label:
+                parent_str = str(parent_uri).rstrip("/")
+                return URIRef(f"{parent_str}/figure/{normalized_label}")
+        elif label:
+            # Fallback to base URI if no parent
+            normalized_label = label.lower().replace(" ", "-").replace(".", "")
+            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}figure/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def _generate_fallback_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
         """Generate fallback URI using UUID for any entity type."""
         import uuid
+
+        # Handle dict objects that shouldn't be here
+        if isinstance(entity, dict):
+            # For dicts, create a more specific URI based on available keys
+            if "type" in entity:
+                entity_type = str(entity["type"]).lower().replace(" ", "-")
+            elif "id" in entity:
+                entity_type = "resource"
+            else:
+                entity_type = "object"
+            return URIRef(f"{self.base_uri}{entity_type}/{uuid.uuid4()}")
 
         entity_type = entity.__class__.__name__.lower().replace("entity", "")
         return URIRef(f"{self.base_uri}{entity_type}/{uuid.uuid4()}")

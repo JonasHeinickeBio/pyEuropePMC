@@ -211,6 +211,7 @@ class BaseEntity:
         mapper: Any = None,
         related_entities: dict[str, list[Any]] | None = None,
         extraction_info: dict[str, Any] | None = None,
+        parent_uri: URIRef | None = None,
     ) -> URIRef:
         """
         Serialize entity to RDF graph using a mapper.
@@ -227,6 +228,8 @@ class BaseEntity:
             Dictionary of related entities by relationship name
         extraction_info : Optional[dict[str, Any]]
             Additional extraction metadata for provenance
+        parent_uri : Optional[URIRef]
+            URI of the parent entity (for generating contextual URIs)
 
         Returns
         -------

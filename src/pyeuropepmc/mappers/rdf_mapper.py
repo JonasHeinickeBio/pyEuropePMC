@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from rdflib import BNode, Dataset, Graph, Literal, Namespace, URIRef
-from rdflib.namespace import DCTERMS, RDF
+from rdflib.namespace import DCTERMS, RDF, RDFS
 import yaml
 
 from pyeuropepmc.mappers.rdf_utils import (
@@ -269,8 +269,90 @@ class RDFMapper:
             # Map multi-value fields
             self._map_multi_value_fields(g, subject, entity, mapping, context)
 
-            # Map complex fields (dicts, nested structures)
-            self._map_complex_fields(g, subject, entity, mapping, context)
+            # Map relationships
+            self._map_relationships(g, subject, entity, mapping, context)
+
+    def _map_relationships(
+        self,
+        g: Any,
+        subject: URIRef,
+        entity: Any,
+        mapping: dict[str, Any],
+        context: URIRef | None = None,
+    ) -> None:
+        """Map entity relationships to RDF triples."""
+        relationships_mapping = mapping.get("relationships", {})
+
+        for rel_name, rel_config in relationships_mapping.items():
+            predicate_str = rel_config.get("predicate")
+            inverse_predicate = rel_config.get("inverse")
+
+            if predicate_str:
+                related_objs = self._get_related_objects(entity, rel_name, None)
+                if related_objs:
+                    self._add_relationship_triples(
+                        g, subject, related_objs, predicate_str, inverse_predicate, context
+                    )
+
+    def _get_related_objects(
+        self, entity: Any, rel_name: str, related_entities: dict[str, Any] | None = None
+    ) -> list[Any] | None:
+        """Get related objects for a relationship name."""
+        # First check if related objects are provided in related_entities dict
+        related_objs = related_entities.get(rel_name) if related_entities else None
+
+        # If not in related_entities, check if it's an attribute of the entity
+        if related_objs is None and hasattr(entity, rel_name):
+            attr_value = getattr(entity, rel_name)
+            if attr_value is not None:
+                return attr_value if isinstance(attr_value, list) else [attr_value]
+
+        return related_objs
+
+    def _add_relationship_triples(
+        self,
+        g: Any,
+        subject: URIRef,
+        related_objs: list[Any],
+        predicate_str: str,
+        inverse_predicate: str | None,
+        context: URIRef | None,
+    ) -> None:
+        """Add relationship triples for related objects."""
+        predicate = self._resolve_predicate(predicate_str)
+
+        for related_obj in related_objs:
+            # Skip dict objects - they should be flattened, not treated as entities
+            if related_obj is None or isinstance(related_obj, dict):
+                continue
+
+            # Only process actual Entity instances
+            if hasattr(related_obj, "to_rdf"):
+                # Generate URI for related object
+                related_uri = self._generate_entity_uri(related_obj, parent_uri=subject)
+
+                # Add relationship triple
+                if context:
+                    g.graph(context).add((subject, predicate, related_uri))
+                else:
+                    g.add((subject, predicate, related_uri))
+
+                # Add inverse relationship if specified
+                if inverse_predicate:
+                    inv_predicate = self._resolve_predicate(inverse_predicate)
+                    if context:
+                        g.graph(context).add((related_uri, inv_predicate, subject))
+                    else:
+                        g.add((related_uri, inv_predicate, subject))
+
+                # Generate detailed RDF for the related entity
+                related_obj.to_rdf(
+                    g,
+                    uri=related_uri,
+                    mapper=self,
+                    extraction_info=None,
+                    parent_uri=subject,
+                )
 
     def _get_entity_mappings(self, entity: Any) -> list[dict[str, Any]]:
         """Get mappings for entity class and parent classes."""
@@ -389,74 +471,63 @@ class RDFMapper:
                         )
                     )
 
-            # Handle funders list (list of dicts with fundref_doi, award_id, etc.)
-            elif field_name == "funders" and isinstance(value, list):
-                for funder in value:
-                    if isinstance(funder, dict):
-                        # Create blank node for grant/funding
-                        grant_node = BNode()
+            # Handle journal_ids dict (e.g., {'nlm-ta': 'Nucleic Acids Res',
+            # 'publisher-id': 'nar'})
+            elif field_name == "journal_ids" and isinstance(value, dict):
+                for id_type, id_value in value.items():
+                    if id_value:
+                        # Create a blank node for each journal identifier
+                        id_node = BNode()
                         g.add(
-                            (subject, predicate, grant_node, context)
+                            (subject, predicate, id_node, context)
                             if context
-                            else (subject, predicate, grant_node)
+                            else (subject, predicate, id_node)
                         )
                         g.add(
-                            (grant_node, RDF.type, self._resolve_predicate("frapo:Grant"), context)
+                            (id_node, DCTERMS.type, Literal(id_type), context)
                             if context
-                            else (grant_node, RDF.type, self._resolve_predicate("frapo:Grant"))
+                            else (id_node, DCTERMS.type, Literal(id_type))
+                        )
+                        g.add(
+                            (id_node, RDF.value, Literal(id_value), context)
+                            if context
+                            else (id_node, RDF.value, Literal(id_value))
                         )
 
-                        # Add funder DOI/FundRef
-                        fundref_doi = funder.get("fundref_doi")
-                        if fundref_doi:
+            # Handle topics list (OpenAlex topics with 'id', 'display_name', 'score')
+            elif field_name == "topics" and isinstance(value, list):
+                for topic in value:
+                    if isinstance(topic, dict) and topic.get("id"):
+                        # Use OpenAlex topic URI directly
+                        topic_uri = URIRef(topic["id"])
+                        g.add(
+                            (subject, predicate, topic_uri, context)
+                            if context
+                            else (subject, predicate, topic_uri)
+                        )
+
+                        # Add topic label and score as additional properties
+                        if topic.get("display_name"):
                             g.add(
-                                (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:doi"),
-                                    URIRef(fundref_doi),
-                                    context,
-                                )
+                                (topic_uri, RDFS.label, Literal(topic["display_name"]), context)
                                 if context
-                                else (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:doi"),
-                                    URIRef(fundref_doi),
-                                )
+                                else (topic_uri, RDFS.label, Literal(topic["display_name"]))
                             )
 
-                        # Add award ID
-                        award_id = funder.get("award_id")
-                        if award_id:
+                        if topic.get("score"):
+                            score_pred = self._resolve_predicate("pyeuropepmc:topicScore")
                             g.add(
                                 (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:identifier"),
-                                    Literal(award_id),
+                                    subject,
+                                    score_pred,
+                                    Literal(topic["score"], datatype=XSD.decimal),
                                     context,
                                 )
                                 if context
                                 else (
-                                    grant_node,
-                                    self._resolve_predicate("datacite:identifier"),
-                                    Literal(award_id),
-                                )
-                            )
-
-                        # Add recipient
-                        recipient = funder.get("recipient_full") or funder.get("recipient_name")
-                        if recipient:
-                            g.add(
-                                (
-                                    grant_node,
-                                    self._resolve_predicate("foaf:fundedBy"),
-                                    Literal(recipient),
-                                    context,
-                                )
-                                if context
-                                else (
-                                    grant_node,
-                                    self._resolve_predicate("foaf:fundedBy"),
-                                    Literal(recipient),
+                                    subject,
+                                    score_pred,
+                                    Literal(topic["score"], datatype=XSD.decimal),
                                 )
                             )
 
@@ -521,9 +592,16 @@ class RDFMapper:
                     predicate = self._resolve_predicate(predicate_str)
 
                     for related_obj in related_objs:
-                        if related_obj is not None:
+                        # Skip dict objects - they should be flattened, not treated as entities
+                        if related_obj is None or isinstance(related_obj, dict):
+                            continue
+
+                        # Only process actual Entity instances
+                        if hasattr(related_obj, "to_rdf"):
                             # Generate URI for related object
-                            related_uri = self._generate_entity_uri(related_obj)
+                            related_uri = self._generate_entity_uri(
+                                related_obj, parent_uri=subject
+                            )
 
                             # Add relationship triple
                             if context:
@@ -540,13 +618,13 @@ class RDFMapper:
                                     g.add((related_uri, inv_predicate, subject))
 
                             # Generate detailed RDF for the related entity
-                            if hasattr(related_obj, "to_rdf"):
-                                related_obj.to_rdf(
-                                    g,
-                                    uri=related_uri,
-                                    mapper=self,
-                                    extraction_info=extraction_info,
-                                )
+                            related_obj.to_rdf(
+                                g,
+                                uri=related_uri,
+                                mapper=self,
+                                extraction_info=extraction_info,
+                                parent_uri=subject,
+                            )
 
     def _normalize_name(self, name: str) -> str | None:
         """
@@ -564,7 +642,7 @@ class RDFMapper:
         """
         return normalize_name(name)
 
-    def _generate_entity_uri(self, entity: Any) -> URIRef:
+    def _generate_entity_uri(self, entity: Any, parent_uri: URIRef | None = None) -> URIRef:
         """
         Generate a URI for an entity using the centralized URI factory.
 
@@ -572,6 +650,8 @@ class RDFMapper:
         ----------
         entity : Any
             Entity instance
+        parent_uri : Optional[URIRef]
+            URI of the parent entity for contextual URI generation
 
         Returns
         -------
@@ -589,7 +669,7 @@ class RDFMapper:
         """
         from pyeuropepmc.mappers.rdf_utils import uri_factory
 
-        return uri_factory.generate_uri(entity)
+        return uri_factory.generate_uri(entity, parent_uri=parent_uri)
 
     def generate_uri(self, entity_type: str, entity: Any) -> URIRef:
         """
@@ -760,8 +840,15 @@ class RDFMapper:
         g : Graph
             RDF graph to bind namespaces to
         """
+        # Bind to the main graph (works for Graph, Dataset, ConjunctiveGraph)
         for prefix, namespace in self.namespaces.items():
             g.bind(prefix, namespace)
+
+        # For Dataset/ConjunctiveGraph, also bind to each named graph
+        if hasattr(g, "graphs"):
+            for graph in g.graphs():
+                for prefix, namespace in self.namespaces.items():
+                    graph.bind(prefix, namespace)
 
     def serialize_graph(
         self, g: Any, format: str = "turtle", destination: str | None = None

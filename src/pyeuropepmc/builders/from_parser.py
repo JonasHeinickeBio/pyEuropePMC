@@ -7,6 +7,7 @@ from typing import TYPE_CHECKING, Any
 from pyeuropepmc.models import (
     AuthorEntity,
     FigureEntity,
+    GrantEntity,
     JournalEntity,
     PaperEntity,
     ReferenceEntity,
@@ -19,6 +20,44 @@ if TYPE_CHECKING:
     from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 __all__ = ["build_paper_entities"]
+
+
+def _create_grant_entities(funding_data: list[dict[str, Any]] | None) -> list[GrantEntity] | None:
+    """Create GrantEntity objects from funding data."""
+    if not funding_data:
+        return None
+
+    grant_entities = []
+    for funder in funding_data:
+        if isinstance(funder, dict):
+            try:
+                # Create AuthorEntity objects for recipients
+                recipient_entities = None
+                if funder.get("recipients"):
+                    recipient_entities = []
+                    for recipient_data in funder["recipients"]:
+                        if isinstance(recipient_data, dict):
+                            recipient_entity = AuthorEntity(
+                                full_name=recipient_data.get("full_name", ""),
+                                first_name=recipient_data.get("given_names"),
+                                last_name=recipient_data.get("surname"),
+                            )
+                            recipient_entities.append(recipient_entity)
+
+                grant_entity = GrantEntity(
+                    fundref_doi=funder.get("fundref_doi"),
+                    funding_source=funder.get("source"),
+                    award_id=funder.get("award_id"),
+                    recipients=recipient_entities,
+                    recipient=funder.get("recipient_full")
+                    or funder.get("recipient_name"),  # Deprecated
+                )
+                grant_entities.append(grant_entity)
+            except Exception as e:
+                print(f"Error creating grant entity: {e}")
+                continue
+
+    return grant_entities if grant_entities else None
 
 
 def _build_author_entity(
@@ -134,7 +173,18 @@ def build_paper_entities(
     if journal_data:
         # Journal data is now a dict with nested structure
         if isinstance(journal_data, dict):
-            journal_entity = JournalEntity(title=journal_data.get("title", ""))
+            # Create comprehensive JournalEntity with all available metadata
+            journal_entity = JournalEntity(
+                title=journal_data.get("title", ""),
+                medline_abbreviation=journal_data.get("nlm_ta"),
+                iso_abbreviation=journal_data.get("iso_abbrev"),
+                nlmid=journal_data.get("nlmid"),
+                issn=journal_data.get("issn_print"),
+                essn=journal_data.get("issn_electronic"),
+                publisher=journal_data.get("publisher_name"),
+                country=journal_data.get("publisher_location"),
+                journal_ids=journal_data.get("journal_ids"),
+            )
             # Extract volume/issue from journal dict (they belong to Paper, not Journal)
             volume = journal_data.get("volume")
             issue = journal_data.get("issue")
@@ -159,6 +209,7 @@ def build_paper_entities(
         pages=meta.get("pages"),
         pub_date=meta.get("pub_date"),
         keywords=meta.get("keywords") or [],
+        grants=_create_grant_entities(meta.get("funding")),
     )
 
     # Merge search API data if provided
@@ -248,6 +299,7 @@ def build_paper_entities(
             pages=ref_data.get("pages"),
             doi=ref_data.get("doi"),
             pmid=ref_data.get("pmid"),
+            pmcid=ref_data.get("pmcid"),
             authors=ref_data.get("authors"),
         )
         references.append(reference)

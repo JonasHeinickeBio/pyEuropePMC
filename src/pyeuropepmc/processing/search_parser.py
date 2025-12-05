@@ -5,7 +5,13 @@ import defusedxml.ElementTree as ET
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, JournalEntity, PaperEntity
+from pyeuropepmc.models import (
+    AuthorEntity,
+    GrantEntity,
+    InstitutionEntity,
+    JournalEntity,
+    PaperEntity,
+)
 
 # Type aliases for better readability
 ParsedResult = dict[str, str | list[str]]
@@ -740,7 +746,12 @@ class EuropePMCParser:
             first_index_date=first_index_date,
             first_publication_date=first_publication_date,
             # Additional metadata
-            funders=funders,
+            grants=[
+                GrantEntity(funding_source=f.get("agency"), award_id=f.get("grantId"))
+                for f in funders
+            ]
+            if funders
+            else None,
             license=license_info,
         )
 

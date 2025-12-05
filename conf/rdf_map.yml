@@ -98,8 +98,8 @@ ScholarlyWorkEntity:
     pages: {predicate: "bibo:pages", datatype: "xsd:string"}
     publication_year: {predicate: "dcterms:issued", datatype: "xsd:gYear"}
     publication_date: {predicate: "dcterms:date", datatype: "xsd:date"}
-    pmcid: {predicate: "datacite:pmcid", datatype: "xsd:string"}
-    pmid: {predicate: "bibo:pmid", datatype: "xsd:string"}
+    pmcid: {predicate: "pyeuropepmc:pmcid", datatype: "xsd:string"}
+    pmid: {predicate: "pyeuropepmc:pmid", datatype: "xsd:string"}
     semantic_scholar_id: {predicate: "pyeuropepmc:semanticScholarId", datatype: "xsd:string"}
   # Multi-value fields (authors handled as relationships in subclasses)
   multi_value_fields: {}
@@ -125,11 +125,14 @@ PaperEntity:
     last_page: {predicate: "bibo:pageEnd", datatype: "xsd:string"}
     semantic_scholar_corpus_id: {predicate: "pyeuropepmc:semanticScholarCorpusId", datatype: "xsd:string"}
     openalex_id: {predicate: "datacite:openalex", datatype: "xsd:string"}
-  # Complex fields (dicts/nested structures) - handled specially in code
-  complex_fields:
-    external_ids: pyeuropepmc:hasIdentifier  # Dict of ID types -> values
-    license: dcterms:license  # Dict with 'url' and 'text' keys
-    funders: foaf:fundedBy  # List of dicts with fundref_doi, award_id, recipient
+    # Direct identifier fields
+    doi: {predicate: "bibo:doi", datatype: "xsd:anyURI"}
+    pmcid: {predicate: "pyeuropepmc:pmcid", datatype: "xsd:string"}
+    pmid: {predicate: "pyeuropepmc:pmid", datatype: "xsd:string"}
+    publisher_id: {predicate: "pyeuropepmc:publisherId", datatype: "xsd:string"}
+    # Flattened license fields (no complex dicts)
+    license_url: {predicate: "dcterms:license", datatype: "xsd:anyURI"}
+    license_text: {predicate: "dcterms:rights", datatype: "xsd:string"}
   # Multi-value fields (lists)
   multi_value_fields:
     keywords: dcterms:subject
@@ -155,6 +158,12 @@ PaperEntity:
     tables:
       predicate: "dcterms:hasPart"
       inverse: dcterms:isPartOf
+    figures:
+      predicate: "dcterms:hasPart"
+      inverse: dcterms:isPartOf
+    grants:
+      predicate: "foaf:fundedBy"
+      inverse: frapo:funds
 
 # AuthorEntity mapping
 AuthorEntity:
@@ -167,7 +176,6 @@ AuthorEntity:
     orcid: {predicate: "datacite:orcid", datatype: "xsd:string"}
     openalex_id: {predicate: "pyeuropepmc:openAlexAuthorId", datatype: "xsd:string"}
     semantic_scholar_id: {predicate: "datacite:semanticScholarId", datatype: "xsd:string"}
-    affiliation_text: {predicate: "org:memberOf", datatype: "xsd:string"}
     position: {predicate: "org:role", datatype: "xsd:string"}
     email: {predicate: "foaf:mbox", datatype: "xsd:string"}
   # Multi-value fields
@@ -179,8 +187,8 @@ AuthorEntity:
       predicate: "foaf:made"
       inverse: dcterms:creator
     institutions:
-      predicate: "org:memberOf"
-      inverse: org:hasMember
+      predicate: "pyeuropepmc:affiliatedWith"
+      inverse: pyeuropepmc:hasAffiliate
 
 # SectionEntity mapping
 SectionEntity:
@@ -197,7 +205,7 @@ SectionEntity:
       inverse: dcterms:hasPart
     subsections:
       predicate: "dcterms:hasPart"
-      inverse: dcterms:isPartOf  # TODO: Implement SubsectionEntity or remove if not needed
+      inverse: dcterms:isPartOf
 
 # TableEntity mapping
 TableEntity:
@@ -230,8 +238,14 @@ TableRowEntity:
 # ReferenceEntity mapping
 ReferenceEntity:
   "rdf:type": ["bibo:Article"]  # More specific than bibo:Document
-  # Inherits all fields from ScholarlyWorkEntity
-  # No additional fields specific to references
+  fields:
+    authors: {predicate: "bibo:authorList", datatype: "xsd:string"}
+    raw_citation: {predicate: "dcterms:description", datatype: "xsd:string"}
+  # Inherits all fields from ScholarlyWorkEntity (including doi, pmid, pmcid, title, etc.)
+  # Identifiers (inherited but documented here for clarity):
+  #   - doi: bibo:doi (xsd:string)
+  #   - pmid: datacite:pmid (xsd:string)
+  #   - pmcid: datacite:pmcid (xsd:string)
   # Relationships
   relationships:
     citing_paper:
@@ -277,7 +291,7 @@ JournalEntity:
     issn: {predicate: "bibo:issn", datatype: "xsd:string"}
     essn: {predicate: "bibo:eissn", datatype: "xsd:string"}
     publisher: {predicate: "dcterms:publisher", datatype: "xsd:string"}
-    country: {predicate: "geo:country", datatype: "xsd:string"}
+    country: {predicate: "pyeuropepmc:publisherLocation", datatype: "xsd:string"}
     language: {predicate: "dcterms:language", datatype: "xsd:string"}
     journal_issue_id: {predicate: "bibo:issue", datatype: "xsd:string"}
     openalex_id: {predicate: "datacite:openAlexId", datatype: "xsd:string"}
@@ -286,6 +300,10 @@ JournalEntity:
     impact_factor: {predicate: "pyeuropepmc:impactFactor", datatype: "xsd:decimal"}
     sjr: {predicate: "pyeuropepmc:sjr", datatype: "xsd:decimal"}
     h_index: {predicate: "pyeuropepmc:hIndex", datatype: "xsd:integer"}
+    # Flattened journal identifier fields
+    nlm_ta: {predicate: "bibo:nlmTA", datatype: "xsd:string"}
+    iso_abbrev: {predicate: "bibo:isoAbbrev", datatype: "xsd:string"}
+    publisher_id: {predicate: "pyeuropepmc:publisherId", datatype: "xsd:string"}
   # Multi-value fields
   multi_value_fields:
     subject_areas: dcterms:subject
@@ -294,3 +312,34 @@ JournalEntity:
     papers:
       predicate: "bibo:article"
       inverse: bibo:journal
+
+# GrantEntity mapping
+GrantEntity:
+  "rdf:type": ["frapo:Grant"]
+  fields:
+    fundref_doi: {predicate: "datacite:doi", datatype: "xsd:anyURI"}
+    funding_source: {predicate: "frapo:hasFundingAgency", datatype: "xsd:string"}
+    award_id: {predicate: "datacite:identifier", datatype: "xsd:string"}
+    recipient: {predicate: "frapo:hasRecipient", datatype: "xsd:string"}  # DEPRECATED: Use recipients relationship instead
+  # Relationships
+  relationships:
+    recipients:
+      predicate: "frapo:hasRecipient"
+      inverse: "frapo:isRecipientOf"
+      comment: "Principal investigators or researchers who receive this grant funding"
+    papers:
+      predicate: "frapo:funds"
+      inverse: "foaf:fundedBy"
+
+# FigureEntity mapping
+FigureEntity:
+  "rdf:type": ["bibo:Image"]
+  fields:
+    caption: {predicate: "dcterms:description", datatype: "xsd:string"}
+    figure_label: {predicate: "rdfs:label", datatype: "xsd:string"}
+    graphic_uri: {predicate: "foaf:depiction", datatype: "xsd:anyURI"}
+  # Relationships
+  relationships:
+    paper:
+      predicate: "dcterms:isPartOf"
+      inverse: dcterms:hasPart

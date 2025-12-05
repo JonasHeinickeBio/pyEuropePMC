@@ -127,7 +127,7 @@ class TestRDFMappingEndToEnd:
 
         # Verify relationships exist
         assert (paper_uri, mapper._resolve_predicate("dcterms:creator"), author_uri) in g
-        assert (author_uri, mapper._resolve_predicate("org:memberOf"), inst_uri) in g
+        assert (author_uri, mapper._resolve_predicate("pyeuropepmc:affiliatedWith"), inst_uri) in g
 
         # Verify all entities are in graph
         assert len(list(g.triples((paper_uri, None, None)))) > 0

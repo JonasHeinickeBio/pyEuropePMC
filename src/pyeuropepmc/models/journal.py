@@ -51,6 +51,15 @@ class JournalEntity(BaseEntity):
         SCImago Journal Rank
     h_index : Optional[int]
         Journal h-index
+    # Flattened journal identifier fields
+    nlm_ta : Optional[str]
+        NLM TA (Title Abbreviation)
+    iso_abbrev : Optional[str]
+        ISO abbreviation
+    publisher_id : Optional[str]
+        Publisher-specific identifier
+    journal_ids : Optional[dict[str, str]]
+        All journal identifiers by type (for backward compatibility and additional IDs)
 
     Examples
     --------
@@ -79,13 +88,25 @@ class JournalEntity(BaseEntity):
     impact_factor: float | None = None
     sjr: float | None = None
     h_index: int | None = None
+    # Flattened journal identifier fields
+    nlm_ta: str | None = None
+    iso_abbrev: str | None = None
+    publisher_id: str | None = None
+    journal_ids: dict[str, str] | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""
         if not self.types:
             self.types = ["bibo:Journal"]
         if not self.label:
-            self.label = self.title or self.medline_abbreviation or self.iso_abbreviation or ""
+            self.label = (
+                self.title
+                or self.medline_abbreviation
+                or self.iso_abbreviation
+                or self.nlm_ta
+                or self.iso_abbrev
+                or ""
+            )
 
     def validate(self) -> None:
         """
@@ -157,6 +178,10 @@ class JournalEntity(BaseEntity):
         self.openalex_id = validate_and_normalize_uri(self.openalex_id)
         self.wikidata_id = validate_and_normalize_uri(self.wikidata_id)
         self.scopus_source_id = normalize_string_field(self.scopus_source_id)
+        # Normalize flattened journal ID fields
+        self.nlm_ta = normalize_string_field(self.nlm_ta)
+        self.iso_abbrev = normalize_string_field(self.iso_abbrev)
+        self.publisher_id = normalize_string_field(self.publisher_id)
 
         super().normalize()
 

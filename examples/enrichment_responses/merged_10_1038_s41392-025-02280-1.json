@@ -2766,7 +2766,7 @@
       "start": "2025-07-31T00:00:00Z",
       "delay_in_days": 0
     },
-    "funders": [
+    "funding": [
       {
         "name": "National Natural Science Foundation of China",
         "doi": "10.13039/501100001809",

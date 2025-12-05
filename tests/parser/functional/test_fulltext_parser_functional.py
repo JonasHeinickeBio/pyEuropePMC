@@ -251,7 +251,7 @@ class TestFullTextXMLParserFunctional:
 
         # Create custom configuration with additional citation types
         custom_config = ElementPatterns(
-            citation_types=["element-citation", "mixed-citation", "nlm-citation", "citation", "ref"]
+            citation_types={"types": ["element-citation", "mixed-citation", "nlm-citation", "citation", "ref"]}
         )
 
         parser = FullTextXMLParser(xml_content, config=custom_config)

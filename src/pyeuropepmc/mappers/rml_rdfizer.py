@@ -182,6 +182,8 @@ class RMLRDFizer:
             "section": "sections.json",
             "table": "tables.json",
             "reference": "references.json",
+            "journal": "journal.json",  # JournalEntity
+            "grant": "grant.json",  # GrantEntity
             "scholarlywork": "scholarlywork.json",  # ScholarlyWorkEntity
             "tablerow": "table_rows.json",
             "institution": "institutions.json",
@@ -246,6 +248,8 @@ class RMLRDFizer:
             "sections.json",
             "tables.json",
             "references.json",
+            "journal.json",  # JournalEntity
+            "grant.json",  # GrantEntity
             "scholarlywork.json",  # ScholarlyWorkEntity
             "table_rows.json",  # TableRowEntity
             "institutions.json",  # InstitutionEntity
@@ -299,6 +303,12 @@ class RMLRDFizer:
         )
         mapping_content = mapping_content.replace(
             '"references.json"', f'"{os.path.join(temp_dir, "references.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"journal.json"', f'"{os.path.join(temp_dir, "journal.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"grant.json"', f'"{os.path.join(temp_dir, "grant.json")}"'
         )
         mapping_content = mapping_content.replace(
             '"scholarlywork.json"', f'"{os.path.join(temp_dir, "scholarlywork.json")}"'

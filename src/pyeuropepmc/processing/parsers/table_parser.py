@@ -58,6 +58,15 @@ class TableParser(BaseParser):
         table_data["label"] = self._extract_first_text_from_element(table_wrap, label_patterns)
         table_data["caption"] = self._extract_first_text_from_element(table_wrap, caption_patterns)
 
+        # Extract table footer if present
+        footer_patterns = {"table_wrap_foot": ".//table-wrap-foot"}
+        table_data["footer"] = self._extract_first_text_from_element(table_wrap, footer_patterns)
+
+        # Extract column group information
+        colgroups = self._extract_column_groups(table_wrap)
+        if colgroups:
+            table_data["column_groups"] = colgroups
+
         # Find table element
         table_elem = None
         for elem in table_wrap.iter():
@@ -74,6 +83,39 @@ class TableParser(BaseParser):
             table_data["rows"] = []
 
         return table_data
+
+    def _extract_column_groups(self, table_wrap: ET.Element) -> list[dict[str, Any]]:
+        """Extract column group information from table."""
+        colgroups = []
+
+        # Find colgroup elements
+        for colgroup in table_wrap.findall(".//colgroup"):
+            colgroup_data: dict[str, Any] = {}
+            colgroup_data["columns"] = []
+
+            # Extract span attribute if present
+            span = colgroup.get("span")
+            if span:
+                colgroup_data["span"] = span
+
+            # Extract individual col elements
+            for col in colgroup.findall(".//col"):
+                col_data = {}
+                col_span = col.get("span")
+                if col_span:
+                    col_data["span"] = col_span
+
+                col_width = col.get("width")
+                if col_width:
+                    col_data["width"] = col_width
+
+                if col_data:
+                    colgroup_data["columns"].append(col_data)
+
+            if colgroup_data["columns"] or "span" in colgroup_data:
+                colgroups.append(colgroup_data)
+
+        return colgroups
 
     def _extract_first_text_from_element(
         self, element: ET.Element, patterns: dict[str, str]

@@ -36,6 +36,7 @@ from pyeuropepmc.processing.converters.markdown_converter import MarkdownConvert
 from pyeuropepmc.processing.converters.plaintext_converter import PlaintextConverter
 from pyeuropepmc.processing.parsers.affiliation_parser import AffiliationParser
 from pyeuropepmc.processing.parsers.author_parser import AuthorParser
+from pyeuropepmc.processing.parsers.figure_parser import FigureParser
 from pyeuropepmc.processing.parsers.metadata_parser import MetadataParser
 from pyeuropepmc.processing.parsers.reference_parser import ReferenceParser
 from pyeuropepmc.processing.parsers.section_parser import SectionParser
@@ -89,7 +90,7 @@ class FullTextXMLParser:
     >>> authors = parser.extract_authors()
     >>>
     >>> # Custom configuration for non-standard XML
-    >>> config = ElementPatterns(citation_types=["element-citation", "mixed-citation"])
+    >>> config = ElementPatterns(citation_types={"types": ["element-citation", "mixed-citation"]})
     >>> parser = FullTextXMLParser(xml_content, config=config)
     >>>
     >>> # Lazy initialization - parsers created only when needed
@@ -135,6 +136,7 @@ class FullTextXMLParser:
         self._metadata_parser: MetadataParser | None = None
         self._reference_parser: ReferenceParser | None = None
         self._table_parser: TableParser | None = None
+        self._figure_parser: FigureParser | None = None
         self._section_parser: SectionParser | None = None
         self._plaintext_converter: PlaintextConverter | None = None
         self._markdown_converter: MarkdownConverter | None = None
@@ -149,6 +151,7 @@ class FullTextXMLParser:
         self._metadata_parser = None
         self._reference_parser = None
         self._table_parser = None
+        self._figure_parser = None
         self._section_parser = None
         self._plaintext_converter = None
         self._markdown_converter = None
@@ -179,7 +182,7 @@ class FullTextXMLParser:
     def reference_parser(self) -> ReferenceParser:
         """Get the reference parser instance."""
         if self._reference_parser is None:
-            self._reference_parser = ReferenceParser(self.root, self.config)
+            self._reference_parser = ReferenceParser(self.root, self.config, self.xml_content)
         return self._reference_parser
 
     @property
@@ -188,6 +191,13 @@ class FullTextXMLParser:
         if self._table_parser is None:
             self._table_parser = TableParser(self.root, self.config)
         return self._table_parser
+
+    @property
+    def figure_parser(self) -> FigureParser:
+        """Get the figure parser instance."""
+        if self._figure_parser is None:
+            self._figure_parser = FigureParser(self.root, self.config)
+        return self._figure_parser
 
     @property
     def section_parser(self) -> SectionParser:
@@ -401,6 +411,25 @@ class FullTextXMLParser:
                 {"error": str(e), "message": "Failed to extract tables from XML"},
             ) from e
 
+    def extract_figures(self) -> list[dict[str, Any]]:
+        """
+        Extract all figures from the full text XML.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of figure dictionaries
+        """
+        self._require_root()
+        try:
+            return self.figure_parser.extract_figures()
+        except Exception as e:
+            logger.error(f"Error extracting figures: {e}")
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"error": str(e), "message": "Failed to extract figures from XML"},
+            ) from e
+
     def get_full_text_sections(self) -> list[dict[str, str]]:
         """
         Extract all body sections with their titles and content.
@@ -491,7 +520,7 @@ class FullTextXMLParser:
             schema.table_structure = "html"
 
         # Detect citation types present
-        for citation_type in self.config.citation_types:
+        for citation_type in self.config.citation_types["types"]:
             if root is not None and root.find(f".//{citation_type}") is not None:
                 schema.citation_types.append(citation_type)
 
@@ -601,11 +630,11 @@ class FullTextXMLParser:
         recognized_patterns: set[str] = set()
 
         # Add citation types directly
-        recognized_patterns.update(self.config.citation_types)
+        recognized_patterns.update(self.config.citation_types["types"])
 
         # Add patterns from all config pattern lists
         recognized_patterns.update(
-            self._extract_elements_from_patterns(self.config.author_element_patterns)
+            self._extract_elements_from_patterns(self.config.author_element_patterns["patterns"])
         )
         recognized_patterns.update(
             self._extract_elements_from_dict_patterns(self.config.author_field_patterns)
@@ -623,7 +652,7 @@ class FullTextXMLParser:
             self._extract_elements_from_dict_patterns(self.config.reference_patterns)
         )
         recognized_patterns.update(
-            self._extract_elements_from_patterns(self.config.inline_element_patterns)
+            self._extract_elements_from_patterns(self.config.inline_element_patterns["patterns"])
         )
         recognized_patterns.update(
             self._extract_elements_from_dict_patterns(self.config.xref_patterns)
@@ -632,7 +661,7 @@ class FullTextXMLParser:
             self._extract_elements_from_dict_patterns(self.config.media_patterns)
         )
         recognized_patterns.update(
-            self._extract_elements_from_patterns(self.config.object_id_patterns)
+            self._extract_elements_from_patterns(self.config.object_id_patterns["patterns"])
         )
 
         # Add common structural elements

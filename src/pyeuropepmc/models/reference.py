@@ -18,6 +18,8 @@ class ReferenceEntity(ScholarlyWorkEntity):
     ----------
     authors : Optional[str]
         Author list (comma-separated)
+    raw_citation : Optional[str]
+        Raw citation text when parsing fails to extract structured metadata
 
     Examples
     --------
@@ -29,6 +31,8 @@ class ReferenceEntity(ScholarlyWorkEntity):
     ... )
     >>> ref.validate()
     """
+
+    raw_citation: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""
@@ -53,4 +57,5 @@ class ReferenceEntity(ScholarlyWorkEntity):
 
         if isinstance(self.authors, str):
             self.authors = normalize_string_field(self.authors)
+        self.raw_citation = normalize_string_field(self.raw_citation)
         super().normalize()

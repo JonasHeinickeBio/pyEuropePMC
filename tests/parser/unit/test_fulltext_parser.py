@@ -323,7 +323,7 @@ class TestFullTextXMLParserExtractReferences:
 
         assert ref["id"] == "ref1"
         assert ref["label"] == "1"
-        assert "A Author" in (ref["authors"] or "")
+        assert "Author, A" in (ref["authors"] or "")
         assert ref["title"] == "Reference Article Title"
         assert ref["source"] == "Reference Journal"
         assert ref["year"] == "2020"

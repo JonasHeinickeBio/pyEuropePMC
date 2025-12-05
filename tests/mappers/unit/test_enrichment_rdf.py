@@ -151,8 +151,8 @@ class TestEnrichmentRDFMapping:
         mapper.map_relationships(g, author_uri, enriched_author, related)
 
         # Check relationship exists
-        org_ns = Namespace("http://www.w3.org/ns/org#")
-        assert (author_uri, org_ns["memberOf"], None) in g
+        pyeuropepmc_ns = Namespace("https://w3id.org/pyeuropepmc/vocab#")
+        assert (author_uri, pyeuropepmc_ns["affiliatedWith"], None) in g
 
     def test_paper_with_authors_relationship(self, mapper, enriched_paper, enriched_author):
         """Test RDF mapping of paper-author relationship."""

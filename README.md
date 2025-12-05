@@ -38,6 +38,17 @@
 - 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
 - 🔗 **External API Enrichment** - Enhance metadata with CrossRef, Unpaywall, Semantic Scholar, and OpenAlex
 
+## 📁 Project Structure
+
+The repository is organized as follows:
+- `src/pyeuropepmc/` - Main package source code
+- `tests/` - Unit and integration tests
+- `docs/` - Documentation and guides
+- `examples/` - Example scripts and usage demonstrations
+- `benchmarks/` - Performance benchmarking scripts and results
+- `data/` - Downloads, outputs, and generated data files
+- `conf/` - Configuration files for RDF mapping and other settings
+
 ## 🚀 Quick Start
 
 ### Installation
@@ -360,6 +371,7 @@ Quick Links:
 - �📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
 - 💡 [Examples](https://jonasheinickebio.github.io/pyEuropePMC/examples/) - Code examples and use cases
 - ✨ [Features](https://jonasheinickebio.github.io/pyEuropePMC/features/) - Explore all features
+- 📊 [XML Coverage Analysis](docs/xml_element_coverage_analysis.md) - Parser coverage and benchmark results
 
 > **Note:** Enable GitHub Pages first! See [Setup Guide](.github/SETUP_GITHUB_PAGES.md) for instructions.
 

@@ -49,7 +49,7 @@ class AuthorParser(BaseParser):
         self._require_root()
 
         # Try each author element pattern in config
-        for author_pattern in self.config.author_element_patterns:
+        for author_pattern in self.config.author_element_patterns["patterns"]:
             author_elems = self.root.findall(author_pattern) if self.root is not None else []
             if author_elems:
                 logger.debug(f"Found {len(author_elems)} authors using pattern: {author_pattern}")

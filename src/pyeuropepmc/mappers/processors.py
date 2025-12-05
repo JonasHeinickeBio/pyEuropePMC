@@ -9,10 +9,14 @@ from typing import Any
 
 from pyeuropepmc.models import (
     AuthorEntity,
+    FigureEntity,
+    GrantEntity,
     InstitutionEntity,
     JournalEntity,
     PaperEntity,
     ReferenceEntity,
+    SectionEntity,
+    TableEntity,
 )
 
 
@@ -274,12 +278,18 @@ def _create_journal_entity(journal_info: dict[str, Any] | str) -> JournalEntity 
     """Create a JournalEntity from journal information."""
     if isinstance(journal_info, dict):
         return JournalEntity(
-            title=journal_info.get("name") or "",
+            title=journal_info.get("title") or journal_info.get("name") or "",
             issn=journal_info.get("issn") or journal_info.get("issn_print"),
             essn=journal_info.get("issn_electronic"),
             medline_abbreviation=journal_info.get("nlm_ta"),
             iso_abbreviation=journal_info.get("iso_abbrev"),
-            publisher=journal_info.get("publisher"),
+            publisher=journal_info.get("publisher_name") or journal_info.get("publisher"),
+            country=journal_info.get("publisher_location"),
+            journal_ids=journal_info.get("journal_ids"),
+            # Flattened journal identifier fields
+            nlm_ta=journal_info.get("nlm_ta"),
+            iso_abbrev=journal_info.get("iso_abbrev"),
+            publisher_id=journal_info.get("publisher_id"),
         )
     elif isinstance(journal_info, str):
         return JournalEntity(title=journal_info)
@@ -304,7 +314,7 @@ def _create_paper_entity(
         authors=paper_data.get("authors", []),
         keywords=paper_data.get("keywords", []),
         mesh_terms=paper_data.get("mesh_terms", []),
-        funders=paper_data.get("funding"),
+        grants=_create_grant_entities(paper_data.get("funding")),
         license=paper_data.get("license"),
         publisher=paper_data.get("publisher", {}).get("name"),
         external_ids=identifiers if identifiers else None,
@@ -445,6 +455,101 @@ def _create_institution_entities(affiliations_data: list[Any]) -> list[Instituti
     return institution_entities
 
 
+def _create_grant_entities(funding_data: list[dict[str, Any]] | None) -> list[GrantEntity] | None:
+    """Create GrantEntity objects from funding data."""
+    if not funding_data:
+        return None
+
+    grant_entities = []
+    for funder in funding_data:
+        if isinstance(funder, dict):
+            try:
+                # Handle recipients list (new format with AuthorEntity objects)
+                recipients_list = []
+                if "recipients" in funder and isinstance(funder["recipients"], list):
+                    from ..models.author import AuthorEntity
+
+                    for recip_data in funder["recipients"]:
+                        if isinstance(recip_data, dict):
+                            full_name = recip_data.get("full_name")
+                            if full_name:
+                                recipient_entity = AuthorEntity(
+                                    full_name=full_name,
+                                    first_name=recip_data.get("given_names"),
+                                    last_name=recip_data.get("surname"),
+                                )
+                                recipients_list.append(recipient_entity)
+
+                grant_entity = GrantEntity(
+                    fundref_doi=funder.get("fundref_doi"),
+                    award_id=funder.get("award_id"),
+                    funding_source=funder.get("funding_source"),
+                    recipients=recipients_list if recipients_list else None,
+                    # Keep deprecated recipient field for backward compatibility
+                    recipient=funder.get("recipient_full") or funder.get("recipient_name"),
+                )
+                grant_entities.append(grant_entity)
+            except Exception as e:
+                print(f"Error creating grant entity: {e}")
+                continue
+
+    return grant_entities if grant_entities else None
+
+
+def _create_section_entities(sections_data: list[dict[str, str]]) -> list[SectionEntity]:
+    """Create SectionEntity objects from section data."""
+    section_entities = []
+    for section_data in sections_data:
+        try:
+            if isinstance(section_data, dict):
+                section_entity = SectionEntity(
+                    title=section_data.get("title"),
+                    content=section_data.get("content"),
+                )
+                section_entities.append(section_entity)
+        except Exception as e:
+            print(f"Error creating section entity: {e}")
+            continue
+    return section_entities
+
+
+def _create_table_entities(tables_data: list[dict[str, Any]]) -> list[TableEntity]:
+    """Create TableEntity objects from table data."""
+    table_entities = []
+    for table_data in tables_data:
+        try:
+            if isinstance(table_data, dict):
+                table_entity = TableEntity(
+                    table_label=table_data.get("label"),
+                    caption=table_data.get("caption"),
+                    headers=table_data.get("headers", []),
+                    # Note: rows would need to be converted to TableRowEntity objects
+                    # but for now, we'll skip this as it's complex
+                )
+                table_entities.append(table_entity)
+        except Exception as e:
+            print(f"Error creating table entity: {e}")
+            continue
+    return table_entities
+
+
+def _create_figure_entities(figures_data: list[dict[str, Any]]) -> list[FigureEntity]:
+    """Create FigureEntity objects from figure data."""
+    figure_entities = []
+    for figure_data in figures_data:
+        try:
+            if isinstance(figure_data, dict):
+                figure_entity = FigureEntity(
+                    figure_label=figure_data.get("label"),
+                    caption=figure_data.get("caption"),
+                )
+                figure_entities.append(figure_entity)
+        except Exception as e:
+            print(f"Error creating figure entity: {e}")
+            continue
+    return figure_entities
+
+
 def _extract_entities_from_xml(
     xml_data: dict[str, Any], include_content: bool
 ) -> list[dict[str, Any]]:
@@ -486,15 +591,30 @@ def _extract_entities_from_xml(
         # Convert reference dicts to ReferenceEntity objects
         reference_entities = _create_reference_entities(xml_data.get("references", []))
 
+        # Convert section dicts to SectionEntity objects
+        section_entities = _create_section_entities(
+            xml_data.get("sections", []) if include_content else []
+        )
+
+        # Convert table dicts to TableEntity objects
+        table_entities = _create_table_entities(
+            xml_data.get("tables", []) if include_content else []
+        )
+
+        # Convert figure dicts to FigureEntity objects
+        figure_entities = _create_figure_entities(
+            xml_data.get("figures", []) if include_content else []
+        )
+
         entities_data.append(
             {
                 "entity": paper_entity,
                 "related_entities": {
                     "authors": author_entities,
                     "institutions": institution_entities,
-                    "sections": xml_data.get("sections", []) if include_content else [],
-                    "tables": xml_data.get("tables", []) if include_content else [],
-                    "figures": xml_data.get("figures", []) if include_content else [],
+                    "sections": section_entities,
+                    "tables": table_entities,
+                    "figures": figure_entities,
                     "references": reference_entities if include_content else [],
                 },
             }
@@ -557,6 +677,7 @@ def _create_enrichment_paper_entity(
         authors=[],  # Will be populated below
         keywords=paper_data.get("keywords", []),
         mesh_terms=paper_data.get("mesh_terms", []),
+        topics=paper_data.get("topics", []),  # OpenAlex topics
     )
 
 

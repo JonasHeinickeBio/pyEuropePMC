@@ -2,6 +2,7 @@
 RDF mapping functionality for converting entities to RDF graphs.
 """
 
+from pyeuropepmc.mappers.config_utils import rebind_namespaces
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
     convert_enrichment_to_rdf,
@@ -33,4 +34,5 @@ __all__ = [
     "generate_entity_uri",
     "map_ontology_alignments",
     "normalize_name",
+    "rebind_namespaces",
 ]

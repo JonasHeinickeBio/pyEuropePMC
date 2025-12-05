@@ -61,7 +61,7 @@ class MetadataParser(BaseParser):
             raise
 
     def _extract_basic_metadata(self) -> dict[str, Any]:
-        """Extract basic article metadata (pmcid, doi, title, abstract)."""
+        """Extract basic article metadata (pmcid, doi, title, abstract, volume, issue)."""
         root = self.root if self.root is not None else ET.Element("empty")
         return {
             "pmcid": self._extract_with_fallbacks(root, self.config.article_patterns["pmcid"]),
@@ -72,6 +72,8 @@ class MetadataParser(BaseParser):
             "abstract": self._extract_with_fallbacks(
                 root, self.config.article_patterns["abstract"], use_full_text=True
             ),
+            "volume": self._extract_with_fallbacks(root, self.config.article_patterns["volume"]),
+            "issue": self._extract_with_fallbacks(root, self.config.article_patterns["issue"]),
         }
 
     def _add_article_identifiers(self, metadata: dict[str, Any]) -> None:
@@ -88,47 +90,109 @@ class MetadataParser(BaseParser):
 
     def _extract_journal_metadata(self) -> dict[str, Any]:
         """Extract journal information including IDs and ISSNs."""
-        root = self.root if self.root is not None else ET.Element("empty")
-        journal_info: dict[str, Any] = {
-            "title": self._extract_with_fallbacks(root, self.config.journal_patterns["title"]),
-            "volume": self._extract_with_fallbacks(root, self.config.journal_patterns["volume"]),
-            "issue": self._extract_with_fallbacks(root, self.config.journal_patterns["issue"]),
-        }
-        self._add_journal_ids_and_issns(journal_info)
-        return journal_info
+        assert self.root is not None  # nosec
+        journal_info: dict[str, Any] = {}
 
-    def _add_journal_ids_and_issns(self, journal_info: dict[str, Any]) -> None:
-        """Add journal IDs and ISSNs to journal info."""
+        # Find journal-meta element first
         journal_meta_result = self.extract_elements_by_patterns(
             {"journal_meta": ".//journal-meta"}, return_type="element"
         )
 
         for journal_meta in journal_meta_result.get("journal_meta", []):
-            # Extract nlm-ta
-            nlm_ta = self._extract_with_fallbacks(
-                journal_meta, [".//journal-id[@journal-id-type='nlm-ta']"]
+            # Extract journal title
+            journal_info["title"] = self._extract_with_fallbacks(
+                journal_meta, [".//journal-title"]
             )
-            if nlm_ta:
-                journal_info["nlm_ta"] = nlm_ta
 
-            # Extract iso-abbrev
-            iso_abbrev = self._extract_with_fallbacks(
-                journal_meta, [".//journal-id[@journal-id-type='iso-abbrev']"]
+            # Extract volume and issue from journal-meta first
+            journal_info["volume"] = self._extract_with_fallbacks(
+                journal_meta, [".//volume", ".//vol"]
             )
-            if iso_abbrev:
-                journal_info["iso_abbrev"] = iso_abbrev
+            journal_info["issue"] = self._extract_with_fallbacks(journal_meta, [".//issue"])
 
-            # Extract ISSNs
-            issn_print = self._extract_with_fallbacks(journal_meta, [".//issn[@pub-type='ppub']"])
-            if issn_print:
-                journal_info["issn_print"] = issn_print
-
-            issn_electronic = self._extract_with_fallbacks(
-                journal_meta, [".//issn[@pub-type='epub']"]
-            )
-            if issn_electronic:
-                journal_info["issn_electronic"] = issn_electronic
             break
+
+        # If journal title not found in journal-meta, look in article-meta using journal patterns
+        if not journal_info.get("title"):
+            journal_info["title"] = self._extract_with_fallbacks(
+                self.root, self.config.journal_patterns["title"]
+            )
+
+        # If volume/issue not found in journal-meta, look in article-meta
+        if not journal_info.get("volume"):
+            journal_info["volume"] = self._extract_with_fallbacks(
+                self.root, [".//volume", ".//vol"]
+            )
+        if not journal_info.get("issue"):
+            journal_info["issue"] = self._extract_with_fallbacks(self.root, [".//issue"])
+
+        # Add journal IDs, ISSNs, and publisher info
+        self._add_journal_ids_and_issns(journal_info)
+        return journal_info
+
+    def _add_journal_ids_and_issns(self, journal_info: dict[str, Any]) -> None:
+        """Add journal IDs, ISSNs, and publisher info to journal info."""
+        journal_meta_result = self.extract_elements_by_patterns(
+            {"journal_meta": ".//journal-meta"}, return_type="element"
+        )
+
+        for journal_meta in journal_meta_result.get("journal_meta", []):
+            self._extract_journal_ids(journal_meta, journal_info)
+            self._extract_issns(journal_meta, journal_info)
+            self._extract_publisher_info(journal_meta, journal_info)
+            break
+
+    def _extract_journal_ids(self, journal_meta: ET.Element, journal_info: dict[str, Any]) -> None:
+        """Extract journal IDs from journal meta."""
+        journal_ids = {}
+        for journal_id_elem in journal_meta.findall(".//journal-id"):
+            id_type = journal_id_elem.get("journal-id-type")
+            if id_type:
+                journal_ids[id_type] = journal_id_elem.text
+
+        # Map common journal ID types to our fields
+        if "nlm-ta" in journal_ids:
+            journal_info["nlm_ta"] = journal_ids["nlm-ta"]
+        if "iso-abbrev" in journal_ids:
+            journal_info["iso_abbrev"] = journal_ids["iso-abbrev"]
+        if "nlmid" in journal_ids:
+            journal_info["nlmid"] = journal_ids["nlmid"]
+
+        # Store all journal IDs for completeness
+        if journal_ids:
+            journal_info["journal_ids"] = journal_ids
+
+    def _extract_issns(self, journal_meta: ET.Element, journal_info: dict[str, Any]) -> None:
+        """Extract ISSNs from journal meta."""
+        issns = {}
+        for issn_elem in journal_meta.findall(".//issn"):
+            pub_type = issn_elem.get("pub-type")
+            if pub_type:
+                issns[pub_type] = issn_elem.text
+
+        # Map to our standard fields
+        if "ppub" in issns:
+            journal_info["issn_print"] = issns["ppub"]
+        if "epub" in issns:
+            journal_info["issn_electronic"] = issns["epub"]
+
+        # Store all ISSNs for completeness
+        if issns:
+            journal_info["issns"] = issns
+
+    def _extract_publisher_info(
+        self, journal_meta: ET.Element, journal_info: dict[str, Any]
+    ) -> None:
+        """Extract publisher information from journal meta."""
+        publisher_elem = journal_meta.find(".//publisher")
+        if publisher_elem is not None:
+            publisher_name = self._extract_with_fallbacks(publisher_elem, [".//publisher-name"])
+            if publisher_name:
+                journal_info["publisher_name"] = publisher_name
+
+            publisher_loc = self._extract_with_fallbacks(publisher_elem, [".//publisher-loc"])
+            if publisher_loc:
+                journal_info["publisher_location"] = publisher_loc
 
     def _extract_page_range(self) -> str | None:
         """Extract page range from first and last page."""
@@ -155,6 +219,79 @@ class MetadataParser(BaseParser):
         if categories:
             metadata["categories"] = categories
 
+        # Add extended metadata
+        extended = self._extract_extended_metadata()
+        if extended:
+            metadata["extended_metadata"] = extended
+
+    def _extract_extended_metadata(self) -> dict[str, Any]:
+        """Extract extended metadata fields."""
+        assert self.root is not None  # nosec
+        extended: dict[str, Any] = {}
+
+        # Conference information
+        conf_name = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("conf_name", [])
+        )
+        if conf_name:
+            extended["conference_name"] = conf_name
+
+        conf_date = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("conf_date", [])
+        )
+        if conf_date:
+            extended["conference_date"] = conf_date
+
+        conf_loc = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("conf_loc", [])
+        )
+        if conf_loc:
+            extended["conference_location"] = conf_loc
+
+        # Article versioning
+        article_version = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("article_version", [])
+        )
+        if article_version:
+            extended["article_version"] = article_version
+
+        # Alternative titles
+        alt_title = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("alt_title", [])
+        )
+        if alt_title:
+            extended["alternative_title"] = alt_title
+
+        # Edition information
+        edition = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("edition", [])
+        )
+        if edition:
+            extended["edition"] = edition
+
+        # Season information
+        season = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("season", [])
+        )
+        if season:
+            extended["season"] = season
+
+        # Series information
+        series = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("series", [])
+        )
+        if series:
+            extended["series"] = series
+
+        # Free to read status
+        free_to_read = self._extract_with_fallbacks(
+            self.root, self.config.extended_metadata_patterns.get("free_to_read", [])
+        )
+        if free_to_read:
+            extended["free_to_read"] = True
+
+        return extended
+
     def extract_pub_date(self) -> str | None:
         """Extract publication date from XML."""
         self._require_root()
@@ -173,11 +310,15 @@ class MetadataParser(BaseParser):
                 date_parts.append(parts["month"][0].zfill(2))
             if parts["day"] and parts["day"][0]:
                 date_parts.append(parts["day"][0].zfill(2))
+
+            # Return date if we have at least year
             if date_parts:
                 date_str = "-".join(date_parts)
                 logger.debug(f"Extracted pub_date: {date_str}")
                 return date_str
+
         logger.debug("No publication date found.")
+        return None
         return None
 
     def extract_keywords(self) -> list[str]:
@@ -193,6 +334,8 @@ class MetadataParser(BaseParser):
         self._require_root()
 
         funding_results = []
+
+        # Try the standard award-group approach first
         award_groups_result = self.extract_elements_by_patterns(
             {"award_groups": ".//award-group"}, return_type="element"
         )
@@ -201,6 +344,10 @@ class MetadataParser(BaseParser):
             funding_data = self._extract_funding_from_group(award_group)
             if funding_data:
                 funding_results.append(funding_data)
+
+        # If no award-groups found, try alternative funding extraction
+        if not funding_results:
+            funding_results = self._extract_funding_from_body()
 
         logger.debug(f"Extracted {len(funding_results)} funding entries")
         return funding_results
@@ -231,19 +378,90 @@ class MetadataParser(BaseParser):
 
         return funding_data
 
-    def _extract_recipient(self, award_group: ET.Element) -> dict[str, str]:
+    def _extract_recipient(self, award_group: ET.Element) -> dict[str, Any]:
         """Extract recipient information from award group."""
-        recipient_info = {}
+        recipient_info: dict[str, Any] = {}
+        recipients_list = []
+
+        # Extract all principal-award-recipient elements (can be multiple)
         for recipient_elem in award_group.findall(".//principal-award-recipient"):
             surname = self._extract_with_fallbacks(recipient_elem, [".//surname"])
             given_names = self._extract_with_fallbacks(recipient_elem, [".//given-names"])
 
-            if surname:
-                recipient_info["recipient"] = surname
-                if given_names:
-                    recipient_info["recipient_full"] = f"{given_names} {surname}"
-            break
+            if surname or given_names:
+                recipient_data = {
+                    "surname": surname,
+                    "given_names": given_names,
+                }
+                # Build full name
+                if given_names and surname:
+                    recipient_data["full_name"] = f"{given_names} {surname}"
+                elif surname:
+                    recipient_data["full_name"] = surname
+                elif given_names:
+                    recipient_data["full_name"] = given_names
+
+                recipients_list.append(recipient_data)
+
+        if recipients_list:
+            recipient_info["recipients"] = recipients_list
+            # For backward compatibility, keep the first recipient as string
+            if recipients_list[0].get("full_name"):
+                recipient_info["recipient_full"] = recipients_list[0]["full_name"]
+
         return recipient_info
+
+    def _extract_funding_from_body(self) -> list[dict[str, Any]]:
+        """Extract funding information from body sections (alternative to award-group)."""
+        funding_results: list[dict[str, Any]] = []
+
+        # Look for sections with title "FUNDING" or similar
+        funding_sections = self.extract_elements_by_patterns(
+            {"funding_sections": ".//sec"}, return_type="element"
+        )
+
+        for section in funding_sections.get("funding_sections", []):
+            if self._is_funding_section(section):
+                funding_sources = section.findall(".//funding-source")
+                if funding_sources:
+                    self._process_funding_sources(section, funding_results)
+
+        return funding_results
+
+    def _is_funding_section(self, section: ET.Element) -> bool:
+        """Check if a section is a funding section."""
+        title_elem = section.find(".//title")
+        if title_elem is not None and title_elem.text:
+            return "FUNDING" in title_elem.text.upper()
+        return False
+
+    def _process_funding_sources(
+        self, section: ET.Element, funding_results: list[dict[str, Any]]
+    ) -> None:
+        """Process funding sources and award IDs from a section."""
+        current_source = None
+        current_awards: list[str] = []
+
+        # Simple approach: pair consecutive funding-source with following award-ids
+        for elem in section.iter():
+            if elem.tag == "funding-source":
+                self._save_funding_group(current_source, current_awards, funding_results)
+                current_source = elem.text.strip() if elem.text else ""
+                current_awards = []
+            elif elem.tag == "award-id" and elem.text:
+                current_awards.append(elem.text.strip())
+
+        # Save last group
+        self._save_funding_group(current_source, current_awards, funding_results)
+
+    def _save_funding_group(
+        self, source: str | None, awards: list[str], funding_results: list[dict[str, Any]]
+    ) -> None:
+        """Save a funding source and its awards to results."""
+        if source and awards:
+            for award in awards:
+                funding_data = {"source": source, "award_id": award}
+                funding_results.append(funding_data)
 
     def extract_license(self) -> dict[str, str | None]:
         """Extract license information from the full text XML."""

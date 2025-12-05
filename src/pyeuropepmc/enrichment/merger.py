@@ -170,7 +170,7 @@ class DataMerger:
         """Merge funders from CrossRef."""
         crossref_data = results.get("crossref")
         if crossref_data and isinstance(crossref_data, dict) and crossref_data.get("funders"):
-            return {"funders": crossref_data["funders"]}
+            return {"funding": crossref_data["funders"]}
         return {}
 
     def _merge_external_ids(self, results: dict[str, Any]) -> dict[str, Any]:  # noqa: C901

@@ -5,6 +5,7 @@ Paper entity model for representing academic articles.
 from dataclasses import dataclass, field
 from typing import Any
 
+from pyeuropepmc.models.grant import GrantEntity
 from pyeuropepmc.models.journal import JournalEntity
 from pyeuropepmc.models.scholarly_work import ScholarlyWorkEntity
 
@@ -34,8 +35,8 @@ class PaperEntity(ScholarlyWorkEntity):
         Research topics from OpenAlex
     fields_of_study : Optional[list[str]]
         Fields of study from Semantic Scholar
-    funders : Optional[list[dict]]
-        Funding information
+    grants : Optional[list[GrantEntity]]
+        Grant/funding information as GrantEntity objects
     is_oa : Optional[bool]
         Open access status
     oa_status : Optional[str]
@@ -129,7 +130,7 @@ class PaperEntity(ScholarlyWorkEntity):
     external_id_conflicts: dict[str, Any] | None = None
 
     # Additional metadata
-    funders: list[dict[str, Any]] | None = None
+    grants: list["GrantEntity"] | None = None
     license: dict[str, Any] | None = None
     related_works: list[str] | None = None
 
@@ -249,7 +250,7 @@ class PaperEntity(ScholarlyWorkEntity):
             influential_citation_count=merged.get("influential_citation_count"),
             topics=merged.get("topics"),
             fields_of_study=merged.get("fields_of_study"),
-            funders=merged.get("funders"),
+            grants=merged.get("funders"),
             is_oa=merged.get("is_oa"),
             oa_status=merged.get("oa_status"),
             oa_url=merged.get("oa_url"),
