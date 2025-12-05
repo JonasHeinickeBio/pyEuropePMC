@@ -5,8 +5,9 @@ These tests validate that the LinkML schema is correctly defined
 and can generate various outputs (JSON Schema, SHACL, etc.).
 """
 
-import pytest
 from pathlib import Path
+
+import pytest
 
 # Skip if linkml is not available
 pytest.importorskip("linkml")
@@ -25,8 +26,8 @@ class TestLinkMLSchemaValidity:
 
     def test_schema_loads_successfully(self) -> None:
         """Test that the schema can be loaded by LinkML."""
-        from linkml_runtime.loaders import yaml_loader
         from linkml_runtime.linkml_model import SchemaDefinition
+        from linkml_runtime.loaders import yaml_loader
 
         schema = yaml_loader.load(str(SCHEMA_PATH), target_class=SchemaDefinition)
         assert schema is not None
@@ -124,7 +125,8 @@ class TestSchemaClasses:
         ]
 
         for slot_name in expected_slots:
-            assert slot_name in institution_slots, f"Slot {slot_name} not found in InstitutionEntity"
+            assert slot_name in institution_slots, \
+                f"Slot {slot_name} not found in InstitutionEntity"
 
 
 class TestSchemaPrefixes:
@@ -176,7 +178,8 @@ class TestSchemaEnums:
         expected_values = ["open", "closed", "hybrid", "green", "gold", "bronze", "unknown"]
 
         for value in expected_values:
-            assert value in oa_enum.permissible_values, f"Value {value} not found in OpenAccessStatus"
+            assert value in oa_enum.permissible_values, \
+                f"Value {value} not found in OpenAccessStatus"
 
     def test_publication_type_enum_exists(self, schema_view) -> None:
         """Test that PublicationType enum is defined."""
@@ -187,7 +190,8 @@ class TestSchemaEnums:
         expected_values = ["journal_article", "review", "preprint"]
 
         for value in expected_values:
-            assert value in pub_type_enum.permissible_values, f"Value {value} not found in PublicationType"
+            assert value in pub_type_enum.permissible_values, \
+                f"Value {value} not found in PublicationType"
 
     def test_institution_type_enum_exists(self, schema_view) -> None:
         """Test that InstitutionType enum is defined."""
