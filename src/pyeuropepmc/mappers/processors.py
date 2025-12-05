@@ -15,9 +15,9 @@ from pyeuropepmc.models import (
     JournalEntity,
     PaperEntity,
     ReferenceEntity,
-    SectionEntity,
-    TableEntity,
 )
+from pyeuropepmc.models.section import SectionEntity
+from pyeuropepmc.models.table import TableEntity
 
 
 def _convert_search_author_to_entity(author_dict: dict[str, Any]) -> AuthorEntity:
@@ -277,19 +277,21 @@ def process_enrichment_data(enrichment_data: dict[str, Any]) -> list[dict[str, A
 def _create_journal_entity(journal_info: dict[str, Any] | str) -> JournalEntity | None:
     """Create a JournalEntity from journal information."""
     if isinstance(journal_info, dict):
+        # Look for title in multiple possible keys
+        title = (
+            journal_info.get("title")
+            or journal_info.get("name")
+            or journal_info.get("journal_title")
+            or ""
+        )
         return JournalEntity(
-            title=journal_info.get("title") or journal_info.get("name") or "",
+            title=title,
             issn=journal_info.get("issn") or journal_info.get("issn_print"),
             essn=journal_info.get("issn_electronic"),
             medline_abbreviation=journal_info.get("nlm_ta"),
             iso_abbreviation=journal_info.get("iso_abbrev"),
-            publisher=journal_info.get("publisher_name") or journal_info.get("publisher"),
-            country=journal_info.get("publisher_location"),
-            journal_ids=journal_info.get("journal_ids"),
-            # Flattened journal identifier fields
-            nlm_ta=journal_info.get("nlm_ta"),
-            iso_abbrev=journal_info.get("iso_abbrev"),
-            publisher_id=journal_info.get("publisher_id"),
+            publisher=journal_info.get("publisher"),
+            country=journal_info.get("country"),
         )
     elif isinstance(journal_info, str):
         return JournalEntity(title=journal_info)
@@ -321,54 +323,76 @@ def _create_paper_entity(
     )
 
 
+def _extract_author_full_name(author_item: dict[str, Any]) -> str:
+    """Extract full name from author item."""
+    return (
+        author_item.get("full_name")
+        or author_item.get("name")
+        or f"{author_item.get('given_names', '')} {author_item.get('surname', '')}".strip()
+        or ""
+    )
+
+
+def _resolve_affiliation_text(
+    author_item: dict[str, Any], affiliations_lookup: dict[str, str] | None
+) -> str | None:
+    """Resolve affiliation text from author item and lookup."""
+    affiliation_text = author_item.get("affiliation")
+    affiliation_refs = author_item.get("affiliation_refs", [])
+
+    if affiliation_text or not affiliation_refs:
+        return affiliation_text
+
+    if affiliations_lookup:
+        resolved = [
+            affiliations_lookup[ref] for ref in affiliation_refs if ref in affiliations_lookup
+        ]
+        return "; ".join(resolved) if resolved else None
+
+    return ", ".join(affiliation_refs)
+
+
+def _resolve_author_institutions(
+    author_item: dict[str, Any],
+    affiliations_id_to_entity: dict[str, InstitutionEntity] | None,
+) -> list[InstitutionEntity]:
+    """Resolve institution entities for author from affiliation refs."""
+    if not affiliations_id_to_entity:
+        return []
+
+    affiliation_refs = author_item.get("affiliation_refs", [])
+    return [
+        affiliations_id_to_entity[ref]
+        for ref in affiliation_refs
+        if ref in affiliations_id_to_entity
+    ]
+
+
 def _create_author_entities(
-    authors_data: list[Any], affiliations_lookup: dict[str, str] | None = None
+    authors_data: list[Any],
+    affiliations_lookup: dict[str, str] | None = None,
+    affiliations_id_to_entity: dict[str, InstitutionEntity] | None = None,
 ) -> list[AuthorEntity]:
     """Create AuthorEntity objects from author data."""
     author_entities = []
     for author_item in authors_data:
         try:
             if isinstance(author_item, dict):
-                # Handle different author data formats from various sources
-                full_name = (
-                    author_item.get("full_name")
-                    or author_item.get("name")
-                    or f"{author_item.get('given_names', '')} "
-                    f"{author_item.get('surname', '')}".strip()
-                    or ""
+                full_name = _extract_author_full_name(author_item)
+                affiliation_text = _resolve_affiliation_text(author_item, affiliations_lookup)
+                author_institutions = _resolve_author_institutions(
+                    author_item, affiliations_id_to_entity
                 )
-
-                # Handle affiliation data (can be string or list of refs)
-                affiliation_text = author_item.get("affiliation")
-
-                # If no direct affiliation text, resolve affiliation refs
-                if not affiliation_text and author_item.get("affiliation_refs"):
-                    if affiliations_lookup:
-                        # Resolve refs to actual affiliation text
-                        resolved_affs = []
-                        for ref in author_item.get("affiliation_refs", []):
-                            aff_text = affiliations_lookup.get(ref)
-                            if aff_text:
-                                resolved_affs.append(aff_text)
-                        affiliation_text = "; ".join(resolved_affs) if resolved_affs else None
-                    else:
-                        # Fallback: just join the refs
-                        affiliation_text = ", ".join(author_item.get("affiliation_refs", []))
 
                 author_entity = AuthorEntity(
                     full_name=full_name,
                     orcid=author_item.get("orcid"),
                     affiliation_text=affiliation_text,
+                    institutions=author_institutions if author_institutions else None,
                 )
             elif isinstance(author_item, str):
-                # Handle case where author is just a string name
-                author_entity = AuthorEntity(
-                    full_name=author_item,
-                    orcid=None,
-                    affiliation_text=None,
-                )
+                author_entity = AuthorEntity(full_name=author_item)
             else:
-                # Skip invalid author data
                 continue
             author_entities.append(author_entity)
         except Exception as e:
@@ -496,40 +520,59 @@ def _create_grant_entities(funding_data: list[dict[str, Any]] | None) -> list[Gr
     return grant_entities if grant_entities else None
 
 
-def _create_section_entities(sections_data: list[dict[str, str]]) -> list[SectionEntity]:
+def _create_section_entities(sections_data: list[Any]) -> list[SectionEntity]:
     """Create SectionEntity objects from section data."""
     section_entities = []
+
     for section_data in sections_data:
         try:
             if isinstance(section_data, dict):
+                # Extract section title and content
+                title = section_data.get("title") or section_data.get("heading", "")
+                content = section_data.get("content") or section_data.get("text", "")
+
+                # Skip sections with no content
+                if not content:
+                    continue
+
                 section_entity = SectionEntity(
-                    title=section_data.get("title"),
-                    content=section_data.get("content"),
+                    title=title,
+                    content=content,
                 )
                 section_entities.append(section_entity)
+            elif isinstance(section_data, SectionEntity):
+                # Already a SectionEntity
+                section_entities.append(section_data)
         except Exception as e:
             print(f"Error creating section entity: {e}")
             continue
+
     return section_entities
 
 
-def _create_table_entities(tables_data: list[dict[str, Any]]) -> list[TableEntity]:
+def _create_table_entities(tables_data: list[Any]) -> list[TableEntity]:
     """Create TableEntity objects from table data."""
     table_entities = []
+
     for table_data in tables_data:
         try:
             if isinstance(table_data, dict):
+                # Extract table label and caption
+                table_label = table_data.get("label") or table_data.get("table_label")
+                caption = table_data.get("caption") or table_data.get("title")
+
                 table_entity = TableEntity(
-                    table_label=table_data.get("label"),
-                    caption=table_data.get("caption"),
-                    headers=table_data.get("headers", []),
-                    # Note: rows would need to be converted to TableRowEntity objects
-                    # but for now, we'll skip this as it's complex
+                    table_label=table_label,
+                    caption=caption,
                 )
                 table_entities.append(table_entity)
+            elif isinstance(table_data, TableEntity):
+                # Already a TableEntity
+                table_entities.append(table_data)
         except Exception as e:
             print(f"Error creating table entity: {e}")
             continue
+
     return table_entities
 
 
@@ -576,6 +619,7 @@ def _extract_entities_from_xml(
 
         # Build affiliations lookup from xml_data if available
         affiliations_lookup = None
+        affiliations_id_to_entity: dict[str, InstitutionEntity] = {}
         if xml_data.get("affiliations"):
             affiliations_lookup = {
                 aff.get("id"): aff.get("text") or aff.get("institution", "")
@@ -583,7 +627,35 @@ def _extract_entities_from_xml(
                 if aff.get("id")
             }
 
-        author_entities = _create_author_entities(authors_data, affiliations_lookup)
+            # Create a mapping from affiliation ID to InstitutionEntity
+            for aff in xml_data.get("affiliations", []):
+                if not isinstance(aff, dict):
+                    continue
+                aff_id = aff.get("id")
+                if not aff_id:
+                    continue
+
+                institution_ids = aff.get("institution_ids", {})
+                institution_name = aff.get("institution") or aff.get("text", "")
+
+                # Skip if no institution identifiers and no name
+                if not institution_ids and not institution_name:
+                    continue
+
+                # Create institution entity
+                institution_entity = InstitutionEntity(
+                    display_name=institution_name,
+                    ror_id=institution_ids.get("ROR"),
+                    grid_id=institution_ids.get("GRID"),
+                    isni=institution_ids.get("ISNI"),
+                    country=aff.get("country"),
+                    city=aff.get("city"),
+                )
+                affiliations_id_to_entity[aff_id] = institution_entity
+
+        author_entities = _create_author_entities(
+            authors_data, affiliations_lookup, affiliations_id_to_entity
+        )
 
         # Create institution entities from affiliations with IDs
         institution_entities = _create_institution_entities(xml_data.get("affiliations", []))
@@ -592,13 +664,13 @@ def _extract_entities_from_xml(
         reference_entities = _create_reference_entities(xml_data.get("references", []))
 
         # Convert section dicts to SectionEntity objects
-        section_entities = _create_section_entities(
-            xml_data.get("sections", []) if include_content else []
+        section_entities = (
+            _create_section_entities(xml_data.get("sections", [])) if include_content else []
         )
 
         # Convert table dicts to TableEntity objects
-        table_entities = _create_table_entities(
-            xml_data.get("tables", []) if include_content else []
+        table_entities = (
+            _create_table_entities(xml_data.get("tables", [])) if include_content else []
         )
 
         # Convert figure dicts to FigureEntity objects

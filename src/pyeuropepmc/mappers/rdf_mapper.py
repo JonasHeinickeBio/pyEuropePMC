@@ -7,7 +7,7 @@ from pathlib import Path
 from typing import Any
 
 from rdflib import BNode, Dataset, Graph, Literal, Namespace, URIRef
-from rdflib.namespace import DCTERMS, RDF, RDFS
+from rdflib.namespace import DCTERMS, RDF
 import yaml
 
 from pyeuropepmc.mappers.rdf_utils import (
@@ -471,65 +471,109 @@ class RDFMapper:
                         )
                     )
 
-            # Handle journal_ids dict (e.g., {'nlm-ta': 'Nucleic Acids Res',
-            # 'publisher-id': 'nar'})
-            elif field_name == "journal_ids" and isinstance(value, dict):
-                for id_type, id_value in value.items():
-                    if id_value:
-                        # Create a blank node for each journal identifier
-                        id_node = BNode()
-                        g.add(
-                            (subject, predicate, id_node, context)
-                            if context
-                            else (subject, predicate, id_node)
-                        )
-                        g.add(
-                            (id_node, DCTERMS.type, Literal(id_type), context)
-                            if context
-                            else (id_node, DCTERMS.type, Literal(id_type))
-                        )
-                        g.add(
-                            (id_node, RDF.value, Literal(id_value), context)
-                            if context
-                            else (id_node, RDF.value, Literal(id_value))
-                        )
+            # Handle funders list (list of dicts with fundref_doi, award_id, etc.)
+            elif field_name == "funders" and isinstance(value, list):
+                for funder in value:
+                    if isinstance(funder, dict):
+                        # Generate meaningful URI for grant using URIFactory
+                        from pyeuropepmc.mappers.rdf_utils import uri_factory
 
-            # Handle topics list (OpenAlex topics with 'id', 'display_name', 'score')
-            elif field_name == "topics" and isinstance(value, list):
-                for topic in value:
-                    if isinstance(topic, dict) and topic.get("id"):
-                        # Use OpenAlex topic URI directly
-                        topic_uri = URIRef(topic["id"])
-                        g.add(
-                            (subject, predicate, topic_uri, context)
-                            if context
-                            else (subject, predicate, topic_uri)
-                        )
+                        grant_uri = uri_factory.generate_grant_uri(funder)
 
-                        # Add topic label and score as additional properties
-                        if topic.get("display_name"):
-                            g.add(
-                                (topic_uri, RDFS.label, Literal(topic["display_name"]), context)
-                                if context
-                                else (topic_uri, RDFS.label, Literal(topic["display_name"]))
+                        # Add grant type
+                        if context:
+                            g.graph(context).add(
+                                (grant_uri, RDF.type, self._resolve_predicate("frapo:Grant"))
                             )
+                        else:
+                            g.add((grant_uri, RDF.type, self._resolve_predicate("frapo:Grant")))
 
-                        if topic.get("score"):
-                            score_pred = self._resolve_predicate("pyeuropepmc:topicScore")
-                            g.add(
-                                (
-                                    subject,
-                                    score_pred,
-                                    Literal(topic["score"], datatype=XSD.decimal),
-                                    context,
-                                )
-                                if context
-                                else (
-                                    subject,
-                                    score_pred,
-                                    Literal(topic["score"], datatype=XSD.decimal),
-                                )
+                        # Add frapo:funds relationship (grant funds paper)
+                        if context:
+                            g.graph(context).add(
+                                (grant_uri, self._resolve_predicate("frapo:funds"), subject)
                             )
+                        else:
+                            g.add((grant_uri, self._resolve_predicate("frapo:funds"), subject))
+
+                        # Add funder DOI/FundRef
+                        fundref_doi = funder.get("fundref_doi")
+                        if fundref_doi:
+                            # Ensure proper URI format for FundRef DOI
+                            fundref_uri = (
+                                URIRef(f"https://doi.org/10.13039/{fundref_doi}")
+                                if not fundref_doi.startswith("http")
+                                else URIRef(fundref_doi)
+                            )
+                            doi_pred = self._resolve_predicate("datacite:doi")
+                            if context:
+                                g.graph(context).add((grant_uri, doi_pred, fundref_uri))
+                            else:
+                                g.add((grant_uri, doi_pred, fundref_uri))
+
+                        # Add award ID
+                        award_id = funder.get("award_id")
+                        if award_id:
+                            if context:
+                                g.graph(context).add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("datacite:identifier"),
+                                        Literal(award_id),
+                                    )
+                                )
+                            else:
+                                g.add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("datacite:identifier"),
+                                        Literal(award_id),
+                                    )
+                                )
+
+                        # Add funding source name
+                        source = funder.get("source")
+                        if source:
+                            if context:
+                                g.graph(context).add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("dcterms:title"),
+                                        Literal(source),
+                                    )
+                                )
+                            else:
+                                g.add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("dcterms:title"),
+                                        Literal(source),
+                                    )
+                                )
+
+                        # Add recipient
+                        recipient = (
+                            funder.get("recipient_full")
+                            or funder.get("recipient_name")
+                            or funder.get("recipient")
+                        )
+                        if recipient:
+                            if context:
+                                g.graph(context).add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("frapo:hasRecipient"),
+                                        Literal(recipient),
+                                    )
+                                )
+                            else:
+                                g.add(
+                                    (
+                                        grant_uri,
+                                        self._resolve_predicate("frapo:hasRecipient"),
+                                        Literal(recipient),
+                                    )
+                                )
 
     def map_relationships(  # noqa: C901
         self,

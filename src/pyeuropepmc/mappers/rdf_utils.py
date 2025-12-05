@@ -42,7 +42,7 @@ class URIFactory:
     def __init__(self) -> None:
         """Initialize the URI factory with standard generators."""
         self._base_uri = None  # Lazy load
-        self.generators = {
+        self.generators: dict[str, Callable[[Any, URIRef | str | None], URIRef]] = {
             "PaperEntity": self._generate_paper_uri,
             "AuthorEntity": self._generate_author_uri,
             "InstitutionEntity": self._generate_institution_uri,
@@ -217,26 +217,126 @@ class URIFactory:
             return URIRef(f"{self.base_uri}journal/{entity.nlmid.lower()}")
         return self._generate_fallback_uri(entity)
 
+    def _generate_section_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for section entity using title-based identifier."""
+        title = getattr(entity, "title", None)
+        if title:
+            # Normalize the title for URI use
+            normalized_title = self._normalize_name(title)
+            if normalized_title:
+                return URIRef(f"{self.base_uri}section/{normalized_title}")
+        # Fallback to label
+        label = getattr(entity, "label", None)
+        if label:
+            normalized_label = self._normalize_name(label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}section/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def _generate_table_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for table entity using label-based identifier."""
+        # First try table_label (e.g., "Table 1")
+        table_label = getattr(entity, "table_label", None)
+        if table_label:
+            normalized_label = self._normalize_name(table_label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}table/{normalized_label}")
+        # Fallback to caption
+        caption = getattr(entity, "caption", None)
+        if caption:
+            # Take first 50 chars of caption for URI
+            short_caption = caption[:50] if len(caption) > 50 else caption
+            normalized_caption = self._normalize_name(short_caption)
+            if normalized_caption:
+                return URIRef(f"{self.base_uri}table/{normalized_caption}")
+        # Fallback to label
+        label = getattr(entity, "label", None)
+        if label and label != "Untitled Table":
+            normalized_label = self._normalize_name(label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}table/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def _generate_figure_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
+        """Generate URI for figure entity using label-based identifier."""
+        # First try figure_label (e.g., "Figure 1")
+        figure_label = getattr(entity, "figure_label", None)
+        if figure_label:
+            normalized_label = self._normalize_name(figure_label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}figure/{normalized_label}")
+        # Fallback to caption
+        caption = getattr(entity, "caption", None)
+        if caption:
+            # Take first 50 chars of caption for URI
+            short_caption = caption[:50] if len(caption) > 50 else caption
+            normalized_caption = self._normalize_name(short_caption)
+            if normalized_caption:
+                return URIRef(f"{self.base_uri}figure/{normalized_caption}")
+        # Fallback to label
+        label = getattr(entity, "label", None)
+        if label and label != "Untitled Figure":
+            normalized_label = self._normalize_name(label)
+            if normalized_label:
+                return URIRef(f"{self.base_uri}figure/{normalized_label}")
+        return self._generate_fallback_uri(entity)
+
+    def generate_grant_uri(self, funder_dict: dict[str, Any]) -> URIRef:
+        """
+        Generate a meaningful URI for a grant/funding record.
+
+        Parameters
+        ----------
+        funder_dict : dict
+            Dictionary containing funder information with keys like:
+            - fundref_doi: FundRef DOI (e.g., "https://doi.org/10.13039/501100001809")
+            - award_id: Award/grant identifier (e.g., "82170974")
+            - source: Funding source name
+
+        Returns
+        -------
+        URIRef
+            Generated URI for the grant
+        """
+        award_id = funder_dict.get("award_id")
+        fundref_doi = funder_dict.get("fundref_doi")
+        source = funder_dict.get("source")
+
+        # Build a meaningful identifier
+        parts = []
+        if fundref_doi:
+            # Extract the funder ID from the FundRef DOI
+            # e.g., "https://doi.org/10.13039/501100001809" -> "501100001809"
+            funder_id = fundref_doi.split("/")[-1] if "/" in fundref_doi else fundref_doi
+            if funder_id:
+                parts.append(funder_id)
+        if award_id:
+            # Normalize award ID for URI use
+            normalized_award = re.sub(r"[^a-zA-Z0-9-]", "-", str(award_id)).lower()
+            parts.append(normalized_award)
+
+        if parts:
+            grant_id = "-".join(parts)
+            return URIRef(f"{self.base_uri}grant/{grant_id}")
+
+        # Fallback: use source if available
+        if source:
+            normalized_source = self._normalize_name(source)
+            if normalized_source:
+                return URIRef(f"{self.base_uri}grant/{normalized_source}")
+
+        # Final fallback to UUID
+        return URIRef(f"{self.base_uri}grant/{uuid.uuid4()}")
+
     def _generate_grant_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for grant entity using award ID or fundref DOI."""
-        # Prioritize award ID for meaningful URIs
-        if getattr(entity, "award_id", None):
-            # Normalize award ID for URI use
-            normalized_award = self._normalize_grant_id(entity.award_id)
-            if normalized_award:
-                return URIRef(f"{self.base_uri}grant/{normalized_award}")
-        # Fallback to fundref DOI
-        if getattr(entity, "fundref_doi", None):
-            # Extract identifier from DOI
-            doi_id = (
-                entity.fundref_doi.split("/")[-1]
-                if "/" in entity.fundref_doi
-                else entity.fundref_doi
-            )
-            normalized_doi = self._normalize_grant_id(doi_id)
-            if normalized_doi:
-                return URIRef(f"{self.base_uri}grant/{normalized_doi}")
-        return self._generate_fallback_uri(entity)
+        # Extract funder info from entity
+        funder_dict = {
+            "fundref_doi": getattr(entity, "fundref_doi", None),
+            "award_id": getattr(entity, "award_id", None),
+            "source": getattr(entity, "funding_source", None),
+        }
+        return self.generate_grant_uri(funder_dict)
 
     def _normalize_journal_abbr(self, abbreviation: str) -> str | None:
         """Normalize journal abbreviation for URI use."""
@@ -326,61 +426,6 @@ class URIFactory:
                 parts.append(journal_short)
 
         return "-".join(parts) if parts else None
-
-    def _generate_section_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
-        """Generate URI for section entity using title or fallback."""
-        # Use title to create meaningful slug
-        title = getattr(entity, "title", None)
-        if title and parent_uri:
-            # Create a slug from the title
-            slug = self._normalize_name(title)
-            if slug:
-                parent_str = str(parent_uri).rstrip("/")
-                return URIRef(f"{parent_str}/section/{slug}")
-        elif title:
-            # Fallback to base URI if no parent
-            slug = self._normalize_name(title)
-            if slug:
-                return URIRef(f"{self.base_uri}section/{slug}")
-        return self._generate_fallback_uri(entity)
-
-    def _generate_table_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
-        """Generate URI for table entity using label or fallback."""
-        # Use table_label to create meaningful identifier
-        label = getattr(entity, "table_label", None)
-        if label and parent_uri:
-            # Normalize the label for URI use
-            normalized_label = label.lower().replace(" ", "-").replace(".", "")
-            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
-            if normalized_label:
-                parent_str = str(parent_uri).rstrip("/")
-                return URIRef(f"{parent_str}/table/{normalized_label}")
-        elif label:
-            # Fallback to base URI if no parent
-            normalized_label = label.lower().replace(" ", "-").replace(".", "")
-            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
-            if normalized_label:
-                return URIRef(f"{self.base_uri}table/{normalized_label}")
-        return self._generate_fallback_uri(entity)
-
-    def _generate_figure_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
-        """Generate URI for figure entity using label or fallback."""
-        # Use figure_label to create meaningful identifier
-        label = getattr(entity, "figure_label", None)
-        if label and parent_uri:
-            # Normalize the label for URI use
-            normalized_label = label.lower().replace(" ", "-").replace(".", "")
-            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
-            if normalized_label:
-                parent_str = str(parent_uri).rstrip("/")
-                return URIRef(f"{parent_str}/figure/{normalized_label}")
-        elif label:
-            # Fallback to base URI if no parent
-            normalized_label = label.lower().replace(" ", "-").replace(".", "")
-            normalized_label = re.sub(r"[^a-z0-9-]", "", normalized_label)
-            if normalized_label:
-                return URIRef(f"{self.base_uri}figure/{normalized_label}")
-        return self._generate_fallback_uri(entity)
 
     def _generate_fallback_uri(
         self, entity: Any, parent_uri: URIRef | str | None = None

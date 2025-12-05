@@ -93,7 +93,6 @@ class MetadataParser(BaseParser):
         assert self.root is not None  # nosec
         journal_info: dict[str, Any] = {}
 
-        # Find journal-meta element first
         journal_meta_result = self.extract_elements_by_patterns(
             {"journal_meta": ".//journal-meta"}, return_type="element"
         )
@@ -110,6 +109,32 @@ class MetadataParser(BaseParser):
             )
             journal_info["issue"] = self._extract_with_fallbacks(journal_meta, [".//issue"])
 
+            # Extract ISSNs
+            issn_print = self._extract_with_fallbacks(journal_meta, [".//issn[@pub-type='ppub']"])
+            if issn_print:
+                journal_info["issn_print"] = issn_print
+
+            issn_electronic = self._extract_with_fallbacks(
+                journal_meta, [".//issn[@pub-type='epub']"]
+            )
+            if issn_electronic:
+                journal_info["issn_electronic"] = issn_electronic
+
+            # Extract publisher name and location from journal-meta
+            publisher_name = self._extract_with_fallbacks(
+                journal_meta, [".//publisher/publisher-name", ".//publisher-name"]
+            )
+            if publisher_name:
+                journal_info["publisher"] = publisher_name
+
+            publisher_loc = self._extract_with_fallbacks(
+                journal_meta, [".//publisher/publisher-loc", ".//publisher-loc"]
+            )
+            if publisher_loc:
+                journal_info["country"] = publisher_loc
+
+            # Add journal IDs
+            self._extract_journal_ids(journal_meta, journal_info)
             break
 
         # If journal title not found in journal-meta, look in article-meta using journal patterns
@@ -126,21 +151,7 @@ class MetadataParser(BaseParser):
         if not journal_info.get("issue"):
             journal_info["issue"] = self._extract_with_fallbacks(self.root, [".//issue"])
 
-        # Add journal IDs, ISSNs, and publisher info
-        self._add_journal_ids_and_issns(journal_info)
         return journal_info
-
-    def _add_journal_ids_and_issns(self, journal_info: dict[str, Any]) -> None:
-        """Add journal IDs, ISSNs, and publisher info to journal info."""
-        journal_meta_result = self.extract_elements_by_patterns(
-            {"journal_meta": ".//journal-meta"}, return_type="element"
-        )
-
-        for journal_meta in journal_meta_result.get("journal_meta", []):
-            self._extract_journal_ids(journal_meta, journal_info)
-            self._extract_issns(journal_meta, journal_info)
-            self._extract_publisher_info(journal_meta, journal_info)
-            break
 
     def _extract_journal_ids(self, journal_meta: ET.Element, journal_info: dict[str, Any]) -> None:
         """Extract journal IDs from journal meta."""
