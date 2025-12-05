@@ -217,30 +217,69 @@ class URIFactory:
             return URIRef(f"{self.base_uri}journal/{entity.nlmid.lower()}")
         return self._generate_fallback_uri(entity)
 
+    def _extract_paper_identifier(self, parent_uri: URIRef | str | None) -> str | None:
+        """Extract paper identifier from parent URI."""
+        if not parent_uri:
+            return None
+
+        uri_str = str(parent_uri)
+
+        # Try to extract from PubMed URL: https://pubmed.ncbi.nlm.nih.gov/{pmid}/
+        import re
+
+        pm_match = re.search(r"pubmed\.ncbi\.nlm\.nih\.gov/(\d+)/?", uri_str)
+        if pm_match:
+            return pm_match.group(1)
+
+        # Try to extract from DOI URL: https://doi.org/{doi}
+        doi_match = re.search(r"doi\.org/(.+)", uri_str)
+        if doi_match:
+            return doi_match.group(1).replace("/", "-").replace(".", "-")
+
+        # Try to extract PMCID: PMC{number}
+        pmc_match = re.search(r"PMC(\d+)", uri_str)
+        if pmc_match:
+            return pmc_match.group(1)
+
+        return None
+
     def _generate_section_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for section entity using title-based identifier."""
+        paper_id = self._extract_paper_identifier(parent_uri)
+
         title = getattr(entity, "title", None)
         if title:
             # Normalize the title for URI use
             normalized_title = self._normalize_name(title)
             if normalized_title:
-                return URIRef(f"{self.base_uri}section/{normalized_title}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}section/{paper_id}/{normalized_title}")
+                else:
+                    return URIRef(f"{self.base_uri}section/{normalized_title}")
         # Fallback to label
         label = getattr(entity, "label", None)
         if label:
             normalized_label = self._normalize_name(label)
             if normalized_label:
-                return URIRef(f"{self.base_uri}section/{normalized_label}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}section/{paper_id}/{normalized_label}")
+                else:
+                    return URIRef(f"{self.base_uri}section/{normalized_label}")
         return self._generate_fallback_uri(entity)
 
     def _generate_table_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for table entity using label-based identifier."""
+        paper_id = self._extract_paper_identifier(parent_uri)
+
         # First try table_label (e.g., "Table 1")
         table_label = getattr(entity, "table_label", None)
         if table_label:
             normalized_label = self._normalize_name(table_label)
             if normalized_label:
-                return URIRef(f"{self.base_uri}table/{normalized_label}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}table/{paper_id}/{normalized_label}")
+                else:
+                    return URIRef(f"{self.base_uri}table/{normalized_label}")
         # Fallback to caption
         caption = getattr(entity, "caption", None)
         if caption:
@@ -248,23 +287,34 @@ class URIFactory:
             short_caption = caption[:50] if len(caption) > 50 else caption
             normalized_caption = self._normalize_name(short_caption)
             if normalized_caption:
-                return URIRef(f"{self.base_uri}table/{normalized_caption}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}table/{paper_id}/{normalized_caption}")
+                else:
+                    return URIRef(f"{self.base_uri}table/{normalized_caption}")
         # Fallback to label
         label = getattr(entity, "label", None)
         if label and label != "Untitled Table":
             normalized_label = self._normalize_name(label)
             if normalized_label:
-                return URIRef(f"{self.base_uri}table/{normalized_label}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}table/{paper_id}/{normalized_label}")
+                else:
+                    return URIRef(f"{self.base_uri}table/{normalized_label}")
         return self._generate_fallback_uri(entity)
 
     def _generate_figure_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for figure entity using label-based identifier."""
+        paper_id = self._extract_paper_identifier(parent_uri)
+
         # First try figure_label (e.g., "Figure 1")
         figure_label = getattr(entity, "figure_label", None)
         if figure_label:
             normalized_label = self._normalize_name(figure_label)
             if normalized_label:
-                return URIRef(f"{self.base_uri}figure/{normalized_label}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}figure/{paper_id}/{normalized_label}")
+                else:
+                    return URIRef(f"{self.base_uri}figure/{normalized_label}")
         # Fallback to caption
         caption = getattr(entity, "caption", None)
         if caption:
@@ -272,13 +322,19 @@ class URIFactory:
             short_caption = caption[:50] if len(caption) > 50 else caption
             normalized_caption = self._normalize_name(short_caption)
             if normalized_caption:
-                return URIRef(f"{self.base_uri}figure/{normalized_caption}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}figure/{paper_id}/{normalized_caption}")
+                else:
+                    return URIRef(f"{self.base_uri}figure/{normalized_caption}")
         # Fallback to label
         label = getattr(entity, "label", None)
         if label and label != "Untitled Figure":
             normalized_label = self._normalize_name(label)
             if normalized_label:
-                return URIRef(f"{self.base_uri}figure/{normalized_label}")
+                if paper_id:
+                    return URIRef(f"{self.base_uri}figure/{paper_id}/{normalized_label}")
+                else:
+                    return URIRef(f"{self.base_uri}figure/{normalized_label}")
         return self._generate_fallback_uri(entity)
 
     def generate_grant_uri(self, funder_dict: dict[str, Any]) -> URIRef:

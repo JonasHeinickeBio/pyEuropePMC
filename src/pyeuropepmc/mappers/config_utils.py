@@ -175,10 +175,10 @@ def rebind_namespaces(g: Graph | Dataset) -> None:
         for prefix, uri in prefix_config.items():
             g.bind(prefix, Namespace(uri), override=True, replace=True)
 
-        # For Dataset, also bind to default context
-        if hasattr(g, "default_context"):
+        # For Dataset, also bind to default graph
+        if hasattr(g, "default_graph"):
             for prefix, uri in prefix_config.items():
-                g.default_context.bind(prefix, Namespace(uri), override=True, replace=True)
+                g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
 
         # For Dataset, also bind to all named graphs
         if hasattr(g, "graphs"):
@@ -261,7 +261,7 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
 
         # Also bind to default graph to ensure proper serialization
         for prefix, uri in prefix_config.items():
-            g.default_context.bind(prefix, Namespace(uri), override=True, replace=True)
+            g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
 
     except Exception as e:
         print(f"Failed to load RDF mapping config: {e}, using fallback namespaces")
@@ -271,7 +271,7 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
     if namespaces:
         for prefix, uri in namespaces.items():
             g.bind(prefix, Namespace(uri), override=True, replace=True)
-            g.default_context.bind(prefix, Namespace(uri), override=True, replace=True)
+            g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
 
     return g
 
