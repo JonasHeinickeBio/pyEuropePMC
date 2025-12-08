@@ -1,0 +1,220 @@
+# PyEuropePMC RDF Runtime Configuration
+# =============================================================================
+# This file contains OPERATIONAL SETTINGS only.
+# Schema/mapping definitions are in schemas/pyeuropepmc_schema.yaml (LinkML)
+#
+# Configuration Categories:
+# 1. Graph Structure: Named graph URIs, base URIs, ontology imports
+# 2. Quality Control: Confidence thresholds, validation levels
+# 3. Performance: Batch sizes, caching settings
+# 4. Output Control: Serialization formats, file naming
+# 5. Debugging: Logging levels, progress reporting
+# =============================================================================
+
+# Schema reference - LinkML is the source of truth for data model definitions
+schema:
+  path: "schemas/pyeuropepmc_schema.yaml"
+  version: "1.0.0"
+  # Legacy config for backward compatibility (will be deprecated)
+  legacy_rdf_map: "conf/rdf_map.yml"
+  use_linkml_introspection: true
+
+# Base URI configuration
+uri:
+  base: "https://w3id.org/pyeuropepmc/"
+  data: "https://w3id.org/pyeuropepmc/data#"
+  vocab: "https://w3id.org/pyeuropepmc/vocab#"
+
+# Named Graphs Configuration
+# Controls how entities are organized in RDF graphs
+named_graphs:
+  enabled: true
+  
+  publications:
+    title: "Publication Entities and Citations"
+    description: "Contains publication entities, citation networks, and bibliographic relationships"
+    uri_base: "https://w3id.org/pyeuropepmc#publications"
+    enabled: true
+  
+  authors:
+    title: "Author Entities and Relationships"
+    description: "Contains all author entities, their affiliations, collaborations, and quality metrics"
+    uri_base: "https://w3id.org/pyeuropepmc#authors"
+    enabled: true
+  
+  institutions:
+    title: "Institutional Entities and Hierarchies"
+    description: "Contains institutional entities, hierarchies, and organizational relationships"
+    uri_base: "https://w3id.org/pyeuropepmc#institutions"
+    enabled: true
+  
+  provenance:
+    title: "Provenance and Quality Metrics"
+    description: "Contains provenance information, quality scores, and temporal metadata"
+    uri_base: "https://w3id.org/pyeuropepmc#provenance"
+    enabled: true
+
+# Required named graphs that must be present
+required_named_graphs:
+  - publications
+  - authors
+  - institutions
+  - provenance
+
+# Knowledge Graph Structure Options
+kg_structure:
+  # What types of entities to include
+  include_content: true  # Include sections, references, tables, figures
+  include_metadata: true  # Include papers, authors, institutions
+  
+  # Default KG type: "complete", "metadata", "content"
+  default_type: "complete"
+  
+  # Semantic enrichment options
+  enable_citation_networks: true
+  enable_collaboration_networks: true
+  enable_institutional_hierarchies: true
+  enable_quality_metrics: true
+  enable_shacl_validation: false
+
+# Quality Control Settings
+quality:
+  # Confidence thresholds for quality categorization
+  thresholds:
+    high: 0.8
+    medium: 0.6
+    low: 0.0
+  
+  # Validation settings
+  validation:
+    enabled: true
+    strict_mode: false  # If true, fail on validation errors
+    log_warnings: true
+  
+  # Data completeness requirements
+  completeness:
+    require_identifiers: true  # At least one identifier (DOI, PMCID, etc.)
+    require_title: false  # Title is optional if identifiers present
+    require_authors: false
+
+# Performance Settings
+performance:
+  # Batch processing
+  batch_size: 100  # Number of entities per batch
+  max_parallel_batches: 4
+  
+  # Caching
+  caching:
+    enabled: true
+    schema_cache_ttl: 3600  # Schema cache time-to-live in seconds
+    entity_cache_ttl: 1800
+    max_cache_size_mb: 512
+  
+  # Memory management
+  memory:
+    max_graph_size_triples: 1000000
+    stream_large_graphs: true
+
+# Output Control Settings
+output:
+  # Default serialization format
+  default_format: "turtle"
+  
+  # Supported formats and their extensions
+  formats:
+    turtle:
+      extension: ".ttl"
+      mime_type: "text/turtle"
+    trig:
+      extension: ".trig"
+      mime_type: "application/trig"
+    json-ld:
+      extension: ".jsonld"
+      mime_type: "application/ld+json"
+    nquads:
+      extension: ".nq"
+      mime_type: "application/n-quads"
+    xml:
+      extension: ".rdf"
+      mime_type: "application/rdf+xml"
+  
+  # File naming
+  filename_template: "{prefix}{entity_type}_{identifier}.{extension}"
+  
+  # Compression
+  compression:
+    enabled: false
+    algorithm: "gzip"  # gzip, bz2, or lzma
+
+# Debugging and Logging Settings
+debugging:
+  # Logging configuration
+  logging:
+    level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+    log_rdf_generation: false
+    log_validation_details: false
+  
+  # Progress reporting
+  progress:
+    enabled: true
+    report_interval: 10  # Report every N entities
+  
+  # Intermediate output (for debugging)
+  intermediate:
+    save_intermediate: false
+    intermediate_dir: "debug_output"
+
+# Provenance Settings
+provenance:
+  # What provenance information to include
+  include_timestamp: true
+  include_method: true
+  include_source: true
+  include_confidence: true
+  
+  # Method identifiers
+  default_method: "pyeuropepmc_parser"
+  
+  # Source tracking
+  track_data_sources: true
+
+# Environment-specific overrides
+# These are merged with the base config based on environment
+environments:
+  development:
+    debugging:
+      logging:
+        level: "DEBUG"
+        log_rdf_generation: true
+      intermediate:
+        save_intermediate: true
+    quality:
+      validation:
+        strict_mode: false
+  
+  production:
+    debugging:
+      logging:
+        level: "WARNING"
+      progress:
+        enabled: false
+    quality:
+      validation:
+        strict_mode: true
+    performance:
+      caching:
+        enabled: true
+        max_cache_size_mb: 1024
+  
+  testing:
+    debugging:
+      logging:
+        level: "DEBUG"
+    performance:
+      batch_size: 10
+      caching:
+        enabled: false
+    quality:
+      validation:
+        enabled: true
+        strict_mode: true
