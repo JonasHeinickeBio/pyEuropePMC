@@ -1,0 +1,2221 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix frapo: <http://purl.org/cerif/frapo/> .
+@prefix linkml: <https://w3id.org/linkml/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix pav: <http://purl.org/pav/> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://w3id.org/pyeuropepmc.owl.ttl> a owl:Ontology ;
+    rdfs:label "pyeuropepmc" ;
+    dcterms:license "MIT" ;
+    dcterms:title "PyEuropePMC Data Model Schema" ;
+    pav:version "1.0.0" ;
+    skos:definition "LinkML schema defining the data model for PyEuropePMC, a Python toolkit for  searching, retrieving, and analyzing scientific literature from Europe PMC. This schema provides a single source of truth for generating JSON Schema,  RDF/OWL, SHACL shapes, and Python dataclasses." .
+
+<https://w3id.org/pyeuropepmc/vocab#AuthorPosition#first> a owl:Class ;
+    rdfs:label "first" ;
+    rdfs:subClassOf pyeuropepmc:AuthorPosition ;
+    skos:definition "First author" .
+
+<https://w3id.org/pyeuropepmc/vocab#AuthorPosition#last> a owl:Class ;
+    rdfs:label "last" ;
+    rdfs:subClassOf pyeuropepmc:AuthorPosition ;
+    skos:definition "Last/corresponding author" .
+
+<https://w3id.org/pyeuropepmc/vocab#AuthorPosition#middle> a owl:Class ;
+    rdfs:label "middle" ;
+    rdfs:subClassOf pyeuropepmc:AuthorPosition ;
+    skos:definition "Middle author" .
+
+pyeuropepmc:FigureEntity a owl:Class ;
+    rdfs:label "FigureEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:graphic_uri ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:caption ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:graphic_uri ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:figure_label ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:figure_label ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:figure_label ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:figure_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:figure_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:caption ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:caption ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:figure_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:graphic_uri ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing a figure with BIBO alignment. Contains figure metadata and graphic URI." ;
+    skos:exactMatch bibo:Image ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:GrantEntity a owl:Class ;
+    rdfs:label "GrantEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:award_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:recipient ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:funded_papers ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:fundref_doi ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:funding_source ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:fundref_doi ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:recipient ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:recipients ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:AuthorEntity ;
+            owl:onProperty pyeuropepmc:recipients ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:funded_papers ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:award_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:funding_source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:award_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:recipient ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:funding_source ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:fundref_doi ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing a research grant or funding award with FRAPO alignment. Contains funding information and relationships to recipients." ;
+    skos:exactMatch frapo:Grant ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#company> a owl:Class ;
+    rdfs:label "company" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Company or corporation" .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#education> a owl:Class ;
+    rdfs:label "education" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Educational institution" .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#facility> a owl:Class ;
+    rdfs:label "facility" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Research facility" .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#government> a owl:Class ;
+    rdfs:label "government" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Government organization" .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#healthcare> a owl:Class ;
+    rdfs:label "healthcare" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Healthcare institution" .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#nonprofit> a owl:Class ;
+    rdfs:label "nonprofit" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Nonprofit organization" .
+
+<https://w3id.org/pyeuropepmc/vocab#InstitutionType#other> a owl:Class ;
+    rdfs:label "other" ;
+    rdfs:subClassOf pyeuropepmc:InstitutionType ;
+    skos:definition "Other institution type" .
+
+pyeuropepmc:JournalEntity a owl:Class ;
+    rdfs:label "JournalEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:journal_papers ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:nlm_ta ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:scopus_source_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:iso_abbrev ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:nlmid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:wikidata_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:nlmid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:sjr ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:nlmid ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:nlm_ta ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:h_index ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:wikidata_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:medline_abbreviation ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:iso_abbrev ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:impact_factor ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:h_index ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:publisher_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:journal_papers ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:issn ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:scopus_source_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:subject_areas ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:publisher ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:publisher_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:nlm_ta ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:journal_issue_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:essn ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:subject_areas ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:language ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:essn ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:publisher ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:iso_abbrev ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty pyeuropepmc:journal_issue_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:essn ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:wikidata_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:iso_abbreviation ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:journal_issue_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:issn ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:publisher ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:publisher_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:impact_factor ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:issn ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:sjr ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:country ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:language ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:country ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:iso_abbreviation ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:h_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:medline_abbreviation ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:language ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:country ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:iso_abbreviation ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:medline_abbreviation ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:impact_factor ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:sjr ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:scopus_source_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:title ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing an academic journal with BIBO alignment. Contains journal metadata and bibliometric information." ;
+    skos:exactMatch bibo:Journal ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#bronze> a owl:Class ;
+    rdfs:label "bronze" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Bronze open access" .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#closed> a owl:Class ;
+    rdfs:label "closed" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Not open access" .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#gold> a owl:Class ;
+    rdfs:label "gold" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Gold open access" .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#green> a owl:Class ;
+    rdfs:label "green" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Green open access (preprint/postprint)" .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#hybrid> a owl:Class ;
+    rdfs:label "hybrid" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Hybrid open access" .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#open> a owl:Class ;
+    rdfs:label "open" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Fully open access" .
+
+<https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#unknown> a owl:Class ;
+    rdfs:label "unknown" ;
+    rdfs:subClassOf pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Unknown open access status" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#book_chapter> a owl:Class ;
+    rdfs:label "book_chapter" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Book chapter" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#conference_paper> a owl:Class ;
+    rdfs:label "conference_paper" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Conference paper" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#dataset> a owl:Class ;
+    rdfs:label "dataset" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Dataset" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#journal_article> a owl:Class ;
+    rdfs:label "journal_article" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Journal article" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#other> a owl:Class ;
+    rdfs:label "other" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Other publication type" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#preprint> a owl:Class ;
+    rdfs:label "preprint" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Preprint" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#review> a owl:Class ;
+    rdfs:label "review" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Review article" .
+
+<https://w3id.org/pyeuropepmc/vocab#PublicationType#thesis> a owl:Class ;
+    rdfs:label "thesis" ;
+    rdfs:subClassOf pyeuropepmc:PublicationType ;
+    skos:definition "Thesis or dissertation" .
+
+pyeuropepmc:ReferenceEntity a owl:Class ;
+    rdfs:label "ReferenceEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:citing_paper ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:citing_paper ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:raw_citation ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:citing_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:raw_citation ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:raw_citation ],
+        pyeuropepmc:ScholarlyWorkEntity ;
+    skos:definition "Entity representing a bibliographic reference with BIBO alignment. Contains citation information for works referenced by papers." ;
+    skos:exactMatch bibo:Article ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:ScholarlyWorkEntity a owl:Class ;
+    rdfs:label "ScholarlyWorkEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^PMC\\d+$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:pmcid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:doi ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:volume ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:publication_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:pages ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^\\d+$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:pmid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:semantic_scholar_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:doi ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:date ;
+            owl:onProperty pyeuropepmc:publication_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:semantic_scholar_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:publication_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:volume ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:pmcid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:pmcid ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 1000 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 9999 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:publication_year ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:anyURI [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:doi ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:pmid ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:volume ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:pages ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:semantic_scholar_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:pages ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:pmid ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:publication_year ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:publication_year ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Base entity for scholarly works (papers, references, etc.). Provides common fields and methods for entities representing scholarly publications." ;
+    skos:exactMatch bibo:Document ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:TableRowEntity a owl:Class ;
+    rdfs:label "TableRowEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:table ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:table ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:cells ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty pyeuropepmc:cells ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:TableEntity ;
+            owl:onProperty pyeuropepmc:table ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing a table row." ;
+    skos:exactMatch bibo:Row ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:cells a owl:DatatypeProperty ;
+    rdfs:label "cells" ;
+    rdfs:range xsd:string ;
+    skos:definition "Cell values for a table row" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:data_sources a owl:DatatypeProperty ;
+    rdfs:label "data_sources" ;
+    rdfs:range xsd:string ;
+    skos:definition "List of data sources that contributed to this entity" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:domains a owl:DatatypeProperty ;
+    rdfs:label "domains" ;
+    rdfs:range xsd:string ;
+    skos:definition "Associated domain names" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:fields_of_study a owl:DatatypeProperty ;
+    rdfs:label "fields_of_study" ;
+    rdfs:range xsd:string ;
+    skos:definition "Fields of study" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:headers a owl:DatatypeProperty ;
+    rdfs:label "headers" ;
+    rdfs:range xsd:string ;
+    skos:definition "Column headers for a table" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:keywords a owl:DatatypeProperty ;
+    rdfs:label "keywords" ;
+    rdfs:range xsd:string ;
+    skos:definition "List of keywords" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:paper_institutions a owl:ObjectProperty ;
+    rdfs:label "paper_institutions" ;
+    rdfs:range pyeuropepmc:InstitutionEntity ;
+    skos:definition "Institutions affiliated with a paper" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:recipients a owl:ObjectProperty ;
+    rdfs:label "recipients" ;
+    rdfs:range pyeuropepmc:AuthorEntity ;
+    skos:definition "Principal investigators/recipients of a grant" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:related_works a owl:DatatypeProperty ;
+    rdfs:label "related_works" ;
+    rdfs:range xsd:string ;
+    skos:definition "Related work IDs" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:sources a owl:DatatypeProperty ;
+    rdfs:label "sources" ;
+    rdfs:range xsd:string ;
+    skos:definition "Data sources for author information" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:subject_areas a owl:DatatypeProperty ;
+    rdfs:label "subject_areas" ;
+    rdfs:range xsd:string ;
+    skos:definition "Subject areas/categories" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:types a owl:DatatypeProperty ;
+    rdfs:label "types" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "RDF types (CURIEs/URIs) for this entity" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:abstract a owl:DatatypeProperty ;
+    rdfs:label "abstract" ;
+    rdfs:range xsd:string ;
+    skos:definition "Article abstract" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:affiliation_text a owl:DatatypeProperty ;
+    rdfs:label "affiliation_text" ;
+    rdfs:range xsd:string ;
+    skos:definition "Affiliation text" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:author_institutions a owl:ObjectProperty ;
+    rdfs:label "author_institutions" ;
+    rdfs:range pyeuropepmc:InstitutionEntity ;
+    owl:inverseOf pyeuropepmc:members ;
+    skos:definition "Institutions an author is affiliated with" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:authors a owl:ObjectProperty ;
+    rdfs:label "authors" ;
+    rdfs:range pyeuropepmc:AuthorEntity ;
+    owl:inverseOf pyeuropepmc:papers ;
+    skos:definition "Authors of a work" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:award_id a owl:DatatypeProperty ;
+    rdfs:label "award_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Grant or award identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:cited_by_count a owl:DatatypeProperty ;
+    rdfs:label "cited_by_count" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Number of papers citing this work" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:city a owl:DatatypeProperty ;
+    rdfs:label "city" ;
+    rdfs:range xsd:string ;
+    skos:definition "City name" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:confidence a owl:DatatypeProperty ;
+    rdfs:label "confidence" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+    skos:definition "Confidence score for extracted information (0.0 to 1.0)" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:content a owl:DatatypeProperty ;
+    rdfs:label "content" ;
+    rdfs:range xsd:string ;
+    skos:definition "Section text content" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:country_code a owl:DatatypeProperty ;
+    rdfs:label "country_code" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^[A-Z]{2}$" ] ) ] ) ] ;
+    skos:definition "ISO country code" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:display_name a owl:DatatypeProperty ;
+    rdfs:label "display_name" ;
+    rdfs:range xsd:string ;
+    skos:definition "Display name of the institution" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:email a owl:DatatypeProperty ;
+    rdfs:label "email" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$" ] ) ] ) ] ;
+    skos:definition "Email address" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:essn a owl:DatatypeProperty ;
+    rdfs:label "essn" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+    skos:definition "Electronic ISSN" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:established a owl:DatatypeProperty ;
+    rdfs:label "established" ;
+    rdfs:range xsd:integer ;
+    skos:definition "Year established" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:figure_label a owl:DatatypeProperty ;
+    rdfs:label "figure_label" ;
+    rdfs:range xsd:string ;
+    skos:definition "Figure label (e.g., \"Figure 1\")" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:figures a owl:ObjectProperty ;
+    rdfs:label "figures" ;
+    rdfs:range pyeuropepmc:FigureEntity ;
+    owl:inverseOf pyeuropepmc:figure_paper ;
+    skos:definition "Figures in a paper" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:first_name a owl:DatatypeProperty ;
+    rdfs:label "first_name" ;
+    rdfs:range xsd:string ;
+    skos:definition "First/given name of the author" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:first_page a owl:DatatypeProperty ;
+    rdfs:label "first_page" ;
+    rdfs:range xsd:string ;
+    skos:definition "First page number" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:full_name a owl:DatatypeProperty ;
+    rdfs:label "full_name" ;
+    rdfs:range xsd:string ;
+    skos:definition "Full name of the author" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:funded_papers a owl:ObjectProperty ;
+    rdfs:label "funded_papers" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:grants ;
+    skos:definition "Papers funded by a grant" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:funding_source a owl:DatatypeProperty ;
+    rdfs:label "funding_source" ;
+    rdfs:range xsd:string ;
+    skos:definition "Name of the funding organization" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:fundref_doi a owl:DatatypeProperty ;
+    rdfs:label "fundref_doi" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "FundRef DOI for the funding organization" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:fundref_id a owl:DatatypeProperty ;
+    rdfs:label "fundref_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "FundRef identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:grants a owl:ObjectProperty ;
+    rdfs:label "grants" ;
+    rdfs:range pyeuropepmc:GrantEntity ;
+    owl:inverseOf pyeuropepmc:funded_papers ;
+    skos:definition "Grants funding a paper" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:graphic_uri a owl:DatatypeProperty ;
+    rdfs:label "graphic_uri" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "URI to the figure graphic/image file" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:grid_id a owl:DatatypeProperty ;
+    rdfs:label "grid_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "GRID identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:id a owl:DatatypeProperty ;
+    rdfs:label "id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Local identifier (slug/uuid) for the entity" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:impact_factor a owl:DatatypeProperty ;
+    rdfs:label "impact_factor" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] ) ] ;
+    skos:definition "Journal impact factor" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:influential_citation_count a owl:DatatypeProperty ;
+    rdfs:label "influential_citation_count" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Influential citation count" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:initials a owl:DatatypeProperty ;
+    rdfs:label "initials" ;
+    rdfs:range xsd:string ;
+    skos:definition "Author's initials" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:institution_type a owl:ObjectProperty ;
+    rdfs:label "institution_type" ;
+    rdfs:range pyeuropepmc:InstitutionType ;
+    skos:definition "Type of institution" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:is_oa a owl:DatatypeProperty ;
+    rdfs:label "is_oa" ;
+    rdfs:range xsd:boolean ;
+    skos:definition "Open access status flag" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:isni a owl:DatatypeProperty ;
+    rdfs:label "isni" ;
+    rdfs:range xsd:string ;
+    skos:definition "ISNI identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:iso_abbrev a owl:DatatypeProperty ;
+    rdfs:label "iso_abbrev" ;
+    rdfs:range xsd:string ;
+    skos:definition "ISO abbreviation (alternative)" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:iso_abbreviation a owl:DatatypeProperty ;
+    rdfs:label "iso_abbreviation" ;
+    rdfs:range xsd:string ;
+    skos:definition "ISO abbreviation" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:issue a owl:DatatypeProperty ;
+    rdfs:label "issue" ;
+    rdfs:range xsd:string ;
+    skos:definition "Journal issue number" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:journal_issue_id a owl:DatatypeProperty ;
+    rdfs:label "journal_issue_id" ;
+    rdfs:range xsd:integer ;
+    skos:definition "Journal issue identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:journal_papers a owl:ObjectProperty ;
+    rdfs:label "journal_papers" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:journal ;
+    skos:definition "Papers published in this journal" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:label a owl:DatatypeProperty ;
+    rdfs:label "label" ;
+    rdfs:range xsd:string ;
+    skos:definition "Human-readable label for the entity" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:language a owl:DatatypeProperty ;
+    rdfs:label "language" ;
+    rdfs:range xsd:string ;
+    skos:definition "Primary language of publication" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:last_name a owl:DatatypeProperty ;
+    rdfs:label "last_name" ;
+    rdfs:range xsd:string ;
+    skos:definition "Last/family name of the author" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:last_page a owl:DatatypeProperty ;
+    rdfs:label "last_page" ;
+    rdfs:range xsd:string ;
+    skos:definition "Last page number" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:last_updated a owl:DatatypeProperty ;
+    rdfs:label "last_updated" ;
+    rdfs:range xsd:dateTime ;
+    skos:definition "Timestamp of last data update (ISO 8601)" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:latitude a owl:DatatypeProperty ;
+    rdfs:label "latitude" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive -9e+01 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 9e+01 ] ) ] ) ] ;
+    skos:definition "Geographic latitude" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:license_text a owl:DatatypeProperty ;
+    rdfs:label "license_text" ;
+    rdfs:range xsd:string ;
+    skos:definition "License description text" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:license_url a owl:DatatypeProperty ;
+    rdfs:label "license_url" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "License URL" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:longitude a owl:DatatypeProperty ;
+    rdfs:label "longitude" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive -1.8e+02 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 1.8e+02 ] ) ] ) ] ;
+    skos:definition "Geographic longitude" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:medline_abbreviation a owl:DatatypeProperty ;
+    rdfs:label "medline_abbreviation" ;
+    rdfs:range xsd:string ;
+    skos:definition "Medline abbreviation" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:members a owl:ObjectProperty ;
+    rdfs:label "members" ;
+    rdfs:range pyeuropepmc:AuthorEntity ;
+    owl:inverseOf pyeuropepmc:author_institutions ;
+    skos:definition "Members of an institution" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:nlm_ta a owl:DatatypeProperty ;
+    rdfs:label "nlm_ta" ;
+    rdfs:range xsd:string ;
+    skos:definition "NLM Title Abbreviation" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:nlmid a owl:DatatypeProperty ;
+    rdfs:label "nlmid" ;
+    rdfs:range xsd:string ;
+    skos:definition "NLM ID" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:oa_status a owl:ObjectProperty ;
+    rdfs:label "oa_status" ;
+    rdfs:range pyeuropepmc:OpenAccessStatus ;
+    skos:definition "Open access status details" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:oa_url a owl:DatatypeProperty ;
+    rdfs:label "oa_url" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "Open access URL" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:orcid a owl:DatatypeProperty ;
+    rdfs:label "orcid" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+    skos:definition "ORCID identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:pages a owl:DatatypeProperty ;
+    rdfs:label "pages" ;
+    rdfs:range xsd:string ;
+    skos:definition "Page range (e.g., \"123-456\")" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:papers a owl:ObjectProperty ;
+    rdfs:label "papers" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:authors ;
+    skos:definition "Papers authored by a person" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:pmid a owl:DatatypeProperty ;
+    rdfs:label "pmid" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^\\d+$" ] ) ] ) ] ;
+    skos:definition "PubMed ID" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:position a owl:ObjectProperty ;
+    rdfs:label "position" ;
+    rdfs:range pyeuropepmc:AuthorPosition ;
+    skos:definition "Author position/role" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:pub_date a owl:DatatypeProperty ;
+    rdfs:label "pub_date" ;
+    rdfs:range xsd:date ;
+    skos:definition "Publication date (legacy field)" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:publication_date a owl:DatatypeProperty ;
+    rdfs:label "publication_date" ;
+    rdfs:range xsd:date ;
+    skos:definition "Full publication date" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:publication_type a owl:ObjectProperty ;
+    rdfs:label "publication_type" ;
+    rdfs:range pyeuropepmc:PublicationType ;
+    skos:definition "Type of publication" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:publication_year a owl:DatatypeProperty ;
+    rdfs:label "publication_year" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 1000 ] ) ] [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:maxInclusive 9999 ] ) ] ) ] ;
+    skos:definition "Publication year (4-digit)" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:publisher_id a owl:DatatypeProperty ;
+    rdfs:label "publisher_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Publisher-specific identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:raw_citation a owl:DatatypeProperty ;
+    rdfs:label "raw_citation" ;
+    rdfs:range xsd:string ;
+    skos:definition "Raw citation text when parsing fails" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:recipient a owl:DatatypeProperty ;
+    rdfs:label "recipient" ;
+    rdfs:range xsd:string ;
+    skos:definition "Grant recipient (deprecated, use recipients relationship)" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:reference_count a owl:DatatypeProperty ;
+    rdfs:label "reference_count" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Number of references cited" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:references a owl:ObjectProperty ;
+    rdfs:label "references" ;
+    rdfs:range pyeuropepmc:ReferenceEntity ;
+    owl:inverseOf pyeuropepmc:citing_paper ;
+    skos:definition "References cited by a paper" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:ror_id a owl:DatatypeProperty ;
+    rdfs:label "ror_id" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "ROR identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:rows a owl:ObjectProperty ;
+    rdfs:label "rows" ;
+    rdfs:range pyeuropepmc:TableRowEntity ;
+    owl:inverseOf pyeuropepmc:table ;
+    skos:definition "Rows in a table" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:scopus_source_id a owl:DatatypeProperty ;
+    rdfs:label "scopus_source_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Scopus source identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:sections a owl:ObjectProperty ;
+    rdfs:label "sections" ;
+    rdfs:range pyeuropepmc:SectionEntity ;
+    owl:inverseOf pyeuropepmc:section_paper ;
+    skos:definition "Sections of a paper" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:semantic_scholar_corpus_id a owl:DatatypeProperty ;
+    rdfs:label "semantic_scholar_corpus_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Semantic Scholar corpus ID" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:sjr a owl:DatatypeProperty ;
+    rdfs:label "sjr" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:float ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] ) ] ;
+    skos:definition "SCImago Journal Rank" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:source_uri a owl:DatatypeProperty ;
+    rdfs:label "source_uri" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "Source URI for provenance tracking" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:subsections a owl:ObjectProperty ;
+    rdfs:label "subsections" ;
+    rdfs:range pyeuropepmc:SectionEntity ;
+    owl:inverseOf pyeuropepmc:parent_section ;
+    skos:definition "Child sections of a section" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:table_label a owl:DatatypeProperty ;
+    rdfs:label "table_label" ;
+    rdfs:range xsd:string ;
+    skos:definition "Table label (e.g., \"Table 1\")" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:tables a owl:ObjectProperty ;
+    rdfs:label "tables" ;
+    rdfs:range pyeuropepmc:TableEntity ;
+    owl:inverseOf pyeuropepmc:table_paper ;
+    skos:definition "Tables in a paper" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:volume a owl:DatatypeProperty ;
+    rdfs:label "volume" ;
+    rdfs:range xsd:string ;
+    skos:definition "Publication volume" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:website a owl:DatatypeProperty ;
+    rdfs:label "website" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "Institution website URL" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:InstitutionEntity a owl:Class ;
+    rdfs:label "InstitutionEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:fundref_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:longitude ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:display_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:country ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:institution_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:website ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:ror_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:InstitutionType ;
+            owl:onProperty pyeuropepmc:institution_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:city ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:domains ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:isni ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:city ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:display_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:latitude ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:wikidata_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:country_code ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:ror_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^[A-Z]{2}$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:country_code ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:city ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:isni ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:AuthorEntity ;
+            owl:onProperty pyeuropepmc:members ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:website ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:ror_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:grid_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:domains ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:fundref_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:wikidata_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:integer ;
+            owl:onProperty pyeuropepmc:established ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:isni ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty pyeuropepmc:display_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:established ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:members ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:grid_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive -1.8e+02 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1.8e+02 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:longitude ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:fundref_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:institution_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:website ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:wikidata_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:latitude ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:grid_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:longitude ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:country_code ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:country ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:established ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:country ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:decimal [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive -9e+01 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 9e+01 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:latitude ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing an institution with ROR alignment. Contains organizational metadata and geographic information." ;
+    skos:exactMatch org:Organization ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:TableEntity a owl:Class ;
+    rdfs:label "TableEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:caption ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:caption ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:table_paper ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:caption ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:rows ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:table_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:table_label ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:table_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:headers ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:table_label ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:TableRowEntity ;
+            owl:onProperty pyeuropepmc:rows ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:headers ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:table_label ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing a table with BIBO alignment. Contains table metadata and structured row data." ;
+    skos:exactMatch bibo:Table ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:citing_paper a owl:ObjectProperty ;
+    rdfs:label "citing_paper" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:references ;
+    skos:definition "Paper that cites this reference" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:figure_paper a owl:ObjectProperty ;
+    rdfs:label "figure_paper" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:figures ;
+    skos:definition "Paper this figure belongs to" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:journal a owl:ObjectProperty ;
+    rdfs:label "journal" ;
+    rdfs:range pyeuropepmc:JournalEntity ;
+    owl:inverseOf pyeuropepmc:journal_papers ;
+    skos:definition "Journal a paper is published in" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:parent_section a owl:ObjectProperty ;
+    rdfs:label "parent_section" ;
+    rdfs:range pyeuropepmc:SectionEntity ;
+    owl:inverseOf pyeuropepmc:subsections ;
+    skos:definition "Parent section" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:section_paper a owl:ObjectProperty ;
+    rdfs:label "section_paper" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:sections ;
+    skos:definition "Paper this section belongs to" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:table a owl:ObjectProperty ;
+    rdfs:label "table" ;
+    rdfs:range pyeuropepmc:TableEntity ;
+    owl:inverseOf pyeuropepmc:rows ;
+    skos:definition "Table this row belongs to" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:table_paper a owl:ObjectProperty ;
+    rdfs:label "table_paper" ;
+    rdfs:range pyeuropepmc:PaperEntity ;
+    owl:inverseOf pyeuropepmc:tables ;
+    skos:definition "Paper this table belongs to" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:AuthorPosition a owl:Class ;
+    rdfs:label "AuthorPosition" ;
+    owl:unionOf ( <https://w3id.org/pyeuropepmc/vocab#AuthorPosition#first> <https://w3id.org/pyeuropepmc/vocab#AuthorPosition#middle> <https://w3id.org/pyeuropepmc/vocab#AuthorPosition#last> ) ;
+    skos:definition "Position of author in author list" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> ;
+    linkml:permissible_values <https://w3id.org/pyeuropepmc/vocab#AuthorPosition#first>,
+        <https://w3id.org/pyeuropepmc/vocab#AuthorPosition#last>,
+        <https://w3id.org/pyeuropepmc/vocab#AuthorPosition#middle> .
+
+pyeuropepmc:begin_index a owl:DatatypeProperty ;
+    rdfs:label "begin_index" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "NIF begin offset for text alignment" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:end_index a owl:DatatypeProperty ;
+    rdfs:label "end_index" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "NIF end offset for text alignment" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:AuthorEntity a owl:Class ;
+    rdfs:label "AuthorEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:affiliation_text ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:sources ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:full_name ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:InstitutionEntity ;
+            owl:onProperty pyeuropepmc:author_institutions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:full_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:h_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:email ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:papers ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:last_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:h_index ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:first_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:email ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:initials ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:affiliation_text ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:last_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:author_institutions ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:citation_count ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:position ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:semantic_scholar_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:AuthorPosition ;
+            owl:onProperty pyeuropepmc:position ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:affiliation_text ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:semantic_scholar_id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:orcid ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:citation_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:orcid ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:email ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:orcid ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:first_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty pyeuropepmc:full_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:last_name ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:position ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:sources ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:initials ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:first_name ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:papers ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:initials ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:citation_count ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:h_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:semantic_scholar_id ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing an author with FOAF alignment. Contains personal information, institutional affiliations, and identifiers." ;
+    skos:exactMatch foaf:Person ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:caption a owl:DatatypeProperty ;
+    rdfs:label "caption" ;
+    rdfs:range xsd:string ;
+    skos:definition "Caption/description" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:citation_count a owl:DatatypeProperty ;
+    rdfs:label "citation_count" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "Total citation count" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:country a owl:DatatypeProperty ;
+    rdfs:label "country" ;
+    rdfs:range xsd:string ;
+    skos:definition "Country name" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:h_index a owl:DatatypeProperty ;
+    rdfs:label "h_index" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:integer ;
+                        owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+    skos:definition "H-index" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:issn a owl:DatatypeProperty ;
+    rdfs:label "issn" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+    skos:definition "ISSN identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:publisher a owl:DatatypeProperty ;
+    rdfs:label "publisher" ;
+    rdfs:range xsd:string ;
+    skos:definition "Publisher name" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:semantic_scholar_id a owl:DatatypeProperty ;
+    rdfs:label "semantic_scholar_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "Semantic Scholar paper ID" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:wikidata_id a owl:DatatypeProperty ;
+    rdfs:label "wikidata_id" ;
+    rdfs:range xsd:anyURI ;
+    skos:definition "Wikidata identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:SectionEntity a owl:Class ;
+    rdfs:label "SectionEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:begin_index ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:content ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty pyeuropepmc:content ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:end_index ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:section_paper ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:end_index ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:subsections ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:parent_section ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:parent_section ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:begin_index ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:content ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:begin_index ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:SectionEntity ;
+            owl:onProperty pyeuropepmc:subsections ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:SectionEntity ;
+            owl:onProperty pyeuropepmc:parent_section ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PaperEntity ;
+            owl:onProperty pyeuropepmc:section_paper ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:section_paper ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:end_index ],
+        pyeuropepmc:BaseEntity ;
+    skos:definition "Entity representing a document section with BIBO and NIF alignment. Contains section content and NIF text offsets for alignment." ;
+    skos:exactMatch bibo:DocumentPart ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:doi a owl:DatatypeProperty ;
+    rdfs:label "doi" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:anyURI [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$" ] ) ] ) ] ;
+    skos:definition "Digital Object Identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:pmcid a owl:DatatypeProperty ;
+    rdfs:label "pmcid" ;
+    rdfs:range [ a rdfs:Datatype ;
+            owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                        owl:onDatatype xsd:string ;
+                        owl:withRestrictions ( [ xsd:pattern "^PMC\\d+$" ] ) ] ) ] ;
+    skos:definition "PubMed Central ID" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:InstitutionType a owl:Class ;
+    rdfs:label "InstitutionType" ;
+    owl:unionOf ( <https://w3id.org/pyeuropepmc/vocab#InstitutionType#education> <https://w3id.org/pyeuropepmc/vocab#InstitutionType#healthcare> <https://w3id.org/pyeuropepmc/vocab#InstitutionType#company> <https://w3id.org/pyeuropepmc/vocab#InstitutionType#government> <https://w3id.org/pyeuropepmc/vocab#InstitutionType#nonprofit> <https://w3id.org/pyeuropepmc/vocab#InstitutionType#facility> <https://w3id.org/pyeuropepmc/vocab#InstitutionType#other> ) ;
+    skos:definition "Type of research institution" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> ;
+    linkml:permissible_values <https://w3id.org/pyeuropepmc/vocab#InstitutionType#company>,
+        <https://w3id.org/pyeuropepmc/vocab#InstitutionType#education>,
+        <https://w3id.org/pyeuropepmc/vocab#InstitutionType#facility>,
+        <https://w3id.org/pyeuropepmc/vocab#InstitutionType#government>,
+        <https://w3id.org/pyeuropepmc/vocab#InstitutionType#healthcare>,
+        <https://w3id.org/pyeuropepmc/vocab#InstitutionType#nonprofit>,
+        <https://w3id.org/pyeuropepmc/vocab#InstitutionType#other> .
+
+pyeuropepmc:OpenAccessStatus a owl:Class ;
+    rdfs:label "OpenAccessStatus" ;
+    owl:unionOf ( <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#open> <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#closed> <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#hybrid> <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#green> <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#gold> <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#bronze> <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#unknown> ) ;
+    skos:definition "Open access status of a publication" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> ;
+    linkml:permissible_values <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#bronze>,
+        <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#closed>,
+        <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#gold>,
+        <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#green>,
+        <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#hybrid>,
+        <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#open>,
+        <https://w3id.org/pyeuropepmc/vocab#OpenAccessStatus#unknown> .
+
+pyeuropepmc:BaseEntity a owl:Class ;
+    rdfs:label "BaseEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:allValuesFrom xsd:dateTime ;
+            owl:onProperty pyeuropepmc:last_updated ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:label ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:confidence ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:last_updated ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:data_sources ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:label ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:data_sources ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:float [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0e+00 ] ) ] [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:float ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 1e+00 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:confidence ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:types ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:source_uri ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:confidence ],
+        [ a owl:Restriction ;
+            owl:minCardinality 1 ;
+            owl:onProperty pyeuropepmc:id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:source_uri ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:label ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:source_uri ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:types ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:id ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:last_updated ] ;
+    skos:definition "Base entity for all data models with RDF serialization support. All entities inherit from this base class, providing common functionality for validation, normalization, and RDF export." ;
+    skos:exactMatch pyeuropepmc:BaseEntity ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:PublicationType a owl:Class ;
+    rdfs:label "PublicationType" ;
+    owl:unionOf ( <https://w3id.org/pyeuropepmc/vocab#PublicationType#journal_article> <https://w3id.org/pyeuropepmc/vocab#PublicationType#review> <https://w3id.org/pyeuropepmc/vocab#PublicationType#preprint> <https://w3id.org/pyeuropepmc/vocab#PublicationType#book_chapter> <https://w3id.org/pyeuropepmc/vocab#PublicationType#conference_paper> <https://w3id.org/pyeuropepmc/vocab#PublicationType#dataset> <https://w3id.org/pyeuropepmc/vocab#PublicationType#thesis> <https://w3id.org/pyeuropepmc/vocab#PublicationType#other> ) ;
+    skos:definition "Type of scholarly publication" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> ;
+    linkml:permissible_values <https://w3id.org/pyeuropepmc/vocab#PublicationType#book_chapter>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#conference_paper>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#dataset>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#journal_article>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#other>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#preprint>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#review>,
+        <https://w3id.org/pyeuropepmc/vocab#PublicationType#thesis> .
+
+pyeuropepmc:openalex_id a owl:DatatypeProperty ;
+    rdfs:label "openalex_id" ;
+    rdfs:range xsd:string ;
+    skos:definition "OpenAlex identifier" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:title a owl:DatatypeProperty ;
+    rdfs:label "title" ;
+    rdfs:range xsd:string ;
+    skos:definition "Work or entity title" ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+pyeuropepmc:PaperEntity a owl:Class ;
+    rdfs:label "PaperEntity" ;
+    rdfs:subClassOf [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:doi ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:fields_of_study ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:related_works ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:abstract ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:last_page ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:pub_date ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:keywords ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:influential_citation_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:first_page ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:figures ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:is_oa ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:AuthorEntity ;
+            owl:onProperty pyeuropepmc:authors ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:oa_status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:doi ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:citation_count ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:reference_count ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:publisher ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:is_oa ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:publication_type ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:cited_by_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:influential_citation_count ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:oa_status ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:last_page ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:citation_count ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:ReferenceEntity ;
+            owl:onProperty pyeuropepmc:references ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:string [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:string ;
+                                owl:withRestrictions ( [ xsd:pattern "^\\d{4}-\\d{3}[\\dX]$" ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:issn ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:oa_url ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:issue ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:issn ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:license_text ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:date ;
+            owl:onProperty pyeuropepmc:pub_date ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:reference_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:references ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:publisher ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:PublicationType ;
+            owl:onProperty pyeuropepmc:publication_type ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:citation_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:abstract ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:OpenAccessStatus ;
+            owl:onProperty pyeuropepmc:oa_status ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:publisher ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:first_page ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:authors ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:doi ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:pub_date ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:SectionEntity ;
+            owl:onProperty pyeuropepmc:sections ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:FigureEntity ;
+            owl:onProperty pyeuropepmc:figures ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:influential_citation_count ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:journal ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:publication_type ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:issn ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:paper_institutions ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:journal ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:oa_url ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:grants ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:semantic_scholar_corpus_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:sections ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:license_text ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:keywords ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:JournalEntity ;
+            owl:onProperty pyeuropepmc:journal ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:last_page ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:first_page ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:pmcid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:license_url ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:InstitutionEntity ;
+            owl:onProperty pyeuropepmc:paper_institutions ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:TableEntity ;
+            owl:onProperty pyeuropepmc:tables ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:pmcid ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:fields_of_study ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:openalex_id ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:reference_count ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:boolean ;
+            owl:onProperty pyeuropepmc:is_oa ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:license_url ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:semantic_scholar_corpus_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:oa_url ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:abstract ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:title ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:issue ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom pyeuropepmc:GrantEntity ;
+            owl:onProperty pyeuropepmc:grants ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:cited_by_count ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom [ a rdfs:Datatype ;
+                    owl:intersectionOf ( xsd:integer [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ) ] ;
+            owl:onProperty pyeuropepmc:cited_by_count ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:related_works ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:tables ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:semantic_scholar_corpus_id ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:anyURI ;
+            owl:onProperty pyeuropepmc:license_url ],
+        [ a owl:Restriction ;
+            owl:minCardinality 0 ;
+            owl:onProperty pyeuropepmc:pmcid ],
+        [ a owl:Restriction ;
+            owl:allValuesFrom xsd:string ;
+            owl:onProperty pyeuropepmc:license_text ],
+        [ a owl:Restriction ;
+            owl:maxCardinality 1 ;
+            owl:onProperty pyeuropepmc:issue ],
+        pyeuropepmc:ScholarlyWorkEntity ;
+    skos:definition "Entity representing an academic paper with BIBO alignment. Contains bibliographic metadata, citation information, and relationships to authors, institutions, journals, and other entities." ;
+    skos:exactMatch bibo:AcademicArticle ;
+    skos:inScheme <https://w3id.org/pyeuropepmc> .
+
+[] rdfs:subClassOf [ owl:intersectionOf ( [ a owl:Restriction ;
+                        owl:onProperty pyeuropepmc:begin_index ;
+                        owl:someValuesFrom [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:maxInclusive 999999999 ] ) ] ] [ a owl:Restriction ;
+                        owl:onProperty pyeuropepmc:end_index ;
+                        owl:someValuesFrom [ a rdfs:Datatype ;
+                                owl:onDatatype xsd:integer ;
+                                owl:withRestrictions ( [ xsd:minInclusive 0 ] ) ] ] ) ] ;
+    owl:intersectionOf ( [ owl:intersectionOf ( [ a owl:Restriction ;
+                            owl:onProperty pyeuropepmc:begin_index ;
+                            owl:someValuesFrom xsd:string ] [ a owl:Restriction ;
+                            owl:onProperty pyeuropepmc:end_index ;
+                            owl:someValuesFrom xsd:string ] ) ] pyeuropepmc:SectionEntity ) .
+
+[] rdfs:subClassOf [ a owl:Restriction ;
+            owl:onProperty pyeuropepmc:title ;
+            owl:someValuesFrom xsd:string ] ;
+    owl:intersectionOf ( [ owl:intersectionOf ( [ a owl:Restriction ;
+                            owl:onProperty pyeuropepmc:doi ;
+                            owl:someValuesFrom xsd:string ] [ a owl:Restriction ;
+                            owl:onProperty pyeuropepmc:pmcid ;
+                            owl:someValuesFrom xsd:string ] ) ] pyeuropepmc:PaperEntity ) .

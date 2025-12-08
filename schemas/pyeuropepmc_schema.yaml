@@ -24,9 +24,9 @@ id: https://w3id.org/pyeuropepmc
 name: pyeuropepmc
 title: PyEuropePMC Data Model Schema
 description: >-
-  LinkML schema defining the data model for PyEuropePMC, a Python toolkit for 
+  LinkML schema defining the data model for PyEuropePMC, a Python toolkit for
   searching, retrieving, and analyzing scientific literature from Europe PMC.
-  This schema provides a single source of truth for generating JSON Schema, 
+  This schema provides a single source of truth for generating JSON Schema,
   RDF/OWL, SHACL shapes, and Python dataclasses.
 version: 1.0.0
 license: MIT

@@ -1,0 +1,1434 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix frapo: <http://purl.org/cerif/frapo/> .
+@prefix geo1: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+bibo:Document a sh:NodeShape ;
+    sh:closed false ;
+    sh:description "Base entity for scholarly works (papers, references, etc.). Provides common fields and methods for entities representing scholarly publications." ;
+    sh:ignoredProperties ( pyeuropepmc:citationCount bibo:pageStart dcterms:related pyeuropepmc:affiliatedWith bibo:pageEnd cito:isCitedBy dcterms:abstract datacite:openalex dcterms:creator dcterms:hasPart bibo:DocumentType dcterms:accessRights dcterms:publisher bibo:numPages bibo:issn bibo:journal pyeuropepmc:semanticScholarCorpusId rdf:type dcterms:rights bibo:issue cito:cites pyeuropepmc:influentialCitationCount dcterms:license foaf:fundedBy dcterms:subject dcterms:description bibo:uri ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Semantic Scholar paper ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path pyeuropepmc:semanticScholarId ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Publication year (4-digit)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 9999 ;
+            sh:minInclusive 1000 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path dcterms:issued ],
+        [ sh:datatype xsd:string ;
+            sh:description "PubMed Central ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path pyeuropepmc:pmcid ;
+            sh:pattern "^PMC\\d+$" ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Digital Object Identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path bibo:doi ;
+            sh:pattern "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "PubMed ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path pyeuropepmc:pmid ;
+            sh:pattern "^\\d+$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Page range (e.g., \"123-456\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path bibo:pages ],
+        [ sh:datatype xsd:string ;
+            sh:description "Work or entity title" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:title ],
+        [ sh:datatype xsd:date ;
+            sh:description "Full publication date" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path dcterms:date ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Publication volume" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path bibo:volume ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass bibo:Document .
+
+pyeuropepmc:BaseEntity a sh:NodeShape ;
+    sh:closed false ;
+    sh:description "Base entity for all data models with RDF serialization support. All entities inherit from this base class, providing common functionality for validation, normalization, and RDF export." ;
+    sh:ignoredProperties ( pyeuropepmc:rorId skos:prefLabel geo1:lat nif:endIndex dcterms:language bibo:pageStart nif:isString pyeuropepmc:semanticScholarId dcterms:related foaf:mbox bibo:pageEnd owl:sameAs cito:isCitedBy foaf:givenName geo1:countryCode pyeuropepmc:pmid bibo:nlmid dcterms:issued dcterms:abstract datacite:openalex dcterms:creator bibo:nlmTA frapo:hasRecipient bibo:shortTitle bibo:doi pyeuropepmc:isni bibo:DocumentType dcterms:accessRights dcterms:publisher pyeuropepmc:impactFactor pyeuropepmc:publisherId foaf:made geo1:long frapo:funds foaf:familyName bibo:issn dcterms:created bibo:journal org:classification org:role dcterms:title bibo:pages pyeuropepmc:semanticScholarCorpusId dcterms:rights bibo:issue cito:cites dcterms:license foaf:initials geo1:city foaf:depiction bibo:eissn pyeuropepmc:sjr bibo:article pyeuropepmc:citationCount nif:beginIndex dcterms:date pyeuropepmc:affiliatedWith bibo:uri org:hasMember datacite:identifier dcterms:hasPart pyeuropepmc:gridId bibo:volume dcterms:isPartOf rdfs:member pyeuropepmc:hIndex foaf:name datacite:doi bibo:numPages foaf:homepage frapo:hasFundingAgency datacite:orcid geo1:country rdf:type pyeuropepmc:fundrefId pyeuropepmc:influentialCitationCount bibo:isoAbbrev foaf:fundedBy dcterms:subject dcterms:description pyeuropepmc:affiliationText pyeuropepmc:pmcid pyeuropepmc:scopusSourceId ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path dcterms:modified ] ;
+    sh:targetClass pyeuropepmc:BaseEntity .
+
+frapo:Grant a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing a research grant or funding award with FRAPO alignment. Contains funding information and relationships to recipients." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "FundRef DOI for the funding organization" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path datacite:doi ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path dcterms:modified ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Papers funded by a grant" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 5 ;
+            sh:path frapo:funds ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "Grant or award identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path datacite:identifier ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Name of the funding organization" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path frapo:hasFundingAgency ],
+        [ sh:class foaf:Person ;
+            sh:description "Principal investigators/recipients of a grant" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 4 ;
+            sh:path frapo:hasRecipient ],
+        [ sh:datatype xsd:string ;
+            sh:description "Grant recipient (deprecated, use recipients relationship)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path frapo:hasRecipient ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path dcterms:identifier ] ;
+    sh:targetClass frapo:Grant .
+
+bibo:Article a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing a bibliographic reference with BIBO alignment. Contains citation information for works referenced by papers." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "PubMed Central ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path pyeuropepmc:pmcid ;
+            sh:pattern "^PMC\\d+$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Work or entity title" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path dcterms:title ],
+        [ sh:datatype xsd:string ;
+            sh:description "Publication volume" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path bibo:volume ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Digital Object Identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path bibo:doi ;
+            sh:pattern "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Raw citation text when parsing fails" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:description ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Paper that cites this reference" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path cito:isCitedBy ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "Page range (e.g., \"123-456\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path bibo:pages ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Publication year (4-digit)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 9999 ;
+            sh:minInclusive 1000 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path dcterms:issued ],
+        [ sh:datatype xsd:string ;
+            sh:description "Semantic Scholar paper ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path pyeuropepmc:semanticScholarId ],
+        [ sh:datatype xsd:date ;
+            sh:description "Full publication date" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path dcterms:date ],
+        [ sh:datatype xsd:string ;
+            sh:description "PubMed ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path pyeuropepmc:pmid ;
+            sh:pattern "^\\d+$" ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path prov:hadPrimarySource ] ;
+    sh:targetClass bibo:Article .
+
+bibo:Image a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing a figure with BIBO alignment. Contains figure metadata and graphic URI." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Caption/description" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:description ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Paper this figure belongs to" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 3 ;
+            sh:path dcterms:isPartOf ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "URI to the figure graphic/image file" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path foaf:depiction ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:string ;
+            sh:description "Figure label (e.g., \"Figure 1\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path prov:hadPrimarySource ] ;
+    sh:targetClass bibo:Image .
+
+bibo:Journal a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing an academic journal with BIBO alignment. Contains journal metadata and bibliometric information." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "NLM ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path bibo:nlmid ],
+        [ sh:datatype xsd:string ;
+            sh:description "Publisher name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path dcterms:publisher ],
+        [ sh:datatype xsd:string ;
+            sh:description "Subject areas/categories" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path dcterms:subject ],
+        [ sh:datatype xsd:string ;
+            sh:description "Primary language of publication" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path dcterms:language ],
+        [ sh:datatype xsd:string ;
+            sh:description "Publisher-specific identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 19 ;
+            sh:path pyeuropepmc:publisherId ],
+        [ sh:datatype xsd:decimal ;
+            sh:description "SCImago Journal Rank" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path pyeuropepmc:sjr ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 23 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Electronic ISSN" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path bibo:eissn ;
+            sh:pattern "^\\d{4}-\\d{3}[\\dX]$" ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Journal issue identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path bibo:issue ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Papers published in this journal" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 20 ;
+            sh:path bibo:article ],
+        [ sh:datatype xsd:string ;
+            sh:description "Scopus source identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path pyeuropepmc:scopusSourceId ],
+        [ sh:datatype xsd:string ;
+            sh:description "Work or entity title" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:title ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 24 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:string ;
+            sh:description "Country name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path geo1:country ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 25 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 22 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Wikidata identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path owl:sameAs ],
+        [ sh:datatype xsd:string ;
+            sh:description "OpenAlex identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path datacite:openalex ],
+        [ sh:datatype xsd:string ;
+            sh:description "NLM Title Abbreviation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path bibo:nlmTA ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 26 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "ISO abbreviation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path bibo:shortTitle ],
+        [ sh:datatype xsd:string ;
+            sh:description "ISO abbreviation (alternative)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path bibo:isoAbbrev ],
+        [ sh:datatype xsd:string ;
+            sh:description "ISSN identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path bibo:issn ;
+            sh:pattern "^\\d{4}-\\d{3}[\\dX]$" ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 27 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:string ;
+            sh:description "Medline abbreviation" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path bibo:shortTitle ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 21 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:decimal ;
+            sh:description "Journal impact factor" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path pyeuropepmc:impactFactor ],
+        [ sh:datatype xsd:integer ;
+            sh:description "H-index" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path pyeuropepmc:hIndex ] ;
+    sh:targetClass bibo:Journal .
+
+bibo:Row a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing a table row." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:class bibo:Table ;
+            sh:description "Table this row belongs to" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 1 ;
+            sh:path dcterms:isPartOf ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Cell values for a table row" ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path rdfs:member ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path dcterms:identifier ] ;
+    sh:targetClass bibo:Row .
+
+bibo:Table a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing a table with BIBO alignment. Contains table metadata and structured row data." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:string ;
+            sh:description "Column headers for a table" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path rdfs:label ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Paper this table belongs to" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 4 ;
+            sh:path dcterms:isPartOf ],
+        [ sh:datatype xsd:string ;
+            sh:description "Table label (e.g., \"Table 1\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path rdfs:label ],
+        [ sh:class bibo:Row ;
+            sh:description "Rows in a table" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 3 ;
+            sh:path dcterms:hasPart ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Caption/description" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:description ] ;
+    sh:targetClass bibo:Table .
+
+org:Organization a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing an institution with ROR alignment. Contains organizational metadata and geographic information." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "GRID identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path pyeuropepmc:gridId ],
+        [ sh:datatype xsd:string ;
+            sh:description "ISNI identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path pyeuropepmc:isni ],
+        [ sh:datatype xsd:string ;
+            sh:description "OpenAlex identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path datacite:openalex ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 20 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 23 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "ROR identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path pyeuropepmc:rorId ],
+        [ sh:datatype xsd:decimal ;
+            sh:description "Geographic longitude" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1.8e+02 ;
+            sh:minInclusive -1.8e+02 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path geo1:long ],
+        [ sh:description "Type of institution" ;
+            sh:in ( "education" "healthcare" "company" "government" "nonprofit" "facility" "other" ) ;
+            sh:maxCount 1 ;
+            sh:order 8 ;
+            sh:path org:classification ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Wikidata identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path owl:sameAs ],
+        [ sh:datatype xsd:string ;
+            sh:description "City name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path geo1:city ],
+        [ sh:datatype xsd:string ;
+            sh:description "Country name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path geo1:country ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Institution website URL" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path foaf:homepage ],
+        [ sh:class foaf:Person ;
+            sh:description "Members of an institution" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 16 ;
+            sh:path org:hasMember ],
+        [ sh:datatype xsd:string ;
+            sh:description "Display name of the institution" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path skos:prefLabel ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 21 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Associated domain names" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path dcterms:subject ],
+        [ sh:datatype xsd:decimal ;
+            sh:description "Geographic latitude" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 9e+01 ;
+            sh:minInclusive -9e+01 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path geo1:lat ],
+        [ sh:datatype xsd:string ;
+            sh:description "FundRef identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path pyeuropepmc:fundrefId ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 22 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 19 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "ISO country code" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path geo1:countryCode ;
+            sh:pattern "^[A-Z]{2}$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Year established" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path dcterms:created ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path rdfs:label ] ;
+    sh:targetClass org:Organization .
+
+bibo:DocumentPart a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing a document section with BIBO and NIF alignment. Contains section content and NIF text offsets for alignment." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:integer ;
+            sh:description "NIF begin offset for text alignment" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path nif:beginIndex ],
+        [ sh:class bibo:DocumentPart ;
+            sh:description "Child sections of a section" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 5 ;
+            sh:path dcterms:hasPart ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:string ;
+            sh:description "Section text content" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path nif:isString ],
+        [ sh:class bibo:DocumentPart ;
+            sh:description "Parent section" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 6 ;
+            sh:path dcterms:isPartOf ],
+        [ sh:datatype xsd:integer ;
+            sh:description "NIF end offset for text alignment" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path nif:endIndex ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Paper this section belongs to" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 4 ;
+            sh:path dcterms:isPartOf ],
+        [ sh:datatype xsd:string ;
+            sh:description "Work or entity title" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path dcterms:title ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path dcterms:modified ] ;
+    sh:targetClass bibo:DocumentPart .
+
+foaf:Person a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing an author with FOAF alignment. Contains personal information, institutional affiliations, and identifiers." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Affiliation text" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path pyeuropepmc:affiliationText ],
+        [ sh:datatype xsd:string ;
+            sh:description "Semantic Scholar paper ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 7 ;
+            sh:path pyeuropepmc:semanticScholarId ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path rdfs:label ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:class org:Organization ;
+            sh:description "Institutions an author is affiliated with" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 12 ;
+            sh:path pyeuropepmc:affiliatedWith ],
+        [ sh:class bibo:AcademicArticle ;
+            sh:description "Papers authored by a person" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 11 ;
+            sh:path foaf:made ],
+        [ sh:datatype xsd:integer ;
+            sh:description "H-index" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 13 ;
+            sh:path pyeuropepmc:hIndex ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 21 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:string ;
+            sh:description "Last/family name of the author" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path foaf:familyName ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 19 ;
+            sh:path rdf:type ],
+        [ sh:datatype xsd:string ;
+            sh:description "Data sources for author information" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Email address" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path foaf:mbox ;
+            sh:pattern "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Full name of the author" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path foaf:name ],
+        [ sh:datatype xsd:string ;
+            sh:description "OpenAlex identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path datacite:openalex ],
+        [ sh:datatype xsd:string ;
+            sh:description "First/given name of the author" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path foaf:givenName ],
+        [ sh:description "Author position/role" ;
+            sh:in ( "first" "middle" "last" ) ;
+            sh:maxCount 1 ;
+            sh:order 8 ;
+            sh:path org:role ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Total citation count" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path pyeuropepmc:citationCount ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:datatype xsd:string ;
+            sh:description "ORCID identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path datacite:orcid ;
+            sh:pattern "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 20 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:datatype xsd:string ;
+            sh:description "Author's initials" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path foaf:initials ] ;
+    sh:targetClass foaf:Person .
+
+bibo:AcademicArticle a sh:NodeShape ;
+    sh:closed true ;
+    sh:description "Entity representing an academic paper with BIBO alignment. Contains bibliographic metadata, citation information, and relationships to authors, institutions, journals, and other entities." ;
+    sh:ignoredProperties ( rdf:type ) ;
+    sh:property [ sh:datatype xsd:string ;
+            sh:description "Journal issue number" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 0 ;
+            sh:path bibo:issue ],
+        [ sh:datatype xsd:string ;
+            sh:description "Work or entity title" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 30 ;
+            sh:path dcterms:title ],
+        [ sh:class bibo:Journal ;
+            sh:description "Journal a paper is published in" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:IRI ;
+            sh:order 24 ;
+            sh:path bibo:journal ],
+        [ sh:datatype xsd:string ;
+            sh:description "ISSN identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 12 ;
+            sh:path bibo:issn ;
+            sh:pattern "^\\d{4}-\\d{3}[\\dX]$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "License description text" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 19 ;
+            sh:path dcterms:rights ],
+        [ sh:datatype xsd:boolean ;
+            sh:description "Open access status flag" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 6 ;
+            sh:path dcterms:accessRights ],
+        [ sh:datatype xsd:string ;
+            sh:description "Local identifier (slug/uuid) for the entity" ;
+            sh:maxCount 1 ;
+            sh:minCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 39 ;
+            sh:path dcterms:identifier ],
+        [ sh:datatype xsd:string ;
+            sh:description "Last page number" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 15 ;
+            sh:path bibo:pageEnd ],
+        [ sh:class frapo:Grant ;
+            sh:description "Grants funding a paper" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 29 ;
+            sh:path foaf:fundedBy ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of data sources that contributed to this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 44 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:description "Open access status details" ;
+            sh:in ( "open" "closed" "hybrid" "green" "gold" "bronze" "unknown" ) ;
+            sh:maxCount 1 ;
+            sh:order 7 ;
+            sh:path dcterms:accessRights ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Number of references cited" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 9 ;
+            sh:path bibo:numPages ],
+        [ sh:datatype xsd:string ;
+            sh:description "Related work IDs" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 21 ;
+            sh:path dcterms:related ],
+        [ sh:datatype xsd:date ;
+            sh:description "Full publication date" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 35 ;
+            sh:path dcterms:date ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Publication year (4-digit)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 9999 ;
+            sh:minInclusive 1000 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 34 ;
+            sh:path dcterms:issued ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "License URL" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 18 ;
+            sh:path dcterms:license ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Open access URL" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 8 ;
+            sh:path bibo:uri ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "RDF types (CURIEs/URIs) for this entity" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 43 ;
+            sh:path rdf:type ],
+        [ sh:class foaf:Person ;
+            sh:description "Authors of a work" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 22 ;
+            sh:path dcterms:creator ],
+        [ sh:datatype xsd:float ;
+            sh:description "Confidence score for extracted information (0.0 to 1.0)" ;
+            sh:maxCount 1 ;
+            sh:maxInclusive 1e+00 ;
+            sh:minInclusive 0e+00 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 42 ;
+            sh:path pyeuropepmc:confidence ],
+        [ sh:description "Type of publication" ;
+            sh:in ( "journal_article" "review" "preprint" "book_chapter" "conference_paper" "dataset" "thesis" "other" ) ;
+            sh:maxCount 1 ;
+            sh:order 13 ;
+            sh:path bibo:DocumentType ],
+        [ sh:class bibo:Image ;
+            sh:description "Figures in a paper" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 28 ;
+            sh:path dcterms:hasPart ],
+        [ sh:datatype xsd:string ;
+            sh:description "Publication volume" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 32 ;
+            sh:path bibo:volume ],
+        [ sh:datatype xsd:string ;
+            sh:description "Human-readable label for the entity" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 40 ;
+            sh:path rdfs:label ],
+        [ sh:class org:Organization ;
+            sh:description "Institutions affiliated with a paper" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 23 ;
+            sh:path pyeuropepmc:affiliatedWith ],
+        [ sh:class bibo:Article ;
+            sh:description "References cited by a paper" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 26 ;
+            sh:path cito:cites ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Source URI for provenance tracking" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 41 ;
+            sh:path prov:hadPrimarySource ],
+        [ sh:class bibo:Table ;
+            sh:description "Tables in a paper" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 27 ;
+            sh:path dcterms:hasPart ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Number of papers citing this work" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 10 ;
+            sh:path pyeuropepmc:citationCount ],
+        [ sh:datatype xsd:string ;
+            sh:description "Article abstract" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 3 ;
+            sh:path dcterms:abstract ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Influential citation count" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 5 ;
+            sh:path pyeuropepmc:influentialCitationCount ],
+        [ sh:datatype xsd:dateTime ;
+            sh:description "Timestamp of last data update (ISO 8601)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 45 ;
+            sh:path dcterms:modified ],
+        [ sh:datatype xsd:date ;
+            sh:description "Publication date (legacy field)" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 1 ;
+            sh:path dcterms:issued ],
+        [ sh:datatype xsd:string ;
+            sh:description "Publisher name" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 11 ;
+            sh:path dcterms:publisher ],
+        [ sh:datatype xsd:string ;
+            sh:description "Semantic Scholar corpus ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 16 ;
+            sh:path pyeuropepmc:semanticScholarCorpusId ],
+        [ sh:datatype xsd:string ;
+            sh:description "OpenAlex identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 17 ;
+            sh:path datacite:openalex ],
+        [ sh:datatype xsd:string ;
+            sh:description "Fields of study" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 20 ;
+            sh:path dcterms:subject ],
+        [ sh:datatype xsd:string ;
+            sh:description "PubMed ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 37 ;
+            sh:path pyeuropepmc:pmid ;
+            sh:pattern "^\\d+$" ],
+        [ sh:datatype xsd:integer ;
+            sh:description "Total citation count" ;
+            sh:maxCount 1 ;
+            sh:minInclusive 0 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 4 ;
+            sh:path pyeuropepmc:citationCount ],
+        [ sh:datatype xsd:anyURI ;
+            sh:description "Digital Object Identifier" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 31 ;
+            sh:path bibo:doi ;
+            sh:pattern "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$" ],
+        [ sh:datatype xsd:string ;
+            sh:description "Semantic Scholar paper ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 38 ;
+            sh:path pyeuropepmc:semanticScholarId ],
+        [ sh:datatype xsd:string ;
+            sh:description "Page range (e.g., \"123-456\")" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 33 ;
+            sh:path bibo:pages ],
+        [ sh:datatype xsd:string ;
+            sh:description "PubMed Central ID" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 36 ;
+            sh:path pyeuropepmc:pmcid ;
+            sh:pattern "^PMC\\d+$" ],
+        [ sh:class bibo:DocumentPart ;
+            sh:description "Sections of a paper" ;
+            sh:nodeKind sh:IRI ;
+            sh:order 25 ;
+            sh:path dcterms:hasPart ],
+        [ sh:datatype xsd:string ;
+            sh:description "List of keywords" ;
+            sh:nodeKind sh:Literal ;
+            sh:order 2 ;
+            sh:path dcterms:subject ],
+        [ sh:datatype xsd:string ;
+            sh:description "First page number" ;
+            sh:maxCount 1 ;
+            sh:nodeKind sh:Literal ;
+            sh:order 14 ;
+            sh:path bibo:pageStart ] ;
+    sh:targetClass bibo:AcademicArticle .
