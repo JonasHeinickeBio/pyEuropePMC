@@ -51,6 +51,12 @@ from .processing.annotation_parser import (
     extract_sentences,
     parse_annotations,
 )
+from .processing.annotations_to_rdf import (
+    annotations_to_entities,
+    annotations_to_rdf,
+    entity_annotation_to_model,
+    relationship_annotation_to_model,
+)
 from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .processing.parser import EuropePMCParser
 from .processing.visualization import (
@@ -121,6 +127,10 @@ __all__ = [
     "extract_entities",
     "extract_sentences",
     "extract_relationships",
+    "annotations_to_entities",
+    "annotations_to_rdf",
+    "entity_annotation_to_model",
+    "relationship_annotation_to_model",
     # Enrichment utilities
     "PaperEnricher",
     "EnrichmentConfig",

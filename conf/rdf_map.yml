@@ -19,6 +19,7 @@ _@prefix:
   obo: "http://purl.obolibrary.org/obo/"
   org: "http://www.w3.org/ns/org#"
   cito: "http://purl.org/spar/cito/"
+  oa: "http://www.w3.org/ns/oa#"
 
 # PaperEntity mapping
 PaperEntity:
@@ -131,3 +132,42 @@ ReferenceEntity:
     citing_paper:
       predicate: cito:isCitedBy
       inverse: cito:cites
+
+# AnnotationEntity mapping (W3C Open Annotation Data Model)
+AnnotationEntity:
+  rdf:type: ["oa:Annotation", "nif:String"]
+  fields:
+    exact: oa:hasBody
+    section: dct:isPartOf
+    provider: dct:creator
+    article_id: oa:hasTarget
+    annotation_type: rdf:type
+
+# EntityAnnotation mapping (Named Entity Recognition)
+EntityAnnotation:
+  rdf:type: ["oa:Annotation", "nif:String", "oa:SpecificResource"]
+  fields:
+    exact: oa:hasBody
+    entity_id: oa:hasBody
+    entity_name: rdfs:label
+    entity_type: rdf:type
+    section: dct:isPartOf
+    provider: dct:creator
+    confidence: oa:hasConfidence
+    article_id: oa:hasTarget
+
+# RelationshipAnnotation mapping (Entity Relationships)
+RelationshipAnnotation:
+  rdf:type: ["oa:Annotation", "nif:String", "rdf:Statement"]
+  fields:
+    exact: oa:hasBody
+    subject_id: rdf:subject
+    subject_name: rdfs:label
+    subject_type: rdf:type
+    predicate: rdf:predicate
+    object_id: rdf:object
+    object_name: rdfs:label
+    object_type: rdf:type
+    section: dct:isPartOf
+    provider: dct:creator
+    article_id: oa:hasTarget

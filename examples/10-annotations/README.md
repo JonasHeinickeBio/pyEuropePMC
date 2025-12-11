@@ -1,6 +1,6 @@
 # Europe PMC Annotations API Examples
 
-This directory contains examples demonstrating how to use PyEuropePMC's **AnnotationsClient** to retrieve and parse text-mining annotations from scientific literature.
+This directory contains examples demonstrating how to use PyEuropePMC's **AnnotationsClient** to retrieve and parse text-mining annotations from scientific literature, including conversion to RDF format.
 
 ## Overview
 
@@ -9,7 +9,7 @@ The Europe PMC Annotations API provides access to automatically extracted annota
 - **Sentence annotations**: Contextual text containing entity mentions
 - **Relationship annotations**: Associations and interactions between entities (e.g., gene-disease relationships)
 
-All annotations follow the [W3C Open Annotation Data Model](https://www.w3.org/TR/annotation-model/) and are provided in JSON-LD format.
+All annotations follow the [W3C Open Annotation Data Model](https://www.w3.org/TR/annotation-model/) and are provided in JSON-LD format. PyEuropePMC now supports converting these annotations to RDF graphs for integration with semantic web applications.
 
 ## Files
 
@@ -37,6 +37,19 @@ An interactive Jupyter notebook tutorial covering:
 **Open the notebook:**
 ```bash
 jupyter notebook annotations_workflow.ipynb
+```
+
+### 3. `annotations_to_rdf_demo.py` ✨ NEW
+A demonstration of converting annotations to RDF graphs:
+- Fetching and parsing annotations
+- Converting to entity models
+- Creating RDF graphs using W3C Open Annotation Data Model
+- Serializing to Turtle and RDF/XML formats
+- Querying RDF graphs
+
+**Run the RDF demo:**
+```bash
+python annotations_to_rdf_demo.py
 ```
 
 ## Quick Start
@@ -88,6 +101,29 @@ provider_annotations = client.get_annotations_by_provider(
 )
 ```
 
+### Convert Annotations to RDF
+
+```python
+from pyeuropepmc import annotations_to_rdf, parse_annotations
+
+# Fetch and parse annotations
+raw = client.get_annotations_by_article_ids(["PMC3359311"])
+parsed = parse_annotations(raw)
+
+# Convert to RDF graph following W3C Open Annotation Data Model
+rdf_graph = annotations_to_rdf(parsed)
+
+# Serialize to Turtle format
+turtle = rdf_graph.serialize(format="turtle")
+print(turtle)
+
+# Save to file
+rdf_graph.serialize(destination="annotations.ttl", format="turtle")
+
+# Also available in RDF/XML
+rdf_graph.serialize(destination="annotations.rdf", format="xml")
+```
+
 ## Key Features
 
 ### 1. Multiple Retrieval Methods
@@ -113,7 +149,39 @@ entities = extract_entities(annotations)
 relationships = extract_relationships(annotations)
 ```
 
-### 3. Flexible Filtering
+### 3. RDF Conversion ✨ NEW
+Convert annotations to RDF graphs using the W3C Open Annotation Data Model:
+```python
+from pyeuropepmc import annotations_to_rdf, annotations_to_entities
+
+# Convert parsed annotations to entity models
+entity_models = annotations_to_entities(parsed)
+
+# Convert to RDF graph
+rdf_graph = annotations_to_rdf(parsed)
+
+# Serialize to various formats
+turtle = rdf_graph.serialize(format="turtle")  # Turtle
+rdfxml = rdf_graph.serialize(format="xml")     # RDF/XML
+jsonld = rdf_graph.serialize(format="json-ld") # JSON-LD
+
+# Query the RDF graph
+from rdflib import Namespace
+from rdflib.namespace import RDF
+
+OA = Namespace("http://www.w3.org/ns/oa#")
+for s, p, o in rdf_graph.triples((None, RDF.type, OA.Annotation)):
+    print(f"Annotation: {s}")
+```
+
+**Benefits of RDF conversion:**
+- Integration with semantic web applications
+- SPARQL queries for complex annotation analysis
+- Interoperability with other RDF datasets
+- Standard W3C Open Annotation Data Model
+- Reuses existing PyEuropePMC RDF infrastructure
+
+### 4. Flexible Filtering
 - Filter by section: `abstract`, `fulltext`, or `all`
 - Filter by annotation type: `Gene`, `Disease`, `Chemical`, etc.
 - Filter by provider: `Europe PMC`, `Pubtator`, etc.

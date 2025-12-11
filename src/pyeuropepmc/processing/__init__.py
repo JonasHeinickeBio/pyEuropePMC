@@ -24,6 +24,12 @@ from .annotation_parser import (
     extract_sentences,
     parse_annotations,
 )
+from .annotations_to_rdf import (
+    annotations_to_entities,
+    annotations_to_rdf,
+    entity_annotation_to_model,
+    relationship_annotation_to_model,
+)
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
 from .parser import EuropePMCParser
 from .visualization import (
@@ -52,6 +58,10 @@ __all__ = [
     "extract_entities",
     "extract_sentences",
     "extract_relationships",
+    "annotations_to_entities",
+    "annotations_to_rdf",
+    "entity_annotation_to_model",
+    "relationship_annotation_to_model",
     "DocumentSchema",
     "ElementPatterns",
     "FullTextXMLParser",
