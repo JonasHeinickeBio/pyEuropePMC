@@ -3,19 +3,93 @@ Configuration utilities for RDF mapping in PyEuropePMC.
 
 This module provides functions for loading RDF configuration from YAML files
 and managing namespaces for RDF graphs.
+
+Configuration Sources (in order of priority):
+1. LinkML schema (schemas/pyeuropepmc_schema.yaml) - Source of truth for data models
+2. Runtime config (conf/rdf_config.yaml) - Operational settings
+3. Legacy config (conf/rdf_map.yml) - Backward compatibility (deprecated)
 """
 
+import logging
 import os
+import warnings
 from pathlib import Path
 from typing import Any
 
 from rdflib import Dataset, Graph, Namespace
 import yaml
 
+logger = logging.getLogger(__name__)
+
+
+def _get_project_root() -> Path:
+    """Get the project root directory."""
+    return Path(__file__).parent.parent.parent.parent
+
+
+def _load_linkml_namespaces() -> dict[str, str]:
+    """
+    Load namespace prefixes from the LinkML schema (source of truth).
+
+    Returns
+    -------
+    dict[str, str]
+        Dictionary mapping prefix to URI from LinkML schema.
+    """
+    try:
+        from pyeuropepmc.mappers.linkml_introspection import (
+            LINKML_AVAILABLE,
+            LinkMLSchemaIntrospector,
+        )
+
+        if LINKML_AVAILABLE:
+            introspector = LinkMLSchemaIntrospector()
+            return introspector.get_namespaces()
+    except Exception as e:
+        logger.debug(f"Could not load LinkML namespaces: {e}")
+    return {}
+
+
+def _load_runtime_config() -> dict[str, Any]:
+    """
+    Load runtime configuration from rdf_config.yaml.
+
+    Returns
+    -------
+    dict[str, Any]
+        Runtime configuration dictionary.
+    """
+    config_path = _get_project_root() / "conf" / "rdf_config.yaml"
+    if config_path.exists():
+        with open(config_path, encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {}
+
+
+def _load_legacy_config() -> dict[str, Any]:
+    """
+    Load legacy configuration from rdf_map.yml (deprecated).
+
+    Returns
+    -------
+    dict[str, Any]
+        Legacy configuration dictionary.
+    """
+    config_path = _get_project_root() / "conf" / "rdf_map.yml"
+    if config_path.exists():
+        with open(config_path, encoding="utf-8") as f:
+            return yaml.safe_load(f) or {}
+    return {}
+
 
 def load_rdf_config() -> dict[str, Any]:
     """
-    Load RDF configuration from YAML file.
+    Load RDF configuration from multiple sources.
+
+    Configuration is loaded in this priority order:
+    1. LinkML schema for namespace prefixes (source of truth)
+    2. Runtime config (rdf_config.yaml) for operational settings
+    3. Legacy config (rdf_map.yml) for backward compatibility
 
     Returns
     -------
@@ -23,52 +97,76 @@ def load_rdf_config() -> dict[str, Any]:
         RDF configuration including named graphs, ontologies, and settings
     """
     try:
-        # Default to conf/rdf_map.yml in project root
-        base_path = Path(__file__).parent.parent.parent.parent
-        config_path = str(base_path / "conf" / "rdf_map.yml")
+        # Load from all sources
+        linkml_namespaces = _load_linkml_namespaces()
+        runtime_config = _load_runtime_config()
+        legacy_config = _load_legacy_config()
 
-        if os.path.exists(config_path):
-            with open(config_path, encoding="utf-8") as f:
-                config = yaml.safe_load(f)
+        # Prefer LinkML namespaces, then legacy _@prefix
+        prefix_config = linkml_namespaces or legacy_config.get("_@prefix", {})
 
-            # Extract configuration sections
-            kg_structure = config.get("_kg_structure", {})
-            named_graphs_config = config.get("_named_graphs", {})
-            required_named_graphs = config.get("_required_named_graphs", [])
-            prefix_config = config.get("_@prefix", {})  # SOURCE OF TRUTH for namespaces
-            base_uri = config.get("_base_uri", "http://example.org/data/")
+        # Get named graphs from runtime config first, then legacy
+        named_graphs_config = runtime_config.get("named_graphs", {})
+        if not named_graphs_config or named_graphs_config.get("enabled") is False:
+            named_graphs_config = legacy_config.get("_named_graphs", {})
 
-            # Filter enabled named graphs
-            enabled_named_graphs = {}
-            for graph_name, graph_config in named_graphs_config.items():
-                if graph_config.get("enabled", True):
-                    enabled_named_graphs[graph_name] = graph_config
+        # Filter enabled named graphs
+        enabled_named_graphs = {}
+        for graph_name, graph_config in named_graphs_config.items():
+            if graph_name == "enabled":
+                continue
+            if isinstance(graph_config, dict) and graph_config.get("enabled", True):
+                enabled_named_graphs[graph_name] = graph_config
 
-            # Create ontologies dict for backwards compatibility
-            ontologies = dict(prefix_config)  # Copy prefix_config
+        # Get KG structure from runtime config first, then legacy
+        kg_structure = runtime_config.get("kg_structure", {})
+        if not kg_structure:
+            kg_structure = legacy_config.get("_kg_structure", {})
 
-            # Add additional ontologies that might not be in _@prefix
-            additional_ontologies = {
-                "pyeuropepmc": "https://github.com/JonasHeinickeBio/pyeuropepmc#",
-                "europepmc": "https://europepmc.org/",
-                "ex": base_uri,
-            }
-            ontologies.update(additional_ontologies)
+        # Build base URI
+        uri_config = runtime_config.get("uri", {})
+        base_uri = uri_config.get("base", legacy_config.get("_base_uri", "https://w3id.org/pyeuropepmc/"))
 
-            return {
-                "kg_structure": kg_structure,
-                "named_graphs": enabled_named_graphs,  # Only enabled graphs
-                "required_named_graphs": required_named_graphs,
-                "_@prefix": prefix_config,  # Keep original key for namespace lookups
-                "ontologies": ontologies,  # Backwards compatibility
-                "base_uri": base_uri,
-                "defaults": config.get("_defaults", {}),
-                "quality_thresholds": config.get("_quality_thresholds", {}),
-            }
-        else:
-            return _get_default_rdf_config()
+        # Create ontologies dict for backwards compatibility
+        ontologies = dict(prefix_config)
+        additional_ontologies = {
+            "pyeuropepmc": "https://w3id.org/pyeuropepmc/vocab#",
+            "europepmc": "https://europepmc.org/",
+            "ex": base_uri,
+        }
+        ontologies.update(additional_ontologies)
+
+        # Get required named graphs
+        required_named_graphs = runtime_config.get(
+            "required_named_graphs",
+            legacy_config.get("_required_named_graphs", [])
+        )
+
+        # Get quality thresholds
+        quality_config = runtime_config.get("quality", {})
+        quality_thresholds = quality_config.get(
+            "thresholds",
+            legacy_config.get("_quality_thresholds", {"high": 0.8, "medium": 0.6, "low": 0.0})
+        )
+
+        return {
+            "kg_structure": kg_structure,
+            "named_graphs": enabled_named_graphs,
+            "required_named_graphs": required_named_graphs,
+            "_@prefix": prefix_config,
+            "ontologies": ontologies,
+            "base_uri": base_uri,
+            "defaults": kg_structure,  # Map kg_structure to defaults for compatibility
+            "quality_thresholds": quality_thresholds,
+            # New runtime config sections
+            "schema": runtime_config.get("schema", {}),
+            "uri": uri_config,
+            "performance": runtime_config.get("performance", {}),
+            "output": runtime_config.get("output", {}),
+            "debugging": runtime_config.get("debugging", {}),
+        }
     except Exception as e:
-        print(f"Failed to load RDF config: {e}, using defaults")
+        logger.warning(f"Failed to load RDF config: {e}, using defaults")
         return _get_default_rdf_config()
 
 

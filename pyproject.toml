@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "1.14.0"
+version = "1.13.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
@@ -67,6 +67,7 @@ cachetools = "^6.2.1"
 requests-cache = "^1.2.1"
 rdfizer = "^4.7.5.12.13"
 cryptography = "^46.0.3"
+linkml = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
@@ -206,3 +207,7 @@ ignore_missing_imports = true
 exclude = "(tests/|examples/)"
 files = "src/"
 disable_error_code = ["misc", "import-untyped"]
+
+[[tool.mypy.overrides]]
+module = "pyeuropepmc.models.generated"
+ignore_errors = true
