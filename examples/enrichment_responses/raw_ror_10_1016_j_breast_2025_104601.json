@@ -1,0 +1,88 @@
+{
+  "02n6dj587": {
+    "ror_id": "https://ror.org/02n6dj587",
+    "status": "active",
+    "types": [
+      "funder",
+      "nonprofit"
+    ],
+    "established": 1996,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "BCA"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Breast Cancer Alliance"
+      }
+    ],
+    "display_name": "Breast Cancer Alliance",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "CT",
+          "country_subdivision_name": "Connecticut",
+          "lat": 41.02649,
+          "lng": -73.62846,
+          "name": "Greenwich"
+        },
+        "geonames_id": 4835395
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "Greenwich",
+    "latitude": 41.02649,
+    "longitude": -73.62846,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://breastcanceralliance.org/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Breast_Cancer_Alliance"
+      }
+    ],
+    "website": "http://breastcanceralliance.org/",
+    "external_ids": [
+      {
+        "all": [
+          "100001513"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.453739.f"
+        ],
+        "preferred": "grid.453739.f",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 5904 8391"
+        ],
+        "preferred": "0000 0004 5904 8391",
+        "type": "isni"
+      }
+    ],
+    "grid_id": "grid.453739.f",
+    "isni": "0000 0004 5904 8391",
+    "relationships": [],
+    "domains": []
+  }
+}

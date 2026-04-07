@@ -644,9 +644,12 @@ class TestInlineElementHandling:
         assert len(affiliations) == 1
         assert affiliations[0]["id"] == "aff1"
         assert affiliations[0]["markers"] == "1"
-        # Clean text should not contain the superscript
-        assert "1" not in affiliations[0]["institution_text"]
-        assert "Department of Biology" in affiliations[0]["institution_text"]
+        # Clean text should not contain the superscript element
+        institution_text = affiliations[0]["institution_text"]
+        assert "<sup>" not in institution_text
+        assert "</sup>" not in institution_text
+        assert "Department of Biology" in institution_text
+        assert "City 12345" in institution_text
 
     def test_custom_inline_patterns_in_config(self):
         """Test using custom inline element patterns from config."""

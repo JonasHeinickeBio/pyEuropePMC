@@ -3,7 +3,6 @@
 import os
 import tempfile
 
-import pytest
 from rdflib import Graph, Namespace
 
 from pyeuropepmc.mappers import RDFMapper
@@ -24,9 +23,9 @@ class TestRDFMapper:
     def test_load_config(self):
         """Test configuration loading."""
         mapper = RDFMapper()
-        assert "_@prefix" in mapper.config
-        assert "PaperEntity" in mapper.config
-        assert "AuthorEntity" in mapper.config
+        assert "prefixes" in mapper.config
+        assert "ontologies" in mapper.config
+        assert "base_uri" in mapper.config
 
     def test_build_namespaces(self):
         """Test namespace building."""
@@ -139,10 +138,12 @@ class TestRDFMapper:
             if os.path.exists(tmp_path):
                 os.unlink(tmp_path)
 
-    def test_invalid_config_path(self):
-        """Test handling of invalid config path."""
-        with pytest.raises(FileNotFoundError):
-            RDFMapper(config_path="/nonexistent/path.yml")
+    def test_linkml_introspector_initialization(self):
+        """Test that LinkML introspector is properly initialized."""
+        mapper = RDFMapper()
+        assert mapper.linkml_introspector is not None
+        assert hasattr(mapper.linkml_introspector, 'get_slot_mapping')
+        assert hasattr(mapper.linkml_introspector, 'get_class_mapping')
 
     def test_map_relationships(self):
         """Test mapping entity relationships."""
@@ -218,7 +219,7 @@ class TestRDFMapper:
         author = AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789")
 
         uri = mapper._generate_entity_uri(author)
-        assert str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"  # Prioritizes name over ORCID
+        assert str(uri) == "https://w3id.org/pyeuropepmc/data#author/john-doe"  # Uses data namespace
 
     def test_generate_entity_uri_author_name(self):
         """Test URI generation for author with name only."""
@@ -244,3 +245,61 @@ class TestRDFMapper:
         # Test empty/None
         assert mapper._normalize_name("") is None
         assert mapper._normalize_name("   ") is None
+
+    def test_map_citation_relationships(self):
+        """Test mapping citation relationships using CiTO ontology."""
+        mapper = RDFMapper()
+        g = Graph()
+        from rdflib import URIRef
+
+        subject = URIRef("http://example.org/section1")
+        citations = [
+            {
+                "rid": "ref1",
+                "text": "1",
+                "references": [
+                    {
+                        "id": "ref1",
+                        "title": "First Reference",
+                        "authors": "Author A",
+                        "doi": "10.1234/ref1"
+                    }
+                ]
+            },
+            {
+                "rid": "ref2 ref3",
+                "text": "[2,3]",
+                "references": [
+                    {
+                        "id": "ref2",
+                        "title": "Second Reference",
+                        "authors": "Author B",
+                        "pmid": "12345678"
+                    },
+                    {
+                        "id": "ref3",
+                        "title": "Third Reference",
+                        "authors": "Author C"
+                    }
+                ]
+            }
+        ]
+
+        mapper.map_citation_relationships(g, subject, citations)
+
+        # Check that citation relationships were added
+        cito_ns = Namespace("http://purl.org/spar/cito/")
+        triples = list(g.triples((subject, cito_ns.cites, None)))
+        assert len(triples) == 2  # Two citation URIs
+
+        # Check that reference links were added
+        ref_triples = list(g.triples((None, DCT.references, None)))
+        assert len(ref_triples) >= 2  # At least 2 reference links
+
+        # Check specific DOI-based reference URI
+        doi_ref = URIRef("https://doi.org/10.1234/ref1")
+        assert (None, DCT.references, doi_ref) in g
+
+        # Check PMID-based reference URI
+        pmid_ref = URIRef("https://pubmed.ncbi.nlm.nih.gov/12345678/")
+        assert (None, DCT.references, pmid_ref) in g

@@ -19,6 +19,9 @@
     "oa_url": "https://example.com/paper.pdf"
   },
   "ror": null,
+  "pubtator": null,
+  "orcid": null,
+  "doi_content_negotiation": null,
   "merged": {
     "title": "Test",
     "is_oa": true,

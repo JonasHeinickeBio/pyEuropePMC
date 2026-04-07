@@ -70,8 +70,8 @@ _named_graphs:
     uri_base: "https://w3id.org/pyeuropepmc#authors"
     enabled: true
   institutions:
-    title: "Institutional Entities and Hierarchies"
-    description: "Contains institutional entities, hierarchies, and organizational relationships"
+    title: "Organizational Entities and Hierarchies"
+    description: "Contains organizational entities, hierarchies, and organizational relationships"
     uri_base: "https://w3id.org/pyeuropepmc#institutions"
     enabled: true
   provenance:
@@ -137,15 +137,13 @@ PaperEntity:
   multi_value_fields:
     keywords: dcterms:subject
     fields_of_study: dcterms:subject
+    pub_types: bibo:DocumentType
     related_works: dcterms:related
   # Relationships
   relationships:
     authors:
       predicate: "dcterms:creator"
       inverse: foaf:made
-    institutions:
-      predicate: "pyeuropepmc:affiliatedWith"
-      inverse: pyeuropepmc:hasAffiliation
     journal:
       predicate: "bibo:journal"
       inverse: bibo:article
@@ -164,6 +162,12 @@ PaperEntity:
     grants:
       predicate: "foaf:fundedBy"
       inverse: frapo:funds
+    paper_institutions:
+      predicate: "pyeuropepmc:affiliatedWith"
+      inverse: pyeuropepmc:hasPublication
+    paper_departments:
+      predicate: "pyeuropepmc:departmentAffiliation"
+      inverse: pyeuropepmc:hasDepartmentPublication
 
 # AuthorEntity mapping
 AuthorEntity:
@@ -178,6 +182,7 @@ AuthorEntity:
     semantic_scholar_id: {predicate: "datacite:semanticScholarId", datatype: "xsd:string"}
     position: {predicate: "org:role", datatype: "xsd:string"}
     email: {predicate: "foaf:mbox", datatype: "xsd:string"}
+    affiliation_text: {predicate: "pyeuropepmc:affiliationText", datatype: "xsd:string"}
   # Multi-value fields
   multi_value_fields:
     sources: prov:hadPrimarySource
@@ -189,6 +194,9 @@ AuthorEntity:
     institutions:
       predicate: "pyeuropepmc:affiliatedWith"
       inverse: pyeuropepmc:hasAffiliate
+    author_departments:
+      predicate: "pyeuropepmc:departmentMember"
+      inverse: pyeuropepmc:hasDepartmentMember
 
 # SectionEntity mapping
 SectionEntity:
@@ -198,6 +206,8 @@ SectionEntity:
     content: {predicate: "nif:isString", datatype: "xsd:string"}
     begin_index: {predicate: "nif:beginIndex", datatype: "xsd:integer"}
     end_index: {predicate: "nif:endIndex", datatype: "xsd:integer"}
+    order: {predicate: "pyeuropepmc:order", datatype: "xsd:integer"}
+    section_type: {predicate: "dcterms:type", datatype: "xsd:string"}
   # Relationships
   relationships:
     paper:
@@ -206,6 +216,9 @@ SectionEntity:
     subsections:
       predicate: "dcterms:hasPart"
       inverse: dcterms:isPartOf
+    citations:
+      predicate: "cito:cites"
+      inverse: "cito:isCitedBy"
 
 # TableEntity mapping
 TableEntity:
@@ -252,8 +265,8 @@ ReferenceEntity:
       predicate: "cito:isCitedBy"
       inverse: cito:cites
 
-# InstitutionEntity mapping
-InstitutionEntity:
+# OrganizationEntity mapping
+Organization:
   "rdf:type": ["org:Organization"]
   fields:
     display_name: {predicate: "skos:prefLabel", datatype: "xsd:string"}
@@ -274,11 +287,54 @@ InstitutionEntity:
   # Multi-value fields
   multi_value_fields:
     domains: dcterms:subject
+    names: skos:altLabel
   # Relationships
   relationships:
     members:
       predicate: "org:hasMember"
       inverse: org:memberOf
+    affiliates:
+      predicate: "pyeuropepmc:hasAffiliate"
+      inverse: pyeuropepmc:affiliatedWith
+    departments:
+      predicate: "org:hasUnit"
+      inverse: org:unitOf
+
+# DepartmentEntity mapping
+Department:
+  "rdf:type": ["org:OrganizationalUnit"]
+  fields:
+    display_name: {predicate: "skos:prefLabel", datatype: "xsd:string"}
+    ror_id: {predicate: "pyeuropepmc:rorId", datatype: "xsd:string"}
+    openalex_id: {predicate: "pyeuropepmc:openAlexInstitutionId", datatype: "xsd:string"}
+    country: {predicate: "geo:country", datatype: "xsd:string"}
+    country_code: {predicate: "geo:countryCode", datatype: "xsd:string"}
+    city: {predicate: "geo:city", datatype: "xsd:string"}
+    latitude: {predicate: "geo:lat", datatype: "xsd:decimal"}
+    longitude: {predicate: "geo:long", datatype: "xsd:decimal"}
+    institution_type: {predicate: "org:classification", datatype: "xsd:string"}
+    grid_id: {predicate: "pyeuropepmc:gridId", datatype: "xsd:string"}
+    isni: {predicate: "pyeuropepmc:isni", datatype: "xsd:string"}
+    wikidata_id: {predicate: "owl:sameAs", datatype: "xsd:anyURI"}
+    fundref_id: {predicate: "pyeuropepmc:fundrefId", datatype: "xsd:string"}
+    website: {predicate: "foaf:homepage", datatype: "xsd:anyURI"}
+    established: {predicate: "dcterms:created", datatype: "xsd:gYear"}
+    parent_organization: {predicate: "org:memberOf", datatype: "xsd:anyURI"}
+  # Multi-value fields
+  multi_value_fields:
+    domains: dcterms:subject
+    names: skos:altLabel
+  # Relationships
+  relationships:
+    members:
+      predicate: "org:hasMember"
+      inverse: org:memberOf
+    affiliates:
+      predicate: "pyeuropepmc:hasAffiliate"
+      inverse: pyeuropepmc:affiliatedWith
+    parent_organization:
+      predicate: "org:unitOf"
+      inverse: org:hasUnit
 
 # JournalEntity mapping
 JournalEntity:

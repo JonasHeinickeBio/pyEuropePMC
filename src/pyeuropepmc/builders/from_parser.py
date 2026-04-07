@@ -1,14 +1,21 @@
 """
 Builder functions to convert FullTextXMLParser outputs to entity models.
+
+This module converts parser outputs into LinkML-generated Pydantic entity models
+with optional schema validation to ensure data quality and constraint compliance.
 """
 
+from datetime import date
+import logging
 from typing import TYPE_CHECKING, Any
 
+from pyeuropepmc.builders.schema_validation import SchemaValidator
 from pyeuropepmc.models import (
     AuthorEntity,
     FigureEntity,
     GrantEntity,
     JournalEntity,
+    Organization,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
@@ -19,7 +26,187 @@ from pyeuropepmc.models import (
 if TYPE_CHECKING:
     from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
+logger = logging.getLogger(__name__)
+
 __all__ = ["build_paper_entities"]
+
+
+# Helper functions for data formatting
+def _format_pmcid(pmcid: str | None) -> str | None:
+    """Format PMCID to ensure it has PMC prefix."""
+    if not pmcid:
+        return None
+    pmcid_str = str(pmcid).strip()
+    if pmcid_str.startswith("PMC"):
+        return pmcid_str
+    return f"PMC{pmcid_str}"
+
+
+def _format_external_ids(external_ids: dict | None) -> str | None:
+    """Format external IDs dict as JSON string."""
+    if not external_ids:
+        return None
+    import json
+
+    return json.dumps(external_ids)
+
+
+def _clean_affiliation_text(text: str) -> str:
+    """
+    Clean affiliation text by removing embedded identifiers and normalizing formatting.
+
+    This function removes ROR IDs, GRID IDs, and other embedded identifiers from
+    affiliation text to make it more readable for display purposes.
+
+    Parameters
+    ----------
+    text : str
+        Raw affiliation text that may contain embedded identifiers
+
+    Returns
+    -------
+    str
+        Cleaned affiliation text suitable for display
+    """
+    import re
+
+    if not text:
+        return text
+
+    # Remove ROR IDs (format: https://ror.org/ followed by 9 alphanumeric characters)
+    text = re.sub(r"https?://ror\.org/[a-zA-Z0-9]{9}", "", text)
+
+    # Remove GRID IDs - look for grid.xxxxx.xxxxxxxxxx pattern ending with letter
+    # Use negative lookahead to avoid matching into institution names
+    text = re.sub(r"grid\.\d+\.[a-zA-Z0-9]*[a-zA-Z](?![a-zA-Z])", "", text)
+    # Also handle GRID IDs with spaces: grid.xxxxx.x xxxx xxxx xxxx
+    text = re.sub(r"grid\.\d+\.\w+\s+\d{4}\s+\d{4}\s+\d{4}", "", text)
+
+    # Remove other institutional identifiers (long numeric sequences)
+    text = re.sub(r"\b\d{10,}\b", "", text)  # Long numeric sequences like 000000041936754X
+
+    # Remove numeric prefixes that might be affiliation reference IDs
+    # Handle cases like "1https://ror.org/..." or "2Department of..."
+    text = re.sub(r"^\d+", "", text)
+    text = re.sub(r"\b\d+(?=[a-zA-Z])", "", text)  # Remove digits followed immediately by letters
+
+    # Clean up any remaining artifacts (dots followed by numbers)
+    text = re.sub(r"\.\d+", "", text)
+
+    # Remove multiple consecutive spaces and normalize whitespace
+    text = re.sub(r"\s+", " ", text)
+
+    # Remove leading/trailing commas, semicolons, and spaces
+    text = text.strip(" ,;")
+
+    # Remove empty parentheses or brackets
+    text = re.sub(r"\(\s*\)", "", text)
+    text = re.sub(r"\[\s*\]", "", text)
+
+    return text.strip()
+
+
+def _format_license(license_data: dict | str | None) -> str | None:
+    """Format license data as string."""
+    if not license_data:
+        return None
+    if isinstance(license_data, str):
+        return license_data
+    if isinstance(license_data, dict):
+        # Extract text field or convert to string representation
+        return license_data.get("text") or str(license_data)
+    return str(license_data)
+
+
+def _parse_pub_date(date_str: str | None) -> date | None:
+    """Parse publication date string into date object, handling partial dates."""
+    if not date_str:
+        return None
+
+    try:
+        # Handle different date formats
+        parts = date_str.split("-")
+        if len(parts) == 3:
+            # Full date: YYYY-MM-DD
+            return date(int(parts[0]), int(parts[1]), int(parts[2]))
+        elif len(parts) == 2:
+            # Year-month: YYYY-MM, assume first day of month
+            return date(int(parts[0]), int(parts[1]), 1)
+        elif len(parts) == 1:
+            # Year only: YYYY, assume January 1st
+            return date(int(parts[0]), 1, 1)
+        else:
+            logger.warning(f"Unexpected date format: {date_str}")
+            return None
+    except (ValueError, IndexError) as e:
+        logger.warning(f"Failed to parse date '{date_str}': {e}")
+        return None
+
+
+def _normalize_section_type(section_type: str | None) -> str:
+    """Normalize section type to match SectionType enum values."""
+    if not section_type:
+        return "other"
+
+    # Mapping for common variations
+    type_mapping = {
+        "materials|methods": "methods",
+        "methods|materials": "methods",
+        "materials and methods": "methods",
+        "methods and materials": "methods",
+        "abstract": "abstract",
+        "introduction": "introduction",
+        "results": "results",
+        "discussion": "discussion",
+        "conclusion": "conclusion",
+        "acknowledgments": "acknowledgments",
+        "references": "references",
+        "supplementary": "supplementary",
+        "appendix": "appendix",
+        "coi-statement": "acknowledgments",
+        "author_notes": "acknowledgments",
+        "competing-interests": "acknowledgments",
+        "funding": "acknowledgments",
+        "data-availability": "other",
+        "ethics-statement": "other",
+        "patient-consent": "other",
+        "author-contributions": "acknowledgments",
+        "disclosure": "acknowledgments",
+    }
+
+    # Return mapped type or default to "other"
+    return type_mapping.get(section_type.lower(), "other")
+
+
+# Module-level validator for optional validation
+_schema_validator = SchemaValidator()
+
+
+def _validate_and_log_entity_data(
+    entity_class: str, data: dict[str, Any], context: str = ""
+) -> None:
+    """
+    Validate entity data against schema and log warnings for issues.
+
+    Parameters
+    ----------
+    entity_class : str
+        Name of the entity class (e.g., "PaperEntity")
+    data : dict
+        Dictionary of field values
+    context : str
+        Context string for logging (e.g., "author #1")
+    """
+    if not _schema_validator.introspector.is_available:
+        return
+
+    is_valid, errors = _schema_validator.validate_entity_data(entity_class, data, strict=False)
+
+    if not is_valid and errors:
+        context_str = f" ({context})" if context else ""
+        logger.warning(f"Schema validation warnings for {entity_class}{context_str}:")
+        for error in errors:
+            logger.warning(f"  - {error}")
 
 
 def _create_grant_entities(funding_data: list[dict[str, Any]] | None) -> list[GrantEntity] | None:
@@ -60,11 +247,10 @@ def _create_grant_entities(funding_data: list[dict[str, Any]] | None) -> list[Gr
     return grant_entities if grant_entities else None
 
 
-def _build_author_entity(
+def _build_author_entity(  # noqa: C901
     author_data: str | dict[str, Any], affiliations: list[dict[str, Any]]
 ) -> AuthorEntity:
     """Build a single AuthorEntity from author data and affiliations."""
-    from pyeuropepmc.models.institution import InstitutionEntity
 
     if isinstance(author_data, str):
         # Backward compatibility: handle string names
@@ -84,31 +270,83 @@ def _build_author_entity(
         # Create a lookup dict for affiliations by ID
         aff_lookup = {aff["id"]: aff for aff in affiliations if aff.get("id")}
 
+    if affiliation_refs:
+        # Create a lookup dict for affiliations by ID
+        aff_lookup = {aff["id"]: aff for aff in affiliations if aff.get("id")}
+
         # Combine text from all referenced affiliations
         aff_texts = []
         for ref_id in affiliation_refs:
             if ref_id in aff_lookup:
                 aff_data = aff_lookup[ref_id]
-                # Prefer clean institution text, fallback to full text
-                text = aff_data.get("institution_text") or aff_data.get("text") or ""
-                if text:
-                    aff_texts.append(text.strip())
+                # Prefer structured parsed institutions over raw text
+                if aff_data.get("parsed_institutions"):
+                    # Build clean text from parsed institution data
+                    inst_texts = []
+                    for inst in aff_data["parsed_institutions"]:
+                        parts = []
+                        if inst.get("name"):
+                            parts.append(inst["name"])
+                        if inst.get("city"):
+                            parts.append(inst["city"])
+                        if inst.get("state_province"):
+                            parts.append(inst["state_province"])
+                        if inst.get("country"):
+                            parts.append(inst["country"])
+                        if parts:
+                            inst_texts.append(", ".join(parts))
+                    if inst_texts:
+                        aff_texts.append("; ".join(inst_texts))
+                else:
+                    # Fallback to cleaned institution_text or text
+                    text = aff_data.get("institution_text") or aff_data.get("text") or ""
+                    if text:
+                        # Clean the affiliation text to remove embedded identifiers
+                        cleaned_text = _clean_affiliation_text(text.strip())
+                        if cleaned_text:  # Only add non-empty cleaned text
+                            aff_texts.append(cleaned_text)
 
-                # Create InstitutionEntity from affiliation data
-                institution = InstitutionEntity(
-                    display_name=aff_data.get("institution")
-                    or aff_data.get("institution_text")
-                    or aff_data.get("text", ""),
-                    city=aff_data.get("city"),
-                    country=aff_data.get("country"),
-                    source_uri=f"urn:pmc-affiliation:{ref_id}",
-                )
-                # Normalize the institution data, including country
-                institution.normalize()
+                # Create Organization from affiliation data
+                # Use the first parsed institution or fallback to raw data
+                if aff_data.get("parsed_institutions") and aff_data["parsed_institutions"]:
+                    primary_inst = aff_data["parsed_institutions"][0]
+                    institution = Organization(
+                        display_name=primary_inst.get("name", ""),
+                        city=primary_inst.get("city"),
+                        country=primary_inst.get("country"),
+                        source_uri=f"urn:pmc-affiliation:{ref_id}",
+                    )
+                    # Add institution IDs if available
+                    inst_ids = primary_inst.get("institution_ids", {})
+                    if inst_ids.get("ROR"):
+                        institution.ror_id = inst_ids["ROR"]
+                    if inst_ids.get("GRID"):
+                        institution.grid_id = inst_ids["GRID"]
+                    if inst_ids.get("ISNI"):
+                        institution.isni = inst_ids["ISNI"]
+                else:
+                    institution = Organization(
+                        display_name=aff_data.get("institution")
+                        or aff_data.get("institution_text")
+                        or aff_data.get("text", ""),
+                        city=aff_data.get("city"),
+                        country=aff_data.get("country"),
+                        source_uri=f"urn:pmc-affiliation:{ref_id}",
+                    )
+                # Normalize string fields
+                if institution.display_name:
+                    institution.display_name = institution.display_name.strip()
+                if institution.city:
+                    institution.city = institution.city.strip()
+                if institution.country:
+                    institution.country = institution.country.strip()
                 institution_entities.append(institution)
 
         if aff_texts:
             affiliation_text = "; ".join(aff_texts)
+            # Always apply final cleaning to ensure no embedded identifiers remain
+            if affiliation_text:
+                affiliation_text = _clean_affiliation_text(affiliation_text)
 
     return AuthorEntity(
         full_name=full_name,
@@ -120,7 +358,7 @@ def _build_author_entity(
     )
 
 
-def build_paper_entities(
+def build_paper_entities(  # noqa: C901
     parser: "FullTextXMLParser",
     search_data: dict[str, Any] | None = None,
 ) -> tuple[
@@ -173,18 +411,20 @@ def build_paper_entities(
     if journal_data:
         # Journal data is now a dict with nested structure
         if isinstance(journal_data, dict):
-            # Create comprehensive JournalEntity with all available metadata
-            journal_entity = JournalEntity(
-                title=journal_data.get("title", ""),
-                medline_abbreviation=journal_data.get("nlm_ta"),
-                iso_abbreviation=journal_data.get("iso_abbrev"),
-                nlmid=journal_data.get("nlmid"),
-                issn=journal_data.get("issn_print"),
-                essn=journal_data.get("issn_electronic"),
-                publisher=journal_data.get("publisher_name"),
-                country=journal_data.get("publisher_location"),
-                journal_ids=journal_data.get("journal_ids"),
-            )
+            title = journal_data.get("title")
+            if title:  # Only create journal entity if we have a title
+                # Create comprehensive JournalEntity with all available metadata
+                journal_entity = JournalEntity(
+                    title=title,
+                    medline_abbreviation=journal_data.get("nlm_ta"),
+                    iso_abbreviation=journal_data.get("iso_abbrev"),
+                    nlmid=journal_data.get("nlmid"),
+                    issn=journal_data.get("issn_print"),
+                    essn=journal_data.get("issn_electronic"),
+                    publisher=journal_data.get("publisher_name"),
+                    country=journal_data.get("publisher_location"),
+                    journal_ids=_format_external_ids(journal_data.get("journal_ids")),
+                )
             # Extract volume/issue from journal dict (they belong to Paper, not Journal)
             volume = journal_data.get("volume")
             issue = journal_data.get("issue")
@@ -200,16 +440,19 @@ def build_paper_entities(
         id=meta.get("pmcid") or meta.get("doi"),
         label=meta.get("title"),
         source_uri=f"urn:pmc:{meta.get('pmcid', '')}" if meta.get("pmcid") else None,
-        pmcid=meta.get("pmcid"),
+        pmcid=_format_pmcid(meta.get("pmcid")),
         doi=meta.get("doi"),
         title=meta.get("title"),
         journal=journal_entity,
         volume=volume,
         issue=issue,
         pages=meta.get("pages"),
-        pub_date=meta.get("pub_date"),
+        pub_date=_parse_pub_date(meta.get("pub_date")),
         keywords=meta.get("keywords") or [],
         grants=_create_grant_entities(meta.get("funding")),
+        pii=meta.get("identifiers", {}).get("pii"),
+        publisher_id=meta.get("identifiers", {}).get("publisher-id"),
+        license=_format_license(meta.get("license")),
     )
 
     # Merge search API data if provided
@@ -258,6 +501,8 @@ def build_paper_entities(
             label=sec_data.get("title"),
             title=sec_data.get("title"),
             content=sec_data.get("content"),
+            section_type=_normalize_section_type(sec_data.get("type")),
+            order=sec_data.get("order"),
         )
         sections.append(section)
 
@@ -291,16 +536,26 @@ def build_paper_entities(
     references = []
     for ref_data in parser.extract_references():
         year = ref_data.get("year")
+
+        # Create a simple JournalEntity for references if journal info is available
+        journal_entity = None
+        journal_name = ref_data.get("source") or ref_data.get("journal")
+        if journal_name:
+            journal_entity = JournalEntity(
+                title=journal_name,
+                source_uri=f"urn:journal:{journal_name.replace(' ', '_')}",
+            )
+
         reference = ReferenceEntity(
             title=ref_data.get("title"),
-            journal=ref_data.get("source"),
+            journal=journal_entity,  # Use the simple JournalEntity
             publication_year=int(year) if year is not None else None,
             volume=ref_data.get("volume"),
             pages=ref_data.get("pages"),
             doi=ref_data.get("doi"),
             pmid=ref_data.get("pmid"),
             pmcid=ref_data.get("pmcid"),
-            authors=ref_data.get("authors"),
+            author_list=ref_data.get("authors"),  # Use author_list instead of authors
         )
         references.append(reference)
 

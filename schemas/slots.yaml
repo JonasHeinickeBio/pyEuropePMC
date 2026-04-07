@@ -1,0 +1,987 @@
+# PyEuropePMC LinkML Schema - Slot Definitions
+# This file contains all reusable attribute definitions (slots)
+
+id: https://w3id.org/pyeuropepmc/slots
+name: pyeuropepmc-slots
+description: Reusable slot definitions for PyEuropePMC data models
+
+imports:
+  - base
+  - enums
+
+# Slot definitions (reusable attribute definitions)
+slots:
+  # Core identifier slots
+  id:
+    description: Local identifier (slug/uuid) for the entity
+    slot_uri: dcterms:identifier
+    required: false
+    range: string
+
+  label:
+    description: Human-readable label for the entity
+    slot_uri: rdfs:label
+    range: string
+
+  source_uri:
+    description: Source URI for provenance tracking
+    slot_uri: prov:hadPrimarySource
+    range: uriorcurie
+
+  confidence:
+    description: Confidence score for extracted information (0.0 to 1.0)
+    slot_uri: pyeuropepmc:confidence
+    range: float
+    minimum_value: 0.0
+    maximum_value: 1.0
+
+  quality_score:
+    description: Overall quality score for data completeness and accuracy (0.0 to 1.0)
+    slot_uri: pyeuropepmc:qualityScore
+    range: float
+    minimum_value: 0.0
+    maximum_value: 1.0
+
+  confidence_score:
+    description: Confidence score for citation type classification (0.0 to 1.0)
+    slot_uri: pyeuropepmc:confidenceScore
+    range: float
+    minimum_value: 0.0
+    maximum_value: 1.0
+
+  types:
+    description: RDF types (CURIEs/URIs) for this entity
+    slot_uri: rdf:type
+    multivalued: true
+    range: uriorcurie
+
+  data_sources:
+    description: List of data sources that contributed to this entity
+    slot_uri: prov:hadPrimarySource
+    multivalued: true
+    range: string
+
+  last_updated:
+    description: Timestamp of last data update (ISO 8601)
+    slot_uri: dcterms:modified
+    range: datetime
+
+  generatedAtTime:
+    description: Timestamp when the entity was generated
+    slot_uri: prov:generatedAtTime
+    range: datetime
+
+  # Scholarly work slots
+  title:
+    description: Work or entity title
+    slot_uri: dcterms:title
+    range: string
+
+  doi:
+    description: Digital Object Identifier
+    slot_uri: bibo:doi
+    range: uriorcurie
+    pattern: "^10\\.\\d{4,9}/[-._;()/:a-zA-Z0-9]+$"
+
+  pmcid:
+    description: PubMed Central ID
+    slot_uri: pyeuropepmc:pmcid
+    range: string
+    pattern: "^PMC\\d+$"
+
+  pmid:
+    description: PubMed ID
+    slot_uri: pyeuropepmc:pmid
+    range: string
+    pattern: "^\\d+$"
+
+  volume:
+    description: Publication volume
+    slot_uri: bibo:volume
+    range: string
+
+  pages:
+    description: Page range (e.g., "123-456")
+    slot_uri: bibo:pages
+    range: string
+
+  publication_year:
+    description: Publication year (4-digit)
+    slot_uri: dcterms:issued
+    range: integer
+    minimum_value: 1000
+    maximum_value: 9999
+
+  publication_date:
+    description: Full publication date
+    slot_uri: dcterms:date
+    range: date
+
+  semantic_scholar_id:
+    description: Semantic Scholar paper ID
+    slot_uri: pyeuropepmc:semanticScholarId
+    range: string
+
+  # Paper-specific slots
+  issue:
+    description: Journal issue number
+    slot_uri: bibo:issue
+    range: string
+
+  pub_date:
+    description: Publication date (legacy field)
+    slot_uri: dcterms:issued
+    range: date
+
+  abstract:
+    description: Article abstract
+    slot_uri: dcterms:abstract
+    range: string
+
+  citation_count:
+    description: Total citation count
+    slot_uri: pyeuropepmc:citationCount
+    range: integer
+    minimum_value: 0
+
+  influential_citation_count:
+    description: Influential citation count
+    slot_uri: pyeuropepmc:influentialCitationCount
+    range: integer
+    minimum_value: 0
+
+  is_oa:
+    description: Open access status flag
+    slot_uri: dcterms:accessRights
+    range: boolean
+
+  oa_status:
+    description: Open access status details
+    slot_uri: dcterms:accessRights
+    range: OpenAccessStatus
+
+  oa_url:
+    description: Open access URL
+    slot_uri: bibo:uri
+    range: uriorcurie
+
+  reference_count:
+    description: Number of references cited
+    slot_uri: pyeuropepmc:referenceCount
+    range: integer
+    minimum_value: 0
+
+  numPages:
+    description: Number of pages in the publication
+    slot_uri: bibo:numPages
+    range: integer
+    minimum_value: 1
+
+  cited_by_count:
+    description: Number of papers citing this work
+    slot_uri: pyeuropepmc:citationCount
+    range: integer
+    minimum_value: 0
+
+  publisher:
+    description: Publisher name
+    slot_uri: dcterms:publisher
+    range: string
+
+  issn:
+    description: ISSN identifier
+    slot_uri: bibo:issn
+    range: string
+    pattern: "^\\d{4}-\\d{3}[\\dX]$"
+
+  publication_type:
+    description: Type of publication
+    slot_uri: bibo:DocumentType
+    range: PublicationType
+
+  first_page:
+    description: First page number
+    slot_uri: bibo:pageStart
+    range: string
+
+  last_page:
+    description: Last page number
+    slot_uri: bibo:pageEnd
+    range: string
+
+  semantic_scholar_corpus_id:
+    description: Semantic Scholar corpus ID
+    slot_uri: pyeuropepmc:semanticScholarCorpusId
+    range: string
+
+  s2_paper_id:
+    description: Semantic Scholar paper ID
+    slot_uri: pyeuropepmc:s2PaperId
+    range: string
+
+  corpus_id:
+    description: Semantic Scholar corpus ID (alternative field)
+    slot_uri: pyeuropepmc:corpusId
+    range: string
+
+  s2_fields_of_study:
+    description: Semantic Scholar fields of study
+    slot_uri: dcterms:subject
+    multivalued: true
+    range: string
+
+  publication_types:
+    description: Publication types from Semantic Scholar
+    slot_uri: bibo:DocumentType
+    multivalued: true
+    range: string
+
+  tldr:
+    description: TLDR summary from Semantic Scholar
+    slot_uri: dcterms:abstract
+    range: string
+
+  open_access_pdf_url:
+    description: Open access PDF URL
+    slot_uri: bibo:uri
+    range: uriorcurie
+
+  referenced_works_count:
+    description: Number of referenced works
+    slot_uri: pyeuropepmc:referencedWorksCount
+    range: integer
+
+  references_count:
+    description: Number of references
+    slot_uri: pyeuropepmc:referencesCount
+    range: integer
+
+  openalex_id:
+    description: OpenAlex identifier
+    slot_uri: pyeuropepmc:openAlexId
+    range: uriorcurie
+
+  license_url:
+    description: License URL
+    slot_uri: dcterms:license
+    range: uriorcurie
+
+  license_text:
+    description: License description text
+    slot_uri: dcterms:rights
+    range: string
+
+  keywords:
+    description: List of keywords
+    slot_uri: dcterms:subject
+    multivalued: true
+    range: string
+
+  fields_of_study:
+    description: Fields of study
+    slot_uri: dcterms:subject
+    multivalued: true
+    range: string
+
+  related_works:
+    description: Related work IDs
+    slot_uri: dcterms:related
+    multivalued: true
+    range: string
+
+  pub_types:
+    description: List of publication types from Europe PMC
+    slot_uri: bibo:DocumentType
+    multivalued: true
+    range: string
+
+  mesh_terms:
+    description: MeSH terms associated with the paper
+    slot_uri: meshv:hasDescriptor
+    multivalued: true
+    range: string
+
+  topics:
+    description: Research topics from OpenAlex
+    slot_uri: dcterms:subject
+    multivalued: true
+    range: string
+
+  has_pdf:
+    description: Whether the paper has a PDF available
+    slot_uri: pyeuropepmc:hasPdf
+    range: boolean
+
+  has_supplementary:
+    description: Whether the paper has supplementary materials
+    slot_uri: pyeuropepmc:hasSupplementary
+    range: boolean
+
+  in_epmc:
+    description: Whether the paper is in Europe PMC
+    slot_uri: pyeuropepmc:inEpmc
+    range: boolean
+
+  in_pmc:
+    description: Whether the paper is in PubMed Central
+    slot_uri: pyeuropepmc:inPmc
+    range: boolean
+
+  journal_issn:
+    description: Journal ISSN identifier
+    slot_uri: bibo:issn
+    range: string
+    pattern: "^\\d{4}-\\d{3}[\\dX]$"
+
+  page_info:
+    description: Page information string
+    slot_uri: bibo:pages
+    range: string
+
+  has_references:
+    description: Whether the paper has references
+    slot_uri: pyeuropepmc:hasReferences
+    range: boolean
+
+  has_text_mined_terms:
+    description: Whether the paper has text-mined terms
+    slot_uri: pyeuropepmc:hasTextMinedTerms
+    range: boolean
+
+  has_db_cross_references:
+    description: Whether the paper has database cross-references
+    slot_uri: pyeuropepmc:hasDbCrossReferences
+    range: boolean
+
+  has_labs_links:
+    description: Whether the paper has labs links
+    slot_uri: pyeuropepmc:hasLabsLinks
+    range: boolean
+
+  has_tm_accession_numbers:
+    description: Whether the paper has text-mined accession numbers
+    slot_uri: pyeuropepmc:hasTmAccessionNumbers
+    range: boolean
+
+  first_index_date:
+    description: First index date
+    slot_uri: pyeuropepmc:firstIndexDate
+    range: date
+
+  first_publication_date:
+    description: First publication date
+    slot_uri: pyeuropepmc:firstPublicationDate
+    range: date
+
+  external_id_conflicts:
+    description: Conflicts in external identifiers
+    slot_uri: pyeuropepmc:externalIdConflicts
+    range: string
+
+  license:
+    description: License information
+    slot_uri: dcterms:license
+    range: uriorcurie
+
+  # Figure slots
+  caption:
+    description: Caption or description
+    slot_uri: dcterms:description
+    range: string
+
+  figure_label:
+    description: Figure label (e.g., "Figure 1")
+    slot_uri: rdfs:label
+    range: string
+
+  graphic_uri:
+    description: URI to the figure graphic/image file
+    slot_uri: foaf:depiction
+    range: uriorcurie
+
+  # Grant slots
+  fundref_doi:
+    description: FundRef DOI for the funding organization
+    slot_uri: datacite:doi
+    range: uriorcurie
+    pattern: "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$"
+
+  funding_source:
+    description: Name of the funding organization/source
+    slot_uri: frapo:hasFundingAgency
+    range: string
+
+  award_id:
+    description: Grant or award identifier
+    slot_uri: datacite:identifier
+    range: string
+
+  grant_id:
+    description: Grant identifier from funding agency
+    slot_uri: frapo:hasGrantNumber
+    range: string
+
+  agency:
+    description: Funding agency name
+    slot_uri: frapo:hasFundingAgency
+    range: string
+
+  order_in:
+    description: Order/position of grant in the list
+    slot_uri: pyeuropepmc:orderIn
+    range: integer
+    minimum_value: 0
+
+  recipient:
+    description: "DEPRECATED: Use recipients instead. Grant recipient name."
+    slot_uri: frapo:hasRecipient
+    range: string
+
+  # Affiliation slots
+  affiliated_author:
+    description: Author affiliated with this institution
+    slot_uri: pyeuropepmc:hasAffiliation
+    range: AuthorEntity
+
+  affiliated_institution:
+    description: Institution the author is affiliated with
+    slot_uri: org:memberOf
+    range: Organization
+
+  affiliation_order:
+    description: Order of affiliation in author's list
+    slot_uri: pyeuropepmc:affiliationOrder
+    range: integer
+    minimum_value: 0
+
+  # Institution slots
+  display_name:
+    description: Display name of the institution
+    slot_uri: skos:prefLabel
+    range: string
+
+  ror_id:
+    description: ROR (Research Organization Registry) identifier
+    slot_uri: pyeuropepmc:rorId
+    range: uriorcurie
+
+  country:
+    description: Country name
+    slot_uri: geo:country
+    range: string
+
+  country_code:
+    description: ISO country code
+    slot_uri: geo:countryCode
+    range: string
+
+  city:
+    description: City name
+    slot_uri: geo:city
+    range: string
+
+  latitude:
+    description: Geographic latitude
+    slot_uri: geo:lat
+    range: decimal
+    minimum_value: -90.0
+    maximum_value: 90.0
+
+  longitude:
+    description: Geographic longitude
+    slot_uri: geo:long
+    range: decimal
+    minimum_value: -180.0
+    maximum_value: 180.0
+
+  institution_type:
+    description: Type of institution
+    slot_uri: org:classification
+    range: InstitutionType
+
+  department_type:
+    description: Type of department
+    slot_uri: org:classification
+    range: string
+
+  grid_id:
+    description: GRID identifier
+    slot_uri: pyeuropepmc:gridId
+    range: string
+
+  isni:
+    description: ISNI identifier
+    slot_uri: pyeuropepmc:isni
+    range: string
+
+  wikidata_id:
+    description: Wikidata identifier
+    slot_uri: owl:sameAs
+    range: uriorcurie
+
+  fundref_id:
+    description: FundRef identifier
+    slot_uri: pyeuropepmc:fundrefId
+    range: string
+
+  website:
+    description: Institution website URL
+    slot_uri: foaf:homepage
+    range: uriorcurie
+
+  established:
+    description: Year established
+    slot_uri: dcterms:created
+    range: integer
+    minimum_value: 1000
+    maximum_value: 9999
+
+  domains:
+    description: Institution domains
+    slot_uri: dcterms:subject
+    multivalued: true
+    range: string
+
+  status:
+    description: Institution status
+    slot_uri: pyeuropepmc:status
+    range: string
+
+  names:
+    description: Alternative institution names
+    slot_uri: skos:altLabel
+    multivalued: true
+    range: string
+
+  locations:
+    description: Institution locations
+    slot_uri: org:siteAddress
+    multivalued: true
+    range: string
+
+  links:
+    description: Institution links
+    slot_uri: foaf:page
+    multivalued: true
+    range: uriorcurie
+
+  parent_organization:
+    description: URI of the parent organization this unit belongs to
+    slot_uri: org:memberOf
+    range: uriorcurie
+
+  external_ids:
+    description: External identifiers for the institution
+    slot_uri: dcterms:identifier
+    multivalued: true
+    range: string
+
+  # Journal slots
+  medline_abbreviation:
+    description: Medline abbreviation
+    slot_uri: bibo:shortTitle
+    range: string
+
+  iso_abbreviation:
+    description: ISO abbreviation
+    slot_uri: bibo:shortTitle
+    range: string
+
+  nlmid:
+    description: NLM ID (National Library of Medicine identifier)
+    slot_uri: bibo:nlmid
+    range: string
+
+  essn:
+    description: Electronic ISSN
+    slot_uri: bibo:eissn
+    range: string
+    pattern: "^\\d{4}-\\d{3}[\\dX]$"
+
+  language:
+    description: Primary language of publication
+    slot_uri: dcterms:language
+    range: string
+
+  journal_issue_id:
+    description: Europe PMC journal issue identifier
+    slot_uri: bibo:issue
+    range: string
+
+  scopus_source_id:
+    description: Scopus source identifier
+    slot_uri: pyeuropepmc:scopusSourceId
+    range: string
+
+  subject_areas:
+    description: Subject areas/categories
+    slot_uri: dcterms:subject
+    multivalued: true
+    range: string
+
+  impact_factor:
+    description: Journal impact factor
+    slot_uri: pyeuropepmc:impactFactor
+    range: decimal
+
+  sjr:
+    description: SCImago Journal Rank
+    slot_uri: pyeuropepmc:sjr
+    range: decimal
+
+  h_index:
+    description: Journal h-index
+    slot_uri: pyeuropepmc:hIndex
+    range: integer
+    minimum_value: 0
+
+  nlm_ta:
+    description: NLM Title Abbreviation
+    slot_uri: bibo:nlmTA
+    range: string
+
+  iso_abbrev:
+    description: ISO abbreviation (alternative field)
+    slot_uri: bibo:isoAbbrev
+    range: string
+
+  publisher_id:
+    description: Publisher identifier
+    slot_uri: pyeuropepmc:publisherId
+    range: string
+
+  pii:
+    description: Publisher Item Identifier
+    slot_uri: pyeuropepmc:pii
+    range: string
+
+  # Reference slots
+  author_list:
+    description: Author list (comma-separated)
+    slot_uri: bibo:authorList
+    range: string
+
+  raw_citation:
+    description: Raw citation text when parsing fails
+    slot_uri: dcterms:description
+    range: string
+
+  # Table slots
+  table_label:
+    description: Table label (e.g., "Table 1")
+    slot_uri: rdfs:label
+    range: string
+
+  headers:
+    description: Column headers for the table
+    slot_uri: rdfs:label
+    multivalued: true
+    range: string
+
+  cells:
+    description: Cell values for a table row
+    slot_uri: rdfs:member
+    multivalued: true
+    range: string
+
+  # Section slots
+  content:
+    description: Section text content
+    slot_uri: nif:isString
+    range: string
+
+  begin_index:
+    description: NIF begin offset for text alignment
+    slot_uri: nif:beginIndex
+    range: integer
+    minimum_value: 0
+
+  end_index:
+    description: NIF end offset for text alignment
+    slot_uri: nif:endIndex
+    range: integer
+    minimum_value: 0
+
+  section_type:
+    description: Type/category of the section
+    slot_uri: dcterms:type
+    range: SectionType
+
+  context_text:
+    description: Surrounding text context of a citation
+    slot_uri: pyeuropepmc:contextText
+    range: string
+
+  citation_type:
+    description: Type of citation relationship
+    slot_uri: cito:citationType
+    range: CitationType
+
+  # Relationship slots
+  authors:
+    description: Authors of a work
+    slot_uri: dcterms:creator
+    multivalued: true
+    range: AuthorEntity
+
+  papers:
+    description: Papers authored by an author
+    slot_uri: foaf:made
+    multivalued: true
+    range: PaperEntity
+
+  paper_institutions:
+    description: Institutions affiliated with a paper
+    slot_uri: pyeuropepmc:affiliatedWith
+    multivalued: true
+    range: Organization
+
+  author_institutions:
+    description: Institutions affiliated with an author
+    slot_uri: pyeuropepmc:affiliatedWith
+    multivalued: true
+    range: Organization
+
+  affiliations:
+    description: Author affiliations with institutions
+    slot_uri: pyeuropepmc:hasAffiliation
+    multivalued: true
+    range: AffiliationEntity
+
+  institution_members:
+    description: Members of an institution
+    slot_uri: org:hasMember
+    multivalued: true
+    range: AuthorEntity
+
+  journal:
+    description: Journal of a paper
+    slot_uri: bibo:journal
+    range: JournalEntity
+
+  journal_papers:
+    description: Papers published in a journal
+    slot_uri: bibo:article
+    multivalued: true
+    range: PaperEntity
+
+  sections:
+    description: Sections of a paper
+    slot_uri: dcterms:hasPart
+    multivalued: true
+    range: SectionEntity
+
+  section_paper:
+    description: Paper containing a section
+    slot_uri: dcterms:isPartOf
+    range: PaperEntity
+
+  subsections:
+    description: Subsections of a section
+    slot_uri: dcterms:hasPart
+    multivalued: true
+    range: SectionEntity
+
+  parent_section:
+    description: Parent section of a subsection
+    slot_uri: dcterms:isPartOf
+    range: SectionEntity
+
+  references:
+    description: References cited by a paper
+    slot_uri: cito:cites
+    multivalued: true
+    range: ReferenceEntity
+    inverse: citing_paper
+
+  citing_paper:
+    description: Paper that cites this reference
+    slot_uri: cito:isCitedBy
+    range: PaperEntity
+
+  tables:
+    description: Tables in a paper
+    slot_uri: dcterms:hasPart
+    multivalued: true
+    range: TableEntity
+
+  table_paper:
+    description: Paper containing a table
+    slot_uri: dcterms:isPartOf
+    range: PaperEntity
+
+  rows:
+    description: Rows in a table
+    slot_uri: dcterms:hasPart
+    multivalued: true
+    range: TableRowEntity
+
+  row_table:
+    description: Table containing a row
+    slot_uri: dcterms:isPartOf
+    range: TableEntity
+
+  figures:
+    description: Figures in a paper
+    slot_uri: dcterms:hasPart
+    multivalued: true
+    range: FigureEntity
+
+  figure_paper:
+    description: Paper containing a figure
+    slot_uri: dcterms:isPartOf
+    range: FigureEntity
+
+  grants:
+    description: Grants funding a paper
+    slot_uri: foaf:fundedBy
+    multivalued: true
+    range: GrantEntity
+
+  recipients:
+    description: Recipients of a grant
+    slot_uri: frapo:hasRecipient
+    multivalued: true
+    range: AuthorEntity
+
+  funded_papers:
+    description: Papers funded by a grant
+    slot_uri: frapo:funds
+    multivalued: true
+    range: PaperEntity
+
+  citations:
+    description: Citations within a section
+    slot_uri: cito:cites
+    multivalued: true
+    range: CitationContextEntity
+
+  citation_contexts:
+    description: Citation contexts in a section
+    slot_uri: pyeuropepmc:citationContext
+    multivalued: true
+    range: CitationContextEntity
+
+  cited_paper:
+    description: Paper being cited
+    slot_uri: cito:isCitedBy
+    range: PaperEntity
+
+  citing_section:
+    description: Section containing the citation
+    slot_uri: cito:cites
+    range: SectionEntity
+
+  # Author slots
+  full_name:
+    description: Full name of the author
+    slot_uri: foaf:name
+    range: string
+
+  first_name:
+    description: First/given name of the author
+    slot_uri: foaf:givenName
+    range: string
+
+  last_name:
+    description: Last/family name of the author
+    slot_uri: foaf:familyName
+    range: string
+
+  initials:
+    description: Author's initials
+    slot_uri: foaf:initials
+    range: string
+
+  orcid:
+    description: ORCID identifier
+    slot_uri: datacite:orcid
+    range: string
+    pattern: "^\\d{4}-\\d{4}-\\d{4}-\\d{3}[\\dX]$"
+
+  email:
+    description: Email address
+    slot_uri: foaf:mbox
+    range: string
+    pattern: "^[\\w\\.-]+@[\\w\\.-]+\\.\\w+$"
+
+  position:
+    description: Author position/role
+    slot_uri: org:role
+    range: AuthorPosition
+
+  roles:
+    description: Specific roles or contributions of authors
+    slot_uri: pyeuropepmc:authorRoles
+    multivalued: true
+    range: AuthorRole
+
+  sources:
+    description: Data sources for author information
+    slot_uri: prov:hadPrimarySource
+    multivalued: true
+    range: string
+
+  affiliation_text:
+    description: Affiliation text
+    slot_uri: pyeuropepmc:affiliationText
+    range: string
+
+  # Additional author slots
+  name:
+    description: Display name (for enrichment compatibility)
+    slot_uri: foaf:name
+    range: string
+
+  semantic_scholar_author_id:
+    description: Semantic Scholar author ID (alternative field)
+    slot_uri: pyeuropepmc:semanticScholarAuthorId
+    range: string
+
+  scopus_author_id:
+    description: Scopus author ID
+    slot_uri: pyeuropepmc:scopusAuthorId
+    range: string
+
+  researcher_id:
+    description: ResearcherID
+    slot_uri: pyeuropepmc:researcherId
+    range: string
+
+  orcid_works_count:
+    description: Number of works associated with ORCID
+    slot_uri: pyeuropepmc:orcidWorksCount
+    range: integer
+    minimum_value: 0
+
+  paper_count:
+    description: Total number of papers by author
+    slot_uri: pyeuropepmc:paperCount
+    range: integer
+    minimum_value: 0
+
+  institutions:
+    description: Institutional affiliations as InstitutionEntity objects
+    slot_uri: org:memberOf
+    multivalued: true
+    range: Organization
+
+  # Additional institution slots
+  relationships:
+    description: Related institutions
+    slot_uri: org:relationship
+    multivalued: true
+    range: string
+
+  # Additional journal slots
+  journal_ids:
+    description: All journal identifiers by type
+    slot_uri: pyeuropepmc:journalIds
+    range: string
+
+  # Additional section slots
+  order:
+    description: Document order of the section (1-based)
+    slot_uri: pyeuropepmc:sectionOrder
+    range: integer
+    minimum_value: 1

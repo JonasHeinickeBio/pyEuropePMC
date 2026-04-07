@@ -24,6 +24,10 @@ class SectionEntity(BaseEntity):
         NIF begin offset (for sentence/token alignment)
     end_index : Optional[int]
         NIF end offset (for sentence/token alignment)
+    order : Optional[int]
+        Document order of the section (1-based)
+    section_type : Optional[str]
+        Semantic type of the section (abstract, introduction, methods, etc.)
 
     Examples
     --------
@@ -38,6 +42,8 @@ class SectionEntity(BaseEntity):
     content: str | None = None
     begin_index: int | None = None
     end_index: int | None = None
+    order: int | None = None
+    section_type: str | None = None
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""

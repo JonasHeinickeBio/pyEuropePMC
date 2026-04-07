@@ -1,0 +1,78 @@
+# PyEuropePMC LinkML Schema - Organization Entity
+# This file contains the Organization and Department entity definitions
+
+id: https://w3id.org/pyeuropepmc/entities/organization
+name: pyeuropepmc-organization-entity
+description: Organization and Department entity classes for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  Organization:
+    description: >-
+      Entity representing an organization with ROR alignment.
+      Contains organizational metadata and geographic information.
+    class_uri: org:Organization
+    is_a: BaseEntity
+    slots:
+      - display_name
+      - ror_id
+      - openalex_id
+      - country
+      - country_code
+      - city
+      - latitude
+      - longitude
+      - institution_type
+      - grid_id
+      - isni
+      - wikidata_id
+      - fundref_id
+      - website
+      - established
+      - domains
+      - relationships
+      - institution_members
+      - status
+      - names
+      - locations
+      - links
+    slot_usage:
+      display_name:
+        required: true
+
+  Department:
+    description: >-
+      Entity representing a department or sub-organization within an organization.
+      Contains organizational metadata and geographic information.
+    class_uri: org:OrganizationalUnit
+    is_a: BaseEntity
+    slots:
+      - display_name
+      - parent_organization
+      - country
+      - country_code
+      - city
+      - latitude
+      - longitude
+      - department_type
+      - grid_id
+      - isni
+      - wikidata_id
+      - website
+      - established
+      - domains
+      - relationships
+      - status
+      - names
+      - locations
+      - links
+    slot_usage:
+      display_name:
+        required: true
+      parent_organization:
+        required: true
+        range: Organization

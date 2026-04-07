@@ -1,0 +1,24 @@
+# PyEuropePMC LinkML Schema - Figure Entity
+# This file contains the FigureEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/figure
+name: pyeuropepmc-figure-entity
+description: Figure entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  FigureEntity:
+    description: >-
+      Entity representing a figure with BIBO alignment.
+      Contains figure metadata and graphic URI.
+    class_uri: bibo:Image
+    is_a: BaseEntity
+    slots:
+      - caption
+      - figure_label
+      - graphic_uri
+      - figure_paper

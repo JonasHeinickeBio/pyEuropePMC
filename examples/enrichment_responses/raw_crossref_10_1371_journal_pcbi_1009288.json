@@ -1,0 +1,180 @@
+{
+  "source": "crossref",
+  "title": "Relaxing restrictions at the pace of vaccination increases freedom and guards against further COVID-19 waves",
+  "authors": [
+    {
+      "name": "Simon Bauer",
+      "given": "Simon",
+      "family": "Bauer",
+      "orcid": "https://orcid.org/0000-0001-9359-9419",
+      "affiliation": [],
+      "sequence": "first",
+      "ORCID": "https://orcid.org/0000-0001-9359-9419"
+    },
+    {
+      "name": "Sebastian Contreras",
+      "given": "Sebastian",
+      "family": "Contreras",
+      "orcid": "https://orcid.org/0000-0001-8909-774X",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-8909-774X"
+    },
+    {
+      "name": "Jonas Dehning",
+      "given": "Jonas",
+      "family": "Dehning",
+      "orcid": "https://orcid.org/0000-0002-1728-2505",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-1728-2505"
+    },
+    {
+      "name": "Matthias Linden",
+      "given": "Matthias",
+      "family": "Linden",
+      "orcid": "https://orcid.org/0000-0001-8439-653X",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-8439-653X"
+    },
+    {
+      "name": "Emil Iftekhar",
+      "given": "Emil",
+      "family": "Iftekhar",
+      "orcid": "https://orcid.org/0000-0003-0188-500X",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0003-0188-500X"
+    },
+    {
+      "name": "Sebastian B. Mohr",
+      "given": "Sebastian B.",
+      "family": "Mohr",
+      "orcid": "https://orcid.org/0000-0002-4721-0561",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-4721-0561"
+    },
+    {
+      "name": "Alvaro Olivera-Nappa",
+      "given": "Alvaro",
+      "family": "Olivera-Nappa",
+      "orcid": "https://orcid.org/0000-0001-6053-7019",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-6053-7019"
+    },
+    {
+      "name": "Viola Priesemann",
+      "given": "Viola",
+      "family": "Priesemann",
+      "affiliation": [],
+      "sequence": "additional"
+    }
+  ],
+  "abstract": "<jats:p>Mass vaccination offers a promising exit strategy for the COVID-19 pandemic. However, as vaccination progresses, demands to lift restrictions increase, despite most of the population remaining susceptible. Using our age-stratified SEIRD-ICU compartmental model and curated epidemiological and vaccination data, we quantified the rate (relative to vaccination progress) at which countries can lift non-pharmaceutical interventions without overwhelming their healthcare systems. We analyzed scenarios ranging from immediately lifting restrictions (accepting high mortality and morbidity) to reducing case numbers to a level where test-trace-and-isolate (TTI) programs efficiently compensate for local spreading events. In general, the age-dependent vaccination roll-out implies a transient decrease of more than ten years in the average age of ICU patients and deceased. The pace of vaccination determines the speed of lifting restrictions; Taking the European Union (EU) as an example case, all considered scenarios allow for steadily increasing contacts starting in May 2021 and relaxing most restrictions by autumn 2021. Throughout summer 2021, only mild contact restrictions will remain necessary. However, only high vaccine uptake can prevent further severe waves. Across EU countries, seroprevalence impacts the long-term success of vaccination campaigns more strongly than age demographics. In addition, we highlight the need for preventive measures to reduce contagion in school settings throughout the year 2021, where children might be drivers of contagion because of them remaining susceptible. Strategies that maintain low case numbers, instead of high ones, reduce infections and deaths by factors of eleven and five, respectively. In general, policies with low case numbers significantly benefit from vaccination, as the overall reduction in susceptibility will further diminish viral spread. Keeping case numbers low is the safest long-term strategy because it considerably reduces mortality and morbidity and offers better preparedness against emerging escape or more contagious virus variants while still allowing for higher contact numbers (freedom) with progressing vaccinations.</jats:p>",
+  "journal": "PLOS Computational Biology",
+  "publication_date": "2021-09-02",
+  "citation_count": 57,
+  "references_count": 68,
+  "license": {
+    "url": "http://creativecommons.org/licenses/by/4.0/",
+    "start": "2021-09-02T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": [
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "max-planck-gesellschaft",
+      "doi": "10.13039/501100004189",
+      "award": [
+        "MPRG Priesemann"
+      ]
+    },
+    {
+      "name": "Comisión Nacional de Investigación Científica y Tecnológica",
+      "doi": "10.13039/501100002848",
+      "award": [
+        "PIA project FB0001, ANID"
+      ]
+    },
+    {
+      "name": "Comisión Nacional de Investigación Científica y Tecnológica",
+      "doi": "10.13039/501100002848",
+      "award": [
+        "PIA project FB0001, ANID"
+      ]
+    },
+    {
+      "name": "Netzwerk Universitätsmedizin",
+      "doi": null,
+      "award": [
+        "egePan (01KX2021)"
+      ]
+    },
+    {
+      "name": "Netzwerk Universitätsmedizin",
+      "doi": null,
+      "award": [
+        "egePan (01KX2021)"
+      ]
+    },
+    {
+      "name": "Netzwerk Universitätsmedizin",
+      "doi": null,
+      "award": [
+        "egePan (01KX2021)"
+      ]
+    }
+  ],
+  "type": "journal-article",
+  "issn": [
+    "1553-7358"
+  ],
+  "volume": "17",
+  "issue": "9",
+  "page": "e1009288",
+  "publisher": "Public Library of Science (PLoS)"
+}

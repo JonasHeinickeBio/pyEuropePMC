@@ -40,10 +40,13 @@ class SectionParser(BaseParser):
             for body_elem in bodies:
                 # Find sections within this specific body element
                 secs = body_elem.findall(".//sec")
+                order = 1
                 for sec in secs:
                     section_data = self._extract_section_structure(sec)
                     if section_data:
+                        section_data["order"] = order
                         sections.append(section_data)
+                        order += 1
 
             # Extract additional content structures
             sections.extend(self._extract_additional_content_structures())
@@ -99,12 +102,81 @@ class SectionParser(BaseParser):
         return structures
 
     def _extract_section_structure(self, section: ET.Element) -> dict[str, str]:
-        """Extract section title and content."""
+        """
+        Extract section title and content.
+
+        Extracts only direct paragraphs (not from nested sections) to avoid duplication.
+        """
         title = self._extract_flat_texts(section, "title", filter_empty=False, use_full_text=True)
-        paragraphs = self._extract_flat_texts(
-            section, ".//p", filter_empty=True, use_full_text=True
-        )
-        return {
+
+        # Extract only direct paragraph children, not from nested sections
+        # Use iterchildren to get direct children only (not findall which gets all descendants)
+        paragraphs = []
+        for child in section:
+            if child.tag == "p":
+                p_text = self._get_text_content(child)
+                if p_text:
+                    paragraphs.append(p_text)
+
+        section_data = {
             "title": title[0] if title else "",
             "content": "\n\n".join(paragraphs) if paragraphs else "",
         }
+        # Add section type classification - first try XML attribute, then title-based
+        section_data["type"] = self._classify_section_type(
+            section_data["title"], section.get("sec-type")
+        )
+        return section_data
+
+    def _classify_section_type(self, title: str, xml_sec_type: str | None = None) -> str:
+        """
+        Classify section type based on XML attribute or title patterns.
+
+        Args:
+            title: Section title text
+            xml_sec_type: Optional sec-type attribute from XML
+
+        Returns:
+            Section type classification
+        """
+        # Priority 1: Use XML sec-type attribute if available
+        if xml_sec_type:
+            xml_type_lower = xml_sec_type.lower().strip()
+            # Map common XML sec-type values
+            type_mapping = {
+                "intro": "introduction",
+                "materials": "methods",
+                "materials-methods": "methods",
+                "results-discussion": "discussion",
+                "conclusions": "conclusion",
+            }
+            # Return mapped value or original if it's a known type
+            return type_mapping.get(xml_type_lower, xml_type_lower)
+
+        # Priority 2: Classify based on title patterns
+        title_lower = title.lower().strip()
+
+        # Common section type patterns
+        type_patterns = {
+            "abstract": ["abstract", "summary"],
+            "introduction": ["introduction", "background"],
+            "methods": [
+                "methods",
+                "materials and methods",
+                "methodology",
+                "experimental procedures",
+            ],
+            "results": ["results", "findings", "data analysis"],
+            "discussion": ["discussion", "interpretation"],
+            "conclusion": ["conclusion", "conclusions"],
+            "acknowledgments": ["acknowledgments", "acknowledgement", "thanks"],
+            "references": ["references", "bibliography", "literature cited"],
+            "supplementary": ["supplementary", "supplemental", "additional data"],
+        }
+
+        for section_type, patterns in type_patterns.items():
+            if any(pattern in title_lower for pattern in patterns):
+                return section_type
+
+        # Default to "section" for unclassified sections
+        return "section"

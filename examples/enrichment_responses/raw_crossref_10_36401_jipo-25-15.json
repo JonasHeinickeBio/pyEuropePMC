@@ -1,0 +1,73 @@
+{
+  "source": "crossref",
+  "title": "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service",
+  "authors": [
+    {
+      "name": "Robin C. Vanderpool",
+      "given": "Robin C.",
+      "family": "Vanderpool",
+      "orcid": "https://orcid.org/0000-0001-9995-4485",
+      "affiliation": [
+        "1 Health Communication and Informatics Research Branch, Behavioral Research Program, Division of Cancer Control and Population Sciences, National Cancer Institute, Rockville, MD, USA"
+      ],
+      "sequence": "first",
+      "ORCID": "https://orcid.org/0000-0001-9995-4485"
+    },
+    {
+      "name": "Laura Dwyer",
+      "given": "Laura",
+      "family": "Dwyer",
+      "affiliation": [
+        "2 Cape Fox Facilities Services, Chantilly, VA, USA"
+      ],
+      "sequence": "additional"
+    },
+    {
+      "name": "Diane Ng",
+      "given": "Diane",
+      "family": "Ng",
+      "affiliation": [
+        "3 Public Health, Westat, Rockville, MD, USA"
+      ],
+      "sequence": "additional"
+    },
+    {
+      "name": "Beth Slotman",
+      "given": "Beth",
+      "family": "Slotman",
+      "affiliation": [
+        "3 Public Health, Westat, Rockville, MD, USA"
+      ],
+      "sequence": "additional"
+    },
+    {
+      "name": "Sandra A. Mitchell",
+      "given": "Sandra A.",
+      "family": "Mitchell",
+      "affiliation": [
+        "4 Outcomes Research Branch, Healthcare Delivery Research Program, Division of Cancer Control and Population Sciences, National Cancer Institute, Rockville, MD, USA"
+      ],
+      "sequence": "additional"
+    }
+  ],
+  "abstract": null,
+  "journal": "Journal of Immunotherapy and Precision Oncology",
+  "publication_date": "2025-10-20",
+  "citation_count": 0,
+  "references_count": 16,
+  "license": {
+    "url": "https://creativecommons.org/public-domain/cc0/",
+    "start": "2025-10-20T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": null,
+  "type": "journal-article",
+  "issn": [
+    "2590-017X",
+    "2666-2345"
+  ],
+  "volume": "8",
+  "issue": "4",
+  "page": "249-253",
+  "publisher": "Innovative Healthcare Institute"
+}

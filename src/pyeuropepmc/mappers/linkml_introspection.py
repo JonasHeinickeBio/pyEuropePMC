@@ -10,8 +10,8 @@ This replaces direct rdf_map.yml reads with LinkML schema introspection,
 establishing the LinkML schema as the single source of truth.
 """
 
-import logging
 from functools import lru_cache
+import logging
 from pathlib import Path
 from typing import Any
 
@@ -29,7 +29,7 @@ except ImportError:
     logger.warning(
         "linkml_runtime not available. "
         "Install with: pip install linkml-runtime. "
-        "Falling back to legacy rdf_map.yml."
+        "RDF mapping will not be available."
     )
 
 __all__ = [
@@ -146,7 +146,7 @@ class LinkMLSchemaIntrospector:
         Returns
         -------
         dict[str, Any]
-            Dictionary containing class_uri, rdf_types, fields, 
+            Dictionary containing class_uri, rdf_types, fields,
             multi_value_fields, and relationships.
         """
         if not self.is_available:
@@ -185,9 +185,7 @@ class LinkMLSchemaIntrospector:
             logger.error(f"Error getting class mapping for {class_name}: {e}")
             return {}
 
-    def get_slot_mapping(
-        self, slot_name: str, class_name: str | None = None
-    ) -> dict[str, Any]:
+    def get_slot_mapping(self, slot_name: str, class_name: str | None = None) -> dict[str, Any]:
         """
         Get the mapping for a specific slot.
 
@@ -310,8 +308,7 @@ class LinkMLSchemaIntrospector:
         try:
             prefixes = self.schema_view.schema.prefixes
             return {
-                prefix: str(prefix_obj.prefix_reference)
-                for prefix, prefix_obj in prefixes.items()
+                prefix: str(prefix_obj.prefix_reference) for prefix, prefix_obj in prefixes.items()
             }
         except Exception as e:
             logger.error(f"Error getting namespaces: {e}")
@@ -496,10 +493,9 @@ class LinkMLSchemaIntrospector:
                 value = getattr(entity, field_name, None)
                 if value is not None:
                     import re
+
                     if not re.match(pattern, str(value)):
-                        errors.append(
-                            f"Field '{field_name}' does not match pattern: {pattern}"
-                        )
+                        errors.append(f"Field '{field_name}' does not match pattern: {pattern}")
 
         # Check value constraints
         for field_name, field_mapping in mapping.get("fields", {}).items():
@@ -508,13 +504,9 @@ class LinkMLSchemaIntrospector:
                 min_val = field_mapping.get("minimum_value")
                 max_val = field_mapping.get("maximum_value")
                 if min_val is not None and value < min_val:
-                    errors.append(
-                        f"Field '{field_name}' value {value} is below minimum {min_val}"
-                    )
+                    errors.append(f"Field '{field_name}' value {value} is below minimum {min_val}")
                 if max_val is not None and value > max_val:
-                    errors.append(
-                        f"Field '{field_name}' value {value} is above maximum {max_val}"
-                    )
+                    errors.append(f"Field '{field_name}' value {value} is above maximum {max_val}")
 
         return errors
 

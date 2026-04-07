@@ -5,7 +5,6 @@ This module provides generic XML extraction and manipulation helper functions.
 """
 
 import logging
-import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
@@ -187,20 +186,29 @@ class XMLHelper:
         if inline_patterns is None:
             inline_patterns = [".//sup"]
 
-        # Get full text
-        full_text = "".join(element.itertext()).strip()
+        # Find all elements to exclude
+        exclude_elements = set()
+        for pattern in inline_patterns:
+            exclude_elements.update(element.findall(pattern))
 
-        # Extract inline element texts
-        inline_texts = XMLHelper.extract_inline_elements(
-            element, inline_patterns, filter_empty=True
-        )
+        # Build text excluding the excluded elements
+        text_parts = []
 
-        # Remove each inline text using regex
-        clean_text = full_text
-        for inline_text in inline_texts:
-            clean_text = re.sub(rf"{re.escape(inline_text)}", "", clean_text)
+        def _collect_text(elem: ET.Element) -> None:
+            # Add element's text if element is not excluded
+            if elem not in exclude_elements and elem.text:
+                text_parts.append(elem.text)
 
-        return clean_text.strip()
+            # Recursively process children
+            for child in elem:
+                _collect_text(child)
+                # Add tail text of child (tail always belongs to parent)
+                if child.tail:
+                    text_parts.append(child.tail)
+
+        _collect_text(element)
+
+        return "".join(text_parts).strip()
 
     @staticmethod
     def extract_with_fallbacks(

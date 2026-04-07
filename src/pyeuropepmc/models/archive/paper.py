@@ -27,6 +27,8 @@ class PaperEntity(ScholarlyWorkEntity):
         List of keywords
     abstract : Optional[str]
         Article abstract
+    affiliation_text : Optional[str]
+        Affiliation text
     citation_count : Optional[int]
         Total citation count from all sources
     influential_citation_count : Optional[int]
@@ -59,6 +61,8 @@ class PaperEntity(ScholarlyWorkEntity):
         ISSN identifier (legacy field, use journal.issn instead)
     publication_type : Optional[str]
         Type of publication
+    pub_types : list[str]
+        List of publication types from Europe PMC
     first_page : Optional[str]
         First page number
     last_page : Optional[str]
@@ -84,6 +88,7 @@ class PaperEntity(ScholarlyWorkEntity):
         default_factory=list
     )  # MeSH terms (str or MeSHHeadingEntity)
     abstract: str | None = None
+    affiliation_text: str | None = None
     citation_count: int | None = None
     influential_citation_count: int | None = None
     topics: list[dict[str, Any]] | None = None
@@ -102,7 +107,7 @@ class PaperEntity(ScholarlyWorkEntity):
     reference_count: int | None = None
 
     # Publication metadata
-    pub_type: str | None = None
+    pub_types: list[str] = field(default_factory=list)
     journal_issn: str | None = None
     page_info: str | None = None
     first_page: str | None = None
@@ -205,6 +210,9 @@ class PaperEntity(ScholarlyWorkEntity):
         self.semantic_scholar_corpus_id = normalize_string_field(self.semantic_scholar_corpus_id)
         self.openalex_id = normalize_string_field(self.openalex_id)
 
+        # Normalize pub types
+        self.pub_types = self._normalize_pub_types(self.pub_types)
+
         # Normalize journal entity if present
         if self.journal:
             if isinstance(self.journal, str):
@@ -282,4 +290,127 @@ class PaperEntity(ScholarlyWorkEntity):
             reference_count=references.get("count"),
             cited_by_count=references.get("cited_by_count"),
             related_works=references.get("related_works"),
+        )
+
+    @staticmethod
+    def _normalize_pub_types(pub_types: list[str] | None) -> list[str]:
+        """
+        Normalize publication types to canonical terms.
+
+        Parameters
+        ----------
+        pub_types : list[str] or None
+            Raw publication types from Europe PMC
+
+        Returns
+        -------
+        list[str]
+            Normalized publication types
+        """
+        if not pub_types:
+            return []
+
+        # Mapping of raw terms to canonical terms
+        normalization_map = {
+            "review-article": "Review Article",
+            "research-article": "Research Article",
+            "journal-article": "Journal Article",
+            "letter": "Letter",
+            "editorial": "Editorial",
+            "news": "News",
+            "commentary": "Commentary",
+            "book-review": "Book Review",
+            "conference-paper": "Conference Paper",
+            "preprint": "Preprint",
+            "dataset": "Dataset",
+            "software": "Software",
+            "other": "Other",
+        }
+
+        normalized = []
+        for pub_type in pub_types:
+            if isinstance(pub_type, str):
+                # Convert to lowercase for matching, then apply mapping
+                key = pub_type.lower().replace(" ", "-")
+                canonical = normalization_map.get(key, pub_type.strip().title())
+                normalized.append(canonical)
+            else:
+                normalized.append(str(pub_type).strip().title())
+
+        return normalized
+
+    @classmethod
+    def from_search_result(cls, search_result: dict[str, Any]) -> "PaperEntity":
+        """
+        Create a PaperEntity from Europe PMC search result.
+
+        Parameters
+        ----------
+        search_result : dict
+            Search result dictionary from Europe PMC API
+
+        Returns
+        -------
+        PaperEntity
+            Paper entity with search result data
+        """
+        # Extract pub types
+        pub_type_list = search_result.get("pubTypeList", {}).get("pubType", [])
+        if isinstance(pub_type_list, str):
+            pub_type_list = [pub_type_list]
+        elif not isinstance(pub_type_list, list):
+            pub_type_list = []
+
+        normalized_pub_types = cls._normalize_pub_types(pub_type_list)
+
+        # Extract journal info
+        journal_info = search_result.get("journalInfo", {})
+        journal = None
+        if journal_info:
+            journal_title = journal_info.get("journal", {}).get("title")
+            if journal_title:
+                journal = JournalEntity(
+                    title=journal_title,
+                    issn=journal_info.get("journal", {}).get("issn"),
+                    publisher=journal_info.get("publisher"),
+                )
+
+        # Extract author info (simplified)
+        author_list = search_result.get("authorList", {}).get("author", [])
+        authors = []
+        if isinstance(author_list, list):
+            from pyeuropepmc.models.author import AuthorEntity
+
+            for author_data in author_list:
+                if isinstance(author_data, dict):
+                    author = AuthorEntity(
+                        full_name=author_data.get("fullName"),
+                        first_name=author_data.get("firstName"),
+                        last_name=author_data.get("lastName"),
+                        orcid=author_data.get("orcid"),
+                    )
+                    authors.append(author)
+
+        return cls(
+            pmcid=search_result.get("pmcid"),
+            doi=search_result.get("doi"),
+            pmid=search_result.get("pmid"),
+            title=search_result.get("title"),
+            abstract=search_result.get("abstractText"),
+            authors=authors,
+            journal=journal,
+            pub_types=normalized_pub_types,
+            publication_year=search_result.get("pubYear"),
+            publication_date=search_result.get("firstPublicationDate"),
+            volume=journal_info.get("volume"),
+            issue=journal_info.get("issue"),
+            page_info=search_result.get("pageInfo"),
+            has_pdf=search_result.get("hasPDF") == "Y",
+            has_supplementary=search_result.get("hasSupplements") == "Y",
+            in_epmc=search_result.get("inEPMC") == "Y",
+            in_pmc=search_result.get("inPMC") == "Y",
+            cited_by_count=search_result.get("citedByCount"),
+            is_oa=search_result.get("isOpenAccess") == "Y",
+            oa_status=search_result.get("openAccess"),
+            license=search_result.get("license"),
         )

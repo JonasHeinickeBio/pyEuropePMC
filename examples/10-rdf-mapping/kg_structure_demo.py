@@ -170,7 +170,7 @@ mapper.save_content_rdf(entities_data, output_dir="rdf_output")
 # Create complete KG (for comprehensive analysis)
 mapper.save_complete_rdf(entities_data, output_dir="rdf_output")
 
-# Use configured default (from conf/rdf_map.yml)
+# Use configured default (from LinkML schema and rdf_config.yaml)
 mapper.save_rdf(entities_data, output_dir="rdf_output")
 """)
 

@@ -2,52 +2,2043 @@
 @prefix datacite: <http://purl.org/spar/datacite/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/pyeuropepmc/author/canhua-jiang> a foaf:Person ;
-    datacite:orcid "https://orcid.org/0000-0002-8133-1981"^^xsd:string ;
-    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-8133-1981> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.163230" ;
+<https://w3id.org/pyeuropepmc/data#paper/nature> a bibo:AcademicArticle ;
+    rdfs:label "A multimodal whole-slide foundation model for pathology"^^xsd:string ;
+    dcterms:abstract "The field of computational pathology has been transformed with recent advances in foundation models that encode histopathology region-of-interests (ROIs) into versatile and transferable feature representations via self-supervised learning. However, translating these advancements to address complex clinical challenges at the patient and slide level remains constrained by limited clinical data in disease-specific cohorts, especially for rare clinical conditions. We propose Transformer-based pathology Image and Text Alignment Network (TITAN), a multimodal whole-slide foundation model pretrained using 335,645 whole-slide images via visual self-supervised learning and vision-language alignment with corresponding pathology reports and 423,122 synthetic captions generated from a multimodal generative AI copilot for pathology. Without any fine-tuning or requiring clinical labels, TITAN can extract general-purpose slide representations and generate pathology reports that generalize to resource-limited clinical scenarios such as rare disease retrieval and cancer prognosis. We evaluate TITAN on diverse clinical tasks and find that it outperforms both ROI and slide foundation models across machine learning settings, including linear probing, few-shot and zero-shot classification, rare cancer retrieval, cross-modal retrieval and pathology report generation. Pretrained using 335,645 whole-slide images, a foundation model is developed to provide representations for slide- and patient-level tasks. It is capable of performing clinical tasks and generating reports even in data-scarce scenarios, such as rare cancer diagnosis and survival prediction, without requiring further fine-tuning."^^xsd:string ;
+    dcterms:accessRights true,
+        "hybrid" ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/ahrong-kim>,
+        <https://w3id.org/pyeuropepmc/data#author/akihiro-kawabe>,
+        <https://w3id.org/pyeuropepmc/data#author/andrew-h-song>,
+        <https://w3id.org/pyeuropepmc/data#author/andrew-zhang>,
+        <https://w3id.org/pyeuropepmc/data#author/anurag-j-vaidya>,
+        <https://w3id.org/pyeuropepmc/data#author/anurag-vaidya>,
+        <https://w3id.org/pyeuropepmc/data#author/bowen-chen>,
+        <https://w3id.org/pyeuropepmc/data#author/chengkuan-chen>,
+        <https://w3id.org/pyeuropepmc/data#author/christina-s-chen>,
+        <https://w3id.org/pyeuropepmc/data#author/cristina-almagroprez>,
+        <https://w3id.org/pyeuropepmc/data#author/daisuke-komura>,
+        <https://w3id.org/pyeuropepmc/data#author/drew-f-k-williamson>,
+        <https://w3id.org/pyeuropepmc/data#author/faisal-mahmood>,
+        <https://w3id.org/pyeuropepmc/data#author/georg-gerber>,
+        <https://w3id.org/pyeuropepmc/data#author/georg-k-gerber>,
+        <https://w3id.org/pyeuropepmc/data#author/guillaume-jaume>,
+        <https://w3id.org/pyeuropepmc/data#author/harry-robertson>,
+        <https://w3id.org/pyeuropepmc/data#author/long-p-le>,
+        <https://w3id.org/pyeuropepmc/data#author/long-phi-le>,
+        <https://w3id.org/pyeuropepmc/data#author/mieko-ochi>,
+        <https://w3id.org/pyeuropepmc/data#author/ming-y-lu>,
+        <https://w3id.org/pyeuropepmc/data#author/muhammad-shaban>,
+        <https://w3id.org/pyeuropepmc/data#author/paul-doucet>,
+        <https://w3id.org/pyeuropepmc/data#author/richard-j-chen>,
+        <https://w3id.org/pyeuropepmc/data#author/sharifa-sahai>,
+        <https://w3id.org/pyeuropepmc/data#author/shinya-sato>,
+        <https://w3id.org/pyeuropepmc/data#author/shumpei-ishikawa>,
+        <https://w3id.org/pyeuropepmc/data#author/sophia-j-wagner>,
+        <https://w3id.org/pyeuropepmc/data#author/tingying-peng>,
+        <https://w3id.org/pyeuropepmc/data#author/tomoyuki-yokose>,
+        <https://w3id.org/pyeuropepmc/data#author/tong-ding>,
+        <https://w3id.org/pyeuropepmc/data#author/yohei-miyagi> ;
+    dcterms:date "2025-11-01"^^xsd:date ;
+    dcterms:license "https://creativecommons.org/licenses/by-nc-nd/4.0"^^xsd:anyURI ;
+    dcterms:subject "AI in cancer detection",
+        "Generative Adversarial Networks and Image Synthesis",
+        "Medicine",
+        "Multimodal Machine Learning Applications" ;
+    dcterms:title "A multimodal whole-slide foundation model for pathology"^^xsd:string ;
+    bibo:issn "1078-8956"^^xsd:string ;
+    bibo:issue "11"^^xsd:string ;
+    bibo:journal <https://w3id.org/pyeuropepmc/data#journal/nature-medicine> ;
+    bibo:pageEnd "3761"^^xsd:string ;
+    bibo:pageStart "3749"^^xsd:string ;
+    bibo:pages "3749-3761"^^xsd:string ;
+    bibo:uri "https://www.nature.com/articles/s41591-025-03982-3.pdf"^^xsd:anyURI ;
+    bibo:volume "31"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.418386" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Can-Hua Jiang"^^xsd:string,
-        "Canhua Jiang"^^xsd:string .
+    pyeuropepmc:citationCount 36 ;
+    pyeuropepmc:influentialCitationCount 1 .
 
-<https://w3id.org/pyeuropepmc/author/muhammad-tufail> a foaf:Person ;
-    datacite:orcid "https://orcid.org/0000-0003-3442-7216"^^xsd:string ;
-    owl:sameAs <https://orcid.org/https://orcid.org/0000-0003-3442-7216> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.124348" ;
+<https://w3id.org/pyeuropepmc/data#author/ahrong-kim> a foaf:Person ;
+    rdfs:label "Ahrong Kim"^^xsd:string ;
+    datacite:orcid "0000-0003-2317-8920"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5031275956>,
+        <https://orcid.org/0000-0003-2317-8920> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/3a08a481-949e-4020-84f1-760dc017c2d3>,
+        <https://w3id.org/pyeuropepmc/data#organization/6b08d4d3-fc8d-4fa6-87d3-564513a5571a>,
+        <https://w3id.org/pyeuropepmc/data#organization/76a17716-26e2-4c64-9953-a6336fde52c7>,
+        <https://w3id.org/pyeuropepmc/data#organization/81f28def-3640-4a3b-b09c-371fb58e75b7>,
+        <https://w3id.org/pyeuropepmc/data#organization/8998e74e-fbbf-40a9-902d-bfe940166802>,
+        <https://w3id.org/pyeuropepmc/data#organization/b167ce8e-8f7e-4ad0-a03a-c9f55cd430a2>,
+        <https://w3id.org/pyeuropepmc/data#organization/b2a61651-a0a8-4485-968d-7cceaf4359ce>,
+        <https://w3id.org/pyeuropepmc/data#organization/da761c01-8ac2-471e-8602-39ae28621cba> ;
+    prov:generatedAtTime "2026-04-07T11:37:59.668409" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Muhammad Tufail"^^xsd:string .
+    foaf:familyName "Kim"^^xsd:string ;
+    foaf:givenName "Ahrong"^^xsd:string ;
+    foaf:name "Ahrong Kim"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5031275956"^^xsd:anyURI .
 
-<https://w3id.org/pyeuropepmc/author/ning-li> a foaf:Person ;
-    datacite:orcid "https://orcid.org/0000-0002-6518-2541"^^xsd:string ;
-    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-6518-2541> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.147067" ;
+<https://w3id.org/pyeuropepmc/data#author/akihiro-kawabe> a foaf:Person ;
+    rdfs:label "Akihiro Kawabe"^^xsd:string ;
+    datacite:orcid "0000-0002-0259-5648"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5005222253>,
+        <https://orcid.org/0000-0002-0259-5648> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/04cefd69-039a-4345-bdbd-5dd65f77dd90>,
+        <https://w3id.org/pyeuropepmc/data#organization/8495584f-42ec-4f8e-9883-ca2d06c84259> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.116002" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Ning Li"^^xsd:string .
+    foaf:familyName "Kawabe"^^xsd:string ;
+    foaf:givenName "Akihiro"^^xsd:string ;
+    foaf:name "Akihiro Kawabe"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5005222253"^^xsd:anyURI .
 
-<https://w3id.org/pyeuropepmc/journal/signal-transduction-and-targeted-therapy> a bibo:Journal ;
-    dcterms:title "Signal Transduction and Targeted Therapy"^^xsd:string ;
-    bibo:article <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.109314" ;
+<https://w3id.org/pyeuropepmc/data#author/andrew-h-song> a foaf:Person ;
+    rdfs:label "Andrew H. Song"^^xsd:string ;
+    datacite:orcid "0000-0001-9356-9156"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5066569995>,
+        <https://orcid.org/0000-0001-9356-9156> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/07c6dd63-bb46-48ce-872f-6f9cdb984667>,
+        <https://w3id.org/pyeuropepmc/data#organization/0aa5ee54-4af3-473c-a22b-372f09e95737>,
+        <https://w3id.org/pyeuropepmc/data#organization/0ccaf5db-1384-4393-8e1b-af8cc7ba9de8>,
+        <https://w3id.org/pyeuropepmc/data#organization/130f4726-e85a-495c-896b-f2490812f0d2>,
+        <https://w3id.org/pyeuropepmc/data#organization/52a9998a-3c75-4fcf-b0ab-a5cc85b655c3>,
+        <https://w3id.org/pyeuropepmc/data#organization/bc540bb0-5e38-4f4e-9e9b-0f95f6ec4f87>,
+        <https://w3id.org/pyeuropepmc/data#organization/f1dd3a5d-0394-46c0-99a6-feeac149af49>,
+        <https://w3id.org/pyeuropepmc/data#organization/f36b175b-32c2-48ac-ad99-241b02ac5086> ;
+    prov:generatedAtTime "2026-04-07T11:37:57.742101" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Song"^^xsd:string ;
+    foaf:givenName "Andrew H."^^xsd:string ;
+    foaf:name "Andrew H. Song"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5066569995"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/andrew-zhang> a foaf:Person ;
+    rdfs:label "Andrew Zhang"^^xsd:string ;
+    datacite:orcid "0000-0002-9432-2793"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5019616787>,
+        <https://orcid.org/0000-0002-9432-2793> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/0c9c4bb8-26af-4218-b42b-65573904a3b0>,
+        <https://w3id.org/pyeuropepmc/data#organization/2ed065f7-4674-49ca-97a9-54511fdb6a34>,
+        <https://w3id.org/pyeuropepmc/data#organization/32b46d40-b06c-4cfb-960a-cf401a24c3ff>,
+        <https://w3id.org/pyeuropepmc/data#organization/3500c4dd-b9ea-4d7a-8f46-0b64873b37dd>,
+        <https://w3id.org/pyeuropepmc/data#organization/44d9214b-ca25-4b2f-a79b-d840bc7f70fe>,
+        <https://w3id.org/pyeuropepmc/data#organization/78d857d0-8050-441e-a1a6-2bd646f66e10>,
+        <https://w3id.org/pyeuropepmc/data#organization/bf6d15af-fa67-4926-baec-df02841d425e>,
+        <https://w3id.org/pyeuropepmc/data#organization/c6a43d66-bf72-4d2e-aa53-4dd8be6c8ab4>,
+        <https://w3id.org/pyeuropepmc/data#organization/d8c9bcca-c1a7-4ed5-ae0b-76556a2b4c96>,
+        <https://w3id.org/pyeuropepmc/data#organization/f244a899-afce-45d0-944c-64c00657d6b0>,
+        <https://w3id.org/pyeuropepmc/data#organization/fc77f94c-0518-46f1-9d2e-4ce966b6f617>,
+        <https://w3id.org/pyeuropepmc/data#organization/fea3a985-dad4-4d01-85b8-688ba3beb528> ;
+    prov:generatedAtTime "2026-04-07T11:37:58.986559" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Andrew"^^xsd:string ;
+    foaf:name "Andrew Zhang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5019616787"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/anurag-j-vaidya> a foaf:Person ;
+    rdfs:label "Anurag J. Vaidya"^^xsd:string ;
+    org:role "middle" ;
+    prov:generatedAtTime "2026-04-07T11:38:03.500680" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Vaidya"^^xsd:string ;
+    foaf:givenName "Anurag J."^^xsd:string ;
+    foaf:name "Anurag J. Vaidya"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/anurag-vaidya> a foaf:Person ;
+    rdfs:label "Anurag Vaidya"^^xsd:string ;
+    datacite:orcid "0000-0001-6378-6010"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5023061511>,
+        <https://orcid.org/0000-0001-6378-6010> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/21f73b9e-ef47-4b0e-bf85-297087e6392e>,
+        <https://w3id.org/pyeuropepmc/data#organization/2a436817-b3cd-4005-927f-e0932a47a787>,
+        <https://w3id.org/pyeuropepmc/data#organization/2eaa215e-090e-488f-b0de-fc37bdf1f34c>,
+        <https://w3id.org/pyeuropepmc/data#organization/3cc7777f-85ef-4189-bd3f-2ba8721227a0>,
+        <https://w3id.org/pyeuropepmc/data#organization/6b2c52e2-f13a-4499-8f51-040ee04b346b>,
+        <https://w3id.org/pyeuropepmc/data#organization/6fa8655e-155f-498c-aa5a-e505b4640ccc>,
+        <https://w3id.org/pyeuropepmc/data#organization/7ee44781-eca7-46ff-9ca1-4cbb4a838c83>,
+        <https://w3id.org/pyeuropepmc/data#organization/b3cc2087-ea7e-46ac-8850-f52b5cc51887>,
+        <https://w3id.org/pyeuropepmc/data#organization/c2334e91-37a2-47d6-b88b-679f003e2736>,
+        <https://w3id.org/pyeuropepmc/data#organization/d527b8a9-4402-4682-9460-8b2d61fc04ce>,
+        <https://w3id.org/pyeuropepmc/data#organization/eb38d49f-3b53-492d-abbc-264053077175>,
+        <https://w3id.org/pyeuropepmc/data#organization/fdfbb681-bcd9-442f-a80c-588c218810d2> ;
+    prov:generatedAtTime "2026-04-07T11:38:03.852506" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:name "Anurag Vaidya"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5023061511"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/bowen-chen> a foaf:Person ;
+    rdfs:label "Bowen Chen"^^xsd:string ;
+    datacite:orcid "0000-0002-5822-0976"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5100675173>,
+        <https://orcid.org/0000-0002-5822-0976> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/3e9121cd-276e-495e-a622-b16a29e962ac>,
+        <https://w3id.org/pyeuropepmc/data#organization/54f862ab-f4ed-4983-bb59-a1a37070b434>,
+        <https://w3id.org/pyeuropepmc/data#organization/63e1ec6c-d6fa-4ac0-83d3-29d2e3b41e5a>,
+        <https://w3id.org/pyeuropepmc/data#organization/9cfe1ec6-60f9-4fe1-941f-c125e5fd28f1>,
+        <https://w3id.org/pyeuropepmc/data#organization/ac9ccf47-bd9c-4b99-82a7-6c94d561bc4e>,
+        <https://w3id.org/pyeuropepmc/data#organization/cfe6368e-16d6-479a-96b8-f78a071202aa>,
+        <https://w3id.org/pyeuropepmc/data#organization/ec1542d8-0151-4eb8-936a-96b42edf53b1>,
+        <https://w3id.org/pyeuropepmc/data#organization/f7607da6-0ed7-40a2-907e-11ae40ba684b> ;
+    prov:generatedAtTime "2026-04-07T11:38:00.383746" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Bowen"^^xsd:string ;
+    foaf:name "Bowen Chen"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5100675173"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/chengkuan-chen> a foaf:Person ;
+    rdfs:label "Chengkuan Chen"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5032079635> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/04408754-ab29-45fb-9453-bd5d609b56fd>,
+        <https://w3id.org/pyeuropepmc/data#organization/38176af1-0bb7-492e-ba77-bd164cdb7ac3>,
+        <https://w3id.org/pyeuropepmc/data#organization/4a07a242-e3cb-4133-9111-288adf332a0e>,
+        <https://w3id.org/pyeuropepmc/data#organization/5a9a211e-7c99-4c3a-8652-93b25996fc33>,
+        <https://w3id.org/pyeuropepmc/data#organization/9f48baaa-ebf0-48ce-9a0b-2f829931f105>,
+        <https://w3id.org/pyeuropepmc/data#organization/bc24b15d-39b5-4fb9-89ba-c4e2442984d5>,
+        <https://w3id.org/pyeuropepmc/data#organization/c07f7397-3aac-460f-a04c-6f39347bcdbd>,
+        <https://w3id.org/pyeuropepmc/data#organization/c7246240-60d7-4b51-bb7a-ce26d398ddc6>,
+        <https://w3id.org/pyeuropepmc/data#organization/c8d935b5-d826-4286-99f3-ead446441688>,
+        <https://w3id.org/pyeuropepmc/data#organization/ce4c0a84-51c4-4e64-9b99-44a6026cdf3d> ;
+    prov:generatedAtTime "2026-04-07T11:38:01.615881" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Chengkuan"^^xsd:string ;
+    foaf:name "Chengkuan Chen"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5032079635"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/christina-s-chen> a foaf:Person ;
+    rdfs:label "Christina S. Chen"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5076415496> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/033cf075-8c89-4751-af02-f1782ba4552b>,
+        <https://w3id.org/pyeuropepmc/data#organization/0c13651d-b7f0-4b12-b8a2-107892c0b248>,
+        <https://w3id.org/pyeuropepmc/data#organization/2e1cd396-7aa8-4eca-ad79-7a8bf03f47db>,
+        <https://w3id.org/pyeuropepmc/data#organization/307e9179-c6e1-4238-b145-3047fbdef3e1>,
+        <https://w3id.org/pyeuropepmc/data#organization/567ce91d-e5ab-452c-b8cd-edd4d47f806b>,
+        <https://w3id.org/pyeuropepmc/data#organization/5cfb3007-c288-4c1a-812f-a1f117556ea9>,
+        <https://w3id.org/pyeuropepmc/data#organization/732be49e-f00e-42a3-b739-79cef832122b>,
+        <https://w3id.org/pyeuropepmc/data#organization/7aec5bf8-3e2b-4263-ba97-d43fd83f655a>,
+        <https://w3id.org/pyeuropepmc/data#organization/7f0dfbaa-ada9-43c4-bc6c-c1abca6af88f>,
+        <https://w3id.org/pyeuropepmc/data#organization/a5370a26-ea97-4824-9da9-0a5af37e1bba>,
+        <https://w3id.org/pyeuropepmc/data#organization/aa8695cc-16a0-4cb7-b78f-1cfbf1916cfa>,
+        <https://w3id.org/pyeuropepmc/data#organization/fc141ccc-0f9d-4dc3-b6b8-822ef5f937e2> ;
+    prov:generatedAtTime "2026-04-07T11:38:01.956475" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Christina S."^^xsd:string ;
+    foaf:name "Christina S. Chen"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5076415496"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/cristina-almagroprez> a foaf:Person ;
+    rdfs:label "Cristina Almagro-Pérez"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5025375747> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/0f705157-f696-49f2-affa-83a348d97cb9>,
+        <https://w3id.org/pyeuropepmc/data#organization/3ab14d61-3229-4ca6-aa83-b54287b2d2d9>,
+        <https://w3id.org/pyeuropepmc/data#organization/43aab48f-47c9-4c88-991d-748c419a7bcf>,
+        <https://w3id.org/pyeuropepmc/data#organization/4bf5f082-ad56-4af5-9930-7838dfbfdb09>,
+        <https://w3id.org/pyeuropepmc/data#organization/4d3adac1-3d7e-46f7-8293-ab0df902e885>,
+        <https://w3id.org/pyeuropepmc/data#organization/535782c5-ca08-4a94-b8ac-e0f655f7e893>,
+        <https://w3id.org/pyeuropepmc/data#organization/959442fd-0d71-4f11-b4e6-f50e8ab24117>,
+        <https://w3id.org/pyeuropepmc/data#organization/972cf0b6-9112-497b-9f47-72de616f9906>,
+        <https://w3id.org/pyeuropepmc/data#organization/a23998c2-3803-4ea6-b4a4-b222108f51db>,
+        <https://w3id.org/pyeuropepmc/data#organization/aaa38609-180b-41ca-8635-dabe1101dbf5>,
+        <https://w3id.org/pyeuropepmc/data#organization/b952fa58-3ab9-46d2-b024-6393eb1160ab>,
+        <https://w3id.org/pyeuropepmc/data#organization/ef7a455a-f00b-42a4-be76-2eb0546f5ab4> ;
+    prov:generatedAtTime "2026-04-07T11:38:00.746935" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Almagro-Pérez"^^xsd:string ;
+    foaf:givenName "Cristina"^^xsd:string ;
+    foaf:name "Cristina Almagro-Pérez"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5025375747"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/daisuke-komura> a foaf:Person ;
+    rdfs:label "Daisuke Komura"^^xsd:string ;
+    datacite:orcid "0000-0002-0038-728X"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5056846884>,
+        <https://orcid.org/0000-0002-0038-728X> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/80f601a5-ba6c-4ef0-8369-089b6cd343f8>,
+        <https://w3id.org/pyeuropepmc/data#organization/cd60cee1-e722-4ec6-80b9-219f75e16ec9> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.039284" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Komura"^^xsd:string ;
+    foaf:givenName "Daisuke"^^xsd:string ;
+    foaf:name "Daisuke Komura"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5056846884"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/drew-f-k-williamson> a foaf:Person ;
+    rdfs:label "Drew F. K. Williamson"^^xsd:string ;
+    datacite:orcid "0000-0003-1745-8846"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5050925115>,
+        <https://orcid.org/0000-0003-1745-8846> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/506d4b9b-5a4a-41b0-b4bf-9e61b0b2a87a>,
+        <https://w3id.org/pyeuropepmc/data#organization/6a0b90b2-2ea1-4fa7-937a-20f682045981>,
+        <https://w3id.org/pyeuropepmc/data#organization/7c99758a-6940-4ec7-a15d-17c04e9a8d4f>,
+        <https://w3id.org/pyeuropepmc/data#organization/85679a20-dff2-49ab-9974-c288a36f948e>,
+        <https://w3id.org/pyeuropepmc/data#organization/cc1023b4-cf68-4e14-9858-c0017d8e2cab>,
+        <https://w3id.org/pyeuropepmc/data#organization/f6f65e1a-3d10-404b-a686-fff5d420aad5> ;
+    prov:generatedAtTime "2026-04-07T11:37:59.849010" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Williamson"^^xsd:string ;
+    foaf:givenName "Drew F. K."^^xsd:string ;
+    foaf:name "Drew F. K. Williamson"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5050925115"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/faisal-mahmood> a foaf:Person ;
+    rdfs:label "Faisal Mahmood"^^xsd:string ;
+    datacite:orcid "0000-0001-7587-1562"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5080050834>,
+        <https://orcid.org/0000-0001-7587-1562> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/16675558-9add-48b3-b91a-aaeafc2d6e8e>,
+        <https://w3id.org/pyeuropepmc/data#organization/33e923ae-20b5-4968-b909-59039aae8141>,
+        <https://w3id.org/pyeuropepmc/data#organization/486ae668-ca33-48b4-80a4-416c720d8aea>,
+        <https://w3id.org/pyeuropepmc/data#organization/5edfd82c-389a-4c1f-bf2c-d270ecb1c27b>,
+        <https://w3id.org/pyeuropepmc/data#organization/7e3f15ad-ef3e-48e2-85cd-67210250ebae>,
+        <https://w3id.org/pyeuropepmc/data#organization/94932345-ca5b-4744-9d39-10400b57e2a0>,
+        <https://w3id.org/pyeuropepmc/data#organization/bcf30b98-b479-4649-ae32-5ff20cc19966>,
+        <https://w3id.org/pyeuropepmc/data#organization/c15a04b4-b5c9-4cfe-b98d-bf9c7fa09d33>,
+        <https://w3id.org/pyeuropepmc/data#organization/ddc22a6b-b71a-4935-972e-0ed650451e6e>,
+        <https://w3id.org/pyeuropepmc/data#organization/eee5fa48-75b6-41aa-afdb-32ab7a4161ff> ;
+    org:role "last" ;
+    prov:generatedAtTime "2026-04-07T11:38:03.449103" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Mahmood"^^xsd:string ;
+    foaf:givenName "Faisal"^^xsd:string ;
+    foaf:name "Faisal Mahmood"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5080050834"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/georg-gerber> a foaf:Person ;
+    rdfs:label "Georg Gerber"^^xsd:string ;
+    datacite:orcid "0000-0002-9149-5509"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-9149-5509> ;
+    org:role "middle" ;
+    prov:generatedAtTime "2026-04-07T11:38:03.521698" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Gerber"^^xsd:string ;
+    foaf:givenName "Georg"^^xsd:string ;
+    foaf:name "Georg Gerber"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/georg-k-gerber> a foaf:Person ;
+    rdfs:label "Georg K. Gerber"^^xsd:string ;
+    datacite:orcid "0000-0002-9149-5509"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5021626481>,
+        <https://orcid.org/0000-0002-9149-5509> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/110f1887-4ce8-47d8-b9b2-47cfac5e6cde>,
+        <https://w3id.org/pyeuropepmc/data#organization/4c31f56e-6195-422c-af95-e26666322045>,
+        <https://w3id.org/pyeuropepmc/data#organization/7345d15a-7e05-4d71-aa51-7e609160b051>,
+        <https://w3id.org/pyeuropepmc/data#organization/89324a3e-7465-4467-9a6e-c723722ecb77>,
+        <https://w3id.org/pyeuropepmc/data#organization/b472a990-db86-4ba9-8d7e-ce4f5a17c14c>,
+        <https://w3id.org/pyeuropepmc/data#organization/be6045ab-9ef5-4325-9571-fd144880234f>,
+        <https://w3id.org/pyeuropepmc/data#organization/cc59b294-d8b9-4517-8f08-cf4472e2744c>,
+        <https://w3id.org/pyeuropepmc/data#organization/ec3127f4-8a98-4e8a-9556-f95be33b2c13>,
+        <https://w3id.org/pyeuropepmc/data#organization/ee7fb329-ab7b-4712-804f-505711b026a3>,
+        <https://w3id.org/pyeuropepmc/data#organization/f3a8aaa9-f5b2-4546-8d88-197d45e59eb2> ;
+    prov:generatedAtTime "2026-04-07T11:38:04.106254" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:name "Georg K. Gerber"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5021626481"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/guillaume-jaume> a foaf:Person ;
+    rdfs:label "Guillaume Jaume"^^xsd:string ;
+    datacite:orcid "0000-0002-3832-1390"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5078448683>,
+        <https://orcid.org/0000-0002-3832-1390> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/23ec09c0-826a-4754-a701-7f8c83b4975b>,
+        <https://w3id.org/pyeuropepmc/data#organization/3c2efa5f-fb64-4914-878e-82e65d5cb30f>,
+        <https://w3id.org/pyeuropepmc/data#organization/3df45a1c-f4e8-429b-8e4f-9c4363585611>,
+        <https://w3id.org/pyeuropepmc/data#organization/4ce37bd4-7527-4ef5-af45-c2fa9844717a>,
+        <https://w3id.org/pyeuropepmc/data#organization/6025b523-4f08-4595-a429-ce78106a8ca6>,
+        <https://w3id.org/pyeuropepmc/data#organization/9d34d3dc-db99-4265-8a63-3e64ccd59aaa>,
+        <https://w3id.org/pyeuropepmc/data#organization/ca4c894d-4868-43a0-9ab7-6fd7cd31d00c>,
+        <https://w3id.org/pyeuropepmc/data#organization/dfd1c826-6d6e-4dcb-ae1f-f923b6716969> ;
+    prov:generatedAtTime "2026-04-07T11:37:59.231610" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Jaume"^^xsd:string ;
+    foaf:givenName "Guillaume"^^xsd:string ;
+    foaf:name "Guillaume Jaume"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5078448683"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/harry-robertson> a foaf:Person ;
+    rdfs:label "Harry Robertson"^^xsd:string ;
+    datacite:orcid "0000-0001-9203-3894"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5050784403>,
+        <https://orcid.org/0000-0001-9203-3894> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/137a1412-ee5f-4d90-87e0-d84a5afada75>,
+        <https://w3id.org/pyeuropepmc/data#organization/3c723dea-5351-488d-882a-3d85f1b34490>,
+        <https://w3id.org/pyeuropepmc/data#organization/58a61f29-9605-4f81-b05c-66eb81a53ca8>,
+        <https://w3id.org/pyeuropepmc/data#organization/77616845-fbfb-4206-b35c-2615272dcc9f>,
+        <https://w3id.org/pyeuropepmc/data#organization/7dd9032d-bd23-497a-8a28-2396267b73cb>,
+        <https://w3id.org/pyeuropepmc/data#organization/96830e16-1a02-49d1-8575-744762b76f85>,
+        <https://w3id.org/pyeuropepmc/data#organization/a6ae236f-0f43-4a5c-ba75-457fcfc75597>,
+        <https://w3id.org/pyeuropepmc/data#organization/ede3bb3b-fec4-4114-bb79-c8c6b87101fa>,
+        <https://w3id.org/pyeuropepmc/data#organization/ef9e79c8-637b-4994-95d7-15c5300eeeff>,
+        <https://w3id.org/pyeuropepmc/data#organization/fbb242db-121b-4f21-8e9e-8a7bd85b769d> ;
+    prov:generatedAtTime "2026-04-07T11:38:00.143723" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Robertson"^^xsd:string ;
+    foaf:givenName "Harry"^^xsd:string ;
+    foaf:name "Harry Robertson"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5050784403"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/long-p-le> a foaf:Person ;
+    rdfs:label "Long P. Le"^^xsd:string ;
+    datacite:orcid "0000-0003-4212-6528"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5078810229>,
+        <https://orcid.org/0000-0003-4212-6528> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/2e4c3570-cf34-48b0-b9cb-ef500cdee215>,
+        <https://w3id.org/pyeuropepmc/data#organization/2e76a0cc-f065-43d8-9d7c-0c5c83c3993d>,
+        <https://w3id.org/pyeuropepmc/data#organization/310735cb-54df-4feb-8646-5ff8b4163966>,
+        <https://w3id.org/pyeuropepmc/data#organization/41de44db-e0a1-48ed-bae9-71fe06d3b552>,
+        <https://w3id.org/pyeuropepmc/data#organization/42618910-47e0-4bcd-b265-e62cea0b87d7>,
+        <https://w3id.org/pyeuropepmc/data#organization/5e379947-02eb-4a47-9ac7-9f6e329e9b8c>,
+        <https://w3id.org/pyeuropepmc/data#organization/5fd58589-5bcb-43f9-a248-17d9b5a6b6cc>,
+        <https://w3id.org/pyeuropepmc/data#organization/6cb97eeb-46e8-40fd-8948-57f2f1adc186>,
+        <https://w3id.org/pyeuropepmc/data#organization/75d4924d-da35-4831-af68-c1e9c3f5e62b>,
+        <https://w3id.org/pyeuropepmc/data#organization/8f47c570-1a28-42ae-81d9-a75d78bb0316>,
+        <https://w3id.org/pyeuropepmc/data#organization/997c3eca-cc1d-4a97-8bdc-048bd5fa0097>,
+        <https://w3id.org/pyeuropepmc/data#organization/b4aaedf5-70c0-437c-87f2-d7216de824ac> ;
+    prov:generatedAtTime "2026-04-07T11:38:04.399014" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:name "Long P. Le"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5078810229"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/long-phi-le> a foaf:Person ;
+    rdfs:label "Long Phi Le"^^xsd:string ;
+    org:role "middle" ;
+    prov:generatedAtTime "2026-04-07T11:38:03.541985" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Le"^^xsd:string ;
+    foaf:givenName "Long Phi"^^xsd:string ;
+    foaf:name "Long Phi Le"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/mieko-ochi> a foaf:Person ;
+    rdfs:label "Mieko Ochi"^^xsd:string ;
+    datacite:orcid "0000-0003-1206-1575"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5089463867>,
+        <https://orcid.org/0000-0003-1206-1575> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/1e9c1b57-4b06-433b-9b33-a6d14c837bcb>,
+        <https://w3id.org/pyeuropepmc/data#organization/37c4f204-3f32-468c-ad22-0cde591ff242>,
+        <https://w3id.org/pyeuropepmc/data#organization/458cc1b4-236b-47fd-9bfd-622b0f1bd581>,
+        <https://w3id.org/pyeuropepmc/data#organization/e52bbf38-b5e4-43f4-926d-35eb5de446db> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.358466" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ochi"^^xsd:string ;
+    foaf:givenName "Mieko"^^xsd:string ;
+    foaf:name "Mieko Ochi"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5089463867"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/ming-y-lu> a foaf:Person ;
+    rdfs:label "Ming Y. Lu"^^xsd:string ;
+    datacite:orcid "0000-0003-0009-9699"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5074001163>,
+        <https://orcid.org/0000-0003-0009-9699> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/121274d2-7632-4ddb-a5b7-5ca03a10534c>,
+        <https://w3id.org/pyeuropepmc/data#organization/28c682af-04c5-45a0-8c67-e1e0b2f68753>,
+        <https://w3id.org/pyeuropepmc/data#organization/39dca855-6937-4ade-9752-da98422854cc>,
+        <https://w3id.org/pyeuropepmc/data#organization/54cd2060-0923-4aa5-bad7-8f6dc48d0b87>,
+        <https://w3id.org/pyeuropepmc/data#organization/56a53f24-4fb1-4559-8f07-cd4a73dd6d84>,
+        <https://w3id.org/pyeuropepmc/data#organization/57dc949b-e040-4495-86c1-6ec3572bcdbf>,
+        <https://w3id.org/pyeuropepmc/data#organization/6777f694-7f94-49ce-8da7-78f6b5b49191>,
+        <https://w3id.org/pyeuropepmc/data#organization/83763f76-2df1-436d-b812-c34c361e2126>,
+        <https://w3id.org/pyeuropepmc/data#organization/a5b2aa04-05e2-4768-87f3-e4fe86945063>,
+        <https://w3id.org/pyeuropepmc/data#organization/b4a60156-90ce-4119-bd43-524e6dcab35f> ;
+    prov:generatedAtTime "2026-04-07T11:37:58.621384" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lu"^^xsd:string ;
+    foaf:givenName "Ming Y."^^xsd:string ;
+    foaf:name "Ming Y. Lu"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5074001163"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/muhammad-shaban> a foaf:Person ;
+    rdfs:label "Muhammad Shaban"^^xsd:string ;
+    datacite:orcid "0000-0001-6115-1505"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5011079056>,
+        <https://orcid.org/0000-0001-6115-1505> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/29252d66-7d64-4533-8048-26c69b7976cd>,
+        <https://w3id.org/pyeuropepmc/data#organization/3c94cec2-b7b8-4b5e-88cb-5dd7fb6adccd>,
+        <https://w3id.org/pyeuropepmc/data#organization/76924587-2753-4ea9-9775-62c17edc7d24>,
+        <https://w3id.org/pyeuropepmc/data#organization/80c630d3-1f09-4872-a3da-9ae4a215d07c>,
+        <https://w3id.org/pyeuropepmc/data#organization/b54d8835-d099-4b5a-8bb0-be49ca821384>,
+        <https://w3id.org/pyeuropepmc/data#organization/c80b68c7-09bc-4f77-b2a7-cb0b00aea523>,
+        <https://w3id.org/pyeuropepmc/data#organization/c9c53be0-9dc1-43a3-ba31-9e062eb19beb>,
+        <https://w3id.org/pyeuropepmc/data#organization/defbfb50-22e9-4784-ae36-9823be44cb08> ;
+    prov:generatedAtTime "2026-04-07T11:37:59.448329" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Shaban"^^xsd:string ;
+    foaf:givenName "Muhammad"^^xsd:string ;
+    foaf:name "Muhammad Shaban"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5011079056"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/paul-doucet> a foaf:Person ;
+    rdfs:label "Paul Doucet"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5084221365> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/113e4330-a98c-4ba7-9ba5-925161d77420>,
+        <https://w3id.org/pyeuropepmc/data#organization/50f350d9-e71c-4cfb-b0d4-a3eccf70368a>,
+        <https://w3id.org/pyeuropepmc/data#organization/53253251-99dd-47da-840f-fdc14dab10ec>,
+        <https://w3id.org/pyeuropepmc/data#organization/5a00c78c-89a9-415f-a71c-8e84a3e93970>,
+        <https://w3id.org/pyeuropepmc/data#organization/6ad7c5e0-436e-4b38-a58d-a9b984dd09b0>,
+        <https://w3id.org/pyeuropepmc/data#organization/98092026-0b57-4ed9-9d27-1d9025280711>,
+        <https://w3id.org/pyeuropepmc/data#organization/d6010933-5711-4c55-a603-6949e183f4d0>,
+        <https://w3id.org/pyeuropepmc/data#organization/e7a03d58-cf43-446a-82da-e3545ebeb5d7> ;
+    prov:generatedAtTime "2026-04-07T11:38:00.973627" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Doucet"^^xsd:string ;
+    foaf:givenName "Paul"^^xsd:string ;
+    foaf:name "Paul Doucet"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5084221365"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/richard-j-chen> a foaf:Person ;
+    rdfs:label "Richard J. Chen"^^xsd:string ;
+    org:role "middle" ;
+    prov:generatedAtTime "2026-04-07T11:38:03.473857" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Richard J."^^xsd:string ;
+    foaf:name "Richard J. Chen"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/sharifa-sahai> a foaf:Person ;
+    rdfs:label "Sharifa Sahai"^^xsd:string ;
+    datacite:orcid "0000-0003-3194-1973"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5070884856>,
+        <https://orcid.org/0000-0003-3194-1973> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/04320c41-f67e-4f79-b0f6-4ac771866ef2>,
+        <https://w3id.org/pyeuropepmc/data#organization/4095d42d-7467-485f-b711-cbf71f923f34>,
+        <https://w3id.org/pyeuropepmc/data#organization/6d8c623d-789c-4f5e-ba08-7d554947ecc2>,
+        <https://w3id.org/pyeuropepmc/data#organization/830fed0d-6c28-4f2f-840a-6116e946372c>,
+        <https://w3id.org/pyeuropepmc/data#organization/95d247e0-9e9d-4e4e-a225-5314b22f5b29>,
+        <https://w3id.org/pyeuropepmc/data#organization/c39a283c-fc7e-4d01-88cd-03e24fed4013>,
+        <https://w3id.org/pyeuropepmc/data#organization/d3427eef-94d5-4531-9000-d6d09cc701f4>,
+        <https://w3id.org/pyeuropepmc/data#organization/d6ba4410-610f-45db-bd45-3fa6601b11bc>,
+        <https://w3id.org/pyeuropepmc/data#organization/f74248cf-38b1-450d-8ccb-0c38ac173c27>,
+        <https://w3id.org/pyeuropepmc/data#organization/ff3a82bf-9e7c-4c32-afdd-99a60c645064> ;
+    prov:generatedAtTime "2026-04-07T11:38:01.314565" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Sahai"^^xsd:string ;
+    foaf:givenName "Sharifa"^^xsd:string ;
+    foaf:name "Sharifa Sahai"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5070884856"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/shinya-sato> a foaf:Person ;
+    rdfs:label "Shinya Sato"^^xsd:string ;
+    datacite:orcid "0000-0002-2155-2379"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5064588100>,
+        <https://orcid.org/0000-0002-2155-2379> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/31a2bfce-2113-404f-93b3-632a5e746b67>,
+        <https://w3id.org/pyeuropepmc/data#organization/b8e38493-89c4-4418-b406-1d2c36840640> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.424721" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Sato"^^xsd:string ;
+    foaf:givenName "Shinya"^^xsd:string ;
+    foaf:name "Shinya Sato"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5064588100"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/shumpei-ishikawa> a foaf:Person ;
+    rdfs:label "Shumpei Ishikawa"^^xsd:string ;
+    datacite:orcid "0000-0002-3309-2330"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5103018405>,
+        <https://orcid.org/0000-0002-3309-2330> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/260324b9-8b51-406a-8fad-7ecbd11db92c>,
+        <https://w3id.org/pyeuropepmc/data#organization/4bdc798d-4e32-444d-9a80-d68e1e90cede>,
+        <https://w3id.org/pyeuropepmc/data#organization/8537f7ab-c975-4750-9f37-81e9d6d0bf57>,
+        <https://w3id.org/pyeuropepmc/data#organization/a338f78a-2d94-4038-a2d9-545fde887757>,
+        <https://w3id.org/pyeuropepmc/data#organization/bb2059b1-9550-4f67-a4d6-5130d3c24735>,
+        <https://w3id.org/pyeuropepmc/data#organization/c97e1bf6-d12e-4796-8a9e-33c701bcd1d4>,
+        <https://w3id.org/pyeuropepmc/data#organization/d162e1b3-6126-4e02-a53d-6cfef7590711>,
+        <https://w3id.org/pyeuropepmc/data#organization/efbe18fc-7382-45a1-83f2-0d0fe553be97> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.909272" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ishikawa"^^xsd:string ;
+    foaf:givenName "Shumpei"^^xsd:string ;
+    foaf:name "Shumpei Ishikawa"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5103018405"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/sophia-j-wagner> a foaf:Person ;
+    rdfs:label "Sophia J. Wagner"^^xsd:string ;
+    datacite:orcid "0000-0003-3763-2282"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5000341866>,
+        <https://orcid.org/0000-0003-3763-2282> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/0a0b5383-2a9c-4a77-80b3-f004c0b2e700>,
+        <https://w3id.org/pyeuropepmc/data#organization/0a98b744-926c-424b-87c7-349450e624cb>,
+        <https://w3id.org/pyeuropepmc/data#organization/173ff99b-ccc5-45dd-9907-6fb81b30aa3d>,
+        <https://w3id.org/pyeuropepmc/data#organization/994bc0df-ec4a-4cda-964c-d3817a67c0b7>,
+        <https://w3id.org/pyeuropepmc/data#organization/9af567e6-206e-4714-a8b5-9d2d20efe9dc>,
+        <https://w3id.org/pyeuropepmc/data#organization/ab8a9b28-a216-463f-a4ef-96709ac0e457>,
+        <https://w3id.org/pyeuropepmc/data#organization/af1a3880-8ee5-4db8-a9b1-1bfc4be9f943>,
+        <https://w3id.org/pyeuropepmc/data#organization/b3aa13ed-1b5f-442c-8e5c-113de7dcc608>,
+        <https://w3id.org/pyeuropepmc/data#organization/b5e34554-061a-4d21-b773-8db178de88bb>,
+        <https://w3id.org/pyeuropepmc/data#organization/eb7ec729-73ad-4633-8bab-fb8a0ba637c0> ;
+    prov:generatedAtTime "2026-04-07T11:37:58.330242" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wagner"^^xsd:string ;
+    foaf:givenName "Sophia J."^^xsd:string ;
+    foaf:name "Sophia J. Wagner"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5000341866"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/tingying-peng> a foaf:Person ;
+    rdfs:label "Tingying Peng"^^xsd:string ;
+    datacite:orcid "0000-0002-7881-1749"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5070636207>,
+        <https://orcid.org/0000-0002-7881-1749> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/19866b33-ef24-43a8-91e0-6e6c838b5e29>,
+        <https://w3id.org/pyeuropepmc/data#organization/29bec5f7-9bbf-4322-91b1-d24e906914b5>,
+        <https://w3id.org/pyeuropepmc/data#organization/a154457e-5d6e-47ba-b1c3-1239c7a40a1e>,
+        <https://w3id.org/pyeuropepmc/data#organization/a2c66e7b-c7ce-4f96-b326-99f307d96c2e>,
+        <https://w3id.org/pyeuropepmc/data#organization/a7b5111d-0458-4ec7-9f30-9b45611e51fd>,
+        <https://w3id.org/pyeuropepmc/data#organization/b4d0ddea-505c-43c6-9e82-3e088a01efb1>,
+        <https://w3id.org/pyeuropepmc/data#organization/ce57e201-3bc2-47a4-bb76-63e5fcec90bf>,
+        <https://w3id.org/pyeuropepmc/data#organization/dd72896a-532c-48d7-9e43-26b36779100a>,
+        <https://w3id.org/pyeuropepmc/data#organization/dfef3b89-42b2-46e5-9943-7ef398b6b6b1>,
+        <https://w3id.org/pyeuropepmc/data#organization/fd1b809f-3b3f-4f36-b074-2c0c981acb1d> ;
+    prov:generatedAtTime "2026-04-07T11:38:03.188885" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Peng"^^xsd:string ;
+    foaf:givenName "Tingying"^^xsd:string ;
+    foaf:name "Tingying Peng"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5070636207"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/tomoyuki-yokose> a foaf:Person ;
+    rdfs:label "Tomoyuki Yokose"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5022455287> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/15613728-bfee-46a4-a732-7ca07f10fe8d>,
+        <https://w3id.org/pyeuropepmc/data#organization/8ecdd8a6-fadc-49c5-b358-49aa25990942>,
+        <https://w3id.org/pyeuropepmc/data#organization/c06f7295-9cde-489d-ba17-23d2f3cbd8d4>,
+        <https://w3id.org/pyeuropepmc/data#organization/c821e23f-49e3-470b-9832-188d50c66266> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.545272" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Yokose"^^xsd:string ;
+    foaf:givenName "Tomoyuki"^^xsd:string ;
+    foaf:name "Tomoyuki Yokose"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5022455287"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/tong-ding> a foaf:Person ;
+    rdfs:label "Tong Ding"^^xsd:string ;
+    datacite:orcid "0000-0002-0305-5037"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5043308359>,
+        <https://orcid.org/0000-0002-0305-5037> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/0fc08ce1-2477-4cc6-9844-39b488f5ed3c>,
+        <https://w3id.org/pyeuropepmc/data#organization/332fa5dd-2e8f-4964-8d7a-030010a81bec>,
+        <https://w3id.org/pyeuropepmc/data#organization/6e63c5fe-974b-422d-a4d6-1e1e4ccf57f6>,
+        <https://w3id.org/pyeuropepmc/data#organization/77072e60-82ad-401e-a620-bfd9ead8fd81>,
+        <https://w3id.org/pyeuropepmc/data#organization/9c6089ea-87cb-45b3-8d1a-048f3282eba1>,
+        <https://w3id.org/pyeuropepmc/data#organization/c399230a-f2b5-4cea-a1d9-04fc919351ff>,
+        <https://w3id.org/pyeuropepmc/data#organization/efb25d79-671c-4abc-b033-07e916a19755>,
+        <https://w3id.org/pyeuropepmc/data#organization/fa617d43-1d75-45ba-838e-065bad7227d3> ;
+    org:role "first" ;
+    prov:generatedAtTime "2026-04-07T11:37:57.967971" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ding"^^xsd:string ;
+    foaf:givenName "Tong"^^xsd:string ;
+    foaf:name "Tong Ding"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5043308359"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/yohei-miyagi> a foaf:Person ;
+    rdfs:label "Yohei Miyagi"^^xsd:string ;
+    datacite:orcid "0000-0002-0056-7010"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5076512316>,
+        <https://orcid.org/0000-0002-0056-7010> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/14f3bde5-5f30-4561-a073-d2598e535018>,
+        <https://w3id.org/pyeuropepmc/data#organization/30db11ea-d7a3-49a4-9802-8126f0c5ab6e>,
+        <https://w3id.org/pyeuropepmc/data#organization/33468039-2cae-485a-bb8f-965453ccf74a>,
+        <https://w3id.org/pyeuropepmc/data#organization/355545b3-9c03-44cb-b5a7-5988d80b311c>,
+        <https://w3id.org/pyeuropepmc/data#organization/a0238833-e684-418d-8cb9-286c3143577b>,
+        <https://w3id.org/pyeuropepmc/data#organization/b63f68f2-0ed2-4989-91fe-b25189436b81> ;
+    prov:generatedAtTime "2026-04-07T11:38:02.710216" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Miyagi"^^xsd:string ;
+    foaf:givenName "Yohei"^^xsd:string ;
+    foaf:name "Yohei Miyagi"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5076512316"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#journal/nature-medicine> a bibo:Journal ;
+    rdfs:label "Nature Medicine"^^xsd:string ;
+    dcterms:title "Nature Medicine"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.467377" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
-<https://pubmed.ncbi.nlm.nih.gov/40739089/> a bibo:AcademicArticle ;
-    dcterms:abstract """<jats:title>Abstract</jats:title>
-          <jats:p>Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.</jats:p>"""^^xsd:string ;
-    dcterms:creator <https://w3id.org/pyeuropepmc/author/canhua-jiang>,
-        <https://w3id.org/pyeuropepmc/author/muhammad-tufail>,
-        <https://w3id.org/pyeuropepmc/author/ning-li> ;
-    dcterms:title "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches"^^xsd:string ;
-    bibo:journal <https://w3id.org/pyeuropepmc/journal/signal-transduction-and-targeted-therapy> ;
-    owl:sameAs <https://europepmc.org/article/MED/40739089>,
-        <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.198567" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmid "40739089"^^xsd:string .
+<https://w3id.org/pyeuropepmc/data#organization/033cf075-8c89-4751-af02-f1782ba4552b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.715688" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/04320c41-f67e-4f79-b0f6-4ac771866ef2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.052933" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/04408754-ab29-45fb-9453-bd5d609b56fd> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.371742" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/04cefd69-039a-4345-bdbd-5dd65f77dd90> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.091385" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/07c6dd63-bb46-48ce-872f-6f9cdb984667> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.718178" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0a0b5383-2a9c-4a77-80b3-f004c0b2e700> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.028957" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0a98b744-926c-424b-87c7-349450e624cb> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Environmental Health"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.250650" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0aa5ee54-4af3-473c-a22b-372f09e95737> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.675355" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0c13651d-b7f0-4b12-b8a2-107892c0b248> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.820507" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0c9c4bb8-26af-4218-b42b-65573904a3b0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.816819" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0ccaf5db-1384-4393-8e1b-af8cc7ba9de8> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.741962" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0f705157-f696-49f2-affa-83a348d97cb9> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.659159" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/0fc08ce1-2477-4cc6-9844-39b488f5ed3c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.881591" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/110f1887-4ce8-47d8-b9b2-47cfac5e6cde> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Technical University of Munich"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.987650" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/113e4330-a98c-4ba7-9ba5-925161d77420> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.923591" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/121274d2-7632-4ddb-a5b7-5ca03a10534c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.504492" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/130f4726-e85a-495c-896b-f2490812f0d2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.584081" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/137a1412-ee5f-4d90-87e0-d84a5afada75> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.088276" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/14f3bde5-5f30-4561-a073-d2598e535018> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.596130" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/15613728-bfee-46a4-a732-7ca07f10fe8d> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.472651" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/16675558-9add-48b3-b91a-aaeafc2d6e8e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University Press"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.379024" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/173ff99b-ccc5-45dd-9907-6fb81b30aa3d> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Technical University of Munich"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.330034" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/19866b33-ef24-43a8-91e0-6e6c838b5e29> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Environmental Health"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.090731" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/1e9c1b57-4b06-433b-9b33-a6d14c837bcb> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.272742" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/21f73b9e-ef47-4b0e-bf85-297087e6392e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.656348" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/23ec09c0-826a-4754-a701-7f8c83b4975b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.067935" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/260324b9-8b51-406a-8fad-7ecbd11db92c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.909134" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/28c682af-04c5-45a0-8c67-e1e0b2f68753> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.427961" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/29252d66-7d64-4533-8048-26c69b7976cd> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.448190" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/29bec5f7-9bbf-4322-91b1-d24e906914b5> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Environmental Health"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.960074" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/2a436817-b3cd-4005-927f-e0932a47a787> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.832364" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/2e1cd396-7aa8-4eca-ad79-7a8bf03f47db> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.793781" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/2e4c3570-cf34-48b0-b9cb-ef500cdee215> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.398883" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/2e76a0cc-f065-43d8-9d7c-0c5c83c3993d> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.307178" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/2eaa215e-090e-488f-b0de-fc37bdf1f34c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.701067" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/2ed065f7-4674-49ca-97a9-54511fdb6a34> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.986408" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/307e9179-c6e1-4238-b145-3047fbdef3e1> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.956268" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/30db11ea-d7a3-49a4-9802-8126f0c5ab6e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.686082" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/310735cb-54df-4feb-8646-5ff8b4163966> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.284356" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/31a2bfce-2113-404f-93b3-632a5e746b67> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.400894" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/32b46d40-b06c-4cfb-960a-cf401a24c3ff> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.901128" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/332fa5dd-2e8f-4964-8d7a-030010a81bec> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.855897" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/33468039-2cae-485a-bb8f-965453ccf74a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.619708" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/33e923ae-20b5-4968-b909-59039aae8141> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.308765" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3500c4dd-b9ea-4d7a-8f46-0b64873b37dd> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.870208" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/355545b3-9c03-44cb-b5a7-5988d80b311c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.641407" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/37c4f204-3f32-468c-ad22-0cde591ff242> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.358328" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/38176af1-0bb7-492e-ba77-bd164cdb7ac3> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.537419" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/39dca855-6937-4ade-9752-da98422854cc> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.405075" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3a08a481-949e-4020-84f1-760dc017c2d3> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Emory University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.520454" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3ab14d61-3229-4ca6-aa83-b54287b2d2d9> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.436050" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3c2efa5f-fb64-4914-878e-82e65d5cb30f> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.204474" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3c723dea-5351-488d-882a-3d85f1b34490> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Sydney"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.926313" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3c94cec2-b7b8-4b5e-88cb-5dd7fb6adccd> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.399429" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3cc7777f-85ef-4189-bd3f-2ba8721227a0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.767634" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3df45a1c-f4e8-429b-8e4f-9c4363585611> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.152242" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/3e9121cd-276e-495e-a622-b16a29e962ac> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.227043" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4095d42d-7467-485f-b711-cbf71f923f34> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Systems Biology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.101374" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/41de44db-e0a1-48ed-bae9-71fe06d3b552> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.350591" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/42618910-47e0-4bcd-b265-e62cea0b87d7> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.146081" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/43aab48f-47c9-4c88-991d-748c419a7bcf> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.487130" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/44d9214b-ca25-4b2f-a79b-d840bc7f70fe> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.839761" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/458cc1b4-236b-47fd-9bfd-622b0f1bd581> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.307303" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/486ae668-ca33-48b4-80a4-416c720d8aea> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.353069" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4a07a242-e3cb-4133-9111-288adf332a0e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.507159" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4bdc798d-4e32-444d-9a80-d68e1e90cede> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.883785" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4bf5f082-ad56-4af5-9930-7838dfbfdb09> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.717571" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4c31f56e-6195-422c-af95-e26666322045> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.968717" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4ce37bd4-7527-4ef5-af45-c2fa9844717a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.040124" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/4d3adac1-3d7e-46f7-8293-ab0df902e885> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.572291" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/506d4b9b-5a4a-41b0-b4bf-9e61b0b2a87a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Emory University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.822244" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/50f350d9-e71c-4cfb-b0d4-a3eccf70368a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.823653" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/52a9998a-3c75-4fcf-b0ab-a5cc85b655c3> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.650154" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/53253251-99dd-47da-840f-fdc14dab10ec> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.902584" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/535782c5-ca08-4a94-b8ac-e0f655f7e893> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.599616" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/54cd2060-0923-4aa5-bad7-8f6dc48d0b87> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.588080" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/54f862ab-f4ed-4983-bb59-a1a37070b434> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.361998" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/567ce91d-e5ab-452c-b8cd-edd4d47f806b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.850485" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/56a53f24-4fb1-4559-8f07-cd4a73dd6d84> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.564178" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/57dc949b-e040-4495-86c1-6ec3572bcdbf> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.473860" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/58a61f29-9605-4f81-b05c-66eb81a53ca8> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.952797" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/5a00c78c-89a9-415f-a71c-8e84a3e93970> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.875691" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/5a9a211e-7c99-4c3a-8652-93b25996fc33> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.563967" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/5cfb3007-c288-4c1a-812f-a1f117556ea9> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.663435" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/5e379947-02eb-4a47-9ac7-9f6e329e9b8c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts General Hospital"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.190189" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/5edfd82c-389a-4c1f-bf2c-d270ecb1c27b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.425211" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/5fd58589-5bcb-43f9-a248-17d9b5a6b6cc> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.376645" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6025b523-4f08-4595-a429-ce78106a8ca6> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.127185" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/63e1ec6c-d6fa-4ac0-83d3-29d2e3b41e5a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.254562" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6777f694-7f94-49ce-8da7-78f6b5b49191> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.621223" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6a0b90b2-2ea1-4fa7-937a-20f682045981> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.721723" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6ad7c5e0-436e-4b38-a58d-a9b984dd09b0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.973445" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6b08d4d3-fc8d-4fa6-87d3-564513a5571a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.596838" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6b2c52e2-f13a-4499-8f51-040ee04b346b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.852380" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6cb97eeb-46e8-40fd-8948-57f2f1adc186> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.166156" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6d8c623d-789c-4f5e-ba08-7d554947ecc2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.077554" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6e63c5fe-974b-422d-a4d6-1e1e4ccf57f6> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.833761" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/6fa8655e-155f-498c-aa5a-e505b4640ccc> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.744917" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/732be49e-f00e-42a3-b739-79cef832122b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.690919" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7345d15a-7e05-4d71-aa51-7e609160b051> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Environmental Health"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.930981" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/75d4924d-da35-4831-af68-c1e9c3f5e62b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.260919" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/76924587-2753-4ea9-9775-62c17edc7d24> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.351091" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/76a17716-26e2-4c64-9953-a6336fde52c7> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.641242" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/77072e60-82ad-401e-a620-bfd9ead8fd81> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.943241" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/77616845-fbfb-4206-b35c-2615272dcc9f> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Sydney"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.062829" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/78d857d0-8050-441e-a1a6-2bd646f66e10> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.930306" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7aec5bf8-3e2b-4263-ba97-d43fd83f655a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.871856" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7c99758a-6940-4ec7-a15d-17c04e9a8d4f> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.794790" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7dd9032d-bd23-497a-8a28-2396267b73cb> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.143566" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7e3f15ad-ef3e-48e2-85cd-67210250ebae> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber/Harvard Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.329623" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7ee44781-eca7-46ff-9ca1-4cbb4a838c83> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.723572" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/7f0dfbaa-ada9-43c4-bc6c-c1abca6af88f> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "University of Maryland, College Park"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.769882" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/80c630d3-1f09-4872-a3da-9ae4a215d07c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.374116" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/80f601a5-ba6c-4ef0-8369-089b6cd343f8> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.014381" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/81f28def-3640-4a3b-b09c-371fb58e75b7> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Pusan National University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.668263" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/830fed0d-6c28-4f2f-840a-6116e946372c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.237856" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/83763f76-2df1-436d-b812-c34c361e2126> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.382210" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/8495584f-42ec-4f8e-9883-ca2d06c84259> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.115856" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/8537f7ab-c975-4750-9f37-81e9d6d0bf57> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.755124" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/85679a20-dff2-49ab-9974-c288a36f948e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Emory University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.748995" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/89324a3e-7465-4467-9a6e-c723722ecb77> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Technical University of Munich"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.106122" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/8998e74e-fbbf-40a9-902d-bfe940166802> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.496530" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/8ecdd8a6-fadc-49c5-b358-49aa25990942> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.497633" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/8f47c570-1a28-42ae-81d9-a75d78bb0316> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.212191" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/94932345-ca5b-4744-9d39-10400b57e2a0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts General Hospital"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.404201" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/959442fd-0d71-4f11-b4e6-f50e8ab24117> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.688200" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/95d247e0-9e9d-4e4e-a225-5314b22f5b29> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.161016" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/96830e16-1a02-49d1-8575-744762b76f85> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.005832" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/972cf0b6-9112-497b-9f47-72de616f9906> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.628627" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/98092026-0b57-4ed9-9d27-1d9025280711> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.849603" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/994bc0df-ec4a-4cda-964c-d3817a67c0b7> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.299085" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/997c3eca-cc1d-4a97-8bdc-048bd5fa0097> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.238221" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/9af567e6-206e-4714-a8b5-9d2d20efe9dc> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.276169" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/9c6089ea-87cb-45b3-8d1a-048f3282eba1> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.811602" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/9cfe1ec6-60f9-4fe1-941f-c125e5fd28f1> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.335194" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/9d34d3dc-db99-4265-8a63-3e64ccd59aaa> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.231450" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/9f48baaa-ebf0-48ce-9a0b-2f829931f105> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.588180" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a0238833-e684-418d-8cb9-286c3143577b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.662566" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a154457e-5d6e-47ba-b1c3-1239c7a40a1e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.061671" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a23998c2-3803-4ea6-b4a4-b222108f51db> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.515970" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a2c66e7b-c7ce-4f96-b326-99f307d96c2e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Technical University of Munich"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.163386" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a338f78a-2d94-4038-a2d9-545fde887757> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.798728" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a5370a26-ea97-4824-9da9-0a5af37e1bba> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.741698" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a5b2aa04-05e2-4768-87f3-e4fe86945063> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.535568" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a6ae236f-0f43-4a5c-ba75-457fcfc75597> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.117053" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/a7b5111d-0458-4ec7-9f30-9b45611e51fd> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.111777" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/aa8695cc-16a0-4cb7-b78f-1cfbf1916cfa> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.901838" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/aaa38609-180b-41ca-8635-dabe1101dbf5> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.746723" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ab8a9b28-a216-463f-a4ef-96709ac0e457> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.220565" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ac9ccf47-bd9c-4b99-82a7-6c94d561bc4e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.383598" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/af1a3880-8ee5-4db8-a9b1-1bfc4be9f943> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.114296" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b167ce8e-8f7e-4ad0-a03a-c9f55cd430a2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Pusan National University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.563630" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b2a61651-a0a8-4485-968d-7cceaf4359ce> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.540484" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b3aa13ed-1b5f-442c-8e5c-113de7dcc608> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Technical University of Munich"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.176207" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b3cc2087-ea7e-46ac-8850-f52b5cc51887> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.681083" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b472a990-db86-4ba9-8d7e-ce4f5a17c14c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.902924" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b4a60156-90ce-4119-bd43-524e6dcab35f> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.450740" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b4aaedf5-70c0-437c-87f2-d7216de824ac> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts General Hospital"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.328129" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b4d0ddea-505c-43c6-9e82-3e088a01efb1> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.981757" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b54d8835-d099-4b5a-8bb0-be49ca821384> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.302398" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b5e34554-061a-4d21-b773-8db178de88bb> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Environmental Health"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.074617" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b63f68f2-0ed2-4989-91fe-b25189436b81> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.710035" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b8e38493-89c4-4418-b406-1d2c36840640> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.424524" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/b952fa58-3ab9-46d2-b024-6393eb1160ab> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.460397" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/bb2059b1-9550-4f67-a4d6-5130d3c24735> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Chiba Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.862243" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/bc24b15d-39b5-4fb9-89ba-c4e2442984d5> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.451421" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/bc540bb0-5e38-4f4e-9e9b-0f95f6ec4f87> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.613547" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/bcf30b98-b479-4649-ae32-5ff20cc19966> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts General Hospital"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.286772" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/be6045ab-9ef5-4325-9571-fd144880234f> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.056124" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/bf6d15af-fa67-4926-baec-df02841d425e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.678150" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c06f7295-9cde-489d-ba17-23d2f3cbd8d4> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.522180" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c07f7397-3aac-460f-a04c-6f39347bcdbd> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "University of Maryland, College Park"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.615733" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c15a04b4-b5c9-4cfe-b98d-bf9c7fa09d33> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.239919" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c2334e91-37a2-47d6-b88b-679f003e2736> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.796979" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c399230a-f2b5-4cea-a1d9-04fc919351ff> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.967777" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c39a283c-fc7e-4d01-88cd-03e24fed4013> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.026430" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c6a43d66-bf72-4d2e-aa53-4dd8be6c8ab4> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.733917" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c7246240-60d7-4b51-bb7a-ce26d398ddc6> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "University of Maryland, College Park"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.478928" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c80b68c7-09bc-4f77-b2a7-cb0b00aea523> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.327728" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c821e23f-49e3-470b-9832-188d50c66266> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.545133" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c8d935b5-d826-4286-99f3-ead446441688> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.423843" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c97e1bf6-d12e-4796-8a9e-33c701bcd1d4> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.820371" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/c9c53be0-9dc1-43a3-ba31-9e062eb19beb> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.278130" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ca4c894d-4868-43a0-9ab7-6fd7cd31d00c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.175166" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/cc1023b4-cf68-4e14-9858-c0017d8e2cab> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.848807" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/cc59b294-d8b9-4517-8f08-cf4472e2744c> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.012144" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/cd60cee1-e722-4ec6-80b9-219f75e16ec9> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The University of Tokyo"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.039146" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ce4c0a84-51c4-4e64-9b99-44a6026cdf3d> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.396984" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ce57e201-3bc2-47a4-bb76-63e5fcec90bf> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.008309" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/cfe6368e-16d6-479a-96b8-f78a071202aa> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.197834" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/d162e1b3-6126-4e02-a53d-6cfef7590711> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.842985" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/d3427eef-94d5-4531-9000-d6d09cc701f4> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Systems Biology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.279365" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/d527b8a9-4402-4682-9460-8b2d61fc04ce> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.632081" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/d6010933-5711-4c55-a603-6949e183f4d0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.948996" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/d6ba4410-610f-45db-bd45-3fa6601b11bc> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.314289" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/d8c9bcca-c1a7-4ed5-ae0b-76556a2b4c96> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.960538" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/da761c01-8ac2-471e-8602-39ae28621cba> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Emory University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.617751" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/dd72896a-532c-48d7-9e43-26b36779100a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.135183" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ddc22a6b-b71a-4935-972e-0ed650451e6e> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University Press"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.265103" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/defbfb50-22e9-4784-ae36-9823be44cb08> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.425162" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/dfd1c826-6d6e-4dcb-ae1f-f923b6716969> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.096621" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/dfef3b89-42b2-46e5-9943-7ef398b6b6b1> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.188743" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/e52bbf38-b5e4-43f4-926d-35eb5de446db> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.331586" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/e7a03d58-cf43-446a-82da-e3545ebeb5d7> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.800572" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/eb38d49f-3b53-492d-abbc-264053077175> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.609600" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/eb7ec729-73ad-4633-8bab-fb8a0ba637c0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.136903" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ec1542d8-0151-4eb8-936a-96b42edf53b1> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.309179" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ec3127f4-8a98-4e8a-9556-f95be33b2c13> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.082914" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ede3bb3b-fec4-4114-bb79-c8c6b87101fa> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.903552" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ee7fb329-ab7b-4712-804f-505711b026a3> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Center for Environmental Health"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:04.035877" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/eee5fa48-75b6-41aa-afdb-32ab7a4161ff> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber/Harvard Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.448961" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ef7a455a-f00b-42a4-be76-2eb0546f5ab4> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.543660" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ef9e79c8-637b-4994-95d7-15c5300eeeff> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.983051" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/efb25d79-671c-4abc-b033-07e916a19755> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.911533" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/efbe18fc-7382-45a1-83f2-0d0fe553be97> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Chiba Cancer Center"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:02.779624" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f1dd3a5d-0394-46c0-99a6-feeac149af49> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.562637" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f244a899-afce-45d0-944c-64c00657d6b0> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.756798" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f36b175b-32c2-48ac-ad99-241b02ac5086> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.696607" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f3a8aaa9-f5b2-4546-8d88-197d45e59eb2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.950000" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f6f65e1a-3d10-404b-a686-fff5d420aad5> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:59.770619" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f74248cf-38b1-450d-8ccb-0c38ac173c27> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.124116" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/f7607da6-0ed7-40a2-907e-11ae40ba684b> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.284026" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fa617d43-1d75-45ba-838e-065bad7227d3> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:57.789356" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fbb242db-121b-4f21-8e9e-8a7bd85b769d> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:00.033279" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fc141ccc-0f9d-4dc3-b6b8-822ef5f937e2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "University of Maryland, College Park"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.931496" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fc77f94c-0518-46f1-9d2e-4ce966b6f617> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Mass General Brigham"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.789246" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fd1b809f-3b3f-4f36-b074-2c0c981acb1d> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Technical University of Munich"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.035951" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fdfbb681-bcd9-442f-a80c-588c218810d2> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Broad Institute"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:03.585753" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/fea3a985-dad4-4d01-85b8-688ba3beb528> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:37:58.708346" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/ff3a82bf-9e7c-4c32-afdd-99a60c645064> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Harvard University"^^xsd:string ;
+    prov:generatedAtTime "2026-04-07T11:38:01.197272" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+

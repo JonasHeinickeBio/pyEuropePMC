@@ -195,7 +195,7 @@ class RMLRDFizer:
         # Convert entities to dict and write JSON
         if entity_type in ["paper", "scholarlywork"]:
             # Always use array format for consistency
-            entities_dicts = [e.to_dict() for e in entities]
+            entities_dicts = [e.model_dump() for e in entities]
 
             # Ensure each entity has an 'id' field for RML subject templates
             for entity_dict in entities_dicts:
@@ -214,7 +214,7 @@ class RMLRDFizer:
             data = entities_dicts
         else:
             # Multiple entities (list)
-            data = [e.to_dict() for e in entities]
+            data = [e.model_dump() for e in entities]
 
         # Filter out None values and convert to strings to avoid invalid RDF
         def filter_none(obj: Any) -> Any:

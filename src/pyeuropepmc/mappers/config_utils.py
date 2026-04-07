@@ -7,12 +7,9 @@ and managing namespaces for RDF graphs.
 Configuration Sources (in order of priority):
 1. LinkML schema (schemas/pyeuropepmc_schema.yaml) - Source of truth for data models
 2. Runtime config (conf/rdf_config.yaml) - Operational settings
-3. Legacy config (conf/rdf_map.yml) - Backward compatibility (deprecated)
 """
 
 import logging
-import os
-import warnings
 from pathlib import Path
 from typing import Any
 
@@ -66,30 +63,13 @@ def _load_runtime_config() -> dict[str, Any]:
     return {}
 
 
-def _load_legacy_config() -> dict[str, Any]:
-    """
-    Load legacy configuration from rdf_map.yml (deprecated).
-
-    Returns
-    -------
-    dict[str, Any]
-        Legacy configuration dictionary.
-    """
-    config_path = _get_project_root() / "conf" / "rdf_map.yml"
-    if config_path.exists():
-        with open(config_path, encoding="utf-8") as f:
-            return yaml.safe_load(f) or {}
-    return {}
-
-
 def load_rdf_config() -> dict[str, Any]:
     """
-    Load RDF configuration from multiple sources.
+    Load RDF configuration from LinkML schema and runtime config.
 
     Configuration is loaded in this priority order:
     1. LinkML schema for namespace prefixes (source of truth)
     2. Runtime config (rdf_config.yaml) for operational settings
-    3. Legacy config (rdf_map.yml) for backward compatibility
 
     Returns
     -------
@@ -97,18 +77,15 @@ def load_rdf_config() -> dict[str, Any]:
         RDF configuration including named graphs, ontologies, and settings
     """
     try:
-        # Load from all sources
+        # Load from LinkML and runtime config
         linkml_namespaces = _load_linkml_namespaces()
         runtime_config = _load_runtime_config()
-        legacy_config = _load_legacy_config()
 
-        # Prefer LinkML namespaces, then legacy _@prefix
-        prefix_config = linkml_namespaces or legacy_config.get("_@prefix", {})
+        # Use LinkML namespaces
+        prefix_config = linkml_namespaces
 
-        # Get named graphs from runtime config first, then legacy
+        # Get named graphs from runtime config
         named_graphs_config = runtime_config.get("named_graphs", {})
-        if not named_graphs_config or named_graphs_config.get("enabled") is False:
-            named_graphs_config = legacy_config.get("_named_graphs", {})
 
         # Filter enabled named graphs
         enabled_named_graphs = {}
@@ -118,16 +95,14 @@ def load_rdf_config() -> dict[str, Any]:
             if isinstance(graph_config, dict) and graph_config.get("enabled", True):
                 enabled_named_graphs[graph_name] = graph_config
 
-        # Get KG structure from runtime config first, then legacy
+        # Get KG structure from runtime config
         kg_structure = runtime_config.get("kg_structure", {})
-        if not kg_structure:
-            kg_structure = legacy_config.get("_kg_structure", {})
 
         # Build base URI
         uri_config = runtime_config.get("uri", {})
-        base_uri = uri_config.get("base", legacy_config.get("_base_uri", "https://w3id.org/pyeuropepmc/"))
+        base_uri = uri_config.get("base", "https://w3id.org/pyeuropepmc/")
 
-        # Create ontologies dict for backwards compatibility
+        # Create ontologies dict
         ontologies = dict(prefix_config)
         additional_ontologies = {
             "pyeuropepmc": "https://w3id.org/pyeuropepmc/vocab#",
@@ -137,23 +112,19 @@ def load_rdf_config() -> dict[str, Any]:
         ontologies.update(additional_ontologies)
 
         # Get required named graphs
-        required_named_graphs = runtime_config.get(
-            "required_named_graphs",
-            legacy_config.get("_required_named_graphs", [])
-        )
+        required_named_graphs = runtime_config.get("required_named_graphs", [])
 
         # Get quality thresholds
         quality_config = runtime_config.get("quality", {})
         quality_thresholds = quality_config.get(
-            "thresholds",
-            legacy_config.get("_quality_thresholds", {"high": 0.8, "medium": 0.6, "low": 0.0})
+            "thresholds", {"high": 0.8, "medium": 0.6, "low": 0.0}
         )
 
         return {
             "kg_structure": kg_structure,
             "named_graphs": enabled_named_graphs,
             "required_named_graphs": required_named_graphs,
-            "_@prefix": prefix_config,
+            "prefixes": prefix_config,
             "ontologies": ontologies,
             "base_uri": base_uri,
             "defaults": kg_structure,  # Map kg_structure to defaults for compatibility
@@ -237,8 +208,8 @@ def _get_default_rdf_config() -> dict[str, Any]:
 
 def get_namespace_from_config(config: dict[str, Any], prefix: str) -> Namespace:
     """Get namespace object from configuration."""
-    # Read from _@prefix section in rdf_map.yml (SOURCE OF TRUTH)
-    uri = config.get("_@prefix", {}).get(prefix)
+    # Read from LinkML schema namespaces (source of truth)
+    uri = config.get("prefixes", {}).get(prefix)
     if uri:
         return Namespace(uri)
     # Fallback to standard namespaces
@@ -247,10 +218,10 @@ def get_namespace_from_config(config: dict[str, Any], prefix: str) -> Namespace:
 
 def rebind_namespaces(g: Graph | Dataset) -> None:
     """
-    Rebind all namespaces from rdf_map.yml to ensure proper prefix usage.
+    Rebind all namespaces from LinkML schema to ensure proper prefix usage.
 
     Call this before serializing a graph to ensure the turtle serializer
-    uses the correct prefixes from rdf_map.yml instead of generic ns1, ns2, etc.
+    uses the correct prefixes from LinkML schema instead of generic ns1, ns2, etc.
 
     Parameters
     ----------
@@ -267,7 +238,7 @@ def rebind_namespaces(g: Graph | Dataset) -> None:
     """
     try:
         config = load_rdf_config()
-        prefix_config = config.get("_@prefix", {})
+        prefix_config = config.get("prefixes", {})
 
         # Bind to main graph/dataset
         for prefix, uri in prefix_config.items():
@@ -291,7 +262,7 @@ def setup_graph(namespaces: dict[str, str] | None = None) -> Graph:
     """
     Create and configure a new RDF graph with standard namespaces.
 
-    Binds namespaces from rdf_map.yml (SOURCE OF TRUTH) to ensure proper
+    Binds namespaces from LinkML schema (source of truth) to ensure proper
     prefix usage in serialized output.
 
     Parameters
@@ -306,16 +277,16 @@ def setup_graph(namespaces: dict[str, str] | None = None) -> Graph:
     """
     g = Graph()
 
-    # Load namespaces from RDF mapping configuration
+    # Load namespaces from LinkML schema
     try:
         config = load_rdf_config()
-        # Read from _@prefix section in rdf_map.yml (SOURCE OF TRUTH)
-        prefix_config = config.get("_@prefix", {})
+        # Read from prefixes section in LinkML schema (source of truth)
+        prefix_config = config.get("prefixes", {})
 
         for prefix, uri in prefix_config.items():
             g.bind(prefix, Namespace(uri), override=True, replace=True)
     except Exception as e:
-        print(f"Failed to load RDF mapping config: {e}, using fallback namespaces")
+        print(f"Failed to load LinkML config: {e}, using fallback namespaces")
         _bind_fallback_namespaces(g)
 
     # Bind additional namespaces if provided
@@ -330,7 +301,7 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
     """
     Create and configure a new RDF dataset with standard namespaces.
 
-    Binds namespaces from rdf_map.yml (SOURCE OF TRUTH) to ensure proper
+    Binds namespaces from LinkML schema (source of truth) to ensure proper
     prefix usage in serialized output.
 
     Parameters
@@ -347,11 +318,11 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
 
     g = Dataset()
 
-    # Load namespaces from RDF mapping configuration
+    # Load namespaces from LinkML schema
     try:
         config = load_rdf_config()
-        # Read from _@prefix section in rdf_map.yml (SOURCE OF TRUTH)
-        prefix_config = config.get("_@prefix", {})
+        # Read from prefixes section in LinkML schema (source of truth)
+        prefix_config = config.get("prefixes", {})
 
         # Bind to main dataset
         for prefix, uri in prefix_config.items():
@@ -362,7 +333,7 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
             g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
 
     except Exception as e:
-        print(f"Failed to load RDF mapping config: {e}, using fallback namespaces")
+        print(f"Failed to load LinkML config: {e}, using fallback namespaces")
         _bind_fallback_namespaces(g)
 
     # Bind additional namespaces if provided
@@ -377,14 +348,14 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
 def _bind_fallback_namespaces(g: Graph) -> None:
     """
     Bind fallback namespaces when config file cannot be loaded.
-    These match the namespaces defined in rdf_map.yml _@prefix section.
+    These match the namespaces defined in LinkML schema prefixes section.
 
     Parameters
     ----------
     g : Graph
         RDF graph to bind namespaces to
     """
-    # Fallback namespaces matching rdf_map.yml
+    # Fallback namespaces matching LinkML schema
     fallback_namespaces = {
         "dcterms": "http://purl.org/dc/terms/",
         "foaf": "http://xmlns.com/foaf/0.1/",

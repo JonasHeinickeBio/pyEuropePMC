@@ -5,8 +5,8 @@
   "publication_year": 2025,
   "publication_date": "2025-07-30",
   "type": "review",
-  "citation_count": 36,
-  "cited_by_count": 36,
+  "citation_count": 37,
+  "cited_by_count": 37,
   "is_oa": true,
   "oa_status": "gold",
   "oa_url": "https://www.nature.com/articles/s41392-025-02280-1.pdf",
@@ -1395,21 +1395,9 @@
     }
   ],
   "topics": [
-    {
-      "id": "https://openalex.org/T10158",
-      "display_name": "Cancer Immunotherapy and Biomarkers",
-      "score": 0.9993000030517578
-    },
-    {
-      "id": "https://openalex.org/T11491",
-      "display_name": "CAR-T cell therapy research",
-      "score": 0.9991999864578247
-    },
-    {
-      "id": "https://openalex.org/T10613",
-      "display_name": "Virus-based gene therapy research",
-      "score": 0.9984999895095825
-    }
+    "Cancer Immunotherapy and Biomarkers",
+    "CAR-T cell therapy research",
+    "Virus-based gene therapy research"
   ],
   "venue": {
     "id": "https://openalex.org/S2739142469",

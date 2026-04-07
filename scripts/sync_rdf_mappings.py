@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """
-Synchronize RML mappings from YAML configuration.
+DEPRECATED: RML mappings are now generated from LinkML schema.
 
-This script reads rdf_map.yml as the source of truth and generates
-rml_mappings.ttl to keep both mapping files synchronized.
+This script was used to synchronize RML mappings from rdf_map.yml.
+Since rdf_map.yml is deprecated, RDF mappings are now handled via
+LinkML schema introspection. This script is kept for reference only.
 """
 
 import argparse
@@ -42,8 +43,8 @@ def generate_rml_header(prefixes: dict[str, str]) -> str:
             "@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .",
             "",
             "# RML Mappings for PyEuropePMC Data Models",
-            "# Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY",
-            "# Run 'python scripts/sync_rdf_mappings.py' to regenerate",
+            "# DEPRECATED: Now generated from LinkML schema - DO NOT EDIT MANUALLY",
+            "# This script is deprecated - use LinkML schema instead",
             "",
         ]
     )
@@ -192,7 +193,7 @@ def sync_mappings(yaml_path: Path, rml_path: Path) -> None:
     config = load_yaml_config(yaml_path)
 
     # Extract prefixes
-    prefixes = config.get("_@prefix", {})
+    prefixes = config.get("_@prefix", {}) or config.get("prefixes", {})
 
     # Generate RML content
     print("Generating RML mappings...")

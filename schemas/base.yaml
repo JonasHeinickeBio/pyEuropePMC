@@ -1,0 +1,21 @@
+# PyEuropePMC LinkML Schema - Base Configuration
+# This file contains base schema metadata, prefixes, and imports
+
+id: https://w3id.org/pyeuropepmc
+name: pyeuropepmc
+title: PyEuropePMC Data Model Schema
+description: >-
+  LinkML schema defining the data model for PyEuropePMC, a Python toolkit for
+  searching, retrieving, and analyzing scientific literature from Europe PMC.
+  This schema provides a single source of truth for generating JSON Schema,
+  RDF/OWL, SHACL shapes, and Python dataclasses.
+version: 1.0.0
+license: MIT
+
+# Schema metadata
+default_range: string
+default_prefix: pyeuropepmc
+
+# Import standard LinkML types
+imports:
+  - linkml:types

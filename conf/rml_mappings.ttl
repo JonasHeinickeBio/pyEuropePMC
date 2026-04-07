@@ -27,8 +27,8 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 # RML Mappings for PyEuropePMC Data Models
-# Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY
-# Run 'python scripts/sync_rdf_mappings.py' to regenerate
+# DEPRECATED: Now generated from LinkML schema - DO NOT EDIT MANUALLY
+# This script is deprecated - use LinkML schema instead
 
 # ===== ScholarlyWorkEntity Mapping =====
 <#ScholarlyWorkEntityMap>
@@ -232,6 +232,11 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate bibo:DocumentType ;
+        rr:objectMap [ rml:reference "pub_types[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate dcterms:related ;
         rr:objectMap [ rml:reference "related_works[*]" ]
     ] ;
@@ -300,6 +305,11 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:affiliationText ;
+        rr:objectMap [ rml:reference "affiliation_text" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate prov:hadPrimarySource ;
         rr:objectMap [ rml:reference "sources[*]" ]
     ] ;
@@ -340,6 +350,16 @@
     rr:predicateObjectMap [
         rr:predicate nif:endIndex ;
         rr:objectMap [ rml:reference "end_index" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:order ;
+        rr:objectMap [ rml:reference "order" ; rr:datatype xsd:integer ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:type ;
+        rr:objectMap [ rml:reference "section_type" ; rr:datatype xsd:string ]
     ] ;
 
     rr:predicateObjectMap [
@@ -422,21 +442,26 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate dcterms:description ;
+        rr:objectMap [ rml:reference "raw_citation" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate rdfs:label ;
         rr:objectMap [ rml:reference "label" ]
     ] .
 
-# ===== InstitutionEntity Mapping =====
-<#InstitutionEntityMap>
+# ===== DepartmentEntity Mapping =====
+<#DepartmentEntityMap>
     rml:logicalSource [
-        rml:source "institutions.json" ;
+        rml:source "department.json" ;
         rml:referenceFormulation ql:JSONPath ;
         rml:iterator "$[*]"
     ] ;
 
     rr:subjectMap [
-        rr:template "http://example.org/data/institution/{id}" ;
-        rr:class org:Organization
+        rr:template "http://example.org/data/department/{id}" ;
+        rr:class org:OrganizationalUnit
     ] ;
 
     rr:predicateObjectMap [
@@ -515,8 +540,18 @@
     ] ;
 
     rr:predicateObjectMap [
+        rr:predicate org:memberOf ;
+        rr:objectMap [ rml:reference "parent_organization" ; rr:datatype xsd:anyURI ]
+    ] ;
+
+    rr:predicateObjectMap [
         rr:predicate dcterms:subject ;
         rr:objectMap [ rml:reference "domains[*]" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate skos:altLabel ;
+        rr:objectMap [ rml:reference "names[*]" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -673,6 +708,39 @@
     rr:predicateObjectMap [
         rr:predicate frapo:hasRecipient ;
         rr:objectMap [ rml:reference "recipient" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== FigureEntity Mapping =====
+<#FigureEntityMap>
+    rml:logicalSource [
+        rml:source "figures.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/figure/{id}" ;
+        rr:class bibo:Image
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:description ;
+        rr:objectMap [ rml:reference "caption" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "figure_label" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:depiction ;
+        rr:objectMap [ rml:reference "graphic_uri" ; rr:datatype xsd:anyURI ]
     ] ;
 
     rr:predicateObjectMap [

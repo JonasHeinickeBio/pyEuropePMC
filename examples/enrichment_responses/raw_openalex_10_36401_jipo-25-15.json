@@ -1,0 +1,990 @@
+{
+  "source": "openalex",
+  "openalex_id": "https://openalex.org/W4415342390",
+  "title": "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service",
+  "publication_year": 2025,
+  "publication_date": "2025-10-20",
+  "type": "article",
+  "citation_count": 0,
+  "cited_by_count": 0,
+  "is_oa": true,
+  "oa_status": "gold",
+  "oa_url": "https://doi.org/10.36401/jipo-25-15",
+  "authors": [
+    {
+      "id": "https://openalex.org/A5010907089",
+      "display_name": "Robin C. Vanderpool",
+      "orcid": "https://orcid.org/0000-0001-9995-4485",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210140884",
+          "display_name": "National Cancer Institute",
+          "country": "United States",
+          "type": "government",
+          "ror_id": "https://ror.org/040gcmg81",
+          "status": "active",
+          "types": [
+            "funder",
+            "government"
+          ],
+          "established": 1937,
+          "names": [
+            {
+              "lang": "fr",
+              "types": [
+                "label"
+              ],
+              "value": "Institut National du Cancer"
+            },
+            {
+              "lang": "es",
+              "types": [
+                "label"
+              ],
+              "value": "Instituto Nacional del Cáncer"
+            },
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NCI"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "National Cancer Institute"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "MD",
+                "country_subdivision_name": "Maryland",
+                "lat": 38.98067,
+                "lng": -77.10026,
+                "name": "Bethesda"
+              },
+              "geonames_id": 4348599
+            }
+          ],
+          "country_code": "US",
+          "city": "Bethesda",
+          "latitude": 38.98067,
+          "longitude": -77.10026,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.cancer.gov/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/National_Cancer_Institute"
+            }
+          ],
+          "website": "http://www.cancer.gov/",
+          "external_ids": [
+            {
+              "all": [
+                "100000054",
+                "100008637",
+                "100007316"
+              ],
+              "preferred": "100000054",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.48336.3a"
+              ],
+              "preferred": "grid.48336.3a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1936 8075"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q664846"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100000054",
+          "grid_id": "grid.48336.3a",
+          "relationships": [
+            {
+              "label": "Center for Cancer Research",
+              "type": "child",
+              "id": "https://ror.org/05bjen692"
+            },
+            {
+              "label": "Frederick National Laboratory for Cancer Research",
+              "type": "child",
+              "id": "https://ror.org/03v6m3209"
+            },
+            {
+              "label": "SWOG Cancer Research Network",
+              "type": "child",
+              "id": "https://ror.org/05n6zrm60"
+            },
+            {
+              "label": "Division of Cancer Epidemiology and Genetics",
+              "type": "child",
+              "id": "https://ror.org/00vkwep27"
+            },
+            {
+              "label": "National Institutes of Health",
+              "type": "parent",
+              "id": "https://ror.org/01cwqze88"
+            },
+            {
+              "label": "MUSC Hollings Cancer Center",
+              "type": "related",
+              "id": "https://ror.org/00w52vt71"
+            },
+            {
+              "label": "The Cancer Imaging Archive",
+              "type": "related",
+              "id": "https://ror.org/02qyzaf42"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "first"
+    },
+    {
+      "id": "https://openalex.org/A5000714509",
+      "display_name": "Laura A. Dwyer",
+      "orcid": "https://orcid.org/0000-0003-3324-563X",
+      "institutions": null,
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5004546681",
+      "display_name": "Diane Ng",
+      "orcid": "https://orcid.org/0000-0002-8429-4194",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1333523220",
+          "display_name": "Westat (United States)",
+          "country": "United States",
+          "type": "company",
+          "ror_id": "https://ror.org/00wt7xg39",
+          "status": "active",
+          "types": [
+            "company"
+          ],
+          "established": 1963,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Westat (United States)"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "MD",
+                "country_subdivision_name": "Maryland",
+                "lat": 39.084,
+                "lng": -77.15276,
+                "name": "Rockville"
+              },
+              "geonames_id": 4367175
+            }
+          ],
+          "country_code": "US",
+          "city": "Rockville",
+          "latitude": 39.084,
+          "longitude": -77.15276,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.westat.com/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Westat"
+            }
+          ],
+          "website": "https://www.westat.com/",
+          "external_ids": [
+            {
+              "all": [
+                "grid.280561.8"
+              ],
+              "preferred": "grid.280561.8",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9270 6633"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q7987109"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.280561.8",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5008220095",
+      "display_name": "Beth Slotman",
+      "orcid": "https://orcid.org/0000-0002-7709-3191",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I1333523220",
+          "display_name": "Westat (United States)",
+          "country": "United States",
+          "type": "company",
+          "ror_id": "https://ror.org/00wt7xg39",
+          "status": "active",
+          "types": [
+            "company"
+          ],
+          "established": 1963,
+          "names": [
+            {
+              "lang": null,
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "Westat (United States)"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "MD",
+                "country_subdivision_name": "Maryland",
+                "lat": 39.084,
+                "lng": -77.15276,
+                "name": "Rockville"
+              },
+              "geonames_id": 4367175
+            }
+          ],
+          "country_code": "US",
+          "city": "Rockville",
+          "latitude": 39.084,
+          "longitude": -77.15276,
+          "links": [
+            {
+              "type": "website",
+              "value": "https://www.westat.com/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/Westat"
+            }
+          ],
+          "website": "https://www.westat.com/",
+          "external_ids": [
+            {
+              "all": [
+                "grid.280561.8"
+              ],
+              "preferred": "grid.280561.8",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0000 9270 6633"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q7987109"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "grid_id": "grid.280561.8",
+          "relationships": [],
+          "domains": []
+        }
+      ],
+      "position": "middle"
+    },
+    {
+      "id": "https://openalex.org/A5016587367",
+      "display_name": "Sandra A. Mitchell",
+      "orcid": "https://orcid.org/0000-0002-4153-9972",
+      "institutions": [
+        {
+          "id": "https://openalex.org/I4210140884",
+          "display_name": "National Cancer Institute",
+          "country": "United States",
+          "type": "government",
+          "ror_id": "https://ror.org/040gcmg81",
+          "status": "active",
+          "types": [
+            "funder",
+            "government"
+          ],
+          "established": 1937,
+          "names": [
+            {
+              "lang": "fr",
+              "types": [
+                "label"
+              ],
+              "value": "Institut National du Cancer"
+            },
+            {
+              "lang": "es",
+              "types": [
+                "label"
+              ],
+              "value": "Instituto Nacional del Cáncer"
+            },
+            {
+              "lang": null,
+              "types": [
+                "acronym"
+              ],
+              "value": "NCI"
+            },
+            {
+              "lang": "en",
+              "types": [
+                "ror_display",
+                "label"
+              ],
+              "value": "National Cancer Institute"
+            }
+          ],
+          "locations": [
+            {
+              "geonames_details": {
+                "continent_code": "NA",
+                "continent_name": "North America",
+                "country_code": "US",
+                "country_name": "United States",
+                "country_subdivision_code": "MD",
+                "country_subdivision_name": "Maryland",
+                "lat": 38.98067,
+                "lng": -77.10026,
+                "name": "Bethesda"
+              },
+              "geonames_id": 4348599
+            }
+          ],
+          "country_code": "US",
+          "city": "Bethesda",
+          "latitude": 38.98067,
+          "longitude": -77.10026,
+          "links": [
+            {
+              "type": "website",
+              "value": "http://www.cancer.gov/"
+            },
+            {
+              "type": "wikipedia",
+              "value": "https://en.wikipedia.org/wiki/National_Cancer_Institute"
+            }
+          ],
+          "website": "http://www.cancer.gov/",
+          "external_ids": [
+            {
+              "all": [
+                "100000054",
+                "100008637",
+                "100007316"
+              ],
+              "preferred": "100000054",
+              "type": "fundref"
+            },
+            {
+              "all": [
+                "grid.48336.3a"
+              ],
+              "preferred": "grid.48336.3a",
+              "type": "grid"
+            },
+            {
+              "all": [
+                "0000 0004 1936 8075"
+              ],
+              "preferred": null,
+              "type": "isni"
+            },
+            {
+              "all": [
+                "Q664846"
+              ],
+              "preferred": null,
+              "type": "wikidata"
+            }
+          ],
+          "fundref_id": "100000054",
+          "grid_id": "grid.48336.3a",
+          "relationships": [
+            {
+              "label": "Center for Cancer Research",
+              "type": "child",
+              "id": "https://ror.org/05bjen692"
+            },
+            {
+              "label": "Frederick National Laboratory for Cancer Research",
+              "type": "child",
+              "id": "https://ror.org/03v6m3209"
+            },
+            {
+              "label": "SWOG Cancer Research Network",
+              "type": "child",
+              "id": "https://ror.org/05n6zrm60"
+            },
+            {
+              "label": "Division of Cancer Epidemiology and Genetics",
+              "type": "child",
+              "id": "https://ror.org/00vkwep27"
+            },
+            {
+              "label": "National Institutes of Health",
+              "type": "parent",
+              "id": "https://ror.org/01cwqze88"
+            },
+            {
+              "label": "MUSC Hollings Cancer Center",
+              "type": "related",
+              "id": "https://ror.org/00w52vt71"
+            },
+            {
+              "label": "The Cancer Imaging Archive",
+              "type": "related",
+              "id": "https://ror.org/02qyzaf42"
+            }
+          ],
+          "domains": []
+        }
+      ],
+      "position": "last"
+    }
+  ],
+  "institutions": [
+    {
+      "id": "https://openalex.org/I4210140884",
+      "display_name": "National Cancer Institute",
+      "country": "United States",
+      "type": "government",
+      "ror_id": "https://ror.org/040gcmg81",
+      "status": "active",
+      "types": [
+        "funder",
+        "government"
+      ],
+      "established": 1937,
+      "names": [
+        {
+          "lang": "fr",
+          "types": [
+            "label"
+          ],
+          "value": "Institut National du Cancer"
+        },
+        {
+          "lang": "es",
+          "types": [
+            "label"
+          ],
+          "value": "Instituto Nacional del Cáncer"
+        },
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NCI"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "National Cancer Institute"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "MD",
+            "country_subdivision_name": "Maryland",
+            "lat": 38.98067,
+            "lng": -77.10026,
+            "name": "Bethesda"
+          },
+          "geonames_id": 4348599
+        }
+      ],
+      "country_code": "US",
+      "city": "Bethesda",
+      "latitude": 38.98067,
+      "longitude": -77.10026,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.cancer.gov/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/National_Cancer_Institute"
+        }
+      ],
+      "website": "http://www.cancer.gov/",
+      "external_ids": [
+        {
+          "all": [
+            "100000054",
+            "100008637",
+            "100007316"
+          ],
+          "preferred": "100000054",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.48336.3a"
+          ],
+          "preferred": "grid.48336.3a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1936 8075"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q664846"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100000054",
+      "grid_id": "grid.48336.3a",
+      "relationships": [
+        {
+          "label": "Center for Cancer Research",
+          "type": "child",
+          "id": "https://ror.org/05bjen692"
+        },
+        {
+          "label": "Frederick National Laboratory for Cancer Research",
+          "type": "child",
+          "id": "https://ror.org/03v6m3209"
+        },
+        {
+          "label": "SWOG Cancer Research Network",
+          "type": "child",
+          "id": "https://ror.org/05n6zrm60"
+        },
+        {
+          "label": "Division of Cancer Epidemiology and Genetics",
+          "type": "child",
+          "id": "https://ror.org/00vkwep27"
+        },
+        {
+          "label": "National Institutes of Health",
+          "type": "parent",
+          "id": "https://ror.org/01cwqze88"
+        },
+        {
+          "label": "MUSC Hollings Cancer Center",
+          "type": "related",
+          "id": "https://ror.org/00w52vt71"
+        },
+        {
+          "label": "The Cancer Imaging Archive",
+          "type": "related",
+          "id": "https://ror.org/02qyzaf42"
+        }
+      ],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I1333523220",
+      "display_name": "Westat (United States)",
+      "country": "United States",
+      "type": "company",
+      "ror_id": "https://ror.org/00wt7xg39",
+      "status": "active",
+      "types": [
+        "company"
+      ],
+      "established": 1963,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Westat (United States)"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "MD",
+            "country_subdivision_name": "Maryland",
+            "lat": 39.084,
+            "lng": -77.15276,
+            "name": "Rockville"
+          },
+          "geonames_id": 4367175
+        }
+      ],
+      "country_code": "US",
+      "city": "Rockville",
+      "latitude": 39.084,
+      "longitude": -77.15276,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.westat.com/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Westat"
+        }
+      ],
+      "website": "https://www.westat.com/",
+      "external_ids": [
+        {
+          "all": [
+            "grid.280561.8"
+          ],
+          "preferred": "grid.280561.8",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9270 6633"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q7987109"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.280561.8",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I1333523220",
+      "display_name": "Westat (United States)",
+      "country": "United States",
+      "type": "company",
+      "ror_id": "https://ror.org/00wt7xg39",
+      "status": "active",
+      "types": [
+        "company"
+      ],
+      "established": 1963,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Westat (United States)"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "MD",
+            "country_subdivision_name": "Maryland",
+            "lat": 39.084,
+            "lng": -77.15276,
+            "name": "Rockville"
+          },
+          "geonames_id": 4367175
+        }
+      ],
+      "country_code": "US",
+      "city": "Rockville",
+      "latitude": 39.084,
+      "longitude": -77.15276,
+      "links": [
+        {
+          "type": "website",
+          "value": "https://www.westat.com/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Westat"
+        }
+      ],
+      "website": "https://www.westat.com/",
+      "external_ids": [
+        {
+          "all": [
+            "grid.280561.8"
+          ],
+          "preferred": "grid.280561.8",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0000 9270 6633"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q7987109"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "grid_id": "grid.280561.8",
+      "relationships": [],
+      "domains": []
+    },
+    {
+      "id": "https://openalex.org/I4210140884",
+      "display_name": "National Cancer Institute",
+      "country": "United States",
+      "type": "government",
+      "ror_id": "https://ror.org/040gcmg81",
+      "status": "active",
+      "types": [
+        "funder",
+        "government"
+      ],
+      "established": 1937,
+      "names": [
+        {
+          "lang": "fr",
+          "types": [
+            "label"
+          ],
+          "value": "Institut National du Cancer"
+        },
+        {
+          "lang": "es",
+          "types": [
+            "label"
+          ],
+          "value": "Instituto Nacional del Cáncer"
+        },
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "NCI"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "National Cancer Institute"
+        }
+      ],
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "MD",
+            "country_subdivision_name": "Maryland",
+            "lat": 38.98067,
+            "lng": -77.10026,
+            "name": "Bethesda"
+          },
+          "geonames_id": 4348599
+        }
+      ],
+      "country_code": "US",
+      "city": "Bethesda",
+      "latitude": 38.98067,
+      "longitude": -77.10026,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://www.cancer.gov/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/National_Cancer_Institute"
+        }
+      ],
+      "website": "http://www.cancer.gov/",
+      "external_ids": [
+        {
+          "all": [
+            "100000054",
+            "100008637",
+            "100007316"
+          ],
+          "preferred": "100000054",
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.48336.3a"
+          ],
+          "preferred": "grid.48336.3a",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 1936 8075"
+          ],
+          "preferred": null,
+          "type": "isni"
+        },
+        {
+          "all": [
+            "Q664846"
+          ],
+          "preferred": null,
+          "type": "wikidata"
+        }
+      ],
+      "fundref_id": "100000054",
+      "grid_id": "grid.48336.3a",
+      "relationships": [
+        {
+          "label": "Center for Cancer Research",
+          "type": "child",
+          "id": "https://ror.org/05bjen692"
+        },
+        {
+          "label": "Frederick National Laboratory for Cancer Research",
+          "type": "child",
+          "id": "https://ror.org/03v6m3209"
+        },
+        {
+          "label": "SWOG Cancer Research Network",
+          "type": "child",
+          "id": "https://ror.org/05n6zrm60"
+        },
+        {
+          "label": "Division of Cancer Epidemiology and Genetics",
+          "type": "child",
+          "id": "https://ror.org/00vkwep27"
+        },
+        {
+          "label": "National Institutes of Health",
+          "type": "parent",
+          "id": "https://ror.org/01cwqze88"
+        },
+        {
+          "label": "MUSC Hollings Cancer Center",
+          "type": "related",
+          "id": "https://ror.org/00w52vt71"
+        },
+        {
+          "label": "The Cancer Imaging Archive",
+          "type": "related",
+          "id": "https://ror.org/02qyzaf42"
+        }
+      ],
+      "domains": []
+    }
+  ],
+  "topics": [
+    "Ethics in Clinical Research",
+    "BRCA gene mutations in cancer",
+    "Economic and Financial Impacts of Cancer"
+  ],
+  "venue": {
+    "id": "https://openalex.org/S4210228385",
+    "display_name": "Journal of Immunotherapy and Precision Oncology",
+    "issn": [
+      "2590-017X",
+      "2666-2345"
+    ],
+    "type": "journal",
+    "is_oa": true
+  },
+  "biblio": {
+    "volume": "8",
+    "issue": "4",
+    "first_page": "249",
+    "last_page": "253"
+  },
+  "doi": "https://doi.org/10.36401/jipo-25-15",
+  "ids": {
+    "openalex": "https://openalex.org/W4415342390",
+    "doi": "https://doi.org/10.36401/jipo-25-15",
+    "pmid": "https://pubmed.ncbi.nlm.nih.gov/41143138"
+  },
+  "abstract_inverted_index": null,
+  "referenced_works_count": 16,
+  "related_works": []
+}

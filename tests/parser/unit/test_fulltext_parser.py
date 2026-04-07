@@ -344,6 +344,102 @@ class TestFullTextXMLParserExtractReferences:
 
         assert len(references) == 0
 
+    def test_extract_in_text_citations(self):
+        """Test extracting in-text citations from XML."""
+        # XML with xref elements referencing bibliography
+        xml_with_citations = '''<?xml version="1.0"?>
+<article xmlns:xlink="http://www.w3.org/1999/xlink">
+<front>
+<article-meta>
+<article-id pub-id-type="pmcid">1234567</article-id>
+</article-meta>
+</front>
+<body>
+<sec>
+<title>Introduction</title>
+<p>This study builds on previous work <xref ref-type="bibr" rid="ref1">1</xref> and extends the methodology described in <xref ref-type="bibr" rid="ref2 ref3">[2,3]</xref>.</p>
+</sec>
+</body>
+<back>
+<ref-list>
+<ref id="ref1">
+<label>1</label>
+<element-citation>
+<person-group person-group-type="author">
+<name><surname>Author</surname><given-names>A</given-names></name>
+</person-group>
+<article-title>First Reference</article-title>
+<source>Journal A</source>
+<year>2020</year>
+</element-citation>
+</ref>
+<ref id="ref2">
+<label>2</label>
+<element-citation>
+<person-group person-group-type="author">
+<name><surname>Author</surname><given-names>B</given-names></name>
+</person-group>
+<article-title>Second Reference</article-title>
+<source>Journal B</source>
+<year>2021</year>
+</element-citation>
+</ref>
+<ref id="ref3">
+<label>3</label>
+<element-citation>
+<person-group person-group-type="author">
+<name><surname>Author</surname><given-names>C</given-names></name>
+</person-group>
+<article-title>Third Reference</article-title>
+<source>Journal C</source>
+<year>2022</year>
+</element-citation>
+</ref>
+</ref-list>
+</back>
+</article>'''
+        parser = FullTextXMLParser(xml_with_citations)
+        citations = parser.extract_in_text_citations()
+
+        assert len(citations) == 2  # Two xref elements
+
+        # First citation (single reference)
+        cit1 = citations[0]
+        assert cit1["text"] == "1"
+        assert len(cit1["references"]) == 1
+        assert cit1["references"][0]["id"] == "ref1"
+        assert cit1["references"][0]["title"] == "First Reference"
+
+        # Second citation (multiple references)
+        cit2 = citations[1]
+        assert cit2["text"] == "[2,3]"
+        assert len(cit2["references"]) == 2
+        ref_ids = [r["id"] for r in cit2["references"]]
+        assert "ref2" in ref_ids
+        assert "ref3" in ref_ids
+
+    def test_extract_in_text_citations_no_parse(self):
+        """Test extracting citations without parsing first."""
+        parser = FullTextXMLParser()
+        with pytest.raises(ParsingError):
+            parser.extract_in_text_citations()
+
+    def test_extract_in_text_citations_no_citations(self):
+        """Test extracting citations when none exist."""
+        xml_no_citations = '''<?xml version="1.0"?>
+<article>
+<body>
+<sec>
+<title>Introduction</title>
+<p>This section has no citations.</p>
+</sec>
+</body>
+</article>'''
+        parser = FullTextXMLParser(xml_no_citations)
+        citations = parser.extract_in_text_citations()
+
+        assert len(citations) == 0
+
 
 class TestFullTextXMLParserGetFullTextSections:
     """Test section extraction."""

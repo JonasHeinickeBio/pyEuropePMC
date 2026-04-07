@@ -201,7 +201,7 @@ def load_rdf_mapped_entities() -> set[str]:
         "TableEntity",
         "TableRowEntity",
         "ReferenceEntity",
-        "InstitutionEntity",
+        "OrganizationEntity",
         "JournalEntity",
         "GrantEntity",
     }

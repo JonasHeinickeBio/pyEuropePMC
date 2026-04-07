@@ -4,7 +4,7 @@ import pytest
 from rdflib import Graph, Namespace
 
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, OrganizationEntity, PaperEntity
 
 
 class TestEnrichmentRDFMapping:
@@ -51,7 +51,7 @@ class TestEnrichmentRDFMapping:
     @pytest.fixture
     def enriched_institution(self):
         """Create an institution entity with enrichment data."""
-        return InstitutionEntity(
+        return OrganizationEntity(
             display_name="Example University",
             ror_id="https://ror.org/abc123",
             openalex_id="https://openalex.org/I123456",
@@ -104,7 +104,7 @@ class TestEnrichmentRDFMapping:
 
         # Check enrichment properties
         assert (uri, mapper._resolve_predicate("datacite:orcid"), None) in g
-        assert (uri, mapper._resolve_predicate("pyeuropepmc:openAlexAuthorId"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:openAlexId"), None) in g
         assert (uri, mapper._resolve_predicate("org:role"), None) in g
         assert (uri, mapper._resolve_predicate("foaf:mbox"), None) in g
 
@@ -112,7 +112,7 @@ class TestEnrichmentRDFMapping:
         assert (uri, mapper._resolve_predicate("prov:hadPrimarySource"), None) in g
 
         # Verify URI is name-based (prioritized over ORCID)
-        assert str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"
+        assert str(uri) == "https://w3id.org/pyeuropepmc/data#author/john-doe"
 
     def test_enriched_institution_to_rdf(self, mapper, enriched_institution):
         """Test converting enriched institution to RDF."""
@@ -122,7 +122,7 @@ class TestEnrichmentRDFMapping:
         # Check basic institution properties
         assert (uri, mapper._resolve_predicate("skos:prefLabel"), None) in g
         assert (uri, mapper._resolve_predicate("pyeuropepmc:rorId"), None) in g
-        assert (uri, mapper._resolve_predicate("pyeuropepmc:openAlexInstitutionId"), None) in g
+        assert (uri, mapper._resolve_predicate("pyeuropepmc:openAlexId"), None) in g
 
         # Check geographic properties
         assert (uri, mapper._resolve_predicate("geo:country"), None) in g
@@ -147,7 +147,7 @@ class TestEnrichmentRDFMapping:
         author_uri = enriched_author.to_rdf(g, mapper=mapper)
 
         # Map relationship to institution
-        related = {"institutions": [enriched_institution]}
+        related = {"author_institutions": [enriched_institution]}
         mapper.map_relationships(g, author_uri, enriched_author, related)
 
         # Check relationship exists

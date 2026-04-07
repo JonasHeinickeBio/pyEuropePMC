@@ -74,10 +74,39 @@ class AffiliationParser(BaseParser):
             },
         )
 
+        # Check for institution-wrap structure
+        institution_wraps = aff_elem.findall(".//institution-wrap")
+        if institution_wraps:
+            parsed_institutions = self._extract_institution_wrap_data(institution_wraps[0])
+            if parsed_institutions:
+                aff_data["parsed_institutions"] = parsed_institutions
+                # Extract markers and clean text for institution-wrap affiliations
+                markers = XMLHelper.extract_inline_elements(aff_elem, [".//sup", ".//label"])
+                if markers:
+                    aff_data["markers"] = ", ".join(markers)
+                clean_text = XMLHelper.get_text_without_inline_elements(
+                    aff_elem, [".//sup", ".//label", ".//institution-id"]
+                )
+                if clean_text:
+                    aff_data["institution_text"] = clean_text
+                # Don't update structured fields if we have parsed institutions
+                return aff_data
+
         if any(structured.values()):
             aff_data.update(structured)
         else:
             self._parse_mixed_content_affiliation(aff_elem, aff_data)
+
+        # Always try to extract markers and clean text if not already done
+        if "institution_text" not in aff_data:
+            markers = XMLHelper.extract_inline_elements(aff_elem, [".//sup", ".//label"])
+            if markers:
+                aff_data["markers"] = ", ".join(markers)
+            clean_text = XMLHelper.get_text_without_inline_elements(
+                aff_elem, [".//sup", ".//label", ".//institution-id"]
+            )
+            if clean_text and clean_text != aff_data.get("text"):
+                aff_data["institution_text"] = clean_text
 
         return aff_data
 
@@ -86,10 +115,12 @@ class AffiliationParser(BaseParser):
     ) -> None:
         """Parse mixed content affiliations without structured tags."""
         # Extract superscript markers
-        markers = XMLHelper.extract_inline_elements(aff_elem, [".//sup"])
+        markers = XMLHelper.extract_inline_elements(aff_elem, [".//sup", ".//label"])
         if markers:
             aff_data["markers"] = ", ".join(markers)
-            clean_text = XMLHelper.get_text_without_inline_elements(aff_elem, [".//sup"])
+            clean_text = XMLHelper.get_text_without_inline_elements(
+                aff_elem, [".//sup", ".//label", ".//institution-id"]
+            )
             aff_data["institution_text"] = clean_text
 
             if clean_text:
@@ -169,6 +200,49 @@ class AffiliationParser(BaseParser):
             "postal_code": postal_code,
             "country": country,
         }
+
+    def _extract_institution_wrap_data(self, wrap_elem: ET.Element) -> list[dict[str, Any]]:
+        """Extract data from institution-wrap element."""
+        institutions = []
+
+        # Get all institution elements
+        inst_elements = wrap_elem.findall(".//institution")
+        if not inst_elements:
+            return institutions
+
+        # Extract institution IDs that apply to all institutions in this wrap
+        institution_ids = self._extract_institution_ids(wrap_elem)
+
+        # Combine all institution texts
+        inst_texts = []
+        for inst_elem in inst_elements:
+            text = XMLHelper.get_text_content(inst_elem)
+            if text:
+                inst_texts.append(text.strip())
+
+        institution_name = ", ".join(inst_texts) if inst_texts else None
+
+        # Get any additional text outside institution-wrap
+        wrap_tail = wrap_elem.tail or ""
+        additional_text = wrap_tail.strip()
+
+        # Parse the combined text
+        full_institution_text = ""
+        if institution_name:
+            full_institution_text = institution_name
+        if additional_text:
+            if full_institution_text:
+                full_institution_text += " " + additional_text
+            else:
+                full_institution_text = additional_text
+
+        if full_institution_text:
+            # Parse geographic information
+            parsed = self._parse_single_institution(full_institution_text, [], 0)
+            parsed["institution_ids"] = institution_ids
+            institutions.append(parsed)
+
+        return institutions
 
     def _extract_institution_ids(self, element: ET.Element) -> dict[str, str]:
         """Extract institution identifiers (ROR, GRID, ISNI, etc.)."""

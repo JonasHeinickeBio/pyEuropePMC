@@ -1,0 +1,29 @@
+# PyEuropePMC LinkML Schema - Grant Entity
+# This file contains the GrantEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/grant
+name: pyeuropepmc-grant-entity
+description: Grant entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  GrantEntity:
+    description: >-
+      Entity representing a research grant or funding award with FRAPO alignment.
+      Contains funding information and relationships to recipients.
+    class_uri: frapo:Grant
+    is_a: BaseEntity
+    slots:
+      - fundref_doi
+      - funding_source
+      - award_id
+      - grant_id
+      - agency
+      - order_in
+      - recipient
+      - recipients
+      - funded_papers

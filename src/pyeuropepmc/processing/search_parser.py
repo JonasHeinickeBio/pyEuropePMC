@@ -1,17 +1,11 @@
 import logging
+import re
 from typing import Any
 
 import defusedxml.ElementTree as ET
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.models import (
-    AuthorEntity,
-    GrantEntity,
-    InstitutionEntity,
-    JournalEntity,
-    PaperEntity,
-)
 
 # Type aliases for better readability
 ParsedResult = dict[str, str | list[str]]
@@ -29,6 +23,64 @@ class EuropePMCParser:
     """Parser for Europe PMC search API responses in various formats (JSON, XML, DC)."""
 
     logger = logging.getLogger("EuropePMCParser")
+
+    @staticmethod
+    def validate_search_result(result: dict[str, Any]) -> dict[str, Any]:
+        """Validate and clean a search result dictionary.
+
+        Args:
+            result: Raw search result dictionary
+
+        Returns:
+            Validated and cleaned result dictionary
+        """
+        if not isinstance(result, dict):
+            raise ParsingError(
+                ErrorCodes.PARSE003, {"message": f"Expected dict, got {type(result).__name__}"}
+            )
+
+        # Basic validation - ensure we have some form of identifier
+        identifiers = [result.get("doi"), result.get("pmcid"), result.get("pmid")]
+        if not any(identifiers):
+            EuropePMCParser.logger.warning("Search result missing identifiers (doi, pmcid, pmid)")
+
+        # Clean and normalize common fields
+        cleaned = {}
+        for key, value in result.items():
+            if isinstance(value, str):
+                cleaned[key] = value.strip()
+            elif isinstance(value, dict):
+                cleaned[key] = EuropePMCParser._clean_nested_dict(value)
+            elif isinstance(value, list):
+                cleaned[key] = EuropePMCParser._clean_list(value)
+            else:
+                cleaned[key] = value
+
+        return cleaned
+
+    @staticmethod
+    def _clean_nested_dict(data: dict[str, Any]) -> dict[str, Any]:
+        """Clean nested dictionary values."""
+        cleaned = {}
+        for key, value in data.items():
+            if isinstance(value, str):
+                cleaned[key] = value.strip()
+            else:
+                cleaned[key] = value
+        return cleaned
+
+    @staticmethod
+    def _clean_list(data: list[Any]) -> list[Any]:
+        """Clean list values."""
+        cleaned = []
+        for item in data:
+            if isinstance(item, str):
+                cleaned.append(item.strip())
+            elif isinstance(item, dict):
+                cleaned.append(EuropePMCParser._clean_nested_dict(item))
+            else:
+                cleaned.append(item)
+        return cleaned
 
     @staticmethod
     def parse_csv(csv_str: str) -> list[dict[str, Any]]:
@@ -326,109 +378,184 @@ class EuropePMCParser:
     # Entity creation methods (moved from converters)
 
     @staticmethod
-    def parse_affiliation_string(affiliation_text: str) -> InstitutionEntity:
+    def parse_affiliation_string(text: str) -> "InstitutionEntity":
         """
-        Parse an affiliation string into an InstitutionEntity.
+        Parse affiliation string into InstitutionEntity with enhanced institution type detection.
 
-        This function attempts to extract institution name, department, city, state/country
-        from common affiliation string patterns.
+        This method uses improved pattern recognition to extract institution information
+        and determine institution type based on keywords and context.
 
         Parameters
         ----------
-        affiliation_text : str
+        text : str
             Raw affiliation text from Europe PMC
 
         Returns
         -------
         InstitutionEntity
-            Parsed institution entity
+            Parsed institution entity with extracted information
         """
-        if not affiliation_text or not affiliation_text.strip():
-            return InstitutionEntity(display_name="")
+        from pyeuropepmc.models import InstitutionEntity, InstitutionType
 
-        text = affiliation_text.strip()
+        if not text or not text.strip():
+            return InstitutionEntity(display_name="Unknown Institution")
 
-        # Split by commas and clean up
+        # Clean the input text
+        text = text.strip()
+
+        # Split by commas to get components
         parts = [part.strip() for part in text.split(",") if part.strip()]
-
         if not parts:
-            return InstitutionEntity(display_name=text)
+            return InstitutionEntity(display_name="Unknown Institution")
 
-        # Initialize variables
-        institution_name = ""
+        # Parse affiliation using pattern recognition
+        # Common patterns: [Department,] Institution [, City] [, State/Postal] [, Country]
+
+        # Initialize
         department = ""
-        city = ""
-        country = ""
+        institution_name = ""
+        city = None
+        country = None
+        confidence = 0.1
 
-        # Common country patterns
+        # Start from the end and work backwards
+        remaining_parts = parts[:]
+
+        # 1. Extract country (if last part matches country pattern)
         country_patterns = [
             "USA",
             "United States",
+            "United States of America",
             "UK",
             "United Kingdom",
+            "Great Britain",
+            "Canada",
+            "Australia",
             "Germany",
             "France",
             "Italy",
             "Spain",
-            "Canada",
-            "Australia",
             "Japan",
             "China",
             "India",
+            "Russia",
+            "Brazil",
+            "Mexico",
+            "Argentina",
+            "Chile",
+            "Colombia",
+            "South Africa",
+            "Israel",
+            "Turkey",
+            "Netherlands",
+            "Belgium",
+            "Switzerland",
+            "Austria",
+            "Sweden",
+            "Norway",
+            "Denmark",
+            "Finland",
+            "Poland",
+            "Czech Republic",
+            "Hungary",
+            "Portugal",
+            "Greece",
+            "Ireland",
+            "New Zealand",
+            "Singapore",
+            "South Korea",
+            "Taiwan",
+            "Thailand",
+            "Malaysia",
+            "Philippines",
+            "Vietnam",
+            "Indonesia",
+            "Pakistan",
+            "Bangladesh",
+            "Egypt",
+            "Saudi Arabia",
+            "UAE",
+            "United Arab Emirates",
         ]
 
-        # Check if last part is a country
-        if len(parts) >= 2 and any(
-            country.lower() in parts[-1].lower() for country in country_patterns
+        if remaining_parts and any(
+            country.lower() in remaining_parts[-1].lower() for country in country_patterns
         ):
-            country = parts[-1]
-            remaining_parts = parts[:-1]
-        else:
-            remaining_parts = parts
+            country = remaining_parts.pop()
+            confidence += 0.2
 
-        # Try to extract city from remaining parts (often the second-to-last part)
-        if len(remaining_parts) >= 2:
-            # Check if second-to-last part looks like a city (not containing department keywords)
+        # 2. Extract city/address (next part from end, if it looks like location)
+        if remaining_parts:
             potential_city = remaining_parts[-1]
-            dept_keywords = [
-                "department",
-                "school",
-                "faculty",
+
+            # Heuristics for identifying city/location:
+            # - Contains postal code
+            # - Contains state abbreviation
+            # - Is a known city name
+            # - Is short and doesn't contain institution keywords
+            has_postal = bool(re.search(r"\d{5}", potential_city))
+            has_state = bool(re.search(r"\b[A-Z]{2}\b", potential_city))
+            known_cities = [
+                "Boston",
+                "New York",
+                "London",
+                "Paris",
+                "Berlin",
+                "Tokyo",
+                "San Francisco",
+                "Los Angeles",
+                "Chicago",
+                "Stanford",
+                "Cambridge",
+                "Heidelberg",
+                "Munich",
+                "Bethesda",
+                "Rockville",
+            ]
+            is_known_city = any(city in potential_city for city in known_cities)
+
+            institution_keywords = [
+                "university",
+                "college",
                 "institute",
                 "center",
-                "program",
-                "division",
-                "section",
-                "unit",
-                "group",
-                "laboratory",
-                "lab",
-                "college",
-                "university",
                 "hospital",
-                "clinic",
+                "school",
+                "department",
+                "faculty",
+                "laboratory",
                 "foundation",
                 "association",
+                "corporation",
+                "company",
+                "national",
+                "federal",
             ]
-            # If the potential city doesn't contain department keywords and is reasonably short,
-            # treat it as a city
-            if (
-                not any(dept in potential_city.lower() for dept in dept_keywords)
-                and len(potential_city.split()) <= 3
-            ):  # Cities are usually 1-3 words
-                city = potential_city
-                remaining_parts = remaining_parts[:-1]
 
-        # The remaining parts are likely institution name and possibly department
+            has_institution_word = any(
+                word in potential_city.lower() for word in institution_keywords
+            )
+            is_short_location = len(potential_city.split()) <= 3 and len(potential_city) <= 20
+
+            if (
+                has_postal
+                or has_state
+                or is_known_city
+                or (is_short_location and not has_institution_word)
+            ):
+                city = potential_city
+                remaining_parts.pop()
+                confidence += 0.15
+
+        # 3. Extract department (if first remaining part looks like department)
         if remaining_parts:
-            first_part = remaining_parts[0]
-            # Check if first part looks like a department
             dept_keywords = [
                 "department",
-                "school",
+                "dept",
                 "faculty",
                 "institute",
                 "center",
+                "centre",
                 "program",
                 "division",
                 "section",
@@ -436,35 +563,242 @@ class EuropePMCParser:
                 "group",
                 "laboratory",
                 "lab",
+                "clinic",
+                "chair",
             ]
-            if any(dept in first_part.lower() for dept in dept_keywords):
+
+            first_part = remaining_parts[0]
+            # Be more specific about department detection - avoid false positives like "Medical School"
+            is_department = False
+            first_lower = first_part.lower()
+            for keyword in dept_keywords:
+                if keyword in first_lower:
+                    # Check if it's actually a department (e.g., "Department of X" or "X Department")
+                    # Avoid false positives like "Medical School" where "school" is part of the institution name
+                    if keyword in [
+                        "department",
+                        "dept",
+                        "faculty",
+                        "institute",
+                        "center",
+                        "centre",
+                        "program",
+                        "division",
+                        "section",
+                        "unit",
+                        "group",
+                        "laboratory",
+                        "lab",
+                        "clinic",
+                        "chair",
+                    ]:
+                        # For these, require the keyword to be at the start or have "of" after it
+                        if (
+                            first_lower.startswith(keyword)
+                            or f" {keyword} of" in first_lower
+                            or f" {keyword} for" in first_lower
+                        ):
+                            is_department = True
+                            break
+                    else:
+                        is_department = True
+                        break
+
+            if is_department:
                 department = first_part
-                institution_name = ", ".join(remaining_parts[1:])
-            else:
-                institution_name = ", ".join(remaining_parts)
+                remaining_parts.pop(0)
+                confidence += 0.15
 
-        # If we still don't have a clear institution name, use the whole text
-        if not institution_name:
-            institution_name = text
+        # 4. Everything else is the institution
+        if remaining_parts:
+            institution_name = ", ".join(remaining_parts)
+        else:
+            # If no parts left, this might be a simple institution-only affiliation
+            institution_name = text.split(",")[0].strip()
 
-        # Clean up institution name (remove email addresses, etc.)
-        institution_name = institution_name.split("Electronic address:")[0].strip()
-        institution_name = institution_name.split("E-mail:")[0].strip()
-        institution_name = institution_name.split("Email:")[0].strip()
+        # Clean up institution name
+        institution_name = EuropePMCParser._clean_institution_name(institution_name)
+
+        # Determine institution type
+        institution_type = EuropePMCParser._determine_institution_type(
+            institution_name, department
+        )
+
+        # Final confidence calculation
+        if institution_name and institution_name != "Unknown Institution":
+            confidence += 0.3
+        if institution_type != InstitutionType.other:
+            confidence += 0.1
+
+        confidence = max(0.1, min(1.0, confidence))
 
         return InstitutionEntity(
             display_name=institution_name,
-            city=city if city else None,
-            country=country if country else None,
-            institution_type=department if department else None,
+            city=city,
+            country=country,
+            institution_type=institution_type,
+            confidence=confidence,
         )
+
+    @staticmethod
+    def _determine_institution_type(institution_name: str, department: str) -> "InstitutionType":
+        """
+        Determine institution type based on keywords in name and department.
+
+        Parameters
+        ----------
+        institution_name : str
+            Name of the institution
+        department : str
+            Department name (if any)
+
+        Returns
+        -------
+        InstitutionType
+            Classified institution type
+        """
+        from pyeuropepmc.models import InstitutionType
+
+        text_to_check = f"{institution_name} {department}".lower()
+
+        # Healthcare institutions
+        healthcare_keywords = [
+            "hospital",
+            "clinic",
+            "medical center",
+            "medical centre",
+            "health",
+            "cancer",
+            "cardiology",
+            "neurology",
+            "surgery",
+            "medicine",
+            "pharmacy",
+        ]
+        if any(keyword in text_to_check for keyword in healthcare_keywords):
+            return InstitutionType.healthcare
+
+        # Educational institutions
+        education_keywords = [
+            "university",
+            "college",
+            "school",
+            "academy",
+            "institute",
+            "faculty",
+            "department",
+            "laboratory",
+            "lab",
+            "research center",
+            "research centre",
+        ]
+        if any(keyword in text_to_check for keyword in education_keywords):
+            return InstitutionType.education
+
+        # Government institutions
+        government_keywords = [
+            "national",
+            "federal",
+            "ministry",
+            "agency",
+            "bureau",
+            "office",
+            "department of",
+            "centers for disease control",
+            "nih",
+            "nci",
+            "fda",
+            "national institutes",
+            "public health",
+        ]
+        if any(keyword in text_to_check for keyword in government_keywords):
+            return InstitutionType.government
+
+        # Company/corporate
+        company_keywords = [
+            "inc",
+            "ltd",
+            "llc",
+            "corp",
+            "corporation",
+            "company",
+            "pharma",
+            "biotech",
+            "therapeutics",
+            "biosciences",
+            "biomedical",
+            "genetics",
+        ]
+        if any(keyword in text_to_check for keyword in company_keywords):
+            return InstitutionType.company
+
+        # Nonprofit/foundation
+        nonprofit_keywords = [
+            "foundation",
+            "association",
+            "society",
+            "council",
+            "alliance",
+            "institute for",
+            "center for",
+            "centre for",
+        ]
+        if any(keyword in text_to_check for keyword in nonprofit_keywords):
+            return InstitutionType.nonprofit
+
+        # Research facility
+        facility_keywords = [
+            "laboratory",
+            "facility",
+            "observatory",
+            "station",
+            "center",
+            "centre",
+            "park",
+            "reserve",
+        ]
+        if any(keyword in text_to_check for keyword in facility_keywords):
+            return InstitutionType.facility
+
+        # Default to other
+        return InstitutionType.other
+
+    @staticmethod
+    def _clean_institution_name(name: str) -> str:
+        """Clean institution name by removing unwanted suffixes and patterns."""
+        if not name:
+            return ""
+
+        # Remove common unwanted patterns
+        patterns_to_remove = [
+            r"Electronic address:.*",
+            r"E-mail:.*",
+            r"Email:.*",
+            r"Tel:.*",
+            r"Fax:.*",
+            r"Phone:.*",
+            r"\(\w+\)",  # Remove parenthetical abbreviations at end
+        ]
+
+        cleaned = name
+        for pattern in patterns_to_remove:
+            import re
+
+            cleaned = re.split(pattern, cleaned, flags=re.IGNORECASE)[0].strip()
+
+        # Remove trailing punctuation
+        cleaned = cleaned.rstrip(".,;:- ")
+
+        return cleaned
 
     @staticmethod
     def extract_authors_and_entities(
         result: dict[str, Any],
-    ) -> tuple[list[dict[str, Any]], list[AuthorEntity], list[InstitutionEntity]]:
+    ) -> tuple[list[dict[str, Any]], list["AuthorEntity"], list["InstitutionEntity"]]:
         """Extract authors and create AuthorEntity and InstitutionEntity objects
-        from search result."""
+        from search result with enhanced role and quality information."""
+        from pyeuropepmc.models import AuthorEntity
+
         authors = []
         author_entities = []
         institution_entities = []
@@ -477,7 +811,7 @@ class EuropePMCParser:
         ]
 
         if isinstance(author_list, list):
-            for author in author_list:
+            for idx, author in enumerate(author_list):
                 # Extract ORCID from author object first
                 orcid = (
                     author.get("authorId", {}).get("value")
@@ -489,12 +823,24 @@ class EuropePMCParser:
                 if not orcid and available_orcids:
                     orcid = available_orcids.pop(0)
 
+                # Determine author position
+                position = EuropePMCParser._determine_author_position(idx, len(author_list))
+
+                # Extract author roles (if available in the data)
+                roles = EuropePMCParser._extract_author_roles(author)
+
+                # Calculate author data quality score
+                quality_score = EuropePMCParser._calculate_author_quality_score(author, orcid)
+
                 author_dict = {
                     "full_name": author.get("fullName"),
                     "first_name": author.get("firstName"),
                     "last_name": author.get("lastName"),
                     "initials": author.get("initials"),
                     "orcid": orcid,
+                    "position": position.value if position else None,
+                    "roles": [role.value for role in roles] if roles else None,
+                    "quality_score": quality_score,
                 }
                 # Add affiliations if available
                 affiliations = []
@@ -517,9 +863,11 @@ class EuropePMCParser:
                     institution_entity = EuropePMCParser.parse_affiliation_string(affiliation_text)
                     if institution_entity.display_name:  # Only add if we have a name
                         author_institutions.append(institution_entity)
-                        institution_entities.append(institution_entity)
+                        # Avoid duplicates
+                        if institution_entity not in institution_entities:
+                            institution_entities.append(institution_entity)
 
-                # Create AuthorEntity object with institutions
+                # Create AuthorEntity object with enhanced information
                 author_entity = AuthorEntity(
                     full_name=author.get("fullName"),
                     first_name=author.get("firstName"),
@@ -527,11 +875,68 @@ class EuropePMCParser:
                     initials=author.get("initials"),
                     orcid=orcid,
                     affiliation_text=", ".join(affiliations) if affiliations else None,
-                    institutions=author_institutions if author_institutions else None,
+                    position=position,
                 )
                 author_entities.append(author_entity)
 
         return authors, author_entities, institution_entities
+
+    @staticmethod
+    def _determine_author_position(index: int, total_authors: int) -> "AuthorPosition | None":
+        """Determine the position of an author in the author list."""
+        from pyeuropepmc.models import AuthorPosition
+
+        if total_authors == 0:
+            return None
+        elif index == 0:
+            return AuthorPosition.first
+        elif index == total_authors - 1:
+            return AuthorPosition.last
+        elif total_authors <= 3:
+            return AuthorPosition.middle
+        else:
+            return AuthorPosition.middle
+
+    @staticmethod
+    def _extract_author_roles(author: dict[str, Any]) -> list["AuthorRole"]:
+        """Extract author roles from author data. Currently returns empty list as
+        Europe PMC doesn't typically provide role information in search results."""
+        # Note: Europe PMC search API doesn't typically include author roles
+        # This method is prepared for future enhancements when role data becomes available
+        return []
+
+    @staticmethod
+    def _calculate_author_quality_score(author: dict[str, Any], orcid: str | None) -> float:
+        """Calculate a quality score for author data completeness."""
+        score = 0.0
+        total_checks = 0
+
+        # Check for full name (high importance)
+        if author.get("fullName"):
+            score += 1.0
+            total_checks += 1
+        else:
+            total_checks += 1
+
+        # Check for ORCID (high importance for disambiguation)
+        if orcid:
+            score += 1.0
+        total_checks += 1
+
+        # Check for first/last name
+        if author.get("firstName") and author.get("lastName"):
+            score += 0.8
+        elif author.get("firstName") or author.get("lastName"):
+            score += 0.4
+        total_checks += 1
+
+        # Check for affiliations
+        affiliations = author.get("authorAffiliationDetailsList", {}).get("authorAffiliation", [])
+        if affiliations and len(affiliations) > 0:
+            score += 0.6
+        total_checks += 1
+
+        return score / total_checks if total_checks > 0 else 0.0
 
     @staticmethod
     def extract_keywords_and_mesh(result: dict[str, Any]) -> list[str]:
@@ -569,7 +974,8 @@ class EuropePMCParser:
         list[MeSHHeadingEntity]
             List of structured MeSH heading entities with qualifiers
         """
-        from pyeuropepmc.models.mesh import MeSHHeadingEntity
+        # TODO: Implement MeSHHeadingEntity class in schema
+        # from pyeuropepmc.models.mesh import MeSHHeadingEntity
 
         mesh_headings = []
         mesh_heading_list = result.get("meshHeadingList", {}).get("meshHeading", [])
@@ -577,8 +983,10 @@ class EuropePMCParser:
         if isinstance(mesh_heading_list, list):
             for mesh_data in mesh_heading_list:
                 try:
-                    heading = MeSHHeadingEntity.from_dict(mesh_data)
-                    mesh_headings.append(heading)
+                    # heading = MeSHHeadingEntity.from_dict(mesh_data)
+                    # mesh_headings.append(heading)
+                    # For now, just return the raw data
+                    mesh_headings.append(mesh_data)
                 except (KeyError, ValueError) as e:
                     # Log warning but continue processing
                     descriptor = mesh_data.get("descriptorName", "unknown")
@@ -657,8 +1065,13 @@ class EuropePMCParser:
     @staticmethod
     def create_paper_entity_from_result(
         result: dict[str, Any],
-    ) -> tuple[PaperEntity, dict[str, Any]]:
-        """Create a comprehensive PaperEntity from search result data."""
+    ) -> tuple["PaperEntity", dict[str, Any]]:
+        """Create a comprehensive PaperEntity from search result data with validation and quality scoring."""
+        from pyeuropepmc.models import GrantEntity, JournalEntity, PaperEntity
+
+        # Validate and clean the result first
+        result = EuropePMCParser.validate_search_result(result)
+
         # Extract basic identifiers
         doi = result.get("doi")
         pmcid = result.get("pmcid")
@@ -704,6 +1117,9 @@ class EuropePMCParser:
             has_tm_accession_numbers,
         ) = EuropePMCParser.extract_citation_info(result)
         pub_type, funders, license_info = EuropePMCParser.extract_publication_metadata(result)
+
+        # Calculate overall paper quality score
+        quality_score = EuropePMCParser._calculate_paper_quality_score(result, author_entities)
 
         # Create the PaperEntity with all extracted information
         paper_entity = PaperEntity(
@@ -758,6 +1174,57 @@ class EuropePMCParser:
         # Return both the paper entity and related entities
         related_entities = {"authors": author_entities, "institutions": institution_entities}
         return paper_entity, related_entities
+
+    @staticmethod
+    def _calculate_paper_quality_score(
+        result: dict[str, Any], author_entities: list["AuthorEntity"]
+    ) -> float:
+        """Calculate an overall quality score for the paper data."""
+        score = 0.0
+        total_checks = 0
+
+        # Identifier quality (high importance)
+        identifiers = [result.get("doi"), result.get("pmcid"), result.get("pmid")]
+        valid_identifiers = sum(1 for id_val in identifiers if id_val)
+        if valid_identifiers >= 1:
+            score += 0.4  # At least one identifier
+        if valid_identifiers >= 2:
+            score += 0.3  # Multiple identifiers
+        total_checks += 1
+
+        # Title presence
+        if result.get("title"):
+            score += 0.3
+        total_checks += 1
+
+        # Abstract presence
+        if result.get("abstractText"):
+            score += 0.2
+        total_checks += 1
+
+        # Author quality (placeholder - would need author quality scores)
+        # For now, just check if authors exist
+        if author_entities:
+            score += 0.2  # Has authors
+        total_checks += 1
+
+        # Journal information
+        journal_info = result.get("journalInfo", {})
+        if journal_info.get("journal", {}).get("title"):
+            score += 0.2
+        total_checks += 1
+
+        # Publication year
+        if result.get("pubYear"):
+            score += 0.1
+        total_checks += 1
+
+        # Open access information
+        if result.get("isOpenAccess") is not None:
+            score += 0.1
+        total_checks += 1
+
+        return score / total_checks if total_checks > 0 else 0.0
 
     @staticmethod
     def parse_search_results_with_entities(

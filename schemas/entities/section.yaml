@@ -1,0 +1,91 @@
+# PyEuropePMC LinkML Schema - Section Entity
+# This file contains the SectionEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/section
+name: pyeuropepmc-section-entity
+description: Section entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  SectionEntity:
+    description: >-
+      Entity representing a document section with BIBO and NIF alignment.
+      Contains section content and NIF text offsets for alignment.
+    class_uri: bibo:DocumentPart
+    is_a: BaseEntity
+    slots:
+      - title
+      - content
+      - begin_index
+      - end_index
+      - section_paper
+      - subsections
+      - parent_section
+      - citations
+      - section_type
+      - order
+      - citation_contexts
+    slot_usage:
+      content:
+        required: true
+      section_type:
+        range: SectionType
+        required: false
+        description: Type/category of the section
+      citation_contexts:
+        range: CitationContextEntity
+        multivalued: true
+        required: false
+        description: Detailed citation contexts within this section
+    rules:
+      - preconditions:
+          slot_conditions:
+            begin_index:
+              value_presence: PRESENT
+            end_index:
+              value_presence: PRESENT
+        postconditions:
+          slot_conditions:
+            begin_index:
+              maximum_value: 999999999
+            end_index:
+              minimum_value: 0
+        description: begin_index must be less than end_index
+
+  CitationContextEntity:
+    description: >-
+      Entity representing the context of a citation within a section.
+      Contains citation type, position, and surrounding text.
+    class_uri: cito:Citation
+    is_a: BaseEntity
+    slots:
+      - citation_type
+      - begin_index
+      - end_index
+      - context_text
+      - cited_paper
+      - citing_section
+      - confidence_score
+    slot_usage:
+      citation_type:
+        range: CitationType
+        required: true
+      begin_index:
+        required: true
+        minimum_value: 0
+      end_index:
+        required: true
+        minimum_value: 0
+      context_text:
+        required: false
+        description: Surrounding text context of the citation
+      confidence_score:
+        range: float
+        minimum_value: 0.0
+        maximum_value: 1.0
+        required: false
+        description: Confidence score for citation type classification

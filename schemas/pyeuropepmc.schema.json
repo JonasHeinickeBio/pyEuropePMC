@@ -1,5 +1,108 @@
 {
     "$defs": {
+        "AffiliationEntity": {
+            "additionalProperties": false,
+            "description": "Entity representing an author's affiliation with an institution. Contains the relationship between authors and institutions with affiliation text.",
+            "properties": {
+                "affiliated_author": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/AuthorEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Author affiliated with this institution"
+                },
+                "affiliated_institution": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/InstitutionEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Institution the author is affiliated with"
+                },
+                "affiliation_order": {
+                    "description": "Order of affiliation in author's list",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "affiliation_text": {
+                    "description": "Affiliation text",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "confidence": {
+                    "description": "Confidence score for extracted information (0.0 to 1.0)",
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "data_sources": {
+                    "description": "List of data sources that contributed to this entity",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "id": {
+                    "description": "Local identifier (slug/uuid) for the entity",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "description": "Human-readable label for the entity",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "last_updated": {
+                    "description": "Timestamp of last data update (ISO 8601)",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "Source URI for provenance tracking",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "types": {
+                    "description": "RDF types (CURIEs/URIs) for this entity",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "title": "AffiliationEntity",
+            "type": "object"
+        },
         "AuthorEntity": {
             "additionalProperties": false,
             "description": "Entity representing an author with FOAF alignment. Contains personal information, institutional affiliations, and identifiers.",
@@ -11,10 +114,20 @@
                         "null"
                     ]
                 },
-                "author_institutions": {
-                    "description": "Institutions an author is affiliated with",
+                "affiliations": {
+                    "description": "Author affiliations with institutions",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/AffiliationEntity"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "author_institutions": {
+                    "description": "Institutions affiliated with an author",
+                    "items": {
+                        "$ref": "#/$defs/InstitutionEntity"
                     },
                     "type": [
                         "array",
@@ -68,7 +181,7 @@
                     "type": "string"
                 },
                 "h_index": {
-                    "description": "H-index",
+                    "description": "Journal h-index",
                     "minimum": 0,
                     "type": [
                         "integer",
@@ -77,12 +190,25 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "initials": {
                     "description": "Author's initials",
                     "type": [
                         "string",
+                        "null"
+                    ]
+                },
+                "institutions": {
+                    "description": "Institutional affiliations as InstitutionEntity objects",
+                    "items": {
+                        "$ref": "#/$defs/InstitutionEntity"
+                    },
+                    "type": [
+                        "array",
                         "null"
                     ]
                 },
@@ -108,6 +234,13 @@
                         "null"
                     ]
                 },
+                "name": {
+                    "description": "Display name (for enrichment compatibility)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "openalex_id": {
                     "description": "OpenAlex identifier",
                     "type": [
@@ -123,10 +256,26 @@
                         "null"
                     ]
                 },
+                "orcid_works_count": {
+                    "description": "Number of works associated with ORCID",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
+                "paper_count": {
+                    "description": "Total number of papers by author",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
                 "papers": {
-                    "description": "Papers authored by a person",
+                    "description": "Papers authored by an author",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/PaperEntity"
                     },
                     "type": [
                         "array",
@@ -136,6 +285,46 @@
                 "position": {
                     "$ref": "#/$defs/AuthorPosition",
                     "description": "Author position/role"
+                },
+                "quality_score": {
+                    "description": "Confidence score for author data completeness and accuracy",
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "researcher_id": {
+                    "description": "ResearcherID",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "roles": {
+                    "description": "Specific roles or contributions of the author",
+                    "items": {
+                        "$ref": "#/$defs/AuthorRole"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "scopus_author_id": {
+                    "description": "Scopus author ID",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "semantic_scholar_author_id": {
+                    "description": "Semantic Scholar author ID (alternative field)",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "semantic_scholar_id": {
                     "description": "Semantic Scholar paper ID",
@@ -173,8 +362,7 @@
                 }
             },
             "required": [
-                "full_name",
-                "id"
+                "full_name"
             ],
             "title": "AuthorEntity",
             "type": "object"
@@ -184,9 +372,172 @@
             "enum": [
                 "first",
                 "middle",
-                "last"
+                "last",
+                "corresponding"
             ],
             "title": "AuthorPosition",
+            "type": "string"
+        },
+        "AuthorRole": {
+            "description": "Specific roles or contributions of authors",
+            "enum": [
+                "conceptualization",
+                "methodology",
+                "software",
+                "validation",
+                "formal_analysis",
+                "investigation",
+                "resources",
+                "data_curation",
+                "writing_original_draft",
+                "writing_review_editing",
+                "visualization",
+                "supervision",
+                "project_administration",
+                "funding_acquisition"
+            ],
+            "title": "AuthorRole",
+            "type": "string"
+        },
+        "CitationContextEntity": {
+            "additionalProperties": false,
+            "description": "Entity representing the context of a citation within a section. Contains citation type, position, and surrounding text.",
+            "properties": {
+                "begin_index": {
+                    "description": "NIF begin offset for text alignment",
+                    "minimum": 0,
+                    "type": "integer"
+                },
+                "citation_type": {
+                    "$ref": "#/$defs/CitationType",
+                    "description": "Type of citation relationship"
+                },
+                "cited_paper": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/PaperEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Paper being cited"
+                },
+                "citing_section": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/SectionEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Section containing the citation"
+                },
+                "confidence": {
+                    "description": "Confidence score for extracted information (0.0 to 1.0)",
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "confidence_score": {
+                    "description": "Confidence score for citation type classification",
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
+                "context_text": {
+                    "description": "Surrounding text context of the citation",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "data_sources": {
+                    "description": "List of data sources that contributed to this entity",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "end_index": {
+                    "description": "NIF end offset for text alignment",
+                    "minimum": 0,
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "Local identifier (slug/uuid) for the entity",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "label": {
+                    "description": "Human-readable label for the entity",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "last_updated": {
+                    "description": "Timestamp of last data update (ISO 8601)",
+                    "format": "date-time",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "source_uri": {
+                    "description": "Source URI for provenance tracking",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "types": {
+                    "description": "RDF types (CURIEs/URIs) for this entity",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                }
+            },
+            "required": [
+                "citation_type",
+                "begin_index",
+                "end_index"
+            ],
+            "title": "CitationContextEntity",
+            "type": "object"
+        },
+        "CitationType": {
+            "description": "Type of citation relationship",
+            "enum": [
+                "cites",
+                "cites_as_evidence",
+                "cites_as_background",
+                "cites_as_related",
+                "cites_as_method",
+                "cites_for_information",
+                "shares_authors",
+                "agrees_with",
+                "disagrees_with",
+                "cites_as_metadata",
+                "cites_as_data"
+            ],
+            "title": "CitationType",
             "type": "string"
         },
         "FigureEntity": {
@@ -194,7 +545,7 @@
             "description": "Entity representing a figure with BIBO alignment. Contains figure metadata and graphic URI.",
             "properties": {
                 "caption": {
-                    "description": "Caption/description",
+                    "description": "Caption or description",
                     "type": [
                         "string",
                         "null"
@@ -227,11 +578,15 @@
                     ]
                 },
                 "figure_paper": {
-                    "description": "Paper this figure belongs to",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/FigureEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Paper containing a figure"
                 },
                 "graphic_uri": {
                     "description": "URI to the figure graphic/image file",
@@ -242,7 +597,10 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "label": {
                     "description": "Human-readable label for the entity",
@@ -277,9 +635,6 @@
                     ]
                 }
             },
-            "required": [
-                "id"
-            ],
             "title": "FigureEntity",
             "type": "object"
         },
@@ -287,6 +642,13 @@
             "additionalProperties": false,
             "description": "Entity representing a research grant or funding award with FRAPO alignment. Contains funding information and relationships to recipients.",
             "properties": {
+                "agency": {
+                    "description": "Funding agency name",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "award_id": {
                     "description": "Grant or award identifier",
                     "type": [
@@ -316,7 +678,7 @@
                 "funded_papers": {
                     "description": "Papers funded by a grant",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/PaperEntity"
                     },
                     "type": [
                         "array",
@@ -324,7 +686,7 @@
                     ]
                 },
                 "funding_source": {
-                    "description": "Name of the funding organization",
+                    "description": "Name of the funding organization/source",
                     "type": [
                         "string",
                         "null"
@@ -332,6 +694,14 @@
                 },
                 "fundref_doi": {
                     "description": "FundRef DOI for the funding organization",
+                    "pattern": "^10\\.\\d{4,9}/[-._;()/:A-Z0-9]+$",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "grant_id": {
+                    "description": "Grant identifier from funding agency",
                     "type": [
                         "string",
                         "null"
@@ -339,7 +709,10 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "label": {
                     "description": "Human-readable label for the entity",
@@ -356,17 +729,25 @@
                         "null"
                     ]
                 },
+                "order_in": {
+                    "description": "Order/position of grant in the list",
+                    "minimum": 0,
+                    "type": [
+                        "integer",
+                        "null"
+                    ]
+                },
                 "recipient": {
-                    "description": "Grant recipient (deprecated, use recipients relationship)",
+                    "description": "DEPRECATED: Use recipients instead. Grant recipient name.",
                     "type": [
                         "string",
                         "null"
                     ]
                 },
                 "recipients": {
-                    "description": "Principal investigators/recipients of a grant",
+                    "description": "Recipients of a grant",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/AuthorEntity"
                     },
                     "type": [
                         "array",
@@ -391,9 +772,6 @@
                     ]
                 }
             },
-            "required": [
-                "id"
-            ],
             "title": "GrantEntity",
             "type": "object"
         },
@@ -426,7 +804,6 @@
                 },
                 "country_code": {
                     "description": "ISO country code",
-                    "pattern": "^[A-Z]{2}$",
                     "type": [
                         "string",
                         "null"
@@ -447,7 +824,7 @@
                     "type": "string"
                 },
                 "domains": {
-                    "description": "Associated domain names",
+                    "description": "Institution domains",
                     "items": {
                         "type": "string"
                     },
@@ -458,6 +835,8 @@
                 },
                 "established": {
                     "description": "Year established",
+                    "maximum": 9999,
+                    "minimum": 1000,
                     "type": [
                         "integer",
                         "null"
@@ -479,7 +858,20 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "institution_members": {
+                    "description": "Members of an institution",
+                    "items": {
+                        "$ref": "#/$defs/AuthorEntity"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
                 },
                 "institution_type": {
                     "$ref": "#/$defs/InstitutionType",
@@ -525,8 +917,15 @@
                         "null"
                     ]
                 },
-                "members": {
-                    "description": "Members of an institution",
+                "openalex_id": {
+                    "description": "OpenAlex identifier",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "relationships": {
+                    "description": "Related institutions",
                     "items": {
                         "type": "string"
                     },
@@ -535,15 +934,15 @@
                         "null"
                     ]
                 },
-                "openalex_id": {
-                    "description": "OpenAlex identifier",
+                "ror_id": {
+                    "description": "ROR (Research Organization Registry) identifier",
                     "type": [
                         "string",
                         "null"
                     ]
                 },
-                "ror_id": {
-                    "description": "ROR identifier",
+                "parent_organization": {
+                    "description": "URI of the parent organization this unit belongs to",
                     "type": [
                         "string",
                         "null"
@@ -582,8 +981,7 @@
                 }
             },
             "required": [
-                "display_name",
-                "id"
+                "display_name"
             ],
             "title": "InstitutionEntity",
             "type": "object"
@@ -641,7 +1039,7 @@
                     ]
                 },
                 "h_index": {
-                    "description": "H-index",
+                    "description": "Journal h-index",
                     "minimum": 0,
                     "type": [
                         "integer",
@@ -650,18 +1048,20 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "impact_factor": {
                     "description": "Journal impact factor",
-                    "minimum": 0.0,
                     "type": [
                         "number",
                         "null"
                     ]
                 },
                 "iso_abbrev": {
-                    "description": "ISO abbreviation (alternative)",
+                    "description": "ISO abbreviation (alternative field)",
                     "type": [
                         "string",
                         "null"
@@ -682,17 +1082,24 @@
                         "null"
                     ]
                 },
-                "journal_issue_id": {
-                    "description": "Journal issue identifier",
+                "journal_ids": {
+                    "description": "All journal identifiers by type",
                     "type": [
-                        "integer",
+                        "string",
+                        "null"
+                    ]
+                },
+                "journal_issue_id": {
+                    "description": "Europe PMC journal issue identifier",
+                    "type": [
+                        "string",
                         "null"
                     ]
                 },
                 "journal_papers": {
-                    "description": "Papers published in this journal",
+                    "description": "Papers published in a journal",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/PaperEntity"
                     },
                     "type": [
                         "array",
@@ -736,7 +1143,7 @@
                     ]
                 },
                 "nlmid": {
-                    "description": "NLM ID",
+                    "description": "NLM ID (National Library of Medicine identifier)",
                     "type": [
                         "string",
                         "null"
@@ -757,7 +1164,7 @@
                     ]
                 },
                 "publisher_id": {
-                    "description": "Publisher-specific identifier",
+                    "description": "Publisher identifier",
                     "type": [
                         "string",
                         "null"
@@ -772,7 +1179,6 @@
                 },
                 "sjr": {
                     "description": "SCImago Journal Rank",
-                    "minimum": 0.0,
                     "type": [
                         "number",
                         "null"
@@ -818,8 +1224,7 @@
                 }
             },
             "required": [
-                "title",
-                "id"
+                "title"
             ],
             "title": "JournalEntity",
             "type": "object"
@@ -861,10 +1266,27 @@
                         "null"
                     ]
                 },
+                "affiliation_text": {
+                    "description": "Affiliation text",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "affiliations": {
+                    "description": "Author affiliations with institutions",
+                    "items": {
+                        "$ref": "#/$defs/AffiliationEntity"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
                 "authors": {
                     "description": "Authors of a work",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/AuthorEntity"
                     },
                     "type": [
                         "array",
@@ -914,6 +1336,20 @@
                         "null"
                     ]
                 },
+                "external_id_conflicts": {
+                    "description": "Conflicts in external identifiers",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "external_ids": {
+                    "description": "External identifiers from various sources",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "fields_of_study": {
                     "description": "Fields of study",
                     "items": {
@@ -927,10 +1363,18 @@
                 "figures": {
                     "description": "Figures in a paper",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/FigureEntity"
                     },
                     "type": [
                         "array",
+                        "null"
+                    ]
+                },
+                "first_index_date": {
+                    "description": "First index date",
+                    "format": "date",
+                    "type": [
+                        "string",
                         "null"
                     ]
                 },
@@ -941,13 +1385,70 @@
                         "null"
                     ]
                 },
+                "first_publication_date": {
+                    "description": "First publication date",
+                    "format": "date",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "grants": {
                     "description": "Grants funding a paper",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/GrantEntity"
                     },
                     "type": [
                         "array",
+                        "null"
+                    ]
+                },
+                "has_db_cross_references": {
+                    "description": "Whether the paper has database cross-references",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "has_labs_links": {
+                    "description": "Whether the paper has labs links",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "has_pdf": {
+                    "description": "Whether the paper has a PDF available",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "has_references": {
+                    "description": "Whether the paper has references",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "has_supplementary": {
+                    "description": "Whether the paper has supplementary materials",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "has_text_mined_terms": {
+                    "description": "Whether the paper has text-mined terms",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "has_tm_accession_numbers": {
+                    "description": "Whether the paper has text-mined accession numbers",
+                    "type": [
+                        "boolean",
                         "null"
                     ]
                 },
@@ -955,6 +1456,20 @@
                     "description": "Local identifier (slug/uuid) for the entity",
                     "type": [
                         "string",
+                        "null"
+                    ]
+                },
+                "in_epmc": {
+                    "description": "Whether the paper is in Europe PMC",
+                    "type": [
+                        "boolean",
+                        "null"
+                    ]
+                },
+                "in_pmc": {
+                    "description": "Whether the paper is in PubMed Central",
+                    "type": [
+                        "boolean",
                         "null"
                     ]
                 },
@@ -989,7 +1504,19 @@
                     ]
                 },
                 "journal": {
-                    "description": "Journal a paper is published in",
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/JournalEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Journal of a paper"
+                },
+                "journal_issn": {
+                    "description": "Journal ISSN identifier",
+                    "pattern": "^\\d{4}-\\d{3}[\\dX]$",
                     "type": [
                         "string",
                         "null"
@@ -1027,6 +1554,13 @@
                         "null"
                     ]
                 },
+                "license": {
+                    "description": "License information",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "license_text": {
                     "description": "License description text",
                     "type": [
@@ -1038,6 +1572,16 @@
                     "description": "License URL",
                     "type": [
                         "string",
+                        "null"
+                    ]
+                },
+                "mesh_terms": {
+                    "description": "MeSH terms associated with the paper",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
                         "null"
                     ]
                 },
@@ -1059,6 +1603,13 @@
                         "null"
                     ]
                 },
+                "page_info": {
+                    "description": "Page information string",
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
                 "pages": {
                     "description": "Page range (e.g., \"123-456\")",
                     "type": [
@@ -1069,7 +1620,7 @@
                 "paper_institutions": {
                     "description": "Institutions affiliated with a paper",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/InstitutionEntity"
                     },
                     "type": [
                         "array",
@@ -1097,6 +1648,16 @@
                     "format": "date",
                     "type": [
                         "string",
+                        "null"
+                    ]
+                },
+                "pub_types": {
+                    "description": "List of publication types from Europe PMC",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
                         "null"
                     ]
                 },
@@ -1128,6 +1689,15 @@
                         "null"
                     ]
                 },
+                "quality_score": {
+                    "description": "Overall quality score for paper data completeness and accuracy",
+                    "maximum": 1.0,
+                    "minimum": 0.0,
+                    "type": [
+                        "number",
+                        "null"
+                    ]
+                },
                 "reference_count": {
                     "description": "Number of references cited",
                     "minimum": 0,
@@ -1139,7 +1709,7 @@
                 "references": {
                     "description": "References cited by a paper",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/ReferenceEntity"
                     },
                     "type": [
                         "array",
@@ -1159,7 +1729,7 @@
                 "sections": {
                     "description": "Sections of a paper",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/SectionEntity"
                     },
                     "type": [
                         "array",
@@ -1190,7 +1760,7 @@
                 "tables": {
                     "description": "Tables in a paper",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/TableEntity"
                     },
                     "type": [
                         "array",
@@ -1201,6 +1771,16 @@
                     "description": "Work or entity title",
                     "type": [
                         "string",
+                        "null"
+                    ]
+                },
+                "topics": {
+                    "description": "Research topics from OpenAlex",
+                    "items": {
+                        "type": "string"
+                    },
+                    "type": [
+                        "array",
                         "null"
                     ]
                 },
@@ -1222,9 +1802,6 @@
                     ]
                 }
             },
-            "required": [
-                "id"
-            ],
             "then": {
                 "properties": {
                     "title": {}
@@ -1255,12 +1832,33 @@
             "additionalProperties": false,
             "description": "Entity representing a bibliographic reference with BIBO alignment. Contains citation information for works referenced by papers.",
             "properties": {
-                "citing_paper": {
-                    "description": "Paper that cites this reference",
+                "author_list": {
+                    "description": "Author list (comma-separated)",
                     "type": [
                         "string",
                         "null"
                     ]
+                },
+                "authors": {
+                    "description": "Authors of a work",
+                    "items": {
+                        "$ref": "#/$defs/AuthorEntity"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "citing_paper": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/PaperEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Paper that cites this reference"
                 },
                 "confidence": {
                     "description": "Confidence score for extracted information (0.0 to 1.0)",
@@ -1291,7 +1889,21 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
+                },
+                "journal": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/JournalEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Journal of a paper"
                 },
                 "label": {
                     "description": "Human-readable label for the entity",
@@ -1394,9 +2006,6 @@
                     ]
                 }
             },
-            "required": [
-                "id"
-            ],
             "title": "ReferenceEntity",
             "type": "object"
         },
@@ -1419,6 +2028,26 @@
                     "minimum": 0,
                     "type": [
                         "integer",
+                        "null"
+                    ]
+                },
+                "citation_contexts": {
+                    "description": "Detailed citation contexts within this section",
+                    "items": {
+                        "$ref": "#/$defs/CitationContextEntity"
+                    },
+                    "type": [
+                        "array",
+                        "null"
+                    ]
+                },
+                "citations": {
+                    "description": "Citations within a section",
+                    "items": {
+                        "$ref": "#/$defs/CitationContextEntity"
+                    },
+                    "type": [
+                        "array",
                         "null"
                     ]
                 },
@@ -1455,7 +2084,10 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "label": {
                     "description": "Human-readable label for the entity",
@@ -1472,19 +2104,39 @@
                         "null"
                     ]
                 },
-                "parent_section": {
-                    "description": "Parent section",
+                "order": {
+                    "description": "Document order of the section (1-based)",
+                    "minimum": 1,
                     "type": [
-                        "string",
+                        "integer",
                         "null"
                     ]
                 },
+                "parent_section": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/SectionEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Parent section of a subsection"
+                },
                 "section_paper": {
-                    "description": "Paper this section belongs to",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/PaperEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Paper containing a section"
+                },
+                "section_type": {
+                    "$ref": "#/$defs/SectionType",
+                    "description": "Type/category of the section"
                 },
                 "source_uri": {
                     "description": "Source URI for provenance tracking",
@@ -1494,9 +2146,9 @@
                     ]
                 },
                 "subsections": {
-                    "description": "Child sections of a section",
+                    "description": "Subsections of a section",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/SectionEntity"
                     },
                     "type": [
                         "array",
@@ -1522,8 +2174,7 @@
                 }
             },
             "required": [
-                "content",
-                "id"
+                "content"
             ],
             "then": {
                 "properties": {
@@ -1542,12 +2193,30 @@
             "title": "SectionEntity",
             "type": "object"
         },
+        "SectionType": {
+            "description": "Type of document section",
+            "enum": [
+                "abstract",
+                "introduction",
+                "methods",
+                "results",
+                "discussion",
+                "conclusion",
+                "acknowledgments",
+                "references",
+                "supplementary",
+                "appendix",
+                "other"
+            ],
+            "title": "SectionType",
+            "type": "string"
+        },
         "TableEntity": {
             "additionalProperties": false,
             "description": "Entity representing a table with BIBO alignment. Contains table metadata and structured row data.",
             "properties": {
                 "caption": {
-                    "description": "Caption/description",
+                    "description": "Caption or description",
                     "type": [
                         "string",
                         "null"
@@ -1573,7 +2242,7 @@
                     ]
                 },
                 "headers": {
-                    "description": "Column headers for a table",
+                    "description": "Column headers for the table",
                     "items": {
                         "type": "string"
                     },
@@ -1584,7 +2253,10 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "label": {
                     "description": "Human-readable label for the entity",
@@ -1604,7 +2276,7 @@
                 "rows": {
                     "description": "Rows in a table",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/$defs/TableRowEntity"
                     },
                     "type": [
                         "array",
@@ -1626,11 +2298,15 @@
                     ]
                 },
                 "table_paper": {
-                    "description": "Paper this table belongs to",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/PaperEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Paper containing a table"
                 },
                 "types": {
                     "description": "RDF types (CURIEs/URIs) for this entity",
@@ -1643,9 +2319,6 @@
                     ]
                 }
             },
-            "required": [
-                "id"
-            ],
             "title": "TableEntity",
             "type": "object"
         },
@@ -1682,7 +2355,10 @@
                 },
                 "id": {
                     "description": "Local identifier (slug/uuid) for the entity",
-                    "type": "string"
+                    "type": [
+                        "string",
+                        "null"
+                    ]
                 },
                 "label": {
                     "description": "Human-readable label for the entity",
@@ -1699,15 +2375,19 @@
                         "null"
                     ]
                 },
+                "row_table": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/$defs/TableEntity"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ],
+                    "description": "Table containing a row"
+                },
                 "source_uri": {
                     "description": "Source URI for provenance tracking",
-                    "type": [
-                        "string",
-                        "null"
-                    ]
-                },
-                "table": {
-                    "description": "Table this row belongs to",
                     "type": [
                         "string",
                         "null"
@@ -1725,8 +2405,7 @@
                 }
             },
             "required": [
-                "cells",
-                "id"
+                "cells"
             ],
             "title": "TableRowEntity",
             "type": "object"

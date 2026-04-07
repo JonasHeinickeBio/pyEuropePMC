@@ -1,0 +1,47 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://w3id.org/pyeuropepmc/data#department/broadinstitute> a org:OrganizationalUnit ;
+    rdfs:label "Broad Institute" ;
+    org:unitOf <https://w3id.org/pyeuropepmc/data#organization/mit> .
+
+<https://w3id.org/pyeuropepmc/data#department/csail> a org:OrganizationalUnit ;
+    rdfs:label "Computer Science and AI Laboratory" ;
+    org:unitOf <https://w3id.org/pyeuropepmc/data#organization/mit> .
+
+<https://w3id.org/pyeuropepmc/data#author/john-smith> a foaf:Person ;
+    foaf:name "John Smith" ;
+    pyeuropepmc:affiliatedWith <https://w3id.org/pyeuropepmc/data#organization/mit> .
+
+<https://w3id.org/pyeuropepmc/data#organization/harvard> a org:Organization ;
+    rdfs:label "Harvard University" ;
+    dcterms:created "1636" ;
+    pyeuropepmc:hasAffiliate <https://w3id.org/pyeuropepmc/data#author/jane-doe> ;
+    pyeuropepmc:hasPublication <https://w3id.org/pyeuropepmc/data#paper/genomics-2024> ;
+    pyeuropepmc:rorId "https://ror.org/03vek6s52" .
+
+<https://w3id.org/pyeuropepmc/data#paper/genomics-2024> a bibo:AcademicArticle ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/jane-doe>,
+        <https://w3id.org/pyeuropepmc/data#author/john-smith> ;
+    dcterms:title "Deep Learning for Genomic Analysis" ;
+    pyeuropepmc:affiliatedWith <https://w3id.org/pyeuropepmc/data#organization/harvard>,
+        <https://w3id.org/pyeuropepmc/data#organization/mit> .
+
+<https://w3id.org/pyeuropepmc/data#author/jane-doe> a foaf:Person ;
+    foaf:name "Jane Doe" ;
+    pyeuropepmc:affiliatedWith <https://w3id.org/pyeuropepmc/data#organization/harvard>,
+        <https://w3id.org/pyeuropepmc/data#organization/mit> .
+
+<https://w3id.org/pyeuropepmc/data#organization/mit> a org:Organization ;
+    rdfs:label "Massachusetts Institute of Technology" ;
+    dcterms:created "1861" ;
+    org:hasUnit <https://w3id.org/pyeuropepmc/data#department/broadinstitute>,
+        <https://w3id.org/pyeuropepmc/data#department/csail> ;
+    pyeuropepmc:hasAffiliate <https://w3id.org/pyeuropepmc/data#author/jane-doe>,
+        <https://w3id.org/pyeuropepmc/data#author/john-smith> ;
+    pyeuropepmc:hasPublication <https://w3id.org/pyeuropepmc/data#paper/genomics-2024> ;
+    pyeuropepmc:rorId "https://ror.org/042nb2s44" .

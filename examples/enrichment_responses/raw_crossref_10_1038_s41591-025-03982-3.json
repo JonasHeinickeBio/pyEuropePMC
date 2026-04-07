@@ -1,0 +1,245 @@
+{
+  "source": "crossref",
+  "title": "A multimodal whole-slide foundation model for pathology",
+  "authors": [
+    {
+      "name": "Tong Ding",
+      "given": "Tong",
+      "family": "Ding",
+      "affiliation": [],
+      "sequence": "first"
+    },
+    {
+      "name": "Sophia J. Wagner",
+      "given": "Sophia J.",
+      "family": "Wagner",
+      "orcid": "https://orcid.org/0000-0003-3763-2282",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0003-3763-2282"
+    },
+    {
+      "name": "Andrew H. Song",
+      "given": "Andrew H.",
+      "family": "Song",
+      "orcid": "https://orcid.org/0000-0001-9356-9156",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-9356-9156"
+    },
+    {
+      "name": "Richard J. Chen",
+      "given": "Richard J.",
+      "family": "Chen",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Ming Y. Lu",
+      "given": "Ming Y.",
+      "family": "Lu",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Andrew Zhang",
+      "given": "Andrew",
+      "family": "Zhang",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Anurag J. Vaidya",
+      "given": "Anurag J.",
+      "family": "Vaidya",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Guillaume Jaume",
+      "given": "Guillaume",
+      "family": "Jaume",
+      "orcid": "https://orcid.org/0000-0002-3832-1390",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-3832-1390"
+    },
+    {
+      "name": "Muhammad Shaban",
+      "given": "Muhammad",
+      "family": "Shaban",
+      "orcid": "https://orcid.org/0000-0001-6115-1505",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-6115-1505"
+    },
+    {
+      "name": "Ahrong Kim",
+      "given": "Ahrong",
+      "family": "Kim",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Drew F. K. Williamson",
+      "given": "Drew F. K.",
+      "family": "Williamson",
+      "orcid": "https://orcid.org/0000-0003-1745-8846",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0003-1745-8846"
+    },
+    {
+      "name": "Harry Robertson",
+      "given": "Harry",
+      "family": "Robertson",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Bowen Chen",
+      "given": "Bowen",
+      "family": "Chen",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Cristina Almagro-Pérez",
+      "given": "Cristina",
+      "family": "Almagro-Pérez",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Paul Doucet",
+      "given": "Paul",
+      "family": "Doucet",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Sharifa Sahai",
+      "given": "Sharifa",
+      "family": "Sahai",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Chengkuan Chen",
+      "given": "Chengkuan",
+      "family": "Chen",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Christina S. Chen",
+      "given": "Christina S.",
+      "family": "Chen",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Daisuke Komura",
+      "given": "Daisuke",
+      "family": "Komura",
+      "orcid": "https://orcid.org/0000-0002-0038-728X",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-0038-728X"
+    },
+    {
+      "name": "Akihiro Kawabe",
+      "given": "Akihiro",
+      "family": "Kawabe",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Mieko Ochi",
+      "given": "Mieko",
+      "family": "Ochi",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Shinya Sato",
+      "given": "Shinya",
+      "family": "Sato",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Tomoyuki Yokose",
+      "given": "Tomoyuki",
+      "family": "Yokose",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Yohei Miyagi",
+      "given": "Yohei",
+      "family": "Miyagi",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Shumpei Ishikawa",
+      "given": "Shumpei",
+      "family": "Ishikawa",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Georg Gerber",
+      "given": "Georg",
+      "family": "Gerber",
+      "orcid": "https://orcid.org/0000-0002-9149-5509",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-9149-5509"
+    },
+    {
+      "name": "Tingying Peng",
+      "given": "Tingying",
+      "family": "Peng",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Long Phi Le",
+      "given": "Long Phi",
+      "family": "Le",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Faisal Mahmood",
+      "given": "Faisal",
+      "family": "Mahmood",
+      "orcid": "https://orcid.org/0000-0001-7587-1562",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-7587-1562"
+    }
+  ],
+  "abstract": null,
+  "journal": "Nature Medicine",
+  "publication_date": "2025-11",
+  "citation_count": 36,
+  "references_count": 150,
+  "license": {
+    "url": "https://creativecommons.org/licenses/by-nc-nd/4.0",
+    "start": "2025-11-01T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": null,
+  "type": "journal-article",
+  "issn": [
+    "1078-8956",
+    "1546-170X"
+  ],
+  "volume": "31",
+  "issue": "11",
+  "page": "3749-3761",
+  "publisher": "Springer Science and Business Media LLC"
+}

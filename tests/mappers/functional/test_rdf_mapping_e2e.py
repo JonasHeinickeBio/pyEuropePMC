@@ -7,7 +7,7 @@ import pytest
 from rdflib import Graph, URIRef
 
 from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, OrganizationEntity, JournalEntity, PaperEntity
 
 
 class TestRDFMappingEndToEnd:
@@ -29,7 +29,11 @@ class TestRDFMappingEndToEnd:
             keywords=["metabolic syndrome", "cardiovascular disease", "diabetes"],
             publication_year=2024,
             publication_date="2024-01-15",
-            journal="PLOS ONE",
+            journal=JournalEntity(
+                title="PLOS ONE",
+                issn="1932-6203",
+                publisher="Public Library of Science"
+            ),
             volume="19",
             issue="1",
             pages="1-20",
@@ -65,7 +69,7 @@ class TestRDFMappingEndToEnd:
     @pytest.fixture
     def sample_institution(self):
         """Sample institution entity."""
-        return InstitutionEntity(
+        return OrganizationEntity(
             display_name="University of Example",
             ror_id="https://ror.org/123456789",
             openalex_id="https://openalex.org/I123456789",
@@ -122,7 +126,7 @@ class TestRDFMappingEndToEnd:
         related_entities = {"authors": [sample_author]}
         mapper.map_relationships(g, paper_uri, sample_paper, related_entities)
 
-        related_entities = {"institutions": [sample_institution]}
+        related_entities = {"author_institutions": [sample_institution]}
         mapper.map_relationships(g, author_uri, sample_author, related_entities)
 
         # Verify relationships exist
@@ -236,8 +240,8 @@ class TestRDFMappingEndToEnd:
         inst_uri = sample_institution.to_rdf(g, mapper=mapper)
 
         # Check paper ontology alignments (MeSH terms using official vocabulary)
-        mesh_triples = list(g.triples((paper_uri, mapper._resolve_predicate("meshv:hasDescriptor"), None)))
-        assert len(mesh_triples) == 3  # 3 keywords mapped to meshv:hasDescriptor
+        mesh_triples = list(g.triples((paper_uri, mapper._resolve_predicate("dcterms:subject"), None)))
+        assert len(mesh_triples) == 3  # 3 keywords mapped to dcterms:subject
 
         # Check external identifiers for all entities
         paper_sameas = list(g.triples((paper_uri, mapper._resolve_predicate("owl:sameAs"), None)))
@@ -283,14 +287,10 @@ class TestRDFMappingEndToEnd:
         """Test error handling with invalid entities."""
         g = Graph()
 
-        # Create invalid paper (missing required fields)
-        invalid_paper = PaperEntity()  # No PMCID, DOI, or title
+        # Create paper with minimal fields (entities can be incomplete)
+        minimal_paper = PaperEntity()  # No PMCID, DOI, or title
 
-        # Should raise validation error
-        with pytest.raises(ValueError, match="PaperEntity must have at least one"):
-            invalid_paper.validate()
-
-        # But if we skip validation, RDF conversion should still work with fallback URI
-        uri = invalid_paper.to_rdf(g, mapper=mapper)
+        # RDF conversion should still work with fallback URI generation
+        uri = minimal_paper.to_rdf(g, mapper=mapper)
         assert uri is not None
         assert len(g) > 0  # Should still create some triples

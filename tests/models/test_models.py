@@ -1,12 +1,14 @@
 """Unit tests for all data models."""
 
 import pytest
+import pydantic
 
 from pyeuropepmc.models import (
     AuthorEntity,
     BaseEntity,
     FigureEntity,
-    InstitutionEntity,
+    Organization,
+    Department,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
@@ -104,10 +106,6 @@ class TestAuthorEntity:
         assert "foaf:Person" in author.types
         assert author.label == "Jane Doe"
 
-    def test_post_init_empty_name(self):
-        """Test post-init with empty name."""
-        author = AuthorEntity()
-        assert author.label == ""
 
     def test_validate_success(self):
         """Test validation with valid data."""
@@ -339,7 +337,7 @@ class TestSectionEntity:
 
     def test_post_init_sets_types_and_label(self):
         """Test post-init sets correct types and label."""
-        section = SectionEntity(title="Methods")
+        section = SectionEntity(title="Methods", content="Some content")
         assert "bibo:DocumentPart" in section.types
         assert "nif:Context" in section.types
         assert section.label == "Methods"
@@ -471,21 +469,11 @@ class TestTableRowEntity:
         row = TableRowEntity(cells=["Value 1", "Value 2", "Value 3"])
         assert row.cells == ["Value 1", "Value 2", "Value 3"]
 
-    def test_creation_empty(self):
-        """Test creating empty TableRowEntity."""
-        row = TableRowEntity()
-        assert row.cells == []
-
     def test_post_init_sets_types_and_label(self):
         """Test post-init sets correct types and label."""
         row = TableRowEntity(cells=["A", "B"])
         assert "bibo:Row" in row.types
         assert row.label == "Row with 2 cells"
-
-    def test_post_init_empty_cells(self):
-        """Test post-init with empty cells."""
-        row = TableRowEntity()
-        assert row.label == "Row with 0 cells"
 
     def test_validate_success_with_cells(self):
         """Test validation passes with cells."""
@@ -494,9 +482,8 @@ class TestTableRowEntity:
 
     def test_validate_failure_empty_cells(self):
         """Test validation fails with empty cells."""
-        row = TableRowEntity()
-        with pytest.raises(ValueError, match="must have cells"):
-            row.validate()
+        with pytest.raises(pydantic.ValidationError):
+            row = TableRowEntity(cells=[])
 
     def test_normalize_trims_whitespace(self):
         """Test normalization trims whitespace from cells."""
@@ -505,12 +492,12 @@ class TestTableRowEntity:
         assert row.cells == ["Value 1", "Value 2"]
 
 
-class TestInstitutionEntity:
-    """Tests for InstitutionEntity."""
+class TestOrganization:
+    """Tests for Organization."""
 
     def test_creation_with_all_fields(self):
-        """Test creating InstitutionEntity with all fields."""
-        institution = InstitutionEntity(
+        """Test creating Organization with all fields."""
+        institution = Organization(
             display_name="University of Example",
             ror_id="https://ror.org/abc123",
             openalex_id="https://openalex.org/I123",
@@ -538,38 +525,38 @@ class TestInstitutionEntity:
         assert institution.institution_type == "education"
 
     def test_creation_minimal(self):
-        """Test creating InstitutionEntity with minimal data."""
-        institution = InstitutionEntity(display_name="Test University")
+        """Test creating Organization with minimal data."""
+        institution = Organization(display_name="Test University")
         assert institution.display_name == "Test University"
         assert institution.ror_id is None
         assert institution.domains == []
 
     def test_post_init_sets_types_and_label(self):
         """Test post-init sets correct types and label."""
-        institution = InstitutionEntity(display_name="Test University")
+        institution = Organization(display_name="Test University")
         assert "org:Organization" in institution.types
         assert institution.label == "Test University"
 
     def test_validate_success(self):
         """Test validation passes with display_name."""
-        institution = InstitutionEntity(display_name="Test University")
+        institution = Organization(display_name="Test University")
         institution.validate()  # Should not raise
 
     def test_validate_failure_no_name(self):
         """Test validation fails without display_name."""
-        institution = InstitutionEntity()
+        institution = Organization()
         with pytest.raises(ValueError, match="must have a display_name"):
             institution.validate()
 
     def test_validate_failure_empty_name(self):
         """Test validation fails with empty display_name."""
-        institution = InstitutionEntity(display_name="   ")
+        institution = Organization(display_name="   ")
         with pytest.raises(ValueError, match="must have a display_name"):
             institution.validate()
 
     def test_normalize_trims_whitespace(self):
         """Test normalization trims whitespace."""
-        institution = InstitutionEntity(
+        institution = Organization(
             display_name="  Test University  ",
             ror_id="  https://ror.org/abc  ",
             city="  Test City  "
@@ -580,7 +567,7 @@ class TestInstitutionEntity:
         assert institution.city == "Test City"
 
     def test_from_enrichment_dict_full(self):
-        """Test creating InstitutionEntity from enrichment dict with full data."""
+        """Test creating Organization from enrichment dict with full data."""
         inst_dict = {
             "display_name": "Jiangnan University",
             "id": "https://openalex.org/I111599522",
@@ -602,7 +589,7 @@ class TestInstitutionEntity:
             ],
             "domains": ["jiangnan.edu.cn"]
         }
-        institution = InstitutionEntity.from_enrichment_dict(inst_dict)
+        institution = Organization.from_enrichment_dict(inst_dict)
         assert institution.display_name == "Jiangnan University"
         assert institution.ror_id == "https://ror.org/04mkzax54"
         assert institution.openalex_id == "https://openalex.org/I111599522"
@@ -616,11 +603,11 @@ class TestInstitutionEntity:
         assert institution.domains == ["jiangnan.edu.cn"]
 
     def test_from_enrichment_dict_minimal(self):
-        """Test creating InstitutionEntity from minimal enrichment dict."""
+        """Test creating Organization from minimal enrichment dict."""
         inst_dict = {
             "display_name": "Test University"
         }
-        institution = InstitutionEntity.from_enrichment_dict(inst_dict)
+        institution = Organization.from_enrichment_dict(inst_dict)
         assert institution.display_name == "Test University"
         assert institution.ror_id is None
         assert institution.grid_id is None

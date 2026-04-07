@@ -46,7 +46,7 @@ class OpenAlexClient(BaseEnrichmentClient):
     def __init__(
         self,
         rate_limit_delay: float = 1.0,
-        timeout: int = 15,
+        timeout: int = 60,
         cache_config: CacheConfig | None = None,
         email: str | None = None,
         enable_ror_enrichment: bool = True,
@@ -59,7 +59,7 @@ class OpenAlexClient(BaseEnrichmentClient):
         rate_limit_delay : float, optional
             Delay between requests in seconds (default: 1.0)
         timeout : int, optional
-            Request timeout in seconds (default: 15)
+            Request timeout in seconds (default: 30)
         cache_config : CacheConfig, optional
             Cache configuration
         email : str, optional
@@ -239,13 +239,9 @@ class OpenAlexClient(BaseEnrichmentClient):
         # Extract topics
         topics = []
         for topic in response.get("topics", []):
-            topics.append(
-                {
-                    "id": topic.get("id"),
-                    "display_name": topic.get("display_name"),
-                    "score": topic.get("score"),
-                }
-            )
+            display_name = topic.get("display_name")
+            if display_name:
+                topics.append(display_name)
 
         # Extract venue information
         venue_info = None

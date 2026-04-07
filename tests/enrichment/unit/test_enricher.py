@@ -62,12 +62,15 @@ class TestPaperEnricher:
         )
         enricher = PaperEnricher(config)
 
-        assert len(enricher.clients) == 5  # crossref, unpaywall, semantic_scholar, openalex, ror
+        assert len(enricher.clients) == 8  # crossref, unpaywall, semantic_scholar, openalex, ror, pubtator, orcid, doi_content_negotiation
         assert "crossref" in enricher.clients
         assert "unpaywall" in enricher.clients
         assert "semantic_scholar" in enricher.clients
         assert "openalex" in enricher.clients
         assert "ror" in enricher.clients  # ROR is enabled by default
+        assert "pubtator" in enricher.clients  # PubTator is enabled by default
+        assert "orcid" in enricher.clients  # ORCID is enabled by default
+        assert "doi_content_negotiation" in enricher.clients  # DOI Content Negotiation is enabled by default
 
     def test_context_manager(self):
         """Test context manager protocol."""

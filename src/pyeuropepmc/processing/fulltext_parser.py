@@ -392,6 +392,27 @@ class FullTextXMLParser:
                 {"error": str(e), "message": "Failed to extract references from XML"},
             ) from e
 
+    def extract_in_text_citations(self) -> list[dict[str, Any]]:
+        """
+        Extract in-text citations (xrefs) from the full text XML.
+
+        Parses <xref> elements with ref-type="bibr" and links them to full references.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of citation dictionaries with position, text, and linked reference data
+        """
+        self._require_root()
+        try:
+            return self.reference_parser.extract_in_text_citations()
+        except Exception as e:
+            logger.error(f"Error extracting in-text citations: {e}")
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"error": str(e), "message": "Failed to extract in-text citations from XML"},
+            ) from e
+
     def extract_tables(self) -> list[dict[str, Any]]:
         """
         Extract all tables from the full text XML.
@@ -485,6 +506,138 @@ class FullTextXMLParser:
             raise ParsingError(
                 ErrorCodes.PARSE003,
                 {"error": str(e), "message": "Failed to convert XML to markdown"},
+            ) from e
+
+    def extract_sections_with_entities(self, paper_id: str | None = None) -> list["SectionEntity"]:
+        """
+        Extract sections and create SectionEntity objects with enhanced metadata.
+
+        Parameters
+        ----------
+        paper_id : str, optional
+            ID of the parent paper for linking sections
+
+        Returns
+        -------
+        list[SectionEntity]
+            List of SectionEntity objects with citations and metadata
+        """
+        from pyeuropepmc.models import (
+            CitationContextEntity,
+            CitationType,
+            SectionEntity,
+            SectionType,
+        )
+
+        def _classify_section_type(section_data: dict[str, Any]) -> SectionType | None:
+            """Classify the type of a section based on its title and content."""
+            title = section_data.get("title", "").lower().strip()
+
+            # Common section type mappings
+            type_mappings = {
+                "abstract": SectionType.abstract,
+                "introduction": SectionType.introduction,
+                "methods": SectionType.methods,
+                "materials and methods": SectionType.methods,
+                "method": SectionType.methods,
+                "results": SectionType.results,
+                "discussion": SectionType.discussion,
+                "conclusion": SectionType.conclusion,
+                "conclusions": SectionType.conclusion,
+                "acknowledgments": SectionType.acknowledgments,
+                "acknowledgement": SectionType.acknowledgments,
+                "references": SectionType.references,
+                "bibliography": SectionType.references,
+                "supplementary": SectionType.supplementary,
+                "appendix": SectionType.appendix,
+            }
+
+            for keyword, section_type in type_mappings.items():
+                if keyword in title:
+                    return section_type
+
+            return SectionType.other
+
+        def _extract_citation_contexts_for_section(
+            section: SectionEntity, citations_data: list[dict[str, Any]]
+        ) -> list[CitationContextEntity]:
+            """Extract citation contexts that fall within a section's boundaries."""
+            if not section.begin_index or not section.end_index:
+                return []
+
+            citation_contexts = []
+            for citation in citations_data:
+                citation_pos = citation.get("position", 0)
+                if section.begin_index <= citation_pos <= section.end_index:
+                    # Determine citation type based on context
+                    citation_type = _classify_citation_type(citation)
+
+                    context_entity = CitationContextEntity(
+                        id=f"{section.id}_citation_{len(citation_contexts)}",
+                        citation_type=citation_type,
+                        begin_index=citation.get("begin_index", citation_pos),
+                        end_index=citation.get("end_index", citation_pos),
+                        context_text=citation.get("context", ""),
+                        citing_section=section.id,
+                        confidence_score=citation.get("confidence", 0.8),
+                    )
+                    citation_contexts.append(context_entity)
+
+            return citation_contexts
+
+        def _classify_citation_type(citation: dict[str, Any]) -> CitationType:
+            """Classify the type of citation based on context and position."""
+            context = citation.get("context", "").lower()
+            ref_id = citation.get("ref_id", "")
+
+            # Simple heuristics for citation type classification
+            if any(word in context for word in ["review", "overview", "summary"]):
+                return CitationType.cites_as_background
+            elif any(word in context for word in ["method", "approach", "technique"]):
+                return CitationType.cites_as_method
+            elif any(word in context for word in ["result", "finding", "show", "demonstrate"]):
+                return CitationType.cites_as_evidence
+            elif any(word in context for word in ["related", "similar", "previous"]):
+                return CitationType.cites_as_related
+            else:
+                return CitationType.cites
+
+        self._require_root()
+        try:
+            sections_data = self.section_parser.get_full_text_sections()
+            citations_data = self.extract_in_text_citations()
+
+            section_entities = []
+            for i, section_data in enumerate(sections_data):
+                # Determine section type
+                section_type = _classify_section_type(section_data)
+
+                # Create SectionEntity
+                section_entity = SectionEntity(
+                    id=f"{paper_id}_section_{i}" if paper_id else f"section_{i}",
+                    title=section_data.get("title", ""),
+                    content=section_data.get("content", ""),
+                    begin_index=section_data.get("begin_index", 0),
+                    end_index=section_data.get("end_index", 0),
+                    section_paper=paper_id,
+                    section_type=section_type,
+                )
+
+                # Add citation contexts for this section
+                citation_contexts = _extract_citation_contexts_for_section(
+                    section_entity, citations_data
+                )
+                if citation_contexts:
+                    section_entity.citation_contexts = citation_contexts
+
+                section_entities.append(section_entity)
+
+            return section_entities
+        except Exception as e:
+            logger.error(f"Error extracting sections with entities: {e}")
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {"error": str(e), "message": "Failed to extract sections with entities"},
             ) from e
 
     # =========================================================================

@@ -253,10 +253,23 @@ class GeoValidator:
             return None
 
         last_comp = components[-1]
+
+        # First try the whole component as country
         if GeoValidator.is_likely_country(last_comp):
             country = _clean_country_name_simple(last_comp)
             components.pop()
             return country
+
+        # Try to split on space and check the last part as country
+        parts = last_comp.split()
+        if len(parts) >= 2:
+            potential_country = " ".join(parts[1:])
+            if GeoValidator.is_likely_country(potential_country):
+                country = _clean_country_name_simple(potential_country)
+                # Replace the last component with the part before country
+                components[-1] = parts[0]
+                return country
+
         return None
 
     @staticmethod
@@ -278,9 +291,21 @@ class GeoValidator:
             return None
 
         potential_state = components[-1]
+
+        # First try the whole component as state/province
         if GeoValidator.is_likely_state_province(potential_state):
             components.pop()
             return potential_state
+
+        # Try to split on space and check the first part as state/province
+        parts = potential_state.split()
+        if len(parts) >= 2:
+            potential_state_code = parts[0]
+            if GeoValidator.is_likely_state_province(potential_state_code):
+                # Replace the last component with the part after state
+                components[-1] = " ".join(parts[1:])
+                return potential_state_code
+
         return None
 
     @staticmethod

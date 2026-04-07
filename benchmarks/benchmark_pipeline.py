@@ -16,6 +16,7 @@ Features:
 - Detailed performance reporting
 """
 
+from collections import Counter
 from dataclasses import dataclass, field
 import json
 from pathlib import Path
@@ -569,6 +570,136 @@ class BenchmarkRunner:
         # Initialize metrics
         self.overall_metrics = BenchmarkMetrics()
 
+    def analyze_section_statistics(self, xml_cache_dir: Path) -> dict[str, Any]:  # noqa: C901
+        """Analyze section parsing statistics from cached XML files."""
+        from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+        from pyeuropepmc.processing.parsers.section_parser import SectionParser
+
+        parser = FullTextXMLParser()
+
+        # Statistics to collect
+        total_papers = 0
+        papers_with_sections = 0
+        total_sections = 0
+        sections_by_type = Counter()
+        sections_per_paper = []
+        section_orders = []
+        nested_sections_count = 0
+        sections_with_types = 0
+
+        xml_files = list(xml_cache_dir.glob("*.xml"))
+        print(f"\n📊 Analyzing {len(xml_files)} papers for section statistics...\n")
+
+        for i, xml_file in enumerate(xml_files, 1):
+            if i % 100 == 0:
+                print(f"   Processed {i}/{len(xml_files)} papers...")
+
+            try:
+                xml_content = xml_file.read_text(encoding="utf-8")
+                root = parser.parse(xml_content)
+
+                total_papers += 1
+
+                # Create a new section parser for this document
+                doc_section_parser = SectionParser(root)
+
+                # Extract sections using SectionParser
+                sections = doc_section_parser.get_full_text_sections()
+
+                if sections:
+                    papers_with_sections += 1
+                    num_sections = len(sections)
+                    total_sections += num_sections
+                    sections_per_paper.append(num_sections)
+
+                    for section in sections:
+                        # Track section types
+                        section_type = section.get("type")
+                        if section_type:
+                            sections_by_type[section_type] += 1
+                            sections_with_types += 1
+
+                        # Track section orders
+                        order = section.get("order")
+                        if order:
+                            section_orders.append(order)
+
+                        # Check for nested sections (basic heuristic: sections with 0 content)
+                        content = section.get("content", "")
+                        if content and len(content.strip()) == 0:
+                            nested_sections_count += 1
+
+            except Exception as e:
+                print(f"   Error parsing {xml_file.name}: {e}")
+
+        # Print statistics
+        print(f"\n{'=' * 70}")
+        print("📈 SECTION PARSING STATISTICS")
+        print(f"{'=' * 70}\n")
+
+        print(f"📄 Papers Analyzed: {total_papers:,}")
+        papers_with_pct = papers_with_sections / total_papers * 100
+        print(f"   Papers with sections: {papers_with_sections:,} ({papers_with_pct:.1f}%)")
+        print(f"   Papers without sections: {total_papers - papers_with_sections:,}\n")
+
+        print("📋 Section Statistics:")
+        print(f"   Total sections extracted: {total_sections:,}")
+        type_pct = sections_with_types / total_sections * 100
+        order_pct = len(section_orders) / total_sections * 100
+        print(f"   Sections with type classification: {sections_with_types:,} ({type_pct:.1f}%)")
+        print(f"   Sections with order numbers: {len(section_orders):,} ({order_pct:.1f}%)")
+        print(f"   Parent sections (0 content): {nested_sections_count:,}\n")
+
+        if sections_per_paper:
+            print("📊 Sections per Paper:")
+            print(f"   Average: {sum(sections_per_paper) / len(sections_per_paper):.1f}")
+            print(f"   Minimum: {min(sections_per_paper)}")
+            print(f"   Maximum: {max(sections_per_paper)}")
+            print(f"   Median: {sorted(sections_per_paper)[len(sections_per_paper) // 2]}\n")
+
+        print("🏷️  Section Types Distribution:")
+        print(f"   {'Type':<20} {'Count':>8} {'Percentage':>12}")
+        print(f"   {'-' * 20} {'-' * 8} {'-' * 12}")
+        for section_type, count in sections_by_type.most_common(10):
+            percentage = count / total_sections * 100
+            print(f"   {section_type:<20} {count:>8,} {percentage:>11.1f}%")
+
+        if len(sections_by_type) > 10:
+            other_count = sum(count for _, count in sections_by_type.most_common()[10:])
+            other_pct = other_count / total_sections * 100
+            print(f"   {'Others':<20} {other_count:>8,} {other_pct:>11.1f}%")
+
+        print(f"\n{'=' * 70}\n")
+
+        # Return statistics dictionary
+        stats = {
+            "summary": {
+                "total_papers": total_papers,
+                "papers_with_sections": papers_with_sections,
+                "total_sections": total_sections,
+                "sections_with_types": sections_with_types,
+                "sections_with_orders": len(section_orders),
+                "parent_sections_count": nested_sections_count,
+            },
+            "sections_per_paper": {
+                "average": sum(sections_per_paper) / len(sections_per_paper)
+                if sections_per_paper
+                else 0,
+                "min": min(sections_per_paper) if sections_per_paper else 0,
+                "max": max(sections_per_paper) if sections_per_paper else 0,
+                "median": sorted(sections_per_paper)[len(sections_per_paper) // 2]
+                if sections_per_paper
+                else 0,
+            },
+            "section_types": dict(sections_by_type),
+            "raw_data": {
+                "sections_per_paper_distribution": sections_per_paper,
+                "section_orders": section_orders,
+            },
+        }
+
+        return stats
+
     def run_full_pipeline(self) -> BenchmarkMetrics:
         """Run the complete benchmarking pipeline."""
         print("🚀 Starting PyEuropePMC Bulk Benchmarking Pipeline")
@@ -632,6 +763,13 @@ class BenchmarkRunner:
                     f.write(f"{tag}\n")
 
             print(f"💾 Saved {len(all_element_types)} element types to {element_types_file}")
+
+            # Step 3.5: Analyze section statistics
+            section_stats = self.analyze_section_statistics(self.config.xml_cache_dir)
+            section_stats_file = self.config.output_dir / "section_statistics.json"
+            with open(section_stats_file, "w", encoding="utf-8") as f:
+                json.dump(section_stats, f, indent=2)
+            print(f"💾 Section statistics saved to {section_stats_file}")
 
             # Step 4: Convert to RDF
             rdf_converter = RDFConverter(self.config)

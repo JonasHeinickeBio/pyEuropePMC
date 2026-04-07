@@ -44,7 +44,10 @@ from pyeuropepmc.mappers.semantic_enrichment import (
     process_search_for_rdf,
     process_xml_for_rdf,
 )
-from pyeuropepmc.mappers.validation import add_shacl_validation_shapes
+from pyeuropepmc.mappers.validation import (
+    add_owl_subclass_relationships,
+    add_shacl_validation_shapes,
+)
 from pyeuropepmc.mappers.validators import (
     validate_enrichment_data,
     validate_search_results,
@@ -655,6 +658,9 @@ def convert_to_rdf(  # noqa: C901
 
         if enable_shacl_validation:
             add_shacl_validation_shapes(main_dataset, named_graph_uris)
+
+        # Add OWL subclass relationships for proper inheritance
+        add_owl_subclass_relationships(main_dataset, named_graph_uris)
 
         # Cache the result if cache backend is provided
         if cache_backend:

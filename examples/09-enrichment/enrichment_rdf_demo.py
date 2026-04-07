@@ -14,23 +14,24 @@ from pathlib import Path
 from rdflib import Graph
 
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, Organization, PaperEntity
 
 
 def load_enrichment_result(doi: str) -> dict:
     """Load enrichment result from saved JSON file."""
-    # Sanitize DOI for filename
-    safe_doi = doi.replace("/", "_").replace(".", "_")
+    # For demo purposes, load from test_output
+    file_path = Path(__file__).parent.parent.parent / "test_output" / "raw_data" / "enrichment_api_response.json"
 
-    # Look for merged enrichment result
-    enrichment_dir = Path(__file__).parent.parent / "enrichment_responses"
-    merged_file = enrichment_dir / f"merged_{safe_doi}.json"
+    if not file_path.exists():
+        raise FileNotFoundError(f"Enrichment file not found: {file_path}")
 
-    if not merged_file.exists():
-        raise FileNotFoundError(f"Enrichment file not found: {merged_file}")
+    with open(file_path) as f:
+        data = json.load(f)
 
-    with open(merged_file) as f:
-        return json.load(f)
+    # Use the DOI from the file, not the requested one
+    actual_doi = data.get("doi", doi)
+    print(f"Using DOI from file: {actual_doi}")
+    return data
 
 
 def create_paper_from_enrichment(enrichment_result: dict) -> PaperEntity:
@@ -51,8 +52,8 @@ def create_authors_from_enrichment(enrichment_result: dict) -> list[AuthorEntity
     return authors
 
 
-def create_institutions_from_authors(authors: list[AuthorEntity]) -> list[InstitutionEntity]:
-    """Extract and create InstitutionEntity instances from author affiliations."""
+def create_institutions_from_authors(authors: list[AuthorEntity]) -> list[Organization]:
+    """Extract and create Organization instances from author affiliations."""
     institutions = []
     seen_ids = set()
 
@@ -60,13 +61,12 @@ def create_institutions_from_authors(authors: list[AuthorEntity]) -> list[Instit
         if not author.institutions:
             continue
 
-        for inst_dict in author.institutions:
+        for inst in author.institutions:
             # Use ROR ID or OpenAlex ID as unique identifier
-            inst_id = inst_dict.get("ror_id") or inst_dict.get("id")
+            inst_id = inst.ror_id or inst.openalex_id or inst.display_name
             if inst_id and inst_id not in seen_ids:
                 seen_ids.add(inst_id)
-                institution = InstitutionEntity.from_enrichment_dict(inst_dict)
-                institutions.append(institution)
+                institutions.append(inst)
 
     return institutions
 
@@ -137,8 +137,8 @@ def generate_enriched_rdf(doi: str, output_file: str | None = None) -> str:
 
         author_uri = mapper._generate_entity_uri(author)
         author_insts = []
-        for inst_dict in author.institutions:
-            inst_id = inst_dict.get("ror_id") or inst_dict.get("id")
+        for inst in author.institutions:
+            inst_id = inst.ror_id or inst.openalex_id or inst.display_name
             if inst_id and inst_id in inst_map:
                 author_insts.append(inst_map[inst_id])
 
@@ -158,26 +158,28 @@ def generate_enriched_rdf(doi: str, output_file: str | None = None) -> str:
 
 def main():
     """Main demo function."""
-    # Example DOI from enrichment_responses
-    doi = "10.1371/journal.pone.0308090"
+    # Example DOI from enrichment data
+    doi = "10.1038/s41392-025-02280-1"  # This will be overridden by the file content
 
     print("=" * 80)
     print("Enriched RDF Generation Demo")
     print("=" * 80)
 
     try:
-        # Generate RDF and print to console
-        ttl = generate_enriched_rdf(doi)
+        # Generate RDF and save to file
+        output_file = Path(__file__).parent.parent.parent / "test_output" / "enrichment_only.ttl"
+        ttl = generate_enriched_rdf(doi, output_file=str(output_file))
 
+        print(f"\nRDF saved to: {output_file}")
+
+        # Print first part
         print("\n" + "=" * 80)
         print("Generated RDF (first 2000 characters):")
         print("=" * 80)
-        print(ttl[:2000])
+        with open(output_file) as f:
+            content = f.read()
+        print(content[:2000])
         print("\n... (truncated)")
-
-        # Optionally save to file
-        output_file = "/tmp/enriched_paper.ttl"
-        generate_enriched_rdf(doi, output_file=output_file)
 
     except FileNotFoundError as e:
         print(f"\nError: {e}")

@@ -1,0 +1,69 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "936af1036376aab847ffa512033281bebb98ba23",
+  "corpus_id": 282261186,
+  "title": "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service",
+  "abstract": null,
+  "venue": "Journal of Immunotherapy and Precision Oncology",
+  "year": 2025,
+  "publication_date": "2025-10-20",
+  "citation_count": 0,
+  "influential_citation_count": 0,
+  "reference_count": 16,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "2262046696",
+      "url": "https://www.semanticscholar.org/author/2262046696"
+    },
+    {
+      "name": null,
+      "author_id": "2386885498",
+      "url": "https://www.semanticscholar.org/author/2386885498"
+    },
+    {
+      "name": null,
+      "author_id": "2308208902",
+      "url": "https://www.semanticscholar.org/author/2308208902"
+    },
+    {
+      "name": null,
+      "author_id": "2061102915",
+      "url": "https://www.semanticscholar.org/author/2061102915"
+    },
+    {
+      "name": null,
+      "author_id": "2386965700",
+      "url": "https://www.semanticscholar.org/author/2386965700"
+    }
+  ],
+  "fields_of_study": [
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "Journal of Immunotherapy and Precision Oncology",
+    "volume": "8",
+    "pages": "249 - 253"
+  },
+  "external_ids": {
+    "PubMedCentral": "12550823",
+    "DOI": "10.36401/JIPO-25-15",
+    "CorpusId": 282261186,
+    "PubMed": "41143138"
+  },
+  "open_access_pdf_url": "",
+  "tldr": null
+}

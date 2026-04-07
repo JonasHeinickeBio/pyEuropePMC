@@ -7,7 +7,7 @@ import tempfile
 import pytest
 
 from pyeuropepmc.mappers import RDFIZER_AVAILABLE, RMLRDFizer
-from pyeuropepmc.models import AuthorEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, JournalEntity, PaperEntity
 
 # Skip all tests if rdfizer is not available
 pytestmark = pytest.mark.skipif(
@@ -130,7 +130,7 @@ class TestRMLRDFizer:
             pmcid="PMC123456",
             doi="10.1234/test",
             title="Test Paper",
-            journal="Test Journal",
+            journal=JournalEntity(title="Test Journal"),
         )
 
         try:

@@ -5,6 +5,7 @@ This module provides specialized parsing for references and citations.
 """
 
 import logging
+from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
@@ -52,6 +53,89 @@ class ReferenceParser(BaseParser):
         except Exception as e:
             logger.error(f"Error extracting references: {e}")
             raise
+
+    def extract_in_text_citations(self) -> list[dict[str, Any]]:
+        """
+        Extract in-text citations (xrefs) from the full text XML.
+
+        Parses <xref> elements with ref-type="bibr" and links them to references.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of citation dictionaries with position, text, and linked reference data
+        """
+        self._require_root()
+
+        try:
+            citations = []
+            # Find all xref elements with ref-type="bibr"
+            xrefs = self.root.findall('.//xref[@ref-type="bibr"]')
+
+            for xref in xrefs:
+                citation_data = self._extract_single_citation(xref)
+                if citation_data:
+                    citations.append(citation_data)
+
+            logger.debug(f"Extracted {len(citations)} in-text citations from XML")
+            return citations
+        except Exception as e:
+            logger.error(f"Error extracting in-text citations: {e}")
+            raise
+
+    def _extract_single_citation(self, xref: ET.Element) -> dict[str, str | None] | None:
+        """Extract data from a single xref citation element."""
+        try:
+            rid = xref.get("rid")
+            if not rid:
+                return None
+
+            citation_text = xref.text or ""
+            citation_data = {
+                "rid": rid,
+                "text": citation_text.strip(),
+                "ref_type": xref.get("ref-type", "bibr"),
+                "position": self._get_element_position(xref),
+            }
+
+            # Link to full references (handle multiple rids)
+            rid_list = rid.split()
+            references = []
+            for single_rid in rid_list:
+                full_ref = self._get_reference_by_id(single_rid)
+                if full_ref:
+                    references.append(full_ref)
+
+            if references:
+                citation_data["references"] = references
+
+            return citation_data
+        except Exception as e:
+            logger.warning(f"Error extracting citation from xref: {e}")
+            return None
+
+    def _get_reference_by_id(self, ref_id: str) -> dict[str, str | None] | None:
+        """Get full reference data by ID."""
+        try:
+            refs = self.extract_references()
+            for ref in refs:
+                if ref.get("id") == ref_id:
+                    return ref
+            return None
+        except Exception:
+            return None
+
+    def _get_element_position(self, element: ET.Element) -> str | None:
+        """Get approximate position of element in document (e.g., section ID)."""
+        # Walk up the tree to find section or paragraph context
+        parent = element
+        while parent is not None:
+            if parent.tag in ["sec", "p"]:
+                sec_id = parent.get("id")
+                if sec_id:
+                    return sec_id
+            parent = parent.getparent() if hasattr(parent, "getparent") else None
+        return None
 
     def _extract_single_reference(self, ref: ET.Element) -> dict[str, str | None]:
         """Extract data from a single reference element."""
@@ -129,38 +213,104 @@ class ReferenceParser(BaseParser):
 
     def _extract_authors_from_text(self, text: str) -> tuple[str | None, str]:
         """Extract authors from citation text and return remaining text."""
+        import html
         import re
 
-        # First try with et al.
+        # First decode HTML entities
+        text = html.unescape(text)
+
+        # Pattern 1: Multiple authors separated by " & " or " and "
+        # Handles: "Aguiar, R. B. d. & Moraes, J. Z. d."
+        # Split at the first occurrence of " & " and take everything before the title
+        if " & " in text or " && " in text:
+            # Find where the title likely starts (capital word longer than 1 char that's not an initial)
+            parts = re.split(r"\s*[\&\&]\s*", text, 1)
+            if len(parts) == 2:
+                # Look for the complete second author by finding the pattern
+                second_author_match = re.search(
+                    r"([A-Z][a-z]+,\s*[A-Z]\.(\s*[A-Z]\.)*\s*[a-z]+\.)", parts[1]
+                )
+                if second_author_match:
+                    second_author = second_author_match.group(1).strip()
+                    author_part = parts[0].strip() + " & " + second_author
+                    # Find where title starts
+                    title_start = text.find(second_author) + len(second_author)
+                    remaining_text = text[title_start:].strip()
+                    if remaining_text.startswith("."):
+                        remaining_text = remaining_text[1:].strip()
+                    return author_part, remaining_text
+
+        # Pattern 2: Authors with "et al."
         author_pattern_et_al = r"^(.+?et al\.)\s+"
-        author_match = re.match(author_pattern_et_al, text)
-        if not author_match:
-            # Fallback to single author with period
-            author_pattern_single = r"^([^.]+?\.)\s+"
-            author_match = re.match(author_pattern_single, text)
-        if not author_match:
-            # Fallback for multiple authors without period, assuming title starts with capital word
-            author_pattern_fallback = r"^(.+?)\s+([A-Z][a-z]+.*)"
-            author_match = re.match(author_pattern_fallback, text)
+        author_match = re.match(author_pattern_et_al, text, re.IGNORECASE)
         if author_match:
             authors_text = author_match.group(1).strip()
             # Clean up common endings
-            authors_text = re.sub(r"\s+et\s+al\.?$", "", authors_text, flags=re.IGNORECASE)
+            authors_text = re.sub(r"\s+et\s+al\.?$", " et al.", authors_text, flags=re.IGNORECASE)
             authors = authors_text.rstrip(".,")
-            if len(author_match.groups()) > 1:
-                remaining_text = author_match.group(2) + text[len(author_match.group(0)) :]
-            else:
-                remaining_text = text[len(author_match.group(0)) :]
-            return authors, remaining_text.strip()
+            remaining_text = text[len(author_match.group(0)) :].strip()
+            return authors, remaining_text
+
+        # Pattern 3: Single author ending with period (common in citations)
+        # Handles: "Aguiar, R. B. d."
+        author_pattern_single = r"^([^.]+?\.)\s+"
+        author_match = re.match(author_pattern_single, text)
+        if author_match:
+            authors = author_match.group(1).strip().rstrip(",")
+            remaining_text = text[len(author_match.group(0)) :].strip()
+            return authors, remaining_text
+
+        # Pattern 4: Multiple authors without clear separator, ending before title
+        # Look for pattern where authors end and title begins with capital word
+        author_pattern_multiple = r"^(.+?)\s+([A-Z][a-z]+.*)"
+        author_match = re.match(author_pattern_multiple, text)
+        if author_match:
+            potential_authors = author_match.group(1).strip()
+            potential_title = author_match.group(2).strip()
+
+            # Check if this looks like authors (contains commas, periods, or common author patterns)
+            if (
+                "," in potential_authors
+                or re.search(r"\b[A-Z]\.\s*[A-Z]\.", potential_authors)  # "R. B."
+                or re.search(r"\b[A-Z]\.\s*[a-z]+\.", potential_authors)
+            ):  # "R. B. d."
+                authors = potential_authors.rstrip(",")
+                remaining_text = potential_title
+                return authors, remaining_text
+
         return None, text
 
     def _extract_title_and_source_from_text(
-        self, text: str
+        self, text: str, ref_data: dict[str, str | None] | None = None
     ) -> tuple[str | None, str | None, str | None, str]:
         """Extract title, source, and year from citation text and return remaining text."""
+        import html
         import re
 
-        # Pattern: Title. Journal...
+        # Decode HTML entities
+        text = html.unescape(text)
+
+        # Pattern 1: Title ending with period, followed by italicized journal
+        # Handles: "Title. <italic>Journal</italic>. <bold>10</bold>, 1023 (2019)."
+        italic_journal_pattern = r"^(.+?)\.\s*<italic>([^<]+)</italic>\.\s*<bold>(\d+)</bold>,\s*(\d+)\s*\(\s*(\d{4})\s*\)"
+        italic_match = re.match(italic_journal_pattern, text, re.IGNORECASE)
+        if italic_match:
+            title = italic_match.group(1).strip()
+            source = italic_match.group(2).strip()
+            volume = italic_match.group(3)
+            pages = italic_match.group(4)
+            year = italic_match.group(5)
+            remaining_text = text[italic_match.end() :].strip()
+
+            # Store additional fields if ref_data provided
+            if ref_data is not None:
+                ref_data["volume"] = volume
+                ref_data["pages"] = pages
+
+            return title, source, year, remaining_text
+
+        # Pattern 2: Title ending with period, followed by journal name
+        # Handles: "Title. Journal..."
         title_pattern = r"^(.+?)\.\s+([A-Z][^0-9]*?)(?=\.|\d|\s+\d{4}|\s*$)"
         title_match = re.match(title_pattern, text)
         if title_match:
@@ -168,15 +318,36 @@ class ReferenceParser(BaseParser):
             source = title_match.group(2).strip().rstrip(".")
             remaining_text = text[len(title_match.group(0)) :].strip()
             return title, source, None, remaining_text
-        else:
-            # Fallback: look for title before year in parentheses
-            title_year_pattern = r"^(.+?)\s*\(\s*(\d{4})\s*\)"
-            title_year_match = re.match(title_year_pattern, text)
-            if title_year_match:
-                title = title_year_match.group(1).strip()
-                year = title_year_match.group(2)
-                remaining_text = text[len(title_year_match.group(0)) :].strip()
-                return title, None, year, remaining_text
+
+        # Pattern 3: Title followed by year in parentheses (fallback)
+        # Handles: "Title (2019)"
+        title_year_pattern = r"^(.+?)\s*\(\s*(\d{4})\s*\)"
+        title_year_match = re.match(title_year_pattern, text)
+        if title_year_match:
+            title = title_year_match.group(1).strip()
+            year = title_year_match.group(2)
+            remaining_text = text[len(title_year_match.group(0)) :].strip()
+            return title, None, year, remaining_text
+
+        # Pattern 4: Title followed by journal and volume/issue info
+        # Handles: "Title. Journal volume, pages (year)"
+        complex_pattern = r"^(.+?)\.\s+([^,]+),\s*(\d+),\s*([^,\s]+)\s*\(\s*(\d{4})\s*\)"
+        complex_match = re.match(complex_pattern, text)
+        if complex_match:
+            title = complex_match.group(1).strip()
+            source = complex_match.group(2).strip()
+            volume = complex_match.group(3)
+            pages = complex_match.group(4)
+            year = complex_match.group(5)
+            remaining_text = text[complex_match.end() :].strip()
+
+            # Store additional fields if ref_data provided
+            if ref_data is not None:
+                ref_data["volume"] = volume
+                ref_data["pages"] = pages
+
+            return title, source, year, remaining_text
+
         return None, None, None, text
 
     def _parse_mixed_citation_text(
@@ -201,7 +372,7 @@ class ReferenceParser(BaseParser):
             ref_data["authors"] = authors
 
         # Extract title and source
-        title, source, year, text = self._extract_title_and_source_from_text(text)
+        title, source, year, text = self._extract_title_and_source_from_text(text, ref_data)
         if title:
             ref_data["title"] = title
         if source:

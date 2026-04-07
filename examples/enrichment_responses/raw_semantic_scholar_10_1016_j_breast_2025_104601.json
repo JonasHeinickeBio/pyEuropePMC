@@ -1,0 +1,70 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "2b9fed3a253d25ed9add4648e048901e0116576e",
+  "corpus_id": 282140832,
+  "title": "Knowledge in Motion: A decade reviewed, a future defined – The ABC Global Alliance 2015–2025 Decade Report and 2025–2035 Global Charter",
+  "abstract": null,
+  "venue": "Breast",
+  "year": 2025,
+  "publication_date": "2025-10-01",
+  "citation_count": 0,
+  "influential_citation_count": 0,
+  "reference_count": 10,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "2238316432",
+      "url": "https://www.semanticscholar.org/author/2238316432"
+    },
+    {
+      "name": null,
+      "author_id": "153183195",
+      "url": "https://www.semanticscholar.org/author/153183195"
+    },
+    {
+      "name": null,
+      "author_id": "2386058327",
+      "url": "https://www.semanticscholar.org/author/2386058327"
+    },
+    {
+      "name": null,
+      "author_id": "2386033239",
+      "url": "https://www.semanticscholar.org/author/2386033239"
+    },
+    {
+      "name": null,
+      "author_id": "2386061248",
+      "url": "https://www.semanticscholar.org/author/2386061248"
+    }
+  ],
+  "fields_of_study": [
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle",
+    "Review"
+  ],
+  "journal": {
+    "name": "The Breast : Official Journal of the European Society of Mastology",
+    "volume": "84",
+    "pages": null
+  },
+  "external_ids": {
+    "PubMedCentral": "12683129",
+    "DOI": "10.1016/j.breast.2025.104601",
+    "CorpusId": 282140832,
+    "PubMed": "41298006"
+  },
+  "open_access_pdf_url": "",
+  "tldr": "Findings from the ABC Global Alliance's Global Decade Report 2.0 (2015–2025) and the newly defined ten goals set out in the 2025–2035 ABC Global Charter 2.0 (2015-2025) are summarized, signaling a renewed commitment to advancing ABC care globally over the next decade."
+}

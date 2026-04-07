@@ -10,7 +10,7 @@ from pyeuropepmc.mappers.rdf_utils import (
     map_single_value_fields,
     normalize_name,
 )
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity, ReferenceEntity
+from pyeuropepmc.models import AuthorEntity, OrganizationEntity, PaperEntity, ReferenceEntity
 
 
 class TestRDFUtils:
@@ -49,7 +49,7 @@ class TestRDFUtils:
         author = AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789")
 
         uri = generate_entity_uri(author)
-        assert str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"
+        assert str(uri) == "https://w3id.org/pyeuropepmc/data#author/john-doe"
 
     def test_generate_entity_uri_author_name(self):
         """Test URI generation for author with name only."""
@@ -60,7 +60,7 @@ class TestRDFUtils:
 
     def test_generate_entity_uri_institution_ror(self):
         """Test URI generation for institution with ROR."""
-        institution = InstitutionEntity(display_name="Test University", ror_id="https://ror.org/123456")
+        institution = OrganizationEntity(display_name="Test University", ror_id="https://ror.org/123456")
 
         uri = generate_entity_uri(institution)
         assert str(uri) == "https://ror.org/123456"
@@ -120,8 +120,8 @@ class TestRDFUtils:
 
         # Mock resolve_predicate function
         def resolve_predicate(pred_str):
-            if pred_str == "meshv:hasDescriptor":
-                return URIRef("http://id.nlm.nih.gov/mesh/vocab#hasDescriptor")
+            if pred_str == "dcterms:subject":
+                return URIRef("http://purl.org/dc/terms/subject")
             elif pred_str == "obo:RO_0000053":
                 return URIRef("http://purl.obolibrary.org/obo/RO_0000053")
             return URIRef(f"http://example.org/{pred_str}")
@@ -164,7 +164,7 @@ class TestRDFUtils:
                 return URIRef("http://www.w3.org/2002/07/owl#sameAs")
             return URIRef(f"http://example.org/{pred_str}")
 
-        author = AuthorEntity(orcid="0000-0001-2345-6789", openalex_id="https://openalex.org/A123456")
+        author = AuthorEntity(full_name="Test Author", orcid="0000-0001-2345-6789", openalex_id="https://openalex.org/A123456")
 
         add_external_identifiers(g, subject, author, resolve_predicate)
 
@@ -182,7 +182,8 @@ class TestRDFUtils:
                 return URIRef("http://www.w3.org/2002/07/owl#sameAs")
             return URIRef(f"http://example.org/{pred_str}")
 
-        institution = InstitutionEntity(
+        institution = OrganizationEntity(
+            display_name="Test Institution",
             ror_id="https://ror.org/123456",
             openalex_id="https://openalex.org/I123456",
             wikidata_id="Q123456"

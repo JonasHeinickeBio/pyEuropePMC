@@ -1,0 +1,24 @@
+# PyEuropePMC LinkML Schema - Affiliation Entity
+# This file contains the AffiliationEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/affiliation
+name: pyeuropepmc-affiliation-entity
+description: Affiliation entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  AffiliationEntity:
+    description: >-
+      Entity representing an author's affiliation with an institution.
+      Contains the relationship between authors and institutions with affiliation text.
+    class_uri: org:Membership
+    is_a: BaseEntity
+    slots:
+      - affiliation_text
+      - affiliated_author
+      - affiliated_institution
+      - affiliation_order

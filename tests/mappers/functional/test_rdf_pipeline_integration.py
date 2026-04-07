@@ -141,7 +141,7 @@ class TestRDFPipelineIntegration:
 
         # Add section-paper relationships (inverse)
         for section, section_uri in zip(sections, section_uris):
-            mapper.map_relationships(g, section_uri, section, {"paper": [paper]})
+            mapper.map_relationships(g, section_uri, section, {"section_paper": [paper]})
 
         # Add reference-paper relationships (inverse)
         for ref, ref_uri in zip(references, reference_uris):

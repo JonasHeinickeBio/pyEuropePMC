@@ -1,0 +1,59 @@
+# PyEuropePMC LinkML Schema - Author Entity
+# This file contains the AuthorEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/author
+name: pyeuropepmc-author-entity
+description: Author entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  AuthorEntity:
+    description: >-
+      Entity representing an author with FOAF alignment.
+      Contains personal information, institutional affiliations, and identifiers.
+    class_uri: foaf:Person
+    is_a: BaseEntity
+    slots:
+      - full_name
+      - first_name
+      - last_name
+      - initials
+      - affiliation_text
+      - orcid
+      - name
+      - openalex_id
+      - semantic_scholar_id
+      - semantic_scholar_author_id
+      - scopus_author_id
+      - researcher_id
+      - position
+      - sources
+      - email
+      - papers
+      - author_institutions
+      - affiliations
+      - institutions
+      - h_index
+      - citation_count
+      - orcid_works_count
+      - paper_count
+      - roles
+      - quality_score
+    slot_usage:
+      full_name:
+        required: true
+      roles:
+        range: AuthorRole
+        multivalued: true
+        required: false
+        description: Specific roles or contributions of the author
+      quality_score:
+        range: float
+        minimum_value: 0.0
+        maximum_value: 1.0
+        required: false
+        description: Confidence score for author data completeness and accuracy

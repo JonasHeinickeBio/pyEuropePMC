@@ -15,9 +15,12 @@ from pyeuropepmc.enrichment.batch_enricher import BatchEnricher
 from pyeuropepmc.enrichment.config import EnrichmentConfig
 from pyeuropepmc.enrichment.crossref import CrossRefClient
 from pyeuropepmc.enrichment.datacite import DataCiteClient
+from pyeuropepmc.enrichment.doi_content_negotiation import DoiContentNegotiationClient
 from pyeuropepmc.enrichment.file_enricher import FileEnricher
 from pyeuropepmc.enrichment.merger import DataMerger
 from pyeuropepmc.enrichment.openalex import OpenAlexClient
+from pyeuropepmc.enrichment.orcid import OrcidClient
+from pyeuropepmc.enrichment.pubtator import PubTatorClient
 from pyeuropepmc.enrichment.reporter import EnrichmentReporter
 from pyeuropepmc.enrichment.ror import RorClient
 from pyeuropepmc.enrichment.semantic_scholar import SemanticScholarClient
@@ -141,6 +144,39 @@ class PaperEnricher:
                 logger.error(f"Failed to initialize ROR client: {e}")
                 raise
 
+        if config.enable_pubtator:
+            try:
+                self.clients["pubtator"] = PubTatorClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                )
+                logger.info("PubTator client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize PubTator client: {e}")
+                raise
+
+        if config.enable_orcid:
+            try:
+                self.clients["orcid"] = OrcidClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                )
+                logger.info("ORCID client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize ORCID client: {e}")
+                raise
+
+        if config.enable_doi_content_negotiation:
+            try:
+                self.clients["doi_content_negotiation"] = DoiContentNegotiationClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                )
+                logger.info("DOI Content Negotiation client initialized")
+            except Exception as e:
+                logger.error(f"Failed to initialize DOI Content Negotiation client: {e}")
+                raise
+
         logger.info(f"PaperEnricher initialized with {len(self.clients)} clients")
 
     def __enter__(self) -> "PaperEnricher":
@@ -191,6 +227,10 @@ class PaperEnricher:
             - unpaywall: Unpaywall OA info (if available)
             - semantic_scholar: Semantic Scholar metrics (if available)
             - openalex: OpenAlex metadata (if available)
+            - ror: ROR institutional data (if available)
+            - pubtator: PubTator biomedical entity annotations (if available)
+            - orcid: ORCID author profile data (if available)
+            - doi_content_negotiation: DOI Content Negotiation metadata (if available)
             - merged: Merged/aggregated metadata from all sources
 
         Raises
@@ -214,12 +254,15 @@ class PaperEnricher:
             "semantic_scholar": None,
             "openalex": None,
             "ror": None,
+            "pubtator": None,
+            "orcid": None,
+            "doi_content_negotiation": None,
         }
 
-        # Enrich from each source (excluding ROR which is handled separately)
+        # Enrich from each source (excluding ROR and ORCID which are handled separately)
         for source_name, client in self.clients.items():
-            if source_name == "ror":
-                continue  # ROR is handled separately for institutions
+            if source_name in ["ror", "orcid"]:
+                continue  # ROR and ORCID are handled separately
 
             try:
                 logger.debug(f"Enriching from {source_name}")
@@ -258,6 +301,35 @@ class PaperEnricher:
                     logger.debug("No additional ROR enrichment needed")
             except Exception as e:
                 logger.error(f"Error enriching institutions with ROR: {e}")
+
+        # Enrich authors with ORCID data if ORCID is enabled and we have author ORCID IDs
+        if self.config.enable_orcid and results.get("merged", {}).get("authors"):
+            try:
+                orcid_enriched_authors = self._enrich_authors_with_orcid(results["merged"])
+                if orcid_enriched_authors:
+                    results["orcid"] = orcid_enriched_authors
+                    results["sources"].append("orcid")
+                    # Re-merge with ORCID data to update author profiles
+                    results["merged"] = self.merger.merge_results(results)
+                    logger.info(
+                        f"Added ORCID enrichment for {len(orcid_enriched_authors)} authors"
+                    )
+                else:
+                    logger.debug("No ORCID IDs found for enrichment")
+            except Exception as e:
+                logger.error(f"Error enriching authors with ORCID: {e}")
+
+        # Add semantic classification
+        try:
+            self._add_semantic_classification(results)
+        except Exception as e:
+            logger.error(f"Error adding semantic classification: {e}")
+
+        # Add cross-references
+        try:
+            self._add_cross_references(results)
+        except Exception as e:
+            logger.error(f"Error adding cross-references: {e}")
 
         # Always save responses to the default directory
         try:
@@ -526,3 +598,251 @@ class PaperEnricher:
                 logger.error(f"Error enriching ROR ID {ror_id}: {e}")
 
         return enriched_institutions
+
+    def _add_semantic_classification(self, results: dict[str, Any]) -> None:
+        """
+        Add semantic subject classification to merged results.
+
+        Parameters
+        ----------
+        results : dict
+            Enrichment results dictionary
+        """
+        merged = results.get("merged", {})
+        if not merged:
+            return
+
+        # Extract subjects from various sources
+        subjects = []
+
+        # From CrossRef
+        if results.get("crossref"):
+            crossref_subjects = results["crossref"].get("subjects", [])
+            if crossref_subjects:
+                subjects.extend(
+                    [{"source": "crossref", "term": subj} for subj in crossref_subjects]
+                )
+
+        # From DOI Content Negotiation
+        if results.get("doi_content_negotiation"):
+            doi_subjects = results["doi_content_negotiation"].get("subjects", [])
+            if doi_subjects:
+                subjects.extend(
+                    [{"source": "doi_content_negotiation", "term": subj} for subj in doi_subjects]
+                )
+
+        # From Semantic Scholar
+        if results.get("semantic_scholar"):
+            ss_fields = results["semantic_scholar"].get("fieldsOfStudy", [])
+            if ss_fields:
+                subjects.extend(
+                    [{"source": "semantic_scholar", "term": field} for field in ss_fields]
+                )
+
+        # From OpenAlex
+        if results.get("openalex"):
+            oa_concepts = results["openalex"].get("concepts", [])
+            if oa_concepts:
+                subjects.extend(
+                    [
+                        {
+                            "source": "openalex",
+                            "term": concept.get("display_name"),
+                            "score": concept.get("score"),
+                        }
+                        for concept in oa_concepts
+                    ]
+                )
+
+        # Add MeSH terms from PubTator if available
+        if results.get("pubtator"):
+            pubtator_entities = results["pubtator"].get("entities", [])
+            mesh_terms = []
+            for entity in pubtator_entities:
+                if entity.get("type") == "Disease" and "identifiers" in entity:
+                    mesh_id = entity["identifiers"].get("mesh")
+                    if mesh_id:
+                        mesh_terms.append(
+                            {
+                                "source": "pubtator",
+                                "term": f"MeSH:{mesh_id}",
+                                "entity_text": entity.get("text"),
+                            }
+                        )
+
+            if mesh_terms:
+                subjects.extend(mesh_terms)
+
+        if subjects:
+            merged["semantic_subjects"] = subjects
+            logger.info(f"Added {len(subjects)} semantic subject classifications")
+
+    def _add_cross_references(self, results: dict[str, Any]) -> None:
+        """
+        Add cross-references to merged results.
+
+        Parameters
+        ----------
+        results : dict
+            Enrichment results dictionary
+        """
+        merged = results.get("merged", {})
+        if not merged:
+            return
+
+        cross_refs = {}
+
+        # DOI links
+        doi = merged.get("doi")
+        if doi:
+            cross_refs["doi_url"] = f"https://doi.org/{doi}"
+            cross_refs["doi_org"] = f"https://www.doi.org/doi:{doi}"
+
+        # PMC ID links
+        pmcid = merged.get("pmcid")
+        if pmcid:
+            cross_refs["pmc_url"] = f"https://www.ncbi.nlm.nih.gov/pmc/articles/{pmcid}/"
+            cross_refs["europe_pmc"] = f"https://europepmc.org/articles/{pmcid}"
+
+        # PMID links
+        pmid = merged.get("pmid")
+        if pmid:
+            cross_refs["pubmed_url"] = f"https://pubmed.ncbi.nlm.nih.gov/{pmid}/"
+            cross_refs["pubmed_central"] = (
+                f"https://www.ncbi.nlm.nih.gov/pmc/articles/PMC{pmid}/" if pmcid else None
+            )
+
+        # Clinical trial identifiers
+        clinical_trials = []
+        if results.get("pubtator"):
+            pubtator_entities = results["pubtator"].get("entities", [])
+            for entity in pubtator_entities:
+                if entity.get("type") == "ClinicalTrial" and "identifiers" in entity:
+                    trial_ids = entity["identifiers"]
+                    if "clinical_trials" in trial_ids:
+                        clinical_trials.append(
+                            {
+                                "id": trial_ids["clinical_trials"],
+                                "url": f"https://clinicaltrials.gov/ct2/show/{trial_ids['clinical_trials']}",
+                                "text": entity.get("text"),
+                            }
+                        )
+
+        if clinical_trials:
+            cross_refs["clinical_trials"] = clinical_trials
+
+        # Dataset DOIs
+        dataset_dois = []
+        if results.get("doi_content_negotiation"):
+            doi_data = results["doi_content_negotiation"]
+            # Look for related identifiers that might be datasets
+            related_ids = doi_data.get("related_identifiers", [])
+            for rel_id in related_ids:
+                if (
+                    rel_id.get("relation_type") == "IsSupplementTo"
+                    and rel_id.get("identifier_type") == "DOI"
+                ):
+                    dataset_dois.append(
+                        {
+                            "doi": rel_id["identifier"],
+                            "url": f"https://doi.org/{rel_id['identifier']}",
+                            "relation": rel_id.get("relation_type"),
+                        }
+                    )
+
+        if dataset_dois:
+            cross_refs["datasets"] = dataset_dois
+
+        # Author ORCID links
+        if merged.get("authors"):
+            author_orcids = []
+            for author in merged["authors"]:
+                orcid = author.get("orcid")
+                if orcid:
+                    author_orcids.append(
+                        {
+                            "orcid": orcid,
+                            "url": f"https://orcid.org/{orcid}",
+                            "name": author.get("name", ""),
+                        }
+                    )
+
+            if author_orcids:
+                cross_refs["author_orcids"] = author_orcids
+
+        if cross_refs:
+            merged["cross_references"] = cross_refs
+            logger.info(f"Added {len(cross_refs)} cross-reference categories")
+
+    def _enrich_authors_with_orcid(self, merged_data: dict[str, Any]) -> dict[str, Any]:
+        """
+        Enrich authors with ORCID profile data.
+
+        Parameters
+        ----------
+        merged_data : dict
+            Merged enrichment data containing authors
+
+        Returns
+        -------
+        dict
+            Dictionary mapping ORCID IDs to enriched author profiles
+        """
+        if "orcid" not in self.clients:
+            return {}
+
+        orcid_client = self.clients["orcid"]
+        authors = merged_data.get("authors", [])
+
+        orcid_ids_to_enrich = set()
+
+        # Extract ORCID IDs from authors
+        for author in authors:
+            orcid = author.get("orcid")
+            if orcid:
+                # Normalize ORCID format (remove https://orcid.org/ prefix if present)
+                if orcid.startswith("https://orcid.org/"):
+                    orcid = orcid[len("https://orcid.org/") :]
+                # Validate ORCID format
+                if self._is_valid_orcid_format(orcid):
+                    orcid_ids_to_enrich.add(orcid)
+
+        if not orcid_ids_to_enrich:
+            logger.debug("No valid ORCID IDs found for enrichment")
+            return {}
+
+        # Enrich each ORCID ID
+        enriched_authors = {}
+        for orcid_id in orcid_ids_to_enrich:
+            try:
+                logger.debug(f"Enriching author with ORCID: {orcid_id}")
+                orcid_data = orcid_client.enrich(identifier=orcid_id)
+                if orcid_data:
+                    enriched_authors[orcid_id] = orcid_data
+                    logger.info(f"Successfully enriched author profile: {orcid_id}")
+                else:
+                    logger.warning(f"No ORCID data found for: {orcid_id}")
+            except Exception as e:
+                logger.error(f"Error enriching ORCID {orcid_id}: {e}")
+
+        return enriched_authors
+
+    def _is_valid_orcid_format(self, orcid: str) -> bool:
+        """
+        Validate ORCID iD format.
+
+        Parameters
+        ----------
+        orcid : str
+            ORCID iD to validate
+
+        Returns
+        -------
+        bool
+            True if valid ORCID format
+        """
+        import re
+
+        # ORCID format: XXXX-XXXX-XXXX-XXXX where X is digit
+        pattern = r"^\d{4}-\d{4}-\d{4}-\d{4}$"
+        return bool(re.match(pattern, orcid))

@@ -67,7 +67,8 @@ class TestSchemaClasses:
             "TableEntity",
             "TableRowEntity",
             "ReferenceEntity",
-            "InstitutionEntity",
+            "OrganizationEntity",
+            "DepartmentEntity",
             "JournalEntity",
             "GrantEntity",
             "FigureEntity",
@@ -111,9 +112,9 @@ class TestSchemaClasses:
         for slot_name in expected_slots:
             assert slot_name in author_slots, f"Slot {slot_name} not found in AuthorEntity"
 
-    def test_institution_entity_has_expected_slots(self, schema_view) -> None:
-        """Test that InstitutionEntity has expected slots."""
-        institution_slots = schema_view.class_slots("InstitutionEntity")
+    def test_organization_entity_has_expected_slots(self, schema_view) -> None:
+        """Test that OrganizationEntity has expected slots."""
+        organization_slots = schema_view.class_slots("OrganizationEntity")
 
         expected_slots = [
             "display_name",
@@ -125,8 +126,8 @@ class TestSchemaClasses:
         ]
 
         for slot_name in expected_slots:
-            assert slot_name in institution_slots, \
-                f"Slot {slot_name} not found in InstitutionEntity"
+            assert slot_name in organization_slots, \
+                f"Slot {slot_name} not found in OrganizationEntity"
 
 
 class TestSchemaPrefixes:

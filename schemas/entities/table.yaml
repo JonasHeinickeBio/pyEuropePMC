@@ -1,0 +1,37 @@
+# PyEuropePMC LinkML Schema - Table Entity
+# This file contains the TableEntity and TableRowEntity class definitions
+
+id: https://w3id.org/pyeuropepmc/entities/table
+name: pyeuropepmc-table-entity
+description: Table entity classes for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  TableEntity:
+    description: >-
+      Entity representing a table with BIBO alignment.
+      Contains table metadata and structured row data.
+    class_uri: bibo:Table
+    is_a: BaseEntity
+    slots:
+      - caption
+      - table_label
+      - headers
+      - rows
+      - table_paper
+
+  TableRowEntity:
+    description: Entity representing a table row.
+    class_uri: bibo:Row
+    is_a: BaseEntity
+    slots:
+      - cells
+      - row_table
+    slot_usage:
+      cells:
+        required: true
+        minimum_cardinality: 1

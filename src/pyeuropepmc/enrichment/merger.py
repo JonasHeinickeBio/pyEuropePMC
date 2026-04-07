@@ -7,6 +7,8 @@ multiple enrichment sources with intelligent conflict resolution.
 
 from typing import Any
 
+from ..mappers.processors import _pad_partial_date
+
 
 class DataMerger:
     """
@@ -96,10 +98,10 @@ class DataMerger:
             and isinstance(crossref_data, dict)
             and crossref_data.get("publication_date")
         ):
-            return {"publication_date": crossref_data["publication_date"]}
+            return {"publication_date": _pad_partial_date(crossref_data["publication_date"])}
         elif openalex_data and isinstance(openalex_data, dict):
             if openalex_data.get("publication_date"):
-                return {"publication_date": openalex_data["publication_date"]}
+                return {"publication_date": _pad_partial_date(openalex_data["publication_date"])}
             elif openalex_data.get("publication_year"):
                 return {"publication_year": openalex_data["publication_year"]}
         return {}
@@ -416,6 +418,14 @@ class DataMerger:
 
         merged_list = list(all_authors.values())
         merged_list.sort(key=lambda x: len(x.get("sources", [])), reverse=True)
+
+        # Ensure institutions is always a list
+        for author in merged_list:
+            if author.get("institutions") is None:
+                author["institutions"] = []
+            elif not isinstance(author["institutions"], list):
+                author["institutions"] = [author["institutions"]]
+
         return merged_list
 
     def _process_crossref_authors(

@@ -27,6 +27,12 @@ class EnrichmentConfig:
         Enable OpenAlex enrichment
     enable_ror : bool
         Enable ROR institutional enrichment (default: True)
+    enable_pubtator : bool
+        Enable PubTator Central biomedical entity recognition
+    enable_orcid : bool
+        Enable ORCID author disambiguation and profile enrichment
+    enable_doi_content_negotiation : bool
+        Enable DOI Content Negotiation for comprehensive metadata resolution
     unpaywall_email : str, optional
         Email for Unpaywall API (required if enable_unpaywall=True)
     crossref_email : str, optional
@@ -55,6 +61,9 @@ class EnrichmentConfig:
         enable_semantic_scholar: bool = True,
         enable_openalex: bool = True,
         enable_ror: bool = True,  # Enable ROR by default for institution enrichment
+        enable_pubtator: bool = True,  # Enable PubTator for biomedical entities
+        enable_orcid: bool = True,  # Enable ORCID for author disambiguation
+        enable_doi_content_negotiation: bool = True,  # Enable DOI content negotiation
         unpaywall_email: str | None = None,
         crossref_email: str | None = None,
         datacite_email: str | None = None,
@@ -82,6 +91,12 @@ class EnrichmentConfig:
             Enable OpenAlex enrichment (default: True)
         enable_ror : bool, optional
             Enable ROR institutional enrichment (default: True)
+        enable_pubtator : bool, optional
+            Enable PubTator Central biomedical entity recognition (default: False)
+        enable_orcid : bool, optional
+            Enable ORCID author disambiguation and profile enrichment (default: False)
+        enable_doi_content_negotiation : bool, optional
+            Enable DOI Content Negotiation for comprehensive metadata resolution (default: False)
         unpaywall_email : str, optional
             Email for Unpaywall API (required if enable_unpaywall=True)
         crossref_email : str, optional
@@ -123,6 +138,9 @@ class EnrichmentConfig:
         self.enable_semantic_scholar = enable_semantic_scholar
         self.enable_openalex = enable_openalex
         self.enable_ror = enable_ror
+        self.enable_pubtator = enable_pubtator
+        self.enable_orcid = enable_orcid
+        self.enable_doi_content_negotiation = enable_doi_content_negotiation
         self.cache_config = cache_config
         self.rate_limit_delay = rate_limit_delay
 

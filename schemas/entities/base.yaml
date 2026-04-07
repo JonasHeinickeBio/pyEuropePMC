@@ -1,0 +1,47 @@
+# PyEuropePMC LinkML Schema - Base Entities
+# This file contains BaseEntity and ScholarlyWorkEntity
+
+id: https://w3id.org/pyeuropepmc/entities/base
+name: pyeuropepmc-base-entities
+description: Base entity classes for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+
+classes:
+  BaseEntity:
+    description: >-
+      Base entity for all data models with RDF serialization support.
+      All entities inherit from this base class, providing common functionality
+      for validation, normalization, and RDF export.
+    class_uri: pyeuropepmc:BaseEntity
+    abstract: true
+    slots:
+      - id
+      - label
+      - source_uri
+      - confidence
+      - types
+      - data_sources
+      - last_updated
+
+  ScholarlyWorkEntity:
+    description: >-
+      Base entity for scholarly works (papers, references, etc.).
+      Provides common fields and methods for entities representing scholarly publications.
+    class_uri: bibo:Document
+    is_a: BaseEntity
+    abstract: true
+    slots:
+      - title
+      - doi
+      - volume
+      - pages
+      - publication_year
+      - publication_date
+      - pmcid
+      - pmid
+      - semantic_scholar_id
+      - authors
+      - journal

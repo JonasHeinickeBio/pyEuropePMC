@@ -1,0 +1,4704 @@
+{
+  "version": "6.9",
+  "hitCount": 858130,
+  "nextCursorMark": "AoIIP8i+VSg1MzI0NDAzNg==",
+  "nextPageUrl": "https://www.ebi.ac.uk/europepmc/webservices/rest/search?query=(OPEN_ACCESS:y) AND \"cancer\" AND (CITED:[10 TO *])&cursorMark=AoIIP8i+VSg1MzI0NDAzNg==&resultType=core&pageSize=10&format=json",
+  "request": {
+    "queryString": "(OPEN_ACCESS:y) AND \"cancer\" AND (CITED:[10 TO *])",
+    "resultType": "core",
+    "cursorMark": "%2A",
+    "pageSize": 10,
+    "sort": "",
+    "synonym": false
+  },
+  "resultList": {
+    "result": [
+      {
+        "id": "40739089",
+        "source": "MED",
+        "pmid": "40739089",
+        "pmcid": "PMC12311175",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12311175"
+          ]
+        },
+        "doi": "10.1038/s41392-025-02280-1",
+        "title": "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches.",
+        "authorString": "Tufail M, Jiang CH, Li N.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Tufail M",
+              "firstName": "Muhammad",
+              "lastName": "Tufail",
+              "initials": "M",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-3442-7216"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Oral and Maxillofacial Surgery, Center of Stomatology, Xiangya Hospital, Central South University, Changsha, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Jiang CH",
+              "firstName": "Can-Hua",
+              "lastName": "Jiang",
+              "initials": "CH",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Oral and Maxillofacial Surgery, Center of Stomatology, Xiangya Hospital, Central South University, Changsha, China."
+                  },
+                  {
+                    "affiliation": "Institute of Oral Precancerous Lesions, Central South University, Changsha, China."
+                  },
+                  {
+                    "affiliation": "Research Center of Oral and Maxillofacial Tumor, Xiangya Hospital, Central South University, Changsha, China."
+                  },
+                  {
+                    "affiliation": "National Clinical Research Center for Geriatric Disorders, Xiangya Hospital, Central South University, Changsha, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Li N",
+              "firstName": "Ning",
+              "lastName": "Li",
+              "initials": "N",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Oral and Maxillofacial Surgery, Center of Stomatology, Xiangya Hospital, Central South University, Changsha, China. liningoms@csu.edu.cn."
+                  },
+                  {
+                    "affiliation": "Institute of Oral Precancerous Lesions, Central South University, Changsha, China. liningoms@csu.edu.cn."
+                  },
+                  {
+                    "affiliation": "Research Center of Oral and Maxillofacial Tumor, Xiangya Hospital, Central South University, Changsha, China. liningoms@csu.edu.cn."
+                  },
+                  {
+                    "affiliation": "National Clinical Research Center for Geriatric Disorders, Xiangya Hospital, Central South University, Changsha, China. liningoms@csu.edu.cn."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0003-3442-7216"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "1",
+          "volume": "10",
+          "journalIssueId": 3968099,
+          "dateOfPublication": "2025 Jul",
+          "monthOfPublication": 7,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-07-01",
+          "journal": {
+            "title": "Signal transduction and targeted therapy",
+            "medlineAbbreviation": "Signal Transduct Target Ther",
+            "essn": "2059-3635",
+            "issn": "2095-9907",
+            "isoabbreviation": "Signal Transduct Target Ther",
+            "nlmid": "101676423"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "227",
+        "abstractText": "Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte-associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS-STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.",
+        "affiliation": "Department of Oral and Maxillofacial Surgery, Center of Stomatology, Xiangya Hospital, Central South University, Changsha, China.",
+        "publicationStatus": "epublish",
+        "language": "eng",
+        "pubModel": "Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "82170974",
+              "agency": "National Natural Science Foundation of China (National Science Foundation of China)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "2023QYJC038",
+              "agency": "Central South University (Central South University in Hunan)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "82170974",
+              "agency": "National Natural Science Foundation of China",
+              "orderIn": 0
+            },
+            {
+              "grantId": "2023QYJC038",
+              "agency": "Central South University",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TH",
+                    "qualifierName": "therapy",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Immunotherapy"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Signal Transduction",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Tumor Escape",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Immune Evasion"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Tumor Microenvironment",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1038/s41392-025-02280-1"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12311175"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12311175?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 10,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-07-30",
+        "dateOfCreation": "2025-07-30",
+        "firstIndexDate": "2025-08-01",
+        "fullTextReceivedDate": "2025-08-02",
+        "dateOfRevision": "2025-08-02",
+        "electronicPublicationDate": "2025-07-31",
+        "firstPublicationDate": "2025-07-31"
+      },
+      {
+        "id": "40675967",
+        "source": "MED",
+        "pmid": "40675967",
+        "pmcid": "PMC12271501",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12271501"
+          ]
+        },
+        "doi": "10.1038/s41392-025-02266-z",
+        "title": "Targeting epigenetic regulators as a promising avenue to overcome cancer therapy resistance.",
+        "authorString": "Song J, Yang P, Chen C, Ding W, Tillement O, Bai H, Zhang S.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Song J",
+              "firstName": "Jiawei",
+              "lastName": "Song",
+              "initials": "J",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Laboratory of Radiation Medicine, West China School of Basic Medical Sciences & Forensic Medicine, Sichuan University, Chengdu, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Yang P",
+              "firstName": "Ping",
+              "lastName": "Yang",
+              "initials": "P",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Laboratory of Radiation Medicine, West China School of Basic Medical Sciences & Forensic Medicine, Sichuan University, Chengdu, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Chen C",
+              "firstName": "Canting",
+              "lastName": "Chen",
+              "initials": "C",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Laboratory of Radiation Medicine, West China School of Basic Medical Sciences & Forensic Medicine, Sichuan University, Chengdu, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Ding W",
+              "firstName": "Weiqun",
+              "lastName": "Ding",
+              "initials": "W",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology, Stephenson Cancer Centre, College of Medicine, University of Oklahoma Health Sciences Center, Oklahoma City, OK, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Tillement O",
+              "firstName": "Olivier",
+              "lastName": "Tillement",
+              "initials": "O",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Institut Lumière Matière, UMR 5306 CNRS-UCBL, Université Claude Bernard Lyon 1, Villeurbanne Cedex, France."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Bai H",
+              "firstName": "Hao",
+              "lastName": "Bai",
+              "initials": "H",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Laboratory of Radiation Medicine, West China School of Basic Medical Sciences & Forensic Medicine, Sichuan University, Chengdu, China. baihao1996@scu.edu.cn."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Zhang S",
+              "firstName": "Shuyu",
+              "lastName": "Zhang",
+              "initials": "S",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-1419-3635"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Laboratory of Radiation Medicine, West China School of Basic Medical Sciences & Forensic Medicine, Sichuan University, Chengdu, China. zhang.shuyu@hotmail.com."
+                  },
+                  {
+                    "affiliation": "The Second Affiliated Hospital of Chengdu Medical College, China National Nuclear Corporation 416 Hospital, Chengdu, China. zhang.shuyu@hotmail.com."
+                  },
+                  {
+                    "affiliation": "Medical College of Tibet University, Lasa, China. zhang.shuyu@hotmail.com."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0003-1419-3635"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "1",
+          "volume": "10",
+          "journalIssueId": 3968099,
+          "dateOfPublication": "2025 Jul",
+          "monthOfPublication": 7,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-07-01",
+          "journal": {
+            "title": "Signal transduction and targeted therapy",
+            "medlineAbbreviation": "Signal Transduct Target Ther",
+            "essn": "2059-3635",
+            "issn": "2095-9907",
+            "isoabbreviation": "Signal Transduct Target Ther",
+            "nlmid": "101676423"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "219",
+        "abstractText": "Cancer remains one of the leading health threats globally, with therapeutic resistance being a long-standing challenge across chemotherapy, radiotherapy, targeted therapy, and immunotherapy. In recent years, the association between epigenetic modification abnormalities and therapeutic resistance in tumors has garnered widespread attention, spurring interest in the development of approaches to target epigenetic factors. In this review, we explore the widespread dysregulation and crosstalk of various types of epigenetic modifications, including DNA methylation, histone modifications, and non-coding RNA changes, which interact through complex regulatory networks in tumors. Clinically, single-targeted therapy based on epigenetic modification usually has its limited effect against cancer. However, the combination of epigenetic drugs with other treatment modalities, such as chemotherapy, targeted therapy, or immunotherapy, shows potential for synergistically enhancing efficacy and reducing drug resistance. Therefore, we evaluate the possibility and potential mechanisms of targeting epigenetic modifications to overcome resistance in cancer therapy, and discuss the challenges and opportunities in moving epigenetic therapy into clinical practice. Moreover, the application of multi-omics technologies will aid in identifying core epigenetic factors from complex epigenetic networks, enabling precision treatment and overcoming therapeutic resistance in tumors. Furthermore, the development of spatial multi-omics technologies, by providing spatial coordinates of cellular and molecular heterogeneity, revolutionizes our understanding of the tumor microenvironment, offering new perspectives for precision therapy. In summary, the combined application of epigenetic therapies and the integration of multi-omics technologies herald a new direction for cancer treatment, holding the potential to achieve more effective personalized treatment strategies.",
+        "affiliation": "Laboratory of Radiation Medicine, West China School of Basic Medical Sciences & Forensic Medicine, Sichuan University, Chengdu, China.",
+        "publicationStatus": "epublish",
+        "language": "eng",
+        "pubModel": "Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "82473574",
+              "agency": "National Natural Science Foundation of China (National Science Foundation of China)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "82404200",
+              "agency": "National Natural Science Foundation of China (National Science Foundation of China)",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TH",
+                    "qualifierName": "therapy",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Immunotherapy"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "DNA Methylation",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Epigenesis, Genetic",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Gene Expression Regulation, Neoplastic",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Drug Resistance, Neoplasm",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Molecular Targeted Therapy"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1038/s41392-025-02266-z"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12271501"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12271501?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 10,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-07-17",
+        "dateOfCreation": "2025-07-17",
+        "firstIndexDate": "2025-07-19",
+        "fullTextReceivedDate": "2025-07-21",
+        "dateOfRevision": "2025-07-20",
+        "electronicPublicationDate": "2025-07-18",
+        "firstPublicationDate": "2025-07-18"
+      },
+      {
+        "id": "40562940",
+        "source": "MED",
+        "pmid": "40562940",
+        "pmcid": "PMC12328229",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12328229"
+          ]
+        },
+        "doi": "10.1038/s41586-025-09176-8",
+        "title": "Nerve-to-cancer transfer of mitochondria during cancer metastasis.",
+        "authorString": "Hoover G, Gilbert S, Curley O, Obellianne C, Lin MT, Hixson W, Pierce TW, Andrews JF, Alexeyev MF, Ding Y, Bu P, Behbod F, Medina D, Chang JT, Ayala G, Grelet S.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Hoover G",
+              "firstName": "Gregory",
+              "lastName": "Hoover",
+              "initials": "G",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  },
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Gilbert S",
+              "firstName": "Shila",
+              "lastName": "Gilbert",
+              "initials": "S",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  },
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Curley O",
+              "firstName": "Olivia",
+              "lastName": "Curley",
+              "initials": "O",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  },
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Obellianne C",
+              "firstName": "Clémence",
+              "lastName": "Obellianne",
+              "initials": "C",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0009-0008-2329-0764"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Microbiology and Immunology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Lin MT",
+              "firstName": "Mike T",
+              "lastName": "Lin",
+              "initials": "MT",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Physiology and Cell Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Hixson W",
+              "firstName": "William",
+              "lastName": "Hixson",
+              "initials": "W",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  },
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Pierce TW",
+              "firstName": "Terry W",
+              "lastName": "Pierce",
+              "initials": "TW",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Andrews JF",
+              "firstName": "Joel F",
+              "lastName": "Andrews",
+              "initials": "JF",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  },
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Alexeyev MF",
+              "firstName": "Mikhail F",
+              "lastName": "Alexeyev",
+              "initials": "MF",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-5942-0099"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Physiology and Cell Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Ding Y",
+              "firstName": "Yi",
+              "lastName": "Ding",
+              "initials": "Y",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology and Laboratory Medicine, University of Texas Health Science Center at Houston, McGovern School of Medicine, Houston, TX, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Bu P",
+              "firstName": "Ping",
+              "lastName": "Bu",
+              "initials": "P",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology and Laboratory Medicine, University of Texas Health Science Center at Houston, McGovern School of Medicine, Houston, TX, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Behbod F",
+              "firstName": "Fariba",
+              "lastName": "Behbod",
+              "initials": "F",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology and Laboratory Medicine, University of Kansas Medical Center, Kansas City, KS, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Medina D",
+              "firstName": "Daniel",
+              "lastName": "Medina",
+              "initials": "D",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Molecular and Cellular Biology, Baylor College of Medicine, Houston, TX, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Chang JT",
+              "firstName": "Jeffrey T",
+              "lastName": "Chang",
+              "initials": "JT",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-4578-5636"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Integrative Biology & Pharmacology, University of Texas Health Science Center at Houston, Houston, TX, USA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Ayala G",
+              "firstName": "Gustavo",
+              "lastName": "Ayala",
+              "initials": "G",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-5288-0244"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Pathology and Laboratory Medicine, University of Texas Health Science Center at Houston, McGovern School of Medicine, Houston, TX, USA. gustavo.e.ayala@uth.tmc.edu."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Grelet S",
+              "firstName": "Simon",
+              "lastName": "Grelet",
+              "initials": "S",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-6805-7925"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA. sgrelet@southalabama.edu."
+                  },
+                  {
+                    "affiliation": "Mitchell Cancer Institute, University of South Alabama, Mobile, AL, USA. sgrelet@southalabama.edu."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0001-6805-7925"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-4578-5636"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-5288-0244"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-5942-0099"
+            },
+            {
+              "type": "ORCID",
+              "value": "0009-0008-2329-0764"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "8075",
+          "volume": "644",
+          "journalIssueId": 3989417,
+          "dateOfPublication": "2025 Aug",
+          "monthOfPublication": 8,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-08-01",
+          "journal": {
+            "title": "Nature",
+            "medlineAbbreviation": "Nature",
+            "essn": "1476-4687",
+            "issn": "0028-0836",
+            "isoabbreviation": "Nature",
+            "nlmid": "0410462"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "252-262",
+        "abstractText": "The nervous system has a pivotal role in cancer biology, and pathological investigations have linked intratumoural nerve density to metastasis<sup>1</sup>. However, the precise impact of cancer-associated neurons and the communication channels at the nerve-cancer interface remain poorly understood. Previous cancer denervation models in rodents and humans have highlighted robust cancer dependency on nerves, but the underlying mechanisms that drive nerve-mediated cancer aggressivity remain unknown<sup>2,3</sup>. Here we show that cancer-associated neurons enhance cancer metabolic plasticity by transferring mitochondria to cancer cells. Breast cancer denervation and nerve-cancer coculture models confirmed that neurons significantly improve tumour energetics. Neurons cocultured with cancer cells undergo metabolic reprogramming, resulting in increased mitochondrial mass and subsequent transfer of mitochondria to adjacent cancer cells. To precisely track the fate of recipient cells, we developed MitoTRACER, a reporter of cell-to-cell mitochondrial transfer that permanently labels recipient cancer cells and their progeny. Lineage tracing and fate mapping of cancer cells acquiring neuronal mitochondria in primary tumours revealed their selective enrichment at metastatic sites following dissemination. Collectively, our data highlight the enhanced metastatic capabilities of cancer cells that receive mitochondria from neurons in primary tumours, shedding new light on how the nervous system supports cancer metabolism and metastatic dissemination.",
+        "affiliation": "Department of Biochemistry and Molecular Biology, Frederick P. Whiddon College of Medicine, University of South Alabama, Mobile, AL, USA.",
+        "publicationStatus": "ppublish",
+        "language": "eng",
+        "pubModel": "Print-Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "research-article",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "G20 RR030956",
+              "agency": "NCRR NIH HHS",
+              "acronym": "RR",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30 CA068485",
+              "agency": "NCI NIH HHS",
+              "acronym": "CA",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01 HL140182",
+              "agency": "NHLBI NIH HHS",
+              "acronym": "HL",
+              "orderIn": 0
+            },
+            {
+              "grantId": "UL1 RR024975",
+              "agency": "NCRR NIH HHS",
+              "acronym": "RR",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30 EY008126",
+              "agency": "NEI NIH HHS",
+              "acronym": "EY",
+              "orderIn": 0
+            },
+            {
+              "grantId": "UL1 TR003096",
+              "agency": "NCATS NIH HHS",
+              "acronym": "TR",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R37 CA292711",
+              "agency": "NCI NIH HHS",
+              "acronym": "CA",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neurons",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Cell Line, Tumor"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Mitochondria",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Mice"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Breast Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasm Metastasis",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Coculture Techniques"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Cell Communication"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Energy Metabolism"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Cell Lineage"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Female"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1038/s41586-025-09176-8"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12328229"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12328229?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "Y",
+        "citedByCount": 12,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by-nc-nd",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-08-07",
+        "dateOfCreation": "2025-06-25",
+        "firstIndexDate": "2025-06-26",
+        "fullTextReceivedDate": "2025-08-09",
+        "dateOfRevision": "2025-09-26",
+        "electronicPublicationDate": "2025-06-25",
+        "firstPublicationDate": "2025-06-25"
+      },
+      {
+        "id": "40629032",
+        "source": "MED",
+        "pmid": "40629032",
+        "pmcid": "PMC12238221",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12238221"
+          ]
+        },
+        "doi": "10.1007/s10238-025-01751-7",
+        "title": "Rationale of using immune checkpoint inhibitors (ICIs) and anti-angiogenic agents in cancer treatment from a molecular perspective.",
+        "authorString": "Sherafat NS, Keshavarz A, Mardi A, Mohammadiara A, Aghaei M, Aghebati-Maleki L, Mohammadi MH.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Sherafat NS",
+              "firstName": "Negar Sadat",
+              "lastName": "Sherafat",
+              "initials": "NS",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Student Research Committee, Ahvaz Jundishapur University of Medical Sciences, Ahvaz, Iran."
+                  },
+                  {
+                    "affiliation": "Department of Immunology, School of Medicine, Ahvaz Jundishapur University of Medical Sciences, Ahvaz, Iran."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Keshavarz A",
+              "firstName": "Ali",
+              "lastName": "Keshavarz",
+              "initials": "A",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Hematology and Blood Banking, School of Allied Medical Sciences, Shahid Beheshti University of Medical Sciences, Tehran, Iran."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Mardi A",
+              "firstName": "Amirhossein",
+              "lastName": "Mardi",
+              "initials": "A",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Student Research Committee, Tabriz University of Medical Sciences, Tabriz, Iran."
+                  },
+                  {
+                    "affiliation": "Immunology Research Center, Tabriz University of Medical Sciences, Tabriz, Iran."
+                  },
+                  {
+                    "affiliation": "Department of Immunology, Faculty of Medicine, Tabriz University of Medical Science, Tabriz, Iran."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Mohammadiara A",
+              "firstName": "Amirmohammad",
+              "lastName": "Mohammadiara",
+              "initials": "A",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Immunology, School of Medicine, Shahid Beheshti University of Medical Sciences, Tehran, Iran."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Aghaei M",
+              "firstName": "Mojtaba",
+              "lastName": "Aghaei",
+              "initials": "M",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Thalassemia & Hemoglobinopathy Research Center, Health Research Institute, Ahvaz Jundishapur University of Medical Sciences, Ahvaz, Iran."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Aghebati-Maleki L",
+              "firstName": "Leili",
+              "lastName": "Aghebati-Maleki",
+              "initials": "L",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Immunology Research Center, Tabriz University of Medical Sciences, Tabriz, Iran. Leili_aghebati_maleki@yahoo.com."
+                  },
+                  {
+                    "affiliation": "Department of Immunology, Faculty of Medicine, Tabriz University of Medical Science, Tabriz, Iran. Leili_aghebati_maleki@yahoo.com."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Mohammadi MH",
+              "firstName": "Mohammad Hossein",
+              "lastName": "Mohammadi",
+              "initials": "MH",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Hematology and Blood Banking, School of Allied Medical Sciences, Shahid Beheshti University of Medical Sciences, Tehran, Iran. Drmohammadi@sbmu.ac.ir."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "1",
+          "volume": "25",
+          "journalIssueId": 3968626,
+          "dateOfPublication": "2025 Jul",
+          "monthOfPublication": 7,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-07-01",
+          "journal": {
+            "title": "Clinical and experimental medicine",
+            "medlineAbbreviation": "Clin Exp Med",
+            "essn": "1591-9528",
+            "issn": "1591-8890",
+            "isoabbreviation": "Clin Exp Med",
+            "nlmid": "100973405"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "238",
+        "abstractText": "Combination of immune checkpoint inhibitors (ICIs) and anti-angiogenic drugs (AADs) holds promise in cancer treatment. While ICIs block signals that help cancer cells evade the immune system, anti-angiogenic agents target blood vessels, limiting tumor growth by restricting nutrient and oxygen supplies. Additionally, the judicious use of AADs can normalize the tumor vasculature, alleviate hypoxia, and enhance the antitumor immune response. As the shutdown of a single target does not necessarily eradicate cancer, the use of combinations of molecular-targeted agents has been proposed, and some pioneering research has been conducted to examine the efficacy of this strategy. The combination of these two modalities offers a synergistic approach, enhancing the efficacy of tumor eradication. Recent studies have elucidated the rationale behind this combination therapy, but a limited response rate has been achieved with monotherapy. Clinical trials have demonstrated the potential of this combination, with improved outcomes in various solid tumor types. The dual blockade of angiogenesis and immune checkpoints is poised to become a standard of care, with indications expected to expand as more evidence accumulates. The antitumor efficacy of current therapies is limited, most likely because of the high degree of cancer clonal heterogeneity, intratumor genetic heterogeneity, and cell signal complexity. Although numerous studies have been conducted in this area, this review provides a comprehensive analysis of the molecular rationale for ICIs and AADs in cancer therapy. We not only compare the individual properties and mechanisms of both treatments, but also explore their complementary roles, which are essential for optimizing personalized treatment strategies. By addressing key challenges such as tumor heterogeneity, immune evasion, and resistance to monotherapies, we demonstrate how this combination approach can enhance treatment outcomes. Furthermore, we incorporate the latest preclinical and clinical findings and offer future perspectives on optimizing drug selection, dosing, and treatment design to maximize therapeutic efficacy.",
+        "affiliation": "Student Research Committee, Ahvaz Jundishapur University of Medical Sciences, Ahvaz, Iran.",
+        "publicationStatus": "epublish",
+        "language": "eng",
+        "pubModel": "Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Neovascularization, Pathologic",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Angiogenesis Inhibitors",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "PD",
+                    "qualifierName": "pharmacology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Immune Checkpoint Inhibitors",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "PD",
+                    "qualifierName": "pharmacology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "keywordList": {
+          "keyword": [
+            "Angiogenesis",
+            "Targeted Therapy",
+            "Cancer Immunotherapy",
+            "Immune Checkpoint Inhibitors"
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "Angiogenesis Inhibitors",
+              "registryNumber": "0"
+            },
+            {
+              "name": "Immune Checkpoint Inhibitors",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1007/s10238-025-01751-7"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12238221"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12238221?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 17,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "license": "cc by-nc-nd",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-07-08",
+        "dateOfCreation": "2025-07-08",
+        "firstIndexDate": "2025-07-09",
+        "fullTextReceivedDate": "2025-07-11",
+        "dateOfRevision": "2025-12-05",
+        "electronicPublicationDate": "2025-07-08",
+        "firstPublicationDate": "2025-07-08"
+      },
+      {
+        "id": "40627813",
+        "source": "MED",
+        "pmid": "40627813",
+        "pmcid": "PMC12622257",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12622257"
+          ]
+        },
+        "doi": "10.1200/jco-25-01346",
+        "title": "RP1 Combined With Nivolumab in Advanced Anti-PD-1-Failed Melanoma (IGNYTE).",
+        "authorString": "Wong MK, Milhem MM, Sacco JJ, Michels J, In GK, Muñoz Couselo E, Schadendorf D, Beasley GM, Niu J, Chmielowski B, Wise-Draper TM, Bowles TL, Tsai KK, Lebbé C, Gaudy-Marqueste C, Middleton MR, Skolariki A, Samson A, Chesney JA, VanderWalde AM, Zakharia Y, Harrington KJ, Appleton E, Bommareddy PK, Zhu J, Viana M, Hou JW, Coffin RS, Robert C.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Wong MK",
+              "firstName": "Michael K",
+              "lastName": "Wong",
+              "initials": "MK",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-7526-1262"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Roswell Park Comprehensive Cancer Center, Buffalo, NY."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Milhem MM",
+              "firstName": "Mohammed M",
+              "lastName": "Milhem",
+              "initials": "MM",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-4663-6824"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Holden Comprehensive Cancer Center, University of Iowa, Iowa City, IA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Sacco JJ",
+              "firstName": "Joseph J",
+              "lastName": "Sacco",
+              "initials": "JJ",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-2591-9796"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The Clatterbridge Cancer Centre, Wirral, United Kingdom."
+                  },
+                  {
+                    "affiliation": "University of Liverpool, Liverpool, United Kingdom."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Michels J",
+              "firstName": "Judith",
+              "lastName": "Michels",
+              "initials": "J",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-9640-0222"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Département de Médecine Oncologique, Gustave Roussy, Villejuif, France."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "In GK",
+              "firstName": "Gino K",
+              "lastName": "In",
+              "initials": "GK",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "University of Southern California Norris Comprehensive Cancer Center, Los Angeles, CA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Muñoz Couselo E",
+              "firstName": "Eva",
+              "lastName": "Muñoz Couselo",
+              "initials": "E",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-7556-7608"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Vall d'Hebron Institute of Oncology (VHIO) and Vall d'Hebron Hospital Medical Oncology Department, Barcelona, Spain."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Schadendorf D",
+              "firstName": "Dirk",
+              "lastName": "Schadendorf",
+              "initials": "D",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-3524-7858"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Dermatology, West German Cancer Center, University Hospital Essen, Essen & National Center for Tumor Diseases (NCT-West), Campus Essen & University Alliance Ruhr, Research Alliance Ruhr, Research Center One Health, University Duisburg-Essen, Campus Essen, Germany."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Beasley GM",
+              "firstName": "Georgia M",
+              "lastName": "Beasley",
+              "initials": "GM",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-6387-9030"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Duke Cancer Institute, Duke University, Durham, NC."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Niu J",
+              "firstName": "Jiaxin",
+              "lastName": "Niu",
+              "initials": "J",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-9018-287X"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Banner MD Anderson Cancer Center, Gilbert, AZ."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Chmielowski B",
+              "firstName": "Bartosz",
+              "lastName": "Chmielowski",
+              "initials": "B",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-2374-3320"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Jonsson Comprehensive Cancer Center, University of California Los Angeles, Los Angeles, CA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Wise-Draper TM",
+              "firstName": "Trisha M",
+              "lastName": "Wise-Draper",
+              "initials": "TM",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-7279-4028"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "University of Cincinnati Cancer Center, University of Cincinnati, Cincinnati, OH."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Bowles TL",
+              "firstName": "Tawnya Lynn",
+              "lastName": "Bowles",
+              "initials": "TL",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-1883-1510"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Intermountain Medical Center, Murray, UT."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Tsai KK",
+              "firstName": "Katy K",
+              "lastName": "Tsai",
+              "initials": "KK",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-7705-1813"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Helen Diller Family Comprehensive Cancer Center, University of California San Francisco, San Francisco, CA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Lebbé C",
+              "firstName": "Céleste",
+              "lastName": "Lebbé",
+              "initials": "C",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-5854-7290"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Université Paris Cité, AP-HP Dermato-Oncology and CIC, Cancer Institute APHP. Nord-Université Paris Cité, INSERM U976, Saint Louis Hospital, Paris, France."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Gaudy-Marqueste C",
+              "firstName": "Caroline",
+              "lastName": "Gaudy-Marqueste",
+              "initials": "C",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Aix-Marseille Université, APHM, Centre de Recherche en Cancérologie de Marseille (CRCM), INSERM, U1068, CNRS, UMR7258, UM105, Hôpital Timone, CEPCM, Dermatology and Skin Cancer Department, Marseille, France."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Middleton MR",
+              "firstName": "Mark R",
+              "lastName": "Middleton",
+              "initials": "MR",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-0167-1685"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Churchill Hospital and University of Oxford, Oxford, United Kingdom."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Skolariki A",
+              "firstName": "Aglaia",
+              "lastName": "Skolariki",
+              "initials": "A",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Churchill Hospital and University of Oxford, Oxford, United Kingdom."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Samson A",
+              "firstName": "Adel",
+              "lastName": "Samson",
+              "initials": "A",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Leeds Institute of Medical Research at St James's, University of Leeds, Leeds, United Kingdom."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Chesney JA",
+              "firstName": "Jason A",
+              "lastName": "Chesney",
+              "initials": "JA",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-0217-8278"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "James Graham Brown Cancer Center, University of Louisville, Louisville, KY."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "VanderWalde AM",
+              "firstName": "Ari M",
+              "lastName": "VanderWalde",
+              "initials": "AM",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-6842-2563"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "West Cancer Center and Research Institute, Germantown, TN."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Zakharia Y",
+              "firstName": "Yousef",
+              "lastName": "Zakharia",
+              "initials": "Y",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-9480-2626"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Holden Comprehensive Cancer Center, University of Iowa, Iowa City, IA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Harrington KJ",
+              "firstName": "Kevin J",
+              "lastName": "Harrington",
+              "initials": "KJ",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-6014-348X"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The Institute of Cancer Research/Royal Marsden NIHR Biomedical Research Centre, London, United Kingdom."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Appleton E",
+              "firstName": "Elizabeth",
+              "lastName": "Appleton",
+              "initials": "E",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The Institute of Cancer Research/Royal Marsden NIHR Biomedical Research Centre, London, United Kingdom."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Bommareddy PK",
+              "firstName": "Praveen K",
+              "lastName": "Bommareddy",
+              "initials": "PK",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-0089-8693"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Replimune, Inc, Woburn, MA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Zhu J",
+              "firstName": "Junhong",
+              "lastName": "Zhu",
+              "initials": "J",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Replimune, Inc, Woburn, MA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Viana M",
+              "firstName": "Marcus",
+              "lastName": "Viana",
+              "initials": "M",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Replimune, Inc, Woburn, MA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Hou JW",
+              "firstName": "Jeannie W",
+              "lastName": "Hou",
+              "initials": "JW",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Replimune, Inc, Woburn, MA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Coffin RS",
+              "firstName": "Robert S",
+              "lastName": "Coffin",
+              "initials": "RS",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Replimune, Inc, Woburn, MA."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Robert C",
+              "firstName": "Caroline",
+              "lastName": "Robert",
+              "initials": "C",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-9493-0238"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Gustave Roussy and Paris-Saclay University, Villejuif, France."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0001-6387-9030"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0001-7526-1262"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0001-7556-7608"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0001-9018-287X"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0001-9480-2626"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-1883-1510"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-2374-3320"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-5854-7290"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-6014-348X"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-6842-2563"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-7279-4028"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-7705-1813"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-9493-0238"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-9640-0222"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-0089-8693"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-0167-1685"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-0217-8278"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-2591-9796"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-3524-7858"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-4663-6824"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "33",
+          "volume": "43",
+          "journalIssueId": 4050473,
+          "dateOfPublication": "2025 Nov",
+          "monthOfPublication": 11,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-11-01",
+          "journal": {
+            "title": "Journal of clinical oncology : official journal of the American Society of Clinical Oncology",
+            "medlineAbbreviation": "J Clin Oncol",
+            "essn": "1527-7755",
+            "issn": "0732-183X",
+            "isoabbreviation": "J Clin Oncol",
+            "nlmid": "8309333"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "3589-3599",
+        "abstractText": "<h4>Purpose</h4>Effective treatment options for melanoma after immune checkpoint blockade failure are limited. RP1 (vusolimogene oderparepvec) is a herpes simplex virus type 1-based oncolytic immunotherapy, here evaluated in combination with nivolumab in anti-PD-1-failed melanoma.<h4>Methods</h4>Patients had advanced melanoma that had confirmed progression on anti-PD-1 (≥8 weeks, last prior treatment). RP1 was administered intratumorally (≤8 doses, ≤10 mL/dose; additional doses allowed) with nivolumab (≤2 years). The objective response rate (ORR) was assessed by independent central review using Response Evaluation Criteria in Solid Tumors version 1.1.<h4>Results</h4>Of 140 patients enrolled, 48.6% had stage IVM1b/c/d disease, 65.7% had primary anti-PD-1 resistance, 56.4% were PD-L1 negative, and 46.4% received prior anti-PD-1 and anti-cytotoxic T-lymphocyte antigen-4 therapy (43.6% in combination and 2.9% sequentially). Confirmed ORR (95% CI) was 32.9% (95% CI, 25.2% to 41.3%; 15.0% complete response). Responses occurred with similar frequency, depth, duration, and kinetics for injected and noninjected, including visceral lesions. The median (95% CI) duration of response was 33.7 (95% CI, 14.1 to not reached) months. Overall survival rates (95% CI) at 1 and 2 years were 75.3% (95% CI, 66.9% to 81.9%) and 63.3% (95% CI, 53.6% to 71.5%), respectively. Biomarker analysis demonstrated broad immune activation associated with response, including increased CD8<sup>+</sup> T-cell infiltration and PD-L1 expression. Treatment-related adverse event rates were 77.1% grade 1/2, 9.3% grade 3, 3.6% grade 4, and no grade 5 events.<h4>Conclusion</h4>RP1 combined with nivolumab provided deep and durable systemic responses in patients with anti-PD-1-failed melanoma, including those with poor prognostic factors. The safety profile was favorable, with mostly grade 1/2 adverse events.",
+        "affiliation": "Roswell Park Comprehensive Cancer Center, Buffalo, NY.",
+        "publicationStatus": "ppublish",
+        "language": "eng",
+        "pubModel": "Print-Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "Clinical Trial, Phase II",
+            "research-article",
+            "Multicenter Study",
+            "Journal Article"
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Herpesvirus 1, Human",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Melanoma",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TH",
+                    "qualifierName": "therapy",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Skin Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Adult"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Aged"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Aged, 80 and over"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Middle Aged"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Female"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Male"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Oncolytic Virotherapy",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AE",
+                    "qualifierName": "adverse effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "MT",
+                    "qualifierName": "methods",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Programmed Cell Death 1 Receptor",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AI",
+                    "qualifierName": "antagonists & inhibitors",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Nivolumab",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AD",
+                    "qualifierName": "administration & dosage",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "AE",
+                    "qualifierName": "adverse effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Immune Checkpoint Inhibitors",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AE",
+                    "qualifierName": "adverse effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "Programmed Cell Death 1 Receptor",
+              "registryNumber": "0"
+            },
+            {
+              "name": "PDCD1 protein, human",
+              "registryNumber": "0"
+            },
+            {
+              "name": "nivolumab",
+              "registryNumber": "31YO63LBSN"
+            },
+            {
+              "name": "Immune Checkpoint Inhibitors",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1200/JCO-25-01346"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12622257"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12622257?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 11,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by-nc-nd",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "eudract",
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-11-17",
+        "dateOfCreation": "2025-07-08",
+        "firstIndexDate": "2025-07-09",
+        "fullTextReceivedDate": "2025-11-19",
+        "dateOfRevision": "2025-11-19",
+        "electronicPublicationDate": "2025-07-08",
+        "firstPublicationDate": "2025-07-08"
+      },
+      {
+        "id": "40057911",
+        "source": "MED",
+        "pmid": "40057911",
+        "pmcid": "PMC12319402",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12319402"
+          ]
+        },
+        "doi": "10.1158/2159-8290.cd-24-1475",
+        "title": "T-cell Dependency of Tumor Regressions and Complete Responses with RAS(ON) Multi-selective Inhibition in Preclinical Models of Pancreatic Ductal Adenocarcinoma.",
+        "authorString": "Orlen M, Vostrejs WP, Sor R, McDevitt JC, Kemp SB, Kim IK, Kramer AB, Tovbis Shifrin N, Markosyan N, Clendenin C, Singh M, Quintana E, Menard M, Vonderheide RH, Stanger BZ.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Orlen M",
+              "firstName": "Margo",
+              "lastName": "Orlen",
+              "initials": "M",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-9834-6282"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Vostrejs WP",
+              "firstName": "William P",
+              "lastName": "Vostrejs",
+              "initials": "WP",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-1659-0186"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Sor R",
+              "firstName": "Rina",
+              "lastName": "Sor",
+              "initials": "R",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-2042-5746"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "McDevitt JC",
+              "firstName": "Jayne C",
+              "lastName": "McDevitt",
+              "initials": "JC",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-5261-394X"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Kemp SB",
+              "firstName": "Samantha B",
+              "lastName": "Kemp",
+              "initials": "SB",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-1505-4015"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Kim IK",
+              "firstName": "Il-Kyu",
+              "lastName": "Kim",
+              "initials": "IK",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-4661-0133"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Kramer AB",
+              "firstName": "Adam B",
+              "lastName": "Kramer",
+              "initials": "AB",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-7818-3837"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Tovbis Shifrin N",
+              "firstName": "Nataliya",
+              "lastName": "Tovbis Shifrin",
+              "initials": "N",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-4312-0606"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Revolution Medicines, Redwood City, California."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Markosyan N",
+              "firstName": "Nune",
+              "lastName": "Markosyan",
+              "initials": "N",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-4618-9454"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Clendenin C",
+              "firstName": "Cynthia",
+              "lastName": "Clendenin",
+              "initials": "C",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-4535-2088"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Singh M",
+              "firstName": "Mallika",
+              "lastName": "Singh",
+              "initials": "M",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0009-0003-0234-1589"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Revolution Medicines, Redwood City, California."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Quintana E",
+              "firstName": "Elsa",
+              "lastName": "Quintana",
+              "initials": "E",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-4123-1695"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Revolution Medicines, Redwood City, California."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Menard M",
+              "firstName": "Marie",
+              "lastName": "Menard",
+              "initials": "M",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-1511-4361"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Revolution Medicines, Redwood City, California."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Vonderheide RH",
+              "firstName": "Robert H",
+              "lastName": "Vonderheide",
+              "initials": "RH",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-7252-954X"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Stanger BZ",
+              "firstName": "Ben Z",
+              "lastName": "Stanger",
+              "initials": "BZ",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0003-0410-4037"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Abramson Cancer Center and Abramson Family Cancer Research Institute, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  },
+                  {
+                    "affiliation": "Department of Cell and Developmental Biology, University of Pennsylvania, Philadelphia, Pennsylvania."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0001-5261-394X"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0001-7818-3837"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-1505-4015"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-1659-0186"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-4123-1695"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-4312-0606"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-4661-0133"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-7252-954X"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-9834-6282"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-0410-4037"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-1511-4361"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-2042-5746"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-4535-2088"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0003-4618-9454"
+            },
+            {
+              "type": "ORCID",
+              "value": "0009-0003-0234-1589"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "8",
+          "volume": "15",
+          "journalIssueId": 3988335,
+          "dateOfPublication": "2025 Aug",
+          "monthOfPublication": 8,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-08-01",
+          "journal": {
+            "title": "Cancer discovery",
+            "medlineAbbreviation": "Cancer Discov",
+            "essn": "2159-8290",
+            "issn": "2159-8274",
+            "isoabbreviation": "Cancer Discov",
+            "nlmid": "101561693"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "1697-1716",
+        "abstractText": "Activating mutations in KRAS drive tumorigenesis in pancreatic ductal adenocarcinoma (PDAC), promoting tumor cell proliferation and contributing to an immunosuppressive tumor microenvironment, rendering PDAC tumors insensitive to immunotherapy. RAS(ON) multi-selective inhibitors, such as daraxonrasib (RMC-6236) and RMC-7977, target the active state of RAS, with potent antitumor activity in PDAC murine models. In this study, we report that RAS(ON) multi-selective inhibition led to rapid and profound PDAC regressions in immunocompetent mice, decreasing myeloid cells and increasing T cells and macrophages in the tumor microenvironment. The depth and duration of tumor regression depended on T cells and conventional dendritic cells. Moreover, the combination of RAS(ON) multi-selective inhibitors with immunotherapy conferred deeper and more durable tumor regressions, including complete responses not seen with either treatment alone. In summary, concurrent inhibition of mutant and wild-type RAS is active in concert with T-cell immunotherapy, revealing RAS(ON) multi-selective inhibitors as a potential therapeutic immuno-sensitizing strategy in PDAC.<h4>Significance</h4>RAS(ON) multi-selective inhibitors enhance antitumor immunity in preclinical models of PDAC, resulting in deeper and more durable responses when combined with immunotherapy. These findings support the clinical evaluation of immune-based strategies that may prolong the response to RAS inhibitor therapies as well as overcome issues of therapeutic resistance to inhibitors alone. See related commentary by Lasse Opsahl and Pasca di Magliano, p. 1537.",
+        "affiliation": "Department of Medicine, Perelman School of Medicine, University of Pennsylvania, Philadelphia, Pennsylvania.",
+        "publicationStatus": "ppublish",
+        "language": "eng",
+        "pubModel": "Print",
+        "pubTypeList": {
+          "pubType": [
+            "research-article",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "P30DK050306",
+              "agency": "National Institute of Diabetes and Digestive and Kidney Diseases",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30 CA016520",
+              "agency": "NCI NIH HHS",
+              "acronym": "CA",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01CA276512",
+              "agency": "National Cancer Institute",
+              "orderIn": 0
+            },
+            {
+              "grantId": "N/A",
+              "agency": "A Love for Life",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30CA016520",
+              "agency": "National Cancer Institute",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30DK050306",
+              "agency": "National Institute of Diabetes and Digestive and Kidney Diseases (NIDDK)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01 CA252225",
+              "agency": "NCI NIH HHS",
+              "acronym": "CA",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01 CA276512",
+              "agency": "NCI NIH HHS",
+              "acronym": "CA",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30 DK050306",
+              "agency": "NIDDK NIH HHS",
+              "acronym": "DK",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P30CA016520",
+              "agency": "National Cancer Institute (NCI)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "W81XWH2210730",
+              "agency": "U.S. Department of Defense (DOD)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01CA252225",
+              "agency": "National Cancer Institute",
+              "orderIn": 0
+            },
+            {
+              "grantId": "N/A",
+              "agency": "Basser Center for BRCA",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01CA252225",
+              "agency": "National Cancer Institute (NCI)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "R01CA276512",
+              "agency": "National Cancer Institute (NCI)",
+              "orderIn": 0
+            },
+            {
+              "grantId": "W81XWH2210730",
+              "agency": "U.S. Department of Defense",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "T-Lymphocytes",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Cell Line, Tumor"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Mice, Inbred C57BL"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Mice, Transgenic"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Mice"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Carcinoma, Pancreatic Ductal",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Pancreatic Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Neoplasms, Experimental",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Piperazines"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Antineoplastic Combined Chemotherapy Protocols",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "PD",
+                    "qualifierName": "pharmacology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Drug Screening Assays, Antitumor"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Tumor Escape",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Drug Synergism"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Drug Resistance, Neoplasm",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Female"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Male"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Proto-Oncogene Proteins p21(ras)",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AI",
+                    "qualifierName": "antagonists & inhibitors",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Tumor Microenvironment",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Carcinogenesis",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Gain of Function Mutation"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Antineoplastic Agents, Immunological",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "PD",
+                    "qualifierName": "pharmacology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "Piperazines",
+              "registryNumber": "0"
+            },
+            {
+              "name": "Proto-Oncogene Proteins p21(ras)",
+              "registryNumber": "EC 3.6.5.2"
+            },
+            {
+              "name": "Antineoplastic Agents, Immunological",
+              "registryNumber": "0"
+            },
+            {
+              "name": "RMC-7977",
+              "registryNumber": "0"
+            },
+            {
+              "name": "RAS Inhibitor A122",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1158/2159-8290.CD-24-1475"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12319402"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12319402?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "Y",
+        "citedByCount": 11,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by-nc-nd",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-08-21",
+        "dateOfCreation": "2025-03-09",
+        "firstIndexDate": "2025-03-10",
+        "fullTextReceivedDate": "2025-08-06",
+        "dateOfRevision": "2025-08-21",
+        "firstPublicationDate": "2025-08-01"
+      },
+      {
+        "id": "39172536",
+        "source": "MED",
+        "pmid": "39172536",
+        "pmcid": "PMC12391672",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12391672"
+          ]
+        },
+        "doi": "10.1093/cvr/cvae177",
+        "title": "Anti-ageing interventions for the treatment of cardiovascular disease.",
+        "authorString": "Abdellatif M, Schmid ST, Fuerlinger A, Kroemer G.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Abdellatif M",
+              "firstName": "Mahmoud",
+              "lastName": "Abdellatif",
+              "initials": "M",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-5042-9054"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Cardiology, Medical University of Graz, 8036 Graz, Austria."
+                  },
+                  {
+                    "affiliation": "Centre de Recherche des Cordeliers, Equipe labellisée par la Ligue contre le cancer, Inserm U1138, Université Paris Cité, Sorbonne Université, 75006 Paris, France."
+                  },
+                  {
+                    "affiliation": "Metabolomics and Cell Biology Platforms, Institut Gustave Roussy, 94805 Villejuif, France."
+                  },
+                  {
+                    "affiliation": "BioTechMed-Graz, 8010 Graz, Austria."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Schmid ST",
+              "firstName": "Sophie T",
+              "lastName": "Schmid",
+              "initials": "ST",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Cardiology, Medical University of Graz, 8036 Graz, Austria."
+                  },
+                  {
+                    "affiliation": "BioTechMed-Graz, 8010 Graz, Austria."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Fuerlinger A",
+              "firstName": "Alexander",
+              "lastName": "Fuerlinger",
+              "initials": "A",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0009-0008-5583-106X"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Cardiology, Medical University of Graz, 8036 Graz, Austria."
+                  },
+                  {
+                    "affiliation": "BioTechMed-Graz, 8010 Graz, Austria."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Kroemer G",
+              "firstName": "Guido",
+              "lastName": "Kroemer",
+              "initials": "G",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0002-9334-4405"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Centre de Recherche des Cordeliers, Equipe labellisée par la Ligue contre le cancer, Inserm U1138, Université Paris Cité, Sorbonne Université, 75006 Paris, France."
+                  },
+                  {
+                    "affiliation": "Metabolomics and Cell Biology Platforms, Institut Gustave Roussy, 94805 Villejuif, France."
+                  },
+                  {
+                    "affiliation": "Department of Biology, Hôpital Européen Georges Pompidou, Institut du Cancer Paris CARPEM, AP-HP, 75015 Paris, France."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0002-5042-9054"
+            },
+            {
+              "type": "ORCID",
+              "value": "0000-0002-9334-4405"
+            },
+            {
+              "type": "ORCID",
+              "value": "0009-0008-5583-106X"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics"
+          ]
+        },
+        "journalInfo": {
+          "issue": "10",
+          "volume": "121",
+          "journalIssueId": 4003469,
+          "dateOfPublication": "2025 Aug",
+          "monthOfPublication": 8,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-08-01",
+          "journal": {
+            "title": "Cardiovascular research",
+            "medlineAbbreviation": "Cardiovasc Res",
+            "essn": "1755-3245",
+            "issn": "0008-6363",
+            "isoabbreviation": "Cardiovasc Res",
+            "nlmid": "0077427"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "1524-1536",
+        "abstractText": "As the global demographic landscape continues to shift towards an aged population, so does the medical and socioeconomic burden of cardiovascular diseases. Indeed, ageing is one of, if not, the key risk factor for the development of cardiovascular diseases. However, there are currently no approved cardiovascular therapeutics that primarily target the molecular and cellular mechanisms underlying the ageing process itself. In this review, we present the potential of emerging anti-ageing strategies, including epigenetic rejuvenation, metabolic reprogramming, autophagy activation, as well as senolytic and anti-inflammatory therapies, in delaying or reversing the development of age-related cardiovascular disorders, while considering potential sex differences. In doing so, we implicate cellular ageing processes in the pathogenesis of several prevalent cardiovascular diseases, such as atherosclerosis, hypertension, various types of cardiomyopathies (including its hypertrophic, ischaemic, dilated, diabetic, and arrhythmogenic forms) and heart failure, particularly that with preserved ejection fraction. Finally, we outline future challenges and steps needed for the implementation of these novel anti-ageing strategies in the clinical setting, with the aim of challenging the long-held notion of ageing as a 'non-modifiable' risk factor for cardiovascular diseases.",
+        "affiliation": "Department of Cardiology, Medical University of Graz, 8036 Graz, Austria.",
+        "publicationStatus": "ppublish",
+        "language": "eng",
+        "pubModel": "Print",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "ANR-21-RHUS-0017",
+              "agency": "RHUs Immunolife and LUCA-pi",
+              "orderIn": 0
+            },
+            {
+              "agency": "Cancer Research ASPIRE",
+              "orderIn": 0
+            },
+            {
+              "agency": "EU Horizon Europe Research and Innovation Programme",
+              "orderIn": 0
+            },
+            {
+              "agency": "PREVALUNG EU",
+              "orderIn": 0
+            },
+            {
+              "agency": "Seerave Foundation",
+              "orderIn": 0
+            },
+            {
+              "grantId": "861878",
+              "agency": "Neutrocure",
+              "orderIn": 0
+            },
+            {
+              "grantId": "ANR-23-CE44-0030",
+              "agency": "Agence National de la Recherche",
+              "orderIn": 0
+            },
+            {
+              "grantId": "H2020-MSCA-IF",
+              "agency": "European Commission",
+              "orderIn": 0
+            },
+            {
+              "agency": "Association pour la recherche sur le cancer",
+              "orderIn": 0
+            },
+            {
+              "agency": "Hevolution Network on Senescence in Aging",
+              "orderIn": 0
+            },
+            {
+              "agency": "Neutrocure",
+              "orderIn": 0
+            },
+            {
+              "grantId": "23-R4HC-0006",
+              "agency": "Agence National de la Recherche",
+              "orderIn": 0
+            },
+            {
+              "grantId": "ANR-22-CE14-0066",
+              "agency": "Agence National de la Recherche",
+              "orderIn": 0
+            },
+            {
+              "agency": "Institut National Du Cancer",
+              "orderIn": 0
+            },
+            {
+              "agency": "Association pour la Recherche sur le Cancer",
+              "orderIn": 0
+            },
+            {
+              "agency": "Medical University of Graz",
+              "orderIn": 0
+            },
+            {
+              "agency": "SIRIC Cancer Research and Personalized Medicine",
+              "orderIn": 0
+            },
+            {
+              "grantId": "ANR-23-RHUS-0010",
+              "agency": "RHUs Immunolife and LUCA-pi",
+              "orderIn": 0
+            },
+            {
+              "agency": "BioTechMed-Graz",
+              "orderIn": 0
+            },
+            {
+              "agency": "European Research Area for Health",
+              "orderIn": 0
+            },
+            {
+              "grantId": "101095604",
+              "agency": "Gut OncoMicrobiome Signatures",
+              "orderIn": 0
+            },
+            {
+              "grantId": "825410",
+              "agency": "European Union Horizon 2020 research and innovation programmes",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P34926 &amp; I6931",
+              "agency": "Austrian Science Fund FWF",
+              "orderIn": 0
+            },
+            {
+              "agency": "Austrian Society of Cardiology",
+              "orderIn": 0
+            },
+            {
+              "agency": "Institut National du Cancer",
+              "orderIn": 0
+            },
+            {
+              "grantId": "101095426",
+              "agency": "ERA4Health",
+              "orderIn": 0
+            },
+            {
+              "grantId": "P34926 & I6931",
+              "agency": "Austrian Science Fund FWF",
+              "orderIn": 0
+            },
+            {
+              "agency": "Cancéropôle Ile-de-France; Fondation pour la Recherche Médicale",
+              "orderIn": 0
+            },
+            {
+              "agency": "European Joint Programme on Rare Diseases",
+              "orderIn": 0
+            },
+            {
+              "agency": "Ligue contre le Cancer",
+              "orderIn": 0
+            },
+            {
+              "agency": "Young Researcher Group",
+              "orderIn": 0
+            },
+            {
+              "grantId": "101052444",
+              "agency": "European Research Council",
+              "orderIn": 0
+            },
+            {
+              "grantId": "ERC-2021-ADG",
+              "agency": "European Research Council",
+              "orderIn": 0
+            },
+            {
+              "agency": "European Research Council",
+              "acronym": "ERC_",
+              "orderIn": 0
+            },
+            {
+              "agency": "Immunogenic cell death",
+              "orderIn": 0
+            },
+            {
+              "agency": "Institut Universitaire de France",
+              "orderIn": 0
+            },
+            {
+              "agency": "Ligue Contre le Cancer",
+              "orderIn": 0
+            },
+            {
+              "agency": "Mark Foundation",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Cardiovascular System",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PP",
+                    "qualifierName": "physiopathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Cardiovascular Diseases",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "EP",
+                    "qualifierName": "epidemiology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PP",
+                    "qualifierName": "physiopathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PC",
+                    "qualifierName": "prevention & control",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Anti-Inflammatory Agents",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AE",
+                    "qualifierName": "adverse effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Cardiovascular Agents",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AE",
+                    "qualifierName": "adverse effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Treatment Outcome"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Rejuvenation"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Risk Factors"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Age Factors"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Signal Transduction",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Epigenesis, Genetic",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Aging",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "GE",
+                    "qualifierName": "genetics",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Autophagy",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Cellular Senescence",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DE",
+                    "qualifierName": "drug effects",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Senotherapeutics",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "AE",
+                    "qualifierName": "adverse effects",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "keywordList": {
+          "keyword": [
+            "Metabolism",
+            "Ageing",
+            "Senescence",
+            "Inflammation",
+            "Autophagy"
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "Anti-Inflammatory Agents",
+              "registryNumber": "0"
+            },
+            {
+              "name": "Cardiovascular Agents",
+              "registryNumber": "0"
+            },
+            {
+              "name": "Senotherapeutics",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1093/cvr/cvae177"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12391672"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12391672?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 16,
+        "hasData": "N",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by-nc",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "N",
+        "dateOfCompletion": "2025-08-28",
+        "dateOfCreation": "2024-08-22",
+        "firstIndexDate": "2024-08-25",
+        "fullTextReceivedDate": "2025-09-01",
+        "dateOfRevision": "2025-08-30",
+        "firstPublicationDate": "2025-08-01"
+      },
+      {
+        "id": "40537775",
+        "source": "MED",
+        "pmid": "40537775",
+        "pmcid": "PMC12178005",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12178005"
+          ]
+        },
+        "doi": "10.1186/s13045-025-01717-y",
+        "title": "Extracellular matrix dynamics in tumor immunoregulation: from tumor microenvironment to immunotherapy.",
+        "authorString": "Hu Q, Zhu Y, Mei J, Liu Y, Zhou G.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Hu Q",
+              "firstName": "Qin",
+              "lastName": "Hu",
+              "initials": "Q",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The Affiliated Cancer Hospital of Nanjing Medical University, Jiangsu Cancer Hospital, Jiangsu Institute of Cancer Research, Nanjing, Jiangsu, People's Republic of China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Zhu Y",
+              "firstName": "Yifei",
+              "lastName": "Zhu",
+              "initials": "Y",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The Affiliated Cancer Hospital of Nanjing Medical University, Jiangsu Cancer Hospital, Jiangsu Institute of Cancer Research, Nanjing, Jiangsu, People's Republic of China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Mei J",
+              "firstName": "Jie",
+              "lastName": "Mei",
+              "initials": "J",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The First Clinical Medicine College, Nanjing Medical University, Nanjing, Jiangsu, People's Republic of China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Liu Y",
+              "firstName": "Ying",
+              "lastName": "Liu",
+              "initials": "Y",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Jiangsu Cancer Hospital, The Affiliated Cancer Hospital of Nanjing Medical University, Jiangsu Institute of Cancer Research, Nanjing, Jiangsu, People's Republic of China. liuying5250@163.com."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Zhou G",
+              "firstName": "Guoren",
+              "lastName": "Zhou",
+              "initials": "G",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "The Affiliated Cancer Hospital of Nanjing Medical University, Jiangsu Cancer Hospital, Jiangsu Institute of Cancer Research, Nanjing, Jiangsu, People's Republic of China. zhouguoren888@126.com."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "1",
+          "volume": "18",
+          "journalIssueId": 3955757,
+          "dateOfPublication": "2025 Jun",
+          "monthOfPublication": 6,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-06-01",
+          "journal": {
+            "title": "Journal of hematology & oncology",
+            "medlineAbbreviation": "J Hematol Oncol",
+            "essn": "1756-8722",
+            "issn": "1756-8722",
+            "isoabbreviation": "J Hematol Oncol",
+            "nlmid": "101468937"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "65",
+        "abstractText": "The extracellular matrix (ECM), closely linked to the dynamic changes in the tumor microenvironment (TME), plays a critical role in modulating tumor immunity. The dual role of the ECM in tumor progression, encompassing both promotion and inhibition, is attributed to its components influencing immune cell activation, migration, and infiltration. This mechanism is intricately connected with the efficacy of immunotherapies. Currently, there is limited understanding of how ECM remodeling spatially and temporally coordinates with immune checkpoint inhibitors (ICIs) or adoptive cell therapies. Furthermore, strategies to selectively target pathological ECM components while preserving their homeostatic functions urgently require systematic investigation. In this review, we summarize current findings on the interplay between ECM and tumor immune regulation, with a particular focus on how key ECM components contribute to immune modulation. Furthermore, we discuss emerging strategies targeting ECM-related mechanisms to enhance the efficacy of immunotherapies, including approaches that remodel the ECM to improve immune infiltration and strategies that synergize with existing immunotherapies. By integrating these insights, we provide a perspective on leveraging ECM-targeted interventions to overcome immune evasion and optimize cancer immunotherapy outcomes.",
+        "affiliation": "The Affiliated Cancer Hospital of Nanjing Medical University, Jiangsu Cancer Hospital, Jiangsu Institute of Cancer Research, Nanjing, Jiangsu, People's Republic of China.",
+        "publicationStatus": "epublish",
+        "language": "eng",
+        "pubModel": "Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "82273162",
+              "agency": "National Natural Science Foundation of China",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Extracellular Matrix",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TH",
+                    "qualifierName": "therapy",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Immunotherapy",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "MT",
+                    "qualifierName": "methods",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Tumor Microenvironment",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Immune Checkpoint Inhibitors",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "Immune Checkpoint Inhibitors",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1186/s13045-025-01717-y"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12178005"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12178005?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 11,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "N",
+        "license": "cc by-nc-nd",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-06-24",
+        "dateOfCreation": "2025-06-19",
+        "firstIndexDate": "2025-06-20",
+        "fullTextReceivedDate": "2025-06-21",
+        "dateOfRevision": "2025-06-24",
+        "electronicPublicationDate": "2025-06-19",
+        "firstPublicationDate": "2025-06-19"
+      },
+      {
+        "id": "40536609",
+        "source": "MED",
+        "pmid": "40536609",
+        "pmcid": "PMC12178997",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12178997"
+          ]
+        },
+        "doi": "10.1007/s12032-025-02822-1",
+        "title": "Immune checkpoint inhibitors in cancer therapy: what lies beyond monoclonal antibodies?",
+        "authorString": "Zamani MR, Šácha P.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Zamani MR",
+              "firstName": "Mohammad Reza",
+              "lastName": "Zamani",
+              "initials": "MR",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Department of Cell Biology, Faculty of Science, Charles University, Prague, Czech Republic."
+                  },
+                  {
+                    "affiliation": "Institute of Organic Chemistry and Biochemistry, Czech Academy of Sciences, Flemingovo n. 2, Prague 6, Prague, 16610, Czech Republic."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Šácha P",
+              "firstName": "Pavel",
+              "lastName": "Šácha",
+              "initials": "P",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Institute of Organic Chemistry and Biochemistry, Czech Academy of Sciences, Flemingovo n. 2, Prague 6, Prague, 16610, Czech Republic. pavel.sacha@uochb.cas.cz."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "7",
+          "volume": "42",
+          "journalIssueId": 3953757,
+          "dateOfPublication": "2025 Jun",
+          "monthOfPublication": 6,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-06-01",
+          "journal": {
+            "title": "Medical oncology (Northwood, London, England)",
+            "medlineAbbreviation": "Med Oncol",
+            "essn": "1559-131X",
+            "issn": "1357-0560",
+            "isoabbreviation": "Med Oncol",
+            "nlmid": "9435512"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "273",
+        "abstractText": "Immune checkpoints are critical in modulating immune responses and maintaining self-tolerance. Cancer cells can exploit these mechanisms to evade immune detection, making immune checkpoints attractive targets for cancer therapy. The introduction of immune checkpoint inhibitors (ICIs) has transformed cancer treatment, with monoclonal antibodies targeting CTLA-4, PD-1, and PD-L1 demonstrating clinical success. However, challenges such as immune-related adverse events, primary and acquired resistance, and high treatment costs persist. To address these challenges, it is essential to explore alternative strategies, including small-molecule and peptide-based inhibitors, aptamers, RNA-based therapies, gene-editing technologies, bispecific and multispecific agents, and cell-based therapies. Additionally, innovative approaches such as lysosome-targeting chimeras, proteolysis-targeting chimeras, and N-(2-hydroxypropyl) methacrylamide copolymers are emerging as promising options for enhancing treatment effectiveness. This review highlights significant advancements in the field, focusing on their clinical implications and successes.",
+        "affiliation": "Department of Cell Biology, Faculty of Science, Charles University, Prague, Czech Republic.",
+        "publicationStatus": "epublish",
+        "language": "eng",
+        "pubModel": "Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "grantsList": {
+          "grant": [
+            {
+              "grantId": "LX22NPO5102",
+              "agency": "National Institute for Cancer Research",
+              "orderIn": 0
+            },
+            {
+              "grantId": "390822",
+              "agency": "Charles University Grant Agency",
+              "orderIn": 0
+            },
+            {
+              "grantId": "24-10814S",
+              "agency": "Czech Science Foundation",
+              "orderIn": 0
+            },
+            {
+              "grantId": "LX22NPO5102",
+              "agency": "National Institute for Cancer Research (Programme EXCELES)",
+              "orderIn": 0
+            }
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "DT",
+                    "qualifierName": "drug therapy",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Antibodies, Monoclonal",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Immunotherapy",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "MT",
+                    "qualifierName": "methods",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Immune Checkpoint Inhibitors",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "PD",
+                    "qualifierName": "pharmacology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "TU",
+                    "qualifierName": "therapeutic use",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "keywordList": {
+          "keyword": [
+            "Monoclonal antibodies",
+            "Immunotherapy",
+            "Cancer therapy",
+            "Small molecules",
+            "Immune Checkpoint Inhibitors"
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "Antibodies, Monoclonal",
+              "registryNumber": "0"
+            },
+            {
+              "name": "Immune Checkpoint Inhibitors",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1007/s12032-025-02822-1"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12178997"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12178997?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 10,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-06-19",
+        "dateOfCreation": "2025-06-19",
+        "firstIndexDate": "2025-06-19",
+        "fullTextReceivedDate": "2025-06-23",
+        "dateOfRevision": "2025-07-06",
+        "electronicPublicationDate": "2025-06-19",
+        "firstPublicationDate": "2025-06-19"
+      },
+      {
+        "id": "40562870",
+        "source": "MED",
+        "pmid": "40562870",
+        "pmcid": "PMC12310982",
+        "fullTextIdList": {
+          "fullTextId": [
+            "PMC12310982"
+          ]
+        },
+        "doi": "10.1038/s41423-025-01310-w",
+        "title": "NF-κB in inflammation and cancer.",
+        "authorString": "Mao H, Zhao X, Sun SC.",
+        "authorList": {
+          "author": [
+            {
+              "fullName": "Mao H",
+              "firstName": "Hongmei",
+              "lastName": "Mao",
+              "initials": "H",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Institute for Immunology, Chinese Institutes for Medical Research, Beijing, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Zhao X",
+              "firstName": "Xiaocui",
+              "lastName": "Zhao",
+              "initials": "X",
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Institute for Immunology, Chinese Institutes for Medical Research, Beijing, China."
+                  }
+                ]
+              }
+            },
+            {
+              "fullName": "Sun SC",
+              "firstName": "Shao-Cong",
+              "lastName": "Sun",
+              "initials": "SC",
+              "authorId": {
+                "type": "ORCID",
+                "value": "0000-0001-7353-9400"
+              },
+              "authorAffiliationDetailsList": {
+                "authorAffiliation": [
+                  {
+                    "affiliation": "Institute for Immunology, Chinese Institutes for Medical Research, Beijing, China. ssun@cimrbj.ac.cn."
+                  },
+                  {
+                    "affiliation": "School of Basic Medicine, Capital Medical University, Beijing, China. ssun@cimrbj.ac.cn."
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "authorIdList": {
+          "authorId": [
+            {
+              "type": "ORCID",
+              "value": "0000-0001-7353-9400"
+            }
+          ]
+        },
+        "dataLinksTagsList": {
+          "dataLinkstag": [
+            "altmetrics",
+            "supporting_data"
+          ]
+        },
+        "journalInfo": {
+          "issue": "8",
+          "volume": "22",
+          "journalIssueId": 3985185,
+          "dateOfPublication": "2025 Aug",
+          "monthOfPublication": 8,
+          "yearOfPublication": 2025,
+          "printPublicationDate": "2025-08-01",
+          "journal": {
+            "title": "Cellular & molecular immunology",
+            "medlineAbbreviation": "Cell Mol Immunol",
+            "essn": "2042-0226",
+            "issn": "1672-7681",
+            "isoabbreviation": "Cell Mol Immunol",
+            "nlmid": "101242872"
+          }
+        },
+        "pubYear": "2025",
+        "pageInfo": "811-839",
+        "abstractText": "Nuclear factor-κB (NF-κB) is a family of transcription factors that transactivates genes associated with a wide range of biological processes, including immune responses, inflammation, cell growth and survival. Dysregulated NF-κB activation contributes to acute and chronic inflammatory disorders, mostly through the aberrant induction of genes encoding proinflammatory factors and metabolic disorders. Abnormal NF-κB activation also influences the development and stability of regulatory T cells, contributing to the pathogenesis of autoimmune disorders. Given the critical role of inflammation in promoting oncogenesis, the proinflammatory role of NF-κB is also linked to cancer development. In addition, aberrant NF-κB activation contributes to uncontrolled tumor cell proliferation, survival, metabolism, metastasis, tumor angiogenesis and therapy resistance. These pathological functions of NF-κB highlight its potential as a therapeutic target for both inflammatory diseases and cancer. In this review, we summarize recent findings regarding the role of NF-κB in these pathological processes and discuss the underlying mechanisms. We also explore potential therapeutic strategies aimed at targeting the NF-κB pathway for disease treatment, along with an analysis of possible challenges.",
+        "affiliation": "Institute for Immunology, Chinese Institutes for Medical Research, Beijing, China.",
+        "publicationStatus": "ppublish",
+        "language": "eng",
+        "pubModel": "Print-Electronic",
+        "pubTypeList": {
+          "pubType": [
+            "review-article",
+            "Review",
+            "Journal Article"
+          ]
+        },
+        "meshHeadingList": {
+          "meshHeading": [
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Animals"
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Humans"
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Neoplasms",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "Inflammation",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "IM",
+                    "qualifierName": "immunology",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  },
+                  {
+                    "abbreviation": "PA",
+                    "qualifierName": "pathology",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "Y",
+              "descriptorName": "NF-kappa B",
+              "meshQualifierList": {
+                "meshQualifier": [
+                  {
+                    "abbreviation": "ME",
+                    "qualifierName": "metabolism",
+                    "majorTopic_YN": "N"
+                  }
+                ]
+              }
+            },
+            {
+              "majorTopic_YN": "N",
+              "descriptorName": "Signal Transduction"
+            }
+          ]
+        },
+        "keywordList": {
+          "keyword": [
+            "Cancer",
+            "Immune response",
+            "Inflammation",
+            "NF-κB",
+            "Autoimmune And Inflammatory Diseases"
+          ]
+        },
+        "chemicalList": {
+          "chemical": [
+            {
+              "name": "NF-kappa B",
+              "registryNumber": "0"
+            }
+          ]
+        },
+        "subsetList": {
+          "subset": [
+            {
+              "code": "IM",
+              "name": "Index Medicus"
+            }
+          ]
+        },
+        "fullTextUrlList": {
+          "fullTextUrl": [
+            {
+              "availability": "Subscription required",
+              "availabilityCode": "S",
+              "documentStyle": "doi",
+              "site": "DOI",
+              "url": "https://doi.org/10.1038/s41423-025-01310-w"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "html",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12310982"
+            },
+            {
+              "availability": "Open access",
+              "availabilityCode": "OA",
+              "documentStyle": "pdf",
+              "site": "Europe_PMC",
+              "url": "https://europepmc.org/articles/PMC12310982?pdf=render"
+            }
+          ]
+        },
+        "isOpenAccess": "Y",
+        "inEPMC": "Y",
+        "inPMC": "Y",
+        "hasPDF": "Y",
+        "hasBook": "N",
+        "hasSuppl": "N",
+        "citedByCount": 21,
+        "hasData": "Y",
+        "hasReferences": "Y",
+        "hasTextMinedTerms": "Y",
+        "hasDbCrossReferences": "N",
+        "hasLabsLinks": "Y",
+        "license": "cc by",
+        "hasEvaluations": "N",
+        "authMan": "N",
+        "epmcAuthMan": "N",
+        "nihAuthMan": "N",
+        "hasTMAccessionNumbers": "Y",
+        "tmAccessionTypeList": {
+          "accessionType": [
+            "nct"
+          ]
+        },
+        "dateOfCompletion": "2025-07-31",
+        "dateOfCreation": "2025-06-25",
+        "firstIndexDate": "2025-06-26",
+        "fullTextReceivedDate": "2025-08-02",
+        "dateOfRevision": "2025-08-02",
+        "electronicPublicationDate": "2025-06-25",
+        "firstPublicationDate": "2025-06-25"
+      }
+    ]
+  }
+}

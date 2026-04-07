@@ -1,0 +1,224 @@
+{
+  "040gcmg81": {
+    "ror_id": "https://ror.org/040gcmg81",
+    "status": "active",
+    "types": [
+      "funder",
+      "government"
+    ],
+    "established": 1937,
+    "names": [
+      {
+        "lang": "fr",
+        "types": [
+          "label"
+        ],
+        "value": "Institut National du Cancer"
+      },
+      {
+        "lang": "es",
+        "types": [
+          "label"
+        ],
+        "value": "Instituto Nacional del Cáncer"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "NCI"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "National Cancer Institute"
+      }
+    ],
+    "display_name": "National Cancer Institute",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "MD",
+          "country_subdivision_name": "Maryland",
+          "lat": 38.98067,
+          "lng": -77.10026,
+          "name": "Bethesda"
+        },
+        "geonames_id": 4348599
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "Bethesda",
+    "latitude": 38.98067,
+    "longitude": -77.10026,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.cancer.gov/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/National_Cancer_Institute"
+      }
+    ],
+    "website": "http://www.cancer.gov/",
+    "external_ids": [
+      {
+        "all": [
+          "100000054",
+          "100008637",
+          "100007316"
+        ],
+        "preferred": "100000054",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.48336.3a"
+        ],
+        "preferred": "grid.48336.3a",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1936 8075"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q664846"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "100000054",
+    "grid_id": "grid.48336.3a",
+    "relationships": [
+      {
+        "label": "Center for Cancer Research",
+        "type": "child",
+        "id": "https://ror.org/05bjen692"
+      },
+      {
+        "label": "Frederick National Laboratory for Cancer Research",
+        "type": "child",
+        "id": "https://ror.org/03v6m3209"
+      },
+      {
+        "label": "SWOG Cancer Research Network",
+        "type": "child",
+        "id": "https://ror.org/05n6zrm60"
+      },
+      {
+        "label": "Division of Cancer Epidemiology and Genetics",
+        "type": "child",
+        "id": "https://ror.org/00vkwep27"
+      },
+      {
+        "label": "National Institutes of Health",
+        "type": "parent",
+        "id": "https://ror.org/01cwqze88"
+      },
+      {
+        "label": "MUSC Hollings Cancer Center",
+        "type": "related",
+        "id": "https://ror.org/00w52vt71"
+      },
+      {
+        "label": "The Cancer Imaging Archive",
+        "type": "related",
+        "id": "https://ror.org/02qyzaf42"
+      }
+    ],
+    "domains": []
+  },
+  "00wt7xg39": {
+    "ror_id": "https://ror.org/00wt7xg39",
+    "status": "active",
+    "types": [
+      "company"
+    ],
+    "established": 1963,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Westat (United States)"
+      }
+    ],
+    "display_name": "Westat (United States)",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "MD",
+          "country_subdivision_name": "Maryland",
+          "lat": 39.084,
+          "lng": -77.15276,
+          "name": "Rockville"
+        },
+        "geonames_id": 4367175
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "Rockville",
+    "latitude": 39.084,
+    "longitude": -77.15276,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.westat.com/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Westat"
+      }
+    ],
+    "website": "https://www.westat.com/",
+    "external_ids": [
+      {
+        "all": [
+          "grid.280561.8"
+        ],
+        "preferred": "grid.280561.8",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0000 9270 6633"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q7987109"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.280561.8",
+    "relationships": [],
+    "domains": []
+  }
+}

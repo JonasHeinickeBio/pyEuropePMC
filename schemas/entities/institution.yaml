@@ -1,0 +1,63 @@
+# PyEuropePMC LinkML Schema - Institution Entity
+# This file contains the InstitutionEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/institution
+name: pyeuropepmc-institution-entity
+description: Institution entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  Institution:
+    description: >-
+      Base class for institutions and departments.
+    class_uri: org:Organization
+    is_a: BaseEntity
+    slots:
+      - display_name
+      - ror_id
+      - openalex_id
+      - country
+      - country_code
+      - city
+      - latitude
+      - longitude
+      - institution_type
+      - grid_id
+      - isni
+      - wikidata_id
+      - fundref_id
+      - website
+      - established
+      - domains
+      - relationships
+      - institution_members
+      - status
+      - names
+      - locations
+      - links
+    slot_usage:
+      display_name:
+        required: true
+
+  OrganizationEntity:
+    description: >-
+      Entity representing an organization with ROR alignment.
+      Contains organizational metadata and geographic information.
+    class_uri: org:Organization
+    is_a: Institution
+    slots: []
+    slot_usage: {}
+
+  DepartmentEntity:
+    description: >-
+      Entity representing a department or sub-organization within an institution.
+      Contains organizational metadata and geographic information.
+    class_uri: org:OrganizationalUnit
+    is_a: Institution
+    slots:
+      - parent_organization
+    slot_usage: {}

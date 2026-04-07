@@ -1,0 +1,108 @@
+# PyEuropePMC LinkML Schema - Paper Entity
+# This file contains the PaperEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/paper
+name: pyeuropepmc-paper-entity
+description: Paper entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  PaperEntity:
+    description: >-
+      Entity representing an academic paper with BIBO alignment.
+      Contains bibliographic metadata, citation information, and relationships
+      to authors, institutions, journals, and other entities.
+    class_uri: bibo:AcademicArticle
+    is_a: ScholarlyWorkEntity
+    slots:
+      - issue
+      - pub_date
+      - keywords
+      - abstract
+      - affiliation_text
+      - citation_count
+      - influential_citation_count
+      - is_oa
+      - oa_status
+      - oa_url
+      - reference_count
+      - cited_by_count
+      - publisher
+      - issn
+      - publication_type
+      - first_page
+      - last_page
+      - semantic_scholar_corpus_id
+      - openalex_id
+      - license_url
+      - license_text
+      - fields_of_study
+      - related_works
+      - pub_types
+      - mesh_terms
+      - topics
+      - has_pdf
+      - has_supplementary
+      - in_epmc
+      - in_pmc
+      - journal_issn
+      - page_info
+      - has_references
+      - has_text_mined_terms
+      - has_db_cross_references
+      - has_labs_links
+      - has_tm_accession_numbers
+      - first_index_date
+      - first_publication_date
+      - external_id_conflicts
+      - pii
+      - publisher_id
+      - license
+      - authors
+      - paper_institutions
+      - affiliations
+      - journal
+      - sections
+      - references
+      - tables
+      - figures
+      - grants
+      - quality_score
+      - s2_paper_id
+      - corpus_id
+      - s2_fields_of_study
+      - publication_types
+      - tldr
+      - open_access_pdf_url
+      - referenced_works_count
+      - references_count
+    slot_usage:
+      title:
+        required: false
+      doi:
+        required: false
+      pmcid:
+        required: false
+      quality_score:
+        range: float
+        minimum_value: 0.0
+        maximum_value: 1.0
+        required: false
+        description: Overall quality score for paper data completeness and accuracy
+    rules:
+      - preconditions:
+          slot_conditions:
+            pmcid:
+              value_presence: ABSENT
+            doi:
+              value_presence: ABSENT
+        postconditions:
+          slot_conditions:
+            title:
+              value_presence: PRESENT
+        description: >-
+          PaperEntity must have at least one of: pmcid, doi, or title

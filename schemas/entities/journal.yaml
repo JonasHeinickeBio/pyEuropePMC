@@ -1,0 +1,45 @@
+# PyEuropePMC LinkML Schema - Journal Entity
+# This file contains the JournalEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/journal
+name: pyeuropepmc-journal-entity
+description: Journal entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  JournalEntity:
+    description: >-
+      Entity representing an academic journal with BIBO alignment.
+      Contains journal metadata and bibliometric information.
+    class_uri: bibo:Journal
+    is_a: BaseEntity
+    slots:
+      - title
+      - medline_abbreviation
+      - iso_abbreviation
+      - nlmid
+      - issn
+      - essn
+      - publisher
+      - country
+      - language
+      - journal_issue_id
+      - openalex_id
+      - wikidata_id
+      - scopus_source_id
+      - subject_areas
+      - impact_factor
+      - sjr
+      - h_index
+      - nlm_ta
+      - iso_abbrev
+      - publisher_id
+      - journal_ids
+      - journal_papers
+    slot_usage:
+      title:
+        required: true

@@ -1,0 +1,82 @@
+{
+  "source": "crossref",
+  "title": "Knowledge in Motion: A decade reviewed, a future defined – The ABC Global Alliance 2015–2025 Decade Report and 2025–2035 Global Charter",
+  "authors": [
+    {
+      "name": "Fatima Cardoso",
+      "given": "Fatima",
+      "family": "Cardoso",
+      "orcid": "https://orcid.org/0000-0002-6692-2249",
+      "affiliation": [],
+      "sequence": "first",
+      "ORCID": "https://orcid.org/0000-0002-6692-2249"
+    },
+    {
+      "name": "Roberta Ventura",
+      "given": "Roberta",
+      "family": "Ventura",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Georgia Attfield",
+      "given": "Georgia",
+      "family": "Attfield",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Alexandra Lewis",
+      "given": "Alexandra",
+      "family": "Lewis",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Karen Gelmon",
+      "given": "Karen",
+      "family": "Gelmon",
+      "affiliation": [],
+      "sequence": "additional"
+    }
+  ],
+  "abstract": null,
+  "journal": "The Breast",
+  "publication_date": "2025-12",
+  "citation_count": 0,
+  "references_count": 2,
+  "license": {
+    "url": "https://www.elsevier.com/tdm/userlicense/1.0/",
+    "start": "2025-12-01T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": [
+    {
+      "name": "Roche",
+      "doi": "10.13039/100004337",
+      "award": []
+    },
+    {
+      "name": "Amsterdam Brain and Cognition",
+      "doi": "10.13039/501100019541",
+      "award": []
+    },
+    {
+      "name": "Breast Cancer Research Foundation",
+      "doi": "10.13039/100001006",
+      "award": []
+    },
+    {
+      "name": "Gilead Sciences",
+      "doi": "10.13039/100005564",
+      "award": []
+    }
+  ],
+  "type": "journal-article",
+  "issn": [
+    "0960-9776"
+  ],
+  "volume": "84",
+  "page": "104601",
+  "publisher": "Elsevier BV"
+}

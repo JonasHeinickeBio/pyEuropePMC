@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """
-Audit script to compare rdf_map.yml mappings against LinkML schema definitions.
+Audit script to verify LinkML schema completeness for RDF mappings.
 
-This script provides a comprehensive gap analysis to determine:
-1. Which mappings in rdf_map.yml are covered by the LinkML schema
-2. Which mappings are missing from the LinkML schema
-3. Any custom logic or transformations not expressible in LinkML
+This script provides a comprehensive analysis to determine:
+1. Which RDF mappings are covered by the LinkML schema
+2. Any missing mappings or custom logic needed
+3. Validation of LinkML-generated RDF against requirements
 
 Usage:
     python scripts/audit_rdf_linkml_coverage.py
@@ -16,7 +16,6 @@ Output:
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Any
 
@@ -127,7 +126,7 @@ def extract_linkml_fields(schema_view: SchemaView) -> dict[str, dict[str, Any]]:
     return class_fields
 
 
-def compare_mappings(
+def compare_mappings(  # noqa: C901
     rdf_map_fields: dict[str, dict[str, Any]],
     linkml_fields: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
@@ -174,25 +173,29 @@ def compare_mappings(
                 # Check predicate match (allowing for prefix differences)
                 if linkml_slot.get("slot_uri"):
                     linkml_pred_local = linkml_slot["slot_uri"].split("/")[-1].split("#")[-1]
-                    rdf_pred_local = rdf_predicate.split(":")[-1] if ":" in rdf_predicate else rdf_predicate
+                    rdf_pred_local = (
+                        rdf_predicate.split(":")[-1] if ":" in rdf_predicate else rdf_predicate
+                    )
                     if linkml_pred_local != rdf_pred_local:
-                        entity_report["predicate_mismatches"].append({
-                            "field": field_name,
-                            "rdf_map": rdf_predicate,
-                            "linkml": linkml_slot["slot_uri"],
-                        })
+                        entity_report["predicate_mismatches"].append(
+                            {
+                                "field": field_name,
+                                "rdf_map": rdf_predicate,
+                                "linkml": linkml_slot["slot_uri"],
+                            }
+                        )
             else:
                 entity_report["missing_fields"].append(field_name)
 
         # Check multi-value fields
-        for field_name, predicate in entity_data.get("multi_value_fields", {}).items():
+        for field_name, _predicate in entity_data.get("multi_value_fields", {}).items():
             if field_name in linkml_entity["multi_value_fields"]:
                 entity_report["covered_multi_value"].append(field_name)
             else:
                 entity_report["missing_multi_value"].append(field_name)
 
         # Check relationships
-        for rel_name, rel_config in entity_data.get("relationships", {}).items():
+        for rel_name, _rel_config in entity_data.get("relationships", {}).items():
             if rel_name in linkml_entity["relationships"]:
                 entity_report["covered_relationships"].append(rel_name)
             else:
@@ -238,14 +241,14 @@ def compare_mappings(
     return report
 
 
-def print_report(report: dict[str, Any]) -> None:
+def print_report(report: dict[str, Any]) -> None:  # noqa: C901
     """Print a formatted audit report to console."""
     print("\n" + "=" * 80)
     print("RDF_MAP.YML vs LINKML SCHEMA COVERAGE AUDIT")
     print("=" * 80)
 
     summary = report["summary"]
-    print(f"\nSUMMARY:")
+    print("\nSUMMARY:")
     print(f"  - Entities in rdf_map.yml: {summary['rdf_map_entities']}")
     print(f"  - Classes in LinkML schema: {summary['linkml_classes']}")
     print(f"  - Fully covered: {summary['fully_covered']}")
@@ -254,7 +257,7 @@ def print_report(report: dict[str, Any]) -> None:
     print(f"  - Average coverage: {summary['average_coverage']:.1f}%")
 
     if report["missing_from_linkml"]:
-        print(f"\nENTITIES MISSING FROM LINKML:")
+        print("\nENTITIES MISSING FROM LINKML:")
         for entity in report["missing_from_linkml"]:
             print(f"  - {entity}")
 
@@ -269,11 +272,15 @@ def print_report(report: dict[str, Any]) -> None:
         if entity_data["missing_multi_value"]:
             print(f"      Missing multi-value: {', '.join(entity_data['missing_multi_value'])}")
         if entity_data["missing_relationships"]:
-            print(f"      Missing relationships: {', '.join(entity_data['missing_relationships'])}")
+            print(
+                f"      Missing relationships: {', '.join(entity_data['missing_relationships'])}"
+            )
         if entity_data["predicate_mismatches"]:
             print("      Predicate mismatches:")
             for mismatch in entity_data["predicate_mismatches"]:
-                print(f"        - {mismatch['field']}: {mismatch['rdf_map']} vs {mismatch['linkml']}")
+                print(
+                    f"        - {mismatch['field']}: {mismatch['rdf_map']} vs {mismatch['linkml']}"
+                )
 
     print("\n" + "=" * 80)
     print("RECOMMENDATION:")

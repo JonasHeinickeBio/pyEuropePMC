@@ -1,0 +1,100 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "2bd545cae842c5a0607e5857ce835afcb3248f36",
+  "corpus_id": 232170182,
+  "title": "Relaxing restrictions at the pace of vaccination increases freedom and guards against further COVID-19 waves",
+  "abstract": "Mass vaccination offers a promising exit strategy for the COVID-19 pandemic. However, as vaccination progresses, demands to lift restrictions increase, despite most of the population remaining susceptible. Using our age-stratified SEIRD-ICU compartmental model and curated epidemiological and vaccination data, we quantified the rate (relative to vaccination progress) at which countries can lift non-pharmaceutical interventions without overwhelming their healthcare systems. We analyzed scenarios ranging from immediately lifting restrictions (accepting high mortality and morbidity) to reducing case numbers to a level where test-trace-and-isolate (TTI) programs efficiently compensate for local spreading events. In general, the age-dependent vaccination roll-out implies a transient decrease of more than ten years in the average age of ICU patients and deceased. The pace of vaccination determines the speed of lifting restrictions; Taking the European Union (EU) as an example case, all considered scenarios allow for steadily increasing contacts starting in May 2021 and relaxing most restrictions by autumn 2021. Throughout summer 2021, only mild contact restrictions will remain necessary. However, only high vaccine uptake can prevent further severe waves. Across EU countries, seroprevalence impacts the long-term success of vaccination campaigns more strongly than age demographics. In addition, we highlight the need for preventive measures to reduce contagion in school settings throughout the year 2021, where children might be drivers of contagion because of them remaining susceptible. Strategies that maintain low case numbers, instead of high ones, reduce infections and deaths by factors of eleven and five, respectively. In general, policies with low case numbers significantly benefit from vaccination, as the overall reduction in susceptibility will further diminish viral spread. Keeping case numbers low is the safest long-term strategy because it considerably reduces mortality and morbidity and offers better preparedness against emerging escape or more contagious virus variants while still allowing for higher contact numbers (freedom) with progressing vaccinations.",
+  "venue": "PLoS Comput. Biol.",
+  "year": 2021,
+  "publication_date": "2021-03-10",
+  "citation_count": 70,
+  "influential_citation_count": 1,
+  "reference_count": 74,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "101695420",
+      "url": "https://www.semanticscholar.org/author/101695420"
+    },
+    {
+      "name": null,
+      "author_id": "151198297",
+      "url": "https://www.semanticscholar.org/author/151198297"
+    },
+    {
+      "name": null,
+      "author_id": "51288429",
+      "url": "https://www.semanticscholar.org/author/51288429"
+    },
+    {
+      "name": null,
+      "author_id": "121969451",
+      "url": "https://www.semanticscholar.org/author/121969451"
+    },
+    {
+      "name": null,
+      "author_id": "2047703666",
+      "url": "https://www.semanticscholar.org/author/2047703666"
+    },
+    {
+      "name": null,
+      "author_id": "35651143",
+      "url": "https://www.semanticscholar.org/author/35651143"
+    },
+    {
+      "name": null,
+      "author_id": "1414106746",
+      "url": "https://www.semanticscholar.org/author/1414106746"
+    },
+    {
+      "name": null,
+      "author_id": "2964400",
+      "url": "https://www.semanticscholar.org/author/2964400"
+    }
+  ],
+  "fields_of_study": [
+    "Biology",
+    "Computer Science",
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Biology",
+      "source": "external"
+    },
+    {
+      "category": "Computer Science",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    },
+    {
+      "category": "Economics",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "PLoS Computational Biology",
+    "volume": "17",
+    "pages": null
+  },
+  "external_ids": {
+    "DBLP": "journals/ploscb/BauerCDLIMOP21",
+    "PubMedCentral": "8412259",
+    "ArXiv": "2103.06228",
+    "DOI": "10.1371/journal.pcbi.1009288",
+    "CorpusId": 232170182,
+    "PubMed": "34473693"
+  },
+  "open_access_pdf_url": "https://journals.plos.org/ploscompbiol/article/file?id=10.1371/journal.pcbi.1009288&type=printable",
+  "tldr": "Using the age-stratified model and curated epidemiological and vaccination data, it is quantified at which pace European countries can lift restrictions without overwhelming their health-care systems."
+}

@@ -1,0 +1,193 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "27ef41325e809dc35657540d14bcbb79cadad20f",
+  "corpus_id": 282811515,
+  "title": "A multimodal whole-slide foundation model for pathology",
+  "abstract": "The field of computational pathology has been transformed with recent advances in foundation models that encode histopathology region-of-interests (ROIs) into versatile and transferable feature representations via self-supervised learning. However, translating these advancements to address complex clinical challenges at the patient and slide level remains constrained by limited clinical data in disease-specific cohorts, especially for rare clinical conditions. We propose Transformer-based pathology Image and Text Alignment Network (TITAN), a multimodal whole-slide foundation model pretrained using 335,645 whole-slide images via visual self-supervised learning and vision-language alignment with corresponding pathology reports and 423,122 synthetic captions generated from a multimodal generative AI copilot for pathology. Without any fine-tuning or requiring clinical labels, TITAN can extract general-purpose slide representations and generate pathology reports that generalize to resource-limited clinical scenarios such as rare disease retrieval and cancer prognosis. We evaluate TITAN on diverse clinical tasks and find that it outperforms both ROI and slide foundation models across machine learning settings, including linear probing, few-shot and zero-shot classification, rare cancer retrieval, cross-modal retrieval and pathology report generation. Pretrained using 335,645 whole-slide images, a foundation model is developed to provide representations for slide- and patient-level tasks. It is capable of performing clinical tasks and generating reports even in data-scarce scenarios, such as rare cancer diagnosis and survival prediction, without requiring further fine-tuning.",
+  "venue": "Nature Medicine",
+  "year": 2025,
+  "publication_date": "2025-11-01",
+  "citation_count": 28,
+  "influential_citation_count": 1,
+  "reference_count": 144,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "2219976215",
+      "url": "https://www.semanticscholar.org/author/2219976215"
+    },
+    {
+      "name": null,
+      "author_id": "2308142179",
+      "url": "https://www.semanticscholar.org/author/2308142179"
+    },
+    {
+      "name": null,
+      "author_id": "2253812042",
+      "url": "https://www.semanticscholar.org/author/2253812042"
+    },
+    {
+      "name": null,
+      "author_id": "2274203774",
+      "url": "https://www.semanticscholar.org/author/2274203774"
+    },
+    {
+      "name": null,
+      "author_id": "2357033634",
+      "url": "https://www.semanticscholar.org/author/2357033634"
+    },
+    {
+      "name": null,
+      "author_id": "2237101584",
+      "url": "https://www.semanticscholar.org/author/2237101584"
+    },
+    {
+      "name": null,
+      "author_id": "2187496179",
+      "url": "https://www.semanticscholar.org/author/2187496179"
+    },
+    {
+      "name": null,
+      "author_id": "35685584",
+      "url": "https://www.semanticscholar.org/author/35685584"
+    },
+    {
+      "name": null,
+      "author_id": "2251130881",
+      "url": "https://www.semanticscholar.org/author/2251130881"
+    },
+    {
+      "name": null,
+      "author_id": "2306195060",
+      "url": "https://www.semanticscholar.org/author/2306195060"
+    },
+    {
+      "name": null,
+      "author_id": "25259989",
+      "url": "https://www.semanticscholar.org/author/25259989"
+    },
+    {
+      "name": null,
+      "author_id": "2342506956",
+      "url": "https://www.semanticscholar.org/author/2342506956"
+    },
+    {
+      "name": null,
+      "author_id": "2152691032",
+      "url": "https://www.semanticscholar.org/author/2152691032"
+    },
+    {
+      "name": null,
+      "author_id": "2342507476",
+      "url": "https://www.semanticscholar.org/author/2342507476"
+    },
+    {
+      "name": null,
+      "author_id": "2308037526",
+      "url": "https://www.semanticscholar.org/author/2308037526"
+    },
+    {
+      "name": null,
+      "author_id": "2060422236",
+      "url": "https://www.semanticscholar.org/author/2060422236"
+    },
+    {
+      "name": null,
+      "author_id": "2145775609",
+      "url": "https://www.semanticscholar.org/author/2145775609"
+    },
+    {
+      "name": null,
+      "author_id": "2392601346",
+      "url": "https://www.semanticscholar.org/author/2392601346"
+    },
+    {
+      "name": null,
+      "author_id": "3025343",
+      "url": "https://www.semanticscholar.org/author/3025343"
+    },
+    {
+      "name": null,
+      "author_id": "2065206914",
+      "url": "https://www.semanticscholar.org/author/2065206914"
+    },
+    {
+      "name": null,
+      "author_id": "35628926",
+      "url": "https://www.semanticscholar.org/author/35628926"
+    },
+    {
+      "name": null,
+      "author_id": "2337300303",
+      "url": "https://www.semanticscholar.org/author/2337300303"
+    },
+    {
+      "name": null,
+      "author_id": "5219846",
+      "url": "https://www.semanticscholar.org/author/5219846"
+    },
+    {
+      "name": null,
+      "author_id": "2261852481",
+      "url": "https://www.semanticscholar.org/author/2261852481"
+    },
+    {
+      "name": null,
+      "author_id": "2263946771",
+      "url": "https://www.semanticscholar.org/author/2263946771"
+    },
+    {
+      "name": null,
+      "author_id": "2273930354",
+      "url": "https://www.semanticscholar.org/author/2273930354"
+    },
+    {
+      "name": null,
+      "author_id": "2254321138",
+      "url": "https://www.semanticscholar.org/author/2254321138"
+    },
+    {
+      "name": null,
+      "author_id": "2186875724",
+      "url": "https://www.semanticscholar.org/author/2186875724"
+    },
+    {
+      "name": null,
+      "author_id": "2260789705",
+      "url": "https://www.semanticscholar.org/author/2260789705"
+    }
+  ],
+  "fields_of_study": [
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    },
+    {
+      "category": "Computer Science",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "Nature Medicine",
+    "volume": "31",
+    "pages": "3749 - 3761"
+  },
+  "external_ids": {
+    "PubMedCentral": "12618242",
+    "DOI": "10.1038/s41591-025-03982-3",
+    "CorpusId": 282811515,
+    "PubMed": "41193692"
+  },
+  "open_access_pdf_url": "",
+  "tldr": "This work proposes Transformer-based pathology Image and Text Alignment Network (TITAN), a multimodal whole-slide foundation model pretrained using 335,645 whole-slide images via visual self-supervised learning and vision-language alignment that outperforms both ROI and slide foundation models across machine learning settings."
+}

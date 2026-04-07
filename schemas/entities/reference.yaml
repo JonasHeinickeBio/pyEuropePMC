@@ -1,0 +1,23 @@
+# PyEuropePMC LinkML Schema - Reference Entity
+# This file contains the ReferenceEntity class definition
+
+id: https://w3id.org/pyeuropepmc/entities/reference
+name: pyeuropepmc-reference-entity
+description: Reference entity class for PyEuropePMC
+
+imports:
+  - ../base
+  - ../slots
+  - base
+
+classes:
+  ReferenceEntity:
+    description: >-
+      Entity representing a bibliographic reference with BIBO alignment.
+      Contains citation information for works referenced by papers.
+    class_uri: bibo:Article
+    is_a: ScholarlyWorkEntity
+    slots:
+      - author_list
+      - raw_citation
+      - citing_paper

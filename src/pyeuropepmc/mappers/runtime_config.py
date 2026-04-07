@@ -12,9 +12,9 @@ The runtime configuration is SEPARATE from the schema/mapping definitions:
 - Runtime config: conf/rdf_config.yaml (operational settings)
 """
 
+from functools import lru_cache
 import logging
 import os
-from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
@@ -38,12 +38,6 @@ def _get_default_config_path() -> Path:
     """Get the default path to the runtime configuration file."""
     base_path = Path(__file__).parent.parent.parent.parent
     return base_path / "conf" / "rdf_config.yaml"
-
-
-def _get_legacy_config_path() -> Path:
-    """Get the path to the legacy rdf_map.yml file."""
-    base_path = Path(__file__).parent.parent.parent.parent
-    return base_path / "conf" / "rdf_map.yml"
 
 
 def _deep_merge(base: dict[str, Any], override: dict[str, Any]) -> dict[str, Any]:
@@ -123,9 +117,7 @@ class RuntimeConfig:
             with open(self.config_path, encoding="utf-8") as f:
                 base_config = yaml.safe_load(f) or {}
         else:
-            logger.warning(
-                f"Runtime config not found at {self.config_path}, using defaults"
-            )
+            logger.warning(f"Runtime config not found at {self.config_path}, using defaults")
             base_config = self._get_default_config()
 
         # Apply environment-specific overrides
@@ -316,8 +308,7 @@ class RuntimeConfig:
     def get_filename_template(self) -> str:
         """Get the filename template."""
         return self.get_output_config().get(
-            "filename_template",
-            "{prefix}{entity_type}_{identifier}.{extension}"
+            "filename_template", "{prefix}{entity_type}_{identifier}.{extension}"
         )
 
     # Debugging Configuration

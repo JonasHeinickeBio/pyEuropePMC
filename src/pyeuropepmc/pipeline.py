@@ -21,7 +21,7 @@ from pyeuropepmc.models import (
 from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 if TYPE_CHECKING:
-    from rdflib import Graph
+    from rdflib import Dataset, Graph
 
 logger = logging.getLogger(__name__)
 
@@ -464,8 +464,6 @@ class PaperProcessingPipeline:
         """Convert entities to RDF with relationships."""
         from datetime import datetime
 
-        from rdflib import Graph
-
         paper = entities["paper"]
         authors = entities["authors"]
         sections = entities["sections"]
@@ -474,7 +472,7 @@ class PaperProcessingPipeline:
         references = entities["references"]
 
         # Create RDF graph
-        g = Graph()
+        g = Dataset()
 
         # Prepare extraction info
         extraction_info = {

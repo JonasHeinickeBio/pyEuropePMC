@@ -1,0 +1,1415 @@
+{
+  "identifier": "10.1016/j.breast.2025.104601",
+  "doi": "10.1016/j.breast.2025.104601",
+  "sources": [
+    "crossref",
+    "semantic_scholar",
+    "openalex",
+    "ror"
+  ],
+  "crossref": {
+    "source": "crossref",
+    "title": "Knowledge in Motion: A decade reviewed, a future defined – The ABC Global Alliance 2015–2025 Decade Report and 2025–2035 Global Charter",
+    "authors": [
+      {
+        "name": "Fatima Cardoso",
+        "given": "Fatima",
+        "family": "Cardoso",
+        "orcid": "https://orcid.org/0000-0002-6692-2249",
+        "affiliation": [],
+        "sequence": "first",
+        "ORCID": "https://orcid.org/0000-0002-6692-2249"
+      },
+      {
+        "name": "Roberta Ventura",
+        "given": "Roberta",
+        "family": "Ventura",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "name": "Georgia Attfield",
+        "given": "Georgia",
+        "family": "Attfield",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "name": "Alexandra Lewis",
+        "given": "Alexandra",
+        "family": "Lewis",
+        "affiliation": [],
+        "sequence": "additional"
+      },
+      {
+        "name": "Karen Gelmon",
+        "given": "Karen",
+        "family": "Gelmon",
+        "affiliation": [],
+        "sequence": "additional"
+      }
+    ],
+    "abstract": null,
+    "journal": "The Breast",
+    "publication_date": "2025-12",
+    "citation_count": 0,
+    "references_count": 2,
+    "license": {
+      "url": "https://www.elsevier.com/tdm/userlicense/1.0/",
+      "start": "2025-12-01T00:00:00Z",
+      "delay_in_days": 0
+    },
+    "funders": [
+      {
+        "name": "Roche",
+        "doi": "10.13039/100004337",
+        "award": []
+      },
+      {
+        "name": "Amsterdam Brain and Cognition",
+        "doi": "10.13039/501100019541",
+        "award": []
+      },
+      {
+        "name": "Breast Cancer Research Foundation",
+        "doi": "10.13039/100001006",
+        "award": []
+      },
+      {
+        "name": "Gilead Sciences",
+        "doi": "10.13039/100005564",
+        "award": []
+      }
+    ],
+    "type": "journal-article",
+    "issn": [
+      "0960-9776"
+    ],
+    "volume": "84",
+    "page": "104601",
+    "publisher": "Elsevier BV"
+  },
+  "datacite": null,
+  "unpaywall": null,
+  "semantic_scholar": {
+    "source": "semantic_scholar",
+    "s2_paper_id": "2b9fed3a253d25ed9add4648e048901e0116576e",
+    "corpus_id": 282140832,
+    "title": "Knowledge in Motion: A decade reviewed, a future defined – The ABC Global Alliance 2015–2025 Decade Report and 2025–2035 Global Charter",
+    "abstract": null,
+    "venue": "Breast",
+    "year": 2025,
+    "publication_date": "2025-10-01",
+    "citation_count": 0,
+    "influential_citation_count": 0,
+    "reference_count": 10,
+    "authors": [
+      {
+        "name": null,
+        "author_id": "2238316432",
+        "url": "https://www.semanticscholar.org/author/2238316432"
+      },
+      {
+        "name": null,
+        "author_id": "153183195",
+        "url": "https://www.semanticscholar.org/author/153183195"
+      },
+      {
+        "name": null,
+        "author_id": "2386058327",
+        "url": "https://www.semanticscholar.org/author/2386058327"
+      },
+      {
+        "name": null,
+        "author_id": "2386033239",
+        "url": "https://www.semanticscholar.org/author/2386033239"
+      },
+      {
+        "name": null,
+        "author_id": "2386061248",
+        "url": "https://www.semanticscholar.org/author/2386061248"
+      }
+    ],
+    "fields_of_study": [
+      "Medicine"
+    ],
+    "s2_fields_of_study": [
+      {
+        "category": "Medicine",
+        "source": "external"
+      },
+      {
+        "category": "Medicine",
+        "source": "s2-fos-model"
+      }
+    ],
+    "publication_types": [
+      "JournalArticle",
+      "Review"
+    ],
+    "journal": {
+      "name": "The Breast : Official Journal of the European Society of Mastology",
+      "volume": "84",
+      "pages": null
+    },
+    "external_ids": {
+      "PubMedCentral": "12683129",
+      "DOI": "10.1016/j.breast.2025.104601",
+      "CorpusId": 282140832,
+      "PubMed": "41298006"
+    },
+    "open_access_pdf_url": "",
+    "tldr": "Findings from the ABC Global Alliance's Global Decade Report 2.0 (2015–2025) and the newly defined ten goals set out in the 2025–2035 ABC Global Charter 2.0 (2015-2025) are summarized, signaling a renewed commitment to advancing ABC care globally over the next decade."
+  },
+  "openalex": {
+    "source": "openalex",
+    "openalex_id": "https://openalex.org/W4415227823",
+    "title": "Knowledge in Motion: A decade reviewed, a future defined – The ABC Global Alliance 2015–2025 Decade Report and 2025–2035 Global Charter",
+    "publication_year": 2025,
+    "publication_date": "2025-10-15",
+    "type": "article",
+    "citation_count": 0,
+    "cited_by_count": 0,
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://doi.org/10.1016/j.breast.2025.104601",
+    "authors": [
+      {
+        "id": "https://openalex.org/A5025554206",
+        "display_name": "Fátima Cardoso",
+        "orcid": "https://orcid.org/0000-0002-6692-2249",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I2799443294",
+            "display_name": "Breast Cancer Alliance",
+            "country": "United States",
+            "type": "nonprofit",
+            "ror_id": "https://ror.org/02n6dj587",
+            "status": "active",
+            "types": [
+              "funder",
+              "nonprofit"
+            ],
+            "established": 1996,
+            "names": [
+              {
+                "lang": null,
+                "types": [
+                  "acronym"
+                ],
+                "value": "BCA"
+              },
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Breast Cancer Alliance"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "NA",
+                  "continent_name": "North America",
+                  "country_code": "US",
+                  "country_name": "United States",
+                  "country_subdivision_code": "CT",
+                  "country_subdivision_name": "Connecticut",
+                  "lat": 41.02649,
+                  "lng": -73.62846,
+                  "name": "Greenwich"
+                },
+                "geonames_id": 4835395
+              }
+            ],
+            "country_code": "US",
+            "city": "Greenwich",
+            "latitude": 41.02649,
+            "longitude": -73.62846,
+            "links": [
+              {
+                "type": "website",
+                "value": "http://breastcanceralliance.org/"
+              },
+              {
+                "type": "wikipedia",
+                "value": "https://en.wikipedia.org/wiki/Breast_Cancer_Alliance"
+              }
+            ],
+            "website": "http://breastcanceralliance.org/",
+            "external_ids": [
+              {
+                "all": [
+                  "100001513"
+                ],
+                "preferred": null,
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.453739.f"
+                ],
+                "preferred": "grid.453739.f",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0004 5904 8391"
+                ],
+                "preferred": "0000 0004 5904 8391",
+                "type": "isni"
+              }
+            ],
+            "grid_id": "grid.453739.f",
+            "isni": "0000 0004 5904 8391",
+            "relationships": [],
+            "domains": []
+          }
+        ],
+        "position": "first"
+      },
+      {
+        "id": "https://openalex.org/A5113613525",
+        "display_name": "Roberta Ventura",
+        "orcid": null,
+        "institutions": [
+          {
+            "id": "https://openalex.org/I2799443294",
+            "display_name": "Breast Cancer Alliance",
+            "country": "United States",
+            "type": "nonprofit",
+            "ror_id": "https://ror.org/02n6dj587",
+            "status": "active",
+            "types": [
+              "funder",
+              "nonprofit"
+            ],
+            "established": 1996,
+            "names": [
+              {
+                "lang": null,
+                "types": [
+                  "acronym"
+                ],
+                "value": "BCA"
+              },
+              {
+                "lang": "en",
+                "types": [
+                  "ror_display",
+                  "label"
+                ],
+                "value": "Breast Cancer Alliance"
+              }
+            ],
+            "locations": [
+              {
+                "geonames_details": {
+                  "continent_code": "NA",
+                  "continent_name": "North America",
+                  "country_code": "US",
+                  "country_name": "United States",
+                  "country_subdivision_code": "CT",
+                  "country_subdivision_name": "Connecticut",
+                  "lat": 41.02649,
+                  "lng": -73.62846,
+                  "name": "Greenwich"
+                },
+                "geonames_id": 4835395
+              }
+            ],
+            "country_code": "US",
+            "city": "Greenwich",
+            "latitude": 41.02649,
+            "longitude": -73.62846,
+            "links": [
+              {
+                "type": "website",
+                "value": "http://breastcanceralliance.org/"
+              },
+              {
+                "type": "wikipedia",
+                "value": "https://en.wikipedia.org/wiki/Breast_Cancer_Alliance"
+              }
+            ],
+            "website": "http://breastcanceralliance.org/",
+            "external_ids": [
+              {
+                "all": [
+                  "100001513"
+                ],
+                "preferred": null,
+                "type": "fundref"
+              },
+              {
+                "all": [
+                  "grid.453739.f"
+                ],
+                "preferred": "grid.453739.f",
+                "type": "grid"
+              },
+              {
+                "all": [
+                  "0000 0004 5904 8391"
+                ],
+                "preferred": "0000 0004 5904 8391",
+                "type": "isni"
+              }
+            ],
+            "grid_id": "grid.453739.f",
+            "isni": "0000 0004 5904 8391",
+            "relationships": [],
+            "domains": []
+          }
+        ],
+        "position": "middle"
+      },
+      {
+        "id": "https://openalex.org/A5092945771",
+        "display_name": "Georgia Attfield",
+        "orcid": null,
+        "institutions": null,
+        "position": "middle"
+      },
+      {
+        "id": "https://openalex.org/A5016803996",
+        "display_name": "Alexandra Lewis",
+        "orcid": null,
+        "institutions": null,
+        "position": "middle"
+      },
+      {
+        "id": "https://openalex.org/A5067468792",
+        "display_name": "Karen A. Gelmon",
+        "orcid": "https://orcid.org/0000-0003-4111-2757",
+        "institutions": null,
+        "position": "last"
+      }
+    ],
+    "institutions": [
+      {
+        "id": "https://openalex.org/I2799443294",
+        "display_name": "Breast Cancer Alliance",
+        "country": "United States",
+        "type": "nonprofit",
+        "ror_id": "https://ror.org/02n6dj587",
+        "status": "active",
+        "types": [
+          "funder",
+          "nonprofit"
+        ],
+        "established": 1996,
+        "names": [
+          {
+            "lang": null,
+            "types": [
+              "acronym"
+            ],
+            "value": "BCA"
+          },
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Breast Cancer Alliance"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "NA",
+              "continent_name": "North America",
+              "country_code": "US",
+              "country_name": "United States",
+              "country_subdivision_code": "CT",
+              "country_subdivision_name": "Connecticut",
+              "lat": 41.02649,
+              "lng": -73.62846,
+              "name": "Greenwich"
+            },
+            "geonames_id": 4835395
+          }
+        ],
+        "country_code": "US",
+        "city": "Greenwich",
+        "latitude": 41.02649,
+        "longitude": -73.62846,
+        "links": [
+          {
+            "type": "website",
+            "value": "http://breastcanceralliance.org/"
+          },
+          {
+            "type": "wikipedia",
+            "value": "https://en.wikipedia.org/wiki/Breast_Cancer_Alliance"
+          }
+        ],
+        "website": "http://breastcanceralliance.org/",
+        "external_ids": [
+          {
+            "all": [
+              "100001513"
+            ],
+            "preferred": null,
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.453739.f"
+            ],
+            "preferred": "grid.453739.f",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0004 5904 8391"
+            ],
+            "preferred": "0000 0004 5904 8391",
+            "type": "isni"
+          }
+        ],
+        "grid_id": "grid.453739.f",
+        "isni": "0000 0004 5904 8391",
+        "relationships": [],
+        "domains": []
+      },
+      {
+        "id": "https://openalex.org/I2799443294",
+        "display_name": "Breast Cancer Alliance",
+        "country": "United States",
+        "type": "nonprofit",
+        "ror_id": "https://ror.org/02n6dj587",
+        "status": "active",
+        "types": [
+          "funder",
+          "nonprofit"
+        ],
+        "established": 1996,
+        "names": [
+          {
+            "lang": null,
+            "types": [
+              "acronym"
+            ],
+            "value": "BCA"
+          },
+          {
+            "lang": "en",
+            "types": [
+              "ror_display",
+              "label"
+            ],
+            "value": "Breast Cancer Alliance"
+          }
+        ],
+        "locations": [
+          {
+            "geonames_details": {
+              "continent_code": "NA",
+              "continent_name": "North America",
+              "country_code": "US",
+              "country_name": "United States",
+              "country_subdivision_code": "CT",
+              "country_subdivision_name": "Connecticut",
+              "lat": 41.02649,
+              "lng": -73.62846,
+              "name": "Greenwich"
+            },
+            "geonames_id": 4835395
+          }
+        ],
+        "country_code": "US",
+        "city": "Greenwich",
+        "latitude": 41.02649,
+        "longitude": -73.62846,
+        "links": [
+          {
+            "type": "website",
+            "value": "http://breastcanceralliance.org/"
+          },
+          {
+            "type": "wikipedia",
+            "value": "https://en.wikipedia.org/wiki/Breast_Cancer_Alliance"
+          }
+        ],
+        "website": "http://breastcanceralliance.org/",
+        "external_ids": [
+          {
+            "all": [
+              "100001513"
+            ],
+            "preferred": null,
+            "type": "fundref"
+          },
+          {
+            "all": [
+              "grid.453739.f"
+            ],
+            "preferred": "grid.453739.f",
+            "type": "grid"
+          },
+          {
+            "all": [
+              "0000 0004 5904 8391"
+            ],
+            "preferred": "0000 0004 5904 8391",
+            "type": "isni"
+          }
+        ],
+        "grid_id": "grid.453739.f",
+        "isni": "0000 0004 5904 8391",
+        "relationships": [],
+        "domains": []
+      }
+    ],
+    "topics": [
+      "Global Politics and Economy",
+      "International Development and Aid"
+    ],
+    "venue": {
+      "id": "https://openalex.org/S181123643",
+      "display_name": "The Breast",
+      "issn": [
+        "0960-9776",
+        "1532-3080"
+      ],
+      "type": "journal",
+      "is_oa": true
+    },
+    "biblio": {
+      "volume": "84",
+      "issue": null,
+      "first_page": "104601",
+      "last_page": "104601"
+    },
+    "doi": "https://doi.org/10.1016/j.breast.2025.104601",
+    "ids": {
+      "openalex": "https://openalex.org/W4415227823",
+      "doi": "https://doi.org/10.1016/j.breast.2025.104601",
+      "pmid": "https://pubmed.ncbi.nlm.nih.gov/41298006"
+    },
+    "abstract_inverted_index": {
+      "Breast": [
+        0,
+        137
+      ],
+      "cancer": [
+        1,
+        25,
+        49
+      ],
+      "remains": [
+        2
+      ],
+      "one": [
+        3
+      ],
+      "of": [
+        4,
+        39,
+        71,
+        115,
+        135,
+        146
+      ],
+      "the": [
+        5,
+        36,
+        58,
+        113,
+        143,
+        149,
+        157,
+        163,
+        173,
+        181,
+        197
+      ],
+      "most": [
+        6
+      ],
+      "significant": [
+        7
+      ],
+      "global": [
+        8
+      ],
+      "health": [
+        9
+      ],
+      "challenges,": [
+        10
+      ],
+      "with": [
+        11,
+        64,
+        74,
+        120
+      ],
+      "approximately": [
+        12
+      ],
+      "2.3": [
+        13
+      ],
+      "million": [
+        14
+      ],
+      "new": [
+        15
+      ],
+      "cases": [
+        16
+      ],
+      "diagnosed": [
+        17,
+        73
+      ],
+      "and": [
+        18,
+        31,
+        43,
+        80,
+        111,
+        117,
+        126,
+        152,
+        172
+      ],
+      "666,000": [
+        19
+      ],
+      "deaths": [
+        20
+      ],
+      "every": [
+        21
+      ],
+      "year.": [
+        22
+      ],
+      "Advanced": [
+        23
+      ],
+      "breast": [
+        24,
+        40,
+        48,
+        105
+      ],
+      "(ABC)": [
+        26
+      ],
+      "-": [
+        27,
+        34
+      ],
+      "encompassing": [
+        28
+      ],
+      "locally": [
+        29
+      ],
+      "advanced": [
+        30
+      ],
+      "metastatic": [
+        32
+      ],
+      "disease": [
+        33
+      ],
+      "represents": [
+        35
+      ],
+      "leading": [
+        37
+      ],
+      "cause": [
+        38
+      ],
+      "cancer-related": [
+        41
+      ],
+      "mortality": [
+        42
+      ],
+      "morbidity": [
+        44
+      ],
+      "worldwide.": [
+        45
+      ],
+      "While": [
+        46
+      ],
+      "early-stage": [
+        47
+      ],
+      "has": [
+        50
+      ],
+      "seen": [
+        51
+      ],
+      "remarkable": [
+        52
+      ],
+      "improvements": [
+        53
+      ],
+      "in": [
+        54,
+        57,
+        96,
+        122,
+        180
+      ],
+      "survival": [
+        55
+      ],
+      "rates": [
+        56
+      ],
+      "past": [
+        59,
+        144
+      ],
+      "decade,": [
+        60
+      ],
+      "outcomes": [
+        61
+      ],
+      "for": [
+        62,
+        88,
+        129,
+        156
+      ],
+      "individuals": [
+        63
+      ],
+      "ABC": [
+        65,
+        75,
+        91,
+        121,
+        150,
+        164,
+        183,
+        193
+      ],
+      "remain": [
+        66
+      ],
+      "sobering:": [
+        67
+      ],
+      "only": [
+        68
+      ],
+      "32": [
+        69
+      ],
+      "%": [
+        70,
+        87
+      ],
+      "women": [
+        72,
+        116
+      ],
+      "survive": [
+        76
+      ],
+      "five": [
+        77
+      ],
+      "years": [
+        78
+      ],
+      "post-diagnosis,": [
+        79
+      ],
+      "this": [
+        81
+      ],
+      "figure": [
+        82
+      ],
+      "drops": [
+        83
+      ],
+      "to": [
+        84,
+        103,
+        109,
+        127,
+        191
+      ],
+      "just": [
+        85
+      ],
+      "20": [
+        86
+      ],
+      "men.": [
+        89
+      ],
+      "The": [
+        90,
+        136
+      ],
+      "Global": [
+        92,
+        165,
+        167,
+        184
+      ],
+      "Alliance": [
+        93
+      ],
+      "was": [
+        94
+      ],
+      "established": [
+        95
+      ],
+      "2016": [
+        97
+      ],
+      "as": [
+        98
+      ],
+      "a": [
+        99,
+        130,
+        140,
+        153,
+        188
+      ],
+      "multi-stakeholder": [
+        100
+      ],
+      "platform": [
+        101
+      ],
+      "dedicated": [
+        102
+      ],
+      "advanced/metastatic": [
+        104
+      ],
+      "cancer.": [
+        106
+      ],
+      "Its": [
+        107
+      ],
+      "vision:": [
+        108
+      ],
+      "improve": [
+        110
+      ],
+      "extend": [
+        112
+      ],
+      "lives": [
+        114
+      ],
+      "men": [
+        118
+      ],
+      "living": [
+        119
+      ],
+      "all": [
+        123
+      ],
+      "countries": [
+        124
+      ],
+      "worldwide": [
+        125
+      ],
+      "fight": [
+        128
+      ],
+      "cure.": [
+        131
+      ],
+      "This": [
+        132
+      ],
+      "special": [
+        133
+      ],
+      "edition": [
+        134
+      ],
+      "is": [
+        138
+      ],
+      "both": [
+        139
+      ],
+      "reflection": [
+        141
+      ],
+      "on": [
+        142
+      ],
+      "decade": [
+        145
+      ],
+      "progress": [
+        147
+      ],
+      "across": [
+        148
+      ],
+      "landscape,": [
+        151
+      ],
+      "forward-looking": [
+        154
+      ],
+      "roadmap": [
+        155
+      ],
+      "future.": [
+        158
+      ],
+      "It": [
+        159
+      ],
+      "summarizes": [
+        160
+      ],
+      "findings": [
+        161
+      ],
+      "from": [
+        162
+      ],
+      "Alliance's": [
+        166
+      ],
+      "Decade": [
+        168
+      ],
+      "Report": [
+        169
+      ],
+      "2.0": [
+        170
+      ],
+      "(2015-2025)": [
+        171
+      ],
+      "newly": [
+        174
+      ],
+      "defined": [
+        175
+      ],
+      "ten": [
+        176
+      ],
+      "goals": [
+        177
+      ],
+      "set": [
+        178
+      ],
+      "out": [
+        179
+      ],
+      "2025-2035": [
+        182
+      ],
+      "Charter": [
+        185
+      ],
+      "2.0,": [
+        186
+      ],
+      "signaling": [
+        187
+      ],
+      "renewed": [
+        189
+      ],
+      "commitment": [
+        190
+      ],
+      "advancing": [
+        192
+      ],
+      "care": [
+        194
+      ],
+      "globally": [
+        195
+      ],
+      "over": [
+        196
+      ],
+      "next": [
+        198
+      ],
+      "decade.": [
+        199
+      ]
+    },
+    "referenced_works_count": 1,
+    "related_works": []
+  },
+  "ror": {
+    "02n6dj587": {
+      "ror_id": "https://ror.org/02n6dj587",
+      "status": "active",
+      "types": [
+        "funder",
+        "nonprofit"
+      ],
+      "established": 1996,
+      "names": [
+        {
+          "lang": null,
+          "types": [
+            "acronym"
+          ],
+          "value": "BCA"
+        },
+        {
+          "lang": "en",
+          "types": [
+            "ror_display",
+            "label"
+          ],
+          "value": "Breast Cancer Alliance"
+        }
+      ],
+      "display_name": "Breast Cancer Alliance",
+      "locations": [
+        {
+          "geonames_details": {
+            "continent_code": "NA",
+            "continent_name": "North America",
+            "country_code": "US",
+            "country_name": "United States",
+            "country_subdivision_code": "CT",
+            "country_subdivision_name": "Connecticut",
+            "lat": 41.02649,
+            "lng": -73.62846,
+            "name": "Greenwich"
+          },
+          "geonames_id": 4835395
+        }
+      ],
+      "country": "United States",
+      "country_code": "US",
+      "city": "Greenwich",
+      "latitude": 41.02649,
+      "longitude": -73.62846,
+      "links": [
+        {
+          "type": "website",
+          "value": "http://breastcanceralliance.org/"
+        },
+        {
+          "type": "wikipedia",
+          "value": "https://en.wikipedia.org/wiki/Breast_Cancer_Alliance"
+        }
+      ],
+      "website": "http://breastcanceralliance.org/",
+      "external_ids": [
+        {
+          "all": [
+            "100001513"
+          ],
+          "preferred": null,
+          "type": "fundref"
+        },
+        {
+          "all": [
+            "grid.453739.f"
+          ],
+          "preferred": "grid.453739.f",
+          "type": "grid"
+        },
+        {
+          "all": [
+            "0000 0004 5904 8391"
+          ],
+          "preferred": "0000 0004 5904 8391",
+          "type": "isni"
+        }
+      ],
+      "grid_id": "grid.453739.f",
+      "isni": "0000 0004 5904 8391",
+      "relationships": [],
+      "domains": []
+    }
+  },
+  "pubtator": null,
+  "orcid": null,
+  "doi_content_negotiation": null,
+  "merged": {
+    "title": "Knowledge in Motion: A decade reviewed, a future defined – The ABC Global Alliance 2015–2025 Decade Report and 2025–2035 Global Charter",
+    "authors": [
+      {
+        "name": "Roberta Ventura",
+        "given_name": "Roberta",
+        "family_name": "Ventura",
+        "orcid": null,
+        "affiliations": [],
+        "sequence": "additional",
+        "sources": [
+          "crossref",
+          "openalex"
+        ],
+        "openalex_id": "https://openalex.org/A5113613525",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I2799443294",
+            "display_name": "Breast Cancer Alliance",
+            "country": "United States",
+            "type": "nonprofit",
+            "ror_id": "https://ror.org/02n6dj587",
+            "country_code": "US",
+            "city": "Greenwich",
+            "latitude": 41.02649,
+            "longitude": -73.62846,
+            "website": "http://breastcanceralliance.org/",
+            "established": 1996,
+            "external_ids": [
+              {
+                "type": "grid",
+                "preferred": "grid.453739.f",
+                "all": [
+                  "grid.453739.f"
+                ]
+              },
+              {
+                "type": "isni",
+                "preferred": "0000 0004 5904 8391",
+                "all": [
+                  "0000 0004 5904 8391"
+                ]
+              }
+            ],
+            "ror_enriched": true
+          }
+        ],
+        "position": "middle"
+      },
+      {
+        "name": "Georgia Attfield",
+        "given_name": "Georgia",
+        "family_name": "Attfield",
+        "orcid": null,
+        "affiliations": [],
+        "sequence": "additional",
+        "sources": [
+          "crossref",
+          "openalex"
+        ],
+        "openalex_id": "https://openalex.org/A5092945771",
+        "position": "middle",
+        "institutions": []
+      },
+      {
+        "name": "Alexandra Lewis",
+        "given_name": "Alexandra",
+        "family_name": "Lewis",
+        "orcid": null,
+        "affiliations": [],
+        "sequence": "additional",
+        "sources": [
+          "crossref",
+          "openalex"
+        ],
+        "openalex_id": "https://openalex.org/A5016803996",
+        "position": "middle",
+        "institutions": []
+      },
+      {
+        "name": "Fatima Cardoso",
+        "given_name": "Fatima",
+        "family_name": "Cardoso",
+        "orcid": "https://orcid.org/0000-0002-6692-2249",
+        "affiliations": [],
+        "sequence": "first",
+        "sources": [
+          "crossref"
+        ],
+        "institutions": []
+      },
+      {
+        "name": "Karen Gelmon",
+        "given_name": "Karen",
+        "family_name": "Gelmon",
+        "orcid": null,
+        "affiliations": [],
+        "sequence": "additional",
+        "sources": [
+          "crossref"
+        ],
+        "institutions": []
+      },
+      {
+        "name": "Fátima Cardoso",
+        "orcid": "https://orcid.org/0000-0002-6692-2249",
+        "openalex_id": "https://openalex.org/A5025554206",
+        "institutions": [
+          {
+            "id": "https://openalex.org/I2799443294",
+            "display_name": "Breast Cancer Alliance",
+            "country": "United States",
+            "type": "nonprofit",
+            "ror_id": "https://ror.org/02n6dj587",
+            "country_code": "US",
+            "city": "Greenwich",
+            "latitude": 41.02649,
+            "longitude": -73.62846,
+            "website": "http://breastcanceralliance.org/",
+            "established": 1996,
+            "external_ids": [
+              {
+                "type": "grid",
+                "preferred": "grid.453739.f",
+                "all": [
+                  "grid.453739.f"
+                ]
+              },
+              {
+                "type": "isni",
+                "preferred": "0000 0004 5904 8391",
+                "all": [
+                  "0000 0004 5904 8391"
+                ]
+              }
+            ],
+            "ror_enriched": true
+          }
+        ],
+        "position": "first",
+        "sources": [
+          "openalex"
+        ]
+      },
+      {
+        "name": "Karen A. Gelmon",
+        "orcid": "https://orcid.org/0000-0003-4111-2757",
+        "openalex_id": "https://openalex.org/A5067468792",
+        "institutions": [],
+        "position": "last",
+        "sources": [
+          "openalex"
+        ]
+      }
+    ],
+    "journal": "The Breast",
+    "publication_date": "2025-12",
+    "citation_counts": [
+      {
+        "source": "crossref",
+        "count": 0
+      },
+      {
+        "source": "semantic_scholar",
+        "count": 0
+      },
+      {
+        "source": "openalex",
+        "count": 0
+      }
+    ],
+    "citation_count": 0,
+    "is_oa": true,
+    "oa_status": "gold",
+    "oa_url": "https://doi.org/10.1016/j.breast.2025.104601",
+    "influential_citation_count": 0,
+    "fields_of_study": [
+      "Medicine"
+    ],
+    "topics": [
+      "Global Politics and Economy",
+      "International Development and Aid"
+    ],
+    "license": {
+      "url": "https://www.elsevier.com/tdm/userlicense/1.0/",
+      "start": "2025-12-01T00:00:00Z",
+      "delay_in_days": 0
+    },
+    "funding": [
+      {
+        "name": "Roche",
+        "doi": "10.13039/100004337",
+        "award": []
+      },
+      {
+        "name": "Amsterdam Brain and Cognition",
+        "doi": "10.13039/501100019541",
+        "award": []
+      },
+      {
+        "name": "Breast Cancer Research Foundation",
+        "doi": "10.13039/100001006",
+        "award": []
+      },
+      {
+        "name": "Gilead Sciences",
+        "doi": "10.13039/100005564",
+        "award": []
+      }
+    ],
+    "external_ids": {
+      "semantic_scholar_corpus_id": 282140832,
+      "pmid": "41298006",
+      "openalex_id": "https://openalex.org/W4415227823",
+      "doi": "10.1016/j.breast.2025.104601"
+    },
+    "biblio": {
+      "volume": "84",
+      "pages": "104601",
+      "publisher": "Elsevier BV",
+      "issn": [
+        "0960-9776"
+      ],
+      "type": "journal-article",
+      "first_page": "104601",
+      "last_page": "104601"
+    },
+    "references": {
+      "count": 10
+    },
+    "cross_references": {
+      "author_orcids": [
+        {
+          "orcid": "https://orcid.org/0000-0002-6692-2249",
+          "url": "https://orcid.org/https://orcid.org/0000-0002-6692-2249",
+          "name": "Fatima Cardoso"
+        },
+        {
+          "orcid": "https://orcid.org/0000-0002-6692-2249",
+          "url": "https://orcid.org/https://orcid.org/0000-0002-6692-2249",
+          "name": "Fátima Cardoso"
+        },
+        {
+          "orcid": "https://orcid.org/0000-0003-4111-2757",
+          "url": "https://orcid.org/https://orcid.org/0000-0003-4111-2757",
+          "name": "Karen A. Gelmon"
+        }
+      ]
+    }
+  }
+}

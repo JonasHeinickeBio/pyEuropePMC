@@ -60,6 +60,13 @@ class URIFactory:
         config = load_rdf_config()
         return str(config.get("base_uri", "http://example.org/data/"))
 
+    @property
+    def data_uri(self) -> str:
+        """Get the data URI from configuration for entity URIs."""
+        config = load_rdf_config()
+        uri_config = config.get("uri", {})
+        return str(uri_config.get("data", "https://w3id.org/pyeuropepmc/data#"))
+
     def generate_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """
         Generate a URI for the given entity using the appropriate scheme.
@@ -82,13 +89,16 @@ class URIFactory:
 
     def _generate_paper_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for paper entity."""
-        # Prioritize PMID for PubMed resolvable URIs
+        # Prioritize local data namespace URIs for consistency with other entities
         if getattr(entity, "pmid", None):
-            return URIRef(f"https://pubmed.ncbi.nlm.nih.gov/{entity.pmid}/")
+            return URIRef(f"{self.data_uri}paper/{entity.pmid}")
         if getattr(entity, "doi", None):
-            return URIRef(f"https://doi.org/{entity.doi}")
+            return URIRef(f"{self.data_uri}paper/{entity.doi.replace('/', '-')}")
         if getattr(entity, "pmcid", None):
-            return URIRef(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{entity.pmcid}/")
+            pmcid = entity.pmcid
+            if not pmcid.upper().startswith("PMC"):
+                pmcid = f"PMC{pmcid}"
+            return URIRef(f"{self.data_uri}paper/{pmcid}")
         # Fallback: first author last name + year + short journal
         return self._generate_paper_fallback_uri(entity)
 
@@ -99,7 +109,7 @@ class URIFactory:
             getattr(entity, "full_name", "") or getattr(entity, "name", "")
         )
         if normalized_name:
-            return URIRef(f"{self.base_uri}author/{normalized_name}")
+            return URIRef(f"{self.data_uri}author/{normalized_name}")
         # Fall back to ORCID if no name available
         if getattr(entity, "orcid", None):
             return URIRef(f"https://orcid.org/{entity.orcid}")
@@ -113,12 +123,22 @@ class URIFactory:
     ) -> URIRef:
         """Generate URI for institution entity."""
         if getattr(entity, "ror_id", None):
-            return URIRef(entity.ror_id)
+            ror_uri = URIRef(entity.ror_id)
+            # Add fragment for department-level entities to avoid URI collisions
+            if getattr(entity, "display_name", None):
+                import hashlib
+
+                # MD5 is safe here for non-cryptographic URI generation
+                name_hash = hashlib.md5(
+                    entity.display_name.encode(), usedforsecurity=False
+                ).hexdigest()[:8]
+                return URIRef(f"{entity.ror_id}#{name_hash}")
+            return ror_uri
         if getattr(entity, "openalex_id", None):
             return URIRef(entity.openalex_id)
         if getattr(entity, "display_name", None):
             compact_id = self._generate_compact_institution_id(entity.display_name)
-            return URIRef(f"{self.base_uri}institution/{compact_id}")
+            return URIRef(f"{self.data_uri}institution/{compact_id}")
         return self._generate_fallback_uri(entity)
 
     def _generate_reference_uri(
@@ -158,7 +178,7 @@ class URIFactory:
 
         if not parts:
             # Final fallback to UUID if no components available
-            return URIRef(f"{self.base_uri}reference/{uuid.uuid4()}")
+            return URIRef(f"{self.data_uri}reference/{uuid.uuid4()}")
 
         base_identifier = "-".join(parts)
 
@@ -166,7 +186,7 @@ class URIFactory:
         title_hash = self._get_title_hash(entity)
         identifier = f"{base_identifier}-{title_hash}" if title_hash else base_identifier
 
-        return URIRef(f"{self.base_uri}reference/{identifier}")
+        return URIRef(f"{self.data_uri}reference/{identifier}")
 
     def _extract_reference_first_author(self, entity: Any) -> str | None:
         """Extract first author last name from reference entity."""
@@ -206,15 +226,15 @@ class URIFactory:
             # Normalize abbreviation for URI use
             normalized_abbr = self._normalize_journal_abbr(abbreviation)
             if normalized_abbr:
-                return URIRef(f"{self.base_uri}journal/{normalized_abbr}")
+                return URIRef(f"{self.data_uri}journal/{normalized_abbr}")
         # Fallback to title-based URI
         if getattr(entity, "title", None):
             normalized_title = self._normalize_name(entity.title)
             if normalized_title:
-                return URIRef(f"{self.base_uri}journal/{normalized_title}")
+                return URIRef(f"{self.data_uri}journal/{normalized_title}")
         # Final fallback to NLM ID if available
         if getattr(entity, "nlmid", None):
-            return URIRef(f"{self.base_uri}journal/{entity.nlmid.lower()}")
+            return URIRef(f"{self.data_uri}journal/{entity.nlmid.lower()}")
         return self._generate_fallback_uri(entity)
 
     def _extract_paper_identifier(self, parent_uri: URIRef | str | None) -> str | None:
@@ -244,27 +264,33 @@ class URIFactory:
         return None
 
     def _generate_section_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
-        """Generate URI for section entity using title-based identifier."""
+        """Generate URI for section entity using order and title-based identifier."""
         paper_id = self._extract_paper_identifier(parent_uri)
 
+        order = getattr(entity, "order", None)
         title = getattr(entity, "title", None)
+
         if title:
             # Normalize the title for URI use
             normalized_title = self._normalize_name(title)
             if normalized_title:
-                if paper_id:
-                    return URIRef(f"{self.base_uri}section/{paper_id}/{normalized_title}")
+                if paper_id and order is not None:
+                    return URIRef(f"{self.data_uri}section/{paper_id}/{order}/{normalized_title}")
+                elif paper_id:
+                    return URIRef(f"{self.data_uri}section/{paper_id}/{normalized_title}")
                 else:
-                    return URIRef(f"{self.base_uri}section/{normalized_title}")
+                    return URIRef(f"{self.data_uri}section/{normalized_title}")
         # Fallback to label
         label = getattr(entity, "label", None)
         if label:
             normalized_label = self._normalize_name(label)
             if normalized_label:
-                if paper_id:
-                    return URIRef(f"{self.base_uri}section/{paper_id}/{normalized_label}")
+                if paper_id and order is not None:
+                    return URIRef(f"{self.data_uri}section/{paper_id}/{order}/{normalized_label}")
+                elif paper_id:
+                    return URIRef(f"{self.data_uri}section/{paper_id}/{normalized_label}")
                 else:
-                    return URIRef(f"{self.base_uri}section/{normalized_label}")
+                    return URIRef(f"{self.data_uri}section/{normalized_label}")
         return self._generate_fallback_uri(entity)
 
     def _generate_table_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
@@ -277,9 +303,9 @@ class URIFactory:
             normalized_label = self._normalize_name(table_label)
             if normalized_label:
                 if paper_id:
-                    return URIRef(f"{self.base_uri}table/{paper_id}/{normalized_label}")
+                    return URIRef(f"{self.data_uri}table/{paper_id}/{normalized_label}")
                 else:
-                    return URIRef(f"{self.base_uri}table/{normalized_label}")
+                    return URIRef(f"{self.data_uri}table/{normalized_label}")
         # Fallback to caption
         caption = getattr(entity, "caption", None)
         if caption:
@@ -288,18 +314,18 @@ class URIFactory:
             normalized_caption = self._normalize_name(short_caption)
             if normalized_caption:
                 if paper_id:
-                    return URIRef(f"{self.base_uri}table/{paper_id}/{normalized_caption}")
+                    return URIRef(f"{self.data_uri}table/{paper_id}/{normalized_caption}")
                 else:
-                    return URIRef(f"{self.base_uri}table/{normalized_caption}")
+                    return URIRef(f"{self.data_uri}table/{normalized_caption}")
         # Fallback to label
         label = getattr(entity, "label", None)
         if label and label != "Untitled Table":
             normalized_label = self._normalize_name(label)
             if normalized_label:
                 if paper_id:
-                    return URIRef(f"{self.base_uri}table/{paper_id}/{normalized_label}")
+                    return URIRef(f"{self.data_uri}table/{paper_id}/{normalized_label}")
                 else:
-                    return URIRef(f"{self.base_uri}table/{normalized_label}")
+                    return URIRef(f"{self.data_uri}table/{normalized_label}")
         return self._generate_fallback_uri(entity)
 
     def _generate_figure_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
@@ -312,9 +338,9 @@ class URIFactory:
             normalized_label = self._normalize_name(figure_label)
             if normalized_label:
                 if paper_id:
-                    return URIRef(f"{self.base_uri}figure/{paper_id}/{normalized_label}")
+                    return URIRef(f"{self.data_uri}figure/{paper_id}/{normalized_label}")
                 else:
-                    return URIRef(f"{self.base_uri}figure/{normalized_label}")
+                    return URIRef(f"{self.data_uri}figure/{normalized_label}")
         # Fallback to caption
         caption = getattr(entity, "caption", None)
         if caption:
@@ -323,18 +349,18 @@ class URIFactory:
             normalized_caption = self._normalize_name(short_caption)
             if normalized_caption:
                 if paper_id:
-                    return URIRef(f"{self.base_uri}figure/{paper_id}/{normalized_caption}")
+                    return URIRef(f"{self.data_uri}figure/{paper_id}/{normalized_caption}")
                 else:
-                    return URIRef(f"{self.base_uri}figure/{normalized_caption}")
+                    return URIRef(f"{self.data_uri}figure/{normalized_caption}")
         # Fallback to label
         label = getattr(entity, "label", None)
         if label and label != "Untitled Figure":
             normalized_label = self._normalize_name(label)
             if normalized_label:
                 if paper_id:
-                    return URIRef(f"{self.base_uri}figure/{paper_id}/{normalized_label}")
+                    return URIRef(f"{self.data_uri}figure/{paper_id}/{normalized_label}")
                 else:
-                    return URIRef(f"{self.base_uri}figure/{normalized_label}")
+                    return URIRef(f"{self.data_uri}figure/{normalized_label}")
         return self._generate_fallback_uri(entity)
 
     def generate_grant_uri(self, funder_dict: dict[str, Any]) -> URIRef:
@@ -373,16 +399,16 @@ class URIFactory:
 
         if parts:
             grant_id = "-".join(parts)
-            return URIRef(f"{self.base_uri}grant/{grant_id}")
+            return URIRef(f"{self.data_uri}grant/{grant_id}")
 
         # Fallback: use source if available
         if source:
             normalized_source = self._normalize_name(source)
             if normalized_source:
-                return URIRef(f"{self.base_uri}grant/{normalized_source}")
+                return URIRef(f"{self.data_uri}grant/{normalized_source}")
 
         # Final fallback to UUID
-        return URIRef(f"{self.base_uri}grant/{uuid.uuid4()}")
+        return URIRef(f"{self.data_uri}grant/{uuid.uuid4()}")
 
     def _generate_grant_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for grant entity using award ID or fundref DOI."""
@@ -428,7 +454,7 @@ class URIFactory:
 
         identifier = self._build_paper_identifier(first_author_last_name, year, short_journal)
         if identifier:
-            return URIRef(f"{self.base_uri}paper/{identifier}")
+            return URIRef(f"{self.data_uri}paper/{identifier}")
         else:
             # Final fallback to UUID if no components available
             return self._generate_fallback_uri(entity)
@@ -498,10 +524,10 @@ class URIFactory:
                 entity_type = "resource"
             else:
                 entity_type = "object"
-            return URIRef(f"{self.base_uri}{entity_type}/{uuid.uuid4()}")
+            return URIRef(f"{self.data_uri}{entity_type}/{uuid.uuid4()}")
 
         entity_type = entity.__class__.__name__.lower().replace("entity", "")
-        return URIRef(f"{self.base_uri}{entity_type}/{uuid.uuid4()}")
+        return URIRef(f"{self.data_uri}{entity_type}/{uuid.uuid4()}")
 
     def _normalize_name(self, name: str) -> str | None:
         """Normalize a name for URI use."""
@@ -512,40 +538,247 @@ class URIFactory:
         return normalized if normalized else None
 
     def _generate_compact_institution_id(self, display_name: str) -> str:
-        """Generate compact institution identifier."""
+        """Generate compact institution identifier with improved stability and accuracy."""
         if not display_name:
             return str(uuid.uuid4())[:8]
 
         name = display_name.strip()
+
+        # Remove country and location suffixes more comprehensively
         name = re.sub(
-            r",\s*(?:USA|United States|UK|United Kingdom|Canada|Australia|"
-            r"Germany|France|Italy|Spain|Japan|China|India)(?:\..*)?$",
+            r",\s*(?:USA|United States|United States of America|UK|United Kingdom|Great Britain|"
+            r"Canada|Australia|Germany|France|Italy|Spain|Japan|China|India|Russia|Brazil|"
+            r"Mexico|Argentina|Chile|Colombia|South Africa|Israel|Turkey|Netherlands|Belgium|"
+            r"Switzerland|Austria|Sweden|Norway|Denmark|Finland|Poland|Czech Republic|Hungary|"
+            r"Portugal|Greece|Ireland|New Zealand|Singapore|South Korea|Taiwan|Thailand|Malaysia|"
+            r"Philippines|Vietnam|Indonesia|Pakistan|Bangladesh|Egypt|Saudi Arabia|UAE|"
+            r"United Arab Emirates)(?:\..*)?$",
             "",
             name,
             flags=re.IGNORECASE,
         )
 
+        # Remove postal codes and state abbreviations
+        name = re.sub(r",\s*[A-Z]{2}\s*\d{5}(-\d{4})?", "", name)
+        name = re.sub(r",\s*[A-Z]{2}(?:\s+\d{5})?", "", name)
+
+        # Remove email addresses and electronic addresses
+        name = re.sub(r"\.\s*Electronic address:.*$", "", name, flags=re.IGNORECASE)
+
+        # Split and clean parts
         parts = [part.strip() for part in name.split(",") if part.strip()]
         if not parts:
             return str(uuid.uuid4())[:8]
 
-        main_name = parts[0]
+        # Enhanced scoring system with institution type prioritization
+        institution_types = {
+            # High priority institutions
+            "university": 5,
+            "college": 4,
+            "school of medicine": 4,
+            "medical school": 4,
+            "school": 3,
+            "institute": 3,
+            "hospital": 3,
+            "medical center": 3,
+            "cancer center": 3,
+            "research center": 3,
+            "national": 4,
+            "federal": 3,
+            # Medium priority
+            "center": 2,
+            "centre": 2,
+            "laboratory": 2,
+            "lab": 2,
+            "clinic": 2,
+            "department": 1,
+            "division": 1,
+            "foundation": 2,
+            "association": 2,
+            "corporation": 1,
+            "company": 1,
+            "ministry": 3,
+            "agency": 2,
+        }
+
+        best_candidate = parts[0]  # Default to first part
+        best_score = 0
+        best_priority = 0  # Tie-breaker priority
+
+        for part in parts:
+            score = 0
+            priority = 0  # For tie-breaking
+            part_lower = part.lower()
+            part_words = part.split()
+
+            # Institution type scoring - check for exact matches first (higher priority)
+            max_type_score = 0
+            for inst_type, type_score in institution_types.items():
+                if inst_type in part_lower:
+                    max_type_score = max(max_type_score, type_score)
+
+            score += max_type_score
+
+            # Set priority for tie-breaking (higher priority = better)
+            if "university" in part_lower:
+                priority = 3
+            elif (
+                "college" in part_lower
+                or "school of medicine" in part_lower
+                or "medical school" in part_lower
+            ):
+                priority = 2
+            elif "hospital" in part_lower or "medical center" in part_lower:
+                priority = 1
+
+            # Prefer parts with reasonable length (3-8 words)
+            word_count = len(part_words)
+            if 3 <= word_count <= 8:
+                score += 2
+            elif word_count <= 12:  # Still acceptable
+                score += 1
+
+            # Prefer parts without numbers (avoid addresses)
+            if not re.search(r"\d", part):
+                score += 1
+
+            # Prefer parts that don't look like cities
+            known_cities = [
+                "Boston",
+                "New York",
+                "London",
+                "Paris",
+                "Berlin",
+                "Tokyo",
+                "San Francisco",
+                "Los Angeles",
+                "Chicago",
+                "Stanford",
+                "Cambridge",
+                "Heidelberg",
+                "Munich",
+                "Bethesda",
+                "Rockville",
+                "Seattle",
+                "Austin",
+                "Changsha",
+                "Hangzhou",
+                "Shanghai",
+                "Lisbon",
+                "Porto",
+                "Madrid",
+                "Barcelona",
+                "Rome",
+                "Milan",
+                "Amsterdam",
+                "Brussels",
+                "Vienna",
+                "Stockholm",
+                "Copenhagen",
+                "Oslo",
+                "Helsinki",
+                "Warsaw",
+                "Prague",
+                "Budapest",
+                "Athens",
+                "Dublin",
+                "Wellington",
+                "Singapore",
+                "Seoul",
+                "Taipei",
+                "Bangkok",
+                "Kuala Lumpur",
+                "Manila",
+                "Jakarta",
+                "Karachi",
+                "Dhaka",
+                "Cairo",
+                "Riyadh",
+                "Dubai",
+                "Abu Dhabi",
+            ]
+            if not any(city.lower() in part_lower for city in known_cities):
+                score += 1
+
+            # Prefer parts that contain proper nouns (capitalized words)
+            capitalized_words = sum(1 for word in part_words if word and word[0].isupper())
+            if capitalized_words >= 2:
+                score += 1
+
+            # Boost score for well-known institution patterns
+            if re.search(
+                r"\b(university|college|school of medicine|medical school)\b", part_lower
+            ):
+                score += 2  # Extra boost for universities
+            if re.search(r"\b(hospital|medical center|clinic)\b", part_lower):
+                score += 1
+
+            # Prefer parts that look like complete institution names
+            if re.search(
+                r"\b(university|college|institute|hospital|center|school)\b.*\b(university|college|institute|hospital|center|school)\b",
+                part_lower,
+            ):
+                score -= 1  # Penalize parts with multiple institution types (likely too long)
+
+            # Tie-breaking: if scores are equal, prefer higher priority
+            if score > best_score or (score == best_score and priority > best_priority):
+                best_score = score
+                best_priority = priority
+                best_candidate = part
+
+        main_name = best_candidate
+
+        # Clean up the selected name
         main_name = re.sub(r"^(?:the\s+)?", "", main_name, flags=re.IGNORECASE)
-        main_name = re.sub(
-            r"(?:\s+(?:university|college|institute|center|centre|hospital|school|department|division|program|unit|group|laboratory|lab|clinic))$",
+
+        # More selective suffix removal - only remove if it results in a better name
+        original_words = main_name.split()
+
+        # Try removing common department prefixes/suffixes
+        cleaned_name = re.sub(
+            r"^(?:department|division|unit|group|program|section)\s+of\s+",
             "",
             main_name,
             flags=re.IGNORECASE,
         )
+        if len(cleaned_name.split()) >= 2 and len(cleaned_name) > len(main_name) * 0.6:
+            main_name = cleaned_name
 
+        # For compound institution names, try to extract the core institution
         words = main_name.split()
-        if len(words) > 4:
-            main_name = " ".join(words[:4])
+        if len(words) > 5:
+            # Look for university patterns and extract the university name
+            uni_patterns = [
+                r"(.*?university.*?)(?:\s+school|\s+institute|\s+college|\s+hospital|\s+center|\s+department|$)",
+                r"(.*?college.*?)(?:\s+of|\s+department|$)",
+                r"(.*?institute.*?)(?:\s+of|\s+department|$)",
+                r"(.*?hospital.*?)(?:\s+department|$)",
+            ]
 
+            for pattern in uni_patterns:
+                match = re.search(pattern, main_name, re.IGNORECASE)
+                if match:
+                    candidate = match.group(1).strip()
+                    if 10 <= len(candidate) <= 60 and len(candidate.split()) <= 5:
+                        main_name = candidate
+                        break
+
+        # Final length limit - prefer 2-5 words, but allow up to 6 for complete names
+        words = main_name.split()
+        if len(words) > 6:
+            main_name = " ".join(words[:6])
+        elif len(words) > 5 and not any(
+            word.lower() in ["university", "college", "institute", "hospital"] for word in words
+        ):
+            # If no institution keyword and still long, truncate more
+            main_name = " ".join(words[:5])
+
+        # Normalize for URI use
         normalized = self._normalize_name(main_name)
-        if normalized and len(normalized) <= 50:
+        if normalized and len(normalized) <= 50 and len(normalized) >= 3:
             return normalized
 
+        # Fallback to hash if normalization fails or result is too short/long
         import hashlib
 
         hash_obj = hashlib.md5(display_name.encode("utf-8"))  # nosec B324
@@ -792,14 +1025,36 @@ def map_multi_value_fields(
     g: Any,
     subject: URIRef,
     entity: Any,
-    multi_value_mapping: dict[str, str],
+    multi_value_mapping: dict[str, str | dict[str, Any]],
     resolve_predicate: Callable[[str], URIRef],
     context: URIRef | None = None,
 ) -> None:
-    """Map multi-value fields to RDF triples."""
-    for field_name, predicate_str in multi_value_mapping.items():
+    """
+    Map multi-value fields to RDF triples with proper datatype handling.
+
+    Args:
+        g: RDF graph
+        subject: Subject URI
+        entity: Entity object
+        multi_value_mapping: Mapping of field names to predicates (string) or dicts
+            with predicate and datatype
+        resolve_predicate: Function to resolve predicate strings to URIRefs
+        context: Optional named graph context
+    """
+    for field_name, predicate_config in multi_value_mapping.items():
         values = getattr(entity, field_name, None)
         if values is not None and isinstance(values, list):
+            # Handle both old format (string) and new format (dict with predicate)
+            predicate_str: str | None
+
+            if isinstance(predicate_config, dict):
+                predicate_str = predicate_config.get("predicate")
+            else:
+                predicate_str = predicate_config
+
+            if predicate_str is None:
+                continue
+
             predicate = resolve_predicate(predicate_str)
             for value in values:
                 if value is not None:
@@ -823,7 +1078,8 @@ def map_paper_ontology_alignments(
     Handles both simple string MeSH terms and structured MeSHHeadingEntity objects
     with qualifiers, creating proper semantic relationships in RDF.
     """
-    from pyeuropepmc.models.mesh import MeSHHeadingEntity
+    # TODO: Implement MeSHHeadingEntity class in schema
+    # from pyeuropepmc.models.mesh import MeSHHeadingEntity
 
     # MeSH terms alignment - handle both string and structured entities
     if not (hasattr(entity, "mesh_terms") and entity.mesh_terms):
@@ -836,10 +1092,11 @@ def map_paper_ontology_alignments(
 
     for mesh_term in entity.mesh_terms:
         # Handle structured MeSH heading with qualifiers
-        if isinstance(mesh_term, MeSHHeadingEntity):
-            _add_structured_mesh_term(g, subject, mesh_term, resolve_predicate, context)
+        # TODO: Re-enable when MeSHHeadingEntity is implemented
+        # if isinstance(mesh_term, MeSHHeadingEntity):
+        #     _add_structured_mesh_term(g, subject, mesh_term, resolve_predicate, context)
         # Handle simple string MeSH term (backward compatibility)
-        elif isinstance(mesh_term, str) and mesh_term.strip():
+        if isinstance(mesh_term, str) and mesh_term.strip():
             _add_simple_mesh_term(g, subject, mesh_term, resolve_predicate, context)
 
 
@@ -851,40 +1108,39 @@ def _add_structured_mesh_term(
     context: URIRef | None,
 ) -> None:
     """Add structured MeSH heading with qualifiers to RDF graph."""
-    # Create MeSH descriptor URI (normalized)
-    descriptor_normalized = mesh_term.descriptor_name.replace(" ", "_")
-    mesh_uri = URIRef(f"http://id.nlm.nih.gov/mesh/{descriptor_normalized}")
-
-    # Declare as MeSH Descriptor using official vocabulary
-    _add_triple(
-        g,
-        mesh_uri,
-        resolve_predicate("rdf:type"),
-        resolve_predicate("meshv:Descriptor"),
-        context,
-    )
-
-    # Link paper to descriptor using meshv:hasDescriptor
-    _add_triple(g, subject, resolve_predicate("meshv:hasDescriptor"), mesh_uri, context)
-
-    # Add preferred label and standard label
-    _add_triple(
-        g,
-        mesh_uri,
-        resolve_predicate("meshv:prefLabel"),
-        Literal(mesh_term.descriptor_name),
-        context,
-    )
-    _add_triple(
-        g,
-        mesh_uri,
-        resolve_predicate("rdfs:label"),
-        Literal(mesh_term.descriptor_name),
-        context,
-    )
-
-    # Add descriptor UI if available
     if mesh_term.descriptor_ui:
+        # Use real MeSH URI
+        mesh_uri = URIRef(f"http://id.nlm.nih.gov/mesh/{mesh_term.descriptor_ui}")
+
+        # Declare as MeSH Descriptor using official vocabulary
+        _add_triple(
+            g,
+            mesh_uri,
+            resolve_predicate("rdf:type"),
+            resolve_predicate("meshv:Descriptor"),
+            context,
+        )
+
+        # Link paper to descriptor using dcterms:subject (standard predicate)
+        _add_triple(g, subject, resolve_predicate("dcterms:subject"), mesh_uri, context)
+
+        # Add preferred label and standard label
+        _add_triple(
+            g,
+            mesh_uri,
+            resolve_predicate("meshv:prefLabel"),
+            Literal(mesh_term.descriptor_name),
+            context,
+        )
+        _add_triple(
+            g,
+            mesh_uri,
+            resolve_predicate("rdfs:label"),
+            Literal(mesh_term.descriptor_name),
+            context,
+        )
+
+        # Add descriptor UI
         _add_triple(
             g,
             mesh_uri,
@@ -892,12 +1148,23 @@ def _add_structured_mesh_term(
             Literal(mesh_term.descriptor_ui),
             context,
         )
-
-    # Handle qualifiers using official MeSH vocabulary
-    for qualifier in mesh_term.qualifiers:
-        _add_mesh_qualifier(
-            g, subject, mesh_uri, qualifier, descriptor_normalized, resolve_predicate, context
+    else:
+        # No UI available, use literal
+        _add_triple(
+            g,
+            subject,
+            resolve_predicate("dcterms:subject"),
+            Literal(mesh_term.descriptor_name),
+            context,
         )
+
+    # Handle qualifiers using official MeSH vocabulary (only if UI available)
+    if mesh_term.descriptor_ui:
+        descriptor_name = mesh_term.descriptor_name.replace(" ", "_")
+        for qualifier in mesh_term.qualifiers:
+            _add_mesh_qualifier(
+                g, subject, mesh_uri, qualifier, descriptor_name, resolve_predicate, context
+            )
 
 
 def _add_mesh_qualifier(
@@ -971,10 +1238,11 @@ def _add_simple_mesh_term(
     context: URIRef | None,
 ) -> None:
     """Add simple string MeSH term to RDF graph (backward compatibility)."""
+    # For simple terms without IDs, use literal with dcterms:subject
     _add_triple(
         g,
         subject,
-        resolve_predicate("meshv:hasDescriptor"),
+        resolve_predicate("dcterms:subject"),
         Literal(mesh_term.strip()),
         context,
     )
@@ -1067,14 +1335,9 @@ def map_institution_ontology_alignments(
         and entity.latitude is not None
         and entity.longitude is not None
     ):
-        # Already handled in fields mapping, but can add geo:SpatialThing type
-        g.add(
-            (
-                subject,
-                resolve_predicate("rdf:type"),
-                URIRef("http://www.w3.org/2003/01/geo/wgs84_pos#SpatialThing"),
-            )
-        )
+        # Geographic coordinates are already handled in fields mapping
+        # Removed geo:SpatialThing type as requested
+        pass
 
 
 def map_reference_ontology_alignments(

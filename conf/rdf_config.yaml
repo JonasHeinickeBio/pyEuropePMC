@@ -15,8 +15,6 @@
 schema:
   path: "schemas/pyeuropepmc_schema.yaml"
   version: "1.0.0"
-  # Legacy config for backward compatibility (will be deprecated)
-  legacy_rdf_map: "conf/rdf_map.yml"
   use_linkml_introspection: true
 
 # Base URI configuration
@@ -29,25 +27,25 @@ uri:
 # Controls how entities are organized in RDF graphs
 named_graphs:
   enabled: true
-  
+
   publications:
     title: "Publication Entities and Citations"
     description: "Contains publication entities, citation networks, and bibliographic relationships"
     uri_base: "https://w3id.org/pyeuropepmc#publications"
     enabled: true
-  
+
   authors:
     title: "Author Entities and Relationships"
     description: "Contains all author entities, their affiliations, collaborations, and quality metrics"
     uri_base: "https://w3id.org/pyeuropepmc#authors"
     enabled: true
-  
+
   institutions:
     title: "Institutional Entities and Hierarchies"
     description: "Contains institutional entities, hierarchies, and organizational relationships"
     uri_base: "https://w3id.org/pyeuropepmc#institutions"
     enabled: true
-  
+
   provenance:
     title: "Provenance and Quality Metrics"
     description: "Contains provenance information, quality scores, and temporal metadata"
@@ -66,10 +64,10 @@ kg_structure:
   # What types of entities to include
   include_content: true  # Include sections, references, tables, figures
   include_metadata: true  # Include papers, authors, institutions
-  
+
   # Default KG type: "complete", "metadata", "content"
   default_type: "complete"
-  
+
   # Semantic enrichment options
   enable_citation_networks: true
   enable_collaboration_networks: true
@@ -84,13 +82,13 @@ quality:
     high: 0.8
     medium: 0.6
     low: 0.0
-  
+
   # Validation settings
   validation:
     enabled: true
     strict_mode: false  # If true, fail on validation errors
     log_warnings: true
-  
+
   # Data completeness requirements
   completeness:
     require_identifiers: true  # At least one identifier (DOI, PMCID, etc.)
@@ -102,14 +100,14 @@ performance:
   # Batch processing
   batch_size: 100  # Number of entities per batch
   max_parallel_batches: 4
-  
+
   # Caching
   caching:
     enabled: true
     schema_cache_ttl: 3600  # Schema cache time-to-live in seconds
     entity_cache_ttl: 1800
     max_cache_size_mb: 512
-  
+
   # Memory management
   memory:
     max_graph_size_triples: 1000000
@@ -119,7 +117,7 @@ performance:
 output:
   # Default serialization format
   default_format: "turtle"
-  
+
   # Supported formats and their extensions
   formats:
     turtle:
@@ -137,10 +135,10 @@ output:
     xml:
       extension: ".rdf"
       mime_type: "application/rdf+xml"
-  
+
   # File naming
   filename_template: "{prefix}{entity_type}_{identifier}.{extension}"
-  
+
   # Compression
   compression:
     enabled: false
@@ -153,12 +151,12 @@ debugging:
     level: "INFO"  # DEBUG, INFO, WARNING, ERROR
     log_rdf_generation: false
     log_validation_details: false
-  
+
   # Progress reporting
   progress:
     enabled: true
     report_interval: 10  # Report every N entities
-  
+
   # Intermediate output (for debugging)
   intermediate:
     save_intermediate: false
@@ -171,10 +169,10 @@ provenance:
   include_method: true
   include_source: true
   include_confidence: true
-  
+
   # Method identifiers
   default_method: "pyeuropepmc_parser"
-  
+
   # Source tracking
   track_data_sources: true
 
@@ -191,7 +189,7 @@ environments:
     quality:
       validation:
         strict_mode: false
-  
+
   production:
     debugging:
       logging:
@@ -205,7 +203,7 @@ environments:
       caching:
         enabled: true
         max_cache_size_mb: 1024
-  
+
   testing:
     debugging:
       logging:
