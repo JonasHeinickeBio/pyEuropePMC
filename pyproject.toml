@@ -100,6 +100,12 @@ markers = [
   "functional: mark test as functional (use '-m \"not functional\"' to skip)",
   "model: mark tests that require ML model dependencies (sentence-transformers, rapidfuzz, etc.)",
 ]
+filterwarnings = [
+  "ignore::DeprecationWarning",
+  "ignore::PendingDeprecationWarning",
+  "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning",
+  "ignore:.*Accessing the 'model_computed_fields' attribute on the instance is deprecated.*:DeprecationWarning",
+]
 [tool.ruff]
 line-length = 99
 target-version = "py310"
