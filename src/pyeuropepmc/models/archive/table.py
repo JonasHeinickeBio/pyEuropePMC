@@ -4,7 +4,7 @@ Table entity models for representing tables and their rows.
 
 from dataclasses import dataclass, field
 
-from pyeuropepmc.models.base import BaseEntity
+from pyeuropepmc.models.archive.base import BaseEntity
 
 __all__ = ["TableEntity", "TableRowEntity"]
 
@@ -26,6 +26,7 @@ class TableRowEntity(BaseEntity):
     """
 
     cells: list[str] = field(default_factory=list)
+    types: list[str] = field(default_factory=list)
 
     def __post_init__(self) -> None:
         """Initialize types and label after dataclass initialization."""

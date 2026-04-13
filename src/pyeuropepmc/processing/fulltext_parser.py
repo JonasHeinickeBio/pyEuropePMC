@@ -588,7 +588,6 @@ class FullTextXMLParser:
         def _classify_citation_type(citation: dict[str, Any]) -> CitationType:
             """Classify the type of citation based on context and position."""
             context = citation.get("context", "").lower()
-            ref_id = citation.get("ref_id", "")
 
             # Simple heuristics for citation type classification
             if any(word in context for word in ["review", "overview", "summary"]):

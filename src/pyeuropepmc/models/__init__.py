@@ -16,10 +16,9 @@ from pydantic import (
     SerializerFunctionWrapHandler,
     field_validator,
     model_serializer,
-    model_validator,
 )
 
-metamodel_version = "None"
+metamodel_version = "1.7.0"
 version = "1.0.0"
 
 
@@ -34,19 +33,6 @@ class ConfiguredBaseModel(BaseModel):
         use_enum_values=True,
         strict=False,
     )
-
-    @model_serializer(mode="wrap", when_used="unless-none")
-    def treat_empty_lists_as_none(
-        self, handler: SerializerFunctionWrapHandler, info: SerializationInfo
-    ) -> dict[str, Any]:
-        if info.exclude_none:
-            _instance = self.model_copy()
-            for field, field_info in type(_instance).model_fields.items():
-                if getattr(_instance, field) == [] and not (field_info.is_required()):
-                    setattr(_instance, field, None)
-        else:
-            _instance = self
-        return handler(_instance, info)
 
 
 class LinkMLMeta(RootModel):
@@ -505,12 +491,12 @@ class BaseEntity(ConfiguredBaseModel):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -523,63 +509,6 @@ class BaseEntity(ConfiguredBaseModel):
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "dcterms:modified"}
         },
     )
-
-    @model_validator(mode="after")
-    def set_defaults(self):
-        """Set default types and label after initialization."""
-        if not self.types:
-            if self.__class__.__name__ == "Organization":
-                self.types = ["org:Organization"]
-            elif self.__class__.__name__ == "Department":
-                self.types = ["org:OrganizationalUnit"]
-            elif self.__class__.__name__ == "AuthorEntity":
-                self.types = ["foaf:Person"]
-            elif self.__class__.__name__ == "FigureEntity":
-                self.types = ["bibo:Image"]
-            elif self.__class__.__name__ == "PaperEntity":
-                self.types = ["bibo:AcademicArticle"]
-            elif self.__class__.__name__ == "ReferenceEntity":
-                self.types = ["bibo:Document"]
-            elif self.__class__.__name__ == "SectionEntity":
-                self.types = ["bibo:DocumentPart", "nif:Context"]
-            elif self.__class__.__name__ == "TableEntity":
-                self.types = ["bibo:Table"]
-            elif self.__class__.__name__ == "TableRowEntity":
-                self.types = ["bibo:Row"]
-
-        if not self.label:
-            if hasattr(self, "display_name") and self.display_name:
-                self.label = self.display_name
-            elif hasattr(self, "full_name") and self.full_name:
-                self.label = self.full_name
-            elif hasattr(self, "title") and self.title:
-                self.label = self.title
-            elif hasattr(self, "figure_label") and self.figure_label:
-                self.label = self.figure_label
-            elif hasattr(self, "table_label") and self.table_label:
-                self.label = self.table_label
-            elif hasattr(self, "doi") and self.doi:
-                self.label = self.doi
-            elif hasattr(self, "pmcid") and self.pmcid:
-                self.label = self.pmcid
-            elif self.__class__.__name__ == "TableRowEntity" and hasattr(self, "cells"):
-                self.label = f"Row with {len(self.cells)} cells"
-            else:
-                # Set default labels for untitled items
-                if self.__class__.__name__ == "FigureEntity":
-                    self.label = "Untitled Figure"
-                elif self.__class__.__name__ == "ReferenceEntity":
-                    self.label = "Untitled Reference"
-                elif (
-                    self.__class__.__name__ == "SectionEntity"
-                    and hasattr(self, "title")
-                    and not self.title
-                ):
-                    self.label = "Untitled Section"
-                elif self.__class__.__name__ == "TableEntity":
-                    self.label = "Untitled Table"
-
-        return self
 
 
 class ScholarlyWorkEntity(BaseEntity):
@@ -667,11 +596,11 @@ class ScholarlyWorkEntity(BaseEntity):
         },
     )
     authors: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Authors of a work""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "PaperEntity"],
+                "domain_of": ["ScholarlyWorkEntity", "PaperEntity", "ReferenceEntity"],
                 "slot_uri": "dcterms:creator",
             }
         },
@@ -715,12 +644,12 @@ class ScholarlyWorkEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -736,14 +665,60 @@ class ScholarlyWorkEntity(BaseEntity):
 
     @field_validator("doi")
     def pattern_doi(cls, v):
+        import re
+
+        def normalize_doi(doi_str):
+            """Normalize DOI by stripping prefixes and lowercasing."""
+            doi_str = doi_str.strip().lower()
+            doi_str = re.sub(r"^https://doi\.org/", "", doi_str)
+            doi_str = re.sub(r"^http://doi\.org/", "", doi_str)
+            doi_str = re.sub(r"^http://dx\.doi\.org/", "", doi_str)
+            return doi_str
+
         pattern = re.compile(r"^10\.\d{4,9}/[-._;()/:a-zA-Z0-9]+$")
+        if isinstance(v, list):
+            normalized = []
+            for element in v:
+                if isinstance(element, str):
+                    element = normalize_doi(element)
+                    if not pattern.match(element):
+                        err_msg = f"Invalid doi format: {element}"
+                        raise ValueError(err_msg)
+                    normalized.append(element)
+                else:
+                    normalized.append(element)
+            return normalized
+        elif isinstance(v, str):
+            v = normalize_doi(v)
+            if not pattern.match(v):
+                err_msg = f"Invalid doi format: {v}"
+                raise ValueError(err_msg)
+            return v
+        return v
+
+    @field_validator("pmcid")
+    def pattern_pmcid(cls, v):
+        pattern = re.compile(r"^PMC\d+$")
         if isinstance(v, list):
             for element in v:
                 if isinstance(element, str) and not pattern.match(element):
-                    err_msg = f"Invalid doi format: {element}"
+                    err_msg = f"Invalid pmcid format: {element}"
                     raise ValueError(err_msg)
         elif isinstance(v, str) and not pattern.match(v):
-            err_msg = f"Invalid doi format: {v}"
+            err_msg = f"Invalid pmcid format: {v}"
+            raise ValueError(err_msg)
+        return v
+
+    @field_validator("pmid")
+    def pattern_pmid(cls, v):
+        pattern = re.compile(r"^\d+$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid pmid format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid pmid format: {v}"
             raise ValueError(err_msg)
         return v
 
@@ -832,7 +807,7 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     keywords: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of keywords""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
@@ -985,35 +960,35 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     fields_of_study: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Fields of study""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
         },
     )
     related_works: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Related work IDs""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:related"}
         },
     )
     pub_types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of publication types from Europe PMC""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:DocumentType"}
         },
     )
     mesh_terms: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""MeSH terms associated with the paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "meshv:hasDescriptor"}
         },
     )
     topics: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Research topics from OpenAlex""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
@@ -1158,24 +1133,24 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     authors: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Authors of a work""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "PaperEntity"],
+                "domain_of": ["ScholarlyWorkEntity", "PaperEntity", "ReferenceEntity"],
                 "slot_uri": "dcterms:creator",
             }
         },
     )
     paper_institutions: list[Organization] | None = Field(
-        default=[],
+        default=None,
         description="""Institutions affiliated with a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "pyeuropepmc:affiliatedWith"}
         },
     )
     affiliations: list[AffiliationEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Author affiliations with institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -1184,7 +1159,7 @@ class PaperEntity(ScholarlyWorkEntity):
             }
         },
     )
-    journal: JournalEntity | None = Field(
+    journal: str | JournalEntity | None = Field(
         default=None,
         description="""Journal of a paper""",
         json_schema_extra={
@@ -1195,35 +1170,39 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     sections: list[SectionEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Sections of a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:hasPart"}
         },
     )
     references: list[ReferenceEntity] | None = Field(
-        default=[],
+        default=None,
         description="""References cited by a paper""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "cito:cites"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity"],
+                "inverse": "citing_paper",
+                "slot_uri": "cito:cites",
+            }
         },
     )
     tables: list[TableEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Tables in a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:hasPart"}
         },
     )
     figures: list[FigureEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Figures in a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:hasPart"}
         },
     )
     grants: list[GrantEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Grants funding a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "foaf:fundedBy"}
@@ -1256,14 +1235,14 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     s2_fields_of_study: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Semantic Scholar fields of study""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
         },
     )
     publication_types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Publication types from Semantic Scholar""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:DocumentType"}
@@ -1401,12 +1380,12 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -1448,14 +1427,60 @@ class PaperEntity(ScholarlyWorkEntity):
 
     @field_validator("doi")
     def pattern_doi(cls, v):
+        import re
+
+        def normalize_doi(doi_str):
+            """Normalize DOI by stripping prefixes and lowercasing."""
+            doi_str = doi_str.strip().lower()
+            doi_str = re.sub(r"^https://doi\.org/", "", doi_str)
+            doi_str = re.sub(r"^http://doi\.org/", "", doi_str)
+            doi_str = re.sub(r"^http://dx\.doi\.org/", "", doi_str)
+            return doi_str
+
         pattern = re.compile(r"^10\.\d{4,9}/[-._;()/:a-zA-Z0-9]+$")
+        if isinstance(v, list):
+            normalized = []
+            for element in v:
+                if isinstance(element, str):
+                    element = normalize_doi(element)
+                    if not pattern.match(element):
+                        err_msg = f"Invalid doi format: {element}"
+                        raise ValueError(err_msg)
+                    normalized.append(element)
+                else:
+                    normalized.append(element)
+            return normalized
+        elif isinstance(v, str):
+            v = normalize_doi(v)
+            if not pattern.match(v):
+                err_msg = f"Invalid doi format: {v}"
+                raise ValueError(err_msg)
+            return v
+        return v
+
+    @field_validator("pmcid")
+    def pattern_pmcid(cls, v):
+        pattern = re.compile(r"^PMC\d+$")
         if isinstance(v, list):
             for element in v:
                 if isinstance(element, str) and not pattern.match(element):
-                    err_msg = f"Invalid doi format: {element}"
+                    err_msg = f"Invalid pmcid format: {element}"
                     raise ValueError(err_msg)
         elif isinstance(v, str) and not pattern.match(v):
-            err_msg = f"Invalid doi format: {v}"
+            err_msg = f"Invalid pmcid format: {v}"
+            raise ValueError(err_msg)
+        return v
+
+    @field_validator("pmid")
+    def pattern_pmid(cls, v):
+        pattern = re.compile(r"^\d+$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid pmid format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid pmid format: {v}"
             raise ValueError(err_msg)
         return v
 
@@ -1621,7 +1646,7 @@ class AuthorEntity(BaseEntity):
         json_schema_extra={"linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "org:role"}},
     )
     sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Data sources for author information""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -1635,14 +1660,14 @@ class AuthorEntity(BaseEntity):
         },
     )
     papers: list[PaperEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Papers authored by an author""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "foaf:made"}
         },
     )
     author_institutions: list[Organization] | None = Field(
-        default=[],
+        default=None,
         description="""Institutions affiliated with an author""",
         json_schema_extra={
             "linkml_meta": {
@@ -1652,7 +1677,7 @@ class AuthorEntity(BaseEntity):
         },
     )
     affiliations: list[AffiliationEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Author affiliations with institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -1662,7 +1687,7 @@ class AuthorEntity(BaseEntity):
         },
     )
     institutions: list[Organization] | None = Field(
-        default=[],
+        default=None,
         description="""Institutional affiliations as InstitutionEntity objects""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "org:memberOf"}
@@ -1710,7 +1735,7 @@ class AuthorEntity(BaseEntity):
         },
     )
     roles: list[AuthorRole] | None = Field(
-        default=[],
+        default=None,
         description="""Specific roles or contributions of the author""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "pyeuropepmc:authorRoles"}
@@ -1757,12 +1782,12 @@ class AuthorEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -1812,12 +1837,15 @@ class Organization(BaseEntity):
         {
             "class_uri": "org:Organization",
             "from_schema": "https://w3id.org/pyeuropepmc/entities/organization",
-            "slot_usage": {"display_name": {"name": "display_name", "required": True}},
+            "slot_usage": {
+                "display_name": {"name": "display_name", "required": False},
+                "label": {"name": "label"},
+            },
         }
     )
 
-    display_name: str = Field(
-        default=...,
+    display_name: str | None = Field(
+        default=None,
         description="""Display name of the institution""",
         json_schema_extra={
             "linkml_meta": {
@@ -1955,7 +1983,7 @@ class Organization(BaseEntity):
         },
     )
     domains: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution domains""",
         json_schema_extra={
             "linkml_meta": {
@@ -1965,7 +1993,7 @@ class Organization(BaseEntity):
         },
     )
     relationships: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Related institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -1975,7 +2003,7 @@ class Organization(BaseEntity):
         },
     )
     institution_members: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Members of an institution""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["Organization"], "slot_uri": "org:hasMember"}
@@ -1992,7 +2020,7 @@ class Organization(BaseEntity):
         },
     )
     names: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Alternative institution names""",
         json_schema_extra={
             "linkml_meta": {
@@ -2002,7 +2030,7 @@ class Organization(BaseEntity):
         },
     )
     locations: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution locations""",
         json_schema_extra={
             "linkml_meta": {
@@ -2012,7 +2040,7 @@ class Organization(BaseEntity):
         },
     )
     links: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution links""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["Organization", "Department"], "slot_uri": "foaf:page"}
@@ -2047,12 +2075,12 @@ class Organization(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2077,7 +2105,8 @@ class Department(BaseEntity):
             "class_uri": "org:OrganizationalUnit",
             "from_schema": "https://w3id.org/pyeuropepmc/entities/organization",
             "slot_usage": {
-                "display_name": {"name": "display_name", "required": True},
+                "display_name": {"name": "display_name", "required": False},
+                "label": {"name": "label"},
                 "parent_organization": {
                     "name": "parent_organization",
                     "range": "Organization",
@@ -2087,8 +2116,8 @@ class Department(BaseEntity):
         }
     )
 
-    display_name: str = Field(
-        default=...,
+    display_name: str | None = Field(
+        default=None,
         description="""Display name of the institution""",
         json_schema_extra={
             "linkml_meta": {
@@ -2209,7 +2238,7 @@ class Department(BaseEntity):
         },
     )
     domains: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution domains""",
         json_schema_extra={
             "linkml_meta": {
@@ -2219,7 +2248,7 @@ class Department(BaseEntity):
         },
     )
     relationships: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Related institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -2239,7 +2268,7 @@ class Department(BaseEntity):
         },
     )
     names: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Alternative institution names""",
         json_schema_extra={
             "linkml_meta": {
@@ -2249,7 +2278,7 @@ class Department(BaseEntity):
         },
     )
     locations: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution locations""",
         json_schema_extra={
             "linkml_meta": {
@@ -2259,7 +2288,7 @@ class Department(BaseEntity):
         },
     )
     links: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution links""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["Organization", "Department"], "slot_uri": "foaf:page"}
@@ -2294,12 +2323,12 @@ class Department(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2437,7 +2466,7 @@ class JournalEntity(BaseEntity):
         },
     )
     subject_areas: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Subject areas/categories""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["JournalEntity"], "slot_uri": "dcterms:subject"}
@@ -2500,7 +2529,7 @@ class JournalEntity(BaseEntity):
         },
     )
     journal_papers: list[PaperEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Papers published in a journal""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["JournalEntity"], "slot_uri": "bibo:article"}
@@ -2535,12 +2564,12 @@ class JournalEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2641,14 +2670,14 @@ class GrantEntity(BaseEntity):
         },
     )
     recipients: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Recipients of a grant""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["GrantEntity"], "slot_uri": "frapo:hasRecipient"}
         },
     )
     funded_papers: list[PaperEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Papers funded by a grant""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["GrantEntity"], "slot_uri": "frapo:funds"}
@@ -2683,12 +2712,12 @@ class GrantEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2750,7 +2779,7 @@ class SectionEntity(BaseEntity):
                     "range": "CitationContextEntity",
                     "required": False,
                 },
-                "content": {"name": "content", "required": True},
+                "content": {"name": "content", "required": False},
                 "section_type": {
                     "description": "Type/category of the section",
                     "name": "section_type",
@@ -2771,8 +2800,8 @@ class SectionEntity(BaseEntity):
             }
         },
     )
-    content: str = Field(
-        default=...,
+    content: str | None = Field(
+        default=None,
         description="""Section text content""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["SectionEntity"], "slot_uri": "nif:isString"}
@@ -2808,7 +2837,7 @@ class SectionEntity(BaseEntity):
         },
     )
     subsections: list[SectionEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Subsections of a section""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["SectionEntity"], "slot_uri": "dcterms:hasPart"}
@@ -2822,7 +2851,7 @@ class SectionEntity(BaseEntity):
         },
     )
     citations: list[CitationContextEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Citations within a section""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["SectionEntity"], "slot_uri": "cito:cites"}
@@ -2844,7 +2873,7 @@ class SectionEntity(BaseEntity):
         },
     )
     citation_contexts: list[CitationContextEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Detailed citation contexts within this section""",
         json_schema_extra={
             "linkml_meta": {
@@ -2882,12 +2911,12 @@ class SectionEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3033,12 +3062,12 @@ class CitationContextEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3080,14 +3109,14 @@ class TableEntity(BaseEntity):
         },
     )
     headers: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Column headers for the table""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["TableEntity"], "slot_uri": "rdfs:label"}
         },
     )
     rows: list[TableRowEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Rows in a table""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["TableEntity"], "slot_uri": "dcterms:hasPart"}
@@ -3129,12 +3158,12 @@ class TableEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3158,14 +3187,13 @@ class TableRowEntity(BaseEntity):
         {
             "class_uri": "bibo:Row",
             "from_schema": "https://w3id.org/pyeuropepmc/entities/table",
-            "slot_usage": {"cells": {"minimum_cardinality": 1, "name": "cells", "required": True}},
+            "slot_usage": {"cells": {"name": "cells", "required": False}},
         }
     )
 
-    cells: list[str] = Field(
-        default=...,
+    cells: list[str] | None = Field(
+        default=None,
         description="""Cell values for a table row""",
-        min_length=1,
         json_schema_extra={
             "linkml_meta": {"domain_of": ["TableRowEntity"], "slot_uri": "rdfs:member"}
         },
@@ -3206,12 +3234,12 @@ class TableRowEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3235,6 +3263,16 @@ class ReferenceEntity(ScholarlyWorkEntity):
         {
             "class_uri": "bibo:Article",
             "from_schema": "https://w3id.org/pyeuropepmc/entities/reference",
+            "slot_usage": {
+                "authors": {
+                    "description": "Comma-separated list of authors or "
+                    "list of AuthorEntity objects",
+                    "multivalued": False,
+                    "name": "authors",
+                    "range": "string",
+                    "required": False,
+                }
+            },
         }
     )
 
@@ -3257,6 +3295,16 @@ class ReferenceEntity(ScholarlyWorkEntity):
         description="""Paper that cites this reference""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["ReferenceEntity"], "slot_uri": "cito:isCitedBy"}
+        },
+    )
+    authors: str | None = Field(
+        default=None,
+        description="""Comma-separated list of authors or list of AuthorEntity objects""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "PaperEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:creator",
+            }
         },
     )
     title: str | None = Field(
@@ -3330,17 +3378,7 @@ class ReferenceEntity(ScholarlyWorkEntity):
             }
         },
     )
-    authors: list[AuthorEntity] | None = Field(
-        default=[],
-        description="""Authors of a work""",
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "PaperEntity"],
-                "slot_uri": "dcterms:creator",
-            }
-        },
-    )
-    journal: JournalEntity | None = Field(
+    journal: str | JournalEntity | None = Field(
         default=None,
         description="""Journal of a paper""",
         json_schema_extra={
@@ -3379,12 +3417,12 @@ class ReferenceEntity(ScholarlyWorkEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3400,14 +3438,60 @@ class ReferenceEntity(ScholarlyWorkEntity):
 
     @field_validator("doi")
     def pattern_doi(cls, v):
+        import re
+
+        def normalize_doi(doi_str):
+            """Normalize DOI by stripping prefixes and lowercasing."""
+            doi_str = doi_str.strip().lower()
+            doi_str = re.sub(r"^https://doi\.org/", "", doi_str)
+            doi_str = re.sub(r"^http://doi\.org/", "", doi_str)
+            doi_str = re.sub(r"^http://dx\.doi\.org/", "", doi_str)
+            return doi_str
+
         pattern = re.compile(r"^10\.\d{4,9}/[-._;()/:a-zA-Z0-9]+$")
+        if isinstance(v, list):
+            normalized = []
+            for element in v:
+                if isinstance(element, str):
+                    element = normalize_doi(element)
+                    if not pattern.match(element):
+                        err_msg = f"Invalid doi format: {element}"
+                        raise ValueError(err_msg)
+                    normalized.append(element)
+                else:
+                    normalized.append(element)
+            return normalized
+        elif isinstance(v, str):
+            v = normalize_doi(v)
+            if not pattern.match(v):
+                err_msg = f"Invalid doi format: {v}"
+                raise ValueError(err_msg)
+            return v
+        return v
+
+    @field_validator("pmcid")
+    def pattern_pmcid(cls, v):
+        pattern = re.compile(r"^PMC\d+$")
         if isinstance(v, list):
             for element in v:
                 if isinstance(element, str) and not pattern.match(element):
-                    err_msg = f"Invalid doi format: {element}"
+                    err_msg = f"Invalid pmcid format: {element}"
                     raise ValueError(err_msg)
         elif isinstance(v, str) and not pattern.match(v):
-            err_msg = f"Invalid doi format: {v}"
+            err_msg = f"Invalid pmcid format: {v}"
+            raise ValueError(err_msg)
+        return v
+
+    @field_validator("pmid")
+    def pattern_pmid(cls, v):
+        pattern = re.compile(r"^\d+$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid pmid format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid pmid format: {v}"
             raise ValueError(err_msg)
         return v
 
@@ -3507,12 +3591,12 @@ class FigureEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3606,12 +3690,12 @@ class AffiliationEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3643,322 +3727,3 @@ TableRowEntity.model_rebuild()
 ReferenceEntity.model_rebuild()
 FigureEntity.model_rebuild()
 AffiliationEntity.model_rebuild()
-
-
-# Custom methods for Organization class
-def _add_organization_custom_methods():
-    """Add custom methods to Organization class."""
-    from typing import Any
-
-    @classmethod
-    def from_enrichment_dict(cls, inst_dict: dict[str, Any]) -> Organization:
-        """
-        Create an Organization from enrichment institution dictionary.
-
-        Parameters
-        ----------
-        inst_dict : dict
-            Institution dictionary from enrichment result
-
-        Returns
-        -------
-        Organization
-            Organization entity with enrichment data
-        """
-        # Handle relationships - extract labels from dicts
-        relationships_data = inst_dict.get("relationships", [])
-        if relationships_data and isinstance(relationships_data[0], dict):
-            relationships_list = [r.get("label", "") for r in relationships_data]
-        else:
-            relationships_list = relationships_data
-
-        # Extract individual identifiers from external_ids
-        grid_id = None
-        isni = None
-        wikidata_id = None
-        fundref_id = None
-
-        external_ids = inst_dict.get("external_ids", [])
-        if external_ids:
-            for ext_id in external_ids:
-                if isinstance(ext_id, dict):
-                    id_type = ext_id.get("type")
-                    id_value = ext_id.get("preferred") or (
-                        ext_id.get("all", [None])[0] if ext_id.get("all") else None
-                    )
-
-                    if id_type == "grid" and id_value:
-                        grid_id = id_value
-                    elif id_type == "isni" and id_value:
-                        isni = id_value
-                    elif id_type == "wikidata" and id_value:
-                        wikidata_id = id_value
-                    elif id_type == "fundref" and id_value:
-                        fundref_id = id_value
-
-        return cls(
-            display_name=inst_dict.get("display_name", ""),
-            ror_id=inst_dict.get("ror_id"),
-            openalex_id=inst_dict.get("openalex_id") or inst_dict.get("id"),
-            country=inst_dict.get("country"),
-            country_code=inst_dict.get("country_code"),
-            city=inst_dict.get("city"),
-            latitude=inst_dict.get("latitude"),
-            longitude=inst_dict.get("longitude"),
-            institution_type=inst_dict.get("type"),
-            grid_id=grid_id,
-            isni=isni,
-            wikidata_id=wikidata_id,
-            fundref_id=fundref_id,
-            website=inst_dict.get("website"),
-            established=inst_dict.get("established"),
-            domains=inst_dict.get("domains", []),
-            relationships=relationships_list,
-            # Additional ROR fields
-            status=inst_dict.get("status"),
-            types=inst_dict.get("types", []),
-            names=inst_dict.get("names", []),
-            locations=inst_dict.get("locations", []),
-            links=inst_dict.get("links", []),
-        )
-
-    # Add the method to the Organization class
-    Organization.from_enrichment_dict = from_enrichment_dict
-
-
-_add_organization_custom_methods()
-
-
-# Custom methods for BaseEntity class
-def _add_base_entity_custom_methods():
-    """Add custom methods to BaseEntity class."""
-    from typing import Any, Dict
-    from urllib.parse import quote
-    import uuid
-
-    def mint_uri(self, prefix: str) -> str:
-        """
-        Mint a URI for this entity.
-
-        Parameters
-        ----------
-        prefix : str
-            URI prefix/path
-
-        Returns
-        -------
-        str
-            The minted URI
-        """
-        if self.id:
-            return f"http://example.org/data/{quote(prefix)}/{quote(self.id)}"
-        else:
-            # Generate UUID if no ID
-            entity_id = str(uuid.uuid4())
-            return f"http://example.org/data/{quote(prefix)}/{quote(entity_id)}"
-
-    def to_dict(self) -> dict[str, Any]:
-        """
-        Convert entity to dictionary representation.
-
-        Returns
-        -------
-        Dict[str, Any]
-            Dictionary representation of the entity
-        """
-        return self.model_dump()
-
-    def validate(self) -> None:
-        """
-        Validate the entity.
-
-        Raises
-        ------
-        ValueError
-            If validation fails
-        """
-        # Basic validation - can be overridden by subclasses
-        pass
-
-    def normalize(self) -> None:
-        """
-        Normalize the entity (trim whitespace, etc.).
-
-        This is a base implementation that can be overridden.
-        """
-        # Base implementation - subclasses should override
-        pass
-
-    # Add methods to BaseEntity
-    BaseEntity.mint_uri = mint_uri
-    BaseEntity.to_dict = to_dict
-    BaseEntity.validate = validate
-    BaseEntity.normalize = normalize
-
-    # Import and assign the to_rdf method
-    from .rdf_methods import to_rdf
-
-    BaseEntity.to_rdf = to_rdf
-
-
-_add_base_entity_custom_methods()
-
-
-# Custom methods for other entities
-def _add_entity_custom_methods():
-    """Add custom methods to other entity classes."""
-
-    # AuthorEntity normalize
-    def author_normalize(self) -> None:
-        """Normalize AuthorEntity by trimming whitespace."""
-        if self.full_name:
-            self.full_name = self.full_name.strip()
-        if self.first_name:
-            self.first_name = self.first_name.strip()
-        if self.last_name:
-            self.last_name = self.last_name.strip()
-        if self.affiliation_text:
-            self.affiliation_text = self.affiliation_text.strip()
-
-    def author_validate(self) -> None:
-        """Validate AuthorEntity."""
-        if not self.full_name or not self.full_name.strip():
-            raise ValueError("AuthorEntity must have either full_name or name")
-
-    # FigureEntity normalize
-    def figure_normalize(self) -> None:
-        """Normalize FigureEntity by trimming whitespace."""
-        if self.caption:
-            self.caption = self.caption.strip()
-        if self.figure_label:
-            self.figure_label = self.figure_label.strip()
-        if self.graphic_uri:
-            self.graphic_uri = self.graphic_uri.strip()
-
-    # PaperEntity normalize
-    def paper_normalize(self) -> None:
-        """Normalize PaperEntity by trimming whitespace."""
-        if self.title:
-            self.title = self.title.strip()
-        if self.doi:
-            self.doi = self.doi.strip().lower()
-        if self.pmcid:
-            self.pmcid = self.pmcid.strip().upper()
-
-    def paper_validate(self) -> None:
-        """Validate PaperEntity."""
-        if not any([self.pmcid, self.doi, self.title]):
-            raise ValueError(
-                "PaperEntity must have at least one identifier (pmcid, doi, or title)"
-            )
-
-    # ReferenceEntity normalize
-    def reference_normalize(self) -> None:
-        """Normalize ReferenceEntity by trimming whitespace."""
-        if self.title:
-            self.title = self.title.strip()
-        if self.doi:
-            self.doi = self.doi.strip().lower()
-        if self.journal:
-            self.journal = self.journal.strip()
-        if self.authors and isinstance(self.authors, str):
-            self.authors = self.authors.strip()
-
-    # SectionEntity normalize
-    def section_normalize(self) -> None:
-        """Normalize SectionEntity by trimming whitespace."""
-        if self.title:
-            self.title = self.title.strip()
-        if self.content:
-            self.content = self.content.strip()
-
-    def section_validate(self) -> None:
-        """Validate SectionEntity."""
-        if not self.content or not self.content.strip():
-            raise ValueError("SectionEntity must have content")
-
-    # TableEntity normalize
-    def table_normalize(self) -> None:
-        """Normalize TableEntity by trimming whitespace."""
-        if self.table_label:
-            self.table_label = self.table_label.strip()
-        if self.caption:
-            self.caption = self.caption.strip()
-        if self.headers:
-            self.headers = [h.strip() if h else h for h in self.headers]
-
-    def table_validate(self) -> None:
-        """Validate TableEntity."""
-        if self.rows:
-            row_lengths = [len(row.cells) for row in self.rows if row.cells]
-            if self.headers and len(self.headers) != row_lengths[0] if row_lengths else 0:
-                raise ValueError("TableEntity headers must match number of columns in rows")
-            if len(set(row_lengths)) > 1:
-                raise ValueError("TableEntity must have the same number of columns in all rows")
-
-    # TableRowEntity normalize
-    def table_row_normalize(self) -> None:
-        """Normalize TableRowEntity by trimming whitespace."""
-        if self.cells:
-            self.cells = [cell.strip() if cell else cell for cell in self.cells]
-
-    def table_row_validate(self) -> None:
-        """Validate TableRowEntity."""
-        if not self.cells:
-            raise ValueError("TableRowEntity must have cells")
-
-    # Organization normalize
-    def organization_normalize(self) -> None:
-        """Normalize Organization by trimming whitespace."""
-        if self.display_name:
-            self.display_name = self.display_name.strip()
-        if self.ror_id:
-            self.ror_id = self.ror_id.strip()
-        if self.city:
-            self.city = self.city.strip()
-
-    def organization_validate(self) -> None:
-        """Validate Organization."""
-        if not self.display_name or not self.display_name.strip():
-            raise ValueError("Organization must have display_name")
-
-    # Department normalize
-    def department_normalize(self) -> None:
-        """Normalize Department by trimming whitespace."""
-        if self.display_name:
-            self.display_name = self.display_name.strip()
-
-    def department_validate(self) -> None:
-        """Validate Department."""
-        if not self.display_name or not self.display_name.strip():
-            raise ValueError("Department must have display_name")
-
-    # Add post-init methods to set types and labels
-    # Add methods to classes (without post_init since we use validator now)
-    AuthorEntity.normalize = author_normalize
-    AuthorEntity.validate = author_validate
-
-    FigureEntity.normalize = figure_normalize
-
-    PaperEntity.normalize = paper_normalize
-    PaperEntity.validate = paper_validate
-
-    ReferenceEntity.normalize = reference_normalize
-
-    SectionEntity.normalize = section_normalize
-    SectionEntity.validate = section_validate
-
-    TableEntity.normalize = table_normalize
-    TableEntity.validate = table_validate
-
-    TableRowEntity.normalize = table_row_normalize
-    TableRowEntity.validate = table_row_validate
-
-    Organization.normalize = organization_normalize
-    Organization.validate = organization_validate
-
-    Department.normalize = department_normalize
-    Department.validate = department_validate
-
-
-_add_entity_custom_methods()

@@ -31,7 +31,7 @@ classes:
       - citation_contexts
     slot_usage:
       content:
-        required: true
+        required: false
       section_type:
         range: SectionType
         required: false

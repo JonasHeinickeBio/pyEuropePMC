@@ -7,6 +7,7 @@ from pyeuropepmc.mappers import RDFMapper
 from pyeuropepmc.models import (
     AuthorEntity,
     BaseEntity,
+    JournalEntity,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
@@ -309,7 +310,7 @@ class TestReferenceEntity:
     """Tests for ReferenceEntity."""
 
     def test_reference_creation(self):
-        """Test reference entity creation."""
+        """Test reference entity creation with string journal."""
         ref = ReferenceEntity(
             title="Sample Article",
             journal="Nature",
@@ -318,6 +319,23 @@ class TestReferenceEntity:
         )
         assert ref.title == "Sample Article"
         assert ref.journal == "Nature"
+        assert ref.publication_year == 2021
+        assert ref.doi == "10.1038/nature12345"
+
+    def test_reference_creation_with_journal_entity(self):
+        """Test reference entity creation with JournalEntity."""
+        journal = JournalEntity(
+            title="Nature",
+            issn="0028-0836",
+        )
+        ref = ReferenceEntity(
+            title="Sample Article",
+            journal=journal,
+            publication_year=2021,
+            doi="10.1038/nature12345",
+        )
+        assert ref.title == "Sample Article"
+        assert ref.journal.title == "Nature"
         assert ref.publication_year == 2021
         assert ref.doi == "10.1038/nature12345"
 

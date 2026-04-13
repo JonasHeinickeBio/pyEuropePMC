@@ -21,3 +21,10 @@ classes:
       - author_list
       - raw_citation
       - citing_paper
+      - authors
+    slot_usage:
+      authors:
+        required: false
+        description: Comma-separated list of authors or list of AuthorEntity objects
+        range: string
+        multivalued: false

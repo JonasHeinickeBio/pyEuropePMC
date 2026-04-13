@@ -6,7 +6,7 @@ import pytest
 from rdflib import Graph
 
 from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import PaperEntity, AuthorEntity, OrganizationEntity, JournalEntity
+from pyeuropepmc.models import PaperEntity, AuthorEntity, Organization, JournalEntity
 
 
 class TestRDFPerformanceAndScalability:
@@ -45,7 +45,7 @@ class TestRDFPerformanceAndScalability:
         # Create institutions
         institutions = []
         for i in range(20):
-            inst = OrganizationEntity(
+            inst = Organization(
                 display_name=f"University {i}",
                 ror_id=f"https://ror.org/{i:06d}",
                 country="Test Country",

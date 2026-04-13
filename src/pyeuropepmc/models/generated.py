@@ -11,13 +11,10 @@ from pydantic import (
     ConfigDict,
     Field,
     RootModel,
-    SerializationInfo,
-    SerializerFunctionWrapHandler,
     field_validator,
-    model_serializer,
 )
 
-metamodel_version = "None"
+metamodel_version = "1.7.0"
 version = "1.0.0"
 
 
@@ -32,19 +29,6 @@ class ConfiguredBaseModel(BaseModel):
         use_enum_values=True,
         strict=False,
     )
-
-    @model_serializer(mode="wrap", when_used="unless-none")
-    def treat_empty_lists_as_none(
-        self, handler: SerializerFunctionWrapHandler, info: SerializationInfo
-    ) -> dict[str, Any]:
-        if info.exclude_none:
-            _instance = self.model_copy()
-            for field, field_info in type(_instance).model_fields.items():
-                if getattr(_instance, field) == [] and not (field_info.is_required()):
-                    setattr(_instance, field, None)
-        else:
-            _instance = self
-        return handler(_instance, info)
 
 
 class LinkMLMeta(RootModel):
@@ -463,7 +447,9 @@ class CitationType(str, Enum):
 
 class BaseEntity(ConfiguredBaseModel):
     """
-    Base entity for all data models with RDF serialization support. All entities inherit from this base class, providing common functionality for validation, normalization, and RDF export.
+    Base entity for all data models with RDF serialization support.
+    All entities inherit from this base class, providing common functionality for
+    validation, normalization, and RDF export.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -503,12 +489,12 @@ class BaseEntity(ConfiguredBaseModel):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default_factory=list,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default_factory=list,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -522,158 +508,13 @@ class BaseEntity(ConfiguredBaseModel):
         },
     )
 
+    def validate(self) -> None:
+        """Validate scholarly work data. Override in subclasses for specific validation."""
+        super().validate()
 
-class ScholarlyWorkEntity(BaseEntity):
-    """
-    Base entity for scholarly works (papers, references, etc.). Provides common fields and methods for entities representing scholarly publications.
-    """
-
-    linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
-        {
-            "abstract": True,
-            "class_uri": "bibo:Document",
-            "from_schema": "https://w3id.org/pyeuropepmc/entities/base",
-        }
-    )
-
-    title: str | None = Field(
-        default=None,
-        description="""Work or entity title""",
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "JournalEntity", "SectionEntity"],
-                "slot_uri": "dcterms:title",
-            }
-        },
-    )
-    doi: str | None = Field(
-        default=None,
-        description="""Digital Object Identifier""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:doi"}
-        },
-    )
-    volume: str | None = Field(
-        default=None,
-        description="""Publication volume""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:volume"}
-        },
-    )
-    pages: str | None = Field(
-        default=None,
-        description="""Page range (e.g., \"123-456\")""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:pages"}
-        },
-    )
-    publication_year: int | None = Field(
-        default=None,
-        description="""Publication year (4-digit)""",
-        ge=1000,
-        le=9999,
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "dcterms:issued"}
-        },
-    )
-    publication_date: date | None = Field(
-        default=None,
-        description="""Full publication date""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "dcterms:date"}
-        },
-    )
-    pmcid: str | None = Field(
-        default=None,
-        description="""PubMed Central ID""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "pyeuropepmc:pmcid"}
-        },
-    )
-    pmid: str | None = Field(
-        default=None,
-        description="""PubMed ID""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "pyeuropepmc:pmid"}
-        },
-    )
-    semantic_scholar_id: str | None = Field(
-        default=None,
-        description="""Semantic Scholar paper ID""",
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity"],
-                "slot_uri": "pyeuropepmc:semanticScholarId",
-            }
-        },
-    )
-    authors: list[AuthorEntity] | None = Field(
-        default=[],
-        description="""Authors of a work""",
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "PaperEntity"],
-                "slot_uri": "dcterms:creator",
-            }
-        },
-    )
-    journal: JournalEntity | None = Field(
-        default=None,
-        description="""Journal of a paper""",
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "PaperEntity"],
-                "slot_uri": "bibo:journal",
-            }
-        },
-    )
-    id: str | None = Field(
-        default=None,
-        description="""Local identifier (slug/uuid) for the entity""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "dcterms:identifier"}
-        },
-    )
-    label: str | None = Field(
-        default=None,
-        description="""Human-readable label for the entity""",
-        json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdfs:label"}},
-    )
-    source_uri: str | None = Field(
-        default=None,
-        description="""Source URI for provenance tracking""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
-        },
-    )
-    confidence: float | None = Field(
-        default=None,
-        description="""Confidence score for extracted information (0.0 to 1.0)""",
-        ge=0.0,
-        le=1.0,
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "pyeuropepmc:confidence"}
-        },
-    )
-    types: list[str] | None = Field(
-        default=[],
-        description="""RDF types (CURIEs/URIs) for this entity""",
-        json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
-    )
-    data_sources: list[str] | None = Field(
-        default=[],
-        description="""List of data sources that contributed to this entity""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
-        },
-    )
-    last_updated: datetime | None = Field(
-        default=None,
-        description="""Timestamp of last data update (ISO 8601)""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "dcterms:modified"}
-        },
-    )
+    def normalize(self) -> None:
+        """Normalize scholarly work data. Override in subclasses for specific normalization."""
+        super().normalize()
 
     @field_validator("doi")
     def pattern_doi(cls, v):
@@ -717,7 +558,9 @@ class ScholarlyWorkEntity(BaseEntity):
 
 class PaperEntity(ScholarlyWorkEntity):
     """
-    Entity representing an academic paper with BIBO alignment. Contains bibliographic metadata, citation information, and relationships to authors, institutions, journals, and other entities.
+    Entity representing an academic paper with BIBO alignment.
+    Contains bibliographic metadata, citation information, and relationships to authors,
+    institutions, journals, and other entities.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -773,17 +616,23 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     keywords: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of keywords""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:subject",
+            }
         },
     )
     abstract: str | None = Field(
         default=None,
         description="""Article abstract""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:abstract"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:abstract",
+            }
         },
     )
     affiliation_text: str | None = Field(
@@ -858,7 +707,7 @@ class PaperEntity(ScholarlyWorkEntity):
         description="""Publisher name""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["PaperEntity", "JournalEntity"],
+                "domain_of": ["PaperEntity", "JournalEntity", "ReferenceEntity"],
                 "slot_uri": "dcterms:publisher",
             }
         },
@@ -867,28 +716,40 @@ class PaperEntity(ScholarlyWorkEntity):
         default=None,
         description="""ISSN identifier""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity", "JournalEntity"], "slot_uri": "bibo:issn"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "JournalEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:issn",
+            }
         },
     )
     publication_type: PublicationType | None = Field(
         default=None,
         description="""Type of publication""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:DocumentType"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:DocumentType",
+            }
         },
     )
     first_page: str | None = Field(
         default=None,
         description="""First page number""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:pageStart"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:pageStart",
+            }
         },
     )
     last_page: str | None = Field(
         default=None,
         description="""Last page number""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:pageEnd"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:pageEnd",
+            }
         },
     )
     semantic_scholar_corpus_id: str | None = Field(
@@ -926,35 +787,35 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     fields_of_study: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Fields of study""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
         },
     )
     related_works: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Related work IDs""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:related"}
         },
     )
     pub_types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of publication types from Europe PMC""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:DocumentType"}
         },
     )
     mesh_terms: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""MeSH terms associated with the paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "meshv:hasDescriptor"}
         },
     )
     topics: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Research topics from OpenAlex""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
@@ -1099,7 +960,7 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     authors: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Authors of a work""",
         json_schema_extra={
             "linkml_meta": {
@@ -1109,14 +970,14 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     paper_institutions: list[Organization] | None = Field(
-        default=[],
+        default=None,
         description="""Institutions affiliated with a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "pyeuropepmc:affiliatedWith"}
         },
     )
     affiliations: list[AffiliationEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Author affiliations with institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -1136,35 +997,39 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     sections: list[SectionEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Sections of a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:hasPart"}
         },
     )
     references: list[ReferenceEntity] | None = Field(
-        default=[],
+        default=None,
         description="""References cited by a paper""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "cito:cites"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity"],
+                "inverse": "citing_paper",
+                "slot_uri": "cito:cites",
+            }
         },
     )
     tables: list[TableEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Tables in a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:hasPart"}
         },
     )
     figures: list[FigureEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Figures in a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:hasPart"}
         },
     )
     grants: list[GrantEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Grants funding a paper""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "foaf:fundedBy"}
@@ -1197,14 +1062,14 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     s2_fields_of_study: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Semantic Scholar fields of study""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:subject"}
         },
     )
     publication_types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Publication types from Semantic Scholar""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:DocumentType"}
@@ -1247,7 +1112,12 @@ class PaperEntity(ScholarlyWorkEntity):
         description="""Work or entity title""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "JournalEntity", "SectionEntity"],
+                "domain_of": [
+                    "ScholarlyWorkEntity",
+                    "JournalEntity",
+                    "SectionEntity",
+                    "ReferenceEntity",
+                ],
                 "slot_uri": "dcterms:title",
             }
         },
@@ -1256,21 +1126,30 @@ class PaperEntity(ScholarlyWorkEntity):
         default=None,
         description="""Digital Object Identifier""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:doi"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:doi",
+            }
         },
     )
     volume: str | None = Field(
         default=None,
         description="""Publication volume""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:volume"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:volume",
+            }
         },
     )
     pages: str | None = Field(
         default=None,
         description="""Page range (e.g., \"123-456\")""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:pages"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:pages",
+            }
         },
     )
     publication_year: int | None = Field(
@@ -1279,28 +1158,40 @@ class PaperEntity(ScholarlyWorkEntity):
         ge=1000,
         le=9999,
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "dcterms:issued"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:issued",
+            }
         },
     )
     publication_date: date | None = Field(
         default=None,
         description="""Full publication date""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "dcterms:date"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:date",
+            }
         },
     )
     pmcid: str | None = Field(
         default=None,
         description="""PubMed Central ID""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "pyeuropepmc:pmcid"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "pyeuropepmc:pmcid",
+            }
         },
     )
     pmid: str | None = Field(
         default=None,
         description="""PubMed ID""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "pyeuropepmc:pmid"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "pyeuropepmc:pmid",
+            }
         },
     )
     semantic_scholar_id: str | None = Field(
@@ -1308,7 +1199,7 @@ class PaperEntity(ScholarlyWorkEntity):
         description="""Semantic Scholar paper ID""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity"],
+                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity", "ReferenceEntity"],
                 "slot_uri": "pyeuropepmc:semanticScholarId",
             }
         },
@@ -1342,12 +1233,12 @@ class PaperEntity(ScholarlyWorkEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -1429,7 +1320,8 @@ class PaperEntity(ScholarlyWorkEntity):
 
 class AuthorEntity(BaseEntity):
     """
-    Entity representing an author with FOAF alignment. Contains personal information, institutional affiliations, and identifiers.
+    Entity representing an author with FOAF alignment.
+    Contains personal information, institutional affiliations, and identifiers.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1524,7 +1416,7 @@ class AuthorEntity(BaseEntity):
         description="""Semantic Scholar paper ID""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity"],
+                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity", "ReferenceEntity"],
                 "slot_uri": "pyeuropepmc:semanticScholarId",
             }
         },
@@ -1562,7 +1454,7 @@ class AuthorEntity(BaseEntity):
         json_schema_extra={"linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "org:role"}},
     )
     sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Data sources for author information""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -1576,14 +1468,14 @@ class AuthorEntity(BaseEntity):
         },
     )
     papers: list[PaperEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Papers authored by an author""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "foaf:made"}
         },
     )
     author_institutions: list[Organization] | None = Field(
-        default=[],
+        default=None,
         description="""Institutions affiliated with an author""",
         json_schema_extra={
             "linkml_meta": {
@@ -1593,7 +1485,7 @@ class AuthorEntity(BaseEntity):
         },
     )
     affiliations: list[AffiliationEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Author affiliations with institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -1603,7 +1495,7 @@ class AuthorEntity(BaseEntity):
         },
     )
     institutions: list[Organization] | None = Field(
-        default=[],
+        default=None,
         description="""Institutional affiliations as InstitutionEntity objects""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "org:memberOf"}
@@ -1651,7 +1543,7 @@ class AuthorEntity(BaseEntity):
         },
     )
     roles: list[AuthorRole] | None = Field(
-        default=[],
+        default=None,
         description="""Specific roles or contributions of the author""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "pyeuropepmc:authorRoles"}
@@ -1698,12 +1590,12 @@ class AuthorEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -1746,7 +1638,8 @@ class AuthorEntity(BaseEntity):
 
 class Organization(BaseEntity):
     """
-    Entity representing an organization with ROR alignment. Contains organizational metadata and geographic information.
+    Entity representing an organization with ROR alignment.
+    Contains organizational metadata and geographic information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1896,7 +1789,7 @@ class Organization(BaseEntity):
         },
     )
     domains: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution domains""",
         json_schema_extra={
             "linkml_meta": {
@@ -1906,7 +1799,7 @@ class Organization(BaseEntity):
         },
     )
     relationships: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Related institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -1916,7 +1809,7 @@ class Organization(BaseEntity):
         },
     )
     institution_members: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Members of an institution""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["Organization"], "slot_uri": "org:hasMember"}
@@ -1933,7 +1826,7 @@ class Organization(BaseEntity):
         },
     )
     names: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Alternative institution names""",
         json_schema_extra={
             "linkml_meta": {
@@ -1943,7 +1836,7 @@ class Organization(BaseEntity):
         },
     )
     locations: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution locations""",
         json_schema_extra={
             "linkml_meta": {
@@ -1953,7 +1846,7 @@ class Organization(BaseEntity):
         },
     )
     links: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution links""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["Organization", "Department"], "slot_uri": "foaf:page"}
@@ -1988,12 +1881,12 @@ class Organization(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2010,7 +1903,8 @@ class Organization(BaseEntity):
 
 class Department(BaseEntity):
     """
-    Entity representing a department or sub-organization within an organization. Contains organizational metadata and geographic information.
+    Entity representing a department or sub-organization within an organization.
+    Contains organizational metadata and geographic information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2150,7 +2044,7 @@ class Department(BaseEntity):
         },
     )
     domains: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution domains""",
         json_schema_extra={
             "linkml_meta": {
@@ -2160,7 +2054,7 @@ class Department(BaseEntity):
         },
     )
     relationships: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Related institutions""",
         json_schema_extra={
             "linkml_meta": {
@@ -2180,7 +2074,7 @@ class Department(BaseEntity):
         },
     )
     names: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Alternative institution names""",
         json_schema_extra={
             "linkml_meta": {
@@ -2190,7 +2084,7 @@ class Department(BaseEntity):
         },
     )
     locations: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution locations""",
         json_schema_extra={
             "linkml_meta": {
@@ -2200,7 +2094,7 @@ class Department(BaseEntity):
         },
     )
     links: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Institution links""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["Organization", "Department"], "slot_uri": "foaf:page"}
@@ -2235,12 +2129,12 @@ class Department(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2257,7 +2151,8 @@ class Department(BaseEntity):
 
 class JournalEntity(BaseEntity):
     """
-    Entity representing an academic journal with BIBO alignment. Contains journal metadata and bibliometric information.
+    Entity representing an academic journal with BIBO alignment.
+    Contains journal metadata and bibliometric information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2273,7 +2168,12 @@ class JournalEntity(BaseEntity):
         description="""Work or entity title""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "JournalEntity", "SectionEntity"],
+                "domain_of": [
+                    "ScholarlyWorkEntity",
+                    "JournalEntity",
+                    "SectionEntity",
+                    "ReferenceEntity",
+                ],
                 "slot_uri": "dcterms:title",
             }
         },
@@ -2303,7 +2203,10 @@ class JournalEntity(BaseEntity):
         default=None,
         description="""ISSN identifier""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity", "JournalEntity"], "slot_uri": "bibo:issn"}
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "JournalEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:issn",
+            }
         },
     )
     essn: str | None = Field(
@@ -2318,7 +2221,7 @@ class JournalEntity(BaseEntity):
         description="""Publisher name""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["PaperEntity", "JournalEntity"],
+                "domain_of": ["PaperEntity", "JournalEntity", "ReferenceEntity"],
                 "slot_uri": "dcterms:publisher",
             }
         },
@@ -2378,7 +2281,7 @@ class JournalEntity(BaseEntity):
         },
     )
     subject_areas: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Subject areas/categories""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["JournalEntity"], "slot_uri": "dcterms:subject"}
@@ -2441,7 +2344,7 @@ class JournalEntity(BaseEntity):
         },
     )
     journal_papers: list[PaperEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Papers published in a journal""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["JournalEntity"], "slot_uri": "bibo:article"}
@@ -2476,12 +2379,12 @@ class JournalEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2524,7 +2427,8 @@ class JournalEntity(BaseEntity):
 
 class GrantEntity(BaseEntity):
     """
-    Entity representing a research grant or funding award with FRAPO alignment. Contains funding information and relationships to recipients.
+    Entity representing a research grant or funding award with FRAPO alignment.
+    Contains funding information and relationships to recipients.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2582,14 +2486,14 @@ class GrantEntity(BaseEntity):
         },
     )
     recipients: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Recipients of a grant""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["GrantEntity"], "slot_uri": "frapo:hasRecipient"}
         },
     )
     funded_papers: list[PaperEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Papers funded by a grant""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["GrantEntity"], "slot_uri": "frapo:funds"}
@@ -2624,12 +2528,12 @@ class GrantEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2707,7 +2611,12 @@ class SectionEntity(BaseEntity):
         description="""Work or entity title""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "JournalEntity", "SectionEntity"],
+                "domain_of": [
+                    "ScholarlyWorkEntity",
+                    "JournalEntity",
+                    "SectionEntity",
+                    "ReferenceEntity",
+                ],
                 "slot_uri": "dcterms:title",
             }
         },
@@ -2749,7 +2658,7 @@ class SectionEntity(BaseEntity):
         },
     )
     subsections: list[SectionEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Subsections of a section""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["SectionEntity"], "slot_uri": "dcterms:hasPart"}
@@ -2763,7 +2672,7 @@ class SectionEntity(BaseEntity):
         },
     )
     citations: list[CitationContextEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Citations within a section""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["SectionEntity"], "slot_uri": "cito:cites"}
@@ -2785,7 +2694,7 @@ class SectionEntity(BaseEntity):
         },
     )
     citation_contexts: list[CitationContextEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Detailed citation contexts within this section""",
         json_schema_extra={
             "linkml_meta": {
@@ -2823,12 +2732,12 @@ class SectionEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -2974,12 +2883,12 @@ class CitationContextEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3021,14 +2930,14 @@ class TableEntity(BaseEntity):
         },
     )
     headers: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""Column headers for the table""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["TableEntity"], "slot_uri": "rdfs:label"}
         },
     )
     rows: list[TableRowEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Rows in a table""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["TableEntity"], "slot_uri": "dcterms:hasPart"}
@@ -3070,12 +2979,12 @@ class TableEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3147,12 +3056,12 @@ class TableRowEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3176,12 +3085,69 @@ class ReferenceEntity(ScholarlyWorkEntity):
         {
             "class_uri": "bibo:Article",
             "from_schema": "https://w3id.org/pyeuropepmc/entities/reference",
+            "rules": [
+                {
+                    "description": "ReferenceEntity must have at least one of: doi, "
+                    "pmid, pmcid, or title",
+                    "postconditions": {
+                        "slot_conditions": {
+                            "title": {"name": "title", "value_presence": "PRESENT"}
+                        }
+                    },
+                    "preconditions": {
+                        "slot_conditions": {
+                            "doi": {"name": "doi", "value_presence": "ABSENT"},
+                            "pmcid": {"name": "pmcid", "value_presence": "ABSENT"},
+                            "pmid": {"name": "pmid", "value_presence": "ABSENT"},
+                        }
+                    },
+                }
+            ],
+            "slot_usage": {
+                "author_list": {
+                    "description": "Comma-separated list of authors",
+                    "name": "author_list",
+                    "required": False,
+                },
+                "doi": {
+                    "description": "Digital Object Identifier for the reference",
+                    "name": "doi",
+                    "required": False,
+                },
+                "journal_string": {
+                    "description": "Journal name as string for references",
+                    "name": "journal_string",
+                    "required": False,
+                },
+                "pmcid": {"description": "PubMed Central ID", "name": "pmcid", "required": False},
+                "pmid": {"description": "PubMed ID", "name": "pmid", "required": False},
+                "publication_date": {
+                    "description": "Full publication date (YYYY-MM-DD format)",
+                    "name": "publication_date",
+                    "required": False,
+                },
+                "publication_year": {
+                    "description": "Year of publication",
+                    "name": "publication_year",
+                    "required": False,
+                },
+                "reference_journal": {
+                    "description": "Journal name for references",
+                    "name": "reference_journal",
+                    "required": False,
+                },
+                "title": {
+                    "description": "Title of the referenced work (required for identification)",
+                    "name": "title",
+                    "required": True,
+                },
+            },
         }
     )
 
     author_list: str | None = Field(
         default=None,
-        description="""Author list (comma-separated)""",
+        description="""Comma-separated list of authors""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["ReferenceEntity"], "slot_uri": "bibo:authorList"}
         },
@@ -3200,65 +3166,91 @@ class ReferenceEntity(ScholarlyWorkEntity):
             "linkml_meta": {"domain_of": ["ReferenceEntity"], "slot_uri": "cito:isCitedBy"}
         },
     )
-    title: str | None = Field(
-        default=None,
-        description="""Work or entity title""",
+    title: str = Field(
+        default=...,
+        description="""Title of the referenced work (required for identification)""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "JournalEntity", "SectionEntity"],
+                "domain_of": [
+                    "ScholarlyWorkEntity",
+                    "JournalEntity",
+                    "SectionEntity",
+                    "ReferenceEntity",
+                ],
                 "slot_uri": "dcterms:title",
             }
         },
     )
     doi: str | None = Field(
         default=None,
-        description="""Digital Object Identifier""",
+        description="""Digital Object Identifier for the reference""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:doi"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:doi",
+            }
         },
     )
     volume: str | None = Field(
         default=None,
         description="""Publication volume""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:volume"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:volume",
+            }
         },
     )
     pages: str | None = Field(
         default=None,
         description="""Page range (e.g., \"123-456\")""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "bibo:pages"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:pages",
+            }
         },
     )
     publication_year: int | None = Field(
         default=None,
-        description="""Publication year (4-digit)""",
+        description="""Year of publication""",
         ge=1000,
         le=9999,
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "dcterms:issued"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:issued",
+            }
         },
     )
     publication_date: date | None = Field(
         default=None,
-        description="""Full publication date""",
+        description="""Full publication date (YYYY-MM-DD format)""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "dcterms:date"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:date",
+            }
         },
     )
     pmcid: str | None = Field(
         default=None,
         description="""PubMed Central ID""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "pyeuropepmc:pmcid"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "pyeuropepmc:pmcid",
+            }
         },
     )
     pmid: str | None = Field(
         default=None,
         description="""PubMed ID""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ScholarlyWorkEntity"], "slot_uri": "pyeuropepmc:pmid"}
+            "linkml_meta": {
+                "domain_of": ["ScholarlyWorkEntity", "ReferenceEntity"],
+                "slot_uri": "pyeuropepmc:pmid",
+            }
         },
     )
     semantic_scholar_id: str | None = Field(
@@ -3266,13 +3258,97 @@ class ReferenceEntity(ScholarlyWorkEntity):
         description="""Semantic Scholar paper ID""",
         json_schema_extra={
             "linkml_meta": {
-                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity"],
+                "domain_of": ["ScholarlyWorkEntity", "AuthorEntity", "ReferenceEntity"],
                 "slot_uri": "pyeuropepmc:semanticScholarId",
             }
         },
     )
+    journal_string: str | None = Field(
+        default=None,
+        description="""Journal name as string for references""",
+        json_schema_extra={
+            "linkml_meta": {"domain_of": ["ReferenceEntity"], "slot_uri": "bibo:journal"}
+        },
+    )
+    abstract: str | None = Field(
+        default=None,
+        description="""Article abstract""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:abstract",
+            }
+        },
+    )
+    issn: str | None = Field(
+        default=None,
+        description="""ISSN identifier""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "JournalEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:issn",
+            }
+        },
+    )
+    publication_type: PublicationType | None = Field(
+        default=None,
+        description="""Type of publication""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:DocumentType",
+            }
+        },
+    )
+    first_page: str | None = Field(
+        default=None,
+        description="""First page number""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:pageStart",
+            }
+        },
+    )
+    last_page: str | None = Field(
+        default=None,
+        description="""Last page number""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "bibo:pageEnd",
+            }
+        },
+    )
+    publisher: str | None = Field(
+        default=None,
+        description="""Publisher name""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "JournalEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:publisher",
+            }
+        },
+    )
+    keywords: list[str] | None = Field(
+        default=None,
+        description="""List of keywords""",
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity", "ReferenceEntity"],
+                "slot_uri": "dcterms:subject",
+            }
+        },
+    )
+    reference_journal: str | None = Field(
+        default=None,
+        description="""Journal name for references""",
+        json_schema_extra={
+            "linkml_meta": {"domain_of": ["ReferenceEntity"], "slot_uri": "bibo:journal"}
+        },
+    )
     authors: list[AuthorEntity] | None = Field(
-        default=[],
+        default=None,
         description="""Authors of a work""",
         json_schema_extra={
             "linkml_meta": {
@@ -3320,12 +3396,12 @@ class ReferenceEntity(ScholarlyWorkEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3375,6 +3451,19 @@ class ReferenceEntity(ScholarlyWorkEntity):
                     raise ValueError(err_msg)
         elif isinstance(v, str) and not pattern.match(v):
             err_msg = f"Invalid pmid format: {v}"
+            raise ValueError(err_msg)
+        return v
+
+    @field_validator("issn")
+    def pattern_issn(cls, v):
+        pattern = re.compile(r"^\d{4}-\d{3}[\dX]$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid issn format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid issn format: {v}"
             raise ValueError(err_msg)
         return v
 
@@ -3448,12 +3537,12 @@ class FigureEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}
@@ -3547,12 +3636,12 @@ class AffiliationEntity(BaseEntity):
         },
     )
     types: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""RDF types (CURIEs/URIs) for this entity""",
         json_schema_extra={"linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "rdf:type"}},
     )
     data_sources: list[str] | None = Field(
-        default=[],
+        default=None,
         description="""List of data sources that contributed to this entity""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["BaseEntity"], "slot_uri": "prov:hadPrimarySource"}

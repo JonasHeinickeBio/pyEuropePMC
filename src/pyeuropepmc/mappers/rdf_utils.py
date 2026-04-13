@@ -46,6 +46,8 @@ class URIFactory:
             "PaperEntity": self._generate_paper_uri,
             "AuthorEntity": self._generate_author_uri,
             "InstitutionEntity": self._generate_institution_uri,
+            "Organization": self._generate_organization_uri,
+            "Department": self._generate_department_uri,
             "ReferenceEntity": self._generate_reference_uri,
             "JournalEntity": self._generate_journal_uri,
             "GrantEntity": self._generate_grant_uri,
@@ -89,16 +91,15 @@ class URIFactory:
 
     def _generate_paper_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for paper entity."""
-        # Prioritize local data namespace URIs for consistency with other entities
         if getattr(entity, "pmid", None):
-            return URIRef(f"{self.data_uri}paper/{entity.pmid}")
+            return URIRef(f"https://pubmed.ncbi.nlm.nih.gov/{entity.pmid}/")
         if getattr(entity, "doi", None):
-            return URIRef(f"{self.data_uri}paper/{entity.doi.replace('/', '-')}")
+            return URIRef(f"https://doi.org/{entity.doi}")
         if getattr(entity, "pmcid", None):
             pmcid = entity.pmcid
             if not pmcid.upper().startswith("PMC"):
                 pmcid = f"PMC{pmcid}"
-            return URIRef(f"{self.data_uri}paper/{pmcid}")
+            return URIRef(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{pmcid}/")
         # Fallback: first author last name + year + short journal
         return self._generate_paper_fallback_uri(entity)
 
@@ -121,43 +122,137 @@ class URIFactory:
     def _generate_institution_uri(
         self, entity: Any, parent_uri: URIRef | str | None = None
     ) -> URIRef:
-        """Generate URI for institution entity."""
+        """Generate URI for institution entity with semantic name + hash for uniqueness."""
+        import hashlib
+
+        display_name = getattr(entity, "display_name", None)
+
         if getattr(entity, "ror_id", None):
             ror_uri = URIRef(entity.ror_id)
             # Add fragment for department-level entities to avoid URI collisions
-            if getattr(entity, "display_name", None):
-                import hashlib
-
+            if display_name:
                 # MD5 is safe here for non-cryptographic URI generation
-                name_hash = hashlib.md5(
-                    entity.display_name.encode(), usedforsecurity=False
-                ).hexdigest()[:8]
+                name_hash = hashlib.md5(display_name.encode(), usedforsecurity=False).hexdigest()[
+                    :8
+                ]
                 return URIRef(f"{entity.ror_id}#{name_hash}")
             return ror_uri
         if getattr(entity, "openalex_id", None):
             return URIRef(entity.openalex_id)
-        if getattr(entity, "display_name", None):
-            compact_id = self._generate_compact_institution_id(entity.display_name)
-            return URIRef(f"{self.data_uri}institution/{compact_id}")
+
+        # Use display_name with hash for uniqueness if available
+        if display_name:
+            # Generate semantic name from display_name
+            compact_name = self._generate_compact_institution_id(display_name)
+            # If compact_name is just a hash (12 chars, hex), try normalized name instead
+            if not re.match(r"^[a-f0-9]{12}$", compact_name):
+                # We got a real name, use it with a short hash
+                name_hash = hashlib.md5(display_name.encode(), usedforsecurity=False).hexdigest()[
+                    :6
+                ]
+                return URIRef(f"{self.data_uri}organization/{compact_name}_{name_hash}")
+            else:
+                # Fallback: use normalized name with hash
+                normalized = self._normalize_name(display_name)
+                if normalized and len(normalized) >= 3:
+                    name_hash = hashlib.md5(
+                        display_name.encode(), usedforsecurity=False
+                    ).hexdigest()[:6]
+                    return URIRef(f"{self.data_uri}organization/{normalized}_{name_hash}")
+
+        # Final fallback: generate UUID-based URI
+        return self._generate_fallback_uri(entity)
+
+    def _generate_organization_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
+        """Generate URI for organization entity using semantic identifiers."""
+        import hashlib
+
+        display_name = getattr(entity, "display_name", None)
+
+        if getattr(entity, "ror_id", None):
+            ror_uri = URIRef(entity.ror_id)
+            # Only add hash fragment for departments/sub-organizations (has parent_organization)
+            if getattr(entity, "parent_organization", None):
+                name_hash = (
+                    hashlib.md5(display_name.encode(), usedforsecurity=False).hexdigest()[:8]
+                    if display_name
+                    else hashlib.md5(
+                        str(uuid.uuid4())[:8].encode(), usedforsecurity=False
+                    ).hexdigest()
+                )
+                return URIRef(f"{entity.ror_id}#{name_hash}")
+            return ror_uri
+
+        if getattr(entity, "grid_id", None):
+            grid_id = entity.grid_id
+            if grid_id.startswith("GRID"):
+                return URIRef(f"{self.data_uri}organization/{grid_id}")
+            return URIRef(f"{self.data_uri}organization/{grid_id}")
+
+        if getattr(entity, "wikidata_id", None):
+            wikidata_id = entity.wikidata_id
+            if wikidata_id.startswith("Q") or wikidata_id.startswith("http"):
+                return URIRef(wikidata_id)
+            return URIRef(f"https://www.wikidata.org/wiki/{wikidata_id}")
+
+        if getattr(entity, "isni", None):
+            isni = entity.isni
+            isni_normalized = isni.replace(" ", "")
+            return URIRef(f"https://isni.org/{isni_normalized}")
+
+        if getattr(entity, "fundref_id", None):
+            fundref_id = entity.fundref_id
+            return URIRef(f"{self.data_uri}organization/{fundref_id}")
+
+        if display_name:
+            compact_name = self._generate_compact_institution_id(display_name)
+            name_hash = hashlib.md5(display_name.encode(), usedforsecurity=False).hexdigest()[:6]
+            if compact_name and len(compact_name) >= 3:
+                return URIRef(f"{self.data_uri}organization/{compact_name}_{name_hash}")
+
+        return self._generate_fallback_uri(entity)
+
+    def _generate_department_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
+        """Generate URI for department entity using parent organization URI with hash."""
+        import hashlib
+
+        # If parent organization URI is provided, use it with hash
+        if parent_uri:
+            parent_str = str(parent_uri)
+            name_hash = hashlib.md5(
+                getattr(entity, "display_name", str(uuid.uuid4())).encode(), usedforsecurity=False
+            ).hexdigest()[:8]
+            return URIRef(f"{parent_str}#{name_hash}")
+
+        # If parent has ROR, use parent's ROR with hash
+        parent_org = getattr(entity, "parent_organization", None)
+        if parent_org and hasattr(parent_org, "ror_id") and parent_org.ror_id:
+            name_hash = hashlib.md5(
+                getattr(entity, "display_name", str(uuid.uuid4())).encode(), usedforsecurity=False
+            ).hexdigest()[:8]
+            return URIRef(f"{parent_org.ror_id}#{name_hash}")
+
+        # Fallback to local data namespace with UUID
         return self._generate_fallback_uri(entity)
 
     def _generate_reference_uri(
         self, entity: Any, parent_uri: URIRef | str | None = None
     ) -> URIRef:
-        """Generate URI for reference entity using resolvable identifiers."""
-        # Prioritize PMID for PubMed resolvable URIs (most specific for biomedical literature)
+        """Generate URI for reference entity using semantic identifiers."""
+        # Prioritize DOI as resolvable identifier
+        if getattr(entity, "doi", None):
+            return URIRef(f"https://doi.org/{entity.doi}")
         if getattr(entity, "pmid", None):
             return URIRef(f"https://pubmed.ncbi.nlm.nih.gov/{entity.pmid}/")
-        # Then PMCID for PMC-specific articles
         if getattr(entity, "pmcid", None):
             pmcid = entity.pmcid
-            # Ensure PMCID has PMC prefix
             if not pmcid.upper().startswith("PMC"):
                 pmcid = f"PMC{pmcid}"
             return URIRef(f"https://www.ncbi.nlm.nih.gov/pmc/articles/{pmcid}/")
-        # Finally DOI as universal identifier
-        if getattr(entity, "doi", None):
-            return URIRef(f"https://doi.org/{entity.doi}")
         # Fallback: use author name + year + sequential number
         return self._generate_reference_fallback_uri(entity)
 
@@ -545,7 +640,7 @@ class URIFactory:
         name = display_name.strip()
 
         # Remove country and location suffixes more comprehensively
-        name = re.sub(
+        name = re.sub(  # noqa: E501
             r",\s*(?:USA|United States|United States of America|UK|United Kingdom|Great Britain|"
             r"Canada|Australia|Germany|France|Italy|Spain|Japan|China|India|Russia|Brazil|"
             r"Mexico|Argentina|Chile|Colombia|South Africa|Israel|Turkey|Netherlands|Belgium|"
@@ -559,7 +654,7 @@ class URIFactory:
         )
 
         # Remove postal codes and state abbreviations
-        name = re.sub(r",\s*[A-Z]{2}\s*\d{5}(-\d{4})?", "", name)
+        name = re.sub(r",\s*[A-Z]{2}\s*\d{5}(-\d{4})?", "", name)  # noqa: E501
         name = re.sub(r",\s*[A-Z]{2}(?:\s+\d{5})?", "", name)
 
         # Remove email addresses and electronic addresses
@@ -732,7 +827,7 @@ class URIFactory:
         main_name = re.sub(r"^(?:the\s+)?", "", main_name, flags=re.IGNORECASE)
 
         # More selective suffix removal - only remove if it results in a better name
-        original_words = main_name.split()
+        _ = main_name.split()
 
         # Try removing common department prefixes/suffixes
         cleaned_name = re.sub(
@@ -1481,7 +1576,7 @@ def add_external_identifiers(
     identifier_adders = {
         "PaperEntity": add_paper_identifiers,
         "AuthorEntity": add_author_identifiers,
-        "InstitutionEntity": add_institution_identifiers,
+        "Organization": add_institution_identifiers,
         "ReferenceEntity": add_reference_identifiers,
     }
 

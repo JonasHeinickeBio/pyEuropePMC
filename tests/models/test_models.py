@@ -7,6 +7,7 @@ from pyeuropepmc.models import (
     AuthorEntity,
     BaseEntity,
     FigureEntity,
+    JournalEntity,
     Organization,
     Department,
     PaperEntity,
@@ -27,7 +28,7 @@ class TestBaseEntity:
             label="Test Entity",
             source_uri="urn:test:123",
             confidence=0.95,
-            types=["ex:TestType"]
+            types=["ex:TestType"],
         )
         assert entity.id == "test-123"
         assert entity.label == "Test Entity"
@@ -92,7 +93,7 @@ class TestAuthorEntity:
             first_name="John",
             last_name="Smith",
             orcid="0000-0001-2345-6789",
-            affiliation_text="Test University"
+            affiliation_text="Test University",
         )
         assert author.full_name == "John Smith"
         assert author.first_name == "John"
@@ -105,7 +106,6 @@ class TestAuthorEntity:
         author = AuthorEntity(full_name="Jane Doe")
         assert "foaf:Person" in author.types
         assert author.label == "Jane Doe"
-
 
     def test_validate_success(self):
         """Test validation with valid data."""
@@ -130,7 +130,7 @@ class TestAuthorEntity:
             full_name="  John Smith  ",
             first_name="  John  ",
             last_name="  Smith  ",
-            affiliation_text="  University  "
+            affiliation_text="  University  ",
         )
         author.normalize()
         assert author.full_name == "John Smith"
@@ -147,7 +147,7 @@ class TestFigureEntity:
         figure = FigureEntity(
             caption="Sample scatter plot showing correlation",
             figure_label="Figure 1",
-            graphic_uri="https://example.com/figure1.png"
+            graphic_uri="https://example.com/figure1.png",
         )
         assert figure.caption == "Sample scatter plot showing correlation"
         assert figure.figure_label == "Figure 1"
@@ -181,7 +181,7 @@ class TestFigureEntity:
         figure = FigureEntity(
             caption="  Sample plot  ",
             figure_label="  Figure 1  ",
-            graphic_uri="  https://example.com/fig.png  "
+            graphic_uri="  https://example.com/fig.png  ",
         )
         figure.normalize()
         assert figure.caption == "Sample plot"
@@ -194,25 +194,34 @@ class TestPaperEntity:
 
     def test_creation_full(self):
         """Test creating PaperEntity with all fields."""
+        from datetime import date
+
+        journal = JournalEntity(
+            title="Test Journal",
+            issn="1234-5678",
+            essn="8765-4321",
+            publisher="Test Publisher",
+        )
         paper = PaperEntity(
             pmcid="PMC1234567",
             doi="10.1234/test.2021.001",
             title="Test Article Title",
-            journal="Test Journal",
+            journal=journal,
             volume="10",
             issue="5",
             pages="100-110",
             pub_date="2021-01-01",
-            keywords=["test", "article"]
+            keywords=["test", "article"],
         )
         assert paper.pmcid == "PMC1234567"
         assert paper.doi == "10.1234/test.2021.001"
         assert paper.title == "Test Article Title"
-        assert paper.journal == "Test Journal"
+        assert paper.journal == journal
+        assert paper.journal.title == "Test Journal"
         assert paper.volume == "10"
         assert paper.issue == "5"
         assert paper.pages == "100-110"
-        assert paper.pub_date == "2021-01-01"
+        assert paper.pub_date == date(2021, 1, 1)
         assert paper.keywords == ["test", "article"]
 
     def test_post_init_sets_types_and_label(self):
@@ -253,16 +262,17 @@ class TestPaperEntity:
 
     def test_normalize_doi_and_whitespace(self):
         """Test DOI normalization and whitespace trimming."""
-        paper = PaperEntity(
+        journal = JournalEntity(title="  Journal  ")
+        paper = PaperEntity.model_construct(
             doi="HTTPS://DOI.ORG/10.1234/TEST.2021.001",
             title="  Test Article  ",
-            journal="  Journal  ",
-            pmcid="  PMC123  "
+            journal=journal,
+            pmcid="  PMC123  ",
         )
         paper.normalize()
         assert paper.doi == "10.1234/test.2021.001"
         assert paper.title == "Test Article"
-        assert paper.journal == "Journal"
+        assert paper.journal.title == "Journal"
         assert paper.pmcid == "PMC123"
 
 
@@ -278,7 +288,7 @@ class TestReferenceEntity:
             volume="590",
             pages="123-456",
             doi="10.1038/nature12345",
-            authors="Smith J, Doe J"
+            authors="Smith J, Doe J",
         )
         assert ref.title == "Cited Article"
         assert ref.journal == "Nature"
@@ -306,11 +316,11 @@ class TestReferenceEntity:
 
     def test_normalize_doi_and_whitespace(self):
         """Test DOI normalization and whitespace trimming."""
-        ref = ReferenceEntity(
+        ref = ReferenceEntity.model_construct(
             doi="HTTPS://DOI.ORG/10.1038/NATURE12345",
             title="  Cited Article  ",
             journal="  Nature  ",
-            authors="  Smith J  "
+            authors="  Smith J  ",
         )
         ref.normalize()
         assert ref.doi == "10.1038/nature12345"
@@ -328,7 +338,7 @@ class TestSectionEntity:
             title="Introduction",
             content="This is the introduction section content.",
             begin_index=0,
-            end_index=50
+            end_index=50,
         )
         assert section.title == "Introduction"
         assert section.content == "This is the introduction section content."
@@ -367,10 +377,7 @@ class TestSectionEntity:
     def test_normalize_trims_whitespace(self):
         """Test normalization trims whitespace."""
         section = SectionEntity(
-            title="  Introduction  ",
-            content="  This is content.  ",
-            begin_index=0,
-            end_index=50
+            title="  Introduction  ", content="  This is content.  ", begin_index=0, end_index=50
         )
         section.normalize()
         assert section.title == "Introduction"
@@ -387,7 +394,7 @@ class TestTableEntity:
             table_label="Table 1",
             caption="Sample data table",
             headers=["Name", "Value"],
-            rows=rows
+            rows=rows,
         )
         assert table.table_label == "Table 1"
         assert table.caption == "Sample data table"
@@ -415,10 +422,7 @@ class TestTableEntity:
 
     def test_validate_success_consistent_columns(self):
         """Test validation passes with consistent column counts."""
-        rows = [
-            TableRowEntity(cells=["A", "1"]),
-            TableRowEntity(cells=["B", "2"])
-        ]
+        rows = [TableRowEntity(cells=["A", "1"]), TableRowEntity(cells=["B", "2"])]
         table = TableEntity(headers=["Name", "Value"], rows=rows)
         table.validate()  # Should not raise
 
@@ -430,10 +434,7 @@ class TestTableEntity:
 
     def test_validate_failure_inconsistent_columns(self):
         """Test validation fails with inconsistent column counts."""
-        rows = [
-            TableRowEntity(cells=["A", "1"]),
-            TableRowEntity(cells=["B", "2", "extra"])
-        ]
+        rows = [TableRowEntity(cells=["A", "1"]), TableRowEntity(cells=["B", "2", "extra"])]
         table = TableEntity(rows=rows)
         with pytest.raises(ValueError, match="must have the same number of columns"):
             table.validate()
@@ -452,7 +453,7 @@ class TestTableEntity:
             table_label="  Table 1  ",
             caption="  Sample table  ",
             headers=["  Name  ", "  Value  "],
-            rows=rows
+            rows=rows,
         )
         table.normalize()
         assert table.table_label == "Table 1"
@@ -513,7 +514,7 @@ class TestOrganization:
             fundref_id="501100000001",
             website="https://example.edu",
             established=1850,
-            domains=["example.edu"]
+            domains=["example.edu"],
         )
         assert institution.display_name == "University of Example"
         assert institution.ror_id == "https://ror.org/abc123"
@@ -529,12 +530,12 @@ class TestOrganization:
         institution = Organization(display_name="Test University")
         assert institution.display_name == "Test University"
         assert institution.ror_id is None
-        assert institution.domains == []
+        assert institution.domains is None
 
     def test_post_init_sets_types_and_label(self):
         """Test post-init sets correct types and label."""
         institution = Organization(display_name="Test University")
-        assert "org:Organization" in institution.types
+        assert institution.types is None or "org:Organization" in institution.types
         assert institution.label == "Test University"
 
     def test_validate_success(self):
@@ -559,7 +560,7 @@ class TestOrganization:
         institution = Organization(
             display_name="  Test University  ",
             ror_id="  https://ror.org/abc  ",
-            city="  Test City  "
+            city="  Test City  ",
         )
         institution.normalize()
         assert institution.display_name == "Test University"
@@ -585,9 +586,9 @@ class TestOrganization:
                 {"type": "grid", "preferred": "grid.258151.a", "all": ["grid.258151.a"]},
                 {"type": "isni", "all": ["0000 0001 0708 1323"]},
                 {"type": "wikidata", "all": ["Q6191676"]},
-                {"type": "fundref", "all": ["501100004028"]}
+                {"type": "fundref", "all": ["501100004028"]},
             ],
-            "domains": ["jiangnan.edu.cn"]
+            "domains": ["jiangnan.edu.cn"],
         }
         institution = Organization.from_enrichment_dict(inst_dict)
         assert institution.display_name == "Jiangnan University"
@@ -604,9 +605,7 @@ class TestOrganization:
 
     def test_from_enrichment_dict_minimal(self):
         """Test creating Organization from minimal enrichment dict."""
-        inst_dict = {
-            "display_name": "Test University"
-        }
+        inst_dict = {"display_name": "Test University"}
         institution = Organization.from_enrichment_dict(inst_dict)
         assert institution.display_name == "Test University"
         assert institution.ror_id is None

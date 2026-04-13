@@ -21,10 +21,10 @@ def add_owl_subclass_relationships(dataset: Any, named_graph_uris: dict[str, Any
 
     # Load config for namespaces
     config = load_rdf_config()
-    PYEUROPEPMC = get_namespace_from_config(config, "pyeuropepmc")
+    _ = get_namespace_from_config(config, "pyeuropepmc")
 
     # Get LinkML schema introspector
-    introspector = LinkMLSchemaIntrospector()
+    _ = LinkMLSchemaIntrospector()
 
     # Define inheritance relationships based on LinkML schema
     inheritance_map = {

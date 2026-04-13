@@ -5,6 +5,7 @@ This module provides functions for processing different data sources
 into entity data format for RDF conversion.
 """
 
+from contextlib import suppress
 from typing import Any
 
 from pyeuropepmc.models import (
@@ -194,14 +195,11 @@ def _extract_mesh_headings(result: dict[str, Any]) -> list[Any]:
 
     if isinstance(mesh_heading_list, list):
         for mesh_data in mesh_heading_list:
-            try:
+            with suppress(KeyError, ValueError):
                 # heading = MeSHHeadingEntity.from_dict(mesh_data)
                 # mesh_headings.append(heading)
                 # For now, just return the raw data
                 mesh_headings.append(mesh_data)
-            except (KeyError, ValueError):
-                # Silently skip malformed headings
-                pass
 
     return mesh_headings
 
@@ -507,7 +505,9 @@ def _create_author_entities(
     return author_entities
 
 
-def _create_reference_entities(references_data: list[Any]) -> list[ReferenceEntity]:
+def _create_reference_entities(
+    references_data: list[Any], paper_entity: Any | None = None
+) -> list[ReferenceEntity]:
     """Create ReferenceEntity objects from reference data."""
     reference_entities = []
     for ref_data in references_data:
@@ -529,23 +529,19 @@ def _create_reference_entities(references_data: list[Any]) -> list[ReferenceEnti
 
                 # Handle authors - should be author_list (string) not authors (list)
                 authors_data = ref_data.get("authors")
-                if isinstance(authors_data, str):
-                    author_list = authors_data
-                    authors = None  # Don't set authors field for references
-                else:
-                    author_list = None
-                    authors = None
+                author_list = authors_data if isinstance(authors_data, str) else None
 
-                # Handle journal - should be None for references since we don't have full JournalEntity
-                journal_data = ref_data.get("source") or ref_data.get("journal")
-                if isinstance(journal_data, str):
-                    # For now, store as title in a minimal JournalEntity or just set to None
-                    journal = None  # References don't typically have full journal entities
-                else:
-                    journal = None
+                # Journal is None for references since we don't have full JournalEntity
+                journal = None
+
+                title = ref_data.get("title")
+                if not title:
+                    title = ref_data.get("raw_citation", "Unknown title")
+                    if len(title) > 200:
+                        title = title[:200] + "..."
 
                 reference_entity = ReferenceEntity(
-                    title=ref_data.get("title"),
+                    title=title,
                     journal=journal,
                     publication_year=year,
                     volume=ref_data.get("volume"),
@@ -553,6 +549,7 @@ def _create_reference_entities(references_data: list[Any]) -> list[ReferenceEnti
                     doi=ref_data.get("doi"),
                     pmid=ref_data.get("pmid"),
                     author_list=author_list,  # Use author_list for the string
+                    citing_paper=paper_entity,  # Link reference back to paper
                 )
             else:
                 # Skip invalid reference data
@@ -795,7 +792,8 @@ def _extract_entities_from_xml(
                 # Use clean institution text if available, otherwise fall back to text/institution
                 clean_text = aff.get("institution_text")
                 if not clean_text:
-                    # For institution-wrap affiliations, construct clean text from parsed_institutions
+                    # For institution-wrap affiliations, construct clean text from
+                    # parsed_institutions
                     if aff.get("parsed_institutions"):
                         inst_parts = []
                         for inst in aff.get("parsed_institutions", []):
@@ -860,7 +858,9 @@ def _extract_entities_from_xml(
         institution_entities = _create_institution_entities(xml_data.get("affiliations", []))
 
         # Convert reference dicts to ReferenceEntity objects
-        reference_entities = _create_reference_entities(xml_data.get("references", []))
+        reference_entities = _create_reference_entities(
+            xml_data.get("references", []), paper_entity
+        )
 
         # Convert section dicts to SectionEntity objects
         section_entities = (
@@ -1056,7 +1056,8 @@ def _create_enrichment_author_entities(authors_data: list[dict[str, Any]]) -> li
 
             author_entity = AuthorEntity(
                 full_name=author_data.get("name")
-                or f"{author_data.get('given_name', '')} {author_data.get('family_name', '')}".strip(),
+                or f"{author_data.get('given_name', '')} "
+                f"{author_data.get('family_name', '')}".strip(),
                 first_name=author_data.get("given_name"),
                 last_name=author_data.get("family_name"),
                 orcid=orcid,
@@ -1171,63 +1172,6 @@ def _create_enrichment_institution_entities(
         deduplicated_entities.append(entity)
 
     return deduplicated_entities
-    """Create AuthorEntity objects from enrichment author data."""
-    author_entities = []
-    for author_dict in authors_data:
-        try:
-            if isinstance(author_dict, dict):
-                # Extract name information
-                full_name = (
-                    author_dict.get("name")
-                    or author_dict.get("full_name")
-                    or author_dict.get("display_name")
-                    or f"{author_dict.get('first_name', '')} {author_dict.get('last_name', '')}".strip()
-                    or ""
-                )
-
-                # Extract affiliation information
-                affiliation_text = author_dict.get("affiliation")
-                if not affiliation_text and author_dict.get("affiliations"):
-                    # Use first affiliation if available
-                    affiliations = author_dict["affiliations"]
-                    if isinstance(affiliations, list) and affiliations:
-                        affiliation_text = affiliations[0].get("name") or affiliations[0].get(
-                            "display_name"
-                        )
-
-                # Extract institutions
-                institutions = []
-                if author_dict.get("institutions"):
-                    for inst in author_dict["institutions"]:
-                        if isinstance(inst, dict):
-                            institutions.append(inst.get("display_name") or inst.get("name", ""))
-
-                author_entity = AuthorEntity(
-                    full_name=full_name,
-                    orcid=_format_orcid(author_dict.get("orcid")),
-                    affiliation_text=affiliation_text,
-                    openalex_id=author_dict.get("openalex_id") or author_dict.get("id"),
-                    semantic_scholar_author_id=author_dict.get("semantic_scholar_author_id")
-                    or author_dict.get("author_id"),
-                    institutions=institutions if institutions else None,
-                    h_index=author_dict.get("h_index"),
-                    citation_count=author_dict.get("citation_count"),
-                    paper_count=author_dict.get("paper_count") or author_dict.get("works_count"),
-                    orcid_works_count=author_dict.get("orcid_works_count"),
-                )
-            elif isinstance(author_dict, str):
-                author_entity = AuthorEntity(
-                    full_name=author_dict,
-                    orcid=None,
-                    affiliation_text=None,
-                )
-            else:
-                continue
-            author_entities.append(author_entity)
-        except Exception as e:
-            print(f"Error creating author entity: {e}")
-            continue
-    return author_entities
 
 
 def _extract_entities_from_enrichment(enrichment_data: dict[str, Any]) -> list[dict[str, Any]]:

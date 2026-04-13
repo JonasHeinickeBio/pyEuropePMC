@@ -7,7 +7,9 @@ such as genes, diseases, chemicals, species, and mutations in PubMed abstracts.
 
 import logging
 from typing import Any
-from xml.etree import ElementTree as ET  # noqa: B405
+from xml.etree.ElementTree import Element  # nosec B405
+
+from defusedxml.ElementTree import fromstring as fromstring_defused
 
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.enrichment.base import BaseEnrichmentClient
@@ -170,7 +172,7 @@ class PubTatorClient(BaseEnrichmentClient):
             Parsed annotations or None if parsing fails
         """
         try:
-            root = ET.fromstring(xml_content)  # noqa: B314
+            root = fromstring_defused(xml_content)
 
             # BioC XML structure: collection > document > passage > annotation/relation
             documents = root.findall(".//document")
@@ -214,11 +216,11 @@ class PubTatorClient(BaseEnrichmentClient):
                 "relation_count": len(all_relations),
             }
 
-        except ET.ParseError as e:
+        except Exception as e:
             logger.error(f"XML parsing error: {e}")
             return None
 
-    def _parse_annotation(self, annotation: ET.Element) -> dict[str, Any] | None:
+    def _parse_annotation(self, annotation: Element) -> dict[str, Any] | None:
         """
         Parse a single annotation element from BioC XML.
 
@@ -276,7 +278,7 @@ class PubTatorClient(BaseEnrichmentClient):
             logger.warning(f"Error parsing annotation: {e}")
             return None
 
-    def _parse_relation(self, relation: ET.Element) -> dict[str, Any] | None:
+    def _parse_relation(self, relation: Element) -> dict[str, Any] | None:
         """
         Parse a single relation element from BioC XML.
 

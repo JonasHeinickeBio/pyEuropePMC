@@ -314,6 +314,8 @@ class RDFMapper:
         >>> subject = URIRef("http://example.org/paper1")
         >>> mapper.add_types(g, subject, ["bibo:AcademicArticle"])
         """
+        if not types:
+            return
         for type_str in types:
             type_uri = self._resolve_predicate(type_str)
             if context:
@@ -948,6 +950,59 @@ class RDFMapper:
 
         return uri_factory.generate_uri(entity, parent_uri=parent_uri)
 
+    def entity_to_rdf(
+        self,
+        entity: Any,
+        g: Any = None,
+        uri: Any = None,
+        related_entities: dict[str, list[Any]] | None = None,
+        extraction_info: dict[str, Any] | None = None,
+        parent_uri: Any = None,
+    ) -> str:
+        """
+        Convert an entity to RDF string representation.
+
+        This is the main entry point for entity-to-RDF conversion, called by
+        BaseEntity.to_rdf() method.
+
+        Parameters
+        ----------
+        entity : Any
+            Entity instance to convert
+        g : Optional[Graph]
+            RDF graph to add triples to (creates new graph if None)
+        uri : Optional[URIRef]
+            URI for this entity (if None, will be minted)
+        related_entities : Optional[dict[str, list[Any]]]
+            Dictionary of related entities by relationship name
+        extraction_info : Optional[dict[str, Any]]
+            Additional extraction metadata for provenance
+        parent_uri : Optional[URIRef]
+            URI of the parent entity (for generating contextual URIs)
+
+        Returns
+        -------
+        str
+            RDF serialization of the graph
+        """
+        from pyeuropepmc.models.rdf_methods import to_rdf
+
+        if g is None:
+            g = Dataset()
+
+        to_rdf(
+            entity,
+            g=g,
+            uri=uri,
+            mapper=self,
+            related_entities=related_entities,
+            extraction_info=extraction_info,
+            parent_uri=parent_uri,
+        )
+
+        # Return serialized RDF
+        return g.serialize(format="turtle")
+
     def generate_uri(self, entity_type: str, entity: Any) -> URIRef:
         """
         Generate a URI for an entity of a specific type.
@@ -1405,14 +1460,16 @@ class RDFMapper:
                         f.write(f"# Generated: {datetime.now().isoformat()}\n")
                         if quality_metrics:
                             f.write(
-                                f"# Quality Score: {quality_metrics.get('overall_score', 'N/A'):.3f}\n"
+                                f"# Quality Score: "
+                                f"{quality_metrics.get('overall_score', 'N/A'):.3f}\n"
                             )
                             f.write(
                                 f"# Total Triples: {quality_metrics.get('total_triples', 0)}\n"
                             )
                         if completeness_metrics:
                             f.write(
-                                f"# Completeness Score: {completeness_metrics.get('completeness_score', 0):.3f}\n"
+                                f"# Completeness Score: "
+                                f"{completeness_metrics.get('completeness_score', 0):.3f}\n"
                             )
                         f.write("# \n")
 
@@ -1657,7 +1714,7 @@ class RDFMapper:
             organizations_by_id = {}
             departments_by_id = {}
 
-            for identifier, entity_data in entities_data.items():
+            for _, entity_data in entities_data.items():
                 entity = entity_data.get("entity")
                 if entity is None:
                     continue
@@ -1675,7 +1732,7 @@ class RDFMapper:
                     departments_by_id[entity_id] = entity
 
             # Link departments to parent organizations
-            for dept_id, dept in departments_by_id.items():
+            for _, dept in departments_by_id.items():
                 if hasattr(dept, "parent_organization") and dept.parent_organization:
                     dept_uri = self._generate_entity_uri(dept)
                     parent_org = dept.parent_organization
@@ -1694,7 +1751,7 @@ class RDFMapper:
                     g.add((parent_uri, ORG.hasUnit, dept_uri))
 
             # Link authors to organizations (explicit institutional affiliation)
-            for author_id, author in authors_by_id.items():
+            for _, author in authors_by_id.items():
                 author_uri = self._generate_entity_uri(author)
 
                 # Handle author_institutions relationship
@@ -1753,13 +1810,13 @@ class RDFMapper:
                                     dept_set.add((author_uri, dept))
 
                     # Add paper -> organization relationships
-                    for author_uri, org in org_set:
+                    for _, org in org_set:
                         org_uri = self._generate_entity_uri(org)
                         g.add((paper_uri, PYEUROPEPMC.affiliatedWith, org_uri))
                         g.add((org_uri, PYEUROPEPMC.hasPublication, paper_uri))
 
                     # Add paper -> department relationships
-                    for author_uri, dept in dept_set:
+                    for _, dept in dept_set:
                         dept_uri = self._generate_entity_uri(dept)
                         g.add((paper_uri, PYEUROPEPMC.departmentAffiliation, dept_uri))
                         g.add((dept_uri, PYEUROPEPMC.hasDepartmentPublication, paper_uri))
@@ -1885,12 +1942,15 @@ class RDFMapper:
                         try:
                             quality_metrics = self.calculate_rdf_quality_metrics(g)
                             quality_score = quality_metrics.get("overall_score")
-                        except Exception:  # noqa: B110
+                        except Exception as e:
                             # Quality calculation is optional; continue without it
-                            pass
+                            self.logger.debug(f"Quality calculation skipped: {e}")
 
                         base_filename = f"{entity_type}_{safe_identifier}"
-                        filename = f"{output_dir}/{self.standardize_filename(base_filename, quality_score, entity_type=entity_type)}"
+                        filename = (
+                            f"{output_dir}/"
+                            f"{self.standardize_filename(base_filename, quality_score, entity_type=entity_type)}"  # noqa: E501
+                        )
                     else:
                         safe_identifier = identifier.replace("/", "_").replace(".", "_")
                         filename = filename_template.format(
@@ -2315,15 +2375,15 @@ class RDFMapper:
         from rdflib.namespace import RDF
 
         entity_counts = Counter()
-        for s, p, o in g.triples((None, RDF.type, None)):
+        for _, _, o in g.triples((None, RDF.type, None)):
             entity_type = str(o).split("/")[-1]  # Get local part of URI
             entity_counts[entity_type] += 1
 
         # Check ORCID coverage for authors
         author_count = entity_counts.get("Person", 0) + entity_counts.get("Author", 0)
         orcid_count = 0
-        for s, p, o in g.triples((None, None, None)):
-            if "orcid" in str(p).lower() or "orcid" in str(o).lower():
+        for _, _, o in g.triples((None, None, None)):
+            if "orcid" in str(o).lower():
                 orcid_count += 1
 
         if author_count > 0:
@@ -2339,7 +2399,7 @@ class RDFMapper:
             "Institution", 0
         )
         ror_count = 0
-        for s, p, o in g.triples((None, None, None)):
+        for _, _, o in g.triples((None, None, None)):
             if "ror.org" in str(o):
                 ror_count += 1
 
@@ -2374,7 +2434,7 @@ class RDFMapper:
         # Check for orphaned references (cited works without DOIs)
         citation_count = 0
         doi_count = 0
-        for s, p, o in g.triples((None, None, None)):
+        for _, p, o in g.triples((None, None, None)):
             if "citation" in str(p).lower() or "cites" in str(p).lower():
                 citation_count += 1
             if "doi" in str(p).lower() and str(o).startswith("https://doi.org/"):

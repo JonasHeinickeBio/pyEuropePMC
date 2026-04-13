@@ -7,7 +7,7 @@ import pytest
 from rdflib import Graph, URIRef
 
 from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import AuthorEntity, OrganizationEntity, JournalEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, Organization, JournalEntity, PaperEntity
 
 
 class TestRDFMappingEndToEnd:
@@ -69,7 +69,7 @@ class TestRDFMappingEndToEnd:
     @pytest.fixture
     def sample_institution(self):
         """Sample institution entity."""
-        return OrganizationEntity(
+        return Organization(
             display_name="University of Example",
             ror_id="https://ror.org/123456789",
             openalex_id="https://openalex.org/I123456789",

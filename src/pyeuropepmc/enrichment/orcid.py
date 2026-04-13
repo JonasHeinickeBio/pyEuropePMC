@@ -121,7 +121,8 @@ class OrcidClient(BaseEnrichmentClient):
 
         if response is None or not isinstance(response, dict):
             logger.warning(
-                f"Invalid or no data found for ORCID: {identifier} (response type: {type(response)})"
+                f"Invalid or no data found for ORCID: {identifier} "
+                f"(response type: {type(response)})"
             )
             return None
 
@@ -200,7 +201,7 @@ class OrcidClient(BaseEnrichmentClient):
         # Determine current affiliation (most recent employment)
         current_affiliation = None
         if employment:
-            # Sort by end date (most recent first), find one without end date or with latest end date
+            # Sort by end date (most recent first)
             sorted_employment = sorted(
                 employment,
                 key=lambda x: x.get("end_date", {}).get("year", {}).get("value", "9999")
@@ -250,17 +251,22 @@ class OrcidClient(BaseEnrichmentClient):
         if not name_data:
             return None
 
+        def get_value(data: dict[str, Any], key1: str, key2: str | None = None) -> str | None:
+            if key2:
+                nested = data.get(key1, {})
+                return nested.get(key2) if nested else None
+            return data.get(key1)
+
+        given_val = get_value(name_data, "given-names", "value")
+        family_val = get_value(name_data, "family-name", "value")
+
+        full_name = f"{given_val if given_val else ''} {family_val if family_val else ''}".strip()
+
         return {
-            "given": name_data.get("given-names", {}).get("value")
-            if name_data.get("given-names") and isinstance(name_data.get("given-names"), dict)
-            else None,
-            "family": name_data.get("family-name", {}).get("value")
-            if name_data.get("family-name") and isinstance(name_data.get("family-name"), dict)
-            else None,
-            "credit": name_data.get("credit-name", {}).get("value")
-            if name_data.get("credit-name") and isinstance(name_data.get("credit-name"), dict)
-            else None,
-            "full": f"{(name_data.get('given-names', {}).get('value') if name_data.get('given-names') and isinstance(name_data.get('given-names'), dict) else '')} {(name_data.get('family-name', {}).get('value') if name_data.get('family-name') and isinstance(name_data.get('family-name'), dict) else '')}".strip(),
+            "given": given_val,
+            "family": family_val,
+            "credit": get_value(name_data, "credit-name", "value"),
+            "full": full_name,
         }
 
     def _extract_external_ids(self, person: dict[str, Any]) -> list[dict[str, Any]]:

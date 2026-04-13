@@ -11,7 +11,7 @@ from rdflib import URIRef
 
 
 def to_rdf(
-    self,
+    self: Any,
     g: Any,
     uri: URIRef | None = None,
     mapper: Any = None,

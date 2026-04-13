@@ -534,6 +534,23 @@ def build_paper_entities(  # noqa: C901
 
     # Build ReferenceEntity list
     references = []
+    # Generate paper URI for linking references back to the paper
+    paper_pmid = meta.get("pmid")
+    paper_doi = meta.get("doi")
+    paper_pmcid = meta.get("pmcid")
+
+    # Generate paper URI using the same logic as RDF mapper
+    paper_uri = "https://w3id.org/pyeuropepmc/data#paper/"
+    if paper_pmid:
+        paper_uri += paper_pmid
+    elif paper_doi:
+        paper_uri += paper_doi.replace("/", "-")
+    elif paper_pmcid:
+        pmcid_str = paper_pmcid
+        if not pmcid_str.upper().startswith("PMC"):
+            pmcid_str = f"PMC{pmcid_str}"
+        paper_uri += pmcid_str
+
     for ref_data in parser.extract_references():
         year = ref_data.get("year")
 
@@ -556,6 +573,7 @@ def build_paper_entities(  # noqa: C901
             pmid=ref_data.get("pmid"),
             pmcid=ref_data.get("pmcid"),
             author_list=ref_data.get("authors"),  # Use author_list instead of authors
+            citing_paper=paper,  # Link reference back to paper
         )
         references.append(reference)
 

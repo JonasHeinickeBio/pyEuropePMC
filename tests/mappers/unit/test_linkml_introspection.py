@@ -40,7 +40,7 @@ class TestLinkMLSchemaIntrospector:
         assert len(classes) > 0
         assert "PaperEntity" in classes
         assert "AuthorEntity" in classes
-        assert "OrganizationEntity" in classes
+        assert "Organization" in classes
 
     def test_get_class_mapping_paper(
         self, introspector: LinkMLSchemaIntrospector

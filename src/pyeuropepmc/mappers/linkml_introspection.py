@@ -216,6 +216,41 @@ class LinkMLSchemaIntrospector:
                 if cls and cls.slot_usage and slot_name in cls.slot_usage:
                     slot_usage = cls.slot_usage[slot_name]
 
+            # If slot_usage exists but has no overridden attributes (all are defaults),
+            # and the original slot has a non-None slot_uri, then slot_uri: null was
+            # implicitly set (the slot should be excluded).
+            # But if other attributes were overridden, the slot_uri: null might not be set.
+            if slot_usage:
+                # Check if any attributes were overridden in slot_usage
+                attrs_overridden = False
+                for attr_name in [
+                    "required",
+                    "multivalued",
+                    "range",
+                    "slot_uri",
+                    "minimum_value",
+                    "maximum_value",
+                    "pattern",
+                    "description",
+                    "domain",
+                    "inlined",
+                    "inlined_as_list",
+                ]:
+                    usage_val = getattr(slot_usage, attr_name, None)
+                    slot_val = getattr(slot, attr_name, None)
+                    if usage_val is not None and usage_val != slot_val:
+                        attrs_overridden = True
+                        break
+
+                # If slot_uri is None in slot_usage but not None in original slot,
+                # and no other attributes were overridden, then slot_uri: null was set
+                if (
+                    slot_usage.slot_uri is None
+                    and slot.slot_uri is not None
+                    and not attrs_overridden
+                ):
+                    return {}
+
             slot_uri = slot.slot_uri
             slot_range = slot.range
             is_multivalued = slot.multivalued or False

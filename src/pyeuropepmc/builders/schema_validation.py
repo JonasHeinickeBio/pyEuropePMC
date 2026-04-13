@@ -134,24 +134,21 @@ class SchemaValidator:
 
         # Check range constraints for numeric values
         if isinstance(value, int | float):
-            if "minimum_value" in field_mapping:
-                if value < field_mapping["minimum_value"]:
-                    errors.append(
-                        f"Field '{field_name}' value {value} is below minimum "
-                        f"{field_mapping['minimum_value']}"
-                    )
+            if "minimum_value" in field_mapping and value < field_mapping["minimum_value"]:
+                errors.append(
+                    f"Field '{field_name}' value {value} is below minimum "
+                    f"{field_mapping['minimum_value']}"
+                )
 
-            if "maximum_value" in field_mapping:
-                if value > field_mapping["maximum_value"]:
-                    errors.append(
-                        f"Field '{field_name}' value {value} exceeds maximum "
-                        f"{field_mapping['maximum_value']}"
-                    )
+            if "maximum_value" in field_mapping and value > field_mapping["maximum_value"]:
+                errors.append(
+                    f"Field '{field_name}' value {value} exceeds maximum "
+                    f"{field_mapping['maximum_value']}"
+                )
 
         # Check multivalued constraint
-        if field_mapping.get("multivalued"):
-            if not isinstance(value, (list, tuple)):
-                errors.append(f"Field '{field_name}' should be a list (multivalued)")
+        if field_mapping.get("multivalued") and not isinstance(value, list | tuple):
+            errors.append(f"Field '{field_name}' should be a list (multivalued)")
 
         is_valid = len(errors) == 0
         return is_valid, errors
@@ -183,9 +180,8 @@ class SchemaValidator:
             return None
 
         # Handle multivalued fields
-        if field_mapping.get("multivalued"):
-            if not isinstance(value, (list, tuple)):
-                value = [value]
+        if field_mapping.get("multivalued") and not isinstance(value, list | tuple):
+            value = [value]
 
         # Handle type coercion based on datatype
         datatype = field_mapping.get("datatype")
@@ -209,7 +205,7 @@ class SchemaValidator:
                 value = str(value)
 
         # Apply range constraints for numeric values
-        if isinstance(value, (int, float)):
+        if isinstance(value, int | float):
             if "minimum_value" in field_mapping:
                 value = max(value, field_mapping["minimum_value"])
             if "maximum_value" in field_mapping:

@@ -17,6 +17,9 @@ __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
 
 # Import main classes for convenient access
+# Import models_custom to patch generated models with custom methods
+import pyeuropepmc.models_custom
+
 from .cache.cache import (
     CacheBackend,
     CacheConfig,

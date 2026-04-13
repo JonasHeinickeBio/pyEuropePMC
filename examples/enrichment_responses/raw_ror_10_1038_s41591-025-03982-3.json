@@ -1,29 +1,23 @@
 {
-  "03k84rm07": {
-    "ror_id": "https://ror.org/03k84rm07",
+  "02jzgtq86": {
+    "ror_id": "https://ror.org/02jzgtq86",
     "status": "active",
     "types": [
-      "facility"
+      "facility",
+      "funder"
     ],
-    "established": 1996,
+    "established": 1947,
     "names": [
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "CEH"
-      },
       {
         "lang": "en",
         "types": [
           "ror_display",
           "label"
         ],
-        "value": "Center for Environmental Health"
+        "value": "Dana-Farber Cancer Institute"
       }
     ],
-    "display_name": "Center for Environmental Health",
+    "display_name": "Dana-Farber Cancer Institute",
     "locations": [
       {
         "geonames_details": {
@@ -31,49 +25,194 @@
           "continent_name": "North America",
           "country_code": "US",
           "country_name": "United States",
-          "country_subdivision_code": "CA",
-          "country_subdivision_name": "California",
-          "lat": 37.80437,
-          "lng": -122.2708,
-          "name": "Oakland"
+          "country_subdivision_code": "MA",
+          "country_subdivision_name": "Massachusetts",
+          "lat": 42.35843,
+          "lng": -71.05977,
+          "name": "Boston"
         },
-        "geonames_id": 5378538
+        "geonames_id": 4930956
       }
     ],
     "country": "United States",
     "country_code": "US",
-    "city": "Oakland",
-    "latitude": 37.80437,
-    "longitude": -122.2708,
+    "city": "Boston",
+    "latitude": 42.35843,
+    "longitude": -71.05977,
     "links": [
       {
         "type": "website",
-        "value": "http://www.ceh.org/"
+        "value": "http://www.dana-farber.org/"
       },
       {
         "type": "wikipedia",
-        "value": "https://en.wikipedia.org/wiki/Center_for_Environmental_Health"
+        "value": "https://en.wikipedia.org/wiki/Dana%E2%80%93Farber_Cancer_Institute"
       }
     ],
-    "website": "http://www.ceh.org/",
+    "website": "http://www.dana-farber.org/",
     "external_ids": [
       {
         "all": [
-          "grid.420640.4"
+          "100007886"
         ],
-        "preferred": "grid.420640.4",
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.65499.37"
+        ],
+        "preferred": "grid.65499.37",
         "type": "grid"
       },
       {
         "all": [
-          "Q19879074"
+          "0000 0001 2106 9910"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q1159198"
         ],
         "preferred": null,
         "type": "wikidata"
       }
     ],
-    "grid_id": "grid.420640.4",
-    "relationships": [],
+    "grid_id": "grid.65499.37",
+    "relationships": [
+      {
+        "label": "Dana-Farber/Boston Children's Cancer and Blood Disorders Center",
+        "type": "child",
+        "id": "https://ror.org/05k11pb55"
+      },
+      {
+        "label": "Dana-Farber Brigham Cancer Center",
+        "type": "child",
+        "id": "https://ror.org/05rgrbr06"
+      },
+      {
+        "label": "Dana-Farber/Harvard Cancer Center",
+        "type": "child",
+        "id": "https://ror.org/03pvyf116"
+      },
+      {
+        "label": "Boston Children's Hospital",
+        "type": "related",
+        "id": "https://ror.org/00dvg7y05"
+      },
+      {
+        "label": "Harvard University",
+        "type": "related",
+        "id": "https://ror.org/03vek6s52"
+      },
+      {
+        "label": "Massachusetts General Hospital",
+        "type": "related",
+        "id": "https://ror.org/002pd6e78"
+      },
+      {
+        "label": "Wyss Institute for Biologically Inspired Engineering",
+        "type": "related",
+        "id": "https://ror.org/008cfmj78"
+      }
+    ],
+    "domains": []
+  },
+  "00jjeh629": {
+    "ror_id": "https://ror.org/00jjeh629",
+    "status": "active",
+    "types": [
+      "education"
+    ],
+    "established": 1970,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "HST"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Harvard–MIT Division of Health Sciences and Technology"
+      }
+    ],
+    "display_name": "Harvard–MIT Division of Health Sciences and Technology",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "MA",
+          "country_subdivision_name": "Massachusetts",
+          "lat": 42.3751,
+          "lng": -71.10561,
+          "name": "Cambridge"
+        },
+        "geonames_id": 4931972
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "Cambridge",
+    "latitude": 42.3751,
+    "longitude": -71.10561,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://hst.mit.edu/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Harvard%E2%80%93MIT_Division_of_Health_Sciences_and_Technology"
+      }
+    ],
+    "website": "http://hst.mit.edu/",
+    "external_ids": [
+      {
+        "all": [
+          "grid.413735.7"
+        ],
+        "preferred": "grid.413735.7",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0475 2760"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q5676651"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.413735.7",
+    "relationships": [
+      {
+        "label": "Harvard University",
+        "type": "related",
+        "id": "https://ror.org/03vek6s52"
+      },
+      {
+        "label": "Massachusetts Institute of Technology",
+        "type": "related",
+        "id": "https://ror.org/042nb2s44"
+      }
+    ],
     "domains": []
   },
   "05a0ya142": {
@@ -221,6 +360,178 @@
         "label": "Massachusetts Institute of Technology",
         "type": "related",
         "id": "https://ror.org/042nb2s44"
+      }
+    ],
+    "domains": []
+  },
+  "057zh3y96": {
+    "ror_id": "https://ror.org/057zh3y96",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1877,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "The University of Tokyo"
+      },
+      {
+        "lang": null,
+        "types": [
+          "alias"
+        ],
+        "value": "Todai"
+      },
+      {
+        "lang": null,
+        "types": [
+          "alias"
+        ],
+        "value": "Tōkyō Daigaku"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "UT"
+      },
+      {
+        "lang": null,
+        "types": [
+          "alias"
+        ],
+        "value": "UTokyo"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "alias"
+        ],
+        "value": "とうきょうだいがく"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "alias"
+        ],
+        "value": "トウキョウダイガク"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "label"
+        ],
+        "value": "東京大学"
+      }
+    ],
+    "display_name": "The University of Tokyo",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "JP",
+          "country_name": "Japan",
+          "country_subdivision_code": "13",
+          "country_subdivision_name": "Tokyo",
+          "lat": 35.6895,
+          "lng": 139.69171,
+          "name": "Tokyo"
+        },
+        "geonames_id": 1850147
+      }
+    ],
+    "country": "Japan",
+    "country_code": "JP",
+    "city": "Tokyo",
+    "latitude": 35.6895,
+    "longitude": 139.69171,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.u-tokyo.ac.jp"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/University_of_Tokyo"
+      }
+    ],
+    "website": "https://www.u-tokyo.ac.jp",
+    "external_ids": [
+      {
+        "all": [
+          "501100004721"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.26999.3d"
+        ],
+        "preferred": "grid.26999.3d",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 2151 536X",
+          "0000 0001 2169 1048"
+        ],
+        "preferred": "0000 0001 2169 1048",
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q7842",
+          "Q363047",
+          "Q56612514",
+          "Q11524675",
+          "Q11524693"
+        ],
+        "preferred": "Q7842",
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.26999.3d",
+    "isni": "0000 0001 2169 1048",
+    "wikidata_id": "Q7842",
+    "relationships": [
+      {
+        "label": "Laboratory for Integrated Micro-Mechatronic Systems",
+        "type": "child",
+        "id": "https://ror.org/0059vr703"
+      },
+      {
+        "label": "Spintronics Research Network of Japan",
+        "type": "child",
+        "id": "https://ror.org/03bbyax37"
+      },
+      {
+        "label": "Institute for Cosmic Ray Research",
+        "type": "child",
+        "id": "https://ror.org/008td3p62"
+      },
+      {
+        "label": "Japanese-French Laboratory for Informatics",
+        "type": "child",
+        "id": "https://ror.org/007xn7v02"
+      },
+      {
+        "label": "University of Tokyo Hospital",
+        "type": "related",
+        "id": "https://ror.org/022cvpj02"
+      },
+      {
+        "label": "Veterinary Medical Center",
+        "type": "related",
+        "id": "https://ror.org/03vaz2582"
       }
     ],
     "domains": []
@@ -387,6 +698,446 @@
       "tum.de"
     ]
   },
+  "04py2rh25": {
+    "ror_id": "https://ror.org/04py2rh25",
+    "status": "active",
+    "types": [
+      "funder",
+      "healthcare"
+    ],
+    "established": 1994,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Mass General Brigham"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "PHS"
+      }
+    ],
+    "display_name": "Mass General Brigham",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "MA",
+          "country_subdivision_name": "Massachusetts",
+          "lat": 42.35843,
+          "lng": -71.05977,
+          "name": "Boston"
+        },
+        "geonames_id": 4930956
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "Boston",
+    "latitude": 42.35843,
+    "longitude": -71.05977,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.massgeneralbrigham.org/"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Partners_HealthCare"
+      }
+    ],
+    "website": "https://www.massgeneralbrigham.org/",
+    "external_ids": [
+      {
+        "all": [
+          "100007806"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.452687.a"
+        ],
+        "preferred": "grid.452687.a",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0378 0997"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q7140719"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.452687.a",
+    "relationships": [
+      {
+        "label": "Brigham and Women's Hospital",
+        "type": "child",
+        "id": "https://ror.org/04b6nzv94"
+      },
+      {
+        "label": "Massachusetts General Hospital",
+        "type": "child",
+        "id": "https://ror.org/002pd6e78"
+      },
+      {
+        "label": "Nantucket Cottage Hospital",
+        "type": "child",
+        "id": "https://ror.org/00jhqgj32"
+      },
+      {
+        "label": "Spaulding Rehabilitation Hospital",
+        "type": "child",
+        "id": "https://ror.org/011dvr318"
+      }
+    ],
+    "domains": []
+  },
+  "00cfam450": {
+    "ror_id": "https://ror.org/00cfam450",
+    "status": "active",
+    "types": [
+      "facility",
+      "funder"
+    ],
+    "established": 1964,
+    "names": [
+      {
+        "lang": "de",
+        "types": [
+          "alias"
+        ],
+        "value": "GSF - Gesellschaft für Strahlen- und Umweltforschung"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "German Research Center for Environmental Health"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "HMGU"
+      },
+      {
+        "lang": "de",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Helmholtz Zentrum München"
+      },
+      {
+        "lang": "de",
+        "types": [
+          "label"
+        ],
+        "value": "Helmholtz Zentrum München - Deutsches Forschungszentrum für Gesundheit und Umwelt"
+      }
+    ],
+    "display_name": "Helmholtz Zentrum München",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "EU",
+          "continent_name": "Europe",
+          "country_code": "DE",
+          "country_name": "Germany",
+          "country_subdivision_code": "BY",
+          "country_subdivision_name": "Bavaria",
+          "lat": 48.13743,
+          "lng": 11.57549,
+          "name": "Munich"
+        },
+        "geonames_id": 2867714
+      }
+    ],
+    "country": "Germany",
+    "country_code": "DE",
+    "city": "Munich",
+    "latitude": 48.13743,
+    "longitude": 11.57549,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.helmholtz-muenchen.de"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Helmholtz_Zentrum_M%C3%BCnchen"
+      }
+    ],
+    "website": "http://www.helmholtz-muenchen.de",
+    "external_ids": [
+      {
+        "all": [
+          "501100013295",
+          "501100013294"
+        ],
+        "preferred": "501100013294",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.4567.0"
+        ],
+        "preferred": "grid.4567.0",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0483 2525"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q878592"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100013294",
+    "grid_id": "grid.4567.0",
+    "relationships": [
+      {
+        "label": "Helmholtz Alliance Imaging and Curing Environmental Metabolic Diseases",
+        "type": "child",
+        "id": "https://ror.org/04s64z252"
+      },
+      {
+        "label": "Institute of Bioinformatics and Systems Biology",
+        "type": "child",
+        "id": "https://ror.org/0127fwn18"
+      },
+      {
+        "label": "Paul Langerhans Institute Dresden",
+        "type": "child",
+        "id": "https://ror.org/05ke5hb07"
+      },
+      {
+        "label": "Institute of Biological and Medical Imaging",
+        "type": "child",
+        "id": "https://ror.org/05g95eg64"
+      },
+      {
+        "label": "Institute of Diabetes Research",
+        "type": "child",
+        "id": "https://ror.org/0278hns33"
+      },
+      {
+        "label": "Institute of Computational Biology",
+        "type": "child",
+        "id": "https://ror.org/00kg2yq63"
+      },
+      {
+        "label": "Institute of Functional Epigenetics",
+        "type": "child",
+        "id": "https://ror.org/05ekkb842"
+      },
+      {
+        "label": "Institute of Epigenetics and Stem Cells",
+        "type": "child",
+        "id": "https://ror.org/00k195394"
+      },
+      {
+        "label": "Helmholtz Association of German Research Centres",
+        "type": "parent",
+        "id": "https://ror.org/0281dp749"
+      }
+    ],
+    "domains": []
+  },
+  "047s2c258": {
+    "ror_id": "https://ror.org/047s2c258",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1856,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "UMD"
+      },
+      {
+        "lang": "es",
+        "types": [
+          "label"
+        ],
+        "value": "Universidad de Maryland"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "University of Maryland, College Park"
+      },
+      {
+        "lang": "fr",
+        "types": [
+          "label"
+        ],
+        "value": "Université du Maryland"
+      }
+    ],
+    "display_name": "University of Maryland, College Park",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "MD",
+          "country_subdivision_name": "Maryland",
+          "lat": 38.98067,
+          "lng": -76.93692,
+          "name": "College Park"
+        },
+        "geonames_id": 4351977
+      }
+    ],
+    "country": "United States",
+    "country_code": "US",
+    "city": "College Park",
+    "latitude": 38.98067,
+    "longitude": -76.93692,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://umd.edu"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/University_of_Maryland,_College_Park"
+      }
+    ],
+    "website": "https://umd.edu",
+    "external_ids": [
+      {
+        "all": [
+          "100006444",
+          "100009144",
+          "100004972",
+          "100007743",
+          "100008640",
+          "100008029",
+          "100008639",
+          "100016817"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.164295.d"
+        ],
+        "preferred": "grid.164295.d",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 0941 7177"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q503415"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.164295.d",
+    "relationships": [
+      {
+        "label": "Earth System Science Interdisciplinary Center",
+        "type": "child",
+        "id": "https://ror.org/042607708"
+      },
+      {
+        "label": "Joint Center for Quantum Information and Computer Science",
+        "type": "child",
+        "id": "https://ror.org/02048n894"
+      },
+      {
+        "label": "Joint Global Change Research Institute",
+        "type": "child",
+        "id": "https://ror.org/058cmd703"
+      },
+      {
+        "label": "Joint Quantum Institute",
+        "type": "child",
+        "id": "https://ror.org/04xz38214"
+      },
+      {
+        "label": "Virginia–Maryland College of Veterinary Medicine",
+        "type": "child",
+        "id": "https://ror.org/010prmy50"
+      },
+      {
+        "label": "Applied Research Laboratory for Intelligence and Security",
+        "type": "child",
+        "id": "https://ror.org/006jjam33"
+      },
+      {
+        "label": "Institute for Bioscience and Biotechnology Research",
+        "type": "child",
+        "id": "https://ror.org/02zs3hb12"
+      },
+      {
+        "label": "Maryland Quantum Materials Center",
+        "type": "child",
+        "id": "https://ror.org/01bdy0k56"
+      },
+      {
+        "label": "University System of Maryland",
+        "type": "parent",
+        "id": "https://ror.org/01r0c1p88"
+      },
+      {
+        "label": "Fraunhofer USA Center Mid-Atlantic CMA",
+        "type": "related",
+        "id": "https://ror.org/05sz9gw20"
+      }
+    ],
+    "domains": [
+      "umd.edu"
+    ]
+  },
   "044fdhr57": {
     "ror_id": "https://ror.org/044fdhr57",
     "status": "active",
@@ -476,46 +1227,25 @@
     "relationships": [],
     "domains": []
   },
-  "002pd6e78": {
-    "ror_id": "https://ror.org/002pd6e78",
+  "03czfpz43": {
+    "ror_id": "https://ror.org/03czfpz43",
     "status": "active",
     "types": [
-      "funder",
-      "healthcare"
+      "education",
+      "funder"
     ],
-    "established": 1811,
+    "established": 1836,
     "names": [
-      {
-        "lang": "es",
-        "types": [
-          "label"
-        ],
-        "value": "Hospital General de Massachusetts"
-      },
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "MGH"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "alias"
-        ],
-        "value": "Mass General"
-      },
       {
         "lang": "en",
         "types": [
           "ror_display",
           "label"
         ],
-        "value": "Massachusetts General Hospital"
+        "value": "Emory University"
       }
     ],
-    "display_name": "Massachusetts General Hospital",
+    "display_name": "Emory University",
     "locations": [
       {
         "geonames_details": {
@@ -523,131 +1253,697 @@
           "continent_name": "North America",
           "country_code": "US",
           "country_name": "United States",
-          "country_subdivision_code": "MA",
-          "country_subdivision_name": "Massachusetts",
-          "lat": 42.35843,
-          "lng": -71.05977,
-          "name": "Boston"
+          "country_subdivision_code": "GA",
+          "country_subdivision_name": "Georgia",
+          "lat": 33.749,
+          "lng": -84.38798,
+          "name": "Atlanta"
         },
-        "geonames_id": 4930956
+        "geonames_id": 4180439
       }
     ],
     "country": "United States",
     "country_code": "US",
-    "city": "Boston",
-    "latitude": 42.35843,
-    "longitude": -71.05977,
+    "city": "Atlanta",
+    "latitude": 33.749,
+    "longitude": -84.38798,
     "links": [
       {
         "type": "website",
-        "value": "http://www.massgeneral.org/"
+        "value": "https://www.emory.edu"
       },
       {
         "type": "wikipedia",
-        "value": "https://en.wikipedia.org/wiki/Massachusetts_General_Hospital"
+        "value": "http://en.wikipedia.org/wiki/Emory_University"
       }
     ],
-    "website": "http://www.massgeneral.org/",
+    "website": "https://www.emory.edu",
     "external_ids": [
       {
         "all": [
-          "100005294",
-          "100008503"
+          "100006939",
+          "100007814",
+          "100007623",
+          "100010416",
+          "100008374",
+          "100007667",
+          "100006786",
+          "100006529",
+          "100006528",
+          "100005833",
+          "100013116"
         ],
-        "preferred": "100005294",
+        "preferred": "100006939",
         "type": "fundref"
       },
       {
         "all": [
-          "grid.32224.35"
+          "grid.189967.8"
         ],
-        "preferred": "grid.32224.35",
+        "preferred": "grid.189967.8",
         "type": "grid"
       },
       {
         "all": [
-          "0000 0004 0386 9924"
+          "0000 0001 0941 6502",
+          "0000 0004 1936 7398"
+        ],
+        "preferred": "0000 0004 1936 7398",
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q621043"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "100006939",
+    "grid_id": "grid.189967.8",
+    "isni": "0000 0004 1936 7398",
+    "relationships": [
+      {
+        "label": "Center for Translational Research in Neuroimaging and Data Science",
+        "type": "child",
+        "id": "https://ror.org/02qx6zf82"
+      },
+      {
+        "label": "Emory Eye Center",
+        "type": "child",
+        "id": "https://ror.org/00hr6kp69"
+      },
+      {
+        "label": "The Wallace H. Coulter Department of Biomedical Engineering",
+        "type": "child",
+        "id": "https://ror.org/02j15s898"
+      },
+      {
+        "label": "Woodruff Health Sciences Center",
+        "type": "child",
+        "id": "https://ror.org/01xm4tt59"
+      },
+      {
+        "label": "Emory Global Health Institute",
+        "type": "child",
+        "id": "https://ror.org/043s0sy92"
+      },
+      {
+        "label": "Georgia Clinical and Translational Science Alliance",
+        "type": "child",
+        "id": "https://ror.org/034hw7m59"
+      },
+      {
+        "label": "Emory National Primate Research Center",
+        "type": "child",
+        "id": "https://ror.org/038kr2d80"
+      },
+      {
+        "label": "Atlanta VA Medical Center",
+        "type": "related",
+        "id": "https://ror.org/04z89xx32"
+      },
+      {
+        "label": "Children's Healthcare of Atlanta",
+        "type": "related",
+        "id": "https://ror.org/050fhx250"
+      },
+      {
+        "label": "Emory Rehabilitation Hospital",
+        "type": "related",
+        "id": "https://ror.org/02sfkc120"
+      },
+      {
+        "label": "Emory University Hospital",
+        "type": "related",
+        "id": "https://ror.org/05dm4ck87"
+      },
+      {
+        "label": "Emory University Hospital Midtown",
+        "type": "related",
+        "id": "https://ror.org/02aknh966"
+      },
+      {
+        "label": "Grady Memorial Hospital",
+        "type": "related",
+        "id": "https://ror.org/009hj8759"
+      },
+      {
+        "label": "Henrietta Egleston Hospital for Children",
+        "type": "related",
+        "id": "https://ror.org/002q1t780"
+      }
+    ],
+    "domains": [
+      "emory.edu"
+    ]
+  },
+  "0384j8v12": {
+    "ror_id": "https://ror.org/0384j8v12",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1850,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Sydney University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "label",
+          "ror_display"
+        ],
+        "value": "The University of Sydney"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "USYD"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "University of Sydney"
+      }
+    ],
+    "display_name": "The University of Sydney",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "OC",
+          "continent_name": "Oceania",
+          "country_code": "AU",
+          "country_name": "Australia",
+          "country_subdivision_code": "NSW",
+          "country_subdivision_name": "New South Wales",
+          "lat": -33.86785,
+          "lng": 151.20732,
+          "name": "Sydney"
+        },
+        "geonames_id": 2147714
+      }
+    ],
+    "country": "Australia",
+    "country_code": "AU",
+    "city": "Sydney",
+    "latitude": -33.86785,
+    "longitude": 151.20732,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.sydney.edu.au"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/University_of_Sydney"
+      }
+    ],
+    "website": "https://www.sydney.edu.au",
+    "external_ids": [
+      {
+        "all": [
+          "501100001774",
+          "100009028",
+          "501100005157",
+          "501100001248",
+          "501100001196",
+          "501100006150",
+          "501100004365",
+          "501100007811",
+          "100014824"
+        ],
+        "preferred": "501100001774",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.1013.3"
+        ],
+        "preferred": "grid.1013.3",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1936 834X"
         ],
         "preferred": null,
         "type": "isni"
       },
       {
         "all": [
-          "Q126412"
+          "Q487556",
+          "Q55080124"
+        ],
+        "preferred": "Q487556",
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100001774",
+    "grid_id": "grid.1013.3",
+    "wikidata_id": "Q487556",
+    "relationships": [
+      {
+        "label": "ARC Centre of Excellence for All-sky Astrophysics",
+        "type": "child",
+        "id": "https://ror.org/04v9m3h35"
+      },
+      {
+        "label": "Sydney Microscopy & Microanalysis",
+        "type": "child",
+        "id": "https://ror.org/02441px27"
+      },
+      {
+        "label": "Charles Perkins Centre Histology Facility",
+        "type": "child",
+        "id": "https://ror.org/00zqx9e28"
+      },
+      {
+        "label": "Bankstown Lidcombe Hospital",
+        "type": "related",
+        "id": "https://ror.org/00qrpt643"
+      },
+      {
+        "label": "Blacktown & Mount Druitt Hospital",
+        "type": "related",
+        "id": "https://ror.org/017bddy38"
+      },
+      {
+        "label": "Canterbury Hospital",
+        "type": "related",
+        "id": "https://ror.org/04c6fcr68"
+      },
+      {
+        "label": "Centenary Institute",
+        "type": "related",
+        "id": "https://ror.org/05gvja138"
+      },
+      {
+        "label": "Children's Hospital at Westmead",
+        "type": "related",
+        "id": "https://ror.org/05k0s5494"
+      },
+      {
+        "label": "Children's Medical Research Institute",
+        "type": "related",
+        "id": "https://ror.org/01bsaey45"
+      },
+      {
+        "label": "Concord Repatriation General Hospital",
+        "type": "related",
+        "id": "https://ror.org/04b0n4406"
+      },
+      {
+        "label": "Hornsby Ku-ring-gai Hospital",
+        "type": "related",
+        "id": "https://ror.org/016c71q24"
+      },
+      {
+        "label": "King George V Memorial Hospital",
+        "type": "related",
+        "id": "https://ror.org/0434c4478"
+      },
+      {
+        "label": "Mona Vale Hospital",
+        "type": "related",
+        "id": "https://ror.org/011tt4192"
+      },
+      {
+        "label": "Nepean Hospital",
+        "type": "related",
+        "id": "https://ror.org/03vb6df93"
+      },
+      {
+        "label": "Royal Hospital for Women",
+        "type": "related",
+        "id": "https://ror.org/021cxfs56"
+      },
+      {
+        "label": "Royal North Shore Hospital",
+        "type": "related",
+        "id": "https://ror.org/02gs2e959"
+      },
+      {
+        "label": "Royal Prince Alfred Hospital",
+        "type": "related",
+        "id": "https://ror.org/05gpvde20"
+      },
+      {
+        "label": "Sydney Adventist Hospital",
+        "type": "related",
+        "id": "https://ror.org/00q10wd18"
+      },
+      {
+        "label": "Sydney College of Divinity",
+        "type": "related",
+        "id": "https://ror.org/00p6her27"
+      },
+      {
+        "label": "Sydney Dental Hospital",
+        "type": "related",
+        "id": "https://ror.org/018wagb29"
+      },
+      {
+        "label": "Sydney Hospital",
+        "type": "related",
+        "id": "https://ror.org/0402tt118"
+      },
+      {
+        "label": "Westmead Hospital",
+        "type": "related",
+        "id": "https://ror.org/04gp5yv64"
+      },
+      {
+        "label": "Westmead Institute for Medical Research",
+        "type": "related",
+        "id": "https://ror.org/04zj3ra44"
+      }
+    ],
+    "domains": [
+      "sydney.edu.au"
+    ]
+  },
+  "01an57a31": {
+    "ror_id": "https://ror.org/01an57a31",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1946,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Busan National University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Miryang National University"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "PNU"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Pusan National University"
+      },
+      {
+        "lang": "ko",
+        "types": [
+          "label"
+        ],
+        "value": "부산대학교"
+      }
+    ],
+    "display_name": "Pusan National University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "KR",
+          "country_name": "South Korea",
+          "country_subdivision_code": "26",
+          "country_subdivision_name": "Busan",
+          "lat": 35.10168,
+          "lng": 129.03004,
+          "name": "Busan"
+        },
+        "geonames_id": 1838524
+      }
+    ],
+    "country": "South Korea",
+    "country_code": "KR",
+    "city": "Busan",
+    "latitude": 35.10168,
+    "longitude": 129.03004,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.pusan.ac.kr"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Pusan_National_University"
+      }
+    ],
+    "website": "https://www.pusan.ac.kr",
+    "external_ids": [
+      {
+        "all": [
+          "501100002543"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.262229.f"
+        ],
+        "preferred": "grid.262229.f",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 0719 8572"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q53122"
         ],
         "preferred": null,
         "type": "wikidata"
       }
     ],
-    "fundref_id": "100005294",
-    "grid_id": "grid.32224.35",
+    "grid_id": "grid.262229.f",
     "relationships": [
       {
-        "label": "Athinoula A. Martinos Center for Biomedical Imaging",
+        "label": "Pusan National University Korean Medicine Hospital",
         "type": "child",
-        "id": "https://ror.org/032q5ym94"
+        "id": "https://ror.org/01v1k9x08"
       },
       {
-        "label": "Benson-Henry Institute",
+        "label": "Pusan National University Hospital",
         "type": "child",
-        "id": "https://ror.org/02kvhs631"
+        "id": "https://ror.org/027zf7h57"
       },
       {
-        "label": "Center for Pain and the Brain",
+        "label": "Pusan National University Dental Hospital",
         "type": "child",
-        "id": "https://ror.org/04zxw0v05"
+        "id": "https://ror.org/041baww89"
       },
       {
-        "label": "Center for Systems Biology",
-        "type": "child",
-        "id": "https://ror.org/05r3dyn47"
-      },
-      {
-        "label": "Gordon Center for Medical Imaging",
-        "type": "child",
-        "id": "https://ror.org/004y4rj95"
-      },
-      {
-        "label": "Harvard Affiliated Emergency Medicine Residency",
-        "type": "child",
-        "id": "https://ror.org/005m2at17"
-      },
-      {
-        "label": "Ragon Institute of MGH, MIT and Harvard",
-        "type": "child",
-        "id": "https://ror.org/053r20n13"
-      },
-      {
-        "label": "Mass General Brigham",
-        "type": "parent",
-        "id": "https://ror.org/04py2rh25"
-      },
-      {
-        "label": "Broad Institute",
+        "label": "Pusan National University Hospital",
         "type": "related",
-        "id": "https://ror.org/05a0ya142"
+        "id": "https://ror.org/027zf7h57"
       },
       {
-        "label": "Dana-Farber Cancer Institute",
+        "label": "Pusan National University Yangsan Hospital",
         "type": "related",
-        "id": "https://ror.org/02jzgtq86"
-      },
-      {
-        "label": "Harvard University",
-        "type": "related",
-        "id": "https://ror.org/03vek6s52"
-      },
-      {
-        "label": "VA Boston Healthcare System",
-        "type": "related",
-        "id": "https://ror.org/04v00sg98"
-      },
-      {
-        "label": "Wyss Institute for Biologically Inspired Engineering",
-        "type": "related",
-        "id": "https://ror.org/008cfmj78"
+        "id": "https://ror.org/04kgg1090"
       }
     ],
+    "domains": [
+      "pusan.ac.kr"
+    ]
+  },
+  "02120t614": {
+    "ror_id": "https://ror.org/02120t614",
+    "status": "active",
+    "types": [
+      "healthcare"
+    ],
+    "established": 1972,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Chiba Cancer Center"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "label"
+        ],
+        "value": "千葉県がんセンター"
+      }
+    ],
+    "display_name": "Chiba Cancer Center",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "JP",
+          "country_name": "Japan",
+          "country_subdivision_code": "12",
+          "country_subdivision_name": "Chiba",
+          "lat": 35.6,
+          "lng": 140.11667,
+          "name": "Chiba"
+        },
+        "geonames_id": 2113015
+      }
+    ],
+    "country": "Japan",
+    "country_code": "JP",
+    "city": "Chiba",
+    "latitude": 35.6,
+    "longitude": 140.11667,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.pref.chiba.lg.jp/gan/"
+      }
+    ],
+    "website": "http://www.pref.chiba.lg.jp/gan/",
+    "external_ids": [
+      {
+        "all": [
+          "grid.418490.0"
+        ],
+        "preferred": "grid.418490.0",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1764 921X"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q17213754"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.418490.0",
+    "relationships": [],
+    "domains": []
+  },
+  "00aapa202": {
+    "ror_id": "https://ror.org/00aapa202",
+    "status": "active",
+    "types": [
+      "healthcare"
+    ],
+    "established": 1986,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Kanagawa Cancer Center"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "alias"
+        ],
+        "value": "かながわけんりつがんセンター"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "alias"
+        ],
+        "value": "カナガワケンリツガンセンター"
+      },
+      {
+        "lang": "ja",
+        "types": [
+          "label"
+        ],
+        "value": "神奈川県立がんセンター"
+      }
+    ],
+    "display_name": "Kanagawa Cancer Center",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "JP",
+          "country_name": "Japan",
+          "country_subdivision_code": "14",
+          "country_subdivision_name": "Kanagawa",
+          "lat": 35.43333,
+          "lng": 139.65,
+          "name": "Yokohama"
+        },
+        "geonames_id": 1848354
+      }
+    ],
+    "country": "Japan",
+    "country_code": "JP",
+    "city": "Yokohama",
+    "latitude": 35.43333,
+    "longitude": 139.65,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://kcch.kanagawa-pho.jp"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Kanagawa_Cancer_Center"
+      }
+    ],
+    "website": "https://kcch.kanagawa-pho.jp",
+    "external_ids": [
+      {
+        "all": [
+          "0000 0004 0629 2905"
+        ],
+        "preferred": "0000 0004 0629 2905",
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q11588998"
+        ],
+        "preferred": "Q11588998",
+        "type": "wikidata"
+      }
+    ],
+    "isni": "0000 0004 0629 2905",
+    "wikidata_id": "Q11588998",
+    "relationships": [],
     "domains": []
   },
   "042nb2s44": {
@@ -878,418 +2174,6 @@
     "domains": [
       "mit.edu"
     ]
-  },
-  "03czfpz43": {
-    "ror_id": "https://ror.org/03czfpz43",
-    "status": "active",
-    "types": [
-      "education",
-      "funder"
-    ],
-    "established": 1836,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Emory University"
-      }
-    ],
-    "display_name": "Emory University",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "NA",
-          "continent_name": "North America",
-          "country_code": "US",
-          "country_name": "United States",
-          "country_subdivision_code": "GA",
-          "country_subdivision_name": "Georgia",
-          "lat": 33.749,
-          "lng": -84.38798,
-          "name": "Atlanta"
-        },
-        "geonames_id": 4180439
-      }
-    ],
-    "country": "United States",
-    "country_code": "US",
-    "city": "Atlanta",
-    "latitude": 33.749,
-    "longitude": -84.38798,
-    "links": [
-      {
-        "type": "website",
-        "value": "https://www.emory.edu"
-      },
-      {
-        "type": "wikipedia",
-        "value": "http://en.wikipedia.org/wiki/Emory_University"
-      }
-    ],
-    "website": "https://www.emory.edu",
-    "external_ids": [
-      {
-        "all": [
-          "100006939",
-          "100007814",
-          "100007623",
-          "100010416",
-          "100008374",
-          "100007667",
-          "100006786",
-          "100006529",
-          "100006528",
-          "100005833",
-          "100013116"
-        ],
-        "preferred": "100006939",
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.189967.8"
-        ],
-        "preferred": "grid.189967.8",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0001 0941 6502",
-          "0000 0004 1936 7398"
-        ],
-        "preferred": "0000 0004 1936 7398",
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q621043"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "fundref_id": "100006939",
-    "grid_id": "grid.189967.8",
-    "isni": "0000 0004 1936 7398",
-    "relationships": [
-      {
-        "label": "Center for Translational Research in Neuroimaging and Data Science",
-        "type": "child",
-        "id": "https://ror.org/02qx6zf82"
-      },
-      {
-        "label": "Emory Eye Center",
-        "type": "child",
-        "id": "https://ror.org/00hr6kp69"
-      },
-      {
-        "label": "The Wallace H. Coulter Department of Biomedical Engineering",
-        "type": "child",
-        "id": "https://ror.org/02j15s898"
-      },
-      {
-        "label": "Woodruff Health Sciences Center",
-        "type": "child",
-        "id": "https://ror.org/01xm4tt59"
-      },
-      {
-        "label": "Emory Global Health Institute",
-        "type": "child",
-        "id": "https://ror.org/043s0sy92"
-      },
-      {
-        "label": "Georgia Clinical and Translational Science Alliance",
-        "type": "child",
-        "id": "https://ror.org/034hw7m59"
-      },
-      {
-        "label": "Emory National Primate Research Center",
-        "type": "child",
-        "id": "https://ror.org/038kr2d80"
-      },
-      {
-        "label": "Atlanta VA Medical Center",
-        "type": "related",
-        "id": "https://ror.org/04z89xx32"
-      },
-      {
-        "label": "Children's Healthcare of Atlanta",
-        "type": "related",
-        "id": "https://ror.org/050fhx250"
-      },
-      {
-        "label": "Emory Rehabilitation Hospital",
-        "type": "related",
-        "id": "https://ror.org/02sfkc120"
-      },
-      {
-        "label": "Emory University Hospital",
-        "type": "related",
-        "id": "https://ror.org/05dm4ck87"
-      },
-      {
-        "label": "Emory University Hospital Midtown",
-        "type": "related",
-        "id": "https://ror.org/02aknh966"
-      },
-      {
-        "label": "Grady Memorial Hospital",
-        "type": "related",
-        "id": "https://ror.org/009hj8759"
-      },
-      {
-        "label": "Henrietta Egleston Hospital for Children",
-        "type": "related",
-        "id": "https://ror.org/002q1t780"
-      }
-    ],
-    "domains": [
-      "emory.edu"
-    ]
-  },
-  "00cfam450": {
-    "ror_id": "https://ror.org/00cfam450",
-    "status": "active",
-    "types": [
-      "facility",
-      "funder"
-    ],
-    "established": 1964,
-    "names": [
-      {
-        "lang": "de",
-        "types": [
-          "alias"
-        ],
-        "value": "GSF - Gesellschaft für Strahlen- und Umweltforschung"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "alias"
-        ],
-        "value": "German Research Center for Environmental Health"
-      },
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "HMGU"
-      },
-      {
-        "lang": "de",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Helmholtz Zentrum München"
-      },
-      {
-        "lang": "de",
-        "types": [
-          "label"
-        ],
-        "value": "Helmholtz Zentrum München - Deutsches Forschungszentrum für Gesundheit und Umwelt"
-      }
-    ],
-    "display_name": "Helmholtz Zentrum München",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "EU",
-          "continent_name": "Europe",
-          "country_code": "DE",
-          "country_name": "Germany",
-          "country_subdivision_code": "BY",
-          "country_subdivision_name": "Bavaria",
-          "lat": 48.13743,
-          "lng": 11.57549,
-          "name": "Munich"
-        },
-        "geonames_id": 2867714
-      }
-    ],
-    "country": "Germany",
-    "country_code": "DE",
-    "city": "Munich",
-    "latitude": 48.13743,
-    "longitude": 11.57549,
-    "links": [
-      {
-        "type": "website",
-        "value": "http://www.helmholtz-muenchen.de"
-      },
-      {
-        "type": "wikipedia",
-        "value": "http://en.wikipedia.org/wiki/Helmholtz_Zentrum_M%C3%BCnchen"
-      }
-    ],
-    "website": "http://www.helmholtz-muenchen.de",
-    "external_ids": [
-      {
-        "all": [
-          "501100013295",
-          "501100013294"
-        ],
-        "preferred": "501100013294",
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.4567.0"
-        ],
-        "preferred": "grid.4567.0",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0004 0483 2525"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q878592"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "fundref_id": "501100013294",
-    "grid_id": "grid.4567.0",
-    "relationships": [
-      {
-        "label": "Helmholtz Alliance Imaging and Curing Environmental Metabolic Diseases",
-        "type": "child",
-        "id": "https://ror.org/04s64z252"
-      },
-      {
-        "label": "Institute of Bioinformatics and Systems Biology",
-        "type": "child",
-        "id": "https://ror.org/0127fwn18"
-      },
-      {
-        "label": "Paul Langerhans Institute Dresden",
-        "type": "child",
-        "id": "https://ror.org/05ke5hb07"
-      },
-      {
-        "label": "Institute of Biological and Medical Imaging",
-        "type": "child",
-        "id": "https://ror.org/05g95eg64"
-      },
-      {
-        "label": "Institute of Diabetes Research",
-        "type": "child",
-        "id": "https://ror.org/0278hns33"
-      },
-      {
-        "label": "Institute of Computational Biology",
-        "type": "child",
-        "id": "https://ror.org/00kg2yq63"
-      },
-      {
-        "label": "Institute of Functional Epigenetics",
-        "type": "child",
-        "id": "https://ror.org/05ekkb842"
-      },
-      {
-        "label": "Institute of Epigenetics and Stem Cells",
-        "type": "child",
-        "id": "https://ror.org/00k195394"
-      },
-      {
-        "label": "Helmholtz Association of German Research Centres",
-        "type": "parent",
-        "id": "https://ror.org/0281dp749"
-      }
-    ],
-    "domains": []
-  },
-  "02120t614": {
-    "ror_id": "https://ror.org/02120t614",
-    "status": "active",
-    "types": [
-      "healthcare"
-    ],
-    "established": 1972,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Chiba Cancer Center"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "label"
-        ],
-        "value": "千葉県がんセンター"
-      }
-    ],
-    "display_name": "Chiba Cancer Center",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "AS",
-          "continent_name": "Asia",
-          "country_code": "JP",
-          "country_name": "Japan",
-          "country_subdivision_code": "12",
-          "country_subdivision_name": "Chiba",
-          "lat": 35.6,
-          "lng": 140.11667,
-          "name": "Chiba"
-        },
-        "geonames_id": 2113015
-      }
-    ],
-    "country": "Japan",
-    "country_code": "JP",
-    "city": "Chiba",
-    "latitude": 35.6,
-    "longitude": 140.11667,
-    "links": [
-      {
-        "type": "website",
-        "value": "http://www.pref.chiba.lg.jp/gan/"
-      }
-    ],
-    "website": "http://www.pref.chiba.lg.jp/gan/",
-    "external_ids": [
-      {
-        "all": [
-          "grid.418490.0"
-        ],
-        "preferred": "grid.418490.0",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0004 1764 921X"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q17213754"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "grid_id": "grid.418490.0",
-    "relationships": [],
-    "domains": []
   },
   "03vek6s52": {
     "ror_id": "https://ror.org/03vek6s52",
@@ -1638,28 +2522,20 @@
       "harvard.edu"
     ]
   },
-  "047s2c258": {
-    "ror_id": "https://ror.org/047s2c258",
+  "03k84rm07": {
+    "ror_id": "https://ror.org/03k84rm07",
     "status": "active",
     "types": [
-      "education",
-      "funder"
+      "facility"
     ],
-    "established": 1856,
+    "established": 1996,
     "names": [
       {
         "lang": null,
         "types": [
           "acronym"
         ],
-        "value": "UMD"
-      },
-      {
-        "lang": "es",
-        "types": [
-          "label"
-        ],
-        "value": "Universidad de Maryland"
+        "value": "CEH"
       },
       {
         "lang": "en",
@@ -1667,17 +2543,10 @@
           "ror_display",
           "label"
         ],
-        "value": "University of Maryland, College Park"
-      },
-      {
-        "lang": "fr",
-        "types": [
-          "label"
-        ],
-        "value": "Université du Maryland"
+        "value": "Center for Environmental Health"
       }
     ],
-    "display_name": "University of Maryland, College Park",
+    "display_name": "Center for Environmental Health",
     "locations": [
       {
         "geonames_details": {
@@ -1685,236 +2554,49 @@
           "continent_name": "North America",
           "country_code": "US",
           "country_name": "United States",
-          "country_subdivision_code": "MD",
-          "country_subdivision_name": "Maryland",
-          "lat": 38.98067,
-          "lng": -76.93692,
-          "name": "College Park"
+          "country_subdivision_code": "CA",
+          "country_subdivision_name": "California",
+          "lat": 37.80437,
+          "lng": -122.2708,
+          "name": "Oakland"
         },
-        "geonames_id": 4351977
+        "geonames_id": 5378538
       }
     ],
     "country": "United States",
     "country_code": "US",
-    "city": "College Park",
-    "latitude": 38.98067,
-    "longitude": -76.93692,
+    "city": "Oakland",
+    "latitude": 37.80437,
+    "longitude": -122.2708,
     "links": [
       {
         "type": "website",
-        "value": "https://umd.edu"
+        "value": "http://www.ceh.org/"
       },
       {
         "type": "wikipedia",
-        "value": "http://en.wikipedia.org/wiki/University_of_Maryland,_College_Park"
+        "value": "https://en.wikipedia.org/wiki/Center_for_Environmental_Health"
       }
     ],
-    "website": "https://umd.edu",
+    "website": "http://www.ceh.org/",
     "external_ids": [
       {
         "all": [
-          "100006444",
-          "100009144",
-          "100004972",
-          "100007743",
-          "100008640",
-          "100008029",
-          "100008639",
-          "100016817"
+          "grid.420640.4"
         ],
-        "preferred": null,
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.164295.d"
-        ],
-        "preferred": "grid.164295.d",
+        "preferred": "grid.420640.4",
         "type": "grid"
       },
       {
         "all": [
-          "0000 0001 0941 7177"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q503415"
+          "Q19879074"
         ],
         "preferred": null,
         "type": "wikidata"
       }
     ],
-    "grid_id": "grid.164295.d",
-    "relationships": [
-      {
-        "label": "Earth System Science Interdisciplinary Center",
-        "type": "child",
-        "id": "https://ror.org/042607708"
-      },
-      {
-        "label": "Joint Center for Quantum Information and Computer Science",
-        "type": "child",
-        "id": "https://ror.org/02048n894"
-      },
-      {
-        "label": "Joint Global Change Research Institute",
-        "type": "child",
-        "id": "https://ror.org/058cmd703"
-      },
-      {
-        "label": "Joint Quantum Institute",
-        "type": "child",
-        "id": "https://ror.org/04xz38214"
-      },
-      {
-        "label": "Virginia–Maryland College of Veterinary Medicine",
-        "type": "child",
-        "id": "https://ror.org/010prmy50"
-      },
-      {
-        "label": "Applied Research Laboratory for Intelligence and Security",
-        "type": "child",
-        "id": "https://ror.org/006jjam33"
-      },
-      {
-        "label": "Institute for Bioscience and Biotechnology Research",
-        "type": "child",
-        "id": "https://ror.org/02zs3hb12"
-      },
-      {
-        "label": "Maryland Quantum Materials Center",
-        "type": "child",
-        "id": "https://ror.org/01bdy0k56"
-      },
-      {
-        "label": "University System of Maryland",
-        "type": "parent",
-        "id": "https://ror.org/01r0c1p88"
-      },
-      {
-        "label": "Fraunhofer USA Center Mid-Atlantic CMA",
-        "type": "related",
-        "id": "https://ror.org/05sz9gw20"
-      }
-    ],
-    "domains": [
-      "umd.edu"
-    ]
-  },
-  "04py2rh25": {
-    "ror_id": "https://ror.org/04py2rh25",
-    "status": "active",
-    "types": [
-      "funder",
-      "healthcare"
-    ],
-    "established": 1994,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Mass General Brigham"
-      },
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "PHS"
-      }
-    ],
-    "display_name": "Mass General Brigham",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "NA",
-          "continent_name": "North America",
-          "country_code": "US",
-          "country_name": "United States",
-          "country_subdivision_code": "MA",
-          "country_subdivision_name": "Massachusetts",
-          "lat": 42.35843,
-          "lng": -71.05977,
-          "name": "Boston"
-        },
-        "geonames_id": 4930956
-      }
-    ],
-    "country": "United States",
-    "country_code": "US",
-    "city": "Boston",
-    "latitude": 42.35843,
-    "longitude": -71.05977,
-    "links": [
-      {
-        "type": "website",
-        "value": "https://www.massgeneralbrigham.org/"
-      },
-      {
-        "type": "wikipedia",
-        "value": "https://en.wikipedia.org/wiki/Partners_HealthCare"
-      }
-    ],
-    "website": "https://www.massgeneralbrigham.org/",
-    "external_ids": [
-      {
-        "all": [
-          "100007806"
-        ],
-        "preferred": null,
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.452687.a"
-        ],
-        "preferred": "grid.452687.a",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0004 0378 0997"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q7140719"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "grid_id": "grid.452687.a",
-    "relationships": [
-      {
-        "label": "Brigham and Women's Hospital",
-        "type": "child",
-        "id": "https://ror.org/04b6nzv94"
-      },
-      {
-        "label": "Massachusetts General Hospital",
-        "type": "child",
-        "id": "https://ror.org/002pd6e78"
-      },
-      {
-        "label": "Nantucket Cottage Hospital",
-        "type": "child",
-        "id": "https://ror.org/00jhqgj32"
-      },
-      {
-        "label": "Spaulding Rehabilitation Hospital",
-        "type": "child",
-        "id": "https://ror.org/011dvr318"
-      }
-    ],
+    "grid_id": "grid.420640.4",
+    "relationships": [],
     "domains": []
   },
   "03pvyf116": {
@@ -2018,96 +2700,178 @@
     ],
     "domains": []
   },
-  "00aapa202": {
-    "ror_id": "https://ror.org/00aapa202",
+  "002pd6e78": {
+    "ror_id": "https://ror.org/002pd6e78",
     "status": "active",
     "types": [
+      "funder",
       "healthcare"
     ],
-    "established": 1986,
+    "established": 1811,
     "names": [
+      {
+        "lang": "es",
+        "types": [
+          "label"
+        ],
+        "value": "Hospital General de Massachusetts"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "MGH"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Mass General"
+      },
       {
         "lang": "en",
         "types": [
           "ror_display",
           "label"
         ],
-        "value": "Kanagawa Cancer Center"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "alias"
-        ],
-        "value": "かながわけんりつがんセンター"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "alias"
-        ],
-        "value": "カナガワケンリツガンセンター"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "label"
-        ],
-        "value": "神奈川県立がんセンター"
+        "value": "Massachusetts General Hospital"
       }
     ],
-    "display_name": "Kanagawa Cancer Center",
+    "display_name": "Massachusetts General Hospital",
     "locations": [
       {
         "geonames_details": {
-          "continent_code": "AS",
-          "continent_name": "Asia",
-          "country_code": "JP",
-          "country_name": "Japan",
-          "country_subdivision_code": "14",
-          "country_subdivision_name": "Kanagawa",
-          "lat": 35.43333,
-          "lng": 139.65,
-          "name": "Yokohama"
+          "continent_code": "NA",
+          "continent_name": "North America",
+          "country_code": "US",
+          "country_name": "United States",
+          "country_subdivision_code": "MA",
+          "country_subdivision_name": "Massachusetts",
+          "lat": 42.35843,
+          "lng": -71.05977,
+          "name": "Boston"
         },
-        "geonames_id": 1848354
+        "geonames_id": 4930956
       }
     ],
-    "country": "Japan",
-    "country_code": "JP",
-    "city": "Yokohama",
-    "latitude": 35.43333,
-    "longitude": 139.65,
+    "country": "United States",
+    "country_code": "US",
+    "city": "Boston",
+    "latitude": 42.35843,
+    "longitude": -71.05977,
     "links": [
       {
         "type": "website",
-        "value": "https://kcch.kanagawa-pho.jp"
+        "value": "http://www.massgeneral.org/"
       },
       {
         "type": "wikipedia",
-        "value": "https://en.wikipedia.org/wiki/Kanagawa_Cancer_Center"
+        "value": "https://en.wikipedia.org/wiki/Massachusetts_General_Hospital"
       }
     ],
-    "website": "https://kcch.kanagawa-pho.jp",
+    "website": "http://www.massgeneral.org/",
     "external_ids": [
       {
         "all": [
-          "0000 0004 0629 2905"
+          "100005294",
+          "100008503"
         ],
-        "preferred": "0000 0004 0629 2905",
+        "preferred": "100005294",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.32224.35"
+        ],
+        "preferred": "grid.32224.35",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0386 9924"
+        ],
+        "preferred": null,
         "type": "isni"
       },
       {
         "all": [
-          "Q11588998"
+          "Q126412"
         ],
-        "preferred": "Q11588998",
+        "preferred": null,
         "type": "wikidata"
       }
     ],
-    "isni": "0000 0004 0629 2905",
-    "wikidata_id": "Q11588998",
-    "relationships": [],
+    "fundref_id": "100005294",
+    "grid_id": "grid.32224.35",
+    "relationships": [
+      {
+        "label": "Athinoula A. Martinos Center for Biomedical Imaging",
+        "type": "child",
+        "id": "https://ror.org/032q5ym94"
+      },
+      {
+        "label": "Benson-Henry Institute",
+        "type": "child",
+        "id": "https://ror.org/02kvhs631"
+      },
+      {
+        "label": "Center for Pain and the Brain",
+        "type": "child",
+        "id": "https://ror.org/04zxw0v05"
+      },
+      {
+        "label": "Center for Systems Biology",
+        "type": "child",
+        "id": "https://ror.org/05r3dyn47"
+      },
+      {
+        "label": "Gordon Center for Medical Imaging",
+        "type": "child",
+        "id": "https://ror.org/004y4rj95"
+      },
+      {
+        "label": "Harvard Affiliated Emergency Medicine Residency",
+        "type": "child",
+        "id": "https://ror.org/005m2at17"
+      },
+      {
+        "label": "Ragon Institute of MGH, MIT and Harvard",
+        "type": "child",
+        "id": "https://ror.org/053r20n13"
+      },
+      {
+        "label": "Mass General Brigham",
+        "type": "parent",
+        "id": "https://ror.org/04py2rh25"
+      },
+      {
+        "label": "Broad Institute",
+        "type": "related",
+        "id": "https://ror.org/05a0ya142"
+      },
+      {
+        "label": "Dana-Farber Cancer Institute",
+        "type": "related",
+        "id": "https://ror.org/02jzgtq86"
+      },
+      {
+        "label": "Harvard University",
+        "type": "related",
+        "id": "https://ror.org/03vek6s52"
+      },
+      {
+        "label": "VA Boston Healthcare System",
+        "type": "related",
+        "id": "https://ror.org/04v00sg98"
+      },
+      {
+        "label": "Wyss Institute for Biologically Inspired Engineering",
+        "type": "related",
+        "id": "https://ror.org/008cfmj78"
+      }
+    ],
     "domains": []
   },
   "006v7bf86": {
@@ -2200,319 +2964,6 @@
     ],
     "domains": []
   },
-  "01an57a31": {
-    "ror_id": "https://ror.org/01an57a31",
-    "status": "active",
-    "types": [
-      "education",
-      "funder"
-    ],
-    "established": 1946,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "alias"
-        ],
-        "value": "Busan National University"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "alias"
-        ],
-        "value": "Miryang National University"
-      },
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "PNU"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Pusan National University"
-      },
-      {
-        "lang": "ko",
-        "types": [
-          "label"
-        ],
-        "value": "부산대학교"
-      }
-    ],
-    "display_name": "Pusan National University",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "AS",
-          "continent_name": "Asia",
-          "country_code": "KR",
-          "country_name": "South Korea",
-          "country_subdivision_code": "26",
-          "country_subdivision_name": "Busan",
-          "lat": 35.10168,
-          "lng": 129.03004,
-          "name": "Busan"
-        },
-        "geonames_id": 1838524
-      }
-    ],
-    "country": "South Korea",
-    "country_code": "KR",
-    "city": "Busan",
-    "latitude": 35.10168,
-    "longitude": 129.03004,
-    "links": [
-      {
-        "type": "website",
-        "value": "https://www.pusan.ac.kr"
-      },
-      {
-        "type": "wikipedia",
-        "value": "http://en.wikipedia.org/wiki/Pusan_National_University"
-      }
-    ],
-    "website": "https://www.pusan.ac.kr",
-    "external_ids": [
-      {
-        "all": [
-          "501100002543"
-        ],
-        "preferred": null,
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.262229.f"
-        ],
-        "preferred": "grid.262229.f",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0001 0719 8572"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q53122"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "grid_id": "grid.262229.f",
-    "relationships": [
-      {
-        "label": "Pusan National University Korean Medicine Hospital",
-        "type": "child",
-        "id": "https://ror.org/01v1k9x08"
-      },
-      {
-        "label": "Pusan National University Hospital",
-        "type": "child",
-        "id": "https://ror.org/027zf7h57"
-      },
-      {
-        "label": "Pusan National University Dental Hospital",
-        "type": "child",
-        "id": "https://ror.org/041baww89"
-      },
-      {
-        "label": "Pusan National University Hospital",
-        "type": "related",
-        "id": "https://ror.org/027zf7h57"
-      },
-      {
-        "label": "Pusan National University Yangsan Hospital",
-        "type": "related",
-        "id": "https://ror.org/04kgg1090"
-      }
-    ],
-    "domains": [
-      "pusan.ac.kr"
-    ]
-  },
-  "057zh3y96": {
-    "ror_id": "https://ror.org/057zh3y96",
-    "status": "active",
-    "types": [
-      "education",
-      "funder"
-    ],
-    "established": 1877,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "The University of Tokyo"
-      },
-      {
-        "lang": null,
-        "types": [
-          "alias"
-        ],
-        "value": "Todai"
-      },
-      {
-        "lang": null,
-        "types": [
-          "alias"
-        ],
-        "value": "Tōkyō Daigaku"
-      },
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "UT"
-      },
-      {
-        "lang": null,
-        "types": [
-          "alias"
-        ],
-        "value": "UTokyo"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "alias"
-        ],
-        "value": "とうきょうだいがく"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "alias"
-        ],
-        "value": "トウキョウダイガク"
-      },
-      {
-        "lang": "ja",
-        "types": [
-          "label"
-        ],
-        "value": "東京大学"
-      }
-    ],
-    "display_name": "The University of Tokyo",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "AS",
-          "continent_name": "Asia",
-          "country_code": "JP",
-          "country_name": "Japan",
-          "country_subdivision_code": "13",
-          "country_subdivision_name": "Tokyo",
-          "lat": 35.6895,
-          "lng": 139.69171,
-          "name": "Tokyo"
-        },
-        "geonames_id": 1850147
-      }
-    ],
-    "country": "Japan",
-    "country_code": "JP",
-    "city": "Tokyo",
-    "latitude": 35.6895,
-    "longitude": 139.69171,
-    "links": [
-      {
-        "type": "website",
-        "value": "https://www.u-tokyo.ac.jp"
-      },
-      {
-        "type": "wikipedia",
-        "value": "http://en.wikipedia.org/wiki/University_of_Tokyo"
-      }
-    ],
-    "website": "https://www.u-tokyo.ac.jp",
-    "external_ids": [
-      {
-        "all": [
-          "501100004721"
-        ],
-        "preferred": null,
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.26999.3d"
-        ],
-        "preferred": "grid.26999.3d",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0001 2151 536X",
-          "0000 0001 2169 1048"
-        ],
-        "preferred": "0000 0001 2169 1048",
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q7842",
-          "Q363047",
-          "Q56612514",
-          "Q11524675",
-          "Q11524693"
-        ],
-        "preferred": "Q7842",
-        "type": "wikidata"
-      }
-    ],
-    "grid_id": "grid.26999.3d",
-    "isni": "0000 0001 2169 1048",
-    "wikidata_id": "Q7842",
-    "relationships": [
-      {
-        "label": "Laboratory for Integrated Micro-Mechatronic Systems",
-        "type": "child",
-        "id": "https://ror.org/0059vr703"
-      },
-      {
-        "label": "Spintronics Research Network of Japan",
-        "type": "child",
-        "id": "https://ror.org/03bbyax37"
-      },
-      {
-        "label": "Institute for Cosmic Ray Research",
-        "type": "child",
-        "id": "https://ror.org/008td3p62"
-      },
-      {
-        "label": "Japanese-French Laboratory for Informatics",
-        "type": "child",
-        "id": "https://ror.org/007xn7v02"
-      },
-      {
-        "label": "University of Tokyo Hospital",
-        "type": "related",
-        "id": "https://ror.org/022cvpj02"
-      },
-      {
-        "label": "Veterinary Medical Center",
-        "type": "related",
-        "id": "https://ror.org/03vaz2582"
-      }
-    ],
-    "domains": []
-  },
   "05r3dyn47": {
     "ror_id": "https://ror.org/05r3dyn47",
     "status": "active",
@@ -2586,457 +3037,6 @@
         "label": "Massachusetts General Hospital",
         "type": "parent",
         "id": "https://ror.org/002pd6e78"
-      }
-    ],
-    "domains": []
-  },
-  "02jzgtq86": {
-    "ror_id": "https://ror.org/02jzgtq86",
-    "status": "active",
-    "types": [
-      "facility",
-      "funder"
-    ],
-    "established": 1947,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Dana-Farber Cancer Institute"
-      }
-    ],
-    "display_name": "Dana-Farber Cancer Institute",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "NA",
-          "continent_name": "North America",
-          "country_code": "US",
-          "country_name": "United States",
-          "country_subdivision_code": "MA",
-          "country_subdivision_name": "Massachusetts",
-          "lat": 42.35843,
-          "lng": -71.05977,
-          "name": "Boston"
-        },
-        "geonames_id": 4930956
-      }
-    ],
-    "country": "United States",
-    "country_code": "US",
-    "city": "Boston",
-    "latitude": 42.35843,
-    "longitude": -71.05977,
-    "links": [
-      {
-        "type": "website",
-        "value": "http://www.dana-farber.org/"
-      },
-      {
-        "type": "wikipedia",
-        "value": "https://en.wikipedia.org/wiki/Dana%E2%80%93Farber_Cancer_Institute"
-      }
-    ],
-    "website": "http://www.dana-farber.org/",
-    "external_ids": [
-      {
-        "all": [
-          "100007886"
-        ],
-        "preferred": null,
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.65499.37"
-        ],
-        "preferred": "grid.65499.37",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0001 2106 9910"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q1159198"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "grid_id": "grid.65499.37",
-    "relationships": [
-      {
-        "label": "Dana-Farber/Boston Children's Cancer and Blood Disorders Center",
-        "type": "child",
-        "id": "https://ror.org/05k11pb55"
-      },
-      {
-        "label": "Dana-Farber Brigham Cancer Center",
-        "type": "child",
-        "id": "https://ror.org/05rgrbr06"
-      },
-      {
-        "label": "Dana-Farber/Harvard Cancer Center",
-        "type": "child",
-        "id": "https://ror.org/03pvyf116"
-      },
-      {
-        "label": "Boston Children's Hospital",
-        "type": "related",
-        "id": "https://ror.org/00dvg7y05"
-      },
-      {
-        "label": "Harvard University",
-        "type": "related",
-        "id": "https://ror.org/03vek6s52"
-      },
-      {
-        "label": "Massachusetts General Hospital",
-        "type": "related",
-        "id": "https://ror.org/002pd6e78"
-      },
-      {
-        "label": "Wyss Institute for Biologically Inspired Engineering",
-        "type": "related",
-        "id": "https://ror.org/008cfmj78"
-      }
-    ],
-    "domains": []
-  },
-  "0384j8v12": {
-    "ror_id": "https://ror.org/0384j8v12",
-    "status": "active",
-    "types": [
-      "education",
-      "funder"
-    ],
-    "established": 1850,
-    "names": [
-      {
-        "lang": "en",
-        "types": [
-          "alias"
-        ],
-        "value": "Sydney University"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "label",
-          "ror_display"
-        ],
-        "value": "The University of Sydney"
-      },
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "USYD"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "alias"
-        ],
-        "value": "University of Sydney"
-      }
-    ],
-    "display_name": "The University of Sydney",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "OC",
-          "continent_name": "Oceania",
-          "country_code": "AU",
-          "country_name": "Australia",
-          "country_subdivision_code": "NSW",
-          "country_subdivision_name": "New South Wales",
-          "lat": -33.86785,
-          "lng": 151.20732,
-          "name": "Sydney"
-        },
-        "geonames_id": 2147714
-      }
-    ],
-    "country": "Australia",
-    "country_code": "AU",
-    "city": "Sydney",
-    "latitude": -33.86785,
-    "longitude": 151.20732,
-    "links": [
-      {
-        "type": "website",
-        "value": "https://www.sydney.edu.au"
-      },
-      {
-        "type": "wikipedia",
-        "value": "http://en.wikipedia.org/wiki/University_of_Sydney"
-      }
-    ],
-    "website": "https://www.sydney.edu.au",
-    "external_ids": [
-      {
-        "all": [
-          "501100001774",
-          "100009028",
-          "501100005157",
-          "501100001248",
-          "501100001196",
-          "501100006150",
-          "501100004365",
-          "501100007811",
-          "100014824"
-        ],
-        "preferred": "501100001774",
-        "type": "fundref"
-      },
-      {
-        "all": [
-          "grid.1013.3"
-        ],
-        "preferred": "grid.1013.3",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0004 1936 834X"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q487556",
-          "Q55080124"
-        ],
-        "preferred": "Q487556",
-        "type": "wikidata"
-      }
-    ],
-    "fundref_id": "501100001774",
-    "grid_id": "grid.1013.3",
-    "wikidata_id": "Q487556",
-    "relationships": [
-      {
-        "label": "ARC Centre of Excellence for All-sky Astrophysics",
-        "type": "child",
-        "id": "https://ror.org/04v9m3h35"
-      },
-      {
-        "label": "Sydney Microscopy & Microanalysis",
-        "type": "child",
-        "id": "https://ror.org/02441px27"
-      },
-      {
-        "label": "Charles Perkins Centre Histology Facility",
-        "type": "child",
-        "id": "https://ror.org/00zqx9e28"
-      },
-      {
-        "label": "Bankstown Lidcombe Hospital",
-        "type": "related",
-        "id": "https://ror.org/00qrpt643"
-      },
-      {
-        "label": "Blacktown & Mount Druitt Hospital",
-        "type": "related",
-        "id": "https://ror.org/017bddy38"
-      },
-      {
-        "label": "Canterbury Hospital",
-        "type": "related",
-        "id": "https://ror.org/04c6fcr68"
-      },
-      {
-        "label": "Centenary Institute",
-        "type": "related",
-        "id": "https://ror.org/05gvja138"
-      },
-      {
-        "label": "Children's Hospital at Westmead",
-        "type": "related",
-        "id": "https://ror.org/05k0s5494"
-      },
-      {
-        "label": "Children's Medical Research Institute",
-        "type": "related",
-        "id": "https://ror.org/01bsaey45"
-      },
-      {
-        "label": "Concord Repatriation General Hospital",
-        "type": "related",
-        "id": "https://ror.org/04b0n4406"
-      },
-      {
-        "label": "Hornsby Ku-ring-gai Hospital",
-        "type": "related",
-        "id": "https://ror.org/016c71q24"
-      },
-      {
-        "label": "King George V Memorial Hospital",
-        "type": "related",
-        "id": "https://ror.org/0434c4478"
-      },
-      {
-        "label": "Mona Vale Hospital",
-        "type": "related",
-        "id": "https://ror.org/011tt4192"
-      },
-      {
-        "label": "Nepean Hospital",
-        "type": "related",
-        "id": "https://ror.org/03vb6df93"
-      },
-      {
-        "label": "Royal Hospital for Women",
-        "type": "related",
-        "id": "https://ror.org/021cxfs56"
-      },
-      {
-        "label": "Royal North Shore Hospital",
-        "type": "related",
-        "id": "https://ror.org/02gs2e959"
-      },
-      {
-        "label": "Royal Prince Alfred Hospital",
-        "type": "related",
-        "id": "https://ror.org/05gpvde20"
-      },
-      {
-        "label": "Sydney Adventist Hospital",
-        "type": "related",
-        "id": "https://ror.org/00q10wd18"
-      },
-      {
-        "label": "Sydney College of Divinity",
-        "type": "related",
-        "id": "https://ror.org/00p6her27"
-      },
-      {
-        "label": "Sydney Dental Hospital",
-        "type": "related",
-        "id": "https://ror.org/018wagb29"
-      },
-      {
-        "label": "Sydney Hospital",
-        "type": "related",
-        "id": "https://ror.org/0402tt118"
-      },
-      {
-        "label": "Westmead Hospital",
-        "type": "related",
-        "id": "https://ror.org/04gp5yv64"
-      },
-      {
-        "label": "Westmead Institute for Medical Research",
-        "type": "related",
-        "id": "https://ror.org/04zj3ra44"
-      }
-    ],
-    "domains": [
-      "sydney.edu.au"
-    ]
-  },
-  "00jjeh629": {
-    "ror_id": "https://ror.org/00jjeh629",
-    "status": "active",
-    "types": [
-      "education"
-    ],
-    "established": 1970,
-    "names": [
-      {
-        "lang": null,
-        "types": [
-          "acronym"
-        ],
-        "value": "HST"
-      },
-      {
-        "lang": "en",
-        "types": [
-          "ror_display",
-          "label"
-        ],
-        "value": "Harvard–MIT Division of Health Sciences and Technology"
-      }
-    ],
-    "display_name": "Harvard–MIT Division of Health Sciences and Technology",
-    "locations": [
-      {
-        "geonames_details": {
-          "continent_code": "NA",
-          "continent_name": "North America",
-          "country_code": "US",
-          "country_name": "United States",
-          "country_subdivision_code": "MA",
-          "country_subdivision_name": "Massachusetts",
-          "lat": 42.3751,
-          "lng": -71.10561,
-          "name": "Cambridge"
-        },
-        "geonames_id": 4931972
-      }
-    ],
-    "country": "United States",
-    "country_code": "US",
-    "city": "Cambridge",
-    "latitude": 42.3751,
-    "longitude": -71.10561,
-    "links": [
-      {
-        "type": "website",
-        "value": "http://hst.mit.edu/"
-      },
-      {
-        "type": "wikipedia",
-        "value": "https://en.wikipedia.org/wiki/Harvard%E2%80%93MIT_Division_of_Health_Sciences_and_Technology"
-      }
-    ],
-    "website": "http://hst.mit.edu/",
-    "external_ids": [
-      {
-        "all": [
-          "grid.413735.7"
-        ],
-        "preferred": "grid.413735.7",
-        "type": "grid"
-      },
-      {
-        "all": [
-          "0000 0004 0475 2760"
-        ],
-        "preferred": null,
-        "type": "isni"
-      },
-      {
-        "all": [
-          "Q5676651"
-        ],
-        "preferred": null,
-        "type": "wikidata"
-      }
-    ],
-    "grid_id": "grid.413735.7",
-    "relationships": [
-      {
-        "label": "Harvard University",
-        "type": "related",
-        "id": "https://ror.org/03vek6s52"
-      },
-      {
-        "label": "Massachusetts Institute of Technology",
-        "type": "related",
-        "id": "https://ror.org/042nb2s44"
       }
     ],
     "domains": []

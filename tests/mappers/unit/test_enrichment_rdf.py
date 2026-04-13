@@ -4,7 +4,7 @@ import pytest
 from rdflib import Graph, Namespace
 
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
-from pyeuropepmc.models import AuthorEntity, OrganizationEntity, PaperEntity
+from pyeuropepmc.models import AuthorEntity, Organization, PaperEntity
 
 
 class TestEnrichmentRDFMapping:
@@ -51,7 +51,7 @@ class TestEnrichmentRDFMapping:
     @pytest.fixture
     def enriched_institution(self):
         """Create an institution entity with enrichment data."""
-        return OrganizationEntity(
+        return Organization(
             display_name="Example University",
             ror_id="https://ror.org/abc123",
             openalex_id="https://openalex.org/I123456",
@@ -141,7 +141,9 @@ class TestEnrichmentRDFMapping:
         # Verify URI is ROR-based
         assert str(uri) == "https://ror.org/abc123"
 
-    def test_author_with_institutions_relationship(self, mapper, enriched_author, enriched_institution):
+    def test_author_with_institutions_relationship(
+        self, mapper, enriched_author, enriched_institution
+    ):
         """Test RDF mapping of author-institution relationship."""
         g = Graph()
         author_uri = enriched_author.to_rdf(g, mapper=mapper)
@@ -167,7 +169,9 @@ class TestEnrichmentRDFMapping:
         dct_ns = Namespace("http://purl.org/dc/terms/")
         assert (paper_uri, dct_ns["creator"], None) in g
 
-    def test_full_enriched_graph(self, mapper, enriched_paper, enriched_author, enriched_institution):
+    def test_full_enriched_graph(
+        self, mapper, enriched_paper, enriched_author, enriched_institution
+    ):
         """Test creating a complete enriched RDF graph with all entities."""
         g = Graph()
 
@@ -178,7 +182,9 @@ class TestEnrichmentRDFMapping:
 
         # Add relationships
         mapper.map_relationships(g, paper_uri, enriched_paper, {"authors": [enriched_author]})
-        mapper.map_relationships(g, author_uri, enriched_author, {"institutions": [enriched_institution]})
+        mapper.map_relationships(
+            g, author_uri, enriched_author, {"institutions": [enriched_institution]}
+        )
 
         # Verify the graph has all entities
         assert (paper_uri, None, None) in g

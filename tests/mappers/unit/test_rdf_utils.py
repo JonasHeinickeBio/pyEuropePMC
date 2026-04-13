@@ -10,7 +10,7 @@ from pyeuropepmc.mappers.rdf_utils import (
     map_single_value_fields,
     normalize_name,
 )
-from pyeuropepmc.models import AuthorEntity, OrganizationEntity, PaperEntity, ReferenceEntity
+from pyeuropepmc.models import AuthorEntity, Organization, PaperEntity, ReferenceEntity
 
 
 class TestRDFUtils:
@@ -60,7 +60,7 @@ class TestRDFUtils:
 
     def test_generate_entity_uri_institution_ror(self):
         """Test URI generation for institution with ROR."""
-        institution = OrganizationEntity(display_name="Test University", ror_id="https://ror.org/123456")
+        institution = Organization(display_name="Test University", ror_id="https://ror.org/123456")
 
         uri = generate_entity_uri(institution)
         assert str(uri) == "https://ror.org/123456"
@@ -182,7 +182,7 @@ class TestRDFUtils:
                 return URIRef("http://www.w3.org/2002/07/owl#sameAs")
             return URIRef(f"http://example.org/{pred_str}")
 
-        institution = OrganizationEntity(
+        institution = Organization(
             display_name="Test Institution",
             ror_id="https://ror.org/123456",
             openalex_id="https://openalex.org/I123456",

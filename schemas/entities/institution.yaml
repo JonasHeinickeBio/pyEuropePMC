@@ -50,7 +50,9 @@ classes:
     class_uri: org:Organization
     is_a: Institution
     slots: []
-    slot_usage: {}
+    slot_usage:
+      display_name:
+        required: false
 
   DepartmentEntity:
     description: >-
