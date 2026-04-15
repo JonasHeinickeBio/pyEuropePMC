@@ -1,31 +1,437 @@
 @prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
 @prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 <https://w3id.org/pyeuropepmc/data#paper/nature> a bibo:AcademicArticle ;
-    rdfs:label "A multimodal whole-slide foundation model for pathology" ;
-    dcterms:abstract "The field of computational pathology has been transformed with recent advances in foundation models that encode histopathology region-of-interests (ROIs) into versatile and transferable feature representations via self-supervised learning. However, translating these advancements to address complex clinical challenges at the patient and slide level remains constrained by limited clinical data in disease-specific cohorts, especially for rare clinical conditions. We propose Transformer-based pathology Image and Text Alignment Network (TITAN), a multimodal whole-slide foundation model pretrained using 335,645 whole-slide images via visual self-supervised learning and vision-language alignment with corresponding pathology reports and 423,122 synthetic captions generated from a multimodal generative AI copilot for pathology. Without any fine-tuning or requiring clinical labels, TITAN can extract general-purpose slide representations and generate pathology reports that generalize to resource-limited clinical scenarios such as rare disease retrieval and cancer prognosis. We evaluate TITAN on diverse clinical tasks and find that it outperforms both ROI and slide foundation models across machine learning settings, including linear probing, few-shot and zero-shot classification, rare cancer retrieval, cross-modal retrieval and pathology report generation. Pretrained using 335,645 whole-slide images, a foundation model is developed to provide representations for slide- and patient-level tasks. It is capable of performing clinical tasks and generating reports even in data-scarce scenarios, such as rare cancer diagnosis and survival prediction, without requiring further fine-tuning." ;
+    rdfs:label "A multimodal knowledge-enhanced whole-slide pathology foundation model"^^xsd:string ;
+    dcterms:abstract "Computational pathology has advanced through foundation models, yet faces challenges in multimodal integration and capturing whole-slide context. Current approaches typically utilize either vision-only or image-caption data, overlooking distinct insights from pathology reports and gene expression profiles. Additionally, most models focus on patch-level analysis, failing to capture comprehensive whole-slide patterns. Here we present mSTAR (Multimodal Self-TAught PRetraining), the pathology foundation model that incorporates three modalities: pathology slides, expert-created reports, and gene expression data, within a unified framework. Our dataset includes 26,169 slide-level modality pairs across 32 cancer types, comprising over 116 million patch images. This approach injects multimodal whole-slide context into patch representations, expanding modeling from single to multiple modalities and from patch-level to slide-level analysis. Across oncological benchmark spanning 97 tasks, mSTAR outperforms previous state-of-the-art models, particularly in molecular prediction and multimodal tasks, revealing that multimodal integration yields greater improvements than simply expanding vision-only datasets. Foundation models have significantly advanced computational pathology, but still face important challenges, particularly when integrating multimodal data. Here, the authors develop mSTAR, an approach that allows injecting multimodal, whole-slide context into pathology foundation models, improving performance in clinical and molecular tasks in oncology."^^xsd:string ;
     dcterms:accessRights true,
-        "hybrid" ;
-    dcterms:date "2025-11-01"^^xsd:date ;
+        "gold" ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/anjia-han>,
+        <https://w3id.org/pyeuropepmc/data#author/cheng-jin>,
+        <https://w3id.org/pyeuropepmc/data#author/chenglong-zhao>,
+        <https://w3id.org/pyeuropepmc/data#author/fengtao-zhou>,
+        <https://w3id.org/pyeuropepmc/data#author/hao-chen>,
+        <https://w3id.org/pyeuropepmc/data#author/huajun-zhou>,
+        <https://w3id.org/pyeuropepmc/data#author/huangjing-lin>,
+        <https://w3id.org/pyeuropepmc/data#author/jiabo-ma>,
+        <https://w3id.org/pyeuropepmc/data#author/jiguang-wang>,
+        <https://w3id.org/pyeuropepmc/data#author/jinbang-li>,
+        <https://w3id.org/pyeuropepmc/data#author/li-liang>,
+        <https://w3id.org/pyeuropepmc/data#author/ronald-chan>,
+        <https://w3id.org/pyeuropepmc/data#author/ronald-cheong-kin-chan>,
+        <https://w3id.org/pyeuropepmc/data#author/shu-yang>,
+        <https://w3id.org/pyeuropepmc/data#author/shuhua-yang>,
+        <https://w3id.org/pyeuropepmc/data#author/xin-wang>,
+        <https://w3id.org/pyeuropepmc/data#author/xiuming-zhang>,
+        <https://w3id.org/pyeuropepmc/data#author/yihui-wang>,
+        <https://w3id.org/pyeuropepmc/data#author/yingxue-xu>,
+        <https://w3id.org/pyeuropepmc/data#author/zhengyu-zhang>,
+        <https://w3id.org/pyeuropepmc/data#author/zhenhui-li> ;
+    dcterms:date "2025-12-12"^^xsd:date ;
     dcterms:license "https://creativecommons.org/licenses/by-nc-nd/4.0"^^xsd:anyURI ;
     dcterms:subject "AI in cancer detection",
-        "Generative Adversarial Networks and Image Synthesis",
+        "Cell Image Analysis Techniques",
+        "Computer Science",
         "Medicine",
         "Multimodal Machine Learning Applications" ;
-    dcterms:title "A multimodal whole-slide foundation model for pathology" ;
-    bibo:issn "1078-8956" ;
-    bibo:issue "11" ;
-    bibo:journal "id=None label=None source_uri=None confidence=None types=[] data_sources=None last_updated=None title='Nature Medicine' medline_abbreviation=None iso_abbreviation=None nlmid=None issn=None essn=None publisher=None country=None language=None journal_issue_id=None openalex_id=None wikidata_id=None scopus_source_id=None subject_areas=None impact_factor=None sjr=None h_index=None nlm_ta=None iso_abbrev=None publisher_id=None journal_ids=None journal_papers=None" ;
-    bibo:pageEnd "3761"^^xsd:gYear ;
-    bibo:pageStart "3749"^^xsd:gYear ;
-    bibo:pages "3749-3761" ;
-    bibo:uri "https://www.nature.com/articles/s41591-025-03982-3.pdf"^^xsd:anyURI ;
-    bibo:volume "31" ;
-    prov:generatedAtTime "2026-04-08T23:19:28.159469" ;
+    dcterms:title "A multimodal knowledge-enhanced whole-slide pathology foundation model"^^xsd:string ;
+    bibo:issn "2041-1723"^^xsd:string ;
+    bibo:issue "1"^^xsd:string ;
+    bibo:journal <https://w3id.org/pyeuropepmc/data#journal/nature-communications> ;
+    bibo:pageEnd "11406"^^xsd:string ;
+    bibo:pageStart "11406"^^xsd:string ;
+    bibo:uri "https://doi.org/10.1038/s41467-025-66220-x"^^xsd:anyURI ;
+    bibo:volume "16"^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:30:08.005230" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:citationCount 37 ;
-    pyeuropepmc:influentialCitationCount 1 .
+    pyeuropepmc:citationCount 67 ;
+    pyeuropepmc:influentialCitationCount 4 .
+
+<https://w3id.org/pyeuropepmc/data#author/anjia-han> a foaf:Person ;
+    rdfs:label "Anjia Han"^^xsd:string ;
+    datacite:orcid "0000-0003-2245-1972"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5101593346>,
+        <https://orcid.org/0000-0003-2245-1972> ;
+    org:memberOf <https://ror.org/0064kty71>,
+        <https://ror.org/037p24858> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.839826" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Han"^^xsd:string ;
+    foaf:givenName "Anjia"^^xsd:string ;
+    foaf:name "Anjia Han"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5101593346"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/cheng-jin> a foaf:Person ;
+    rdfs:label "Cheng Jin"^^xsd:string ;
+    datacite:orcid "0000-0002-3522-3592"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5101788962>,
+        <https://orcid.org/0000-0002-3522-3592> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.656206" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Jin"^^xsd:string ;
+    foaf:givenName "Cheng"^^xsd:string ;
+    foaf:name "Cheng Jin"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5101788962"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/chenglong-zhao> a foaf:Person ;
+    rdfs:label "Chenglong Zhao"^^xsd:string ;
+    datacite:orcid "0000-0001-5758-1385"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5101514984>,
+        <https://orcid.org/0000-0001-5758-1385> ;
+    org:memberOf <https://ror.org/00swtqp09>,
+        <https://ror.org/01eq10738>,
+        <https://ror.org/01vjw4z39>,
+        <https://ror.org/03wnrsb51>,
+        <https://ror.org/05jb9pq57> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.716804" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhao"^^xsd:string ;
+    foaf:givenName "Chenglong"^^xsd:string ;
+    foaf:name "Chenglong Zhao"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5101514984"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/fengtao-zhou> a foaf:Person ;
+    rdfs:label "Fengtao Zhou"^^xsd:string ;
+    datacite:orcid "0000-0001-7039-1156"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5052910009>,
+        <https://orcid.org/0000-0001-7039-1156> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.617130" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhou"^^xsd:string ;
+    foaf:givenName "Fengtao"^^xsd:string ;
+    foaf:name "Fengtao Zhou"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5052910009"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/hao-chen> a foaf:Person ;
+    rdfs:label "Hao Chen"^^xsd:string ;
+    datacite:orcid "0000-0002-8400-3780"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5100353596>,
+        <https://orcid.org/0000-0002-8400-3780> ;
+    org:memberOf <https://ror.org/00q4vv597>,
+        <https://ror.org/00sz56h79>,
+        <https://ror.org/02zhqgq86> ;
+    org:role "last" ;
+    prov:generatedAtTime "2026-04-13T17:30:07.905642" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Hao"^^xsd:string ;
+    foaf:name "Hao Chen"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5100353596"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/huajun-zhou> a foaf:Person ;
+    rdfs:label "Huajun Zhou"^^xsd:string ;
+    datacite:orcid "0000-0002-1419-5422"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5101870647>,
+        <https://orcid.org/0000-0002-1419-5422> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.736969" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhou"^^xsd:string ;
+    foaf:givenName "Huajun"^^xsd:string ;
+    foaf:name "Huajun Zhou"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5101870647"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/huangjing-lin> a foaf:Person ;
+    rdfs:label "Huangjing Lin"^^xsd:string ;
+    datacite:orcid "0000-0002-6799-9352"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5000932451>,
+        <https://orcid.org/0000-0002-6799-9352> ;
+    org:memberOf <https://ror.org/00t33hh48> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.774727" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lin"^^xsd:string ;
+    foaf:givenName "Huangjing"^^xsd:string ;
+    foaf:name "Huangjing Lin"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5000932451"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/jiabo-ma> a foaf:Person ;
+    rdfs:label "Jiabo Ma"^^xsd:string ;
+    datacite:orcid "0000-0001-8532-4466"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5048981603>,
+        <https://orcid.org/0000-0001-8532-4466> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.637649" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ma"^^xsd:string ;
+    foaf:givenName "Jiabo"^^xsd:string ;
+    foaf:name "Jiabo Ma"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5048981603"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/jiguang-wang> a foaf:Person ;
+    rdfs:label "Jiguang Wang"^^xsd:string ;
+    datacite:orcid "0000-0002-6923-4097"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5101451440>,
+        <https://orcid.org/0000-0002-6923-4097> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.818100" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Jiguang"^^xsd:string ;
+    foaf:name "Jiguang Wang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5101451440"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/jinbang-li> a foaf:Person ;
+    rdfs:label "Jinbang Li"^^xsd:string ;
+    datacite:orcid "0000-0003-1400-2851"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5026742243>,
+        <https://orcid.org/0000-0003-1400-2851> ;
+    org:memberOf <https://ror.org/00swtqp09>,
+        <https://ror.org/01eq10738>,
+        <https://ror.org/01vjw4z39> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.675414" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Li"^^xsd:string ;
+    foaf:givenName "Jinbang"^^xsd:string ;
+    foaf:name "Jinbang Li"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5026742243"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/li-liang> a foaf:Person ;
+    rdfs:label "Li Liang"^^xsd:string ;
+    datacite:orcid "0000-0001-5302-2754"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5100718184>,
+        <https://orcid.org/0000-0001-5302-2754> ;
+    org:memberOf <https://ror.org/00swtqp09>,
+        <https://ror.org/01eq10738>,
+        <https://ror.org/01vjw4z39> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.862172" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Liang"^^xsd:string ;
+    foaf:givenName "Li"^^xsd:string ;
+    foaf:name "Li Liang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5100718184"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/ronald-chan> a foaf:Person ;
+    rdfs:label "Ronald Chan"^^xsd:string ;
+    datacite:orcid "0000-0001-9267-0076"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5009979655>,
+        <https://orcid.org/0000-0001-9267-0076> ;
+    org:memberOf <https://ror.org/00t33hh48>,
+        <https://ror.org/02827ca86> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.985983" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:name "Ronald Chan"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5009979655"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/ronald-cheong-kin-chan> a foaf:Person ;
+    rdfs:label "Ronald Cheong Kin Chan"^^xsd:string ;
+    org:role "middle" ;
+    prov:generatedAtTime "2026-04-13T17:30:07.943144" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chan"^^xsd:string ;
+    foaf:givenName "Ronald Cheong Kin"^^xsd:string ;
+    foaf:name "Ronald Cheong Kin Chan"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/shu-yang> a foaf:Person ;
+    rdfs:label "Shu Yang"^^xsd:string ;
+    org:role "middle" ;
+    prov:generatedAtTime "2026-04-13T17:30:07.924541" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Yang"^^xsd:string ;
+    foaf:givenName "Shu"^^xsd:string ;
+    foaf:name "Shu Yang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/shuhua-yang> a foaf:Person ;
+    rdfs:label "Shuhua Yang"^^xsd:string ;
+    datacite:orcid "0000-0002-9879-0164"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5100330822>,
+        <https://orcid.org/0000-0002-9879-0164> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.962547" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:name "Shuhua Yang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5100330822"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/xin-wang> a foaf:Person ;
+    rdfs:label "Xin Wang"^^xsd:string ;
+    datacite:orcid "0000-0002-5122-2418"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5100327957>,
+        <https://orcid.org/0000-0002-5122-2418> ;
+    org:memberOf <https://ror.org/00t33hh48>,
+        <https://ror.org/02827ca86> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.795090" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Xin"^^xsd:string ;
+    foaf:name "Xin Wang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5100327957"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/xiuming-zhang> a foaf:Person ;
+    rdfs:label "Xiuming Zhang"^^xsd:string ;
+    datacite:orcid "0000-0002-1961-3339"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5085101174>,
+        <https://orcid.org/0000-0002-1961-3339> ;
+    org:memberOf <https://ror.org/00a2xv884> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.881867" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Xiuming"^^xsd:string ;
+    foaf:name "Xiuming Zhang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5085101174"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/yihui-wang> a foaf:Person ;
+    rdfs:label "Yihui Wang"^^xsd:string ;
+    datacite:orcid "0009-0002-7606-9816"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5100324204>,
+        <https://orcid.org/0009-0002-7606-9816> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.600015" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Yihui"^^xsd:string ;
+    foaf:name "Yihui Wang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5100324204"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/yingxue-xu> a foaf:Person ;
+    rdfs:label "Yingxue Xu"^^xsd:string ;
+    datacite:orcid "0000-0002-9657-3107"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5089045263>,
+        <https://orcid.org/0000-0002-9657-3107> ;
+    org:memberOf <https://ror.org/00q4vv597> ;
+    org:role "first" ;
+    prov:generatedAtTime "2026-04-13T17:30:07.580599" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Xu"^^xsd:string ;
+    foaf:givenName "Yingxue"^^xsd:string ;
+    foaf:name "Yingxue Xu"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5089045263"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/zhengyu-zhang> a foaf:Person ;
+    rdfs:label "Zhengyu Zhang"^^xsd:string ;
+    datacite:orcid "0009-0009-9287-9756"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5008836087>,
+        <https://orcid.org/0009-0009-9287-9756> ;
+    org:memberOf <https://ror.org/00swtqp09>,
+        <https://ror.org/01eq10738>,
+        <https://ror.org/01vjw4z39> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.692916" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Zhengyu"^^xsd:string ;
+    foaf:name "Zhengyu Zhang"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5008836087"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#author/zhenhui-li> a foaf:Person ;
+    rdfs:label "Zhenhui Li"^^xsd:string ;
+    datacite:orcid "0009-0009-3613-9403"^^xsd:string ;
+    owl:sameAs <https://openalex.org/A5114236198>,
+        <https://orcid.org/0009-0009-3613-9403> ;
+    org:memberOf <https://ror.org/038c3w259> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.756450" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Li"^^xsd:string ;
+    foaf:givenName "Zhenhui"^^xsd:string ;
+    foaf:name "Zhenhui Li"^^xsd:string ;
+    pyeuropepmc:openAlexId "https://openalex.org/A5114236198"^^xsd:anyURI .
+
+<https://w3id.org/pyeuropepmc/data#journal/nature-communications> a bibo:Journal ;
+    dcterms:title "Nature Communications"^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:30:07.542859" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/0064kty71> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Sun Yat-sen University"^^xsd:string ;
+    owl:sameAs <https://ror.org/0064kty71> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.838238" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/00a2xv884> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Zhejiang University"^^xsd:string ;
+    owl:sameAs <https://ror.org/00a2xv884> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.880709" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/00sz56h79> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "HKUST Shenzhen Research Institute"^^xsd:string ;
+    owl:sameAs <https://ror.org/00sz56h79> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.903000" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/02zhqgq86> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "University of Hong Kong"^^xsd:string ;
+    owl:sameAs <https://ror.org/02zhqgq86> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.903647" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/037p24858> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "The First Affiliated Hospital, Sun Yat-sen University"^^xsd:string ;
+    owl:sameAs <https://ror.org/037p24858> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.838704" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/038c3w259> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Kunming Medical University"^^xsd:string ;
+    owl:sameAs <https://ror.org/038c3w259> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.755705" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/03wnrsb51> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Shandong Provincial QianFoShan Hospital"^^xsd:string ;
+    owl:sameAs <https://ror.org/03wnrsb51> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.713037" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/05jb9pq57> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Shandong First Medical University"^^xsd:string ;
+    owl:sameAs <https://ror.org/05jb9pq57> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.713682" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/02827ca86> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Prince of Wales Hospital"^^xsd:string ;
+    owl:sameAs <https://ror.org/02827ca86> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.793825" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/00t33hh48> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Chinese University of Hong Kong"^^xsd:string ;
+    owl:sameAs <https://ror.org/00t33hh48> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.773941" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/00swtqp09> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Key Laboratory of Guangdong Province"^^xsd:string ;
+    owl:sameAs <https://ror.org/00swtqp09> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.673178" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/01eq10738> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Nanfang Hospital"^^xsd:string ;
+    owl:sameAs <https://ror.org/01eq10738> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.673614" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/01vjw4z39> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Southern Medical University"^^xsd:string ;
+    owl:sameAs <https://ror.org/01vjw4z39> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.674019" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/00q4vv597> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Hong Kong University of Science and Technology"^^xsd:string ;
+    owl:sameAs <https://ror.org/00q4vv597> ;
+    prov:generatedAtTime "2026-04-13T17:30:07.579537" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .

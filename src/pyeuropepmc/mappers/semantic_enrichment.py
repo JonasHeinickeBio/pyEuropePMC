@@ -375,6 +375,37 @@ def add_paper_metadata(
             )
         )
 
+    # Add multi-source citation counts if available
+    if hasattr(paper_entity, "crossref_citation_count") and paper_entity.crossref_citation_count:
+        dataset.graph(publications_context).add(
+            (
+                paper_uri,
+                EX.crossrefCitationCount,
+                Literal(paper_entity.crossref_citation_count, datatype=XSD.integer),
+            )
+        )
+
+    if (
+        hasattr(paper_entity, "semantic_scholar_citation_count")
+        and paper_entity.semantic_scholar_citation_count
+    ):
+        dataset.graph(publications_context).add(
+            (
+                paper_uri,
+                EX.semanticScholarCitationCount,
+                Literal(paper_entity.semantic_scholar_citation_count, datatype=XSD.integer),
+            )
+        )
+
+    if hasattr(paper_entity, "openalex_citation_count") and paper_entity.openalex_citation_count:
+        dataset.graph(publications_context).add(
+            (
+                paper_uri,
+                EX.openalexCitationCount,
+                Literal(paper_entity.openalex_citation_count, datatype=XSD.integer),
+            )
+        )
+
 
 def add_author_metadata(
     author_entity: Any, dataset: Any, author_uri: URIRef, authors_context: Any

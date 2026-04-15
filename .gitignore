@@ -192,3 +192,4 @@ PMC3258128.xml
 
 # Audit reports
 audit_report.json
+examples/enrichment_responses/*

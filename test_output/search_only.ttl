@@ -10,777 +10,70 @@
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/pyeuropepmc/data#author/almagroprez-c> a foaf:Person ;
-    rdfs:label "Almagro-Pérez C" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.238592" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Almagro-Pérez" ;
-    foaf:givenName "Cristina" ;
-    foaf:initials "C" ;
-    foaf:name "Almagro-Pérez C" .
-
-<https://w3id.org/pyeuropepmc/data#author/attfield-g> a foaf:Person ;
-    rdfs:label "Attfield G" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.445104" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Attfield" ;
-    foaf:givenName "Georgia" ;
-    foaf:initials "G" ;
-    foaf:name "Attfield G" .
-
-<https://w3id.org/pyeuropepmc/data#author/bowman-t> a foaf:Person ;
-    rdfs:label "Bowman T" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.197901" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Bowman" ;
-    foaf:givenName "Teri" ;
-    foaf:initials "T" ;
-    foaf:name "Bowman T" .
-
-<https://w3id.org/pyeuropepmc/data#author/cardoso-f> a foaf:Person ;
-    rdfs:label "Cardoso F" ;
-    datacite:orcid "0000-0002-6692-2249" ;
-    owl:sameAs <https://orcid.org/0000-0002-6692-2249> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.326947" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Cardoso" ;
-    foaf:givenName "Fatima" ;
-    foaf:initials "F" ;
-    foaf:name "Cardoso F" .
-
-<https://w3id.org/pyeuropepmc/data#author/chen-b> a foaf:Person ;
-    rdfs:label "Chen B" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.138026" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Chen" ;
-    foaf:givenName "Bowen" ;
-    foaf:initials "B" ;
-    foaf:name "Chen B" .
-
-<https://w3id.org/pyeuropepmc/data#author/chen-c> a foaf:Person ;
-    rdfs:label "Chen C" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.505601" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Chen" ;
-    foaf:givenName "Chengkuan" ;
-    foaf:initials "C" ;
-    foaf:name "Chen C" .
-
-<https://w3id.org/pyeuropepmc/data#author/chen-cs> a foaf:Person ;
-    rdfs:label "Chen CS" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.582212" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Chen" ;
-    foaf:givenName "Christina S" ;
-    foaf:initials "CS" ;
-    foaf:name "Chen CS" .
-
-<https://w3id.org/pyeuropepmc/data#author/chen-rj> a foaf:Person ;
-    rdfs:label "Chen RJ" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.382036" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Chen" ;
-    foaf:givenName "Richard J" ;
-    foaf:initials "RJ" ;
-    foaf:name "Chen RJ" .
-
-<https://w3id.org/pyeuropepmc/data#author/conde-j> a foaf:Person ;
-    rdfs:label "Conde J" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.952979" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Conde" ;
-    foaf:givenName "João" ;
-    foaf:initials "J" ;
-    foaf:name "Conde J" .
-
-<https://w3id.org/pyeuropepmc/data#author/ding-t> a foaf:Person ;
-    rdfs:label "Ding T" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.103928" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Ding" ;
-    foaf:givenName "Tong" ;
-    foaf:initials "T" ;
-    foaf:name "Ding T" .
-
-<https://w3id.org/pyeuropepmc/data#author/doucet-p> a foaf:Person ;
-    rdfs:label "Doucet P" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.338928" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Doucet" ;
-    foaf:givenName "Paul" ;
-    foaf:initials "P" ;
-    foaf:name "Doucet P" .
-
-<https://w3id.org/pyeuropepmc/data#author/farhi-sl> a foaf:Person ;
-    rdfs:label "Farhi SL" ;
-    datacite:orcid "0000-0003-1359-4568" ;
-    owl:sameAs <https://orcid.org/0000-0003-1359-4568> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.487630" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Farhi" ;
-    foaf:givenName "Samouil L" ;
-    foaf:initials "SL" ;
-    foaf:name "Farhi SL" .
-
-<https://w3id.org/pyeuropepmc/data#author/felt-k> a foaf:Person ;
-    rdfs:label "Felt K" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.064779" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Felt" ;
-    foaf:givenName "Kristen" ;
-    foaf:initials "K" ;
-    foaf:name "Felt K" .
-
-<https://w3id.org/pyeuropepmc/data#author/gao-c> a foaf:Person ;
-    rdfs:label "Gao C" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.803375" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Gao" ;
-    foaf:givenName "Ce" ;
-    foaf:initials "C" ;
-    foaf:name "Gao C" .
-
-<https://w3id.org/pyeuropepmc/data#author/gelmon-k> a foaf:Person ;
-    rdfs:label "Gelmon K" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.564622" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Gelmon" ;
-    foaf:givenName "Karen" ;
-    foaf:initials "K" ;
-    foaf:name "Gelmon K" .
-
-<https://w3id.org/pyeuropepmc/data#author/gerber-g> a foaf:Person ;
-    rdfs:label "Gerber G" ;
-    datacite:orcid "0000-0002-9149-5509" ;
-    owl:sameAs <https://orcid.org/0000-0002-9149-5509> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.081683" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Gerber" ;
-    foaf:givenName "Georg" ;
-    foaf:initials "G" ;
-    foaf:name "Gerber G" .
-
-<https://w3id.org/pyeuropepmc/data#author/goods-ba> a foaf:Person ;
-    rdfs:label "Goods BA" ;
-    datacite:orcid "0000-0002-5962-9570" ;
-    owl:sameAs <https://orcid.org/0000-0002-5962-9570> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.405192" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Goods" ;
-    foaf:givenName "Brittany A" ;
-    foaf:initials "BA" ;
-    foaf:name "Goods BA" .
-
-<https://w3id.org/pyeuropepmc/data#author/guo-y> a foaf:Person ;
-    rdfs:label "Guo Y" ;
-    datacite:orcid "0000-0003-2610-9154" ;
-    owl:sameAs <https://orcid.org/0000-0003-2610-9154> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.650891" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Guo" ;
-    foaf:givenName "Yanmei" ;
-    foaf:initials "Y" ;
-    foaf:name "Guo Y" .
-
-<https://w3id.org/pyeuropepmc/data#author/huang-r> a foaf:Person ;
-    rdfs:label "Huang R" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.683957" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Huang" ;
-    foaf:givenName "Ruixu" ;
-    foaf:initials "R" ;
-    foaf:name "Huang R" .
-
-<https://w3id.org/pyeuropepmc/data#author/ishikawa-s> a foaf:Person ;
-    rdfs:label "Ishikawa S" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.023544" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Ishikawa" ;
-    foaf:givenName "Shumpei" ;
-    foaf:initials "S" ;
-    foaf:name "Ishikawa S" .
-
-<https://w3id.org/pyeuropepmc/data#author/jaume-g> a foaf:Person ;
-    rdfs:label "Jaume G" ;
-    datacite:orcid "0000-0002-3832-1390" ;
-    owl:sameAs <https://orcid.org/0000-0002-3832-1390> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.729616" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Jaume" ;
-    foaf:givenName "Guillaume" ;
-    foaf:initials "G" ;
-    foaf:name "Jaume G" .
-
-<https://w3id.org/pyeuropepmc/data#author/kawabe-a> a foaf:Person ;
-    rdfs:label "Kawabe A" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.712757" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Kawabe" ;
-    foaf:givenName "Akihiro" ;
-    foaf:initials "A" ;
-    foaf:name "Kawabe A" .
-
-<https://w3id.org/pyeuropepmc/data#author/kim-a> a foaf:Person ;
-    rdfs:label "Kim A" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.893805" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Kim" ;
-    foaf:givenName "Ahrong" ;
-    foaf:initials "A" ;
-    foaf:name "Kim A" .
-
-<https://w3id.org/pyeuropepmc/data#author/komura-d> a foaf:Person ;
-    rdfs:label "Komura D" ;
-    datacite:orcid "0000-0002-0038-728X" ;
-    owl:sameAs <https://orcid.org/0000-0002-0038-728X> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.652156" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Komura" ;
-    foaf:givenName "Daisuke" ;
-    foaf:initials "D" ;
-    foaf:name "Komura D" .
-
-<https://w3id.org/pyeuropepmc/data#author/krishna-s> a foaf:Person ;
-    rdfs:label "Krishna S" ;
-    datacite:orcid "0000-0002-7457-9700" ;
-    owl:sameAs <https://orcid.org/0000-0002-7457-9700> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.997291" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Krishna" ;
-    foaf:givenName "Sachi" ;
-    foaf:initials "S" ;
-    foaf:name "Krishna S" .
-
-<https://w3id.org/pyeuropepmc/data#author/le-lp> a foaf:Person ;
-    rdfs:label "Le LP" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.198905" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Le" ;
-    foaf:givenName "Long Phi" ;
-    foaf:initials "LP" ;
-    foaf:name "Le LP" .
-
-<https://w3id.org/pyeuropepmc/data#author/lei-y> a foaf:Person ;
-    rdfs:label "Lei Y" ;
-    datacite:orcid "0000-0002-4468-8076" ;
-    owl:sameAs <https://orcid.org/0000-0002-4468-8076> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.545372" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Lei" ;
-    foaf:givenName "Yubin" ;
-    foaf:initials "Y" ;
-    foaf:name "Lei Y" .
-
-<https://w3id.org/pyeuropepmc/data#author/lewis-a> a foaf:Person ;
-    rdfs:label "Lewis A" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.505327" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Lewis" ;
-    foaf:givenName "Alexandra" ;
-    foaf:initials "A" ;
-    foaf:name "Lewis A" .
-
-<https://w3id.org/pyeuropepmc/data#author/lim-k> a foaf:Person ;
-    rdfs:label "Lim K" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.678892" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Lim" ;
-    foaf:givenName "KeeSiang" ;
-    foaf:initials "K" ;
-    foaf:name "Lim K" .
-
-<https://w3id.org/pyeuropepmc/data#author/lu-my> a foaf:Person ;
-    rdfs:label "Lu MY" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.470840" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Lu" ;
-    foaf:givenName "Ming Y" ;
-    foaf:initials "MY" ;
-    foaf:name "Lu MY" .
-
-<https://w3id.org/pyeuropepmc/data#author/mahmood-f> a foaf:Person ;
-    rdfs:label "Mahmood F" ;
-    datacite:orcid "0000-0001-7587-1562" ;
-    owl:sameAs <https://orcid.org/0000-0001-7587-1562> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.258887" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Mahmood" ;
-    foaf:givenName "Faisal" ;
-    foaf:initials "F" ;
-    foaf:name "Mahmood F" .
-
-<https://w3id.org/pyeuropepmc/data#author/marcuello-c> a foaf:Person ;
-    rdfs:label "Marcuello C" ;
-    datacite:orcid "0000-0003-3459-8605" ;
-    owl:sameAs <https://orcid.org/0000-0003-3459-8605> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.587554" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Marcuello" ;
-    foaf:givenName "Carlos" ;
-    foaf:initials "C" ;
-    foaf:name "Marcuello C" .
-
-<https://w3id.org/pyeuropepmc/data#author/miyagi-y> a foaf:Person ;
-    rdfs:label "Miyagi Y" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.963487" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Miyagi" ;
-    foaf:givenName "Yohei" ;
-    foaf:initials "Y" ;
-    foaf:name "Miyagi Y" .
-
-<https://w3id.org/pyeuropepmc/data#author/nelson-j> a foaf:Person ;
-    rdfs:label "Nelson J" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.742368" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Nelson" ;
-    foaf:givenName "Jack" ;
-    foaf:initials "J" ;
-    foaf:name "Nelson J" .
-
-<https://w3id.org/pyeuropepmc/data#author/nisini-g> a foaf:Person ;
-    rdfs:label "Nisini G" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.776961" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Nisini" ;
-    foaf:givenName "Giacomo" ;
-    foaf:initials "G" ;
-    foaf:name "Nisini G" .
-
-<https://w3id.org/pyeuropepmc/data#author/ochi-m> a foaf:Person ;
-    rdfs:label "Ochi M" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.772989" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Ochi" ;
-    foaf:givenName "Mieko" ;
-    foaf:initials "M" ;
-    foaf:name "Ochi M" .
-
-<https://w3id.org/pyeuropepmc/data#author/peng-t> a foaf:Person ;
-    rdfs:label "Peng T" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.138257" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Peng" ;
-    foaf:givenName "Tingying" ;
-    foaf:initials "T" ;
-    foaf:name "Peng T" .
-
-<https://w3id.org/pyeuropepmc/data#author/pfaff-kl> a foaf:Person ;
-    rdfs:label "Pfaff KL" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.132357" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Pfaff" ;
-    foaf:givenName "Kathleen L" ;
-    foaf:initials "KL" ;
-    foaf:name "Pfaff KL" .
-
-<https://w3id.org/pyeuropepmc/data#author/pokrovsky-vs> a foaf:Person ;
-    rdfs:label "Pokrovsky VS" ;
-    datacite:orcid "0000-0003-4006-9320" ;
-    owl:sameAs <https://orcid.org/0000-0003-4006-9320> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.872205" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Pokrovsky" ;
-    foaf:givenName "Vadim S" ;
-    foaf:initials "VS" ;
-    foaf:name "Pokrovsky VS" .
-
-<https://w3id.org/pyeuropepmc/data#author/robertson-h> a foaf:Person ;
-    rdfs:label "Robertson H" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.053567" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Robertson" ;
-    foaf:givenName "Harry" ;
-    foaf:initials "H" ;
-    foaf:name "Robertson H" .
-
-<https://w3id.org/pyeuropepmc/data#author/rodig-sj> a foaf:Person ;
-    rdfs:label "Rodig SJ" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.262460" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Rodig" ;
-    foaf:givenName "Scott J" ;
-    foaf:initials "SJ" ;
-    foaf:name "Rodig SJ" .
-
-<https://w3id.org/pyeuropepmc/data#author/ruggeri-fs> a foaf:Person ;
-    rdfs:label "Ruggeri FS" ;
-    datacite:orcid "0000-0002-1232-1907" ;
-    owl:sameAs <https://orcid.org/0000-0002-1232-1907> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.044985" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Ruggeri" ;
-    foaf:givenName "Francesco Simone" ;
-    foaf:initials "FS" ;
-    foaf:name "Ruggeri FS" .
-
-<https://w3id.org/pyeuropepmc/data#author/sahai-s> a foaf:Person ;
-    rdfs:label "Sahai S" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.425841" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Sahai" ;
-    foaf:givenName "Sharifa" ;
-    foaf:initials "S" ;
-    foaf:name "Sahai S" .
-
-<https://w3id.org/pyeuropepmc/data#author/sato-s> a foaf:Person ;
-    rdfs:label "Sato S" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.837923" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Sato" ;
-    foaf:givenName "Shinya" ;
-    foaf:initials "S" ;
-    foaf:name "Sato S" .
-
-<https://w3id.org/pyeuropepmc/data#author/shaban-m> a foaf:Person ;
-    rdfs:label "Shaban M" ;
-    datacite:orcid "0000-0001-6115-1505" ;
-    owl:sameAs <https://orcid.org/0000-0001-6115-1505> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.814631" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Shaban" ;
-    foaf:givenName "Muhammad" ;
-    foaf:initials "M" ;
-    foaf:name "Shaban M" .
-
-<https://w3id.org/pyeuropepmc/data#author/shi-s> a foaf:Person ;
-    rdfs:label "Shi S" ;
-    datacite:orcid "0000-0002-6652-0629" ;
-    owl:sameAs <https://orcid.org/0000-0002-6652-0629> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.950159" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Shi" ;
-    foaf:givenName "Si" ;
-    foaf:initials "S" ;
-    foaf:name "Shi S" .
-
-<https://w3id.org/pyeuropepmc/data#author/song-ah> a foaf:Person ;
-    rdfs:label "Song AH" ;
-    datacite:orcid "0000-0001-9356-9156" ;
-    owl:sameAs <https://orcid.org/0000-0001-9356-9156> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.292045" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Song" ;
-    foaf:givenName "Andrew H" ;
-    foaf:initials "AH" ;
-    foaf:name "Song AH" .
-
-<https://w3id.org/pyeuropepmc/data#author/tan-z> a foaf:Person ;
-    rdfs:label "Tan Z" ;
-    datacite:orcid "0000-0002-6188-209X" ;
-    owl:sameAs <https://orcid.org/0000-0002-6188-209X> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.454892" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Tan" ;
-    foaf:givenName "Zhen" ;
-    foaf:initials "Z" ;
-    foaf:name "Tan Z" .
-
-<https://w3id.org/pyeuropepmc/data#author/tran-m> a foaf:Person ;
-    rdfs:label "Tran M" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.868035" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Tran" ;
-    foaf:givenName "Miles" ;
-    foaf:initials "M" ;
-    foaf:name "Tran M" .
-
-<https://w3id.org/pyeuropepmc/data#author/vaidya-aj> a foaf:Person ;
-    rdfs:label "Vaidya AJ" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.643024" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Vaidya" ;
-    foaf:givenName "Anurag J" ;
-    foaf:initials "AJ" ;
-    foaf:name "Vaidya AJ" .
-
-<https://w3id.org/pyeuropepmc/data#author/ventura-r> a foaf:Person ;
-    rdfs:label "Ventura R" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.385618" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Ventura" ;
-    foaf:givenName "Roberta" ;
-    foaf:initials "R" ;
-    foaf:name "Ventura R" .
-
-<https://w3id.org/pyeuropepmc/data#author/wagner-sj> a foaf:Person ;
-    rdfs:label "Wagner SJ" ;
-    datacite:orcid "0000-0003-3763-2282" ;
-    owl:sameAs <https://orcid.org/0000-0003-3763-2282> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.201317" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Wagner" ;
-    foaf:givenName "Sophia J" ;
-    foaf:initials "SJ" ;
-    foaf:name "Wagner SJ" .
-
-<https://w3id.org/pyeuropepmc/data#author/wang-h> a foaf:Person ;
-    rdfs:label "Wang H" ;
-    datacite:orcid "0000-0001-6773-8382" ;
-    owl:sameAs <https://orcid.org/0000-0001-6773-8382> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.625369" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Wang" ;
-    foaf:givenName "Huan" ;
-    foaf:initials "H" ;
-    foaf:name "Wang H" .
-
-<https://w3id.org/pyeuropepmc/data#author/wang-w> a foaf:Person ;
-    rdfs:label "Wang W" ;
-    datacite:orcid "0000-0003-0286-6337" ;
-    owl:sameAs <https://orcid.org/0000-0003-0286-6337> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.722883" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Wang" ;
-    foaf:givenName "Wei" ;
-    foaf:initials "W" ;
-    foaf:name "Wang W" .
-
-<https://w3id.org/pyeuropepmc/data#author/wei-k> a foaf:Person ;
-    rdfs:label "Wei K" ;
-    datacite:orcid "0000-0002-1821-167X" ;
-    owl:sameAs <https://orcid.org/0000-0002-1821-167X> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.327737" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Wei" ;
-    foaf:givenName "Kevin" ;
-    foaf:initials "K" ;
-    foaf:name "Wei K" .
-
-<https://w3id.org/pyeuropepmc/data#author/williamson-dfk> a foaf:Person ;
-    rdfs:label "Williamson DFK" ;
-    datacite:orcid "0000-0003-1745-8846" ;
-    owl:sameAs <https://orcid.org/0000-0003-1745-8846> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.972085" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Williamson" ;
-    foaf:givenName "Drew F K" ;
-    foaf:initials "DFK" ;
-    foaf:name "Williamson DFK" .
-
-<https://w3id.org/pyeuropepmc/data#author/xiao-m> a foaf:Person ;
-    rdfs:label "Xiao M" ;
-    datacite:orcid "0000-0003-0862-2501" ;
-    owl:sameAs <https://orcid.org/0000-0003-0862-2501> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.288930" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Xiao" ;
-    foaf:givenName "Mingming" ;
-    foaf:initials "M" ;
-    foaf:name "Xiao M" .
-
-<https://w3id.org/pyeuropepmc/data#author/xu-h> a foaf:Person ;
-    rdfs:label "Xu H" ;
-    datacite:orcid "0000-0002-4044-3186" ;
-    owl:sameAs <https://orcid.org/0000-0002-4044-3186> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.375381" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Xu" ;
-    foaf:givenName "He" ;
-    foaf:initials "H" ;
-    foaf:name "Xu H" .
-
-<https://w3id.org/pyeuropepmc/data#author/xu-j> a foaf:Person ;
-    rdfs:label "Xu J" ;
-    datacite:orcid "0000-0002-2942-8604" ;
-    owl:sameAs <https://orcid.org/0000-0002-2942-8604> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.795621" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Xu" ;
-    foaf:givenName "Jin" ;
-    foaf:initials "J" ;
-    foaf:name "Xu J" .
-
-<https://w3id.org/pyeuropepmc/data#author/yang-j> a foaf:Person ;
-    rdfs:label "Yang J" ;
-    datacite:orcid "0009-0003-2199-8623" ;
-    owl:sameAs <https://orcid.org/0009-0003-2199-8623> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.127989" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Yang" ;
-    foaf:givenName "Jing" ;
-    foaf:initials "J" ;
-    foaf:name "Yang J" .
-
-<https://w3id.org/pyeuropepmc/data#author/yeaton-a> a foaf:Person ;
-    rdfs:label "Yeaton A" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.931696" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Yeaton" ;
-    foaf:givenName "Anna" ;
-    foaf:initials "A" ;
-    foaf:name "Yeaton A" .
-
-<https://w3id.org/pyeuropepmc/data#author/yokose-t> a foaf:Person ;
-    rdfs:label "Yokose T" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:20.901243" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Yokose" ;
-    foaf:givenName "Tomoyuki" ;
-    foaf:initials "T" ;
-    foaf:name "Yokose T" .
-
-<https://w3id.org/pyeuropepmc/data#author/yu-x> a foaf:Person ;
-    rdfs:label "Yu X" ;
-    datacite:orcid "0000-0002-6697-7143",
-        "0009-0002-6288-4932" ;
-    owl:sameAs <https://orcid.org/0000-0002-6697-7143>,
-        <https://orcid.org/0009-0002-6288-4932> ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.213084" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Yu" ;
-    foaf:givenName "Xianjun",
-        "Xiaoning" ;
-    foaf:initials "X" ;
-    foaf:name "Yu X" .
-
-<https://w3id.org/pyeuropepmc/data#author/zhang-a> a foaf:Person ;
-    rdfs:label "Zhang A" ;
-    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
-    prov:generatedAtTime "2026-04-08T23:19:19.560114" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Zhang" ;
-    foaf:givenName "Andrew" ;
-    foaf:initials "A" ;
-    foaf:name "Zhang A" .
-
-<https://pubmed.ncbi.nlm.nih.gov/40467104/> a bibo:AcademicArticle ;
-    rdfs:label "Histone lactylation-driven feedback loop modulates cholesterol-linked immunosuppression in pancreatic cancer." ;
-    meshv:hasDescriptor "Acetyl-CoA C-Acetyltransferase",
-        "Animals",
-        "Cell Line, Tumor",
-        "Cholesterol",
-        "Epigenesis, Genetic",
-        "Feedback, Physiological",
-        "Histones",
-        "Humans",
-        "Lactic Acid",
-        "Mice",
-        "Pancreatic Neoplasms",
-        "Tumor Microenvironment" ;
-    dcterms:abstract "<h4>Background</h4>Pancreatic cancer exhibits limited clinical responses to immunotherapy, highlighting the need for new strategies to counteract its immunosuppressive microenvironment. Although metabolic reprogramming and epigenetic changes contribute to malignancy, the impact of lactate-driven histone lactylation on the tumour microenvironment (TME) has not been fully explored.<h4>Objective</h4>This study aims to investigate the role of histone lactylation in pancreatic cancer, focusing on its effects on cholesterol metabolism and antitumour immunity.<h4>Designs</h4>Global lactylome profiling was conducted to identify novel epigenetic mechanisms driven by lactate-induced histone lactylation. Mechanisms were investigated via RNA sequencing, CUT&Tag, immunoprecipitation-mass spectrometry and GST-pull down. Mass cytometry by time-of-flight, <i>in vitro</i> co-culture system, orthotopic pancreatic cancer models and flow cytometry were used to explore Acetyl-CoA acetyltransferase (ACAT2) functions. A proteolysis-targeting chimaera (PROTAC) was developed to degrade ACAT2.<h4>Results</h4>Global lactylome profiling revealed that lactate-driven histone lactylation, particularly H3K18la, promotes the transcriptional activation of ACAT2. ACAT2 acetylates mitochondrial carrier homolog 2 (MTCH2), stabilising it and disrupting oxidative phosphorylation, which increases lactate production and fuels a positive feedback loop in pancreatic cancer. This loop facilitates the delivery of cholesterol via small extracellular vesicles (sEVs), polarising tumour-associated macrophages toward an immunosuppressive M2 phenotype. Additionally, the PROTAC targeting ACAT2 enhanced the efficacy of immune checkpoint blockade therapy <i>in vivo</i>.<h4>Conclusions</h4>Our findings highlight the critical role of the H3K18la/ACAT2/sEV-cholesterol axis in TME reprogramming. Targeting this pathway may improve anti-PD-1 therapy response in pancreatic cancer, providing a novel therapeutic strategy by linking histone lactylation, cholesterol metabolic reprogramming and immune modulation." ;
-    dcterms:issued 2025 ;
-    dcterms:subject "Acetyl-CoA C-Acetyltransferase",
-        "Animals",
-        "Cell Line, Tumor",
-        "Cholesterol",
-        "Epigenesis, Genetic",
-        "Feedback, Physiological",
-        "Histones",
-        "Humans",
-        "Immune response",
-        "Lactic Acid",
-        "Macrophages",
-        "Mice",
-        "Pancreatic Neoplasms",
-        "Pancreatic cancer",
-        "Tumor Microenvironment",
-        "gene targeting",
-        "lipid metabolism" ;
-    dcterms:title "Histone lactylation-driven feedback loop modulates cholesterol-linked immunosuppression in pancreatic cancer." ;
-    bibo:doi "10.1136/gutjnl-2024-334361"^^xsd:anyURI ;
-    owl:sameAs <https://doi.org/10.1136/gutjnl-2024-334361>,
-        <https://europepmc.org/article/MED/40467104>,
-        <https://europepmc.org/article/PMC/12573332/>,
-        <https://pubmed.ncbi.nlm.nih.gov/40467104/>,
-        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12573332/> ;
-    prov:generatedAtTime "2026-04-08T23:19:23.049099" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmcid "PMC12573332" ;
-    pyeuropepmc:pmid "40467104" .
-
 <https://pubmed.ncbi.nlm.nih.gov/41193692/> a bibo:AcademicArticle ;
-    rdfs:label "A multimodal whole-slide foundation model for pathology." ;
+    rdfs:label "A multimodal whole-slide foundation model for pathology."^^xsd:string ;
     meshv:hasDescriptor "Humans",
         "Image Processing, Computer-Assisted",
         "Machine Learning",
         "Neoplasms",
         "Pathology" ;
-    dcterms:abstract "The field of computational pathology has been transformed with recent advances in foundation models that encode histopathology region-of-interests (ROIs) into versatile and transferable feature representations via self-supervised learning. However, translating these advancements to address complex clinical challenges at the patient and slide level remains constrained by limited clinical data in disease-specific cohorts, especially for rare clinical conditions. We propose Transformer-based pathology Image and Text Alignment Network (TITAN), a multimodal whole-slide foundation model pretrained using 335,645 whole-slide images via visual self-supervised learning and vision-language alignment with corresponding pathology reports and 423,122 synthetic captions generated from a multimodal generative AI copilot for pathology. Without any fine-tuning or requiring clinical labels, TITAN can extract general-purpose slide representations and generate pathology reports that generalize to resource-limited clinical scenarios such as rare disease retrieval and cancer prognosis. We evaluate TITAN on diverse clinical tasks and find that it outperforms both ROI and slide foundation models across machine learning settings, including linear probing, few-shot and zero-shot classification, rare cancer retrieval, cross-modal retrieval and pathology report generation." ;
+    dcterms:abstract "The field of computational pathology has been transformed with recent advances in foundation models that encode histopathology region-of-interests (ROIs) into versatile and transferable feature representations via self-supervised learning. However, translating these advancements to address complex clinical challenges at the patient and slide level remains constrained by limited clinical data in disease-specific cohorts, especially for rare clinical conditions. We propose Transformer-based pathology Image and Text Alignment Network (TITAN), a multimodal whole-slide foundation model pretrained using 335,645 whole-slide images via visual self-supervised learning and vision-language alignment with corresponding pathology reports and 423,122 synthetic captions generated from a multimodal generative AI copilot for pathology. Without any fine-tuning or requiring clinical labels, TITAN can extract general-purpose slide representations and generate pathology reports that generalize to resource-limited clinical scenarios such as rare disease retrieval and cancer prognosis. We evaluate TITAN on diverse clinical tasks and find that it outperforms both ROI and slide foundation models across machine learning settings, including linear probing, few-shot and zero-shot classification, rare cancer retrieval, cross-modal retrieval and pathology report generation."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/almagroprez-c>,
+        <https://w3id.org/pyeuropepmc/data#author/chen-b>,
+        <https://w3id.org/pyeuropepmc/data#author/chen-c>,
+        <https://w3id.org/pyeuropepmc/data#author/chen-cs>,
+        <https://w3id.org/pyeuropepmc/data#author/chen-rj>,
+        <https://w3id.org/pyeuropepmc/data#author/ding-t>,
+        <https://w3id.org/pyeuropepmc/data#author/doucet-p>,
+        <https://w3id.org/pyeuropepmc/data#author/gerber-g>,
+        <https://w3id.org/pyeuropepmc/data#author/ishikawa-s>,
+        <https://w3id.org/pyeuropepmc/data#author/jaume-g>,
+        <https://w3id.org/pyeuropepmc/data#author/kawabe-a>,
+        <https://w3id.org/pyeuropepmc/data#author/kim-a>,
+        <https://w3id.org/pyeuropepmc/data#author/komura-d>,
+        <https://w3id.org/pyeuropepmc/data#author/le-lp>,
+        <https://w3id.org/pyeuropepmc/data#author/lu-my>,
+        <https://w3id.org/pyeuropepmc/data#author/mahmood-f>,
+        <https://w3id.org/pyeuropepmc/data#author/miyagi-y>,
+        <https://w3id.org/pyeuropepmc/data#author/ochi-m>,
+        <https://w3id.org/pyeuropepmc/data#author/peng-t>,
+        <https://w3id.org/pyeuropepmc/data#author/robertson-h>,
+        <https://w3id.org/pyeuropepmc/data#author/sahai-s>,
+        <https://w3id.org/pyeuropepmc/data#author/sato-s>,
+        <https://w3id.org/pyeuropepmc/data#author/shaban-m>,
+        <https://w3id.org/pyeuropepmc/data#author/song-ah>,
+        <https://w3id.org/pyeuropepmc/data#author/vaidya-aj>,
+        <https://w3id.org/pyeuropepmc/data#author/wagner-sj>,
+        <https://w3id.org/pyeuropepmc/data#author/williamson-dfk>,
+        <https://w3id.org/pyeuropepmc/data#author/yokose-t>,
+        <https://w3id.org/pyeuropepmc/data#author/zhang-a> ;
     dcterms:issued 2025 ;
     dcterms:subject "Humans",
         "Image Processing, Computer-Assisted",
         "Machine Learning",
         "Neoplasms",
         "Pathology" ;
-    dcterms:title "A multimodal whole-slide foundation model for pathology." ;
+    dcterms:title "A multimodal whole-slide foundation model for pathology."^^xsd:string ;
     bibo:doi "10.1038/s41591-025-03982-3"^^xsd:anyURI ;
     owl:sameAs <https://doi.org/10.1038/s41591-025-03982-3>,
         <https://europepmc.org/article/MED/41193692>,
         <https://europepmc.org/article/PMC/12618242/>,
         <https://pubmed.ncbi.nlm.nih.gov/41193692/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12618242/> ;
-    prov:generatedAtTime "2026-04-08T23:19:18.923900" ;
+    prov:generatedAtTime "2026-04-13T17:29:52.738181" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmcid "PMC12618242" ;
-    pyeuropepmc:pmid "41193692" .
+    pyeuropepmc:pmcid "PMC12618242"^^xsd:string ;
+    pyeuropepmc:pmid "41193692"^^xsd:string .
 
 <https://pubmed.ncbi.nlm.nih.gov/41256193/> a bibo:AcademicArticle ;
-    rdfs:label "Nanoscale Analysis beyond Imaging by Atomic Force Microscopy: Molecular Perspectives on Oncology and Neurodegeneration." ;
-    dcterms:abstract "Nanobiomedicine promises to revolutionize life quality and expectancy of patients with cognitive impairment and cancer malignancies, via unraveling key molecular processes related to their onset useful as biomarkers of disease to develop and improve the efficacy of therapies. However, it is still a challenge understanding and identifying these molecular mechanisms as biomarkers of disease, because of their high-level of polymorphism and nanoscale dimensions. Here, it provides a review work linking the potential and capabilities of atomic force microscopy (AFM) technologies in unraveling beyond imaging the common and hidden properties of transient and nanosized molecular processes in cancer and neurodegeneration. This study highlights the most prominent operational modes of AFM to achieve morphological, mechanical, and chemical characterization of the molecular processes leading to these diseases. Finally, it outlines the advantages of AFM compared with other techniques to guide newcomers and stakeholders toward potential future avenues opened by AFM methods in nanobiomedicine." ;
+    rdfs:label "Nanoscale Analysis beyond Imaging by Atomic Force Microscopy: Molecular Perspectives on Oncology and Neurodegeneration."^^xsd:string ;
+    dcterms:abstract "Nanobiomedicine promises to revolutionize life quality and expectancy of patients with cognitive impairment and cancer malignancies, via unraveling key molecular processes related to their onset useful as biomarkers of disease to develop and improve the efficacy of therapies. However, it is still a challenge understanding and identifying these molecular mechanisms as biomarkers of disease, because of their high-level of polymorphism and nanoscale dimensions. Here, it provides a review work linking the potential and capabilities of atomic force microscopy (AFM) technologies in unraveling beyond imaging the common and hidden properties of transient and nanosized molecular processes in cancer and neurodegeneration. This study highlights the most prominent operational modes of AFM to achieve morphological, mechanical, and chemical characterization of the molecular processes leading to these diseases. Finally, it outlines the advantages of AFM compared with other techniques to guide newcomers and stakeholders toward potential future avenues opened by AFM methods in nanobiomedicine."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/conde-j>,
+        <https://w3id.org/pyeuropepmc/data#author/lim-k>,
+        <https://w3id.org/pyeuropepmc/data#author/marcuello-c>,
+        <https://w3id.org/pyeuropepmc/data#author/nisini-g>,
+        <https://w3id.org/pyeuropepmc/data#author/pokrovsky-vs>,
+        <https://w3id.org/pyeuropepmc/data#author/ruggeri-fs> ;
     dcterms:issued 2025 ;
     dcterms:subject "Amyloidogenic Proteins",
         "Atomic force microscopy",
@@ -789,20 +82,20 @@
         "Force Spectroscopy",
         "Nano‐Chemical Analysis",
         "Neurodegeneration" ;
-    dcterms:title "Nanoscale Analysis beyond Imaging by Atomic Force Microscopy: Molecular Perspectives on Oncology and Neurodegeneration." ;
+    dcterms:title "Nanoscale Analysis beyond Imaging by Atomic Force Microscopy: Molecular Perspectives on Oncology and Neurodegeneration."^^xsd:string ;
     bibo:doi "10.1002/smsc.202500351"^^xsd:anyURI ;
     owl:sameAs <https://doi.org/10.1002/smsc.202500351>,
         <https://europepmc.org/article/MED/41256193>,
         <https://europepmc.org/article/PMC/12622512/>,
         <https://pubmed.ncbi.nlm.nih.gov/41256193/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12622512/> ;
-    prov:generatedAtTime "2026-04-08T23:19:22.491280" ;
+    prov:generatedAtTime "2026-04-13T17:29:56.038459" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmcid "PMC12622512" ;
-    pyeuropepmc:pmid "41256193" .
+    pyeuropepmc:pmcid "PMC12622512"^^xsd:string ;
+    pyeuropepmc:pmid "41256193"^^xsd:string .
 
 <https://pubmed.ncbi.nlm.nih.gov/41266321/> a bibo:AcademicArticle ;
-    rdfs:label "Systematic benchmarking of imaging spatial transcriptomics platforms in FFPE tissues." ;
+    rdfs:label "Systematic benchmarking of imaging spatial transcriptomics platforms in FFPE tissues."^^xsd:string ;
     meshv:hasDescriptor "Humans",
         "Neoplasms",
         "Paraffin Embedding",
@@ -810,7 +103,21 @@
         "Spatial Transcriptomics",
         "Tissue Array Analysis",
         "Tissue Fixation" ;
-    dcterms:abstract "Emerging imaging spatial transcriptomics (iST) platforms and coupled analytical methods can recover cell-to-cell interactions, groups of spatially covarying genes, and gene signatures associated with pathological features, and are thus particularly well-suited for applications in formalin fixed paraffin embedded (FFPE) tissues. Here, we benchmark the performance of three commercial iST platforms-10X Xenium, Vizgen MERSCOPE, and Nanostring CosMx-on serial sections from tissue microarrays (TMAs) containing 17 tumor and 16 normal tissue types for both relative technical and biological performance. On matched genes, we find that Xenium consistently generates higher transcript counts per gene without sacrificing specificity. Xenium and CosMx measure RNA transcripts in concordance with orthogonal single-cell transcriptomics. All three platforms can perform spatially resolved cell typing with varying degrees of sub-clustering capabilities, with Xenium and CosMx finding slightly more clusters than MERSCOPE, albeit with different false discovery rates and cell segmentation error frequencies. Taken together, our analyses provide a comprehensive benchmark to guide the choice of iST method as researchers design studies with precious samples in this rapidly evolving field." ;
+    dcterms:abstract "Emerging imaging spatial transcriptomics (iST) platforms and coupled analytical methods can recover cell-to-cell interactions, groups of spatially covarying genes, and gene signatures associated with pathological features, and are thus particularly well-suited for applications in formalin fixed paraffin embedded (FFPE) tissues. Here, we benchmark the performance of three commercial iST platforms-10X Xenium, Vizgen MERSCOPE, and Nanostring CosMx-on serial sections from tissue microarrays (TMAs) containing 17 tumor and 16 normal tissue types for both relative technical and biological performance. On matched genes, we find that Xenium consistently generates higher transcript counts per gene without sacrificing specificity. Xenium and CosMx measure RNA transcripts in concordance with orthogonal single-cell transcriptomics. All three platforms can perform spatially resolved cell typing with varying degrees of sub-clustering capabilities, with Xenium and CosMx finding slightly more clusters than MERSCOPE, albeit with different false discovery rates and cell segmentation error frequencies. Taken together, our analyses provide a comprehensive benchmark to guide the choice of iST method as researchers design studies with precious samples in this rapidly evolving field."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/bowman-t>,
+        <https://w3id.org/pyeuropepmc/data#author/farhi-sl>,
+        <https://w3id.org/pyeuropepmc/data#author/felt-k>,
+        <https://w3id.org/pyeuropepmc/data#author/gao-c>,
+        <https://w3id.org/pyeuropepmc/data#author/goods-ba>,
+        <https://w3id.org/pyeuropepmc/data#author/huang-r>,
+        <https://w3id.org/pyeuropepmc/data#author/krishna-s>,
+        <https://w3id.org/pyeuropepmc/data#author/nelson-j>,
+        <https://w3id.org/pyeuropepmc/data#author/pfaff-kl>,
+        <https://w3id.org/pyeuropepmc/data#author/rodig-sj>,
+        <https://w3id.org/pyeuropepmc/data#author/tran-m>,
+        <https://w3id.org/pyeuropepmc/data#author/wang-h>,
+        <https://w3id.org/pyeuropepmc/data#author/wei-k>,
+        <https://w3id.org/pyeuropepmc/data#author/yeaton-a> ;
     dcterms:issued 2025 ;
     dcterms:subject "Humans",
         "Neoplasms",
@@ -819,27 +126,32 @@
         "Spatial Transcriptomics",
         "Tissue Array Analysis",
         "Tissue Fixation" ;
-    dcterms:title "Systematic benchmarking of imaging spatial transcriptomics platforms in FFPE tissues." ;
+    dcterms:title "Systematic benchmarking of imaging spatial transcriptomics platforms in FFPE tissues."^^xsd:string ;
     bibo:doi "10.1038/s41467-025-64990-y"^^xsd:anyURI ;
     owl:sameAs <https://doi.org/10.1038/s41467-025-64990-y>,
         <https://europepmc.org/article/MED/41266321>,
         <https://europepmc.org/article/PMC/12635344/>,
         <https://pubmed.ncbi.nlm.nih.gov/41266321/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12635344/> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.567101" ;
+    prov:generatedAtTime "2026-04-13T17:29:55.075322" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmcid "PMC12635344" ;
-    pyeuropepmc:pmid "41266321" .
+    pyeuropepmc:pmcid "PMC12635344"^^xsd:string ;
+    pyeuropepmc:pmid "41266321"^^xsd:string .
 
 <https://pubmed.ncbi.nlm.nih.gov/41298006/> a bibo:AcademicArticle ;
-    rdfs:label "Knowledge in Motion: A decade reviewed, a future defined - The ABC Global Alliance 2015-2025 Decade Report and 2025-2035 Global Charter." ;
+    rdfs:label "Knowledge in Motion: A decade reviewed, a future defined - The ABC Global Alliance 2015-2025 Decade Report and 2025-2035 Global Charter."^^xsd:string ;
     meshv:hasDescriptor "Breast Neoplasms",
         "Female",
         "Forecasting",
         "Global Health",
         "Humans",
         "Male" ;
-    dcterms:abstract "Breast cancer remains one of the most significant global health challenges, with approximately 2.3 million new cases diagnosed and 666,000 deaths every year. Advanced breast cancer (ABC) - encompassing locally advanced and metastatic disease - represents the leading cause of breast cancer-related mortality and morbidity worldwide. While early-stage breast cancer has seen remarkable improvements in survival rates in the past decade, outcomes for individuals with ABC remain sobering: only 32 % of women diagnosed with ABC survive five years post-diagnosis, and this figure drops to just 20 % for men. The ABC Global Alliance was established in 2016 as a multi-stakeholder platform dedicated to advanced/metastatic breast cancer. Its vision: to improve and extend the lives of women and men living with ABC in all countries worldwide and to fight for a cure. This special edition of The Breast is both a reflection on the past decade of progress across the ABC landscape, and a forward-looking roadmap for the future. It summarizes findings from the ABC Global Alliance's Global Decade Report 2.0 (2015-2025) and the newly defined ten goals set out in the 2025-2035 ABC Global Charter 2.0, signaling a renewed commitment to advancing ABC care globally over the next decade." ;
+    dcterms:abstract "Breast cancer remains one of the most significant global health challenges, with approximately 2.3 million new cases diagnosed and 666,000 deaths every year. Advanced breast cancer (ABC) - encompassing locally advanced and metastatic disease - represents the leading cause of breast cancer-related mortality and morbidity worldwide. While early-stage breast cancer has seen remarkable improvements in survival rates in the past decade, outcomes for individuals with ABC remain sobering: only 32 % of women diagnosed with ABC survive five years post-diagnosis, and this figure drops to just 20 % for men. The ABC Global Alliance was established in 2016 as a multi-stakeholder platform dedicated to advanced/metastatic breast cancer. Its vision: to improve and extend the lives of women and men living with ABC in all countries worldwide and to fight for a cure. This special edition of The Breast is both a reflection on the past decade of progress across the ABC landscape, and a forward-looking roadmap for the future. It summarizes findings from the ABC Global Alliance's Global Decade Report 2.0 (2015-2025) and the newly defined ten goals set out in the 2025-2035 ABC Global Charter 2.0, signaling a renewed commitment to advancing ABC care globally over the next decade."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/attfield-g>,
+        <https://w3id.org/pyeuropepmc/data#author/cardoso-f>,
+        <https://w3id.org/pyeuropepmc/data#author/gelmon-k>,
+        <https://w3id.org/pyeuropepmc/data#author/lewis-a>,
+        <https://w3id.org/pyeuropepmc/data#author/ventura-r> ;
     dcterms:issued 2025 ;
     dcterms:subject "Abc Global Alliance",
         "Advanced breast cancer",
@@ -854,44 +166,875 @@
         "Humans",
         "Male",
         "Metastatic breast cancer" ;
-    dcterms:title "Knowledge in Motion: A decade reviewed, a future defined - The ABC Global Alliance 2015-2025 Decade Report and 2025-2035 Global Charter." ;
+    dcterms:title "Knowledge in Motion: A decade reviewed, a future defined - The ABC Global Alliance 2015-2025 Decade Report and 2025-2035 Global Charter."^^xsd:string ;
     bibo:doi "10.1016/j.breast.2025.104601"^^xsd:anyURI ;
     owl:sameAs <https://doi.org/10.1016/j.breast.2025.104601>,
         <https://europepmc.org/article/MED/41298006>,
         <https://europepmc.org/article/PMC/12683129/>,
         <https://pubmed.ncbi.nlm.nih.gov/41298006/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12683129/> ;
-    prov:generatedAtTime "2026-04-08T23:19:21.261523" ;
+    prov:generatedAtTime "2026-04-13T17:29:54.256717" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmcid "PMC12683129" ;
-    pyeuropepmc:pmid "41298006" .
+    pyeuropepmc:pmcid "PMC12683129"^^xsd:string ;
+    pyeuropepmc:pmid "41298006"^^xsd:string .
+
+<https://pubmed.ncbi.nlm.nih.gov/41387679/> a bibo:AcademicArticle ;
+    rdfs:label "A multimodal knowledge-enhanced whole-slide pathology foundation model."^^xsd:string ;
+    meshv:hasDescriptor "Computational Biology",
+        "Humans",
+        "Image Processing, Computer-Assisted",
+        "Neoplasms",
+        "Pathology" ;
+    dcterms:abstract "Computational pathology has advanced through foundation models, yet faces challenges in multimodal integration and capturing whole-slide context. Current approaches typically utilize either vision-only or image-caption data, overlooking distinct insights from pathology reports and gene expression profiles. Additionally, most models focus on patch-level analysis, failing to capture comprehensive whole-slide patterns. Here we present mSTAR (Multimodal Self-TAught PRetraining), the pathology foundation model that incorporates three modalities: pathology slides, expert-created reports, and gene expression data, within a unified framework. Our dataset includes 26,169 slide-level modality pairs across 32 cancer types, comprising over 116 million patch images. This approach injects multimodal whole-slide context into patch representations, expanding modeling from single to multiple modalities and from patch-level to slide-level analysis. Across oncological benchmark spanning 97 tasks, mSTAR outperforms previous state-of-the-art models, particularly in molecular prediction and multimodal tasks, revealing that multimodal integration yields greater improvements than simply expanding vision-only datasets."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/data#author/chan-rck>,
+        <https://w3id.org/pyeuropepmc/data#author/chen-h>,
+        <https://w3id.org/pyeuropepmc/data#author/han-a>,
+        <https://w3id.org/pyeuropepmc/data#author/jin-c>,
+        <https://w3id.org/pyeuropepmc/data#author/li-j>,
+        <https://w3id.org/pyeuropepmc/data#author/li-z>,
+        <https://w3id.org/pyeuropepmc/data#author/liang-l>,
+        <https://w3id.org/pyeuropepmc/data#author/lin-h>,
+        <https://w3id.org/pyeuropepmc/data#author/ma-j>,
+        <https://w3id.org/pyeuropepmc/data#author/wang-j>,
+        <https://w3id.org/pyeuropepmc/data#author/wang-x>,
+        <https://w3id.org/pyeuropepmc/data#author/wang-y>,
+        <https://w3id.org/pyeuropepmc/data#author/xu-y>,
+        <https://w3id.org/pyeuropepmc/data#author/yang-s>,
+        <https://w3id.org/pyeuropepmc/data#author/zhang-x>,
+        <https://w3id.org/pyeuropepmc/data#author/zhang-z>,
+        <https://w3id.org/pyeuropepmc/data#author/zhao-c>,
+        <https://w3id.org/pyeuropepmc/data#author/zhou-f>,
+        <https://w3id.org/pyeuropepmc/data#author/zhou-h> ;
+    dcterms:issued 2025 ;
+    dcterms:subject "Computational Biology",
+        "Humans",
+        "Image Processing, Computer-Assisted",
+        "Neoplasms",
+        "Pathology" ;
+    dcterms:title "A multimodal knowledge-enhanced whole-slide pathology foundation model."^^xsd:string ;
+    bibo:doi "10.1038/s41467-025-66220-x"^^xsd:anyURI ;
+    owl:sameAs <https://doi.org/10.1038/s41467-025-66220-x>,
+        <https://europepmc.org/article/MED/41387679>,
+        <https://europepmc.org/article/PMC/12738713/>,
+        <https://pubmed.ncbi.nlm.nih.gov/41387679/>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12738713/> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.621036" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:pmcid "PMC12738713"^^xsd:string ;
+    pyeuropepmc:pmid "41387679"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/almagroprez-c> a foaf:Person ;
+    rdfs:label "Almagro-Pérez C"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.094168" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Almagro-Pérez"^^xsd:string ;
+    foaf:givenName "Cristina"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:name "Almagro-Pérez C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/attfield-g> a foaf:Person ;
+    rdfs:label "Attfield G"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.172659" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Attfield"^^xsd:string ;
+    foaf:givenName "Georgia"^^xsd:string ;
+    foaf:initials "G"^^xsd:string ;
+    foaf:name "Attfield G"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/bowman-t> a foaf:Person ;
+    rdfs:label "Bowman T"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.902209" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Bowman"^^xsd:string ;
+    foaf:givenName "Teri"^^xsd:string ;
+    foaf:initials "T"^^xsd:string ;
+    foaf:name "Bowman T"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/cardoso-f> a foaf:Person ;
+    rdfs:label "Cardoso F"^^xsd:string ;
+    datacite:orcid "0000-0002-6692-2249"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-6692-2249> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.087651" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Cardoso"^^xsd:string ;
+    foaf:givenName "Fatima"^^xsd:string ;
+    foaf:initials "F"^^xsd:string ;
+    foaf:name "Cardoso F"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/chan-rck> a foaf:Person ;
+    rdfs:label "Chan RCK"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.413245" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chan"^^xsd:string ;
+    foaf:givenName "Ronald Cheong Kin"^^xsd:string ;
+    foaf:initials "RCK"^^xsd:string ;
+    foaf:name "Chan RCK"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/chen-b> a foaf:Person ;
+    rdfs:label "Chen B"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.051909" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Bowen"^^xsd:string ;
+    foaf:initials "B"^^xsd:string ;
+    foaf:name "Chen B"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/chen-c> a foaf:Person ;
+    rdfs:label "Chen C"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.224745" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Chengkuan"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:name "Chen C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/chen-cs> a foaf:Person ;
+    rdfs:label "Chen CS"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.266162" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Christina S"^^xsd:string ;
+    foaf:initials "CS"^^xsd:string ;
+    foaf:name "Chen CS"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/chen-h> a foaf:Person ;
+    rdfs:label "Chen H"^^xsd:string ;
+    datacite:orcid "0000-0002-8400-3780"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-8400-3780> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.620863" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Hao"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:name "Chen H"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/chen-rj> a foaf:Person ;
+    rdfs:label "Chen RJ"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.407069" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Richard J"^^xsd:string ;
+    foaf:initials "RJ"^^xsd:string ;
+    foaf:name "Chen RJ"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/conde-j> a foaf:Person ;
+    rdfs:label "Conde J"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.988425" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Conde"^^xsd:string ;
+    foaf:givenName "João"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:name "Conde J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/ding-t> a foaf:Person ;
+    rdfs:label "Ding T"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.180392" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ding"^^xsd:string ;
+    foaf:givenName "Tong"^^xsd:string ;
+    foaf:initials "T"^^xsd:string ;
+    foaf:name "Ding T"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/doucet-p> a foaf:Person ;
+    rdfs:label "Doucet P"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.134558" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Doucet"^^xsd:string ;
+    foaf:givenName "Paul"^^xsd:string ;
+    foaf:initials "P"^^xsd:string ;
+    foaf:name "Doucet P"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/farhi-sl> a foaf:Person ;
+    rdfs:label "Farhi SL"^^xsd:string ;
+    datacite:orcid "0000-0003-1359-4568"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-1359-4568> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.075165" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Farhi"^^xsd:string ;
+    foaf:givenName "Samouil L"^^xsd:string ;
+    foaf:initials "SL"^^xsd:string ;
+    foaf:name "Farhi SL"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/felt-k> a foaf:Person ;
+    rdfs:label "Felt K"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.814252" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Felt"^^xsd:string ;
+    foaf:givenName "Kristen"^^xsd:string ;
+    foaf:initials "K"^^xsd:string ;
+    foaf:name "Felt K"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/gao-c> a foaf:Person ;
+    rdfs:label "Gao C"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.637799" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Gao"^^xsd:string ;
+    foaf:givenName "Ce"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:name "Gao C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/gelmon-k> a foaf:Person ;
+    rdfs:label "Gelmon K"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.256604" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Gelmon"^^xsd:string ;
+    foaf:givenName "Karen"^^xsd:string ;
+    foaf:initials "K"^^xsd:string ;
+    foaf:name "Gelmon K"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/gerber-g> a foaf:Person ;
+    rdfs:label "Gerber G"^^xsd:string ;
+    datacite:orcid "0000-0002-9149-5509"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-9149-5509> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.610730" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Gerber"^^xsd:string ;
+    foaf:givenName "Georg"^^xsd:string ;
+    foaf:initials "G"^^xsd:string ;
+    foaf:name "Gerber G"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/goods-ba> a foaf:Person ;
+    rdfs:label "Goods BA"^^xsd:string ;
+    datacite:orcid "0000-0002-5962-9570"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-5962-9570> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.032487" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Goods"^^xsd:string ;
+    foaf:givenName "Brittany A"^^xsd:string ;
+    foaf:initials "BA"^^xsd:string ;
+    foaf:name "Goods BA"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/han-a> a foaf:Person ;
+    rdfs:label "Han A"^^xsd:string ;
+    datacite:orcid "0000-0003-2245-1972"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-2245-1972> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.336164" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Han"^^xsd:string ;
+    foaf:givenName "Anjia"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:name "Han A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/huang-r> a foaf:Person ;
+    rdfs:label "Huang R"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.548562" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Huang"^^xsd:string ;
+    foaf:givenName "Ruixu"^^xsd:string ;
+    foaf:initials "R"^^xsd:string ;
+    foaf:name "Huang R"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/ishikawa-s> a foaf:Person ;
+    rdfs:label "Ishikawa S"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.568394" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ishikawa"^^xsd:string ;
+    foaf:givenName "Shumpei"^^xsd:string ;
+    foaf:initials "S"^^xsd:string ;
+    foaf:name "Ishikawa S"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/jaume-g> a foaf:Person ;
+    rdfs:label "Jaume G"^^xsd:string ;
+    datacite:orcid "0000-0002-3832-1390"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-3832-1390> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.816321" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Jaume"^^xsd:string ;
+    foaf:givenName "Guillaume"^^xsd:string ;
+    foaf:initials "G"^^xsd:string ;
+    foaf:name "Jaume G"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/jin-c> a foaf:Person ;
+    rdfs:label "Jin C"^^xsd:string ;
+    datacite:orcid "0000-0002-3522-3592"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-3522-3592> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.575938" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Jin"^^xsd:string ;
+    foaf:givenName "Cheng"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:name "Jin C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/kawabe-a> a foaf:Person ;
+    rdfs:label "Kawabe A"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.355346" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Kawabe"^^xsd:string ;
+    foaf:givenName "Akihiro"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:name "Kawabe A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/kim-a> a foaf:Person ;
+    rdfs:label "Kim A"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.927082" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Kim"^^xsd:string ;
+    foaf:givenName "Ahrong"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:name "Kim A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/komura-d> a foaf:Person ;
+    rdfs:label "Komura D"^^xsd:string ;
+    datacite:orcid "0000-0002-0038-728X"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-0038-728X> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.312679" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Komura"^^xsd:string ;
+    foaf:givenName "Daisuke"^^xsd:string ;
+    foaf:initials "D"^^xsd:string ;
+    foaf:name "Komura D"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/krishna-s> a foaf:Person ;
+    rdfs:label "Krishna S"^^xsd:string ;
+    datacite:orcid "0000-0002-7457-9700"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-7457-9700> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.769445" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Krishna"^^xsd:string ;
+    foaf:givenName "Sachi"^^xsd:string ;
+    foaf:initials "S"^^xsd:string ;
+    foaf:name "Krishna S"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/le-lp> a foaf:Person ;
+    rdfs:label "Le LP"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.695145" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Le"^^xsd:string ;
+    foaf:givenName "Long Phi"^^xsd:string ;
+    foaf:initials "LP"^^xsd:string ;
+    foaf:name "Le LP"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/lewis-a> a foaf:Person ;
+    rdfs:label "Lewis A"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.213927" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lewis"^^xsd:string ;
+    foaf:givenName "Alexandra"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:name "Lewis A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/li-j> a foaf:Person ;
+    rdfs:label "Li J"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.731347" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Li"^^xsd:string ;
+    foaf:givenName "Jinbang"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:name "Li J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/li-z> a foaf:Person ;
+    rdfs:label "Li Z"^^xsd:string ;
+    datacite:orcid "0009-0009-3613-9403"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0009-0009-3613-9403> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.997000" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Li"^^xsd:string ;
+    foaf:givenName "Zhenhui"^^xsd:string ;
+    foaf:initials "Z"^^xsd:string ;
+    foaf:name "Li Z"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/liang-l> a foaf:Person ;
+    rdfs:label "Liang L"^^xsd:string ;
+    datacite:orcid "0000-0001-5302-2754"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-5302-2754> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.476149" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Liang"^^xsd:string ;
+    foaf:givenName "Li"^^xsd:string ;
+    foaf:initials "L"^^xsd:string ;
+    foaf:name "Liang L"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/lim-k> a foaf:Person ;
+    rdfs:label "Lim K"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.845089" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lim"^^xsd:string ;
+    foaf:givenName "KeeSiang"^^xsd:string ;
+    foaf:initials "K"^^xsd:string ;
+    foaf:name "Lim K"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/lin-h> a foaf:Person ;
+    rdfs:label "Lin H"^^xsd:string ;
+    datacite:orcid "0000-0002-6799-9352"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-6799-9352> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.067653" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lin"^^xsd:string ;
+    foaf:givenName "Huangjing"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:name "Lin H"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/lu-my> a foaf:Person ;
+    rdfs:label "Lu MY"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.508382" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lu"^^xsd:string ;
+    foaf:givenName "Ming Y"^^xsd:string ;
+    foaf:initials "MY"^^xsd:string ;
+    foaf:name "Lu MY"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/ma-j> a foaf:Person ;
+    rdfs:label "Ma J"^^xsd:string ;
+    datacite:orcid "0000-0001-8532-4466"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-8532-4466> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.503916" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ma"^^xsd:string ;
+    foaf:givenName "Jiabo"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:name "Ma J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/mahmood-f> a foaf:Person ;
+    rdfs:label "Mahmood F"^^xsd:string ;
+    datacite:orcid "0000-0001-7587-1562"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-7587-1562> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.738029" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Mahmood"^^xsd:string ;
+    foaf:givenName "Faisal"^^xsd:string ;
+    foaf:initials "F"^^xsd:string ;
+    foaf:name "Mahmood F"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/marcuello-c> a foaf:Person ;
+    rdfs:label "Marcuello C"^^xsd:string ;
+    datacite:orcid "0000-0003-3459-8605"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-3459-8605> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.799131" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Marcuello"^^xsd:string ;
+    foaf:givenName "Carlos"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:name "Marcuello C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/miyagi-y> a foaf:Person ;
+    rdfs:label "Miyagi Y"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.518123" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Miyagi"^^xsd:string ;
+    foaf:givenName "Yohei"^^xsd:string ;
+    foaf:initials "Y"^^xsd:string ;
+    foaf:name "Miyagi Y"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/nelson-j> a foaf:Person ;
+    rdfs:label "Nelson J"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.597087" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Nelson"^^xsd:string ;
+    foaf:givenName "Jack"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:name "Nelson J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/nisini-g> a foaf:Person ;
+    rdfs:label "Nisini G"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.893066" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Nisini"^^xsd:string ;
+    foaf:givenName "Giacomo"^^xsd:string ;
+    foaf:initials "G"^^xsd:string ;
+    foaf:name "Nisini G"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/ochi-m> a foaf:Person ;
+    rdfs:label "Ochi M"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.396065" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ochi"^^xsd:string ;
+    foaf:givenName "Mieko"^^xsd:string ;
+    foaf:initials "M"^^xsd:string ;
+    foaf:name "Ochi M"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/peng-t> a foaf:Person ;
+    rdfs:label "Peng T"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.653251" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Peng"^^xsd:string ;
+    foaf:givenName "Tingying"^^xsd:string ;
+    foaf:initials "T"^^xsd:string ;
+    foaf:name "Peng T"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/pfaff-kl> a foaf:Person ;
+    rdfs:label "Pfaff KL"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.859500" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Pfaff"^^xsd:string ;
+    foaf:givenName "Kathleen L"^^xsd:string ;
+    foaf:initials "KL"^^xsd:string ;
+    foaf:name "Pfaff KL"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/pokrovsky-vs> a foaf:Person ;
+    rdfs:label "Pokrovsky VS"^^xsd:string ;
+    datacite:orcid "0000-0003-4006-9320"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-4006-9320> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
+    prov:generatedAtTime "2026-04-13T17:29:55.942227" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Pokrovsky"^^xsd:string ;
+    foaf:givenName "Vadim S"^^xsd:string ;
+    foaf:initials "VS"^^xsd:string ;
+    foaf:name "Pokrovsky VS"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/robertson-h> a foaf:Person ;
+    rdfs:label "Robertson H"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.005062" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Robertson"^^xsd:string ;
+    foaf:givenName "Harry"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:name "Robertson H"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/rodig-sj> a foaf:Person ;
+    rdfs:label "Rodig SJ"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.945170" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Rodig"^^xsd:string ;
+    foaf:givenName "Scott J"^^xsd:string ;
+    foaf:initials "SJ"^^xsd:string ;
+    foaf:name "Rodig SJ"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/ruggeri-fs> a foaf:Person ;
+    rdfs:label "Ruggeri FS"^^xsd:string ;
+    datacite:orcid "0000-0002-1232-1907"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-1232-1907> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> ;
+    prov:generatedAtTime "2026-04-13T17:29:56.038322" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ruggeri"^^xsd:string ;
+    foaf:givenName "Francesco Simone"^^xsd:string ;
+    foaf:initials "FS"^^xsd:string ;
+    foaf:name "Ruggeri FS"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/sahai-s> a foaf:Person ;
+    rdfs:label "Sahai S"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.182591" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Sahai"^^xsd:string ;
+    foaf:givenName "Sharifa"^^xsd:string ;
+    foaf:initials "S"^^xsd:string ;
+    foaf:name "Sahai S"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/sato-s> a foaf:Person ;
+    rdfs:label "Sato S"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.436662" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Sato"^^xsd:string ;
+    foaf:givenName "Shinya"^^xsd:string ;
+    foaf:initials "S"^^xsd:string ;
+    foaf:name "Sato S"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/shaban-m> a foaf:Person ;
+    rdfs:label "Shaban M"^^xsd:string ;
+    datacite:orcid "0000-0001-6115-1505"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-6115-1505> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.886007" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Shaban"^^xsd:string ;
+    foaf:givenName "Muhammad"^^xsd:string ;
+    foaf:initials "M"^^xsd:string ;
+    foaf:name "Shaban M"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/song-ah> a foaf:Person ;
+    rdfs:label "Song AH"^^xsd:string ;
+    datacite:orcid "0000-0001-9356-9156"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-9356-9156> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.322727" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Song"^^xsd:string ;
+    foaf:givenName "Andrew H"^^xsd:string ;
+    foaf:initials "AH"^^xsd:string ;
+    foaf:name "Song AH"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/tran-m> a foaf:Person ;
+    rdfs:label "Tran M"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.681400" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Tran"^^xsd:string ;
+    foaf:givenName "Miles"^^xsd:string ;
+    foaf:initials "M"^^xsd:string ;
+    foaf:name "Tran M"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/vaidya-aj> a foaf:Person ;
+    rdfs:label "Vaidya AJ"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.665553" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Vaidya"^^xsd:string ;
+    foaf:givenName "Anurag J"^^xsd:string ;
+    foaf:initials "AJ"^^xsd:string ;
+    foaf:name "Vaidya AJ"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/ventura-r> a foaf:Person ;
+    rdfs:label "Ventura R"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.128090" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ventura"^^xsd:string ;
+    foaf:givenName "Roberta"^^xsd:string ;
+    foaf:initials "R"^^xsd:string ;
+    foaf:name "Ventura R"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/wagner-sj> a foaf:Person ;
+    rdfs:label "Wagner SJ"^^xsd:string ;
+    datacite:orcid "0000-0003-3763-2282"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-3763-2282> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.252901" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wagner"^^xsd:string ;
+    foaf:givenName "Sophia J"^^xsd:string ;
+    foaf:initials "SJ"^^xsd:string ;
+    foaf:name "Wagner SJ"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/wang-h> a foaf:Person ;
+    rdfs:label "Wang H"^^xsd:string ;
+    datacite:orcid "0000-0001-6773-8382"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-6773-8382> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.503193" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Huan"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:name "Wang H"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/wang-j> a foaf:Person ;
+    rdfs:label "Wang J"^^xsd:string ;
+    datacite:orcid "0000-0002-6923-4097"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-6923-4097> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.242710" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Jiguang"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:name "Wang J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/wang-x> a foaf:Person ;
+    rdfs:label "Wang X"^^xsd:string ;
+    datacite:orcid "0000-0002-5122-2418"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-5122-2418> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.151778" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Xin"^^xsd:string ;
+    foaf:initials "X"^^xsd:string ;
+    foaf:name "Wang X"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/wang-y> a foaf:Person ;
+    rdfs:label "Wang Y"^^xsd:string ;
+    datacite:orcid "0009-0002-7606-9816"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0009-0002-7606-9816> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.363161" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Yihui"^^xsd:string ;
+    foaf:initials "Y"^^xsd:string ;
+    foaf:name "Wang Y"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/wei-k> a foaf:Person ;
+    rdfs:label "Wei K"^^xsd:string ;
+    datacite:orcid "0000-0002-1821-167X"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-1821-167X> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.983857" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wei"^^xsd:string ;
+    foaf:givenName "Kevin"^^xsd:string ;
+    foaf:initials "K"^^xsd:string ;
+    foaf:name "Wei K"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/williamson-dfk> a foaf:Person ;
+    rdfs:label "Williamson DFK"^^xsd:string ;
+    datacite:orcid "0000-0003-1745-8846"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-1745-8846> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.965607" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Williamson"^^xsd:string ;
+    foaf:givenName "Drew F K"^^xsd:string ;
+    foaf:initials "DFK"^^xsd:string ;
+    foaf:name "Williamson DFK"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/xu-y> a foaf:Person ;
+    rdfs:label "Xu Y"^^xsd:string ;
+    datacite:orcid "0000-0002-9657-3107"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-9657-3107> ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.295926" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Xu"^^xsd:string ;
+    foaf:givenName "Yingxue"^^xsd:string ;
+    foaf:initials "Y"^^xsd:string ;
+    foaf:name "Xu Y"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/yang-s> a foaf:Person ;
+    rdfs:label "Yang S"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.652046" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Yang"^^xsd:string ;
+    foaf:givenName "Shu"^^xsd:string ;
+    foaf:initials "S"^^xsd:string ;
+    foaf:name "Yang S"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/yeaton-a> a foaf:Person ;
+    rdfs:label "Yeaton A"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> ;
+    prov:generatedAtTime "2026-04-13T17:29:54.723446" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Yeaton"^^xsd:string ;
+    foaf:givenName "Anna"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:name "Yeaton A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/yokose-t> a foaf:Person ;
+    rdfs:label "Yokose T"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:52.476438" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Yokose"^^xsd:string ;
+    foaf:givenName "Tomoyuki"^^xsd:string ;
+    foaf:initials "T"^^xsd:string ;
+    foaf:name "Yokose T"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/zhang-a> a foaf:Person ;
+    rdfs:label "Zhang A"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> ;
+    prov:generatedAtTime "2026-04-13T17:29:51.599783" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Andrew"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:name "Zhang A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/zhang-x> a foaf:Person ;
+    rdfs:label "Zhang X"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:49.556128" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Xiuming"^^xsd:string ;
+    foaf:initials "X"^^xsd:string ;
+    foaf:name "Zhang X"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/zhang-z> a foaf:Person ;
+    rdfs:label "Zhang Z"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.797894" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Zhengyu"^^xsd:string ;
+    foaf:initials "Z"^^xsd:string ;
+    foaf:name "Zhang Z"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/zhao-c> a foaf:Person ;
+    rdfs:label "Zhao C"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.864576" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhao"^^xsd:string ;
+    foaf:givenName "Chenglong"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:name "Zhao C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/zhou-f> a foaf:Person ;
+    rdfs:label "Zhou F"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.433461" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhou"^^xsd:string ;
+    foaf:givenName "Fengtao"^^xsd:string ;
+    foaf:initials "F"^^xsd:string ;
+    foaf:name "Zhou F"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/data#author/zhou-h> a foaf:Person ;
+    rdfs:label "Zhou H"^^xsd:string ;
+    org:memberOf <https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> ;
+    prov:generatedAtTime "2026-04-13T17:29:48.929335" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhou"^^xsd:string ;
+    foaf:givenName "Huajun"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:name "Zhou H"^^xsd:string .
 
 <https://w3id.org/pyeuropepmc/data#organization/advanced-breast-cancer-abc-global_96148a> a org:Organization,
         pyeuropepmc:BaseEntity ;
-    rdfs:label "Advanced Breast Cancer (ABC) Global Alliance, Lisbon, Portugal. Electronic address: fcardoso@abcglobalalliance.org." ;
-    prov:generatedAtTime "2026-04-08T23:19:21.305274" ;
+    rdfs:label "Advanced Breast Cancer (ABC) Global Alliance, Lisbon, Portugal. Electronic address: fcardoso@abcglobalalliance.org."^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:29:54.074667" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/617a733e8cea_617a73> a org:Organization,
         pyeuropepmc:BaseEntity ;
-    rdfs:label "Laboratorio de Microscopias Avanzadas (LMA) Universidad de Zaragoza Zaragoza 50018 Spain." ;
-    prov:generatedAtTime "2026-04-08T23:19:22.554445" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" .
-
-<https://w3id.org/pyeuropepmc/data#organization/fudan-university-shanghai-cancer-center_4103c4> a org:Organization,
-        pyeuropepmc:BaseEntity ;
-    rdfs:label "Department of Pancreatic Surgery, Fudan University Shanghai Cancer Center, Shanghai, China." ;
-    prov:generatedAtTime "2026-04-08T23:19:23.101337" ;
+    rdfs:label "Laboratorio de Microscopias Avanzadas (LMA) Universidad de Zaragoza Zaragoza 50018 Spain."^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:29:55.777344" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/broad-institute_3936cc> a org:Organization,
         pyeuropepmc:BaseEntity ;
-    rdfs:label "Spatial Technology Platform, Broad Institute of MIT and Harvard, Cambridge, MA, USA." ;
-    prov:generatedAtTime "2026-04-08T23:19:21.605725" ;
+    rdfs:label "Spatial Technology Platform, Broad Institute of MIT and Harvard, Cambridge, MA, USA."^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:29:54.489461" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#organization/hong-kong-university-of-science-and_32b32a> a org:Organization,
+        pyeuropepmc:BaseEntity ;
+    rdfs:label "Department of Computer Science and Engineering, The Hong Kong University of Science and Technology, Hong Kong SAR, China."^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:29:48.272083" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/harvard-medical-school_970c33> a org:Organization,
         pyeuropepmc:BaseEntity ;
-    rdfs:label "Department of Pathology, Mass General Brigham, Harvard Medical School, Boston, MA, USA." ;
-    prov:generatedAtTime "2026-04-08T23:19:19.048190" ;
+    rdfs:label "Department of Pathology, Mass General Brigham, Harvard Medical School, Boston, MA, USA."^^xsd:string ;
+    prov:generatedAtTime "2026-04-13T17:29:51.154131" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .

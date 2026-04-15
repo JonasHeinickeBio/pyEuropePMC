@@ -989,6 +989,10 @@ def _create_enrichment_paper_entity(
         influential_citation_count=paper_data.get("influential_citation_count"),
         cited_by_count=paper_data.get("cited_by_count"),
         reference_count=paper_data.get("reference_count"),
+        crossref_citation_count=paper_data.get("citation_count"),
+        semantic_scholar_citation_count=paper_data.get("citation_count"),
+        openalex_citation_count=paper_data.get("cited_by_count")
+        or paper_data.get("citation_count"),
         is_oa=paper_data.get("is_oa"),
         oa_status=paper_data.get("oa_status"),
         oa_url=paper_data.get("oa_url"),
