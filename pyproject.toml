@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "1.13.0"
+version = "1.14.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
@@ -101,8 +101,6 @@ markers = [
   "model: mark tests that require ML model dependencies (sentence-transformers, rapidfuzz, etc.)",
 ]
 filterwarnings = [
-  "ignore::DeprecationWarning",
-  "ignore::PendingDeprecationWarning",
   "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning",
   "ignore:.*Accessing the 'model_computed_fields' attribute on the instance is deprecated.*:DeprecationWarning",
 ]
@@ -279,11 +277,10 @@ exclude_dirs = [
 paths = ["src"]
 
 [tool.mypy]
-python_version = "3.10"
-strict = false
+python_version = "3.12"
+strict = true
 ignore_missing_imports = true
 exclude = "(tests/|examples/|.*_backup.*|.*_temp.*)"
-disable_error_code = ["misc", "import-untyped", "type-arg", "union-attr", "return-value", "assignment", "call-arg", "attr-defined"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.models.generated"
@@ -299,35 +296,123 @@ disable_error_code = ["attr-defined", "name-defined"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.linkml_introspection"
-disable_error_code = ["union-attr", "var-annotated", "name-defined", "no-untyped-def", "arg-type", "attr-defined", "has-type", "operator", "call-overload"]
+disable_error_code = [
+  "union-attr",
+  "var-annotated",
+  "name-defined",
+  "no-untyped-def",
+  "arg-type",
+  "attr-defined",
+  "has-type",
+  "operator",
+  "call-overload",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.runtime_config"
-disable_error_code = ["no-untyped-call", "no-untyped-def", "var-annotated", "assignment", "attr-defined", "dict-item", "arg-type", "union-attr"]
+disable_error_code = [
+  "no-untyped-call",
+  "no-untyped-def",
+  "var-annotated",
+  "assignment",
+  "attr-defined",
+  "dict-item",
+  "arg-type",
+  "union-attr",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.builders.schema_validation"
-disable_error_code = ["no-untyped-def", "dict-item", "union-attr", "arg-type", "name-defined"]
+disable_error_code = [
+  "no-untyped-def",
+  "dict-item",
+  "union-attr",
+  "arg-type",
+  "name-defined",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.fulltext_parser"
-disable_error_code = ["var-annotated", "name-defined", "attr-defined", "call-arg", "union-attr", "dict-item", "no-untyped-def", "dict-item", "no-untyped-def"]
+disable_error_code = [
+  "var-annotated",
+  "name-defined",
+  "attr-defined",
+  "call-arg",
+  "union-attr",
+  "dict-item",
+  "no-untyped-def",
+  "dict-item",
+  "no-untyped-def",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.builders.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item"]
+disable_error_code = [
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+]
 
 [[tool.mypy.overrides]]
 module = "audit_rdf_linkml_coverage"
-disable_error_code = ["var-annotated", "arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "assignment", "index", "attr-defined", "call-arg", "no-untyped-def", "no-untyped-call", "import-untyped"]
+disable_error_code = [
+  "var-annotated",
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "assignment",
+  "index",
+  "attr-defined",
+  "call-arg",
+  "no-untyped-def",
+  "no-untyped-call",
+  "import-untyped",
+]
 
 [[tool.mypy.overrides]]
 module = "benchmark_pipeline"
-disable_error_code = ["var-annotated", "arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "assignment", "index", "attr-defined", "call-arg", "no-untyped-def", "no-untyped-call", "import-untyped"]
+disable_error_code = [
+  "var-annotated",
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "assignment",
+  "index",
+  "attr-defined",
+  "call-arg",
+  "no-untyped-def",
+  "no-untyped-call",
+  "import-untyped",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "var-annotated", "no-untyped-def", "no-untyped-call", "attr-defined", "call-arg"]
+disable_error_code = [
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "var-annotated",
+  "no-untyped-def",
+  "no-untyped-call",
+  "attr-defined",
+  "call-arg",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.rdf_utils"
@@ -335,52 +420,212 @@ disable_error_code = ["var-annotated", "name-defined", "union-attr"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.enrichment.pubtator"
-disable_error_code = ["var-annotated", "arg-type", "name-defined", "dict-item", "attr-defined", "union-attr", "has-type", "operator", "call-overload", "no-untyped-def", "call-arg", "assignment", "no-untyped-call"]
+disable_error_code = [
+  "var-annotated",
+  "arg-type",
+  "name-defined",
+  "dict-item",
+  "attr-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "no-untyped-def",
+  "call-arg",
+  "assignment",
+  "no-untyped-call",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.enrichment.enricher"
-disable_error_code = ["attr-defined", "arg-type", "name-defined", "union-attr", "dict-item", "call-arg", "var-annotated", "assignment", "has-type", "operator", "call-overload", "no-untyped-def", "no-untyped-call"]
+disable_error_code = [
+  "attr-defined",
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "dict-item",
+  "call-arg",
+  "var-annotated",
+  "assignment",
+  "has-type",
+  "operator",
+  "call-overload",
+  "no-untyped-def",
+  "no-untyped-call",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.enrichment.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "attr-defined", "var-annotated", "assignment", "dict-item", "call-arg"]
+disable_error_code = [
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "attr-defined",
+  "var-annotated",
+  "assignment",
+  "dict-item",
+  "call-arg",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.models.generated_updated"
-disable_error_code = ["arg-type", "attr-defined", "dict-item", "union-attr", "has-type", "operator", "call-overload", "call-arg", "no-untyped-def", "var-annotated"]
+disable_error_code = [
+  "arg-type",
+  "attr-defined",
+  "dict-item",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "call-arg",
+  "no-untyped-def",
+  "var-annotated",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.models.generated_new"
-disable_error_code = ["arg-type", "attr-defined", "dict-item", "union-attr", "has-type", "operator", "call-overload", "call-arg", "no-untyped-def", "var-annotated"]
+disable_error_code = [
+  "arg-type",
+  "attr-defined",
+  "dict-item",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "call-arg",
+  "no-untyped-def",
+  "var-annotated",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.models.*"
-disable_error_code = ["dict-item", "arg-type", "union-attr", "has-type", "operator", "call-overload", "call-arg", "no-untyped-def", "var-annotated", "no-redef"]
+disable_error_code = [
+  "dict-item",
+  "arg-type",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "call-arg",
+  "no-untyped-def",
+  "var-annotated",
+  "no-redef",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.processors"
-disable_error_code = ["arg-type", "name-defined", "var-annotated", "union-attr", "has-type", "operator", "call-overload", "dict-item", "call-arg", "assignment", "no-untyped-call", "no-untyped-def"]
+disable_error_code = [
+  "arg-type",
+  "name-defined",
+  "var-annotated",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "call-arg",
+  "assignment",
+  "no-untyped-call",
+  "no-untyped-def",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.rdf_mapper"
-disable_error_code = ["var-annotated", "operator", "call-overload", "arg-type", "name-defined", "union-attr", "has-type", "call-arg", "dict-item", "assignment", "attr-defined", "no-redef", "index"]
+disable_error_code = [
+  "var-annotated",
+  "operator",
+  "call-overload",
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "call-arg",
+  "dict-item",
+  "assignment",
+  "attr-defined",
+  "no-redef",
+  "index",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.validation"
-disable_error_code = ["dict-item", "var-annotated", "arg-type", "attr-defined", "union-attr", "has-type", "no-untyped-def"]
+disable_error_code = [
+  "dict-item",
+  "var-annotated",
+  "arg-type",
+  "attr-defined",
+  "union-attr",
+  "has-type",
+  "no-untyped-def",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.builders.from_parser"
-disable_error_code = ["dict-item", "arg-type", "name-defined", "var-annotated", "union-attr", "has-type", "operator", "call-overload", "assignment", "no-untyped-call"]
+disable_error_code = [
+  "dict-item",
+  "arg-type",
+  "name-defined",
+  "var-annotated",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "assignment",
+  "no-untyped-call",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.parsers.affiliation_parser"
-disable_error_code = ["var-annotated", "name-defined", "arg-type", "union-attr", "has-type", "operator", "call-overload", "dict-item", "attr-defined", "assignment", "no-untyped-call", "no-untyped-def"]
+disable_error_code = [
+  "var-annotated",
+  "name-defined",
+  "arg-type",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "attr-defined",
+  "assignment",
+  "no-untyped-call",
+  "no-untyped-def",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.parsers.reference_parser"
-disable_error_code = ["var-annotated", "name-defined", "arg-type", "union-attr", "has-type", "operator", "call-overload", "dict-item", "attr-defined", "call-arg", "assignment", "no-untyped-call", "no-untyped-def"]
+disable_error_code = [
+  "var-annotated",
+  "name-defined",
+  "arg-type",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "attr-defined",
+  "call-arg",
+  "assignment",
+  "no-untyped-call",
+  "no-untyped-def",
+]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.parsers.*"
-disable_error_code = ["var-annotated", "name-defined", "arg-type", "union-attr", "has-type", "operator", "call-overload", "dict-item", "attr-defined", "call-arg", "assignment", "no-untyped-def", "no-untyped-call"]
+disable_error_code = [
+  "var-annotated",
+  "name-defined",
+  "arg-type",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "attr-defined",
+  "call-arg",
+  "assignment",
+  "no-untyped-def",
+  "no-untyped-call",
+]
