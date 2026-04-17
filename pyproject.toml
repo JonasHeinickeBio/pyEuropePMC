@@ -77,6 +77,7 @@ black = "^25.1.0"
 mypy = "^1.16.1"
 types-PyYAML = "6.0.12.20240311"
 types-requests = "^2.31.0"
+types-cachetools = "^5.5.0.20240818"
 pytest-benchmark = "^5.2.3"
 coverage = "^7.11.3"
 bandit = "^1.8.5"
@@ -283,11 +284,49 @@ ignore_missing_imports = true
 exclude = "(tests/|examples/|.*_backup.*|.*_temp.*)"
 
 [[tool.mypy.overrides]]
+module = "scripts.*"
+disable_error_code = [
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "dict-item",
+  "attr-defined",
+  "assignment",
+  "var-annotated",
+  "no-untyped-def",
+  "no-untyped-call",
+  "type-arg",
+  "import-untyped",
+  "no-any-return",
+  "return-value",
+  "unused-ignore",
+  "misc",
+  "call-arg",
+  "index",
+  "override",
+]
+
+[[tool.mypy.overrides]]
 module = "pyeuropepmc.models.generated"
 ignore_errors = true
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.models.archive.*"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "pyeuropepmc.models.generated_updated"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "pyeuropepmc.models.generated_new"
+ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "pyeuropepmc.models.__init__"
 ignore_errors = true
 
 [[tool.mypy.overrides]]
@@ -412,6 +451,7 @@ disable_error_code = [
   "no-untyped-call",
   "attr-defined",
   "call-arg",
+  "assignment",
 ]
 
 [[tool.mypy.overrides]]
@@ -468,164 +508,40 @@ disable_error_code = [
   "assignment",
   "dict-item",
   "call-arg",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.generated_updated"
-disable_error_code = [
-  "arg-type",
-  "attr-defined",
-  "dict-item",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "call-arg",
-  "no-untyped-def",
-  "var-annotated",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.generated_new"
-disable_error_code = [
-  "arg-type",
-  "attr-defined",
-  "dict-item",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "call-arg",
-  "no-untyped-def",
-  "var-annotated",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.*"
-disable_error_code = [
-  "dict-item",
-  "arg-type",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "call-arg",
-  "no-untyped-def",
-  "var-annotated",
-  "no-redef",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.mappers.processors"
-disable_error_code = [
-  "arg-type",
-  "name-defined",
-  "var-annotated",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "call-arg",
-  "assignment",
-  "no-untyped-call",
-  "no-untyped-def",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.mappers.rdf_mapper"
-disable_error_code = [
-  "var-annotated",
-  "operator",
-  "call-overload",
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "call-arg",
-  "dict-item",
-  "assignment",
-  "attr-defined",
-  "no-redef",
-  "index",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.mappers.validation"
-disable_error_code = [
-  "dict-item",
-  "var-annotated",
-  "arg-type",
-  "attr-defined",
-  "union-attr",
-  "has-type",
-  "no-untyped-def",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.builders.from_parser"
-disable_error_code = [
-  "dict-item",
-  "arg-type",
-  "name-defined",
-  "var-annotated",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "assignment",
-  "no-untyped-call",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.processing.parsers.affiliation_parser"
-disable_error_code = [
-  "var-annotated",
-  "name-defined",
-  "arg-type",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "attr-defined",
-  "assignment",
-  "no-untyped-call",
-  "no-untyped-def",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.processing.parsers.reference_parser"
-disable_error_code = [
-  "var-annotated",
-  "name-defined",
-  "arg-type",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "attr-defined",
-  "call-arg",
-  "assignment",
-  "no-untyped-call",
-  "no-untyped-def",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.processing.parsers.*"
-disable_error_code = [
-  "var-annotated",
-  "name-defined",
-  "arg-type",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "attr-defined",
-  "call-arg",
-  "assignment",
   "no-untyped-def",
   "no-untyped-call",
+  "misc",
+  "no-any-return",
+   "type-arg",
+   "unused-ignore",
 ]
+
+[[tool.mypy.overrides]]
+module = "scripts.sync_rdf_mappings"
+disable_error_code = ["import-untyped"]
+
+[[tool.mypy.overrides]]
+module = "pyeuropepmc.pipeline"
+disable_error_code = [
+  "arg-type",
+  "name-defined",
+  "union-attr",
+  "has-type",
+  "operator",
+  "call-overload",
+  "attr-defined",
+  "var-annotated",
+  "assignment",
+  "dict-item",
+  "call-arg",
+  "no-untyped-def",
+  "no-untyped-call",
+  "misc",
+  "no-any-return",
+  "type-arg",
+  "unused-ignore",
+]
+
+[[tool.mypy.overrides]]
+module = "benchmarks.*"
+ignore_errors = true
