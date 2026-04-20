@@ -203,14 +203,15 @@ class RuntimeConfig:
     # Named Graphs Configuration
     def get_named_graphs_config(self) -> dict[str, Any]:
         """Get the named graphs configuration."""
-        return self._config.get("named_graphs", {})
+        return self._config.get("named_graphs", {})  # type: ignore[no-any-return]
 
     def get_named_graph_uri(self, graph_name: str) -> str | None:
         """Get the URI for a specific named graph."""
         graphs = self.get_named_graphs_config()
         graph_config = graphs.get(graph_name, {})
         if isinstance(graph_config, dict) and graph_config.get("enabled", True):
-            return graph_config.get("uri_base")
+            uri_base = graph_config.get("uri_base")
+            return uri_base if isinstance(uri_base, str) else None
         return None
 
     def get_enabled_named_graphs(self) -> dict[str, str]:
@@ -220,106 +221,123 @@ class RuntimeConfig:
         for name, config in graphs.items():
             if isinstance(config, dict) and config.get("enabled", True):
                 uri = config.get("uri_base")
-                if uri:
+                if uri and isinstance(uri, str):
                     enabled[name] = uri
         return enabled
 
     def are_named_graphs_enabled(self) -> bool:
         """Check if named graphs are enabled globally."""
-        return self._config.get("named_graphs", {}).get("enabled", True)
+        enabled = self._config.get("named_graphs", {}).get("enabled", True)
+        return enabled if isinstance(enabled, bool) else True
 
     # URI Configuration
     def get_base_uri(self) -> str:
         """Get the base URI for data."""
-        return self._config.get("uri", {}).get("base", "https://w3id.org/pyeuropepmc/")
+        return str(self._config.get("uri", {}).get("base", "https://w3id.org/pyeuropepmc/"))
 
     def get_data_uri(self) -> str:
         """Get the data namespace URI."""
-        return self._config.get("uri", {}).get("data", "https://w3id.org/pyeuropepmc/data#")
+        return str(self._config.get("uri", {}).get("data", "https://w3id.org/pyeuropepmc/data#"))
 
     def get_vocab_uri(self) -> str:
         """Get the vocabulary namespace URI."""
-        return self._config.get("uri", {}).get("vocab", "https://w3id.org/pyeuropepmc/vocab#")
+        return str(self._config.get("uri", {}).get("vocab", "https://w3id.org/pyeuropepmc/vocab#"))
 
     # Knowledge Graph Structure
     def get_kg_structure(self) -> dict[str, Any]:
         """Get the knowledge graph structure configuration."""
-        return self._config.get("kg_structure", {})
+        return self._config.get("kg_structure", {})  # type: ignore[no-any-return]
 
     def should_include_content(self) -> bool:
         """Check if content entities should be included."""
-        return self.get_kg_structure().get("include_content", True)
+        include = self.get_kg_structure().get("include_content", True)
+        return include if isinstance(include, bool) else True
 
     def should_include_metadata(self) -> bool:
         """Check if metadata entities should be included."""
-        return self.get_kg_structure().get("include_metadata", True)
+        include = self.get_kg_structure().get("include_metadata", True)
+        return include if isinstance(include, bool) else True
 
     def get_default_kg_type(self) -> str:
         """Get the default knowledge graph type."""
-        return self.get_kg_structure().get("default_type", "complete")
+        default_type = self.get_kg_structure().get("default_type", "complete")
+        return default_type if isinstance(default_type, str) else "complete"
 
     def is_feature_enabled(self, feature_name: str) -> bool:
         """Check if a KG feature is enabled."""
-        return self.get_kg_structure().get(feature_name, False)
+        enabled = self.get_kg_structure().get(feature_name, False)
+        return enabled if isinstance(enabled, bool) else False
 
     # Quality Configuration
     def get_quality_config(self) -> dict[str, Any]:
         """Get the quality configuration."""
-        return self._config.get("quality", {})
+        return self._config.get("quality", {})  # type: ignore[no-any-return]
 
     def get_quality_threshold(self, level: str) -> float:
         """Get a quality threshold value."""
         thresholds = self.get_quality_config().get("thresholds", {})
-        return thresholds.get(level, 0.0)
+        threshold = thresholds.get(level, 0.0)
+        return threshold if isinstance(threshold, int | float) else 0.0
 
     def is_validation_enabled(self) -> bool:
         """Check if validation is enabled."""
         validation = self.get_quality_config().get("validation", {})
-        return validation.get("enabled", True)
+        enabled = validation.get("enabled", True) if isinstance(validation, dict) else True
+        return enabled if isinstance(enabled, bool) else True
 
     def is_strict_mode(self) -> bool:
         """Check if strict validation mode is enabled."""
         validation = self.get_quality_config().get("validation", {})
-        return validation.get("strict_mode", False)
+        strict = validation.get("strict_mode", False) if isinstance(validation, dict) else False
+        return strict if isinstance(strict, bool) else False
 
     # Performance Configuration
     def get_performance_config(self) -> dict[str, Any]:
         """Get the performance configuration."""
-        return self._config.get("performance", {})
+        return self._config.get("performance", {})  # type: ignore[no-any-return]
 
     def get_batch_size(self) -> int:
         """Get the batch processing size."""
-        return self.get_performance_config().get("batch_size", 100)
+        batch_size = self.get_performance_config().get("batch_size", 100)
+        return batch_size if isinstance(batch_size, int) else 100
 
     def is_caching_enabled(self) -> bool:
         """Check if caching is enabled."""
         caching = self.get_performance_config().get("caching", {})
-        return caching.get("enabled", True)
+        enabled = caching.get("enabled", True) if isinstance(caching, dict) else True
+        return enabled if isinstance(enabled, bool) else True
 
     # Output Configuration
     def get_output_config(self) -> dict[str, Any]:
         """Get the output configuration."""
-        return self._config.get("output", {})
+        return self._config.get("output", {})  # type: ignore[no-any-return]
 
     def get_default_format(self) -> str:
         """Get the default serialization format."""
-        return self.get_output_config().get("default_format", "turtle")
+        fmt = self.get_output_config().get("default_format", "turtle")
+        return fmt if isinstance(fmt, str) else "turtle"
 
     def get_filename_template(self) -> str:
         """Get the filename template."""
-        return self.get_output_config().get(
+        template = self.get_output_config().get(
             "filename_template", "{prefix}{entity_type}_{identifier}.{extension}"
+        )
+        return (
+            template
+            if isinstance(template, str)
+            else "{prefix}{entity_type}_{identifier}.{extension}"
         )
 
     # Debugging Configuration
     def get_debugging_config(self) -> dict[str, Any]:
         """Get the debugging configuration."""
-        return self._config.get("debugging", {})
+        return self._config.get("debugging", {})  # type: ignore[no-any-return]
 
     def get_log_level(self) -> str:
         """Get the configured log level."""
         logging_config = self.get_debugging_config().get("logging", {})
-        return logging_config.get("level", "INFO")
+        level = logging_config.get("level", "INFO") if isinstance(logging_config, dict) else "INFO"
+        return level if isinstance(level, str) else "INFO"
 
     # Schema/Mapping Access (via LinkML)
     def get_class_mapping(self, class_name: str) -> dict[str, Any]:
@@ -337,7 +355,8 @@ class RuntimeConfig:
             Class mapping including fields, relationships, etc.
         """
         if self.use_linkml:
-            return self.linkml_introspector.get_class_mapping(class_name)
+            result = self.linkml_introspector.get_class_mapping(class_name)
+            return result if isinstance(result, dict) else {}
         return {}
 
     def get_namespaces(self) -> dict[str, str]:
@@ -350,7 +369,8 @@ class RuntimeConfig:
             Dictionary mapping prefix to URI.
         """
         if self.use_linkml:
-            return self.linkml_introspector.get_namespaces()
+            result = self.linkml_introspector.get_namespaces()
+            return result if isinstance(result, dict) else {}
         return {}
 
     def validate_entity(self, entity: Any) -> list[str]:
@@ -369,7 +389,8 @@ class RuntimeConfig:
         """
         if self.use_linkml and self.is_validation_enabled():
             class_name = entity.__class__.__name__
-            return self.linkml_introspector.validate_entity(entity, class_name)
+            result = self.linkml_introspector.validate_entity(entity, class_name)
+            return result if isinstance(result, list) else []
         return []
 
     # Raw config access

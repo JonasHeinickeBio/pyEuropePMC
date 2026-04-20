@@ -17,7 +17,9 @@ import yaml
 def load_yaml_config(yaml_path: Path) -> dict[str, Any]:
     """Load YAML configuration file."""
     with open(yaml_path, encoding="utf-8") as f:
-        return yaml.safe_load(f)  # type: ignore
+        result = yaml.safe_load(f)
+        assert isinstance(result, dict)
+        return result
 
 
 def generate_rml_header(prefixes: dict[str, str]) -> str:
@@ -95,7 +97,7 @@ def generate_subject_map(entity_name: str, entity_config: dict[str, Any]) -> lis
     return lines
 
 
-def generate_fields_mapping(fields: dict[str, dict]) -> list[str]:
+def generate_fields_mapping(fields: dict[str, dict[str, Any]]) -> list[str]:
     """Generate fields mapping lines."""
     lines = []
     for field_name, field_config in fields.items():

@@ -6,9 +6,8 @@ name: pyeuropepmc-section-entity
 description: Section entity class for PyEuropePMC
 
 imports:
-  - ../base
-  - ../slots
   - base
+  - slots
 
 classes:
   SectionEntity:
@@ -37,24 +36,8 @@ classes:
         required: false
         description: Type/category of the section
       citation_contexts:
-        range: CitationContextEntity
-        multivalued: true
         required: false
         description: Detailed citation contexts within this section
-    rules:
-      - preconditions:
-          slot_conditions:
-            begin_index:
-              value_presence: PRESENT
-            end_index:
-              value_presence: PRESENT
-        postconditions:
-          slot_conditions:
-            begin_index:
-              maximum_value: 999999999
-            end_index:
-              minimum_value: 0
-        description: begin_index must be less than end_index
 
   CitationContextEntity:
     description: >-

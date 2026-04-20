@@ -24,6 +24,7 @@ from rdflib.namespace import RDF, RDFS, DCTERMS
 from pyeuropepmc.models import AuthorEntity, PaperEntity, Organization, Department
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
 
+
 def create_institutional_hierarchy():
     """Create a sample institutional hierarchy for demonstration."""
 
@@ -38,7 +39,7 @@ def create_institutional_hierarchy():
         longitude=-71.0589,
         institution_type="education",
         website="https://www.mit.edu",
-        established="1861"
+        established="1861",
     )
 
     harvard = Organization(
@@ -51,7 +52,7 @@ def create_institutional_hierarchy():
         longitude=-71.1167,
         institution_type="education",
         website="https://www.harvard.edu",
-        established="1636"
+        established="1636",
     )
 
     # Create departments
@@ -60,7 +61,7 @@ def create_institutional_hierarchy():
         parent_organization=mit,
         country="United States",
         city="Cambridge",
-        department_type="Research Laboratory"
+        department_type="Research Laboratory",
     )
 
     dept_broadinstitute = Department(
@@ -68,7 +69,7 @@ def create_institutional_hierarchy():
         parent_organization=mit,
         country="United States",
         city="Cambridge",
-        department_type="Research Institute"
+        department_type="Research Institute",
     )
 
     # Create authors with institutional affiliations
@@ -79,7 +80,7 @@ def create_institutional_hierarchy():
         orcid="0000-0001-2345-6789",
         author_institutions=[mit],
         affiliation_text="Computer Science and Artificial Intelligence Laboratory, MIT",
-        position="first"
+        position="first",
     )
 
     author2 = AuthorEntity(
@@ -89,7 +90,7 @@ def create_institutional_hierarchy():
         orcid="0000-0001-9876-5432",
         author_institutions=[mit, harvard],
         affiliation_text="Broad Institute of Harvard and MIT",
-        position="middle"
+        position="middle",
     )
 
     # Create a paper with institutional affiliations
@@ -100,14 +101,14 @@ def create_institutional_hierarchy():
         publication_year="2024",
         abstract="This paper presents a novel approach to genomic analysis using deep learning.",
         authors=[author1, author2],
-        paper_institutions=[mit, harvard]
+        paper_institutions=[mit, harvard],
     )
 
     return {
         "organizations": {"mit": mit, "harvard": harvard},
         "departments": {"csail": dept_csail, "broadinstitute": dept_broadinstitute},
         "authors": {"smith": author1, "doe": author2},
-        "papers": {"genomics": paper}
+        "papers": {"genomics": paper},
     }
 
 
@@ -124,9 +125,7 @@ def generate_institutional_rdf():
     entities_data = {
         "genomics-paper": {
             "entity": entities["papers"]["genomics"],
-            "related_entities": {
-                "authors": entities["authors"].values()
-            }
+            "related_entities": {"authors": entities["authors"].values()},
         }
     }
 
@@ -135,7 +134,7 @@ def generate_institutional_rdf():
         entities_data,
         output_dir="test_output",
         prefix="institutional_",
-        filename_template="test_output/institutional_hierarchy.ttl"
+        filename_template="test_output/institutional_hierarchy.ttl",
     )
 
     return rdf_graphs
@@ -155,9 +154,9 @@ def print_institutional_relationships():
     paper_id = list(graphs.keys())[0]
     rdf_graph = graphs[paper_id]
 
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("INSTITUTIONAL HIERARCHY RDF RELATIONSHIPS")
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
 
     # Define namespaces for querying
     ORG = Namespace("http://www.w3.org/ns/org#")
@@ -175,9 +174,9 @@ def print_institutional_relationships():
     print("\n2. AUTHOR AFFILIATIONS")
     print("-" * 80)
     for s, p, o in rdf_graph.triples((None, PYEUROPEPMC.affiliatedWith, None)):
-        subject_name = s.split('#')[-1]
-        object_name = o.split('#')[-1]
-        if 'author' in str(s):
+        subject_name = s.split("#")[-1]
+        object_name = o.split("#")[-1]
+        if "author" in str(s):
             print(f"  Author: {subject_name}")
             print(f"  Affiliated With: {object_name}")
             print()
@@ -185,8 +184,8 @@ def print_institutional_relationships():
     print("\n3. DEPARTMENT MEMBERSHIP")
     print("-" * 80)
     for s, p, o in rdf_graph.triples((None, PYEUROPEPMC.departmentMember, None)):
-        subject_name = s.split('#')[-1]
-        object_name = o.split('#')[-1]
+        subject_name = s.split("#")[-1]
+        object_name = o.split("#")[-1]
         print(f"  Author: {subject_name}")
         print(f"  Department Member: {object_name}")
         print()
@@ -194,9 +193,9 @@ def print_institutional_relationships():
     print("\n4. PAPER-ORGANIZATION RELATIONSHIPS")
     print("-" * 80)
     for s, p, o in rdf_graph.triples((None, PYEUROPEPMC.affiliatedWith, None)):
-        subject_name = s.split('#')[-1]
-        object_name = o.split('#')[-1]
-        if 'paper' in str(s):
+        subject_name = s.split("#")[-1]
+        object_name = o.split("#")[-1]
+        if "paper" in str(s):
             print(f"  Paper: {subject_name}")
             print(f"  Organization: {object_name}")
             print()
@@ -204,8 +203,8 @@ def print_institutional_relationships():
     print("\n5. PAPER DEPARTMENTS")
     print("-" * 80)
     for s, p, o in rdf_graph.triples((None, PYEUROPEPMC.departmentAffiliation, None)):
-        subject_name = s.split('#')[-1]
-        object_name = o.split('#')[-1]
+        subject_name = s.split("#")[-1]
+        object_name = o.split("#")[-1]
         print(f"  Paper: {subject_name}")
         print(f"  Department: {object_name}")
         print()
@@ -213,9 +212,9 @@ def print_institutional_relationships():
     print(f"\nTotal triples in RDF graph: {len(rdf_graph)}")
 
     # Print full TTL for inspection
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("COMPLETE RDF IN TURTLE FORMAT")
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
     ttl_path = Path("test_output/institutional_hierarchy.ttl")
     if ttl_path.exists():
         with open(ttl_path) as f:
@@ -234,9 +233,9 @@ def validate_namespace_usage():
     paper_id = list(graphs.keys())[0]
     rdf_graph = graphs[paper_id]
 
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("NAMESPACE VALIDATION")
-    print(f"{'='*80}\n")
+    print(f"{'=' * 80}\n")
 
     print("Namespaces bound in graph:")
     for prefix, namespace in rdf_graph.namespace_manager.namespaces():
@@ -245,7 +244,7 @@ def validate_namespace_usage():
     print("\nVerifying proper namespace usage...")
 
     # Check for problematic ns1, ns2, ns3 prefixes
-    bad_prefixes = ['ns1', 'ns2', 'ns3', 'ns4', 'ns5']
+    bad_prefixes = ["ns1", "ns2", "ns3", "ns4", "ns5"]
     ttl_output = rdf_graph.serialize(format="turtle")
 
     problems_found = False
@@ -259,10 +258,10 @@ def validate_namespace_usage():
 
     # Verify expected namespaces
     expected_namespaces = [
-        ('dcterms', 'http://purl.org/dc/terms/'),
-        ('foaf', 'http://xmlns.com/foaf/0.1/'),
-        ('org', 'http://www.w3.org/ns/org#'),
-        ('py europepmc', 'https://w3id.org/pyeuropepmc/vocab#'),
+        ("dcterms", "http://purl.org/dc/terms/"),
+        ("foaf", "http://xmlns.com/foaf/0.1/"),
+        ("org", "http://www.w3.org/ns/org#"),
+        ("pyeuropepmc", "https://w3id.org/pyeuropepmc/vocab#"),
     ]
 
     print("\nExpected namespaces:")
@@ -274,9 +273,9 @@ def validate_namespace_usage():
 
 
 if __name__ == "__main__":
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("INSTITUTIONAL HIERARCHY AND RELATIONSHIP MAPPING DEMONSTRATION")
-    print("="*80)
+    print("=" * 80)
 
     # Generate and display relationships
     print_institutional_relationships()
@@ -284,6 +283,6 @@ if __name__ == "__main__":
     # Validate namespace usage
     validate_namespace_usage()
 
-    print(f"\n{'='*80}")
+    print(f"\n{'=' * 80}")
     print("Demo complete! Check test_output/institutional_hierarchy.ttl for full RDF.")
-    print("="*80 + "\n")
+    print("=" * 80 + "\n")

@@ -8,6 +8,7 @@ and early error detection.
 
 import logging
 import re
+from re import Pattern
 from typing import Any
 
 from pyeuropepmc.mappers.linkml_introspection import LinkMLSchemaIntrospector
@@ -33,7 +34,7 @@ class SchemaValidator:
     def __init__(self):
         """Initialize the schema validator."""
         self.introspector = LinkMLSchemaIntrospector()
-        self._pattern_cache: dict[str, re.Pattern] = {}
+        self._pattern_cache: dict[str, Pattern[str]] = {}
 
     def validate_entity_data(
         self, entity_class: str, data: dict[str, Any], strict: bool = False
@@ -155,7 +156,7 @@ class SchemaValidator:
 
     def sanitize_field_value(
         self, field_name: str, value: Any, field_mapping: dict[str, Any]
-    ) -> Any:
+    ) -> int | float | str | bool | list[Any] | None:
         """
         Sanitize a field value to conform to schema constraints.
 
@@ -206,16 +207,18 @@ class SchemaValidator:
 
         # Apply range constraints for numeric values
         if isinstance(value, int | float):
-            if "minimum_value" in field_mapping:
-                value = max(value, field_mapping["minimum_value"])
-            if "maximum_value" in field_mapping:
-                value = min(value, field_mapping["maximum_value"])
+            min_val = field_mapping.get("minimum_value")
+            max_val = field_mapping.get("maximum_value")
+            if isinstance(min_val, int | float):
+                value = max(value, min_val)
+            if isinstance(max_val, int | float):
+                value = min(value, max_val)
 
-        return value
+        return value  # type: ignore[no-any-return]
 
 
 # Module-level convenience functions
-_validator = SchemaValidator()
+_validator = SchemaValidator()  # type: ignore[no-untyped-call]
 
 
 def validate_entity_data(

@@ -24,16 +24,15 @@ class TestDoiContentNegotiationClient:
     @patch.object(DoiContentNegotiationClient, "_make_request")
     def test_enrich_crossref_success(self, mock_request):
         """Test successful enrichment with CrossRef data."""
-        # Mock DOI agency response first, then CrossRef metadata response
+        # Mock CrossRef metadata response first, then agency lookup fallback (not used if crossref succeeds)
         mock_request.side_effect = [
-            {"agency": "crossref"},  # Agency response
             {  # CrossRef metadata response (wrapped in message)
                 "message": {
                     "DOI": "10.1234/test",
                     "title": ["Test Article"],
                     "author": [
                         {"given": "John", "family": "Doe", "name": "John Doe"},
-                        {"given": "Jane", "family": "Smith", "name": "Jane Smith"}
+                        {"given": "Jane", "family": "Smith", "name": "Jane Smith"},
                     ],
                     "abstract": "Test abstract",
                     "container-title": ["Test Journal"],
@@ -45,7 +44,7 @@ class TestDoiContentNegotiationClient:
                     "volume": "10",
                     "issue": "3",
                     "page": "123-145",
-                    "publisher": "Test Publisher"
+                    "publisher": "Test Publisher",
                 }
             }
         ]
@@ -67,9 +66,9 @@ class TestDoiContentNegotiationClient:
     @patch.object(DoiContentNegotiationClient, "_make_request")
     def test_enrich_datacite_success(self, mock_request):
         """Test successful enrichment with DataCite data."""
-        # Mock DOI agency response first, then DataCite metadata response
+        # Mock CrossRef fails (empty), then DataCite metadata response
         mock_request.side_effect = [
-            {"agency": "datacite"},  # Agency response
+            None,  # CrossRef returns None (no message)
             {  # DataCite metadata response
                 "data": {
                     "id": "10.5281/test",
@@ -79,7 +78,7 @@ class TestDoiContentNegotiationClient:
                         "titles": [{"title": "Test Dataset"}],
                         "creators": [
                             {"givenName": "John", "familyName": "Doe", "name": "John Doe"},
-                            {"name": "Jane Smith"}
+                            {"name": "Jane Smith"},
                         ],
                         "descriptions": [{"description": "Test description"}],
                         "container": {"title": "Test Repository"},
@@ -87,10 +86,10 @@ class TestDoiContentNegotiationClient:
                         "citationCount": 25,
                         "referenceCount": 15,
                         "types": {"resourceTypeGeneral": "Dataset"},
-                        "publisher": "Test Publisher"
-                    }
+                        "publisher": "Test Publisher",
+                    },
                 }
-            }
+            },
         ]
 
         client = DoiContentNegotiationClient()
@@ -130,10 +129,10 @@ class TestDoiContentNegotiationClient:
     @patch.object(DoiContentNegotiationClient, "_make_request")
     def test_enrich_empty_datacite(self, mock_request):
         """Test enrichment with empty DataCite response."""
-        # Mock DOI agency response first, then empty DataCite response
+        # Mock CrossRef fails, then empty DataCite response
         mock_request.side_effect = [
-            {"agency": "datacite"},  # Agency response
-            {"data": {}}  # Empty DataCite response
+            None,  # CrossRef returns None
+            {"data": {}},  # Empty DataCite response
         ]
 
         client = DoiContentNegotiationClient()
@@ -147,14 +146,10 @@ class TestDoiContentNegotiationClient:
     @patch.object(DoiContentNegotiationClient, "_make_request")
     def test_enrich_crossref_minimal(self, mock_request):
         """Test enrichment with minimal CrossRef data."""
-        # Mock DOI agency response first, then CrossRef metadata response
+        # Mock CrossRef metadata response
         mock_request.side_effect = [
-            {"agency": "crossref"},  # Agency response
             {  # Minimal CrossRef metadata response
-                "message": {
-                    "DOI": "10.1234/test",
-                    "title": ["Minimal Article"]
-                }
+                "message": {"DOI": "10.1234/test", "title": ["Minimal Article"]}
             }
         ]
 

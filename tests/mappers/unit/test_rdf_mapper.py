@@ -126,7 +126,7 @@ class TestRDFMapper:
 
         try:
             result = mapper.serialize_graph(g, format="turtle", destination=tmp_path)
-            assert result == ""
+            assert result is None  # Returns None when writing to file
             assert os.path.exists(tmp_path)
 
             # Read and check content

@@ -42,7 +42,7 @@ def _format_pmcid(pmcid: str | None) -> str | None:
     return f"PMC{pmcid_str}"
 
 
-def _format_external_ids(external_ids: dict | None) -> str | None:
+def _format_external_ids(external_ids: dict[str, Any] | None) -> str | None:
     """Format external IDs dict as JSON string."""
     if not external_ids:
         return None
@@ -106,7 +106,7 @@ def _clean_affiliation_text(text: str) -> str:
     return text.strip()
 
 
-def _format_license(license_data: dict | str | None) -> str | None:
+def _format_license(license_data: dict[str, Any] | str | None) -> str | None:
     """Format license data as string."""
     if not license_data:
         return None
@@ -179,7 +179,7 @@ def _normalize_section_type(section_type: str | None) -> str:
 
 
 # Module-level validator for optional validation
-_schema_validator = SchemaValidator()
+_schema_validator = SchemaValidator()  # type: ignore[no-untyped-call]
 
 
 def _validate_and_log_entity_data(

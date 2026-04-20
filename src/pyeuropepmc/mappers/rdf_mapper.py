@@ -147,7 +147,7 @@ class RDFMapper:
 
         from pyeuropepmc.builders.schema_validation import SchemaValidator
 
-        validator = SchemaValidator()
+        validator = SchemaValidator()  # type: ignore[no-untyped-call]
         entity_class = entity.__class__.__name__
 
         # Convert entity to dict for validation
@@ -454,17 +454,22 @@ class RDFMapper:
     def _get_entity_mappings(self, entity: Any) -> list[dict[str, Any]]:
         """Get mappings for entity class and parent classes using LinkML schema."""
         all_mappings = []
-        for cls in entity.__class__.__mro__:
+
+        # First, get the most specific class mapping (e.g., Organization, not just BaseEntity)
+        # This is the primary mapping and should be first in the list
+        entity_class_name = entity.__class__.__name__
+        specific_mapping = self.linkml_introspector.get_class_mapping(entity_class_name)
+        if specific_mapping:
+            all_mappings.append(specific_mapping)
+
+        # Then, get mappings from parent classes that end with "Entity"
+        # Skip the entity's own class and also skip if we already got it above
+        for cls in entity.__class__.__mro__[1:]:  # Skip entity class itself
             if cls.__name__.endswith("Entity"):
                 # Use LinkML schema introspector for mappings
                 mapping = self.linkml_introspector.get_class_mapping(cls.__name__)
                 if mapping:
                     all_mappings.append(mapping)
-
-        # If no mappings found, try direct class name lookup as fallback
-        if not all_mappings:
-            mapping = self.linkml_introspector.get_class_mapping(entity.__class__.__name__)
-            all_mappings = [mapping] if mapping else []
 
         return all_mappings
 
@@ -1001,7 +1006,7 @@ class RDFMapper:
         )
 
         # Return serialized RDF
-        return g.serialize(format="turtle")
+        return str(g.serialize(format="turtle"))
 
     def generate_uri(self, entity_type: str, entity: Any) -> URIRef:
         """
@@ -1182,34 +1187,6 @@ class RDFMapper:
                 for prefix, namespace in self.namespaces.items():
                     graph.bind(prefix, namespace)
 
-    def _validate_rdf_syntax(self, g: Any) -> None:
-        """
-        Validate RDF graph syntax before serialization.
-
-        This method attempts to serialize the graph to check for syntax errors
-        and logs warnings if issues are found.
-
-        Parameters
-        ----------
-        g : Graph or Dataset
-            RDF graph to validate
-        """
-        try:
-            # Attempt to serialize to check for syntax errors
-            test_serialization = str(g.serialize(format="turtle"))
-
-            # Try to parse it back to ensure it's valid
-            from rdflib import Graph as RDFGraph
-
-            test_graph = RDFGraph()
-            test_graph.parse(data=test_serialization, format="turtle")
-
-        except Exception as e:
-            self.logger.warning(f"RDF syntax validation failed: {e}")
-            if self.strict_validation:
-                raise ValueError(f"RDF syntax validation failed: {e}") from e
-            # In non-strict mode, log the error but continue
-
     def calculate_rdf_quality_metrics(self, g: Any) -> dict[str, Any]:
         """
         Calculate quality metrics for the RDF graph.
@@ -1224,24 +1201,29 @@ class RDFMapper:
         dict
             Quality metrics including triple count, entity counts, etc.
         """
-        metrics = {
+        metrics: dict[str, Any] = {
             "total_triples": 0,
             "unique_subjects": 0,
             "unique_predicates": 0,
             "unique_objects": 0,
-            "entity_counts": {},
-            "namespaces_used": set(),
+            "entity_counts": dict[str, int](),
+            "namespaces_used": set[str](),
             "quality_score": 0.0,
         }
 
         try:
+            # Handle both Graph (triple store) and Dataset (quad store)
+            from rdflib import Dataset
+
+            graph_iter = g.default_graph if isinstance(g, Dataset) else g
+
             # Count triples and unique elements
             subjects = set()
             predicates = set()
             objects = set()
-            entity_types = {}
+            entity_types: dict[str, int] = {}
 
-            for s, p, o in g:
+            for s, p, o in graph_iter:
                 metrics["total_triples"] += 1
                 subjects.add(s)
                 predicates.add(p)
@@ -1261,14 +1243,17 @@ class RDFMapper:
             metrics["unique_predicates"] = len(predicates)
             metrics["unique_objects"] = len(objects)
             metrics["entity_counts"] = entity_types
-            metrics["namespaces_used"] = list(metrics["namespaces_used"])
+            namespaces_set = metrics["namespaces_used"]
+            metrics["namespaces_used"] = list(namespaces_set)
 
             # Calculate quality score based on various factors
             quality_factors = []
 
             # Factor 1: Data completeness (entities with identifiers)
             identifier_triples = sum(
-                1 for s, p, o in g if "id" in str(p).lower() or "identifier" in str(p).lower()
+                1
+                for s, p, o in graph_iter
+                if "id" in str(p).lower() or "identifier" in str(p).lower()
             )
             quality_factors.append(
                 min(1.0, identifier_triples / max(1, metrics["total_triples"] * 0.1))
@@ -1277,7 +1262,7 @@ class RDFMapper:
             # Factor 2: Semantic richness (use of ontologies beyond basic RDF)
             ontology_triples = sum(
                 1
-                for s, p, o in g
+                for s, p, o in graph_iter
                 if any(
                     ns in str(p)
                     for ns in [
@@ -1288,17 +1273,18 @@ class RDFMapper:
                     ]
                 )
             )
-            quality_factors.append(
-                min(1.0, ontology_triples / max(1, metrics["total_triples"] * 0.3))
-            )
+            total_triples = metrics["total_triples"]
+            quality_factors.append(min(1.0, ontology_triples / max(1, total_triples * 0.3)))
 
             # Factor 3: Connectivity (average connections per entity)
-            avg_connections = metrics["total_triples"] / max(1, metrics["unique_subjects"])
+            unique_subjects = metrics["unique_subjects"]
+            avg_connections = total_triples / max(1, unique_subjects)
             quality_factors.append(min(1.0, avg_connections / 10.0))  # Assume 10 is good
 
             # Factor 4: Namespace diversity
+            namespaces_used = metrics["namespaces_used"]
             quality_factors.append(
-                min(1.0, len(metrics["namespaces_used"]) / 5.0)
+                min(1.0, len(namespaces_used) / 5.0)
             )  # Assume 5+ namespaces is good
 
             metrics["quality_score"] = (
@@ -1310,7 +1296,7 @@ class RDFMapper:
 
         return metrics
 
-    def check_data_completeness(self, entities_data: dict[str, Any]) -> dict[str, Any]:
+    def check_data_completeness(self, entities_data: dict[str, Any] | None) -> dict[str, Any]:
         """
         Check data completeness across entities.
 
@@ -1337,6 +1323,8 @@ class RDFMapper:
         }
 
         try:
+            if entities_data is None:
+                return completeness
             for entity_data in entities_data.values():
                 entity = entity_data.get("entity")
                 if not entity:
@@ -1414,7 +1402,7 @@ class RDFMapper:
         destination: str | None = None,
         include_quality_metadata: bool = True,
         entities_data: dict[str, Any] | None = None,
-    ) -> str:
+    ) -> str | None:
         """
         Serialize RDF graph to string or file with optional quality metadata.
 
@@ -1442,7 +1430,7 @@ class RDFMapper:
         # Calculate quality metrics if requested and entities provided
         quality_metrics = None
         completeness_metrics = None
-        if include_quality_metadata and entities_data:
+        if include_quality_metadata and entities_data is not None:
             try:
                 quality_metrics = self.calculate_rdf_quality_metrics(g)
                 completeness_metrics = self.check_data_completeness(entities_data)
@@ -1453,38 +1441,44 @@ class RDFMapper:
         try:
             if destination:
                 # Serialize to file
-                with open(destination, "w", encoding="utf-8") as f:
-                    # Write quality metadata as comments if requested
-                    if include_quality_metadata and (quality_metrics or completeness_metrics):
-                        f.write("# PyEuropePMC RDF Export\n")
-                        f.write(f"# Generated: {datetime.now().isoformat()}\n")
-                        if quality_metrics:
-                            f.write(
-                                f"# Quality Score: "
-                                f"{quality_metrics.get('overall_score', 'N/A'):.3f}\n"
-                            )
-                            f.write(
-                                f"# Total Triples: {quality_metrics.get('total_triples', 0)}\n"
-                            )
-                        if completeness_metrics:
-                            f.write(
-                                f"# Completeness Score: "
-                                f"{completeness_metrics.get('completeness_score', 0):.3f}\n"
-                            )
-                        f.write("# \n")
+                # Write quality metadata as comments if requested
+                if include_quality_metadata and (quality_metrics or completeness_metrics):
+                    # Write metadata first, then serialize
 
-                    # Serialize the graph
-                    g.serialize(f, format=format)
+                    metadata_lines = [
+                        "# PyEuropePMC RDF Export\n",
+                        f"# Generated: {datetime.now().isoformat()}\n",
+                    ]
+                    if quality_metrics:
+                        quality_score = quality_metrics.get("quality_score", 0)
+                        metadata_lines.append(f"# Quality Score: {quality_score:.3f}\n")
+                        metadata_lines.append(
+                            f"# Total Triples: {quality_metrics.get('total_triples', 0)}\n"
+                        )
+                    if completeness_metrics:
+                        metadata_lines.append(
+                            f"# Completeness Score: "
+                            f"{completeness_metrics.get('completeness_score', 0):.3f}\n"
+                        )
+                    metadata_lines.append("# \n")
+
+                    # Serialize to string first, then write with metadata
+                    serialized = g.serialize(format=format)
+                    with open(destination, "w", encoding="utf-8") as f:
+                        f.writelines(metadata_lines)
+                        f.write(serialized)
+                else:
+                    # Direct serialization to file
+                    g.serialize(destination, format=format)
             else:
                 # Return as string
-                rdf_string = g.serialize(format=format)
-                return rdf_string
+                return str(g.serialize(format=format))
 
         except Exception as e:
             self.logger.error(f"Error serializing RDF graph: {e}")
             raise
 
-        return ""
+        return None
 
     def _validate_rdf_syntax(self, g: Any) -> None:
         """
@@ -1691,7 +1685,7 @@ class RDFMapper:
         except Exception as e:
             self.logger.warning(f"Error adding semantic enrichment: {e}")
 
-    def _add_institutional_hierarchy(self, g: Any, entities_data: dict[str, Any]) -> None:
+    def _add_institutional_hierarchy(self, g: Any, entities_data: dict[str, Any] | None) -> None:
         """
         Add institutional hierarchy relationships (department -> institution -> organization).
 
@@ -1709,11 +1703,13 @@ class RDFMapper:
             PYEUROPEPMC = Namespace("https://w3id.org/pyeuropepmc/vocab#")
 
             # Extract all entities by type
-            papers_by_id = {}
-            authors_by_id = {}
-            organizations_by_id = {}
-            departments_by_id = {}
+            papers_by_id: dict[str | Any, Any] = {}
+            authors_by_id: dict[str | Any, Any] = {}
+            organizations_by_id: dict[str | Any, Any] = {}
+            departments_by_id: dict[str | Any, Any] = {}
 
+            if entities_data is None:
+                return
             for _, entity_data in entities_data.items():
                 entity = entity_data.get("entity")
                 if entity is None:
@@ -1783,8 +1779,14 @@ class RDFMapper:
                 paper_uri = self._generate_entity_uri(paper)
 
                 # Get authors from related entities
-                if "authors" in entities_data.get(paper_id, {}).get("related_entities", {}):
-                    authors_list = entities_data[paper_id]["related_entities"]["authors"]
+                if entities_data is None:
+                    continue
+                paper_data = entities_data.get(paper_id, {})
+                authors_list = []
+                if isinstance(paper_data, dict):
+                    related_entities = paper_data.get("related_entities", {})
+                    if isinstance(related_entities, dict) and "authors" in related_entities:
+                        authors_list = related_entities["authors"]
 
                     org_set = set()
                     dept_set = set()
@@ -1941,7 +1943,7 @@ class RDFMapper:
                         quality_score = None
                         try:
                             quality_metrics = self.calculate_rdf_quality_metrics(g)
-                            quality_score = quality_metrics.get("overall_score")
+                            quality_score = quality_metrics.get("quality_score")
                         except Exception as e:
                             # Quality calculation is optional; continue without it
                             self.logger.debug(f"Quality calculation skipped: {e}")
@@ -1953,9 +1955,10 @@ class RDFMapper:
                         )
                     else:
                         safe_identifier = identifier.replace("/", "_").replace(".", "_")
-                        filename = filename_template.format(
+                        filename_template_filled = filename_template.format(
                             prefix=prefix, identifier=safe_identifier, entity_type=entity_type
                         )
+                        filename = f"{output_dir}/{filename_template_filled}"
 
                     try:
                         self.serialize_graph(
@@ -2374,7 +2377,7 @@ class RDFMapper:
 
         from rdflib.namespace import RDF
 
-        entity_counts = Counter()
+        entity_counts: Counter[str] = Counter()
         for _, _, o in g.triples((None, RDF.type, None)):
             entity_type = str(o).split("/")[-1]  # Get local part of URI
             entity_counts[entity_type] += 1

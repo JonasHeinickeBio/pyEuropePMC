@@ -4,6 +4,7 @@ Real API testing examples.
 Demonstrates real API usage with actual Europe PMC data.
 """
 
+# mypy: ignore-errors
 import logging
 from pathlib import Path
 

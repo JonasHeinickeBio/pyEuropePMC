@@ -1,13 +1,13 @@
-# PyEuropePMC LinkML Schema - Base Entities
-# This file contains BaseEntity and ScholarlyWorkEntity
+# PyEuropePMC LinkML Schema - Base Entity
+# This file contains the BaseEntity class definition
 
 id: https://w3id.org/pyeuropepmc/entities/base
-name: pyeuropepmc-base-entities
-description: Base entity classes for PyEuropePMC
+name: pyeuropepmc-base-entity
+description: Base entity class for PyEuropePMC
 
 imports:
-  - ../base
-  - ../slots
+  - base
+  - slots
 
 classes:
   BaseEntity:

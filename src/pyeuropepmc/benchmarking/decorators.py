@@ -9,12 +9,12 @@ from typing import Any
 class TimingResult:
     function: str
     execution_time: float
-    args: tuple
-    kwargs: dict
+    args: tuple[Any, ...]
+    kwargs: dict[str, Any]
     result: Any
 
 
-def measure_time(warmup: int = 0, repetitions: int = 1):
+def measure_time(warmup: int = 0, repetitions: int = 1) -> Callable[..., Callable[..., Any]]:
     """Decorator to measure function execution time with optional warmup and repetition.
 
     Args:
@@ -22,9 +22,9 @@ def measure_time(warmup: int = 0, repetitions: int = 1):
         repetitions: Number of repetitions to average (default: 1)
     """
 
-    def decorator(func: Callable) -> Callable:
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @functools.wraps(func)
-        def wrapper(*args, **kwargs) -> TimingResult:
+        def wrapper(*args: Any, **kwargs: Any) -> TimingResult:
             result: Any = None
 
             for _i in range(warmup):
@@ -52,14 +52,14 @@ def measure_time(warmup: int = 0, repetitions: int = 1):
     return decorator
 
 
-def profile_function(func: Callable) -> Callable:
+def profile_function(func: Callable[..., Any]) -> Callable[..., tuple[Any, str]]:
     """Decorator for profiling function execution with detailed timing information."""
     import cProfile
     from io import StringIO
     import pstats
 
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args: Any, **kwargs: Any) -> tuple[Any, str]:
         profiler = cProfile.Profile()
 
         try:

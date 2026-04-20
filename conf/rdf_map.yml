@@ -319,7 +319,7 @@ Department:
     fundref_id: {predicate: "pyeuropepmc:fundrefId", datatype: "xsd:string"}
     website: {predicate: "foaf:homepage", datatype: "xsd:anyURI"}
     established: {predicate: "dcterms:created", datatype: "xsd:gYear"}
-    parent_organization: {predicate: "org:memberOf", datatype: "xsd:anyURI"}
+
   # Multi-value fields
   multi_value_fields:
     domains: dcterms:subject

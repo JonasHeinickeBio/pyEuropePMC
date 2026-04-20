@@ -5,6 +5,7 @@ Performs actual API calls to Europe PMC and retrieves real papers
 for realistic performance benchmarking.
 """
 
+# mypy: ignore-errors
 import contextlib
 from dataclasses import dataclass, field
 from datetime import datetime

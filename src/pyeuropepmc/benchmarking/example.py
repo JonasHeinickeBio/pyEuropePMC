@@ -15,7 +15,7 @@ from pyeuropepmc.benchmarking import (
 from pyeuropepmc.enrichment import EnrichmentConfig, PaperEnricher
 
 
-def main():
+def main() -> None:
     """Run benchmarking examples."""
     print("=" * 70)
     print("PyEuropePMC Benchmarking Example")
@@ -40,7 +40,7 @@ def main():
     search_results = runner.benchmark_search_operations(search_client, queries)
 
     # Print summary
-    runner.print_summary()
+    runner.get_statistics()
 
     # Example 2: Article retrieval benchmark
     print("\n[Example 2] Benchmarking Article Retrieval")
@@ -92,7 +92,7 @@ def main():
     enricher = PaperEnricher(config)
 
     # Generate test papers
-    generator.generate_test_papers(2)
+    _ = generator.generate_test_papers(2)
     batch_results = runner.benchmark_batch_operations(enricher, batch_size=2)
 
     # Print results

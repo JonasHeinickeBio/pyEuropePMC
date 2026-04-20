@@ -40,6 +40,7 @@ from pyeuropepmc.benchmarking.report_generators import (
     TextReportGenerator,
     generate_comprehensive_report,
 )
+from pyeuropepmc.benchmarking.test_data import TestDataGenerator
 
 __all__ = [
     "BenchmarkRunner",

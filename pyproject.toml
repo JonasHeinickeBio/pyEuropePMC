@@ -2,10 +2,11 @@
 name = "pyeuropepmc"
 version = "1.14.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
-license = "file:LICENSE"
+license = "MIT"
+license-files = ["LICENSE"]
 readme = "README.md"
 authors = [
-  { name = "Jonas Heinicke (HZI)", email = "jonas.heinicke@helmholtz-hzi.de" },
+  { name = "Jonas Heinicke", email = "jonas.heinicke@helmholtz-hzi.de" },
 ]
 requires-python = ">=3.10,<4.0"
 keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific"]
@@ -21,33 +22,39 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 urls = { Homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC", Repository = "https://github.com/JonasHeinickeBio/pyEuropePMC" }
-dynamic = ["dependencies"]
 
-[tool.semantic_release]
-version_variable = ["src/pyeuropepmc/__init__.py:__version__"]
-version_toml = ["pyproject.toml:project.version"]
-branch = "main"
-upload_to_pypi = true
-upload_to_release = true
-build_command = "pip install poetry && poetry build"
-commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.4.1",
+  "pytest-cov>=6.0.0",
+  "pre-commit>=4.2.0",
+  "black>=25.1.0",
+  "mypy>=1.16.1",
+  "types-PyYAML>=6.0.12.20240311",
+  "types-requests>=2.31.0",
+  "types-cachetools>=5.5.0.20240818",
+  "pytest-benchmark>=5.2.3",
+  "coverage>=7.11.3",
+  "bandit>=1.8.5",
+  "ruff>=0.14.4",
+  "typing-extensions>=4.14.0",
+  "memory-profiler>=0.61.0",
+]
 
-[[tool.poetry.packages]]
-include = "pyeuropepmc"
-from = "src"
+[tool.poetry]
+name = "pyeuropepmc"
+version = "1.14.0"
+description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
+authors = ["Jonas Heinicke <jonas.heinicke@helmholtz-hzi.de>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC"
+repository = "https://github.com/JonasHeinickeBio/pyEuropePMC"
+keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific"]
+packages = [{ include = "pyeuropepmc", from = "src" }]
 
 [tool.poetry.dependencies]
 python = ">=3.10,<4.0"
-ipython = ">=7.30"
-ipykernel = ">=6.7"
-ipywidgets = ">=7.6"
-jupyterlab = ">=3.2"
-notebook = ">=6.4"
-numpy = ">=1.21"
-pandas = ">=1.4"
-rdflib-jsonld = ">=0.5"
-rdflib = ">=6.0"
-python-dotenv = ">=0.19"
 requests = "^2.32.5"
 typer = ">=0.12.5,<0.13.0"
 backoff = "^2.2.1"
@@ -65,30 +72,32 @@ matplotlib = "^3.7.0"
 seaborn = "^0.12.0"
 cachetools = "^6.2.1"
 requests-cache = "^1.2.1"
-rdfizer = "^4.7.5.12.13"
+rdflib = "^6.0"
+rdflib-jsonld = ">=0.5"
+python-dotenv = ">=0.19"
 cryptography = "^46.0.3"
 linkml = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^8.4.1"
-pytest-cov = "^6.0.0"
-pre-commit = "^4.2.0"
-black = "^25.1.0"
-mypy = "^1.16.1"
-types-PyYAML = "6.0.12.20240311"
-types-requests = "^2.31.0"
-types-cachetools = "^5.5.0.20240818"
-pytest-benchmark = "^5.2.3"
-coverage = "^7.11.3"
-bandit = "^1.8.5"
-ruff = "^0.14.4"
-typing-extensions = "^4.14.0"
-memory-profiler = "^0.61.0"
-
+ipython = ">=7.30"
+ipykernel = ">=6.7"
+ipywidgets = ">=7.6"
+jupyterlab = ">=3.2"
+notebook = ">=6.4"
+numpy = ">=1.21"
+pandas = ">=1.4"
 
 [build-system]
-requires = ["poetry-core"]
+requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.semantic_release]
+version_variable = ["src/pyeuropepmc/__init__.py:__version__"]
+branch = "main"
+upload_to_pypi = true
+upload_to_release = true
+build_command = "pip install poetry && poetry build"
+commit_author = "Jonas Heinicke <jonas.heinicke@helmholtz-hzi.de>"
 
 [tool.pytest.ini_options]
 addopts = "-ra -q"
@@ -105,6 +114,7 @@ filterwarnings = [
   "ignore:.*Accessing the 'model_fields' attribute on the instance is deprecated.*:DeprecationWarning",
   "ignore:.*Accessing the 'model_computed_fields' attribute on the instance is deprecated.*:DeprecationWarning",
 ]
+
 [tool.ruff]
 line-length = 99
 target-version = "py310"
@@ -125,98 +135,27 @@ exclude = [
 ]
 
 [tool.ruff.lint]
-select = [
-  "E",   # pycodestyle errors
-  "F",   # pyflakes
-  "W",   # pycodestyle warnings
-  "C90", # mccabe complexity
-  "I",   # isort
-  "UP",  # pyupgrade
-  "B",   # flake8-bugbear
-  "SIM", # flake8-simplify
-]
+select = ["E", "F", "W", "C90", "I", "UP", "B", "SIM"]
 ignore = ["E203", "E266", "E731"]
 
 [tool.ruff.lint.per-file-ignores]
-"__init__.py" = ["F401"] # Allow unused imports in __init__.py
-"src/pyeuropepmc/ftp_downloader.py" = ["C901"] # Allow complex FTP operations
-"src/pyeuropepmc/fulltext_parser.py" = [
-  "C901",
-] # Allow complex XML parsing/analysis methods
-"src/pyeuropepmc/enrichment/enricher.py" = [
-  "C901",
-] # Allow complex merge operations
-"src/pyeuropepmc/builders/schema_validation.py" = [
-  "C901",
-] # Allow complex validation/sanitization logic
-"src/pyeuropepmc/enrichment/pubtator.py" = [
-  "C901",
-] # Allow complex identifier parsing logic
-"src/pyeuropepmc/mappers/linkml_introspection.py" = [
-  "C901",
-] # Allow complex slot mapping and validation logic
-"src/pyeuropepmc/mappers/processors.py" = [
-  "C901",
-] # Allow complex data processing and entity extraction logic
-"src/pyeuropepmc/mappers/rdf_mapper.py" = [
-  "C901",
-  "F821",
-  "F841",
-] # Allow complex RDF mapping and import/unused variable issues
-"src/pyeuropepmc/mappers/rdf_utils.py" = [
-  "C901",
-] # Allow complex text processing functions
-"src/pyeuropepmc/models/generated.py" = [
-  "E501",
-  "F821",
-  "F841",
-  "F811",
-] # Auto-generated file with long docstrings and undefined/redefined names
-"scripts/regenerate_models.py" = [
-  "E501",
-] # Long lines in string literals for regex patterns and descriptions
-"src/pyeuropepmc/models/generated_backup.py" = [
-  "E501",
-] # Backup file with long docstrings
-"src/pyeuropepmc/models/generated_backup_modular.py" = [
-  "E501",
-] # Backup file with long docstrings
-"src/pyeuropepmc/models/generated_new.py" = [
-  "E501",
-] # Generated file with long docstrings
-"src/pyeuropepmc/models/generated_updated.py" = [
-  "E501",
-] # Generated file with long docstrings
-"src/pyeuropepmc/models/models_temp.py" = [
-  "E501",
-] # Temp file with long docstrings
-"src/pyeuropepmc/models_backup_before_external_ids_removal.py" = [
-  "E501",
-] # Backup file with long docstrings
-"src/pyeuropepmc/models/__init__.py" = [
-  "E501",
-  "F811",
-  "F841",
-] # Allow long docstrings, duplicate validators and unused variables from LinkML generation
-
-"src/pyeuropepmc/models_custom.py" = [
-  "C901",
-  "SIM102",
-] # Allow complex custom methods and nested if statements
-"src/pyeuropepmc/processing/fulltext_parser.py" = [
-  "C901",
-  "F821",
-] # Allow complex XML parsing and import issues
-"src/pyeuropepmc/processing/search_parser.py" = [
-  "C901",
-  "F821",
-  "F841",
-  "E501",
-] # Allow complex parsing logic and import issues
-"src/pyeuropepmc/processing/parsers/reference_parser.py" = [
-  "E501",
-  "B034",
-] # Allow long regex patterns and positional args
+"__init__.py" = ["F401"]
+"src/pyeuropepmc/ftp_downloader.py" = ["C901"]
+"src/pyeuropepmc/fulltext_parser.py" = ["C901"]
+"src/pyeuropepmc/enrichment/enricher.py" = ["C901"]
+"src/pyeuropepmc/builders/schema_validation.py" = ["C901"]
+"src/pyeuropepmc/enrichment/pubtator.py" = ["C901"]
+"src/pyeuropepmc/mappers/linkml_introspection.py" = ["C901"]
+"src/pyeuropepmc/mappers/processors.py" = ["C901"]
+"src/pyeuropepmc/mappers/rdf_mapper.py" = ["C901", "F821", "F841"]
+"src/pyeuropepmc/mappers/rdf_utils.py" = ["C901"]
+"src/pyeuropepmc/models/generated.py" = ["E501", "F821", "F841", "F811"]
+"scripts/regenerate_models.py" = ["E501"]
+"src/pyeuropepmc/models_backup*.py" = ["E501"]
+"src/pyeuropepmc/models_custom.py" = ["C901", "SIM102"]
+"src/pyeuropepmc/processing/fulltext_parser.py" = ["C901", "F821"]
+"src/pyeuropepmc/processing/search_parser.py" = ["C901", "F821", "F841", "E501"]
+"src/pyeuropepmc/processing/parsers/reference_parser.py" = ["E501", "B034"]
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10
@@ -224,6 +163,11 @@ max-complexity = 10
 [tool.ruff.lint.isort]
 known-first-party = ["pyeuropepmc"]
 force-sort-within-sections = true
+
+[tool.ruff.lint.flake8-quotes]
+inline-quotes = "double"
+multiline-quotes = "double"
+docstring-quotes = "double"
 
 [tool.black]
 line-length = 99
@@ -245,11 +189,6 @@ exclude = '''
 preview = true
 skip-string-normalization = false
 
-[tool.ruff.lint.flake8-quotes]
-inline-quotes = "double"
-multiline-quotes = "double"
-docstring-quotes = "double"
-
 [tool.coverage.run]
 branch = true
 source = ["pyeuropepmc"]
@@ -257,7 +196,7 @@ source = ["pyeuropepmc"]
 [tool.coverage.report]
 show_missing = true
 skip_covered = true
-fail_under = 50     # Set your desired test coverage threshold
+fail_under = 50
 
 [tool.bandit]
 skips = ["B101", "B303"]
@@ -281,53 +220,15 @@ paths = ["src"]
 python_version = "3.12"
 strict = true
 ignore_missing_imports = true
-exclude = "(tests/|examples/|.*_backup.*|.*_temp.*)"
+exclude = ["tests/", "examples/", ".*_backup.*", ".*_temp.*"]
+
+[[tool.mypy.overrides]]
+module = "pyeuropepmc.models.*"
+ignore_errors = true
 
 [[tool.mypy.overrides]]
 module = "scripts.*"
-disable_error_code = [
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "attr-defined",
-  "assignment",
-  "var-annotated",
-  "no-untyped-def",
-  "no-untyped-call",
-  "type-arg",
-  "import-untyped",
-  "no-any-return",
-  "return-value",
-  "unused-ignore",
-  "misc",
-  "call-arg",
-  "index",
-  "override",
-]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.generated"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.archive.*"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.generated_updated"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.generated_new"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.__init__"
-ignore_errors = true
+disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "attr-defined", "assignment", "var-annotated", "no-untyped-def", "no-untyped-call", "type-arg", "import-untyped", "no-any-return", "return-value", "unused-ignore", "misc", "call-arg", "index", "override"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.utils.search_logging"
@@ -335,124 +236,27 @@ disable_error_code = ["attr-defined", "name-defined"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.linkml_introspection"
-disable_error_code = [
-  "union-attr",
-  "var-annotated",
-  "name-defined",
-  "no-untyped-def",
-  "arg-type",
-  "attr-defined",
-  "has-type",
-  "operator",
-  "call-overload",
-]
+disable_error_code = ["union-attr", "var-annotated", "name-defined", "no-untyped-def", "arg-type", "attr-defined", "has-type", "operator", "call-overload"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.runtime_config"
-disable_error_code = [
-  "no-untyped-call",
-  "no-untyped-def",
-  "var-annotated",
-  "assignment",
-  "attr-defined",
-  "dict-item",
-  "arg-type",
-  "union-attr",
-]
+disable_error_code = ["no-untyped-call", "no-untyped-def", "var-annotated", "assignment", "attr-defined", "dict-item", "arg-type", "union-attr"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.builders.schema_validation"
-disable_error_code = [
-  "no-untyped-def",
-  "dict-item",
-  "union-attr",
-  "arg-type",
-  "name-defined",
-]
+disable_error_code = ["no-untyped-def", "dict-item", "union-attr", "arg-type", "name-defined"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.fulltext_parser"
-disable_error_code = [
-  "var-annotated",
-  "name-defined",
-  "attr-defined",
-  "call-arg",
-  "union-attr",
-  "dict-item",
-  "no-untyped-def",
-  "dict-item",
-  "no-untyped-def",
-]
+disable_error_code = ["var-annotated", "name-defined", "attr-defined", "call-arg", "union-attr", "dict-item", "no-untyped-def"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.builders.*"
-disable_error_code = [
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-]
-
-[[tool.mypy.overrides]]
-module = "audit_rdf_linkml_coverage"
-disable_error_code = [
-  "var-annotated",
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "assignment",
-  "index",
-  "attr-defined",
-  "call-arg",
-  "no-untyped-def",
-  "no-untyped-call",
-  "import-untyped",
-]
-
-[[tool.mypy.overrides]]
-module = "benchmark_pipeline"
-disable_error_code = [
-  "var-annotated",
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "assignment",
-  "index",
-  "attr-defined",
-  "call-arg",
-  "no-untyped-def",
-  "no-untyped-call",
-  "import-untyped",
-]
+disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.processing.*"
-disable_error_code = [
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "dict-item",
-  "var-annotated",
-  "no-untyped-def",
-  "no-untyped-call",
-  "attr-defined",
-  "call-arg",
-  "assignment",
-]
+disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "var-annotated", "no-untyped-def", "no-untyped-call", "attr-defined", "call-arg", "assignment"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.mappers.rdf_utils"
@@ -460,88 +264,32 @@ disable_error_code = ["var-annotated", "name-defined", "union-attr"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.enrichment.pubtator"
-disable_error_code = [
-  "var-annotated",
-  "arg-type",
-  "name-defined",
-  "dict-item",
-  "attr-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "no-untyped-def",
-  "call-arg",
-  "assignment",
-  "no-untyped-call",
-]
+disable_error_code = ["var-annotated", "arg-type", "name-defined", "dict-item", "attr-defined", "union-attr", "has-type", "operator", "call-overload", "no-untyped-def", "call-arg", "assignment", "no-untyped-call"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.enrichment.enricher"
-disable_error_code = [
-  "attr-defined",
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "dict-item",
-  "call-arg",
-  "var-annotated",
-  "assignment",
-  "has-type",
-  "operator",
-  "call-overload",
-  "no-untyped-def",
-  "no-untyped-call",
-]
+disable_error_code = ["attr-defined", "arg-type", "name-defined", "union-attr", "dict-item", "call-arg", "var-annotated", "assignment", "has-type", "operator", "call-overload", "no-untyped-def", "no-untyped-call"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.enrichment.*"
-disable_error_code = [
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "attr-defined",
-  "var-annotated",
-  "assignment",
-  "dict-item",
-  "call-arg",
-  "no-untyped-def",
-  "no-untyped-call",
-  "misc",
-  "no-any-return",
-   "type-arg",
-   "unused-ignore",
-]
-
-[[tool.mypy.overrides]]
-module = "scripts.sync_rdf_mappings"
-disable_error_code = ["import-untyped"]
+disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "attr-defined", "var-annotated", "assignment", "dict-item", "call-arg", "no-untyped-def", "no-untyped-call", "misc", "no-any-return", "type-arg", "unused-ignore"]
 
 [[tool.mypy.overrides]]
 module = "pyeuropepmc.pipeline"
-disable_error_code = [
-  "arg-type",
-  "name-defined",
-  "union-attr",
-  "has-type",
-  "operator",
-  "call-overload",
-  "attr-defined",
-  "var-annotated",
-  "assignment",
-  "dict-item",
-  "call-arg",
-  "no-untyped-def",
-  "no-untyped-call",
-  "misc",
-  "no-any-return",
-  "type-arg",
-  "unused-ignore",
-]
+disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "attr-defined", "var-annotated", "assignment", "dict-item", "call-arg", "no-untyped-def", "no-untyped-call", "misc", "no-any-return", "type-arg", "unused-ignore"]
 
 [[tool.mypy.overrides]]
 module = "benchmarks.*"
 ignore_errors = true
+
+[[tool.mypy.overrides]]
+module = "yaml.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "requests.*"
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = "cachetools.*"
+ignore_missing_imports = true

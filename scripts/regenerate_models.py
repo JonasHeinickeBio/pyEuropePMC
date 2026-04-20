@@ -12,11 +12,12 @@ Usage:
 """
 
 from pathlib import Path
+import re
 import subprocess
 import sys
 
 
-def regenerate_models():
+def regenerate_models() -> None:
     """Regenerate models from LinkML schema and add custom methods."""
 
     project_root = Path(__file__).parent.parent
@@ -38,16 +39,14 @@ def regenerate_models():
 
     # Patch ReferenceEntity to allow journal to be Union[str, JournalEntity]
     with open(models_file) as f:
-        content = f.read()
-
-    import re
+        content: str = f.read()
 
     # Patch ReferenceEntity: change journal field to Union[str, JournalEntity, None]
     # The journal field is inherited from ScholarlyWorkEntity, so we need to patch it
     # in the ReferenceEntity class definition
     pattern_ref_journal = r"(class ReferenceEntity.*?)(journal: Optional\[JournalEntity\])"
 
-    def replace_ref_journal(match):
+    def replace_ref_journal(match: re.Match[str]) -> str:
         return match.group(1) + "journal: Union[str, JournalEntity, None]"
 
     content = re.sub(pattern_ref_journal, replace_ref_journal, content, flags=re.DOTALL)
@@ -55,7 +54,7 @@ def regenerate_models():
     # Patch PaperEntity: change journal field to Union[str, JournalEntity, None]
     pattern_paper_journal = r"(class PaperEntity.*?)(journal: Optional\[JournalEntity\])"
 
-    def replace_paper_journal(match):
+    def replace_paper_journal(match: re.Match[str]) -> str:
         return match.group(1) + "journal: Union[str, JournalEntity, None]"
 
     content = re.sub(pattern_paper_journal, replace_paper_journal, content, flags=re.DOTALL)
@@ -129,8 +128,6 @@ def regenerate_models():
     # We'll use a simpler approach: replace the entire validator section
 
     # First, let's identify the DOI validator pattern in the file
-    import re
-
     # Pattern to match a DOI validator
     doi_validator_pattern = (
         r"(@field_validator\("
@@ -138,7 +135,7 @@ def regenerate_models():
         "\\)\\s+def pattern_doi\\(cls, v\\):.*?(?=\n    @field_validator|\n    class |\\Z))"
     )
 
-    def replace_doi_validator(match):
+    def replace_doi_validator(match: re.Match[str]) -> str:
         return doi_validator_patch.strip()
 
     content = re.sub(doi_validator_pattern, replace_doi_validator, content, flags=re.DOTALL)

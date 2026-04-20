@@ -188,7 +188,7 @@ class CacheConfig:
         ttl: int = 86400,  # 24 hours default
         size_limit_mb: int = 500,  # 500MB default
         eviction_policy: str = "least-recently-used",
-        enable_l2: bool = True,  # L2 cache enabled by default for production
+        enable_l2: bool = False,  # L2 cache disabled by default
         l2_size_limit_mb: int = 5000,  # 5GB for L2
         ttl_by_type: dict[CacheDataType, int] | None = None,
         namespace_version: int = 1,

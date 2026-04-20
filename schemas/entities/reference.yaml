@@ -6,9 +6,8 @@ name: pyeuropepmc-reference-entity
 description: Reference entity class for PyEuropePMC
 
 imports:
-  - ../base
-  - ../slots
   - base
+  - slots
 
 classes:
   ReferenceEntity:
@@ -25,6 +24,6 @@ classes:
     slot_usage:
       authors:
         required: false
-        description: Comma-separated list of authors or list of AuthorEntity objects
+        description: Author list (comma-separated string or list of author names)
         range: string
-        multivalued: false
+        multivalued: true

@@ -53,7 +53,7 @@ def add_owl_subclass_relationships(dataset: Any, named_graph_uris: dict[str, Any
             dataset.graph(provenance_context).add((subclass_uri, RDFS.subClassOf, parent_uri))
 
 
-def _resolve_curie_to_uri(curie: str, config: dict) -> Any:
+def _resolve_curie_to_uri(curie: str, config: dict[str, Any]) -> str | None:
     """Resolve a CURIE to a URI using the config namespaces."""
     if ":" not in curie:
         return None
@@ -61,7 +61,8 @@ def _resolve_curie_to_uri(curie: str, config: dict) -> Any:
     prefix, local = curie.split(":", 1)
     namespace = get_namespace_from_config(config, prefix)
     if namespace:
-        return namespace[local]
+        uri = namespace[local]
+        return uri if isinstance(uri, str) else None
     return None
 
 

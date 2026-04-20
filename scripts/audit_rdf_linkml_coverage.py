@@ -38,7 +38,9 @@ def load_rdf_map(config_path: str | None = None) -> dict[str, Any]:
         config_path = str(base_path / "conf" / "rdf_map.yml")
 
     with open(config_path, encoding="utf-8") as f:
-        return yaml.safe_load(f)
+        result = yaml.safe_load(f)
+        assert isinstance(result, dict)
+        return result
 
 
 def load_linkml_schema(schema_path: str | None = None) -> SchemaView | None:
@@ -131,7 +133,7 @@ def compare_mappings(  # noqa: C901
     linkml_fields: dict[str, dict[str, Any]],
 ) -> dict[str, Any]:
     """Compare rdf_map.yml mappings with LinkML schema definitions."""
-    report = {
+    report: dict[str, Any] = {
         "summary": {
             "rdf_map_entities": len(rdf_map_fields),
             "linkml_classes": len(linkml_fields),
@@ -140,9 +142,9 @@ def compare_mappings(  # noqa: C901
             "not_covered": 0,
         },
         "entities": {},
-        "missing_from_linkml": [],
-        "extra_in_linkml": [],
-        "field_coverage": {},
+        "missing_from_linkml": list[str](),
+        "extra_in_linkml": list[str](),
+        "field_coverage": dict[str, float](),
     }
 
     # Check each rdf_map entity against LinkML
@@ -153,14 +155,15 @@ def compare_mappings(  # noqa: C901
             continue
 
         linkml_entity = linkml_fields[entity_name]
-        entity_report = {
-            "covered_fields": [],
-            "missing_fields": [],
-            "covered_multi_value": [],
-            "missing_multi_value": [],
-            "covered_relationships": [],
-            "missing_relationships": [],
-            "predicate_mismatches": [],
+        entity_report: dict[str, Any] = {
+            "covered_fields": list[str](),
+            "missing_fields": list[str](),
+            "covered_multi_value": list[str](),
+            "missing_multi_value": list[str](),
+            "covered_relationships": list[str](),
+            "missing_relationships": list[str](),
+            "predicate_mismatches": list[dict[str, Any]](),
+            "coverage_percentage": 0.0,
         }
 
         # Check single-value fields
@@ -213,7 +216,7 @@ def compare_mappings(  # noqa: C901
             + len(entity_report["covered_relationships"])
         )
 
-        coverage_pct = (covered_items / total_items * 100) if total_items > 0 else 100
+        coverage_pct = float(covered_items / total_items * 100) if total_items > 0 else 100.0
         entity_report["coverage_percentage"] = coverage_pct
 
         if coverage_pct == 100:

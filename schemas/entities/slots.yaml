@@ -8,7 +8,6 @@ description: Reusable slot definitions for PyEuropePMC data models
 imports:
   - base
   - enums
-  - linkml:types
 
 # Slot definitions (reusable attribute definitions)
 slots:
@@ -148,24 +147,6 @@ slots:
   influential_citation_count:
     description: Influential citation count
     slot_uri: pyeuropepmc:influentialCitationCount
-    range: integer
-    minimum_value: 0
-
-  crossref_citation_count:
-    description: Citation count from Crossref
-    slot_uri: pyeuropepmc:crossrefCitationCount
-    range: integer
-    minimum_value: 0
-
-  semantic_scholar_citation_count:
-    description: Citation count from Semantic Scholar
-    slot_uri: pyeuropepmc:semanticScholarCitationCount
-    range: integer
-    minimum_value: 0
-
-  openalex_citation_count:
-    description: Citation count from OpenAlex
-    slot_uri: pyeuropepmc:openalexCitationCount
     range: integer
     minimum_value: 0
 

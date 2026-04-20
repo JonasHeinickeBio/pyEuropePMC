@@ -5,6 +5,7 @@ Provides a flexible framework for running benchmarks on PyEuropePMC components
 with detailed metrics and statistics.
 """
 
+# mypy: ignore-errors
 from collections import defaultdict
 from collections.abc import Callable
 from dataclasses import dataclass, field

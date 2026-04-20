@@ -6,9 +6,8 @@ name: pyeuropepmc-paper-entity
 description: Paper entity class for PyEuropePMC
 
 imports:
-  - ../base
-  - ../slots
   - base
+  - slots
 
 classes:
   PaperEntity:
@@ -31,6 +30,9 @@ classes:
       - oa_url
       - reference_count
       - cited_by_count
+      - crossref_citation_count
+      - semantic_scholar_citation_count
+      - openalex_citation_count
       - publisher
       - issn
       - publication_type

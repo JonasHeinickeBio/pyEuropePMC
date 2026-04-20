@@ -887,6 +887,39 @@ class PaperEntity(ScholarlyWorkEntity):
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "pyeuropepmc:citationCount"}
         },
     )
+    crossref_citation_count: int | None = Field(
+        default=None,
+        description="""Citation count from Crossref""",
+        ge=0,
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity"],
+                "slot_uri": "pyeuropepmc:crossrefCitationCount",
+            }
+        },
+    )
+    semantic_scholar_citation_count: int | None = Field(
+        default=None,
+        description="""Citation count from Semantic Scholar""",
+        ge=0,
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity"],
+                "slot_uri": "pyeuropepmc:semanticScholarCitationCount",
+            }
+        },
+    )
+    openalex_citation_count: int | None = Field(
+        default=None,
+        description="""Citation count from OpenAlex""",
+        ge=0,
+        json_schema_extra={
+            "linkml_meta": {
+                "domain_of": ["PaperEntity"],
+                "slot_uri": "pyeuropepmc:openalexCitationCount",
+            }
+        },
+    )
     publisher: str | None = Field(
         default=None,
         description="""Publisher name""",
@@ -1132,80 +1165,6 @@ class PaperEntity(ScholarlyWorkEntity):
             "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:license"}
         },
     )
-    venue: str | None = Field(
-        default=None,
-        description="""Publication venue name (journal, conference, etc.)""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:venue"}
-        },
-    )
-    venue_id: str | None = Field(
-        default=None,
-        description="""Publication venue identifier""",
-        json_schema_extra={"linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:uri"}},
-    )
-    author_positions: list[str] | None = Field(
-        default=None,
-        description="""Author positions/sequences (first, middle, last)""",
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["PaperEntity"],
-                "slot_uri": "pyeuropepmc:authorPositions",
-            }
-        },
-    )
-    oa_pdf_url: str | None = Field(
-        default=None,
-        description="""Open access PDF URL""",
-        json_schema_extra={"linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "bibo:pdf"}},
-    )
-    reference_works: list[str] | None = Field(
-        default=None,
-        description="""Works cited by this paper""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "cito:cites"}
-        },
-    )
-    related_works: list[str] | None = Field(
-        default=None,
-        description="""Related work identifiers""",
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["PaperEntity"], "slot_uri": "dcterms:related"}
-        },
-    )
-    crossref_citation_count: int | None = Field(
-        default=None,
-        description="""Citation count from Crossref""",
-        ge=0,
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["PaperEntity"],
-                "slot_uri": "pyeuropepmc:crossrefCitationCount",
-            }
-        },
-    )
-    semantic_scholar_citation_count: int | None = Field(
-        default=None,
-        description="""Citation count from Semantic Scholar""",
-        ge=0,
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["PaperEntity"],
-                "slot_uri": "pyeuropepmc:semanticScholarCitationCount",
-            }
-        },
-    )
-    openalex_citation_count: int | None = Field(
-        default=None,
-        description="""Citation count from OpenAlex""",
-        ge=0,
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["PaperEntity"],
-                "slot_uri": "pyeuropepmc:openalexCitationCount",
-            }
-        },
-    )
     authors: list[AuthorEntity] | None = Field(
         default=None,
         description="""Authors of a work""",
@@ -1256,7 +1215,7 @@ class PaperEntity(ScholarlyWorkEntity):
         json_schema_extra={
             "linkml_meta": {
                 "domain_of": ["PaperEntity"],
-                "inverse": "citing_paper",
+                "inverse": "cito:isCitedBy",
                 "slot_uri": "cito:cites",
             }
         },
@@ -1731,33 +1690,6 @@ class AuthorEntity(BaseEntity):
         description="""Email address""",
         json_schema_extra={
             "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "foaf:mbox"}
-        },
-    )
-    h_index: int | None = Field(
-        default=None,
-        description="""Author h-index metric""",
-        ge=0,
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "pyeuropepmc:hIndex"}
-        },
-    )
-    orcid_works_count: int | None = Field(
-        default=None,
-        description="""Number of works in ORCID""",
-        ge=0,
-        json_schema_extra={
-            "linkml_meta": {
-                "domain_of": ["AuthorEntity"],
-                "slot_uri": "pyeuropepmc:orcidWorksCount",
-            }
-        },
-    )
-    paper_count: int | None = Field(
-        default=None,
-        description="""Number of papers associated with author""",
-        ge=0,
-        json_schema_extra={
-            "linkml_meta": {"domain_of": ["AuthorEntity"], "slot_uri": "pyeuropepmc:paperCount"}
         },
     )
     papers: list[PaperEntity] | None = Field(
@@ -2855,29 +2787,10 @@ class SectionEntity(BaseEntity):
         {
             "class_uri": "bibo:DocumentPart",
             "from_schema": "https://w3id.org/pyeuropepmc/entities/section",
-            "rules": [
-                {
-                    "description": "begin_index must be less than end_index",
-                    "postconditions": {
-                        "slot_conditions": {
-                            "begin_index": {"maximum_value": 999999999, "name": "begin_index"},
-                            "end_index": {"minimum_value": 0, "name": "end_index"},
-                        }
-                    },
-                    "preconditions": {
-                        "slot_conditions": {
-                            "begin_index": {"name": "begin_index", "value_presence": "PRESENT"},
-                            "end_index": {"name": "end_index", "value_presence": "PRESENT"},
-                        }
-                    },
-                }
-            ],
             "slot_usage": {
                 "citation_contexts": {
                     "description": "Detailed citation contexts within this section",
-                    "multivalued": True,
                     "name": "citation_contexts",
-                    "range": "CitationContextEntity",
                     "required": False,
                 },
                 "content": {"name": "content", "required": False},
@@ -3366,9 +3279,8 @@ class ReferenceEntity(ScholarlyWorkEntity):
             "from_schema": "https://w3id.org/pyeuropepmc/entities/reference",
             "slot_usage": {
                 "authors": {
-                    "description": "Comma-separated list of authors or "
-                    "list of AuthorEntity objects",
-                    "multivalued": False,
+                    "description": "Author list (comma-separated string or list of author names)",
+                    "multivalued": True,
                     "name": "authors",
                     "range": "string",
                     "required": False,
@@ -3395,12 +3307,16 @@ class ReferenceEntity(ScholarlyWorkEntity):
         default=None,
         description="""Paper that cites this reference""",
         json_schema_extra={
-            "linkml_meta": {"domain_of": ["ReferenceEntity"], "slot_uri": "cito:isCitedBy"}
+            "linkml_meta": {
+                "domain_of": ["ReferenceEntity"],
+                "inverse": "cito:hasCiting",
+                "slot_uri": "cito:isCitedBy",
+            }
         },
     )
-    authors: str | None = Field(
+    authors: list[str] | None = Field(
         default=None,
-        description="""Comma-separated list of authors or list of AuthorEntity objects""",
+        description="""Author list (comma-separated string or list of author names)""",
         json_schema_extra={
             "linkml_meta": {
                 "domain_of": ["ScholarlyWorkEntity", "PaperEntity", "ReferenceEntity"],

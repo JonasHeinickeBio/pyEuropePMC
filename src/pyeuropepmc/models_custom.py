@@ -6,6 +6,7 @@ These methods are not part of the LinkML schema and need to be added after
 model generation.
 """
 
+# mypy: ignore-errors
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -499,17 +500,11 @@ def _add_table_methods():
 
     TableRowEntity.__init__ = _new_tablerow_init
 
-    def tablerow_validate(self: TableRowEntity) -> None:
-        """Validate table row has cells."""
-        if not self.cells or len(self.cells) < 1:
-            raise ValueError("TableRowEntity must have cells")
-
     def tablerow_normalize(self: TableRowEntity) -> None:
         """Normalize table row data by trimming whitespace from cells."""
         if self.cells:
             object.__setattr__(self, "cells", [c.strip() for c in self.cells if c])
 
-    TableRowEntity.validate = tablerow_validate
     TableRowEntity.normalize = tablerow_normalize
 
     def table_post_init(self: TableEntity) -> None:

@@ -280,7 +280,7 @@ class HTMLReportGenerator(ReportGenerator):
 def generate_comprehensive_report(
     results: list[dict[str, Any]],
     output_dir: str | Path | None = None,
-    formats: list[str] = None,
+    formats: list[str] | None = None,
 ) -> dict[str, str]:
     """
     Generate comprehensive reports in multiple formats.

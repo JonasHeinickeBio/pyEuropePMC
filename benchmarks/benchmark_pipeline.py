@@ -197,7 +197,7 @@ class BulkSearchLoader:
                         page=page,
                     )
 
-                    results = response.get("resultList", {}).get("result", [])  # type: ignore
+                    results = response.get("resultList", {}).get("result", [])
                     if not results:
                         break
 
@@ -624,9 +624,13 @@ class BenchmarkRunner:
                         if order:
                             section_orders.append(order)
 
-                        # Check for nested sections (basic heuristic: sections with 0 content)
+                        # Check for nested sections (sections without meaningful content)
                         content = section.get("content", "")
-                        if content and len(content.strip()) == 0:
+                        if (
+                            content
+                            and len(content.strip()) == 0
+                            and (order is None or order != "0")
+                        ):
                             nested_sections_count += 1
 
             except Exception as e:
@@ -648,7 +652,7 @@ class BenchmarkRunner:
         order_pct = len(section_orders) / total_sections * 100
         print(f"   Sections with type classification: {sections_with_types:,} ({type_pct:.1f}%)")
         print(f"   Sections with order numbers: {len(section_orders):,} ({order_pct:.1f}%)")
-        print(f"   Parent sections (0 content): {nested_sections_count:,}\n")
+        print(f"   Root sections (order=0): {nested_sections_count:,}\n")
 
         if sections_per_paper:
             print("📊 Sections per Paper:")
@@ -669,7 +673,7 @@ class BenchmarkRunner:
             other_pct = other_count / total_sections * 100
             print(f"   {'Others':<20} {other_count:>8,} {other_pct:>11.1f}%")
 
-        print(f"\n{'=' * 70}\n")
+            print(f"\n{'=' * 70}\n")
 
         # Return statistics dictionary
         stats = {

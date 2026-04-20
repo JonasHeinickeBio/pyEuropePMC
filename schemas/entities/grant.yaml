@@ -8,7 +8,6 @@ description: Grant entity class for PyEuropePMC
 imports:
   - ../base
   - ../slots
-  - base
 
 classes:
   GrantEntity:

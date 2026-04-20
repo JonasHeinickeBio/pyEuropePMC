@@ -33,7 +33,7 @@ def _format_pmcid(pmcid: str | None) -> str | None:
     return f"PMC{pmcid_str}"
 
 
-def _format_external_ids(external_ids: dict | None) -> str | None:
+def _format_external_ids(external_ids: dict[str, Any] | None) -> str | None:
     """Format external IDs dict as JSON string."""
     if not external_ids:
         return None
@@ -42,7 +42,7 @@ def _format_external_ids(external_ids: dict | None) -> str | None:
     return json.dumps(external_ids)
 
 
-def _format_license(license_data: dict | str | None) -> str | None:
+def _format_license(license_data: dict[str, Any] | str | None) -> str | None:
     """Format license data as string."""
     if not license_data:
         return None
@@ -689,7 +689,7 @@ def _create_section_entities(sections_data: list[Any]) -> list[SectionEntity]:
                 if raw_section_type:
                     mapped_type = section_type_mapping.get(raw_section_type, raw_section_type)
                     # Ensure it's a valid SectionType enum value
-                    if hasattr(SectionType, mapped_type):
+                    if isinstance(mapped_type, str) and hasattr(SectionType, mapped_type):
                         section_type = getattr(SectionType, mapped_type)
                     else:
                         section_type = SectionType.other

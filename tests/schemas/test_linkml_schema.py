@@ -67,8 +67,8 @@ class TestSchemaClasses:
             "TableEntity",
             "TableRowEntity",
             "ReferenceEntity",
-            "OrganizationEntity",
-            "DepartmentEntity",
+            "Organization",
+            "Department",
             "JournalEntity",
             "GrantEntity",
             "FigureEntity",
@@ -113,8 +113,8 @@ class TestSchemaClasses:
             assert slot_name in author_slots, f"Slot {slot_name} not found in AuthorEntity"
 
     def test_organization_entity_has_expected_slots(self, schema_view) -> None:
-        """Test that OrganizationEntity has expected slots."""
-        organization_slots = schema_view.class_slots("OrganizationEntity")
+        """Test that Organization has expected slots."""
+        organization_slots = schema_view.class_slots("Organization")
 
         expected_slots = [
             "display_name",
@@ -126,8 +126,7 @@ class TestSchemaClasses:
         ]
 
         for slot_name in expected_slots:
-            assert slot_name in organization_slots, \
-                f"Slot {slot_name} not found in OrganizationEntity"
+            assert slot_name in organization_slots, f"Slot {slot_name} not found in Organization"
 
 
 class TestSchemaPrefixes:
@@ -156,8 +155,9 @@ class TestSchemaPrefixes:
 
         for prefix, uri in expected_prefixes.items():
             assert prefix in schema_prefixes, f"Prefix {prefix} not found in schema"
-            assert schema_prefixes[prefix].prefix_reference == uri, \
+            assert schema_prefixes[prefix].prefix_reference == uri, (
                 f"Prefix {prefix} has unexpected URI: {schema_prefixes[prefix].prefix_reference}"
+            )
 
 
 class TestSchemaEnums:
@@ -179,8 +179,9 @@ class TestSchemaEnums:
         expected_values = ["open", "closed", "hybrid", "green", "gold", "bronze", "unknown"]
 
         for value in expected_values:
-            assert value in oa_enum.permissible_values, \
+            assert value in oa_enum.permissible_values, (
                 f"Value {value} not found in OpenAccessStatus"
+            )
 
     def test_publication_type_enum_exists(self, schema_view) -> None:
         """Test that PublicationType enum is defined."""
@@ -191,8 +192,9 @@ class TestSchemaEnums:
         expected_values = ["journal_article", "review", "preprint"]
 
         for value in expected_values:
-            assert value in pub_type_enum.permissible_values, \
+            assert value in pub_type_enum.permissible_values, (
                 f"Value {value} not found in PublicationType"
+            )
 
     def test_institution_type_enum_exists(self, schema_view) -> None:
         """Test that InstitutionType enum is defined."""

@@ -151,10 +151,14 @@ class TestRDFPipelineIntegration:
         assert len(g) > 80  # Should have many triples
 
         # Verify paper has all expected relationships
-        author_rels = list(g.triples((paper_uri, mapper._resolve_predicate("dcterms:creator"), None)))
+        author_rels = list(
+            g.triples((paper_uri, mapper._resolve_predicate("dcterms:creator"), None))
+        )
         assert len(author_rels) == 2
 
-        section_rels = list(g.triples((paper_uri, mapper._resolve_predicate("dcterms:hasPart"), None)))
+        section_rels = list(
+            g.triples((paper_uri, mapper._resolve_predicate("dcterms:hasPart"), None))
+        )
         # Should have at least the 3 sections we created (may have more from paper itself)
         assert len(section_rels) >= 3
 
@@ -163,15 +167,21 @@ class TestRDFPipelineIntegration:
 
         # Verify inverse relationships
         for author_uri in author_uris:
-            paper_rels = list(g.triples((author_uri, mapper._resolve_predicate("foaf:made"), None)))
+            paper_rels = list(
+                g.triples((author_uri, mapper._resolve_predicate("foaf:made"), None))
+            )
             assert len(paper_rels) == 1
 
         for section_uri in section_uris:
-            paper_rels = list(g.triples((section_uri, mapper._resolve_predicate("dcterms:isPartOf"), None)))
+            paper_rels = list(
+                g.triples((section_uri, mapper._resolve_predicate("dcterms:isPartOf"), None))
+            )
             assert len(paper_rels) == 1
 
         for ref_uri in reference_uris:
-            citing_rels = list(g.triples((ref_uri, mapper._resolve_predicate("cito:isCitedBy"), None)))
+            citing_rels = list(
+                g.triples((ref_uri, mapper._resolve_predicate("cito:isCitedBy"), None))
+            )
             assert len(citing_rels) == 1
 
     def test_batch_processing_with_files(self, mapper, complex_paper_data):
@@ -185,7 +195,7 @@ class TestRDFPipelineIntegration:
                         "authors": complex_paper_data["authors"],
                         "sections": complex_paper_data["sections"],
                         "references": complex_paper_data["references"],
-                    }
+                    },
                 }
             }
 
@@ -197,7 +207,7 @@ class TestRDFPipelineIntegration:
                 extraction_info={
                     "timestamp": "2024-01-15T12:00:00Z",
                     "method": "functional_test",
-                }
+                },
             )
 
             # Verify results
@@ -209,10 +219,11 @@ class TestRDFPipelineIntegration:
             # Check file was created
             files = list(Path(tmpdir).glob("*.ttl"))
             assert len(files) == 1
-            assert files[0].name.startswith("batch_paper_")
+            # Filename format: {timestamp}_{entity_type}_{identifier}.ttl
+            assert "paper_paper_1234567" in files[0].name
 
             # Verify file content
-            with open(files[0], 'r') as f:
+            with open(files[0], "r") as f:
                 content = f.read()
                 assert "@prefix" in content
                 assert "Computational Analysis of Protein-Protein Interaction Networks" in content
@@ -253,8 +264,11 @@ class TestRDFPipelineIntegration:
         assert typed_ratio > 0.8  # At least 80% of subjects should be typed
 
         # 3. Validate URI consistency
-        doi_uris = [str(o) for s, p, o in g.triples((None, mapper._resolve_predicate("owl:sameAs"), None))
-                   if str(o).startswith("https://doi.org/")]
+        doi_uris = [
+            str(o)
+            for s, p, o in g.triples((None, mapper._resolve_predicate("owl:sameAs"), None))
+            if str(o).startswith("https://doi.org/")
+        ]
         assert len(doi_uris) > 0  # Should have DOI URIs
 
         # 4. Check for duplicate triples (shouldn't exist)
@@ -285,9 +299,7 @@ class TestRDFPipelineIntegration:
         with tempfile.TemporaryDirectory() as tmpdir:
             # Process large batch
             results = mapper.convert_and_save_entities_to_rdf(
-                entities_data,
-                output_dir=tmpdir,
-                prefix="large_batch_"
+                entities_data, output_dir=tmpdir, prefix="large_batch_"
             )
 
             # Verify all papers were processed
@@ -370,5 +382,7 @@ class TestRDFPipelineIntegration:
         # Verify final graph integrity
         assert (paper_uri, mapper._resolve_predicate("dcterms:creator"), author1_uri) in g
         # Check that there's at least one hasPart relationship for the section
-        section_rels = list(g.triples((paper_uri, mapper._resolve_predicate("dcterms:hasPart"), None)))
+        section_rels = list(
+            g.triples((paper_uri, mapper._resolve_predicate("dcterms:hasPart"), None))
+        )
         assert len(section_rels) >= 1

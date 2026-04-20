@@ -37,12 +37,12 @@ def test_search_post_logs_request_and_response(caplog) -> None:
     """Test that search POST logs request and response information."""
     client = SearchClient()
 
-    with patch.object(client, "_post") as mock_post:
+    with patch.object(client, "_get") as mock_get:
         mock_response = MagicMock(spec=requests.Response)
         mock_response.json.return_value = {"test": "data"}
         mock_response.text = json.dumps({"test": "data"})
         mock_response.status_code = 200
-        mock_post.return_value = mock_response
+        mock_get.return_value = mock_response
 
         with caplog.at_level(logging.INFO):
             client.search("test query", synonym=True)

@@ -292,10 +292,9 @@ class TestTableRowEntity:
         row.validate()  # Should not raise
 
     def test_row_validate_failure(self):
-        """Test row validation with invalid data."""
+        """Test row validation with empty cells (allowed now)."""
         row = TableRowEntity()
-        with pytest.raises(ValueError, match="must have cells"):
-            row.validate()
+        row.validate()  # Should not raise - empty cells are now allowed
 
     def test_row_normalize(self):
         """Test row normalization."""

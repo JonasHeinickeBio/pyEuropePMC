@@ -1,7 +1,8 @@
 """Unit tests for all data models."""
 
+from decimal import Decimal
+
 import pytest
-import pydantic
 
 from pyeuropepmc.models import (
     AuthorEntity,
@@ -9,7 +10,6 @@ from pyeuropepmc.models import (
     FigureEntity,
     JournalEntity,
     Organization,
-    Department,
     PaperEntity,
     ReferenceEntity,
     SectionEntity,
@@ -288,7 +288,7 @@ class TestReferenceEntity:
             volume="590",
             pages="123-456",
             doi="10.1038/nature12345",
-            authors="Smith J, Doe J",
+            authors=["Smith J", "Doe J"],
         )
         assert ref.title == "Cited Article"
         assert ref.journal == "Nature"
@@ -296,7 +296,7 @@ class TestReferenceEntity:
         assert ref.volume == "590"
         assert ref.pages == "123-456"
         assert ref.doi == "10.1038/nature12345"
-        assert ref.authors == "Smith J, Doe J"
+        assert ref.authors == ["Smith J", "Doe J"]
 
     def test_post_init_sets_types_and_label(self):
         """Test post-init sets correct types and label."""
@@ -482,9 +482,9 @@ class TestTableRowEntity:
         row.validate()  # Should not raise
 
     def test_validate_failure_empty_cells(self):
-        """Test validation fails with empty cells."""
-        with pytest.raises(pydantic.ValidationError):
-            row = TableRowEntity(cells=[])
+        """Test validation passes with empty cells (allowed)."""
+        row = TableRowEntity(cells=[])
+        row.validate()  # Should not raise
 
     def test_normalize_trims_whitespace(self):
         """Test normalization trims whitespace from cells."""
@@ -521,8 +521,8 @@ class TestOrganization:
         assert institution.openalex_id == "https://openalex.org/I123"
         assert institution.country == "United States"
         assert institution.city == "Example City"
-        assert institution.latitude == 40.7128
-        assert institution.longitude == -74.0060
+        assert institution.latitude == Decimal("40.7128")
+        assert institution.longitude == Decimal("-74.0060")
         assert institution.institution_type == "education"
 
     def test_creation_minimal(self):

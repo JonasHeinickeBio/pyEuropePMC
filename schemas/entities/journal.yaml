@@ -8,7 +8,6 @@ description: Journal entity class for PyEuropePMC
 imports:
   - ../base
   - ../slots
-  - base
 
 classes:
   JournalEntity:

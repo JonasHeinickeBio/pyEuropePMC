@@ -1,0 +1,165 @@
+# PyEuropePMC LinkML Schema - Enumerations
+# This file contains all controlled vocabularies and enums
+
+id: https://w3id.org/pyeuropepmc/enums
+name: pyeuropepmc-enums
+description: Controlled vocabularies for PyEuropePMC data models
+
+imports:
+  - base
+
+# Controlled vocabularies (enums)
+enums:
+  OpenAccessStatus:
+    description: Open access status of a publication
+    permissible_values:
+      open:
+        description: Fully open access
+      closed:
+        description: Not open access
+      hybrid:
+        description: Hybrid open access
+      green:
+        description: Green open access (preprint/postprint)
+      gold:
+        description: Gold open access
+      bronze:
+        description: Bronze open access
+      unknown:
+        description: Unknown open access status
+
+  PublicationType:
+    description: Type of scholarly publication
+    permissible_values:
+      journal_article:
+        description: Journal article
+      review:
+        description: Review article
+      preprint:
+        description: Preprint
+      book_chapter:
+        description: Book chapter
+      conference_paper:
+        description: Conference paper
+      dataset:
+        description: Dataset
+      thesis:
+        description: Thesis or dissertation
+      other:
+        description: Other publication type
+
+  InstitutionType:
+    description: Type of research institution
+    permissible_values:
+      education:
+        description: Educational institution
+      healthcare:
+        description: Healthcare institution
+      company:
+        description: Company or corporation
+      government:
+        description: Government organization
+      nonprofit:
+        description: Nonprofit organization
+      facility:
+        description: Research facility
+      funder:
+        description: Funding organization
+      other:
+        description: Other institution type
+
+  AuthorPosition:
+    description: Position of author in author list
+    permissible_values:
+      first:
+        description: First author
+      middle:
+        description: Middle author
+      last:
+        description: Last/corresponding author
+      corresponding:
+        description: Corresponding author (may overlap with first/last)
+
+  AuthorRole:
+    description: Specific roles or contributions of authors
+    permissible_values:
+      conceptualization:
+        description: Ideas, formulation of research goals
+      methodology:
+        description: Development of methodology
+      software:
+        description: Programming, software development
+      validation:
+        description: Verification of methods/analyses
+      formal_analysis:
+        description: Application of statistical techniques
+      investigation:
+        description: Conducting research, data collection
+      resources:
+        description: Provision of study materials/reagents
+      data_curation:
+        description: Management of data activities
+      writing_original_draft:
+        description: Preparation of original draft
+      writing_review_editing:
+        description: Review and editing of manuscript
+      visualization:
+        description: Preparation of figures/tables
+      supervision:
+        description: Oversight and leadership
+      project_administration:
+        description: Management and coordination
+      funding_acquisition:
+        description: Acquisition of funding
+
+  SectionType:
+    description: Type of document section
+    permissible_values:
+      abstract:
+        description: Abstract section
+      introduction:
+        description: Introduction section
+      methods:
+        description: Methods/Materials section
+      results:
+        description: Results section
+      discussion:
+        description: Discussion section
+      conclusion:
+        description: Conclusion section
+      acknowledgments:
+        description: Acknowledgments section
+      references:
+        description: References/Bibliography section
+      supplementary:
+        description: Supplementary materials
+      appendix:
+        description: Appendix section
+      other:
+        description: Other section type
+
+  CitationType:
+    description: Type of citation relationship
+    permissible_values:
+      cites:
+        description: General citation
+      cites_as_evidence:
+        description: Cites as evidence/support
+      cites_as_background:
+        description: Cites for background information
+      cites_as_related:
+        description: Cites related work
+      cites_as_method:
+        description: Cites methodological work
+      cites_for_information:
+        description: Cites for specific information
+      shares_authors:
+        description: Shares authors with cited work
+      agrees_with:
+        description: Agrees with cited work
+      disagrees_with:
+        description: Disagrees with cited work
+      cites_as_metadata:
+        description: Citation in metadata/references section
+      cites_as_data:
+        description: Cites data source

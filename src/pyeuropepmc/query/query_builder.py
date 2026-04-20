@@ -319,6 +319,8 @@ FIELD_METADATA: dict[str, tuple[str, str]] = {
     "_version_": ("_version_", "Document version (internal use)"),
     "text_hl": ("text_hl", "Highlighted text snippets (internal use)"),
     "text_synonyms": ("text_synonyms", "Text synonym expansion (internal use)"),
+    # Meta field
+    "all_fields": ("ALL_FIELDS", "Search across all available fields"),
 }
 
 

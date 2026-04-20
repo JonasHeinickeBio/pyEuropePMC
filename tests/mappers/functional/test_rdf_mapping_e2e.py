@@ -30,9 +30,7 @@ class TestRDFMappingEndToEnd:
             publication_year=2024,
             publication_date="2024-01-15",
             journal=JournalEntity(
-                title="PLOS ONE",
-                issn="1932-6203",
-                publisher="Public Library of Science"
+                title="PLOS ONE", issn="1932-6203", publisher="Public Library of Science"
             ),
             volume="19",
             issue="1",
@@ -46,7 +44,7 @@ class TestRDFMappingEndToEnd:
             oa_url="https://doi.org/10.1371/journal.pone.0308090",
             publisher="Public Library of Science",
             issn="1932-6203",
-            publication_type="Journal Article",
+            publication_type="journal_article",
             semantic_scholar_corpus_id="12345678",
             openalex_id="https://openalex.org/W1234567890",
             reference_count=35,
@@ -113,7 +111,9 @@ class TestRDFMappingEndToEnd:
         # Verify graph has substantial content
         assert len(g) > 20  # Should have many triples
 
-    def test_paper_with_relationships_rdf(self, mapper, sample_paper, sample_author, sample_institution):
+    def test_paper_with_relationships_rdf(
+        self, mapper, sample_paper, sample_author, sample_institution
+    ):
         """Test RDF conversion with relationships between entities."""
         g = Graph()
 
@@ -166,17 +166,15 @@ class TestRDFMappingEndToEnd:
     def test_batch_entity_conversion(self, mapper, sample_paper, sample_author):
         """Test batch conversion of multiple entities."""
         entities_data = {
-            "paper1": {
-                "entity": sample_paper,
-                "related_entities": {"authors": [sample_author]}
-            }
+            "paper1": {"entity": sample_paper, "related_entities": {"authors": [sample_author]}}
         }
 
         with tempfile.TemporaryDirectory() as tmpdir:
             results = mapper.convert_and_save_entities_to_rdf(
                 entities_data,
                 output_dir=tmpdir,
-                prefix="test_"
+                prefix="test_",
+                filename_template="{prefix}{entity_type}_{identifier}.ttl",
             )
 
             # Verify results
@@ -216,10 +214,7 @@ class TestRDFMappingEndToEnd:
         extraction_info = {
             "timestamp": "2024-01-15T10:30:00Z",
             "method": "xml_parser",
-            "quality": {
-                "validation_passed": True,
-                "completeness_score": 0.95
-            }
+            "quality": {"validation_passed": True, "completeness_score": 0.95},
         }
 
         uri = sample_paper.to_rdf(g, mapper=mapper, extraction_info=extraction_info)
@@ -230,7 +225,9 @@ class TestRDFMappingEndToEnd:
         assert (uri, mapper._resolve_predicate("ex:validationStatus"), None) in g
         assert (uri, mapper._resolve_predicate("ex:completenessScore"), None) in g
 
-    def test_ontology_alignments_complete(self, mapper, sample_paper, sample_author, sample_institution):
+    def test_ontology_alignments_complete(
+        self, mapper, sample_paper, sample_author, sample_institution
+    ):
         """Test complete ontology alignments across all entity types."""
         g = Graph()
 
@@ -240,14 +237,18 @@ class TestRDFMappingEndToEnd:
         inst_uri = sample_institution.to_rdf(g, mapper=mapper)
 
         # Check paper ontology alignments (MeSH terms using official vocabulary)
-        mesh_triples = list(g.triples((paper_uri, mapper._resolve_predicate("dcterms:subject"), None)))
+        mesh_triples = list(
+            g.triples((paper_uri, mapper._resolve_predicate("dcterms:subject"), None))
+        )
         assert len(mesh_triples) == 3  # 3 keywords mapped to dcterms:subject
 
         # Check external identifiers for all entities
         paper_sameas = list(g.triples((paper_uri, mapper._resolve_predicate("owl:sameAs"), None)))
         assert len(paper_sameas) >= 2  # DOI + PMCID + OpenAlex
 
-        author_sameas = list(g.triples((author_uri, mapper._resolve_predicate("owl:sameAs"), None)))
+        author_sameas = list(
+            g.triples((author_uri, mapper._resolve_predicate("owl:sameAs"), None))
+        )
         assert len(author_sameas) >= 1  # ORCID + OpenAlex
 
         inst_sameas = list(g.triples((inst_uri, mapper._resolve_predicate("owl:sameAs"), None)))
@@ -262,10 +263,10 @@ class TestRDFMappingEndToEnd:
         for i in range(10):
             paper = PaperEntity(
                 pmcid=f"PMC{i:07d}",
-                doi=f"10.1234/test.{2024+i:04d}.001",
+                doi=f"10.1234/test.{2024 + i:04d}.001",
                 title=f"Test Paper {i}",
                 keywords=[f"keyword{i}", f"topic{i}"],
-                publication_year=2024 + i
+                publication_year=2024 + i,
             )
             papers.append(paper)
 

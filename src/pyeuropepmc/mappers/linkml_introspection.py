@@ -426,7 +426,8 @@ class LinkMLSchemaIntrospector:
             List of RDF type URIs.
         """
         mapping = self.get_class_mapping(class_name)
-        return mapping.get("rdf_types", [])
+        rdf_types = mapping.get("rdf_types", [])
+        return rdf_types if isinstance(rdf_types, list) else []
 
     def get_inheritance_chain(self, class_name: str) -> list[str]:
         """

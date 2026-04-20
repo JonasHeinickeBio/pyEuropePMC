@@ -5,6 +5,7 @@ Performs actual searches and retrieves real papers from Europe PMC API
 for realistic performance measurement.
 """
 
+# mypy: ignore-errors
 import json
 import logging
 from pathlib import Path

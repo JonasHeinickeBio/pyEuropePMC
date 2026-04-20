@@ -1,8 +1,11 @@
 import logging
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 import backoff
+
+if TYPE_CHECKING:
+    from requests import Response as RequestsResponse
 import requests
 
 from .error_codes import ErrorCodes
@@ -44,10 +47,10 @@ class BaseAPIClient:
         on_giveup=lambda details: BaseAPIClient.logger.error(
             f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
         ),
-    )
+    )  # type: ignore[misc]
     def _get(
         self, endpoint: str, params: dict[str, Any] | None = None, stream: bool = False
-    ) -> requests.Response:
+    ) -> "RequestsResponse":
         """
         Robust GET request with retries and backoff.
         Raises APIClientError on failure.
@@ -258,10 +261,10 @@ class BaseAPIClient:
         on_giveup=lambda details: BaseAPIClient.logger.error(
             f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
         ),
-    )
+    )  # type: ignore[misc]
     def _post(
         self, endpoint: str, data: dict[str, Any], headers: dict[str, str] | None = None
-    ) -> requests.Response:
+    ) -> "RequestsResponse":
         """
         Robust POST request with retries and backoff.
         Raises APIClientError on failure.
