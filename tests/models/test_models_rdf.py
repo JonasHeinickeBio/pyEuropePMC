@@ -370,3 +370,55 @@ class TestReferenceEntity:
         title_values = list(g.objects(uri, DCT.title))
         assert len(title_values) == 1
         assert str(title_values[0]) == "Sample Article"
+
+    def test_bidirectional_citation_relationships(self):
+        """Test bidirectional citation relationships between papers and references."""
+        mapper = RDFMapper()
+        g = Graph()
+
+        # Create a paper
+        paper = PaperEntity(
+            pmcid="PMC123456",
+            title="Main Research Paper",
+            abstract="This paper presents new findings.",
+        )
+
+        # Create references
+        ref1 = ReferenceEntity(
+            doi="10.1038/nature12345",
+            title="Referenced Paper 1",
+            publication_year=2020,
+        )
+        ref2 = ReferenceEntity(
+            doi="10.1038/nature67890",
+            title="Referenced Paper 2",
+            publication_year=2021,
+        )
+
+        # Convert all entities to RDF
+        paper_uri = paper.to_rdf(g, mapper=mapper)
+        ref1_uri = ref1.to_rdf(g, mapper=mapper)
+        ref2_uri = ref2.to_rdf(g, mapper=mapper)
+
+        # Add paper-to-references relationship (forward direction)
+        related_entities = {"references": [ref1, ref2]}
+        mapper.map_relationships(g, paper_uri, paper, related_entities)
+
+        # Add references-to-paper relationship (inverse direction)
+        mapper.map_relationships(g, ref1_uri, ref1, {"citing_paper": [paper]})
+        mapper.map_relationships(g, ref2_uri, ref2, {"citing_paper": [paper]})
+
+        # Verify forward direction: paper cites references
+        cito_ns = Namespace("http://purl.org/spar/cito/")
+        cites_triples = list(g.triples((paper_uri, cito_ns.cites, None)))
+        assert len(cites_triples) == 2, "Paper should cite 2 references"
+
+        # Verify inverse direction: references are cited by paper
+        is_cited_by_triples_ref1 = list(g.triples((ref1_uri, cito_ns.isCitedBy, None)))
+        is_cited_by_triples_ref2 = list(g.triples((ref2_uri, cito_ns.isCitedBy, None)))
+        assert len(is_cited_by_triples_ref1) > 0, "Reference 1 should have isCitedBy triple"
+        assert len(is_cited_by_triples_ref2) > 0, "Reference 2 should have isCitedBy triple"
+
+        # Verify the graph has appropriate number of triples
+        # Should include: entity types, labels, titles, DOIs, and relationships
+        assert len(g) > 10, "Graph should have enough triples for all relationships"

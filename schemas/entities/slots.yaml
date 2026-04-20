@@ -792,10 +792,12 @@ slots:
     slot_uri: cito:cites
     multivalued: true
     range: ReferenceEntity
+    inverse: citing_paper
 
   citing_paper:
     description: Paper that cites this reference
     slot_uri: cito:isCitedBy
+    inverse: references
     range: PaperEntity
 
   tables:
