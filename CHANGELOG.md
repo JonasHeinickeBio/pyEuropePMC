@@ -2,6 +2,23 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [1.15.0] - 2026-04-21
+
+### ✨ Features
+
+- **QA Module Enhancements**: Comprehensive quality assurance improvements
+  - Added type annotations to all QA module functions
+  - Fixed union type handling for error/warning lists
+  - Improved type inference with explicit variable declarations
+  - Enhanced SPARQL query validation with better error reporting
+
+### 🔧 Maintenance
+
+- **Code Quality**: Fixed mypy type checking errors
+  - Removed duplicate `__init__` methods and docstrings
+  - Fixed dictionary value type inference issues
+  - Improved type safety across QA module files
+
 ## [1.14.0] - 2025-01-15
 
 ### ✨ Features
