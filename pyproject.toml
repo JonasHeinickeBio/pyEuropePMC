@@ -3,7 +3,6 @@ name = "pyeuropepmc"
 version = "1.14.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "MIT"
-license-files = ["LICENSE"]
 readme = "README.md"
 authors = [
   { name = "Jonas Heinicke", email = "jonas.heinicke@helmholtz-hzi.de" },
@@ -13,7 +12,6 @@ keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific"]
 classifiers = [
   "Development Status :: 5 - Production/Stable",
   "Intended Audience :: Science/Research",
-  "License :: OSI Approved :: MIT License",
   "Operating System :: OS Independent",
   "Programming Language :: Python :: 3",
   "Programming Language :: Python :: 3.10",
@@ -22,6 +20,33 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Bio-Informatics",
 ]
 urls = { Homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC", Repository = "https://github.com/JonasHeinickeBio/pyEuropePMC" }
+
+dependencies = [
+  "requests>=2.32.5,<3.0.0",
+  "typer>=0.12.5,<0.13.0",
+  "backoff>=2.2.1,<3.0.0",
+  "tornado>=6.5.1,<7.0.0",
+  "flask>=3.1.1,<4.0.0",
+  "defusedxml>=0.7.1,<0.8.0",
+  "tqdm>=4.67.1,<5.0.0",
+  "beautifulsoup4>=4.13.5,<5.0.0",
+  "tabulate>=0.9.0,<1.0.0",
+  "xlsxwriter>=3.2.9,<4.0.0",
+  "diskcache>=5.6.3,<6.0.0",
+  "rapidfuzz>=2.15.0,<3.0.0",
+  "search-query>=0.13.0,<0.14.0",
+  "matplotlib>=3.7.0,<4.0.0",
+  "seaborn>=0.12.0,<0.13.0",
+  "cachetools>=6.2.1,<7.0.0",
+  "requests-cache>=1.2.1,<2.0.0",
+  "rdflib>=6.0.0,<7.0.0",
+  "python-dotenv>=0.19.0,<1.0.0",
+  "cryptography>=46.0.3,<47.0.0",
+  "linkml>=1.0.0,<2.0.0",
+]
+
+[project.scripts]
+europepmc-qa = "pyeuropepmc.qa.cli:main"
 
 [project.optional-dependencies]
 dev = [
@@ -41,55 +66,13 @@ dev = [
   "memory-profiler>=0.61.0",
 ]
 
-[tool.poetry]
-name = "pyeuropepmc"
-version = "1.14.0"
-description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
-authors = ["Jonas Heinicke <jonas.heinicke@helmholtz-hzi.de>"]
-license = "MIT"
-readme = "README.md"
-homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC"
-repository = "https://github.com/JonasHeinickeBio/pyEuropePMC"
-keywords = ["europe-pmc", "pubmed", "literature", "api", "scientific"]
-packages = [{ include = "pyeuropepmc", from = "src" }]
-
-[tool.poetry.dependencies]
-python = ">=3.10,<4.0"
-requests = "^2.32.5"
-typer = ">=0.12.5,<0.13.0"
-backoff = "^2.2.1"
-tornado = "^6.5.1"
-flask = "^3.1.1"
-defusedxml = "^0.7.1"
-tqdm = "^4.67.1"
-beautifulsoup4 = "^4.13.5"
-tabulate = "^0.9.0"
-xlsxwriter = "^3.2.9"
-diskcache = "^5.6.3"
-rapidfuzz = "^2.15.0"
-search-query = "^0.13.0"
-matplotlib = "^3.7.0"
-seaborn = "^0.12.0"
-cachetools = "^6.2.1"
-requests-cache = "^1.2.1"
-rdflib = "^6.0"
-rdflib-jsonld = ">=0.5"
-python-dotenv = ">=0.19"
-cryptography = "^46.0.3"
-linkml = "^1.0.0"
-
-[tool.poetry.group.dev.dependencies]
-ipython = ">=7.30"
-ipykernel = ">=6.7"
-ipywidgets = ">=7.6"
-jupyterlab = ">=3.2"
-notebook = ">=6.4"
-numpy = ">=1.21"
-pandas = ">=1.4"
-
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[[tool.poetry.packages]]
+include = "pyeuropepmc"
+from = "src"
 
 [tool.semantic_release]
 version_variable = ["src/pyeuropepmc/__init__.py:__version__"]
@@ -215,81 +198,3 @@ exclude_dirs = [
   ".idea",
 ]
 paths = ["src"]
-
-[tool.mypy]
-python_version = "3.12"
-strict = true
-ignore_missing_imports = true
-exclude = ["tests/", "examples/", ".*_backup.*", ".*_temp.*"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.models.*"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "scripts.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "attr-defined", "assignment", "var-annotated", "no-untyped-def", "no-untyped-call", "type-arg", "import-untyped", "no-any-return", "return-value", "unused-ignore", "misc", "call-arg", "index", "override"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.utils.search_logging"
-disable_error_code = ["attr-defined", "name-defined"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.mappers.linkml_introspection"
-disable_error_code = ["union-attr", "var-annotated", "name-defined", "no-untyped-def", "arg-type", "attr-defined", "has-type", "operator", "call-overload"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.mappers.runtime_config"
-disable_error_code = ["no-untyped-call", "no-untyped-def", "var-annotated", "assignment", "attr-defined", "dict-item", "arg-type", "union-attr"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.builders.schema_validation"
-disable_error_code = ["no-untyped-def", "dict-item", "union-attr", "arg-type", "name-defined"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.processing.fulltext_parser"
-disable_error_code = ["var-annotated", "name-defined", "attr-defined", "call-arg", "union-attr", "dict-item", "no-untyped-def"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.builders.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.processing.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "dict-item", "var-annotated", "no-untyped-def", "no-untyped-call", "attr-defined", "call-arg", "assignment"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.mappers.rdf_utils"
-disable_error_code = ["var-annotated", "name-defined", "union-attr"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.enrichment.pubtator"
-disable_error_code = ["var-annotated", "arg-type", "name-defined", "dict-item", "attr-defined", "union-attr", "has-type", "operator", "call-overload", "no-untyped-def", "call-arg", "assignment", "no-untyped-call"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.enrichment.enricher"
-disable_error_code = ["attr-defined", "arg-type", "name-defined", "union-attr", "dict-item", "call-arg", "var-annotated", "assignment", "has-type", "operator", "call-overload", "no-untyped-def", "no-untyped-call"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.enrichment.*"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "attr-defined", "var-annotated", "assignment", "dict-item", "call-arg", "no-untyped-def", "no-untyped-call", "misc", "no-any-return", "type-arg", "unused-ignore"]
-
-[[tool.mypy.overrides]]
-module = "pyeuropepmc.pipeline"
-disable_error_code = ["arg-type", "name-defined", "union-attr", "has-type", "operator", "call-overload", "attr-defined", "var-annotated", "assignment", "dict-item", "call-arg", "no-untyped-def", "no-untyped-call", "misc", "no-any-return", "type-arg", "unused-ignore"]
-
-[[tool.mypy.overrides]]
-module = "benchmarks.*"
-ignore_errors = true
-
-[[tool.mypy.overrides]]
-module = "yaml.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "requests.*"
-ignore_missing_imports = true
-
-[[tool.mypy.overrides]]
-module = "cachetools.*"
-ignore_missing_imports = true
