@@ -3,9 +3,10 @@
 @prefix datacite: <http://purl.org/spar/datacite/> .
 @prefix dcterms: <http://purl.org/dc/terms/> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix geo1: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
 @prefix meshv: <http://id.nlm.nih.gov/mesh/vocab#> .
 @prefix nif: <http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#> .
+@prefix ns1: <file:///home/jhe24/AID-PAIS/pyEuropePMC_project/test_output/> .
 @prefix org: <http://www.w3.org/ns/org#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix prov: <http://www.w3.org/ns/prov#> .
@@ -3126,35 +3127,35 @@
     bibo:eissn "1932-6203"^^xsd:string ;
     bibo:shortTitle "PLoS ONE"^^xsd:string,
         "PLoS One"^^xsd:string ;
-    geo:country "San Francisco, USA"^^xsd:string ;
+    geo1:country "San Francisco, USA"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:56.710217" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/agricultural-research-council_5ad02a> a org:Organization ;
     rdfs:label "Biometry Unit, Agricultural Research Council, Silverton, Pretoria"^^xsd:string ;
-    geo:city "South Africa"^^xsd:string ;
+    geo1:city "South Africa"^^xsd:string ;
     skos:prefLabel "Biometry Unit, Agricultural Research Council, Silverton, Pretoria"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:57.431159" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/animal-health-division_b150c5> a org:Organization ;
     rdfs:label "Animal Health Division, Bayer Pty Ltd, Isando"^^xsd:string ;
-    geo:city "South Africa"^^xsd:string ;
+    geo1:city "South Africa"^^xsd:string ;
     skos:prefLabel "Animal Health Division, Bayer Pty Ltd, Isando"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:57.044511" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/department-of-agriculture_9921ac> a org:Organization ;
     rdfs:label "Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape"^^xsd:string ;
-    geo:city "South Africa"^^xsd:string ;
+    geo1:city "South Africa"^^xsd:string ;
     skos:prefLabel "Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:57.262720" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/emory-university_eca44a> a org:Organization ;
     rdfs:label "Department of Global Health, Rollins School of Public Health, Emory University, Atlanta"^^xsd:string ;
-    geo:city "Georgia"^^xsd:string ;
-    geo:country "United States of America"^^xsd:string ;
+    geo1:city "Georgia"^^xsd:string ;
+    geo1:country "United States of America"^^xsd:string ;
     skos:prefLabel "Department of Global Health, Rollins School of Public Health, Emory University, Atlanta"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:57.146469" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
@@ -3167,21 +3168,21 @@
 
 <https://w3id.org/pyeuropepmc/data#organization/ross-university_7b67cd> a org:Organization ;
     rdfs:label "Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts"^^xsd:string ;
-    geo:city "West Indies"^^xsd:string ;
+    geo1:city "West Indies"^^xsd:string ;
     skos:prefLabel "Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:56.802612" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/stewardship-for-research-on-infectious-diseases_fb08e3> a org:Organization ;
     rdfs:label "Stewardship for Research on Infectious Diseases of Poverty (STE)"^^xsd:string ;
-    geo:city "UNICEF/UNDP/World Bank/WHO Special Programme for Research"^^xsd:string ;
+    geo1:city "UNICEF/UNDP/World Bank/WHO Special Programme for Research"^^xsd:string ;
     skos:prefLabel "Stewardship for Research on Infectious Diseases of Poverty (STE)"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:57.816704" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/university-of-johannesburg_2c125f> a org:Organization ;
     rdfs:label "Department of Zoology, University of Johannesburg, Auckland Park"^^xsd:string ;
-    geo:city "South Africa"^^xsd:string ;
+    geo1:city "South Africa"^^xsd:string ;
     skos:prefLabel "Department of Zoology, University of Johannesburg, Auckland Park"^^xsd:string ;
     prov:generatedAtTime "2026-04-21T10:51:56.833292" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
@@ -3313,10 +3314,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Helmholtz Zentrum München"^^xsd:string ;
     dcterms:created 1964 ;
     owl:sameAs <https://ror.org/00cfam450> ;
-    geo:city "Munich"^^xsd:string ;
-    geo:country "Germany"^^xsd:string ;
-    geo:lat 48.13743 ;
-    geo:long 11.57549 ;
+    geo1:city "Munich"^^xsd:string ;
+    geo1:country "Germany"^^xsd:string ;
+    geo1:lat 48.13743 ;
+    geo1:long 11.57549 ;
     skos:prefLabel "Helmholtz Zentrum München"^^xsd:string ;
     org:classification "facility" ;
     prov:generatedAtTime "2026-04-21T10:52:10.369877" ;
@@ -3328,10 +3329,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Pusan National University"^^xsd:string ;
     dcterms:created 1946 ;
     owl:sameAs <https://ror.org/01an57a31> ;
-    geo:city "Busan"^^xsd:string ;
-    geo:country "South Korea"^^xsd:string ;
-    geo:lat 35.10168 ;
-    geo:long 129.03004 ;
+    geo1:city "Busan"^^xsd:string ;
+    geo1:country "South Korea"^^xsd:string ;
+    geo1:lat 35.10168 ;
+    geo1:long 129.03004 ;
     skos:prefLabel "Pusan National University"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.680797" ;
@@ -3343,10 +3344,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Chiba Cancer Center"^^xsd:string ;
     dcterms:created 1972 ;
     owl:sameAs <https://ror.org/02120t614> ;
-    geo:city "Chiba"^^xsd:string ;
-    geo:country "Japan"^^xsd:string ;
-    geo:lat 35.6 ;
-    geo:long 140.11667 ;
+    geo1:city "Chiba"^^xsd:string ;
+    geo1:country "Japan"^^xsd:string ;
+    geo1:lat 35.6 ;
+    geo1:long 140.11667 ;
     skos:prefLabel "Chiba Cancer Center"^^xsd:string ;
     org:classification "healthcare" ;
     prov:generatedAtTime "2026-04-21T10:52:10.614963" ;
@@ -3358,10 +3359,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "The University of Sydney"^^xsd:string ;
     dcterms:created 1850 ;
     owl:sameAs <https://ror.org/0384j8v12> ;
-    geo:city "Sydney"^^xsd:string ;
-    geo:country "Australia"^^xsd:string ;
-    geo:lat -33.86785 ;
-    geo:long 151.20732 ;
+    geo1:city "Sydney"^^xsd:string ;
+    geo1:country "Australia"^^xsd:string ;
+    geo1:lat -33.86785 ;
+    geo1:long 151.20732 ;
     skos:prefLabel "The University of Sydney"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.777433" ;
@@ -3373,10 +3374,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Center for Environmental Health"^^xsd:string ;
     dcterms:created 1996 ;
     owl:sameAs <https://ror.org/03k84rm07> ;
-    geo:city "Oakland"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 37.80437 ;
-    geo:long -122.2708 ;
+    geo1:city "Oakland"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 37.80437 ;
+    geo1:long -122.2708 ;
     skos:prefLabel "Center for Environmental Health"^^xsd:string ;
     org:classification "facility" ;
     prov:generatedAtTime "2026-04-21T10:52:10.376223" ;
@@ -3388,10 +3389,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Center for Systems Biology"^^xsd:string ;
     dcterms:created 1999 ;
     owl:sameAs <https://ror.org/05r3dyn47> ;
-    geo:city "Boston"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.35843 ;
-    geo:long -71.05977 ;
+    geo1:city "Boston"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.35843 ;
+    geo1:long -71.05977 ;
     skos:prefLabel "Center for Systems Biology"^^xsd:string ;
     org:classification "facility" ;
     prov:generatedAtTime "2026-04-21T10:52:09.983774" ;
@@ -3441,7 +3442,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/1991-d07b22ad> a bibo:Article,
         bibo:Document ;
     rdfs:label "The zoonotic Taeniae of Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 1991 ;
     dcterms:title "The zoonotic Taeniae of Africa."^^xsd:string ;
     bibo:authorList "Harrison, LJS, Sewell, MMH"^^xsd:string ;
@@ -3452,7 +3453,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2000-da12d008> a bibo:Article,
         bibo:Document ;
     rdfs:label "Livestock Strategy to 2010: Making the Livestock Revolution work for the poor."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2000 ;
     dcterms:title "Livestock Strategy to 2010: Making the Livestock Revolution work for the poor."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
@@ -3462,7 +3463,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2001-80ba26f1> a bibo:Article,
         bibo:Document ;
     rdfs:label "Unknown title"^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2001 ;
     dcterms:title "Unknown title"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
@@ -3472,7 +3473,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2001-cace5f4e> a bibo:Article,
         bibo:Document ;
     rdfs:label "Census 2007. Community Survey 2007."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2001 ;
     dcterms:title "Census 2007. Community Survey 2007."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
@@ -3482,7 +3483,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2003-b951b968> a bibo:Article,
         bibo:Document ;
     rdfs:label "Control of Neurocysticercosis."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2003 ;
     dcterms:title "Control of Neurocysticercosis."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
@@ -3492,7 +3493,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2004-98130016> a bibo:Article,
         bibo:Document ;
     rdfs:label "Questionnaire results from a community-based project on porcine cysticercosis in the Eastern Cape Province of South Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2004 ;
     dcterms:title "Questionnaire results from a community-based project on porcine cysticercosis in the Eastern Cape Province of South Africa."^^xsd:string ;
     bibo:authorList "Krecek, RC, Michael, LM, Willingham, AL, Schantz, PM"^^xsd:string ;
@@ -3505,7 +3506,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2006-220de8e9> a bibo:Article,
         bibo:Document ;
     rdfs:label "Estimation of the cost of Taenia solium cysticercosis in the Eastern Cape, South Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2006 ;
     dcterms:title "Estimation of the cost of Taenia solium cysticercosis in the Eastern Cape, South Africa."^^xsd:string ;
     bibo:authorList "Carabin, H, Krecek, RC, Cowan, LD, Michael, L, Foyaca-Sibat, H"^^xsd:string ;
@@ -3518,7 +3519,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/2011-927af6ab> a bibo:Article,
         bibo:Document ;
     rdfs:label "Corrigendum to Prevalence of Taenia solium cysticercosis in swine from a community-based study in 21 villages of the Eastern Cape Province, South Africa. [Vet Parasitol 154: 38–47]."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2011 ;
     dcterms:title "Corrigendum to Prevalence of Taenia solium cysticercosis in swine from a community-based study in 21 villages of the Eastern Cape Province, South Africa. [Vet Parasitol 154: 38–47]."^^xsd:string ;
     bibo:authorList "Krecek, RC, Michael, LM, Schantz, PM, Ntanjana, L, Smith, MF"^^xsd:string ;
@@ -3531,7 +3532,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/365c8556-9a66-4ffa-9f63-d76cffef9400> a bibo:Article,
         bibo:Document ;
     rdfs:label "Microsoft© Excel"^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:title "Microsoft© Excel"^^xsd:string ;
     bibo:authorList "Microsoft© Windows XP Professional 2002."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
@@ -3541,7 +3542,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/80813502-f0e7-47e7-9337-5ab2557b0fb2> a bibo:Article,
         bibo:Document ;
     rdfs:label "SAS Institute Inc, Cary, North Carolina, USA"^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:title "SAS Institute Inc, Cary, North Carolina, USA"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     prov:generatedAtTime "2026-04-21T10:52:05.911693" ;
@@ -3550,7 +3551,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://w3id.org/pyeuropepmc/data#reference/d7af2b82-2320-44ea-9f05-61e9f1b1b375> a bibo:Article,
         bibo:Document ;
     rdfs:label "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:title "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States."^^xsd:string ;
     bibo:authorList "O'Neal, SE, Townes, JM, Wilkins, PP, Noh, JC, Lee, D"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
@@ -3560,7 +3561,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/10681021/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Sero-epidemiological study of Taenia saginata cysticercosis in Belgian cattle."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2000 ;
     dcterms:title "Sero-epidemiological study of Taenia saginata cysticercosis in Belgian cattle."^^xsd:string ;
     bibo:authorList "Dorny, P, Vercammen, F, Brandt, J, Vansteenkiste, W, Berkvens, D"^^xsd:string ;
@@ -3575,7 +3576,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/10855829/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Helminth parasites of dogs from two resource-limited communities in South Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 1999 ;
     dcterms:title "Helminth parasites of dogs from two resource-limited communities in South Africa."^^xsd:string ;
     bibo:authorList "Minnaar, WN, Krecek, RC, Rajput, JI"^^xsd:string ;
@@ -3590,7 +3591,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/11030358/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Animal husbandry in Moretele 1 of North-West Province: implications for veterinary training and research."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2000 ;
     dcterms:title "Animal husbandry in Moretele 1 of North-West Province: implications for veterinary training and research."^^xsd:string ;
     bibo:authorList "Letsoalo, SS, Krecek, RC, Botha, CAJ, Ngetu, X"^^xsd:string ;
@@ -3605,7 +3606,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/11563717/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Socioeconomic, health and management aspects of working donkeys in Moretele 1, North West Province, South Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2001 ;
     dcterms:title "Socioeconomic, health and management aspects of working donkeys in Moretele 1, North West Province, South Africa."^^xsd:string ;
     bibo:authorList "Wells, D, Krecek, RC"^^xsd:string ;
@@ -3620,7 +3621,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/11816233/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Hygiene and restraint of pigs associated with absence of Taenia solium cysticercosis in a rural community of Mexico."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2001 ;
     dcterms:title "Hygiene and restraint of pigs associated with absence of Taenia solium cysticercosis in a rural community of Mexico."^^xsd:string ;
     bibo:authorList "Vazquez-Flores, S, Ballesteros-Rodea, G, Flisser, A, Schantz, PM"^^xsd:string ;
@@ -3635,7 +3636,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/12781374/> a bibo:Article,
         bibo:Document ;
     rdfs:label "The emergence of Taenia solium Cysticercosis in Eastern and Southern Africa as a serious agricultural problem and public health risk."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2003 ;
     dcterms:title "The emergence of Taenia solium Cysticercosis in Eastern and Southern Africa as a serious agricultural problem and public health risk."^^xsd:string ;
     bibo:authorList "Phiri, I, Ngowi, H, Afonso, S, Matenga, E, Boa, M"^^xsd:string ;
@@ -3650,7 +3651,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/12781375/> a bibo:Article,
         bibo:Document ;
     rdfs:label "The current status of neurocysticercosis in Eastern and Southern Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2003 ;
     dcterms:title "The current status of neurocysticercosis in Eastern and Southern Africa."^^xsd:string ;
     bibo:authorList "Mafojane, NA, Appleton, CC, Krecek, RC, Michael, LM, Willingham, AL"^^xsd:string ;
@@ -3665,7 +3666,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/15063938/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Risk factors for the prevalence of porcine cysticercosis in Mbulu District, Tanzania."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2004 ;
     dcterms:title "Risk factors for the prevalence of porcine cysticercosis in Mbulu District, Tanzania."^^xsd:string ;
     bibo:authorList "Ngowi, HA, Kassuku, AA, Madeda, GEM, Boa, ME, Carabin, H"^^xsd:string ;
@@ -3680,7 +3681,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/15214691/> a bibo:Article,
         bibo:Document ;
     rdfs:label "An analysis of opinions from veterinarians in South Africa regarding business management skills."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2004 ;
     dcterms:title "An analysis of opinions from veterinarians in South Africa regarding business management skills."^^xsd:string ;
     bibo:authorList "Krecek, RC, Tobin, P"^^xsd:string ;
@@ -3695,7 +3696,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/15900892/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Third meeting of the Cysticercosis Working Group in Eastern and Southern Africa takes place in Maputo."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2005 ;
     dcterms:title "Third meeting of the Cysticercosis Working Group in Eastern and Southern Africa takes place in Maputo."^^xsd:string ;
     bibo:authorList "Krecek, RC"^^xsd:string ;
@@ -3710,7 +3711,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/16956727/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Risk factors associated with porcine cysticercosis in selected districts of Eastern and Southern provinces of Zambia."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2007 ;
     dcterms:title "Risk factors associated with porcine cysticercosis in selected districts of Eastern and Southern provinces of Zambia."^^xsd:string ;
     bibo:authorList "Sikasunge, CS, Phiri, IK, Phiri, AM, Dorny, P, Siziya, S"^^xsd:string ;
@@ -3725,7 +3726,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/18440704/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Prevalence of Taenia solium cysticercosis in swine from a community-based study in 21 villages of the Eastern Cape Province, South Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2008 ;
     dcterms:title "Prevalence of Taenia solium cysticercosis in swine from a community-based study in 21 villages of the Eastern Cape Province, South Africa."^^xsd:string ;
     bibo:authorList "Krecek, RC, Michael, LM, Schantz, PM, Ntanjana, L, Smith, MF"^^xsd:string ;
@@ -3740,7 +3741,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/19997629/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Accuracy of Serological Testing for the Diagnosis of Prevalent Neurocysticercosis in Outpatients with Epilepsy, Eastern Cape Province, South Africa."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2009 ;
     dcterms:title "Accuracy of Serological Testing for the Diagnosis of Prevalent Neurocysticercosis in Outpatients with Epilepsy, Eastern Cape Province, South Africa."^^xsd:string ;
     bibo:authorList "Foyaca-Sibat, H, Cowan, LD, Carabin, H, Targonska, I, Anwary, MA"^^xsd:string ;
@@ -3755,7 +3756,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/20126403/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Prevalence and risk factors of porcine cysticercosis in Angónia District, Mozambique."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2010 ;
     dcterms:title "Prevalence and risk factors of porcine cysticercosis in Angónia District, Mozambique."^^xsd:string ;
     bibo:authorList "Pondja, A, Neves, L, Mlangwa, J, Afonso, S, Fafetine, J"^^xsd:string ;
@@ -3770,7 +3771,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/20348512/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Evaluating the efficacy of teaching methods regarding prevention of human epilepsy caused by Taenia solium neurocysticercosis in Western Kenya."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 2010 ;
     dcterms:title "Evaluating the efficacy of teaching methods regarding prevention of human epilepsy caused by Taenia solium neurocysticercosis in Western Kenya."^^xsd:string ;
     bibo:authorList "Wohlegemut, J, Dewey, C, Levy, M, Mutua, F"^^xsd:string ;
@@ -3785,7 +3786,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/2674862/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Specific detection of circulating surface/secreted glycoproteins of viable cysticerci in Taenia saginata cysticercosis."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 1989 ;
     dcterms:title "Specific detection of circulating surface/secreted glycoproteins of viable cysticerci in Taenia saginata cysticercosis."^^xsd:string ;
     bibo:authorList "Harrison, LJS, Joshua, GWP, Wright, SH, Parkhouse, RME"^^xsd:string ;
@@ -3800,7 +3801,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 <https://pubmed.ncbi.nlm.nih.gov/9080868/> a bibo:Article,
         bibo:Document ;
     rdfs:label "Development and evaluation of a health education intervention against Taenia solium in a rural community in Mexico."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    ns1:citing_paper <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:issued 1997 ;
     dcterms:title "Development and evaluation of a health education intervention against Taenia solium in a rural community in Mexico."^^xsd:string ;
     bibo:authorList "Sarti, E, Flisser, A, Schantz, PM, Gleizer, M, Loya, M"^^xsd:string ;
@@ -3816,10 +3817,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Kanagawa Cancer Center"^^xsd:string ;
     dcterms:created 1986 ;
     owl:sameAs <https://ror.org/00aapa202> ;
-    geo:city "Yokohama"^^xsd:string ;
-    geo:country "Japan"^^xsd:string ;
-    geo:lat 35.43333 ;
-    geo:long 139.65 ;
+    geo1:city "Yokohama"^^xsd:string ;
+    geo1:country "Japan"^^xsd:string ;
+    geo1:lat 35.43333 ;
+    geo1:long 139.65 ;
     skos:prefLabel "Kanagawa Cancer Center"^^xsd:string ;
     org:classification "healthcare" ;
     prov:generatedAtTime "2026-04-21T10:52:10.292127" ;
@@ -3831,10 +3832,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Emory University"^^xsd:string ;
     dcterms:created 1836 ;
     owl:sameAs <https://ror.org/03czfpz43> ;
-    geo:city "Atlanta"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 33.749 ;
-    geo:long -84.38798 ;
+    geo1:city "Atlanta"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 33.749 ;
+    geo1:long -84.38798 ;
     skos:prefLabel "Emory University"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.678870" ;
@@ -3846,10 +3847,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "University of Maryland, College Park"^^xsd:string ;
     dcterms:created 1856 ;
     owl:sameAs <https://ror.org/047s2c258> ;
-    geo:city "College Park"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 38.98067 ;
-    geo:long -76.93692 ;
+    geo1:city "College Park"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 38.98067 ;
+    geo1:long -76.93692 ;
     skos:prefLabel "University of Maryland, College Park"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:10.028572" ;
@@ -3879,10 +3880,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Technical University of Munich"^^xsd:string ;
     dcterms:created 1868 ;
     owl:sameAs <https://ror.org/02kkvpp62> ;
-    geo:city "Munich"^^xsd:string ;
-    geo:country "Germany"^^xsd:string ;
-    geo:lat 48.13743 ;
-    geo:long 11.57549 ;
+    geo1:city "Munich"^^xsd:string ;
+    geo1:country "Germany"^^xsd:string ;
+    geo1:lat 48.13743 ;
+    geo1:long 11.57549 ;
     skos:prefLabel "Technical University of Munich"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.326546" ;
@@ -3894,10 +3895,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
     dcterms:created 1970 ;
     owl:sameAs <https://ror.org/00jjeh629> ;
-    geo:city "Cambridge"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.3751 ;
-    geo:long -71.10561 ;
+    geo1:city "Cambridge"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.3751 ;
+    geo1:long -71.10561 ;
     skos:prefLabel "Harvard–MIT Division of Health Sciences and Technology"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.534107" ;
@@ -3909,10 +3910,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
     dcterms:created 1986 ;
     owl:sameAs <https://ror.org/044fdhr57> ;
-    geo:city "Yokohama"^^xsd:string ;
-    geo:country "Japan"^^xsd:string ;
-    geo:lat 35.43333 ;
-    geo:long 139.65 ;
+    geo1:city "Yokohama"^^xsd:string ;
+    geo1:country "Japan"^^xsd:string ;
+    geo1:lat 35.43333 ;
+    geo1:long 139.65 ;
     skos:prefLabel "Kanagawa Prefectural Hospital Organization"^^xsd:string ;
     org:classification "healthcare" ;
     prov:generatedAtTime "2026-04-21T10:52:10.211714" ;
@@ -3924,10 +3925,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Massachusetts Institute of Technology"^^xsd:string ;
     dcterms:created 1861 ;
     owl:sameAs <https://ror.org/042nb2s44> ;
-    geo:city "Cambridge"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.3751 ;
-    geo:long -71.10561 ;
+    geo1:city "Cambridge"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.3751 ;
+    geo1:long -71.10561 ;
     skos:prefLabel "Massachusetts Institute of Technology"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.482717" ;
@@ -3969,10 +3970,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "The University of Tokyo"^^xsd:string ;
     dcterms:created 1877 ;
     owl:sameAs <https://ror.org/057zh3y96> ;
-    geo:city "Tokyo"^^xsd:string ;
-    geo:country "Japan"^^xsd:string ;
-    geo:lat 35.6895 ;
-    geo:long 139.69171 ;
+    geo1:city "Tokyo"^^xsd:string ;
+    geo1:country "Japan"^^xsd:string ;
+    geo1:lat 35.6895 ;
+    geo1:long 139.69171 ;
     skos:prefLabel "The University of Tokyo"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:10.089498" ;
@@ -4038,10 +4039,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Dana-Farber Cancer Institute"^^xsd:string ;
     dcterms:created 1947 ;
     owl:sameAs <https://ror.org/02jzgtq86> ;
-    geo:city "Boston"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.35843 ;
-    geo:long -71.05977 ;
+    geo1:city "Boston"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.35843 ;
+    geo1:long -71.05977 ;
     skos:prefLabel "Dana-Farber Cancer Institute"^^xsd:string ;
     org:classification "facility" ;
     prov:generatedAtTime "2026-04-21T10:52:09.223431" ;
@@ -4053,10 +4054,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Broad Institute"^^xsd:string ;
     dcterms:created 2004 ;
     owl:sameAs <https://ror.org/05a0ya142> ;
-    geo:city "Cambridge"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.3751 ;
-    geo:long -71.10561 ;
+    geo1:city "Cambridge"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.3751 ;
+    geo1:long -71.10561 ;
     skos:prefLabel "Broad Institute"^^xsd:string ;
     org:classification "funder" ;
     prov:generatedAtTime "2026-04-21T10:52:09.225134" ;
@@ -4068,10 +4069,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Harvard University"^^xsd:string ;
     dcterms:created 1636 ;
     owl:sameAs <https://ror.org/03vek6s52> ;
-    geo:city "Cambridge"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.3751 ;
-    geo:long -71.10561 ;
+    geo1:city "Cambridge"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.3751 ;
+    geo1:long -71.10561 ;
     skos:prefLabel "Harvard University"^^xsd:string ;
     org:classification "education" ;
     prov:generatedAtTime "2026-04-21T10:52:09.227445" ;
@@ -4083,10 +4084,10 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     rdfs:label "Mass General Brigham"^^xsd:string ;
     dcterms:created 1994 ;
     owl:sameAs <https://ror.org/04py2rh25> ;
-    geo:city "Boston"^^xsd:string ;
-    geo:country "United States"^^xsd:string ;
-    geo:lat 42.35843 ;
-    geo:long -71.05977 ;
+    geo1:city "Boston"^^xsd:string ;
+    geo1:country "United States"^^xsd:string ;
+    geo1:lat 42.35843 ;
+    geo1:long -71.05977 ;
     skos:prefLabel "Mass General Brigham"^^xsd:string ;
     org:classification "healthcare" ;
     prov:generatedAtTime "2026-04-21T10:52:09.229715" ;
@@ -4102,6 +4103,34 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
 
 <https://pubmed.ncbi.nlm.nih.gov/22655065/> a bibo:AcademicArticle ;
     rdfs:label "Risk Factors of Porcine Cysticercosis in the Eastern Cape Province, South Africa"^^xsd:string ;
+    ns1:references <https://pubmed.ncbi.nlm.nih.gov/10681021/>,
+        <https://pubmed.ncbi.nlm.nih.gov/10855829/>,
+        <https://pubmed.ncbi.nlm.nih.gov/11030358/>,
+        <https://pubmed.ncbi.nlm.nih.gov/11563717/>,
+        <https://pubmed.ncbi.nlm.nih.gov/11816233/>,
+        <https://pubmed.ncbi.nlm.nih.gov/12781374/>,
+        <https://pubmed.ncbi.nlm.nih.gov/12781375/>,
+        <https://pubmed.ncbi.nlm.nih.gov/15063938/>,
+        <https://pubmed.ncbi.nlm.nih.gov/15214691/>,
+        <https://pubmed.ncbi.nlm.nih.gov/15900892/>,
+        <https://pubmed.ncbi.nlm.nih.gov/16956727/>,
+        <https://pubmed.ncbi.nlm.nih.gov/18440704/>,
+        <https://pubmed.ncbi.nlm.nih.gov/19997629/>,
+        <https://pubmed.ncbi.nlm.nih.gov/20126403/>,
+        <https://pubmed.ncbi.nlm.nih.gov/20348512/>,
+        <https://pubmed.ncbi.nlm.nih.gov/2674862/>,
+        <https://pubmed.ncbi.nlm.nih.gov/9080868/>,
+        <https://w3id.org/pyeuropepmc/data#reference/1991-d07b22ad>,
+        <https://w3id.org/pyeuropepmc/data#reference/2000-da12d008>,
+        <https://w3id.org/pyeuropepmc/data#reference/2001-80ba26f1>,
+        <https://w3id.org/pyeuropepmc/data#reference/2001-cace5f4e>,
+        <https://w3id.org/pyeuropepmc/data#reference/2003-b951b968>,
+        <https://w3id.org/pyeuropepmc/data#reference/2004-98130016>,
+        <https://w3id.org/pyeuropepmc/data#reference/2006-220de8e9>,
+        <https://w3id.org/pyeuropepmc/data#reference/2011-927af6ab>,
+        <https://w3id.org/pyeuropepmc/data#reference/365c8556-9a66-4ffa-9f63-d76cffef9400>,
+        <https://w3id.org/pyeuropepmc/data#reference/80813502-f0e7-47e7-9337-5ab2557b0fb2>,
+        <https://w3id.org/pyeuropepmc/data#reference/d7af2b82-2320-44ea-9f05-61e9f1b1b375> ;
     dcterms:abstract "There is a high prevalence of Taenia solium taeniosis/cysticercosis in humans and pigs in the Eastern Cape Province (ECP) of South Africa. The objective of this study was to identify risk factors of porcine cysticercosis in select districts of the ECP. Data were collected in 2003 by interviewing 217 pig producers from the area. Blood samples were collected from 261 of their pigs, which were tested using two enzyme-linked immunosorbent assays (ELISA) for the presence of antibodies to cysticercosis. Frequencies of both owner- and pig-level characteristics were determined. For pig-level analysis, all bivariable and multivariable associations were determined using the surveylogistic procedure of the SAS/STAT® software to accommodate for the intraclass correlation that exists for clusters of pigs within one owner and for clusters of owners within a district. All tests for significance were performed at the α = 0.05 level, and adjusted odds ratios (aOR) and 95% confidence intervals (CI) were determined. Among the respondents, 48% of their households lacked a latrine, 98% slaughtered pigs at home, and 99% indicated that meat inspection services were not available. On bivariable analysis, there was a significant association between porcine infection and district ( p = 0.003), breed ( p = 0.041) and the absence of a latrine ( p = 0.006). On multivariable analysis, the absence of a latrine was the only variable significantly associated with porcine infection (aOR = 1.89; 95% CI = 1.07, 3.35) ( p = 0.028). The increased odds of porcine infection with households lacking a latrine contributes to our understanding of the transmission of this parasite in the ECP. Determining and addressing the risk factors for T. solium infection can potentially lower the very high prevalence in humans and pigs in this endemic area."^^xsd:string ;
     dcterms:creator <https://w3id.org/pyeuropepmc/data#author/arve-lee-willingham>,
         <https://w3id.org/pyeuropepmc/data#author/hamish-mohammed>,
@@ -4165,32 +4194,4 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmcid "PMC3359999"^^xsd:string ;
     pyeuropepmc:pmid "22655065"^^xsd:string ;
-    pyeuropepmc:publisherId "PONE-D-11-19621"^^xsd:string ;
-    <references> <https://pubmed.ncbi.nlm.nih.gov/10681021/>,
-        <https://pubmed.ncbi.nlm.nih.gov/10855829/>,
-        <https://pubmed.ncbi.nlm.nih.gov/11030358/>,
-        <https://pubmed.ncbi.nlm.nih.gov/11563717/>,
-        <https://pubmed.ncbi.nlm.nih.gov/11816233/>,
-        <https://pubmed.ncbi.nlm.nih.gov/12781374/>,
-        <https://pubmed.ncbi.nlm.nih.gov/12781375/>,
-        <https://pubmed.ncbi.nlm.nih.gov/15063938/>,
-        <https://pubmed.ncbi.nlm.nih.gov/15214691/>,
-        <https://pubmed.ncbi.nlm.nih.gov/15900892/>,
-        <https://pubmed.ncbi.nlm.nih.gov/16956727/>,
-        <https://pubmed.ncbi.nlm.nih.gov/18440704/>,
-        <https://pubmed.ncbi.nlm.nih.gov/19997629/>,
-        <https://pubmed.ncbi.nlm.nih.gov/20126403/>,
-        <https://pubmed.ncbi.nlm.nih.gov/20348512/>,
-        <https://pubmed.ncbi.nlm.nih.gov/2674862/>,
-        <https://pubmed.ncbi.nlm.nih.gov/9080868/>,
-        <https://w3id.org/pyeuropepmc/data#reference/1991-d07b22ad>,
-        <https://w3id.org/pyeuropepmc/data#reference/2000-da12d008>,
-        <https://w3id.org/pyeuropepmc/data#reference/2001-80ba26f1>,
-        <https://w3id.org/pyeuropepmc/data#reference/2001-cace5f4e>,
-        <https://w3id.org/pyeuropepmc/data#reference/2003-b951b968>,
-        <https://w3id.org/pyeuropepmc/data#reference/2004-98130016>,
-        <https://w3id.org/pyeuropepmc/data#reference/2006-220de8e9>,
-        <https://w3id.org/pyeuropepmc/data#reference/2011-927af6ab>,
-        <https://w3id.org/pyeuropepmc/data#reference/365c8556-9a66-4ffa-9f63-d76cffef9400>,
-        <https://w3id.org/pyeuropepmc/data#reference/80813502-f0e7-47e7-9337-5ab2557b0fb2>,
-        <https://w3id.org/pyeuropepmc/data#reference/d7af2b82-2320-44ea-9f05-61e9f1b1b375> .
+    pyeuropepmc:publisherId "PONE-D-11-19621"^^xsd:string .

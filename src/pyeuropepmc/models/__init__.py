@@ -451,7 +451,10 @@ class CitationType(str, Enum):
 
 class BaseEntity(ConfiguredBaseModel):
     """
-    Base entity for all data models with RDF serialization support. All entities inherit from this base class, providing common functionality for validation, normalization, and RDF export.
+    Base entity for all data models with RDF serialization support.
+
+    All entities inherit from this base class, providing common functionality
+    for validation, normalization, and RDF export.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -513,7 +516,10 @@ class BaseEntity(ConfiguredBaseModel):
 
 class ScholarlyWorkEntity(BaseEntity):
     """
-    Base entity for scholarly works (papers, references, etc.). Provides common fields and methods for entities representing scholarly publications.
+    Base entity for scholarly works (papers, references, etc.).
+
+    Provides common fields and methods for entities representing
+    scholarly publications.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -710,7 +716,7 @@ class ScholarlyWorkEntity(BaseEntity):
         return v
 
     @field_validator("pmid")
-    def pattern_pmid(cls, v):
+    def _validate_pmid_first(cls, v):
         pattern = re.compile(r"^\d+$")
         if isinstance(v, list):
             for element in v:
@@ -723,7 +729,7 @@ class ScholarlyWorkEntity(BaseEntity):
         return v
 
     @field_validator("pmcid")
-    def pattern_pmcid(cls, v):
+    def _validate_pmcid_first(cls, v):
         pattern = re.compile(r"^PMC\d+$")
         if isinstance(v, list):
             for element in v:
@@ -748,10 +754,39 @@ class ScholarlyWorkEntity(BaseEntity):
             raise ValueError(err_msg)
         return v
 
+    @field_validator("pmcid")
+    def _validate_pmcid_internal(cls, v):
+        pattern = re.compile(r"^PMC\d+$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid pmcid format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid pmcid format: {v}"
+            raise ValueError(err_msg)
+        return v
+
+    @field_validator("pmid")
+    def _validate_pmid_internal(cls, v):
+        pattern = re.compile(r"^\d+$")
+        if isinstance(v, list):
+            for element in v:
+                if isinstance(element, str) and not pattern.match(element):
+                    err_msg = f"Invalid pmid format: {element}"
+                    raise ValueError(err_msg)
+        elif isinstance(v, str) and not pattern.match(v):
+            err_msg = f"Invalid pmid format: {v}"
+            raise ValueError(err_msg)
+        return v
+
 
 class PaperEntity(ScholarlyWorkEntity):
     """
-    Entity representing an academic paper with BIBO alignment. Contains bibliographic metadata, citation information, and relationships to authors, institutions, journals, and other entities.
+    Entity representing an academic paper with BIBO alignment.
+
+    Contains bibliographic metadata, citation information, and relationships
+    to authors, institutions, journals, and other entities.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1518,7 +1553,7 @@ class PaperEntity(ScholarlyWorkEntity):
         return v
 
     @field_validator("pmcid")
-    def pattern_pmcid(cls, v):
+    def _validate_pmcid_paper(cls, v):
         pattern = re.compile(r"^PMC\d+$")
         if isinstance(v, list):
             for element in v:
@@ -1531,7 +1566,7 @@ class PaperEntity(ScholarlyWorkEntity):
         return v
 
     @field_validator("pmid")
-    def pattern_pmid(cls, v):
+    def _validate_pmid_paper(cls, v):
         pattern = re.compile(r"^\d+$")
         if isinstance(v, list):
             for element in v:
@@ -1546,7 +1581,9 @@ class PaperEntity(ScholarlyWorkEntity):
 
 class AuthorEntity(BaseEntity):
     """
-    Entity representing an author with FOAF alignment. Contains personal information, institutional affiliations, and identifiers.
+    Entity representing an author with FOAF alignment.
+
+    Contains personal information, institutional affiliations, and identifiers.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1863,7 +1900,9 @@ class AuthorEntity(BaseEntity):
 
 class Organization(BaseEntity):
     """
-    Entity representing an organization with ROR alignment. Contains organizational metadata and geographic information.
+    Entity representing an organization with ROR alignment.
+
+    Contains organizational metadata and geographic information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2130,7 +2169,9 @@ class Organization(BaseEntity):
 
 class Department(BaseEntity):
     """
-    Entity representing a department or sub-organization within an organization. Contains organizational metadata and geographic information.
+    Entity representing a department or sub-organization within an organization.
+
+    Contains organizational metadata and geographic information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2378,7 +2419,9 @@ class Department(BaseEntity):
 
 class JournalEntity(BaseEntity):
     """
-    Entity representing an academic journal with BIBO alignment. Contains journal metadata and bibliometric information.
+    Entity representing an academic journal with BIBO alignment.
+
+    Contains journal metadata and bibliometric information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2645,7 +2688,9 @@ class JournalEntity(BaseEntity):
 
 class GrantEntity(BaseEntity):
     """
-    Entity representing a research grant or funding award with FRAPO alignment. Contains funding information and relationships to recipients.
+    Entity representing a research grant or funding award with FRAPO alignment.
+
+    Contains funding information and relationships to recipients.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2780,7 +2825,9 @@ class GrantEntity(BaseEntity):
 
 class SectionEntity(BaseEntity):
     """
-    Entity representing a document section with BIBO and NIF alignment. Contains section content and NIF text offsets for alignment.
+    Entity representing a document section with BIBO and NIF alignment.
+
+    Contains section content and NIF text offsets for alignment.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2947,7 +2994,9 @@ class SectionEntity(BaseEntity):
 
 class CitationContextEntity(BaseEntity):
     """
-    Entity representing the context of a citation within a section. Contains citation type, position, and surrounding text.
+    Entity representing the context of a citation within a section.
+
+    Contains citation type, position, and surrounding text.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -3098,7 +3147,9 @@ class CitationContextEntity(BaseEntity):
 
 class TableEntity(BaseEntity):
     """
-    Entity representing a table with BIBO alignment. Contains table metadata and structured row data.
+    Entity representing a table with BIBO alignment.
+
+    Contains table metadata and structured row data.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -3270,7 +3321,9 @@ class TableRowEntity(BaseEntity):
 
 class ReferenceEntity(ScholarlyWorkEntity):
     """
-    Entity representing a bibliographic reference with BIBO alignment. Contains citation information for works referenced by papers.
+    Entity representing a bibliographic reference with BIBO alignment.
+
+    Contains citation information for works referenced by papers.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -3513,7 +3566,7 @@ class ReferenceEntity(ScholarlyWorkEntity):
         return v
 
     @field_validator("pmcid")
-    def pattern_pmcid(cls, v):
+    def _validate_pmcid_reference(cls, v):
         pattern = re.compile(r"^PMC\d+$")
         if isinstance(v, list):
             for element in v:
@@ -3526,7 +3579,7 @@ class ReferenceEntity(ScholarlyWorkEntity):
         return v
 
     @field_validator("pmid")
-    def pattern_pmid(cls, v):
+    def _validate_pmid_reference(cls, v):
         pattern = re.compile(r"^\d+$")
         if isinstance(v, list):
             for element in v:
@@ -3630,7 +3683,10 @@ class FigureEntity(BaseEntity):
 
 class AffiliationEntity(BaseEntity):
     """
-    Entity representing an author's affiliation with an institution. Contains the relationship between authors and institutions with affiliation text.
+    Entity representing an author's affiliation with an institution.
+
+    Contains the relationship between authors and institutions with
+    affiliation text.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(

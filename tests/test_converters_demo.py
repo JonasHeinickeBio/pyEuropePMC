@@ -2,8 +2,8 @@
 """
 Test script for RDF converters to demonstrate different Knowledge Graph outputs.
 
-This script tests all converter functions with real API data and saves the resulting
-RDF graphs to TTL files for inspection.
+This script tests all converter functions with fixture data (offline mode) or real API
+data (online mode) and saves the resulting RDF graphs to TTL files for inspection.
 
 PERFORMANCE OPTIMIZATIONS:
 - SearchClient: Uses 1-hour TTL cache for API responses
@@ -21,6 +21,12 @@ ENHANCED FEATURES:
 - Data quality metrics and validation reports
 - Comprehensive comparison and summary reports
 
+FIXTURE SUPPORT:
+- search_cancer_core.json: Search results fixture (5059039 hits)
+- PMC12738713.xml: Full-text XML fixture (open access article)
+- Offline mode: Uses fixtures by default
+- Online mode: Set ENVIRONMENT variable TEST_OFFLINE=false to fetch real API data
+
 OUTPUT FILES:
 - test_output/search_only.ttl: Basic search results conversion
 - test_output/xml_only.ttl: Full-text XML data conversion
@@ -33,29 +39,38 @@ USAGE:
     python tests/test_converters_demo.py
 
 The script will automatically:
-1. Load real data from Europe PMC APIs
+1. Load data from fixtures (offline) or Europe PMC APIs (online)
 2. Test all converter functions
 3. Generate comprehensive performance and quality reports
-4. Save RDF graphs in Turtle format for analysis
+4. Save RDF graphs in Turtle format for analysis.
 """
 
+import os
 import time
 import logging
+import json
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, Optional, Tuple
 
 # Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 logger = logging.getLogger(__name__)
+
+# Determine offline mode from environment
+TEST_OFFLINE = os.environ.get("TEST_OFFLINE", "true").lower() in ("true", "1", "yes")
+logger.info(f"Running in {'OFFLINE' if TEST_OFFLINE else 'ONLINE'} mode")
 
 # Try to import tqdm for progress bars
 try:
     from tqdm import tqdm
+
     TQDM_AVAILABLE = True
 except ImportError:
     TQDM_AVAILABLE = False
-    print("Note: Install 'tqdm' for enhanced progress bars: pip install tqdm")
+    logger.info("Install 'tqdm' for enhanced progress bars: pip install tqdm")
 
 from pyeuropepmc import EnrichmentConfig, FullTextClient, PaperEnricher, SearchClient
 from pyeuropepmc.cache.cache import CacheConfig
@@ -86,27 +101,54 @@ class DataLoader:
 
 
 class SearchDataLoader(DataLoader):
-    """Loads search results from Europe PMC."""
+    """Loads search results from Europe PMC or fixtures."""
+
+    FIXTURE_PATH = Path("tests/fixtures/search_cancer_core.json")
 
     def __init__(self, query: str = "cancer", page_size: int = 5):
         self.query = query
         self.page_size = page_size
         self.client: SearchClient | None = None
+        self.from_fixture: bool = False
 
     def load(self) -> list[dict[str, Any]]:
-        """Load search results."""
+        """Load search results from fixture or API."""
+        if TEST_OFFLINE:
+            return self._load_from_fixture()
+
         # Enable caching for faster subsequent runs
         cache_config = CacheConfig(enabled=True, ttl=3600)  # 1 hour cache
         self.client = SearchClient(cache_config=cache_config)
         try:
             response = self.client.search(self.query, pageSize=self.page_size, resultType="core")
             if isinstance(response, dict):
-                return response.get("resultList", {}).get("result", [])
+                results = response.get("resultList", {}).get("result", [])
+                return results
             else:
-                print(f"   ⚠️  Unexpected response type: {type(response)}")
+                logger.warning(f"Unexpected response type: {type(response)}")
                 return []
         except Exception as e:
-            print(f"   ⚠️  Error loading search data: {e}")
+            logger.error(f"Error loading search data: {e}")
+            if self.FIXTURE_PATH.exists():
+                logger.info("Falling back to fixture data")
+                return self._load_from_fixture()
+            return []
+
+    def _load_from_fixture(self) -> list[dict[str, Any]]:
+        """Load search results from fixture file."""
+        if not self.FIXTURE_PATH.exists():
+            logger.error(f"Fixture not found: {self.FIXTURE_PATH}")
+            return []
+
+        self.from_fixture = True
+        try:
+            with open(self.FIXTURE_PATH, "r", encoding="utf-8") as f:
+                data = json.load(f)
+            results = data.get("resultList", {}).get("result", [])
+            logger.info(f"Loaded {len(results)} search results from fixture")
+            return results
+        except Exception as e:
+            logger.error(f"Error loading fixture: {e}")
             return []
 
     def close(self) -> None:
@@ -116,21 +158,36 @@ class SearchDataLoader(DataLoader):
 
 
 class XMLDataLoader(DataLoader):
-    """Loads and parses XML full-text data from PMC."""
+    """Loads and parses XML full-text data from PMC or fixtures."""
+
+    FIXTURE_DIR = Path("tests/fixtures/fulltext_downloads")
 
     def __init__(self, search_results: list[dict[str, Any]]):
         self.search_results = search_results
         self.client: FullTextClient | None = None
-        self.cache_dir = Path("tests/fixtures/fulltext_downloads")
-        self.cache_dir.mkdir(parents=True, exist_ok=True)
+        self.xml_content: str | None = None
+        self.from_fixture: bool = False
 
     def load(self) -> dict[str, Any]:
-        """Load and parse XML data."""
+        """Load and parse XML data from fixture or API."""
+        if TEST_OFFLINE:
+            return self._load_from_fixture()
+
         # Enable caching for API responses
         cache_config = CacheConfig(enabled=True, ttl=3600)  # 1 hour cache
         self.client = FullTextClient(cache_config=cache_config)
 
-        # Find a paper with full text
+        try:
+            return self._load_from_api()
+        except Exception as e:
+            logger.error(f"Error loading XML from API: {e}")
+            if self.FIXTURE_DIR.exists():
+                logger.info("Falling back to fixture data")
+                return self._load_from_fixture()
+            raise
+
+    def _load_from_api(self) -> dict[str, Any]:
+        """Load and parse XML data from PMC API."""
         paper_with_fulltext = self._find_paper_with_fulltext()
         pmcid = paper_with_fulltext.get("pmcid")
 
@@ -138,22 +195,57 @@ class XMLDataLoader(DataLoader):
             raise ValueError("No PMC ID found. Cannot proceed without real XML data.")
 
         # Check if XML is already cached
-        xml_file = self.cache_dir / f"{pmcid}.xml"
+        xml_file = self.FIXTURE_DIR / f"{pmcid}.xml"
         if xml_file.exists():
-            print(f"   Loading cached XML for {pmcid} from {xml_file}...")
+            logger.info(f"Loading cached XML for {pmcid}")
             xml_content = xml_file.read_text(encoding="utf-8")
         else:
-            print(f"   Downloading XML for {pmcid}...")
+            logger.info(f"Downloading XML for {pmcid}")
             xml_content = self.client.get_fulltext_content(pmcid=pmcid, format_type="xml")
             if not xml_content:
-                raise ValueError(
-                    f"No XML content available for {pmcid}. Cannot proceed without real XML data."
-                )
-            # Save to cache
-            xml_file.write_text(xml_content, encoding="utf-8")
-            print(f"   Saved XML to {xml_file}")
+                raise ValueError(f"No XML content available for {pmcid}")
+
+        self.xml_content = xml_content
+        return self._parse_xml_comprehensive(xml_content, paper_with_fulltext)
+
+    def _load_from_fixture(self) -> dict[str, Any]:
+        """Load and parse XML data from fixture file."""
+        xml_files = list(self.FIXTURE_DIR.glob("PMC*.xml"))
+        if not xml_files:
+            raise FileNotFoundError(f"No XML fixtures found in {self.FIXTURE_DIR}")
+
+        self.from_fixture = True
+        xml_file = xml_files[0]  # Use first available fixture
+        logger.info(f"Loading XML from fixture: {xml_file.name}")
+
+        xml_content = xml_file.read_text(encoding="utf-8")
+        self.xml_content = xml_content
+
+        # Extract paper metadata from fixture for consistency
+        paper_with_fulltext = self._extract_paper_from_xml(xml_content)
+        if not paper_with_fulltext:
+            paper_with_fulltext = {
+                "pmcid": xml_file.stem,
+                "doi": "10.1038/s41467-025-66220-x",
+                "title": "A multimodal knowledge-enhanced whole-slide pathology foundation model",
+            }
 
         return self._parse_xml_comprehensive(xml_content, paper_with_fulltext)
+
+    def _extract_paper_from_xml(self, xml_content: str) -> dict[str, Any]:
+        """Extract paper metadata from XML fixture."""
+        import re
+
+        pmcid_match = re.search(r'<article-id[^>]*pub-id-type="pmcid"[^>]*>([^<]+)</article-id>', xml_content)
+        pmid_match = re.search(r'<article-id[^>]*pub-id-type="pmid"[^>]*>([^<]+)</article-id>', xml_content)
+        doi_match = re.search(r'<article-id[^>]*pub-id-type="doi"[^>]*>([^<]+)</article-id>', xml_content)
+
+        return {
+            "pmcid": pmcid_match.group(1) if pmcid_match else "",
+            "pmid": pmid_match.group(1) if pmid_match else "",
+            "doi": doi_match.group(1) if doi_match else "",
+            "title": "Fixture XML Article",
+        }
 
     def _find_paper_with_fulltext(self) -> dict[str, Any]:
         """Find a paper with available full text."""
@@ -161,9 +253,9 @@ class XMLDataLoader(DataLoader):
             pmcid = result.get("pmcid")
             if pmcid and pmcid.startswith("PMC"):
                 return result
-        raise ValueError(
-            "No papers with PMC IDs found in search results. Cannot proceed without real XML data."
-        )
+        if self.from_fixture and self.xml_content:
+            return self._extract_paper_from_xml(self.xml_content)
+        raise ValueError("No papers with PMC IDs found in search results")
 
     def _parse_xml_comprehensive(self, xml_content: str, paper: dict[str, Any]) -> dict[str, Any]:
         """Parse XML with all available data extraction methods."""
@@ -207,50 +299,102 @@ class XMLDataLoader(DataLoader):
         """Clean up XML client."""
         if self.client:
             self.client.close()
+        self.xml_content = None
 
 
 class EnrichmentDataLoader(DataLoader):
-    """Loads enrichment data from external APIs."""
+    """Loads enrichment data from external APIs or uses cached API response."""
+
+    FIXTURE_PATH = Path("test_output/raw_data/enrichment_api_response.json")
 
     def __init__(self, search_results: list[dict[str, Any]]):
         self.search_results = search_results
         self.enricher: PaperEnricher | None = None
+        self.from_fixture: bool = False
+        self.cached_response: dict[str, Any] | None = None
 
     def load(self) -> dict[str, Any]:
-        """Load enrichment data."""
-        # Find a paper with DOI for enrichment
-        paper_with_doi = self._find_paper_with_doi()
-
-        if not paper_with_doi:
-            raise ValueError(
-                "No papers with DOI found in search results. "
-                "Cannot proceed without real enrichment data."
-            )
-
-        doi = paper_with_doi.get("doi")
-        if not doi:
-            raise ValueError("No DOI available for enrichment. Cannot proceed.")
+        """Load enrichment data from API or use cached response."""
+        if TEST_OFFLINE:
+            return self._load_from_cache()
 
         # Enable caching for enrichment APIs
-        cache_config = CacheConfig(enabled=True, ttl=3600)  # 1 hour cache
+        cache_config = CacheConfig(enabled=True, ttl=3600)
         enrichment_config = EnrichmentConfig(
             enable_crossref=True,
             enable_semantic_scholar=True,
             enable_openalex=True,
-            enable_unpaywall=False,  # Requires email configuration
+            enable_unpaywall=False,
             cache_config=cache_config,
         )
         self.enricher = PaperEnricher(enrichment_config)
 
-        print(f"   Enriching paper with DOI: {doi}...")
+        try:
+            return self._load_from_api()
+        except Exception as e:
+            logger.error(f"Error loading enrichment data: {e}")
+            if self.FIXTURE_PATH.exists():
+                logger.info("Falling back to cached API response")
+                return self._load_from_cache()
+            logger.info("Using minimal fallback enrichment data")
+            return self._get_minimal_fallback()
+
+    def _load_from_api(self) -> dict[str, Any]:
+        """Load enrichment data from external APIs."""
+        paper_with_doi = self._find_paper_with_doi()
+
+        if not paper_with_doi:
+            raise ValueError("No papers with DOI found in search results")
+
+        doi = paper_with_doi.get("doi")
+        if not doi:
+            raise ValueError("No DOI available for enrichment")
+
+        logger.info(f"Enriching paper with DOI: {doi}")
         enrichment_result = self.enricher.enrich_paper(identifier=doi)
         enrichment_data = {
             "paper": enrichment_result.get("merged", {}),
             "authors": enrichment_result.get("merged", {}).get("authors", []),
             "sources": enrichment_result.get("sources", []),
         }
-        print(f"   Enriched using sources: {', '.join(enrichment_data['sources'])}")
+        logger.info(f"Enriched using sources: {', '.join(enrichment_data['sources'])}")
         return enrichment_data
+
+    def _load_from_cache(self) -> dict[str, Any]:
+        """Load enrichment data from cached API response."""
+        if not self.FIXTURE_PATH.exists():
+            logger.warning("Cached enrichment response not found")
+            return self._get_minimal_fallback()
+
+        self.from_fixture = True
+        try:
+            with open(self.FIXTURE_PATH, "r", encoding="utf-8") as f:
+                self.cached_response = json.load(f)
+            # The cached response already has the full enrichment data structure with 'merged'
+            enrichment_data = {
+                "merged": self.cached_response.get("merged", {}),
+                "authors": self.cached_response.get("merged", {}).get("authors", []),
+                "sources": self.cached_response.get("sources", []),
+            }
+            logger.info(f"Loaded enrichment data from cache with sources: {', '.join(enrichment_data['sources'])}")
+            return enrichment_data
+        except Exception as e:
+            logger.error(f"Error loading cached enrichment data: {e}")
+            return self._get_minimal_fallback()
+
+    def _get_minimal_fallback(self) -> dict[str, Any]:
+        """Return minimal fallback enrichment data."""
+        self.from_fixture = True
+        logger.info("Using minimal fallback enrichment data")
+        return {
+            "paper": {
+                "title": "Placeholder enriched paper",
+                "authorString": "Test Author",
+                "pubYear": "2025",
+            },
+            "authors": [{"fullName": "Test Author"}],
+            "sources": ["placeholder"],
+        }
 
     def _find_paper_with_doi(self) -> dict[str, Any] | None:
         """Find a paper with DOI."""
@@ -282,6 +426,7 @@ class ValidationReporter:
         }
 
         if graph is None or not self.linkml_introspector.is_available:
+            results["linkml_available"] = False
             return results
 
         # Extract entities from graph (simplified - would need more sophisticated extraction)
@@ -306,7 +451,7 @@ class ValidationReporter:
             add_shacl_validation_shapes(graph, named_graph_uris)
             return True
         except Exception as e:
-            print(f"   ⚠️  SHACL validation failed for {name}: {e}")
+            logger.warning(f"SHACL validation failed for {name}: {e}")
             return False
 
 
@@ -343,14 +488,14 @@ class EnhancedStatistics:
                 stats["predicate_counts"][p] += 1
 
                 # Count URIs vs literals
-                if hasattr(o, 'datatype') or hasattr(o, 'language'):
+                if hasattr(o, "datatype") or hasattr(o, "language"):
                     stats["literals"] += 1
                 else:
                     stats["uris"] += 1
 
                 # Extract namespaces
-                if hasattr(s, 'n3'):
-                    ns = str(s).split('#')[0] if '#' in str(s) else str(s).rsplit('/', 1)[0] + '/'
+                if hasattr(s, "n3"):
+                    ns = str(s).split("#")[0] if "#" in str(s) else str(s).rsplit("/", 1)[0] + "/"
                     stats["namespaces"][ns] += 1
 
         # Handle both Graph and Dataset objects
@@ -521,7 +666,7 @@ class TimingManager:
         }
 
 
-class TestConfiguration:
+class _TestConfiguration:
     """Configuration for converter tests."""
 
     def __init__(self):
@@ -589,12 +734,12 @@ class TestConfiguration:
         }
 
 
-class TestRunner:
+class _TestRunner:
     """Runs converter tests with different configurations."""
 
-    def __init__(self, config: TestConfiguration, timing_manager: Optional[TimingManager] = None,
-                 validation_reporter: Optional[ValidationReporter] = None,
-                 statistics: Optional[EnhancedStatistics] = None):
+    def __init__(self, config: _TestConfiguration, timing_manager: Optional[TimingManager] = None,
+                  validation_reporter: Optional[ValidationReporter] = None,
+                  statistics: Optional[EnhancedStatistics] = None):
         self.config = config
         self.timing = timing_manager or TimingManager()
         self.validator = validation_reporter or ValidationReporter()
@@ -602,7 +747,7 @@ class TestRunner:
 
     def run_test(self, test_config: dict[str, Any], data: dict[str, Any]) -> Any:
         """Run a single converter test with enhanced features."""
-        print(f"🔍 Testing {test_config['description']}")
+        logger.info(f"Testing {test_config['description']}")
 
         # Start timing
         if self.config.enable_timing:
@@ -621,7 +766,7 @@ class TestRunner:
             }
             input_desc = "combined data"
 
-        print(f"   Input: {input_desc}")
+        logger.info(f"Input: {input_desc}")
 
         try:
             # Call the converter function
@@ -632,34 +777,34 @@ class TestRunner:
                 # Single data converter
                 graph = test_config["converter_func"](input_data)
 
-            print(f"   Output: {len(graph)} triples")
+            logger.info(f"Output: {len(graph)} triples")
 
             # Add SHACL validation if enabled
             if test_config.get("enable_shacl", False):
-                shacl_added = self.validator.add_shacl_validation(graph, test_config['name'])
+                shacl_added = self.validator.add_shacl_validation(graph, test_config["name"])
                 if shacl_added:
-                    print(f"   ✅ SHACL validation shapes added")
+                    logger.info("SHACL validation shapes added")
 
             # Validate entities if enabled
             if self.config.enable_validation:
-                validation_results = self.validator.validate_graph_entities(graph, test_config['name'])
+                validation_results = self.validator.validate_graph_entities(graph, test_config["name"])
                 if validation_results.get("linkml_available"):
-                    print(f"   ✅ LinkML validation available")
+                    logger.info("LinkML validation available")
 
             # Analyze statistics
             if self.config.enable_timing:
                 convert_time = self.timing.end_timer(f"convert_{test_config['name']}")
-                print(f"   ⏱️  Conversion time: {convert_time:.2f}s")
+                logger.info(f"Conversion time: {convert_time:.2f}s")
 
             # Start timing for analysis
             if self.config.enable_timing:
                 self.timing.start_timer(f"analyze_{test_config['name']}")
 
-            graph_stats = self.stats.analyze_graph(graph, test_config['name'])
+            graph_stats = self.stats.analyze_graph(graph, test_config["name"])
 
             if self.config.enable_timing:
                 analyze_time = self.timing.end_timer(f"analyze_{test_config['name']}")
-                print(f"   📊 Analysis time: {analyze_time:.2f}s")
+                logger.info(f"Analysis time: {analyze_time:.2f}s")
 
             # Rebind namespaces from LinkML schema before serialization
             rebind_namespaces(graph)
@@ -667,13 +812,12 @@ class TestRunner:
             # Save to file
             output_file = self.config.output_dir / f"{test_config['name']}.ttl"
             graph.serialize(output_file, format=test_config["format"])
-            print(f"   💾 Saved to: {output_file}")
+            logger.info(f"Saved to: {output_file}")
 
             return graph
 
         except Exception as e:
             logger.error(f"Error in {test_config['name']}: {e}", exc_info=True)
-            print(f"   ❌ Error: {e}")
             if self.config.enable_timing:
                 self.timing.end_timer(f"convert_{test_config['name']}")
             return None
@@ -681,46 +825,46 @@ class TestRunner:
     def run_incremental_test(self, base_graph: Any, enrichment_data: dict[str, Any]) -> Any:
         """Run incremental enhancement test with enhanced features."""
         config = self.config.get_incremental_config()
-        print(f"\n⬆️  Testing {config['description']}")
-        print(f"   Input: Base graph ({len(base_graph)} triples) + enrichment data")
+        logger.info(f"Testing {config['description']}")
+        logger.info(f"Input: Base graph ({len(base_graph)} triples) + enrichment data")
 
         if self.config.enable_timing:
             self.timing.start_timer(f"convert_{config['name']}")
 
         try:
             enhanced_graph = config["converter_func"](base_graph, enrichment_data)
-            print(
-                f"   Output: {len(enhanced_graph)} triples "
+            logger.info(
+                f"Output: {len(enhanced_graph)} triples "
                 f"(added {len(enhanced_graph) - len(base_graph)})"
             )
 
             # Add SHACL validation if enabled
             if config.get("enable_shacl", False):
-                shacl_added = self.validator.add_shacl_validation(enhanced_graph, config['name'])
+                shacl_added = self.validator.add_shacl_validation(enhanced_graph, config["name"])
                 if shacl_added:
-                    print(f"   ✅ SHACL validation shapes added")
+                    logger.info("SHACL validation shapes added")
 
             # Validate and analyze
             if self.config.enable_validation:
-                self.validator.validate_graph_entities(enhanced_graph, config['name'])
+                self.validator.validate_graph_entities(enhanced_graph, config["name"])
 
             if self.config.enable_timing:
                 convert_time = self.timing.end_timer(f"convert_{config['name']}")
-                print(f"   ⏱️  Conversion time: {convert_time:.2f}s")
+                logger.info(f"Conversion time: {convert_time:.2f}s")
 
-            self.stats.analyze_graph(enhanced_graph, config['name'])
+            self.stats.analyze_graph(enhanced_graph, config["name"])
 
             # Rebind namespaces from LinkML schema before serialization
             rebind_namespaces(enhanced_graph)
 
             output_file = self.config.output_dir / f"{config['name']}.ttl"
             enhanced_graph.serialize(output_file, format=config["format"])
-            print(f"   💾 Saved to: {output_file}")
+            logger.info(f"Saved to: {output_file}")
 
             return enhanced_graph
 
         except Exception as e:
-            print(f"   ❌ Error: {e}")
+            logger.error(f"Error: {e}")
             if self.config.enable_timing:
                 self.timing.end_timer(f"convert_{config['name']}")
             return None
@@ -728,8 +872,8 @@ class TestRunner:
     def run_enhanced_test(self, data: dict[str, Any]) -> tuple[Any, Any]:
         """Run enhanced semantic test with all features enabled."""
         config = self.config.get_enhanced_config()
-        print(f"\n🚀 Testing {config['description']}")
-        print("   Input: Combined data with semantic enrichment")
+        logger.info(f"Testing {config['description']}")
+        logger.info("Input: Combined data with semantic enrichment")
 
         if self.config.enable_timing:
             self.timing.start_timer(f"convert_{config['name']}")
@@ -745,30 +889,30 @@ class TestRunner:
                 enable_quality_metrics=True,
                 enable_shacl_validation=config.get("enable_shacl", True),
             )
-            print(f"   Output: {len(main_dataset)} triples in main graph")
-            print(f"   Named graphs: {list(named_graph_uris.keys())}")
+            logger.info(f"Output: {len(main_dataset)} triples in main graph")
+            logger.info(f"Named graphs: {list(named_graph_uris.keys())}")
 
             # Validate and analyze
             if self.config.enable_validation:
-                self.validator.validate_graph_entities(main_dataset, config['name'])
+                self.validator.validate_graph_entities(main_dataset, config["name"])
 
             if self.config.enable_timing:
                 convert_time = self.timing.end_timer(f"convert_{config['name']}")
-                print(f"   ⏱️  Conversion time: {convert_time:.2f}s")
+                logger.info(f"Conversion time: {convert_time:.2f}s")
 
-            self.stats.analyze_graph(main_dataset, config['name'])
+            self.stats.analyze_graph(main_dataset, config["name"])
 
             # Rebind namespaces from LinkML schema before serialization
             rebind_namespaces(main_dataset)
 
             output_file = self.config.output_dir / f"{config['name']}.ttl"
             main_dataset.serialize(output_file, format=config["format"])
-            print(f"   💾 Saved to: {output_file}")
+            logger.info(f"Saved to: {output_file}")
 
             return main_dataset, named_graph_uris
 
         except Exception as e:
-            print(f"   ❌ Error: {e}")
+            logger.error(f"Error: {e}")
             if self.config.enable_timing:
                 self.timing.end_timer(f"convert_{config['name']}")
             return None, None
@@ -779,8 +923,8 @@ def print_graph_stats(graph, name):
     if graph is None:
         return
 
-    print(f"\n📊 {name} Graph Statistics:")
-    print(f"   Triples: {len(graph)}")
+    logger.info(f"{name} Graph Statistics:")
+    logger.info(f"  Triples: {len(graph)}")
 
     # Count subjects, predicates, objects
     subjects = set()
@@ -803,37 +947,39 @@ def print_graph_stats(graph, name):
     else:  # Regular Graph
         process_triples(graph)
 
-    print(f"   Unique subjects: {len(subjects)}")
-    print(f"   Unique predicates: {len(predicates)}")
-    print(f"   Unique objects: {len(objects)}")
+    logger.info(f"  Unique subjects: {len(subjects)}")
+    logger.info(f"  Unique predicates: {len(predicates)}")
+    logger.info(f"  Unique objects: {len(objects)}")
 
     # Show sample predicates
-    print("   Top predicates:")
+    logger.info("  Top predicates:")
     sorted_preds = sorted(pred_count.items(), key=lambda x: x[1], reverse=True)
     for pred, count in sorted_preds[:5]:
-        print(f"     {pred}: {count}")
+        logger.info(f"    {pred}: {count}")
 
 
 def main():
     """Run all converter tests using modular components with enhanced features."""
-    print("🧪 Testing PyEuropePMC RDF Converters")
-    print("=" * 50)
+    logger.info("=" * 60)
+    logger.info("Testing PyEuropePMC RDF Converters")
+    logger.info("=" * 60)
 
     # Initialize enhanced components
-    config = TestConfiguration()
+    config = _TestConfiguration()
     timing = TimingManager()
     validator = ValidationReporter()
     statistics = EnhancedStatistics()
-    runner = TestRunner(config, timing, validator, statistics)
+    runner = _TestRunner(config, timing, validator, statistics)
 
     # Progress tracking
     progress_bar = None
     if config.enable_progress and TQDM_AVAILABLE:
         import tqdm
+
         progress_bar = tqdm.tqdm(total=7, desc="Overall Progress", unit="step")
 
     # Load data using modular loaders
-    print("\n📂 Loading real API data...")
+    logger.info("Loading data...")
     timing.start_timer("data_loading")
 
     # Load search results
@@ -860,7 +1006,7 @@ def main():
         progress_bar.update(1)
 
     timing.end_timer("data_loading")
-    print(f"   ⏱️  Data loading time: {timing.timers['data_loading']:.2f}s")
+    logger.info(f"Data loading time: {timing.timers['data_loading']:.2f}s")
 
     # Organize data for testing
     data = {
@@ -894,16 +1040,16 @@ def main():
         progress_bar.close()
 
     # Generate comprehensive reports
-    print("\n" + "=" * 50)
-    print("📊 Enhanced Analysis Reports")
-    print("=" * 50)
+    logger.info("=" * 60)
+    logger.info("Enhanced Analysis Reports")
+    logger.info("=" * 60)
 
     # Timing report
     if config.enable_timing:
-        print("\n" + timing.get_timing_report())
+        logger.info("\n" + timing.get_timing_report())
 
     # Statistics summary
-    print("\n📈 Graph Statistics Summary")
+    logger.info("\nGraph Statistics Summary")
     print_graph_stats(graphs.get("search_only"), "Search-only")
     print_graph_stats(graphs.get("xml_only"), "XML-only")
     print_graph_stats(graphs.get("enrichment_only"), "Enrichment-only")
@@ -912,49 +1058,53 @@ def main():
     print_graph_stats(graphs.get("enhanced_semantic"), "Enhanced Semantic")
 
     # Comprehensive comparison report
-    print("\n" + statistics.generate_comparison_report())
+    logger.info("\n" + statistics.generate_comparison_report())
 
     # Validation summary
-    print("\n🔍 Validation Summary")
-    print("-" * 30)
+    logger.info("\nValidation Summary")
+    logger.info("-" * 30)
     for name, results in validator.validation_results.items():
-        print(f"{name}:")
+        logger.info(f"{name}:")
         if results.get("linkml_available"):
-            print("  ✅ LinkML validation available")
+            logger.info("  LinkML validation available")
         if results.get("validation_errors"):
-            print(f"  ⚠️  {len(results['validation_errors'])} validation errors")
+            logger.info(f"  {len(results['validation_errors'])} validation errors")
         else:
-            print("  ✅ No validation errors")
+            logger.info("  No validation errors")
 
     # Data quality insights
-    print("\n💡 Data Quality Insights")
-    print("-" * 30)
+    logger.info("\nData Quality Insights")
+    logger.info("-" * 30)
     total_papers = len(search_results) if search_results else 0
     papers_with_doi = sum(1 for r in search_results if r.get("doi")) if search_results else 0
     papers_with_pmc = sum(1 for r in search_results if r.get("pmcid")) if search_results else 0
 
-    print(f"  📄 Total papers: {total_papers}")
-    print(f"  🔗 Papers with DOI: {papers_with_doi} ({papers_with_doi/max(total_papers,1)*100:.1f}%)")
-    print(f"  📖 Papers with PMC fulltext: {papers_with_pmc} ({papers_with_pmc/max(total_papers,1)*100:.1f}%)")
+    logger.info(f"  Total papers: {total_papers}")
+    logger.info(
+        f"  Papers with DOI: {papers_with_doi} ({papers_with_doi/max(total_papers,1)*100:.1f}%)"
+    )
+    logger.info(
+        f"  Papers with PMC fulltext: {papers_with_pmc} ({papers_with_pmc/max(total_papers,1)*100:.1f}%)"
+    )
 
     if xml_data:
         authors_count = len(xml_data.get("authors_detailed", []))
-        print(f"  👥 Detailed authors extracted: {authors_count}")
+        logger.info(f"  Detailed authors extracted: {authors_count}")
 
     if enrichment_data:
         sources = enrichment_data.get("sources", [])
-        print(f"  🌐 Enrichment sources: {', '.join(sources)}")
+        logger.info(f"  Enrichment sources: {', '.join(sources)}")
 
-    print("\n✅ Testing complete! Check test_output/ directory for TTL files.")
-    print("   Use RDF viewers or SPARQL endpoints to explore the Knowledge Graphs.")
-    print("   📊 See above for detailed performance and quality metrics.")
+    logger.info("\nTesting complete! Check test_output/ directory for TTL files.")
+    logger.info("Use RDF viewers or SPARQL endpoints to explore the Knowledge Graphs.")
+    logger.info("See above for detailed performance and quality metrics.")
 
     # Suggestions for next steps
-    print("\n🚀 Next Steps:")
-    print("   • Load TTL files into GraphDB, Blazegraph, or Apache Jena")
-    print("   • Query with SPARQL: SELECT * WHERE { ?s ?p ?o } LIMIT 10")
-    print("   • Visualize with RDF-grapher or WebVOWL")
-    print("   • Validate with SHACL tools like pySHACL")
+    logger.info("\nNext Steps:")
+    logger.info("  • Load TTL files into GraphDB, Blazegraph, or Apache Jena")
+    logger.info("  • Query with SPARQL: SELECT * WHERE { ?s ?p ?o } LIMIT 10")
+    logger.info("  • Visualize with RDF-grapher or WebVOWL")
+    logger.info("  • Validate with SHACL tools like pySHACL")
 
 
 if __name__ == "__main__":

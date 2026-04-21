@@ -459,7 +459,9 @@ class CitationType(str, Enum):
 
 class BaseEntity(ConfiguredBaseModel):
     """
-    Base entity for all data models with RDF serialization support. All entities inherit from this base class, providing common functionality for validation, normalization, and RDF export.
+    Base entity for all data models with RDF serialization support.
+    All entities inherit from this base class, providing common
+    functionality for validation, normalization, and RDF export.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -521,7 +523,9 @@ class BaseEntity(ConfiguredBaseModel):
 
 class ScholarlyWorkEntity(BaseEntity):
     """
-    Base entity for scholarly works (papers, references, etc.). Provides common fields and methods for entities representing scholarly publications.
+    Base entity for scholarly works (papers, references, etc.).
+    Provides common fields and methods for entities representing
+    scholarly publications.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -713,7 +717,9 @@ class ScholarlyWorkEntity(BaseEntity):
 
 class PaperEntity(ScholarlyWorkEntity):
     """
-    Entity representing an academic paper with BIBO alignment. Contains bibliographic metadata, citation information, and relationships to authors, institutions, journals, and other entities.
+    Entity representing an academic paper with BIBO alignment.
+    Contains bibliographic metadata, citation information, and
+    relationships to authors, institutions, journals, and other entities.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1425,7 +1431,9 @@ class PaperEntity(ScholarlyWorkEntity):
 
 class AuthorEntity(BaseEntity):
     """
-    Entity representing an author with FOAF alignment. Contains personal information, institutional affiliations, and identifiers.
+    Entity representing an author with FOAF alignment.
+    Contains personal information, institutional affiliations,
+    and identifiers.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1742,7 +1750,8 @@ class AuthorEntity(BaseEntity):
 
 class InstitutionEntity(BaseEntity):
     """
-    Entity representing an institution with ROR alignment. Contains organizational metadata and geographic information.
+    Entity representing an institution with ROR alignment.
+    Contains organizational metadata and geographic information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -1976,7 +1985,8 @@ class InstitutionEntity(BaseEntity):
 
 class JournalEntity(BaseEntity):
     """
-    Entity representing an academic journal with BIBO alignment. Contains journal metadata and bibliometric information.
+    Entity representing an academic journal with BIBO alignment.
+    Contains journal metadata and bibliometric information.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2243,7 +2253,8 @@ class JournalEntity(BaseEntity):
 
 class GrantEntity(BaseEntity):
     """
-    Entity representing a research grant or funding award with FRAPO alignment. Contains funding information and relationships to recipients.
+    Entity representing a research grant or funding award with FRAPO alignment.
+    Contains funding information and relationships to recipients.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2378,7 +2389,8 @@ class GrantEntity(BaseEntity):
 
 class SectionEntity(BaseEntity):
     """
-    Entity representing a document section with BIBO and NIF alignment. Contains section content and NIF text offsets for alignment.
+    Entity representing a document section with BIBO and NIF alignment.
+    Contains section content and NIF text offsets for alignment.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2564,7 +2576,8 @@ class SectionEntity(BaseEntity):
 
 class CitationContextEntity(BaseEntity):
     """
-    Entity representing the context of a citation within a section. Contains citation type, position, and surrounding text.
+    Entity representing the context of a citation within a section.
+    Contains citation type, position, and surrounding text.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2715,7 +2728,8 @@ class CitationContextEntity(BaseEntity):
 
 class TableEntity(BaseEntity):
     """
-    Entity representing a table with BIBO alignment. Contains table metadata and structured row data.
+    Entity representing a table with BIBO alignment.
+    Contains table metadata and structured row data.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -2888,7 +2902,8 @@ class TableRowEntity(BaseEntity):
 
 class ReferenceEntity(ScholarlyWorkEntity):
     """
-    Entity representing a bibliographic reference with BIBO alignment. Contains citation information for works referenced by papers.
+    Entity representing a bibliographic reference with BIBO alignment.
+    Contains citation information for works referenced by papers.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
@@ -3189,7 +3204,9 @@ class FigureEntity(BaseEntity):
 
 class AffiliationEntity(BaseEntity):
     """
-    Entity representing an author's affiliation with an institution. Contains the relationship between authors and institutions with affiliation text.
+    Entity representing an author's affiliation with an institution.
+    Contains the relationship between authors and institutions
+    with affiliation text.
     """
 
     linkml_meta: ClassVar[LinkMLMeta] = LinkMLMeta(
