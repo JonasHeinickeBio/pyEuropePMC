@@ -289,6 +289,38 @@ class RDFMapper:
         # If no prefix or unknown prefix, return as-is wrapped in URIRef
         return URIRef(predicate_str)
 
+    def _resolve_inverse_predicate(self, inverse_field_name: str | Any) -> URIRef:
+        """
+        Resolve an inverse field name to its predicate URI.
+
+        When a relationship has an inverse defined (e.g., "citing_paper" for "references"),
+        the field name needs to be looked up in the schema to get the actual predicate URI.
+
+        Parameters
+        ----------
+        inverse_field_name : str or Any
+            Name of the inverse field (e.g., "citing_paper"), may be SlotDefinitionName
+
+        Returns
+        -------
+        URIRef
+            Resolved URIRef for the inverse predicate
+        """
+        # Convert to string if it's a SlotDefinitionName or other type
+        inverse_field_name_str = str(inverse_field_name) if inverse_field_name else ""
+
+        if ":" in inverse_field_name_str:
+            return self._resolve_predicate(inverse_field_name_str)
+
+        try:
+            slot_mapping = self.linkml_introspector.get_slot_mapping(inverse_field_name_str, None)
+            if slot_mapping and slot_mapping.get("predicate"):
+                return self._resolve_predicate(slot_mapping["predicate"])
+        except (AttributeError, KeyError, TypeError):
+            pass
+
+        return self._resolve_predicate(inverse_field_name_str)
+
     def add_types(
         self, g: Any, subject: URIRef, types: list[str], context: URIRef | None = None
     ) -> None:
@@ -436,7 +468,7 @@ class RDFMapper:
 
                 # Add inverse relationship if specified
                 if inverse_predicate:
-                    inv_predicate = self._resolve_predicate(inverse_predicate)
+                    inv_predicate = self._resolve_inverse_predicate(inverse_predicate)
                     if context:
                         g.graph(context).add((related_uri, inv_predicate, subject))
                     else:
@@ -760,7 +792,7 @@ class RDFMapper:
 
                             # Add inverse relationship if specified
                             if inverse_predicate:
-                                inv_predicate = self._resolve_predicate(inverse_predicate)
+                                inv_predicate = self._resolve_inverse_predicate(inverse_predicate)
                                 if context:
                                     g.graph(context).add((related_uri, inv_predicate, subject))
                                 else:

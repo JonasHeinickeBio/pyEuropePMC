@@ -500,7 +500,7 @@ class EnhancedStatistics:
 
         # Handle both Graph and Dataset objects
         if hasattr(graph, "graphs"):  # Dataset
-            for g in graph.graphs():
+            for g_name, g in graph.graphs():
                 process_triples(g)
         else:  # Regular Graph
             process_triples(graph)
@@ -942,7 +942,7 @@ def print_graph_stats(graph, name):
 
     # Handle both Graph and Dataset objects
     if hasattr(graph, "graphs"):  # Dataset
-        for g in graph.graphs():
+        for g_name, g in graph.graphs():
             process_triples(g)
     else:  # Regular Graph
         process_triples(graph)

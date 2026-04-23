@@ -244,10 +244,10 @@ def rebind_namespaces(g: Graph | Dataset) -> None:
         for prefix, uri in prefix_config.items():
             g.bind(prefix, Namespace(uri), override=True, replace=True)
 
-        # For Dataset, also bind to default graph
-        if hasattr(g, "default_graph"):
+        # For Dataset, also bind to default context
+        if hasattr(g, "default_context"):
             for prefix, uri in prefix_config.items():
-                g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
+                g.default_context.bind(prefix, Namespace(uri), override=True, replace=True)
 
         # For Dataset, also bind to all named graphs
         if hasattr(g, "graphs"):
@@ -297,7 +297,37 @@ def setup_graph(namespaces: dict[str, str] | None = None) -> Graph:
     return g
 
 
-def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
+def _bind_prefixes_to_graph(
+    g: Any, config: dict[str, Any], namespaces: dict[str, str] | None = None
+) -> None:
+    """Bind prefixes from config and additional namespaces to a graph."""
+    prefix_config = config.get("prefixes", {})
+    for prefix, uri in prefix_config.items():
+        g.bind(prefix, Namespace(uri), override=True, replace=True)
+
+    if namespaces:
+        for prefix, uri in namespaces.items():
+            g.bind(prefix, Namespace(uri), override=True, replace=True)
+
+
+def _bind_prefixes_to_dataset(
+    g: Dataset, config: dict[str, Any], namespaces: dict[str, str] | None = None
+) -> None:
+    """Bind prefixes from config and additional namespaces to a dataset and its default context."""
+    prefix_config = config.get("prefixes", {})
+    for prefix, uri in prefix_config.items():
+        g.bind(prefix, Namespace(uri), override=True, replace=True)
+        g.default_context.bind(prefix, Namespace(uri), override=True, replace=True)
+
+    if namespaces:
+        for prefix, uri in namespaces.items():
+            g.bind(prefix, Namespace(uri), override=True, replace=True)
+            g.default_context.bind(prefix, Namespace(uri), override=True, replace=True)
+
+
+def setup_dataset(
+    namespaces: dict[str, str] | None = None, use_dataset: bool = True
+) -> Dataset | Graph:
     """
     Create and configure a new RDF dataset with standard namespaces.
 
@@ -308,41 +338,36 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
     ----------
     namespaces : Optional[Dict[str, str]]
         Additional namespaces to bind (prefix -> URI)
+    use_dataset : bool
+        Whether to use Dataset (quad store) or Graph (triple store)
 
     Returns
     -------
-    Dataset
-        Configured RDF dataset
+    Dataset or Graph
+        Configured RDF dataset or graph depending on use_dataset parameter
     """
-    from rdflib import Dataset
+    from rdflib import Dataset, Graph
 
-    g = Dataset()
-
-    # Load namespaces from LinkML schema
     try:
         config = load_rdf_config()
-        # Read from prefixes section in LinkML schema (source of truth)
-        prefix_config = config.get("prefixes", {})
-
-        # Bind to main dataset
-        for prefix, uri in prefix_config.items():
-            g.bind(prefix, Namespace(uri), override=True, replace=True)
-
-        # Also bind to default graph to ensure proper serialization
-        for prefix, uri in prefix_config.items():
-            g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
-
     except Exception as e:
         print(f"Failed to load LinkML config: {e}, using fallback namespaces")
-        _bind_fallback_namespaces(g)
+        config = {}
 
-    # Bind additional namespaces if provided
-    if namespaces:
-        for prefix, uri in namespaces.items():
-            g.bind(prefix, Namespace(uri), override=True, replace=True)
-            g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
-
-    return g
+    if use_dataset:
+        g = Dataset()
+        if config:
+            _bind_prefixes_to_dataset(g, config, namespaces)
+        else:
+            _bind_fallback_namespaces(g)
+        return g
+    else:
+        g = Graph()
+        if config:
+            _bind_prefixes_to_graph(g, config, namespaces)
+        else:
+            _bind_fallback_namespaces(g)
+        return g
 
 
 def _bind_fallback_namespaces(g: Graph) -> None:

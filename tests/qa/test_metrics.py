@@ -1,24 +1,26 @@
 """Unit tests for the QA toolset."""
 
+from __future__ import annotations
+
 import pytest
 import json
 import sys
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock
+from typing import Any
 
 import rdflib
-from rdflib import Graph, Namespace, URIRef, Literal
-from rdflib.namespace import RDF
+from rdflib import Graph, Namespace, URIRef, Literal, RDF
 
-from qa_toolset.metrics import RDFMetricsCalculator
-from qa_toolset.sparql_queries import SPARQLValidator
-from qa_toolset.schema_validation import SchemaValidator
-from qa_toolset.consistency_checks import ConsistencyChecker
-from qa_toolset.compare_outputs import OutputComparator, compare_ttl_files
+from pyeuropepmc.qa.metrics import RDFMetricsCalculator
+from pyeuropepmc.qa.sparql_queries import SPARQLValidator
+from pyeuropepmc.qa.schema_validation import SchemaValidator
+from pyeuropepmc.qa.consistency_checks import ConsistencyChecker
+from pyeuropepmc.qa.compare_outputs import OutputComparator, compare_ttl_files
 
 
 @pytest.fixture
-def sample_graph():
+def sample_graph() -> Graph:
     """Create a sample RDF graph for testing."""
     g = Graph()
     BIBO = Namespace('http://purl.org/ontology/bibo/')
@@ -70,7 +72,7 @@ def sample_graph():
 
 
 @pytest.fixture
-def empty_graph():
+def empty_graph() -> Graph:
     """Create an empty RDF graph for testing."""
     return Graph()
 

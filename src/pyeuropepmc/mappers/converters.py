@@ -100,7 +100,7 @@ def _convert_to_rdf(
     extraction_info: dict[str, Any] | None = None,
     enable_named_graphs: bool = True,
     **processor_kwargs: Any,
-) -> Dataset:
+) -> Dataset | Graph:
     """
     Generic RDF conversion function that handles common conversion logic.
 
@@ -141,7 +141,7 @@ def _convert_to_rdf(
         validator(data)
 
         mapper = _get_default_mapper(config_path, enable_named_graphs)
-        g = setup_dataset(namespaces)
+        g = setup_dataset(namespaces, use_dataset=enable_named_graphs)
 
         # Process data into entities format
         entities_data = processor(data, **processor_kwargs)
@@ -179,7 +179,7 @@ def convert_search_to_rdf(
     namespaces: dict[str, str] | None = None,
     cache_backend: CacheBackend | None = None,
     extraction_info: dict[str, Any] | None = None,
-) -> Dataset:
+) -> Dataset | Graph:
     """
     Convert search results directly to RDF graph.
 
@@ -230,7 +230,7 @@ def convert_xml_to_rdf(
     cache_backend: CacheBackend | None = None,
     extraction_info: dict[str, Any] | None = None,
     include_content: bool = True,
-) -> Dataset:
+) -> Dataset | Graph:
     """
     Convert XML parsing results to RDF graph.
 
@@ -283,7 +283,7 @@ def convert_enrichment_to_rdf(
     namespaces: dict[str, str] | None = None,
     cache_backend: CacheBackend | None = None,
     extraction_info: dict[str, Any] | None = None,
-) -> Dataset:
+) -> Dataset | Graph:
     """
     Convert enrichment data to RDF graph.
 
@@ -375,24 +375,38 @@ def convert_pipeline_to_rdf(
     try:
         g = setup_dataset(namespaces)
 
-        # Convert each data source and merge into single graph
+        # Convert each data source and merge into single dataset
         if search_results:
             search_graph = convert_search_to_rdf(
                 search_results, config_path, namespaces, None, extraction_info
             )
-            g += search_graph
+            # Add triples from graph to dataset (handles both Graph and Dataset)
+            if hasattr(search_graph, "graph"):
+                # It's a Dataset, add all quads
+                g.addN((s, p, o, g) for s, p, o, _ in search_graph.quads((None, None, None, None)))
+            else:
+                # It's a Graph, add all triples
+                g.addN((s, p, o, g) for s, p, o in search_graph)
 
         if xml_data:
             xml_graph = convert_xml_to_rdf(
                 xml_data, config_path, namespaces, None, extraction_info, include_content
             )
-            g += xml_graph
+            if hasattr(xml_graph, "graph"):
+                g.addN((s, p, o, g) for s, p, o, _ in xml_graph.quads((None, None, None, None)))
+            else:
+                g.addN((s, p, o, g) for s, p, o in xml_graph)
 
         if enrichment_data:
             enrichment_graph = convert_enrichment_to_rdf(
                 enrichment_data, config_path, namespaces, None, extraction_info
             )
-            g += enrichment_graph
+            if hasattr(enrichment_graph, "graph"):
+                g.addN(
+                    (s, p, o, g) for s, p, o, _ in enrichment_graph.quads((None, None, None, None))
+                )
+            else:
+                g.addN((s, p, o, g) for s, p, o in enrichment_graph)
 
         # Cache the result if cache backend is provided
         if cache_backend:

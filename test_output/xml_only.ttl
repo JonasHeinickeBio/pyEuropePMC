@@ -15,7 +15,7 @@
 <https://w3id.org/pyeuropepmc/data#author/arve-lee-willingham> a foaf:Person ;
     rdfs:label "Arve Lee Willingham"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/stewardship-for-research-on-infectious-diseases_fb08e3> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.357283" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.565797" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Arve Lee Willingham"^^xsd:string ;
     pyeuropepmc:affiliationText "Stewardship for Research on Infectious Diseases of Poverty (STE), UNICEF/UNDP/World Bank/WHO Special Programme for Research and Training in Tropical Diseases (TDR), Geneva, Switzerland"^^xsd:string .
@@ -23,7 +23,7 @@
 <https://w3id.org/pyeuropepmc/data#author/hamish-mohammed> a foaf:Person ;
     rdfs:label "Hamish Mohammed"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/university-of-trinidad_4a8b73> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.044642" ;
+    prov:generatedAtTime "2026-04-22T11:03:29.999255" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Hamish Mohammed"^^xsd:string ;
     pyeuropepmc:affiliationText "University of Trinidad and Tobago, Arima, Trinidad"^^xsd:string .
@@ -31,7 +31,7 @@
 <https://w3id.org/pyeuropepmc/data#author/liesl-morey> a foaf:Person ;
     rdfs:label "Liesl Morey"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/agricultural-research-council_5ad02a> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.250393" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.363385" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Liesl Morey"^^xsd:string ;
     pyeuropepmc:affiliationText "Biometry Unit, Agricultural Research Council, Silverton, Pretoria, South Africa"^^xsd:string .
@@ -39,7 +39,7 @@
 <https://w3id.org/pyeuropepmc/data#author/lulama-ntanjana> a foaf:Person ;
     rdfs:label "Lulama Ntanjana"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/department-of-agriculture_9921ac> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.199932" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.275472" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Lulama Ntanjana"^^xsd:string ;
     pyeuropepmc:affiliationText "Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape, South Africa"^^xsd:string .
@@ -47,7 +47,7 @@
 <https://w3id.org/pyeuropepmc/data#author/lynne-margaret-michael> a foaf:Person ;
     rdfs:label "Lynne Margaret Michael"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/animal-health-division_b150c5> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.091546" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.087374" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Lynne Margaret Michael"^^xsd:string ;
     pyeuropepmc:affiliationText "Animal Health Division, Bayer Pty Ltd, Isando, South Africa"^^xsd:string .
@@ -55,7 +55,7 @@
 <https://w3id.org/pyeuropepmc/data#author/peter-mullineaux-schantz> a foaf:Person ;
     rdfs:label "Peter Mullineaux Schantz"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/emory-university_eca44a> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.145994" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.184277" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Peter Mullineaux Schantz"^^xsd:string ;
     pyeuropepmc:affiliationText "Department of Global Health, Rollins School of Public Health, Emory University, Atlanta, Georgia, United States of America"^^xsd:string .
@@ -64,7 +64,7 @@
     rdfs:label "Rosina Claudia Krecek"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/ross-university_7b67cd>,
         <https://w3id.org/pyeuropepmc/data#organization/university-of-johannesburg_2c125f> ;
-    prov:generatedAtTime "2026-04-21T10:51:29.990254" ;
+    prov:generatedAtTime "2026-04-22T11:03:29.918677" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Rosina Claudia Krecek"^^xsd:string ;
     pyeuropepmc:affiliationText "Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts, West Indies; Department of Zoology, University of Johannesburg, Auckland Park, South Africa"^^xsd:string .
@@ -72,7 +72,7 @@
 <https://w3id.org/pyeuropepmc/data#author/stephen-rakem-werre> a foaf:Person ;
     rdfs:label "Stephen Rakem Werre"^^xsd:string ;
     org:memberOf <https://w3id.org/pyeuropepmc/data#organization/laboratory-for-study-design_2c2320> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.303332" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.462157" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:name "Stephen Rakem Werre"^^xsd:string ;
     pyeuropepmc:affiliationText "Laboratory for Study Design and Statistical Analysis, Virginia-Maryland Regional College of Veterinary Medicine, Virginia Tech, Blacksburg, Virginia, United States of America"^^xsd:string .
@@ -84,28 +84,28 @@
     bibo:shortTitle "PLoS ONE"^^xsd:string,
         "PLoS One"^^xsd:string ;
     geo:country "San Francisco, USA"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:29.879967" ;
+    prov:generatedAtTime "2026-04-22T11:03:29.754438" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/agricultural-research-council_5ad02a> a org:Organization ;
     rdfs:label "Biometry Unit, Agricultural Research Council, Silverton, Pretoria"^^xsd:string ;
     geo:city "South Africa"^^xsd:string ;
     skos:prefLabel "Biometry Unit, Agricultural Research Council, Silverton, Pretoria"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.232843" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.333931" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/animal-health-division_b150c5> a org:Organization ;
     rdfs:label "Animal Health Division, Bayer Pty Ltd, Isando"^^xsd:string ;
     geo:city "South Africa"^^xsd:string ;
     skos:prefLabel "Animal Health Division, Bayer Pty Ltd, Isando"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.073129" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.058043" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/department-of-agriculture_9921ac> a org:Organization ;
     rdfs:label "Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape"^^xsd:string ;
     geo:city "South Africa"^^xsd:string ;
     skos:prefLabel "Department of Agriculture, Veterinary Services Eastern Cape Province, Bhisho, Eastern Cape"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.182326" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.246056" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/emory-university_eca44a> a org:Organization ;
@@ -113,40 +113,40 @@
     geo:city "Georgia"^^xsd:string ;
     geo:country "United States of America"^^xsd:string ;
     skos:prefLabel "Department of Global Health, Rollins School of Public Health, Emory University, Atlanta"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.128370" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.150342" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/laboratory-for-study-design_2c2320> a org:Organization ;
     rdfs:label "Laboratory for Study Design"^^xsd:string ;
     skos:prefLabel "Laboratory for Study Design"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.283349" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.424709" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/ross-university_7b67cd> a org:Organization ;
     rdfs:label "Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts"^^xsd:string ;
     geo:city "West Indies"^^xsd:string ;
     skos:prefLabel "Department of Research, Ross University School of Veterinary Medicine (RUSVM), Basseterre, St. Kitts"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:29.934056" ;
+    prov:generatedAtTime "2026-04-22T11:03:29.839250" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/stewardship-for-research-on-infectious-diseases_fb08e3> a org:Organization ;
     rdfs:label "Stewardship for Research on Infectious Diseases of Poverty (STE)"^^xsd:string ;
     geo:city "UNICEF/UNDP/World Bank/WHO Special Programme for Research"^^xsd:string ;
     skos:prefLabel "Stewardship for Research on Infectious Diseases of Poverty (STE)"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.339139" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.528639" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/university-of-johannesburg_2c125f> a org:Organization ;
     rdfs:label "Department of Zoology, University of Johannesburg, Auckland Park"^^xsd:string ;
     geo:city "South Africa"^^xsd:string ;
     skos:prefLabel "Department of Zoology, University of Johannesburg, Auckland Park"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:29.949691" ;
+    prov:generatedAtTime "2026-04-22T11:03:29.867597" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#organization/university-of-trinidad_4a8b73> a org:Organization ;
     rdfs:label "University of Trinidad"^^xsd:string ;
     skos:prefLabel "University of Trinidad"^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:30.027194" ;
+    prov:generatedAtTime "2026-04-22T11:03:29.974284" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#section/22655065/1/introduction> a nif:Context,
@@ -157,7 +157,7 @@
 The ECP reported high levels (28–50%) of human juvenile NCC (which occurs in children) and limited current data for porcine cysticercosis [5] , [9] – [11] . In 2003, the prevalence of porcine cysticercosis was studied in these same districts by testing 261 pigs [10] . The diagnostic tests used in the study included lingual examination, two enzyme-linked immunosorbent tests (ELISA) and an enzyme immunoelectrotransfer (EITB) test [10] . Previously, when we employed a Bayesian approach to estimate the true prevalence of porcine cysticercosis in the ECP, we found the level to be very high [10] . In this study, using the same dataset, we determine risk factors of porcine cysticercosis, while accounting for the clustering effects of more than one pig belonging to the same owner and of more than one owner in a district."""^^xsd:string ;
     dcterms:title "Introduction"^^xsd:string ;
     dcterms:type "introduction" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.394385" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.632162" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 1 .
 
@@ -175,7 +175,7 @@ It is essential to consider the results of the current study in the context of t
 The presence of T. solium limits pork production and is a serious threat to public health in this province [9] – [10] . The current study reports, though the majority of pig owners observe tapeworm infections in humans, they have a very poor understanding of the transmission of this parasite between humans and pigs. There is no access to formal meat inspection or availability of information about transmission, treatment and prevention of these diseases. Though these were not identified as risk factors the statistical analysis reported very high percentages. This is coupled with the high levels of porcine infection and human juvenile cysticercosis throughout the Alfred Nzo and Oliver R. Tambo Districts of ECP [2] , [4] – [6] . An overarching goal of the Cysticercosis Working Group of Eastern and Southern Africa is to identify appropriate recommendations for prevention and management in endemic areas of these countries [2] , [5] , [10] , [11] . In addition to the need for improvement of infrastructure is the need to provide appropriate information to communities. Education in combination with other interventions has been shown to have the greatest impact on lowering levels of these diseases [27] with one of the earliest reported examples in a rural community in Mexico [25] , [27] . A more recent example tested the efficacy of teaching methods in Kenyan farmers to prevent human epilepsy caused by neurocysticercosis [28] . This training enhanced knowledge acquisition and behavior change which are first steps to prevention of this disease. Understanding the risk factors which lead to T. solium infection together with applying educational interventions to increase awareness and knowledge of this disease can potentially lower the very high prevalence in humans and pigs in endemic areas such as the ECP."""^^xsd:string ;
     dcterms:title "Discussion"^^xsd:string ;
     dcterms:type "discussion" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.520148" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.849011" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 10 .
 
@@ -185,7 +185,7 @@ The presence of T. solium limits pork production and is a serious threat to publ
     nif:isString "This study was carried out from February to June 2003, in the six veterinary districts of the Alfred Nzo and Oliver R. Tambo Districts of the ECP. These districts included 124 villages and are served by animal health officers (AHO) and state veterinarians. The role of AHOs is to serve specific villages in a district. Therefore they contacted pig owners and invited them to participate in this study. The criteria for owners to be invited to participate in the study were that they were emerging pig producers, would be available during the days that the research team was scheduled to conduct the survey, and that the villages were accessible by road. All owners who agreed to participate were scheduled to meet on specific days with the research team. Details of the numbers of pigs and the village sampling are reported elsewhere [10] ."^^xsd:string ;
     dcterms:title "Study design and population"^^xsd:string ;
     dcterms:type "other" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.413185" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.662797" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 3 .
 
@@ -195,7 +195,7 @@ The presence of T. solium limits pork production and is a serious threat to publ
     nif:isString "Data were collected from a standard hardcopy questionnaire that included 42 questions on household identification, information and respondent details, pig breed (South African hut breed, cross bred or other pure breed), pig management and husbandry, possible transmission factors (e.g. source of drinking water, absence of a latrine or toilet) and awareness of taeniosis/cysticercosis in humans and of cysticercosis in pigs. The questionnaire methodology followed [12] – [15] and I. Phiri (personal communication, 2003). The questionnaire underwent pilot testing in the field and then was administered to the pig owners during an interview by an AHO fluent in Xhosa (a local language) and concurrent with examination of the pigs. Due to the high level of illiteracy among villagers, informed verbal consent was obtained from pig owners by the AHOs."^^xsd:string ;
     dcterms:title "Household questionnaire"^^xsd:string ;
     dcterms:type "other" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.430918" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.690441" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 4 .
 
@@ -207,7 +207,7 @@ The presence of T. solium limits pork production and is a serious threat to publ
 Bivariable models were adjusted for clusters of pigs within owner, while the multivariable model was simultaneously adjusted for clusters of pigs within owner and clusters of owners within district. Porcine infection with cysticercosis was determined using two ELISA tests. B158/B60 Ag-ELISA [18] and HP10 Ag-ELISA [19] – [20] . The outcome for all analyses was porcine infection, defined as a positive result on either of the two ELISA tests. All variables with a p -value less than or equal to 0.10 on bivariable analysis were considered for inclusion in the final multivariable model, and tests for significant interaction between the terms in this model were performed. All tests for significance were performed at the α = 0.05 level, and both unadjusted and adjusted odds ratios (aOR) and 95% confidence intervals (CI) were determined."""^^xsd:string ;
     dcterms:title "Statistical analysis"^^xsd:string ;
     dcterms:type "other" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.448928" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.718794" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 5 .
 
@@ -217,7 +217,7 @@ Bivariable models were adjusted for clusters of pigs within owner, while the mul
     nif:isString "The study protocol was approved by the National Department of Agriculture Directorate, South Africa and Animal Ethics Committee of Veterinary Services Eastern Cape Province, Department of Agriculture, ECP, South Africa, village leaders and pig owners. Collection of blood specimens from pigs was performed by a licensed veterinarian according to South African guidelines for animal care."^^xsd:string ;
     dcterms:title "Ethical approval"^^xsd:string ;
     dcterms:type "other" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.464875" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.749344" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 6 .
 
@@ -231,7 +231,7 @@ Of the pig owners interviewed, 73% were female; 50% were under 51 years of age; 
 The majority (93%) of households reported consumption of pork, 98% slaughtered pigs at home and almost all (99%) indicated that meat inspection services were not available. Most owners (74%) had observed cysts in pork, 78% did not know what the cysts were and 83% did not know how pigs acquired cysticercosis. The majority of respondents (69%) had heard of tapeworm infection in humans, though 74% did not know how to recognize a tapeworm if they were individually infected and 87% did not know how infection with a tapeworm occurred. The majority (86%) had heard of persons in their village complaining of epilepsy, 44% of headache and 62% of madness. Seventy-one percent reported that they did not know about the disease or how to treat, prevent or manage the disease."""^^xsd:string ;
     dcterms:title "Description of pig owners"^^xsd:string ;
     dcterms:type "other" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.483304" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.781739" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 8 .
 
@@ -241,7 +241,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     nif:isString "Overall, the prevalence (95% CI) of porcine infection was 57% (51%, 63%); 41% (35%, 47%) and 54% (48%, 60%) were positive by B158/B60 Ag-ELISA and HP10 Ag-ELISA, respectively. There was some variation between districts, with the prevalence of porcine infection ranging from 29% to 73% ( Table 1 ). On bivariable analysis ( Table 1 ), there was a significant association between infection and district ( p = 0.003, type 3 wald statistic), breed ( p = 0.041), and the absence of a latrine ( p = 0.006). The multivariable model assessed included breed, absence of a latrine, and the interaction between breed and latrine as fixed effects; and owner and district as cluster level factors. In the final model, the absence of a latrine was the only variable significantly associated with infection (aOR = 1.89; 95% CI = 1.07, 3.35) ( Table 2 )."^^xsd:string ;
     dcterms:title "Risk factors and prevalence of infection"^^xsd:string ;
     dcterms:type "other" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.500587" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.814099" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:sectionOrder 9 .
 
@@ -251,19 +251,19 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     nif:isString "* E-mail: tkrecek@rossvet.edu.kn Conceived and designed the experiments: RCK ALW PMS. Performed the experiments: RCK LMM LN LM. Analyzed the data: RCK HM LM SRW. Contributed reagents/materials/analysis tools: RCK LMM SRW. Wrote the paper: RCK HM PMS LM ALW SRW."^^xsd:string ;
     dcterms:title "Author Notes"^^xsd:string ;
     dcterms:type "acknowledgments" ;
-    prov:generatedAtTime "2026-04-21T10:51:30.536510" ;
+    prov:generatedAtTime "2026-04-22T11:03:30.879629" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#table/22655065/table-1> a bibo:Table ;
     rdfs:label "Table 1"^^xsd:string ;
     dcterms:description "Bivariable associations between owner/pig characteristics and cysticercosis 1 infection in pigs from Eastern Cape Province (South Africa) (N = 256) 2 ."^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:34.085435" ;
+    prov:generatedAtTime "2026-04-22T11:03:37.645337" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#table/22655065/table-2> a bibo:Table ;
     rdfs:label "Table 2"^^xsd:string ;
     dcterms:description "Final multivariable model for the association between owner/pig characteristics and cysticercosis 1 infection in pigs from Eastern Cape Province (South Africa) (N = 256) 2 ."^^xsd:string ;
-    prov:generatedAtTime "2026-04-21T10:51:34.102495" ;
+    prov:generatedAtTime "2026-04-22T11:03:37.673414" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/1991-d07b22ad> a bibo:Article,
@@ -274,7 +274,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     dcterms:title "The zoonotic Taeniae of Africa."^^xsd:string ;
     bibo:authorList "Harrison, LJS, Sewell, MMH"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.007638" ;
+    prov:generatedAtTime "2026-04-22T11:03:35.972103" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2000-da12d008> a bibo:Article,
@@ -284,7 +284,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     dcterms:issued 2000 ;
     dcterms:title "Livestock Strategy to 2010: Making the Livestock Revolution work for the poor."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.547062" ;
+    prov:generatedAtTime "2026-04-22T11:03:32.997469" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2001-80ba26f1> a bibo:Article,
@@ -294,7 +294,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     dcterms:issued 2001 ;
     dcterms:title "Unknown title"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.413539" ;
+    prov:generatedAtTime "2026-04-22T11:03:32.718696" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2001-cace5f4e> a bibo:Article,
@@ -304,7 +304,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     dcterms:issued 2001 ;
     dcterms:title "Census 2007. Community Survey 2007."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.825074" ;
+    prov:generatedAtTime "2026-04-22T11:03:37.222583" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2003-b951b968> a bibo:Article,
@@ -314,7 +314,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     dcterms:issued 2003 ;
     dcterms:title "Control of Neurocysticercosis."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.662354" ;
+    prov:generatedAtTime "2026-04-22T11:03:31.141940" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2004-98130016> a bibo:Article,
@@ -327,7 +327,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:pages "271-274"^^xsd:string ;
     bibo:volume "35"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.279043" ;
+    prov:generatedAtTime "2026-04-22T11:03:32.424611" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2006-220de8e9> a bibo:Article,
@@ -340,7 +340,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:pages "906-916"^^xsd:string ;
     bibo:volume "11"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.672875" ;
+    prov:generatedAtTime "2026-04-22T11:03:33.253890" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://w3id.org/pyeuropepmc/data#reference/2011-927af6ab> a bibo:Article,
@@ -353,36 +353,36 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:pages "198-200"^^xsd:string ;
     bibo:volume "183"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.212974" ;
+    prov:generatedAtTime "2026-04-22T11:03:36.187549" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
-<https://w3id.org/pyeuropepmc/data#reference/5e864d3d-3c1f-433a-aa7e-25d17d97ae70> a bibo:Article,
-        bibo:Document ;
-    rdfs:label "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States."^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    dcterms:title "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States."^^xsd:string ;
-    bibo:authorList "O'Neal, SE, Townes, JM, Wilkins, PP, Noh, JC, Lee, D"^^xsd:string ;
-    cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.909229" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" .
-
-<https://w3id.org/pyeuropepmc/data#reference/ed6c2aa4-8d2e-40e1-a4a4-2dd0a85012a9> a bibo:Article,
-        bibo:Document ;
-    rdfs:label "SAS Institute Inc, Cary, North Carolina, USA"^^xsd:string ;
-    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    dcterms:title "SAS Institute Inc, Cary, North Carolina, USA"^^xsd:string ;
-    cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.627010" ;
-    prov:wasGeneratedBy "pyeuropepmc_parser" .
-
-<https://w3id.org/pyeuropepmc/data#reference/fce69b27-5968-468f-a54e-02b7c0065d48> a bibo:Article,
+<https://w3id.org/pyeuropepmc/data#reference/28c39d4a-6073-4f52-8e0b-72d8d3d35c84> a bibo:Article,
         bibo:Document ;
     rdfs:label "Microsoft© Excel"^^xsd:string ;
     <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     dcterms:title "Microsoft© Excel"^^xsd:string ;
     bibo:authorList "Microsoft© Windows XP Professional 2002."^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.497174" ;
+    prov:generatedAtTime "2026-04-22T11:03:34.962150" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#reference/a6ca2c84-81dc-46a3-aa60-df979d267b33> a bibo:Article,
+        bibo:Document ;
+    rdfs:label "SAS Institute Inc, Cary, North Carolina, USA"^^xsd:string ;
+    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    dcterms:title "SAS Institute Inc, Cary, North Carolina, USA"^^xsd:string ;
+    cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    prov:generatedAtTime "2026-04-22T11:03:35.288015" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://w3id.org/pyeuropepmc/data#reference/f18eb687-1ebe-4ef4-8c1c-80e384a619d3> a bibo:Article,
+        bibo:Document ;
+    rdfs:label "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States."^^xsd:string ;
+    <citing_paper> <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    dcterms:title "Seroprevalence of antibodies against Taenia solium cysticerci among refugees resettled in United States."^^xsd:string ;
+    bibo:authorList "O'Neal, SE, Townes, JM, Wilkins, PP, Noh, JC, Lee, D"^^xsd:string ;
+    cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
+    prov:generatedAtTime "2026-04-22T11:03:31.642023" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
 <https://pubmed.ncbi.nlm.nih.gov/10681021/> a bibo:Article,
@@ -396,7 +396,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "88"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/10681021/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.741506" ;
+    prov:generatedAtTime "2026-04-22T11:03:35.549626" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "10681021"^^xsd:string .
 
@@ -411,7 +411,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "70"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/10855829/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.367559" ;
+    prov:generatedAtTime "2026-04-22T11:03:34.656093" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "10855829"^^xsd:string .
 
@@ -426,7 +426,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "71"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/11030358/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.250703" ;
+    prov:generatedAtTime "2026-04-22T11:03:34.414744" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "11030358"^^xsd:string .
 
@@ -441,7 +441,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "72"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/11563717/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.137793" ;
+    prov:generatedAtTime "2026-04-22T11:03:34.167314" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "11563717"^^xsd:string .
 
@@ -456,7 +456,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "43"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/11816233/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.688486" ;
+    prov:generatedAtTime "2026-04-22T11:03:36.946969" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "11816233"^^xsd:string .
 
@@ -471,7 +471,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "87"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/12781374/> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.776172" ;
+    prov:generatedAtTime "2026-04-22T11:03:31.381977" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "12781374"^^xsd:string .
 
@@ -486,7 +486,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "87"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/12781375/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.141147" ;
+    prov:generatedAtTime "2026-04-22T11:03:32.138218" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "12781375"^^xsd:string .
 
@@ -501,7 +501,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "120"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/15063938/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.447116" ;
+    prov:generatedAtTime "2026-04-22T11:03:36.561495" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "15063938"^^xsd:string .
 
@@ -516,7 +516,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "75"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/15214691/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.019328" ;
+    prov:generatedAtTime "2026-04-22T11:03:33.939530" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "15214691"^^xsd:string .
 
@@ -531,7 +531,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "76"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/15900892/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.029011" ;
+    prov:generatedAtTime "2026-04-22T11:03:31.851838" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "15900892"^^xsd:string .
 
@@ -546,7 +546,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "143"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/16956727/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.329530" ;
+    prov:generatedAtTime "2026-04-22T11:03:36.373278" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "16956727"^^xsd:string .
 
@@ -561,7 +561,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "154"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/18440704/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.790648" ;
+    prov:generatedAtTime "2026-04-22T11:03:33.481013" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "18440704"^^xsd:string .
 
@@ -576,7 +576,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "3"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/19997629/> ;
-    prov:generatedAtTime "2026-04-21T10:51:31.905940" ;
+    prov:generatedAtTime "2026-04-22T11:03:33.727160" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "19997629"^^xsd:string .
 
@@ -591,7 +591,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "4"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/20126403/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.570411" ;
+    prov:generatedAtTime "2026-04-22T11:03:36.737645" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "20126403"^^xsd:string .
 
@@ -606,7 +606,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "82"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/20348512/> ;
-    prov:generatedAtTime "2026-04-21T10:51:34.067595" ;
+    prov:generatedAtTime "2026-04-22T11:03:37.617547" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "20348512"^^xsd:string .
 
@@ -621,7 +621,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "11"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/2674862/> ;
-    prov:generatedAtTime "2026-04-21T10:51:32.864326" ;
+    prov:generatedAtTime "2026-04-22T11:03:35.749056" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "2674862"^^xsd:string .
 
@@ -636,7 +636,7 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
     bibo:volume "56"^^xsd:string ;
     cito:isCitedBy <https://pubmed.ncbi.nlm.nih.gov/22655065/> ;
     owl:sameAs <https://pubmed.ncbi.nlm.nih.gov/9080868/> ;
-    prov:generatedAtTime "2026-04-21T10:51:33.944823" ;
+    prov:generatedAtTime "2026-04-22T11:03:37.411688" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmid "9080868"^^xsd:string .
 
@@ -693,15 +693,15 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
         <https://w3id.org/pyeuropepmc/data#reference/2004-98130016>,
         <https://w3id.org/pyeuropepmc/data#reference/2006-220de8e9>,
         <https://w3id.org/pyeuropepmc/data#reference/2011-927af6ab>,
-        <https://w3id.org/pyeuropepmc/data#reference/5e864d3d-3c1f-433a-aa7e-25d17d97ae70>,
-        <https://w3id.org/pyeuropepmc/data#reference/ed6c2aa4-8d2e-40e1-a4a4-2dd0a85012a9>,
-        <https://w3id.org/pyeuropepmc/data#reference/fce69b27-5968-468f-a54e-02b7c0065d48> ;
+        <https://w3id.org/pyeuropepmc/data#reference/28c39d4a-6073-4f52-8e0b-72d8d3d35c84>,
+        <https://w3id.org/pyeuropepmc/data#reference/a6ca2c84-81dc-46a3-aa60-df979d267b33>,
+        <https://w3id.org/pyeuropepmc/data#reference/f18eb687-1ebe-4ef4-8c1c-80e384a619d3> ;
     owl:sameAs <https://doi.org/10.1371/journal.pone.0037718>,
         <https://europepmc.org/article/MED/22655065>,
         <https://europepmc.org/article/PMC/3359999/>,
         <https://pubmed.ncbi.nlm.nih.gov/22655065/>,
         <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3359999/> ;
-    prov:generatedAtTime "2026-04-21T10:51:30.607679" ;
+    prov:generatedAtTime "2026-04-22T11:03:31.027982" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     pyeuropepmc:pmcid "PMC3359999"^^xsd:string ;
     pyeuropepmc:pmid "22655065"^^xsd:string ;
@@ -731,6 +731,6 @@ The majority (93%) of households reported consumption of pork, 98% slaughtered p
         <https://w3id.org/pyeuropepmc/data#reference/2004-98130016>,
         <https://w3id.org/pyeuropepmc/data#reference/2006-220de8e9>,
         <https://w3id.org/pyeuropepmc/data#reference/2011-927af6ab>,
-        <https://w3id.org/pyeuropepmc/data#reference/5e864d3d-3c1f-433a-aa7e-25d17d97ae70>,
-        <https://w3id.org/pyeuropepmc/data#reference/ed6c2aa4-8d2e-40e1-a4a4-2dd0a85012a9>,
-        <https://w3id.org/pyeuropepmc/data#reference/fce69b27-5968-468f-a54e-02b7c0065d48> .
+        <https://w3id.org/pyeuropepmc/data#reference/28c39d4a-6073-4f52-8e0b-72d8d3d35c84>,
+        <https://w3id.org/pyeuropepmc/data#reference/a6ca2c84-81dc-46a3-aa60-df979d267b33>,
+        <https://w3id.org/pyeuropepmc/data#reference/f18eb687-1ebe-4ef4-8c1c-80e384a619d3> .
