@@ -1,22 +1,31 @@
-name: CI — Unit tests
+name: CI — Unit Tests
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  push:
+    branches: [ main ]
+  workflow_dispatch: {}
+  schedule:
+    # Nightly at 03:00 UTC
+    - cron: '0 3 * * *'
 
 permissions:
   contents: read
+  issues: write
 
 jobs:
   unit:
-    name: Unit tests (fast)
+    name: Unit Tests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
+      - name: Checkout (fetch LFS objects)
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
+
+      - name: Ensure Git LFS objects are present
+        run: |
+          git lfs install --local || true
+          git lfs pull || true
 
       - name: Set up Python
         uses: actions/setup-python@v6.2.0
@@ -33,5 +42,54 @@ jobs:
       - name: Install dependencies
         run: poetry install --with dev --no-interaction --no-ansi
 
-      - name: Run unit tests (exclude integration/e2e/functional)
+      - name: Run unit tests
+        id: tests
         run: poetry run pytest -q -m "not integration and not e2e and not functional"
+
+      - name: Create issue on test failure
+        if: steps.tests.outcome == 'failure'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          # Get the current date for issue title
+          DATE=$(date +'%Y-%m-%d')
+
+          # Extract test failure summary from pytest output
+          FAILURE_SUMMARY=$(poetry run pytest -v --tb=short 2>&1 | tail -20)
+
+          # Create a unique identifier for this failure type
+          FAILURE_HASH=$(echo "$FAILURE_SUMMARY" | sha256sum | cut -d' ' -f1 | head -c 16)
+
+          # Check if an issue already exists for this failure
+          EXISTING_ISSUE=$(gh issue list --state open --json number,title --jq ".[] | select(.title | contains(\"$FAILURE_HASH\")) | .number" | head -1)
+
+          if [ -z "$EXISTING_ISSUE" ]; then
+            echo "Creating new issue for unit test failure..."
+
+            # Create the issue body
+            ISSUE_BODY="## Unit Test Failure
+
+          **Date:** $DATE
+          **Workflow:** ${{ github.workflow }}
+          **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+
+          ### Test Output
+          \`\`\`
+          $FAILURE_SUMMARY
+          \`\`\`
+
+          ### Details
+          - Branch: \`${{ github.ref_name }}\`
+          - Commit: \`${{ github.sha }}\`
+          - Trigger: \`${{ github.event_name }}\`
+
+          This issue was automatically created when unit tests failed in CI."
+
+            # Create the issue
+            gh issue create \
+              --title "Unit Test Failure - $DATE ($FAILURE_HASH)" \
+              --body "$ISSUE_BODY" \
+              --label "tests,bug,ci"
+          else
+            echo "Issue already exists for this failure type: #$EXISTING_ISSUE"
+          fi

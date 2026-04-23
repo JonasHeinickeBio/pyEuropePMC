@@ -69,7 +69,7 @@ jobs:
           FAILURE_HASH=$(echo "$FAILURE_SUMMARY" | sha256sum | cut -d' ' -f1 | head -c 16)
 
           # Check if an issue already exists for this failure
-          EXISTING_ISSUE=$(gh issue list --label "functional-test-failure" --state open --json number,title --jq ".[] | select(.title | contains(\"$FAILURE_HASH\")) | .number" | head -1)
+          EXISTING_ISSUE=$(gh issue list --state open --json number,title --jq ".[] | select(.title | contains(\"$FAILURE_HASH\")) | .number" | head -1)
 
           if [ -z "$EXISTING_ISSUE" ]; then
             echo "Creating new issue for functional test failure..."
@@ -97,7 +97,7 @@ jobs:
             gh issue create \
               --title "Functional Test Failure - $DATE ($FAILURE_HASH)" \
               --body "$ISSUE_BODY" \
-              --label "functional-test-failure,bug,ci-failure"
+              --label "bug,ci-failure"
           else
             echo "Issue already exists for this failure type: #$EXISTING_ISSUE"
           fi
