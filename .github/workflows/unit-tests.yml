@@ -17,7 +17,11 @@ jobs:
     name: Unit Tests
     runs-on: ubuntu-latest
     steps:
+<<<<<<< copilot/adopt-linkml-as-source-of-truth
       - name: Checkout (fetch LFS objects)
+=======
+      - name: Checkout
+>>>>>>> main
         uses: actions/checkout@v6
         with:
           fetch-depth: 0
