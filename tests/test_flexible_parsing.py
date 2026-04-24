@@ -24,14 +24,14 @@ class TestElementPatterns:
         config = ElementPatterns()
 
         # Check citation types
-        assert "element-citation" in config.citation_types
-        assert "mixed-citation" in config.citation_types
-        assert "nlm-citation" in config.citation_types
-        assert "citation" in config.citation_types
+        assert "element-citation" in config.citation_types["types"]
+        assert "mixed-citation" in config.citation_types["types"]
+        assert "nlm-citation" in config.citation_types["types"]
+        assert "citation" in config.citation_types["types"]
 
         # Check author patterns
-        assert ".//contrib[@contrib-type='author']/name" in config.author_element_patterns
-        assert ".//author" in config.author_element_patterns
+        assert ".//contrib[@contrib-type='author']/name" in config.author_element_patterns["patterns"]
+        assert ".//author" in config.author_element_patterns["patterns"]
 
         # Check journal patterns
         assert config.journal_patterns["title"] == [".//journal-title", ".//source", ".//journal"]
@@ -43,19 +43,19 @@ class TestElementPatterns:
 
     def test_custom_citation_types(self):
         """Test creating ElementPatterns with custom citation types."""
-        custom_types = ["custom-citation", "my-citation"]
+        custom_types = {"types": ["custom-citation", "my-citation"]}
         config = ElementPatterns(citation_types=custom_types)
 
         assert config.citation_types == custom_types
-        assert "element-citation" not in config.citation_types
+        assert "element-citation" not in config.citation_types["types"]
 
     def test_custom_author_patterns(self):
         """Test creating ElementPatterns with custom author patterns."""
-        custom_patterns = [".//custom-author", ".//my-author/name"]
+        custom_patterns = {"patterns": [".//custom-author", ".//my-author/name"]}
         config = ElementPatterns(author_element_patterns=custom_patterns)
 
         assert config.author_element_patterns == custom_patterns
-        assert ".//contrib[@contrib-type='author']/name" not in config.author_element_patterns
+        assert ".//contrib[@contrib-type='author']/name" not in config.author_element_patterns["patterns"]
 
 
 class TestDocumentSchema:
@@ -370,9 +370,10 @@ class TestFlexibleExtractMetadata:
         assert metadata["pmcid"] == "3258128"
         assert metadata["doi"] == "10.1234/test"
         assert metadata["title"] == "Test Article Title"
-        assert metadata["journal"] == "Test Journal"
-        assert metadata["volume"] == "10"
-        assert metadata["issue"] == "2"
+        # Journal is now a dict with nested structure including volume/issue
+        assert metadata["journal"]["title"] == "Test Journal"
+        assert metadata["journal"]["volume"] == "10"
+        assert metadata["journal"]["issue"] == "2"
         assert metadata["pages"] == "100-110"
 
     def test_extract_with_alternative_patterns(self):
@@ -395,7 +396,8 @@ class TestFlexibleExtractMetadata:
 
         # Should fall back to alternative patterns
         assert metadata["title"] == "Alternative Title Element"
-        assert metadata["journal"] == "Journal Source"
+        # Journal is now a dict with nested structure
+        assert metadata["journal"]["title"] == "Journal Source"
 
 
 class TestFlexibleExtractAuthors:
@@ -490,14 +492,14 @@ class TestCustomConfiguration:
     def test_parser_with_custom_config(self):
         """Test initializing parser with custom configuration."""
         custom_config = ElementPatterns(
-            citation_types=["custom-citation"],
-            author_element_patterns=[".//custom-author/name"],
+            citation_types={"types": ["custom-citation"]},
+            author_element_patterns={"patterns": [".//custom-author/name"]},
         )
 
         parser = FullTextXMLParser(config=custom_config)
 
-        assert parser.config.citation_types == ["custom-citation"]
-        assert parser.config.author_element_patterns == [".//custom-author/name"]
+        assert parser.config.citation_types == {"types": ["custom-citation"]}
+        assert parser.config.author_element_patterns == {"patterns": [".//custom-author/name"]}
 
     def test_extract_with_custom_citation_type(self):
         """Test reference extraction with custom citation type."""
@@ -514,7 +516,7 @@ class TestCustomConfiguration:
         </root>"""
         root = ET.fromstring(xml)
 
-        custom_config = ElementPatterns(citation_types=["custom-citation"])
+        custom_config = ElementPatterns(citation_types={"types": ["custom-citation"]})
         parser = FullTextXMLParser(config=custom_config)
         parser.root = root
 
@@ -655,11 +657,11 @@ class TestInlineElementHandling:
         p_elem = root.find(".//p")
         assert p_elem is not None
 
-        config = ElementPatterns(inline_element_patterns=[".//custom-sup"])
+        config = ElementPatterns(inline_element_patterns={"patterns": [".//custom-sup"]})
         parser = FullTextXMLParser(config=config)
         parser.root = root
 
-        markers = parser._extract_inline_elements(p_elem, config.inline_element_patterns)
+        markers = parser._extract_inline_elements(p_elem, config.inline_element_patterns["patterns"])
 
         assert len(markers) == 1
         assert "*" in markers

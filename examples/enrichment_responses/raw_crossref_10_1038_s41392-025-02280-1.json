@@ -1,0 +1,62 @@
+{
+  "source": "crossref",
+  "title": "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches",
+  "authors": [
+    {
+      "name": "Muhammad Tufail",
+      "given": "Muhammad",
+      "family": "Tufail",
+      "orcid": "https://orcid.org/0000-0003-3442-7216",
+      "affiliation": [],
+      "sequence": "first",
+      "ORCID": "https://orcid.org/0000-0003-3442-7216"
+    },
+    {
+      "name": "Can-Hua Jiang",
+      "given": "Can-Hua",
+      "family": "Jiang",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Ning Li",
+      "given": "Ning",
+      "family": "Li",
+      "affiliation": [],
+      "sequence": "additional"
+    }
+  ],
+  "abstract": "<jats:title>Abstract</jats:title>\n          <jats:p>Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.</jats:p>",
+  "journal": "Signal Transduction and Targeted Therapy",
+  "publication_date": "2025-07-31",
+  "citation_count": 37,
+  "references_count": 640,
+  "license": {
+    "url": "https://creativecommons.org/licenses/by/4.0",
+    "start": "2025-07-31T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": [
+    {
+      "name": "National Natural Science Foundation of China",
+      "doi": "10.13039/501100001809",
+      "award": [
+        "82170974"
+      ]
+    },
+    {
+      "name": "Central South University",
+      "doi": "10.13039/501100002822",
+      "award": [
+        "2023QYJC038"
+      ]
+    }
+  ],
+  "type": "journal-article",
+  "issn": [
+    "2059-3635"
+  ],
+  "volume": "10",
+  "issue": "1",
+  "publisher": "Springer Science and Business Media LLC"
+}

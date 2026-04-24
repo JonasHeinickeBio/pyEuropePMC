@@ -41,9 +41,9 @@ def main():
     print(f"Authors:    {', '.join(metadata['authors'][:3])}")
     if len(metadata['authors']) > 3:
         print(f"            ... and {len(metadata['authors']) - 3} more authors")
-    print(f"Journal:    {metadata['journal']}")
+    print(f"Journal:    {metadata['journal']['title']}")
     print(f"Date:       {metadata['pub_date']}")
-    print(f"Volume:     {metadata['volume']}, Issue: {metadata['issue']}")
+    print(f"Volume:     {metadata['journal']['volume']}, Issue: {metadata['journal']['issue']}")
     if metadata['abstract']:
         abstract_preview = metadata['abstract'][:150]
         print(f"Abstract:   {abstract_preview}...")

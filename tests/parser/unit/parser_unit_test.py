@@ -1,7 +1,7 @@
 
 import logging
 import pytest
-from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.processing.search_parser import EuropePMCParser
 from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.core.error_codes import ErrorCodes
 

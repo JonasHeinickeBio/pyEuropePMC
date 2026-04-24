@@ -147,6 +147,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
             "citationCount",
             "influentialCitationCount",
             "authors",
+            "authors.affiliations",  # Request author affiliations explicitly
             "fieldsOfStudy",
             "externalIds",
             "paperId",
@@ -377,6 +378,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
                 "citationCount",
                 "influentialCitationCount",
                 "authors",
+                "authors.affiliations",  # Request author affiliations explicitly
                 "fieldsOfStudy",
                 "externalIds",
                 "paperId",

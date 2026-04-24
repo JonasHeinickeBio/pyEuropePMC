@@ -1,0 +1,114 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "11ee7b03d77f0e63668a77ce2a557249083f8284",
+  "corpus_id": 1161281,
+  "title": "Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA",
+  "abstract": "microRNAs (miRNAs) are a versatile class of non-coding RNAs involved in regulation of various biological processes. miRNA-122 (miR-122) is specifically and abundantly expressed in human liver. In this study, we employed 3′-end biotinylated synthetic miR-122 to identify its targets based on affinity purification. Quantitative RT-PCR analysis of the affinity purified RNAs demonstrated a specific enrichment of several known miR-122 targets such as CAT-1 (also called SLC7A1), ADAM17 and BCL-w. Using microarray analysis of affinity purified RNAs, we also discovered many candidate target genes of miR-122. Among these candidates, we confirmed that protein kinase, interferon-inducible double-stranded RNA-dependent activator (PRKRA), a Dicer-interacting protein, is a direct target gene of miR-122. miRNA quantitative-RT–PCR results indicated that miR-122 and small interfering RNA against PRKRA may facilitate the accumulation of newly synthesized miRNAs but did not detectably affect endogenous miRNAs levels. Our findings will lead to further understanding of multiple functions of this hepato-specific miRNA. We conclude that miR-122 could repress PRKRA expression and facilitate accumulation of newly synthesized miRNAs.",
+  "venue": "Nucleic Acids Research",
+  "year": 2011,
+  "publication_date": "2011-09-21",
+  "citation_count": 38,
+  "influential_citation_count": 2,
+  "reference_count": 48,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "2133435709",
+      "url": "https://www.semanticscholar.org/author/2133435709"
+    },
+    {
+      "name": null,
+      "author_id": "2146279338",
+      "url": "https://www.semanticscholar.org/author/2146279338"
+    },
+    {
+      "name": null,
+      "author_id": "39037721",
+      "url": "https://www.semanticscholar.org/author/39037721"
+    },
+    {
+      "name": null,
+      "author_id": "2075304982",
+      "url": "https://www.semanticscholar.org/author/2075304982"
+    },
+    {
+      "name": null,
+      "author_id": "46919497",
+      "url": "https://www.semanticscholar.org/author/46919497"
+    },
+    {
+      "name": null,
+      "author_id": "47130593",
+      "url": "https://www.semanticscholar.org/author/47130593"
+    },
+    {
+      "name": null,
+      "author_id": "1684133",
+      "url": "https://www.semanticscholar.org/author/1684133"
+    },
+    {
+      "name": null,
+      "author_id": "4345956",
+      "url": "https://www.semanticscholar.org/author/4345956"
+    },
+    {
+      "name": null,
+      "author_id": "5361520",
+      "url": "https://www.semanticscholar.org/author/5361520"
+    },
+    {
+      "name": null,
+      "author_id": "47054994",
+      "url": "https://www.semanticscholar.org/author/47054994"
+    },
+    {
+      "name": null,
+      "author_id": "5306737",
+      "url": "https://www.semanticscholar.org/author/5306737"
+    },
+    {
+      "name": null,
+      "author_id": "145109682",
+      "url": "https://www.semanticscholar.org/author/145109682"
+    }
+  ],
+  "fields_of_study": [
+    "Biology",
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Biology",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Biology",
+      "source": "s2-fos-model"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "Nucleic Acids Research",
+    "volume": "40",
+    "pages": "884 - 891"
+  },
+  "external_ids": {
+    "MAG": "2003074093",
+    "PubMedCentral": "3258128",
+    "DOI": "10.1093/nar/gkr715",
+    "CorpusId": 1161281,
+    "PubMed": "21937511"
+  },
+  "open_access_pdf_url": "https://academic.oup.com/nar/article-pdf/40/2/884/16957911/gkr715.pdf",
+  "tldr": "It is concluded that miR-122 could repress PRKRA expression and facilitate accumulation of newly synthesized miRNAs to lead to further understanding of multiple functions of this hepato-specific miRNA."
+}

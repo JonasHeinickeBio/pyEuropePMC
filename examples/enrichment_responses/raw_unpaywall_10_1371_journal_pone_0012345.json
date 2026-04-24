@@ -1,0 +1,36 @@
+{
+  "source": "unpaywall",
+  "is_oa": true,
+  "oa_status": "gold",
+  "best_oa_location": {
+    "url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0012345&type=printable",
+    "url_for_pdf": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0012345&type=printable",
+    "url_for_landing_page": "https://doi.org/10.1371/journal.pone.0012345",
+    "version": "publishedVersion",
+    "license": "cc-by",
+    "repository_type": "publisher",
+    "evidence": "deprecated"
+  },
+  "oa_locations": [
+    {
+      "url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0012345&type=printable",
+      "url_for_pdf": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0012345&type=printable",
+      "version": "publishedVersion",
+      "license": "cc-by",
+      "repository_type": "publisher"
+    },
+    {
+      "url": "http://doi.org/10.1371/journal.pone.0012345",
+      "url_for_pdf": null,
+      "version": "submittedVersion",
+      "license": "cc-by",
+      "repository_type": "repository"
+    }
+  ],
+  "oa_locations_embargoed": null,
+  "first_oa_date": null,
+  "journal_is_oa": true,
+  "journal_is_in_doaj": true,
+  "publisher": "Public Library of Science (PLoS)",
+  "year": 2010
+}

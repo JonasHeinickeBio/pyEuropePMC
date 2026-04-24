@@ -1,5 +1,5 @@
 import pytest
-from pyeuropepmc.processing.parser import EuropePMCParser, ParsingError
+from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
 import os
 import json
 import logging

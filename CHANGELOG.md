@@ -2,8 +2,46 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [1.14.0] - 2025-01-15
 
-## [1.11.0] - 2025-11-14
+### ✨ Features
+
+- **Enhanced RDF Mapping System**: Complete overhaul of RDF mapping capabilities with YAML-based configuration
+  - New `InstitutionEntity` model for institutional data representation
+  - Enhanced `ScholarlyWorkEntity` base class with PMID support and validation
+  - Comprehensive RDF mapping synchronization script (`scripts/sync_rdf_mappings.py`)
+  - Improved enrichment integration for external metadata sources
+
+- **Advanced Enrichment Integration**: Expanded support for external APIs and data enrichment
+  - New enrichment RDF generation demo script (`examples/09-enrichment/enrichment_rdf_demo.py`)
+  - Enhanced RDF mapping for enrichment data with automatic entity building
+  - Integration tests for enrichment workflows (`tests/mappers/test_enrichment_rdf.py`)
+
+- **RDF Mapping Demonstration**: Complete end-to-end RDF mapping workflow example
+  - New comprehensive demo notebook (`examples/10-rdf-mapping/rdf_mapping_demo.ipynb`)
+  - Shows full pipeline from search → XML retrieval → RDF conversion → enrichment → comparison
+  - Includes both basic XML-derived RDF and enriched RDF from external APIs
+
+### 🔧 Maintenance
+
+- **Model Enhancements**: Extended data models with better validation and RDF support
+  - Added PMID field to `PaperEntity` with proper validation and normalization
+  - Enhanced `AuthorEntity` and other models with enrichment-compatible fields
+  - Improved type safety and documentation across all entity models
+
+- **Testing Improvements**: Added comprehensive tests for new RDF mapping features
+  - New test suite for enrichment RDF generation (`tests/mappers/test_enrichment_rdf.py`)
+  - Enhanced model tests with RDF validation (`tests/models/test_models_rdf.py`)
+  - Fixed pagination timing tests for accurate elapsed time measurement
+
+### 📚 Documentation
+
+- **New Examples**: Added comprehensive examples for RDF mapping workflows
+  - RDF mapping demo showing complete pipeline from search to enriched RDF
+  - Enrichment RDF generation examples with external API integration
+  - Updated documentation for new features and capabilities
+
+## [1.13.0] - 2025-01-10
 
 ### ✨ Features
 

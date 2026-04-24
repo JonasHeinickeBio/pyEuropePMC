@@ -72,10 +72,8 @@ metadata = parser.extract_metadata()
 # - doi: Digital Object Identifier
 # - title: Article title
 # - authors: List of author names
-# - journal: Journal name
+# - journal: Journal info dict with 'title', 'volume', 'issue' keys
 # - pub_date: Publication date
-# - volume: Journal volume
-# - issue: Journal issue
 # - pages: Page range
 # - abstract: Article abstract
 # - keywords: List of keywords
@@ -84,7 +82,7 @@ print(f"PMC ID: {metadata['pmcid']}")
 print(f"DOI: {metadata['doi']}")
 print(f"Title: {metadata['title']}")
 print(f"Authors: {', '.join(metadata['authors'])}")
-print(f"Journal: {metadata['journal']}")
+print(f"Journal: {metadata['journal']['title']} Vol. {metadata['journal'].get('volume', 'N/A')}")
 print(f"Date: {metadata['pub_date']}")
 ```
 

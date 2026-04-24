@@ -1,0 +1,125 @@
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/ontology/bibo/volume> "8" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/subject> "immunotherapy" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:pmc:12618787> .
+<https://doi.org/10.2147/CMAR.S548762> <http://id.nlm.nih.gov/mesh/hasSubject> "case report" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/ontology/bibo/volume> "17" .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:00.607725" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/2000/01/rdf-schema#label> "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/2000/01/rdf-schema#label> "Immunotherapeutics in metastatic cancer management" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/subject> "stem cell transplantation" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/identifier> "12618787" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/issue> "1" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/title> "Overcoming barriers in primary bone cancer: Nanomaterial-enabled immunotherapy" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/ontology/bibo/journal> "Materials Today Bio" .
+<https://doi.org/10.36401/JIPO-25-15> <http://id.nlm.nih.gov/mesh/hasSubject> "stem cell transplantation" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/subject> "immunotherapy response" .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.2147/CMAR.S548762> .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/2000/01/rdf-schema#label> "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/journal> "Discover Oncology" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/subject> "Combination therapy" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/issued> "2025-10-31" .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.1007/s12672-025-03561-5> .
+<https://doi.org/10.2147/CMAR.S548762> <http://id.nlm.nih.gov/mesh/hasSubject> "tislelizumab" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/subject> "SCLC" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/subject> "AFPGC" .
+<https://doi.org/10.21037/tcr-2025-996> <http://id.nlm.nih.gov/mesh/hasSubject> "immunotherapy response" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "Cancer vaccines" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/doi> "10.1007/s12672-025-03561-5" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "Tumor microenvironment" .
+<https://doi.org/10.36401/JIPO-25-15> <http://id.nlm.nih.gov/mesh/hasSubject> "targeted therapy" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/2002/07/owl#sameAs> <https://www.ncbi.nlm.nih.gov/pmc/articles/12618787/> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/identifier> "12605440" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "Immunotherapy" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/identifier> "12550823" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://id.nlm.nih.gov/mesh/hasSubject> "Immunotherapy" .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/2000/01/rdf-schema#label> "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/ontology/bibo/doi> "10.1016/j.mtbio.2025.102530" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/subject> "case report" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:00.616046" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/identifier> "12628704" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/ontology/bibo/doi> "10.2147/CMAR.S548762" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.36401/JIPO-25-15> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/subject> "tumor microenvironment" .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:pmc:12628704> .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/2002/07/owl#sameAs> <https://www.ncbi.nlm.nih.gov/pmc/articles/12639873/> .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:pmc:12550823> .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/ontology/bibo/volume> "35" .
+<https://doi.org/10.36401/JIPO-25-15> <http://id.nlm.nih.gov/mesh/hasSubject> "patient education" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/ontology/bibo/pages> "2785-2791" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://id.nlm.nih.gov/mesh/hasSubject> "Primary bone neoplasms" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/subject> "tislelizumab" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://id.nlm.nih.gov/mesh/hasSubject> "Multifunctional nanoparticles" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://id.nlm.nih.gov/mesh/hasSubject> "Nanomaterial" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://id.nlm.nih.gov/mesh/hasSubject> "Immune checkpoint inhibitors" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/2000/01/rdf-schema#label> "Overcoming barriers in primary bone cancer: Nanomaterial-enabled immunotherapy" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/doi> "10.21037/tcr-2025-996" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/issued> "2025-11-15" .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/2002/07/owl#sameAs> <https://www.ncbi.nlm.nih.gov/pmc/articles/12605440/> .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/subject> "Immunotherapy" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/subject> "Heterogeneous subpopulation" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:00.621257" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "CAR-T cells" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://id.nlm.nih.gov/mesh/hasSubject> "CAR-T cells" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/title> "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/2002/07/owl#sameAs> <https://www.ncbi.nlm.nih.gov/pmc/articles/12550823/> .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/2002/07/owl#sameAs> <https://www.ncbi.nlm.nih.gov/pmc/articles/12628704/> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/title> "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/title> "Immunotherapeutics in metastatic cancer management" .
+<https://doi.org/10.21037/tcr-2025-996> <http://id.nlm.nih.gov/mesh/hasSubject> "Heterogeneous subpopulation" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/subject> "immunotherapy" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.1016/j.mtbio.2025.102530> .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/subject> "targeted therapy" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://id.nlm.nih.gov/mesh/hasSubject> "Immunotherapy" .
+<https://doi.org/10.2147/CMAR.S548762> <http://id.nlm.nih.gov/mesh/hasSubject> "immunotherapy" .
+<https://doi.org/10.36401/JIPO-25-15> <http://id.nlm.nih.gov/mesh/hasSubject> "immunotherapy" .
+<https://doi.org/10.36401/JIPO-25-15> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/ontology/bibo/doi> "10.36401/JIPO-25-15" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/issued> "2025-10-20" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/journal> "Translational Cancer Research" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/volume> "16" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/ontology/bibo/pages> "249-253" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/subject> "Primary bone neoplasms" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/dc/terms/subject> "prognosis" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/subject> "Multifunctional nanoparticles" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/subject> "Nanomaterial" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/ontology/bibo/pages> "17-48" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://id.nlm.nih.gov/mesh/hasSubject> "Cancer vaccines" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://id.nlm.nih.gov/mesh/hasSubject> "Tumor microenvironment" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/volume> "14" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://id.nlm.nih.gov/mesh/hasSubject> "Combination therapy" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/ontology/bibo/issue> "4" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:pmc:12639873> .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/issue> "10" .
+<https://doi.org/10.2147/CMAR.S548762> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:00.623900" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/ns/prov#wasDerivedFrom> <urn:pmc:12605440> .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "Metastatic cancer" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/2002/07/owl#sameAs> <https://doi.org/10.21037/tcr-2025-996> .
+<https://doi.org/10.2147/CMAR.S548762> <http://id.nlm.nih.gov/mesh/hasSubject> "SCLC" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/issued> "2025-11-07" .
+<https://doi.org/10.21037/tcr-2025-996> <http://id.nlm.nih.gov/mesh/hasSubject> "tumor microenvironment" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/dc/terms/identifier> "12639873" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/ontology/bibo/issue> "1" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://id.nlm.nih.gov/mesh/hasSubject> "Metastatic cancer" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/subject> "patient education" .
+<https://doi.org/10.2147/CMAR.S548762> <http://id.nlm.nih.gov/mesh/hasSubject> "AFPGC" .
+<https://doi.org/10.21037/tcr-2025-996> <http://id.nlm.nih.gov/mesh/hasSubject> "prognosis" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/dc/terms/subject> "health communication" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/dc/terms/title> "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" .
+<https://doi.org/10.21037/tcr-2025-996> <http://purl.org/ontology/bibo/pages> "6316-6329" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/issued> "2025-11-14" .
+<https://doi.org/10.1007/s12672-025-03561-5> <http://purl.org/dc/terms/subject> "Immune checkpoint inhibitors" .
+<https://doi.org/10.36401/JIPO-25-15> <http://id.nlm.nih.gov/mesh/hasSubject> "health communication" .
+<https://doi.org/10.21037/tcr-2025-996> <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://purl.org/ontology/bibo/AcademicArticle> .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://purl.org/ontology/bibo/pages> "2037-2043" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/ontology/bibo/journal> "Cancer Management and Research" .
+<https://doi.org/10.2147/CMAR.S548762> <http://purl.org/ontology/bibo/issue> "11" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/ns/prov#wasGeneratedBy> "pyeuropepmc_parser" .
+<https://doi.org/10.36401/JIPO-25-15> <http://purl.org/ontology/bibo/journal> "Journal of Immunotherapy and Precision Oncology" .
+<https://doi.org/10.1016/j.mtbio.2025.102530> <http://www.w3.org/ns/prov#generatedAtTime> "2025-11-24T11:19:00.675798" .

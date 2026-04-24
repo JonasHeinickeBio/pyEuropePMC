@@ -1,6 +1,7 @@
 """Integration tests for builder layer."""
 
 from pyeuropepmc.builders import build_paper_entities
+from pyeuropepmc.models import JournalEntity
 from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 # Sample XML for testing
@@ -96,7 +97,9 @@ class TestBuildPaperEntities:
         assert paper.pmcid == "1234567"
         assert paper.doi == "10.1234/test.2021.001"
         assert paper.title == "Sample Test Article Title"
-        assert paper.journal == "Test Journal"
+        assert isinstance(paper.journal, JournalEntity)
+        # Journal entity stores title as a string
+        assert paper.journal.title == "Test Journal"
         assert paper.volume == "10"
         assert paper.issue == "5"
         assert paper.pages == "100-110"
@@ -115,7 +118,7 @@ class TestBuildPaperEntities:
 
         # Check references
         assert len(references) >= 1
-        assert references[0].source == "Nature"
+        assert references[0].journal == "Nature"
 
     def test_build_entities_normalizes_data(self):
         """Test that built entities can be normalized."""
@@ -126,6 +129,9 @@ class TestBuildPaperEntities:
         paper.normalize()
         for author in authors:
             author.normalize()
+        # Normalize journal if it exists
+        if paper.journal and hasattr(paper.journal, "normalize"):
+            paper.journal.normalize()
 
         # Check normalization worked
         assert paper.doi == "10.1234/test.2021.001"  # Should be lowercase
@@ -134,6 +140,10 @@ class TestBuildPaperEntities:
         """Test that built entities can be validated."""
         parser = FullTextXMLParser(SAMPLE_XML)
         paper, authors, sections, tables, figures, references = build_paper_entities(parser)
+
+        # Validate journal first if it exists
+        if paper.journal and hasattr(paper.journal, "validate"):
+            paper.journal.validate()
 
         # Validate - should not raise
         paper.validate()

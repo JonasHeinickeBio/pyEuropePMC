@@ -1,0 +1,107 @@
+{
+  "identifier": "10.1371/journal.pone.0123456",
+  "doi": "10.1371/journal.pone.0123456",
+  "sources": [
+    "semantic_scholar"
+  ],
+  "crossref": null,
+  "datacite": null,
+  "unpaywall": null,
+  "semantic_scholar": {
+    "source": "semantic_scholar",
+    "s2_paper_id": "d927ea90e66abe7fc16606cc73a0b6e5df820101",
+    "corpus_id": 13906721,
+    "title": "Interactive and Independent Associations between the Socioeconomic and Objective Built Environment on the Neighbourhood Level and Individual Health: A Systematic Review of Multilevel Studies",
+    "abstract": "Background The research question how contextual factors of neighbourhood environments influence individual health has gained increasing attention in public health research. Both socioeconomic neighbourhood characteristics and factors of the built environment play an important role for health and health-related behaviours. However, their reciprocal relationships have not been systematically reviewed so far. This systematic review aims to identify studies applying a multilevel modelling approach which consider both neighbourhood socioeconomic position (SEP) and factors of the objective built environment simultaneously in order to disentangle their independent and interactive effects on individual health. Methods The three databases PubMed, PsycINFO, and Web of Science were systematically searched with terms for title and abstract screening. Grey literature was not included. Observational studies from USA, Canada, Australia, New Zealand, and Western European countries were considered which analysed simultaneously factors of neighbourhood SEP and the objective built environment with a multilevel modelling approach. Adjustment for individual SEP was a further inclusion criterion. Results Thirty-three studies were included in qualitative synthesis. Twenty-two studies showed an independent association between characteristics of neighbourhood SEP or the built environment and individual health outcomes or health-related behaviours. Twenty-one studies found cross-level or within-level interactions either between neighbourhood SEP and the built environment, or between neighbourhood SEP or the built environment and individual characteristics, such as sex, individual SEP or ethnicity. Due to the large variation of study design and heterogeneous reporting of results the identification of consistent findings was problematic and made quantitative analysis not possible. Conclusions There is a need for studies considering multiple neighbourhood dimensions and applying multilevel modelling in order to clarify their causal relationship towards individual health. Especially, more studies using comparable characteristics of neighbourhood SEP and the objective built environment and analysing interactive effects are necessary to disentangle health impacts and identify vulnerable neighbourhoods and population groups.",
+    "venue": "PLoS ONE",
+    "year": 2015,
+    "publication_date": "2015-04-07",
+    "citation_count": 133,
+    "influential_citation_count": 7,
+    "reference_count": 85,
+    "authors": [
+      {
+        "name": "S. Schüle",
+        "author_id": "47086451",
+        "url": "https://www.semanticscholar.org/author/47086451"
+      },
+      {
+        "name": "G. Bolte",
+        "author_id": "4481782",
+        "url": "https://www.semanticscholar.org/author/4481782"
+      }
+    ],
+    "fields_of_study": [
+      "Medicine",
+      "Psychology"
+    ],
+    "s2_fields_of_study": [
+      {
+        "category": "Medicine",
+        "source": "external"
+      },
+      {
+        "category": "Psychology",
+        "source": "external"
+      },
+      {
+        "category": "Environmental Science",
+        "source": "s2-fos-model"
+      },
+      {
+        "category": "Geography",
+        "source": "s2-fos-model"
+      },
+      {
+        "category": "Sociology",
+        "source": "s2-fos-model"
+      }
+    ],
+    "publication_types": [
+      "Review",
+      "JournalArticle"
+    ],
+    "journal": {
+      "name": "PLoS ONE",
+      "volume": "10",
+      "pages": null
+    },
+    "external_ids": {
+      "MAG": "2082491593",
+      "PubMedCentral": "4388459",
+      "DOI": "10.1371/journal.pone.0123456",
+      "CorpusId": 13906721,
+      "PubMed": "25849569"
+    },
+    "open_access_pdf_url": "https://journals.plos.org/plosone/article/file?id=10.1371/journal.pone.0123456&type=printable",
+    "tldr": "There is a need for studies considering multiple neighbourhood dimensions and applying multilevel modelling in order to clarify their causal relationship towards individual health to disentangle health impacts and identify vulnerable neighbourhoods and population groups."
+  },
+  "openalex": null,
+  "ror": null,
+  "merged": {
+    "title": "Interactive and Independent Associations between the Socioeconomic and Objective Built Environment on the Neighbourhood Level and Individual Health: A Systematic Review of Multilevel Studies",
+    "abstract": "Background The research question how contextual factors of neighbourhood environments influence individual health has gained increasing attention in public health research. Both socioeconomic neighbourhood characteristics and factors of the built environment play an important role for health and health-related behaviours. However, their reciprocal relationships have not been systematically reviewed so far. This systematic review aims to identify studies applying a multilevel modelling approach which consider both neighbourhood socioeconomic position (SEP) and factors of the objective built environment simultaneously in order to disentangle their independent and interactive effects on individual health. Methods The three databases PubMed, PsycINFO, and Web of Science were systematically searched with terms for title and abstract screening. Grey literature was not included. Observational studies from USA, Canada, Australia, New Zealand, and Western European countries were considered which analysed simultaneously factors of neighbourhood SEP and the objective built environment with a multilevel modelling approach. Adjustment for individual SEP was a further inclusion criterion. Results Thirty-three studies were included in qualitative synthesis. Twenty-two studies showed an independent association between characteristics of neighbourhood SEP or the built environment and individual health outcomes or health-related behaviours. Twenty-one studies found cross-level or within-level interactions either between neighbourhood SEP and the built environment, or between neighbourhood SEP or the built environment and individual characteristics, such as sex, individual SEP or ethnicity. Due to the large variation of study design and heterogeneous reporting of results the identification of consistent findings was problematic and made quantitative analysis not possible. Conclusions There is a need for studies considering multiple neighbourhood dimensions and applying multilevel modelling in order to clarify their causal relationship towards individual health. Especially, more studies using comparable characteristics of neighbourhood SEP and the objective built environment and analysing interactive effects are necessary to disentangle health impacts and identify vulnerable neighbourhoods and population groups.",
+    "citation_counts": [
+      {
+        "source": "semantic_scholar",
+        "count": 133
+      }
+    ],
+    "citation_count": 133,
+    "influential_citation_count": 7,
+    "fields_of_study": [
+      "Medicine",
+      "Psychology"
+    ],
+    "external_ids": {
+      "semantic_scholar_corpus_id": 13906721,
+      "pmid": "25849569"
+    },
+    "biblio": {
+      "volume": "10"
+    },
+    "references": {
+      "count": 85
+    }
+  }
+}

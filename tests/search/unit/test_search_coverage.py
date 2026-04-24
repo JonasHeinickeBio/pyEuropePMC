@@ -255,7 +255,7 @@ class TestSearchClientCoverage:
         empty_response = {"hitCount": 0, "resultList": {"result": []}}
 
         with patch.object(self.client, "search", return_value=empty_response), patch(
-            "pyeuropepmc.processing.parser.EuropePMCParser.parse_json", return_value=[]
+            "pyeuropepmc.processing.search_parser.EuropePMCParser.parse_json", return_value=[]
         ):
             result = self.client.search_and_parse("cancer", format="json")
             assert result == []
@@ -268,7 +268,7 @@ class TestSearchClientCoverage:
         with (
             patch.object(self.client, "search", return_value=mock_results),
             patch(
-                "pyeuropepmc.processing.parser.EuropePMCParser.parse_json",
+                "pyeuropepmc.processing.search_parser.EuropePMCParser.parse_json",
                 side_effect=Exception("Parse error"),
             ),
         ):

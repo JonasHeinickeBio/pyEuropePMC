@@ -26,7 +26,7 @@ class EnrichmentConfig:
     enable_openalex : bool
         Enable OpenAlex enrichment
     enable_ror : bool
-        Enable ROR institutional enrichment
+        Enable ROR institutional enrichment (default: True)
     unpaywall_email : str, optional
         Email for Unpaywall API (required if enable_unpaywall=True)
     crossref_email : str, optional
@@ -54,7 +54,7 @@ class EnrichmentConfig:
         enable_unpaywall: bool = False,
         enable_semantic_scholar: bool = True,
         enable_openalex: bool = True,
-        enable_ror: bool = False,
+        enable_ror: bool = True,  # Enable ROR by default for institution enrichment
         unpaywall_email: str | None = None,
         crossref_email: str | None = None,
         datacite_email: str | None = None,
@@ -81,7 +81,7 @@ class EnrichmentConfig:
         enable_openalex : bool, optional
             Enable OpenAlex enrichment (default: True)
         enable_ror : bool, optional
-            Enable ROR institutional enrichment (default: False)
+            Enable ROR institutional enrichment (default: True)
         unpaywall_email : str, optional
             Email for Unpaywall API (required if enable_unpaywall=True)
         crossref_email : str, optional

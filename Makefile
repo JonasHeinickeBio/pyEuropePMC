@@ -79,6 +79,13 @@ codescene-delta:
 quality-full: quality codescene
 	@echo "All quality checks completed!"
 
+## Synchronize RML mappings from YAML configuration
+.PHONY: sync-rdf
+sync-rdf:
+	@echo "Synchronizing RML mappings from YAML..."
+	$(PYTHON_INTERPRETER) scripts/sync_rdf_mappings.py
+	@echo "✓ RML mappings synchronized"
+
 
 
 

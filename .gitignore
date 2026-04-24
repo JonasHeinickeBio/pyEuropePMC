@@ -1,5 +1,6 @@
 # Data
 /data/
+benchmark_cache/
 
 /aid_pais_knowledgegraph/downloaded_pdfs/
 /aid_pais_knowledgegraph/processed_jsons/
@@ -186,3 +187,4 @@ junit.xml
 .benchmarks/
 MODULAR_BENCHMARK_RESULTS.json
 examples/rdf_output
+PMC3258128.xml

@@ -105,6 +105,7 @@ class TestPaginationState:
 
         state = PaginationState(query="test query")
         time.sleep(0.01)  # Small delay
+        state.update()  # Update last_updated timestamp
 
         elapsed = state.elapsed_time()
         assert elapsed > 0

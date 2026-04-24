@@ -1,0 +1,465 @@
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix cito: <http://purl.org/spar/cito/> .
+@prefix datacite: <http://purl.org/spar/datacite/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix geo1: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
+@prefix org: <http://www.w3.org/ns/org#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix ror: <https://ror.org/vocab#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://openalex.org/A2095950045> a foaf:Person ;
+    rdfs:label "Yuxing Sun" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A2095950045" ;
+    owl:sameAs <https://openalex.org/A2095950045> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.011200" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.2147/cmar.s548762> ;
+    foaf:name "Yuxing Sun" .
+
+<https://openalex.org/A2331896408> a foaf:Person ;
+    rdfs:label "Jiang-yu Bian" ;
+    ex:authorPosition "first" ;
+    ex:openAlexId "https://openalex.org/A2331896408" ;
+    owl:sameAs <https://openalex.org/A2331896408> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.011125" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.2147/cmar.s548762> ;
+    foaf:name "Jiang-yu Bian" .
+
+<https://openalex.org/A4295798812> a foaf:Person ;
+    rdfs:label "Sunil Kumar Mahobiya" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A4295798812" ;
+    owl:sameAs <https://openalex.org/A4295798812> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009264" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.1007/s12672-025-03561-5> ;
+    foaf:name "Sunil Kumar Mahobiya" .
+
+<https://orcid.org/https://orcid.org/0000-0001-5218-6001> a foaf:Person ;
+    rdfs:label "Tong Zhang" ;
+    ex:authorPosition "last" ;
+    ex:openAlexId "https://openalex.org/A1973384194" ;
+    datacite:orcid "https://orcid.org/0000-0001-5218-6001" ;
+    owl:sameAs <https://openalex.org/A1973384194>,
+        <https://orcid.org/https://orcid.org/0000-0001-5218-6001> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.011279" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.2147/cmar.s548762> ;
+    foaf:name "Tong Zhang" .
+
+<https://orcid.org/https://orcid.org/0000-0002-4122-9202> a foaf:Person ;
+    rdfs:label "Manisha Shukla" ;
+    ex:authorPosition "first" ;
+    ex:openAlexId "https://openalex.org/A2144144467" ;
+    datacite:orcid "https://orcid.org/0000-0002-4122-9202" ;
+    owl:sameAs <https://openalex.org/A2144144467>,
+        <https://orcid.org/https://orcid.org/0000-0002-4122-9202> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009103" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.1007/s12672-025-03561-5> ;
+    foaf:name "Manisha Shukla" .
+
+<https://orcid.org/https://orcid.org/0000-0003-3324-563X> a foaf:Person ;
+    rdfs:label "Laura A. Dwyer" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A5000714509" ;
+    datacite:orcid "https://orcid.org/0000-0003-3324-563X" ;
+    owl:sameAs <https://openalex.org/A5000714509>,
+        <https://orcid.org/https://orcid.org/0000-0003-3324-563X> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.007796" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.36401/jipo-25-15> ;
+    foaf:name "Laura A. Dwyer" .
+
+<https://orcid.org/https://orcid.org/0009-0006-9661-8615> a foaf:Person ;
+    rdfs:label "Rohit Kumar Vishwakarma" ;
+    ex:authorPosition "last" ;
+    ex:openAlexId "https://openalex.org/A2954764049" ;
+    datacite:orcid "https://orcid.org/0009-0006-9661-8615" ;
+    owl:sameAs <https://openalex.org/A2954764049>,
+        <https://orcid.org/https://orcid.org/0009-0006-9661-8615> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009345" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.1007/s12672-025-03561-5> ;
+    foaf:name "Rohit Kumar Vishwakarma" .
+
+<https://ror.org/00z3td547> a geo1:SpatialThing,
+        org:Organization ;
+    rdfs:label "Northwest University" ;
+    ex:city "Xi'an" ;
+    ex:country "China" ;
+    ex:countryCode "CN" ;
+    ex:establishedYear 1902 ;
+    ex:gridId "grid.412262.1" ;
+    ex:openAlexId "https://openalex.org/I37802460" ;
+    owl:sameAs <https://openalex.org/I37802460>,
+        <https://ror.org/00z3td547> ;
+    geo1:lat 3.425833e+01 ;
+    geo1:long 1.089286e+02 ;
+    skos:prefLabel "Northwest University" ;
+    org:classification "education" ;
+    org:hasMember <https://openalex.org/A5102086970> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.010616" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:homepage "http://english.nwu.edu.cn/" ;
+    ror:rorId "https://ror.org/00z3td547" .
+
+<https://ror.org/https://ror.org/002ztb251> a org:Organization ;
+    rdfs:label "Ganesh Shankar Vidyarthi Memorial Medical College" ;
+    ex:country "IN" ;
+    ex:openAlexId "https://openalex.org/I2802359691" ;
+    owl:sameAs <https://openalex.org/I2802359691>,
+        <https://ror.org/https://ror.org/002ztb251> ;
+    skos:prefLabel "Ganesh Shankar Vidyarthi Memorial Medical College" ;
+    org:classification "education" ;
+    org:hasMember <https://openalex.org/A5094388357> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009448" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    ror:rorId "https://ror.org/https://ror.org/002ztb251" .
+
+<https://openalex.org/A5094388357> a foaf:Person ;
+    rdfs:label "Poorna Shri" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A5094388357" ;
+    owl:sameAs <https://openalex.org/A5094388357> ;
+    org:memberOf <https://ror.org/https://ror.org/002ztb251> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009189" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.1007/s12672-025-03561-5> ;
+    foaf:name "Poorna Shri" .
+
+<https://openalex.org/A5102086970> a foaf:Person ;
+    rdfs:label "Chao Yin" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A5102086970" ;
+    owl:sameAs <https://openalex.org/A5102086970> ;
+    org:memberOf <https://ror.org/00z3td547> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.010152" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.21037/tcr-2025-996> ;
+    foaf:name "Chao Yin" .
+
+<https://openalex.org/A5104153506> a foaf:Person ;
+    rdfs:label "Kunqin Wang" ;
+    ex:authorPosition "first" ;
+    ex:openAlexId "https://openalex.org/A5104153506" ;
+    owl:sameAs <https://openalex.org/A5104153506> ;
+    org:memberOf <https://ror.org/02tbvhh96> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009990" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.21037/tcr-2025-996> ;
+    foaf:name "Kunqin Wang" .
+
+<https://orcid.org/https://orcid.org/0000-0001-8551-6468> a foaf:Person ;
+    rdfs:label "Guanghui Wang" ;
+    ex:authorPosition "last" ;
+    ex:openAlexId "https://openalex.org/A5100399474" ;
+    datacite:orcid "https://orcid.org/0000-0001-8551-6468" ;
+    owl:sameAs <https://openalex.org/A5100399474>,
+        <https://orcid.org/https://orcid.org/0000-0001-8551-6468> ;
+    org:memberOf <https://ror.org/02tbvhh96> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.010233" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.21037/tcr-2025-996> ;
+    foaf:name "Guanghui Wang" .
+
+<https://orcid.org/https://orcid.org/0000-0001-9017-4503> a foaf:Person ;
+    rdfs:label "Xue Dong" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A5101941977" ;
+    datacite:orcid "https://orcid.org/0000-0001-9017-4503" ;
+    owl:sameAs <https://openalex.org/A5101941977>,
+        <https://orcid.org/https://orcid.org/0000-0001-9017-4503> ;
+    org:memberOf <https://ror.org/02tbvhh96> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.010075" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.21037/tcr-2025-996> ;
+    foaf:name "Xue Dong" .
+
+<https://orcid.org/https://orcid.org/0000-0001-9995-4485> a foaf:Person ;
+    rdfs:label "Robin C. Vanderpool" ;
+    ex:authorPosition "first" ;
+    ex:openAlexId "https://openalex.org/A5010907089" ;
+    datacite:orcid "https://orcid.org/0000-0001-9995-4485" ;
+    owl:sameAs <https://openalex.org/A5010907089>,
+        <https://orcid.org/https://orcid.org/0000-0001-9995-4485> ;
+    org:memberOf <https://ror.org/040gcmg81> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.007699" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.36401/jipo-25-15> ;
+    foaf:name "Robin C. Vanderpool" .
+
+<https://orcid.org/https://orcid.org/0000-0002-4153-9972> a foaf:Person ;
+    rdfs:label "Sandra A. Mitchell" ;
+    ex:authorPosition "last" ;
+    ex:openAlexId "https://openalex.org/A5016587367" ;
+    datacite:orcid "https://orcid.org/0000-0002-4153-9972" ;
+    owl:sameAs <https://openalex.org/A5016587367>,
+        <https://orcid.org/https://orcid.org/0000-0002-4153-9972> ;
+    org:memberOf <https://ror.org/040gcmg81> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.008070" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.36401/jipo-25-15> ;
+    foaf:name "Sandra A. Mitchell" .
+
+<https://orcid.org/https://orcid.org/0000-0002-7709-3191> a foaf:Person ;
+    rdfs:label "Beth Slotman" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A5008220095" ;
+    datacite:orcid "https://orcid.org/0000-0002-7709-3191" ;
+    owl:sameAs <https://openalex.org/A5008220095>,
+        <https://orcid.org/https://orcid.org/0000-0002-7709-3191> ;
+    org:memberOf <https://ror.org/00wt7xg39> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.007980" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.36401/jipo-25-15> ;
+    foaf:name "Beth Slotman" .
+
+<https://orcid.org/https://orcid.org/0000-0002-8429-4194> a foaf:Person ;
+    rdfs:label "Diane Ng" ;
+    ex:authorPosition "middle" ;
+    ex:openAlexId "https://openalex.org/A5004546681" ;
+    datacite:orcid "https://orcid.org/0000-0002-8429-4194" ;
+    owl:sameAs <https://openalex.org/A5004546681>,
+        <https://orcid.org/https://orcid.org/0000-0002-8429-4194> ;
+    org:memberOf <https://ror.org/00wt7xg39> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.007889" ;
+    prov:hadPrimarySource "openalex" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://doi.org/10.36401/jipo-25-15> ;
+    foaf:name "Diane Ng" .
+
+<https://ror.org/00wt7xg39> a geo1:SpatialThing,
+        org:Organization ;
+    rdfs:label "Westat (United States)" ;
+    ex:city "Rockville" ;
+    ex:country "United States" ;
+    ex:countryCode "US" ;
+    ex:establishedYear 1963 ;
+    ex:gridId "grid.280561.8" ;
+    ex:openAlexId "https://openalex.org/I1333523220" ;
+    owl:sameAs <https://openalex.org/I1333523220>,
+        <https://ror.org/00wt7xg39> ;
+    geo1:lat 3.9084e+01 ;
+    geo1:long -7.715276e+01 ;
+    skos:prefLabel "Westat (United States)" ;
+    org:classification "company" ;
+    org:hasMember <https://orcid.org/https://orcid.org/0000-0002-7709-3191>,
+        <https://orcid.org/https://orcid.org/0000-0002-8429-4194> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.008460" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:homepage "https://www.westat.com/" ;
+    ror:rorId "https://ror.org/00wt7xg39" .
+
+<https://ror.org/040gcmg81> a geo1:SpatialThing,
+        org:Organization ;
+    rdfs:label "National Cancer Institute" ;
+    ex:city "Bethesda" ;
+    ex:country "United States" ;
+    ex:countryCode "US" ;
+    ex:establishedYear 1937 ;
+    ex:fundrefId "100000054" ;
+    ex:gridId "grid.48336.3a" ;
+    ex:openAlexId "https://openalex.org/I4210140884" ;
+    owl:sameAs <https://openalex.org/I4210140884>,
+        <https://ror.org/040gcmg81> ;
+    geo1:lat 3.898067e+01 ;
+    geo1:long -7.710026e+01 ;
+    skos:prefLabel "National Cancer Institute" ;
+    org:classification "government" ;
+    org:hasMember <https://orcid.org/https://orcid.org/0000-0001-9995-4485>,
+        <https://orcid.org/https://orcid.org/0000-0002-4153-9972> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.008258" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:homepage "http://www.cancer.gov/" ;
+    ror:rorId "https://ror.org/040gcmg81" .
+
+<https://doi.org/10.2147/cmar.s548762> a bibo:AcademicArticle ;
+    rdfs:label "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" ;
+    ex:influentialCitationCount 0 ;
+    ex:isOpenAccess true ;
+    ex:openAccessStatus "gold" ;
+    ex:openAccessUrl "https://www.dovepress.com/article/download/108931" ;
+    ex:openAlexId "https://openalex.org/W7105651041" ;
+    ex:pmid "41267890" ;
+    ex:referenceCount 16 ;
+    ex:semanticScholarCorpusId 283051141 ;
+    dcterms:abstract "Background Alpha-fetoprotein-positive gastric cancer (AFPGC) is a rare subtype of gastric cancer characterized by high invasiveness and extremely poor prognosis. According to relevant studies, the median overall survival of such patients is significantly shorter than that of AFP-negative gastric cancer patients (14 months vs 40 months). Small cell lung cancer (SCLC), the most malignant type of lung cancer, has a median survival time of only 8–12 months in patients with extensive disease. To date, there have been no reported cases of dual primary cancers involving both AFPGC and SCLC, and the therapeutic role of immunotherapy in such dual primary tumors remains unclear. Case Presentation This paper reports a case of a 72-year-old male patient who was diagnosed via imaging and pathology as having concurrent AFPGC (moderately to poorly differentiated adenocarcinoma, PD-L1 positive, Tumor mutation burden(TMB) 10.03Muts/Mb, PD-L1 Combined Positive Score (CPS)<1) combined with primary extensive-stage SCLC. The patient received CAPEOX regimen (capecitabine plus oxaliplatin) combined with tislelizumab therapy. After 4 cycles, partial response (PR) was observed in the gastric lymph nodes, and stable disease (SD) was noted in the pulmonary lesions. Following pathological confirmation of dual primary cancers, treatment continued with the original regimen, followed by maintenance therapy with tegafur gimeracil oteracil potassium capsule (teysuno) plus tislelizumab. During treatment, serum AFP levels decreased from baseline 502 μg/L to 1.56 μg/L. Both primary tumor lesions remained stably controlled for over 33 months, and the patient currently tolerates treatment well with an Eastern Cooperative Oncology Group (ECOG) performance status of 0. Conclusion Through the long-term treatment course of this case, we validated the therapeutic efficacy of chemotherapy combined with immunotherapy (CAPEOX plus tislelizumab) for the rare aggressive dual primary tumors AFPGC and SCLC, demonstrating significant long-term maintenance benefits from the immunotherapy. Concurrently, this case confirmed the efficacy and safety of tislelizumab during the maintenance therapy phase for both tumors, offering a new treatment option for managing such complex clinical presentations." ;
+    dcterms:creator <https://openalex.org/A2095950045>,
+        <https://openalex.org/A2331896408>,
+        <https://orcid.org/https://orcid.org/0000-0001-5218-6001>,
+        "{'name': 'Jiang-yu Bian', 'orcid': None, 'openalex_id': 'https://openalex.org/A2331896408', 'institutions': [], 'position': 'first', 'sources': ['openalex']}",
+        "{'name': 'Tong Zhang', 'orcid': 'https://orcid.org/0000-0001-5218-6001', 'openalex_id': 'https://openalex.org/A1973384194', 'institutions': [], 'position': 'last', 'sources': ['openalex']}",
+        "{'name': 'Yuxing Sun', 'orcid': None, 'openalex_id': 'https://openalex.org/A2095950045', 'institutions': [], 'position': 'middle', 'sources': ['openalex']}" ;
+    dcterms:date "2025-11" ;
+    dcterms:publisher "Informa UK Limited" ;
+    dcterms:subject "Medicine" ;
+    dcterms:title "A Rare Case of Chemotherapy Combined with Immunotherapy for Dual Primary AFP-Positive Gastric Cancer and Synchronous Small Cell Lung Cancer" ;
+    bibo:DocumentType "journal-article" ;
+    bibo:doi "10.2147/cmar.s548762" ;
+    bibo:issn "['1179-1322']" ;
+    bibo:journal "Cancer Management and Research" ;
+    bibo:pageEnd "2791" ;
+    bibo:pageStart "2785" ;
+    bibo:pages "2785-2791" ;
+    bibo:volume "Volume 17" ;
+    cito:citationCount 0 ;
+    owl:sameAs <https://doi.org/10.2147/cmar.s548762> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.011049" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://ror.org/02tbvhh96> a geo1:SpatialThing,
+        org:Organization ;
+    rdfs:label "First Affiliated Hospital of Xi'an Jiaotong University" ;
+    ex:city "Xi'an" ;
+    ex:country "China" ;
+    ex:countryCode "CN" ;
+    ex:establishedYear 1956 ;
+    ex:gridId "grid.452438.c" ;
+    ex:openAlexId "https://openalex.org/I4210121771" ;
+    owl:sameAs <https://openalex.org/I4210121771>,
+        <https://ror.org/02tbvhh96> ;
+    geo1:lat 3.425833e+01 ;
+    geo1:long 1.089286e+02 ;
+    skos:prefLabel "First Affiliated Hospital of Xi'an Jiaotong University" ;
+    org:classification "healthcare" ;
+    org:hasMember <https://openalex.org/A5104153506>,
+        <https://orcid.org/https://orcid.org/0000-0001-8551-6468>,
+        <https://orcid.org/https://orcid.org/0000-0001-9017-4503> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.010418" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:homepage "http://www.dyyy.xjtu.edu.cn/" ;
+    ror:rorId "https://ror.org/02tbvhh96" .
+
+<https://doi.org/10.1007/s12672-025-03561-5> a bibo:AcademicArticle ;
+    rdfs:label "Immunotherapeutics in metastatic cancer management" ;
+    ex:influentialCitationCount 0 ;
+    ex:isOpenAccess true ;
+    ex:openAccessStatus "gold" ;
+    ex:openAccessUrl "https://link.springer.com/content/pdf/10.1007/s12672-025-03561-5.pdf" ;
+    ex:openAlexId "https://openalex.org/W7105673248" ;
+    ex:pmid "41239147" ;
+    ex:referenceCount 94 ;
+    ex:semanticScholarCorpusId 283022096 ;
+    dcterms:abstract "Metastatic cancer remains the leading cause of cancer-related mortality, largely owing to the limitations of conventional treatments such as chemotherapy, radiotherapy, and targeted agents that are challenged by tumor heterogeneity, acquired resistance, and systemic toxicity. In contrast, immunotherapy has emerged as a transformative modality, harnessing the power of the immune system to selectively target and eradicate tumor cells. This review systematically examines key immunotherapeutic strategies ranging from immune checkpoint inhibitors (ICIs) and monoclonal antibodies to cancer vaccines, oncolytic viruses, and adoptive cell therapies (such as CAR-T and TCR-engineered T cells). Of particular interest are personalized approaches, including neoantigen-based vaccines and tumor-infiltrating lymphocyte (TIL) therapies, which hold promise for tailored treatment but also present significant logistical and translational challenges. Central to therapeutic outcomes are factors like immune resistance, the suppressive tumor microenvironment, and the identification of predictive biomarkers including PD-L1 expression and tumor mutational burden (TMB) that can guide patient selection and efficacy. As the field progresses, future breakthroughs will hinge on deepening our understanding of metastasis immunobiology, refining biomarker-driven precision approaches, and developing novel immunological targets and delivery platforms to improve outcomes and accessibility." ;
+    dcterms:creator <https://openalex.org/A4295798812>,
+        <https://openalex.org/A5094388357>,
+        <https://orcid.org/https://orcid.org/0000-0002-4122-9202>,
+        <https://orcid.org/https://orcid.org/0009-0006-9661-8615>,
+        "{'name': 'Manisha Shukla', 'orcid': 'https://orcid.org/0000-0002-4122-9202', 'openalex_id': 'https://openalex.org/A2144144467', 'institutions': [], 'position': 'first', 'sources': ['openalex']}",
+        "{'name': 'Poorna Shri', 'orcid': None, 'openalex_id': 'https://openalex.org/A5094388357', 'institutions': [{'id': 'https://openalex.org/I2802359691', 'display_name': 'Ganesh Shankar Vidyarthi Memorial Medical College', 'country': 'IN', 'type': 'education', 'ror_id': 'https://ror.org/https://ror.org/002ztb251'}], 'position': 'middle', 'sources': ['openalex']}",
+        "{'name': 'Rohit Kumar Vishwakarma', 'orcid': 'https://orcid.org/0009-0006-9661-8615', 'openalex_id': 'https://openalex.org/A2954764049', 'institutions': [], 'position': 'last', 'sources': ['openalex']}",
+        "{'name': 'Sunil Kumar Mahobiya', 'orcid': None, 'openalex_id': 'https://openalex.org/A4295798812', 'institutions': [], 'position': 'middle', 'sources': ['openalex']}" ;
+    dcterms:date "2025-11-14" ;
+    dcterms:publisher "Springer Science and Business Media LLC" ;
+    dcterms:subject "Medicine" ;
+    dcterms:title "Immunotherapeutics in metastatic cancer management" ;
+    bibo:DocumentType "journal-article" ;
+    bibo:doi "10.1007/s12672-025-03561-5" ;
+    bibo:issn "['2730-6011']" ;
+    bibo:issue "1" ;
+    bibo:journal "Discover Oncology" ;
+    bibo:pageEnd "2106" ;
+    bibo:pageStart "2106" ;
+    bibo:volume "16" ;
+    cito:citationCount 0 ;
+    owl:sameAs <https://doi.org/10.1007/s12672-025-03561-5> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009016" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://doi.org/10.21037/tcr-2025-996> a bibo:AcademicArticle ;
+    rdfs:label "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" ;
+    ex:influentialCitationCount 0 ;
+    ex:isOpenAccess true ;
+    ex:openAccessStatus "diamond" ;
+    ex:openAccessUrl "https://doi.org/10.21037/tcr-2025-996" ;
+    ex:openAlexId "https://openalex.org/W4415738814" ;
+    ex:pmid "41234876" ;
+    ex:semanticScholarCorpusId 282710855 ;
+    dcterms:abstract "Background Cancer-associated fibroblasts (CAFs) are thought to contribute to malignant tumor progression. Although it has been reported that signatures based on CAFs-specific genes could be used to evaluate the prognosis of gastric cancer (GC), as a heterogeneous subgroup, the CAFs subpopulations and their characteristics in the GC microenvironment were still ambiguous. This study aimed to identify CAFs subgroups in GC and evaluate their prognostic and immunotherapy relevance. Methods We utilized the Gene Expression Omnibus (GEO) database to acquire single-cell sequencing data of CAFs associated with GC, and The Cancer Genome Atlas (TCGA) database to obtain GC patient messenger RNA (mRNA) expression profiles. All CAFs were classified using unsupervised clustering based on the expression of 235 characteristic genes. The unsupervised clustering results indicated that the CAFs in the GC microenvironment were divided into four clusters. Kyoto Encyclopedia of Genes and Genomes (KEGG) pathway enrichment analysis revealed the intrinsic differences of these clusters and the CIBERSORT algorithm was used to perform immune cell infiltration analysis. Results Cluster1, Cluster2 and Cluster4 were partly related to extracellular matrix production, while Cluster3 was mainly related to the TGF-β pathway. In addition, the CAF-related score based on Cluster3 (CRS3) could significantly distinguish the prognosis of patients. Moreover, patients with low CRS3 scores had a higher tumor mutation burden and higher levels of immune checkpoints (CTLA-4, LAG3, MAGE-A3, PD-1 and PD-L1), which might indicate a higher immunotherapy response. Conclusions All in all, our study revealed four heterogeneous subpopulations of CAFs in the GC microenvironment, and highlighted that Cluster3 was associated with prognosis and response to immunotherapy." ;
+    dcterms:creator <https://openalex.org/A5102086970>,
+        <https://openalex.org/A5104153506>,
+        <https://orcid.org/https://orcid.org/0000-0001-8551-6468>,
+        <https://orcid.org/https://orcid.org/0000-0001-9017-4503>,
+        "{'name': 'Chao Yin', 'orcid': None, 'openalex_id': 'https://openalex.org/A5102086970', 'institutions': [{'id': 'https://openalex.org/I37802460', 'display_name': 'Northwest University', 'country': 'China', 'type': 'education', 'ror_id': 'https://ror.org/00z3td547', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://english.nwu.edu.cn/', 'established': 1902, 'external_ids': [{'type': 'grid', 'preferred': 'grid.412262.1', 'all': ['grid.412262.1']}], 'relationships': [{'label': 'State Key Laboratory of Continental Dynamics', 'type': 'child', 'id': 'https://ror.org/01t2m0x06'}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}",
+        "{'name': 'Guanghui Wang', 'orcid': 'https://orcid.org/0000-0001-8551-6468', 'openalex_id': 'https://openalex.org/A5100399474', 'institutions': [{'id': 'https://openalex.org/I4210121771', 'display_name': \"First Affiliated Hospital of Xi'an Jiaotong University\", 'country': 'China', 'type': 'healthcare', 'ror_id': 'https://ror.org/02tbvhh96', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://www.dyyy.xjtu.edu.cn/', 'established': 1956, 'external_ids': [{'type': 'grid', 'preferred': 'grid.452438.c', 'all': ['grid.452438.c']}], 'ror_enriched': True}], 'position': 'last', 'sources': ['openalex']}",
+        "{'name': 'Kunqin Wang', 'orcid': None, 'openalex_id': 'https://openalex.org/A5104153506', 'institutions': [{'id': 'https://openalex.org/I4210121771', 'display_name': \"First Affiliated Hospital of Xi'an Jiaotong University\", 'country': 'China', 'type': 'healthcare', 'ror_id': 'https://ror.org/02tbvhh96', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://www.dyyy.xjtu.edu.cn/', 'established': 1956, 'external_ids': [{'type': 'grid', 'preferred': 'grid.452438.c', 'all': ['grid.452438.c']}], 'ror_enriched': True}], 'position': 'first', 'sources': ['openalex']}",
+        "{'name': 'Xue Dong', 'orcid': 'https://orcid.org/0000-0001-9017-4503', 'openalex_id': 'https://openalex.org/A5101941977', 'institutions': [{'id': 'https://openalex.org/I4210121771', 'display_name': \"First Affiliated Hospital of Xi'an Jiaotong University\", 'country': 'China', 'type': 'healthcare', 'ror_id': 'https://ror.org/02tbvhh96', 'country_code': 'CN', 'city': \"Xi'an\", 'latitude': 34.25833, 'longitude': 108.92861, 'website': 'http://www.dyyy.xjtu.edu.cn/', 'established': 1956, 'external_ids': [{'type': 'grid', 'preferred': 'grid.452438.c', 'all': ['grid.452438.c']}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}" ;
+    dcterms:date "2025-10" ;
+    dcterms:publisher "AME Publishing Company" ;
+    dcterms:subject "Medicine" ;
+    dcterms:title "Identification of cancer-associated fibroblast subpopulation and construction of an immunotherapy signature for gastric cancer" ;
+    bibo:DocumentType "journal-article" ;
+    bibo:doi "10.21037/tcr-2025-996" ;
+    bibo:issn "['2218-676X', '2219-6803']" ;
+    bibo:issue "10" ;
+    bibo:journal "Translational Cancer Research" ;
+    bibo:pageEnd "6329" ;
+    bibo:pageStart "6316" ;
+    bibo:pages "6316-6329" ;
+    bibo:volume "14" ;
+    cito:citationCount 0 ;
+    owl:sameAs <https://doi.org/10.21037/tcr-2025-996> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.009918" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .
+
+<https://doi.org/10.36401/jipo-25-15> a bibo:AcademicArticle ;
+    rdfs:label "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" ;
+    ex:influentialCitationCount 0 ;
+    ex:isOpenAccess true ;
+    ex:openAccessStatus "gold" ;
+    ex:openAccessUrl "https://doi.org/10.36401/jipo-25-15" ;
+    ex:openAlexId "https://openalex.org/W4415342390" ;
+    ex:pmid "41143138" ;
+    ex:referenceCount 16 ;
+    ex:semanticScholarCorpusId 282261186 ;
+    dcterms:creator <https://orcid.org/https://orcid.org/0000-0001-9995-4485>,
+        <https://orcid.org/https://orcid.org/0000-0002-4153-9972>,
+        <https://orcid.org/https://orcid.org/0000-0002-7709-3191>,
+        <https://orcid.org/https://orcid.org/0000-0002-8429-4194>,
+        <https://orcid.org/https://orcid.org/0000-0003-3324-563X>,
+        "{'name': 'Beth Slotman', 'orcid': 'https://orcid.org/0000-0002-7709-3191', 'openalex_id': 'https://openalex.org/A5008220095', 'institutions': [{'id': 'https://openalex.org/I1333523220', 'display_name': 'Westat (United States)', 'country': 'United States', 'type': 'company', 'ror_id': 'https://ror.org/00wt7xg39', 'country_code': 'US', 'city': 'Rockville', 'latitude': 39.084, 'longitude': -77.15276, 'website': 'https://www.westat.com/', 'established': 1963, 'external_ids': [{'type': 'grid', 'preferred': 'grid.280561.8', 'all': ['grid.280561.8']}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}",
+        "{'name': 'Diane Ng', 'orcid': 'https://orcid.org/0000-0002-8429-4194', 'openalex_id': 'https://openalex.org/A5004546681', 'institutions': [{'id': 'https://openalex.org/I1333523220', 'display_name': 'Westat (United States)', 'country': 'United States', 'type': 'company', 'ror_id': 'https://ror.org/00wt7xg39', 'country_code': 'US', 'city': 'Rockville', 'latitude': 39.084, 'longitude': -77.15276, 'website': 'https://www.westat.com/', 'established': 1963, 'external_ids': [{'type': 'grid', 'preferred': 'grid.280561.8', 'all': ['grid.280561.8']}], 'ror_enriched': True}], 'position': 'middle', 'sources': ['openalex']}",
+        "{'name': 'Laura A. Dwyer', 'orcid': 'https://orcid.org/0000-0003-3324-563X', 'openalex_id': 'https://openalex.org/A5000714509', 'institutions': [], 'position': 'middle', 'sources': ['openalex']}",
+        "{'name': 'Robin C. Vanderpool', 'orcid': 'https://orcid.org/0000-0001-9995-4485', 'openalex_id': 'https://openalex.org/A5010907089', 'institutions': [{'id': 'https://openalex.org/I4210140884', 'display_name': 'National Cancer Institute', 'country': 'United States', 'type': 'government', 'ror_id': 'https://ror.org/040gcmg81', 'country_code': 'US', 'city': 'Bethesda', 'latitude': 38.98067, 'longitude': -77.10026, 'website': 'http://www.cancer.gov/', 'established': 1937, 'external_ids': [{'type': 'fundref', 'preferred': '100000054', 'all': ['100000054', '100008637', '100007316']}, {'type': 'grid', 'preferred': 'grid.48336.3a', 'all': ['grid.48336.3a']}], 'relationships': [{'label': 'Center for Cancer Research', 'type': 'child', 'id': 'https://ror.org/05bjen692'}, {'label': 'Frederick National Laboratory for Cancer Research', 'type': 'child', 'id': 'https://ror.org/03v6m3209'}, {'label': 'SWOG Cancer Research Network', 'type': 'child', 'id': 'https://ror.org/05n6zrm60'}, {'label': 'Division of Cancer Epidemiology and Genetics', 'type': 'child', 'id': 'https://ror.org/00vkwep27'}, {'label': 'National Institutes of Health', 'type': 'parent', 'id': 'https://ror.org/01cwqze88'}, {'label': 'MUSC Hollings Cancer Center', 'type': 'related', 'id': 'https://ror.org/00w52vt71'}, {'label': 'The Cancer Imaging Archive', 'type': 'related', 'id': 'https://ror.org/02qyzaf42'}], 'ror_enriched': True}], 'position': 'first', 'sources': ['openalex']}",
+        "{'name': 'Sandra A. Mitchell', 'orcid': 'https://orcid.org/0000-0002-4153-9972', 'openalex_id': 'https://openalex.org/A5016587367', 'institutions': [{'id': 'https://openalex.org/I4210140884', 'display_name': 'National Cancer Institute', 'country': 'United States', 'type': 'government', 'ror_id': 'https://ror.org/040gcmg81', 'country_code': 'US', 'city': 'Bethesda', 'latitude': 38.98067, 'longitude': -77.10026, 'website': 'http://www.cancer.gov/', 'established': 1937, 'external_ids': [{'type': 'fundref', 'preferred': '100000054', 'all': ['100000054', '100008637', '100007316']}, {'type': 'grid', 'preferred': 'grid.48336.3a', 'all': ['grid.48336.3a']}], 'relationships': [{'label': 'Center for Cancer Research', 'type': 'child', 'id': 'https://ror.org/05bjen692'}, {'label': 'Frederick National Laboratory for Cancer Research', 'type': 'child', 'id': 'https://ror.org/03v6m3209'}, {'label': 'SWOG Cancer Research Network', 'type': 'child', 'id': 'https://ror.org/05n6zrm60'}, {'label': 'Division of Cancer Epidemiology and Genetics', 'type': 'child', 'id': 'https://ror.org/00vkwep27'}, {'label': 'National Institutes of Health', 'type': 'parent', 'id': 'https://ror.org/01cwqze88'}, {'label': 'MUSC Hollings Cancer Center', 'type': 'related', 'id': 'https://ror.org/00w52vt71'}, {'label': 'The Cancer Imaging Archive', 'type': 'related', 'id': 'https://ror.org/02qyzaf42'}], 'ror_enriched': True}], 'position': 'last', 'sources': ['openalex']}" ;
+    dcterms:date "2025-10-20" ;
+    dcterms:publisher "Innovative Healthcare Institute" ;
+    dcterms:subject "Medicine" ;
+    dcterms:title "Characterizing Inquiries About Novel Cancer Therapies: Findings from the National Cancer Institute’s Cancer Information Service" ;
+    bibo:DocumentType "journal-article" ;
+    bibo:doi "10.36401/jipo-25-15" ;
+    bibo:issn "['2590-017X', '2666-2345']" ;
+    bibo:issue "4" ;
+    bibo:journal "Journal of Immunotherapy and Precision Oncology" ;
+    bibo:pageEnd "253" ;
+    bibo:pageStart "249" ;
+    bibo:pages "249-253" ;
+    bibo:volume "8" ;
+    cito:citationCount 0 ;
+    owl:sameAs <https://doi.org/10.36401/jipo-25-15> ;
+    prov:generatedAtTime "2025-11-24T11:19:45.007572" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" .

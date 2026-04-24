@@ -130,8 +130,8 @@ class RorClient(BaseEnrichmentClient):
         if not ror_id:
             return None
 
-        # Remove any URL prefix
-        if "ror.org/" in ror_id:
+        # Remove any URL prefix (handle multiple prefixes)
+        while "ror.org/" in ror_id:
             ror_id = ror_id.split("ror.org/", 1)[1]
 
         # Remove any leading/trailing slashes

@@ -152,6 +152,9 @@ class RMLRDFizer:
             if os.path.exists(output_file):
                 g.parse(output_file, format="nt")  # RDFizer outputs N-Triples
 
+            # Bind namespaces to ensure proper prefixes in serialization
+            self._bind_namespaces(g)
+
             return g
 
     def _entities_to_json(self, entities: list[Any], entity_type: str, output_dir: str) -> str:
@@ -172,34 +175,56 @@ class RMLRDFizer:
         str
             Path to the created JSON file
         """
-        # Determine filename based on entity type
+        # Determine filename based on entity type - match sync script naming
         filename_map = {
-            "paper": "paper.json",
+            "paper": "paper.json",  # PaperEntity
             "author": "authors.json",
             "section": "sections.json",
             "table": "tables.json",
             "reference": "references.json",
+            "journal": "journal.json",  # JournalEntity
+            "grant": "grant.json",  # GrantEntity
+            "scholarlywork": "scholarlywork.json",  # ScholarlyWorkEntity
+            "tablerow": "table_rows.json",
+            "institution": "institutions.json",
         }
 
         filename = filename_map.get(entity_type, f"{entity_type}.json")
         json_path = os.path.join(output_dir, filename)
 
         # Convert entities to dict and write JSON
-        if entity_type == "paper":
+        if entity_type in ["paper", "scholarlywork"]:
             # Always use array format for consistency
-            data = [e.to_dict() for e in entities]
+            entities_dicts = [e.to_dict() for e in entities]
+
+            # Ensure each entity has an 'id' field for RML subject templates
+            for entity_dict in entities_dicts:
+                if entity_dict.get("id") is None:
+                    # Generate an ID similar to how RDFMapper does it
+                    if entity_dict.get("doi"):
+                        entity_dict["id"] = entity_dict["doi"]
+                    elif entity_dict.get("pmcid"):
+                        entity_dict["id"] = entity_dict["pmcid"]
+                    elif entity_dict.get("pmid"):
+                        entity_dict["id"] = f"pmid:{entity_dict['pmid']}"
+                    else:
+                        # Fallback to a generated ID
+                        entity_dict["id"] = f"entity_{hash(str(entity_dict)) % 10000}"
+
+            data = entities_dicts
         else:
             # Multiple entities (list)
             data = [e.to_dict() for e in entities]
 
-        # Filter out None values to avoid invalid RDF
+        # Filter out None values and convert to strings to avoid invalid RDF
         def filter_none(obj: Any) -> Any:
             if isinstance(obj, dict):
                 return {k: filter_none(v) for k, v in obj.items() if v is not None}
             elif isinstance(obj, list):
                 return [filter_none(item) for item in obj]
             else:
-                return obj
+                # Convert all values to strings for RML processing
+                return str(obj)
 
         data = filter_none(data)
 
@@ -223,6 +248,11 @@ class RMLRDFizer:
             "sections.json",
             "tables.json",
             "references.json",
+            "journal.json",  # JournalEntity
+            "grant.json",  # GrantEntity
+            "scholarlywork.json",  # ScholarlyWorkEntity
+            "table_rows.json",  # TableRowEntity
+            "institutions.json",  # InstitutionEntity
         ]
 
         for filename in filenames:
@@ -274,6 +304,21 @@ class RMLRDFizer:
         mapping_content = mapping_content.replace(
             '"references.json"', f'"{os.path.join(temp_dir, "references.json")}"'
         )
+        mapping_content = mapping_content.replace(
+            '"journal.json"', f'"{os.path.join(temp_dir, "journal.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"grant.json"', f'"{os.path.join(temp_dir, "grant.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"scholarlywork.json"', f'"{os.path.join(temp_dir, "scholarlywork.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"table_rows.json"', f'"{os.path.join(temp_dir, "table_rows.json")}"'
+        )
+        mapping_content = mapping_content.replace(
+            '"institutions.json"', f'"{os.path.join(temp_dir, "institutions.json")}"'
+        )
 
         # Write temp mapping
         with open(temp_mapping_path, "w", encoding="utf-8") as f:
@@ -294,6 +339,41 @@ class RMLRDFizer:
             f.write(config_content)
 
         return temp_config_path
+
+    def _bind_namespaces(self, g: Graph) -> None:
+        """
+        Bind namespaces to the RDF graph for proper prefixing.
+
+        Parameters
+        ----------
+        g : Graph
+            RDF graph to bind namespaces to
+        """
+        # Define the same namespaces as in the RML mappings
+        namespaces = {
+            "ex": "http://example.org/",
+            "dct": "http://purl.org/dc/terms/",
+            "foaf": "http://xmlns.com/foaf/0.1/",
+            "bibo": "http://purl.org/ontology/bibo/",
+            "prov": "http://www.w3.org/ns/prov#",
+            "rdfs": "http://www.w3.org/2000/01/rdf-schema#",
+            "nif": "http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#",
+            "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+            "owl": "http://www.w3.org/2002/07/owl#",
+            "mesh": "http://id.nlm.nih.gov/mesh/",
+            "obo": "http://purl.obolibrary.org/obo/",
+            "org": "http://www.w3.org/ns/org#",
+            "cito": "http://purl.org/spar/cito/",
+            "datacite": "http://purl.org/spar/datacite/",
+            "geo": "http://www.w3.org/2003/01/geo/wgs84_pos#",
+            "ror": "https://ror.org/vocab#",
+            "skos": "http://www.w3.org/2004/02/skos/core#",
+            "data": "http://example.org/data/",
+            "xsd": "http://www.w3.org/2001/XMLSchema#",
+        }
+
+        for prefix, uri in namespaces.items():
+            g.bind(prefix, uri)
 
     def _run_rdfizer(self, config_path: str, temp_dir: str) -> str:
         """
@@ -366,6 +446,9 @@ class RMLRDFizer:
                 "section": "sections.json",
                 "table": "tables.json",
                 "reference": "references.json",
+                "scholarlywork": "scholarlywork.json",
+                "tablerow": "table_rows.json",
+                "institution": "institutions.json",
             }
 
             filename = filename_map.get(entity_type, f"{entity_type}.json")
@@ -395,5 +478,8 @@ class RMLRDFizer:
             g = Graph()
             if os.path.exists(output_file):
                 g.parse(output_file, format="nt")
+
+            # Bind namespaces to ensure proper prefixes in serialization
+            self._bind_namespaces(g)
 
             return g

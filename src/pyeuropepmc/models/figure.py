@@ -46,14 +46,24 @@ class FigureEntity(BaseEntity):
 
     def validate(self) -> None:
         """Validate figure data."""
-        # Figures can exist with minimal information
-        pass
+        from pyeuropepmc.models.utils import validate_and_normalize_uri
+
+        # Validate URI if provided
+        if self.graphic_uri:
+            self.graphic_uri = validate_and_normalize_uri(self.graphic_uri)
+
+        super().validate()
 
     def normalize(self) -> None:
-        """Normalize figure data (trim whitespace)."""
-        if self.caption:
-            self.caption = self.caption.strip()
-        if self.figure_label:
-            self.figure_label = self.figure_label.strip()
+        """Normalize figure data (trim whitespace, validate URIs)."""
+        from pyeuropepmc.models.utils import (
+            normalize_string_field,
+            validate_and_normalize_uri,
+        )
+
+        self.caption = normalize_string_field(self.caption)
+        self.figure_label = normalize_string_field(self.figure_label)
         if self.graphic_uri:
-            self.graphic_uri = self.graphic_uri.strip()
+            self.graphic_uri = validate_and_normalize_uri(self.graphic_uri)
+
+        super().normalize()

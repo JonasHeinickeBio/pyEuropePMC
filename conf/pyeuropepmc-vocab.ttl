@@ -1,0 +1,201 @@
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+
+# PyEuropePMC Custom Vocabulary Ontology
+# Defines properties specific to biomedical literature and knowledge graphs
+# that are not adequately covered by existing ontologies
+
+pyeuropepmc: a owl:Ontology ;
+    rdfs:label "PyEuropePMC Vocabulary"@en ;
+    rdfs:comment "Custom vocabulary for PyEuropePMC RDF mappings"@en ;
+    owl:versionInfo "1.0.0"@en .
+
+# Identifier Properties
+pyeuropepmc:semanticScholarId a owl:DatatypeProperty ;
+    rdfs:label "Semantic Scholar ID"@en ;
+    rdfs:comment "Identifier for a work in Semantic Scholar"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:openAlexId a owl:DatatypeProperty ;
+    rdfs:label "OpenAlex ID"@en ;
+    rdfs:comment "Identifier for a work in OpenAlex"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:semanticScholarCorpusId a owl:DatatypeProperty ;
+    rdfs:label "Semantic Scholar Corpus ID"@en ;
+    rdfs:comment "Corpus identifier in Semantic Scholar"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+pyeuropepmc:openAlexAuthorId a owl:DatatypeProperty ;
+    rdfs:label "OpenAlex Author ID"@en ;
+    rdfs:comment "Author identifier in OpenAlex"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:openAlexInstitutionId a owl:DatatypeProperty ;
+    rdfs:label "OpenAlex Institution ID"@en ;
+    rdfs:comment "Institution identifier in OpenAlex"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+# Citation and Impact Metrics
+pyeuropepmc:citationCount a owl:DatatypeProperty ;
+    rdfs:label "Citation Count"@en ;
+    rdfs:comment "Total number of citations for a work"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+pyeuropepmc:influentialCitationCount a owl:DatatypeProperty ;
+    rdfs:label "Influential Citation Count"@en ;
+    rdfs:comment "Number of influential citations for a work"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+pyeuropepmc:impactFactor a owl:DatatypeProperty ;
+    rdfs:label "Impact Factor"@en ;
+    rdfs:comment "Journal impact factor"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:decimal .
+
+pyeuropepmc:sjr a owl:DatatypeProperty ;
+    rdfs:label "SCImago Journal Rank"@en ;
+    rdfs:comment "SCImago Journal Rank indicator"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:decimal .
+
+pyeuropepmc:hIndex a owl:DatatypeProperty ;
+    rdfs:label "h-index"@en ;
+    rdfs:comment "h-index metric for journals or authors"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:integer .
+
+# External Identifier Properties
+pyeuropepmc:scopusSourceId a owl:DatatypeProperty ;
+    rdfs:label "Scopus Source ID"@en ;
+    rdfs:comment "Source identifier in Scopus"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:gridId a owl:DatatypeProperty ;
+    rdfs:label "GRID ID"@en ;
+    rdfs:comment "Global Research Identifier Database ID"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:isni a owl:DatatypeProperty ;
+    rdfs:label "ISNI"@en ;
+    rdfs:comment "International Standard Name Identifier"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:fundrefId a owl:DatatypeProperty ;
+    rdfs:label "FundRef ID"@en ;
+    rdfs:comment "Funding organization identifier"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+pyeuropepmc:rorId a owl:DatatypeProperty ;
+    rdfs:label "ROR ID"@en ;
+    rdfs:comment "Research Organization Registry identifier"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .
+
+# Quality and Metadata Properties
+pyeuropepmc:qualityScore a owl:DatatypeProperty ;
+    rdfs:label "Quality Score"@en ;
+    rdfs:comment "Overall quality score for an entity"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:decimal .
+
+pyeuropepmc:completenessScore a owl:DatatypeProperty ;
+    rdfs:label "Completeness Score"@en ;
+    rdfs:comment "Metadata completeness score"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:decimal .
+
+pyeuropepmc:confidenceScore a owl:DatatypeProperty ;
+    rdfs:label "Confidence Score"@en ;
+    rdfs:comment "Confidence score for extracted data"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:decimal .
+
+# Relationship Properties
+pyeuropepmc:hasAuthor a owl:ObjectProperty ;
+    rdfs:label "has author"@en ;
+    rdfs:comment "Relates a work to its author"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:hasInstitution a owl:ObjectProperty ;
+    rdfs:label "has institution"@en ;
+    rdfs:comment "Relates an entity to an institution"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:cites a owl:ObjectProperty ;
+    rdfs:label "cites"@en ;
+    rdfs:comment "Relates a work to cited works"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:isCitedBy a owl:ObjectProperty ;
+    rdfs:label "is cited by"@en ;
+    rdfs:comment "Relates a work to citing works"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:collaboratesWith a owl:ObjectProperty ;
+    rdfs:label "collaborates with"@en ;
+    rdfs:comment "Relates authors who have co-authored"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+# Content Properties
+pyeuropepmc:hasSection a owl:ObjectProperty ;
+    rdfs:label "has section"@en ;
+    rdfs:comment "Relates a document to its sections"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:hasTable a owl:ObjectProperty ;
+    rdfs:label "has table"@en ;
+    rdfs:comment "Relates a document to its tables"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:hasFigure a owl:ObjectProperty ;
+    rdfs:label "has figure"@en ;
+    rdfs:comment "Relates a document to its figures"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+# Provenance Properties
+pyeuropepmc:extractedFrom a owl:ObjectProperty ;
+    rdfs:label "extracted from"@en ;
+    rdfs:comment "Relates extracted data to its source"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:enrichedBy a owl:ObjectProperty ;
+    rdfs:label "enriched by"@en ;
+    rdfs:comment "Relates data to enrichment sources"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range owl:Thing .
+
+pyeuropepmc:lastUpdated a owl:DatatypeProperty ;
+    rdfs:label "last updated"@en ;
+    rdfs:comment "Timestamp of last update"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:dateTime .
+
+pyeuropepmc:dataSource a owl:DatatypeProperty ;
+    rdfs:label "data source"@en ;
+    rdfs:comment "Source of the data"@en ;
+    rdfs:domain owl:Thing ;
+    rdfs:range xsd:string .

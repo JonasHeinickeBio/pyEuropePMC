@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "1.13.0"
+version = "1.14.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
@@ -136,7 +136,9 @@ ignore = ["E203", "E266", "E731"]
 "src/pyeuropepmc/fulltext_parser.py" = [
   "C901",
 ] # Allow complex XML parsing/analysis methods
-"src/pyeuropepmc/enrichment/enricher.py" = ["C901"] # Allow complex merge operations
+"src/pyeuropepmc/enrichment/enricher.py" = [
+  "C901",
+] # Allow complex merge operations
 
 [tool.ruff.lint.mccabe]
 max-complexity = 10

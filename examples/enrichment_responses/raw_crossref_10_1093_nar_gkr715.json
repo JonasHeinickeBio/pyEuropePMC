@@ -1,0 +1,116 @@
+{
+  "source": "crossref",
+  "title": "Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA",
+  "authors": [
+    {
+      "name": "Shuai Li",
+      "given": "Shuai",
+      "family": "Li",
+      "affiliation": [],
+      "sequence": "first"
+    },
+    {
+      "name": "Juanjuan Zhu",
+      "given": "Juanjuan",
+      "family": "Zhu",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Hanjiang Fu",
+      "given": "Hanjiang",
+      "family": "Fu",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Jing Wan",
+      "given": "Jing",
+      "family": "Wan",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Zheng Hu",
+      "given": "Zheng",
+      "family": "Hu",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Shanshan Liu",
+      "given": "Shanshan",
+      "family": "Liu",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Jie Li",
+      "given": "Jie",
+      "family": "Li",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Yi Tie",
+      "given": "Yi",
+      "family": "Tie",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Ruiyun Xing",
+      "given": "Ruiyun",
+      "family": "Xing",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Jie Zhu",
+      "given": "Jie",
+      "family": "Zhu",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Zhixian Sun",
+      "given": "Zhixian",
+      "family": "Sun",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Xiaofei Zheng",
+      "given": "Xiaofei",
+      "family": "Zheng",
+      "affiliation": [],
+      "sequence": "additional"
+    }
+  ],
+  "abstract": null,
+  "journal": "Nucleic Acids Research",
+  "publication_date": "2011-09-21",
+  "citation_count": 27,
+  "references_count": 47,
+  "license": {
+    "url": "http://creativecommons.org/licenses/by-nc/3.0",
+    "start": "2016-11-07T00:00:00Z",
+    "delay_in_days": 1874
+  },
+  "funders": [
+    {
+      "name": "National Natural Science Foundation of China",
+      "doi": "10.13039/501100001809",
+      "award": []
+    }
+  ],
+  "type": "journal-article",
+  "issn": [
+    "1362-4962",
+    "0305-1048"
+  ],
+  "volume": "40",
+  "issue": "2",
+  "page": "884-891",
+  "publisher": "Oxford University Press (OUP)"
+}

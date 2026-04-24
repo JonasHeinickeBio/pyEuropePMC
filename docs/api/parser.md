@@ -5,7 +5,7 @@ The `EuropePMCParser` handles parsing and normalization of Europe PMC API respon
 ## Class Overview
 
 ```python
-from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.processing.search_parser import EuropePMCParser
 
 class EuropePMCParser:
     """Parser for Europe PMC API responses."""
@@ -31,7 +31,7 @@ Parse raw search API response into structured data.
 
 **Example:**
 ```python
-from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.processing.search_parser import EuropePMCParser
 
 parser = EuropePMCParser()
 raw_response = client.search("cancer", format="json")
@@ -70,7 +70,7 @@ Extract journal and publication information.
 - `paper_dict` (dict): Paper data containing journal information
 
 **Returns:**
-- Dictionary with journal metadata
+- Dictionary with journal metadata including 'title', 'volume', and 'issue' keys
 
 ## Static Methods
 
@@ -106,7 +106,7 @@ Parse various date formats into standardized format.
 
 ```python
 from pyeuropepmc.search import SearchClient
-from pyeuropepmc.processing.parser import EuropePMCParser
+from pyeuropepmc.processing.search_parser import EuropePMCParser
 
 with SearchClient() as client:
     # Get raw response

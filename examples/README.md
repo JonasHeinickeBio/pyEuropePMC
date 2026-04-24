@@ -41,17 +41,36 @@ Welcome to the PyEuropePMC examples directory! This folder contains organized ex
 - Multi-client caching patterns
 
 ### [07-advanced](./07-advanced/) - Advanced Features
-**3 examples** - Power user techniques
+**7 examples** - Power user techniques
 - Advanced parsing patterns
 - Progress callbacks for long operations
 - Schema coverage analysis
+- Analytics and filtering
+- End-to-end pipeline demos
+- Long COVID research analysis
 
-### [Data Models & RDF](./data_models_demo.ipynb) - Semantic Integration
-**2 notebooks** - Convert articles to RDF knowledge graphs
+### [08-query-builder](./08-query-builder/) - Query Building
+**5 examples** - Advanced query construction
+- Basic query building patterns
+- Comprehensive query demonstrations
+- Load/save/translate functionality
+- Systematic review tracking
+- Field validation and coverage
+
+### [09-enrichment](./09-enrichment/) - Data Enrichment
+**4 examples** - Enhance metadata with external sources
+- Basic enrichment workflows
+- Advanced enrichment patterns
+- RDF conversion with enrichment
+- Multi-source enrichment integration
+
+### [10-rdf-mapping](./10-rdf-mapping/) - Semantic Integration
+**5 examples** - Convert articles to RDF knowledge graphs
 - Typed entity models (Paper, Author, Section, etc.)
 - RDF serialization with ontology alignment
+- Knowledge graph structures
 - SPARQL queries on literature data
-- CLI tools for batch processing
+- Modular RDF conversion workflows
 
 ## 🚀 Getting Started
 
@@ -89,8 +108,11 @@ Start here: [`01-getting-started/01-basic-usage.ipynb`](./01-getting-started/01-
 | Article Client | ⭐⭐ Intermediate | 1 | Citation analysis |
 | Fulltext Parser | ⭐⭐⭐ Advanced | 6 | Data extraction |
 | FTP Downloader | ⭐⭐ Intermediate | 3 | Bulk downloads |
-| Caching | ⭐⭐ Intermediate | 2 | Performance |
-| Advanced | ⭐⭐⭐ Advanced | 3 | Power users |
+| Caching | ⭐⭐ Intermediate | 3 | Performance |
+| Advanced | ⭐⭐⭐ Advanced | 7 | Power users |
+| Query Builder | ⭐⭐ Intermediate | 5 | Advanced queries |
+| Enrichment | ⭐⭐⭐ Advanced | 4 | Metadata enhancement |
+| RDF Mapping | ⭐⭐⭐ Advanced | 5 | Semantic integration |
 
 ## 💡 Usage Tips
 
@@ -133,6 +155,6 @@ Have a useful example? Contributions welcome!
 
 ---
 
-**Total Examples**: 19 files (13 notebooks + 6 scripts) organized into 7 feature categories
+**Total Examples**: 39 files (21 notebooks + 18 scripts) organized into 10 feature categories
 
-*Last Updated: October 2025*
+*Last Updated: November 2025*

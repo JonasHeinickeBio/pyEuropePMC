@@ -62,7 +62,12 @@ class TestCrossRefClient:
         assert result["source"] == "crossref"
         assert result["title"] == "Test Article"
         assert len(result["authors"]) == 2
-        assert result["authors"][0] == "John Doe"
+        assert result["authors"][0]["name"] == "John Doe"
+        assert result["authors"][0]["given"] == "John"
+        assert result["authors"][0]["family"] == "Doe"
+        assert result["authors"][1]["name"] == "Jane Smith"
+        assert result["authors"][1]["given"] == "Jane"
+        assert result["authors"][1]["family"] == "Smith"
         assert result["abstract"] == "Test abstract"
         assert result["journal"] == "Test Journal"
         assert result["publication_date"] == "2021-06-15"

@@ -1,0 +1,109 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "6ec648eea35730e20b2e00bd909df3d0c5d8b533",
+  "corpus_id": 274175896,
+  "title": "Neurologic Manifestations of Long COVID Disproportionately Affect Young and Middle‐Age Adults",
+  "abstract": "To investigate neurologic manifestations of post‐acute sequelae of SARS‐CoV‐2 infection (Neuro‐PASC) in post‐hospitalization Neuro‐PASC (PNP) and non‐hospitalized Neuro‐PASC (NNP) patients across the adult lifespan.",
+  "venue": "Annals of Neurology",
+  "year": 2024,
+  "publication_date": "2024-11-22",
+  "citation_count": 18,
+  "influential_citation_count": 0,
+  "reference_count": 33,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "2331700070",
+      "url": "https://www.semanticscholar.org/author/2331700070"
+    },
+    {
+      "name": null,
+      "author_id": "2304503989",
+      "url": "https://www.semanticscholar.org/author/2304503989"
+    },
+    {
+      "name": null,
+      "author_id": "2144199725",
+      "url": "https://www.semanticscholar.org/author/2144199725"
+    },
+    {
+      "name": null,
+      "author_id": "2331700043",
+      "url": "https://www.semanticscholar.org/author/2331700043"
+    },
+    {
+      "name": null,
+      "author_id": "2043933879",
+      "url": "https://www.semanticscholar.org/author/2043933879"
+    },
+    {
+      "name": null,
+      "author_id": "2166157720",
+      "url": "https://www.semanticscholar.org/author/2166157720"
+    },
+    {
+      "name": null,
+      "author_id": "2317146568",
+      "url": "https://www.semanticscholar.org/author/2317146568"
+    },
+    {
+      "name": null,
+      "author_id": "2331764075",
+      "url": "https://www.semanticscholar.org/author/2331764075"
+    },
+    {
+      "name": null,
+      "author_id": "2297151176",
+      "url": "https://www.semanticscholar.org/author/2297151176"
+    },
+    {
+      "name": null,
+      "author_id": "2331699737",
+      "url": "https://www.semanticscholar.org/author/2331699737"
+    },
+    {
+      "name": null,
+      "author_id": "2238992851",
+      "url": "https://www.semanticscholar.org/author/2238992851"
+    },
+    {
+      "name": null,
+      "author_id": "3838509",
+      "url": "https://www.semanticscholar.org/author/3838509"
+    },
+    {
+      "name": null,
+      "author_id": "2257404075",
+      "url": "https://www.semanticscholar.org/author/2257404075"
+    }
+  ],
+  "fields_of_study": [
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "Annals of Neurology",
+    "volume": "97",
+    "pages": "369 - 383"
+  },
+  "external_ids": {
+    "PubMedCentral": "11740262",
+    "DOI": "10.1002/ana.27128",
+    "CorpusId": 274175896,
+    "PubMed": "39575583"
+  },
+  "open_access_pdf_url": "",
+  "tldr": null
+}
