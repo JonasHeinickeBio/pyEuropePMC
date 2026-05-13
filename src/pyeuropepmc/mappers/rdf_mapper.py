@@ -355,18 +355,35 @@ class RDFMapper:
                 )
 
     def _get_entity_mappings(self, entity: Any) -> list[dict[str, Any]]:
-        """Get mappings for entity class and parent classes."""
-        all_mappings = []
-        for cls in entity.__class__.__mro__:
-            if cls.__name__.endswith("Entity"):
-                mapping = self.config.get(cls.__name__, {})
-                if mapping:
-                    all_mappings.append(mapping)
+        """
+        Get mappings for entity class and parent classes.
 
-        # If no mappings found, try direct class name lookup as fallback
-        if not all_mappings:
-            mapping = self.config.get(entity.__class__.__name__, {})
-            all_mappings = [mapping] if mapping else []
+        This method checks each class in the MRO for configuration entries.
+        It first prioritizes the entity's own class, then checks parent classes.
+        This allows for more flexible entity class naming (not just "Entity" suffix).
+        """
+        all_mappings = []
+        entity_class_name = entity.__class__.__name__
+
+        # First, try to load config for the entity's own class
+        # This takes priority and allows proper subclass configurations
+        direct_mapping = self.config.get(entity_class_name, {})
+        if direct_mapping:
+            all_mappings.append(direct_mapping)
+
+        # Then check parent classes for additional mappings
+        # This provides inheritance of mappings from base entity classes
+        for cls in entity.__class__.__mro__[
+            1:
+        ]:  # Skip the first class since we already checked it
+            if cls.__name__ == "object":
+                continue
+
+            # Check if this class has a mapping in the config
+            # Works for any entity class, not just those ending with "Entity"
+            mapping = self.config.get(cls.__name__, {})
+            if mapping and cls.__name__ != entity_class_name:
+                all_mappings.append(mapping)
 
         return all_mappings
 
@@ -407,7 +424,7 @@ class RDFMapper:
         context: URIRef | None = None,
     ) -> None:
         """Map complex fields (dicts, nested structures) to RDF triples."""
-        from rdflib import XSD, Literal
+        from rdflib import XSD
 
         complex_mapping = mapping.get("complex_fields", {})
 
@@ -782,6 +799,8 @@ class RDFMapper:
         """
         from datetime import datetime
 
+        from rdflib.namespace import XSD
+
         extraction_info = extraction_info or {}
 
         # Check if provenance has already been added for this subject
@@ -792,9 +811,17 @@ class RDFMapper:
         if (subject, prov_predicate, None) in target_graph:
             return
 
-        # Add extraction timestamp
+        # Add extraction timestamp with proper XSD:dateTime type
         timestamp = extraction_info.get("timestamp") or datetime.now().isoformat()
-        target_graph.add((subject, prov_predicate, Literal(timestamp)))
+        # Ensure timestamp is in proper ISO 8601 format without microseconds
+        if "." in timestamp:
+            # Remove microseconds if present
+            timestamp = timestamp.split(".")[0]
+        if not timestamp.endswith("Z") and "+" not in timestamp:
+            timestamp += "Z"
+        # Create properly typed literal
+        dt_literal = Literal(timestamp, datatype=XSD.dateTime)
+        target_graph.add((subject, prov_predicate, dt_literal))
 
         # Add extraction method
         method = extraction_info.get("method", "pyeuropepmc_parser")

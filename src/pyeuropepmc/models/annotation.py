@@ -5,6 +5,7 @@ This module provides entity models for representing annotations extracted
 from scientific literature, following the W3C Open Annotation Data Model.
 """
 
+import contextlib
 from dataclasses import dataclass, field
 from typing import Any
 
@@ -56,11 +57,12 @@ class AnnotationEntity(BaseEntity):
     section: str | None = None
     provider: str | None = None
     article_id: str | None = None
+    article_uri: str | None = None
     position: dict[str, int] | None = None
     annotation_type: str | None = None
 
     types: list[str] = field(
-        default_factory=lambda: ["oa:Annotation", "nif:String"],
+        default_factory=lambda: ["oa:Annotation", "pyeuropepmc:Annotation"],
         init=False,
     )
 
@@ -91,6 +93,8 @@ class EntityAnnotation(AnnotationEntity):
         Name of the entity
     entity_type : Optional[str]
         Type of entity (Gene, Disease, Chemical, etc.)
+    annotation_category : Optional[str]
+        Broad annotation category from Europe PMC (Diseases, Chemicals, Gene Ontology, etc.)
     confidence : Optional[float]
         Confidence score for the annotation
 
@@ -101,6 +105,7 @@ class EntityAnnotation(AnnotationEntity):
     ...     entity_id="DOID:12365",
     ...     entity_name="malaria",
     ...     entity_type="Disease",
+    ...     annotation_category="Diseases",
     ...     section="abstract",
     ...     provider="Europe PMC"
     ... )
@@ -109,10 +114,15 @@ class EntityAnnotation(AnnotationEntity):
     entity_id: str | None = None
     entity_name: str | None = None
     entity_type: str | None = None
+    annotation_category: str | None = None
     confidence: float | None = None
 
     types: list[str] = field(
-        default_factory=lambda: ["oa:Annotation", "nif:String", "oa:SpecificResource"],
+        default_factory=lambda: [
+            "oa:Annotation",
+            "oa:SpecificResource",
+            "pyeuropepmc:EntityAnnotation",
+        ],
         init=False,
     )
 
@@ -128,6 +138,46 @@ class EntityAnnotation(AnnotationEntity):
         super().validate()
         if not self.entity_id and not self.entity_name:
             raise ValueError("EntityAnnotation must have entity_id or entity_name")
+
+    def to_rdf(
+        self,
+        g: Any,
+        uri: Any = None,
+        mapper: Any = None,
+        related_entities: dict[str, list[Any]] | None = None,
+        extraction_info: dict[str, Any] | None = None,
+        parent_uri: Any = None,
+    ) -> Any:
+        """
+        Serialize entity annotation to RDF graph.
+
+        Extends base serialization to add NIF properties for text annotations.
+        """
+        # Call parent to_rdf for standard serialization
+        subject = super().to_rdf(g, uri, mapper, related_entities, extraction_info, parent_uri)
+
+        # Add NIF properties for text-based annotations
+        from rdflib import Literal, Namespace
+
+        NIF = Namespace("http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#")
+
+        # Add nif:anchorOf with the exact text if available
+        if self.exact and isinstance(self.exact, str) and self.exact.strip():
+            g.add((subject, NIF.anchorOf, Literal(str(self.exact).strip())))
+
+        # Add text context if available
+        VOCAB = Namespace("https://w3id.org/pyeuropepmc/vocab#")
+        if self.prefix:
+            g.add((subject, VOCAB.textPrefix, Literal(str(self.prefix))))
+        if self.postfix:
+            g.add((subject, VOCAB.textPostfix, Literal(str(self.postfix))))
+
+        # Add confidence score if available
+        if self.confidence is not None:
+            with contextlib.suppress(ValueError, TypeError):
+                g.add((subject, VOCAB.confidence, Literal(float(self.confidence))))
+
+        return subject
 
 
 @dataclass
@@ -176,7 +226,11 @@ class RelationshipAnnotation(AnnotationEntity):
     object_type: str | None = None
 
     types: list[str] = field(
-        default_factory=lambda: ["oa:Annotation", "nif:String", "rdf:Statement"],
+        default_factory=lambda: [
+            "oa:Annotation",
+            "rdf:Statement",
+            "pyeuropepmc:RelationshipAnnotation",
+        ],
         init=False,
     )
 

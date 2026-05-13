@@ -386,5 +386,5 @@ def atomic_download(
     except Exception as e:
         # If anything goes wrong, clean up the temp file
         temp_path.unlink(missing_ok=True)
-        logging.error(f"Error during atomic download: {e}")
+        logging.debug(f"Error during atomic download: {e}")
         return False

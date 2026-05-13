@@ -13,6 +13,7 @@ from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, ValidationError
+from pyeuropepmc.processing.annotation_parser import normalize_annotations_response
 
 __all__ = ["AnnotationsClient"]
 
@@ -72,8 +73,7 @@ class AnnotationsClient(BaseAPIClient):
         """Return a string representation of the client."""
         status = "closed" if self.is_closed else "active"
         return (
-            f"{self.__class__.__name__}(rate_limit_delay={self.rate_limit_delay}, "
-            f"status={status})"
+            f"{self.__class__.__name__}(rate_limit_delay={self.rate_limit_delay}, status={status})"
         )
 
     def close(self) -> None:
@@ -85,7 +85,7 @@ class AnnotationsClient(BaseAPIClient):
     def get_annotations_by_article_ids(
         self,
         article_ids: list[str],
-        section: str = "all",
+        section: str | None = None,
         provider: str | None = None,
         annotation_type: str | None = None,
         format: str = "JSON-LD",
@@ -96,8 +96,8 @@ class AnnotationsClient(BaseAPIClient):
 
         Args:
             article_ids: List of article identifiers (e.g., ['PMC1234567', 'PMC2345678'])
-            section: Section to retrieve annotations from - 'all', 'abstract', or 'fulltext'
-                (default: 'all')
+            section: Section to retrieve annotations from - 'abstract', or 'fulltext'.
+                If omitted or None, retrieves annotations from the entire article.
             provider: Filter by annotation provider (e.g., 'Europe PMC', 'Pubtator')
             annotation_type: Filter by annotation type (e.g., 'Gene', 'Disease', 'Chemical')
             format: Response format - 'JSON-LD' (default), 'JSON', or 'XML'
@@ -132,23 +132,97 @@ class AnnotationsClient(BaseAPIClient):
         if format:
             self._validate_format(format)
 
-        # Build endpoint with article IDs
-        article_ids_str = ",".join(str(aid) for aid in article_ids)
-        endpoint = "annotationsByArticleIds"
+        params = self._build_annotation_params(
+            article_ids=article_ids,
+            section=section,
+            provider=provider,
+            annotation_type=annotation_type,
+            format=format,
+            **kwargs,
+        )
+
+        result = self._get_annotations_with_cache(
+            endpoint="annotationsByArticleIds",
+            params=params,
+            article_ids_str=params["articleIds"],
+        )
+
+        return normalize_annotations_response(result)
+
+    def _build_annotation_params(
+        self,
+        article_ids: list[str],
+        section: str | None,
+        provider: str | None,
+        annotation_type: str | None,
+        format: str,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """Build parameters dictionary for annotation API calls.
+
+        Args:
+            article_ids: List of article identifiers
+            section: Section to retrieve annotations from
+            provider: Filter by annotation provider
+            annotation_type: Filter by annotation type
+            format: Response format
+            **kwargs: Additional query parameters
+
+        Returns:
+            Dictionary of API parameters
+        """
+        normalized_ids = self._normalize_article_ids(article_ids)
+        article_ids_str = ",".join(normalized_ids)
 
         params: dict[str, Any] = {
             "articleIds": article_ids_str,
-            "section": section,
             "format": format,
             **kwargs,
         }
+
+        if section is not None and section != "all":
+            params["section"] = section
 
         if provider:
             params["provider"] = provider
         if annotation_type:
             params["type"] = annotation_type
 
-        # Check cache first
+        return params
+
+    def _normalize_article_ids(self, article_ids: list[str]) -> list[str]:
+        """Normalize article IDs to ensure proper format.
+
+        Args:
+            article_ids: List of article identifiers
+
+        Returns:
+            List of normalized article IDs
+        """
+        normalized = []
+        for aid in article_ids:
+            aid_str = str(aid).strip()
+            if aid_str.startswith("PMC") and ":" not in aid_str:
+                aid_str = f"PMC:{aid_str[3:]}"
+            normalized.append(aid_str)
+        return normalized
+
+    def _get_annotations_with_cache(
+        self,
+        endpoint: str,
+        params: dict[str, Any],
+        article_ids_str: str,
+    ) -> dict[str, Any]:
+        """Retrieve annotations with caching support.
+
+        Args:
+            endpoint: API endpoint name
+            params: Request parameters
+            article_ids_str: String of article IDs for logging
+
+        Returns:
+            Raw JSON response as dict
+        """
         cache_key = self._cache._normalize_key("annotations_by_ids", **params)
         try:
             cached_result = self._cache.get(cache_key)
@@ -163,9 +237,8 @@ class AnnotationsClient(BaseAPIClient):
         try:
             response = self._get_annotations(endpoint, params=params)
             result = response.json()
-            result_dict = dict(result)
+            result_dict = normalize_annotations_response(result)
 
-            # Cache the result
             try:
                 self._cache.set(cache_key, result_dict, tag="annotations")
             except Exception as e:
@@ -173,16 +246,19 @@ class AnnotationsClient(BaseAPIClient):
 
             return result_dict
         except Exception as e:
-            context = {"article_ids": article_ids_str, "endpoint": endpoint}
+            error_context: dict[str, Any] = {
+                "article_ids": article_ids_str,
+                "endpoint": endpoint,
+            }
             self.logger.error("Failed to retrieve annotations for article IDs")
-            raise APIClientError(ErrorCodes.NET001, context) from e
+            raise APIClientError(ErrorCodes.NET001, error_context) from e
 
     def get_annotations_by_entity(
         self,
         entity_id: str,
         entity_type: str,
         provider: str | None = None,
-        section: str = "all",
+        section: str | None = None,
         page: int = 1,
         page_size: int = 25,
         format: str = "JSON-LD",
@@ -195,7 +271,8 @@ class AnnotationsClient(BaseAPIClient):
             entity_id: Entity identifier (e.g., 'CHEBI:16236' for ethanol)
             entity_type: Type of entity (e.g., 'CHEBI', 'GO', 'Disease')
             provider: Filter by annotation provider
-            section: Section to retrieve annotations from - 'all', 'abstract', or 'fulltext'
+            section: Section to retrieve annotations from - 'abstract', or 'fulltext'.
+                If omitted or None, retrieves annotations from the entire article.
             page: Page number for pagination, starting at 1 (default: 1)
             page_size: Number of results per page (default: 25)
             format: Response format - 'JSON-LD' (default), 'JSON', or 'XML'
@@ -242,12 +319,14 @@ class AnnotationsClient(BaseAPIClient):
         params: dict[str, Any] = {
             "entityId": entity_id,
             "entityType": entity_type,
-            "section": section,
             "page": page,
             "pageSize": page_size,
             "format": format,
             **kwargs,
         }
+
+        if section:
+            params["section"] = section
 
         if provider:
             params["provider"] = provider
@@ -267,7 +346,7 @@ class AnnotationsClient(BaseAPIClient):
         try:
             response = self._get_annotations(endpoint, params=params)
             result = response.json()
-            result_dict = dict(result)
+            result_dict = normalize_annotations_response(result)
 
             # Cache the result
             try:
@@ -277,15 +356,19 @@ class AnnotationsClient(BaseAPIClient):
 
             return result_dict
         except Exception as e:
-            context = {"entity_id": entity_id, "entity_type": entity_type, "endpoint": endpoint}
+            error_context: dict[str, Any] = {
+                "entity_id": entity_id,
+                "entity_type": entity_type,
+                "endpoint": endpoint,
+            }
             self.logger.error("Failed to retrieve entity annotations")
-            raise APIClientError(ErrorCodes.NET001, context) from e
+            raise APIClientError(ErrorCodes.NET001, error_context) from e
 
     def get_annotations_by_provider(
         self,
         provider: str,
         article_ids: list[str] | None = None,
-        section: str = "all",
+        section: str | None = None,
         annotation_type: str | None = None,
         format: str = "JSON-LD",
         **kwargs: Any,
@@ -296,7 +379,8 @@ class AnnotationsClient(BaseAPIClient):
         Args:
             provider: Annotation provider name (e.g., 'Europe PMC', 'Pubtator')
             article_ids: Optional list of article IDs to filter
-            section: Section to retrieve annotations from - 'all', 'abstract', or 'fulltext'
+            section: Section to retrieve annotations from - 'abstract', or 'fulltext'.
+                If omitted or None, retrieves annotations from the entire article.
             annotation_type: Filter by annotation type (e.g., 'Gene', 'Disease')
             format: Response format - 'JSON-LD' (default), 'JSON', or 'XML'
             **kwargs: Additional query parameters
@@ -328,10 +412,12 @@ class AnnotationsClient(BaseAPIClient):
         endpoint = "annotationsByProvider"
         params: dict[str, Any] = {
             "provider": provider,
-            "section": section,
             "format": format,
             **kwargs,
         }
+
+        if section:
+            params["section"] = section
 
         if article_ids:
             params["articleIds"] = ",".join(str(aid) for aid in article_ids)
@@ -353,7 +439,7 @@ class AnnotationsClient(BaseAPIClient):
         try:
             response = self._get_annotations(endpoint, params=params)
             result = response.json()
-            result_dict = dict(result)
+            result_dict = normalize_annotations_response(result)
 
             # Cache the result
             try:
@@ -363,13 +449,11 @@ class AnnotationsClient(BaseAPIClient):
 
             return result_dict
         except Exception as e:
-            context = {"provider": provider, "endpoint": endpoint}
+            error_context: dict[str, Any] = {"provider": provider, "endpoint": endpoint}
             self.logger.error("Failed to retrieve provider annotations")
-            raise APIClientError(ErrorCodes.NET001, context) from e
+            raise APIClientError(ErrorCodes.NET001, error_context) from e
 
-    def _get_annotations(
-        self, endpoint: str, params: dict[str, Any] | None = None
-    ) -> Any:
+    def _get_annotations(self, endpoint: str, params: dict[str, Any] | None = None) -> Any:
         """
         Make a GET request to the Annotations API.
 
@@ -392,9 +476,11 @@ class AnnotationsClient(BaseAPIClient):
             # Restore original BASE_URL
             self.BASE_URL = original_base_url
 
-    def _validate_section(self, section: str) -> None:
+    def _validate_section(self, section: str | None) -> None:
         """Validate section parameter."""
-        valid_sections = {"all", "abstract", "fulltext"}
+        if section is None:
+            return
+        valid_sections = {"abstract", "fulltext", "all"}
         if section not in valid_sections:
             context = {"section": section, "valid_sections": list(valid_sections)}
             raise ValidationError(

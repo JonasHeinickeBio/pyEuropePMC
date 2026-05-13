@@ -11,10 +11,21 @@ from .exceptions import APIClientError, ValidationError
 __all__ = ["BaseAPIClient", "APIClientError"]
 
 
+def _configure_base_logger() -> None:
+    """Configure base logger with datetime formatting."""
+    if not logging.getLogger().handlers:
+        logging.basicConfig(
+            level=logging.INFO,
+            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+            datefmt="%Y-%m-%d %H:%M:%S",
+        )
+
+
 class BaseAPIClient:
     BASE_URL: str = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
     DEFAULT_TIMEOUT: int = 15
     logger = logging.getLogger(__name__)
+    _logger_configured = False
 
     def __init__(self, rate_limit_delay: float = 1.0) -> None:
         self.rate_limit_delay: float = rate_limit_delay
@@ -23,6 +34,10 @@ class BaseAPIClient:
         self.session.headers.update(
             {"User-Agent": ("pyeuropepmc/1.0.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)")}
         )
+
+        if not BaseAPIClient._logger_configured:
+            _configure_base_logger()
+            BaseAPIClient._logger_configured = True
 
     def __repr__(self) -> str:
         """Return a string representation of the client."""
@@ -46,7 +61,11 @@ class BaseAPIClient:
         ),
     )
     def _get(
-        self, endpoint: str, params: dict[str, Any] | None = None, stream: bool = False
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+        stream: bool = False,
+        timeout: float | None = None,
     ) -> requests.Response:
         """
         Robust GET request with retries and backoff.
@@ -57,9 +76,16 @@ class BaseAPIClient:
 
         url: str = self.BASE_URL + endpoint
         try:
-            self.logger.debug(f"GET request to {url} with params={params} and stream={stream}")
+            actual_timeout = timeout if timeout is not None else self.DEFAULT_TIMEOUT
+            self.logger.debug(
+                "GET request to %s with params=%s, stream=%s, timeout=%s",
+                url,
+                params,
+                stream,
+                actual_timeout,
+            )
             response: requests.Response = self.session.get(
-                url, params=params, timeout=self.DEFAULT_TIMEOUT, stream=stream
+                url, params=params, timeout=actual_timeout, stream=stream
             )
             response.raise_for_status()
             self.logger.info(f"GET request to {url} succeeded with status {response.status_code}")

@@ -293,5 +293,30 @@ class QueryBuilderError(PyEuropePMCError):
         self.query_part = query_part
 
 
+class UnpaywallError(PyEuropePMCError):
+    """
+    Exception raised for Unpaywall API errors.
+
+    This exception covers Unpaywall lookup failures, network errors,
+    and response parsing issues.
+    """
+
+    def __init__(
+        self,
+        error_code: ErrorCodes | None = None,
+        context: dict[str, Any] | None = None,
+        message: str | None = None,
+        doi: str | None = None,
+    ) -> None:
+        # Add Unpaywall-specific context
+        if context is None:
+            context = {}
+        if doi:
+            context["doi"] = doi
+
+        super().__init__(error_code, context, message)
+        self.doi = doi
+
+
 # Convenience aliases for backward compatibility
 EuropePMCError = SearchError  # Legacy alias

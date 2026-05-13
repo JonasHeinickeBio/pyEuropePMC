@@ -11,6 +11,7 @@ from typing import Any
 
 __all__ = [
     "AnnotationParser",
+    "normalize_annotations_response",
     "parse_annotations",
     "extract_entities",
     "extract_sentences",
@@ -32,7 +33,9 @@ class AnnotationParser:
     """
 
     @staticmethod
-    def parse_annotations(response: dict[str, Any]) -> dict[str, Any]:
+    def parse_annotations(
+        response: dict[str, Any] | list[dict[str, Any]],
+    ) -> dict[str, Any]:
         """
         Parse a complete annotation response.
 
@@ -48,6 +51,9 @@ class AnnotationParser:
             >>> parsed = parser.parse_annotations(raw_response)
             >>> print(f"Found {len(parsed['entities'])} entities")
         """
+        if isinstance(response, list):
+            response = {"annotations": response}
+
         if not isinstance(response, dict):
             logger.warning("Invalid annotation response: expected dict")
             return {
@@ -261,14 +267,20 @@ class AnnotationParser:
         # Check various possible fields for provider
         provider = annotation.get("provider", {})
         if isinstance(provider, dict):
-            return provider.get("name", UNKNOWN_PROVIDER)
+            name = provider.get("name")
+            if isinstance(name, str):
+                return name
+            return UNKNOWN_PROVIDER
         elif isinstance(provider, str):
             return provider
 
         # Check annotator field as fallback
         annotator = annotation.get("annotator", {})
         if isinstance(annotator, dict):
-            return annotator.get("name", UNKNOWN_PROVIDER)
+            name = annotator.get("name")
+            if isinstance(name, str):
+                return name
+            return UNKNOWN_PROVIDER
         elif isinstance(annotator, str):
             return annotator
 
@@ -287,7 +299,38 @@ class AnnotationParser:
 
 
 # Convenience functions for direct use
-def parse_annotations(response: dict[str, Any]) -> dict[str, Any]:
+def normalize_annotations_response(response: dict[str, Any]) -> dict[str, Any]:
+    """Normalize annotation response to ensure consistent structure.
+
+    Args:
+        response: Raw annotation response
+
+    Returns:
+        Normalized response dict with required fields
+    """
+    if not isinstance(response, dict):
+        return {
+            "entities": [],
+            "sentences": [],
+            "relationships": [],
+            "metadata": {},
+            "raw": None,
+            "valid": False,
+        }
+
+    return {
+        "entities": response.get("entities", []),
+        "sentences": response.get("sentences", []),
+        "relationships": response.get("relationships", []),
+        "metadata": response.get("metadata", {}),
+        "raw": response,
+        "valid": True,
+    }
+
+
+def parse_annotations(
+    response: dict[str, Any] | list[dict[str, Any]],
+) -> dict[str, Any]:
     """
     Parse annotation response (convenience function).
 

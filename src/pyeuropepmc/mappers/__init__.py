@@ -5,6 +5,7 @@ RDF mapping functionality for converting entities to RDF graphs.
 from pyeuropepmc.mappers.config_utils import rebind_namespaces
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
+    convert_annotations_to_rdf,
     convert_enrichment_to_rdf,
     convert_incremental_to_rdf,
     convert_pipeline_to_rdf,
@@ -25,6 +26,7 @@ __all__ = [
     "RMLRDFizer",
     "RDFIZER_AVAILABLE",
     "RDFConversionError",
+    "convert_annotations_to_rdf",
     "add_external_identifiers",
     "convert_enrichment_to_rdf",
     "convert_incremental_to_rdf",

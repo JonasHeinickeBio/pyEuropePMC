@@ -30,6 +30,7 @@ from pyeuropepmc.mappers.config_utils import (
 from pyeuropepmc.mappers.exceptions import RDFConversionError
 from pyeuropepmc.mappers.processors import (
     _extract_entities_from_enrichment,
+    process_annotations_data,
     process_enrichment_data,
     process_search_results,
     process_xml_data,
@@ -46,6 +47,7 @@ from pyeuropepmc.mappers.semantic_enrichment import (
 )
 from pyeuropepmc.mappers.validation import add_shacl_validation_shapes
 from pyeuropepmc.mappers.validators import (
+    validate_annotations_data,
     validate_enrichment_data,
     validate_search_results,
     validate_xml_data,
@@ -56,6 +58,7 @@ __all__ = [
     "convert_search_to_rdf",
     "convert_xml_to_rdf",
     "convert_enrichment_to_rdf",
+    "convert_annotations_to_rdf",
     "convert_pipeline_to_rdf",
     "convert_incremental_to_rdf",
     "convert_to_rdf",
@@ -220,6 +223,20 @@ def convert_search_to_rdf(
     )
 
 
+def _merge_rdf_graph(target: Dataset, source: Dataset | Graph) -> None:
+    """Merge triples or quads from one RDF graph into another dataset."""
+    if hasattr(source, "quads"):
+        for subject, predicate, obj, context in source.quads((None, None, None, None)):
+            if context is not None:
+                target.add((subject, predicate, obj, context))
+            else:
+                target.add((subject, predicate, obj))
+        return
+
+    for subject, predicate, obj in source:
+        target.add((subject, predicate, obj))
+
+
 def convert_xml_to_rdf(
     xml_data: dict[str, Any],
     config_path: str | None = None,
@@ -324,10 +341,33 @@ def convert_enrichment_to_rdf(
     )
 
 
+def convert_annotations_to_rdf(
+    annotations_data: dict[str, Any] | list[dict[str, Any]],
+    config_path: str | None = None,
+    namespaces: dict[str, str] | None = None,
+    cache_backend: CacheBackend | None = None,
+    extraction_info: dict[str, Any] | None = None,
+) -> Dataset:
+    """Convert annotations data to RDF graph."""
+    return _convert_to_rdf(
+        data=annotations_data,
+        validator=validate_annotations_data,
+        processor=process_annotations_data,
+        cache_key_prefix="annotations_rdf",
+        cache_data_type=CacheDataType.RECORD,
+        config_path=config_path,
+        namespaces=namespaces,
+        cache_backend=cache_backend,
+        extraction_info=extraction_info,
+        enable_named_graphs=False,
+    )
+
+
 def convert_pipeline_to_rdf(
     search_results: list[dict[str, Any]] | dict[str, Any] | None = None,
     xml_data: dict[str, Any] | None = None,
     enrichment_data: dict[str, Any] | None = None,
+    annotations_data: dict[str, Any] | list[dict[str, Any]] | None = None,
     config_path: str | None = None,
     namespaces: dict[str, str] | None = None,
     cache_backend: CacheBackend | None = None,
@@ -348,6 +388,8 @@ def convert_pipeline_to_rdf(
         Parsed XML data from fulltext processing
     enrichment_data : Optional[Dict[str, Any]]
         Enrichment data from external APIs
+    annotations_data : Optional[Union[List[Dict[str, Any]], Dict[str, Any]]]
+        Annotation data from the Europe PMC Annotations API
     config_path : Optional[str]
         Path to custom RDF mapping configuration file
     namespaces : Optional[Dict[str, str]]
@@ -377,24 +419,33 @@ def convert_pipeline_to_rdf(
             search_graph = convert_search_to_rdf(
                 search_results, config_path, namespaces, None, extraction_info
             )
-            g += search_graph
+            _merge_rdf_graph(g, search_graph)
 
         if xml_data:
             xml_graph = convert_xml_to_rdf(
                 xml_data, config_path, namespaces, None, extraction_info, include_content
             )
-            g += xml_graph
+            _merge_rdf_graph(g, xml_graph)
 
         if enrichment_data:
             enrichment_graph = convert_enrichment_to_rdf(
                 enrichment_data, config_path, namespaces, None, extraction_info
             )
-            g += enrichment_graph
+            _merge_rdf_graph(g, enrichment_graph)
+
+        if annotations_data:
+            annotations_graph = convert_annotations_to_rdf(
+                annotations_data, config_path, namespaces, None, extraction_info
+            )
+            _merge_rdf_graph(g, annotations_graph)
 
         # Cache the result if cache backend is provided
         if cache_backend:
             combined_str = (
-                str(search_results or {}) + str(xml_data or {}) + str(enrichment_data or {})
+                str(search_results or {})
+                + str(xml_data or {})
+                + str(enrichment_data or {})
+                + str(annotations_data or {})
             )
             cache_key = f"pipeline_rdf_{hash(combined_str)}"
             cache_backend.set(cache_key, g, data_type=CacheDataType.FULLTEXT)
@@ -529,6 +580,7 @@ def convert_to_rdf(  # noqa: C901
     search_results: list[dict[str, Any]] | dict[str, Any] | None = None,
     xml_data: dict[str, Any] | None = None,
     enrichment_data: dict[str, Any] | None = None,
+    annotations_data: dict[str, Any] | list[dict[str, Any]] | None = None,
     config_path: str | None = None,
     enable_citation_networks: bool = True,
     enable_collaboration_networks: bool = True,
@@ -557,6 +609,8 @@ def convert_to_rdf(  # noqa: C901
         Parsed XML data from fulltext processing
     enrichment_data : Optional[Dict[str, Any]]
         Enrichment data from external APIs
+    annotations_data : Optional[Union[List[Dict[str, Any]], Dict[str, Any]]]
+        Annotation data from the Europe PMC Annotations API
     config_path : Optional[str]
         Path to custom RDF mapping configuration file
     enable_citation_networks : bool
@@ -637,6 +691,13 @@ def convert_to_rdf(  # noqa: C901
                 enrichment_data, main_dataset, named_graph_uris, mapper, extraction_info
             )
 
+        # Process annotation data
+        if annotations_data:
+            annotations_graph = convert_annotations_to_rdf(
+                annotations_data, config_path, None, None, extraction_info
+            )
+            _merge_rdf_graph(main_dataset, annotations_graph)
+
         # Build semantic networks
         if enable_citation_networks:
             build_citation_networks(main_dataset, named_graph_uris)
@@ -659,7 +720,10 @@ def convert_to_rdf(  # noqa: C901
         # Cache the result if cache backend is provided
         if cache_backend:
             combined_str = (
-                str(search_results or {}) + str(xml_data or {}) + str(enrichment_data or {})
+                str(search_results or {})
+                + str(xml_data or {})
+                + str(enrichment_data or {})
+                + str(annotations_data or {})
             )
             cache_key = f"rdf_{hash(combined_str)}"
             cache_backend.set(cache_key, main_dataset, data_type=CacheDataType.FULLTEXT)

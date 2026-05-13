@@ -259,10 +259,6 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
         for prefix, uri in prefix_config.items():
             g.bind(prefix, Namespace(uri), override=True, replace=True)
 
-        # Also bind to default graph to ensure proper serialization
-        for prefix, uri in prefix_config.items():
-            g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
-
     except Exception as e:
         print(f"Failed to load RDF mapping config: {e}, using fallback namespaces")
         _bind_fallback_namespaces(g)
@@ -271,7 +267,6 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
     if namespaces:
         for prefix, uri in namespaces.items():
             g.bind(prefix, Namespace(uri), override=True, replace=True)
-            g.default_graph.bind(prefix, Namespace(uri), override=True, replace=True)
 
     return g
 

@@ -13,6 +13,7 @@ from pyeuropepmc.builders.from_parser import build_paper_entities
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.clients import FullTextClient, SearchClient
 from pyeuropepmc.enrichment.enricher import EnrichmentConfig, PaperEnricher
+from pyeuropepmc.mappers.converters import convert_annotations_to_rdf
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
 from pyeuropepmc.models import (
     AuthorEntity,
@@ -184,6 +185,7 @@ class PaperProcessingPipeline:
         xml_content: str | None = None,
         doi: str | None = None,
         pmcid: str | None = None,
+        annotations_data: dict[str, Any] | list[dict[str, Any]] | None = None,
         save_rdf: bool = True,
         filename_prefix: str = "",
     ) -> dict[str, Any]:
@@ -198,6 +200,8 @@ class PaperProcessingPipeline:
             DOI of the paper (used for enrichment and naming)
         pmcid : Optional[str]
             PMC ID of the paper
+        annotations_data : Optional[Union[List[Dict[str, Any]], Dict[str, Any]]]
+            Optional annotations response to merge into the RDF output
         save_rdf : bool
             Whether to save RDF to file
         filename_prefix : str
@@ -237,7 +241,7 @@ class PaperProcessingPipeline:
             enrichment_data = self._enrich_paper(paper)
 
         # Step 4: Convert to RDF
-        rdf_result = self._convert_to_rdf(entities, enrichment_data)
+        rdf_result = self._convert_to_rdf(entities, enrichment_data, annotations_data)
 
         # Step 5: Save RDF (if requested)
         output_file = None
@@ -459,7 +463,10 @@ class PaperProcessingPipeline:
         return n1 == n2
 
     def _convert_to_rdf(
-        self, entities: dict[str, Any], enrichment_data: dict[str, Any] | None = None
+        self,
+        entities: dict[str, Any],
+        enrichment_data: dict[str, Any] | None = None,
+        annotations_data: dict[str, Any] | list[dict[str, Any]] | None = None,
     ) -> dict[str, Any]:
         """Convert entities to RDF with relationships."""
         from datetime import datetime
@@ -505,6 +512,10 @@ class PaperProcessingPipeline:
             related_entities=related_entities,
             extraction_info=extraction_info,
         )
+
+        if annotations_data:
+            annotations_graph = convert_annotations_to_rdf(annotations_data)
+            g += annotations_graph
 
         # Count triples
         triple_count = len(list(g))

@@ -11,6 +11,7 @@ from .article import ArticleClient
 from .ftp_downloader import FTPDownloader
 from .fulltext import FullTextClient, ProgressInfo
 from .search import EuropePMCError, SearchClient
+from .unpaywall_client import UnpaywallClient
 
 __all__ = [
     "AnnotationsClient",
@@ -20,4 +21,5 @@ __all__ = [
     "ProgressInfo",
     "EuropePMCError",
     "SearchClient",
+    "UnpaywallClient",
 ]

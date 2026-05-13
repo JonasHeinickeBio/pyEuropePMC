@@ -43,6 +43,9 @@ class URIFactory:
         """Initialize the URI factory with standard generators."""
         self._base_uri = None  # Lazy load
         self.generators: dict[str, Callable[[Any, URIRef | str | None], URIRef]] = {
+            "AnnotationEntity": self._generate_annotation_uri,
+            "EntityAnnotation": self._generate_annotation_uri,
+            "RelationshipAnnotation": self._generate_annotation_uri,
             "PaperEntity": self._generate_paper_uri,
             "AuthorEntity": self._generate_author_uri,
             "InstitutionEntity": self._generate_institution_uri,
@@ -384,6 +387,37 @@ class URIFactory:
         # Final fallback to UUID
         return URIRef(f"{self.base_uri}grant/{uuid.uuid4()}")
 
+    def _generate_annotation_uri(
+        self, entity: Any, parent_uri: URIRef | str | None = None
+    ) -> URIRef:
+        """Generate a stable URI for annotation entities."""
+        annotation_id = getattr(entity, "id", None)
+        if annotation_id:
+            annotation_id_str = str(annotation_id)
+            if "://" in annotation_id_str:
+                return URIRef(annotation_id_str)
+            normalized_id = self._normalize_name(annotation_id_str)
+            if normalized_id:
+                return URIRef(f"{self.base_uri}annotation/{normalized_id}")
+
+        article_id = getattr(entity, "article_id", None)
+        if article_id:
+            normalized_article = self._normalize_name(str(article_id))
+            if normalized_article:
+                entity_kind = self._normalize_name(entity.__class__.__name__.replace("Entity", ""))
+                exact_value = getattr(entity, "exact", None) or getattr(
+                    entity, "entity_name", None
+                )
+                exact_slug = self._normalize_name(str(exact_value)) if exact_value else None
+                if entity_kind and exact_slug:
+                    return URIRef(
+                        f"{self.base_uri}annotation/{entity_kind}/{normalized_article}/{exact_slug}"
+                    )
+                if entity_kind:
+                    return URIRef(f"{self.base_uri}annotation/{entity_kind}/{normalized_article}")
+
+        return self._generate_fallback_uri(entity)
+
     def _generate_grant_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for grant entity using award ID or fundref DOI."""
         # Extract funder info from entity
@@ -645,6 +679,77 @@ def generate_entity_uri(entity: Any) -> URIRef:
     return uri_factory.generate_uri(entity)
 
 
+def _parse_predicate_config(
+    predicate_config: str | dict[str, Any],
+) -> tuple[str | None, str | None]:
+    """Parse predicate configuration into predicate string and datatype string.
+
+    Args:
+        predicate_config: Either a string predicate or dict with 'predicate' and 'datatype' keys
+
+    Returns:
+        Tuple of (predicate_str, datatype_str), either can be None
+    """
+    if isinstance(predicate_config, dict):
+        return predicate_config.get("predicate"), predicate_config.get("datatype")
+    return predicate_config, None
+
+
+def _handle_entity_annotation_special_cases(
+    g: Any,
+    subject: URIRef,
+    predicate: URIRef,
+    entity: Any,
+    field_name: str,
+    value: Any,
+    predicate_str: str,
+    context: URIRef | None,
+    hasbody_added: bool,
+) -> bool:
+    """
+    Handle special cases for EntityAnnotation oa:hasBody field.
+
+    Args:
+        g: RDF graph
+        subject: Subject URI
+        predicate: Predicate URI
+        entity: Entity object
+        field_name: Name of field being processed
+        value: Value of the field
+        predicate_str: String representation of predicate
+        context: Named graph context
+        hasbody_added: Whether oa:hasBody has already been added
+
+    Returns:
+        True if special case was handled, False otherwise
+    """
+    if predicate_str != "oa:hasBody" or not hasbody_added:
+        return False
+
+    if field_name == "entity_id":
+        entity_uri = _construct_entity_uri(value)
+        if entity_uri:
+            if context:
+                g.graph(context).add((subject, predicate, entity_uri))
+            else:
+                g.add((subject, predicate, entity_uri))
+            return True
+
+    if field_name == "exact":
+        if entity.entity_id:
+            existing_uri = _construct_entity_uri(entity.entity_id)
+            if existing_uri:
+                return True
+
+        if context:
+            g.graph(context).add((subject, predicate, Literal(value)))
+        else:
+            g.add((subject, predicate, Literal(value)))
+        return True
+
+    return False
+
+
 def map_single_value_fields(
     g: Any,
     subject: URIRef,
@@ -665,34 +770,53 @@ def map_single_value_fields(
         resolve_predicate: Function to resolve predicate strings to URIRefs
         context: Optional named graph context
     """
+    # Check if this is an EntityAnnotation to handle oa:hasBody specially
+    from pyeuropepmc.models.annotation import EntityAnnotation
+
+    is_entity_annotation = isinstance(entity, EntityAnnotation)
+
+    # Track if we've already added oa:hasBody to handle priority
+    hasbody_added = False
+
     for field_name, predicate_config in fields_mapping.items():
         value = getattr(entity, field_name, None)
         if value is None:
             continue
 
-        # Handle both old format (string) and new format (dict with predicate and datatype)
-        predicate_str: str | None
-        datatype_str: str | None
-
-        if isinstance(predicate_config, dict):
-            predicate_str = predicate_config.get("predicate")
-            datatype_str = predicate_config.get("datatype")
-        else:
-            predicate_str = predicate_config
-            datatype_str = None
-
+        predicate_str, datatype_str = _parse_predicate_config(predicate_config)
         if predicate_str is None:
             continue
 
         predicate = resolve_predicate(predicate_str)
 
+        if is_entity_annotation and _handle_entity_annotation_special_cases(
+            g,
+            subject,
+            predicate,
+            entity,
+            field_name,
+            value,
+            predicate_str,
+            context,
+            hasbody_added,
+        ):
+            hasbody_added = True
+            continue
+
+        # Check if this is an EntityAnnotation and this field should be a URI
+        if field_name == "entity_id" and predicate_str != "oa:hasBody":
+            entity_uri = _construct_entity_uri(value)
+            if entity_uri:
+                if context:
+                    g.graph(context).add((subject, predicate, entity_uri))
+                else:
+                    g.add((subject, predicate, entity_uri))
+                continue
+
         # Determine the appropriate datatype
-        if datatype_str:
-            # Parse datatype from config (e.g., "xsd:string" -> XSD.string)
-            datatype = _parse_datatype(datatype_str)
-        else:
-            # Fallback to legacy behavior for backward compatibility
-            datatype = _infer_datatype(field_name, value)
+        datatype = (
+            _parse_datatype(datatype_str) if datatype_str else _infer_datatype(field_name, value)
+        )
 
         # Create literal with datatype
         literal = Literal(value, datatype=datatype) if datatype else Literal(value)
@@ -701,6 +825,103 @@ def map_single_value_fields(
             g.graph(context).add((subject, predicate, literal))
         else:
             g.add((subject, predicate, literal))
+
+
+def _try_database_format(entity_id: str) -> URIRef | None:
+    """
+    Try to parse database-specific format (DATABASE:identifier).
+
+    Args:
+        entity_id: Entity ID in format like "CHEBI:16236"
+
+    Returns:
+        URIRef if parsing succeeded, None otherwise
+    """
+    parts = entity_id.split(":", 1)
+    if len(parts) != 2:
+        return None
+
+    db_prefix, identifier = parts
+    db_prefix = db_prefix.upper().strip()
+    identifier = identifier.strip()
+
+    db_to_ontology = {
+        "CHEBI": "http://purl.obolibrary.org/obo/CHEBI_",
+        "DOID": "http://purl.obolibrary.org/obo/DOID_",
+        "GO": "http://purl.obolibrary.org/obo/GO_",
+        "SO": "http://purl.obolibrary.org/obo/SO_",
+        "EFO": "http://www.ebi.ac.uk/efo/EFO_",
+        "HP": "http://purl.obolibrary.org/obo/HP_",
+        "MONDO": "http://purl.obolibrary.org/obo/MONDO_",
+        "OMIM": "https://omim.org/entry/",
+        "UNIPROT": "https://identifiers.org/uniprot/",
+        "NCBITAXON": "http://purl.obolibrary.org/obo/NCBITaxon_",
+        "TAXON": "http://purl.obolibrary.org/obo/NCBITaxon_",
+        "MESH": "http://id.nlm.nih.gov/mesh/",
+        "UMLS": "http://linkedlifedata.com/resource/umls/concept/",
+        "SNOMED": "http://snomed.info/id/",
+    }
+
+    if db_prefix not in db_to_ontology:
+        return None
+
+    base_uri = db_to_ontology[db_prefix]
+
+    if db_prefix in ["CHEBI", "DOID", "GO", "SO", "EFO", "HP", "MONDO", "OMIM"]:
+        formatted_id = identifier.replace(":", "_")
+    elif db_prefix == "MESH":
+        formatted_id = identifier
+    else:
+        formatted_id = identifier
+
+    full_uri = f"{base_uri}{formatted_id}"
+    try:
+        return URIRef(full_uri)
+    except Exception:
+        return None
+
+
+def _construct_entity_uri(entity_id: str) -> URIRef | None:
+    """
+    Construct a proper entity IRI from an entity_id string.
+
+    This function handles various entity identifier formats and converts them
+    to proper ontology IRIs for use in RDF graphs.
+
+    Args:
+        entity_id: Entity identifier string (e.g., "CHEBI:16236", "DOID:12365",
+            "GO:0008150", or literal text like "metabolic failure")
+
+    Returns:
+        URIRef for the entity IRI if recognizable, None otherwise
+
+    Examples:
+        >>> _construct_entity_uri("CHEBI:16236")  # doctest: +SKIP
+        URIRef('http://purl.obolibrary.org/obo/CHEBI_16236')
+        >>> _construct_entity_uri("DOID:12365")  # doctest: +SKIP
+        URIRef('http://purl.obolibrary.org/obo/DOID_12365')
+        >>> _construct_entity_uri("GO:0008150")  # doctest: +SKIP
+        URIRef('http://purl.obolibrary.org/obo/GO_0008150')
+        >>> _construct_entity_uri("metabolic failure") is None
+        True
+    """
+    if not entity_id or not isinstance(entity_id, str):
+        return None
+
+    # Check if it's already a valid URI
+    if "://" in entity_id:
+        try:
+            return URIRef(entity_id)
+        except Exception:  # nosec B110
+            pass
+
+    # Try to parse database-specific formats
+    if ":" in entity_id:
+        result = _try_database_format(entity_id)
+        if result:
+            return result
+
+    return None
 
 
 def _parse_datatype(datatype_str: str) -> URIRef | None:
@@ -1208,6 +1429,22 @@ def add_reference_identifiers(
         )
 
 
+def add_entity_annotation_identifiers(
+    g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
+) -> None:
+    """Add owl:sameAs links to external concept IRIs for entity annotations."""
+    if hasattr(entity, "entity_id") and entity.entity_id:
+        # entity_id contains the concept IRI (e.g., http://linkedlifedata.com/resource/umls-concept/C0015674)
+        # Link to it using owl:sameAs to enable semantic integration
+        g.add(
+            (
+                subject,
+                resolve_predicate("owl:sameAs"),
+                URIRef(entity.entity_id),
+            )
+        )
+
+
 def add_external_identifiers(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
@@ -1220,6 +1457,7 @@ def add_external_identifiers(
         "AuthorEntity": add_author_identifiers,
         "InstitutionEntity": add_institution_identifiers,
         "ReferenceEntity": add_reference_identifiers,
+        "EntityAnnotation": add_entity_annotation_identifiers,
     }
 
     # Get the appropriate adder function, skip if not found

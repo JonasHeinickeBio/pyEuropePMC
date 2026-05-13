@@ -8,6 +8,7 @@ from Europe PMC, including PDF, XML, and HTML formats.
 from collections.abc import Callable
 import gzip
 from io import BytesIO
+import json
 import logging
 import os
 from pathlib import Path
@@ -22,12 +23,15 @@ import requests
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import APIClientError, BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
-from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.core.exceptions import FullTextError, UnpaywallError
 from pyeuropepmc.utils.helpers import atomic_download, atomic_write
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["FullTextClient", "FullTextError", "ProgressInfo"]
+# Type alias for strategy functions
+StrategyFunc = Callable[[], Path | None | bool | str | dict[str, Any]]
+
+__all__ = ["FullTextClient", "FullTextError", "ProgressInfo", "DownloadReport"]
 
 
 class ProgressInfo:
@@ -125,6 +129,108 @@ class ProgressInfo:
             f"Current: PMC{self.current_pmcid} - "
             f"Status: {self.status}"
         )
+
+
+class DownloadReport:
+    """
+    Comprehensive download attempt tracking and reporting system.
+
+    Tracks all download attempts with detailed error information,
+    fallback chain results, and provides JSON export for analysis.
+    """
+
+    def __init__(self, pmcid: str):
+        self.pmcid = pmcid
+        self.timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.download_attempts: list[dict[str, Any]] = []
+        self.fallback_chain: list[dict[str, Any]] = []
+        self.overall_status: str = "pending"
+        self.successful_method: str | None = None
+        self.successful_path: str | None = None
+        self.detailed_analysis: dict[str, Any] = {}
+
+    def add_attempt(
+        self,
+        method: str,
+        success: bool,
+        path: str | None = None,
+        error: str | None = None,
+        error_code: str | None = None,
+        details: dict[str, Any] | None = None,
+        elapsed_seconds: float | None = None,
+    ) -> None:
+        """Add a download attempt to the report."""
+        attempt = {
+            "method": method,
+            "success": success,
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "path": path,
+            "error": error,
+            "error_code": error_code,
+            "details": details or {},
+            "elapsed_seconds": elapsed_seconds,
+        }
+        self.download_attempts.append(attempt)
+
+        if success:
+            self.overall_status = "success"
+            self.successful_method = method
+            self.successful_path = str(path) if path else None
+
+    def add_fallback(self, chain_position: int, method: str, tried: bool, success: bool) -> None:
+        """Add fallback chain status."""
+        fallback = {
+            "position": chain_position,
+            "method": method,
+            "tried": tried,
+            "success": success,
+        }
+        self.fallback_chain.append(fallback)
+
+    def set_detailed_analysis(self, analysis: dict[str, Any]) -> None:
+        """Set detailed analysis data."""
+        self.detailed_analysis = analysis
+
+    def to_dict(self) -> dict[str, Any]:
+        """Convert report to dictionary for JSON serialization."""
+        return {
+            "pmcid": self.pmcid,
+            "timestamp": self.timestamp,
+            "overall_status": self.overall_status,
+            "successful_method": self.successful_method,
+            "successful_path": self.successful_path,
+            "download_attempts": self.download_attempts,
+            "fallback_chain": self.fallback_chain,
+            "detailed_analysis": self.detailed_analysis,
+        }
+
+    def to_json(self, indent: int = 2) -> str:
+        """Convert report to JSON string."""
+        return json.dumps(self.to_dict(), indent=indent)
+
+    def save(self, output_path: str | Path) -> Path:
+        """Save report to JSON file."""
+        output_path = Path(output_path)
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        with open(output_path, "w", encoding="utf-8") as f:
+            json.dump(self.to_dict(), f, indent=2)
+        return output_path
+
+    def __str__(self) -> str:
+        """Human-readable summary."""
+        lines = [
+            f"Download Report for {self.pmcid}",
+            f"Status: {self.overall_status}",
+            f"Successful method: {self.successful_method or 'None'}",
+            f"Total attempts: {len(self.download_attempts)}",
+            "Attempts:",
+        ]
+        for attempt in self.download_attempts:
+            status = "✓" if attempt["success"] else "✗"
+            lines.append(f"  {status} {attempt['method']}")
+            if attempt["error"]:
+                lines.append(f"    Error: {attempt['error'][:100]}")
+        return "\n".join(lines)
 
 
 class FullTextClient(BaseAPIClient):
@@ -849,12 +955,12 @@ class FullTextClient(BaseAPIClient):
         """
         Download PDF of a paper from Europe PMC using its PMC ID.
 
-        Uses caching to avoid re-downloading existing files. Tries multiple PDF endpoints
-        in order and validates downloaded content:
+        Uses layered fallback strategy with caching to maximize success:
         1. Check cache for existing valid file
         2. Europe PMC render endpoint (?pdf=render)
         3. Backend render service (ptpmcrender.fcgi)
         4. ZIP archive from OA collection
+        5. Unpaywall API via DOI lookup (final fallback)
 
         Parameters
         ----------
@@ -905,7 +1011,12 @@ class FullTextClient(BaseAPIClient):
             self._save_to_cache(output_path, normalized_pmcid, "pdf")
             return output_path
 
-        self.logger.error(f"PDF not available or invalid for PMC{normalized_pmcid}")
+        # 4. Final fallback: Unpaywall via DOI lookup
+        if self._try_unpaywall_pdf(normalized_pmcid, output_path):
+            self._save_to_cache(output_path, normalized_pmcid, "pdf")
+            return output_path
+
+        self.logger.info(f"PDF not available or invalid for PMC{normalized_pmcid}")
         return None
 
     def download_xml_by_pmcid(
@@ -914,9 +1025,12 @@ class FullTextClient(BaseAPIClient):
         """
         Download XML full text of a paper from Europe PMC using its PMC ID.
 
-        Uses caching to avoid re-downloading existing files. This method first checks
-        the cache, then tries the REST API endpoint, and if that fails, falls back to
-        bulk download from Europe PMC FTP OA archives.
+        Uses layered fallback strategy with caching to maximize success:
+        1. Check cache for existing valid file
+        2. Europe PMC REST API (XML endpoint)
+        3. FTP bulk XML archives
+        4. Europe PMC fulltextRepo endpoint
+        5. Unpaywall API via DOI lookup (final fallback)
 
         Parameters
         ----------
@@ -934,7 +1048,7 @@ class FullTextClient(BaseAPIClient):
         Raises
         ------
         FullTextError
-            If PMC ID is invalid, XML not available via REST API or bulk FTP,
+            If PMC ID is invalid, XML not available via any method,
             or download fails
         """
         self.logger.info(f"Starting XML download for PMC ID: {pmcid}")
@@ -964,6 +1078,18 @@ class FullTextClient(BaseAPIClient):
         # Fall back to bulk download
         bulk_result = self._try_bulk_xml_download(normalized_pmcid, output_path)
         if bulk_result:
+            self._save_to_cache(output_path, normalized_pmcid, "xml")
+            return output_path
+
+        # Try fulltextRepo endpoint
+        repo_result = self._try_fulltext_repo(normalized_pmcid, output_path)
+        if repo_result:
+            self._save_to_cache(output_path, normalized_pmcid, "xml")
+            return output_path
+
+        # Final fallback: Unpaywall via DOI lookup
+        unpaywall_result = self._try_unpaywall_xml(normalized_pmcid, output_path)
+        if unpaywall_result:
             self._save_to_cache(output_path, normalized_pmcid, "xml")
             return output_path
 
@@ -1512,7 +1638,6 @@ class FullTextClient(BaseAPIClient):
                 self.logger.info(f"Downloaded valid PDF via {endpoint_name}: {output_path}")
                 return True
             else:
-                self.logger.warning(f"Downloaded invalid PDF from {endpoint_name}, removed file")
                 return False
 
         except requests.RequestException as e:
@@ -1577,9 +1702,6 @@ class FullTextClient(BaseAPIClient):
                     else:
                         # Remove invalid file
                         temp_path.unlink(missing_ok=True)
-                        self.logger.warning(
-                            "Downloaded invalid PDF from ZIP archive, removed file"
-                        )
                         return False
                 except Exception as e:
                     # Clean up temp file on error
@@ -1706,6 +1828,255 @@ class FullTextClient(BaseAPIClient):
 
         except (OSError, requests.RequestException, ValueError) as e:
             self.logger.debug(f"Error during bulk XML download for PMC{pmcid}: {e}")
+            return False
+
+    def _try_fulltext_repo(self, normalized_pmcid: str, output_path: Path) -> bool:
+        """
+        Try to download XML using Europe PMC fulltextRepo endpoint.
+
+        Parameters
+        ----------
+        normalized_pmcid : str
+            Normalized PMC ID
+        output_path : Path
+            Output file path
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise
+        """
+        try:
+            url = f"https://www.ebi.ac.uk/europepmc/webservices/rest/PMC{normalized_pmcid}/fulltextRepo"
+            self.logger.info(f"Trying fulltextRepo endpoint: {url}")
+
+            response = self._get(url, timeout=30)
+            self.logger.debug(f"fulltextRepo response: {response.status_code}")
+
+            if response.status_code != 200:
+                self.logger.debug(f"fulltextRepo returned status {response.status_code}")
+                return False
+
+            with atomic_write(output_path, "w", encoding="utf-8") as f:
+                f.write(response.text)
+
+            self.logger.info(f"Successfully downloaded XML from fulltextRepo: {output_path}")
+            return True
+
+        except APIClientError as e:
+            self.logger.warning(f"fulltextRepo API failed for PMC{normalized_pmcid}: {e}")
+            return False
+        except requests.RequestException as e:
+            self.logger.warning(
+                f"Network error during fulltextRepo download for PMC{normalized_pmcid}: {e}"
+            )
+            return False
+        except OSError as e:
+            self.logger.error(f"File system error while saving XML for PMC{normalized_pmcid}: {e}")
+            return False
+
+    def _try_unpaywall_xml(self, normalized_pmcid: str, output_path: Path) -> bool:
+        """
+        Try to download XML using Unpaywall API via DOI lookup.
+
+        Parameters
+        ----------
+        normalized_pmcid : str
+            Normalized PMC ID
+        output_path : Path
+            Output file path
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise
+        """
+        try:
+            # Get article details to find DOI
+            from pyeuropepmc.clients.article import ArticleClient
+
+            article_client = ArticleClient(rate_limit_delay=self.rate_limit_delay)
+            try:
+                details = article_client.get_article_details(
+                    "PMC", normalized_pmcid, result_type="lite"
+                )
+                doi = None
+                if "result" in details:
+                    doi = details["result"].get("doi")
+
+                if not doi:
+                    self.logger.debug(f"No DOI found for PMC{normalized_pmcid} in article details")
+                    return False
+            finally:
+                article_client.close()
+
+            self.logger.info(f"Looking up DOI in Unpaywall: {doi}")
+
+            # Create Unpaywall client (email required for rate limiting)
+            from pyeuropepmc.clients.unpaywall_client import UnpaywallClient
+
+            unpaywall = UnpaywallClient(email="user@example.com", rate_limit_delay=0.6)
+
+            # Try to get OA location with PDF
+            best_location = unpaywall.get_best_oa_location(doi)
+
+            if best_location is None:
+                self.logger.debug(f"No OA location found via Unpaywall for DOI {doi}")
+                return False
+
+            url_for_pdf = best_location.get("url_for_pdf")
+            url = best_location.get("url")
+
+            download_url = url_for_pdf or url
+
+            if not download_url:
+                self.logger.debug(f"No PDF URL found in Unpaywall location for DOI {doi}")
+                return False
+
+            self.logger.info(f"Downloading from Unpaywall: {download_url}")
+
+            # Download the PDF/XML from Unpaywall
+            response = requests.get(download_url, timeout=30, stream=True)
+            response.raise_for_status()
+
+            # Check content type
+            content_type = response.headers.get("content-type", "").lower()
+            if "xml" not in content_type and "pdf" not in content_type:
+                self.logger.warning(f"Unexpected content type from Unpaywall: {content_type}")
+                return False
+
+            # Save using atomic write
+            with atomic_write(output_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+
+            # Verify file was downloaded
+            if output_path.exists() and output_path.stat().st_size > 0:
+                self.logger.info(f"Successfully downloaded from Unpaywall: {output_path}")
+                return True
+            else:
+                self.logger.warning(
+                    f"Download from Unpaywall resulted in empty file: {output_path}"
+                )
+                return False
+
+        except UnpaywallError as e:
+            self.logger.warning(f"Unpaywall API error for PMC{normalized_pmcid}: {e}")
+            return False
+        except requests.RequestException as e:
+            self.logger.warning(
+                f"Network error during Unpaywall download for PMC{normalized_pmcid}: {e}"
+            )
+            return False
+        except OSError as e:
+            self.logger.error(
+                f"File system error while saving Unpaywall download for PMC{normalized_pmcid}: {e}"
+            )
+            return False
+
+    def _try_unpaywall_pdf(self, normalized_pmcid: str, output_path: Path) -> bool:
+        """
+        Try to download PDF using Unpaywall API via DOI lookup.
+
+        Parameters
+        ----------
+        normalized_pmcid : str
+            Normalized PMC ID
+        output_path : Path
+            Output file path
+
+        Returns
+        -------
+        bool
+            True if successful, False otherwise
+        """
+        try:
+            # Get article details to find DOI
+            from pyeuropepmc.clients.article import ArticleClient
+
+            article_client = ArticleClient(rate_limit_delay=self.rate_limit_delay)
+            try:
+                details = article_client.get_article_details(
+                    "PMC", normalized_pmcid, result_type="lite"
+                )
+                doi = None
+                if "result" in details:
+                    doi = details["result"].get("doi")
+
+                if not doi:
+                    self.logger.debug(f"No DOI found for PMC{normalized_pmcid} in article details")
+                    return False
+            finally:
+                article_client.close()
+
+            self.logger.info(f"Looking up DOI in Unpaywall for PDF: {doi}")
+
+            # Create Unpaywall client (email required for rate limiting)
+            from pyeuropepmc.clients.unpaywall_client import UnpaywallClient
+
+            unpaywall = UnpaywallClient(email="user@example.com", rate_limit_delay=0.6)
+
+            # Try to get OA location with PDF
+            best_location = unpaywall.get_best_oa_location(doi)
+
+            if best_location is None:
+                self.logger.debug(f"No OA location found via Unpaywall for DOI {doi}")
+                return False
+
+            url_for_pdf = best_location.get("url_for_pdf")
+            url = best_location.get("url")
+
+            download_url = url_for_pdf or url
+
+            if not download_url:
+                self.logger.debug(f"No PDF URL found in Unpaywall location for DOI {doi}")
+                return False
+
+            # Check if it's actually a PDF URL
+            download_url_lower = download_url.lower()
+            if "pdf" not in download_url_lower and "full" not in download_url_lower:
+                self.logger.debug(f"Unpaywall URL doesn't appear to be PDF: {download_url}")
+                return False
+
+            self.logger.info(f"Downloading PDF from Unpaywall: {download_url}")
+
+            # Download the PDF from Unpaywall
+            response = requests.get(download_url, timeout=30, stream=True)
+            response.raise_for_status()
+
+            # Validate content type
+            content_type = response.headers.get("content-type", "").lower()
+            if "pdf" not in content_type and "application" not in content_type:
+                self.logger.warning(f"Unexpected content type from Unpaywall: {content_type}")
+                return False
+
+            # Save using atomic write
+            with atomic_write(output_path, "wb") as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    if chunk:
+                        f.write(chunk)
+
+            # Validate downloaded PDF
+            if not self._validate_pdf_content(output_path):
+                self.logger.warning(f"Downloaded file failed PDF validation: {output_path}")
+                return False
+
+            self.logger.info(f"Successfully downloaded PDF from Unpaywall: {output_path}")
+            return True
+
+        except UnpaywallError as e:
+            self.logger.warning(f"Unpaywall API error for PMC{normalized_pmcid}: {e}")
+            return False
+        except requests.RequestException as e:
+            self.logger.warning(
+                f"Network error during Unpaywall download for PMC{normalized_pmcid}: {e}"
+            )
+            return False
+        except OSError as e:
+            self.logger.error(
+                f"File system error while saving Unpaywall PDF for PMC{normalized_pmcid}: {e}"
+            )
             return False
 
     def search_and_download_fulltext(
@@ -1961,3 +2332,316 @@ class FullTextClient(BaseAPIClient):
             return export.to_markdown_table(results)
         else:
             raise ValueError(f"Unsupported export format: {format}")
+
+    def analyze_download(
+        self,
+        pmcid: str,
+        output_dir: str | Path | None = None,
+        run_all_strategies: bool = False,
+    ) -> DownloadReport:
+        """
+        Run comprehensive download analysis for a single PMCID.
+
+        Tests all available download strategies and generates a detailed
+        report tracking each attempt, fallback chain execution, and
+        error details.
+
+        Parameters
+        ----------
+        pmcid : str
+            PMC ID to analyze
+        output_dir : str or Path, optional
+            Directory to save analysis report. If None, saves to current directory
+        run_all_strategies : bool, default False
+            If True, runs all 6 strategies (REST XML, REST PDF, FTP XML,
+            FTP PDF, fulltextRepo, Search). If False, uses the built-in
+            fallback chain in download methods.
+
+        Returns
+        -------
+        DownloadReport
+            Comprehensive report with all download attempts, results, and analysis
+
+        Examples
+        --------
+        >>> client = FullTextClient()
+        >>> report = client.analyze_download("PMC11537498")
+        >>> print(report)
+        >>> report.save("analysis_report.json")
+        """
+        report = DownloadReport(pmcid)
+        self.logger.info(f"Starting download analysis for {pmcid}")
+
+        try:
+            normalized_pmcid = self._validate_pmcid(pmcid)
+        except Exception as e:
+            report.add_attempt(
+                method="validation",
+                success=False,
+                error=str(e),
+                error_code="VALIDATION_FAILED",
+            )
+            report.overall_status = "failed"
+            if output_dir:
+                output_path = Path(output_dir) / f"PMC{normalized_pmcid}_analysis.json"
+                report.save(output_path)
+            return report
+
+        output_dir_path = Path(output_dir) if output_dir else Path.cwd()
+        output_dir_path.mkdir(parents=True, exist_ok=True)
+
+        if run_all_strategies:
+            report = self._analyze_all_strategies(report, normalized_pmcid, output_dir_path)
+        else:
+            report = self._analyze_fallback_chain(report, normalized_pmcid, output_dir_path)
+
+        self.logger.info(f"Download analysis complete for {pmcid}: {report.overall_status}")
+
+        if output_dir:
+            output_path = output_dir_path / f"PMC{normalized_pmcid}_analysis.json"
+            report.save(output_path)
+            self.logger.info(f"Analysis saved to: {output_path}")
+
+        return report
+
+    def _analyze_all_strategies(
+        self, report: DownloadReport, normalized_pmcid: str, output_dir: Path
+    ) -> DownloadReport:
+        """Run all 6 download strategies and record results."""
+
+        client = FullTextClient(enable_cache=False, rate_limit_delay=self.rate_limit_delay)
+
+        strategies: list[tuple[str, StrategyFunc]] = [
+            (
+                "REST XML",
+                lambda: client.download_xml_by_pmcid(
+                    normalized_pmcid, output_dir / f"PMC{normalized_pmcid}.xml"
+                ),
+            ),
+            (
+                "REST PDF",
+                lambda: client.download_pdf_by_pmcid(
+                    normalized_pmcid, output_dir / f"PMC{normalized_pmcid}.pdf"
+                ),
+            ),
+            (
+                "FTP XML",
+                lambda: client.download_xml_by_pmcid_bulk(
+                    normalized_pmcid, output_dir / f"PMC{normalized_pmcid}_ftp.xml"
+                ),
+            ),
+            (
+                "fulltextRepo",
+                lambda: self._try_fulltext_repo_analysis(normalized_pmcid, output_dir),
+            ),
+            ("Search HTML/PDF", lambda: self._try_search_analysis(normalized_pmcid)),
+            (
+                "Unpaywall (via download)",
+                lambda: client.download_xml_by_pmcid(
+                    normalized_pmcid, output_dir / f"PMC{normalized_pmcid}_unpaywall.xml"
+                ),
+            ),
+        ]
+
+        for i, (name, strategy_func) in enumerate(strategies, 1):
+            self.logger.info(f"[{i}/{len(strategies)}] Testing strategy: {name}")
+            start_time = time.time()
+
+            try:
+                result = strategy_func()
+                elapsed = time.time() - start_time
+
+                if result:
+                    if isinstance(result, str | Path):
+                        path = str(result)
+                        success = True
+                        error = None
+                    elif isinstance(result, bool):
+                        path = None
+                        success = result
+                        error = None
+                    else:
+                        path = str(result) if result else None
+                        success = bool(result)
+                        error = None
+                else:
+                    path = None
+                    success = False
+                    error = "No result returned"
+
+                report.add_attempt(
+                    method=name,
+                    success=success,
+                    path=path,
+                    elapsed_seconds=elapsed,
+                )
+                report.add_fallback(i, name, True, success)
+
+                if success:
+                    self.logger.info(f"  ✓ SUCCESS: {name}")
+                else:
+                    self.logger.warning(f"  ✗ FAILED: {name} - {error}")
+
+            except FullTextError as e:
+                elapsed = time.time() - start_time
+                report.add_attempt(
+                    method=name,
+                    success=False,
+                    error=str(e),
+                    error_code=str(e.error_code) if hasattr(e, "error_code") else "FULLTEXT_ERROR",
+                    elapsed_seconds=elapsed,
+                )
+                report.add_fallback(i, name, True, False)
+                self.logger.warning(f"  ✗ FAILED: {name} - {e}")
+            except Exception as e:
+                elapsed = time.time() - start_time
+                report.add_attempt(
+                    method=name,
+                    success=False,
+                    error=str(e),
+                    error_code="UNEXPECTED_ERROR",
+                    elapsed_seconds=elapsed,
+                )
+                report.add_fallback(i, name, True, False)
+                self.logger.error(f"  ✗ ERROR: {name} - {e}")
+
+        return report
+
+    def _try_fulltext_repo_analysis(self, normalized_pmcid: str, output_dir: Path) -> Path | None:
+        """Analyze fulltextRepo endpoint without caching."""
+        try:
+            url = f"https://www.ebi.ac.uk/europepmc/webservices/rest/PMC{normalized_pmcid}/fulltextRepo"
+            response = requests.get(url, timeout=30)
+            if response.status_code == 200:
+                output_path = output_dir / f"PMC{normalized_pmcid}_fulltextrepo.xml"
+                with open(output_path, "w", encoding="utf-8") as f:
+                    f.write(response.text)
+                return output_path
+        except Exception:
+            self.logger.debug(
+                f"Exception in _try_fulltext_repo_analysis for PMC{normalized_pmcid}",
+                exc_info=True,
+            )
+        return None
+
+    def _try_search_analysis(self, normalized_pmcid: str) -> dict[str, Any] | None:
+        """Analyze search API for full-text URLs."""
+        try:
+            from pyeuropepmc.clients.search import SearchClient
+
+            search_client = SearchClient(rate_limit_delay=self.rate_limit_delay)
+            try:
+                results = search_client.search(f"PMC{normalized_pmcid}", result_type="core")
+                if isinstance(results, dict) and results.get("hitCount", 0) > 0:
+                    records = results.get("resultList", {}).get("result", [])
+                    if records:
+                        return {"found": True, "record": records[0]}
+            finally:
+                search_client.close()
+        except Exception:
+            self.logger.debug(
+                f"Exception in _try_search_analysis for PMC{normalized_pmcid}",
+                exc_info=True,
+            )
+        return None
+
+    def _analyze_fallback_chain(
+        self, report: DownloadReport, normalized_pmcid: str, output_dir: Path
+    ) -> DownloadReport:
+        """Analyze the built-in fallback chain execution."""
+        fallback_methods = [
+            ("cache", False),
+            ("rest_xml", True),
+            ("bulk_xml", True),
+            ("fulltextRepo", True),
+            ("unpaywall_xml", True),
+        ]
+
+        for position, (method_name, should_try) in enumerate(fallback_methods, 1):
+            if not should_try:
+                continue
+
+            report.add_fallback(position, method_name, True, False)
+
+            try:
+                if method_name == "rest_xml":
+                    start_time = time.time()
+                    result = self.download_xml_by_pmcid(
+                        normalized_pmcid, output_dir / f"PMC{normalized_pmcid}.xml"
+                    )
+                    elapsed = time.time() - start_time
+                    if result:
+                        report.add_attempt(
+                            method=method_name,
+                            success=True,
+                            path=str(result),
+                            elapsed_seconds=elapsed,
+                        )
+                        report.add_fallback(position, method_name, True, True)
+                        return report
+                elif method_name == "bulk_xml":
+                    start_time = time.time()
+                    result = self.download_xml_by_pmcid_bulk(
+                        normalized_pmcid, output_dir / f"PMC{normalized_pmcid}_bulk.xml"
+                    )
+                    elapsed = time.time() - start_time
+                    if result:
+                        report.add_attempt(
+                            method=method_name,
+                            success=True,
+                            path=str(result),
+                            elapsed_seconds=elapsed,
+                        )
+                        report.add_fallback(position, method_name, True, True)
+                        return report
+                elif method_name == "fulltextRepo":
+                    start_time = time.time()
+                    result = self._try_fulltext_repo_analysis(normalized_pmcid, output_dir)
+                    elapsed = time.time() - start_time
+                    if result:
+                        report.add_attempt(
+                            method=method_name,
+                            success=True,
+                            path=str(result),
+                            elapsed_seconds=elapsed,
+                        )
+                        report.add_fallback(position, method_name, True, True)
+                        return report
+                elif method_name == "unpaywall_xml":
+                    start_time = time.time()
+                    result = self.download_xml_by_pmcid(
+                        normalized_pmcid, output_dir / f"PMC{normalized_pmcid}_unpaywall.xml"
+                    )
+                    elapsed = time.time() - start_time
+                    if result:
+                        report.add_attempt(
+                            method=method_name,
+                            success=True,
+                            path=str(result),
+                            elapsed_seconds=elapsed,
+                        )
+                        report.add_fallback(position, method_name, True, True)
+                        return report
+            except FullTextError as e:
+                elapsed = time.time() - start_time
+                report.add_attempt(
+                    method=method_name,
+                    success=False,
+                    error=str(e),
+                    error_code=str(e.error_code) if hasattr(e, "error_code") else "FULLTEXT_ERROR",
+                    elapsed_seconds=elapsed,
+                )
+                self.logger.warning(f"Fallback method failed: {method_name} - {e}")
+            except Exception as e:
+                elapsed = time.time() - start_time
+                report.add_attempt(
+                    method=method_name,
+                    success=False,
+                    error=str(e),
+                    error_code="UNEXPECTED_ERROR",
+                    elapsed_seconds=elapsed,
+                )
+                self.logger.error(f"Fallback method error: {method_name} - {e}")
+
+        report.overall_status = "failed"
+        return report

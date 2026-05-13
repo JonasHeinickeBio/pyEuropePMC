@@ -274,6 +274,26 @@ def process_enrichment_data(enrichment_data: dict[str, Any]) -> list[dict[str, A
     return _extract_entities_from_enrichment(enrichment_data)
 
 
+def process_annotations_data(
+    annotations_data: dict[str, Any] | list[dict[str, Any]],
+) -> list[dict[str, Any]]:
+    """Process annotation data into entities_data format."""
+    from pyeuropepmc.processing.annotation_parser import (
+        normalize_annotations_response,
+        parse_annotations,
+    )
+    from pyeuropepmc.processing.annotations_to_rdf import annotations_to_entities
+
+    parsed_annotations: dict[str, Any]
+    if not (isinstance(annotations_data, dict) and "entities" in annotations_data):
+        parsed_annotations = normalize_annotations_response(parse_annotations(annotations_data))
+    else:
+        parsed_annotations = normalize_annotations_response(annotations_data)
+
+    entities = annotations_to_entities(parsed_annotations)
+    return [{"entity": entity, "related_entities": {}} for entity in entities]
+
+
 def _create_journal_entity(journal_info: dict[str, Any] | str) -> JournalEntity | None:
     """Create a JournalEntity from journal information."""
     if isinstance(journal_info, dict):

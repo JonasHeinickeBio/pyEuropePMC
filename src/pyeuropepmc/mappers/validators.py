@@ -89,3 +89,27 @@ def validate_enrichment_data(enrichment_data: Any) -> None:
     # Check type
     if not isinstance(enrichment_data, dict):
         raise RDFConversionError("Enrichment data must be a dictionary")
+
+
+def validate_annotations_data(annotations_data: Any) -> None:
+    """
+    Validate annotation data structure.
+
+    Parameters
+    ----------
+    annotations_data : Any
+        Annotation data to validate
+
+    Raises
+    ------
+    RDFConversionError
+        If annotation data is invalid
+    """
+    if annotations_data is None:
+        raise RDFConversionError("Annotations data cannot be None")
+
+    if not annotations_data:
+        raise RDFConversionError("Annotations data cannot be empty")
+
+    if not isinstance(annotations_data, list | dict):
+        raise RDFConversionError("Annotations data must be a list or dict")

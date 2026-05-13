@@ -11,12 +11,8 @@ Example usage:
     >>> papers = client.search_and_parse("COVID-19", format="json")
 """
 
-__version__ = "1.14.0"
-__author__ = "Jonas Heinicke"
-__email__ = "jonas.heinicke@helmholtz-hzi.de"
-__url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
+import logging
 
-# Import main classes for convenient access
 from .cache.cache import (
     CacheBackend,
     CacheConfig,
@@ -30,8 +26,9 @@ from .clients.ftp_downloader import FTPDownloader
 from .clients.fulltext import FullTextClient, ProgressInfo
 from .clients.search import SearchClient
 from .core.base import BaseAPIClient
-from .core.exceptions import APIClientError, EuropePMCError, FullTextError
+from .core.exceptions import APIClientError, EuropePMCError, FullTextError, UnpaywallError
 from .enrichment.enricher import EnrichmentConfig, PaperEnricher
+from .mappers.converters import convert_annotations_to_rdf
 from .pipeline import PaperProcessingPipeline, PipelineConfig
 from .processing.analytics import (
     author_statistics,
@@ -78,6 +75,35 @@ from .query.pagination import (
 from .query.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
 from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
+__version__ = "1.14.0"
+__author__ = "Jonas Heinicke"
+__email__ = "jonas.heinicke@helmholtz-hzi.de"
+__url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
+
+logger = logging.getLogger(__name__)
+
+
+def configure_logging(
+    level: int = logging.INFO,
+    format: str = "%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt: str = "%Y-%m-%d %H:%M:%S",
+) -> None:
+    """Configure logging with datetime formatting for all pyeuropepmc modules.
+
+    Parameters
+    ----------
+    level : int
+        Logging level (default: INFO)
+    format : str
+        Log format string with datetime placeholder (default: includes datetime)
+    datefmt : str
+        Date/time format string (default: YYYY-MM-DD HH:MM:SS)
+    """
+    logging.basicConfig(level=level, format=format, datefmt=datefmt)
+
+
+# Import main classes for convenient access
+
 # Convenience imports for common usage patterns
 Client = SearchClient  # Alias for backwards compatibility
 Parser = EuropePMCParser  # Alias for convenience
@@ -109,6 +135,7 @@ __all__ = [
     "normalize_query_params",
     "ArtifactStore",
     "ArtifactMetadata",
+    "UnpaywallError",
     # Pagination
     "PaginationState",
     "PaginationCheckpoint",
@@ -130,6 +157,7 @@ __all__ = [
     "extract_relationships",
     "annotations_to_entities",
     "annotations_to_rdf",
+    "convert_annotations_to_rdf",
     "entity_annotation_to_model",
     "relationship_annotation_to_model",
     # Enrichment utilities

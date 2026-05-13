@@ -41,6 +41,8 @@ class ErrorCodes(Enum):
     FULL009 = "FULL009"
     FULL010 = "FULL010"
     FULL011 = "FULL011"
+    FULL012 = "FULL012"
+    FULL013 = "FULL013"
 
     # Parsing Error Codes (PARSE)
     PARSE001 = "PARSE001"
@@ -112,6 +114,8 @@ ERROR_MESSAGES: dict[str, str] = {
     ErrorCodes.FULL009.value: "File operation failed.",
     ErrorCodes.FULL010.value: "Unsupported format for batch download.",
     ErrorCodes.FULL011.value: "URL construction not supported for format '{format_type}'.",
+    ErrorCodes.FULL012.value: "Unpaywall API error: {message}",
+    ErrorCodes.FULL013.value: "DOI not found in Unpaywall database",
     # Parsing Error Codes (PARSE)
     ErrorCodes.PARSE001.value: "JSON parsing failed. Invalid format.",
     ErrorCodes.PARSE002.value: "XML parsing failed. Invalid structure.",

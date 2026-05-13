@@ -381,6 +381,44 @@ class PaperEnricher:
             logger.error(f"Error resolving identifier {identifier}: {e}")
             raise
 
+    def enrich(
+        self,
+        papers: list[dict[str, Any]] | None = None,
+        **kwargs: Any,
+    ) -> dict[str, Any]:
+        """
+        Enrich papers (convenience method wrapper).
+
+        Parameters
+        ----------
+        papers : list[dict[str, Any]], optional
+            List of paper dictionaries to enrich. If None, uses single identifier from kwargs.
+        **kwargs
+            Additional parameters: either 'identifier' for single paper or 'papers' for batch
+
+        Returns
+        -------
+        dict[str, Any]
+            Enrichment results
+        """
+        if papers is not None:
+            if len(papers) == 1:
+                identifier = (
+                    papers[0].get("doi") or papers[0].get("pmcid") or papers[0].get("pmid")
+                )
+                if identifier:
+                    return self.enrich_paper(identifier=identifier, **kwargs)
+            return self.enrich_papers_batch(
+                [p.get("doi") or p.get("pmcid") for p in papers if p.get("doi") or p.get("pmcid")],
+                **kwargs,
+            )
+
+        identifier = kwargs.pop("identifier", None)
+        if identifier:
+            return self.enrich_paper(identifier=identifier, **kwargs)
+
+        raise ValueError("Either papers list or identifier required")
+
     def enrich_papers_batch(
         self,
         identifiers: list[str],
