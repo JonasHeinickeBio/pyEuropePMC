@@ -100,7 +100,9 @@ class TestGetAnnotationsByArticleIds:
 
         assert isinstance(result, dict)
         assert "annotations" in result
-        assert result["totalCount"] == 1
+        assert result["metadata"]["total_count"] == 1
+        assert result["metadata"]["page"] == 1
+        assert result["metadata"]["page_size"] == 25
         mock_get.assert_called_once()
 
     @patch.object(AnnotationsClient, "_get")

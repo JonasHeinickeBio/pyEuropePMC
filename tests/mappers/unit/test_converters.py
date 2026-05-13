@@ -7,6 +7,7 @@ from rdflib import Graph
 from pyeuropepmc.cache.cache import CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
+    convert_annotations_to_rdf,
     _convert_to_rdf,
     convert_search_to_rdf,
     convert_xml_to_rdf,
@@ -342,16 +343,55 @@ class TestConvertersIndividual:
         with pytest.raises(RDFConversionError, match="Enrichment data cannot be empty"):
             convert_enrichment_to_rdf({})
 
+    def test_convert_annotations_to_rdf_success(self):
+        """Test successful annotations data conversion."""
+        annotations_data = [
+            {
+                "source": "MED",
+                "extId": "22649552",
+                "pmcid": "PMC3359311",
+                "annotations": [
+                    {
+                        "id": "http://europepmc.org/abstract/MED/22649552#ann1",
+                        "exact": "malaria",
+                        "tags": [
+                            {
+                                "uri": "DOID:12365",
+                                "name": "malaria",
+                                "type": "Disease",
+                            }
+                        ],
+                        "section": "abstract",
+                        "provider": {"name": "Europe PMC"},
+                    }
+                ],
+            }
+        ]
+
+        graph = convert_annotations_to_rdf(annotations_data)
+
+        assert isinstance(graph, Graph)
+        assert len(graph) > 0
+
     def test_convert_pipeline_to_rdf_combined(self):
         """Test pipeline conversion with multiple data sources."""
         search_data = [{"doi": "10.1234/test", "title": "Test Paper"}]
         xml_data = {"paper": {"doi": "10.1234/test", "title": "Test Paper"}}
         enrichment_data = {"paper": {"doi": "10.1234/test", "title": "Test Paper"}}
+        annotations_data = [
+            {
+                "source": "MED",
+                "extId": "22649552",
+                "pmcid": "PMC3359311",
+                "annotations": [],
+            }
+        ]
 
         graph = convert_pipeline_to_rdf(
             search_results=search_data,
             xml_data=xml_data,
             enrichment_data=enrichment_data,
+            annotations_data=annotations_data,
         )
 
         assert isinstance(graph, Graph)
