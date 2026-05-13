@@ -141,13 +141,11 @@ class AnnotationsClient(BaseAPIClient):
             **kwargs,
         )
 
-        result = self._get_annotations_with_cache(
+        return self._get_annotations_with_cache(
             endpoint="annotationsByArticleIds",
             params=params,
             article_ids_str=params["articleIds"],
         )
-
-        return normalize_annotations_response(result)
 
     def _build_annotation_params(
         self,
