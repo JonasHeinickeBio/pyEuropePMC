@@ -350,3 +350,97 @@ class TestConvenienceFunctions:
         """Test extract_relationships convenience function."""
         relationships = extract_relationships([sample_relationship_annotation])
         assert len(relationships) == 1
+
+
+class TestEntityExtractionContext:
+    """Test entity extraction with context from target (JSON-LD format)."""
+
+    def test_extract_entity_with_target_context(self):
+        """Test extracting entity with target context (JSON-LD format)."""
+        annotation = {
+            "id": "http://europepmc.org/article/MED/9050854#phenebank-4336f204e03abb0fee2d9017eb5802e1",
+            "type": "Cell",
+            "creator": "PheneBank",
+            "body": "http://browser.ihtsdotools.org/?perspective=full&conceptId1=4421005",
+            "target": {
+                "source": "http://europepmc.org/article/MED/9050854",
+                "isPartOf": "Abstract",
+                "selector": {
+                    "type": "TextQuoteSelector",
+                    "exact": "cell",
+                    "prefix": "which an inactivated ",
+                    "suffix": " can inactivate adjacent",
+                },
+            },
+            "exact": "cell",
+            "annotation_id": "http://europepmc.org/article/MED/9050854#phenebank-4336f204e03abb0fee2d9017eb5802e1",
+        }
+        entities = AnnotationParser.extract_entities([annotation])
+
+        assert len(entities) == 1
+        entity = entities[0]
+
+        # Test entity type from IRI domain
+        assert entity["type"] == "SNOMED_CT"
+
+        # Test name from exact text
+        assert entity["name"] == "cell"
+
+        # Test prefix/postfix from selector
+        assert entity["prefix"] == "which an inactivated "
+        assert entity["postfix"] == " can inactivate adjacent"
+
+        # Test section from target
+        assert entity["section"] == "Abstract"
+
+        # Test provider from creator
+        assert entity["provider"] == "PheneBank"
+
+        # Test article_id from target source
+        assert entity["article_id"] == "http://europepmc.org/article/MED/9050854"
+
+    def test_extract_entity_type_from_identifiers_org(self):
+        """Test extracting type from identifiers.org IRI."""
+        tag = {"uri": "http://identifiers.org/taxonomy/9606"}
+        entity_type = AnnotationParser._extract_entity_type(tag)
+        assert entity_type == "Taxonomy"
+
+    def test_extract_entity_type_from_chebi(self):
+        """Test extracting CHEBI type from IRI."""
+        tag = {"uri": "http://identifiers.org/chebi:123"}
+        entity_type = AnnotationParser._extract_entity_type(tag)
+        assert entity_type == "CHEBI"
+
+    def test_extract_entity_type_from_doid(self):
+        """Test extracting DOID (Disease) type from IRI."""
+        tag = {"uri": "http://identifiers.org/doid:123"}
+        entity_type = AnnotationParser._extract_entity_type(tag)
+        assert entity_type == "Disease"
+
+    def test_extract_provider_from_creator(self):
+        """Test extracting provider from creator field (JSON-LD format)."""
+        annotation = {"creator": "Europe PMC"}
+        provider = AnnotationParser._extract_provider(annotation)
+        assert provider == "Europe PMC"
+
+    def test_extract_provider_from_creator_dict(self):
+        """Test extracting provider from creator dict."""
+        annotation = {"creator": {"name": "Europe PMC"}}
+        provider = AnnotationParser._extract_provider(annotation)
+        assert provider == "Europe PMC"
+
+    def test_extract_provider_creator_fallback(self):
+        """Test provider extraction with creator as fallback."""
+        annotation = {"creator": "Europe PMC"}
+        provider = AnnotationParser._extract_provider(annotation)
+        assert provider == "Europe PMC"
+
+    def test_extract_provider_priority(self):
+        """Test provider extraction priority: provider > creator > annotator."""
+        # Provider takes priority
+        annotation = {
+            "provider": "PriorityProvider",
+            "creator": "CreatorProvider",
+        }
+        provider = AnnotationParser._extract_provider(annotation)
+        assert provider == "PriorityProvider"

@@ -22,6 +22,7 @@ logger = logging.getLogger(__name__)
 
 # Constants
 UNKNOWN_PROVIDER = "Unknown"
+UNKNOWN_ENTITY_TYPE = "Unknown"
 
 
 class AnnotationParser:
@@ -108,12 +109,57 @@ class AnnotationParser:
             if not isinstance(annotation, dict):
                 continue
 
-            # Entity annotations typically have tags with entity IDs
+            # Entity annotations can have either "tags" or "body" field
             tags = annotation.get("tags", [])
+
+            # If no tags, check for body field (JSON-LD format)
             if not tags:
+                body = annotation.get("body")
+                if body:
+                    # Extract prefix/suffix from target.selector (OA selector format)
+                    prefix = ""
+                    suffix = ""
+                    target = annotation.get("target")
+                    if isinstance(target, dict):
+                        selector = target.get("selector")
+                        if isinstance(selector, dict):
+                            selector_prefix = selector.get("prefix")
+                            prefix = (
+                                selector_prefix
+                                if selector_prefix
+                                else annotation.get("prefix", "")
+                            )
+                            selector_suffix = selector.get("suffix")
+                            suffix = (
+                                selector_suffix
+                                if selector_suffix
+                                else annotation.get("postfix", "")
+                            )
+
+                    # Create a synthetic tag from body IRI
+                    tag = {"uri": body}
+                    entity = {
+                        "id": body,
+                        "name": annotation.get("exact", ""),
+                        "type": AnnotationParser._extract_entity_type_from_body(body, annotation),
+                        "exact": annotation.get("exact", ""),
+                        "prefix": prefix,
+                        "postfix": suffix,
+                        "section": AnnotationParser._extract_section_from_target(annotation),
+                        "provider": AnnotationParser._extract_provider(annotation),
+                        "confidence": None,
+                        "article_id": AnnotationParser._extract_article_id_from_target(annotation),
+                    }
+
+                    # Add position information if available
+                    position = annotation.get("position")
+                    if position:
+                        entity["position"] = position
+
+                    entities.append(entity)
                 continue
 
-            # Extract entity information
+            # Extract entity information for tags format
             for tag in tags:
                 if not isinstance(tag, dict):
                     continue
@@ -257,20 +303,53 @@ class AnnotationParser:
         if not entity_type:
             uri = tag.get("uri") or tag.get("@id", "")
             if uri and ":" in uri:
-                entity_type = uri.split(":")[0]
+                # Check for identifiers.org format first
+                if "identifiers.org" in uri:
+                    # Extract the resource name from identifiers.org URIs
+                    # Format: http://identifiers.org/resource/identifier or http://identifiers.org/resource:identifier
+                    parts = uri.split("/")
+                    if len(parts) >= 3:
+                        # The resource name is the last part for URI form: http://identifiers.org/resource:identifier
+                        # or second-to-last for http://identifiers.org/resource/identifier
+                        # http://identifiers.org/chebi:123 -> chebi
+                        # http://identifiers.org/doid:123 -> doid
+                        # http://identifiers.org/taxonomy/9606 -> taxonomy
+                        resource_part = parts[-1]
+                        if ":" in resource_part:
+                            resource_name = resource_part.split(":")[0]
+                        elif resource_part.replace("-", "").isdigit():
+                            # If the last part looks like an identifier (numeric/valid ID),
+                            # use second-to-last
+                            # http://identifiers.org/taxonomy/9606 -> taxonomy (9606 is numeric)
+                            resource_name = parts[-2] if len(parts) >= 4 else resource_part
+                        else:
+                            resource_name = resource_part
+                        # Map specific resources to their types
+                        resource_type_map = {
+                            "doid": "Disease",
+                            "chebi": "CHEBI",
+                            "go": "GO",
+                            "taxon": "Taxonomy",
+                            "taxonomy": "Taxonomy",
+                        }
+                        entity_type = resource_type_map.get(
+                            resource_name, resource_name.capitalize()
+                        )
+                else:
+                    entity_type = uri.split(":")[0]
 
-        return str(entity_type)
+        return str(entity_type) if entity_type else UNKNOWN_ENTITY_TYPE
 
     @staticmethod
     def _extract_provider(annotation: dict[str, Any]) -> str:
         """Extract provider information from an annotation."""
         # Check various possible fields for provider
+        # First check the main provider field
         provider = annotation.get("provider", {})
         if isinstance(provider, dict):
             name = provider.get("name")
             if isinstance(name, str):
                 return name
-            return UNKNOWN_PROVIDER
         elif isinstance(provider, str):
             return provider
 
@@ -280,11 +359,64 @@ class AnnotationParser:
             name = annotator.get("name")
             if isinstance(name, str):
                 return name
-            return UNKNOWN_PROVIDER
         elif isinstance(annotator, str):
             return annotator
 
+        # Check creator field as fallback (JSON-LD format)
+        creator = annotation.get("creator")
+        if isinstance(creator, str):
+            return creator
+        elif isinstance(creator, dict):
+            name = creator.get("name")
+            if isinstance(name, str):
+                return name
+
         return UNKNOWN_PROVIDER
+
+    @staticmethod
+    def _extract_entity_type_from_body(body: str, annotation: dict[str, Any]) -> str:
+        """Extract entity type from body IRI."""
+        # Try to extract type from IRI domain
+        if not body:
+            return UNKNOWN_ENTITY_TYPE
+
+        # Check for known IRI patterns
+        if "browser.ihtsdotools.org" in body:
+            return "SNOMED_CT"
+        elif "identifiers.org" in body:
+            # Extract type from identifiers.org IRI
+            # e.g., http://identifiers.org/taxonomy/9606 -> Taxonomy
+            parts = body.split("/")
+            if len(parts) >= 4:
+                return parts[3].upper()
+
+        # Fallback: extract from annotation type field
+        entity_type = annotation.get("type") or annotation.get("@type", "")
+        if entity_type:
+            return str(entity_type)
+
+        return UNKNOWN_ENTITY_TYPE
+
+    @staticmethod
+    def _extract_section_from_target(annotation: dict[str, Any]) -> str:
+        """Extract section from target field."""
+        target = annotation.get("target")
+        if isinstance(target, dict):
+            section = target.get("isPartOf") or target.get("section")
+            if section:
+                return str(section)
+        section = annotation.get("section", "")
+        return str(section)
+
+    @staticmethod
+    def _extract_article_id_from_target(annotation: dict[str, Any]) -> str | None:
+        """Extract article ID from target source."""
+        target = annotation.get("target")
+        if isinstance(target, dict):
+            source = target.get("source")
+            if source:
+                return str(source)
+        return None
 
     @staticmethod
     def _extract_metadata(response: dict[str, Any]) -> dict[str, Any]:
@@ -318,14 +450,19 @@ def normalize_annotations_response(response: dict[str, Any]) -> dict[str, Any]:
             "valid": False,
         }
 
-    return {
+    result = {
         "entities": response.get("entities", []),
         "sentences": response.get("sentences", []),
         "relationships": response.get("relationships", []),
-        "metadata": response.get("metadata", {}),
+        "metadata": AnnotationParser._extract_metadata(response),
         "raw": response,
         "valid": True,
     }
+
+    if "annotations" in response:
+        result["annotations"] = response["annotations"]
+
+    return result
 
 
 def parse_annotations(

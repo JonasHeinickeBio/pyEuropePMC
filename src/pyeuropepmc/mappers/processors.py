@@ -286,7 +286,24 @@ def process_annotations_data(
 
     parsed_annotations: dict[str, Any]
     if not (isinstance(annotations_data, dict) and "entities" in annotations_data):
-        parsed_annotations = normalize_annotations_response(parse_annotations(annotations_data))
+        if isinstance(annotations_data, list) and annotations_data:
+            if isinstance(annotations_data[0], dict) and "annotations" in annotations_data[0]:
+                flattened_annotations = []
+                for article in annotations_data:
+                    article_annotations = article.get("annotations", [])
+                    if isinstance(article_annotations, list):
+                        flattened_annotations.extend(article_annotations)
+                parsed_annotations = normalize_annotations_response(
+                    parse_annotations(flattened_annotations)
+                )
+            else:
+                parsed_annotations = normalize_annotations_response(
+                    parse_annotations(annotations_data)
+                )
+        else:
+            parsed_annotations = normalize_annotations_response(
+                parse_annotations(annotations_data)
+            )
     else:
         parsed_annotations = normalize_annotations_response(annotations_data)
 
