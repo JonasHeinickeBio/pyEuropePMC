@@ -6,6 +6,7 @@ from Europe PMC, including PDF, XML, and HTML formats.
 """
 
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import gzip
 from io import BytesIO
 import json
@@ -13,12 +14,14 @@ import logging
 import os
 from pathlib import Path
 import tempfile
+from threading import Lock
 import time
 from typing import Any
 from urllib.parse import urljoin
 import zipfile
 
 import requests
+from tqdm import tqdm
 
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import APIClientError, BaseAPIClient
@@ -31,7 +34,7 @@ logger = logging.getLogger(__name__)
 # Type alias for strategy functions
 StrategyFunc = Callable[[], Path | None | bool | str | dict[str, Any]]
 
-__all__ = ["FullTextClient", "FullTextError", "ProgressInfo", "DownloadReport"]
+__all__ = ["FullTextClient", "FullTextError", "ProgressInfo", "DownloadReport", "RateLimiter"]
 
 
 class ProgressInfo:
@@ -231,6 +234,71 @@ class DownloadReport:
             if attempt["error"]:
                 lines.append(f"    Error: {attempt['error'][:100]}")
         return "\n".join(lines)
+
+
+class RateLimiter:
+    """
+    Per-worker rate limiter with 80% threshold warnings.
+
+    Tracks requests per second and warns when approaching rate limits.
+    Each worker gets its own RateLimiter instance for independent tracking.
+    """
+
+    def __init__(self, worker_id: int, max_requests_per_second: float = 1.0):
+        self.worker_id = worker_id
+        self.max_requests_per_second = max_requests_per_second
+        self.request_threshold = max_requests_per_second * 0.8
+        self.requests_made: int = 0
+        self.window_start: float = time.time()
+        self.warnings_issued: set[int] = set()
+        self.lock = Lock()
+
+    def check_and_record(self) -> bool:
+        """
+        Check if rate limit is approaching and record a request.
+
+        Returns:
+            True if request should proceed, False if rate limited
+        """
+        with self.lock:
+            current_time = time.time()
+            elapsed = current_time - self.window_start
+
+            # Reset window if more than 1 second has passed
+            if elapsed >= 1.0:
+                self.requests_made = 0
+                self.window_start = current_time
+                elapsed = 0
+
+            self.requests_made += 1
+
+            # Check if approaching threshold (80%)
+            if elapsed < 1.0 and self.requests_made >= self.request_threshold:
+                warning_key = int(current_time)
+                if warning_key not in self.warnings_issued:
+                    self.warnings_issued.add(warning_key)
+                    logger.warning(
+                        f"Worker {self.worker_id} approaching rate limit: "
+                        f"{self.requests_made}/{int(self.request_threshold)} req/s "
+                        f"(80% threshold)"
+                    )
+                    return False
+
+            return True
+
+    def get_stats(self) -> dict[str, Any]:
+        """Get rate limiter statistics."""
+        with self.lock:
+            return {
+                "worker_id": self.worker_id,
+                "requests_made": self.requests_made,
+                "window_start": self.window_start,
+                "warnings_issued": len(self.warnings_issued),
+            }
+
+
+WorkerStats = dict[int, dict[str, Any]]
+DownloadStats = dict[str, Any]
 
 
 class FullTextClient(BaseAPIClient):
@@ -2645,3 +2713,327 @@ class FullTextClient(BaseAPIClient):
 
         report.overall_status = "failed"
         return report
+
+    def download_fulltext_batch_parallel(  # noqa: C901
+        self,
+        pmcids: list[str],
+        format_type: str = "pdf",
+        output_dir: str | Path | None = None,
+        skip_errors: bool = True,
+        max_workers: int | None = None,
+        show_progress: bool = True,
+        verbose: bool = False,
+    ) -> dict[str, Path | None]:
+        """
+        Download full text content for multiple PMC IDs using parallel execution.
+
+        Uses ThreadPoolExecutor for concurrent downloads with rate limiting and
+        progress tracking. Each worker operates independently with its own rate limiter.
+
+        Parameters
+        ----------
+        pmcids : List[str]
+            List of PMC IDs to download
+        format_type : str, optional
+            Format type ('pdf', 'xml', or 'html', default is 'pdf')
+        output_dir : str or Path, optional
+            Directory to save files. If None, uses current directory
+        skip_errors : bool, optional
+            If True, continue downloading other files when one fails (default is True)
+        max_workers : int, optional
+            Number of parallel workers. If None, auto-detects CPU cores
+            and uses min(cpu_count(), 8). Range: 1-8
+        show_progress : bool, optional
+            If True, display tqdm progress bar (default is True)
+        verbose : bool, optional
+            If True, enable verbose logging (default is False)
+
+        Returns
+        -------
+        Dict[str, Optional[Path]]
+            Dictionary mapping PMC IDs to downloaded file paths (or None if failed)
+
+        Raises
+        ------
+        FullTextError
+            If skip_errors is False and any download fails
+
+        Examples
+        --------
+        >>> client = FullTextClient()
+        >>> results = client.download_fulltext_batch_parallel(pmcids)
+        >>> results = client.download_fulltext_batch_parallel(pmcids, max_workers=4)
+        >>> print(client.download_stats)
+        """
+        if not pmcids:
+            self.logger.warning("No PMC IDs provided for download")
+            self.download_stats = {
+                "total_items": 0,
+                "format_type": format_type,
+                "max_workers": 1,
+                "start_time": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "end_time": time.strftime("%Y-%m-%d %H:%M:%S"),
+                "total_time_seconds": 0.0,
+                "avg_speed": 0.0,
+                "success_rate": 0.0,
+                "worker_stats": {
+                    0: {"requests": 0, "failures": 0, "successes": 0, "time_spent": 0.0}
+                },
+                "global_stats": {"total_requests": 0, "total_failures": 0, "total_successes": 0},
+            }
+            return {}
+
+        self.logger.info(
+            f"Starting parallel batch download for {len(pmcids)} PMC IDs, "
+            f"format: {format_type}, workers: {max_workers or 'auto'}"
+        )
+        output_dir = Path.cwd() if output_dir is None else Path(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Auto-detect workers if not specified
+        if max_workers is None:
+            cpu_count = os.cpu_count() or 4
+            max_workers = min(cpu_count, 8)
+        else:
+            max_workers = max(1, min(max_workers, 8))
+
+        self.logger.info(f"Using {max_workers} parallel workers")
+
+        # Initialize rate limiters for each worker
+        rate_limiters = {
+            i: RateLimiter(worker_id=i, max_requests_per_second=1.0) for i in range(max_workers)
+        }
+
+        # Initialize locks for thread-safe updates
+        stats_lock = Lock()
+        progress_lock = Lock()
+
+        # Track errors for early termination
+        error_occurred = False
+
+        # Initialize statistics tracking
+        self.download_stats = {
+            "total_items": len(pmcids),
+            "format_type": format_type,
+            "max_workers": max_workers,
+            "start_time": time.strftime("%Y-%m-%d %H:%M:%S"),
+            "worker_stats": {
+                i: {"requests": 0, "failures": 0, "successes": 0, "time_spent": 0.0}
+                for i in range(max_workers)
+            },
+            "global_stats": {"total_requests": 0, "total_failures": 0, "total_successes": 0},
+        }
+
+        if verbose:
+            logger.debug(f"Rate limiters initialized for {max_workers} workers")
+
+        results: dict[str, Path | None] = {}
+        progress_info = ProgressInfo(total_items=len(pmcids), format_type=format_type)
+        progress_info.start_time = time.time()
+
+        def worker_download(args: tuple[int, str]) -> tuple[str, Path | None, dict[str, Any]]:
+            """Worker function to download a single item."""
+            worker_id, pmcid = args
+            rate_limiter = rate_limiters[worker_id]
+            worker_start = time.time()
+            result = None
+
+            try:
+                # Record request
+                rate_limiter.check_and_record()
+
+                # Validate and download
+                normalized_pmcid = self._validate_pmcid(pmcid)
+
+                if format_type == "pdf":
+                    output_path = output_dir / f"PMC{normalized_pmcid}.pdf"
+                    result = self.download_pdf_by_pmcid(pmcid, output_path)
+                elif format_type == "xml":
+                    output_path = output_dir / f"PMC{normalized_pmcid}.xml"
+                    result = self.download_xml_by_pmcid(pmcid, output_path)
+                elif format_type == "html":
+                    output_path = output_dir / f"PMC{normalized_pmcid}.html"
+                    result = self.download_html_by_pmcid(pmcid, output_path)
+                else:
+                    raise FullTextError(ErrorCodes.FULL010, format_type=format_type)
+
+            except FullTextError as e:
+                worker_time = time.time() - worker_start
+                with stats_lock:
+                    self.download_stats["worker_stats"][worker_id]["requests"] += 1  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+
+                return (
+                    pmcid,
+                    None,
+                    {"worker_id": worker_id, "elapsed": worker_time, "error": str(e)},
+                )
+
+            worker_time = time.time() - worker_start
+            with stats_lock:
+                self.download_stats["worker_stats"][worker_id]["requests"] += 1  # type: ignore[index]
+                self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time  # type: ignore[index]
+                if result:
+                    self.download_stats["worker_stats"][worker_id]["successes"] += 1  # type: ignore[index]
+                else:
+                    self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+
+            file_size = result.stat().st_size if result else 0
+            result_dict = {
+                "worker_id": worker_id,
+                "elapsed": worker_time,
+                "file_size": file_size,
+            }
+            return pmcid, result, result_dict
+
+        # Use ThreadPoolExecutor for parallel downloads
+        with ThreadPoolExecutor(max_workers=max_workers) as executor:
+            if show_progress:
+                with tqdm(
+                    total=len(pmcids),
+                    desc=f"Parallel Download ( Workers: {max_workers} )",
+                    unit="item",
+                    dynamic_ncols=True,
+                ) as pbar:
+                    futures = {
+                        executor.submit(worker_download, (i % max_workers, pmcid)): (i, pmcid)
+                        for i, pmcid in enumerate(pmcids)
+                    }
+
+                    for future in as_completed(futures):
+                        if skip_errors and error_occurred:
+                            break
+
+                        i, pmcid = futures[future]
+                        try:
+                            worker_pmcid, result, stats = future.result()
+                            with progress_lock:
+                                if result:
+                                    progress_info.successful_downloads += 1
+                                    if result.exists():
+                                        size = result.stat().st_size
+                                        progress_info.total_downloaded_bytes += size
+                                else:
+                                    progress_info.failed_downloads += 1
+
+                            progress_info.current_item = i + 1
+                            progress_info.current_pmcid = worker_pmcid
+                            results[worker_pmcid] = result
+
+                            pbar.update(1)
+                            pbar.set_postfix(
+                                {
+                                    "worker": stats["worker_id"],
+                                    "success": progress_info.successful_downloads,
+                                    "failed": progress_info.failed_downloads,
+                                    "speed": f"{progress_info.completion_rate:.2f} items/s",
+                                }
+                            )
+
+                        except Exception as e:
+                            worker_id = stats.get("worker_id", "unknown")
+                            self.logger.error(f"Worker {worker_id} error for {pmcid}: {e}")
+                            error_occurred = True
+                            with progress_lock:
+                                progress_info.failed_downloads += 1
+                                ws = self.download_stats["worker_stats"]
+                                if isinstance(ws, dict) and worker_id in ws:
+                                    ws[worker_id]["failures"] += 1
+                            results[pmcid] = None
+                            if not skip_errors:
+                                raise
+
+            else:
+                futures = {
+                    executor.submit(worker_download, (i % max_workers, pmcid)): (i, pmcid)
+                    for i, pmcid in enumerate(pmcids)
+                }
+
+                for future in as_completed(futures):
+                    if skip_errors and error_occurred:
+                        break
+
+                    i, pmcid = futures[future]
+                    try:
+                        worker_pmcid, result, stats = future.result()
+                        with progress_lock:
+                            if result:
+                                progress_info.successful_downloads += 1
+                                if result.exists():
+                                    progress_info.total_downloaded_bytes += result.stat().st_size
+                            else:
+                                progress_info.failed_downloads += 1
+
+                        progress_info.current_item = i + 1
+                        progress_info.current_pmcid = worker_pmcid
+                        results[worker_pmcid] = result
+
+                    except Exception as e:
+                        worker_id = stats.get("worker_id", "unknown")
+                        self.logger.error(f"Worker {worker_id} error for {pmcid}: {e}")
+                        error_occurred = True
+                        with progress_lock:
+                            progress_info.failed_downloads += 1
+                            ws = self.download_stats["worker_stats"]
+                            if isinstance(ws, dict) and worker_id in ws:
+                                ws[worker_id]["failures"] += 1
+                        results[pmcid] = None
+                        if not skip_errors:
+                            raise
+
+        # Update global statistics
+        self.download_stats["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
+        self.download_stats["total_time_seconds"] = time.time() - progress_info.start_time
+        total_time: float = self.download_stats["total_time_seconds"]  # type: ignore[assignment]
+        self.download_stats["avg_speed"] = len(pmcids) / total_time if total_time > 0 else 0
+
+        for worker_id in range(max_workers):
+            worker_stat = self.download_stats["worker_stats"][worker_id]  # type: ignore[index]
+            self.download_stats["global_stats"]["total_requests"] += worker_stat["requests"]  # type: ignore[index]
+            self.download_stats["global_stats"]["total_failures"] += worker_stat["failures"]  # type: ignore[index]
+            self.download_stats["global_stats"]["total_successes"] += worker_stat["successes"]  # type: ignore[index]
+
+        self.download_stats["success_rate"] = (
+            self.download_stats["global_stats"]["total_successes"] / len(pmcids)  # type: ignore[index]
+            if len(pmcids) > 0
+            else 0
+        )
+
+        self.logger.info(
+            f"Parallel batch download completed: "
+            f"{progress_info.successful_downloads} successful, "
+            f"{progress_info.failed_downloads} failed, "
+            f"avg speed: {self.download_stats['avg_speed']:.2f} items/s"
+        )
+
+        return results
+
+    def _update_worker_stats(
+        self, lock: Lock, worker_id: int, worker_time: float, result: Path | None, is_success: bool
+    ) -> None:
+        """Update worker statistics in a thread-safe manner.
+
+        Parameters
+        ----------
+        lock : Lock
+            Thread lock for synchronization
+        worker_id : int
+            Worker ID
+        worker_time : float
+            Time spent in worker
+        result : Path or None
+            Download result
+        is_success : bool
+            Whether this was a success
+        """
+        with lock:
+            self.download_stats["worker_stats"][worker_id]["requests"] += 1  # type: ignore[index]
+            self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time  # type: ignore[index]
+            if is_success:
+                if result:
+                    self.download_stats["worker_stats"][worker_id]["successes"] += 1  # type: ignore[index]
+                else:
+                    self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+            else:
+                self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]

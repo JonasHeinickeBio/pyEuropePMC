@@ -11,6 +11,7 @@ The **FullTextClient** and **FTPDownloader** provide comprehensive capabilities 
 - 📊 **Progress tracking** with callbacks
 - 🔄 **Automatic retry** and error handling
 - 💾 **Smart caching** for repeated requests
+- ⚡ **Parallel batch downloads** with rate limiting and statistics
 
 ## Quick Start
 
