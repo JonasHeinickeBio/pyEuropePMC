@@ -1,7 +1,7 @@
 # Advanced Examples
 
 **Level**: ⭐⭐⭐ Advanced
-**Examples**: 7 files (4 notebooks + 3 scripts)
+**Examples**: 8 files (4 notebooks + 4 scripts)
 **Time**: 45-60 minutes
 
 ## Overview
@@ -63,6 +63,23 @@ Analyze corpus schemas:
 - Statistical analysis
 - Corpus profiling
 - Compatibility testing
+
+### 04-mecfs-kg-readiness-demo.py
+**Large-scale ME/CFS KG readiness demo**
+
+Assess a 100,000-paper ME/CFS corpus for KG readiness:
+- Open access signal coverage
+- XML full-text availability
+- Annotation availability and RDF enrichment
+- Literature KG and physiological KG capability scoring
+
+**What you'll build**: A professional readiness report for a high-value biomedical corpus
+
+**Key topics**:
+- Cursor-based large-scale retrieval
+- Full-text and annotation probing
+- Scientific KG best-practice checks
+- JSON reporting and operational summaries
 
 ## 🚀 Quick Examples
 

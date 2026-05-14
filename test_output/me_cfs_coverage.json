@@ -1,0 +1,18 @@
+{
+  "annotation_entities": 16,
+  "annotation_relationships": 0,
+  "annotation_verified": true,
+  "annotation_verified_article_id": "PMC:12888368",
+  "matched_paper": {
+    "isOpenAccess": null,
+    "pmcid": "PMC12888368",
+    "pmid": "41444612",
+    "title": null
+  },
+  "open_access_count": 6687,
+  "pmcid_count": 7546,
+  "query": "\"myalgic encephalomyelitis\" OR \"ME/CFS\" OR \"chronic fatigue syndrome\"",
+  "total_results": 10000,
+  "xml_verified": true,
+  "xml_verified_article_id": "PMC:12888368"
+}

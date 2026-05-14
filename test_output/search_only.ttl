@@ -8,56 +8,234 @@
 @prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/pyeuropepmc/author/jiang-ch> a foaf:Person ;
-    prov:generatedAtTime "2025-12-05T18:54:52.716342" ;
+<https://w3id.org/pyeuropepmc/author/chan-rck> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:19.531484" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Jiang"^^xsd:string ;
-    foaf:givenName "Can-Hua"^^xsd:string ;
-    foaf:initials "CH"^^xsd:string ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Jiang CH"^^xsd:string .
+    foaf:familyName "Chan"^^xsd:string ;
+    foaf:givenName "Ronald Cheong Kin"^^xsd:string ;
+    foaf:initials "RCK"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Chan RCK"^^xsd:string .
 
-<https://w3id.org/pyeuropepmc/author/li-n> a foaf:Person ;
-    prov:generatedAtTime "2025-12-05T18:54:52.730846" ;
+<https://w3id.org/pyeuropepmc/author/chen-h> a foaf:Person ;
+    datacite:orcid "0000-0002-8400-3780"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-8400-3780> ;
+    prov:generatedAtTime "2026-04-24T11:17:20.013113" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Chen"^^xsd:string ;
+    foaf:givenName "Hao"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Chen H"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/han-a> a foaf:Person ;
+    datacite:orcid "0000-0003-2245-1972"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0003-2245-1972> ;
+    prov:generatedAtTime "2026-04-24T11:17:19.376763" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Han"^^xsd:string ;
+    foaf:givenName "Anjia"^^xsd:string ;
+    foaf:initials "A"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Han A"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/jin-c> a foaf:Person ;
+    datacite:orcid "0000-0002-3522-3592"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-3522-3592> ;
+    prov:generatedAtTime "2026-04-24T11:17:17.061911" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Jin"^^xsd:string ;
+    foaf:givenName "Cheng"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Jin C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/li-j> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:17.504628" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
     foaf:familyName "Li"^^xsd:string ;
-    foaf:givenName "Ning"^^xsd:string ;
-    foaf:initials "N"^^xsd:string ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Li N"^^xsd:string .
+    foaf:givenName "Jinbang"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Li J"^^xsd:string .
 
-<https://w3id.org/pyeuropepmc/author/tufail-m> a foaf:Person ;
-    datacite:orcid "0000-0003-3442-7216"^^xsd:string ;
-    owl:sameAs <https://orcid.org/0000-0003-3442-7216> ;
-    prov:generatedAtTime "2025-12-05T18:54:52.701752" ;
+<https://w3id.org/pyeuropepmc/author/li-z> a foaf:Person ;
+    datacite:orcid "0009-0009-3613-9403"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0009-0009-3613-9403> ;
+    prov:generatedAtTime "2026-04-24T11:17:18.437593" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:familyName "Tufail"^^xsd:string ;
-    foaf:givenName "Muhammad"^^xsd:string ;
-    foaf:initials "M"^^xsd:string ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Tufail M"^^xsd:string .
+    foaf:familyName "Li"^^xsd:string ;
+    foaf:givenName "Zhenhui"^^xsd:string ;
+    foaf:initials "Z"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Li Z"^^xsd:string .
 
-<https://pubmed.ncbi.nlm.nih.gov/40739089/> a bibo:AcademicArticle ;
-    meshv:hasDescriptor "Humans",
-        "Immune Evasion",
-        "Immunotherapy",
+<https://w3id.org/pyeuropepmc/author/liang-l> a foaf:Person ;
+    datacite:orcid "0000-0001-5302-2754"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-5302-2754> ;
+    prov:generatedAtTime "2026-04-24T11:17:19.702063" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Liang"^^xsd:string ;
+    foaf:givenName "Li"^^xsd:string ;
+    foaf:initials "L"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Liang L"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/lin-h> a foaf:Person ;
+    datacite:orcid "0000-0002-6799-9352"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-6799-9352> ;
+    prov:generatedAtTime "2026-04-24T11:17:18.691649" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Lin"^^xsd:string ;
+    foaf:givenName "Huangjing"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Lin H"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/ma-j> a foaf:Person ;
+    datacite:orcid "0000-0001-8532-4466"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0001-8532-4466> ;
+    prov:generatedAtTime "2026-04-24T11:17:16.808169" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Ma"^^xsd:string ;
+    foaf:givenName "Jiabo"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Ma J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/wang-j> a foaf:Person ;
+    datacite:orcid "0000-0002-6923-4097"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-6923-4097> ;
+    prov:generatedAtTime "2026-04-24T11:17:19.215014" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Jiguang"^^xsd:string ;
+    foaf:initials "J"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Wang J"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/wang-x> a foaf:Person ;
+    datacite:orcid "0000-0002-5122-2418"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-5122-2418> ;
+    prov:generatedAtTime "2026-04-24T11:17:18.960715" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Xin"^^xsd:string ;
+    foaf:initials "X"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Wang X"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/wang-y> a foaf:Person ;
+    datacite:orcid "0009-0002-7606-9816"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0009-0002-7606-9816> ;
+    prov:generatedAtTime "2026-04-24T11:17:16.235891" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Wang"^^xsd:string ;
+    foaf:givenName "Yihui"^^xsd:string ;
+    foaf:initials "Y"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Wang Y"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/xu-y> a foaf:Person ;
+    datacite:orcid "0000-0002-9657-3107"^^xsd:string ;
+    owl:sameAs <https://orcid.org/0000-0002-9657-3107> ;
+    prov:generatedAtTime "2026-04-24T11:17:15.957476" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Xu"^^xsd:string ;
+    foaf:givenName "Yingxue"^^xsd:string ;
+    foaf:initials "Y"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Xu Y"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/yang-s> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:17.279699" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Yang"^^xsd:string ;
+    foaf:givenName "Shu"^^xsd:string ;
+    foaf:initials "S"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Yang S"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhang-x> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:19.861191" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Xiuming"^^xsd:string ;
+    foaf:initials "X"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhang X"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhang-z> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:17.802731" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhang"^^xsd:string ;
+    foaf:givenName "Zhengyu"^^xsd:string ;
+    foaf:initials "Z"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhang Z"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhao-c> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:18.006238" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhao"^^xsd:string ;
+    foaf:givenName "Chenglong"^^xsd:string ;
+    foaf:initials "C"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhao C"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhou-f> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:16.519761" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhou"^^xsd:string ;
+    foaf:givenName "Fengtao"^^xsd:string ;
+    foaf:initials "F"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhou F"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhou-h> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T11:17:18.197420" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:familyName "Zhou"^^xsd:string ;
+    foaf:givenName "Huajun"^^xsd:string ;
+    foaf:initials "H"^^xsd:string ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhou H"^^xsd:string .
+
+<https://pubmed.ncbi.nlm.nih.gov/41387679/> a bibo:AcademicArticle ;
+    meshv:hasDescriptor "Computational Biology",
+        "Humans",
+        "Image Processing, Computer-Assisted",
         "Neoplasms",
-        "Signal Transduction",
-        "Tumor Escape",
-        "Tumor Microenvironment" ;
-    dcterms:abstract "Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte-associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS-STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology."^^xsd:string ;
-    dcterms:creator <https://w3id.org/pyeuropepmc/author/jiang-ch>,
-        <https://w3id.org/pyeuropepmc/author/li-n>,
-        <https://w3id.org/pyeuropepmc/author/tufail-m> ;
+        "Pathology" ;
+    dcterms:abstract "Computational pathology has advanced through foundation models, yet faces challenges in multimodal integration and capturing whole-slide context. Current approaches typically utilize either vision-only or image-caption data, overlooking distinct insights from pathology reports and gene expression profiles. Additionally, most models focus on patch-level analysis, failing to capture comprehensive whole-slide patterns. Here we present mSTAR (Multimodal Self-TAught PRetraining), the pathology foundation model that incorporates three modalities: pathology slides, expert-created reports, and gene expression data, within a unified framework. Our dataset includes 26,169 slide-level modality pairs across 32 cancer types, comprising over 116 million patch images. This approach injects multimodal whole-slide context into patch representations, expanding modeling from single to multiple modalities and from patch-level to slide-level analysis. Across oncological benchmark spanning 97 tasks, mSTAR outperforms previous state-of-the-art models, particularly in molecular prediction and multimodal tasks, revealing that multimodal integration yields greater improvements than simply expanding vision-only datasets."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/author/chan-rck>,
+        <https://w3id.org/pyeuropepmc/author/chen-h>,
+        <https://w3id.org/pyeuropepmc/author/han-a>,
+        <https://w3id.org/pyeuropepmc/author/jin-c>,
+        <https://w3id.org/pyeuropepmc/author/li-j>,
+        <https://w3id.org/pyeuropepmc/author/li-z>,
+        <https://w3id.org/pyeuropepmc/author/liang-l>,
+        <https://w3id.org/pyeuropepmc/author/lin-h>,
+        <https://w3id.org/pyeuropepmc/author/ma-j>,
+        <https://w3id.org/pyeuropepmc/author/wang-j>,
+        <https://w3id.org/pyeuropepmc/author/wang-x>,
+        <https://w3id.org/pyeuropepmc/author/wang-y>,
+        <https://w3id.org/pyeuropepmc/author/xu-y>,
+        <https://w3id.org/pyeuropepmc/author/yang-s>,
+        <https://w3id.org/pyeuropepmc/author/zhang-x>,
+        <https://w3id.org/pyeuropepmc/author/zhang-z>,
+        <https://w3id.org/pyeuropepmc/author/zhao-c>,
+        <https://w3id.org/pyeuropepmc/author/zhou-f>,
+        <https://w3id.org/pyeuropepmc/author/zhou-h> ;
     dcterms:issued "2025"^^xsd:gYear ;
-    dcterms:title "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches."^^xsd:string ;
-    bibo:doi "10.1038/s41392-025-02280-1"^^xsd:anyURI ;
-    owl:sameAs <https://doi.org/10.1038/s41392-025-02280-1>,
-        <https://europepmc.org/article/MED/40739089>,
-        <https://europepmc.org/article/PMC/12311175/>,
-        <https://pubmed.ncbi.nlm.nih.gov/40739089/>,
-        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12311175/> ;
-    prov:generatedAtTime "2025-12-05T18:54:52.730894" ;
+    dcterms:title "A multimodal knowledge-enhanced whole-slide pathology foundation model."^^xsd:string ;
+    bibo:doi "10.1038/s41467-025-66220-x"^^xsd:anyURI ;
+    owl:sameAs <https://doi.org/10.1038/s41467-025-66220-x>,
+        <https://europepmc.org/article/MED/41387679>,
+        <https://europepmc.org/article/PMC/12738713/>,
+        <https://pubmed.ncbi.nlm.nih.gov/41387679/>,
+        <https://www.ncbi.nlm.nih.gov/pmc/articles/PMC12738713/> ;
+    prov:generatedAtTime "2026-04-24T11:17:20.013434" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmcid "PMC12311175"^^xsd:string ;
-    pyeuropepmc:pmid "40739089"^^xsd:string .
+    pyeuropepmc:pmcid "PMC12738713"^^xsd:string ;
+    pyeuropepmc:pmid "41387679"^^xsd:string .

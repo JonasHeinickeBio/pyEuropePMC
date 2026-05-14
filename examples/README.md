@@ -41,7 +41,7 @@ Welcome to the PyEuropePMC examples directory! This folder contains organized ex
 - Multi-client caching patterns
 
 ### [07-advanced](./07-advanced/) - Advanced Features
-**7 examples** - Power user techniques
+**8 examples** - Power user techniques
 - Advanced parsing patterns
 - Progress callbacks for long operations
 - Schema coverage analysis
@@ -63,6 +63,14 @@ Welcome to the PyEuropePMC examples directory! This folder contains organized ex
 - Advanced enrichment patterns
 - RDF conversion with enrichment
 - Multi-source enrichment integration
+
+### [10-annotations](./10-annotations/) - Annotations & Knowledge Graphs ✨ NEW
+**5 examples** - Extract biomedical concepts and build knowledge graphs
+- Annotation API response structure
+- Parse and ingest annotations from Europe PMC
+- Convert annotations to RDF/Knowledge Graph format
+- W3C Open Annotation Data Model
+- SPARQL querying of annotation data
 
 ### [10-rdf-mapping](./10-rdf-mapping/) - Semantic Integration
 **5 examples** - Convert articles to RDF knowledge graphs
@@ -155,6 +163,6 @@ Have a useful example? Contributions welcome!
 
 ---
 
-**Total Examples**: 39 files (21 notebooks + 18 scripts) organized into 10 feature categories
+**Total Examples**: 40 files (21 notebooks + 19 scripts) organized into 10 feature categories
 
 *Last Updated: November 2025*

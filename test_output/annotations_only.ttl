@@ -1,0 +1,213 @@
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
+@prefix prov: <http://www.w3.org/ns/prov#> .
+@prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://europepmc.org/article/MED/41444612#europepmc-03205efffe97774196f6ae94517bd63a> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "lipid" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.944906" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-1afc348d4dda4b23c8170fad0113afc3> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "ME" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.947680" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-1c25ca2d64a70fceadb72be72f7fd988> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "solute homeostasis" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.945797" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-2baa15d107d8818b65a9a89bdf146d60> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "ME" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.938824" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-3461300753dc13c7e3c8a405effe96a7> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "metabolic failure" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.947010" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-50b2a3b10e3cfb3a942c6acb716dbf59> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "ME/CFS" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.949360" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-6335968432a133ac53a1ff1d1541192c> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "RNA-seq" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.941388" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-6c58a740a7f1da37c17c4ddc8f506fff> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "ME" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.948463" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-7e10209829c819602f822cb9fb811974> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "amino acid" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.944161" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-8c9141e026efd75ebf9c93ec2338518c> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "oxygen" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.946420" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-a5fda6747e0fb5072bcfac6e0e351425> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "fatty acid" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.943309" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-a9f039642bf8027c0202c329c345cda0> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "cognitive dysfunction" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.940397" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-b3829232d228dddb810c1bc51a5b8d93> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "chronic fatigue syndrome" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.937949" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-b9f4526f6297ac1cebcdf9a5dc38869b> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "sleep" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.939533" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-c195ee1f3cb25a9e98327eb6426934a2> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "Myalgic encephalomyelitis" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.937020" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .
+
+<http://europepmc.org/article/MED/41444612#europepmc-f86b0fc81f872b39506fcdc6d9725abd> a oa:Annotation,
+        oa:SpecificResource,
+        pyeuropepmc:EntityAnnotation ;
+    dcterms:creator "Europe PMC" ;
+    dcterms:isPartOf "Abstract (http://purl.org/dc/terms/abstract)" ;
+    oa:hasBody "phosphorylation" ;
+    oa:hasTarget "http://europepmc.org/article/MED/41444612"^^xsd:anyURI ;
+    prov:generatedAtTime "2026-04-24T10:22:41.942389" ;
+    prov:wasDerivedFrom <http://europepmc.org/article/MED/41444612> ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    pyeuropepmc:annotationType "entity" ;
+    pyeuropepmc:articleId "PMC12888368" .

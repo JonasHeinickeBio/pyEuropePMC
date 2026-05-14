@@ -39,7 +39,22 @@ An interactive Jupyter notebook tutorial covering:
 jupyter notebook annotations_workflow.ipynb
 ```
 
-### 3. `annotations_to_rdf_demo.py` ✨ NEW
+### 3. `annotation_api_demo.ipynb` ✨ NEW
+An interactive Jupyter notebook showing the complete annotation pipeline:
+- **Raw API Response**: Display the actual JSON-LD from the Europe PMC Annotations API
+- **Parsing**: Extract structured entities, relationships, and context
+- **RDF Conversion**: Transform to W3C Open Annotation model triples
+- **Knowledge Graph Integration**: Create a SPARQL-queryable knowledge graph
+- **Visualization**: Display RDF triples in Turtle format
+
+Perfect for understanding how biomedical concepts flow from API response through ingestion to knowledge graph integration.
+
+**Open the notebook:**
+```bash
+jupyter notebook annotation_api_demo.ipynb
+```
+
+### 4. `annotations_to_rdf_demo.py`
 A demonstration of converting annotations to RDF graphs:
 - Fetching and parsing annotations
 - Converting to entity models
@@ -215,10 +230,10 @@ def find_gene_disease_associations(article_ids):
     """Extract gene-disease co-occurrences."""
     annotations = client.get_annotations_by_article_ids(article_ids)
     parsed = parse_annotations(annotations)
-    
+
     genes = [e for e in parsed['entities'] if e['type'] == 'Gene']
     diseases = [e for e in parsed['entities'] if e['type'] == 'Disease']
-    
+
     return genes, diseases
 ```
 

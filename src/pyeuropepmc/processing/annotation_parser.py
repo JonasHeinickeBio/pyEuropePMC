@@ -70,8 +70,18 @@ class AnnotationParser:
         if not isinstance(annotations, list):
             annotations = [annotations] if annotations else []
 
+        # Flatten nested annotations (article objects with nested "annotations" field)
+        flattened_annotations = []
+        for annotation in annotations:
+            if isinstance(annotation, dict) and "annotations" in annotation:
+                nested_annotations = annotation.get("annotations", [])
+                if isinstance(nested_annotations, list):
+                    flattened_annotations.extend(nested_annotations)
+            else:
+                flattened_annotations.append(annotation)
+
         # Extract different types of annotations
-        entities = AnnotationParser.extract_entities(annotations)
+        entities = AnnotationParser.extract_entities(flattened_annotations)
         sentences = AnnotationParser.extract_sentences(annotations)
         relationships = AnnotationParser.extract_relationships(annotations)
 
@@ -83,6 +93,86 @@ class AnnotationParser:
             "raw": response,
             "valid": True,
         }
+
+    @staticmethod
+    def _extract_entity_from_body(annotation: dict[str, Any]) -> dict[str, Any] | None:
+        """Extract entity from body field (JSON-LD format)."""
+        body = annotation.get("body")
+        if not body:
+            return None
+
+        prefix = ""
+        suffix = ""
+        target = annotation.get("target")
+        if isinstance(target, dict):
+            selector = target.get("selector")
+            if isinstance(selector, dict):
+                selector_prefix = selector.get("prefix")
+                prefix = selector_prefix if selector_prefix else annotation.get("prefix", "")
+                selector_suffix = selector.get("suffix")
+                suffix = selector_suffix if selector_suffix else annotation.get("postfix", "")
+
+        return {
+            "id": body,
+            "name": annotation.get("exact", ""),
+            "type": AnnotationParser._extract_entity_type_from_body(body, annotation),
+            "exact": annotation.get("exact", ""),
+            "prefix": prefix,
+            "postfix": suffix,
+            "section": AnnotationParser._extract_section_from_target(annotation),
+            "provider": AnnotationParser._extract_provider(annotation),
+            "confidence": None,
+            "article_id": AnnotationParser._extract_article_id_from_target(annotation),
+        }
+
+    @staticmethod
+    def _extract_entity_from_tag(
+        annotation: dict[str, Any], tag: dict[str, Any]
+    ) -> dict[str, Any]:
+        """Extract entity from tags field."""
+        name = tag.get("name", "") or annotation.get("exact", "")
+        entity = {
+            "id": tag.get("uri") or tag.get("@id", ""),
+            "name": name,
+            "type": AnnotationParser._extract_entity_type(tag),
+            "exact": annotation.get("exact", ""),
+            "prefix": annotation.get("prefix", ""),
+            "postfix": annotation.get("postfix", ""),
+            "section": annotation.get("section", ""),
+            "provider": AnnotationParser._extract_provider(annotation),
+            "confidence": tag.get("confidence"),
+        }
+
+        position = annotation.get("position")
+        if position:
+            entity["position"] = position
+
+        if "id" not in entity or not entity["id"]:
+            import uuid
+
+            entity["id"] = f"annotation-{uuid.uuid4().hex[:12]}"
+
+        if "annotation_id" not in entity:
+            entity["annotation_id"] = entity["id"]
+
+        return entity
+
+    @staticmethod
+    def _deduplicate_entities(entities: list[dict[str, Any]]) -> list[dict[str, Any]]:
+        """Deduplicate entities based on key fields."""
+        seen = set()
+        unique_entities = []
+        for entity in entities:
+            dedup_key = (
+                entity.get("id"),
+                entity.get("exact"),
+                entity.get("section"),
+                entity.get("provider"),
+            )
+            if dedup_key not in seen:
+                seen.add(dedup_key)
+                unique_entities.append(entity)
+        return unique_entities
 
     @staticmethod
     def extract_entities(annotations: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -109,81 +199,24 @@ class AnnotationParser:
             if not isinstance(annotation, dict):
                 continue
 
-            # Entity annotations can have either "tags" or "body" field
             tags = annotation.get("tags", [])
 
-            # If no tags, check for body field (JSON-LD format)
             if not tags:
-                body = annotation.get("body")
-                if body:
-                    # Extract prefix/suffix from target.selector (OA selector format)
-                    prefix = ""
-                    suffix = ""
-                    target = annotation.get("target")
-                    if isinstance(target, dict):
-                        selector = target.get("selector")
-                        if isinstance(selector, dict):
-                            selector_prefix = selector.get("prefix")
-                            prefix = (
-                                selector_prefix
-                                if selector_prefix
-                                else annotation.get("prefix", "")
-                            )
-                            selector_suffix = selector.get("suffix")
-                            suffix = (
-                                selector_suffix
-                                if selector_suffix
-                                else annotation.get("postfix", "")
-                            )
-
-                    # Create a synthetic tag from body IRI
-                    tag = {"uri": body}
-                    entity = {
-                        "id": body,
-                        "name": annotation.get("exact", ""),
-                        "type": AnnotationParser._extract_entity_type_from_body(body, annotation),
-                        "exact": annotation.get("exact", ""),
-                        "prefix": prefix,
-                        "postfix": suffix,
-                        "section": AnnotationParser._extract_section_from_target(annotation),
-                        "provider": AnnotationParser._extract_provider(annotation),
-                        "confidence": None,
-                        "article_id": AnnotationParser._extract_article_id_from_target(annotation),
-                    }
-
-                    # Add position information if available
+                entity = AnnotationParser._extract_entity_from_body(annotation)
+                if entity:
                     position = annotation.get("position")
                     if position:
                         entity["position"] = position
-
                     entities.append(entity)
                 continue
 
-            # Extract entity information for tags format
             for tag in tags:
                 if not isinstance(tag, dict):
                     continue
-
-                entity = {
-                    "id": tag.get("uri") or tag.get("@id", ""),
-                    "name": tag.get("name", ""),
-                    "type": AnnotationParser._extract_entity_type(tag),
-                    "exact": annotation.get("exact", ""),
-                    "prefix": annotation.get("prefix", ""),
-                    "postfix": annotation.get("postfix", ""),
-                    "section": annotation.get("section", ""),
-                    "provider": AnnotationParser._extract_provider(annotation),
-                    "confidence": tag.get("confidence"),
-                }
-
-                # Add position information if available
-                position = annotation.get("position")
-                if position:
-                    entity["position"] = position
-
+                entity = AnnotationParser._extract_entity_from_tag(annotation, tag)
                 entities.append(entity)
 
-        return entities
+        return AnnotationParser._deduplicate_entities(entities)
 
     @staticmethod
     def extract_sentences(annotations: list[dict[str, Any]]) -> list[dict[str, Any]]:

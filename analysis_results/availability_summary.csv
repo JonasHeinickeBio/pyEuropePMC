@@ -1,0 +1,43 @@
+PMCID,XML_Available,XML_Methods,PDF_Available,PDF_Methods,HTML_Available,HTML_Methods,Recommendations
+PMC12823910,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12732907,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12377778,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12785749,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12159039,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11623837,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11537498,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC11771906,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12744296,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12386925,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12864992,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC11953386,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12734507,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC10661112,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC13068840,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC10490974,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC10764071,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC10308215,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11877039,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11755773,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11394909,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC9524193,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12888595,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12876057,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC13072972,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC9724286,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC9168545,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC8959090,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC10822158,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC11347473,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11500513,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC11768041,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC8835111,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC12040102,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11661678,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC8101228,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC8347596,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC11704346,True,rest_api,False,,True,web_interface,Use XML via: rest_api; No PDF available through known methods; Use HTML via: web_interface
+PMC8186297,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC11225883,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC5510613,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface
+PMC9538807,False,,False,,True,web_interface,No XML available through known methods; No PDF available through known methods; Use HTML via: web_interface

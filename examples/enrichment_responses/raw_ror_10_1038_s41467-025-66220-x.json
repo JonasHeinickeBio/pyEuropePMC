@@ -1,0 +1,1822 @@
+{
+  "00sz56h79": {
+    "ror_id": "https://ror.org/00sz56h79",
+    "status": "active",
+    "types": [
+      "facility"
+    ],
+    "established": 1999,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "HKUST Shenzhen Research Institute"
+      }
+    ],
+    "display_name": "HKUST Shenzhen Research Institute",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "GD",
+          "country_subdivision_name": "Guangdong",
+          "lat": 20.31261,
+          "lng": 110.16439,
+          "name": "Nanshan"
+        },
+        "geonames_id": 8333973
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Nanshan",
+    "latitude": 20.31261,
+    "longitude": 110.16439,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.shenzhen-institute.ust.hk/en/sz_ier.htm"
+      }
+    ],
+    "website": "http://www.shenzhen-institute.ust.hk/en/sz_ier.htm",
+    "external_ids": [
+      {
+        "all": [
+          "grid.495521.e"
+        ],
+        "preferred": "grid.495521.e",
+        "type": "grid"
+      }
+    ],
+    "grid_id": "grid.495521.e",
+    "relationships": [
+      {
+        "label": "Hong Kong University of Science and Technology",
+        "type": "parent",
+        "id": "https://ror.org/00q4vv597"
+      },
+      {
+        "label": "Peking University",
+        "type": "parent",
+        "id": "https://ror.org/02v51f717"
+      },
+      {
+        "label": "Shenzhen Municipal People's Government",
+        "type": "parent",
+        "id": "https://ror.org/05rcfc739"
+      }
+    ],
+    "domains": []
+  },
+  "03wnrsb51": {
+    "ror_id": "https://ror.org/03wnrsb51",
+    "status": "active",
+    "types": [
+      "healthcare"
+    ],
+    "established": 1960,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Shandong Provincial QianFoShan Hospital"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "山东省千佛山医院"
+      }
+    ],
+    "display_name": "Shandong Provincial QianFoShan Hospital",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "SD",
+          "country_subdivision_name": "Shandong",
+          "lat": 36.66833,
+          "lng": 116.99722,
+          "name": "Jinan"
+        },
+        "geonames_id": 1805753
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Jinan",
+    "latitude": 36.66833,
+    "longitude": 116.99722,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.sdhospital.com.cn/"
+      }
+    ],
+    "website": "http://www.sdhospital.com.cn/",
+    "external_ids": [
+      {
+        "all": [
+          "grid.452422.7"
+        ],
+        "preferred": "grid.452422.7",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 0604 7301"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q30296182"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.452422.7",
+    "relationships": [],
+    "domains": []
+  },
+  "00a2xv884": {
+    "ror_id": "https://ror.org/00a2xv884",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1897,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Chekiang University"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "ZJU"
+      },
+      {
+        "lang": null,
+        "types": [
+          "alias"
+        ],
+        "value": "Zheda"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Zhejiang University"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "浙江大学"
+      }
+    ],
+    "display_name": "Zhejiang University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "ZJ",
+          "country_subdivision_name": "Zhejiang",
+          "lat": 30.29365,
+          "lng": 120.16142,
+          "name": "Hangzhou"
+        },
+        "geonames_id": 1808926
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Hangzhou",
+    "latitude": 30.29365,
+    "longitude": 120.16142,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.zju.edu.cn"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Zhejiang_University"
+      }
+    ],
+    "website": "https://www.zju.edu.cn",
+    "external_ids": [
+      {
+        "all": [
+          "501100004835",
+          "501100002771",
+          "501100002928",
+          "100009109",
+          "501100012602"
+        ],
+        "preferred": "501100004835",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.13402.34"
+        ],
+        "preferred": "grid.13402.34",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1759 700X"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q197543"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100004835",
+    "grid_id": "grid.13402.34",
+    "relationships": [
+      {
+        "label": "Collaborative Innovation Center of Advanced Microstructures",
+        "type": "child",
+        "id": "https://ror.org/04ttadj76"
+      },
+      {
+        "label": "Huzhou Central Hospital",
+        "type": "child",
+        "id": "https://ror.org/01czx1v82"
+      },
+      {
+        "label": "The Synergetic Innovation Center for Advanced Materials",
+        "type": "child",
+        "id": "https://ror.org/05nzc1r88"
+      },
+      {
+        "label": "Zhejiang Taizhou Hospital",
+        "type": "child",
+        "id": "https://ror.org/05m0wv206"
+      },
+      {
+        "label": "Zhejiang University-University of Edinburgh Institute",
+        "type": "child",
+        "id": "https://ror.org/04jth1r26"
+      },
+      {
+        "label": "State Key Laboratory of Diagnosis and Treatment of Infectious Diseases",
+        "type": "child",
+        "id": "https://ror.org/00325dg83"
+      },
+      {
+        "label": "State Key Laboratory Fluid Power and Mechatronic Systems",
+        "type": "child",
+        "id": "https://ror.org/01h0g5x34"
+      },
+      {
+        "label": "State Key Laboratory of Clean Energy Utilization",
+        "type": "child",
+        "id": "https://ror.org/01mx22g67"
+      },
+      {
+        "label": "State Key Laboratory of Silicon Materials",
+        "type": "child",
+        "id": "https://ror.org/02dmmay61"
+      },
+      {
+        "label": "State Key Laboratory of Computer Aided Design and Graphics",
+        "type": "child",
+        "id": "https://ror.org/04jwqm611"
+      },
+      {
+        "label": "State Key Laboratory of Modern Optical Instruments",
+        "type": "child",
+        "id": "https://ror.org/018fpas51"
+      },
+      {
+        "label": "State Key Laboratory of Industrial Control Technology",
+        "type": "child",
+        "id": "https://ror.org/03a33a786"
+      },
+      {
+        "label": "State Key Laboratory of Rice Biology",
+        "type": "child",
+        "id": "https://ror.org/05s5qx907"
+      },
+      {
+        "label": "State Key Laboratory of Plant Physiology and Biochemistry",
+        "type": "child",
+        "id": "https://ror.org/02yjhrp74"
+      },
+      {
+        "label": "Zhejiang University Robotics Institute",
+        "type": "child",
+        "id": "https://ror.org/03se25782"
+      },
+      {
+        "label": "Children's Hospital of Zhejiang University",
+        "type": "related",
+        "id": "https://ror.org/025fyfd20"
+      },
+      {
+        "label": "First Affiliated Hospital Zhejiang University",
+        "type": "related",
+        "id": "https://ror.org/05m1p5x56"
+      },
+      {
+        "label": "Hangzhou Seventh Peoples Hospital",
+        "type": "related",
+        "id": "https://ror.org/0310dsa24"
+      },
+      {
+        "label": "Hangzhou Xixi hospital",
+        "type": "related",
+        "id": "https://ror.org/04zkkh342"
+      },
+      {
+        "label": "Lishui Central Hospital",
+        "type": "related",
+        "id": "https://ror.org/023e72x78"
+      },
+      {
+        "label": "Second Affiliated Hospital of Zhejiang University",
+        "type": "related",
+        "id": "https://ror.org/059cjpv64"
+      },
+      {
+        "label": "Sir Run Run Shaw Hospital",
+        "type": "related",
+        "id": "https://ror.org/00ka6rp58"
+      },
+      {
+        "label": "Third People's Hospital of Hangzhou",
+        "type": "related",
+        "id": "https://ror.org/02sysn258"
+      },
+      {
+        "label": "Women's Hospital, School of Medicine, Zhejiang University",
+        "type": "related",
+        "id": "https://ror.org/042t7yh44"
+      },
+      {
+        "label": "Zhejiang Cancer Hospital",
+        "type": "related",
+        "id": "https://ror.org/0144s0951"
+      }
+    ],
+    "domains": [
+      "zju.edu.cn"
+    ]
+  },
+  "01vjw4z39": {
+    "ror_id": "https://ror.org/01vjw4z39",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1951,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "First Military Medical University"
+      },
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "SMU"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Southern Medical University"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "南方医科大学"
+      }
+    ],
+    "display_name": "Southern Medical University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "GD",
+          "country_subdivision_name": "Guangdong",
+          "lat": 23.11667,
+          "lng": 113.25,
+          "name": "Guangzhou"
+        },
+        "geonames_id": 1809858
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Guangzhou",
+    "latitude": 23.11667,
+    "longitude": 113.25,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.smu.edu.cn"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Southern_Medical_University"
+      }
+    ],
+    "website": "https://www.smu.edu.cn",
+    "external_ids": [
+      {
+        "all": [
+          "501100010096",
+          "501100017688"
+        ],
+        "preferred": "501100010096",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.284723.8"
+        ],
+        "preferred": "grid.284723.8",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0000 8877 7471"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q7570129"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100010096",
+    "grid_id": "grid.284723.8",
+    "relationships": [
+      {
+        "label": "Boai Hospital of Zhongshan",
+        "type": "related",
+        "id": "https://ror.org/0440kgc56"
+      },
+      {
+        "label": "Chaozhou Central Hospital",
+        "type": "related",
+        "id": "https://ror.org/03rzkxc19"
+      },
+      {
+        "label": "Dongguan People’s Hospital",
+        "type": "related",
+        "id": "https://ror.org/022s5gm85"
+      },
+      {
+        "label": "Nanfang Hospital",
+        "type": "related",
+        "id": "https://ror.org/01eq10738"
+      },
+      {
+        "label": "Southern Medical University Shenzhen Hospital",
+        "type": "related",
+        "id": "https://ror.org/037c01n91"
+      },
+      {
+        "label": "Third Affiliated Hospital of Southern Medical University",
+        "type": "related",
+        "id": "https://ror.org/0050r1b65"
+      },
+      {
+        "label": "Zhujiang Hospital",
+        "type": "related",
+        "id": "https://ror.org/02mhxa927"
+      }
+    ],
+    "domains": [
+      "smu.edu.cn"
+    ]
+  },
+  "02zhqgq86": {
+    "ror_id": "https://ror.org/02zhqgq86",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1911,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "HKU"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Hong Kong University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "University of Hong Kong"
+      }
+    ],
+    "display_name": "University of Hong Kong",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "HK",
+          "country_name": "Hong Kong",
+          "country_subdivision_code": "HSO",
+          "country_subdivision_name": "Southern",
+          "lat": 22.26861,
+          "lng": 114.12924,
+          "name": "Pok Fu Lam"
+        },
+        "geonames_id": 1819091
+      }
+    ],
+    "country": "Hong Kong",
+    "country_code": "HK",
+    "city": "Pok Fu Lam",
+    "latitude": 22.26861,
+    "longitude": 114.12924,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.hku.hk"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/University_of_Hong_Kong"
+      }
+    ],
+    "website": "https://www.hku.hk",
+    "external_ids": [
+      {
+        "all": [
+          "501100003803",
+          "501100003802",
+          "501100012692"
+        ],
+        "preferred": "501100003803",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.194645.b"
+        ],
+        "preferred": "grid.194645.b",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 2174 2757"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q15568"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100003803",
+    "grid_id": "grid.194645.b",
+    "relationships": [
+      {
+        "label": "Institute of Molecular Functional Materials",
+        "type": "child",
+        "id": "https://ror.org/00qfke340"
+      },
+      {
+        "label": "State Key Laboratory of Synthetic Chemistry",
+        "type": "child",
+        "id": "https://ror.org/038ey3e97"
+      },
+      {
+        "label": "Alice Ho Miu Ling Nethersole Hospital",
+        "type": "related",
+        "id": "https://ror.org/01g171x08"
+      },
+      {
+        "label": "Duchess of Kent Children's Hospital",
+        "type": "related",
+        "id": "https://ror.org/006f92m60"
+      },
+      {
+        "label": "Grantham Hospital",
+        "type": "related",
+        "id": "https://ror.org/01t54q348"
+      },
+      {
+        "label": "HKU-Pasteur Research Pole",
+        "type": "related",
+        "id": "https://ror.org/03wwjjr94"
+      },
+      {
+        "label": "Hong Kong Sanatorium and Hospital",
+        "type": "related",
+        "id": "https://ror.org/010mjn423"
+      },
+      {
+        "label": "Kowloon Hospital",
+        "type": "related",
+        "id": "https://ror.org/01b1r6152"
+      },
+      {
+        "label": "Pamela Youde Nethersole Eastern Hospital",
+        "type": "related",
+        "id": "https://ror.org/009s7a550"
+      },
+      {
+        "label": "Prince Philip Dental Hospital",
+        "type": "related",
+        "id": "https://ror.org/011p8xd65"
+      },
+      {
+        "label": "Queen Mary Hospital",
+        "type": "related",
+        "id": "https://ror.org/02xkx3e48"
+      },
+      {
+        "label": "Ruttonjee Hospital",
+        "type": "related",
+        "id": "https://ror.org/01a1x1d92"
+      },
+      {
+        "label": "Tsan Yuk Hospital",
+        "type": "related",
+        "id": "https://ror.org/03kjtb134"
+      },
+      {
+        "label": "Tung Wah Hospital",
+        "type": "related",
+        "id": "https://ror.org/05pc9cb65"
+      },
+      {
+        "label": "University of Hong Kong - Shenzhen Hospital",
+        "type": "related",
+        "id": "https://ror.org/047w7d678"
+      }
+    ],
+    "domains": [
+      "hku.hk"
+    ]
+  },
+  "037p24858": {
+    "ror_id": "https://ror.org/037p24858",
+    "status": "active",
+    "types": [
+      "funder",
+      "healthcare"
+    ],
+    "established": 1910,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Affiliated Hospital of Guangdong Public Institution of Medicine"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "First Affiliated Hospital of Sun Yat-Sen University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "First Affiliated Hospital, Sun Yat-sen University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Sun Yat-sen University First Affiliated Hospital"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "The First Affiliated Hospital, Sun Yat-sen University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Zhongshan Hospital"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "中山大学附属第一医院"
+      }
+    ],
+    "display_name": "The First Affiliated Hospital, Sun Yat-sen University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "GD",
+          "country_subdivision_name": "Guangdong",
+          "lat": 23.11667,
+          "lng": 113.25,
+          "name": "Guangzhou"
+        },
+        "geonames_id": 1809858
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Guangzhou",
+    "latitude": 23.11667,
+    "longitude": 113.25,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.fahsysu.org.cn"
+      }
+    ],
+    "website": "https://www.fahsysu.org.cn",
+    "external_ids": [
+      {
+        "all": [
+          "501100010108"
+        ],
+        "preferred": "501100010108",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.412615.5"
+        ],
+        "preferred": "grid.412615.5",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1803 6239"
+        ],
+        "preferred": "0000 0004 1803 6239",
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q10875263"
+        ],
+        "preferred": "Q10875263",
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100010108",
+    "grid_id": "grid.412615.5",
+    "isni": "0000 0004 1803 6239",
+    "wikidata_id": "Q10875263",
+    "relationships": [
+      {
+        "label": "Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/0064kty71"
+      },
+      {
+        "label": "Guangxi Hospital Division of The First Affiliated Hospital, Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/027pjy323"
+      }
+    ],
+    "domains": []
+  },
+  "01eq10738": {
+    "ror_id": "https://ror.org/01eq10738",
+    "status": "active",
+    "types": [
+      "funder",
+      "healthcare"
+    ],
+    "established": 1941,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Nanfang Hospital"
+      }
+    ],
+    "display_name": "Nanfang Hospital",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "GD",
+          "country_subdivision_name": "Guangdong",
+          "lat": 23.11667,
+          "lng": 113.25,
+          "name": "Guangzhou"
+        },
+        "geonames_id": 1809858
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Guangzhou",
+    "latitude": 23.11667,
+    "longitude": 113.25,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.nfyy.com/"
+      }
+    ],
+    "website": "http://www.nfyy.com/",
+    "external_ids": [
+      {
+        "all": [
+          "501100010112"
+        ],
+        "preferred": "501100010112",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.416466.7"
+        ],
+        "preferred": "grid.416466.7",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1757 959X"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q10907979"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100010112",
+    "grid_id": "grid.416466.7",
+    "relationships": [
+      {
+        "label": "Southern Medical University",
+        "type": "related",
+        "id": "https://ror.org/01vjw4z39"
+      }
+    ],
+    "domains": []
+  },
+  "00swtqp09": {
+    "ror_id": "https://ror.org/00swtqp09",
+    "status": "active",
+    "types": [
+      "facility"
+    ],
+    "established": 1986,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Key Laboratory of Guangdong Province"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "广东省重点实验室"
+      }
+    ],
+    "display_name": "Key Laboratory of Guangdong Province",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "GD",
+          "country_subdivision_name": "Guangdong",
+          "lat": 23.11667,
+          "lng": 113.25,
+          "name": "Guangzhou"
+        },
+        "geonames_id": 1809858
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Guangzhou",
+    "latitude": 23.11667,
+    "longitude": 113.25,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://gdlab.gdstc.gov.cn/"
+      }
+    ],
+    "website": "http://gdlab.gdstc.gov.cn/",
+    "external_ids": [
+      {
+        "all": [
+          "grid.484195.5"
+        ],
+        "preferred": "grid.484195.5",
+        "type": "grid"
+      }
+    ],
+    "grid_id": "grid.484195.5",
+    "relationships": [],
+    "domains": []
+  },
+  "0064kty71": {
+    "ror_id": "https://ror.org/0064kty71",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1924,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Sun Yat-sen University"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "中山大学"
+      }
+    ],
+    "display_name": "Sun Yat-sen University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "GD",
+          "country_subdivision_name": "Guangdong",
+          "lat": 23.11667,
+          "lng": 113.25,
+          "name": "Guangzhou"
+        },
+        "geonames_id": 1809858
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Guangzhou",
+    "latitude": 23.11667,
+    "longitude": 113.25,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.sysu.edu.cn"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Sun_Yat-sen_University"
+      }
+    ],
+    "website": "https://www.sysu.edu.cn",
+    "external_ids": [
+      {
+        "all": [
+          "501100002402"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.12981.33"
+        ],
+        "preferred": "grid.12981.33",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0001 2360 039X"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q178972"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.12981.33",
+    "relationships": [
+      {
+        "label": "State Key Laboratory of Oncology in South China",
+        "type": "child",
+        "id": "https://ror.org/04dn2ax39"
+      },
+      {
+        "label": "State Key Laboratory of Ophthalmology",
+        "type": "child",
+        "id": "https://ror.org/003mfbe21"
+      },
+      {
+        "label": "State Key Laboratory of Optoelectronic Materials and Technology",
+        "type": "child",
+        "id": "https://ror.org/010fszt18"
+      },
+      {
+        "label": "State Key Laboratory of Pest Control and Resource Utilization",
+        "type": "child",
+        "id": "https://ror.org/01bs5br94"
+      },
+      {
+        "label": "Zhongshan Ophthalmic Center, Sun Yat-sen University",
+        "type": "child",
+        "id": "https://ror.org/02z2yec16"
+      },
+      {
+        "label": "National Supercomputer Center in Guangzhou",
+        "type": "child",
+        "id": "https://ror.org/042999n30"
+      },
+      {
+        "label": "Fifth Affiliated Hospital of Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/023te5r95"
+      },
+      {
+        "label": "The First Affiliated Hospital, Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/037p24858"
+      },
+      {
+        "label": "Hainan Eye Hospital",
+        "type": "related",
+        "id": "https://ror.org/03k18qw23"
+      },
+      {
+        "label": "SYSU-CMU International Joint Research Institute",
+        "type": "related",
+        "id": "https://ror.org/02w30ae27"
+      },
+      {
+        "label": "Shantou Central Hospital",
+        "type": "related",
+        "id": "https://ror.org/04jmrra88"
+      },
+      {
+        "label": "Sixth Affiliated Hospital of Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/005pe1772"
+      },
+      {
+        "label": "Solar Energy Research Institute of Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/028kjem67"
+      },
+      {
+        "label": "Sun Yat-sen Memorial Hospital",
+        "type": "related",
+        "id": "https://ror.org/01px77p81"
+      },
+      {
+        "label": "Sun Yat-sen University Cancer Center",
+        "type": "related",
+        "id": "https://ror.org/0400g8r85"
+      },
+      {
+        "label": "The Seventh Affiliated Hospital of Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/00rfd5b88"
+      },
+      {
+        "label": "Third Affiliated Hospital of Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/04tm3k558"
+      },
+      {
+        "label": "Hospital of Stomatology, Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/04bswr545"
+      },
+      {
+        "label": "Eighth Affiliated Hospital of Sun Yat-sen University",
+        "type": "related",
+        "id": "https://ror.org/00xjwyj62"
+      }
+    ],
+    "domains": [
+      "sysu.edu.cn"
+    ]
+  },
+  "00t33hh48": {
+    "ror_id": "https://ror.org/00t33hh48",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1963,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "CUHK"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Chinese University of Hong Kong"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "香港中文大學"
+      }
+    ],
+    "display_name": "Chinese University of Hong Kong",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "HK",
+          "country_name": "Hong Kong",
+          "country_subdivision_code": null,
+          "country_subdivision_name": null,
+          "lat": 22.27832,
+          "lng": 114.17469,
+          "name": "Hong Kong"
+        },
+        "geonames_id": 1819729
+      }
+    ],
+    "country": "Hong Kong",
+    "country_code": "HK",
+    "city": "Hong Kong",
+    "latitude": 22.27832,
+    "longitude": 114.17469,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.cuhk.edu.hk/english/index.html"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Chinese_University_of_Hong_Kong"
+      }
+    ],
+    "website": "http://www.cuhk.edu.hk/english/index.html",
+    "external_ids": [
+      {
+        "all": [
+          "501100004853",
+          "501100005956",
+          "501100006355",
+          "501100023925"
+        ],
+        "preferred": "501100004853",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.10784.3a"
+        ],
+        "preferred": "grid.10784.3a",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1937 0482"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q15570"
+        ],
+        "preferred": "Q15570",
+        "type": "wikidata"
+      }
+    ],
+    "fundref_id": "501100004853",
+    "grid_id": "grid.10784.3a",
+    "wikidata_id": "Q15570",
+    "relationships": [
+      {
+        "label": "Chinese University of Hong Kong, Shenzhen",
+        "type": "child",
+        "id": "https://ror.org/02d5ks197"
+      },
+      {
+        "label": "Institute of Molecular Functional Materials",
+        "type": "child",
+        "id": "https://ror.org/00qfke340"
+      },
+      {
+        "label": "State Key Laboratory of Synthetic Chemistry",
+        "type": "child",
+        "id": "https://ror.org/038ey3e97"
+      },
+      {
+        "label": "Hong Kong Eye Hospital",
+        "type": "related",
+        "id": "https://ror.org/03fttgk04"
+      },
+      {
+        "label": "Pamela Youde Nethersole Eastern Hospital",
+        "type": "related",
+        "id": "https://ror.org/009s7a550"
+      },
+      {
+        "label": "Prince of Wales Hospital",
+        "type": "related",
+        "id": "https://ror.org/02827ca86"
+      }
+    ],
+    "domains": []
+  },
+  "05jb9pq57": {
+    "ror_id": "https://ror.org/05jb9pq57",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1958,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Shandong Academy of Medical Science"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Shandong First Medical University"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Shandong First Medical University & Shandong Academy of Medical Sciences"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Shandong Medical Sciences"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "alias"
+        ],
+        "value": "山东省医学科学院"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "山东第一医科大学"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "alias"
+        ],
+        "value": "山东第一医科大学（山东省医学科学院)"
+      }
+    ],
+    "display_name": "Shandong First Medical University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "SD",
+          "country_subdivision_name": "Shandong",
+          "lat": 36.66833,
+          "lng": 116.99722,
+          "name": "Jinan"
+        },
+        "geonames_id": 1805753
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Jinan",
+    "latitude": 36.66833,
+    "longitude": 116.99722,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www.sdams.cn/"
+      }
+    ],
+    "website": "http://www.sdams.cn/",
+    "external_ids": [
+      {
+        "all": [
+          "501100015508"
+        ],
+        "preferred": "501100015508",
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.410587.f"
+        ],
+        "preferred": "grid.410587.f",
+        "type": "grid"
+      }
+    ],
+    "fundref_id": "501100015508",
+    "grid_id": "grid.410587.f",
+    "relationships": [
+      {
+        "label": "Jinan City People's Hospital",
+        "type": "related",
+        "id": "https://ror.org/05b2ycy47"
+      },
+      {
+        "label": "Shandong Tumor Hospital",
+        "type": "related",
+        "id": "https://ror.org/01413r497"
+      },
+      {
+        "label": "Jinan Central Hospital",
+        "type": "related",
+        "id": "https://ror.org/01fr19c68"
+      }
+    ],
+    "domains": []
+  },
+  "02827ca86": {
+    "ror_id": "https://ror.org/02827ca86",
+    "status": "active",
+    "types": [
+      "healthcare"
+    ],
+    "established": 1984,
+    "names": [
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Prince of Wales Hospital"
+      }
+    ],
+    "display_name": "Prince of Wales Hospital",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "HK",
+          "country_name": "Hong Kong",
+          "country_subdivision_code": "NST",
+          "country_subdivision_name": "Sha Tin",
+          "lat": 22.38333,
+          "lng": 114.18333,
+          "name": "Shatin"
+        },
+        "geonames_id": 1818920
+      }
+    ],
+    "country": "Hong Kong",
+    "country_code": "HK",
+    "city": "Shatin",
+    "latitude": 22.38333,
+    "longitude": 114.18333,
+    "links": [
+      {
+        "type": "website",
+        "value": "http://www3.ha.org.hk/pwh/index_e.asp"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Prince_of_Wales_Hospital"
+      }
+    ],
+    "website": "http://www3.ha.org.hk/pwh/index_e.asp",
+    "external_ids": [
+      {
+        "all": [
+          "grid.415197.f"
+        ],
+        "preferred": "grid.415197.f",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1764 7206"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q4116367"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.415197.f",
+    "relationships": [
+      {
+        "label": "Hospital Authority",
+        "type": "parent",
+        "id": "https://ror.org/05sn8t512"
+      },
+      {
+        "label": "Chinese University of Hong Kong",
+        "type": "related",
+        "id": "https://ror.org/00t33hh48"
+      }
+    ],
+    "domains": []
+  },
+  "038c3w259": {
+    "ror_id": "https://ror.org/038c3w259",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1933,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "KMU"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "alias"
+        ],
+        "value": "Kunming Medical College"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Kunming Medical University"
+      },
+      {
+        "lang": "zh",
+        "types": [
+          "label"
+        ],
+        "value": "昆明医科大学"
+      }
+    ],
+    "display_name": "Kunming Medical University",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "CN",
+          "country_name": "China",
+          "country_subdivision_code": "YN",
+          "country_subdivision_name": "Yunnan",
+          "lat": 25.03889,
+          "lng": 102.71833,
+          "name": "Kunming"
+        },
+        "geonames_id": 1804651
+      }
+    ],
+    "country": "China",
+    "country_code": "CN",
+    "city": "Kunming",
+    "latitude": 25.03889,
+    "longitude": 102.71833,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://www.kmmc.cn"
+      },
+      {
+        "type": "wikipedia",
+        "value": "https://en.wikipedia.org/wiki/Kunming_Medical_University"
+      }
+    ],
+    "website": "https://www.kmmc.cn",
+    "external_ids": [
+      {
+        "all": [
+          "501100003996"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.285847.4"
+        ],
+        "preferred": "grid.285847.4",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0000 9588 0960"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q6444884"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.285847.4",
+    "relationships": [
+      {
+        "label": "First Affiliated Hospital of Kunming Medical University",
+        "type": "related",
+        "id": "https://ror.org/02g01ht84"
+      },
+      {
+        "label": "Kunming Children's Hospital",
+        "type": "related",
+        "id": "https://ror.org/00fjv1g65"
+      },
+      {
+        "label": "Second Affiliated Hospital of Kunming Medical College",
+        "type": "related",
+        "id": "https://ror.org/01kq6mv68"
+      },
+      {
+        "label": "Second People's Hospital of Yunnan Province",
+        "type": "related",
+        "id": "https://ror.org/00c639s42"
+      },
+      {
+        "label": "Sixth Affiliated Hospital of Kunming Medical University",
+        "type": "related",
+        "id": "https://ror.org/05tv5ra11"
+      },
+      {
+        "label": "Yan'an Hospital Affiliated To Kunming Medical University",
+        "type": "related",
+        "id": "https://ror.org/05ctyj936"
+      }
+    ],
+    "domains": []
+  },
+  "00q4vv597": {
+    "ror_id": "https://ror.org/00q4vv597",
+    "status": "active",
+    "types": [
+      "education",
+      "funder"
+    ],
+    "established": 1991,
+    "names": [
+      {
+        "lang": null,
+        "types": [
+          "acronym"
+        ],
+        "value": "HKUST"
+      },
+      {
+        "lang": "en",
+        "types": [
+          "ror_display",
+          "label"
+        ],
+        "value": "Hong Kong University of Science and Technology"
+      }
+    ],
+    "display_name": "Hong Kong University of Science and Technology",
+    "locations": [
+      {
+        "geonames_details": {
+          "continent_code": "AS",
+          "continent_name": "Asia",
+          "country_code": "HK",
+          "country_name": "Hong Kong",
+          "country_subdivision_code": null,
+          "country_subdivision_name": null,
+          "lat": 22.27832,
+          "lng": 114.17469,
+          "name": "Hong Kong"
+        },
+        "geonames_id": 1819729
+      }
+    ],
+    "country": "Hong Kong",
+    "country_code": "HK",
+    "city": "Hong Kong",
+    "latitude": 22.27832,
+    "longitude": 114.17469,
+    "links": [
+      {
+        "type": "website",
+        "value": "https://hkust.edu.hk"
+      },
+      {
+        "type": "wikipedia",
+        "value": "http://en.wikipedia.org/wiki/Hong_Kong_University_of_Science_and_Technology"
+      }
+    ],
+    "website": "https://hkust.edu.hk",
+    "external_ids": [
+      {
+        "all": [
+          "501100005950"
+        ],
+        "preferred": null,
+        "type": "fundref"
+      },
+      {
+        "all": [
+          "grid.24515.37"
+        ],
+        "preferred": "grid.24515.37",
+        "type": "grid"
+      },
+      {
+        "all": [
+          "0000 0004 1937 1450"
+        ],
+        "preferred": null,
+        "type": "isni"
+      },
+      {
+        "all": [
+          "Q1333303"
+        ],
+        "preferred": null,
+        "type": "wikidata"
+      }
+    ],
+    "grid_id": "grid.24515.37",
+    "relationships": [
+      {
+        "label": "Chinese National Engineering Research Center for Control and Treatment of Heavy Metal Pollution",
+        "type": "child",
+        "id": "https://ror.org/0373ev724"
+      },
+      {
+        "label": "Guangdong-Hongkong-Macau Joint Laboratory of Collaborative Innovation for Environmental Quality",
+        "type": "child",
+        "id": "https://ror.org/02gwsx029"
+      },
+      {
+        "label": "Guangzhou HKUST Fok Ying Tung Research Institute",
+        "type": "child",
+        "id": "https://ror.org/05cvbj479"
+      },
+      {
+        "label": "HKUST Shenzhen Research Institute",
+        "type": "child",
+        "id": "https://ror.org/00sz56h79"
+      },
+      {
+        "label": "Institute of Molecular Functional Materials",
+        "type": "child",
+        "id": "https://ror.org/00qfke340"
+      },
+      {
+        "label": "The Hong Kong University of Science and Technology (Guangzhou)",
+        "type": "related",
+        "id": "https://ror.org/050h0vm43"
+      }
+    ],
+    "domains": [
+      "hkust.edu.hk",
+      "ust.hk"
+    ]
+  }
+}

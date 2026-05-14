@@ -1,0 +1,4060 @@
+{
+  "summary": {
+    "total_pmcid": 42,
+    "xml_available": 28,
+    "pdf_available": 0,
+    "html_available": 42,
+    "no_content": 0,
+    "success_rate_xml": 66.66666666666666,
+    "success_rate_pdf": 0.0
+  },
+  "results": [
+    {
+      "pmcid": "PMC12823910",
+      "normalized_pmcid": "12823910",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12800000_PMC12899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12800000_PMC12899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12732907",
+      "normalized_pmcid": "12732907",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12700000_PMC12799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12700000_PMC12799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12377778",
+      "normalized_pmcid": "12377778",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12300000_PMC12399999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12300000_PMC12399999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12785749",
+      "normalized_pmcid": "12785749",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12700000_PMC12799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12700000_PMC12799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12159039",
+      "normalized_pmcid": "12159039",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12100000_PMC12199999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12100000_PMC12199999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11623837",
+      "normalized_pmcid": "11623837",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11600000_PMC11699999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11600000_PMC11699999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11537498",
+      "normalized_pmcid": "11537498",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11500000_PMC11599999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11500000_PMC11599999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11771906",
+      "normalized_pmcid": "11771906",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11700000_PMC11799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11700000_PMC11799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12744296",
+      "normalized_pmcid": "12744296",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12700000_PMC12799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12700000_PMC12799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12386925",
+      "normalized_pmcid": "12386925",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12300000_PMC12399999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12300000_PMC12399999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12864992",
+      "normalized_pmcid": "12864992",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12800000_PMC12899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12800000_PMC12899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11953386",
+      "normalized_pmcid": "11953386",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11900000_PMC11999999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11900000_PMC11999999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12734507",
+      "normalized_pmcid": "12734507",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12700000_PMC12799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12700000_PMC12799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC10661112",
+      "normalized_pmcid": "10661112",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC10600000_PMC10699999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC10600000_PMC10699999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC13068840",
+      "normalized_pmcid": "13068840",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC13000000_PMC13099999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC13000000_PMC13099999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC10490974",
+      "normalized_pmcid": "10490974",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC10400000_PMC10499999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC10400000_PMC10499999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC10764071",
+      "normalized_pmcid": "10764071",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC10700000_PMC10799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC10700000_PMC10799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC10308215",
+      "normalized_pmcid": "10308215",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC10300000_PMC10399999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC10300000_PMC10399999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11877039",
+      "normalized_pmcid": "11877039",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11800000_PMC11899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11800000_PMC11899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11755773",
+      "normalized_pmcid": "11755773",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11700000_PMC11799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11700000_PMC11799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11394909",
+      "normalized_pmcid": "11394909",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11300000_PMC11399999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11300000_PMC11399999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC9524193",
+      "normalized_pmcid": "9524193",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC9500000_PMC9599999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC9500000_PMC9599999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12888595",
+      "normalized_pmcid": "12888595",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12800000_PMC12899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12800000_PMC12899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12876057",
+      "normalized_pmcid": "12876057",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC12800000_PMC12899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC12800000_PMC12899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC13072972",
+      "normalized_pmcid": "13072972",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC13000000_PMC13099999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC13000000_PMC13099999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC9724286",
+      "normalized_pmcid": "9724286",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC9700000_PMC9799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC9700000_PMC9799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC9168545",
+      "normalized_pmcid": "9168545",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC9100000_PMC9199999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC9100000_PMC9199999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC8959090",
+      "normalized_pmcid": "8959090",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC8900000_PMC8999999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC8900000_PMC8999999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC10822158",
+      "normalized_pmcid": "10822158",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC10800000_PMC10899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC10800000_PMC10899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11347473",
+      "normalized_pmcid": "11347473",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11300000_PMC11399999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11300000_PMC11399999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11500513",
+      "normalized_pmcid": "11500513",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11500000_PMC11599999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11500000_PMC11599999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11768041",
+      "normalized_pmcid": "11768041",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11700000_PMC11799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11700000_PMC11799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC8835111",
+      "normalized_pmcid": "8835111",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC8800000_PMC8899999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC8800000_PMC8899999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC12040102",
+      "normalized_pmcid": "12040102",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 404,
+              "archive": "PMC12000000_PMC12099999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 404,
+          "archive": "PMC12000000_PMC12099999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11661678",
+      "normalized_pmcid": "11661678",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11600000_PMC11699999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11600000_PMC11699999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC8101228",
+      "normalized_pmcid": "8101228",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC8100000_PMC8199999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC8100000_PMC8199999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC8347596",
+      "normalized_pmcid": "8347596",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC8300000_PMC8399999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC8300000_PMC8399999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11704346",
+      "normalized_pmcid": "11704346",
+      "availability": {
+        "xml": {
+          "available": true,
+          "methods": [
+            "rest_api"
+          ],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": true,
+              "status_code": 200
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC11700000_PMC11799999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": true,
+          "status_code": 200
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC11700000_PMC11799999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "Use XML via: rest_api",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC8186297",
+      "normalized_pmcid": "8186297",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC8100000_PMC8199999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC8100000_PMC8199999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC11225883",
+      "normalized_pmcid": "11225883",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 404,
+              "archive": "PMC11200000_PMC11299999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 404,
+          "archive": "PMC11200000_PMC11299999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC5510613",
+      "normalized_pmcid": "5510613",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 404,
+              "archive": "PMC5500000_PMC5599999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 404
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 404,
+          "archive": "PMC5500000_PMC5599999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    },
+    {
+      "pmcid": "PMC9538807",
+      "normalized_pmcid": "9538807",
+      "availability": {
+        "xml": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "rest_api",
+              "success": false,
+              "status_code": 404
+            },
+            {
+              "method": "bulk_ftp",
+              "success": false,
+              "status_code": 502,
+              "archive": "PMC9500000_PMC9599999.xml.gz"
+            }
+          ]
+        },
+        "pdf": {
+          "available": false,
+          "methods": [],
+          "attempts": [
+            {
+              "method": "render_endpoint",
+              "success": false,
+              "status_code": 302
+            },
+            {
+              "method": "backend_service",
+              "success": false,
+              "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+            },
+            {
+              "method": "zip_archive",
+              "success": false,
+              "status_code": 503
+            }
+          ]
+        },
+        "html": {
+          "available": true,
+          "methods": [
+            "web_interface"
+          ],
+          "attempts": [
+            {
+              "method": "web_interface",
+              "success": true,
+              "status_code": 200
+            }
+          ]
+        }
+      },
+      "download_attempts": [
+        {
+          "method": "rest_api",
+          "success": false,
+          "status_code": 404
+        },
+        {
+          "method": "bulk_ftp",
+          "success": false,
+          "status_code": 502,
+          "archive": "PMC9500000_PMC9599999.xml.gz"
+        },
+        {
+          "method": "render_endpoint",
+          "success": false,
+          "status_code": 302
+        },
+        {
+          "method": "backend_service",
+          "success": false,
+          "error": "('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))"
+        },
+        {
+          "method": "zip_archive",
+          "success": false,
+          "status_code": 503
+        },
+        {
+          "method": "web_interface",
+          "success": true,
+          "status_code": 200
+        }
+      ],
+      "recommendations": [
+        "No XML available through known methods",
+        "No PDF available through known methods",
+        "Use HTML via: web_interface"
+      ]
+    }
+  ],
+  "pmcid_needing_manual_review": []
+}

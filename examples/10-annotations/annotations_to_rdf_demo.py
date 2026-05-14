@@ -79,33 +79,33 @@ from pyeuropepmc import annotations_to_rdf
 try:
     # Convert to RDF graph
     rdf_graph = annotations_to_rdf(parsed)
-    
+
     print(f"✓ Created RDF graph with {len(rdf_graph)} triples")
     print()
-    
+
     # Example 5: Serialize to different formats
     print("Example 5: Serialize RDF to different formats")
     print("-" * 70)
-    
+
     # Turtle format (human-readable)
     turtle = rdf_graph.serialize(format="turtle")
     print("Turtle format (first 500 characters):")
     print(turtle[:500])
     print("...")
     print()
-    
+
     # Save to file
     output_file = "/tmp/annotations.ttl"
     rdf_graph.serialize(destination=output_file, format="turtle")
     print(f"✓ Saved RDF graph to {output_file}")
     print()
-    
+
     # Also save as RDF/XML
     xml_file = "/tmp/annotations.rdf"
     rdf_graph.serialize(destination=xml_file, format="xml")
     print(f"✓ Saved RDF graph to {xml_file}")
     print()
-    
+
 except Exception as e:
     print(f"✗ Error converting to RDF: {e}")
     import traceback
@@ -118,16 +118,16 @@ print("-" * 70)
 try:
     from rdflib import Namespace
     from rdflib.namespace import RDF
-    
+
     # Define namespaces
     OA = Namespace("http://www.w3.org/ns/oa#")
-    
+
     # Query for all annotations
     print("Querying for annotations:")
     for s, p, o in rdf_graph.triples((None, RDF.type, OA.Annotation)):
         print(f"  Found annotation: {s}")
     print()
-    
+
 except Exception as e:
     print(f"✗ Error querying RDF: {e}")
 

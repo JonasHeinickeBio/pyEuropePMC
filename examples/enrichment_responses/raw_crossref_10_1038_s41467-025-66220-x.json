@@ -1,0 +1,179 @@
+{
+  "source": "crossref",
+  "title": "A multimodal knowledge-enhanced whole-slide pathology foundation model",
+  "authors": [
+    {
+      "name": "Yingxue Xu",
+      "given": "Yingxue",
+      "family": "Xu",
+      "orcid": "https://orcid.org/0000-0002-9657-3107",
+      "affiliation": [],
+      "sequence": "first",
+      "ORCID": "https://orcid.org/0000-0002-9657-3107"
+    },
+    {
+      "name": "Yihui Wang",
+      "given": "Yihui",
+      "family": "Wang",
+      "orcid": "https://orcid.org/0009-0002-7606-9816",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0009-0002-7606-9816"
+    },
+    {
+      "name": "Fengtao Zhou",
+      "given": "Fengtao",
+      "family": "Zhou",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Jiabo Ma",
+      "given": "Jiabo",
+      "family": "Ma",
+      "orcid": "https://orcid.org/0000-0001-8532-4466",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-8532-4466"
+    },
+    {
+      "name": "Cheng Jin",
+      "given": "Cheng",
+      "family": "Jin",
+      "orcid": "https://orcid.org/0000-0002-3522-3592",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-3522-3592"
+    },
+    {
+      "name": "Shu Yang",
+      "given": "Shu",
+      "family": "Yang",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Jinbang Li",
+      "given": "Jinbang",
+      "family": "Li",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Zhengyu Zhang",
+      "given": "Zhengyu",
+      "family": "Zhang",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Chenglong Zhao",
+      "given": "Chenglong",
+      "family": "Zhao",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Huajun Zhou",
+      "given": "Huajun",
+      "family": "Zhou",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Zhenhui Li",
+      "given": "Zhenhui",
+      "family": "Li",
+      "orcid": "https://orcid.org/0009-0009-3613-9403",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0009-0009-3613-9403"
+    },
+    {
+      "name": "Huangjing Lin",
+      "given": "Huangjing",
+      "family": "Lin",
+      "orcid": "https://orcid.org/0000-0002-6799-9352",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-6799-9352"
+    },
+    {
+      "name": "Xin Wang",
+      "given": "Xin",
+      "family": "Wang",
+      "orcid": "https://orcid.org/0000-0002-5122-2418",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-5122-2418"
+    },
+    {
+      "name": "Jiguang Wang",
+      "given": "Jiguang",
+      "family": "Wang",
+      "orcid": "https://orcid.org/0000-0002-6923-4097",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-6923-4097"
+    },
+    {
+      "name": "Anjia Han",
+      "given": "Anjia",
+      "family": "Han",
+      "orcid": "https://orcid.org/0000-0003-2245-1972",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0003-2245-1972"
+    },
+    {
+      "name": "Ronald Cheong Kin Chan",
+      "given": "Ronald Cheong Kin",
+      "family": "Chan",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Li Liang",
+      "given": "Li",
+      "family": "Liang",
+      "orcid": "https://orcid.org/0000-0001-5302-2754",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0001-5302-2754"
+    },
+    {
+      "name": "Xiuming Zhang",
+      "given": "Xiuming",
+      "family": "Zhang",
+      "affiliation": [],
+      "sequence": "additional"
+    },
+    {
+      "name": "Hao Chen",
+      "given": "Hao",
+      "family": "Chen",
+      "orcid": "https://orcid.org/0000-0002-8400-3780",
+      "affiliation": [],
+      "sequence": "additional",
+      "ORCID": "https://orcid.org/0000-0002-8400-3780"
+    }
+  ],
+  "abstract": null,
+  "journal": "Nature Communications",
+  "publication_date": "2025-12-12",
+  "citation_count": 18,
+  "references_count": 75,
+  "license": {
+    "url": "https://creativecommons.org/licenses/by-nc-nd/4.0",
+    "start": "2025-12-12T00:00:00Z",
+    "delay_in_days": 0
+  },
+  "funders": null,
+  "type": "journal-article",
+  "issn": [
+    "2041-1723"
+  ],
+  "volume": "16",
+  "issue": "1",
+  "publisher": "Springer Science and Business Media LLC"
+}

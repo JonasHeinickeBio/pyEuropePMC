@@ -1,0 +1,150 @@
+{
+  "source": "semantic_scholar",
+  "s2_paper_id": "4fd62fee0b0d99dfffc82afeaddb2b622b126b02",
+  "corpus_id": 271328555,
+  "title": "A multimodal knowledge-enhanced whole-slide pathology foundation model",
+  "abstract": "Computational pathology has advanced through foundation models, yet faces challenges in multimodal integration and capturing whole-slide context. Current approaches typically utilize either vision-only or image-caption data, overlooking distinct insights from pathology reports and gene expression profiles. Additionally, most models focus on patch-level analysis, failing to capture comprehensive whole-slide patterns. Here we present mSTAR (Multimodal Self-TAught PRetraining), the pathology foundation model that incorporates three modalities: pathology slides, expert-created reports, and gene expression data, within a unified framework. Our dataset includes 26,169 slide-level modality pairs across 32 cancer types, comprising over 116 million patch images. This approach injects multimodal whole-slide context into patch representations, expanding modeling from single to multiple modalities and from patch-level to slide-level analysis. Across oncological benchmark spanning 97 tasks, mSTAR outperforms previous state-of-the-art models, particularly in molecular prediction and multimodal tasks, revealing that multimodal integration yields greater improvements than simply expanding vision-only datasets. Foundation models have significantly advanced computational pathology, but still face important challenges, particularly when integrating multimodal data. Here, the authors develop mSTAR, an approach that allows injecting multimodal, whole-slide context into pathology foundation models, improving performance in clinical and molecular tasks in oncology.",
+  "venue": "Nature Communications",
+  "year": 2024,
+  "publication_date": "2024-07-22",
+  "citation_count": 68,
+  "influential_citation_count": 4,
+  "reference_count": 87,
+  "authors": [
+    {
+      "name": null,
+      "author_id": "2277808642",
+      "url": "https://www.semanticscholar.org/author/2277808642"
+    },
+    {
+      "name": null,
+      "author_id": "2290636217",
+      "url": "https://www.semanticscholar.org/author/2290636217"
+    },
+    {
+      "name": null,
+      "author_id": "2294149589",
+      "url": "https://www.semanticscholar.org/author/2294149589"
+    },
+    {
+      "name": null,
+      "author_id": "2268511388",
+      "url": "https://www.semanticscholar.org/author/2268511388"
+    },
+    {
+      "name": null,
+      "author_id": "2273671629",
+      "url": "https://www.semanticscholar.org/author/2273671629"
+    },
+    {
+      "name": null,
+      "author_id": "2429235287",
+      "url": "https://www.semanticscholar.org/author/2429235287"
+    },
+    {
+      "name": null,
+      "author_id": "1792198995",
+      "url": "https://www.semanticscholar.org/author/1792198995"
+    },
+    {
+      "name": null,
+      "author_id": "2268245507",
+      "url": "https://www.semanticscholar.org/author/2268245507"
+    },
+    {
+      "name": null,
+      "author_id": "2379478022",
+      "url": "https://www.semanticscholar.org/author/2379478022"
+    },
+    {
+      "name": null,
+      "author_id": "2289901964",
+      "url": "https://www.semanticscholar.org/author/2289901964"
+    },
+    {
+      "name": null,
+      "author_id": "2316887420",
+      "url": "https://www.semanticscholar.org/author/2316887420"
+    },
+    {
+      "name": null,
+      "author_id": "3277637",
+      "url": "https://www.semanticscholar.org/author/3277637"
+    },
+    {
+      "name": null,
+      "author_id": "2294567404",
+      "url": "https://www.semanticscholar.org/author/2294567404"
+    },
+    {
+      "name": null,
+      "author_id": "2294378609",
+      "url": "https://www.semanticscholar.org/author/2294378609"
+    },
+    {
+      "name": null,
+      "author_id": "2312326827",
+      "url": "https://www.semanticscholar.org/author/2312326827"
+    },
+    {
+      "name": null,
+      "author_id": "2294362788",
+      "url": "https://www.semanticscholar.org/author/2294362788"
+    },
+    {
+      "name": null,
+      "author_id": "2312750026",
+      "url": "https://www.semanticscholar.org/author/2312750026"
+    },
+    {
+      "name": null,
+      "author_id": "2271246633",
+      "url": "https://www.semanticscholar.org/author/2271246633"
+    },
+    {
+      "name": null,
+      "author_id": "2290502968",
+      "url": "https://www.semanticscholar.org/author/2290502968"
+    }
+  ],
+  "fields_of_study": [
+    "Computer Science",
+    "Medicine"
+  ],
+  "s2_fields_of_study": [
+    {
+      "category": "Computer Science",
+      "source": "external"
+    },
+    {
+      "category": "Medicine",
+      "source": "external"
+    },
+    {
+      "category": "Computer Science",
+      "source": "s2-fos-model"
+    },
+    {
+      "category": "Medicine",
+      "source": "s2-fos-model"
+    }
+  ],
+  "publication_types": [
+    "JournalArticle"
+  ],
+  "journal": {
+    "name": "Nature Communications",
+    "volume": "16",
+    "pages": null
+  },
+  "external_ids": {
+    "PubMedCentral": "12738713",
+    "ArXiv": "2407.15362",
+    "DBLP": "journals/corr/abs-2407-15362",
+    "DOI": "10.1038/s41467-025-66220-x",
+    "CorpusId": 271328555,
+    "PubMed": "41387679"
+  },
+  "open_access_pdf_url": "",
+  "tldr": null
+}

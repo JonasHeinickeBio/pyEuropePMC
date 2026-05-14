@@ -80,6 +80,11 @@ _named_graphs:
     description: "Contains provenance information, quality scores, and temporal metadata"
     uri_base: "https://w3id.org/pyeuropepmc#provenance"
     enabled: true
+  annotations:
+    title: "Annotation Entities and Relationships"
+    description: "Contains annotation entities, entity mentions, and relationship annotations"
+    uri_base: "https://w3id.org/pyeuropepmc#annotations"
+    enabled: true
 
 # Required Named Graphs
 # List of named graphs that must be present and enabled
@@ -88,6 +93,7 @@ _required_named_graphs:
   - authors
   - institutions
   - provenance
+  - annotations
 
 # ScholarlyWorkEntity mapping (base class)
 ScholarlyWorkEntity:
@@ -255,12 +261,54 @@ ReferenceEntity:
 
 # AnnotationEntity mapping (W3C Open Annotation Data Model)
 AnnotationEntity:
-  rdf:type: ["oa:Annotation", "nif:String"]
+  rdf:type: ["oa:Annotation", "pyeuropepmc:Annotation"]
   fields:
     exact: oa:hasBody
-    section: dct:isPartOf
-    provider: dct:creator
+    section: dcterms:isPartOf
+    provider: dcterms:creator
+    article_id: pyeuropepmc:articleId
+    article_uri: oa:hasTarget
+    annotation_type: pyeuropepmc:annotationType
 
+# EntityAnnotation mapping (Named Entity Recognition)
+EntityAnnotation:
+  rdf:type: ["oa:Annotation", "oa:SpecificResource", "pyeuropepmc:EntityAnnotation"]
+  fields:
+    exact: oa:hasBody
+    entity_id: {predicate: "oa:hasBody", datatype: "xsd:anyURI"}
+    entity_name: rdfs:label
+    entity_type: pyeuropepmc:entityType
+    annotation_category: pyeuropepmc:entityCategory
+    prefix: pyeuropepmc:textPrefix
+    postfix: pyeuropepmc:textPostfix
+    section: dcterms:isPartOf
+    provider: dcterms:creator
+    confidence: pyeuropepmc:confidence
+    article_id: pyeuropepmc:articleId
+    article_uri: oa:hasTarget
+  # Alignments: Link entity to external concept IRIs using owl:sameAs
+  alignments:
+    entity_id:
+      predicate: owl:sameAs
+      type: uri
+      description: "Link to external concept IRI in knowledge base"
+
+# RelationshipAnnotation mapping (Entity Relationships)
+RelationshipAnnotation:
+  rdf:type: ["oa:Annotation", "rdf:Statement", "pyeuropepmc:RelationshipAnnotation"]
+  fields:
+    exact: oa:hasBody
+    subject_id: rdf:subject
+    subject_name: rdfs:label
+    subject_type: rdf:type
+    predicate: rdf:predicate
+    object_id: rdf:object
+    object_name: rdfs:label
+    object_type: rdf:type
+    section: dcterms:isPartOf
+    provider: dcterms:creator
+    article_id: pyeuropepmc:articleId
+    article_uri: oa:hasTarget
 # InstitutionEntity mapping
 InstitutionEntity:
   "rdf:type": ["org:Organization"]
@@ -351,34 +399,8 @@ FigureEntity:
   relationships:
     paper:
       predicate: "dcterms:isPartOf"
-      inverse: dcterms:hasPart
-# GrantEntity mapping
-GrantEntity:
-  "rdf:type": ["frapo:Grant"]
-  fields:
-    fundref_doi: {predicate: "datacite:doi", datatype: "xsd:anyURI"}
-    funding_source: {predicate: "frapo:hasFundingAgency", datatype: "xsd:string"}
-    award_id: {predicate: "datacite:identifier", datatype: "xsd:string"}
-    recipient: {predicate: "frapo:hasRecipient", datatype: "xsd:string"}  # DEPRECATED: Use recipients relationship instead
-  # Relationships
-  relationships:
-    recipients:
-      predicate: "frapo:hasRecipient"
       inverse: "frapo:isRecipientOf"
       comment: "Principal investigators or researchers who receive this grant funding"
     papers:
       predicate: "frapo:funds"
       inverse: "foaf:fundedBy"
-
-# FigureEntity mapping
-FigureEntity:
-  "rdf:type": ["bibo:Image"]
-  fields:
-    caption: {predicate: "dcterms:description", datatype: "xsd:string"}
-    figure_label: {predicate: "rdfs:label", datatype: "xsd:string"}
-    graphic_uri: {predicate: "foaf:depiction", datatype: "xsd:anyURI"}
-  # Relationships
-  relationships:
-    paper:
-      predicate: "dcterms:isPartOf"
-      inverse: dcterms:hasPart

@@ -7,47 +7,203 @@
 @prefix pyeuropepmc: <https://w3id.org/pyeuropepmc/vocab#> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<https://w3id.org/pyeuropepmc/author/canhua-jiang> a foaf:Person ;
-    datacite:orcid "https://orcid.org/0000-0002-8133-1981"^^xsd:string ;
-    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-8133-1981> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.163230" ;
+<https://w3id.org/pyeuropepmc/author/anjia-han> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0003-2245-1972"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0003-2245-1972> ;
+    prov:generatedAtTime "2026-04-24T10:22:39.106568" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Can-Hua Jiang"^^xsd:string,
-        "Canhua Jiang"^^xsd:string .
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Anjia Han"^^xsd:string .
 
-<https://w3id.org/pyeuropepmc/author/muhammad-tufail> a foaf:Person ;
-    datacite:orcid "https://orcid.org/0000-0003-3442-7216"^^xsd:string ;
-    owl:sameAs <https://orcid.org/https://orcid.org/0000-0003-3442-7216> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.124348" ;
+<https://w3id.org/pyeuropepmc/author/cheng-jin> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-3522-3592"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-3522-3592> ;
+    prov:generatedAtTime "2026-04-24T10:22:35.854601" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Muhammad Tufail"^^xsd:string .
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Cheng Jin"^^xsd:string .
 
-<https://w3id.org/pyeuropepmc/author/ning-li> a foaf:Person ;
-    datacite:orcid "https://orcid.org/0000-0002-6518-2541"^^xsd:string ;
-    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-6518-2541> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.147067" ;
+<https://w3id.org/pyeuropepmc/author/chenglong-zhao> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0001-5758-1385"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0001-5758-1385> ;
+    prov:generatedAtTime "2026-04-24T10:22:36.728409" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    foaf:made <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    foaf:name "Ning Li"^^xsd:string .
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Chenglong Zhao"^^xsd:string .
 
-<https://w3id.org/pyeuropepmc/journal/signal-transduction-and-targeted-therapy> a bibo:Journal ;
-    dcterms:title "Signal Transduction and Targeted Therapy"^^xsd:string ;
-    bibo:article <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.109314" ;
+<https://w3id.org/pyeuropepmc/author/fengtao-zhou> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0001-7039-1156"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0001-7039-1156> ;
+    prov:generatedAtTime "2026-04-24T10:22:35.388869" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Fengtao Zhou"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/hao-chen> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-8400-3780"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-8400-3780> ;
+    prov:generatedAtTime "2026-04-24T10:22:40.107446" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Hao Chen"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/huajun-zhou> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-1419-5422"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-1419-5422> ;
+    prov:generatedAtTime "2026-04-24T10:22:37.061327" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Huajun Zhou"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/huangjing-lin> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-6799-9352"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-6799-9352> ;
+    prov:generatedAtTime "2026-04-24T10:22:37.962363" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Huangjing Lin"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/jiabo-ma> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0001-8532-4466"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0001-8532-4466> ;
+    prov:generatedAtTime "2026-04-24T10:22:35.634841" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Jiabo Ma"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/jiguang-wang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-6923-4097"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-6923-4097> ;
+    prov:generatedAtTime "2026-04-24T10:22:38.728476" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Jiguang Wang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/jinbang-li> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0003-1400-2851"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0003-1400-2851> ;
+    prov:generatedAtTime "2026-04-24T10:22:36.069198" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Jinbang Li"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/li-liang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0001-5302-2754"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0001-5302-2754> ;
+    prov:generatedAtTime "2026-04-24T10:22:39.471142" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Li Liang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/ronald-chan> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0001-9267-0076"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0001-9267-0076> ;
+    prov:generatedAtTime "2026-04-24T10:22:41.105530" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Ronald Chan"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/ronald-cheong-kin-chan> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T10:22:40.712783" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Ronald Cheong Kin Chan"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/shu-yang> a foaf:Person ;
+    prov:generatedAtTime "2026-04-24T10:22:40.411635" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Shu Yang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/shuhua-yang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-9879-0164"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-9879-0164> ;
+    prov:generatedAtTime "2026-04-24T10:22:40.932944" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Shuhua Yang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/xin-wang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-5122-2418"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-5122-2418> ;
+    prov:generatedAtTime "2026-04-24T10:22:38.340407" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Xin Wang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/xiuming-zhang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-1961-3339"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-1961-3339> ;
+    prov:generatedAtTime "2026-04-24T10:22:39.806697" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Xiuming Zhang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/yihui-wang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0009-0002-7606-9816"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0009-0002-7606-9816> ;
+    prov:generatedAtTime "2026-04-24T10:22:35.002897" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Yihui Wang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/yingxue-xu> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0000-0002-9657-3107"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0000-0002-9657-3107> ;
+    prov:generatedAtTime "2026-04-24T10:22:34.609310" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Yingxue Xu"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhengyu-zhang> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0009-0009-9287-9756"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0009-0009-9287-9756> ;
+    prov:generatedAtTime "2026-04-24T10:22:36.404133" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhengyu Zhang"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/author/zhenhui-li> a foaf:Person ;
+    datacite:orcid "https://orcid.org/0009-0009-3613-9403"^^xsd:string ;
+    owl:sameAs <https://orcid.org/https://orcid.org/0009-0009-3613-9403> ;
+    prov:generatedAtTime "2026-04-24T10:22:37.404585" ;
+    prov:wasGeneratedBy "pyeuropepmc_parser" ;
+    foaf:made <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    foaf:name "Zhenhui Li"^^xsd:string .
+
+<https://w3id.org/pyeuropepmc/journal/nature-communications> a bibo:Journal ;
+    dcterms:title "Nature Communications"^^xsd:string ;
+    bibo:article <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    prov:generatedAtTime "2026-04-24T10:22:34.238080" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" .
 
-<https://pubmed.ncbi.nlm.nih.gov/40739089/> a bibo:AcademicArticle ;
-    dcterms:abstract """<jats:title>Abstract</jats:title>
-          <jats:p>Immune evasion represents a significant challenge in oncology. It allows tumors to evade immune surveillance and destruction, thereby complicating therapeutic interventions and contributing to suboptimal patient outcomes. This review addresses the critical need to understand how cancers evade immune surveillance. It aims to provide a comprehensive overview of strategies of tumors to escape immune detection by examining tumor-induced immune suppression, immune checkpoint regulation, and genetic and epigenetic influences. Moreover, it explores the dynamic role of the tumor microenvironment (TME) in fostering immune resistance and highlights the impact of metabolic reprogramming on immune suppression. Additionally, this review focuses on how tumor heterogeneity influences immune evasion and discusses the limitations of current immunotherapies. The role of key signaling pathways, including programmed cell death protein 1/programmed cell death ligand 1 (PD-1/PD-L1), cytotoxic T-lymphocyte–associated antigen 4 (CTLA-4), transforming growth factor-β (TGF-β), nuclear factor kappa-light-chain-enhancer of activated B cells (NF-κB), and cyclic GMP-AMP synthase-stimulator of interferon genes (cGAS–STING) is analyzed to elucidate their contributions to immune escape. Emphasizing the complexities of immune evasion, this review underscores the importance of personalized approaches and the integration of multi-omics data to combat therapeutic resistance. Furthermore, it discusses novel and emerging therapeutic strategies, such as bispecific antibodies, oncolytic viruses, and nanotechnology-driven immunotherapies, showcasing innovative avenues in cancer treatment. The significance of this review lies in its potential to guide future research and innovations in immunotherapy, ultimately improving patient outcomes and advancing our understanding of cancer immunology.</jats:p>"""^^xsd:string ;
-    dcterms:creator <https://w3id.org/pyeuropepmc/author/canhua-jiang>,
-        <https://w3id.org/pyeuropepmc/author/muhammad-tufail>,
-        <https://w3id.org/pyeuropepmc/author/ning-li> ;
-    dcterms:title "Immune evasion in cancer: mechanisms and cutting-edge therapeutic approaches"^^xsd:string ;
-    bibo:journal <https://w3id.org/pyeuropepmc/journal/signal-transduction-and-targeted-therapy> ;
-    owl:sameAs <https://europepmc.org/article/MED/40739089>,
-        <https://pubmed.ncbi.nlm.nih.gov/40739089/> ;
-    prov:generatedAtTime "2025-12-05T18:54:57.198567" ;
+<https://pubmed.ncbi.nlm.nih.gov/41387679/> a bibo:AcademicArticle ;
+    dcterms:abstract "Computational pathology has advanced through foundation models, yet faces challenges in multimodal integration and capturing whole-slide context. Current approaches typically utilize either vision-only or image-caption data, overlooking distinct insights from pathology reports and gene expression profiles. Additionally, most models focus on patch-level analysis, failing to capture comprehensive whole-slide patterns. Here we present mSTAR (Multimodal Self-TAught PRetraining), the pathology foundation model that incorporates three modalities: pathology slides, expert-created reports, and gene expression data, within a unified framework. Our dataset includes 26,169 slide-level modality pairs across 32 cancer types, comprising over 116 million patch images. This approach injects multimodal whole-slide context into patch representations, expanding modeling from single to multiple modalities and from patch-level to slide-level analysis. Across oncological benchmark spanning 97 tasks, mSTAR outperforms previous state-of-the-art models, particularly in molecular prediction and multimodal tasks, revealing that multimodal integration yields greater improvements than simply expanding vision-only datasets. Foundation models have significantly advanced computational pathology, but still face important challenges, particularly when integrating multimodal data. Here, the authors develop mSTAR, an approach that allows injecting multimodal, whole-slide context into pathology foundation models, improving performance in clinical and molecular tasks in oncology."^^xsd:string ;
+    dcterms:creator <https://w3id.org/pyeuropepmc/author/anjia-han>,
+        <https://w3id.org/pyeuropepmc/author/cheng-jin>,
+        <https://w3id.org/pyeuropepmc/author/chenglong-zhao>,
+        <https://w3id.org/pyeuropepmc/author/fengtao-zhou>,
+        <https://w3id.org/pyeuropepmc/author/hao-chen>,
+        <https://w3id.org/pyeuropepmc/author/huajun-zhou>,
+        <https://w3id.org/pyeuropepmc/author/huangjing-lin>,
+        <https://w3id.org/pyeuropepmc/author/jiabo-ma>,
+        <https://w3id.org/pyeuropepmc/author/jiguang-wang>,
+        <https://w3id.org/pyeuropepmc/author/jinbang-li>,
+        <https://w3id.org/pyeuropepmc/author/li-liang>,
+        <https://w3id.org/pyeuropepmc/author/ronald-chan>,
+        <https://w3id.org/pyeuropepmc/author/ronald-cheong-kin-chan>,
+        <https://w3id.org/pyeuropepmc/author/shu-yang>,
+        <https://w3id.org/pyeuropepmc/author/shuhua-yang>,
+        <https://w3id.org/pyeuropepmc/author/xin-wang>,
+        <https://w3id.org/pyeuropepmc/author/xiuming-zhang>,
+        <https://w3id.org/pyeuropepmc/author/yihui-wang>,
+        <https://w3id.org/pyeuropepmc/author/yingxue-xu>,
+        <https://w3id.org/pyeuropepmc/author/zhengyu-zhang>,
+        <https://w3id.org/pyeuropepmc/author/zhenhui-li> ;
+    dcterms:title "A multimodal knowledge-enhanced whole-slide pathology foundation model"^^xsd:string ;
+    bibo:journal <https://w3id.org/pyeuropepmc/journal/nature-communications> ;
+    owl:sameAs <https://europepmc.org/article/MED/41387679>,
+        <https://pubmed.ncbi.nlm.nih.gov/41387679/> ;
+    prov:generatedAtTime "2026-04-24T10:22:41.292148" ;
     prov:wasGeneratedBy "pyeuropepmc_parser" ;
-    pyeuropepmc:pmid "40739089"^^xsd:string .
+    pyeuropepmc:pmid "41387679"^^xsd:string .

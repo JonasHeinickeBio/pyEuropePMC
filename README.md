@@ -183,24 +183,24 @@ with AnnotationsClient() as client:
         article_ids=["PMC3359311"],
         section="abstract"  # or "fulltext", "all"
     )
-    
+
     # Parse annotations to extract structured data
     parsed = parse_annotations(annotations)
-    
+
     print(f"Found {len(parsed['entities'])} entities")
     print(f"Found {len(parsed['relationships'])} relationships")
-    
+
     # Display entities by type
     for entity in parsed['entities'][:5]:
         print(f"{entity['name']} ({entity['type']})")
-    
+
     # Search for specific entities (e.g., chemicals)
     entity_annotations = client.get_annotations_by_entity(
         entity_id="CHEBI:16236",  # Ethanol
         entity_type="CHEBI",
         page_size=20
     )
-    
+
     # Filter by annotation provider
     provider_annotations = client.get_annotations_by_provider(
         provider="Europe PMC",
@@ -210,7 +210,7 @@ with AnnotationsClient() as client:
 
 **Supported Entity Types:**
 - 🧬 Genes and proteins
-- 🦠 Diseases and conditions  
+- 🦠 Diseases and conditions
 - 🧪 Chemicals and drugs (CHEBI)
 - 🔬 Gene Ontology terms
 - 🌱 Organisms and species
