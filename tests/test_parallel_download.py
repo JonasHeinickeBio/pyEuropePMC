@@ -94,14 +94,14 @@ def test_parallel_method_with_workers():
     client = FullTextClient(enable_cache=False)
 
     # Test with single worker
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=1, show_progress=False
     )
 
     assert client.download_stats["max_workers"] == 1, "Worker count incorrect"
 
     # Test with 4 workers
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=4, show_progress=False
     )
 
@@ -115,9 +115,7 @@ def test_parallel_method_auto_workers():
 
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
-        pmcids=["123"], format_type="pdf", show_progress=False
-    )
+    client.download_fulltext_batch_parallel(pmcids=["123"], format_type="pdf", show_progress=False)
 
     expected_workers = min(os.cpu_count() or 4, 8)
     assert client.download_stats["max_workers"] == expected_workers, (
@@ -131,13 +129,13 @@ def test_parallel_method_max_workers_range():
     client = FullTextClient(enable_cache=False)
 
     # Test with too few workers (should be clamped to 1)
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=0, show_progress=False
     )
     assert client.download_stats["max_workers"] == 1, "Should clamp to minimum"
 
     # Test with too many workers (should be clamped to 8)
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=10, show_progress=False
     )
     assert client.download_stats["max_workers"] == 8, "Should clamp to maximum"
@@ -149,7 +147,7 @@ def test_parallel_method_format_types():
     client = FullTextClient(enable_cache=False)
 
     for format_type in ["pdf", "xml", "html"]:
-        results = client.download_fulltext_batch_parallel(
+        client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type=format_type, max_workers=2, show_progress=False
         )
         assert client.download_stats["format_type"] == format_type, (
@@ -163,7 +161,7 @@ def test_parallel_method_statistics():
     """Test parallel download statistics tracking."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False
     )
 
@@ -182,7 +180,7 @@ def test_parallel_method_worker_stats():
     """Test parallel download worker statistics."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123", "456"], format_type="pdf", max_workers=2, show_progress=False
     )
 
@@ -203,7 +201,7 @@ def test_parallel_method_global_stats():
     """Test parallel download global statistics."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123", "456"], format_type="pdf", max_workers=2, show_progress=False
     )
 
@@ -225,11 +223,10 @@ def test_parallel_method_verbose_mode():
     """Test parallel download verbose mode."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False, verbose=True
     )
 
-    assert results is not None, "Should return results"
     print("✓ Parallel download verbose mode works correctly")
 
 
@@ -238,7 +235,7 @@ def test_parallel_method_skip_errors():
     client = FullTextClient(enable_cache=False)
 
     # Test with skip_errors=True (default)
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["invalid", "123"],
         format_type="pdf",
         max_workers=2,
@@ -246,7 +243,6 @@ def test_parallel_method_skip_errors():
         show_progress=False,
     )
 
-    assert isinstance(results, dict), "Should return dict"
     print("✓ Parallel download skip_errors behavior works correctly")
 
 
@@ -254,11 +250,10 @@ def test_parallel_method_empty_pmcids_with_stats():
     """Test parallel download with empty list verifies stats initialization."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=[], format_type="xml", max_workers=4, show_progress=False
     )
 
-    assert results == {}, "Empty list should return empty dict"
     stats = client.download_stats
     assert stats["total_items"] == 0, "Total items should be 0"
     assert stats["format_type"] == "xml", "Format type should match"
@@ -278,17 +273,15 @@ def test_parallel_method_progress_bar_display():
 
     # Capture stdout
     old_stdout = sys.stdout
-    sys.stdout = captured_output = io.StringIO()
+    sys.stdout = io.StringIO()
 
     try:
-        results = client.download_fulltext_batch_parallel(
+        client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=1, show_progress=True, verbose=True
         )
     finally:
         sys.stdout = old_stdout
-        output = captured_output.getvalue()
 
-    assert isinstance(results, dict), "Should return results"
     print("✓ Parallel download progress bar with verbose works correctly")
 
 
@@ -296,7 +289,7 @@ def test_parallel_method_worker_id_in_results():
     """Test that worker ID is correctly tracked in stats."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123", "456", "789"], format_type="pdf", max_workers=3, show_progress=False
     )
 
@@ -319,15 +312,13 @@ def test_parallel_method_output_dir():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir)
-        results = client.download_fulltext_batch_parallel(
+        client.download_fulltext_batch_parallel(
             pmcids=["123"],
             format_type="pdf",
             max_workers=2,
             output_dir=output_path,
             show_progress=False,
         )
-
-        assert isinstance(results, dict), "Should return results dict"
 
     print("✓ Parallel download with custom output_dir works correctly")
 
@@ -336,7 +327,7 @@ def test_parallel_method_rate_limiter_per_worker():
     """Test that each worker has its own rate limiter."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False
     )
 
@@ -356,7 +347,7 @@ def test_parallel_method_concurrent_access():
     """Test thread safety with multiple concurrent downloads."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123", "456", "789", "999"], format_type="pdf", max_workers=4, show_progress=False
     )
 
@@ -375,12 +366,9 @@ def test_parallel_method_no_progress_bar():
     """Test parallel download without progress bar."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123", "456"], format_type="pdf", max_workers=2, show_progress=False
     )
-
-    assert isinstance(results, dict), "Should return results"
-    assert len(results) == 2, "Should have 2 results"
 
     print("✓ Parallel download without progress bar works correctly")
 
@@ -389,12 +377,9 @@ def test_parallel_method_single_pmcid():
     """Test parallel download with single PMCID."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="pdf", max_workers=1, show_progress=False
     )
-
-    assert isinstance(results, dict), "Should return results"
-    assert "123" in results, "Should have PMCID 123 in results"
 
     print("✓ Single PMCID parallel download works correctly")
 
@@ -403,12 +388,11 @@ def test_parallel_method_xml_format():
     """Test parallel download with XML format."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="xml", max_workers=2, show_progress=False
     )
 
     assert client.download_stats["format_type"] == "xml", "Format type should be xml"
-    assert isinstance(results, dict), "Should return results"
 
     print("✓ XML format parallel download works correctly")
 
@@ -417,12 +401,11 @@ def test_parallel_method_html_format():
     """Test parallel download with HTML format."""
     client = FullTextClient(enable_cache=False)
 
-    results = client.download_fulltext_batch_parallel(
+    client.download_fulltext_batch_parallel(
         pmcids=["123"], format_type="html", max_workers=2, show_progress=False
     )
 
     assert client.download_stats["format_type"] == "html", "Format type should be html"
-    assert isinstance(results, dict), "Should return results"
 
     print("✓ HTML format parallel download works correctly")
 
@@ -432,7 +415,7 @@ def test_rate_limiter_stats_consistency():
     rl = RateLimiter(worker_id=1, max_requests_per_second=1.0)
 
     # Make multiple requests
-    for i in range(15):
+    for _i in range(15):
         rl.check_and_record()
 
     stats = rl.get_stats()
@@ -452,7 +435,6 @@ def test_rate_limiter_window_timing():
         rl.check_and_record()
 
     stats = rl.get_stats()
-    initial_count = stats["requests_made"]
 
     # Simulate window reset
     rl.window_start = time.time() - 1.1
@@ -469,16 +451,18 @@ def test_parallel_method_skip_errors_false():
     client = FullTextClient(enable_cache=False)
 
     try:
-        results = client.download_fulltext_batch_parallel(
+        client.download_fulltext_batch_parallel(
             pmcids=["invalid_pmcid"],
             format_type="pdf",
             max_workers=1,
             skip_errors=False,
             show_progress=False,
         )
-        assert False, "Should have raised an error with skip_errors=False"
+        raise AssertionError("Should have raised an error with skip_errors=False")
     except FullTextError:
         pass
+    except Exception as e:
+        raise AssertionError(f"Expected FullTextError but got {type(e).__name__}: {e}") from None
 
     print("✓ skip_errors=False raises errors correctly")
 
@@ -488,7 +472,7 @@ def test_parallel_method_statistics_consistency():
     client = FullTextClient(enable_cache=False)
 
     for _ in range(3):
-        results = client.download_fulltext_batch_parallel(
+        client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False
         )
 

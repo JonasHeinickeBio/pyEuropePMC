@@ -7,6 +7,7 @@ from Europe PMC, including PDF, XML, and HTML formats.
 
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from contextlib import suppress
 import gzip
 from io import BytesIO
 import json
@@ -14,13 +15,14 @@ import logging
 import os
 from pathlib import Path
 import tempfile
-from threading import Lock
+from threading import Lock, local
 import time
 from typing import Any, TypedDict
 from urllib.parse import urljoin
 import zipfile
 
 import requests
+from requests import Session
 from tqdm import tqdm
 
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
@@ -2833,6 +2835,9 @@ class FullTextClient(BaseAPIClient):
         # Track errors for early termination
         error_occurred = False
 
+        # Thread-local storage for worker sessions
+        thread_local = local()
+
         # Initialize statistics tracking
         self.download_stats = {
             "total_items": len(pmcids),
@@ -2857,31 +2862,51 @@ class FullTextClient(BaseAPIClient):
         progress_info = ProgressInfo(total_items=len(pmcids), format_type=format_type)
         progress_info.start_time = time.time()
 
+        def get_worker_session() -> Session:
+            """Get or create a thread-local session for the current worker."""
+            if not hasattr(thread_local, "session") or thread_local.session is None:
+                thread_local.session = Session()
+                thread_local.session.headers.update(
+                    {
+                        "User-Agent": "pyeuropepmc/1.0.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)"
+                    }
+                )
+            session: Session = thread_local.session
+            return session
+
         def worker_download(args: tuple[int, str]) -> tuple[str, Path | None, dict[str, Any]]:
             """Worker function to download a single item."""
             worker_id, pmcid = args
             rate_limiter = rate_limiters[worker_id]
             worker_start = time.time()
             result = None
+            error_info = None
 
             try:
                 # Record request
                 rate_limiter.check_and_record()
 
-                # Validate and download
+                # Validate and download using thread-local session
                 normalized_pmcid = self._validate_pmcid(pmcid)
 
-                if format_type == "pdf":
-                    output_path = output_dir / f"PMC{normalized_pmcid}.pdf"
-                    result = self.download_pdf_by_pmcid(pmcid, output_path)
-                elif format_type == "xml":
-                    output_path = output_dir / f"PMC{normalized_pmcid}.xml"
-                    result = self.download_xml_by_pmcid(pmcid, output_path)
-                elif format_type == "html":
-                    output_path = output_dir / f"PMC{normalized_pmcid}.html"
-                    result = self.download_html_by_pmcid(pmcid, output_path)
-                else:
-                    raise FullTextError(ErrorCodes.FULL010, format_type=format_type)
+                # Temporarily replace session with thread-local session
+                original_session = self.session
+                self.session = get_worker_session()
+
+                try:
+                    if format_type == "pdf":
+                        output_path = output_dir / f"PMC{normalized_pmcid}.pdf"
+                        result = self.download_pdf_by_pmcid(pmcid, output_path)
+                    elif format_type == "xml":
+                        output_path = output_dir / f"PMC{normalized_pmcid}.xml"
+                        result = self.download_xml_by_pmcid(pmcid, output_path)
+                    elif format_type == "html":
+                        output_path = output_dir / f"PMC{normalized_pmcid}.html"
+                        result = self.download_html_by_pmcid(pmcid, output_path)
+                    else:
+                        raise FullTextError(ErrorCodes.FULL010, format_type=format_type)
+                finally:
+                    self.session = original_session
 
             except FullTextError as e:
                 worker_time = time.time() - worker_start
@@ -2890,13 +2915,10 @@ class FullTextClient(BaseAPIClient):
                     self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time
                     self.download_stats["worker_stats"][worker_id]["failures"] += 1
 
+                error_info = {"worker_id": worker_id, "elapsed": worker_time, "error": str(e)}
                 if not skip_errors:
                     raise
-                return (
-                    pmcid,
-                    None,
-                    {"worker_id": worker_id, "elapsed": worker_time, "error": str(e)},
-                )
+                return pmcid, None, error_info
 
             worker_time = time.time() - worker_start
             with stats_lock:
@@ -2961,8 +2983,8 @@ class FullTextClient(BaseAPIClient):
 
                         except Exception as e:
                             _, pmcid_from_future = futures[future]
-                            worker_id: int = 0
-                            if "stats" in locals():
+                            worker_id = 0
+                            if "stats" in locals() and isinstance(stats, dict):
                                 worker_id = stats.get("worker_id", 0)
                             self.logger.error(
                                 f"Worker {worker_id} error for {pmcid_from_future}: {e}"
@@ -3005,7 +3027,7 @@ class FullTextClient(BaseAPIClient):
                     except Exception as e:
                         _, pmcid_from_future = futures[future]
                         worker_id = 0
-                        if "stats" in locals():
+                        if "stats" in locals() and isinstance(stats, dict):
                             worker_id = stats.get("worker_id", 0)
                         self.logger.error(f"Worker {worker_id} error for {pmcid_from_future}: {e}")
                         error_occurred = True
@@ -3043,6 +3065,11 @@ class FullTextClient(BaseAPIClient):
             f"{progress_info.failed_downloads} failed, "
             f"avg speed: {self.download_stats['avg_speed']:.2f} items/s"
         )
+
+        # Clean up thread-local sessions
+        if hasattr(thread_local, "session") and thread_local.session is not None:
+            with suppress(Exception):
+                thread_local.session.close()
 
         return results
 
