@@ -16,7 +16,7 @@ from pathlib import Path
 import tempfile
 from threading import Lock
 import time
-from typing import Any
+from typing import Any, TypedDict
 from urllib.parse import urljoin
 import zipfile
 
@@ -34,7 +34,29 @@ logger = logging.getLogger(__name__)
 # Type alias for strategy functions
 StrategyFunc = Callable[[], Path | None | bool | str | dict[str, Any]]
 
-__all__ = ["FullTextClient", "FullTextError", "ProgressInfo", "DownloadReport", "RateLimiter"]
+
+class WorkerStat(TypedDict):
+    """TypedDict for worker statistics."""
+
+    requests: int
+    failures: int
+    successes: int
+    time_spent: float
+
+
+class DownloadStats(TypedDict):
+    """TypedDict for download statistics."""
+
+    total_items: int
+    format_type: str
+    max_workers: int
+    start_time: str
+    end_time: str
+    total_time_seconds: float
+    avg_speed: float
+    success_rate: float
+    worker_stats: dict[int, WorkerStat]
+    global_stats: dict[str, int]
 
 
 class ProgressInfo:
@@ -247,7 +269,9 @@ class RateLimiter:
     def __init__(self, worker_id: int, max_requests_per_second: float = 1.0):
         self.worker_id = worker_id
         self.max_requests_per_second = max_requests_per_second
-        self.request_threshold = max_requests_per_second * 0.8
+        self.request_threshold = int(max_requests_per_second * 0.8)
+        if self.request_threshold < 1:
+            self.request_threshold = 1
         self.requests_made: int = 0
         self.window_start: float = time.time()
         self.warnings_issued: set[int] = set()
@@ -279,7 +303,7 @@ class RateLimiter:
                     self.warnings_issued.add(warning_key)
                     logger.warning(
                         f"Worker {self.worker_id} approaching rate limit: "
-                        f"{self.requests_made}/{int(self.request_threshold)} req/s "
+                        f"{self.requests_made}/{self.request_threshold} req/s "
                         f"(80% threshold)"
                     )
                     return False
@@ -295,10 +319,6 @@ class RateLimiter:
                 "window_start": self.window_start,
                 "warnings_issued": len(self.warnings_issued),
             }
-
-
-WorkerStats = dict[int, dict[str, Any]]
-DownloadStats = dict[str, Any]
 
 
 class FullTextClient(BaseAPIClient):
@@ -333,6 +353,8 @@ class FullTextClient(BaseAPIClient):
     FTP_OA_BASE_URL = "https://europepmc.org/ftp/oa/"
     # Archive naming pattern: PMC{start_id}_{end_id}.xml.gz
     # Archives contain XML files for PMC IDs in the range [start_id, end_id]
+
+    download_stats: DownloadStats
 
     def __init__(
         self,
@@ -2822,6 +2844,10 @@ class FullTextClient(BaseAPIClient):
                 for i in range(max_workers)
             },
             "global_stats": {"total_requests": 0, "total_failures": 0, "total_successes": 0},
+            "end_time": "",
+            "total_time_seconds": 0.0,
+            "avg_speed": 0.0,
+            "success_rate": 0.0,
         }
 
         if verbose:
@@ -2860,10 +2886,12 @@ class FullTextClient(BaseAPIClient):
             except FullTextError as e:
                 worker_time = time.time() - worker_start
                 with stats_lock:
-                    self.download_stats["worker_stats"][worker_id]["requests"] += 1  # type: ignore[index]
-                    self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time  # type: ignore[index]
-                    self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["requests"] += 1
+                    self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time
+                    self.download_stats["worker_stats"][worker_id]["failures"] += 1
 
+                if not skip_errors:
+                    raise
                 return (
                     pmcid,
                     None,
@@ -2872,12 +2900,12 @@ class FullTextClient(BaseAPIClient):
 
             worker_time = time.time() - worker_start
             with stats_lock:
-                self.download_stats["worker_stats"][worker_id]["requests"] += 1  # type: ignore[index]
-                self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time  # type: ignore[index]
+                self.download_stats["worker_stats"][worker_id]["requests"] += 1
+                self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time
                 if result:
-                    self.download_stats["worker_stats"][worker_id]["successes"] += 1  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["successes"] += 1
                 else:
-                    self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["failures"] += 1
 
             file_size = result.stat().st_size if result else 0
             result_dict = {
@@ -2932,15 +2960,20 @@ class FullTextClient(BaseAPIClient):
                             )
 
                         except Exception as e:
-                            worker_id = stats.get("worker_id", "unknown")
-                            self.logger.error(f"Worker {worker_id} error for {pmcid}: {e}")
+                            _, pmcid_from_future = futures[future]
+                            worker_id: int = 0
+                            if "stats" in locals():
+                                worker_id = stats.get("worker_id", 0)
+                            self.logger.error(
+                                f"Worker {worker_id} error for {pmcid_from_future}: {e}"
+                            )
                             error_occurred = True
                             with progress_lock:
                                 progress_info.failed_downloads += 1
                                 ws = self.download_stats["worker_stats"]
                                 if isinstance(ws, dict) and worker_id in ws:
                                     ws[worker_id]["failures"] += 1
-                            results[pmcid] = None
+                            results[pmcid_from_future] = None
                             if not skip_errors:
                                 raise
 
@@ -2970,35 +3003,39 @@ class FullTextClient(BaseAPIClient):
                         results[worker_pmcid] = result
 
                     except Exception as e:
-                        worker_id = stats.get("worker_id", "unknown")
-                        self.logger.error(f"Worker {worker_id} error for {pmcid}: {e}")
+                        _, pmcid_from_future = futures[future]
+                        worker_id = 0
+                        if "stats" in locals():
+                            worker_id = stats.get("worker_id", 0)
+                        self.logger.error(f"Worker {worker_id} error for {pmcid_from_future}: {e}")
                         error_occurred = True
                         with progress_lock:
                             progress_info.failed_downloads += 1
                             ws = self.download_stats["worker_stats"]
                             if isinstance(ws, dict) and worker_id in ws:
                                 ws[worker_id]["failures"] += 1
-                        results[pmcid] = None
+                        results[pmcid_from_future] = None
                         if not skip_errors:
                             raise
 
         # Update global statistics
         self.download_stats["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
         self.download_stats["total_time_seconds"] = time.time() - progress_info.start_time
-        total_time: float = self.download_stats["total_time_seconds"]  # type: ignore[assignment]
-        self.download_stats["avg_speed"] = len(pmcids) / total_time if total_time > 0 else 0
+        total_time: float = self.download_stats["total_time_seconds"]
+        avg_speed: float = len(pmcids) / total_time if total_time > 0 else 0
+        self.download_stats["avg_speed"] = avg_speed
 
+        global_stats: dict[str, int] = self.download_stats["global_stats"]
+        worker_stats: dict[int, WorkerStat] = self.download_stats["worker_stats"]
         for worker_id in range(max_workers):
-            worker_stat = self.download_stats["worker_stats"][worker_id]  # type: ignore[index]
-            self.download_stats["global_stats"]["total_requests"] += worker_stat["requests"]  # type: ignore[index]
-            self.download_stats["global_stats"]["total_failures"] += worker_stat["failures"]  # type: ignore[index]
-            self.download_stats["global_stats"]["total_successes"] += worker_stat["successes"]  # type: ignore[index]
+            worker_stat = worker_stats[worker_id]
+            global_stats["total_requests"] += worker_stat["requests"]
+            global_stats["total_failures"] += worker_stat["failures"]
+            global_stats["total_successes"] += worker_stat["successes"]
 
-        self.download_stats["success_rate"] = (
-            self.download_stats["global_stats"]["total_successes"] / len(pmcids)  # type: ignore[index]
-            if len(pmcids) > 0
-            else 0
-        )
+        total_successes = global_stats["total_successes"]
+        success_rate: float = total_successes / len(pmcids) if len(pmcids) > 0 else 0.0
+        self.download_stats["success_rate"] = success_rate
 
         self.logger.info(
             f"Parallel batch download completed: "
@@ -3028,12 +3065,12 @@ class FullTextClient(BaseAPIClient):
             Whether this was a success
         """
         with lock:
-            self.download_stats["worker_stats"][worker_id]["requests"] += 1  # type: ignore[index]
-            self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time  # type: ignore[index]
+            self.download_stats["worker_stats"][worker_id]["requests"] += 1
+            self.download_stats["worker_stats"][worker_id]["time_spent"] += worker_time
             if is_success:
                 if result:
-                    self.download_stats["worker_stats"][worker_id]["successes"] += 1  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["successes"] += 1
                 else:
-                    self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+                    self.download_stats["worker_stats"][worker_id]["failures"] += 1
             else:
-                self.download_stats["worker_stats"][worker_id]["failures"] += 1  # type: ignore[index]
+                self.download_stats["worker_stats"][worker_id]["failures"] += 1
