@@ -40,8 +40,9 @@ Current sequential downloads are slow for large batches. Parallel execution with
    - Detailed error reporting per item
 
 5. **Session Management**
-   - Shared thread-safe session across workers
-   - Lock for cache access if needed
+    - Thread-local sessions per worker (no shared sessions)
+    - Each worker gets its own Session instance for thread safety
+    - Sessions tracked in registry and cleaned up on completion
 
 ### Implementation Plan
 
@@ -85,7 +86,7 @@ print(client.download_stats)
 None - new method is additive, existing `download_fulltext_batch()` remains unchanged.
 
 ### Files to Modify
-- `pyeuropepmc/fulltext.py` - Add RateLimiter class and parallel download method
+- `src/pyeuropepmc/clients/fulltext.py` - Add RateLimiter class and parallel download method
 - `pyeuropepmc/__init__.py` - Export new functionality if needed
 - Documentation files as needed
 
