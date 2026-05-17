@@ -187,6 +187,8 @@ class AnnotationParser:
                 entity.get("exact"),
                 entity.get("section"),
                 entity.get("provider"),
+                entity.get("article_id"),
+                entity.get("article_uri"),
             )
             if dedup_key not in seen:
                 seen.add(dedup_key)

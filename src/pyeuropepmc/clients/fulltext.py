@@ -15,6 +15,7 @@ import logging
 import os
 from pathlib import Path
 import tempfile
+import threading
 from threading import Lock, local
 import time
 from typing import Any, TypedDict
@@ -322,15 +323,16 @@ class RateLimiter:
             if elapsed >= 1.0:
                 self.requests_made = 0
                 self.window_start = current_time
-                return
 
             # If we've hit the threshold, wait until the window resets
             if self.requests_made >= self.max_requests_per_second:
                 sleep_time = 1.0 - elapsed
                 if sleep_time > 0:
                     time.sleep(sleep_time)
-                    self.requests_made = 0
-                    self.window_start = time.time()
+                self.requests_made = 0
+                self.window_start = time.time()
+
+            self.requests_made += 1
 
     def get_stats(self) -> dict[str, Any]:
         """Get rate limiter statistics."""
@@ -2933,13 +2935,19 @@ class FullTextClient(BaseAPIClient):
         stats_lock = Lock()
         progress_lock = Lock()
         session_registry_lock = Lock()
-        session_registry: dict[int, Session] = {}
+        session_registry: dict[tuple[int, int], Session] = {}
 
         # Track errors for early termination
         error_occurred = False
 
         # Thread-local storage for worker sessions
         thread_local = local()
+
+        def get_thread_key() -> tuple[int, int]:
+            """Get a unique key combining worker_id and thread_id."""
+            return (thread_id_counter[0], threading.get_ident())
+
+        thread_id_counter: list[int] = [0]
 
         # Initialize statistics tracking
         self.download_stats = {
@@ -2967,6 +2975,7 @@ class FullTextClient(BaseAPIClient):
 
         def get_worker_session(worker_id: int) -> Session:
             """Get or create a thread-local session for the current worker."""
+            thread_key = get_thread_key()
             if not hasattr(thread_local, "session") or thread_local.session is None:
                 new_session = Session()
                 new_session.headers.update(
@@ -2976,7 +2985,7 @@ class FullTextClient(BaseAPIClient):
                 )
                 thread_local.session = new_session
                 with session_registry_lock:
-                    session_registry[worker_id] = new_session
+                    session_registry[thread_key] = new_session
             thread_session: Session = thread_local.session
             return thread_session
 
@@ -3068,7 +3077,7 @@ class FullTextClient(BaseAPIClient):
 
                         for future in as_completed(futures):
                             if skip_errors and error_occurred:
-                                break
+                                continue
 
                             i, pmcid = futures[future]
                             try:
@@ -3122,7 +3131,7 @@ class FullTextClient(BaseAPIClient):
 
                     for future in as_completed(futures):
                         if skip_errors and error_occurred:
-                            break
+                            continue
 
                         i, pmcid = futures[future]
                         try:
@@ -3164,109 +3173,6 @@ class FullTextClient(BaseAPIClient):
 
         finally:
             cleanup_sessions()
-
-        # Use ThreadPoolExecutor for parallel downloads
-        with ThreadPoolExecutor(max_workers=max_workers) as executor:
-            if show_progress:
-                with tqdm(
-                    total=len(pmcids),
-                    desc=f"Parallel Download ( Workers: {max_workers} )",
-                    unit="item",
-                    dynamic_ncols=True,
-                ) as pbar:
-                    futures = {
-                        executor.submit(worker_download, (i % max_workers, pmcid)): (i, pmcid)
-                        for i, pmcid in enumerate(pmcids)
-                    }
-
-                    for future in as_completed(futures):
-                        if skip_errors and error_occurred:
-                            break
-
-                        i, pmcid = futures[future]
-                        try:
-                            worker_pmcid, result, stats = future.result()
-                            with progress_lock:
-                                if result:
-                                    progress_info.successful_downloads += 1
-                                    if result.exists():
-                                        size = result.stat().st_size
-                                        progress_info.total_downloaded_bytes += size
-                                else:
-                                    progress_info.failed_downloads += 1
-
-                            progress_info.current_item = i + 1
-                            progress_info.current_pmcid = worker_pmcid
-                            results[worker_pmcid] = result
-
-                            pbar.update(1)
-                            pbar.set_postfix(
-                                {
-                                    "worker": stats["worker_id"],
-                                    "success": progress_info.successful_downloads,
-                                    "failed": progress_info.failed_downloads,
-                                    "speed": f"{progress_info.completion_rate:.2f} items/s",
-                                }
-                            )
-
-                        except Exception as e:
-                            _, pmcid_from_future = futures[future]
-                            worker_id = 0
-                            if "stats" in locals() and isinstance(stats, dict):
-                                worker_id = stats.get("worker_id", 0)
-                            self.logger.error(
-                                f"Worker {worker_id} error for {pmcid_from_future}: {e}"
-                            )
-                            error_occurred = True
-                            with progress_lock:
-                                progress_info.failed_downloads += 1
-                                ws = self.download_stats["worker_stats"]
-                                if isinstance(ws, dict) and worker_id in ws:
-                                    ws[worker_id]["failures"] += 1
-                            results[pmcid_from_future] = None
-                            if not skip_errors:
-                                raise
-
-            else:
-                futures = {
-                    executor.submit(worker_download, (i % max_workers, pmcid)): (i, pmcid)
-                    for i, pmcid in enumerate(pmcids)
-                }
-
-                for future in as_completed(futures):
-                    if skip_errors and error_occurred:
-                        break
-
-                    i, pmcid = futures[future]
-                    try:
-                        worker_pmcid, result, stats = future.result()
-                        with progress_lock:
-                            if result:
-                                progress_info.successful_downloads += 1
-                                if result.exists():
-                                    progress_info.total_downloaded_bytes += result.stat().st_size
-                            else:
-                                progress_info.failed_downloads += 1
-
-                        progress_info.current_item = i + 1
-                        progress_info.current_pmcid = worker_pmcid
-                        results[worker_pmcid] = result
-
-                    except Exception as e:
-                        _, pmcid_from_future = futures[future]
-                        worker_id = 0
-                        if "stats" in locals() and isinstance(stats, dict):
-                            worker_id = stats.get("worker_id", 0)
-                        self.logger.error(f"Worker {worker_id} error for {pmcid_from_future}: {e}")
-                        error_occurred = True
-                        with progress_lock:
-                            progress_info.failed_downloads += 1
-                            ws = self.download_stats["worker_stats"]
-                            if isinstance(ws, dict) and worker_id in ws:
-                                ws[worker_id]["failures"] += 1
-                        results[pmcid_from_future] = None
-                        if not skip_errors:
-                            raise
 
         # Update global statistics
         self.download_stats["end_time"] = time.strftime("%Y-%m-%d %H:%M:%S")
