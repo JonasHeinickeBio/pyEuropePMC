@@ -12,6 +12,7 @@ The **FullTextClient** and **FTPDownloader** provide comprehensive capabilities 
 - 🔄 **Automatic retry** and error handling
 - 💾 **Smart caching** for repeated requests
 - ⚡ **Parallel batch downloads** with rate limiting and statistics
+- 🎯 **Efficient cache usage** - rate limiter only invoked for network requests, not cached hits
 
 ## Quick Start
 
@@ -267,6 +268,40 @@ if results['failed']:
     print(f"Still failed: {len(still_failed)}")
 ```
 
+### Example 3: Parallel Batch Download with Rate Limiting
+
+Download multiple files in parallel with automatic rate limiting and progress tracking:
+
+```python
+from pyeuropepmc import FullTextClient
+
+client = FullTextClient()
+
+# Parallel batch download with 4 workers
+pmcids = ["PMC1234567", "PMC2345678", "PMC3456789", "PMC4567890"]
+
+results = client.download_fulltext_batch_parallel(
+    pmcids=pmcids,
+    format_type="pdf",
+    output_dir="./downloads",
+    max_workers=4,
+    show_progress=True
+)
+
+# Check results
+for pmcid, path in results.items():
+    if path:
+        print(f"✓ {pmcid}: {path}")
+    else:
+        print(f"✗ {pmcid}: Failed")
+
+# View download statistics
+print(f"Total requests: {client.download_stats['global_stats']['total_requests']}")
+print(f"Success rate: {client.download_stats['success_rate']:.1%}")
+```
+
+**Note:** The rate limiter is only invoked for network requests, not for cached files, making parallel downloads more efficient.
+
 ### Example 3: Download + Parse Workflow
 
 ```python
@@ -349,7 +384,35 @@ with FullTextClient() as client:
 
 ## Performance Optimization
 
-### 1. Use FTP for Bulk Downloads
+### 1. Parallel Batch Downloads with Rate Limiting
+
+Use parallel downloads for multiple files with automatic rate limiting:
+
+```python
+from pyeuropepmc import FullTextClient
+
+client = FullTextClient()
+
+# Download 10 files in parallel with 4 workers
+pmcids = [f"PMC{1234560+i}" for i in range(10)]
+
+results = client.download_fulltext_batch_parallel(
+    pmcids=pmcids,
+    format_type="pdf",
+    max_workers=4,
+    show_progress=True
+)
+
+print(f"Downloaded: {sum(1 for p in results.values() if p)} files")
+```
+
+**Key features:**
+- Automatic rate limiting per worker (1 request/second)
+- Cache-aware: rate limiter only invoked for network requests
+- Progress tracking with detailed worker statistics
+- Automatic error handling and retry logic
+
+### 2. Use FTP for Bulk Downloads
 
 For downloading many articles, FTP is much faster:
 
@@ -367,7 +430,7 @@ results = downloader.bulk_download_and_extract(
 )
 ```
 
-### 2. Enable Caching
+### 3. Enable Caching
 
 Caching is enabled by default for FullTextClient:
 
@@ -380,7 +443,7 @@ with FullTextClient() as client:
     xml2 = client.get_fulltext_xml("PMC3258128")
 ```
 
-### 3. Batch Processing
+### 4. Batch Processing
 
 Process files in batches to manage memory:
 
