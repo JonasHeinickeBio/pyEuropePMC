@@ -473,6 +473,9 @@ class AnnotationParser:
         # Check target first (higher priority)
         target = annotation.get("target")
         if isinstance(target, dict):
+            pmcid_from_target = target.get("pmcid")
+            if pmcid_from_target:
+                return f"PMC{str(pmcid_from_target).replace('PMC', '')}"
             source_from_target = target.get("source")
             if source_from_target:
                 return str(source_from_target)
