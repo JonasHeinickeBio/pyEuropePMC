@@ -1064,7 +1064,10 @@ class FullTextClient(BaseAPIClient):
             )
 
     def download_pdf_by_pmcid(
-        self, pmcid: str, output_path: str | Path | None = None
+        self,
+        pmcid: str,
+        output_path: str | Path | None = None,
+        rate_limiter: RateLimiter | None = None,
     ) -> Path | None:
         """
         Download PDF of a paper from Europe PMC using its PMC ID.
@@ -1082,6 +1085,8 @@ class FullTextClient(BaseAPIClient):
             PMC ID of the paper (with or without 'PMC' prefix)
         output_path : str or Path, optional
             Path where to save the PDF file
+        rate_limiter : RateLimiter, optional
+            Rate limiter to use for network requests
 
         Returns
         -------
@@ -1107,6 +1112,10 @@ class FullTextClient(BaseAPIClient):
         if cached_file:
             self.logger.info(f"Using cached PDF for PMC{normalized_pmcid}")
             return cached_file
+
+        # Rate limit before network requests
+        if rate_limiter is not None:
+            rate_limiter.wait_if_needed()
 
         # 1. Try the ?pdf=render endpoint
         render_url = self.PDF_RENDER_URL.format(pmcid=normalized_pmcid)
@@ -1134,7 +1143,10 @@ class FullTextClient(BaseAPIClient):
         return None
 
     def download_xml_by_pmcid(
-        self, pmcid: str, output_path: str | Path | None = None
+        self,
+        pmcid: str,
+        output_path: str | Path | None = None,
+        rate_limiter: RateLimiter | None = None,
     ) -> Path | None:
         """
         Download XML full text of a paper from Europe PMC using its PMC ID.
@@ -1153,6 +1165,8 @@ class FullTextClient(BaseAPIClient):
         output_path : str or Path, optional
             Path where to save the XML file. If None, saves to current directory
             with filename 'PMC{pmcid}.xml'
+        rate_limiter : RateLimiter, optional
+            Rate limiter to use for network requests
 
         Returns
         -------
@@ -1182,6 +1196,10 @@ class FullTextClient(BaseAPIClient):
         if cached_file:
             self.logger.info(f"Using cached XML for PMC{normalized_pmcid}")
             return cached_file
+
+        # Rate limit before network requests
+        if rate_limiter is not None:
+            rate_limiter.wait_if_needed()
 
         # Try REST API first
         rest_result = self._try_xml_rest_api(normalized_pmcid, output_path)
@@ -1392,7 +1410,11 @@ class FullTextClient(BaseAPIClient):
             ) from e
 
     def _download_pdf_with_session(
-        self, pmcid: str, output_path: Path, session: Session
+        self,
+        pmcid: str,
+        output_path: Path,
+        session: Session,
+        rate_limiter: RateLimiter | None = None,
     ) -> Path | None:
         """
         Download PDF using a specific session.
@@ -1405,6 +1427,8 @@ class FullTextClient(BaseAPIClient):
             Path where to save the PDF file
         session : Session
             Session to use for download
+        rate_limiter : RateLimiter, optional
+            Rate limiter to use for network requests
 
         Returns
         -------
@@ -1414,12 +1438,16 @@ class FullTextClient(BaseAPIClient):
         original_session = self.session
         self.session = session
         try:
-            return self.download_pdf_by_pmcid(pmcid, output_path)
+            return self.download_pdf_by_pmcid(pmcid, output_path, rate_limiter)
         finally:
             self.session = original_session
 
     def _download_xml_with_session(
-        self, pmcid: str, output_path: Path, session: Session
+        self,
+        pmcid: str,
+        output_path: Path,
+        session: Session,
+        rate_limiter: RateLimiter | None = None,
     ) -> Path | None:
         """
         Download XML using a specific session.
@@ -1432,6 +1460,8 @@ class FullTextClient(BaseAPIClient):
             Path where to save the XML file
         session : Session
             Session to use for download
+        rate_limiter : RateLimiter, optional
+            Rate limiter to use for network requests
 
         Returns
         -------
@@ -1441,12 +1471,16 @@ class FullTextClient(BaseAPIClient):
         original_session = self.session
         self.session = session
         try:
-            return self.download_xml_by_pmcid(pmcid, output_path)
+            return self.download_xml_by_pmcid(pmcid, output_path, rate_limiter)
         finally:
             self.session = original_session
 
     def _download_html_with_session(
-        self, pmcid: str, output_path: Path, session: Session
+        self,
+        pmcid: str,
+        output_path: Path,
+        session: Session,
+        rate_limiter: RateLimiter | None = None,
     ) -> Path | None:
         """
         Download HTML using a specific session.
@@ -1459,6 +1493,8 @@ class FullTextClient(BaseAPIClient):
             Path where to save the HTML file
         session : Session
             Session to use for download
+        rate_limiter : RateLimiter, optional
+            Rate limiter to use for network requests
 
         Returns
         -------
@@ -1468,7 +1504,7 @@ class FullTextClient(BaseAPIClient):
         original_session = self.session
         self.session = session
         try:
-            return self.download_html_by_pmcid(pmcid, output_path)
+            return self.download_html_by_pmcid(pmcid, output_path, rate_limiter)
         finally:
             self.session = original_session
 
@@ -1691,7 +1727,10 @@ class FullTextClient(BaseAPIClient):
             return self.HTML_ARTICLE_URL_PMC.format(pmcid=normalized_pmcid)
 
     def download_html_by_pmcid(
-        self, pmcid: str, output_path: str | Path | None = None
+        self,
+        pmcid: str,
+        output_path: str | Path | None = None,
+        rate_limiter: RateLimiter | None = None,
     ) -> Path | None:
         """
         Download HTML full text of a paper from Europe PMC using its PMC ID.
@@ -1704,6 +1743,8 @@ class FullTextClient(BaseAPIClient):
             PMC ID of the paper (with or without 'PMC' prefix)
         output_path : str or Path, optional
             Path where to save the HTML file
+        rate_limiter : RateLimiter, optional
+            Rate limiter to use for network requests
 
         Returns
         -------
@@ -1729,6 +1770,10 @@ class FullTextClient(BaseAPIClient):
         if cached_file:
             self.logger.info(f"Using cached HTML for PMC{normalized_pmcid}")
             return cached_file
+
+        # Rate limit before network request
+        if rate_limiter is not None:
+            rate_limiter.wait_if_needed()
 
         try:
             html_url = self.get_html_article_url(normalized_pmcid)
@@ -3008,9 +3053,6 @@ class FullTextClient(BaseAPIClient):
                 error_info = None
 
                 try:
-                    # Enforce rate limit by blocking if needed
-                    rate_limiter.wait_if_needed()
-
                     # Validate and download using thread-local session
                     normalized_pmcid = self._validate_pmcid(pmcid)
 
@@ -3020,17 +3062,25 @@ class FullTextClient(BaseAPIClient):
                     try:
                         if format_type == "pdf":
                             output_path = output_dir / f"PMC{normalized_pmcid}.pdf"
-                            result = self._download_pdf_with_session(pmcid, output_path, session)
+                            result = self._download_pdf_with_session(
+                                pmcid, output_path, session, rate_limiter
+                            )
                         elif format_type == "xml":
                             output_path = output_dir / f"PMC{normalized_pmcid}.xml"
-                            result = self._download_xml_with_session(pmcid, output_path, session)
+                            result = self._download_xml_with_session(
+                                pmcid, output_path, session, rate_limiter
+                            )
                         elif format_type == "html":
                             output_path = output_dir / f"PMC{normalized_pmcid}.html"
-                            result = self._download_html_with_session(pmcid, output_path, session)
+                            result = self._download_html_with_session(
+                                pmcid, output_path, session, rate_limiter
+                            )
                         else:
                             raise FullTextError(ErrorCodes.FULL010, format_type=format_type)
-                    except Exception:
+                    except FullTextError:
                         raise
+                    except Exception as e:
+                        raise FullTextError(ErrorCodes.FULL001, context={"error": str(e)}) from e
 
                 except FullTextError as e:
                     worker_time = time.time() - worker_start
@@ -3107,9 +3157,7 @@ class FullTextClient(BaseAPIClient):
 
                             except Exception as e:
                                 _, pmcid_from_future = futures[future]
-                                worker_id = 0
-                                if "stats" in locals() and isinstance(stats, dict):
-                                    worker_id = stats.get("worker_id", 0)
+                                worker_id = futures[future][0]
                                 self.logger.error(
                                     f"Worker {worker_id} error for {pmcid_from_future}: {e}"
                                 )
@@ -3152,12 +3200,7 @@ class FullTextClient(BaseAPIClient):
 
                         except Exception as e:
                             _, pmcid_from_future = futures[future]
-                            try:
-                                worker_id = (
-                                    stats.get("worker_id", 0) if isinstance(stats, dict) else 0
-                                )
-                            except NameError:
-                                worker_id = 0
+                            worker_id = futures[future][0]
                             self.logger.error(
                                 f"Worker {worker_id} error for {pmcid_from_future}: {e}"
                             )
