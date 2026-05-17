@@ -2,6 +2,22 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [1.15.0] - 2025-01-20
+
+### ✨ Features
+
+- **Parallel Download Rate Limiting Fix**: Improved rate limiter implementation for parallel batch downloads
+  - Rate limiter now only invoked after cache miss (network boundary), preventing unnecessary delays for cached files
+  - Fixed exception handler worker_id derivation to use futures mapping instead of stale stats dict
+  - More efficient parallel downloads with proper rate limiting at network boundary
+  - Fixed `NameError` when exception handlers reference undefined `stats` variable
+
+### 🔧 Maintenance
+
+- **Exception Handling**: Improved worker error handling in parallel downloads
+  - Worker_id now correctly derived from `futures[future][0]` tuple
+  - Consistent stats tracking regardless of execution context
+
 ## [1.14.0] - 2025-01-15
 
 ### ✨ Features

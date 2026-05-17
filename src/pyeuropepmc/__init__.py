@@ -75,7 +75,7 @@ from .query.pagination import (
 from .query.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
 from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
-__version__ = "1.14.0"
+__version__ = "1.15.0"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"

@@ -83,6 +83,8 @@ ruff = "^0.14.4"
 typing-extensions = "^4.14.0"
 memory-profiler = "^0.61.0"
 
+[tool.poetry.requires-plugins]
+poetry-plugin-export = ">=1.8"
 
 [build-system]
 requires = ["poetry-core"]

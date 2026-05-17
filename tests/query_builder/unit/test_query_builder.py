@@ -10,6 +10,7 @@ Tests cover:
 """
 
 import pytest
+from datetime import datetime
 
 from pyeuropepmc.core.exceptions import QueryBuilderError
 from pyeuropepmc.query.query_builder import QueryBuilder
@@ -110,8 +111,9 @@ class TestDateRangeFilters:
         """Test date range with only start year."""
         qb = QueryBuilder(validate=False)
         query = qb.date_range(start_year=2020).build()
-        # Uses current year (2025) instead of * for open-ended ranges
-        assert "PUB_YEAR:[2020 TO 2025]" in query
+        # Uses current year instead of * for open-ended ranges
+        current_year = datetime.now().year
+        assert f"PUB_YEAR:[2020 TO {current_year}]" in query
 
     def test_date_range_end_year_only(self) -> None:
         """Test date range with only end year."""
