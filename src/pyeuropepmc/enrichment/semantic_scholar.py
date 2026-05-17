@@ -351,7 +351,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
         dict, list, or None
             Response data, or None if request fails.
         """
-        request_base_url = (base_url or self.base_url).rstrip("/")
+        request_base_url = (base_url if base_url is not None else self.base_url).rstrip("/")
         url = f"{request_base_url}/{endpoint.lstrip('/')}"
 
         cache_key = ""
@@ -430,7 +430,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
         dict, list, or None
             Response data, or None if request fails
         """
-        request_base_url = (base_url or self.base_url).rstrip("/")
+        request_base_url = (base_url if base_url is not None else self.base_url).rstrip("/")
         url = f"{request_base_url}/{endpoint.lstrip('/')}"
 
         # Check cache first (for idempotent requests)
