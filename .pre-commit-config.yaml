@@ -53,3 +53,8 @@ repos:
         entry: bash -c 'poetry lock && git diff --exit-code poetry.lock'
         language: system
         pass_filenames: false
+      - id: poetry-export
+        name: Export poetry dependencies to requirements.txt
+        entry: bash -c 'poetry export -f requirements.txt -o requirements.txt --without-hashes'
+        language: system
+        pass_filenames: false
