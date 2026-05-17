@@ -72,11 +72,23 @@ class AnnotationParser:
 
         # Flatten nested annotations (article objects with nested "annotations" field)
         flattened_annotations = []
+
         for annotation in annotations:
             if isinstance(annotation, dict) and "annotations" in annotation:
                 nested_annotations = annotation.get("annotations", [])
                 if isinstance(nested_annotations, list):
-                    flattened_annotations.extend(nested_annotations)
+                    for nested in nested_annotations:
+                        # Copy parent metadata to nested annotation
+                        nested_with_metadata = nested.copy()
+                        if "pmcid" not in nested_with_metadata and "pmcid" in annotation:
+                            nested_with_metadata["pmcid"] = annotation["pmcid"]
+                        if "source" not in nested_with_metadata and "source" in annotation:
+                            nested_with_metadata["source"] = annotation["source"]
+                        if "extId" not in nested_with_metadata and "extId" in annotation:
+                            nested_with_metadata["extId"] = annotation["extId"]
+                        flattened_annotations.append(nested_with_metadata)
+                else:
+                    flattened_annotations.append(annotation)
             else:
                 flattened_annotations.append(annotation)
 
@@ -112,7 +124,7 @@ class AnnotationParser:
                 selector_suffix = selector.get("suffix")
                 suffix = selector_suffix if selector_suffix else annotation.get("postfix", "")
 
-        return {
+        entity = {
             "id": body,
             "name": annotation.get("exact", ""),
             "type": AnnotationParser._extract_entity_type_from_body(body, annotation),
@@ -124,6 +136,10 @@ class AnnotationParser:
             "confidence": None,
             "article_id": AnnotationParser._extract_article_id_from_target(annotation),
         }
+
+        entity["article_uri"] = AnnotationParser._extract_article_uri(annotation)
+
+        return entity
 
     @staticmethod
     def _extract_entity_from_tag(
@@ -155,6 +171,9 @@ class AnnotationParser:
         if "annotation_id" not in entity:
             entity["annotation_id"] = entity["id"]
 
+        entity["article_id"] = AnnotationParser._extract_article_id_from_target(annotation)
+        entity["article_uri"] = AnnotationParser._extract_article_uri(annotation)
+
         return entity
 
     @staticmethod
@@ -175,7 +194,9 @@ class AnnotationParser:
         return unique_entities
 
     @staticmethod
-    def extract_entities(annotations: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    def extract_entities(
+        annotations: list[dict[str, Any]], parent_metadata_cache: dict[str, Any] | None = None
+    ) -> list[dict[str, Any]]:
         """
         Extract entity annotations from a list of annotations.
 
@@ -184,6 +205,7 @@ class AnnotationParser:
 
         Args:
             annotations: List of annotation objects
+            parent_metadata_cache: Optional dict mapping annotation id to parent metadata
 
         Returns:
             List of entity annotation dictionaries
@@ -443,12 +465,53 @@ class AnnotationParser:
 
     @staticmethod
     def _extract_article_id_from_target(annotation: dict[str, Any]) -> str | None:
-        """Extract article ID from target source."""
+        """Extract article ID from target source or annotation fields."""
+        pmcid = annotation.get("pmcid")
+        source = annotation.get("source")
+        ext_id = annotation.get("extId")
+
+        # Check target first (higher priority)
         target = annotation.get("target")
         if isinstance(target, dict):
-            source = target.get("source")
-            if source:
-                return str(source)
+            source_from_target = target.get("source")
+            if source_from_target:
+                return str(source_from_target)
+
+        # Fall back to annotation-level fields
+        if pmcid:
+            return f"PMC{pmcid.replace('PMC', '')}"
+        if source and ext_id:
+            return f"{source}/{ext_id}"
+        if ext_id:
+            return str(ext_id)
+
+        return None
+
+    @staticmethod
+    def _extract_article_uri(annotation: dict[str, Any]) -> str | None:
+        """Extract or construct article URI from annotation metadata."""
+        pmcid = annotation.get("pmcid")
+        source = annotation.get("source")
+        ext_id = annotation.get("extId")
+
+        if pmcid:
+            return f"https://europepmc.org/articles/PMC{pmcid.replace('PMC', '')}"
+
+        if source and ext_id:
+            return f"https://europepmc.org/articles/{source}/{ext_id}"
+
+        target = annotation.get("target")
+        if isinstance(target, dict):
+            source_from_target = target.get("source")
+            ext_id_from_target = target.get("extId") or target.get("id")
+            if source_from_target and ext_id_from_target:
+                return f"https://europepmc.org/articles/{source_from_target}/{ext_id_from_target}"
+
+            source_from_target = target.get("source")
+            pmcid_from_target = target.get("pmcid")
+            if source_from_target and pmcid_from_target:
+                return f"https://europepmc.org/articles/PMC{pmcid_from_target.replace('PMC', '')}"
+
         return None
 
     @staticmethod

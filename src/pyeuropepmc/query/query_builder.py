@@ -312,6 +312,7 @@ FIELD_METADATA: dict[str, tuple[str, str]] = {
     # Annotation fields
     "annotation_provider": ("ANNOTATION_PROVIDER", "Source of text-mining annotations"),
     "annotation_type": ("ANNOTATION_TYPE", "Type of annotation (e.g., Disease, Gene)"),
+    "all_fields": ("ALL_FIELDS", "All searchable fields (system field)"),
     # System fields (note: API returns these in lowercase)
     "shard": ("SHARD", "Database shard identifier (internal use)"),
     "qn1": ("QN1", "Query normalization field 1 (internal use)"),
