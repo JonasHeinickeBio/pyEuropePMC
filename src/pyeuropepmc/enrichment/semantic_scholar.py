@@ -103,7 +103,13 @@ class SemanticScholarClient(BaseEnrichmentClient):
         return normalized
 
     def _validate_paper_ids(self, paper_ids: list[str], argument_name: str) -> list[str]:
-        """Validate a list of paper identifiers and remove duplicates while preserving order."""
+        """
+        Validate a list of paper identifiers and remove duplicates while preserving order.
+
+        Notes
+        -----
+        Duplicate IDs are automatically de-duplicated in the returned list.
+        """
         if not paper_ids:
             raise ValueError(f"{argument_name} must contain at least one paper ID")
         normalized_ids = [self._validate_paper_id(paper_id) for paper_id in paper_ids]

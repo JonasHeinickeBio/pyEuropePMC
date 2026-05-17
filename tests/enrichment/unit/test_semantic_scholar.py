@@ -44,7 +44,7 @@ class TestSemanticScholarRecommendations:
             recommendations = client.get_recommendations_for_papers(
                 positive_paper_ids=["649def34f8be52c8b66281af98ae884c09aef38b"],
                 negative_paper_ids=["ArXiv:1805.02262"],
-                limit=1000,  # Validates capping to client.MAX_RECOMMENDATIONS (500).
+                limit=1000,
             )
 
         assert recommendations == [{"paperId": "p3"}]
