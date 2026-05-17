@@ -46,7 +46,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
     BASE_URL = "https://api.semanticscholar.org/graph/v1"
     RECOMMENDATIONS_BASE_URL = "https://api.semanticscholar.org/recommendations/v1"
     MAX_RECOMMENDATIONS = 500
-    _PAPER_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9:./_-]{1,255}$")
+    _PAPER_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9:./_-]{0,255}$")
 
     def __init__(
         self,
