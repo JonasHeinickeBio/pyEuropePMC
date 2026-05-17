@@ -2142,6 +2142,7 @@ FieldType = Literal[
     "title_abs",
     "annotation_provider",
     "annotation_type",
+    "all_fields",
     "shard",
     "qn1",
     "qn2",

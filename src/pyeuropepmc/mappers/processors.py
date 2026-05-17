@@ -292,7 +292,15 @@ def process_annotations_data(
                 for article in annotations_data:
                     article_annotations = article.get("annotations", [])
                     if isinstance(article_annotations, list):
-                        flattened_annotations.extend(article_annotations)
+                        for nested in article_annotations:
+                            nested_with_metadata = nested.copy()
+                            if "pmcid" not in nested_with_metadata and "pmcid" in article:
+                                nested_with_metadata["pmcid"] = article["pmcid"]
+                            if "source" not in nested_with_metadata and "source" in article:
+                                nested_with_metadata["source"] = article["source"]
+                            if "extId" not in nested_with_metadata and "extId" in article:
+                                nested_with_metadata["extId"] = article["extId"]
+                            flattened_annotations.append(nested_with_metadata)
                 parsed_annotations = normalize_annotations_response(
                     parse_annotations(flattened_annotations)
                 )
