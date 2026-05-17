@@ -53,7 +53,6 @@ class TestSemanticScholarRecommendations:
             "negativePaperIds": ["ArXiv:1805.02262"],
         }
         assert captured["params"] == {"limit": 500}
-        assert captured["params"]["limit"] == client.MAX_RECOMMENDATIONS
 
     def test_get_recommendations_for_paper_invalid_id_raises(self) -> None:
         """Invalid paper IDs are rejected."""

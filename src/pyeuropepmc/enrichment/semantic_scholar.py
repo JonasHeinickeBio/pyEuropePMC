@@ -45,7 +45,10 @@ class SemanticScholarClient(BaseEnrichmentClient):
 
     BASE_URL = "https://api.semanticscholar.org/graph/v1"
     RECOMMENDATIONS_BASE_URL = "https://api.semanticscholar.org/recommendations/v1"
+    # Semantic Scholar recommendations endpoint currently allows up to 500 results per request.
     MAX_RECOMMENDATIONS = 500
+    # IDs must start with an alphanumeric character and may include : . / _ -,
+    # with a maximum length of 256 characters.
     _PAPER_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9:./_-]{0,255}$")
 
     def __init__(
