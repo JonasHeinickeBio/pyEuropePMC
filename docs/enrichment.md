@@ -148,6 +148,28 @@ with OpenAlexClient(email="your@email.com") as client:
     print(data["topics"])
 ```
 
+### Semantic Scholar Recommendations API
+
+`SemanticScholarClient` also supports Semantic Scholar Recommendations API v1:
+
+```python
+from pyeuropepmc.enrichment import SemanticScholarClient
+
+with SemanticScholarClient(api_key="your-api-key") as client:
+    # GET /recommendations/v1/papers/forpaper/{paper_id}
+    recs_for_one = client.get_recommendations_for_paper(
+        paper_id="649def34f8be52c8b66281af98ae884c09aef38b",
+        limit=500,
+    )
+
+    # POST /recommendations/v1/papers/
+    recs_for_many = client.get_recommendations_for_papers(
+        positive_paper_ids=["649def34f8be52c8b66281af98ae884c09aef38b"],
+        negative_paper_ids=["ArXiv:1805.02262"],
+        limit=500,
+    )
+```
+
 ## Data Merging Strategy
 
 When multiple sources provide the same information, `PaperEnricher` uses the following priority:

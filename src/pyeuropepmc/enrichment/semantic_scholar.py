@@ -6,6 +6,7 @@ abstracts, and venue information.
 """
 
 import logging
+import re
 import time
 from typing import Any
 
@@ -43,6 +44,9 @@ class SemanticScholarClient(BaseEnrichmentClient):
     """
 
     BASE_URL = "https://api.semanticscholar.org/graph/v1"
+    RECOMMENDATIONS_BASE_URL = "https://api.semanticscholar.org/recommendations/v1"
+    MAX_RECOMMENDATIONS = 500
+    _PAPER_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9:./_-]{1,255}$")
 
     def __init__(
         self,
@@ -77,6 +81,147 @@ class SemanticScholarClient(BaseEnrichmentClient):
         if api_key:
             self.session.headers.update({"x-api-key": api_key})
             logger.info("Semantic Scholar API key configured")
+
+    def _normalize_recommendation_limit(self, limit: int | None) -> int:
+        """Validate and normalize recommendation limit to API boundaries."""
+        if limit is None:
+            return self.MAX_RECOMMENDATIONS
+        if limit <= 0:
+            raise ValueError("limit must be a positive integer")
+        return min(limit, self.MAX_RECOMMENDATIONS)
+
+    def _validate_paper_id(self, paper_id: str) -> str:
+        """Validate a Semantic Scholar paper identifier string."""
+        normalized = paper_id.strip()
+        if not normalized:
+            raise ValueError("paper_id must be a non-empty string")
+        if not self._PAPER_ID_PATTERN.match(normalized):
+            raise ValueError(
+                "paper_id contains invalid characters; allowed: letters, "
+                "numbers, ':', '.', '/', '_', '-'"
+            )
+        return normalized
+
+    def _validate_paper_ids(self, paper_ids: list[str], argument_name: str) -> list[str]:
+        """Validate a list of paper identifiers and remove duplicates while preserving order."""
+        if not paper_ids:
+            raise ValueError(f"{argument_name} must contain at least one paper ID")
+        normalized_ids = [self._validate_paper_id(paper_id) for paper_id in paper_ids]
+        return list(dict.fromkeys(normalized_ids))
+
+    def _extract_recommendations(self, response: dict[str, Any] | None) -> list[dict[str, Any]]:
+        """Extract recommendation payload from Semantic Scholar responses."""
+        if not response:
+            return []
+        recommendations = response.get("recommendedPapers", [])
+        if isinstance(recommendations, list):
+            return [item for item in recommendations if isinstance(item, dict)]
+        logger.warning("Unexpected recommendations response format")
+        return []
+
+    def get_recommendations_for_paper(
+        self,
+        paper_id: str,
+        limit: int | None = None,
+        fields: list[str] | None = None,
+        use_cache: bool = True,
+    ) -> list[dict[str, Any]]:
+        """
+        Get recommended papers for a single positive example paper.
+
+        Parameters
+        ----------
+        paper_id : str
+            Positive example paper ID.
+        limit : int, optional
+            Number of recommendations to return (capped at API maximum).
+        fields : list[str], optional
+            Additional paper fields to request from Semantic Scholar.
+        use_cache : bool, optional
+            Whether to use cache for idempotent requests.
+
+        Returns
+        -------
+        list[dict]
+            Recommended papers.
+        """
+        validated_paper_id = self._validate_paper_id(paper_id)
+        params: dict[str, Any] = {"limit": self._normalize_recommendation_limit(limit)}
+
+        if fields:
+            filtered_fields = [field.strip() for field in fields if field.strip()]
+            if filtered_fields:
+                params["fields"] = ",".join(filtered_fields)
+
+        response = self._make_get_request(
+            endpoint=f"papers/forpaper/{validated_paper_id}",
+            params=params,
+            use_cache=use_cache,
+            base_url=self.RECOMMENDATIONS_BASE_URL,
+        )
+        if not isinstance(response, dict):
+            return []
+        return self._extract_recommendations(response)
+
+    def get_recommendations_for_papers(
+        self,
+        positive_paper_ids: list[str],
+        negative_paper_ids: list[str] | None = None,
+        limit: int | None = None,
+        fields: list[str] | None = None,
+        use_cache: bool = True,
+    ) -> list[dict[str, Any]]:
+        """
+        Get recommended papers based on positive and optional negative example papers.
+
+        Parameters
+        ----------
+        positive_paper_ids : list[str]
+            Positive example paper IDs.
+        negative_paper_ids : list[str], optional
+            Negative example paper IDs.
+        limit : int, optional
+            Number of recommendations to return (capped at API maximum).
+        fields : list[str], optional
+            Additional paper fields to request from Semantic Scholar.
+        use_cache : bool, optional
+            Whether to use cache for idempotent requests.
+
+        Returns
+        -------
+        list[dict]
+            Recommended papers.
+        """
+        validated_positive = self._validate_paper_ids(positive_paper_ids, "positive_paper_ids")
+        validated_negative: list[str] = []
+        if negative_paper_ids:
+            validated_negative = self._validate_paper_ids(negative_paper_ids, "negative_paper_ids")
+            overlap = set(validated_positive).intersection(validated_negative)
+            if overlap:
+                raise ValueError(
+                    "positive_paper_ids and negative_paper_ids must not contain the same paper IDs"
+                )
+
+        params: dict[str, Any] = {"limit": self._normalize_recommendation_limit(limit)}
+        if fields:
+            filtered_fields = [field.strip() for field in fields if field.strip()]
+            if filtered_fields:
+                params["fields"] = ",".join(filtered_fields)
+
+        payload: dict[str, Any] = {"positivePaperIds": validated_positive}
+        if validated_negative:
+            payload["negativePaperIds"] = validated_negative
+
+        response = self._make_post_request(
+            endpoint="papers/",
+            json_data=payload,
+            params=params,
+            use_cache=use_cache,
+            base_url=self.RECOMMENDATIONS_BASE_URL,
+        )
+        if not isinstance(response, dict):
+            return []
+        return self._extract_recommendations(response)
 
     def enrich(
         self,
@@ -177,6 +322,84 @@ class SemanticScholarClient(BaseEnrichmentClient):
             logger.error(f"Error parsing Semantic Scholar response for {endpoint}: {e}")
             return None
 
+    def _make_get_request(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+        use_cache: bool = True,
+        base_url: str | None = None,
+    ) -> dict[str, Any] | list[Any] | None:
+        """
+        Make HTTP GET request with caching and error handling.
+
+        Parameters
+        ----------
+        endpoint : str
+            API endpoint (will be appended to base_url).
+        params : dict, optional
+            Query parameters.
+        headers : dict, optional
+            Additional headers.
+        use_cache : bool, optional
+            Whether to use caching for this request (default: True).
+        base_url : str, optional
+            Base URL override. Uses client base URL when not provided.
+
+        Returns
+        -------
+        dict, list, or None
+            Response data, or None if request fails.
+        """
+        request_base_url = (base_url or self.base_url).rstrip("/")
+        url = f"{request_base_url}/{endpoint.lstrip('/')}"
+
+        cache_key = ""
+        if use_cache and self._cache.config.enabled:
+            cache_key = f"GET:{url}:{str(params)}"
+            cached = self._cache.get(cache_key)
+            if cached is not None:
+                logger.debug(f"Cache hit for GET {url}")
+                return cached  # type: ignore[no-any-return]
+
+        request_headers = dict(self.session.headers)
+        if headers:
+            request_headers.update(headers)
+
+        try:
+            logger.debug(f"GET request to {url} with params={params}")
+            response = self.session.get(
+                url, params=params, headers=request_headers, timeout=self.timeout
+            )
+
+            if response.status_code == 404:
+                logger.info(f"Resource not found at {url}")
+                return None
+
+            response.raise_for_status()
+            data = response.json()
+
+            if use_cache and self._cache.config.enabled:
+                self._cache.set(cache_key, data)
+
+            logger.info(f"GET request to {url} succeeded")
+            return data  # type: ignore[no-any-return]
+
+        except requests.HTTPError as e:
+            if e.response is not None and e.response.status_code == 404:
+                logger.info(f"Resource not found at {url}")
+                return None
+            logger.error(f"HTTP error for GET {url}: {e}")
+            raise APIClientError(message=f"HTTP error: {e}") from e
+        except requests.RequestException as e:
+            logger.error(f"GET request failed for {url}: {e}")
+            raise APIClientError(message=f"Request failed: {e}") from e
+        except ValueError as e:
+            logger.error(f"Invalid JSON response from GET {url}: {e}")
+            return None
+        finally:
+            time.sleep(self.rate_limit_delay)
+
     def _make_post_request(
         self,
         endpoint: str,
@@ -184,6 +407,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
         params: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
         use_cache: bool = True,
+        base_url: str | None = None,
     ) -> dict[str, Any] | list[Any] | None:
         """
         Make HTTP POST request with retries and caching.
@@ -206,7 +430,8 @@ class SemanticScholarClient(BaseEnrichmentClient):
         dict, list, or None
             Response data, or None if request fails
         """
-        url = f"{self.base_url}/{endpoint.lstrip('/')}"
+        request_base_url = (base_url or self.base_url).rstrip("/")
+        url = f"{request_base_url}/{endpoint.lstrip('/')}"
 
         # Check cache first (for idempotent requests)
         cache_key = ""
