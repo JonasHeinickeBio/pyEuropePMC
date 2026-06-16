@@ -4,8 +4,13 @@ import pandas as pd
 import pytest
 
 from pyeuropepmc.processing.analytics import (
+    access_distribution,
+    author_collaboration_network,
+    citation_by_access_type,
     citation_statistics,
     detect_duplicates,
+    disease_comparison_trends,
+    funding_source_analysis,
     journal_distribution,
     publication_type_distribution,
     publication_year_distribution,
@@ -421,3 +426,320 @@ class TestAuthorStatistics:
         df = to_dataframe(sample_papers)
         stats = author_statistics(df)
         assert stats["total_authors"] == 6
+
+
+@pytest.fixture
+def extended_papers():
+    """Extended sample papers with license, grant, and fulltext fields."""
+    return [
+        {
+            "id": "1", "source": "MED", "title": "Cancer Research on ME/CFS",
+            "authorString": "Smith J, Doe J", "pubYear": "2020",
+            "isOpenAccess": "Y", "citedByCount": "10", "hasPDF": "Y",
+            "inPMC": "Y", "inEPMC": "Y", "license": "CC-BY",
+            "abstractText": "This study examines ME/CFS in detail.",
+            "grantsList": {"grant": [{"agency": "NIH"}, {"agency": "Wellcome"}]},
+        },
+        {
+            "id": "2", "source": "MED", "title": "Another Paper on long COVID",
+            "authorString": "Jones A", "pubYear": "2021",
+            "isOpenAccess": "N", "citedByCount": "25", "hasPDF": "N",
+            "inPMC": "N", "inEPMC": "N", "license": "Publisher",
+            "abstractText": "Review of long COVID post-acute sequelae.",
+            "grantsList": {"grant": [{"agency": "NIH"}]},
+        },
+        {
+            "id": "3", "source": "MED", "title": "Immunotherapy for chronic fatigue syndrome",
+            "authorString": "Brown B, Green G", "pubYear": "2022",
+            "isOpenAccess": "Y", "citedByCount": "5", "hasPDF": "Y",
+            "inPMC": "Y", "inEPMC": "Y", "license": "CC0",
+            "abstractText": "Clinical trial on chronic fatigue syndrome.",
+            "grantsList": {"grant": [{"agency": "MRC"}]},
+        },
+        {
+            "id": "4", "source": "MED", "title": "ME prevalence study",
+            "authorString": "White W, Black K", "pubYear": "2023",
+            "isOpenAccess": "Y", "citedByCount": "15", "hasPDF": "Y",
+            "inPMC": "N", "inEPMC": "Y", "license": "CC-BY-NC",
+            "abstractText": "ME/CFS prevalence across demographics.",
+            "grantsList": {"grant": [{"agency": "NIH"}, {"agency": "MRC"}, {"agency": "Wellcome"}]},
+        },
+    ]
+
+
+class TestAccessDistribution:
+    """Tests for access_distribution function."""
+
+    def test_basic(self, extended_papers):
+        """Test basic access distribution."""
+        result = access_distribution(extended_papers)
+        assert isinstance(result, dict)
+        assert result["total_papers"] == 4
+        assert result["open_access_count"] == 3
+        assert result["open_access_percentage"] == 75.0
+        assert result["closed_access_count"] == 1
+        assert result["closed_access_percentage"] == 25.0
+
+    def test_fulltext_availability(self, extended_papers):
+        """Test fulltext availability counts."""
+        result = access_distribution(extended_papers)
+        assert result["has_fulltext_api_count"] == 3
+        assert result["no_fulltext_api_count"] == 1
+
+    def test_license_distribution(self, extended_papers):
+        """Test license distribution extraction."""
+        result = access_distribution(extended_papers)
+        assert isinstance(result["license_distribution"], dict)
+        assert len(result["license_distribution"]) > 0
+        assert "CC-BY" in result["license_distribution"]
+        assert result["license_distribution"]["CC-BY"] == 1
+
+    def test_fulltext_breakdown(self, extended_papers):
+        """Test fulltext availability breakdown."""
+        result = access_distribution(extended_papers)
+        breakdown = result["fulltext_availability_breakdown"]
+        assert isinstance(breakdown, dict)
+        assert "pdf" in breakdown
+        assert "pmc" in breakdown
+        assert "epmc" in breakdown
+        assert "none" in breakdown
+        assert breakdown["pdf"] == 3
+
+    def test_license_top_n(self, extended_papers):
+        """Test top N licenses."""
+        result = access_distribution(extended_papers, top_n_licenses=2)
+        assert isinstance(result["license_top_n"], pd.Series)
+        assert len(result["license_top_n"]) <= 2
+
+    def test_empty(self):
+        """Test with empty data."""
+        result = access_distribution([])
+        assert result["total_papers"] == 0
+        assert result["open_access_count"] == 0
+        assert result["license_distribution"] == {}
+
+    def test_dataframe(self, extended_papers):
+        """Test with DataFrame input."""
+        df = to_dataframe(extended_papers)
+        # DataFrame won't have license column from to_dataframe, but should not crash
+        result = access_distribution(df)
+        assert result["total_papers"] == 4
+
+
+class TestCitationByAccessType:
+    """Tests for citation_by_access_type function."""
+
+    def test_basic(self, extended_papers):
+        """Test basic citation by access type."""
+        result = citation_by_access_type(extended_papers)
+        assert isinstance(result, dict)
+        assert result["open_access"]["count"] == 3
+        assert result["closed_access"]["count"] == 1
+
+    def test_citation_stats(self, extended_papers):
+        """Test citation statistics per group."""
+        result = citation_by_access_type(extended_papers)
+        assert result["open_access"]["mean_citations"] == 10.0  # (10+5+15)/3
+        assert result["closed_access"]["mean_citations"] == 25.0
+
+    def test_distribution_percentiles(self, extended_papers):
+        """Test distribution percentiles exist."""
+        result = citation_by_access_type(extended_papers)
+        assert "25th_percentile" in result["open_access"]["distribution"]
+        assert "75th_percentile" in result["closed_access"]["distribution"]
+
+    def test_effect_size(self, extended_papers):
+        """Test effect size is computed."""
+        result = citation_by_access_type(extended_papers)
+        assert isinstance(result["effect_size"], float)
+
+    def test_citation_impact_score(self, extended_papers):
+        """Test citation impact score."""
+        result = citation_by_access_type(extended_papers)
+        assert isinstance(result["citation_impact_score"], float)
+        # OA mean (10) < closed mean (25), so negative impact
+        assert result["citation_impact_score"] < 0
+
+    def test_empty(self):
+        """Test with empty data."""
+        result = citation_by_access_type([])
+        assert result["open_access"]["count"] == 0
+        assert result["closed_access"]["count"] == 0
+        assert result["effect_size"] == 0.0
+
+    def test_missing_columns(self):
+        """Test with DataFrame missing required columns."""
+        df = pd.DataFrame({"title": ["test"]})
+        result = citation_by_access_type(df)
+        assert result["open_access"]["count"] == 0
+
+
+class TestDiseaseComparisonTrends:
+    """Tests for disease_comparison_trends function."""
+
+    def test_basic(self, extended_papers):
+        """Test basic disease comparison."""
+        disease_terms = {
+            "ME/CFS": ["ME/CFS", "chronic fatigue syndrome"],
+            "Long-COVID": ["long COVID", "post-acute sequelae"],
+        }
+        result = disease_comparison_trends(extended_papers, disease_terms)
+        assert isinstance(result, dict)
+        assert result["ME/CFS"]["total_publications"] == 3
+        assert result["Long-COVID"]["total_publications"] == 1
+
+    def test_publications_by_year(self, extended_papers):
+        """Test publications by year per disease."""
+        disease_terms = {
+            "ME/CFS": ["ME/CFS", "chronic fatigue syndrome"],
+            "Long-COVID": ["long COVID"],
+        }
+        result = disease_comparison_trends(extended_papers, disease_terms)
+        me_years = result["ME/CFS"]["publications_by_year"]
+        assert isinstance(me_years, dict)
+        assert 2020 in me_years
+        assert 2022 in me_years
+
+    def test_growth_rate(self, extended_papers):
+        """Test growth rate calculation."""
+        disease_terms = {"Disease_A": ["cancer", "tumor"], "Disease_B": ["diabetes"]}
+        result = disease_comparison_trends(extended_papers, disease_terms)
+        assert isinstance(result["Disease_A"]["growth_rate"], float)
+
+    def test_comparison(self, extended_papers):
+        """Test comparison section."""
+        disease_terms = {
+            "ME/CFS": ["ME/CFS", "chronic fatigue syndrome"],
+            "Long-COVID": ["long COVID", "post-acute sequelae"],
+        }
+        result = disease_comparison_trends(extended_papers, disease_terms)
+        comparison = result["comparison"]
+        assert "when_disease_b_overtook_a" in comparison
+        assert "ratio_at_crossover" in comparison
+        assert "combined_trend" in comparison
+
+    def test_empty(self):
+        """Test with empty data."""
+        disease_terms = {"A": ["term1"], "B": ["term2"]}
+        result = disease_comparison_trends([], disease_terms)
+        assert result["A"]["total_publications"] == 0
+        assert result["comparison"]["when_disease_b_overtook_a"] is None
+
+    def test_single_disease(self):
+        """Test with only one disease key."""
+        disease_terms = {"OnlyDisease": ["cancer"]}
+        result = disease_comparison_trends([], disease_terms)
+        assert result["OnlyDisease"]["total_publications"] == 0
+
+
+class TestAuthorCollaborationNetwork:
+    """Tests for author_collaboration_network function."""
+
+    def test_basic(self, extended_papers):
+        """Test basic network stats."""
+        result = author_collaboration_network(extended_papers)
+        assert isinstance(result, dict)
+        assert result["network_stats"]["total_authors"] == 7
+        assert result["network_stats"]["total_collaborations"] == 3
+
+    def test_avg_authors_per_paper(self, extended_papers):
+        """Test average authors per paper."""
+        result = author_collaboration_network(extended_papers)
+        assert result["network_stats"]["avg_authors_per_paper"] == 1.75
+
+    def test_single_and_multi_author(self, extended_papers):
+        """Test single vs multi author paper counts."""
+        result = author_collaboration_network(extended_papers)
+        assert result["network_stats"]["single_author_papers"] == 1
+        assert result["network_stats"]["multi_author_papers"] == 3
+
+    def test_top_authors(self, extended_papers):
+        """Test top authors series."""
+        result = author_collaboration_network(extended_papers, top_n=3)
+        assert isinstance(result["top_authors"], pd.Series)
+        assert len(result["top_authors"]) <= 3
+
+    def test_collaboration_matrix(self, extended_papers):
+        """Test collaboration matrix DataFrame."""
+        result = author_collaboration_network(extended_papers, top_n=3)
+        assert isinstance(result["collaboration_matrix"], pd.DataFrame)
+
+    def test_centrality_metrics(self, extended_papers):
+        """Test centrality metrics."""
+        result = author_collaboration_network(extended_papers)
+        assert isinstance(result["centrality_metrics"], dict)
+        for author, score in result["centrality_metrics"].items():
+            assert 0.0 <= score <= 1.0
+
+    def test_research_groups(self, extended_papers):
+        """Test research group detection."""
+        result = author_collaboration_network(extended_papers)
+        assert isinstance(result["research_groups"], list)
+        # Should find Smith-Doe, Brown-Green, White-Black as groups
+        assert len(result["research_groups"]) == 3
+
+    def test_empty(self):
+        """Test with empty data."""
+        result = author_collaboration_network([])
+        assert result["network_stats"]["total_authors"] == 0
+        assert result["top_authors"].empty
+
+    def test_dataframe(self, extended_papers):
+        """Test with DataFrame input."""
+        df = to_dataframe(extended_papers)
+        result = author_collaboration_network(df)
+        assert result["network_stats"]["total_authors"] == 7
+
+
+class TestFundingSourceAnalysis:
+    """Tests for funding_source_analysis function."""
+
+    def test_basic(self, extended_papers):
+        """Test basic funding analysis."""
+        result = funding_source_analysis(extended_papers)
+        assert isinstance(result, dict)
+        assert result["total_funded_papers"] == 4
+
+    def test_funding_distribution(self, extended_papers):
+        """Test funding source distribution."""
+        result = funding_source_analysis(extended_papers)
+        dist = result["funding_source_distribution"]
+        assert isinstance(dist, dict)
+        assert "NIH" in dist
+        assert dist["NIH"] == 3
+
+    def test_top_funders(self, extended_papers):
+        """Test top funders series."""
+        result = funding_source_analysis(extended_papers, top_n=2)
+        assert isinstance(result["top_funders"], pd.Series)
+        assert len(result["top_funders"]) <= 2
+
+    def test_concentration_index(self, extended_papers):
+        """Test HHI concentration index."""
+        result = funding_source_analysis(extended_papers)
+        assert 0.0 <= result["concentration_index"] <= 1.0
+
+    def test_multi_funder(self, extended_papers):
+        """Test multi-funder paper count."""
+        result = funding_source_analysis(extended_papers)
+        assert result["multi_funder_papers"] == 2  # Papers 1 and 4
+
+    def test_funding_by_year(self, extended_papers):
+        """Test funding by year."""
+        result = funding_source_analysis(extended_papers)
+        by_year = result["funding_by_year"]
+        assert isinstance(by_year, dict)
+        assert 2020 in by_year
+        assert "NIH" in by_year[2020]
+
+    def test_empty(self):
+        """Test with empty data."""
+        result = funding_source_analysis([])
+        assert result["total_funded_papers"] == 0
+        assert result["funding_source_distribution"] == {}
+
+    def test_dataframe(self, extended_papers):
+        """Test with DataFrame input."""
+        df = to_dataframe(extended_papers)
+        result = funding_source_analysis(df)
+        assert result["total_funded_papers"] == 4
