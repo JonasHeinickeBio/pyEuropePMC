@@ -163,7 +163,7 @@ def open_access(self, is_open_access: bool = True) -> QueryBuilder:
 
 ## Recommended Approach
 
-### Phase 1: Add Generic Method ✅ (Done!)
+### Phase 1: Add Generic Method (Done!)
 - Add `field()` method
 - Document it
 - Test it

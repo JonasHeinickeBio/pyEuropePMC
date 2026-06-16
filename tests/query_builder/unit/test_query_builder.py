@@ -9,8 +9,9 @@ Tests cover:
 - Edge cases and validation
 """
 
-import pytest
 from datetime import datetime
+
+import pytest
 
 from pyeuropepmc.core.exceptions import QueryBuilderError
 from pyeuropepmc.query.query_builder import QueryBuilder

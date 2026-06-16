@@ -6,10 +6,10 @@ import pytest
 
 from pyeuropepmc.processing.annotation_parser import (
     AnnotationParser,
-    parse_annotations,
     extract_entities,
-    extract_sentences,
     extract_relationships,
+    extract_sentences,
+    parse_annotations,
 )
 
 

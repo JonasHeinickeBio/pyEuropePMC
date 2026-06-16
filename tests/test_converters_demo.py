@@ -3,17 +3,17 @@
 import pytest
 from rdflib import Graph
 
-from pyeuropepmc.clients.search import SearchClient
-from pyeuropepmc.clients.article import ArticleClient
 from pyeuropepmc.clients.annotations import AnnotationsClient
+from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.clients.search import SearchClient
 from pyeuropepmc.enrichment.enricher import PaperEnricher
 from pyeuropepmc.mappers.converters import (
+    RDFConversionError,
+    convert_annotations_to_rdf,
+    convert_enrichment_to_rdf,
+    convert_pipeline_to_rdf,
     convert_search_to_rdf,
     convert_xml_to_rdf,
-    convert_enrichment_to_rdf,
-    convert_annotations_to_rdf,
-    convert_pipeline_to_rdf,
-    RDFConversionError,
 )
 
 

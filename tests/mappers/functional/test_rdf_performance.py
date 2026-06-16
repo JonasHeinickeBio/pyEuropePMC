@@ -6,7 +6,7 @@ import pytest
 from rdflib import Graph
 
 from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import PaperEntity, AuthorEntity, InstitutionEntity
+from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
 
 
 class TestRDFPerformanceAndScalability:
@@ -162,7 +162,6 @@ class TestRDFPerformanceAndScalability:
     def test_batch_processing_throughput(self, mapper, performance_paper_batch):
         """Test throughput of batch processing operations."""
         import tempfile
-        from pathlib import Path
 
         # Prepare batch data
         entities_data = {}
@@ -294,8 +293,9 @@ class TestRDFPerformanceAndScalability:
     def test_resource_cleanup_efficiency(self, mapper, performance_paper_batch):
         """Test that resources are properly managed during large operations."""
         import gc
-        import psutil
         import os
+
+        import psutil
 
         # Get initial memory usage
         process = psutil.Process(os.getpid())

@@ -83,48 +83,46 @@ def test_close(client):
 def test_get_request_exception_logs_and_raises(client, caplog):
     with patch.object(
         client.session, "get", side_effect=requests.RequestException("Timeout error")
-    ):
-        with caplog.at_level("ERROR"):
-            with pytest.raises(APIClientError) as exc_info:
-                client._get("timeout_endpoint")
+    ), caplog.at_level("ERROR"):
+        with pytest.raises(APIClientError) as exc_info:
+            client._get("timeout_endpoint")
 
-            # Check that the exception has the correct error code
-            assert exc_info.value.error_code.value == "NET001"
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code.value == "NET001"
 
-            # Check that the error message contains the network error description
-            error_str = str(exc_info.value)
-            assert "[NET001]" in error_str
-            assert "Network connection failed" in error_str
+        # Check that the error message contains the network error description
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
-            # Check that the URL and error details are in the context
-            assert "timeout_endpoint" in error_str or exc_info.value.context.get(
-                "url", ""
-            ).endswith("timeout_endpoint")
-            assert "Timeout error" in str(exc_info.value.context.get("error", ""))
+        # Check that the URL and error details are in the context
+        assert "timeout_endpoint" in error_str or exc_info.value.context.get(
+            "url", ""
+        ).endswith("timeout_endpoint")
+        assert "Timeout error" in str(exc_info.value.context.get("error", ""))
 
 
 @pytest.mark.unit
 def test_post_request_exception_logs_and_raises(client, caplog):
     with patch.object(
         client.session, "post", side_effect=requests.RequestException("Timeout error")
-    ):
-        with caplog.at_level("ERROR"):
-            with pytest.raises(APIClientError) as exc_info:
-                client._post("timeout_endpoint", data={"foo": "bar"})
+    ), caplog.at_level("ERROR"):
+        with pytest.raises(APIClientError) as exc_info:
+            client._post("timeout_endpoint", data={"foo": "bar"})
 
-            # Check that the exception has the correct error code
-            assert exc_info.value.error_code.value == "NET001"
+        # Check that the exception has the correct error code
+        assert exc_info.value.error_code.value == "NET001"
 
-            # Check that the error message contains the network error description
-            error_str = str(exc_info.value)
-            assert "[NET001]" in error_str
-            assert "Network connection failed" in error_str
+        # Check that the error message contains the network error description
+        error_str = str(exc_info.value)
+        assert "[NET001]" in error_str
+        assert "Network connection failed" in error_str
 
-            # Check that the URL and error details are in the context
-            assert "timeout_endpoint" in error_str or exc_info.value.context.get(
-                "url", ""
-            ).endswith("timeout_endpoint")
-            assert "Timeout error" in str(exc_info.value.context.get("error", ""))
+        # Check that the URL and error details are in the context
+        assert "timeout_endpoint" in error_str or exc_info.value.context.get(
+            "url", ""
+        ).endswith("timeout_endpoint")
+        assert "Timeout error" in str(exc_info.value.context.get("error", ""))
 
 
 # Additional comprehensive unit tests for BaseAPIClient

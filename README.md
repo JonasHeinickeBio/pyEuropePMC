@@ -263,6 +263,51 @@ create_summary_dashboard(df, save_path="analysis_dashboard.png")
 
 Enhance paper metadata with data from CrossRef, Unpaywall, Semantic Scholar, and OpenAlex:
 
+**Professional Semantic Scholar Integration** (v0.12.0)
+
+PyEuropePMC now uses the `danielnsilva/semanticscholar` professional library for robust Semantic Scholar API integration:
+
+**Usage with API Key:**
+
+```python
+from pyeuropepmc.enrichment.semantic_scholar import SemanticScholarClient
+
+# With API key (recommended for higher rate limits)
+client = SemanticScholarClient(api_key="your_api_key_here")
+
+# Get enriched paper data
+result = client.enrich(semantic_scholar_id="649def34f8be52c8b66281af98ae884c09aef38b")
+print(f"Citations: {result['citation_count']}")  # 439
+print(f"Influential: {result['influential_citation_count']}")
+
+# Get recommendations
+recommendations = client.get_recommendations_for_paper("649def34f8be52c8b66281af98ae884c09aef38b")
+```
+
+**Usage for Bulk Search:**
+
+For search operations that may be rate-limited, use `bulk=True` for faster results:
+
+```python
+# Search with bulk retrieval (no relevance ranking, faster)
+results = client.search_papers(query="machine learning cancer", bulk=True)
+
+# Or with relevance ranking (default, may be rate-limited)
+results = client.search_papers(query="machine learning cancer", bulk=False)
+```
+
+**Note:** Search operations may be rate-limited depending on API usage. For reliable results with specific papers, use `client.enrich()` with paper IDs (DOI, S2PaperId, etc.). The `search_papers()` method is best used with `bulk=True` for faster, non-ranked results, or with specific filters to reduce the result set.
+
+**Benefits of Professional Library:**
+- ✅ Typed response objects (`Paper`, `Author`, `Venue`)
+- ✅ Automatic retries and rate limiting
+- ✅ Full API coverage (Graph, Recommendations, Datasets)
+- ✅ Async support for concurrent requests
+- ✅ Built-in pagination handling
+- ✅ Production-ready (461 stars on GitHub)
+
+**Usage:** [examples/09-enrichment/semantic_scholar_demo.py](examples/09-enrichment/semantic_scholar_demo.py)
+
 ```python
 from pyeuropepmc import PaperEnricher, EnrichmentConfig
 
@@ -300,6 +345,7 @@ with PaperEnricher(config) as enricher:
 - 💰 Funding information
 - 🏷️ Topic classifications and fields of study
 - ⚡ Optional caching for performance
+- 📚 Professional Semantic Scholar client (typed responses, async support)
 
 See [examples/09-enrichment](examples/09-enrichment/) for more details.
 

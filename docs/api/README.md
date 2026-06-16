@@ -1,17 +1,8 @@
-
 # API Reference
 
-<div align="center">
+**Complete API documentation** - All classes, methods, and parameters
 
-**📚 Complete API documentation** - All classes, methods, and parameters
-
-[🔍 SearchClient](search-client.md) • [📄 FullTextClient](fulltext-client.md) • [🔬 XML Parser](xml-parser.md) • [⬅️ Back to Docs](../README.md)
-
-</div>
-
----
-
-## 📋 API Overview
+## API Overview
 
 This section provides detailed documentation for all PyEuropePMC classes and methods. The API is organized around several core clients:
 
@@ -22,8 +13,6 @@ This section provides detailed documentation for all PyEuropePMC classes and met
 | **[ArticleClient](article-client.md)** | Article-specific operations | `get_citations()`, `get_references()` |
 | **[FullTextXMLParser](xml-parser.md)** | Parse XML documents | `extract_metadata()`, `extract_tables()` |
 | **[FTPDownloader](ftp-downloader.md)** | Bulk downloads via FTP | `download_bulk()` |
-
----
 
 ## Core Classes
 
@@ -47,8 +36,6 @@ The advanced fluent API for building complex search queries with type safety and
 - **Evaluation**: Assess search effectiveness metrics
 
 **[Complete QueryBuilder API →](query-builder.md)**
-
----
 
 ### EuropePMC Client
 
@@ -253,21 +240,11 @@ level = INFO
 format = %(asctime)s - %(name)s - %(levelname)s - %(message)s
 ```
 
----
-
-## 📚 Related Sections
+## Related Sections
 
 | Section | Why Visit? |
 |---------|------------|
-| **[🚀 Getting Started](../../getting-started/)** | Installation and basics |
-| **[✨ Features](../../features/)** | What PyEuropePMC can do |
-| **[🎯 Examples](../../examples/)** | Working code samples |
-| **[⚙️ Advanced](../../advanced/)** | Power user features |
-
----
-
-<div align="center">
-
-**[⬆ Back to Top](#api-reference)** • [⬅️ Back to Main Docs](../README.md)
-
-</div>
+| **[Getting Started](../getting-started/)** | Installation and basics |
+| **[Features](../features/)** | What PyEuropePMC can do |
+| **[Examples](../examples/)** | Working code samples |
+| **[Advanced](../advanced/)** | Power user features |

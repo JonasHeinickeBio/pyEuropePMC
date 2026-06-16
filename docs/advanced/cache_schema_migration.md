@@ -126,4 +126,4 @@ pytest tests/cache/test_diskcache_schema.py -v
 
 - [diskcache documentation](http://www.grantjenks.com/docs/diskcache/)
 - [SQLite PRAGMA statements](https://www.sqlite.org/pragma.html)
-- [PyEuropePMC Cache Architecture](./cache_architecture.md)
+- [PyEuropePMC Cache Architecture](./advanced_cache_implementation_guide.md)

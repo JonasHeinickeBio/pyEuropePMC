@@ -29,9 +29,10 @@ try:
     from cachetools import TTLCache
 
     CACHETOOLS_AVAILABLE = True
+    TTLCacheType = TTLCache
 except ImportError:
-    TTLCache = None
     CACHETOOLS_AVAILABLE = False
+    TTLCacheType = None
 
 # diskcache is kept as optional fallback (not currently used)
 # Type checking imports

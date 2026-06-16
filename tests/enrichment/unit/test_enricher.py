@@ -1,7 +1,8 @@
 """Unit tests for paper enrichment orchestrator."""
 
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 
 from pyeuropepmc.enrichment.enricher import EnrichmentConfig, PaperEnricher
 

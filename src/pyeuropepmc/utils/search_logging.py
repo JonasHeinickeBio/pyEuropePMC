@@ -43,9 +43,9 @@ try:
     from cryptography.hazmat.primitives.asymmetric import rsa
 
     CRYPTOGRAPHY_AVAILABLE = True
+    SerializationModule = serialization
+    RsaModule = rsa
 except ImportError:
-    serialization = None
-    rsa = None
     CRYPTOGRAPHY_AVAILABLE = False
 
 logger = logging.getLogger(__name__)

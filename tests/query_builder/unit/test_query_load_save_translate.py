@@ -9,14 +9,14 @@ This module tests the integration with the search-query package for:
 """
 
 import json
-import tempfile
 from pathlib import Path
+import tempfile
 from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc.query.query_builder import QueryBuilder
 from pyeuropepmc.core.exceptions import QueryBuilderError
+from pyeuropepmc.query.query_builder import QueryBuilder
 
 
 class TestQueryBuilderFromString:

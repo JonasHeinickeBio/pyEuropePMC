@@ -1,6 +1,8 @@
-import pytest
-from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
 import os
+
+import pytest
+
+from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "../../fixtures/fulltext_downloads")
 
@@ -17,7 +19,7 @@ PMCIDS = get_pmcids()
 def test_parse_xml_fulltext(pmcid):
     xml_path = os.path.join(FIXTURE_DIR, f"{pmcid}.xml")
     assert os.path.exists(xml_path)
-    with open(xml_path, "r", encoding="utf-8") as f:
+    with open(xml_path, encoding="utf-8") as f:
         xml_str = f.read()
     try:
         results = EuropePMCParser.parse_xml(xml_str)

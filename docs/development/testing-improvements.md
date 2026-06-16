@@ -2,7 +2,7 @@
 
 This document describes the enhanced testing capabilities and workflow improvements for pyEuropePMC.
 
-## 🚀 New Features
+## New Features
 
 ### 1. Enhanced GitHub Actions Workflow
 
@@ -73,7 +73,7 @@ python scripts/local_test.py --all
 - **Dry-run Mode**: See estimated runtime and test coverage
 - **Windows Compatibility**: Automatic Windows test adaptations
 
-## 🎯 How to Use for Your Workflow
+## How to Use for Your Workflow
 
 ### Before Pushing Changes
 
@@ -114,7 +114,7 @@ python scripts/local_test.py --all
    - Set "Test Level" to `core-only` for faster feedback
    - Use "Test Modules" to focus on changed areas
 
-## 📊 Workflow Performance
+## Workflow Performance
 
 ### Test Level Runtimes (Estimated)
 
@@ -142,7 +142,7 @@ python scripts/local_test.py --all
 - **fulltext**: PDF/XML/HTML retrieval (Windows-sensitive)
 - **ftp**: Bulk content downloads
 
-## 🔧 Troubleshooting
+## Troubleshooting
 
 ### Common Issues
 
@@ -174,7 +174,7 @@ The following tests are automatically skipped on Windows due to file locking iss
 
 This is expected behavior and doesn't indicate a problem with the core functionality.
 
-## 🏗️ Architecture
+## Architecture
 
 ### Workflow Structure
 

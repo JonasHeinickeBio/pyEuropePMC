@@ -37,7 +37,6 @@ def test_all_and_any_needles_match():
 def test_any_match_semantic_skip_if_missing():
     # If sentence-transformers is installed the call should not raise; otherwise it's gracefully handled
     try:
-        import sentence_transformers  # type: ignore
         has_st = True
     except Exception:
         has_st = False

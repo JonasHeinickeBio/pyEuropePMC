@@ -29,7 +29,7 @@ class TestAnalyticsWithFixtures:
     def fixture_data(self):
         """Load test data from fixtures."""
         fixture_path = Path(__file__).parent.parent.parent / "fixtures" / "search_cancer.json"
-        with open(fixture_path, "r", encoding="utf-8") as f:
+        with open(fixture_path, encoding="utf-8") as f:
             data = json.load(f)
         return data["resultList"]["result"]
 
@@ -37,7 +37,7 @@ class TestAnalyticsWithFixtures:
     def large_fixture_data(self):
         """Load larger test dataset from fixtures."""
         fixture_path = Path(__file__).parent.parent.parent / "fixtures" / "search_1000results_cancer.json"
-        with open(fixture_path, "r", encoding="utf-8") as f:
+        with open(fixture_path, encoding="utf-8") as f:
             data = json.load(f)
         return data["resultList"]["result"]
 

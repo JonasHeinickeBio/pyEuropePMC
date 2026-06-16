@@ -1,26 +1,27 @@
 
-import time
-import tempfile
-import statistics
-import psutil
-import os
-import json
-from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple, Type
-from dataclasses import dataclass, field
 from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+import json
+import os
+from pathlib import Path
 import shutil
+import statistics
+import tempfile
+import threading
+import time
+import tracemalloc
+from typing import Any
+
+import psutil
 import pytest
 import requests
-import threading
-import tracemalloc
 
+from pyeuropepmc.cache.cache import CacheConfig
 
 # Import all main client classes here
 from pyeuropepmc.clients.article import ArticleClient
-from pyeuropepmc.clients.search import SearchClient
 from pyeuropepmc.clients.fulltext import FullTextClient
-from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.clients.search import SearchClient
 
 
 # A tiny no-op benchmark fixture that mimics pytest-benchmark's minimal API
@@ -39,9 +40,9 @@ class _DummyBenchmarkFixture:
 @dataclass
 class BenchmarkConfig:
     """Configuration for a benchmark run."""
-    client_class: Type
-    cache_config: Optional[CacheConfig] = None
-    methods: List[str] = field(default_factory=list)
+    client_class: type
+    cache_config: CacheConfig | None = None
+    methods: list[str] = field(default_factory=list)
     # Number of measured iterations (used to compute means). Increase for stability.
     iterations: int = 30
     # Number of warmup (unmeasured) iterations to run before timing
@@ -49,8 +50,8 @@ class BenchmarkConfig:
     # Number of cold measured runs (measured before warmup, to capture cold start)
     cold_runs: int = 1
     name: str = ""
-    cache_dir: Optional[Path] = None
-    test_data: Dict[str, List[str]] = field(default_factory=dict)
+    cache_dir: Path | None = None
+    test_data: dict[str, list[str]] = field(default_factory=dict)
 
 
 @dataclass
@@ -59,28 +60,28 @@ class BenchmarkResult:
     method_name: str
     client_name: str
     cache_enabled: bool
-    execution_times: List[float]
-    memory_usages: List[float]
+    execution_times: list[float]
+    memory_usages: list[float]
     # Optional cold-start measured times (measured before warmup)
-    cold_execution_times: List[float] = field(default_factory=list)
-    cold_memory_usages: List[float] = field(default_factory=list)
-    cache_stats: Dict[str, Any] = field(default_factory=dict)
+    cold_execution_times: list[float] = field(default_factory=list)
+    cold_memory_usages: list[float] = field(default_factory=list)
+    cache_stats: dict[str, Any] = field(default_factory=dict)
     # Per-measured-run cache stats (list aligned with execution_times)
-    cache_stats_per_run: List[Dict[str, Any]] = field(default_factory=list)
-    errors: List[str] = field(default_factory=list)
+    cache_stats_per_run: list[dict[str, Any]] = field(default_factory=list)
+    errors: list[str] = field(default_factory=list)
     # Per-measured-run HTTP request counts (aligned with execution_times)
-    request_counts_per_run: List[int] = field(default_factory=list)
+    request_counts_per_run: list[int] = field(default_factory=list)
     # Cold-run request counts
-    cold_request_counts: List[int] = field(default_factory=list)
+    cold_request_counts: list[int] = field(default_factory=list)
     # Aggregate total requests observed during this benchmark
     total_requests: int = 0
     # Per-run peak RSS in bytes
-    rss_peak_bytes_per_run: List[int] = field(default_factory=list)
+    rss_peak_bytes_per_run: list[int] = field(default_factory=list)
     # Per-run tracemalloc peak in bytes
-    tracemalloc_peak_bytes_per_run: List[int] = field(default_factory=list)
+    tracemalloc_peak_bytes_per_run: list[int] = field(default_factory=list)
     # Cold-run rss peaks
-    cold_rss_peak_bytes: List[int] = field(default_factory=list)
-    cold_tracemalloc_peak_bytes: List[int] = field(default_factory=list)
+    cold_rss_peak_bytes: list[int] = field(default_factory=list)
+    cold_tracemalloc_peak_bytes: list[int] = field(default_factory=list)
 
     @property
     def mean_time(self) -> float:
@@ -108,8 +109,8 @@ class BenchmarkSuiteResult:
     """Results from a complete benchmark suite."""
     suite_name: str
     timestamp: str
-    results: Dict[str, List[BenchmarkResult]] = field(default_factory=dict)
-    summary: Dict[str, Any] = field(default_factory=dict)
+    results: dict[str, list[BenchmarkResult]] = field(default_factory=dict)
+    summary: dict[str, Any] = field(default_factory=dict)
 
 
 class BenchmarkRunner:
@@ -120,7 +121,7 @@ class BenchmarkRunner:
     def __init__(self, config: BenchmarkConfig):
         self.config = config
         self.client = None
-        self.temp_dirs: List[Path] = []
+        self.temp_dirs: list[Path] = []
         # HTTP request instrumentation
         self._original_request = None
         self._current_request_count = 0
@@ -144,9 +145,7 @@ class BenchmarkRunner:
                 self.config.cache_dir = temp_dir
 
         # Instantiate client based on type
-        if self.config.client_class == ArticleClient:
-            self.client = self.config.client_class(cache_config=self.config.cache_config)
-        elif self.config.client_class == SearchClient:
+        if self.config.client_class == ArticleClient or self.config.client_class == SearchClient:
             self.client = self.config.client_class(cache_config=self.config.cache_config)
         elif self.config.client_class == FullTextClient:
             file_cache_dir = None
@@ -214,7 +213,7 @@ class BenchmarkRunner:
         process = psutil.Process(os.getpid())
         return process.memory_info().rss / (1024 * 1024)
 
-    def _memory_sampler(self, stop_event: threading.Event, peak_holder: List[int]):
+    def _memory_sampler(self, stop_event: threading.Event, peak_holder: list[int]):
         """Background sampler that updates peak RSS in bytes while not stopped."""
         proc = psutil.Process(os.getpid())
         try:
@@ -230,10 +229,10 @@ class BenchmarkRunner:
         except Exception:
             return
 
-    def _start_memory_sampler(self) -> Tuple[threading.Event, threading.Thread, List[int], int]:
+    def _start_memory_sampler(self) -> tuple[threading.Event, threading.Thread, list[int], int]:
         """Start memory sampler thread. Returns (stop_event, thread, peak_holder, baseline_rss)."""
         stop_event = threading.Event()
-        peak_holder: List[int] = [0]
+        peak_holder: list[int] = [0]
         # set baseline first
         try:
             baseline = psutil.Process(os.getpid()).memory_info().rss
@@ -253,7 +252,7 @@ class BenchmarkRunner:
         except Exception:
             pass
 
-    def run_method_with_timing(self, method_name: str, *args, **kwargs) -> Tuple[Any, float, float, int, int]:
+    def run_method_with_timing(self, method_name: str, *args, **kwargs) -> tuple[Any, float, float, int, int]:
         """
         Run a method and return result, execution time, and memory usage.
         """
@@ -316,7 +315,7 @@ class BenchmarkRunner:
 
         return result, execution_time, memory_used, rss_delta_bytes, tracemalloc_peak
 
-    def benchmark_method(self, method_name: str, method_args: Tuple = (), method_kwargs: Optional[Dict] = None) -> BenchmarkResult:
+    def benchmark_method(self, method_name: str, method_args: tuple = (), method_kwargs: dict | None = None) -> BenchmarkResult:
         """
         Benchmark a method with multiple iterations.
         """
@@ -324,16 +323,16 @@ class BenchmarkRunner:
         memory_usages = []
         cold_execution_times = []
         cold_memory_usages = []
-        cache_stats_per_run: List[Dict[str, Any]] = []
+        cache_stats_per_run: list[dict[str, Any]] = []
         errors = []
         # Request counting collectors
-        request_counts_per_run: List[int] = []
-        cold_request_counts: List[int] = []
+        request_counts_per_run: list[int] = []
+        cold_request_counts: list[int] = []
     # Memory peak collectors
-        rss_peak_bytes_per_run: List[int] = []
-        tracemalloc_peak_bytes_per_run: List[int] = []
-        cold_rss_peak_bytes: List[int] = []
-        cold_tracemalloc_peak_bytes: List[int] = []
+        rss_peak_bytes_per_run: list[int] = []
+        tracemalloc_peak_bytes_per_run: list[int] = []
+        cold_rss_peak_bytes: list[int] = []
+        cold_tracemalloc_peak_bytes: list[int] = []
 
         # Cold measured runs (measured before warmup) to capture cold-start behavior
         for c in range(getattr(self.config, "cold_runs", 0)):
@@ -386,7 +385,7 @@ class BenchmarkRunner:
         # Measured runs
         if getattr(self, 'benchmark_fixture', None) is not None:
             # Use pytest-benchmark if provided for robust timing statistics.
-            per_run_cache_stats: List[Dict[str, Any]] = []
+            per_run_cache_stats: list[dict[str, Any]] = []
 
             def _bench_wrapper():
                 # Each invocation corresponds to one measured run
@@ -411,7 +410,7 @@ class BenchmarkRunner:
                 tracemalloc_peak_bytes_per_run.append(tracemalloc_peak)
 
                 # per-run cache stats
-                run_cache_stats: Dict[str, Any] = {}
+                run_cache_stats: dict[str, Any] = {}
                 if self.client:
                     if hasattr(self.client, 'get_cache_stats'):
                         try:
@@ -479,7 +478,7 @@ class BenchmarkRunner:
                     tracemalloc_peak_bytes_per_run.append(tracemalloc_peak)
 
                     # Attempt to collect cache stats after the run, if the client exposes them
-                    run_cache_stats: Dict[str, Any] = {}
+                    run_cache_stats: dict[str, Any] = {}
                     if self.client:
                         if hasattr(self.client, 'get_cache_stats'):
                             try:
@@ -579,18 +578,18 @@ class BaseBenchmark(ABC):
         self.runner = BenchmarkRunner(config)
 
     @abstractmethod
-    def get_test_params(self, method_name: str, iteration: int = 0) -> Tuple[Tuple, Dict]:
+    def get_test_params(self, method_name: str, iteration: int = 0) -> tuple[tuple, dict]:
         """Get test parameters for a method."""
         pass
 
     @abstractmethod
-    def run_benchmark(self) -> List[BenchmarkResult]:
+    def run_benchmark(self) -> list[BenchmarkResult]:
         """Run the benchmark and return results."""
         pass
 
-    def generate_report(self, results: List[BenchmarkResult]) -> str:
+    def generate_report(self, results: list[BenchmarkResult]) -> str:
         """Generate a report from results."""
-        report_lines: List[str] = []
+        report_lines: list[str] = []
         report_lines.append(f"# Benchmark Report: {self.config.name}\n")
         report_lines.append(f"**Generated:** {time.strftime('%Y-%m-%d %H:%M:%S')}\n\n")
 
@@ -617,7 +616,7 @@ class BaseBenchmark(ABC):
 class ArticleClientBenchmark(BaseBenchmark):
     """Benchmark for ArticleClient methods."""
 
-    def get_test_params(self, method_name: str, iteration: int = 0) -> Tuple[Tuple, Dict]:
+    def get_test_params(self, method_name: str, iteration: int = 0) -> tuple[tuple, dict]:
         """Get test parameters for ArticleClient methods."""
         test_data = self.config.test_data
 
@@ -628,7 +627,7 @@ class ArticleClientBenchmark(BaseBenchmark):
         else:
             return ((), {})
 
-    def run_benchmark(self) -> List[BenchmarkResult]:
+    def run_benchmark(self) -> list[BenchmarkResult]:
         """Run benchmark for all configured methods."""
         results = []
 
@@ -655,7 +654,7 @@ class ArticleClientBenchmark(BaseBenchmark):
 class SearchClientBenchmark(BaseBenchmark):
     """Benchmark for SearchClient methods."""
 
-    def get_test_params(self, method_name: str, iteration: int = 0) -> Tuple[Tuple, Dict]:
+    def get_test_params(self, method_name: str, iteration: int = 0) -> tuple[tuple, dict]:
         """Get test parameters for SearchClient methods."""
         test_data = self.config.test_data
 
@@ -666,7 +665,7 @@ class SearchClientBenchmark(BaseBenchmark):
         else:
             return ((), {})
 
-    def run_benchmark(self) -> List[BenchmarkResult]:
+    def run_benchmark(self) -> list[BenchmarkResult]:
         """Run benchmark for all configured methods."""
         results = []
 
@@ -692,7 +691,7 @@ class SearchClientBenchmark(BaseBenchmark):
 class FullTextClientBenchmark(BaseBenchmark):
     """Benchmark for FullTextClient methods."""
 
-    def get_test_params(self, method_name: str, iteration: int = 0) -> Tuple[Tuple, Dict]:
+    def get_test_params(self, method_name: str, iteration: int = 0) -> tuple[tuple, dict]:
         """Get test parameters for FullTextClient methods."""
         test_data = self.config.test_data
 
@@ -703,7 +702,7 @@ class FullTextClientBenchmark(BaseBenchmark):
         else:
             return ((), {})
 
-    def run_benchmark(self) -> List[BenchmarkResult]:
+    def run_benchmark(self) -> list[BenchmarkResult]:
         """Run benchmark for all configured methods."""
         results = []
 
@@ -732,8 +731,8 @@ class BenchmarkManager:
     """
 
     def __init__(self):
-        self.benchmarks: List[BaseBenchmark] = []
-        self.results: Dict[str, List[BenchmarkResult]] = {}
+        self.benchmarks: list[BaseBenchmark] = []
+        self.results: dict[str, list[BenchmarkResult]] = {}
 
     def add_benchmark(self, benchmark: BaseBenchmark):
         """Add a benchmark to the manager."""
@@ -757,7 +756,7 @@ class BenchmarkManager:
 
         return suite_result
 
-    def _generate_summary(self, results: Dict[str, List[BenchmarkResult]]) -> Dict[str, Any]:
+    def _generate_summary(self, results: dict[str, list[BenchmarkResult]]) -> dict[str, Any]:
         """Generate summary statistics."""
         summary = {
             "total_benchmarks": len(results),
@@ -811,7 +810,7 @@ class BenchmarkManager:
             report_lines.append("| Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |\n")
             report_lines.append("|---|---:|---:|---:|:--:|---:|---:|\n")
 
-            def fmt_mean_time(val: Optional[float]) -> str:
+            def fmt_mean_time(val: float | None) -> str:
                 if val is None:
                     return "-"
                 if val < 1e-3:
@@ -841,7 +840,7 @@ class BenchmarkManager:
                     stddev = result.std_dev_time
                     ops = (1.0 / mean) if mean and mean > 0 else None
 
-                    def fmt_stat(val: Optional[float]) -> str:
+                    def fmt_stat(val: float | None) -> str:
                         if val is None:
                             return "-"
                         if val < 1e-3:
@@ -870,7 +869,7 @@ class BenchmarkManager:
                 report_lines.append("| Method | No-Cache Mean | Cached Mean | Speedup (no/cache) |\n")
                 report_lines.append("|---|---:|---:|---:|\n")
 
-                paired_speedups: List[float] = []
+                paired_speedups: list[float] = []
 
                 nocache_results = lookup[nocache_name]
                 cached_results = lookup[cached_name]
@@ -885,7 +884,7 @@ class BenchmarkManager:
                     no_mean = no_r.mean_time if no_r and no_r.execution_times else None
                     ca_mean = ca_r.mean_time if ca_r and ca_r.execution_times else None
 
-                    def fmt_mean(val: Optional[float]) -> str:
+                    def fmt_mean(val: float | None) -> str:
                         if val is None:
                             return "-"
                         if val < 1e-3:

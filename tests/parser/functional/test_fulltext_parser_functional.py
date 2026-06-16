@@ -6,12 +6,17 @@ end-to-end functionality for metadata extraction, format conversion,
 table extraction, and schema detection.
 """
 
-import pytest
 import logging
 from pathlib import Path
 
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser, ElementPatterns, DocumentSchema
+import pytest
+
 from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.processing.fulltext_parser import (
+    DocumentSchema,
+    ElementPatterns,
+    FullTextXMLParser,
+)
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("fulltext_parser_functional_test")
@@ -36,7 +41,7 @@ class TestFullTextXMLParserFunctional:
         """Test parsing real XML files from fixtures."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         try:
@@ -59,7 +64,7 @@ class TestFullTextXMLParserFunctional:
         """Test metadata extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -86,7 +91,7 @@ class TestFullTextXMLParserFunctional:
         """Test author extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -112,7 +117,7 @@ class TestFullTextXMLParserFunctional:
         """Test reference extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -142,7 +147,7 @@ class TestFullTextXMLParserFunctional:
         """Test table extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -174,7 +179,7 @@ class TestFullTextXMLParserFunctional:
         """Test schema detection from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -199,7 +204,7 @@ class TestFullTextXMLParserFunctional:
         """Test conversion to plaintext from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -219,7 +224,7 @@ class TestFullTextXMLParserFunctional:
         """Test conversion to markdown from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -246,7 +251,7 @@ class TestFullTextXMLParserFunctional:
         """Test parser with custom ElementPatterns configuration."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         # Create custom configuration with additional citation types
@@ -278,7 +283,7 @@ class TestFullTextXMLParserFunctional:
         logger.info(f"INTEGRATION TEST: Complete workflow with {filename}")
         logger.info(f"{'='*60}\n")
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         # Step 1: Initialize parser
@@ -374,7 +379,7 @@ class TestFullTextXMLParserFunctional:
         """Test that multiple parses of same file produce consistent results."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         # Parse twice
@@ -403,7 +408,7 @@ class TestFullTextXMLParserFunctional:
         """Test that different output formats contain compatible information."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, 'r', encoding='utf-8') as f:
+        with open(xml_path, encoding='utf-8') as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -443,7 +448,7 @@ def sample_xml_path():
 @pytest.fixture
 def sample_xml_content(sample_xml_path):
     """Provide content of first available XML fixture."""
-    with open(sample_xml_path, 'r', encoding='utf-8') as f:
+    with open(sample_xml_path, encoding='utf-8') as f:
         return f.read()
 
 

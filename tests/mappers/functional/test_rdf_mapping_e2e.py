@@ -1,7 +1,7 @@
 """Functional tests for RDF mapping end-to-end workflows."""
 
-import tempfile
 from pathlib import Path
+import tempfile
 
 import pytest
 from rdflib import Graph, URIRef

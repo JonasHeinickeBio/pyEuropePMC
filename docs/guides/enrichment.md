@@ -72,6 +72,31 @@ Each API has a dedicated client that extends `BaseEnrichmentClient`:
 - `SemanticScholarClient`
 - `OpenAlexClient`
 
+### Professional Library Integration
+
+PyEuropePMC now uses **danielnsilva/semanticscholar v0.12.0** professional library as the backend for Semantic Scholar API operations. This integration provides:
+
+| Feature | Professional Library | Old API Wrapper |
+|---------|---------------------|-----------------|
+| **Type Safety** | ✅ Full typed responses (`Paper`, `Author`, `Venue`) | ⚠️ Dict-based |
+| **Async Support** | ✅ Native async/await | ❌ Sync only |
+| **Bulk Search** | ✅ `/paper/search/bulk` endpoint | ⚠️ paginated |
+| **Typed Objects** | ✅ Dataclass models | ❌ Raw dicts |
+| **Recommended** | ✅ For new projects | ⚠️ Legacy |
+
+#### When to Use Each Client
+
+**Use `ProfessionalSemanticScholarClient` (Recommended for new projects):**
+- ✅ You need typed responses (`Paper`, `Author`, `Venue` objects)
+- ✅ You're building async applications
+- ✅ You need faster bulk search operations
+- ✅ You want type-safe development with IDE autocomplete
+
+**Use `SemanticScholarClient` (Legacy):**
+- ⚠️ You're migrating existing code
+- ⚠️ You need a simple dict-based interface
+- ⚠️ You're using the unified `PaperEnricher` class
+
 ### PaperEnricher Orchestrator
 
 High-level interface that:
@@ -170,6 +195,71 @@ with SemanticScholarClient(api_key="your-api-key") as client:
     )
 ```
 
+### Using the Professional Library Directly
+
+For advanced use cases, you can use `ProfessionalSemanticScholarClient` directly:
+
+```python
+from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+
+# Configure with API key (optional but recommended for higher rate limits)
+client = ProfessionalSemanticScholarClient(
+    api_key="your-api-key",
+    rate_limit_delay=1.0  # 1 second delay between requests
+)
+
+# Typed responses with Paper objects
+paper = client.get_paper("10.1038/nature12373")
+print(f"Title: {paper.title}")
+print(f"Authors: {len(paper.authors)}")
+print(f"Citations: {paper.citation_count}")
+
+# Bulk search (faster, no relevance ranking, up to 10M results)
+results = client.search_paper("cancer", bulk=True, limit=50)
+
+# Regular search with relevance ranking
+results = client.search_paper("machine learning", bulk=False, limit=100)
+
+# Get author information
+author = client.get_author("1724609")
+print(f"Author: {author.name}")
+print(f"Paper count: {author.paper_count}")
+
+# Get venue information
+venue = client.get_venue("12345")
+print(f"Venue: {venue.name}")
+print(f"Paper count: {venue.paper_count}")
+```
+
+### Migrating from Old Library to Professional Library
+
+**Old Code:**
+```python
+from pyeuropepmc.enrichment import SemanticScholarClient
+
+client = SemanticScholarClient()
+results = client.search_paper("cancer")
+```
+
+**New Code:**
+```python
+from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+
+client = ProfessionalSemanticScholarClient()
+results = client.search_paper("cancer", bulk=False)  # explicit
+```
+
+**Migration Benefits:**
+1. ✅ Typed responses (`Paper`, `Author`, `Venue`) instead of dicts
+2. ✅ Bulk search endpoint for faster operations
+3. ✅ Better async support
+4. ✅ More consistent API
+
+**Backward Compatibility:**
+- `SemanticScholarClient` still works and wraps the professional library
+- Existing code continues to function without changes
+- Use `PaperEnricher` for unified multi-API enrichment
+
 ## Data Merging Strategy
 
 When multiple sources provide the same information, `PaperEnricher` uses the following priority:
@@ -233,14 +323,85 @@ The enrichment module provides robust error handling:
 4. Start with fewer APIs and add as needed
 5. Handle missing data gracefully
 
+## Authentication & API Keys
+
+### Recommended: Environment Variables
+
+The simplest and most secure way to configure API keys is using environment variables:
+
+```bash
+# Linux/Mac (add to ~/.bashrc or ~/.zshrc)
+export SEMANTIC_SCHOLAR_API_KEY="your-api-key-here"
+export UNPAYWALL_EMAIL="your@email.com"
+export CROSSREF_EMAIL="your@email.com"
+export OPENALEX_EMAIL="your@email.com"
+
+# Windows (PowerShell)
+$env:SEMANTIC_SCHOLAR_API_KEY="your-api-key-here"
+$env:UNPAYWALL_EMAIL="your@email.com"
+```
+
+### Programmatic Configuration
+
+```python
+from pyeuropepmc.enrichment import EnrichmentConfig, ProfessionalSemanticScholarClient
+
+# Configure with all options
+config = EnrichmentConfig(
+    # Enable/disable APIs
+    enable_crossref=True,
+    enable_unpaywall=True,
+    enable_semantic_scholar=True,
+    enable_openalex=True,
+
+    # API-specific settings
+    unpaywall_email="your@email.com",
+    crossref_email="your@email.com",
+    semantic_scholar_api_key="your-api-key",
+    openalex_email="your@email.com",
+
+    # Performance settings
+    rate_limit_delay=1.0
+)
+
+with ProfessionalSemanticScholarClient(
+    api_key=config.semantic_scholar_api_key,
+    rate_limit_delay=config.rate_limit_delay
+) as client:
+    paper = client.get_paper("10.1038/nature12373")
+```
+
+### Authentication Priority
+
+1. **Environment variables** (highest priority)
+2. **Programmatic configuration**
+3. **Default (no authentication)** - Limited to free tier
+
 ## Rate Limits
 
-| API | Free Tier Limit | With Authentication |
-|-----|----------------|---------------------|
-| CrossRef | No strict limit | Polite pool: faster |
-| Unpaywall | 100,000/day | Same |
-| Semantic Scholar | 100 req/5 min | With API key: higher |
-| OpenAlex | 10 req/sec | Polite pool: stable |
+| API | Free Tier Limit | With Authentication | Recommended Delay |
+|-----|----------------|---------------------|-------------------|
+| CrossRef | No strict limit | Polite pool | 1.0-2.0s |
+| Unpaywall | 100,000/day | Same | 0.5-1.0s |
+| Semantic Scholar | 100 req/5 min | 300 req/5 min | 1.5-3.0s |
+| OpenAlex | 10 req/sec | 100 req/day | 0.2-0.5s |
+
+### Rate Limiting Recommendations
+
+| Use Case | Delay | Notes |
+|----------|-------|-------|
+| Hobby projects | 2.0s | Conservative, respectful usage |
+| Research projects | 1.0s | Balanced for moderate workloads |
+| Production with caching | 0.5s | Use caching to reduce requests |
+| Bulk operations | N/A | Use `bulk=True` to minimize API calls |
+
+### Best Practices
+1. Enable caching for repeated queries
+2. Use `bulk=True` for search operations (minimizes API calls)
+3. Provide emails for polite pools (faster response)
+4. Use API keys where available (higher limits)
+5. Monitor response headers for rate limit status
+6. Handle 429 (rate limit) responses with exponential backoff
 
 ## Testing
 
@@ -259,7 +420,7 @@ pytest tests/enrichment/
 
 ## Examples
 
-See [examples/09-enrichment/](../examples/09-enrichment/) for:
+See [examples/09-enrichment/](../../examples/09-enrichment/) for:
 - `basic_enrichment.py` - Simple enrichment example
 - `advanced_enrichment.py` - Advanced with caching and all APIs
 - `enrichment_demo.ipynb` - Interactive Jupyter notebook demo

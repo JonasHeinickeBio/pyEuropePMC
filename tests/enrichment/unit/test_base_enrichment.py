@@ -1,7 +1,8 @@
 """Unit tests for base enrichment client."""
 
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.enrichment.base import BaseEnrichmentClient

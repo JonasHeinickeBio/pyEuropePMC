@@ -71,7 +71,6 @@ with SearchClient() as client:
         print(f"Authors: {article.get('authorString', 'N/A')}")
         print(f"DOI: {article.get('doi', 'N/A')}")
         print(f"Publication Year: {article.get('pubYear', 'N/A')}")
-        print("---")
 ```
 
 ## Supported Formats
@@ -80,8 +79,7 @@ with SearchClient() as client:
 - XML
 - Dublin Core
 
-
-### Using Context Manager
+## Using Context Manager
 
 ```python
 with SearchClient() as client:
@@ -100,5 +98,5 @@ with SearchClient() as client:
 ## Getting Help
 
 - Check the [FAQ](faq.md)
-- Browse [Examples](examples/README.md)
+- Browse [Examples](../examples/)
 - Visit our [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)

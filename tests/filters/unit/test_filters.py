@@ -4,25 +4,27 @@ Tests for Europe PMC filtering utilities (unit copy).
 This file is a direct copy of the top-level tests for localized unit testing.
 """
 
-import pytest
 import logging
+
+import pytest
+
 logger = logging.getLogger("test.filters")
 
 from pyeuropepmc.query.filters import (
-	filter_pmc_papers,
-	filter_pmc_papers_or,
-	_meets_type_criteria,
-	_meets_access_criteria,
 	_extract_authors,
 	_extract_keywords,
 	_extract_mesh_terms,
-	_has_required_mesh,
-	_has_required_keywords,
-	_has_required_abstract_terms,
-	_has_any_required_mesh,
-	_has_any_required_keywords,
-	_has_any_required_abstract_terms,
 	_extract_paper_metadata,
+	_has_any_required_abstract_terms,
+	_has_any_required_keywords,
+	_has_any_required_mesh,
+	_has_required_abstract_terms,
+	_has_required_keywords,
+	_has_required_mesh,
+	_meets_access_criteria,
+	_meets_type_criteria,
+	filter_pmc_papers,
+	filter_pmc_papers_or,
 )
 
 

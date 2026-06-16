@@ -1,4 +1,5 @@
 import pytest
+
 from pyeuropepmc.clients.fulltext import FullTextClient
 
 SAMPLE_RESULTS = [

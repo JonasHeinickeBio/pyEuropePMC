@@ -4,7 +4,7 @@
 
 Successfully integrated a professional caching system into `SearchClient` with the following features:
 
-### ✅ Completed Features
+### Completed Features
 
 1. **Optional Caching** (Step 4 of 4-step plan)
    - Integrated `CacheBackend` into `SearchClient.__init__()`

@@ -2,16 +2,17 @@
 Additional unit tests for FTP downloader to increase coverage.
 """
 
-import pytest
 from pathlib import Path
-from unittest.mock import Mock, patch, mock_open
-import requests
-import zipfile
 import tempfile
+from unittest.mock import Mock, mock_open, patch
+import zipfile
+
+import pytest
+import requests
 
 from pyeuropepmc.clients.ftp_downloader import FTPDownloader
-from pyeuropepmc.core.exceptions import FullTextError
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import FullTextError
 
 
 class TestFTPDownloaderCoverage:

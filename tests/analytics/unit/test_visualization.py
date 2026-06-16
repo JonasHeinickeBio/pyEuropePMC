@@ -1,7 +1,7 @@
 """Tests for visualization module."""
 
-import tempfile
 from pathlib import Path
+import tempfile
 
 import matplotlib
 import matplotlib.pyplot as plt

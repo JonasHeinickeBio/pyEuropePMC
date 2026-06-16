@@ -2,12 +2,13 @@
 Unit tests for AnnotationsClient.
 """
 
-import pytest
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import Mock, patch
 
-from pyeuropepmc.clients.annotations import AnnotationsClient
+import pytest
+
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.core.exceptions import ValidationError, APIClientError
+from pyeuropepmc.clients.annotations import AnnotationsClient
+from pyeuropepmc.core.exceptions import ValidationError
 
 
 @pytest.fixture

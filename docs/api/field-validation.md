@@ -217,5 +217,5 @@ These are included for completeness but typically not used in user queries.
 ## See Also
 
 - [Europe PMC Web Service Reference](https://europepmc.org/docs/EBI_Europe_PMC_Web_Service_Reference.pdf)
-- [QueryBuilder Documentation](../../docs/api/query-builder.md)
-- [Field Validation Example](../../examples/field_validation_example.py)
+- [QueryBuilder Documentation](./query-builder.md)
+- [Field Metadata Structure](./field-metadata-structure.md)

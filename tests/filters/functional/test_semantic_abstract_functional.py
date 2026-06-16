@@ -8,11 +8,12 @@ This file contains:
 """
 
 import pytest
+
 from pyeuropepmc.query.filters import filter_pmc_papers
 from pyeuropepmc.utils.text_match import as_semantic_model
 
+
 def make_sample_papers():
-    from typing import List, Dict, Any
     return [
         {
             "id": "S1",
@@ -36,8 +37,11 @@ def make_sample_papers():
 
 
 
-from typing import Any, Dict, List, Sequence, Optional
+from collections.abc import Sequence
+from typing import Any
+
 import numpy as np
+
 
 class FakeSemanticModel:
     """Fake semantic model that returns high similarity when 'tumor' or 'immuno' present.
@@ -52,10 +56,10 @@ class FakeSemanticModel:
         show_progress_bar: bool = False,
         convert_to_numpy: bool = False,
         convert_to_tensor: bool = False,
-        device: Optional[Any] = None,
+        device: Any | None = None,
         normalize_embeddings: bool = False,
     ) -> np.ndarray:
-        out: List[np.ndarray] = []
+        out: list[np.ndarray] = []
         for s in list(sentences):
             ss = (s or "").lower()
             if "tumor" in ss or "tumour" in ss or "immuno" in ss:
@@ -68,11 +72,11 @@ class FakeSemanticModel:
 @pytest.mark.model
 @pytest.mark.skip(reason="Semantic abstract matching not yet implemented in filter_pmc_papers")
 def test_semantic_abstract_with_fake_model() -> None:
-    papers: List[Dict[str, Any]] = make_sample_papers()
+    papers: list[dict[str, Any]] = make_sample_papers()
     model = FakeSemanticModel()
 
     # Use semantic abstract matching; the first paper should match 'tumor' via semantic
-    filtered: List[Dict[str, Any]] = filter_pmc_papers(
+    filtered: list[dict[str, Any]] = filter_pmc_papers(
         papers,
         required_abstract_terms={"tumor"},
         use_semantic_abstract=True,
@@ -94,9 +98,9 @@ def test_semantic_abstract_with_real_model() -> None:
         pytest.skip("sentence-transformers not available")
 
     model = SentenceTransformer("all-MiniLM-L6-v2")
-    papers: List[Dict[str, Any]] = make_sample_papers()
+    papers: list[dict[str, Any]] = make_sample_papers()
 
-    filtered: List[Dict[str, Any]] = filter_pmc_papers(
+    filtered: list[dict[str, Any]] = filter_pmc_papers(
         papers,
         required_abstract_terms={"immunotherapy"},
         use_semantic_abstract=True,
@@ -113,11 +117,11 @@ def test_semantic_abstract_with_real_model() -> None:
 @pytest.mark.skip(reason="Semantic abstract matching not yet implemented in filter_pmc_papers")
 def test_semantic_abstract_or_with_fake_model() -> None:
     """Test OR-style high-level filter with semantic abstract matching using fake model."""
-    papers: List[Dict[str, Any]] = make_sample_papers()
+    papers: list[dict[str, Any]] = make_sample_papers()
     model = FakeSemanticModel()
 
     # Use OR-style filter: at least one of the required abstract terms should match
-    filtered: List[Dict[str, Any]] = filter_pmc_papers(
+    filtered: list[dict[str, Any]] = filter_pmc_papers(
         papers,
         required_abstract_terms={"tumor", "diabetes"},
         use_semantic_abstract=True,
@@ -143,9 +147,9 @@ def test_semantic_abstract_or_with_real_model() -> None:
 
 
     model = SentenceTransformer("all-MiniLM-L6-v2")
-    papers: List[Dict[str, Any]] = make_sample_papers()
+    papers: list[dict[str, Any]] = make_sample_papers()
 
-    filtered: List[Dict[str, Any]] = filter_pmc_papers(
+    filtered: list[dict[str, Any]] = filter_pmc_papers(
         papers,
         required_abstract_terms={"immunotherapy", "diabetes"},
         use_semantic_abstract=True,

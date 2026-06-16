@@ -2,12 +2,14 @@
 Unit tests for FTP downloader functionality.
 """
 
-import pytest
 from pathlib import Path
-from unittest.mock import Mock, patch, mock_open
+from unittest.mock import Mock, mock_open, patch
+
+import pytest
+
 from pyeuropepmc.clients.ftp_downloader import FTPDownloader
-from pyeuropepmc.core.exceptions import FullTextError
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import FullTextError
 
 
 class TestFTPDownloader:

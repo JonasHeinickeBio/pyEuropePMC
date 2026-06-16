@@ -3,8 +3,8 @@ Unit tests for search logging functionality.
 """
 
 import json
-import tempfile
 from pathlib import Path
+import tempfile
 from unittest.mock import Mock, patch
 
 import pytest
@@ -14,6 +14,7 @@ from pyeuropepmc.utils.search_logging import (
     SearchLogEntry,
     generate_private_key,
     prisma_summary,
+    record_export,
     record_peer_review,
     record_platform,
     record_query,
@@ -22,7 +23,6 @@ from pyeuropepmc.utils.search_logging import (
     sign_file,
     start_search,
     zip_results,
-    record_export,
 )
 
 

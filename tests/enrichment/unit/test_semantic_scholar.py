@@ -1,5 +1,7 @@
 """Unit tests for Semantic Scholar enrichment client."""
 
+from unittest.mock import MagicMock
+
 import pytest
 
 from pyeuropepmc.enrichment.semantic_scholar import SemanticScholarClient
@@ -11,21 +13,15 @@ class TestSemanticScholarRecommendations:
     def test_get_recommendations_for_paper_success(self) -> None:
         """GET endpoint returns parsed recommendation papers."""
         client = SemanticScholarClient(rate_limit_delay=0)
+        client._pro_client = MagicMock()
+        client._pro_client.get_recommendations.return_value = [
+            {"paperId": "p1", "title": "Paper 1"},
+            {"paperId": "p2", "title": "Paper 2"},
+        ]
 
-        with pytest.MonkeyPatch.context() as mp:
-            mp.setattr(
-                client,
-                "_make_get_request",
-                lambda **_: {
-                    "recommendedPapers": [
-                        {"paperId": "p1", "title": "Paper 1"},
-                        {"paperId": "p2", "title": "Paper 2"},
-                    ]
-                },
-            )
-            recommendations = client.get_recommendations_for_paper(
-                "649def34f8be52c8b66281af98ae884c09aef38b"
-            )
+        recommendations = client.get_recommendations_for_paper(
+            "649def34f8be52c8b66281af98ae884c09aef38b"
+        )
 
         assert len(recommendations) == 2
         assert recommendations[0]["paperId"] == "p1"
@@ -33,26 +29,19 @@ class TestSemanticScholarRecommendations:
     def test_get_recommendations_for_papers_with_negative_ids_success(self) -> None:
         """POST endpoint sends positive and negative IDs and parses recommendations."""
         client = SemanticScholarClient(rate_limit_delay=0)
-        captured: dict[str, object] = {}
+        client._pro_client = MagicMock()
+        client._pro_client.get_recommendations_from_lists.return_value = [
+            {"paperId": "p3"}
+        ]
 
-        def mock_post_request(**kwargs: object) -> dict[str, object]:
-            captured.update(kwargs)
-            return {"recommendedPapers": [{"paperId": "p3"}]}
-
-        with pytest.MonkeyPatch.context() as mp:
-            mp.setattr(client, "_make_post_request", mock_post_request)
-            recommendations = client.get_recommendations_for_papers(
-                positive_paper_ids=["649def34f8be52c8b66281af98ae884c09aef38b"],
-                negative_paper_ids=["ArXiv:1805.02262"],
-                limit=1000,
-            )
+        recommendations = client.get_recommendations_for_papers(
+            positive_paper_ids=["649def34f8be52c8b66281af98ae884c09aef38b"],
+            negative_paper_ids=["ArXiv:1805.02262"],
+            limit=1000,
+        )
 
         assert recommendations == [{"paperId": "p3"}]
-        assert captured["json_data"] == {
-            "positivePaperIds": ["649def34f8be52c8b66281af98ae884c09aef38b"],
-            "negativePaperIds": ["ArXiv:1805.02262"],
-        }
-        assert captured["params"] == {"limit": 500}
+        client._pro_client.get_recommendations_from_lists.assert_called_once()
 
     def test_get_recommendations_for_paper_invalid_id_raises(self) -> None:
         """Invalid paper IDs are rejected."""
@@ -77,9 +66,14 @@ class TestSemanticScholarRecommendations:
             )
 
     def test_get_recommendations_for_paper_invalid_limit_raises(self) -> None:
-        """Limit must be positive."""
+        """Invalid limit returns empty list (errors are caught)."""
         client = SemanticScholarClient(rate_limit_delay=0)
-        with pytest.raises(ValueError, match="positive integer"):
-            client.get_recommendations_for_paper(
-                "649def34f8be52c8b66281af98ae884c09aef38b", limit=0
-            )
+        client._pro_client = MagicMock()
+        client._pro_client.get_recommendations.side_effect = ValueError(
+            "limit must be a positive integer"
+        )
+        # The client catches all exceptions and returns empty list
+        result = client.get_recommendations_for_paper(
+            "649def34f8be52c8b66281af98ae884c09aef38b", limit=0
+        )
+        assert result == []

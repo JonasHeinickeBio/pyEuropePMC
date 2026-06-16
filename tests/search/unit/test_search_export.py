@@ -1,4 +1,5 @@
 import pytest
+
 from pyeuropepmc.clients.search import SearchClient
 
 SAMPLE_RESULTS = [

@@ -1,7 +1,7 @@
 """Functional tests for RDF converters integration."""
 
-import tempfile
 from pathlib import Path
+import tempfile
 from unittest.mock import Mock
 
 import pytest
@@ -10,11 +10,11 @@ from rdflib import Graph
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
+    convert_enrichment_to_rdf,
+    convert_incremental_to_rdf,
+    convert_pipeline_to_rdf,
     convert_search_to_rdf,
     convert_xml_to_rdf,
-    convert_enrichment_to_rdf,
-    convert_pipeline_to_rdf,
-    convert_incremental_to_rdf,
 )
 
 

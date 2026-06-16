@@ -6,6 +6,7 @@ import pytest
 from pyeuropepmc.processing.analytics import (
     access_distribution,
     author_collaboration_network,
+    author_statistics,
     citation_by_access_type,
     citation_statistics,
     detect_duplicates,
@@ -17,7 +18,6 @@ from pyeuropepmc.processing.analytics import (
     quality_metrics,
     remove_duplicates,
     to_dataframe,
-    author_statistics,
 )
 
 

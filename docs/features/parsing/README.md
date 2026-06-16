@@ -4,14 +4,14 @@ The **FullTextXMLParser** provides comprehensive capabilities for extracting str
 
 ## Overview
 
-- 📋 **Metadata extraction** - Title, authors, journal, dates, DOI, keywords
-- 📊 **Table extraction** - Complete table data with headers and captions
-- 📚 **Reference extraction** - Bibliography with full citation information
-- 📝 **Format conversion** - Convert to plaintext or Markdown
-- 🔍 **Section extraction** - Get structured body sections
-- ✅ **Schema validation** - Analyze XML element recognition
-- ⚙️ **Flexible configuration** - Customize element patterns
-- 🎯 **Multi-schema support** - Handle JATS, NLM, and custom XML
+- **Metadata extraction** - Title, authors, journal, dates, DOI, keywords
+- **Table extraction** - Complete table data with headers and captions
+- **Reference extraction** - Bibliography with full citation information
+- **Format conversion** - Convert to plaintext or Markdown
+- **Section extraction** - Get structured body sections
+- **Schema validation** - Analyze XML element recognition
+- **Flexible configuration** - Customize element patterns
+- **Multi-schema support** - Handle JATS, NLM, and custom XML
 
 ## Quick Start
 
@@ -532,14 +532,14 @@ for elem, count in sorted_unrecognized[:20]:
 ### 1. Reuse Parser Instances
 
 ```python
-# ❌ Creating new parser for each operation
+# Bad: Creating new parser for each operation
 xml_content = load_xml()
 parser1 = FullTextXMLParser(xml_content)
 metadata = parser1.extract_metadata()
 parser2 = FullTextXMLParser(xml_content)
 tables = parser2.extract_tables()
 
-# ✅ Reuse parser instance
+# Good: Reuse parser instance
 parser = FullTextXMLParser(xml_content)
 metadata = parser.extract_metadata()
 tables = parser.extract_tables()
@@ -549,13 +549,13 @@ references = parser.extract_references()
 ### 2. Extract Only Needed Data
 
 ```python
-# ❌ Extract everything if you only need metadata
+# Bad: Extract everything if you only need metadata
 parser = FullTextXMLParser(xml_content)
 metadata = parser.extract_metadata()
 tables = parser.extract_tables()  # Unnecessary
 references = parser.extract_references()  # Unnecessary
 
-# ✅ Extract only what you need
+# Good: Extract only what you need
 parser = FullTextXMLParser(xml_content)
 metadata = parser.extract_metadata()
 ```
@@ -597,13 +597,5 @@ except Exception as e:
 - **[API Reference: FullTextXMLParser](../../api/xml-parser.md)** - Complete API documentation
 - **[API Reference: ElementPatterns](../../api/xml-parser.md#elementpatterns)** - Pattern configuration
 - **[Full-Text Retrieval](../fulltext/)** - Download XML files to parse
-- **[Examples: Parsing](../../examples/basic-examples.md#parsing)** - More code examples
-- **[Advanced: Custom Patterns](../../advanced/custom-patterns.md)** - Advanced pattern customization
-
----
-
-**Next Steps:**
-- Learn [Custom Element Patterns](../../advanced/custom-patterns.md) for specialized XML
-- Explore [Schema Coverage](./schema-coverage.md) validation in detail
-- Read [Table Extraction](./table-extraction.md) advanced guide
-- See [Metadata Extraction](./metadata-extraction.md) complete reference
+- **[Examples](../../examples/)** - Code examples in the repository
+- **[Element Patterns](../../api/xml-parser.md#elementpatterns)** - Pattern configuration API

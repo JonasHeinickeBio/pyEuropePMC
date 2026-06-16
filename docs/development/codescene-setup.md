@@ -1,40 +1,40 @@
 # CodeScene CLI Setup for pyEuropePMC
 
-## ✅ Installation Complete
+## Installation Complete
 
 CodeScene CLI has been successfully installed and configured for your project!
 
-## 🔧 What's Been Set Up
+## What's Been Set Up
 
-### 1. **CodeScene CLI Installation**
-- ✅ CodeScene CLI installed at `~/.local/bin/cs`
-- ✅ Access token configured (`CS_ACCESS_TOKEN`)
-- ✅ CLI is functional and tested
+### 1. CodeScene CLI Installation
+- CodeScene CLI installed at `~/.local/bin/cs`
+- Access token configured (`CS_ACCESS_TOKEN`)
+- CLI is functional and tested
 
-### 2. **Custom Configuration**
-- ✅ `.codescene-rules.json` - Custom rules for different file types
-- ✅ Stricter rules for source code, relaxed for tests and examples
+### 2. Custom Configuration
+- `.codescene-rules.json` - Custom rules for different file types
+- Stricter rules for source code, relaxed for tests and examples
 
-### 3. **Development Integration**
-- ✅ **Pre-commit hook** added for automatic code health checks
-- ✅ **Makefile targets**:
+### 3. Development Integration
+- **Pre-commit hook** added for automatic code health checks
+- **Makefile targets**:
   - `make codescene` - Full analysis
   - `make codescene-delta` - Delta analysis
   - `make quality-full` - All quality checks including CodeScene
-- ✅ **Analysis script** at `scripts/codescene_analysis.sh`
+- **Analysis script** at `scripts/codescene_analysis.sh`
 
-### 4. **CI/CD Integration**
-- ✅ **GitHub Actions workflows** (`.github/workflows/cdci.yml` and `analyze_repo.yml`)
-- ✅ Automatic CodeScene CLI installation in CI
-- ✅ Environment variable loading from `.env` file
-- ✅ Comprehensive analysis with check, review, and delta commands
+### 4. CI/CD Integration
+- **GitHub Actions workflows** (`.github/workflows/cdci.yml` and `analyze_repo.yml`)
+- Automatic CodeScene CLI installation in CI
+- Environment variable loading from `.env` file
+- Comprehensive analysis with check, review, and delta commands
 
-### 5. **Environment Management**
-- ✅ **`.env` file** for secure token storage
-- ✅ **`.env.example`** template for team setup
-- ✅ Automatic loading in scripts and workflows
+### 5. Environment Management
+- **`.env` file** for secure token storage
+- **`.env.example`** template for team setup
+- Automatic loading in scripts and workflows
 
-## � Environment Setup
+## Environment Setup
 
 ### CodeScene Access Token
 1. **Copy the template:**
@@ -53,9 +53,9 @@ CodeScene CLI has been successfully installed and configured for your project!
    ```
 
 ### Security Notes
-- ✅ `.env` is in `.gitignore` (won't be committed)
-- ✅ Token is loaded automatically by scripts and CI/CD
-- ✅ No hardcoded secrets in code
+- `.env` is in `.gitignore` (won't be committed)
+- Token is loaded automatically by scripts and CI/CD
+- No hardcoded secrets in code
 
 ### Command Line Usage
 ```bash
@@ -105,22 +105,22 @@ make quality-full
 ./scripts/codescene_analysis.sh help
 ```
 
-## 📊 Current Code Health Status
+## Current Code Health Status
 
 ### `src/pyeuropepmc/article.py` - Score: 7.55/10
 **Issues Found:**
-- ⚠️ Code duplication in multiple locations
-- ⚠️ Functions with 5-7 arguments (threshold: 4)
-- ⚠️ Complex conditional expressions
-- ⚠️ Overall code complexity
+- Code duplication in multiple locations
+- Functions with 5-7 arguments (threshold: 4)
+- Complex conditional expressions
+- Overall code complexity
 
 ### `src/pyeuropepmc/search.py` - Score: 7.31/10
 **Issues Found:**
-- ⚠️ Complex methods (cyclomatic complexity up to 18!)
-- ⚠️ Bumpy road patterns
-- ⚠️ Multiple complex conditionals
+- Complex methods (cyclomatic complexity up to 18!)
+- Bumpy road patterns
+- Multiple complex conditionals
 
-## 🎯 Improvement Recommendations
+## Improvement Recommendations
 
 ### High Priority (search.py)
 1. **Break down complex methods** (cc > 10)
@@ -145,7 +145,7 @@ make quality-full
 2. **Single responsibility** - Each function should do one thing
 3. **Descriptive naming** - Use clear, intention-revealing names
 
-## 🔄 Integration with Git Workflow
+## Integration with Git Workflow
 
 ### CI/CD Pipelines
 CodeScene analysis runs automatically in:
@@ -163,7 +163,7 @@ Both workflows:
 - Checks all staged Python files
 - Prevents commits with severe code health issues
 
-## 📈 Monitoring Code Health
+## Monitoring Code Health
 
 ### Regular Analysis
 ```bash
@@ -180,7 +180,7 @@ Edit `.codescene-rules.json` to adjust:
 - Argument count limits
 - File-specific rules
 
-## 🔗 Next Steps
+## Next Steps
 
 1. **Set up your environment:**
    ```bash
@@ -200,12 +200,8 @@ Edit `.codescene-rules.json` to adjust:
 
 5. **Set up regular code health monitoring** in your development workflow
 
-## 📚 Resources
+## Resources
 
 - [CodeScene CLI Documentation](https://codescene.io/docs/cli/)
 - [Code Health Metrics Guide](https://codescene.io/docs/guides/code-health/)
 - [Refactoring Patterns](https://refactoring.guru/)
-
----
-
-**CodeScene CLI is now fully integrated into your development workflow!** 🎉

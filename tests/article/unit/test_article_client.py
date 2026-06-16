@@ -10,7 +10,9 @@ Tests the ArticleClient class methods including:
 """
 
 from unittest.mock import Mock, patch
+
 import pytest
+
 from pyeuropepmc.clients.article import ArticleClient
 from pyeuropepmc.core.exceptions import ValidationError
 

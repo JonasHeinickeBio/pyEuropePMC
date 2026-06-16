@@ -210,6 +210,6 @@ highly_cited = [p for p in papers if p.get('citedByCount', 0) > 100]
 
 ## Related Classes
 
-- [`QueryBuilder`](../query-builder.md) - For building complex search queries
-- [`FullTextClient`](../fulltext-client.md) - For downloading full-text content
-- [`EuropePMCParser`](../parser.md) - For parsing search results
+- [`QueryBuilder`](./query-builder.md) - For building complex search queries
+- [`FullTextClient`](./fulltext-client.md) - For downloading full-text content
+- [`EuropePMCParser`](./parser.md) - For parsing search results

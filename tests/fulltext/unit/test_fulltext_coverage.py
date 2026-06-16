@@ -3,18 +3,18 @@ Additional unit tests for FullTextClient to improve test coverage.
 """
 
 import gzip
-import tempfile
-import zipfile
 from io import BytesIO
 from pathlib import Path
+import tempfile
 from unittest.mock import Mock, patch
+import zipfile
 
 import pytest
 import requests
 
+from pyeuropepmc.clients.fulltext import FullTextClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, FullTextError
-from pyeuropepmc.clients.fulltext import FullTextClient
 
 pytestmark = pytest.mark.unit
 
@@ -239,7 +239,7 @@ class TestFullTextClientCoverage:
     def test_validate_pdf_content_exception_handling(self):
         """Test PDF validation exception handling."""
         # Mock file operations to raise exception
-        with patch("builtins.open", side_effect=IOError("File error")):
+        with patch("builtins.open", side_effect=OSError("File error")):
             temp_path = Path("/tmp/test.pdf")
             result = self.client._validate_pdf_content(temp_path)
             assert result is False
@@ -442,7 +442,7 @@ class TestFullTextClientCoverage:
                 assert output_path.exists()
 
                 # Verify content was saved correctly
-                with open(output_path, "r", encoding="utf-8") as f:
+                with open(output_path, encoding="utf-8") as f:
                     saved_content = f.read()
                     assert "PMC123456" in saved_content
                     assert "article-meta" in saved_content
@@ -462,7 +462,7 @@ class TestFullTextClientCoverage:
 
         with (
             patch("requests.get") as mock_get,
-            patch("builtins.open", side_effect=IOError("File error")),
+            patch("builtins.open", side_effect=OSError("File error")),
         ):
             mock_response = Mock()
             mock_response.status_code = 200
@@ -869,8 +869,9 @@ class TestFullTextClientCoverage:
 
     def test_progress_info_initialization(self):
         """Test ProgressInfo initialization with all parameters."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
         import time
+
+        from pyeuropepmc.clients.fulltext import ProgressInfo
 
         start_time = time.time()
         progress = ProgressInfo(
@@ -915,8 +916,9 @@ class TestFullTextClientCoverage:
 
     def test_estimated_times_calculation(self):
         """Test estimated time calculations."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
         import time
+
+        from pyeuropepmc.clients.fulltext import ProgressInfo
 
         start_time = time.time() - 10  # 10 seconds ago
         progress = ProgressInfo(total_items=100, current_item=25, start_time=start_time)
@@ -932,9 +934,10 @@ class TestFullTextClientCoverage:
 
     def test_completion_rate_calculation(self):
         """Test completion rate calculation."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
-        from unittest.mock import patch
         import time
+        from unittest.mock import patch
+
+        from pyeuropepmc.clients.fulltext import ProgressInfo
 
         # Test with actual elapsed time
         start_time = time.time() - 10  # 10 seconds ago
@@ -1065,7 +1068,8 @@ class TestFullTextClientCoverage:
             stale_file.write_bytes(b"content")
 
             # Make file old
-            import time, os
+            import os
+            import time
             old_time = time.time() - (2 * 24 * 3600)  # 2 days ago
             os.utime(stale_file, (old_time, old_time))
             assert not client._is_cached_file_valid(stale_file)

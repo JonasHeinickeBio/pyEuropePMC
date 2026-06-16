@@ -2,7 +2,7 @@
 
 ## Overview
 
-The QueryBuilder now integrates with PyEuropePMC's systematic review tracking system to maintain PRISMA/Cochrane-compliant records of all searches performed. This enables researchers to:
+The QueryBuilder integrates with PyEuropePMC's systematic review tracking system to maintain PRISMA/Cochrane-compliant records of all searches performed. This enables researchers to:
 
 - Track all search queries with **exact syntax and parameters used in API calls**
 - Record filters, platforms, and search dates automatically
@@ -340,11 +340,11 @@ new_response = client.search(logged_query, pageSize=100)
 
 ### Reproducibility Checklist
 
-- ✅ Query string matches exact API call
-- ✅ All search parameters documented
-- ✅ Raw API response saved
-- ✅ Timestamps and versions recorded
-- ✅ Query can be directly copied and reused
+- Query string matches exact API call
+- All search parameters documented
+- Raw API response saved
+- Timestamps and versions recorded
+- Query can be directly copied and reused
 
 ## Example: Complete Systematic Review
 

@@ -21,7 +21,7 @@ This guide covers development practices, contributing guidelines, and project se
 - Git
 - Poetry (recommended) or pip
 
-📋 **Note**: See our [Python Version Compatibility Strategy](python-version-strategy.md) for detailed information about supported Python versions and testing procedures.
+**Note**: See our [Python Version Compatibility Strategy](python-version-strategy.md) for detailed information about supported Python versions and testing procedures.
 
 ### Quick Setup
 
@@ -601,4 +601,3 @@ class RateLimitError(EuropePMCError):
 - **Documentation**: Check the [API documentation](../api/README.md)
 - **Issues**: Report bugs on [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)
 - **Discussions**: Ask questions in [GitHub Discussions](https://github.com/JonasHeinickeBio/pyEuropePMC/discussions)
-- **Contributing**: See our [Contributing Guide](CONTRIBUTING.md)

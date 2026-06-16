@@ -1,18 +1,11 @@
 # PyEuropePMC Features
 
-<div align="center">
+**Explore what PyEuropePMC can do** - Comprehensive feature overview and workflows
 
-**✨ Explore what PyEuropePMC can do** - Comprehensive feature overview and workflows
+## Core Features
 
-[🔍 Search](search/) • [📄 Full-Text](fulltext/) • [🔬 Parsing](parsing/) • [⬅️ Back to Docs](../README.md)
+### Search
 
-</div>
-
----
-
-## 🔍 Core Features
-
-### [Search](search/)
 **Query the Europe PMC database with powerful search capabilities**
 
 - Advanced query syntax support
@@ -31,11 +24,10 @@ with SearchClient() as client:
     results = client.search("cancer AND therapy", pageSize=50, sort="CITED desc")
 ```
 
-**[Learn More →](search/)**
+**[Learn More](search/)**
 
----
+### Full-Text Retrieval
 
-### [Full-Text Retrieval](fulltext/)
 **Download complete article content in multiple formats**
 
 - PDF downloads from open access articles
@@ -54,11 +46,10 @@ with FullTextClient() as client:
     xml_content = client.download_xml_by_pmcid("PMC1234567")
 ```
 
-**[Learn More →](fulltext/)**
+**[Learn More](fulltext/)**
 
----
+### XML Parsing
 
-### [XML Parsing](parsing/)
 **Extract structured data from full-text XML documents**
 
 - **Metadata extraction** - Title, authors, journal, dates, DOI, keywords
@@ -89,11 +80,10 @@ coverage = parser.validate_schema_coverage()
 print(f"Coverage: {coverage['coverage_percentage']:.1f}%")
 ```
 
-**[Learn More →](parsing/)**
+**[Learn More](parsing/)**
 
----
+### Query Builder
 
-### [🔧 Query Builder](query-builder-load-save-translate.md)
 **Advanced fluent API for building complex search queries with type safety**
 
 - Type-safe field specifications (150+ searchable fields)
@@ -120,11 +110,10 @@ query = (qb
 # Result: "(TITLE:cancer) AND (CITED:[50 TO *]) AND (PUB_YEAR:[2020 TO *])"
 ```
 
-**[Learn More →](query-builder-load-save-translate.md)**
+**[Learn More](query-builder-load-save-translate.md)**
 
----
+### Systematic Review Tracking
 
-### [📋 Systematic Review Tracking](systematic-review-tracking.md)
 **PRISMA/Cochrane-compliant search logging and audit trails**
 
 - Complete systematic review workflow support
@@ -143,34 +132,30 @@ qb = QueryBuilder().keyword("cancer").and_().field("open_access", True)
 qb.log_to_search(log, filters={"open_access": True}, results_returned=100)
 ```
 
-**[Learn More →](systematic-review-tracking.md)**
+**[Learn More](systematic-review-tracking.md)**
 
----
-
-## 📊 Feature Comparison
+## Feature Comparison
 
 | Feature | SearchClient | FullTextClient | FullTextXMLParser | FTPDownloader | QueryBuilder |
 |---------|-------------|---------------|-------------------|---------------|--------------|
-| **Search Europe PMC** | ✅ | - | - | - | ✅ |
-| **Build Complex Queries** | - | - | - | - | ✅ |
-| **Type-Safe Fields** | - | - | - | - | ✅ |
-| **Query Validation** | - | - | - | - | ✅ |
-| **Query Translation** | - | - | - | - | ✅ |
-| **Download PDFs** | - | ✅ | - | ✅ | - |
-| **Download XML** | - | ✅ | - | - | - |
-| **Parse XML** | - | - | ✅ | - | - |
-| **Extract Metadata** | - | - | ✅ | - | - |
-| **Extract Tables** | - | - | ✅ | - | - |
-| **Bulk Downloads** | - | - | - | ✅ | - |
-| **Systematic Review Logging** | - | - | - | - | ✅ |
-| **Caching** | ✅ | ✅ | - | - | - |
-| **Progress Tracking** | - | ✅ | - | ✅ |
+| **Search Europe PMC** | Yes | - | - | - | Yes |
+| **Build Complex Queries** | - | - | - | - | Yes |
+| **Type-Safe Fields** | - | - | - | - | Yes |
+| **Query Validation** | - | - | - | - | Yes |
+| **Query Translation** | - | - | - | - | Yes |
+| **Download PDFs** | - | Yes | - | Yes | - |
+| **Download XML** | - | Yes | - | - | - |
+| **Parse XML** | - | - | Yes | - | - |
+| **Extract Metadata** | - | - | Yes | - | - |
+| **Extract Tables** | - | - | Yes | - | - |
+| **Bulk Downloads** | - | - | - | Yes | - |
+| **Systematic Review Logging** | - | - | - | - | Yes |
+| **Caching** | Yes | Yes | - | - | - |
+| **Progress Tracking** | - | Yes | - | Yes | - |
 
----
+## Common Workflows
 
-## 🚀 Common Workflows
-
-### Workflow 1: Advanced Query → Search → Parse
+### Workflow 1: Advanced Query -> Search -> Parse
 
 ```python
 from pyeuropepmc import QueryBuilder, SearchClient, FullTextXMLParser
@@ -236,7 +221,7 @@ with SearchClient() as client:
 log.save("systematic_review_log.json")
 ```
 
-### Workflow 3: Advanced Search → Filter → Extract
+### Workflow 3: Advanced Search -> Filter -> Extract
 
 ```python
 from pyeuropepmc import SearchClient, FullTextXMLParser
@@ -263,72 +248,66 @@ with SearchClient() as client:
         # Analyze...
 ```
 
----
-
-## 📊 Feature Matrix
+## Feature Matrix
 
 ### Search Features
 
 | Capability | Supported | Notes |
 |-----------|-----------|-------|
-| Keyword search | ✅ | Full-text search across all fields |
-| Boolean operators | ✅ | AND, OR, NOT |
-| Field-specific | ✅ | Search specific fields (author, title, etc.) |
-| Date filtering | ✅ | Publication date ranges |
-| Citation sorting | ✅ | Sort by citation count |
-| Pagination | ✅ | Handle large result sets |
-| Multiple formats | ✅ | JSON, XML, Dublin Core |
+| Keyword search | Yes | Full-text search across all fields |
+| Boolean operators | Yes | AND, OR, NOT |
+| Field-specific | Yes | Search specific fields (author, title, etc.) |
+| Date filtering | Yes | Publication date ranges |
+| Citation sorting | Yes | Sort by citation count |
+| Pagination | Yes | Handle large result sets |
+| Multiple formats | Yes | JSON, XML, Dublin Core |
 
 ### Full-Text Features
 
 | Capability | Supported | Notes |
 |-----------|-----------|-------|
-| PDF download | ✅ | Open access articles only |
-| XML download | ✅ | JATS/NLM XML format |
-| HTML content | ✅ | HTML representation |
-| Bulk FTP | ✅ | Efficient for large datasets |
-| Progress tracking | ✅ | Real-time progress callbacks |
-| Auto-retry | ✅ | Robust error handling |
+| PDF download | Yes | Open access articles only |
+| XML download | Yes | JATS/NLM XML format |
+| HTML content | Yes | HTML representation |
+| Bulk FTP | Yes | Efficient for large datasets |
+| Progress tracking | Yes | Real-time progress callbacks |
+| Auto-retry | Yes | Robust error handling |
 
 ### Parsing Features
 
 | Capability | Supported | Notes |
 |-----------|-----------|-------|
-| Metadata extraction | ✅ | Title, authors, journal, dates, etc. |
-| Table extraction | ✅ | Structured table data |
-| Reference extraction | ✅ | Complete bibliography |
-| Plaintext conversion | ✅ | Full article text |
-| Markdown conversion | ✅ | Formatted markdown |
-| Schema validation | ✅ | Coverage analysis |
-| Custom patterns | ✅ | Flexible configuration |
-| Multiple XML schemas | ✅ | JATS, NLM, custom |
+| Metadata extraction | Yes | Title, authors, journal, dates, etc. |
+| Table extraction | Yes | Structured table data |
+| Reference extraction | Yes | Complete bibliography |
+| Plaintext conversion | Yes | Full article text |
+| Markdown conversion | Yes | Formatted markdown |
+| Schema validation | Yes | Coverage analysis |
+| Custom patterns | Yes | Flexible configuration |
+| Multiple XML schemas | Yes | JATS, NLM, custom |
 
----
-
-## 🎓 Learning Resources
+## Learning Resources
 
 ### By Feature
 
-- **Search** → [Search Documentation](search/)
-- **Full-Text** → [Full-Text Documentation](fulltext/)
-- **Parsing** → [Parsing Documentation](parsing/)
-- **Caching** → [Caching Documentation](caching/)
+- **Search** -> [Search Documentation](search/)
+- **Full-Text** -> [Full-Text Documentation](fulltext/)
+- **Parsing** -> [Parsing Documentation](parsing/)
+- **Caching** -> [Caching Documentation](caching/)
 
 ### By Use Case
 
-- **Literature Review** → [Examples: Literature Review](../examples/use-cases.md#literature-review)
-- **Data Mining** → [Examples: Text Mining](../examples/use-cases.md#text-mining)
-- **Meta-Analysis** → [Examples: Meta-Analysis](../examples/use-cases.md#meta-analysis)
+- **Literature Review** -> [Examples](../examples/)
+- **Data Mining** -> [Examples](../examples/)
+- **Meta-Analysis** -> [Examples](../examples/)
 
 ### By Skill Level
 
-- **Beginner** → [Getting Started](../getting-started/)
-- **Intermediate** → [Examples](../examples/)
-- **Advanced** → [Advanced Guide](../advanced/)
+- **Beginner** -> [Getting Started](../getting-started/)
+- **Intermediate** -> [Examples](../examples/)
+- **Advanced** -> [Advanced Guide](../advanced/)
 
----
-
-## 💡 Best Practices
+## Best Practices
 
 ### Performance
 - Use caching for repeated queries
@@ -348,38 +327,11 @@ with SearchClient() as client:
 - Cache results to minimize API calls
 - Consider FTP for large-scale downloads
 
----
-
-## 🔄 What's Next?
-
-Explore each feature in detail:
-
-1. **[Search Features](search/)** - Master the search API
-2. **[Full-Text Retrieval](fulltext/)** - Download article content
-3. **[XML Parsing](parsing/)** - Extract structured data
-4. **[Caching](caching/)** - Optimize performance
-
-Or jump to:
-
-- **[📚 API Reference](../api/)** for complete API documentation
-- **[🎯 Examples](../examples/)** for working code
-- **[⚙️ Advanced Guide](../advanced/)** for power user features
-
----
-
-## 📚 Related Sections
+## Related Sections
 
 | Section | Why Visit? |
 |---------|------------|
-| **[🚀 Getting Started](../getting-started/)** | Installation and basics |
-| **[📚 API Reference](../api/)** | Complete method documentation |
-| **[🎯 Examples](../examples/)** | Working code samples |
-| **[⚙️ Advanced](../advanced/)** | Power user features |
-
----
-
-<div align="center">
-
-**[⬆ Back to Top](#pyeuropepmc-features)** • [⬅️ Back to Main Docs](../README.md)
-
-</div>
+| **[Getting Started](../getting-started/)** | Installation and basics |
+| **[API Reference](../api/)** | Complete method documentation |
+| **[Examples](../examples/)** | Working code samples |
+| **[Advanced](../advanced/)** | Power user features |

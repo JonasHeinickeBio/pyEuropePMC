@@ -3,8 +3,8 @@ Quick test to verify caching is integrated in all clients.
 """
 import pytest
 
-from pyeuropepmc.clients.article import ArticleClient
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.clients.article import ArticleClient
 from pyeuropepmc.clients.fulltext import FullTextClient
 from pyeuropepmc.clients.search import SearchClient
 

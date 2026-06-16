@@ -2,14 +2,14 @@
 Unit tests for FullTextClient functionality.
 """
 
-import tempfile
 from pathlib import Path
+import tempfile
 from unittest.mock import Mock, patch
 
 import pytest
 
-from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.clients.fulltext import FullTextClient, FullTextError
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 pytestmark = pytest.mark.unit
 
@@ -286,8 +286,8 @@ class TestFullTextClient:
     @patch("requests.get")
     def test_download_pdf_by_pmcid_zip_success(self, mock_get):
         """Test PDF download via OA ZIP fallback (success)."""
-        import zipfile
         from io import BytesIO
+        import zipfile
 
         # First call: render endpoint fails
         mock_response_render = Mock()

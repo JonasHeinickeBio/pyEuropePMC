@@ -212,5 +212,5 @@ citations = paper.get('citedByCount', 0)
 
 ## Related Classes
 
-- [`SearchClient`](../search-client.md) - For retrieving data to parse
-- [`FullTextXMLParser`](../parser-quick-reference.md) - For parsing XML content
+- [`SearchClient`](./search-client.md) - For retrieving data to parse
+- [`FullTextXMLParser`](./xml-parser.md) - For parsing XML content

@@ -2,18 +2,18 @@
 Unit tests for cache backend functionality.
 """
 
+from pathlib import Path
 import tempfile
 import time
-from pathlib import Path
 
 import pytest
 
 from pyeuropepmc.cache.cache import (
+    CACHETOOLS_AVAILABLE,
     CacheBackend,
     CacheConfig,
     CacheDataType,
     CacheLayer,
-    CACHETOOLS_AVAILABLE,
 )
 
 

@@ -72,8 +72,6 @@ page1 = client.search("query", pageSize=100, offset=0)
 page2 = client.search("query", pageSize=100, offset=100)
 ```
 
-dc_results = client.search("query", format="dc")
-
 ### What output formats are available?
 
 - **JSON** (default): Structured data, easy to process
@@ -252,9 +250,9 @@ authors = paper.get("authorString", "No authors listed")
 
 ### Where can I find more examples?
 
-- [Examples documentation](examples/README.md)
+- [Examples documentation](../examples/)
 - [GitHub examples directory](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples)
-- [API reference](api/README.md)
+- [API reference](../api/)
 
 ### How do I report bugs or request features?
 
@@ -263,7 +261,7 @@ authors = paper.get("authorString", "No authors listed")
 
 ### How can I contribute to the project?
 
-See our [Contributing Guide](development/README.md#contributing-guidelines) for:
+See our [Contributing Guide](../development/README.md#contributing-guidelines) for:
 
 - Code contributions
 - Documentation improvements

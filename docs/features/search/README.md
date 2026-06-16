@@ -4,12 +4,12 @@ The **SearchClient** provides powerful querying capabilities for the Europe PMC 
 
 ## Overview
 
-- 🔍 **Full-text search** across millions of papers
-- 🎯 **Advanced query syntax** with Boolean operators
-- 📊 **Flexible filtering** by date, citation count, and more
-- 🔄 **Pagination** for large result sets
-- 💾 **Automatic caching** for improved performance
-- 📝 **Multiple output formats** (JSON, XML, Dublin Core)
+- **Full-text search** across millions of papers
+- **Advanced query syntax** with Boolean operators
+- **Flexible filtering** by date, citation count, and more
+- **Pagination** for large result sets
+- **Automatic caching** for improved performance
+- **Multiple output formats** (JSON, XML, Dublin Core)
 
 ## Quick Start
 
@@ -307,6 +307,103 @@ open_access = [
 ]
 ```
 
+## Large-Scale Search Operations
+
+For processing thousands of papers, use these strategies:
+
+### Bulk Search (Recommended for Semantic Scholar)
+
+When using the Semantic Scholar enrichment client, use `bulk=True` for faster search:
+
+```python
+from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+
+client = ProfessionalSemanticScholarClient()
+
+# Bulk search (fast, no relevance ranking, up to 10M results)
+results = client.search_paper("cancer", bulk=True, limit=1000)
+
+# Regular search with relevance ranking (slower for large result sets)
+results = client.search_paper("cancer", bulk=False, limit=100)
+```
+
+### Europe PMC CursorMark Pagination
+
+Efficient pagination for large result sets:
+
+```python
+from pyeuropepmc import SearchClient
+
+with SearchClient() as client:
+    cursor = "*"
+    all_results = []
+
+    # Get 10 pages of 100 results each
+    for i in range(10):
+        results = client.search("cancer", pageSize=100, cursorMark=cursor)
+
+        # Process results
+        all_results.extend(results['resultList']['result'])
+
+        # Get next page
+        next_cursor = results.get('nextCursorMark')
+        if not next_cursor or next_cursor == cursor:
+            break
+        cursor = next_cursor
+
+    print(f"Total papers retrieved: {len(all_results)}")
+```
+
+### Batch Processing 1000+ Papers
+
+```python
+from pyeuropepmc import SearchClient
+
+def process_papers_in_batches(query, batch_size=100, max_batches=10):
+    with SearchClient() as client:
+        cursor = "*"
+        total_processed = 0
+
+        for batch_num in range(max_batches):
+            results = client.search(
+                query=query,
+                pageSize=batch_size,
+                cursorMark=cursor,
+                resultType="core"
+            )
+
+            papers = results['resultList']['result']
+            if not papers:
+                break
+
+            # Process batch
+            for paper in papers:
+                # Your processing logic here
+                process_paper(paper)
+                total_processed += 1
+
+            # Update cursor
+            next_cursor = results.get('nextCursorMark')
+            if not next_cursor or next_cursor == cursor:
+                break
+            cursor = next_cursor
+
+        return total_processed
+
+# Usage
+count = process_papers_in_batches("cancer immunotherapy")
+print(f"Processed {count} papers")
+```
+
+### Performance Comparison
+
+| Strategy | API Calls | Time for 1000 papers | Best For |
+|----------|-----------|---------------------|----------|
+| `pageSize=10` | 100 | ~100s | Testing |
+| `pageSize=100` | 10 | ~20s | Default |
+| `pageSize=500` | 2 | ~8s | Large datasets |
+| `bulk=True` (SemSchol) | ~1 | ~5s | Semantic Scholar |
+
 ## Performance Tips
 
 ### 1. Use Caching
@@ -326,23 +423,23 @@ with SearchClient() as client:
 
 ```python
 # Too small - many API calls
-results = client.search("cancer", pageSize=10)  # ❌
+results = client.search("cancer", pageSize=10)
 
 # Optimal for most use cases
-results = client.search("cancer", pageSize=100)  # ✅
+results = client.search("cancer", pageSize=100)
 
 # Too large - slow response
-results = client.search("cancer", pageSize=1000)  # ⚠️
+results = client.search("cancer", pageSize=1000)
 ```
 
 ### 3. Use Specific Queries
 
 ```python
 # Vague - many irrelevant results
-results = client.search("cancer")  # ❌
+results = client.search("cancer")
 
 # Specific - fewer, better results
-results = client.search("lung cancer AND immunotherapy AND PUB_YEAR:[2020 TO 2024]")  # ✅
+results = client.search("lung cancer AND immunotherapy AND PUB_YEAR:[2020 TO 2024]")
 ```
 
 ### 4. Request Only Needed Data
@@ -354,6 +451,29 @@ results = client.search("cancer", resultType="core")
 # Minimal metadata (faster)
 results = client.search("cancer", resultType="idlist")
 ```
+
+## Rate Limiting
+
+### SearchClient Rate Limiting
+
+```python
+from pyeuropepmc import SearchClient
+
+with SearchClient(rate_limit_delay=1.0) as client:
+    results = client.search("cancer")
+```
+
+### Europe PMC Rate Limits
+
+| API | Free Tier Limit | With Authentication |
+|-----|----------------|---------------------|
+| Europe PMC | No strict limit | Register for API key |
+
+### Best Practices
+1. Use caching for repeated queries
+2. Set appropriate `rate_limit_delay` based on your use case
+3. Use larger `pageSize` to reduce total API calls
+4. Implement retry logic for transient failures
 
 ## Error Handling
 
@@ -380,13 +500,5 @@ with SearchClient() as client:
 ## See Also
 
 - **[API Reference: SearchClient](../../api/search-client.md)** - Complete API documentation
-- **[Examples: Search](../../examples/basic-examples.md#search)** - More code examples
-- **[Advanced: Query Optimization](../../advanced/configuration.md#search-optimization)** - Performance tuning
+- **[Search Examples](../../examples/)** - Code examples in the repository
 - **[Caching](../caching/)** - Understanding caching behavior
-
----
-
-**Next Steps:**
-- Try [Full-Text Retrieval](../fulltext/) to download complete articles
-- Explore [XML Parsing](../parsing/) to extract structured data
-- Read [Advanced Examples](../../examples/advanced-examples.md) for complex workflows

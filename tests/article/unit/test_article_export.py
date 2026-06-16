@@ -1,4 +1,5 @@
 import pytest
+
 from pyeuropepmc.clients.article import ArticleClient
 
 SAMPLE_RESULTS = [
