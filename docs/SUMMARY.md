@@ -29,6 +29,7 @@
 * [ArticleClient](api/article-client.md)
 * [QueryBuilder](api/query-builder.md)
 * [XML Parser](api/xml-parser.md)
+* [XML Parser Extensions](api/xml-parser-extensions.md)
 * [EuropePMCParser](api/parser.md)
 * [FTPDownloader](api/ftp-downloader.md)
 * [Analytics & Visualization](api/analytics-visualization.md)
@@ -71,6 +72,7 @@
 * [RML Mappings Guide](reference/rml_mappings_guide.md)
 * [XML Element Types](reference/xml_element_types_documentation.md)
 * [XML Element Coverage](reference/xml_element_coverage_analysis.md)
+* [XML Parser Extensions](reference/xml-parser-extensions.md)
 * [Performance Benchmarks](reference/MODULAR_PERFORMANCE_REPORT.md)
 
 ## Development

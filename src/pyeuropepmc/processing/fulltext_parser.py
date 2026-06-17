@@ -43,6 +43,35 @@ from pyeuropepmc.processing.parsers.section_parser import SectionParser
 from pyeuropepmc.processing.parsers.table_parser import TableParser
 from pyeuropepmc.processing.utils.xml_helpers import XMLHelper
 
+# Lazy-loaded extension imports (avoid circular imports during package init)
+_HAS_EXTENSIONS: bool | None = None
+_ContentBlockExtractor: type | None = None
+_StructuredSection: type | None = None
+
+
+def _ensure_extensions() -> bool:
+    """Lazily import extension modules."""
+    global _HAS_EXTENSIONS, _ContentBlockExtractor, _StructuredSection
+    if _HAS_EXTENSIONS is not None:
+        return _HAS_EXTENSIONS
+    try:
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            ContentBlockExtractor as _CBE,
+        )
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            StructuredSection as _SS,
+        )
+
+        _ContentBlockExtractor = _CBE
+        _StructuredSection = _SS
+        _HAS_EXTENSIONS = True
+    except ImportError:
+        _ContentBlockExtractor = None
+        _StructuredSection = None
+        _HAS_EXTENSIONS = False
+    return _HAS_EXTENSIONS
+
+
 logger = logging.getLogger(__name__)
 
 __all__ = ["FullTextXMLParser", "ElementPatterns", "DocumentSchema"]
@@ -140,6 +169,8 @@ class FullTextXMLParser:
         self._section_parser: SectionParser | None = None
         self._plaintext_converter: PlaintextConverter | None = None
         self._markdown_converter: MarkdownConverter | None = None
+        # Extension components (lazy-loaded)
+        self._content_block_extractor: Any = None
 
         if xml_content is not None:
             self.parse(xml_content)
@@ -155,6 +186,7 @@ class FullTextXMLParser:
         self._section_parser = None
         self._plaintext_converter = None
         self._markdown_converter = None
+        self._content_block_extractor = None
         self._schema = None
 
     @property
@@ -205,6 +237,18 @@ class FullTextXMLParser:
         if self._section_parser is None:
             self._section_parser = SectionParser(self.root, self.config)
         return self._section_parser
+
+    @property
+    def content_block_extractor(self) -> Any:
+        """Get the content block extractor instance (extension)."""
+        if self._content_block_extractor is None:
+            if not _ensure_extensions():
+                raise ImportError(
+                    "ContentBlockExtractor not available. "
+                    "Ensure pyeuropepmc.processing.extensions is installed."
+                )
+            self._content_block_extractor = _ContentBlockExtractor(self.root, self.config)
+        return self._content_block_extractor
 
     @property
     def plaintext_converter(self) -> PlaintextConverter:
@@ -447,6 +491,62 @@ class FullTextXMLParser:
             raise ParsingError(
                 ErrorCodes.PARSE003,
                 {"error": str(e), "message": "Failed to extract sections from XML"},
+            ) from e
+
+    def get_full_text_sections_structured(
+        self,
+    ) -> list[dict[str, Any]]:
+        """
+        Extract all body sections as structured content blocks (typed blocks).
+
+        Unlike the flat ``get_full_text_sections()`` which returns ``{title, content}``
+        strings, this method preserves document structure by returning typed content
+        blocks (paragraphs, lists, formulas, figures, tables, etc.).
+
+        This is ideal for RAG/LLM pipelines where block-level structure matters.
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of section dicts, each containing:
+            - ``title``: Section title (str)
+            - ``content``: List of typed content blocks (dicts)
+            - ``section_type``: Type hint (``"body"``, ``"back"``, ``"appendix"``)
+
+        Examples
+        --------
+        >>> sections = parser.get_full_text_sections_structured()
+        >>> for section in sections:
+        ...     print(f"\\n## {section['title']}")
+        ...     for block in section["content"]:
+        ...         if block["type"] == "paragraph":
+        ...             print(block["text"])
+        ...         elif block["type"] == "list":
+        ...             for item in block["items"]:
+        ...                 print(f"  - {item}")
+        """
+        self._require_root()
+        try:
+            structured_sections = self.content_block_extractor.extract_sections()
+            return [s.to_dict() for s in structured_sections]
+        except ImportError as e:
+            logger.error(f"Extensions not available: {e}")
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {
+                    "error": str(e),
+                    "message": "ContentBlockExtractor not available. "
+                    "Install required dependencies.",
+                },
+            ) from e
+        except Exception as e:
+            logger.error(f"Error extracting structured sections: {e}")
+            raise ParsingError(
+                ErrorCodes.PARSE003,
+                {
+                    "error": str(e),
+                    "message": "Failed to extract structured sections from XML",
+                },
             ) from e
 
     def to_plaintext(self) -> str:
