@@ -11,7 +11,7 @@ if env_path.exists():
 
 api_key = os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
 if api_key:
-    print(f"API key: {api_key[:10]}...")
+    print(f"API key: set (length={len(api_key)})")
 else:
     print("API key: NOT SET")
 
