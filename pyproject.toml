@@ -23,15 +23,6 @@ classifiers = [
 urls = { Homepage = "https://github.com/JonasHeinickeBio/pyEuropePMC", Repository = "https://github.com/JonasHeinickeBio/pyEuropePMC" }
 dynamic = ["dependencies"]
 
-[tool.semantic_release]
-version_variable = ["src/pyeuropepmc/__init__.py:__version__"]
-version_toml = ["pyproject.toml:project.version"]
-branch = "main"
-upload_to_pypi = true
-upload_to_release = true
-build_command = "pip install poetry && poetry build"
-commit_author = "Jonas Heinicke (HZI) <jonas.heinicke@helmholtz-hzi.de>"
-
 [[tool.poetry.packages]]
 include = "pyeuropepmc"
 from = "src"
