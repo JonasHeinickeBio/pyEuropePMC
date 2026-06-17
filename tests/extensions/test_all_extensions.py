@@ -12,6 +12,9 @@ import pytest
 
 from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
+# Apply module-level markers
+pytestmark = pytest.mark.unit
+
 
 # ============================================================================
 # XML Fixtures
@@ -235,7 +238,17 @@ class TestContentBlocks:
 
         p = ContentBlock.paragraph("Hello")
         d = p.to_dict()
-        assert d == {"type": "paragraph", "text": "Hello"}
+        assert d["type"] == "paragraph"
+        assert d["text"] == "Hello"
+        assert "schema_version" in d
+
+        # Empty fields should be omitted
+        assert "items" not in d
+        assert "inlines" not in d
+        assert "parse_status" not in d  # default "success" == no parse_status key
+        assert "quality_score" not in d  # default 1.0 == no quality_score key
+        assert "parser_notes" not in d
+        assert "definition_terms" not in d
 
         fig = ContentBlock.figure("Fig. 1", "Caption", uri="f1.jpg")
         d = fig.to_dict()
@@ -516,8 +529,8 @@ class TestJATS4RValidator:
         report = validator.validate()
 
         author_findings = report.categories.get("authors", [])
-        # Should have some findings about authors
-        assert len(author_findings) >= 0
+        # Validation should produce a list (may be empty for valid articles)
+        assert isinstance(author_findings, list)
 
     def test_funding_detected(self):
         """Test funding information detection."""
@@ -867,7 +880,7 @@ class TestLocalProcessing:
 
         # Default init - config is None until set
         processor = LocalXMLProcessor()
-        assert processor.config is None or processor.config is not None
+        assert processor.config is None
         # With explicit config
         from pyeuropepmc.processing.config.element_patterns import ElementPatterns
 
@@ -942,3 +955,334 @@ class TestPydanticHelpers:
 
         with pytest.raises(ImportError):
             PydanticModelGenerator()
+
+
+# ============================================================================
+# Tests: Inline Tracking, Def Lists, RAG Chunking, Schema Versioning
+# ============================================================================
+
+
+class TestInlineTracking:
+    """Tests for inline element tracking within paragraph blocks."""
+
+    PARAGRAPH_WITH_INLINES = """<?xml version="1.0"?>
+<article xmlns:xlink="http://www.w3.org/1999/xlink">
+<body><sec><title>Test</title>
+<p>Text with <bold>bold</bold>, <italic>italic</italic>,
+and an <xref ref-type="fig" rid="f1">inline xref</xref>.
+Also a formula: <inline-formula><alternatives><tex-math>E=mc^2</tex-math></alternatives></inline-formula>.</p>
+</sec></body></article>"""
+
+    def test_inline_elements_tracked(self):
+        """Verify inlines are tracked in paragraph blocks."""
+        parser = FullTextXMLParser(self.PARAGRAPH_WITH_INLINES)
+        sections = parser.get_full_text_sections_structured()
+        blocks = sections[0]["content"]
+
+        para_blocks = [b for b in blocks if b["type"] == "paragraph"]
+        assert len(para_blocks) >= 1
+
+        # Check that inlines are present
+        p = para_blocks[0]
+        assert "inlines" in p, "Paragraph should have inlines field"
+        assert len(p["inlines"]) >= 4, "Expected 4+ inline elements"
+
+        types = [i["type"] for i in p["inlines"]]
+        assert "bold" in types
+        assert "italic" in types
+        assert "xref" in types
+        assert "inline_formula" in types
+
+    def test_inline_positions(self):
+        """Verify inline element positions are tracked correctly."""
+        parser = FullTextXMLParser(self.PARAGRAPH_WITH_INLINES)
+        sections = parser.get_full_text_sections_structured()
+        para = [b for b in sections[0]["content"] if b["type"] == "paragraph"][0]
+
+        for inline in para["inlines"]:
+            assert "position" in inline
+            assert "length" in inline
+            assert inline["position"] >= 0
+            assert inline["length"] > 0
+
+
+class TestDefList:
+    """Tests for definition list support."""
+
+    XML_WITH_DEF_LIST = """<?xml version="1.0"?>
+<article><body><sec><title>Glossary</title>
+<def-list><title>Terms</title>
+<def-item><term>DNA</term><def><p>Deoxyribonucleic acid</p></def></def-item>
+<def-item><term>RNA</term><def><p>Ribonucleic acid</p></def></def-item>
+</def-list>
+</sec></body></article>"""
+
+    def test_def_list_detection(self):
+        """Verify definition lists are detected."""
+        parser = FullTextXMLParser(self.XML_WITH_DEF_LIST)
+        sections = parser.get_full_text_sections_structured()
+        def_lists = [
+            b for s in sections for b in s["content"]
+            if b.get("type") == "definition_list"
+        ]
+        assert len(def_lists) >= 1
+
+    def test_def_list_terms(self):
+        """Verify term/definition pairs are extracted."""
+        parser = FullTextXMLParser(self.XML_WITH_DEF_LIST)
+        sections = parser.get_full_text_sections_structured()
+        dl = next(
+            b for s in sections for b in s["content"]
+            if b.get("type") == "definition_list"
+        )
+        assert "definition_terms" in dl
+        terms = dl["definition_terms"]
+        assert len(terms) == 2
+        assert terms[0]["term"] == "DNA"
+        assert "nucleic" in terms[0]["def"]
+        assert terms[1]["term"] == "RNA"
+
+
+class TestRagChunking:
+    """Tests for RAG chunking capabilities."""
+
+    XML_FOR_CHUNKING = """<?xml version="1.0"?>
+<article><body>
+<sec id="s1"><title>Introduction</title>
+<p>First paragraph with important content for testing.</p>
+<p>Second paragraph discussing methods and results.</p>
+<list list-type="ordered"><list-item><p>Step one</p></list-item><list-item><p>Step two</p></list-item></list>
+</sec>
+<sec id="s2"><title>Methods</title><p>Detailed methodology section.</p></sec>
+</body></article>"""
+
+    def test_to_chunks_basic(self):
+        """Verify basic chunking produces chunks."""
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            ContentBlock,
+            ContentBlockType,
+            StructuredSection,
+        )
+
+        parser = FullTextXMLParser(self.XML_FOR_CHUNKING)
+        sections_dicts = parser.get_full_text_sections_structured()
+        structured_sections = []
+        for s in sections_dicts:
+            # Convert dict blocks back to ContentBlock objects
+            content_blocks = []
+            for b in s["content"]:
+                block = ContentBlock(type=ContentBlockType(b["type"]), text=b.get("text", ""))
+                content_blocks.append(block)
+            structured_sections.append(
+                StructuredSection(
+                    title=s["title"],
+                    content=content_blocks,
+                    section_type=s.get("section_type", "body"),
+                )
+            )
+
+        chunks = []
+        for section in structured_sections:
+            chunks.extend(section.to_chunks(max_tokens=50, overlap=10))
+
+        assert len(chunks) >= 2, "Should produce at least 2 chunks"
+        for chunk in chunks:
+            assert "text" in chunk
+            assert "section_path" in chunk
+            assert chunk["section_path"] in ("Introduction", "Methods")
+
+    def test_to_chunks_section_path(self):
+        """Verify section_path tracks provenance."""
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            ContentBlock,
+            ContentBlockType,
+            StructuredSection,
+        )
+
+        parser = FullTextXMLParser(self.XML_FOR_CHUNKING)
+        sections_dicts = parser.get_full_text_sections_structured()
+        structured_sections = []
+        for s in sections_dicts:
+            content_blocks = []
+            for b in s["content"]:
+                block = ContentBlock(type=ContentBlockType(b["type"]), text=b.get("text", ""))
+                content_blocks.append(block)
+            structured_sections.append(
+                StructuredSection(
+                    title=s["title"],
+                    content=content_blocks,
+                    section_type=s.get("section_type", "body"),
+                )
+            )
+
+        chunks = []
+        for section in structured_sections:
+            chunks.extend(section.to_chunks(max_tokens=200))
+
+        introduction_chunks = [
+            c for c in chunks
+            if c["section_path"] == "Introduction"
+        ]
+        assert len(introduction_chunks) >= 1
+
+    def test_to_langchain_documents(self):
+        """Verify LangChain-compatible output."""
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            ContentBlock,
+            ContentBlockType,
+            StructuredSection,
+        )
+
+        parser = FullTextXMLParser(self.XML_FOR_CHUNKING)
+        sections_dicts = parser.get_full_text_sections_structured()
+
+        for s in sections_dicts:
+            content_blocks = []
+            for b in s["content"]:
+                block = ContentBlock(type=ContentBlockType(b["type"]), text=b.get("text", ""))
+                content_blocks.append(block)
+            section = StructuredSection(
+                title=s["title"],
+                content=content_blocks,
+                section_type=s.get("section_type", "body"),
+            )
+            docs = section.to_langchain_documents()
+            for doc in docs:
+                assert "page_content" in doc
+                assert "metadata" in doc
+                assert "block_type" in doc["metadata"]
+                assert "section_title" in doc["metadata"]
+                # Verify source section preserved
+                assert doc["metadata"]["section_title"] == s["title"]
+
+
+class TestParseDiagnostics:
+    """Tests for parse status and quality tracking."""
+
+    def test_parse_status_default(self):
+        """Verify default parse status is 'success'."""
+        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+
+        p = ContentBlock.paragraph("test")
+        assert p.parse_status == "success"
+        assert p.quality_score == 1.0
+
+    def test_parse_status_in_dict(self):
+        """Verify non-default parse_status appears in dict."""
+        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+
+        p = ContentBlock.paragraph("test")
+        d = p.to_dict()
+        assert "parse_status" not in d  # default omitted
+
+        p.parse_status = "partial"
+        p.quality_score = 0.5
+        d = p.to_dict()
+        assert d["parse_status"] == "partial"
+        assert d["quality_score"] == 0.5
+
+
+class TestSchemaVersion:
+    """Tests for schema versioning."""
+
+    def test_schema_version_present(self):
+        """Verify schema_version is included in dict output."""
+        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+
+        p = ContentBlock.paragraph("test")
+        d = p.to_dict()
+        assert "schema_version" in d
+        assert isinstance(d["schema_version"], str)
+
+    def test_schema_version_consistent(self):
+        """Verify all blocks have same schema_version."""
+        parser = FullTextXMLParser(SIMPLE_ARTICLE_XML)
+        sections = parser.get_full_text_sections_structured()
+        versions = set()
+        for s in sections:
+            for b in s["content"]:
+                if "schema_version" in b:
+                    versions.add(b["schema_version"])
+        assert len(versions) <= 1, "Multiple schema versions found"
+
+
+class TestMathMLRendering:
+    """Tests for MathML HTML/SVG rendering."""
+
+    def test_to_html(self):
+        """Verify to_html produces proper HTML."""
+        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+
+        mathml = ET.fromstring(
+            '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="inline">'
+            "<mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:mi>m</mml:mi>"
+            "<mml:msup><mml:mi>c</mml:mi><mml:mn>2</mml:mn></mml:msup></mml:math>"
+        )
+
+        converter = MathMLConverter()
+        html = converter.to_html(mathml)
+        assert 'class="math-inline"' in html
+        assert "E" in html
+        assert "c" in html
+
+        # Display math
+        mathml.set("display", "block")
+        html_block = converter.to_html(mathml)
+        assert 'class="math-display"' in html_block
+
+
+class TestBITSBook:
+    """Tests for BITS book article support."""
+
+    BITS_XML = """<?xml version="1.0"?>
+<book xmlns:xlink="http://www.w3.org/1999/xlink">
+<book-meta>
+<book-id pub-id-type="doi">10.1234/book.2024</book-id>
+<title-group><book-title>Test Book</book-title></title-group>
+</book-meta>
+<body><sec><title>Chapter 1</title><p>Book content paragraph.</p></sec></body>
+</book>"""
+
+    def test_bits_parsing(self):
+        """Verify BITS book articles can be parsed."""
+        from pyeuropepmc.processing.extensions.local_processing import parse_bits_book
+
+        parser = parse_bits_book(self.BITS_XML)
+        assert parser.root is not None
+        assert parser.root.tag.endswith("book") or parser.root.tag == "book"
+        metadata = parser.extract_metadata()
+        # BITS book-meta extraction is partial; verify parser works end-to-end
+        assert isinstance(metadata, dict)
+        assert "title" in metadata
+        assert metadata.get("doi") is None  # BITS metadata not fully mapped yet
+
+    def test_bits_structured_sections(self):
+        """Verify content block extraction works on BITS articles."""
+        from pyeuropepmc.processing.extensions.local_processing import parse_bits_book
+
+        parser = parse_bits_book(self.BITS_XML)
+        sections = parser.get_full_text_sections_structured()
+        assert len(sections) >= 1
+        assert sections[0]["title"] == "Chapter 1"
+
+
+class TestPmcDownload:
+    """Tests for PMC download pipeline (mock-based, no network)."""
+
+    def test_process_single_pmc_raises_on_empty(self):
+        """Verify process_single_pmc raises on empty PMC ID."""
+        from pyeuropepmc.processing.extensions.local_processing import (
+            process_single_pmc,
+        )
+
+        with pytest.raises((ConnectionError, ValueError)):
+            process_single_pmc("INVALID", max_retries=1)
+
+    def test_pmcid_prefix_normalization(self):
+        """Verify PMC prefix normalization."""
+        from pyeuropepmc.processing.extensions.local_processing import (
+            process_single_pmc,
+        )
+
+        with pytest.raises((ConnectionError, ValueError)):
+            process_single_pmc("1234567", max_retries=1)

@@ -301,7 +301,7 @@ class PeerReviewExtractor(BaseParser):
         if body is None:
             return sections
 
-        for sec in body.findall(".//sec"):
+        for sec in body.findall("sec"):
             structured_sec = self.block_extractor._extract_structured_section(sec)  # noqa: SLF001
             if structured_sec.content:
                 sections.append(structured_sec)

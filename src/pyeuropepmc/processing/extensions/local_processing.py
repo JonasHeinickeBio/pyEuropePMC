@@ -316,3 +316,227 @@ class LocalXMLProcessor:
             data["keywords"] = parser.extract_keywords()
 
         return data
+
+
+# ===========================================================================
+# PMC Download Pipeline
+# ===========================================================================
+
+PMC_FULLTEXT_BASE = "https://www.ebi.ac.uk/europepmc/webservices/rest/{pmcid}/fullTextXML"
+
+
+def process_single_pmc(
+    pmcid: str,
+    max_retries: int = 3,
+    timeout: int = 30,
+) -> FullTextXMLParser:
+    """
+    Download and parse a single PMC article by ID.
+
+    Fetches the full-text XML from the Europe PMC REST API and returns
+    a fully initialized ``FullTextXMLParser`` ready for extraction.
+
+    Parameters
+    ----------
+    pmcid : str
+        PMC article ID (e.g. ``"PMC1234567"``). The ``PMC`` prefix is optional.
+    max_retries : int, optional
+        Maximum number of retry attempts on network failure (default: 3).
+    timeout : int, optional
+        HTTP request timeout in seconds (default: 30).
+
+    Returns
+    -------
+    FullTextXMLParser
+        Parser with the article content loaded.
+
+    Raises
+    ------
+    ConnectionError
+        If the article cannot be fetched after all retries.
+    ValueError
+        If the PMC ID is invalid or the response is empty.
+
+    Examples
+    --------
+    >>> parser = process_single_pmc("PMC1234567")
+    >>> metadata = parser.extract_metadata()
+    >>> sections = parser.get_full_text_sections_structured()
+    """
+    import time
+    import urllib.error
+    import urllib.request
+
+    pmcid = pmcid.strip()
+    if not pmcid.startswith("PMC"):
+        pmcid = f"PMC{pmcid}"
+
+    url = PMC_FULLTEXT_BASE.format(pmcid=pmcid)
+    last_error: Exception | None = None
+
+    for attempt in range(1, max_retries + 1):
+        try:
+            resp = urllib.request.urlopen(url, timeout=timeout)  # nosec
+            xml_bytes = resp.read()
+            xml_str = xml_bytes.decode("utf-8")
+
+            if not xml_str.strip():
+                raise ValueError(f"Empty response for {pmcid}")
+
+            parser = FullTextXMLParser(xml_str)
+            logger.info(f"Successfully fetched and parsed {pmcid}")
+            return parser
+
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                raise ConnectionError(
+                    f"Article {pmcid} not found at Europe PMC"
+                ) from e
+            last_error = e
+        except (urllib.error.URLError, ConnectionError, TimeoutError) as e:
+            last_error = e
+        except Exception as e:
+            last_error = e
+
+        if attempt < max_retries:
+            wait = 2 ** attempt  # Exponential backoff: 2, 4, 8...
+            logger.debug(f"Retry {attempt}/{max_retries} for {pmcid} in {wait}s")
+            time.sleep(wait)
+
+    raise ConnectionError(
+        f"Failed to fetch {pmcid} after {max_retries} retries: {last_error}"
+    ) from last_error
+
+
+def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullTextXMLParser]:
+    """
+    Parse a bioRxiv manifest file (manifest.xml) and download all listed articles.
+
+    bioRxiv provides a ``manifest.xml`` that lists preprints with their DOIs.
+    This function reads the manifest, resolves each DOI to a PMC ID where possible,
+    and downloads the full-text XML for each one.
+
+    Parameters
+    ----------
+    manifest_path : str
+        Path to the ``manifest.xml`` file.
+    **kwargs
+        Additional arguments passed to ``process_single_pmc()``.
+
+    Returns
+    -------
+    list[FullTextXMLParser]
+        List of parsers for successfully downloaded articles.
+
+    Examples
+    --------
+    >>> parsers = process_biorxiv_manifest("/path/to/manifest.xml", max_retries=2)
+    >>> for parser in parsers:
+    ...     print(parser.extract_metadata().get("title"))
+    """
+    import xml.etree.ElementTree as ET2  # nosec B405
+
+    with open(manifest_path, "r", encoding="utf-8") as f:
+        manifest_xml = f.read()
+
+    root = ET2.fromstring(manifest_xml)
+    parsers: list[FullTextXMLParser] = []
+
+    # bioRxiv manifest typically uses <article> or <record> elements with DOIs
+    for article_elem in root.findall(".//article") or root.findall(".//record"):
+        doi_elem = (
+            article_elem.find("doi")
+            or article_elem.find("DOI")
+            or article_elem.find(".//article-id[@pub-id-type='doi']")
+        )
+        if doi_elem is not None and doi_elem.text:
+            doi = doi_elem.text.strip()
+            # Try to resolve DOI -> PMC and download
+            try:
+                from pyeuropepmc.processing.extensions.reference_resolver import (
+                    ReferenceResolver,
+                )
+
+                resolver = ReferenceResolver()
+                resolved = resolver._lookup_by_doi(doi)  # type: ignore[union-attr]
+                if resolved and resolved.resolved_pmid:
+                    parser = process_single_pmc(
+                        resolved.resolved_pmid, **kwargs
+                    )
+                    parsers.append(parser)
+            except Exception as e:
+                logger.warning(f"Failed to download article with DOI {doi}: {e}")
+
+    logger.info(f"Downloaded {len(parsers)} articles from bioRxiv manifest")
+    return parsers
+
+
+def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
+    """
+    Parse a BITS (Book Interchange Tag Suite) book article XML.
+
+    BITS extends JATS for book publishing. This function auto-detects
+    BITS book articles and configures the parser appropriately.
+
+    Parameters
+    ----------
+    filepath_or_xml : str
+        Path to the BITS XML file, or XML content string.
+    **kwargs
+        Additional arguments passed to ``FullTextXMLParser``.
+
+    Returns
+    -------
+    FullTextXMLParser
+        Parser configured for BITS book content.
+
+    Examples
+    --------
+    >>> parser = parse_bits_book("/path/to/book.xml")
+    >>> metadata = parser.extract_metadata()
+    """
+    xml_content: str
+    if Path(filepath_or_xml).is_file():
+        with open(filepath_or_xml, "r", encoding="utf-8") as f:
+            xml_content = f.read()
+    else:
+        xml_content = filepath_or_xml
+
+    # Auto-detect BITS root element
+    root_check = _safe_parse(xml_content)
+    if root_check is not None:
+        tag = root_check.tag
+        if tag.endswith("}book") or tag == "book":
+            logger.info("Detected BITS book article, configuring parser")
+            # BITS books use different element patterns
+            from pyeuropepmc.processing.config.element_patterns import ElementPatterns
+
+            bits_config = ElementPatterns(
+                citation_types={
+                    "types": [
+                        "element-citation",
+                        "mixed-citation",
+                        "nlm-citation",
+                    ]
+                },
+                author_element_patterns={
+                    "patterns": [
+                        ".//contrib/name",
+                        ".//contrib-group/name",
+                    ]
+                },
+            )
+            kwargs["config"] = bits_config
+
+    parser = FullTextXMLParser(xml_content, **kwargs)
+    return parser
+
+
+def _safe_parse(xml_content: str) -> ET.Element | None:
+    """Safely parse XML content, returning None on failure."""
+    try:
+        import xml.etree.ElementTree as ET2  # nosec B405
+
+        return ET2.fromstring(xml_content)
+    except Exception:
+        return None

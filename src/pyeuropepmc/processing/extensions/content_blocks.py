@@ -8,7 +8,16 @@ ordered content blocks with explicit types (paragraph, list, formula, figure_ref
 This is the core data model that other extensions (MathML, peer review, image fetching)
 can integrate with by producing content blocks of their respective types.
 
-Based on patterns from pmcgrab and JATS4R recommendations.
+Extensions beyond pmcgrab:
+- Inline element tracking (xref, inline-formula, chem-struct within paragraphs)
+- Definition list support
+- Parse diagnostics (per-block parse_status / quality_score)
+- RAG chunking with section provenance
+- LangChain/LlamaIndex adapter
+- Schema versioning
+
+Based on patterns from pmcgrab, JATS4R recommendations, and competitive analysis
+of docling, pubmed_parser, and ncbijs/jats.
 """
 
 from __future__ import annotations
@@ -16,6 +25,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
+import re
 from typing import Any, ClassVar
 from xml.etree import ElementTree as ET  # nosec B405
 
@@ -24,6 +34,88 @@ from pyeuropepmc.processing.parsers.base_parser import BaseParser
 from pyeuropepmc.processing.utils.xml_helpers import XMLHelper
 
 logger = logging.getLogger(__name__)
+
+# Schema version for content block output tracking
+SCHEMA_VERSION = "0.2.0"
+
+
+class InlineElementType(str, Enum):
+    """Types of inline elements that can appear within a paragraph block."""
+
+    XREF = "xref"
+    INLINE_FORMULA = "inline_formula"
+    BOLD = "bold"
+    ITALIC = "italic"
+    SUP = "superscript"
+    SUB = "subscript"
+    CHEMICAL_STRUCTURE = "chemical_structure"
+    NAMED_CONTENT = "named_content"
+    STRIKETHROUGH = "strikethrough"
+    UNDERLINE = "underline"
+    MONOSPACE = "monospace"
+    UNKNOWN_INLINE = "unknown_inline"
+
+
+@dataclass
+class InlineElement:
+    """
+    An inline element occurring within a content block's text.
+
+    Records the position, type, and target of inline elements (xrefs, formatting,
+    inline formulas) so downstream consumers can reconstruct rich text or track
+    cross-references.
+
+    Parameters
+    ----------
+    type : InlineElementType
+        The type of inline element.
+    text : str
+        The rendered text of this inline element.
+    ref_type : str, optional
+        For xref elements: the reference type (e.g. ``"fig"``, ``"bibr"``, ``"table"``).
+    target_id : str, optional
+        The ``rid`` attribute of an xref, identifying the target element.
+    position : int, optional
+        Character offset of this inline element within the parent block text.
+    length : int, optional
+        Character length of the inline text within the parent block.
+    formula_latex : str, optional
+        LaTeX representation (for inline formulas).
+    language : str, optional
+        Language for named_content or monospace elements.
+    metadata : dict, optional
+        Additional type-specific metadata.
+    """
+
+    type: InlineElementType
+    text: str = ""
+    ref_type: str = ""
+    target_id: str = ""
+    position: int = 0
+    length: int = 0
+    formula_latex: str = ""
+    language: str = ""
+    metadata: dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> dict[str, Any]:
+        """Serialize to a plain dictionary, omitting empty fields."""
+        base: dict[str, Any] = {
+            "type": self.type.value,
+            "text": self.text,
+            "position": self.position,
+            "length": self.length,
+        }
+        if self.ref_type:
+            base["ref_type"] = self.ref_type
+        if self.target_id:
+            base["target_id"] = self.target_id
+        if self.formula_latex:
+            base["formula_latex"] = self.formula_latex
+        if self.language:
+            base["language"] = self.language
+        if self.metadata:
+            base["metadata"] = self.metadata
+        return base
 
 
 class ContentBlockType(str, Enum):
@@ -41,6 +133,7 @@ class ContentBlockType(str, Enum):
     TABLE = "table"
     MATHML = "mathml"
     PEER_REVIEW = "peer_review"
+    DEFINITION_LIST = "definition_list"
     UNKNOWN_BLOCK = "unknown_block"
 
 
@@ -80,6 +173,18 @@ class ContentBlock:
         Original JATS tag name (for unknown blocks).
     metadata : dict[str, Any], optional
         Additional type-specific metadata.
+    inlines : list[InlineElement], optional
+        Tracked inline elements within this block (xrefs, formatting, inline formulas).
+    parse_status : str, optional
+        Quality indicator: ``"success"``, ``"partial"``, ``"error"``.
+    quality_score : float, optional
+        Completeness score 0-1 based on expected vs actual fields populated.
+    parser_notes : list[str], optional
+        Warning or diagnostic messages from the parser.
+    definition_terms : list[dict], optional
+        For definition_list: list of {term, def} dicts.
+    schema_version : str, optional
+        Version of the content block schema used for serialization.
     """
 
     type: ContentBlockType
@@ -95,9 +200,22 @@ class ContentBlock:
     uri: str = ""
     jats_tag: str = ""
     metadata: dict[str, Any] = field(default_factory=dict)
+    inlines: list[InlineElement] = field(default_factory=list)
+    parse_status: str = "success"
+    quality_score: float = 1.0
+    parser_notes: list[str] = field(default_factory=list)
+    definition_terms: list[dict[str, str]] = field(default_factory=list)
+    schema_version: str = SCHEMA_VERSION
 
     # Block types that carry items (list-like structure)
-    LIST_TYPES: ClassVar[set[ContentBlockType]] = {ContentBlockType.LIST}
+    LIST_TYPES: ClassVar[set[ContentBlockType]] = {
+        ContentBlockType.LIST,
+    }
+
+    # Block types that carry definition pairs
+    DEF_LIST_TYPES: ClassVar[set[ContentBlockType]] = {
+        ContentBlockType.DEFINITION_LIST,
+    }
 
     # Block types that carry rich structured data
     RICH_TYPES: ClassVar[set[ContentBlockType]] = {
@@ -115,7 +233,10 @@ class ContentBlock:
         dict[str, Any]
             Compact dictionary representation.
         """
-        base: dict[str, Any] = {"type": self.type.value}
+        base: dict[str, Any] = {
+            "type": self.type.value,
+            "schema_version": self.schema_version,
+        }
         if self.text:
             base["text"] = self.text
         if self.items:
@@ -138,8 +259,18 @@ class ContentBlock:
             base["uri"] = self.uri
         if self.jats_tag:
             base["jats_tag"] = self.jats_tag
+        if self.inlines:
+            base["inlines"] = [i.to_dict() for i in self.inlines]
+        if self.definition_terms:
+            base["definition_terms"] = self.definition_terms
         if self.metadata:
             base["metadata"] = self.metadata
+        if self.parse_status != "success":
+            base["parse_status"] = self.parse_status
+        if self.quality_score < 1.0:
+            base["quality_score"] = self.quality_score
+        if self.parser_notes:
+            base["parser_notes"] = self.parser_notes
         return base
 
     @classmethod
@@ -208,6 +339,30 @@ class ContentBlock:
         """Create an unknown block (preserve JATS elements that are not explicitly handled)."""
         return cls(type=ContentBlockType.UNKNOWN_BLOCK, jats_tag=jats_tag, text=text)
 
+    @classmethod
+    def definition_list(cls, terms: list[dict[str, str]]) -> ContentBlock:
+        """Create a definition list block (term/def pairs).
+
+        Parameters
+        ----------
+        terms : list[dict[str, str]]
+            List of ``{"term": "...", "def": "..."}`` dictionaries.
+        """
+        return cls(type=ContentBlockType.DEFINITION_LIST, definition_terms=terms)
+
+    @classmethod
+    def paragraph_with_inlines(
+        cls,
+        text: str,
+        inlines: list[InlineElement] | None = None,
+    ) -> ContentBlock:
+        """Create a paragraph block with tracked inline elements."""
+        return cls(
+            type=ContentBlockType.PARAGRAPH,
+            text=text,
+            inlines=inlines or [],
+        )
+
 
 @dataclass
 class StructuredSection:
@@ -229,12 +384,187 @@ class StructuredSection:
     section_type: str = "body"
 
     def to_dict(self) -> dict[str, Any]:
-        """Serialize to a plain dictionary."""
+        """Serialize to a plain dictionary with schema version."""
         return {
             "title": self.title,
             "content": [block.to_dict() for block in self.content],
             "section_type": self.section_type,
+            "schema_version": SCHEMA_VERSION,
         }
+
+    def to_chunks(
+        self,
+        max_tokens: int = 512,
+        overlap: int = 50,
+        approx_chars_per_token: int = 4,
+    ) -> list[dict[str, Any]]:
+        """
+        Split section content into overlapping chunks suitable for RAG/LLM ingestion.
+
+        Each chunk preserves ``section_path`` provenance so downstream retrievers
+        can cite the original document location.
+
+        Parameters
+        ----------
+        max_tokens : int, optional
+            Maximum tokens per chunk (default 512).
+        overlap : int, optional
+            Token overlap between consecutive chunks (default 50).
+        approx_chars_per_token : int, optional
+            Approximation for token estimation (default 4 for English text).
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of chunk dicts with keys: ``text``, ``section_path``,
+            ``block_type``, ``section_type``, ``chunk_index``, ``estimated_tokens``.
+        """
+        chunks: list[dict[str, Any]] = []
+        current_chunk: list[str] = []
+        current_tokens = 0
+        max_chars = max_tokens * approx_chars_per_token
+
+        for block in self.content:
+            block_text = self._block_text(block)
+            block_chars = len(block_text)
+            block_tokens = block_chars // approx_chars_per_token
+
+            # If a single block exceeds max_tokens, split it
+            if block_tokens > max_tokens:
+                self._split_block_into_chunks(block_text, max_chars, chunks, self.title)
+                continue
+
+            # If adding this block would exceed max_tokens, flush current chunk
+            if current_tokens + block_tokens > max_tokens and current_chunk:
+                chunk_text = "\n\n".join(current_chunk)
+                chunks.append(
+                    {
+                        "text": chunk_text,
+                        "section_path": self.title,
+                        "section_type": self.section_type,
+                        "chunk_index": len(chunks),
+                        "estimated_tokens": current_tokens,
+                    }
+                )
+                # Keep overlap blocks
+                overlap_chars = overlap * approx_chars_per_token
+                retained: list[str] = []
+                retained_tokens = 0
+                for cb in reversed(current_chunk):
+                    cb_chars = len(cb)
+                    cb_tokens = cb_chars // approx_chars_per_token
+                    if retained_tokens + cb_tokens > overlap_chars:
+                        break
+                    retained.insert(0, cb)
+                    retained_tokens += cb_tokens
+                current_chunk = retained
+                current_tokens = retained_tokens
+
+            current_chunk.append(block_text)
+            current_tokens += block_tokens
+
+        # Flush final chunk
+        if current_chunk:
+            chunk_text = "\n\n".join(current_chunk)
+            chunks.append(
+                {
+                    "text": chunk_text,
+                    "section_path": self.title,
+                    "section_type": self.section_type,
+                    "chunk_index": len(chunks),
+                    "estimated_tokens": current_tokens,
+                }
+            )
+
+        return chunks
+
+    @staticmethod
+    def _block_text(block: ContentBlock) -> str:
+        """Extract the primary text content from a block."""
+        if block.text:
+            return block.text
+        if block.items:
+            return "\n".join(f"- {item}" for item in block.items)
+        if block.definition_terms:
+            return "\n".join(
+                f"{t.get('term', '')}: {t.get('def', '')}" for t in block.definition_terms
+            )
+        if block.caption:
+            return block.caption
+        return ""
+
+    @staticmethod
+    def _split_block_into_chunks(
+        text: str,
+        max_chars: int,
+        chunks: list[dict[str, Any]],
+        section_title: str,
+    ) -> None:
+        """Split an oversized block into smaller chunks by sentence boundaries."""
+        sentences = re.split(r"(?<=[.!?])\s+", text)
+        current = ""
+        for sentence in sentences:
+            if len(current) + len(sentence) > max_chars and current:
+                chunks.append(
+                    {
+                        "text": current.strip(),
+                        "section_path": section_title,
+                        "section_type": "",
+                        "chunk_index": len(chunks),
+                        "estimated_tokens": len(current) // 4,
+                    }
+                )
+                current = sentence
+            else:
+                current += " " + sentence if current else sentence
+        if current:
+            chunks.append(
+                {
+                    "text": current.strip(),
+                    "section_path": section_title,
+                    "section_type": "",
+                    "chunk_index": len(chunks),
+                    "estimated_tokens": len(current) // 4,
+                }
+            )
+
+    def to_langchain_documents(
+        self,
+        metadata: dict[str, Any] | None = None,
+    ) -> list[dict[str, Any]]:
+        """
+        Convert blocks to LangChain-compatible Document dictionaries.
+
+        Each block becomes a document with ``page_content`` and ``metadata`` fields
+        matching LangChain's Document schema. Works with both LangChain and LlamaIndex.
+
+        Parameters
+        ----------
+        metadata : dict, optional
+            Additional metadata to attach to every document (e.g. article_id, source).
+
+        Returns
+        -------
+        list[dict[str, Any]]
+            List of ``{"page_content": str, "metadata": dict}`` dicts.
+        """
+        docs: list[dict[str, Any]] = []
+        base_meta = dict(metadata) if metadata else {}
+        base_meta.setdefault("section_title", self.title)
+        base_meta.setdefault("section_type", self.section_type)
+
+        for i, block in enumerate(self.content):
+            text = self._block_text(block)
+            if not text:
+                continue
+            meta = dict(base_meta)
+            meta["block_type"] = block.type.value
+            meta["block_index"] = i
+            if block.label:
+                meta["label"] = block.label
+            docs.append({"page_content": text, "metadata": meta})
+
+        return docs
 
 
 class ContentBlockExtractor(BaseParser):
@@ -260,6 +590,7 @@ class ContentBlockExtractor(BaseParser):
         "p": "paragraph",
         "list": "list",
         "list-item": "list",
+        "def-list": "definition_list",
         "disp-formula": "formula",
         "inline-formula": "formula",
         "fig": "figure",
@@ -282,6 +613,7 @@ class ContentBlockExtractor(BaseParser):
         self._handler_map = {
             "paragraph": self._handle_paragraph,
             "list": self._handle_list,
+            "definition_list": self._handle_def_list,
             "formula": self._handle_formula,
             "figure": self._handle_figure,
             "table": self._handle_table,
@@ -289,6 +621,26 @@ class ContentBlockExtractor(BaseParser):
             "boxed_text": self._handle_boxed_text,
             "section": self._handle_subsection,
         }
+
+    # ------------------------------------------------------------------
+    # Inline element tag mapping for paragraph-level tracking
+    # ------------------------------------------------------------------
+    INLINE_TAG_MAP: ClassVar[dict[str, str]] = {
+        "xref": "xref",
+        "bold": "bold",
+        "italic": "italic",
+        "sup": "superscript",
+        "sub": "subscript",
+        "inline-formula": "inline_formula",
+        "chem-struct": "chemical_structure",
+        "named-content": "named_content",
+        "strike": "strikethrough",
+        "underline": "underline",
+        "monospace": "monospace",
+        "sc": "small_caps",
+        "roman": "roman",
+        "styled-content": "styled_content",
+    }
 
     def extract_sections(self) -> list[StructuredSection]:
         """
@@ -306,7 +658,7 @@ class ContentBlockExtractor(BaseParser):
         # Extract from main body
         if self.root is not None:
             for body_elem in self.root.findall(".//body"):
-                for sec in body_elem.findall(".//sec"):
+                for sec in body_elem.findall("sec"):
                     structured_sec = self._extract_structured_section(sec)
                     if structured_sec.content:
                         sections.append(structured_sec)
@@ -351,11 +703,210 @@ class ContentBlockExtractor(BaseParser):
         )
 
     def _handle_paragraph(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <p> elements and similar text blocks."""
-        text = XMLHelper.get_text_content(elem)
-        if text.strip():
-            return [ContentBlock.paragraph(text.strip())]
-        return []
+        """
+        Handle ``<p>`` elements with inline element tracking.
+
+        Walks child elements to detect xrefs, inline formatting, and inline formulas,
+        recording them as ``InlineElement`` entries in the paragraph block.
+        """
+        # Collect all text and inline elements
+        inlines: list[InlineElement] = []
+        parts: list[str] = []
+        pos = 0
+
+        # Capture text before the first child element (elem.text)
+        if elem.text:
+            initial_text = self._resolve_entities(elem.text)
+            parts.append(initial_text)
+            pos += len(initial_text)
+
+        # Walk children in document order to capture inline elements
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            inline_handler = self.INLINE_TAG_MAP.get(tag)
+
+            if inline_handler == "xref":
+                # Cross-reference
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                ref_type = child.get("ref-type", "")
+                rid = child.get("rid", "")
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.XREF,
+                            text=child_text,
+                            ref_type=ref_type,
+                            target_id=rid,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            elif inline_handler == "inline_formula":
+                # Inline formula
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                formula_latex = self._convert_inline_formula(child)
+                display_text = child_text or "[formula]"
+                parts.append(display_text)
+                inlines.append(
+                    InlineElement(
+                        type=InlineElementType.INLINE_FORMULA,
+                        text=child_text,
+                        formula_latex=formula_latex,
+                        position=pos,
+                        length=len(display_text),
+                    )
+                )
+                pos += len(display_text)
+
+            elif inline_handler == "bold":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.BOLD,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            elif inline_handler == "italic":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.ITALIC,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            elif inline_handler == "superscript":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.SUP,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            elif inline_handler == "subscript":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.SUB,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            elif inline_handler == "chemical_structure":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                display_text = child_text or "[chem-struct]"
+                parts.append(display_text)
+                inlines.append(
+                    InlineElement(
+                        type=InlineElementType.CHEMICAL_STRUCTURE,
+                        text=child_text,
+                        position=pos,
+                        length=len(display_text),
+                    )
+                )
+                pos += len(display_text)
+
+            elif inline_handler == "named_content":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                lang = child.get("{http://www.w3.org/XML/1998/namespace}lang", "")
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.NAMED_CONTENT,
+                            text=child_text,
+                            language=lang,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            elif inline_handler in (
+                "strikethrough",
+                "underline",
+                "monospace",
+                "small_caps",
+                "roman",
+                "styled_content",
+            ):
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    ie_type = {
+                        "strikethrough": InlineElementType.STRIKETHROUGH,
+                        "underline": InlineElementType.UNDERLINE,
+                        "monospace": InlineElementType.MONOSPACE,
+                    }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
+                    inlines.append(
+                        InlineElement(
+                            type=ie_type,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            else:
+                # Unknown inline element - include its text
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.UNKNOWN_INLINE,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    pos += len(child_text)
+
+            # Tail text after this child
+            if child.tail:
+                tail = self._resolve_entities(child.tail)
+                parts.append(tail)
+                pos += len(tail)
+
+        # If no child elements found, use simple text content
+        if not inlines and not parts:
+            full_text = XMLHelper.get_text_content(elem)
+            if full_text.strip():
+                return [ContentBlock.paragraph(full_text.strip())]
+            return []
+
+        full_text = "".join(parts).strip()
+        if not full_text:
+            return []
+
+        block = ContentBlock.paragraph_with_inlines(text=full_text, inlines=inlines)
+        return [block]
 
     def _handle_list(self, elem: ET.Element) -> list[ContentBlock]:
         """Handle <list> elements."""
@@ -367,6 +918,24 @@ class ContentBlockExtractor(BaseParser):
                 items.append(item_text.strip())
         if items:
             return [ContentBlock.list_block(items=items, list_type=list_type)]
+        return []
+
+    def _handle_def_list(self, elem: ET.Element) -> list[ContentBlock]:
+        """Handle <def-list> elements (definition lists with term/def pairs)."""
+        terms: list[dict[str, str]] = []
+        for def_item in elem.findall("def-item"):
+            term_elems = def_item.findall("term")
+            def_elems = def_item.findall("def")
+            term_text = ""
+            if term_elems:
+                term_text = XMLHelper.get_text_content(term_elems[0]).strip()
+            def_text = ""
+            if def_elems:
+                def_text = XMLHelper.get_text_content(def_elems[0]).strip()
+            if term_text or def_text:
+                terms.append({"term": term_text, "def": def_text})
+        if terms:
+            return [ContentBlock.definition_list(terms=terms)]
         return []
 
     def _handle_formula(self, elem: ET.Element) -> list[ContentBlock]:
@@ -563,3 +1132,40 @@ class ContentBlockExtractor(BaseParser):
             "mml": "http://www.w3.org/1998/Math/MathML",
             "xlink": "http://www.w3.org/1999/xlink",
         }
+
+    @staticmethod
+    def _resolve_entities(text: str) -> str:
+        """Resolve common HTML/XML entities in text content."""
+        entities = {
+            "&amp;": "&",
+            "&lt;": "<",
+            "&gt;": ">",
+            "&quot;": '"',
+            "&apos;": "'",
+            "&nbsp;": " ",
+            "&ndash;": "–",
+            "&mdash;": "—",
+            "&hellip;": "…",
+        }
+        for entity, char in entities.items():
+            text = text.replace(entity, char)
+        return text
+
+    @staticmethod
+    def _convert_inline_formula(elem: ET.Element) -> str:
+        """Attempt to extract LaTeX from an inline formula element."""
+        # Try MathML first
+        mathml_elem = elem.find(".//mml:math", {"mml": "http://www.w3.org/1998/Math/MathML"})
+        if mathml_elem is not None:
+            try:
+                from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+
+                converter = MathMLConverter(inline=True)
+                return converter.convert_to_latex(mathml_elem)
+            except ImportError:
+                pass
+            except Exception:
+                pass
+
+        # Fallback: extract plain text
+        return XMLHelper.get_text_content(mathml_elem) if mathml_elem is not None else ""

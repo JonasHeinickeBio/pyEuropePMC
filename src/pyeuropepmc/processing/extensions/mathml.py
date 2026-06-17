@@ -433,11 +433,13 @@ class MathMLConverter:
             for cell in row.findall("mtd"):
                 cell_content = self._convert_children(cell)
                 cells.append(cell_content)
-            rows.append(" & ".join(cells))
-        if rows:
-            num_cols = len(rows[0].split(" & "))
-            "c" * num_cols
-        return f"\\begin{{matrix}} {rows[0]} \\end{{matrix}}"
+            if cells:  # Skip empty rows
+                rows.append(" & ".join(cells))
+        if not rows:
+            return ""
+        num_cols = max(len(r.split(" & ")) for r in rows)
+        align = "c" * num_cols
+        return f"\\begin{{array}}{{{align}}} {chr(10).join(rows)} \\end{{array}}"
 
     # ------------------------------------------------------------------
     # Utilities
@@ -518,3 +520,113 @@ class MathMLConverter:
             LaTeX math string wrapped in ``$$...$$``.
         """
         return cls(inline=False).convert(mathml_element)
+
+    def to_html(self, mathml_element: ET.Element) -> str:
+        """
+        Convert MathML to HTML with MathJax-compatible LaTeX.
+
+        Parameters
+        ----------
+        mathml_element : ET.Element
+            The MathML element to convert.
+
+        Returns
+        -------
+        str
+            HTML fragment with the math rendered via MathJax-compatible LaTeX.
+        """
+        latex = self.convert_to_latex(mathml_element)
+        display = mathml_element.get("display", "")
+        is_inline = (
+            self._force_inline
+            if self._force_inline is not None
+            else (display == "inline" or display == "")
+        )
+
+        if is_inline:
+            return f'<span class="math-inline">\\({latex}\\)</span>'
+        return f'<div class="math-display">\\[{latex}\\]</div>'
+
+    def to_svg(self, mathml_element: ET.Element) -> str:
+        """
+        Convert MathML to SVG using latex + dvisvgm (requires system LaTeX).
+
+        .. note::
+           This method requires ``latex`` and ``dvisvgm`` to be installed on the
+           system PATH. If they are not available, a ``RuntimeError`` is raised.
+
+        Parameters
+        ----------
+        mathml_element : ET.Element
+            The MathML element to convert.
+
+        Returns
+        -------
+        str
+            SVG string of the rendered math expression.
+
+        Raises
+        ------
+        RuntimeError
+            If system LaTeX tools are not installed.
+        """
+        import subprocess
+        import tempfile
+
+        latex_str = self.convert_to_latex(mathml_element)
+        display = mathml_element.get("display", "")
+        is_inline = (
+            self._force_inline
+            if self._force_inline is not None
+            else (display == "inline" or display == "")
+        )
+
+        # Build a minimal LaTeX document
+        if is_inline:
+            doc = (
+                "\\documentclass[preview]{standalone}\\begin{document}"
+                f"${latex_str}$\\end{{document}}"
+            )
+        else:
+            doc = (
+                "\\documentclass[preview]{standalone}\\begin{document}"
+                f"\\[{latex_str}\\]\\end{{document}}"
+            )
+
+        with tempfile.TemporaryDirectory() as tmpdir:
+            tex_path = f"{tmpdir}/math.tex"
+            with open(tex_path, "w") as f:
+                f.write(doc)
+
+            # Run latex -> dvi
+            try:
+                subprocess.run(
+                    ["latex", "-interaction=nonstopmode", "-output-directory", tmpdir, "math.tex"],
+                    capture_output=True,
+                    timeout=30,
+                    check=True,
+                )
+            except FileNotFoundError as e:
+                raise RuntimeError(
+                    "System LaTeX (latex) not found. Install TeX Live or similar."
+                ) from e
+            except subprocess.CalledProcessError as e:
+                logger.warning(f"LaTeX compilation failed: {e.stderr.decode()}")
+                raise RuntimeError(f"LaTeX compilation failed: {e.stderr.decode()}") from e
+
+            # Run dvisvgm -> svg
+            try:
+                result = subprocess.run(
+                    ["dvisvgm", "--no-fonts", "--stdout", f"{tmpdir}/math.dvi"],
+                    capture_output=True,
+                    timeout=30,
+                    check=True,
+                )
+                return result.stdout.decode("utf-8")
+            except FileNotFoundError as e:
+                raise RuntimeError(
+                    "dvisvgm not found. Install it (e.g., apt install dvisvgm)."
+                ) from e
+            except subprocess.CalledProcessError as e:
+                logger.warning(f"dvisvgm conversion failed: {e.stderr.decode()}")
+                raise RuntimeError(f"SVG conversion failed: {e.stderr.decode()}") from e

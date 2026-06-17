@@ -10,9 +10,11 @@ Based on patterns from pubmed-stream and pmcgrab.
 from __future__ import annotations
 
 from collections.abc import Callable
+import concurrent.futures
 import contextlib
 from dataclasses import dataclass, field
 import logging
+import threading
 import time
 from typing import Any
 
@@ -148,6 +150,57 @@ class BatchProcessor:
         self.error_callback = error_callback
         self._completed = 0
         self._total = 0
+        self._lock = threading.Lock()
+
+    def _rate_sleep(self) -> None:
+        """Sleep to respect the rate limit (thread-safe)."""
+        time.sleep(1.0 / self.rate_limit)
+
+    def _process_file_one(self, file_path: str, extraction_fn: Callable[[FullTextXMLParser], dict[str, Any]] | None) -> ProcessingResult:
+        """Process a single file with rate limiting (called from thread pool)."""
+        self._rate_sleep()
+        t0 = time.time()
+        try:
+            with open(file_path) as f:
+                xml_content = f.read()
+            parser = FullTextXMLParser(xml_content)
+            data = self._extract_data(parser, extraction_fn)
+            duration = time.time() - t0
+            result = ProcessingResult(identifier=file_path, success=True, data=data, duration=duration)
+        except Exception as e:
+            duration = time.time() - t0
+            logger.error(f"Error processing {file_path}: {e}")
+            result = ProcessingResult(identifier=file_path, success=False, error=str(e), duration=duration)
+            if self.error_callback:
+                self.error_callback(file_path, e)
+
+        with self._lock:
+            self._completed += 1
+            if self.progress_callback:
+                self.progress_callback(self._completed, self._total, file_path)
+        return result
+
+    def _process_xml_one(self, identifier: str, xml_content: str, extraction_fn: Callable[[FullTextXMLParser], dict[str, Any]] | None) -> ProcessingResult:
+        """Process a single XML string with rate limiting (called from thread pool)."""
+        self._rate_sleep()
+        t0 = time.time()
+        try:
+            parser = FullTextXMLParser(xml_content)
+            data = self._extract_data(parser, extraction_fn)
+            duration = time.time() - t0
+            result = ProcessingResult(identifier=identifier, success=True, data=data, duration=duration)
+        except Exception as e:
+            duration = time.time() - t0
+            logger.error(f"Error processing {identifier}: {e}")
+            result = ProcessingResult(identifier=identifier, success=False, error=str(e), duration=duration)
+            if self.error_callback:
+                self.error_callback(identifier, e)
+
+        with self._lock:
+            self._completed += 1
+            if self.progress_callback:
+                self.progress_callback(self._completed, self._total, identifier)
+        return result
 
     def process_files(
         self,
@@ -172,55 +225,17 @@ class BatchProcessor:
         """
         self._total = len(file_paths)
         self._completed = 0
-        results: list[ProcessingResult] = []
-        errors: list[Exception] = []
 
         start = time.time()
 
-        # Process sequentially with rate limiting (true threading would need
-        # concurrent.futures but that adds complexity for this use case)
-        rate_sleep = 1.0 / self.rate_limit
-
-        for file_path in file_paths:
-            try:
-                t0 = time.time()
-                with open(file_path) as f:
-                    xml_content = f.read()
-
-                parser = FullTextXMLParser(xml_content)
-                data = self._extract_data(parser, extraction_fn)
-                duration = time.time() - t0
-
-                results.append(
-                    ProcessingResult(
-                        identifier=file_path,
-                        success=True,
-                        data=data,
-                        duration=duration,
-                    )
-                )
-            except Exception as e:
-                duration = time.time() - t0 if "t0" in dir() else 0
-                logger.error(f"Error processing {file_path}: {e}")
-                results.append(
-                    ProcessingResult(
-                        identifier=file_path,
-                        success=False,
-                        error=str(e),
-                        duration=duration,
-                    )
-                )
-                errors.append(e)
-                if self.error_callback:
-                    self.error_callback(file_path, e)
-
-            self._completed += 1
-            if self.progress_callback:
-                self.progress_callback(self._completed, self._total, file_path)
-
-            # Rate limiting
-            if self._completed < self._total:
-                time.sleep(rate_sleep)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures = {
+                executor.submit(self._process_file_one, fp, extraction_fn): fp
+                for fp in file_paths
+            }
+            results: list[ProcessingResult] = []
+            for future in concurrent.futures.as_completed(futures):
+                results.append(future.result())
 
         total_duration = time.time() - start
         return BatchResult(results=results, total_duration=total_duration)
@@ -247,46 +262,17 @@ class BatchProcessor:
         """
         self._total = len(items)
         self._completed = 0
-        results: list[ProcessingResult] = []
-        rate_sleep = 1.0 / self.rate_limit
 
         start = time.time()
 
-        for identifier, xml_content in items:
-            try:
-                t0 = time.time()
-                parser = FullTextXMLParser(xml_content)
-                data = self._extract_data(parser, extraction_fn)
-                duration = time.time() - t0
-
-                results.append(
-                    ProcessingResult(
-                        identifier=identifier,
-                        success=True,
-                        data=data,
-                        duration=duration,
-                    )
-                )
-            except Exception as e:
-                duration = time.time() - t0 if "t0" in dir() else 0
-                logger.error(f"Error processing {identifier}: {e}")
-                results.append(
-                    ProcessingResult(
-                        identifier=identifier,
-                        success=False,
-                        error=str(e),
-                        duration=duration,
-                    )
-                )
-                if self.error_callback:
-                    self.error_callback(identifier, e)
-
-            self._completed += 1
-            if self.progress_callback:
-                self.progress_callback(self._completed, self._total, identifier)
-
-            if self._completed < self._total:
-                time.sleep(rate_sleep)
+        with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            futures = {
+                executor.submit(self._process_xml_one, ident, xml, extraction_fn): ident
+                for ident, xml in items
+            }
+            results: list[ProcessingResult] = []
+            for future in concurrent.futures.as_completed(futures):
+                results.append(future.result())
 
         total_duration = time.time() - start
         return BatchResult(results=results, total_duration=total_duration)

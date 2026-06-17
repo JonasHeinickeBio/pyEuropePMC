@@ -10,6 +10,7 @@ Based on patterns from pubmed_parser's reference resolution.
 from __future__ import annotations
 
 from collections.abc import Callable
+import copy
 from dataclasses import dataclass, field
 import logging
 import time
@@ -130,7 +131,7 @@ class ReferenceResolver:
         cache_key = doi or pmid or title[:50]
         if cache_key in self._cache:
             self._stats["cache_hits"] += 1
-            return self._cache[cache_key]
+            return copy.deepcopy(self._cache[cache_key])
 
         # Rate limiting
         self._throttle()
@@ -275,7 +276,7 @@ class ReferenceResolver:
             year=entry.get("firstPublicationDate", "")[:4] or "",
             journal=entry.get("journalTitle", "") or "",
             citations=int(entry.get("citedByCount", 0) or 0),
-            is_open_access=entry.get("isOpenAccess", False) or False,
+            is_open_access=bool(entry.get("isOpenAccess", False)),
         )
 
     def _throttle(self) -> None:

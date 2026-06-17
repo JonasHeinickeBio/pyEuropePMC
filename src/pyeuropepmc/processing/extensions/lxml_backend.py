@@ -34,6 +34,8 @@ import logging
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
+from pyeuropepmc.core.exceptions import ParsingError
+
 logger = logging.getLogger(__name__)
 
 # Try to import lxml; fail gracefully if not installed
@@ -95,7 +97,9 @@ class LXMLParser:
         remove_blank_text: bool = True,
     ):
         if not _HAS_LXML:
-            raise ImportError("lxml is not installed. Install it with: pip install lxml")
+            raise ImportError(
+                "lxml is not installed. Install it with: pip install pyeuropepmc[xml]"
+            ) from None
 
         self._parser = lxml_etree.XMLParser(
             **SECURE_PARSER_KWARGS,
@@ -134,10 +138,13 @@ class LXMLParser:
         """
         parser = cls(**kwargs)
         try:
-            return parser._parser.fromstring(xml_content)  # type: ignore[no-any-return]  # noqa: SLF001
+            return lxml_etree.fromstring(xml_content, parser=parser._parser)  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"lxml parsing error: {e}")
-            raise
+            raise ParsingError(
+                message=f"lxml XML parsing failed: {e}",
+                parser_type="lxml",
+            ) from e
 
     @classmethod
     def fromfile(cls, filepath: str, **kwargs: Any) -> ET.Element:
@@ -168,7 +175,10 @@ class LXMLParser:
             return lxml_etree.parse(filepath, parser._parser).getroot()  # type: ignore[no-any-return]  # noqa: SLF001
         except Exception as e:
             logger.error(f"lxml file parsing error for {filepath}: {e}")
-            raise
+            raise ParsingError(
+                message=f"lxml file parsing failed for {filepath}: {e}",
+                parser_type="lxml",
+            ) from e
 
     @staticmethod
     def enable_for(

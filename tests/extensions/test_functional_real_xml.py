@@ -22,6 +22,9 @@ from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 FIXTURE_DIR = Path(__file__).parent.parent / "fixtures" / "fulltext_downloads"
 
+# Apply module-level markers
+pytestmark = [pytest.mark.functional, pytest.mark.slow]
+
 # Determine which real XML files are available
 REAL_XML_FILES: list[Path] = []
 PMC_IDS: list[str] = []
@@ -119,7 +122,10 @@ def load_real_xml(filepath: Path) -> str:
 def get_article_id_from_file(filepath: Path) -> str:
     """Extract the article ID from a real XML file."""
     content = load_real_xml(filepath)
-    root = ET.fromstring(content)
+    try:
+        root = ET.fromstring(content)
+    except ET.ParseError:
+        return filepath.stem
     for elem in root.findall(".//article-id[@pub-id-type='pmcid']"):
         if elem.text and elem.text.strip():
             return elem.text.strip()
@@ -162,7 +168,7 @@ class TestFunctionalRealXML:
 
         sections = parser.get_full_text_sections_structured()
         assert isinstance(sections, list), f"{label}: should return list"
-        assert len(sections) >= 0, f"{label}: should return sections"
+        assert len(sections) > 0, f"{label}: should return at least one section"
 
         # Check each section structure
         for section in sections:
@@ -261,7 +267,6 @@ class TestFunctionalRealXML:
         result = extractor.extract_peer_reviews()
 
         # Should always return a PeerReviewSet even if no reviews present
-        assert result.article_id or not result.article_id
         assert isinstance(result.reviews, list)
         assert isinstance(result.revision_rounds, dict)
 
@@ -390,7 +395,7 @@ class TestFunctionalRealXML:
         assert article.article_id == article_id
         assert len(article.sections) == len(sections_dicts)
         if article.metadata and article.sections:
-            assert len(article.sections[0].content) >= 0
+            assert isinstance(article.sections[0].content, list)
 
     def test_structured_vs_flat_consistency(self, article_data):
         """Verify structured mode doesn't lose text content vs flat mode."""
@@ -400,9 +405,10 @@ class TestFunctionalRealXML:
         flat = parser.get_full_text_sections()
         structured = parser.get_full_text_sections_structured()
 
-        # Both should have the same number of top-level sections
-        # (may differ slightly due to back matter handling)
-        assert len(structured) >= len(flat) or len(flat) >= len(structured)
+        # Both should have sections
+        assert len(structured) > 0 or len(flat) > 0, (
+            f"{label}: at least one mode should produce sections"
+        )
 
         # Flat text should be a subset of structured text (which preserves more)
         flat_text = " ".join(s["content"] for s in flat)
@@ -414,8 +420,8 @@ class TestFunctionalRealXML:
         )
 
         # Structured may have more text (from lists, formulas, etc.)
-        assert len(structured_text) >= 0
-        assert len(flat_text) >= 0
+        assert isinstance(structured_text, str)
+        assert isinstance(flat_text, str)
 
 
 # ============================================================================

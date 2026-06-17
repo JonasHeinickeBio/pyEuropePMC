@@ -109,23 +109,31 @@ def dataclass_to_pydantic(
             dc_field = dc.__dataclass_fields__.get(field_name)
 
         if dc_field and dc_field.default_factory is not MISSING:
-            # Field has a default_factory; invoke it
-            try:
-                default = dc_field.default_factory()
-            except Exception:
-                default = None
+            # Field has a default_factory; pass it to Pydantic (don't invoke it here)
+            use_default_factory = True
+            default = dc_field.default_factory
         else:
+            use_default_factory = False
             default = dc_field.default if dc_field else ...
 
         # Wrap in Pydantic Field for metadata
         if dc_field and dc_field.metadata:
-            fields[field_name] = (
-                field_type,
-                Field(default=default, **dc_field.metadata),
-            )
+            if use_default_factory:
+                fields[field_name] = (
+                    field_type,
+                    Field(default_factory=default, **dc_field.metadata),
+                )
+            else:
+                fields[field_name] = (
+                    field_type,
+                    Field(default=default, **dc_field.metadata),
+                )
         else:
             # Standard annotation: (type, default)
-            fields[field_name] = (field_type, default)
+            if use_default_factory:
+                fields[field_name] = (field_type, Field(default_factory=default))
+            else:
+                fields[field_name] = (field_type, default)
 
     return create_model(model_name, **fields)  # type: ignore
 

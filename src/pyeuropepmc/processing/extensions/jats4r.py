@@ -433,11 +433,15 @@ class JATS4RValidator(BaseParser):
         # Check each reference for required elements
         for ref in refs:
             ref_id = ref.get("id", "")
-            citation = ref.find(".//element-citation") or ref.find(".//mixed-citation")
+            citation = ref.find(".//element-citation")
+            if citation is None:
+                citation = ref.find(".//mixed-citation")
 
             if citation is None:
                 # Check for other citation types
-                citation = ref.find(".//nlm-citation") or ref.find(".//citation")
+                citation = ref.find(".//nlm-citation")
+                if citation is None:
+                    citation = ref.find(".//citation")
 
             if citation is None:
                 report.add_finding(

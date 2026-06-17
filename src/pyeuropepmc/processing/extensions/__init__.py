@@ -112,7 +112,8 @@ __all__ = [
     "extract_article_id_from_xml",
     "parse_xml_directory",
     "parse_xml_file",
-    # Pydantic
-    "PydanticModelGenerator",
-    "dataclass_to_pydantic",
 ]
+
+# Conditionally include pydantic helpers only when available
+if _HAS_PYDANTIC:
+    __all__.extend(["PydanticModelGenerator", "dataclass_to_pydantic"])

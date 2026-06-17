@@ -368,9 +368,18 @@ class ImageFetcher(BaseParser):
 
     def _download_single_asset(self, asset: AssetRef) -> str:
         """Download a single asset and return the local path."""
+        import urllib.parse
         import urllib.request
 
         if not self.download_dir:
+            return ""
+
+        # Validate URI scheme to prevent SSRF / file:// attacks
+        parsed = urllib.parse.urlparse(asset.uri)
+        if parsed.scheme not in ("http", "https"):
+            logger.warning(
+                f"Skipping asset with unsupported scheme '{parsed.scheme}': {asset.uri}"
+            )
             return ""
 
         # Determine filename from URI
