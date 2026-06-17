@@ -378,6 +378,7 @@ jobs:
                   print(f"  Created: {result.stdout.strip()}")
               else:
                   print(f"  Failed: {result.stderr.strip()}")
+                  sys.exit(1)
           CREATE_ISSUES
 
       - name: Upload analysis artifacts
