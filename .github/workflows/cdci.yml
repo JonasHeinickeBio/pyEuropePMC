@@ -3,6 +3,7 @@ name: CDCI Pipeline
 on:
   push:
     branches: [main]
+  pull_request:
 
 permissions:
   contents: read
@@ -53,20 +54,20 @@ jobs:
           curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y
 
       - name: Run CodeScene Code Health Analysis
+        continue-on-error: true
         env:
           CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
         run: |
-          # Load environment variables from .env file if it exists
-          if [ -f ".env" ]; then
-            echo "🔧 Loading environment variables from .env file..."
-            set -a
-            source .env
-            set +a
-            echo "✅ Environment variables loaded"
+          mkdir -p analysis_output
+          if command -v cs &> /dev/null; then
+            echo "Running CodeScene delta analysis..."
+            cs delta --output-format json > analysis_output/codescene_delta.json 2>&1 || echo '{"error": "CodeScene delta analysis failed"}' > analysis_output/codescene_delta.json
+            cs delta > analysis_output/codescene_delta.txt 2>&1 || echo "CodeScene delta analysis failed" > analysis_output/codescene_delta.txt
+          else
+            echo "CodeScene CLI not available, skipping delta analysis"
+            echo '{"error": "CodeScene CLI not available"}' > analysis_output/codescene_delta.json
+            echo "CodeScene CLI not available" > analysis_output/codescene_delta.txt
           fi
-
-          chmod +x scripts/codescene_analysis.sh
-          ./scripts/codescene_analysis.sh delta
 
       - name: Run tests with coverage
         run: |

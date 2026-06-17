@@ -220,15 +220,18 @@ jobs:
         run: |
           # Test syntax by compiling all Python files
           echo "Testing syntax for all Python modules..."
-          poetry run python -m py_compile src/pyeuropepmc/__init__.py
-          poetry run python -m py_compile src/pyeuropepmc/core/base.py
-          poetry run python -m py_compile src/pyeuropepmc/clients/search.py
-          poetry run python -m py_compile src/pyeuropepmc/processing/parser.py
-          poetry run python -m py_compile src/pyeuropepmc/clients/fulltext.py
-          poetry run python -m py_compile src/pyeuropepmc/clients/ftp_downloader.py
-          poetry run python -m py_compile src/pyeuropepmc/core/error_codes.py
-          poetry run python -m py_compile src/pyeuropepmc/core/exceptions.py
-          poetry run python -m py_compile src/pyeuropepmc/utils/helpers.py
+          FAILED=0
+          for f in $(find src/pyeuropepmc -name "*.py" -type f); do
+            if ! poetry run python -m py_compile "$f"; then
+              echo "FAILED: $f"
+              FAILED=1
+            fi
+          done
+          if [ "$FAILED" -eq 1 ]; then
+            echo "Syntax check failed for one or more files"
+            exit 1
+          fi
+          echo "All Python files compiled successfully"
 
           echo "Testing imports for all modules..."
           # Test core imports
