@@ -65,11 +65,11 @@ jobs:
         poetry install --with dev --no-interaction
         poetry run ruff check src/
         poetry run ruff format --check src/
-        poetry run mypy src/ || true
+        poetry run mypy src/
 
     - name: Run tests
       run: |
-        poetry run pytest tests/ -v --timeout=60
+        poetry run pytest tests/ -v
 
   # ---------------------------------------------------------------------------
   # Build: create distribution packages

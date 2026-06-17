@@ -85,7 +85,7 @@ jobs:
         uses: coverallsapp/github-action@v2
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: coverage.xml
+          path-to-lcov: coverage/reports/coverage.xml
 
       - name: Upload coverage reports to Codecov
         continue-on-error: true
