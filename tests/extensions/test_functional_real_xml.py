@@ -332,6 +332,8 @@ class TestFunctionalRealXML:
 
     def test_linkml_models(self, article_data):
         """Verify LinkML models can be instantiated from parsed content."""
+        pytest.importorskip("jsonasobj2")
+        pytest.importorskip("linkml_runtime")
         from pyeuropepmc.processing.extensions.linkml_models import (
             ArticleContent,
             ContentBlock,

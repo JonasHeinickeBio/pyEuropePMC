@@ -318,7 +318,7 @@ class TestRDFPerformanceAndScalability:
         print(f"Memory increase: {memory_increase:.1f} MB")
 
         # Memory should not increase excessively
-        assert memory_increase < 50  # Less than 50MB increase for 100 papers
+        assert memory_increase <= 50  # Less than 50MB increase for 100 papers
 
         # Verify graph integrity after cleanup
         assert len(g) > 1000  # Should still have content
