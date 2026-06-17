@@ -1,13 +1,13 @@
 """Functional tests for RDF mapping integration with full pipeline."""
 
-import tempfile
 from pathlib import Path
+import tempfile
 
 import pytest
 from rdflib import Graph
 
 from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import PaperEntity, AuthorEntity, SectionEntity, ReferenceEntity
+from pyeuropepmc.models import AuthorEntity, PaperEntity, ReferenceEntity, SectionEntity
 
 
 class TestRDFPipelineIntegration:
@@ -212,7 +212,7 @@ class TestRDFPipelineIntegration:
             assert files[0].name.startswith("batch_paper_")
 
             # Verify file content
-            with open(files[0], 'r') as f:
+            with open(files[0]) as f:
                 content = f.read()
                 assert "@prefix" in content
                 assert "Computational Analysis of Protein-Protein Interaction Networks" in content

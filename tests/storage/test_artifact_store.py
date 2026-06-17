@@ -2,8 +2,8 @@
 Unit tests for artifact store functionality.
 """
 
-import tempfile
 from pathlib import Path
+import tempfile
 
 import pytest
 

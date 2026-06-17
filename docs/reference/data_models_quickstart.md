@@ -319,8 +319,6 @@ class ExtendedPaperEntity(PaperEntity):
 - **Tests**: `tests/models/`, `tests/mappers/`, `tests/builders/`
 - **Issues**: [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues)
 
----
-
 **Quick Reference Card**
 
 ```python

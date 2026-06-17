@@ -1,6 +1,6 @@
 [project]
 name = "pyeuropepmc"
-version = "1.16.0"
+version = "1.17.0"
 description = "A Python package for working with the Europe PMC API to search and retrieve scientific literature."
 license = "file:LICENSE"
 readme = "README.md"
@@ -67,6 +67,8 @@ cachetools = "^6.2.1"
 requests-cache = "^1.2.1"
 rdfizer = "^4.7.5.12.13"
 cryptography = "^46.0.3"
+semanticscholar = "^0.12.0"
+tenacity = "^8.2.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
@@ -134,16 +136,29 @@ ignore = ["E203", "E266", "E731"]
 
 [tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"] # Allow unused imports in __init__.py
-"src/pyeuropepmc/ftp_downloader.py" = ["C901"] # Allow complex FTP operations
-"src/pyeuropepmc/fulltext_parser.py" = [
+"ftp_downloader.py" = ["C901"] # Allow complex FTP operations
+"fulltext_parser.py" = [
   "C901",
 ] # Allow complex XML parsing/analysis methods
-"src/pyeuropepmc/enrichment/enricher.py" = [
+"enricher.py" = [
   "C901",
 ] # Allow complex merge operations
-"src/pyeuropepmc/processing/annotations_to_rdf.py" = [
+"base.py" = [
+  "C901",
+  "E501",
+] # Allow complex request handling and long lines
+"annotations_to_rdf.py" = [
   "C901",
 ] # Allow complex RDF mapping operations
+"error_codes.py" = [
+  "E501",
+] # Allow long lines for error message documentation
+"exceptions.py" = [
+  "E501",
+] # Allow long lines for error message documentation
+"semantic_scholar.py" = [
+  "E501",
+] # Allow long lines for long URLs
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15

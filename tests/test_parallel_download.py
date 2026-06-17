@@ -1,7 +1,7 @@
 """Test parallel download functionality."""
 
 import time
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 from pyeuropepmc.clients.fulltext import FullTextClient, RateLimiter
 from pyeuropepmc.core.exceptions import FullTextError

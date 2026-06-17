@@ -1,7 +1,8 @@
 """Unit tests for Unpaywall enrichment client."""
 
-import pytest
 from unittest.mock import patch
+
+import pytest
 
 from pyeuropepmc.enrichment.unpaywall import UnpaywallClient
 

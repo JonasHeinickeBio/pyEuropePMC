@@ -4,15 +4,15 @@ The **FullTextClient** and **FTPDownloader** provide comprehensive capabilities 
 
 ## Overview
 
-- 📄 **PDF downloads** from open access articles
-- 📋 **XML full-text** in JATS/NLM format
-- 🌐 **HTML content** retrieval
-- 📦 **Bulk FTP downloads** for large datasets
-- 📊 **Progress tracking** with callbacks
-- 🔄 **Automatic retry** and error handling
-- 💾 **Smart caching** for repeated requests
-- ⚡ **Parallel batch downloads** with rate limiting and statistics
-- 🎯 **Efficient cache usage** - rate limiter only invoked for network requests, not cached hits
+- **PDF downloads** from open access articles
+- **XML full-text** in JATS/NLM format
+- **HTML content** retrieval
+- **Bulk FTP downloads** for large datasets
+- **Progress tracking** with callbacks
+- **Automatic retry** and error handling
+- **Smart caching** for repeated requests
+- **Parallel batch downloads** with rate limiting and statistics
+- **Efficient cache usage** - rate limiter only invoked for network requests, not cached hits
 
 ## Quick Start
 
@@ -291,9 +291,9 @@ results = client.download_fulltext_batch_parallel(
 # Check results
 for pmcid, path in results.items():
     if path:
-        print(f"✓ {pmcid}: {path}")
+        print(f"OK {pmcid}: {path}")
     else:
-        print(f"✗ {pmcid}: Failed")
+        print(f"FAIL {pmcid}: Failed")
 
 # View download statistics
 print(f"Total requests: {client.download_stats['global_stats']['total_requests']}")
@@ -302,7 +302,7 @@ print(f"Success rate: {client.download_stats['success_rate']:.1%}")
 
 **Note:** The rate limiter is only invoked for network requests, not for cached files, making parallel downloads more efficient.
 
-### Example 3: Download + Parse Workflow
+### Example 4: Download + Parse Workflow
 
 ```python
 from pyeuropepmc import FullTextClient, FullTextXMLParser
@@ -327,7 +327,7 @@ with FullTextClient() as client:
         print(f"References: {len(references)}")
 ```
 
-### Example 4: Batch Processing with Progress
+### Example 5: Batch Processing with Progress
 
 ```python
 from pyeuropepmc import FTPDownloader, FullTextXMLParser
@@ -356,7 +356,7 @@ with open("metadata_summary.json", "w") as f:
     json.dump(all_metadata, f, indent=2)
 ```
 
-### Example 5: Selective Download by File Size
+### Example 6: Selective Download by File Size
 
 ```python
 from pyeuropepmc import FullTextClient
@@ -417,12 +417,12 @@ print(f"Downloaded: {sum(1 for p in results.values() if p)} files")
 For downloading many articles, FTP is much faster:
 
 ```python
-# ❌ Slow: Individual downloads
+# Slow: Individual downloads
 with FullTextClient() as client:
     for pmcid in many_pmcids:
         client.download_pdf_by_pmcid(pmcid)
 
-# ✅ Fast: Bulk FTP download
+# Fast: Bulk FTP download
 downloader = FTPDownloader()
 results = downloader.bulk_download_and_extract(
     pmcids=many_pmcids,
@@ -538,12 +538,5 @@ with FullTextClient() as client:
 - **[API Reference: FullTextClient](../../api/fulltext-client.md)** - Complete API documentation
 - **[API Reference: FTPDownloader](../../api/ftp-downloader.md)** - FTP downloader API
 - **[XML Parsing](../parsing/)** - Parse downloaded XML files
-- **[Examples: Full-Text](../../examples/basic-examples.md#fulltext)** - More code examples
-- **[Advanced: Progress Callbacks](../../advanced/configuration.md#progress-tracking)** - Custom progress tracking
-
----
-
-**Next Steps:**
-- Learn [XML Parsing](../parsing/) to extract data from downloaded files
-- Explore [Caching](../caching/) to understand caching behavior
-- Read [Advanced Examples](../../examples/advanced-examples.md) for complex workflows
+- **[Examples](../../examples/)** - Code examples in the repository
+- **[Progress Callbacks](../../advanced/progress-callbacks.md)** - Custom progress tracking

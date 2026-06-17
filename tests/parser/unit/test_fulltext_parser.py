@@ -2,9 +2,8 @@
 
 import pytest
 
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.core.exceptions import ParsingError
-
+from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 # Sample XML content for testing
 SAMPLE_ARTICLE_XML = '''<?xml version="1.0"?>

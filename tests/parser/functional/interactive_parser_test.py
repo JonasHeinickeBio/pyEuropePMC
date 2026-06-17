@@ -1,5 +1,7 @@
 import sys
+
 from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
+
 
 def interactive_parser_test():
     print("EuropePMCParser Interactive Test")

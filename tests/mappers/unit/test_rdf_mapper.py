@@ -149,6 +149,7 @@ class TestRDFMapper:
         mapper = RDFMapper()
         g = Graph()
         from rdflib import URIRef
+
         from pyeuropepmc.models import AuthorEntity
 
         paper = PaperEntity(title="Test Article")

@@ -85,5 +85,4 @@ client = SearchClient(rate_limit_delay=2.0)  # 2 second delay
 ## Next Steps
 
 - [Quick Start Guide](quickstart.md)
-- [Basic Usage Examples](basic-usage.md)
-- [API Reference](api/search-client.md)
+- [API Reference](../api/search-client.md)

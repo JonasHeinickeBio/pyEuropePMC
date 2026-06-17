@@ -27,20 +27,20 @@ FIELD_METADATA: dict[str, tuple[str, str]] = {
 
 ## Key Features
 
-### 1. **API Name Mapping**
+### 1. API Name Mapping
 Each field is mapped to its uppercase API field name (as returned by the Europe PMC API).
 
-### 2. **Field Aliases**
+### 2. Field Aliases
 Multiple user-friendly names can map to the same API field:
 - `author` and `auth` both map to `AUTH`
 - `affiliation` and `aff` both map to `AFF`
 - `language` and `lang` both map to `LANG`
 - `chemical` and `chem` both map to `CHEM`
 
-### 3. **Human-Readable Descriptions**
+### 3. Human-Readable Descriptions
 Every field includes a description explaining its purpose, making it easier for developers to understand what each field does.
 
-### 4. **Special Cases: Internal Fields**
+### 4. Special Cases: Internal Fields
 Most API fields are uppercase (`TITLE`, `ABSTRACT`, `AUTH`), but three internal fields use lowercase:
 - `_version_` - Document version (internal use)
 - `text_hl` - Highlighted text snippets (internal use)
@@ -160,5 +160,5 @@ FieldType = Literal["title", "abstract", "author", ...]
 ## See Also
 
 - [Field Validation Guide](field-validation.md) - Complete field reference
-- [QueryBuilder API](../api/README.md) - QueryBuilder documentation
+- [QueryBuilder API](./query-builder.md) - QueryBuilder documentation
 - [Advanced Usage](../advanced/README.md) - Advanced query building patterns

@@ -1,12 +1,12 @@
 # Advanced Cache Architecture Implementation Guide
 
-## Status: Phase 1 & 2 Complete ✅
+## Status: Phase 1 & 2 Complete
 
 This document tracks the implementation of the advanced multi-layer caching architecture for PyEuropePMC.
 
 ## Completed Features
 
-### Phase 1: Enhanced L1 Cache ✅
+### Phase 1: Enhanced L1 Cache
 
 **Namespace Versioning**
 - Keys now include version: `{type}:v{version}:{prefix}:{hash}`
@@ -28,7 +28,7 @@ DEFAULT_TTLS = {
 - Overall combined metrics
 - Hit rate calculation per layer
 
-### Phase 2: L2 Persistent Cache ✅
+### Phase 2: L2 Persistent Cache
 
 **Multi-Layer Architecture**
 - L1: `cachetools.TTLCache` (in-memory, hot data, ultra-fast)
@@ -62,7 +62,7 @@ def get(key):
 
 ## Implementation Roadmap
 
-### Phase 3: Content-Addressed Artifact Storage 📋
+### Phase 3: Content-Addressed Artifact Storage
 
 **Goal**: Efficient storage and deduplication of large files (PDF, XML, ZIP)
 
@@ -118,7 +118,7 @@ def get(key):
 - `src/pyeuropepmc/artifact_store.py` - Artifact storage implementation
 - `tests/cache/test_artifact_store.py` - Tests for artifact storage
 
-### Phase 4: HTTP Caching with requests-cache 📋
+### Phase 4: HTTP Caching with requests-cache
 
 **Goal**: Protocol-correct HTTP caching with ETag/Last-Modified support
 
@@ -161,7 +161,7 @@ def get(key):
 - `src/pyeuropepmc/http_cache.py` - HTTP caching wrapper
 - `tests/cache/test_http_cache.py` - Tests for HTTP caching
 
-### Phase 5: Advanced Features 📋
+### Phase 5: Advanced Features
 
 **Cursor-Based Pagination**
 ```python
@@ -223,7 +223,7 @@ def cache_error(status_code: int, key: str, response: dict):
 - `tests/cache/test_pagination.py` - Pagination tests
 - `tests/cache/test_error_cache.py` - Error caching tests
 
-### Phase 6: Monitoring and Observability 📋
+### Phase 6: Monitoring and Observability
 
 **Telemetry**
 ```python

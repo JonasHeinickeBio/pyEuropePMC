@@ -576,5 +576,4 @@ translated = loaded_qb.translate("wos")  # Translate to Web of Science syntax
 See Also:
 - [Query Builder Features](../features/query-builder-load-save-translate.md)
 - [Systematic Review Tracking](../features/systematic-review-tracking.md)
-- [Field Metadata](field-metadata-structure.md)</content>
-<parameter name="filePath">/home/jhe24/AID-PAIS/pyEuropePMC_project/docs/api/query-builder.md
+- [Field Metadata](field-metadata-structure.md)

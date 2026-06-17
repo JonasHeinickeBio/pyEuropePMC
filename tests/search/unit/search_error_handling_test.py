@@ -4,8 +4,8 @@ from unittest.mock import patch
 import pytest
 import requests
 
-from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.clients.search import EuropePMCError, SearchClient
+from pyeuropepmc.core.error_codes import ErrorCodes
 
 logging.basicConfig(level=logging.INFO)
 

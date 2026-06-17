@@ -5,13 +5,15 @@ Tests cache initialization, hit/miss behavior, cache management,
 and backward compatibility.
 """
 
-import pytest
-import tempfile
-import shutil
 from pathlib import Path
+import shutil
+import tempfile
 from unittest.mock import patch
-from pyeuropepmc.clients.search import SearchClient
+
+import pytest
+
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.clients.search import SearchClient
 
 
 class TestSearchClientCacheInitialization:

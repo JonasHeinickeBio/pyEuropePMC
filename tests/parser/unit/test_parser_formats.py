@@ -1,5 +1,6 @@
 from pyeuropepmc.processing.search_parser import EuropePMCParser
 
+
 class TestEuropePMCParserFormats:
 
     def test_parse_csv_basic(self):

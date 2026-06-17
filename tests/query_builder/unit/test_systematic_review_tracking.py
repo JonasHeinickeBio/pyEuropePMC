@@ -118,7 +118,7 @@ class TestSystematicReviewTracking:
             assert Path(entry.raw_results_path).exists()
 
             # Verify raw results file content
-            with open(entry.raw_results_path, "r") as f:
+            with open(entry.raw_results_path) as f:
                 saved_results = json.load(f)
             assert saved_results == raw_results
 
@@ -147,7 +147,7 @@ class TestSystematicReviewTracking:
 
             # Verify file exists and contains correct data
             assert saved_path.exists()
-            with open(saved_path, "r") as f:
+            with open(saved_path) as f:
                 log_data = json.load(f)
 
             assert log_data["title"] == "Complete Workflow Test"

@@ -1,8 +1,8 @@
 """Tests for the create_suggestions.py script."""
 
 import json
-import sys
 from pathlib import Path
+import sys
 
 # Add project root to path to enable scripts import
 project_root = Path(__file__).parent.parent.parent

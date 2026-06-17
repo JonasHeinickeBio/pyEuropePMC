@@ -128,6 +128,6 @@ with ArticleClient() as client:
 
 ## Related Classes
 
-- [`SearchClient`](../search-client.md) - For searching articles
-- [`FullTextClient`](../fulltext-client.md) - For downloading full text
-- [`EuropePMCParser`](../parser.md) - For parsing responses
+- [`SearchClient`](./search-client.md) - For searching articles
+- [`FullTextClient`](./fulltext-client.md) - For downloading full text
+- [`EuropePMCParser`](./parser.md) - For parsing responses

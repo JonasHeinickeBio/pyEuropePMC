@@ -94,21 +94,17 @@ class TestParseJson:
         """Test parsing with None input."""
         with pytest.raises(ParsingError) as exc_info:
             EuropePMCParser.parse_json(None)
-        # Check that the exception has the correct error code
+        # Validate the stable error code, not the human-readable message
         assert exc_info.value.error_code == ErrorCodes.PARSE003
-        error_str = str(exc_info.value)
-        assert "[PARSE003]" in error_str
-        assert "Content cannot be None or empty." in error_str
+        assert "[PARSE003]" in str(exc_info.value)
 
     def test_parse_json_string_input(self):
         """Test parsing with string input."""
         with pytest.raises(ParsingError) as exc_info:
             EuropePMCParser.parse_json("invalid input")
-        # Check that the exception has the correct error code
+        # Validate the stable error code, not the human-readable message
         assert exc_info.value.error_code == ErrorCodes.PARSE001
-        error_str = str(exc_info.value)
-        assert "[PARSE001]" in error_str
-        assert "Invalid format" in error_str
+        assert "[PARSE001]" in str(exc_info.value)
 
     def test_parse_json_complex_nested_data(self):
         """Test parsing complex nested JSON data."""

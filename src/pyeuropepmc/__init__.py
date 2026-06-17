@@ -26,7 +26,16 @@ from .clients.ftp_downloader import FTPDownloader
 from .clients.fulltext import FullTextClient, ProgressInfo
 from .clients.search import SearchClient
 from .core.base import BaseAPIClient
-from .core.exceptions import APIClientError, EuropePMCError, FullTextError, UnpaywallError
+from .core.exceptions import (
+    APIClientError,
+    ClientError,
+    EuropePMCError,
+    FileError,
+    FullTextError,
+    ModelError,
+    UnpaywallError,
+)
+from .enrichment import SemanticScholarClient
 from .enrichment.enricher import EnrichmentConfig, PaperEnricher
 from .mappers.converters import convert_annotations_to_rdf
 from .pipeline import PaperProcessingPipeline, PipelineConfig
@@ -75,7 +84,7 @@ from .query.pagination import (
 from .query.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
 from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
-__version__ = "1.15.0"
+__version__ = "1.17.0"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
@@ -136,6 +145,9 @@ __all__ = [
     "ArtifactStore",
     "ArtifactMetadata",
     "UnpaywallError",
+    "ClientError",
+    "FileError",
+    "ModelError",
     # Pagination
     "PaginationState",
     "PaginationCheckpoint",
@@ -163,6 +175,7 @@ __all__ = [
     # Enrichment utilities
     "PaperEnricher",
     "EnrichmentConfig",
+    "SemanticScholarClient",
     # Pipeline utilities
     "PaperProcessingPipeline",
     "PipelineConfig",

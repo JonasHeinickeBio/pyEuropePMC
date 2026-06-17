@@ -5,17 +5,17 @@ This module focuses on testing the new error code system and less common scenari
 to achieve higher test coverage for the exceptions module.
 """
 
+from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import (
-    PyEuropePMCError,
     APIClientError,
-    SearchError,
-    FullTextError,
-    ParsingError,
-    ValidationError,
     ConfigurationError,
     EuropePMCError,
+    FullTextError,
+    ParsingError,
+    PyEuropePMCError,
+    SearchError,
+    ValidationError,
 )
-from pyeuropepmc.core.error_codes import ErrorCodes
 
 
 class TestExceptionsCoverage:

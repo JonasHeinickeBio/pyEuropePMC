@@ -5,12 +5,14 @@ Tests all methods and edge cases using pytest and unittest.mock.
 """
 
 import json
-from unittest.mock import Mock, patch, call
+from unittest.mock import Mock, call, patch
+
 import pytest
 import requests
+
 from pyeuropepmc.clients.article import ArticleClient
-from pyeuropepmc.core.exceptions import ValidationError, APIClientError
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import APIClientError, ValidationError
 
 
 class TestArticleClientComprehensive:

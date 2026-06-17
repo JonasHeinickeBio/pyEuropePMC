@@ -6,13 +6,13 @@ to achieve higher test coverage for the search module.
 """
 
 from unittest.mock import Mock, patch
+
 import pytest
 import requests
 
 from pyeuropepmc.clients.search import SearchClient
-from pyeuropepmc.core.exceptions import SearchError, APIClientError
 from pyeuropepmc.core.error_codes import ErrorCodes
-
+from pyeuropepmc.core.exceptions import APIClientError, SearchError
 
 pytestmark = pytest.mark.unit
 

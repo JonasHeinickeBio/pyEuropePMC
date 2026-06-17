@@ -6,14 +6,14 @@ to achieve higher test coverage for the helpers module.
 """
 
 import json
-import tempfile
 from pathlib import Path
-from unittest.mock import patch, mock_open
+import tempfile
+from unittest.mock import mock_open, patch
+
 import pytest
 
-from pyeuropepmc.utils.helpers import save_to_json_with_merge, save_to_json, load_json
 from pyeuropepmc.core.exceptions import ValidationError
-
+from pyeuropepmc.utils.helpers import load_json, save_to_json, save_to_json_with_merge
 
 pytestmark = pytest.mark.unit
 
@@ -31,7 +31,7 @@ class TestHelpersCoverage:
 
             # Verify file was created with the data
             assert file_path.exists()
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 saved_data = json.load(f)
             assert saved_data == data
 
@@ -51,7 +51,7 @@ class TestHelpersCoverage:
             save_to_json_with_merge(new_data, file_path)
 
             # Verify data was merged
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 saved_data = json.load(f)
             assert "old_key" in saved_data
             assert "new_key" in saved_data
@@ -63,7 +63,7 @@ class TestHelpersCoverage:
         data = {"test": "data"}
         test_file = tmp_path / "test.json"
 
-        with patch("builtins.open", side_effect=IOError("Permission denied")):
+        with patch("builtins.open", side_effect=OSError("Permission denied")):
             with pytest.raises(ValidationError) as exc_info:
                 save_to_json(data, test_file)
 
@@ -132,7 +132,7 @@ class TestHelpersCoverage:
                 load_json(test_file)
 
             error_message = str(exc_info.value)
-            assert "Failed to read JSON file" in error_message
+            assert "JSON file not found" in error_message
 
     def test_load_json_unicode_decode_error(self, tmp_path):
         """Test load_json with Unicode decode error."""
@@ -145,7 +145,7 @@ class TestHelpersCoverage:
                 load_json(test_file)
 
             error_message = str(exc_info.value)
-            assert "Failed to read JSON file" in error_message
+            assert "JSON file not found" in error_message
 
     def test_load_json_valid_file(self):
         """Test load_json with valid JSON file."""
@@ -171,7 +171,7 @@ class TestHelpersCoverage:
 
             # Verify file was created correctly
             assert file_path.exists()
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 saved_data = json.load(f)
             assert saved_data == test_data
 
@@ -190,7 +190,7 @@ class TestHelpersCoverage:
             save_to_json_with_merge(new_data, file_path)
 
             # Verify new data was saved
-            with open(file_path, "r", encoding="utf-8") as f:
+            with open(file_path, encoding="utf-8") as f:
                 saved_data = json.load(f)
             assert saved_data == new_data
 
@@ -221,7 +221,7 @@ class TestHelpersCoverage:
         # Test save_to_json error context
         test_file = tmp_path / "test.json"
 
-        with patch("builtins.open", side_effect=IOError("IO Error")):
+        with patch("builtins.open", side_effect=OSError("IO Error")):
             with pytest.raises(ValidationError) as exc_info:
                 save_to_json({"test": "data"}, test_file)
 
@@ -240,8 +240,9 @@ class TestHelpersCoverage:
 
     def test_warn_if_empty_hitcount_zero(self):
         """Test warning is issued when hitCount == 0."""
-        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         import warnings
+
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         response = {"hitCount": 0}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -250,8 +251,9 @@ class TestHelpersCoverage:
 
     def test_warn_if_empty_hitcount_zero_with_context(self):
         """Test warning includes context when hitCount == 0 and context is provided."""
-        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         import warnings
+
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         response = {"hitCount": 0}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -260,8 +262,9 @@ class TestHelpersCoverage:
 
     def test_warn_if_empty_hitcount_missing_key(self):
         """Test warning is issued when 'hitCount' key is missing."""
-        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         import warnings
+
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         response = {"other": 1}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -270,8 +273,9 @@ class TestHelpersCoverage:
 
     def test_warn_if_empty_hitcount_missing_key_with_context(self):
         """Test warning includes context when 'hitCount' key is missing and context is provided."""
-        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         import warnings
+
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         response = {"other": 1}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -280,8 +284,9 @@ class TestHelpersCoverage:
 
     def test_warn_if_empty_hitcount_type_error(self):
         """Test warning is issued when response is not a dict."""
-        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         import warnings
+
+        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
         response = None
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")

@@ -1,0 +1,68 @@
+/* GitBook website styles */
+
+.page-inner {
+  max-width: 900px;
+}
+
+.markdown-section code {
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-size: 0.9em;
+}
+
+.markdown-section pre {
+  border-radius: 4px;
+}
+
+.markdown-section table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.markdown-section table th,
+.markdown-section table td {
+  padding: 8px 12px;
+  border: 1px solid #e1e4e8;
+}
+
+.markdown-section table th {
+  background-color: #f6f8fa;
+  font-weight: 600;
+}
+
+.markdown-section blockquote {
+  border-left: 4px solid #0366d6;
+  padding: 0 16px;
+  margin: 16px 0;
+  color: #586069;
+}
+
+/* API method sections */
+.markdown-section h3 {
+  border-bottom: 1px solid #e1e4e8;
+  padding-bottom: 8px;
+}
+
+/* Tip/Note/Warning blocks */
+.markdown-section .tip,
+.markdown-section .note,
+.markdown-section .warning {
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin: 16px 0;
+}
+
+.markdown-section .tip {
+  border-left: 4px solid #42b983;
+  background-color: #f0fff4;
+}
+
+.markdown-section .note {
+  border-left: 4px solid #0366d6;
+  background-color: #f1f8ff;
+}
+
+.markdown-section .warning {
+  border-left: 4px solid #f9826c;
+  background-color: #fff5f5;
+}

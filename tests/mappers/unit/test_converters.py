@@ -1,31 +1,32 @@
 """Unit tests for RDF converters."""
 
-import pytest
 from unittest.mock import Mock, patch
+
+import pytest
 from rdflib import Graph
 
 from pyeuropepmc.cache.cache import CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
-    convert_annotations_to_rdf,
     _convert_to_rdf,
+    convert_annotations_to_rdf,
+    convert_enrichment_to_rdf,
+    convert_incremental_to_rdf,
+    convert_pipeline_to_rdf,
     convert_search_to_rdf,
     convert_xml_to_rdf,
-    convert_enrichment_to_rdf,
-    convert_pipeline_to_rdf,
-    convert_incremental_to_rdf,
-)
-from pyeuropepmc.mappers.validators import (
-    validate_search_results,
-    validate_xml_data,
-    validate_enrichment_data,
 )
 from pyeuropepmc.mappers.processors import (
+    process_enrichment_data,
     process_search_results,
     process_xml_data,
-    process_enrichment_data,
 )
-from pyeuropepmc.models import PaperEntity, AuthorEntity, JournalEntity
+from pyeuropepmc.mappers.validators import (
+    validate_enrichment_data,
+    validate_search_results,
+    validate_xml_data,
+)
+from pyeuropepmc.models import AuthorEntity, JournalEntity, PaperEntity
 
 
 class TestConvertersValidation:

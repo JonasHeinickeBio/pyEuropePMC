@@ -383,10 +383,9 @@ All functions accept either a list of papers (from API) or a pandas DataFrame.
 
 ## Examples
 
-See the [analytics demo notebook](../../examples/analytics_demo.ipynb) for a comprehensive walkthrough of all features.
+See the [examples directory](../examples/) for usage examples.
 
 ## See Also
 
 - [Search Client Documentation](./search-client.md)
-- [Filtering Documentation](./filtering.md)
 - [Examples](../examples/)

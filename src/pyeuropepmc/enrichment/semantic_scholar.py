@@ -6,14 +6,13 @@ abstracts, and venue information.
 """
 
 import logging
-import time
+import os
+import re
 from typing import Any
 
-import requests
-
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.enrichment.base import BaseEnrichmentClient
+from pyeuropepmc.enrichment.semanticscholar_pro import ProfessionalSemanticScholarClient
 
 logger = logging.getLogger(__name__)
 
@@ -33,6 +32,9 @@ class SemanticScholarClient(BaseEnrichmentClient):
     - Fields of study
     - References and citations
 
+    This client uses the danielnsilva/semanticscholar library for professional
+    API handling with automatic retries, typed response objects, and async support.
+
     Examples
     --------
     >>> client = SemanticScholarClient()
@@ -43,6 +45,15 @@ class SemanticScholarClient(BaseEnrichmentClient):
     """
 
     BASE_URL = "https://api.semanticscholar.org/graph/v1"
+    RECOMMENDATIONS_BASE_URL = "https://api.semanticscholar.org/recommendations/v1"
+    # Semantic Scholar recommendations endpoint currently allows up to 500 results per request.
+    MAX_RECOMMENDATIONS = 500
+    # IDs must start with an alphanumeric character and may include : . / _ -,
+    # with a maximum length of 256 characters.
+    _PAPER_ID_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9:./_-]{0,255}$")
+
+    # Use professional library internally for API calls
+    _pro_client: ProfessionalSemanticScholarClient
 
     def __init__(
         self,
@@ -63,20 +74,177 @@ class SemanticScholarClient(BaseEnrichmentClient):
         cache_config : CacheConfig, optional
             Cache configuration
         api_key : str, optional
-            API key for higher rate limits (recommended but not required)
+            API key for higher rate limits (recommended but not required).
+            If not provided, will load from SEMANTIC_SCHOLAR_API_KEY environment variable.
         """
+        # Use provided API key or load from environment
+        self.api_key = api_key or os.environ.get("SEMANTIC_SCHOLAR_API_KEY")
+        api_key_missing = not bool(self.api_key)
+
         super().__init__(
             base_url=self.BASE_URL,
             rate_limit_delay=rate_limit_delay,
             timeout=timeout,
             cache_config=cache_config,
+            api_key_missing=api_key_missing,
         )
-        self.api_key = api_key
 
-        # Add API key to headers if provided
-        if api_key:
-            self.session.headers.update({"x-api-key": api_key})
+        # Initialize professional Semantic Scholar client for API calls
+        self._pro_client = ProfessionalSemanticScholarClient(
+            rate_limit_delay=rate_limit_delay,
+            timeout=timeout,
+            api_key=self.api_key,
+            use_cache=True,
+        )
+
+        # Add API key to headers if available (Semantic Scholar uses Bearer auth)
+        if self.api_key:
+            self.session.headers.update({"Authorization": f"Bearer {self.api_key}"})
             logger.info("Semantic Scholar API key configured")
+        else:
+            logger.warning(
+                "No Semantic Scholar API key configured. Rate limits are lower (25k/month). "
+                "Consider adding SEMANTIC_SCHOLAR_API_KEY to environment for higher limits (100k/month)."
+            )
+
+    def _normalize_recommendation_limit(self, limit: int | None) -> int:
+        """Validate and normalize recommendation limit to API boundaries."""
+        if limit is None:
+            return self.MAX_RECOMMENDATIONS
+        if limit <= 0:
+            raise ValueError("limit must be a positive integer")
+        return min(limit, self.MAX_RECOMMENDATIONS)
+
+    def _validate_paper_id(self, paper_id: str) -> str:
+        """Validate a Semantic Scholar paper identifier string."""
+        normalized = paper_id.strip()
+        if not normalized:
+            raise ValueError("paper_id must be a non-empty string")
+        if not self._PAPER_ID_PATTERN.match(normalized):
+            raise ValueError(
+                "paper_id contains invalid characters; allowed: letters, "
+                "numbers, ':', '.', '/', '_', '-'"
+            )
+        return normalized
+
+    def _validate_paper_ids(self, paper_ids: list[str], argument_name: str) -> list[str]:
+        """
+        Validate a list of paper identifiers and remove duplicates while preserving order.
+
+        Notes
+        -----
+        Duplicate IDs are automatically de-duplicated in the returned list.
+        """
+        if not paper_ids:
+            raise ValueError(f"{argument_name} must contain at least one paper ID")
+        normalized_ids = [self._validate_paper_id(paper_id) for paper_id in paper_ids]
+        return list(dict.fromkeys(normalized_ids))
+
+    def _extract_recommendations(self, response: dict[str, Any] | None) -> list[dict[str, Any]]:
+        """Extract recommendation payload from Semantic Scholar responses."""
+        if not response:
+            return []
+        recommendations = response.get("recommendedPapers", [])
+        if isinstance(recommendations, list):
+            return [item for item in recommendations if isinstance(item, dict)]
+        logger.warning("Unexpected recommendations response format")
+        return []
+
+    def get_recommendations_for_paper(
+        self,
+        paper_id: str,
+        limit: int | None = None,
+        fields: list[str] | None = None,
+        use_cache: bool = True,
+    ) -> list[dict[str, Any]]:
+        """
+        Get recommended papers for a single positive example paper.
+
+        Parameters
+        ----------
+        paper_id : str
+            Positive example paper ID.
+        limit : int, optional
+            Number of recommendations to return (capped at API maximum).
+        fields : list[str], optional
+            Additional paper fields to request from Semantic Scholar.
+        use_cache : bool, optional
+            Whether to use cache for idempotent requests.
+
+        Returns
+        -------
+        list[dict]
+            Recommended papers.
+        """
+        validated_paper_id = self._validate_paper_id(paper_id)
+
+        try:
+            # Use professional client for recommendations
+            papers = self._pro_client.get_recommendations(
+                paper_id=validated_paper_id,
+                fields=fields,
+                limit=self._normalize_recommendation_limit(limit),
+            )
+            return papers
+
+        except Exception as e:
+            logger.error(f"Failed to get recommendations for paper {validated_paper_id}: {e}")
+            return []
+
+    def get_recommendations_for_papers(
+        self,
+        positive_paper_ids: list[str],
+        negative_paper_ids: list[str] | None = None,
+        limit: int | None = None,
+        fields: list[str] | None = None,
+        use_cache: bool = True,
+    ) -> list[dict[str, Any]]:
+        """
+        Get recommended papers based on positive and optional negative example papers.
+
+        Parameters
+        ----------
+        positive_paper_ids : list[str]
+            Positive example paper IDs.
+        negative_paper_ids : list[str], optional
+            Negative example paper IDs.
+        limit : int, optional
+            Number of recommendations to return (capped at API maximum).
+        fields : list[str], optional
+            Additional paper fields to request from Semantic Scholar.
+        use_cache : bool, optional
+            Whether to use cache for idempotent requests.
+
+        Returns
+        -------
+        list[dict]
+            Recommended papers.
+        """
+        validated_positive = self._validate_paper_ids(positive_paper_ids, "positive_paper_ids")
+        validated_negative: list[str] = []
+        if negative_paper_ids:
+            validated_negative = self._validate_paper_ids(negative_paper_ids, "negative_paper_ids")
+            overlap = set(validated_positive).intersection(validated_negative)
+            if overlap:
+                raise ValueError(
+                    "positive_paper_ids and negative_paper_ids must not contain the same paper IDs"
+                )
+
+        try:
+            # Use professional client for recommendations from lists
+            papers = self._pro_client.get_recommendations_from_lists(
+                positive_paper_ids=validated_positive,
+                negative_paper_ids=validated_negative or None,
+                fields=fields,
+                limit=self._normalize_recommendation_limit(limit),
+            )
+            return papers
+
+        except Exception as e:
+            logger.error(
+                f"Failed to get recommendations for papers: positive={validated_positive}, negative={validated_negative or []}: {e}"
+            )
+            return []
 
     def enrich(
         self,
@@ -130,214 +298,48 @@ class SemanticScholarClient(BaseEnrichmentClient):
         if not identifier and not semantic_scholar_id:
             raise ValueError("Either identifier or Semantic Scholar ID is required")
 
-        # Construct endpoint
-        if semantic_scholar_id:
-            endpoint = f"paper/{semantic_scholar_id}"
-            logger.debug(f"Enriching metadata for S2 ID: {semantic_scholar_id}")
-        else:
-            endpoint = f"paper/{identifier}"
-            logger.debug(f"Enriching metadata for identifier: {identifier}")
+        # Use professional library for API calls
+        paper_id = semantic_scholar_id or identifier
+        if paper_id is None:
+            raise ValueError("paper_id cannot be None")
 
-        # Define comprehensive fields to retrieve
-        fields = [
-            "title",
-            "abstract",
-            "venue",
-            "year",
-            "citationCount",
-            "influentialCitationCount",
-            "authors",
-            "authors.affiliations",  # Request author affiliations explicitly
-            "fieldsOfStudy",
-            "externalIds",
-            "paperId",
-            "corpusId",
-            "referenceCount",
-            "openAccessPdf",
-            "publicationTypes",
-            "publicationDate",
-            "journal",
-            "tldr",
-            "s2FieldsOfStudy",
-        ]
+        # Call professional client
+        result = self._pro_client.get_paper(
+            paper_id=paper_id,
+            fields=[
+                "title",
+                "abstract",
+                "venue",
+                "year",
+                "citationCount",
+                "influentialCitationCount",
+                "authors",
+                "authors.affiliations",
+                "fieldsOfStudy",
+                "externalIds",
+                "paperId",
+                "corpusId",
+                "referenceCount",
+                "openAccessPdf",
+                "publicationTypes",
+                "publicationDate",
+                "journal",
+                "tldr",
+                "s2FieldsOfStudy",
+            ],
+        )
 
-        params = {"fields": ",".join(fields)}
-
-        response = self._make_request(endpoint=endpoint, params=params, use_cache=use_cache)
-        if response is None:
-            logger.warning(f"No data found for: {endpoint}")
+        if result is None:
+            logger.warning(f"No data found for: {paper_id}")
             return None
 
         try:
-            enriched = self._parse_semantic_scholar_response(response)
-            logger.info(f"Successfully enriched metadata from Semantic Scholar: {endpoint}")
-            return enriched
+            logger.info(f"Successfully enriched metadata from Semantic Scholar: {paper_id}")
+            return result
 
         except Exception as e:
-            logger.error(f"Error parsing Semantic Scholar response for {endpoint}: {e}")
+            logger.error(f"Error processing Semantic Scholar data for {paper_id}: {e}")
             return None
-
-    def _make_post_request(
-        self,
-        endpoint: str,
-        json_data: dict[str, Any] | None = None,
-        params: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
-        use_cache: bool = True,
-    ) -> dict[str, Any] | list[Any] | None:
-        """
-        Make HTTP POST request with retries and caching.
-
-        Parameters
-        ----------
-        endpoint : str
-            API endpoint (will be appended to base_url)
-        json_data : dict, optional
-            JSON data to send in request body
-        params : dict, optional
-            Query parameters
-        headers : dict, optional
-            Additional headers
-        use_cache : bool, optional
-            Whether to use caching for this request (default: True)
-
-        Returns
-        -------
-        dict, list, or None
-            Response data, or None if request fails
-        """
-        url = f"{self.base_url}/{endpoint.lstrip('/')}"
-
-        # Check cache first (for idempotent requests)
-        cache_key = ""
-        if use_cache and self._cache.config.enabled:
-            cache_key = f"POST:{url}:{str(params)}:{str(json_data)}"
-            cached = self._cache.get(cache_key)
-            if cached is not None:
-                logger.debug(f"Cache hit for POST {url}")
-                return cached  # type: ignore[no-any-return]
-
-        # Prepare headers
-        request_headers = dict(self.session.headers)
-        if headers:
-            request_headers.update(headers)
-
-        try:
-            logger.debug(f"POST request to {url} with params={params}")
-            response = self.session.post(
-                url, json=json_data, params=params, headers=request_headers, timeout=self.timeout
-            )
-
-            # Handle 404 gracefully - return None instead of raising
-            if response.status_code == 404:
-                logger.info(f"Resource not found at {url}")
-                return None
-
-            response.raise_for_status()
-
-            # Parse JSON response
-            data = response.json()
-
-            # Cache successful response (for idempotent requests)
-            if use_cache and self._cache.config.enabled:
-                self._cache.set(cache_key, data)
-
-            logger.info(f"POST request to {url} succeeded")
-            return data  # type: ignore[no-any-return]
-
-        except requests.HTTPError as e:
-            if e.response is not None and e.response.status_code == 404:
-                logger.info(f"Resource not found at {url}")
-                return None
-            logger.error(f"HTTP error for POST {url}: {e}")
-            raise APIClientError(message=f"HTTP error: {e}") from e
-        except requests.RequestException as e:
-            logger.error(f"POST request failed for {url}: {e}")
-            raise APIClientError(message=f"Request failed: {e}") from e
-        except ValueError as e:
-            logger.error(f"Invalid JSON response from POST {url}: {e}")
-            return None
-        finally:
-            time.sleep(self.rate_limit_delay)
-
-    def _parse_semantic_scholar_response(self, response: dict[str, Any]) -> dict[str, Any]:
-        """
-        Parse Semantic Scholar API response into normalized metadata.
-
-        Parameters
-        ----------
-        response : dict
-            Semantic Scholar API response
-
-        Returns
-        -------
-        dict
-            Normalized metadata
-        """
-        # Extract authors with enhanced information
-        authors = []
-        for author in response.get("authors", []):
-            author_data = {
-                "name": author.get("name"),
-                "author_id": author.get("authorId"),
-            }
-
-            # Add Semantic Scholar author URL if authorId is available
-            if author.get("authorId"):
-                author_data["url"] = f"https://www.semanticscholar.org/author/{author['authorId']}"
-
-            # Add any additional author fields that might be present
-            if author.get("url"):
-                author_data["url"] = author["url"]
-            if author.get("affiliations"):
-                author_data["affiliations"] = author["affiliations"]
-            if author.get("homepage"):
-                author_data["homepage"] = author["homepage"]
-
-            authors.append(author_data)
-
-        # Extract external IDs
-        external_ids = response.get("externalIds", {})
-
-        # Extract open access PDF
-        oa_pdf = response.get("openAccessPdf")
-        oa_pdf_url = oa_pdf.get("url") if oa_pdf else None
-
-        # Extract journal information
-        journal = response.get("journal")
-        journal_info = None
-        if journal:
-            journal_info = {
-                "name": journal.get("name"),
-                "volume": journal.get("volume"),
-                "pages": journal.get("pages"),
-            }
-
-        # Extract TL;DR summary
-        tldr = response.get("tldr")
-        tldr_text = tldr.get("text") if tldr else None
-
-        return {
-            "source": "semantic_scholar",
-            "s2_paper_id": response.get("paperId"),
-            "corpus_id": response.get("corpusId"),
-            "title": response.get("title"),
-            "abstract": response.get("abstract"),
-            "venue": response.get("venue"),
-            "year": response.get("year"),
-            "publication_date": response.get("publicationDate"),
-            "citation_count": response.get("citationCount", 0),
-            "influential_citation_count": response.get("influentialCitationCount", 0),
-            "reference_count": response.get("referenceCount", 0),
-            "authors": authors if authors else None,
-            "fields_of_study": response.get("fieldsOfStudy"),
-            "s2_fields_of_study": response.get("s2FieldsOfStudy"),
-            "publication_types": response.get("publicationTypes"),
-            "journal": journal_info,
-            "external_ids": external_ids if external_ids else None,
-            "open_access_pdf_url": oa_pdf_url,
-            "tldr": tldr_text,
-        }
 
     def enrich_batch(
         self, identifiers: list[str], use_cache: bool = True, **kwargs: Any
@@ -369,51 +371,47 @@ class SemanticScholarClient(BaseEnrichmentClient):
         for i in range(0, len(identifiers), batch_size):
             batch = identifiers[i : i + batch_size]
 
-            # Define comprehensive fields for batch request
-            fields = [
-                "title",
-                "abstract",
-                "venue",
-                "year",
-                "citationCount",
-                "influentialCitationCount",
-                "authors",
-                "authors.affiliations",  # Request author affiliations explicitly
-                "fieldsOfStudy",
-                "externalIds",
-                "paperId",
-                "corpusId",
-                "referenceCount",
-                "openAccessPdf",
-                "publicationTypes",
-                "publicationDate",
-                "journal",
-                "tldr",
-            ]
+            # Use professional client for batch retrieval
+            try:
+                papers_result = self._pro_client.get_papers(
+                    paper_ids=batch,
+                    fields=[
+                        "title",
+                        "abstract",
+                        "venue",
+                        "year",
+                        "citationCount",
+                        "influentialCitationCount",
+                        "authors",
+                        "authors.affiliations",
+                        "fieldsOfStudy",
+                        "externalIds",
+                        "paperId",
+                        "corpusId",
+                        "referenceCount",
+                        "openAccessPdf",
+                        "publicationTypes",
+                        "publicationDate",
+                        "journal",
+                        "tldr",
+                        "s2FieldsOfStudy",
+                    ],
+                )
 
-            params = {"fields": ",".join(fields)}
-            json_data = {"ids": batch}
+                # Handle both return types: list (default) or tuple (return_not_found=True)
+                if isinstance(papers_result, tuple):
+                    papers_list, _ = papers_result
+                else:
+                    papers_list = papers_result
 
-            response = self._make_post_request(
-                endpoint="paper/batch", params=params, json_data=json_data, use_cache=use_cache
-            )
+                for paper in papers_list:
+                    if paper:
+                        paper_id = paper.get("s2_paper_id")
+                        doi = paper.get("external_ids", {}).get("DOI")
+                        results[paper_id or doi] = paper
 
-            if response and isinstance(response, list):
-                for item in response:
-                    if isinstance(item, dict):
-                        paper_id = item.get("paperId")
-                        if paper_id and isinstance(paper_id, str):
-                            parsed = self._parse_semantic_scholar_response(item)
-                            results[paper_id] = parsed
-                        else:
-                            # If no paperId, try to match by external IDs
-                            external_ids = item.get("externalIds", {})
-                            doi = external_ids.get("DOI")
-                            if doi and isinstance(doi, str):
-                                parsed = self._parse_semantic_scholar_response(item)
-                                results[doi] = parsed
-            else:
-                logger.warning(f"Batch request failed for batch starting at index {i}")
+            except Exception as e:
+                logger.warning(f"Batch request failed for batch starting at index {i}: {e}")
 
         return results
 
@@ -446,45 +444,33 @@ class SemanticScholarClient(BaseEnrichmentClient):
             - h_index: H-index
             - external_ids: External identifiers
         """
-        fields = [
-            "name",
-            "url",
-            "affiliations",
-            "homepage",
-            "paperCount",
-            "citationCount",
-            "hIndex",
-            "externalIds",
-        ]
-
-        params = {"fields": ",".join(fields)}
-        response = self._make_request(
-            endpoint=f"author/{author_id}", params=params, use_cache=use_cache
-        )
-
-        if response is None:
-            logger.warning(f"No data found for author: {author_id}")
-            return None
-
         try:
-            return {
-                "source": "semantic_scholar",
-                "author_id": response.get("authorId"),
-                "name": response.get("name"),
-                "url": response.get("url"),
-                "affiliations": response.get("affiliations"),
-                "homepage": response.get("homepage"),
-                "paper_count": response.get("paperCount"),
-                "citation_count": response.get("citationCount"),
-                "h_index": response.get("hIndex"),
-                "external_ids": response.get("externalIds"),
-            }
+            result = self._pro_client.get_author(
+                author_id=author_id,
+                fields=[
+                    "name",
+                    "url",
+                    "affiliations",
+                    "homepage",
+                    "paperCount",
+                    "citationCount",
+                    "hIndex",
+                    "externalIds",
+                ],
+            )
+            return result
+
         except Exception as e:
-            logger.error(f"Error parsing author response for {author_id}: {e}")
+            logger.error(f"Error enriching author {author_id}: {e}")
             return None
 
     def search_papers(
-        self, query: str, limit: int = 100, use_cache: bool = True, **kwargs: Any
+        self,
+        query: str,
+        limit: int = 100,
+        use_cache: bool = True,
+        bulk: bool = False,
+        **kwargs: Any,
     ) -> list[dict[str, Any]]:
         """
         Search for papers using Semantic Scholar's relevance search.
@@ -497,6 +483,8 @@ class SemanticScholarClient(BaseEnrichmentClient):
             Maximum number of results (default: 100, max: 1000)
         use_cache : bool, optional
             Whether to use cached results (default: True)
+        bulk : bool, optional
+            Use bulk retrieval (faster, no relevance ranking, up to 10M results)
         **kwargs
             Additional search parameters (year, venue, fieldsOfStudy, etc.)
 
@@ -527,20 +515,31 @@ class SemanticScholarClient(BaseEnrichmentClient):
             if key in valid_keys:
                 params[key] = value
 
-        response = self._make_request(endpoint="paper/search", params=params, use_cache=use_cache)
-
-        if response is None:
-            logger.warning(f"No search results for query: {query}")
-            return []
-
         try:
-            data = response.get("data", [])
-            results = []
-            for item in data:
-                if isinstance(item, dict):
-                    parsed = self._parse_semantic_scholar_response(item)
-                    results.append(parsed)
+            results = self._pro_client.search_paper(
+                query=query,
+                year=kwargs.get("year"),
+                venue=kwargs.get("venue"),
+                fields_of_study=kwargs.get("fieldsOfStudy"),
+                min_citation_count=kwargs.get("minCitationCount"),
+                publication_date_or_year=kwargs.get("publicationDateOrYear"),
+                limit=min(limit, 100),
+                fields=[
+                    "title",
+                    "abstract",
+                    "venue",
+                    "year",
+                    "citationCount",
+                    "influentialCitationCount",
+                    "authors",
+                    "fieldsOfStudy",
+                    "externalIds",
+                    "paperId",
+                ],
+                bulk=bulk,
+            )
             return results
+
         except Exception as e:
-            logger.error(f"Error parsing search response for query '{query}': {e}")
+            logger.error(f"Error searching papers for query '{query}': {e}")
             return []

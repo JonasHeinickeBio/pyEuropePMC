@@ -1,4 +1,5 @@
 import pandas as pd
+
 from pyeuropepmc.utils import export
 
 SAMPLE_RESULTS = [

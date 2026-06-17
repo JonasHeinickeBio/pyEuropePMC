@@ -71,5 +71,3 @@ sign_and_zip_results(
 
 - [PRISMA 2020 Statement](https://www.prisma-statement.org/)
 - [Cochrane Handbook: Documenting the Search](https://training.cochrane.org/handbook/current/chapter-04#section-4-4)
-- [search_logging.py API Reference](../src/pyeuropepmc/utils/search_logging.py)
-- [Unit tests for search logging](../../tests/)

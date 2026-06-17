@@ -2,10 +2,17 @@
 Extra coverage tests for pyeuropepmc.exceptions.py
 """
 import pytest
-from pyeuropepmc.core.exceptions import (
-    PyEuropePMCError, APIClientError, SearchError, FullTextError, ParsingError, ValidationError, ConfigurationError
-)
+
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import (
+    ConfigurationError,
+    FullTextError,
+    ParsingError,
+    PyEuropePMCError,
+    SearchError,
+    ValidationError,
+)
+
 
 def test_value_error_if_no_code_or_message():
     with pytest.raises(ValueError):

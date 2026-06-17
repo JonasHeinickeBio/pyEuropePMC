@@ -1,0 +1,37 @@
+{
+  "title": "PyEuropePMC Documentation",
+  "description": "A comprehensive Python toolkit for searching, retrieving, and analyzing biomedical literature from Europe PMC",
+  "author": "Jonas Heinicke",
+  "language": "en",
+  "gitbook": ">=3.2.0",
+  "links": {
+    "sidebar": {
+      "GitHub": "https://github.com/JonasHeinickeBio/pyEuropePMC"
+    }
+  },
+  "plugins": [
+    "search-pro",
+    "expandable-chapters",
+    "splitter",
+    "anchors",
+    "copy-code",
+    "edit-link",
+    "prism",
+    "-lunr",
+    "-search"
+  ],
+  "pluginsConfig": {
+    "edit-link": {
+      "base": "https://github.com/JonasHeinickeBio/pyEuropePMC/edit/main/docs",
+      "label": "Edit This Page"
+    },
+    "prism": {
+      "lang": {
+        "toml": "ini"
+      }
+    }
+  },
+  "styles": {
+    "website": "styles/website.css"
+  }
+}

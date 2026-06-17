@@ -15,8 +15,9 @@ Note: These tests make real API calls and may be slow. They are marked with
 from __future__ import annotations
 
 import logging
-import pytest
 import time
+
+import pytest
 
 from pyeuropepmc import QueryBuilder, SearchClient
 

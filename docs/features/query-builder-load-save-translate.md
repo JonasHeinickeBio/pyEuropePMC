@@ -160,7 +160,7 @@ print(f"F1 Score: {results['f1_score']:.2f}")
 
 ## Workflow Examples
 
-### Round-Trip: Load → Translate → Save
+### Round-Trip: Load -> Translate -> Save
 
 ```python
 from pyeuropepmc import QueryBuilder
@@ -178,7 +178,7 @@ qb_wos = QueryBuilder.from_string(wos_query, platform="wos")
 qb_wos.save("wos-search.json", platform="wos")
 ```
 
-### Build → Save → Load
+### Build -> Save -> Load
 
 ```python
 from pyeuropepmc import QueryBuilder

@@ -3,17 +3,17 @@ Functional tests for FullTextClient with real API calls.
 These tests require network access and interact with the real Europe PMC API.
 """
 
-import tempfile
 from pathlib import Path
-from unittest.mock import patch, Mock, mock_open
+import tempfile
+from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-from pyeuropepmc.clients.fulltext import FullTextClient
-from pyeuropepmc.core.exceptions import FullTextError
-from pyeuropepmc.clients.search import SearchClient
 from pyeuropepmc.clients.ftp_downloader import FTPDownloader
+from pyeuropepmc.clients.fulltext import FullTextClient
+from pyeuropepmc.clients.search import SearchClient
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import FullTextError
 
 pytestmark = pytest.mark.functional
 
@@ -108,7 +108,7 @@ class TestFullTextClientFunctional:
             assert result == output_path
             assert output_path.exists()
             assert output_path.stat().st_size > 100
-            with open(output_path, "r", encoding="utf-8") as f:
+            with open(output_path, encoding="utf-8") as f:
                 content = f.read()
                 logger.info(f"First 200 chars of XML: {content[:200]}")
                 assert content.strip().startswith("<")
@@ -125,7 +125,7 @@ class TestFullTextClientFunctional:
             logger.info(f"Download result: {result}")
             assert result == output_path
             assert output_path.exists()
-            with open(output_path, "r", encoding="utf-8") as f:
+            with open(output_path, encoding="utf-8") as f:
                 content = f.read()
                 logger.info(f"First 200 chars of XML: {content[:200]}")
                 assert content.strip().startswith("<")
@@ -340,7 +340,7 @@ class TestFullTextClientFunctional:
             result = self.client.download_xml_by_pmcid("3257301", output_path)
             assert result == output_path
             assert output_path.exists()
-            with open(output_path, "r", encoding="utf-8") as f:
+            with open(output_path, encoding="utf-8") as f:
                 content = f.read()
                 assert content.strip().startswith("<"), "Downloaded file should be XML"
 
@@ -401,7 +401,7 @@ class TestFullTextClientFunctional:
                         logger.info(f"Download result: {result}")
                         assert result == output_path
                         assert output_path.exists()
-                        with open(output_path, "r", encoding="utf-8") as f:
+                        with open(output_path, encoding="utf-8") as f:
                             content = f.read()
                             logger.info(f"First 200 chars of XML for PMC{pmcid}: {content[:200]}")
                             assert content.strip().startswith("<"), (

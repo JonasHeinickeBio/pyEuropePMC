@@ -217,11 +217,11 @@ print(f"L2 Size: {l2_stats['size_mb']:.1f} MB")
 health = cache.get_health()
 
 if health['status'] == 'healthy':
-    print("✅ Cache operating normally")
+    print("Cache operating normally")
 elif health['status'] == 'warning':
-    print(f"⚠️  Warnings: {health['warnings']}")
+    print(f"Warnings: {health['warnings']}")
 else:
-    print(f"❌ Critical: {health['warnings']}")
+    print(f"Critical: {health['warnings']}")
 
 print(f"Size Utilization: {health['size_utilization']:.1%}")
 print(f"Error Rate: {health['error_rate']:.1%}")
@@ -522,6 +522,3 @@ class ArtifactStore:
 ## See Also
 
 - [Advanced Cache Demo](../../examples/06-caching/02-advanced-cache-demo.py)
-- [Cache API Reference](../api/cache.md)
-- [Artifact Storage API Reference](../api/artifact-store.md)
-- [Performance Benchmarks](../../examples/06-caching/performance-benchmark.py)

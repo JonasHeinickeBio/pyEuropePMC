@@ -1,9 +1,11 @@
-import pytest
-from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
-import os
 import json
 import logging
+import os
+
+import pytest
+
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("parser_functional_test")
@@ -31,7 +33,7 @@ def get_fulltext_pdf_files():
 @pytest.mark.parametrize("filename", get_json_files())
 def test_parse_json_fixture(filename):
     path = os.path.join(FIXTURE_DIR, filename)
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         data = json.load(f)
     try:
         results = EuropePMCParser.parse_json(data)
@@ -49,7 +51,7 @@ def test_parse_json_fixture(filename):
 @pytest.mark.parametrize("filename", get_xml_files())
 def test_parse_xml_fixture(filename):
     path = os.path.join(FIXTURE_DIR, filename)
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         xml_str = f.read()
     try:
         results = EuropePMCParser.parse_xml(xml_str)
@@ -67,7 +69,7 @@ def test_parse_xml_fixture(filename):
 @pytest.mark.parametrize("filename", get_dc_files())
 def test_parse_dc_fixture(filename):
     path = os.path.join(FIXTURE_DIR, filename)
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         dc_str = f.read()
     try:
         results = EuropePMCParser.parse_dc(dc_str)
@@ -85,7 +87,7 @@ def test_parse_dc_fixture(filename):
 @pytest.mark.parametrize("filename", get_fulltext_xml_files())
 def test_parse_fulltext_xml(filename):
     path = os.path.join(FULLTEXT_DIR, filename)
-    with open(path, "r", encoding="utf-8") as f:
+    with open(path, encoding="utf-8") as f:
         xml_str = f.read()
     try:
         results = EuropePMCParser.parse_xml(xml_str)

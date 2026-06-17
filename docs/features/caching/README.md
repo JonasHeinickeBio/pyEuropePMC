@@ -4,12 +4,12 @@ PyEuropePMC provides **smart automatic caching** to improve performance and redu
 
 ## Overview
 
-- 🚀 **Automatic caching** - Enabled by default for SearchClient and FullTextClient
-- 💾 **Disk-based persistence** - Cache survives program restarts
-- ⏰ **TTL support** - Configurable time-to-live for cached data
-- 🔄 **Cache invalidation** - Manual and automatic cache clearing
-- 📊 **Memory efficient** - Optimized storage for large datasets
-- ⚙️ **Configurable** - Customize cache behavior per client
+- **Automatic caching** - Enabled by default for SearchClient and FullTextClient
+- **Disk-based persistence** - Cache survives program restarts
+- **TTL support** - Configurable time-to-live for cached data
+- **Cache invalidation** - Manual and automatic cache clearing
+- **Memory efficient** - Optimized storage for large datasets
+- **Configurable** - Customize cache behavior per client
 
 ## Quick Start
 
@@ -414,7 +414,7 @@ print(f"Speedup: {speedup:.1f}x faster with cache")
 ### 1. Use Caching in Development
 
 ```python
-# ✅ Keep cache during development
+# Good: Keep cache during development
 with SearchClient(cache_ttl=None) as client:
     results = client.search("test query")
 ```
@@ -422,11 +422,11 @@ with SearchClient(cache_ttl=None) as client:
 ### 2. Set Appropriate TTL for Production
 
 ```python
-# ✅ Short TTL for real-time data
+# Good: Short TTL for real-time data
 with SearchClient(cache_ttl=300) as client:  # 5 minutes
     results = client.search("latest research")
 
-# ✅ Longer TTL for historical data
+# Good: Longer TTL for historical data
 with SearchClient(cache_ttl=86400) as client:  # 24 hours
     results = client.search("historical data")
 ```
@@ -434,7 +434,7 @@ with SearchClient(cache_ttl=86400) as client:  # 24 hours
 ### 3. Clear Cache When Schema Changes
 
 ```python
-# ✅ Clear cache after library updates
+# Good: Clear cache after library updates
 from pyeuropepmc import SearchClient
 
 with SearchClient() as client:
@@ -445,7 +445,7 @@ with SearchClient() as client:
 ### 4. Monitor Cache Size
 
 ```python
-# ✅ Periodically check cache size
+# Good: Periodically check cache size
 import os
 from pyeuropepmc import SearchClient
 
@@ -463,7 +463,7 @@ with SearchClient() as client:
 ### 5. Use Separate Caches for Different Projects
 
 ```python
-# ✅ Project-specific cache directories
+# Good: Project-specific cache directories
 with SearchClient(cache_dir="./project_a/cache") as client:
     results = client.search("project A query")
 
@@ -506,12 +506,5 @@ with SearchClient() as client:
 
 - **[API Reference: SearchClient](../../api/search-client.md#caching)** - Caching configuration
 - **[API Reference: FullTextClient](../../api/fulltext-client.md#caching)** - Full-text caching
-- **[Advanced: Performance](../../advanced/performance.md)** - Performance optimization
-- **[Examples: Caching](../../examples/basic-examples.md#caching)** - Code examples
-
----
-
-**Next Steps:**
-- Learn about [Search Features](../search/) that benefit from caching
-- Explore [Advanced Configuration](../../advanced/configuration.md) for fine-tuning
-- Read [Performance Guide](../../advanced/performance.md) for optimization tips
+- **[Examples](../../examples/)** - Code examples in the repository
+- **[Performance Tips](../search/#performance)** - Performance considerations

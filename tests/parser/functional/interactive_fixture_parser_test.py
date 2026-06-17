@@ -1,5 +1,7 @@
 import os
+
 from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
+
 
 def list_fixtures(fixture_dir):
     files = []
@@ -24,7 +26,7 @@ def interactive_fixture_parser_test():
         print("Invalid selection.")
         return
     import json
-    with open(fpath, "r", encoding="utf-8") as f:
+    with open(fpath, encoding="utf-8") as f:
         if fpath.endswith(".json"):
             try:
                 raw_input = json.load(f)

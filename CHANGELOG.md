@@ -2,6 +2,38 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [1.17.0] - 2026-06-17
+
+### 🐛 Bug Fixes
+
+- **Type Errors**: Fixed mypy type errors in search_logging.py and cache.py
+  - Added proper type annotations for optional cryptography and cachetools imports
+  - Removed unused `type: ignore` comments
+
+- **Test Failures**: Fixed test assertions in test_helpers_coverage.py
+  - Updated error message assertions to match actual validation error messages
+  - Changed "Failed to read JSON file" to "JSON file not found" for VALID004
+  - Changed "Failed to parse JSON file" for VALID005 validation error
+
+### ✨ Features
+
+- **Documentation Restructuring**: Complete overhaul of documentation organization
+  - Moved guides to docs/guides/, reference to docs/reference/, migration to docs/migration/
+  - Added comprehensive guides for Semantic Scholar API integration
+  - New documentation on professional library usage and rate limiting
+
+### 🔧 Maintenance
+
+- **Version Bump**: Updated to version 1.17.0
+  - Updated pyproject.toml version from 1.16.0 to 1.17.0
+  - Updated src/pyeuropepmc/__init__.py __version__ to 1.17.0
+  - Created git tag v1.17.0 for release
+
+- **Auto-formatting**: Applied ruff format across codebase
+  - Fixed import ordering in all test files
+  - Cleaned up unused imports
+  - Fixed trailing whitespace and EOF issues
+
 ## [1.15.0] - 2025-01-20
 
 ### ✨ Features

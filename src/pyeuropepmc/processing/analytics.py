@@ -8,7 +8,9 @@ to pandas DataFrames for further analysis.
 """
 
 from collections import Counter
+from itertools import combinations
 import logging
+import re
 from typing import Any, cast
 
 import pandas as pd
@@ -927,6 +929,782 @@ def _normalize_country(country: str) -> str:
     return country_mappings.get(country, country)
 
 
+def _count_access_types(df: pd.DataFrame, total: int) -> tuple[int, int]:
+    """Count open access and closed access papers."""
+    oa_col = df["isOpenAccess"] if "isOpenAccess" in df.columns else pd.Series(["N"] * total)
+    open_access_count = int((oa_col == "Y").sum())
+    closed_access_count = total - open_access_count
+    return open_access_count, closed_access_count
+
+
+def _count_fulltext_availability(
+    df: pd.DataFrame,
+    papers: list[dict[str, Any]] | pd.DataFrame,
+    total: int,
+) -> int:
+    """Count papers with fulltext available via API."""
+    has_fulltext = pd.Series([False] * total, index=df.index)
+    if "hasPDF" in df.columns:
+        has_fulltext = has_fulltext | df["hasPDF"].fillna(False).astype(bool)
+    if "inPMC" in df.columns:
+        has_fulltext = has_fulltext | df["inPMC"].fillna(False).astype(bool)
+    if "inEPMC" in df.columns:
+        has_fulltext = has_fulltext | df["inEPMC"].fillna(False).astype(bool)
+
+    if isinstance(papers, list):
+        for i, paper in enumerate(papers):
+            if i < total and paper.get("hasFullText") == "Y":
+                has_fulltext.iloc[i] = True
+
+    return int(has_fulltext.sum())
+
+
+def _count_license_distribution(
+    df: pd.DataFrame,
+    papers: list[dict[str, Any]] | pd.DataFrame,
+) -> dict[str, int]:
+    """Count and normalize license distribution from papers."""
+    license_dist: dict[str, int] = {}
+    if "license" in df.columns:
+        for lic in df["license"].dropna():
+            lic_str = str(lic).strip()
+            if lic_str and lic_str.lower() not in ("", "none", "null", "n/a"):
+                lic_normalized = _normalize_license(lic_str)
+                license_dist[lic_normalized] = license_dist.get(lic_normalized, 0) + 1
+
+    # For raw papers, also check for 'license' field at top level
+    if isinstance(papers, list) and not license_dist:
+        for paper in papers:
+            lic = paper.get("license", "")
+            if lic and str(lic).strip().lower() not in ("", "none", "null", "n/a"):
+                lic_normalized = _normalize_license(str(lic).strip())
+                license_dist[lic_normalized] = license_dist.get(lic_normalized, 0) + 1
+    return license_dist
+
+
+def _count_fulltext_breakdown(
+    df: pd.DataFrame, has_fulltext_api_count: int, total: int
+) -> dict[str, int]:
+    """Count fulltext availability breakdown by source type."""
+    breakdown: dict[str, int] = {"pdf": 0, "pmc": 0, "epmc": 0, "none": 0}
+    if "hasPDF" in df.columns:
+        breakdown["pdf"] = int(df["hasPDF"].fillna(False).astype(bool).sum())
+    if "inPMC" in df.columns:
+        breakdown["pmc"] = int(df["inPMC"].fillna(False).astype(bool).sum())
+    if "inEPMC" in df.columns:
+        breakdown["epmc"] = int(df["inEPMC"].fillna(False).astype(bool).sum())
+    breakdown["none"] = total - has_fulltext_api_count
+    return breakdown
+
+
+def access_distribution(
+    papers: list[dict[str, Any]] | pd.DataFrame,
+    top_n_licenses: int = 10,
+) -> dict[str, Any]:
+    """
+    Analyze access and license distribution of papers.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+    top_n_licenses : int, default=10
+        Number of top licenses to return.
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing access and license distribution:
+        - total_papers: Total number of papers
+        - open_access_count / open_access_percentage: OA stats
+        - closed_access_count / closed_access_percentage: Closed access stats
+        - has_fulltext_api_count / has_fulltext_api_percentage: Fulltext availability
+        - no_fulltext_api_count / no_fulltext_api_percentage: No fulltext
+        - license_distribution: All licenses with counts
+        - license_top_n: Top N licenses as pd.Series
+        - fulltext_availability_breakdown: PDF, HTML, PMC, none
+
+    Examples
+    --------
+    >>> from pyeuropepmc.processing.analytics import access_distribution
+    >>> stats = access_distribution(papers)
+    >>> print(f"Open access: {stats['open_access_percentage']:.1f}%")
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    if df.empty:
+        return {
+            "total_papers": 0,
+            "open_access_count": 0,
+            "open_access_percentage": 0.0,
+            "closed_access_count": 0,
+            "closed_access_percentage": 0.0,
+            "has_fulltext_api_count": 0,
+            "has_fulltext_api_percentage": 0.0,
+            "no_fulltext_api_count": 0,
+            "no_fulltext_api_percentage": 0.0,
+            "license_distribution": {},
+            "license_top_n": pd.Series(dtype=int),
+            "fulltext_availability_breakdown": {},
+        }
+
+    total = len(df)
+    open_access_count, closed_access_count = _count_access_types(df, total)
+    has_fulltext_api_count = _count_fulltext_availability(df, papers, total)
+    no_fulltext_api_count = total - has_fulltext_api_count
+    license_dist = _count_license_distribution(df, papers)
+    license_top_n = pd.Series(license_dist).sort_values(ascending=False).head(top_n_licenses)
+    fulltext_breakdown = _count_fulltext_breakdown(df, has_fulltext_api_count, total)
+
+    return {
+        "total_papers": total,
+        "open_access_count": open_access_count,
+        "open_access_percentage": round((open_access_count / total * 100), 2)
+        if total > 0
+        else 0.0,
+        "closed_access_count": closed_access_count,
+        "closed_access_percentage": round((closed_access_count / total * 100), 2)
+        if total > 0
+        else 0.0,
+        "has_fulltext_api_count": has_fulltext_api_count,
+        "has_fulltext_api_percentage": round((has_fulltext_api_count / total * 100), 2)
+        if total > 0
+        else 0.0,
+        "no_fulltext_api_count": no_fulltext_api_count,
+        "no_fulltext_api_percentage": round((no_fulltext_api_count / total * 100), 2)
+        if total > 0
+        else 0.0,
+        "license_distribution": license_dist,
+        "license_top_n": license_top_n,
+        "fulltext_availability_breakdown": fulltext_breakdown,
+    }
+
+
+def _normalize_license(license_str: str) -> str:
+    """Normalize license string to common categories."""
+    lic_lower = license_str.lower().strip()
+
+    # Map common license variations to standard categories
+    if "cc-by" in lic_lower and "nc" not in lic_lower and "nd" not in lic_lower:
+        return "CC-BY"
+    elif "cc-by-nc" in lic_lower and "nd" not in lic_lower:
+        return "CC-BY-NC"
+    elif "cc-by-nc-nd" in lic_lower:
+        return "CC-BY-NC-ND"
+    elif "cc-by-nd" in lic_lower:
+        return "CC-BY-ND"
+    elif "cc0" in lic_lower:
+        return "CC0"
+    elif "cc-by-sa" in lic_lower:
+        return "CC-BY-SA"
+    elif "public domain" in lic_lower or lic_lower == "pd":
+        return "Public Domain"
+    elif "publisher" in lic_lower or "copyright" in lic_lower:
+        return "Publisher"
+    elif "open access" in lic_lower:
+        return "Open Access"
+    elif "creative commons" in lic_lower:
+        return "Creative Commons (other)"
+    else:
+        return license_str.strip() if license_str.strip() else "Unknown"
+
+
+def citation_by_access_type(
+    papers: list[dict[str, Any]] | pd.DataFrame,
+) -> dict[str, Any]:
+    """
+    Compare citation impact between open access and closed access papers.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing citation comparison by access type:
+        - open_access / closed_access: Stats per group
+          (count, mean, median, std, total, distribution)
+        - effect_size: Cohen's d effect size
+        - is_significant: Whether difference is statistically significant (p < 0.05)
+        - citation_impact_score: OA advantage as percentage
+
+    Examples
+    --------
+    >>> from pyeuropepmc.processing.analytics import citation_by_access_type
+    >>> result = citation_by_access_type(papers)
+    >>> print(f"OA advantage: {result['citation_impact_score']:.1f}%")
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    empty_group = {
+        "count": 0,
+        "mean_citations": 0.0,
+        "median_citations": 0.0,
+        "std_citations": 0.0,
+        "total_citations": 0,
+        "distribution": {},
+    }
+
+    if df.empty or "citedByCount" not in df.columns or "isOpenAccess" not in df.columns:
+        return {
+            "open_access": empty_group,
+            "closed_access": empty_group,
+            "effect_size": 0.0,
+            "is_significant": False,
+            "citation_impact_score": 0.0,
+        }
+
+    citations = df["citedByCount"].astype(int)
+    oa_mask = df["isOpenAccess"] == "Y"
+
+    oa_citations = citations[oa_mask]
+    closed_citations = citations[~oa_mask]
+
+    def _group_stats(cits: pd.Series) -> dict[str, Any]:
+        if cits.empty:
+            return dict(empty_group)
+        return {
+            "count": int(len(cits)),
+            "mean_citations": float(cits.mean()),
+            "median_citations": float(cits.median()),
+            "std_citations": float(cits.std()) if len(cits) > 1 else 0.0,
+            "total_citations": int(cits.sum()),
+            "distribution": {
+                "25th_percentile": float(cits.quantile(0.25)),
+                "50th_percentile": float(cits.quantile(0.50)),
+                "75th_percentile": float(cits.quantile(0.75)),
+                "90th_percentile": float(cits.quantile(0.90)),
+            },
+        }
+
+    oa_stats = _group_stats(oa_citations)
+    closed_stats = _group_stats(closed_citations)
+
+    # Cohen's d effect size
+    effect_size = 0.0
+    is_significant = False
+    if oa_stats["count"] > 1 and closed_stats["count"] > 1:
+        pooled_std = (
+            (
+                oa_stats["std_citations"] ** 2 * (oa_stats["count"] - 1)
+                + closed_stats["std_citations"] ** 2 * (closed_stats["count"] - 1)
+            )
+            / (oa_stats["count"] + closed_stats["count"] - 2)
+        ) ** 0.5
+        if pooled_std > 0:
+            effect_size = (
+                oa_stats["mean_citations"] - closed_stats["mean_citations"]
+            ) / pooled_std
+
+        # Welch's t-test
+        try:
+            import scipy.stats as stats
+
+            t_stat, p_value = stats.ttest_ind(
+                oa_citations.values, closed_citations.values, equal_var=False
+            )
+            is_significant = p_value < 0.05
+        except ImportError:
+            # Fallback: rough significance check based on effect size
+            is_significant = abs(effect_size) > 0.5
+
+    # Citation impact score (OA advantage percentage)
+    citation_impact_score = 0.0
+    if closed_stats["mean_citations"] > 0:
+        citation_impact_score = round(
+            (
+                (oa_stats["mean_citations"] - closed_stats["mean_citations"])
+                / closed_stats["mean_citations"]
+                * 100
+            ),
+            2,
+        )
+
+    return {
+        "open_access": oa_stats,
+        "closed_access": closed_stats,
+        "effect_size": round(effect_size, 4),
+        "is_significant": is_significant,
+        "citation_impact_score": citation_impact_score,
+    }
+
+
+def disease_comparison_trends(
+    papers: list[dict[str, Any]] | pd.DataFrame,
+    disease_terms: dict[str, list[str]],
+) -> dict[str, Any]:
+    """
+    Compare publication trends across different diseases/conditions.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+    disease_terms : dict[str, list[str]]
+        Dictionary mapping disease keys to lists of search terms.
+        Example: {"ME/CFS": ["ME/CFS", "myalgic encephalomyelitis"], "Long-COVID": ["long COVID"]}
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing trend comparison per disease and combined:
+        - Each disease key: publications_by_year, total_publications, growth_rate
+        - comparison: when_disease_b_overtook_a, ratio_at_crossover, combined_trend
+
+    Examples
+    --------
+    >>> from pyeuropepmc.processing.analytics import disease_comparison_trends
+    >>> result = disease_comparison_trends(papers, {
+    ...     "ME/CFS": ["ME/CFS", "chronic fatigue syndrome"],
+    ...     "Long-COVID": ["long COVID", "post-acute sequelae"]
+    ... })
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    empty_disease = {
+        "publications_by_year": {},
+        "total_publications": 0,
+        "growth_rate": 0.0,
+    }
+
+    if df.empty or "title" not in df.columns:
+        return {
+            **{k: dict(empty_disease) for k in disease_terms},
+            "comparison": {
+                "when_disease_b_overtook_a": None,
+                "ratio_at_crossover": 0.0,
+                "combined_trend": {},
+            },
+        }
+
+    # Prepare text for matching: combine title + abstract
+    df_text = df[["title", "pubYear"]].copy()
+    if "abstractText" in df.columns:
+        df_text["abstractText"] = df["abstractText"]
+    else:
+        df_text["abstractText"] = ""
+    df_text["combined_text"] = (
+        df_text["title"].fillna("").str.lower()
+        + " "
+        + df_text["abstractText"].fillna("").str.lower()
+    )
+    df_text["pubYear"] = pd.to_numeric(df_text["pubYear"], errors="coerce")
+
+    disease_results: dict[str, dict[str, Any]] = {}
+    combined_trend: dict[int, int] = {}
+
+    for disease_key, terms in disease_terms.items():
+        # Create regex pattern for matching
+        pattern = "|".join(re.escape(term.lower()) for term in terms)
+        mask = df_text["combined_text"].str.contains(pattern, regex=True, na=False)
+
+        matched = df_text[mask].dropna(subset=["pubYear"])
+        total = len(matched)
+
+        # Publications by year
+        pubs_by_year: dict[int, int] = {}
+        if not matched.empty:
+            year_counts = matched["pubYear"].astype(int).value_counts()
+            pubs_by_year = {int(y): int(c) for y, c in year_counts.items()}
+            # Update combined trend
+            for year, count in pubs_by_year.items():
+                combined_trend[year] = combined_trend.get(year, 0) + count
+
+        # Calculate YoY growth rate
+        growth_rate = 0.0
+        sorted_years = sorted(pubs_by_year.keys())
+        if len(sorted_years) >= 2:
+            first_year_count = pubs_by_year[sorted_years[0]]
+            last_year_count = pubs_by_year[sorted_years[-1]]
+            num_years = sorted_years[-1] - sorted_years[0]
+            if first_year_count > 0 and num_years > 0:
+                growth_rate = round(
+                    ((last_year_count / first_year_count) ** (1.0 / num_years) - 1) * 100, 2
+                )
+
+        disease_results[disease_key] = {
+            "publications_by_year": pubs_by_year,
+            "total_publications": total,
+            "growth_rate": growth_rate,
+        }
+
+    # Comparison: check if disease_b overtook disease_a
+    disease_keys = list(disease_terms.keys())
+    overtaken_year: int | None = None
+    ratio_at_crossover = 0.0
+
+    if len(disease_keys) >= 2:
+        a_key, b_key = disease_keys[0], disease_keys[1]
+        a_years = disease_results[a_key]["publications_by_year"]
+        b_years = disease_results[b_key]["publications_by_year"]
+
+        all_years = sorted(set(a_years.keys()) | set(b_years.keys()))
+        prev_ratio = 0.0
+        for year in all_years:
+            a_count = a_years.get(year, 0)
+            b_count = b_years.get(year, 0)
+            ratio = b_count / a_count if a_count > 0 else float("inf") if b_count > 0 else 0.0
+
+            # Detect crossover: b goes from below a to above a
+            if prev_ratio < 1.0 and ratio >= 1.0 and overtaken_year is None:
+                overtaken_year = year
+                ratio_at_crossover = round(ratio, 4)
+            prev_ratio = ratio
+
+    return {
+        **disease_results,
+        "comparison": {
+            "when_disease_b_overtook_a": overtaken_year,
+            "ratio_at_crossover": ratio_at_crossover,
+            "combined_trend": combined_trend,
+        },
+    }
+
+
+def author_collaboration_network(
+    papers: list[dict[str, Any]] | pd.DataFrame,
+    top_n: int = 10,
+) -> dict[str, Any]:
+    """
+    Analyze author collaboration networks from co-authorship patterns.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+    top_n : int, default=10
+        Number of top authors and network nodes to analyze.
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing collaboration network analysis:
+        - network_stats: total_authors, total_collaborations, avg_authors_per_paper, etc.
+        - top_authors: pd.Series of most prolific authors
+        - collaboration_matrix: pd.DataFrame of co-authorship counts
+        - centrality_metrics: dict of degree centrality per author
+        - core_researchers: list of highly connected authors
+        - research_groups: list of author clusters
+
+    Examples
+    --------
+    >>> from pyeuropepmc.processing.analytics import author_collaboration_network
+    >>> net = author_collaboration_network(papers)
+    >>> print(f"Core researchers: {net['core_researchers']}")
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    empty_result = {
+        "network_stats": {
+            "total_authors": 0,
+            "total_collaborations": 0,
+            "avg_authors_per_paper": 0.0,
+            "single_author_papers": 0,
+            "multi_author_papers": 0,
+        },
+        "top_authors": pd.Series(dtype=int),
+        "collaboration_matrix": pd.DataFrame(),
+        "centrality_metrics": {},
+        "core_researchers": [],
+        "research_groups": [],
+    }
+
+    if df.empty or "authorString" not in df.columns:
+        return empty_result
+
+    # Parse authors per paper
+    all_author_mentions: list[str] = []
+    author_counts_per_paper: list[int] = []
+    paper_authors: list[list[str]] = []
+
+    for author_str in df["authorString"].dropna():
+        if author_str and str(author_str).strip():
+            authors = [a.strip() for a in str(author_str).split(",") if a.strip()]
+            all_author_mentions.extend(authors)
+            author_counts_per_paper.append(len(authors))
+            paper_authors.append(authors)
+        else:
+            author_counts_per_paper.append(0)
+            paper_authors.append([])
+
+    if not all_author_mentions:
+        return empty_result
+
+    total_authors = len(set(all_author_mentions))
+    single_author = sum(1 for c in author_counts_per_paper if c <= 1)
+    multi_author = sum(1 for c in author_counts_per_paper if c > 1)
+    avg_authors = len(all_author_mentions) / len(df) if len(df) > 0 else 0.0
+
+    # Top authors
+    author_freq = pd.Series(Counter(all_author_mentions)).sort_values(ascending=False)
+    top_authors = author_freq.head(top_n)
+
+    # Build collaboration pairs
+    collaboration_pairs: Counter[tuple[str, str]] = Counter()
+    for authors in paper_authors:
+        if len(authors) >= 2:
+            # Sort pair to avoid duplicates (A,B) == (B,A)
+            for a1, a2 in combinations(sorted(set(authors)), 2):
+                collaboration_pairs[(a1, a2)] += 1
+
+    total_collaborations = sum(collaboration_pairs.values())
+
+    # Build collaboration matrix for top authors only
+    top_author_names = list(top_authors.index)
+    collab_matrix = pd.DataFrame(0, index=top_author_names, columns=top_author_names)
+    for (a1, a2), count in collaboration_pairs.items():
+        if a1 in top_author_names and a2 in top_author_names:
+            collab_matrix.loc[a1, a2] = count
+            collab_matrix.loc[a2, a1] = count
+
+    # Centrality metrics (degree-based, simple)
+    degree_counts: dict[str, int] = Counter()
+    for a1, a2 in collaboration_pairs:
+        degree_counts[a1] += 1
+        degree_counts[a2] += 1
+
+    max_degree = max(degree_counts.values()) if degree_counts else 1
+    centrality_metrics = {
+        author: round(degree_counts.get(author, 0) / max_degree, 4) for author in top_author_names
+    }
+
+    # Core researchers: authors with degree > median degree
+    if degree_counts:
+        median_degree = sorted(degree_counts.values())[len(degree_counts) // 2]
+        core_threshold = max(median_degree, 2)
+        core_researchers = [
+            author
+            for author, deg in degree_counts.items()
+            if deg >= core_threshold and author in top_author_names
+        ]
+    else:
+        core_researchers = []
+
+    # Research groups: connected components from top authors (simple greedy clustering)
+    research_groups = _find_research_groups(collaboration_pairs, top_author_names)
+
+    return {
+        "network_stats": {
+            "total_authors": total_authors,
+            "total_collaborations": total_collaborations,
+            "avg_authors_per_paper": round(avg_authors, 2),
+            "single_author_papers": single_author,
+            "multi_author_papers": multi_author,
+        },
+        "top_authors": top_authors,
+        "collaboration_matrix": collab_matrix,
+        "centrality_metrics": centrality_metrics,
+        "core_researchers": core_researchers,
+        "research_groups": research_groups,
+    }
+
+
+def _find_research_groups(
+    collaboration_pairs: Counter[tuple[str, str]],
+    top_author_names: list[str],
+) -> list[list[str]]:
+    """Find research groups using union-find on collaboration pairs."""
+    parent: dict[str, str] = {a: a for a in top_author_names}
+
+    def find(x: str) -> str:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(x: str, y: str) -> None:
+        rx, ry = find(x), find(y)
+        if rx != ry:
+            parent[rx] = ry
+
+    for a1, a2 in collaboration_pairs:
+        if a1 in parent and a2 in parent:
+            union(a1, a2)
+
+    groups: dict[str, list[str]] = {}
+    for author in top_author_names:
+        root = find(author)
+        groups.setdefault(root, []).append(author)
+
+    return [group for group in groups.values() if len(group) > 1]
+
+
+def _extract_agencies_from_grants_str(grants_str: str) -> list[str]:
+    """Parse semicolon-separated grant agencies from a string."""
+    return [
+        a.strip()
+        for a in str(grants_str).split(";")
+        if a.strip() and a.strip().lower() not in ("", "none", "n/a")
+    ]
+
+
+def _parse_funding_from_df(
+    df: pd.DataFrame,
+) -> tuple[Counter[str], int, int, dict[int, Counter[str]]]:
+    """Extract funding info from a DataFrame's grants column.
+
+    Returns (funder_counter, funded_count, multi_funder_count, funding_by_year).
+    """
+    funder_counter: Counter[str] = Counter()
+    funded_count = 0
+    multi_funder_count = 0
+    funding_by_year: dict[int, Counter[str]] = {}
+
+    for _, row in df.iterrows():
+        grants_str = row.get("grants", "")
+        if not grants_str or str(grants_str).strip() == "":
+            continue
+
+        agencies = _extract_agencies_from_grants_str(grants_str)
+        if not agencies:
+            continue
+
+        funded_count += 1
+        if len(agencies) > 1:
+            multi_funder_count += 1
+        _update_funder_counts(
+            agencies,
+            funder_counter,
+            funding_by_year,
+            row.get("pubYear"),
+        )
+
+    return funder_counter, funded_count, multi_funder_count, funding_by_year
+
+
+def _parse_funding_from_papers(
+    papers: list[dict[str, Any]],
+) -> tuple[Counter[str], int, int, dict[int, Counter[str]]]:
+    """Extract funding info from raw paper dicts via grantsList.
+
+    Returns (funder_counter, funded_count, multi_funder_count, funding_by_year).
+    """
+    funder_counter: Counter[str] = Counter()
+    funded_count = 0
+    multi_funder_count = 0
+    funding_by_year: dict[int, Counter[str]] = {}
+
+    for paper in papers:
+        grant_list = paper.get("grantsList", {}).get("grant", [])
+        if not isinstance(grant_list, list):
+            continue
+        agencies = [
+            g["agency"]
+            for g in grant_list
+            if isinstance(g, dict) and "agency" in g and g["agency"]
+        ]
+        if not agencies:
+            continue
+
+        funded_count += 1
+        if len(agencies) > 1:
+            multi_funder_count += 1
+        _update_funder_counts(
+            agencies,
+            funder_counter,
+            funding_by_year,
+            paper.get("pubYear"),
+        )
+
+    return funder_counter, funded_count, multi_funder_count, funding_by_year
+
+
+def _update_funder_counts(
+    agencies: list[str],
+    funder_counter: Counter[str],
+    funding_by_year: dict[int, Counter[str]],
+    pub_year: Any,
+) -> None:
+    """Update funder counts and yearly breakdown for a list of agencies."""
+    for agency in agencies:
+        funder_counter[agency] += 1
+        if pub_year and str(pub_year).strip():
+            try:
+                year = int(float(pub_year))
+                if year not in funding_by_year:
+                    funding_by_year[year] = Counter()
+                funding_by_year[year][agency] += 1
+            except (ValueError, TypeError):
+                pass
+
+
+def funding_source_analysis(
+    papers: list[dict[str, Any]] | pd.DataFrame,
+    top_n: int = 10,
+) -> dict[str, Any]:
+    """
+    Analyze funding source distribution and concentration.
+
+    Parameters
+    ----------
+    papers : list[dict[str, Any]] | pd.DataFrame
+        List of papers or DataFrame with paper data.
+    top_n : int, default=10
+        Number of top funders to return.
+
+    Returns
+    -------
+    dict[str, Any]
+        Dictionary containing funding analysis:
+        - total_funded_papers: Number of papers with funding
+        - funding_source_distribution: Agency -> count
+        - top_funders: pd.Series of top N funders
+        - concentration_index: Herfindahl-Hirschman Index (0-1)
+        - multi_funder_papers: Papers with multiple funders
+        - funding_by_year: Year -> funder -> count
+
+    Examples
+    --------
+    >>> from pyeuropepmc.processing.analytics import funding_source_analysis
+    >>> result = funding_source_analysis(papers)
+    >>> print(f"Top funder: {result['top_funders'].index[0]}")
+    """
+    df = to_dataframe(papers) if isinstance(papers, list) else papers
+
+    if df.empty:
+        return {
+            "total_funded_papers": 0,
+            "funding_source_distribution": {},
+            "top_funders": pd.Series(dtype=int),
+            "concentration_index": 0.0,
+            "multi_funder_papers": 0,
+            "funding_by_year": {},
+        }
+
+    funder_counter, funded_count, multi_funder_count, funding_by_year = _parse_funding_from_df(df)
+
+    # For raw papers, try grantsList if grants column is empty
+    if isinstance(papers, list) and not funder_counter:
+        funder_counter, funded_count, multi_funder_count, funding_by_year = (
+            _parse_funding_from_papers(papers)
+        )
+
+    top_funders = pd.Series(funder_counter).sort_values(ascending=False).head(top_n)
+
+    # Herfindahl-Hirschman Index (concentration)
+    total_mentions = sum(funder_counter.values())
+    concentration_index = 0.0
+    if total_mentions > 0:
+        shares = [count / total_mentions for count in funder_counter.values()]
+        concentration_index = round(sum(s**2 for s in shares), 6)
+
+    # Convert funding_by_year Counter dicts to regular dicts
+    funding_by_year_clean: dict[int, dict[str, int]] = {
+        year: dict(counter) for year, counter in sorted(funding_by_year.items())
+    }
+
+    return {
+        "total_funded_papers": funded_count,
+        "funding_source_distribution": dict(funder_counter),
+        "top_funders": top_funders,
+        "concentration_index": concentration_index,
+        "multi_funder_papers": multi_funder_count,
+        "funding_by_year": funding_by_year_clean,
+    }
+
+
 __all__ = [
     "to_dataframe",
     "publication_year_distribution",
@@ -938,4 +1716,9 @@ __all__ = [
     "journal_distribution",
     "author_statistics",
     "geographic_analysis",
+    "access_distribution",
+    "citation_by_access_type",
+    "disease_comparison_trends",
+    "author_collaboration_network",
+    "funding_source_analysis",
 ]

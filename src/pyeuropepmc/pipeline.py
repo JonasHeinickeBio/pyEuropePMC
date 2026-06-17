@@ -514,8 +514,12 @@ class PaperProcessingPipeline:
         )
 
         if annotations_data:
-            annotations_graph = convert_annotations_to_rdf(annotations_data)
-            g += annotations_graph
+            annotations_dataset = convert_annotations_to_rdf(annotations_data)
+            for subject, predicate, obj, context in annotations_dataset.quads(
+                (None, None, None, None)
+            ):
+                if context is not None:
+                    g.add((subject, predicate, obj))
 
         # Count triples
         triple_count = len(list(g))

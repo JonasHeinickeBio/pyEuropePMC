@@ -1,5 +1,5 @@
 import logging
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 
@@ -30,7 +30,7 @@ def test_search_json_functional(query: str, page_size: int) -> None:
     format = "json"
     client = SearchClient()
     logger.debug(f"Starting search for '{query}' with pageSize={page_size} and format='{format}'")
-    result: Dict[str, Any] = client.search(query, pageSize=page_size, format=format)  # type: ignore
+    result: dict[str, Any] = client.search(query, pageSize=page_size, format=format)  # type: ignore
     logger.debug(f"Search result: {result}")
     assert isinstance(result, dict), "search() should return a dict for JSON format"
     assert "resultList" in result, "Missing 'resultList' in response"
@@ -67,7 +67,7 @@ def test_search_post_json_functional(query: str, page_size: int) -> None:
     logger.debug(
         f"Starting search_post for '{query}' with pageSize={page_size} and format='{format}'"
     )
-    result: Dict[str, Any] = client.search_post(query, pageSize=page_size, format=format)  # type: ignore
+    result: dict[str, Any] = client.search_post(query, pageSize=page_size, format=format)  # type: ignore
     logger.debug(f"Search_post result: {result}")
     assert isinstance(result, dict), "search_post() should return a dict for JSON format"
     assert "resultList" in result, "Missing 'resultList' in response"

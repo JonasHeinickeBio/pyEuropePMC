@@ -164,5 +164,5 @@ Europe PMC organizes articles in a hierarchical FTP structure:
 
 ## Related Classes
 
-- [`FullTextClient`](../fulltext-client.md) - For individual article downloads
-- [`SearchClient`](../search-client.md) - For finding articles to download
+- [`FullTextClient`](./fulltext-client.md) - For individual article downloads
+- [`SearchClient`](./search-client.md) - For finding articles to download
