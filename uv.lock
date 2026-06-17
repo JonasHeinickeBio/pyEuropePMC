@@ -2262,7 +2262,7 @@ requires-dist = [
     { name = "pandas", specifier = ">=1.4" },
     { name = "python-dotenv", specifier = ">=0.19" },
     { name = "rapidfuzz", specifier = ">=2.15.0,<3.0.0" },
-    { name = "rdfizer", specifier = ">=4.7.5.12.13,<5.0.0.0.0" },
+    { name = "rdfizer", specifier = ">=4.7.5,<5" },
     { name = "rdflib", specifier = ">=6.0" },
     { name = "rdflib-jsonld", specifier = ">=0.5" },
     { name = "requests", specifier = ">=2.32.5,<3.0.0" },
