@@ -435,8 +435,8 @@ jobs:
           echo "Testing context manager functionality..."
           poetry run python -c "
           import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc.search import SearchClient
-          from pyeuropepmc.fulltext import FullTextClient
+          from pyeuropepmc import SearchClient
+          from pyeuropepmc import FullTextClient
 
           # Test context managers
           with SearchClient() as search_client:
@@ -448,7 +448,8 @@ jobs:
               print('SUCCESS: FullTextClient context manager works')
 
           print('SUCCESS: All context managers working correctly')
-          "  # Level 3: Full Testing (Primary Version Only)
+          "
+  # Level 3: Full Testing (Primary Version Only)
   full-tests:
     name: Full Test Suite (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
@@ -590,10 +591,9 @@ jobs:
           echo "Running smoke tests..."
           poetry run python -c "
           import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc.search import SearchClient
-          from pyeuropepmc.fulltext import FullTextClient
-          from pyeuropepmc.error_codes import ErrorCodes
-          from pyeuropepmc.exceptions import ValidationError, FullTextError
+          from pyeuropepmc import SearchClient, FullTextClient, FTPDownloader
+          from pyeuropepmc.core.error_codes import ErrorCodes
+          from pyeuropepmc.core.exceptions import ValidationError
 
           # Test error handling
           try:
@@ -656,7 +656,7 @@ jobs:
           poetry run python -c "
           import time, sys
           sys.path.insert(0, 'src')
-          from pyeuropepmc.search import SearchClient
+          from pyeuropepmc import SearchClient
           from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts
 
           # Basic performance tests
