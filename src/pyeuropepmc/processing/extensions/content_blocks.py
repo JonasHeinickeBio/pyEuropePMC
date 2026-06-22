@@ -22,6 +22,7 @@ of docling, pubmed_parser, and ncbijs/jats.
 
 from __future__ import annotations
 
+import contextlib
 from dataclasses import dataclass, field
 from enum import Enum
 import logging
@@ -1951,15 +1952,11 @@ class ContentBlockExtractor(BaseParser):
         # Try MathML first
         mathml_elem = elem.find(".//mml:math", {"mml": "http://www.w3.org/1998/Math/MathML"})
         if mathml_elem is not None:
-            try:
+            with contextlib.suppress(ImportError, Exception):
                 from pyeuropepmc.processing.extensions.mathml import MathMLConverter
 
                 converter = MathMLConverter(inline=True)
                 return converter.convert_to_latex(mathml_elem)
-            except ImportError:
-                pass
-            except Exception:
-                pass
 
         # Fallback: extract plain text
         return XMLHelper.get_text_content(mathml_elem) if mathml_elem is not None else ""
