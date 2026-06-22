@@ -97,12 +97,12 @@ _Notes: Means are computed over measured iterations; '-' indicates missing data.
 
 | Metric | Mean | Min | Max | Std Dev |
 |--------|------|-----|-----|---------|
-| **Composite Score** | **0.9496** | 0.8835 | 0.9908 | 0.0250 |
+| **Composite Score** | **0.9506** | 0.8607 | 0.9908 | 0.0250 |
 | Metadata Accuracy | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
 | Text Fidelity | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
-| Element Coverage | 0.9923 | 0.9655 | 1.0000 | 0.0089 |
+| Element Coverage | 0.9925 | 0.9655 | 1.0000 | 0.0087 |
 | Section Accuracy | 0.9339 | 0.7692 | 1.0000 | 0.0518 |
-| Inline Recall | 0.8219 | 0.4286 | 0.9732 | 0.1204 |
+| Inline Recall | 0.8267 | 0.4286 | 0.9732 | 0.1140 |
 
 ### Parse Speed
 
