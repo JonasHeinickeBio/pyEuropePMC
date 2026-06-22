@@ -31,6 +31,12 @@ from .annotations_to_rdf import (
     relationship_annotation_to_model,
 )
 from .fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
+from .jats_normalizer import (
+    JATSNormalizer,
+    classify_section,
+    normalize_jats_text,
+    normalize_jats_xml,
+)
 from .search_parser import EuropePMCParser
 from .visualization import (
     create_summary_dashboard,
@@ -65,6 +71,10 @@ __all__ = [
     "DocumentSchema",
     "ElementPatterns",
     "FullTextXMLParser",
+    "JATSNormalizer",
+    "classify_section",
+    "normalize_jats_xml",
+    "normalize_jats_text",
     "EuropePMCParser",
     "create_summary_dashboard",
     "plot_citation_distribution",
