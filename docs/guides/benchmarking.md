@@ -86,6 +86,50 @@ Exact-match accuracy for title, DOI, PMID, PMCID extraction, plus author overlap
 ### Composite Score
 Weighted average of all 5 metrics (equal weights).
 
+## Latest Results
+
+Results from the built-in benchmark dataset (55 open-access JATS articles):
+
+| Metric | Mean | Min | Max | Std Dev |
+|--------|------|-----|-----|---------|
+| **Composite Score** | **0.9496** | 0.8835 | 0.9908 | 0.0250 |
+| Metadata Accuracy | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
+| Text Fidelity | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
+| Element Coverage | 0.9923 | 0.9655 | 1.0000 | 0.0089 |
+| Section Accuracy | 0.9339 | 0.7692 | 1.0000 | 0.0518 |
+| Inline Recall | 0.8219 | 0.4286 | 0.9732 | 0.1204 |
+
+### Parse Speed
+
+| Metric | Value |
+|--------|-------|
+| Throughput | 48.0 articles/s |
+| Mean parse time | 0.024s |
+| Median parse time | 0.021s |
+| Fastest article | PMC13249065 (0.004s, 28 KB) |
+| Slowest article | PMC13255524 (0.076s, 216 KB) |
+
+### Content Coverage (55 articles)
+
+| Metric | Count |
+|--------|-------|
+| Total sections | 1,452 |
+| Total content blocks | 6,735 |
+| Block types | 8 |
+| Inline types | 9 |
+
+Block type breakdown: paragraphs (5,372), figures (184), tables (129), quotes (69), headings (59), formulas (14), lists (11), unknown (897).
+
+### Reproduce
+
+```bash
+# Full quality benchmark
+pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --limit 55 --output results.json
+
+# Speed + coverage
+pyeuropepmc benchmark run-extra --xml-dir benchmark_xmls/xml --output extra.json
+```
+
 ## Profiling
 
 ### Function-Level Profiling (cProfile)

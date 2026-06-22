@@ -471,17 +471,28 @@ Quick Links:
 
 > **Note:** Enable GitHub Pages first! See [Setup Guide](.github/SETUP_GITHUB_PAGES.md) for instructions.
 
-## 📊 Performance
+## 📊 Parser Quality Benchmark
 
-> Benchmarks run weekly on Monday at 02:00 UTC. Last updated: *Pending first run*
+The XML full-text parser is continuously evaluated against a curated benchmark of 55 open-access JATS articles from Europe PMC. Results demonstrate high-fidelity extraction across all quality dimensions:
 
-| Metric | Value |
-|--------|-------|
-| **Total Requests** | *Pending* |
-| **Average Response Time** | *Pending* |
-| **Success Rate** | *Pending* |
+| Metric | Mean | Min | Max | Std Dev |
+|--------|------|-----|-----|---------|
+| **Composite Score** | **0.9496** | 0.8835 | 0.9908 | 0.0250 |
+| Metadata Accuracy | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
+| Text Fidelity | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
+| Element Coverage | 0.9923 | 0.9655 | 1.0000 | 0.0089 |
+| Section Accuracy | 0.9339 | 0.7692 | 1.0000 | 0.0518 |
+| Inline Recall | 0.8219 | 0.4286 | 0.9732 | 0.1204 |
 
-*Benchmark results will be automatically updated weekly by GitHub Actions.*
+**Parse speed:** 48.0 articles/s (median 0.021s per article)
+
+Run the benchmark yourself:
+
+```bash
+pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --limit 55
+```
+
+See the [Benchmarking Guide](docs/guides/benchmarking.md) for full methodology and profiling tools.
 
 ## 🤝 Contributing
 
