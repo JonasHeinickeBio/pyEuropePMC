@@ -55,6 +55,7 @@ class InlineElementType(str, Enum):
     MONOSPACE = "monospace"
     SMALL_CAPS = "small_caps"
     ROMAN = "roman"
+    SANS_SERIF = "sans_serif"
     STYLED_CONTENT = "styled_content"
     UNKNOWN_INLINE = "unknown_inline"
 
@@ -663,6 +664,7 @@ class ContentBlockExtractor(BaseParser):
         "monospace": "monospace",
         "sc": "small_caps",
         "roman": "roman",
+        "sans-serif": "sans_serif",
         "styled-content": "styled_content",
     }
 
@@ -893,6 +895,7 @@ class ContentBlockExtractor(BaseParser):
                 "monospace",
                 "small_caps",
                 "roman",
+                "sans_serif",
                 "styled_content",
             ):
                 child_text = self._resolve_entities(XMLHelper.get_text_content(child))
@@ -910,6 +913,7 @@ class ContentBlockExtractor(BaseParser):
                         "monospace": InlineElementType.MONOSPACE,
                         "small_caps": InlineElementType.SMALL_CAPS,
                         "roman": InlineElementType.ROMAN,
+                        "sans_serif": InlineElementType.SANS_SERIF,
                         "styled_content": InlineElementType.STYLED_CONTENT,
                     }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
                     # Extract xml:lang attribute for named-content
@@ -1035,6 +1039,7 @@ class ContentBlockExtractor(BaseParser):
                 "monospace",
                 "small_caps",
                 "roman",
+                "sans_serif",
                 "styled_content",
             ):
                 if child_text:
@@ -1050,6 +1055,7 @@ class ContentBlockExtractor(BaseParser):
                         "monospace": InlineElementType.MONOSPACE,
                         "small_caps": InlineElementType.SMALL_CAPS,
                         "roman": InlineElementType.ROMAN,
+                        "sans_serif": InlineElementType.SANS_SERIF,
                         "styled_content": InlineElementType.STYLED_CONTENT,
                     }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
                     inlines.append(
@@ -1185,6 +1191,7 @@ class ContentBlockExtractor(BaseParser):
                 "monospace",
                 "small_caps",
                 "roman",
+                "sans_serif",
                 "styled_content",
             ):
                 child_text = self._resolve_entities(XMLHelper.get_text_content(child))
@@ -1201,6 +1208,7 @@ class ContentBlockExtractor(BaseParser):
                         "monospace": InlineElementType.MONOSPACE,
                         "small_caps": InlineElementType.SMALL_CAPS,
                         "roman": InlineElementType.ROMAN,
+                        "sans_serif": InlineElementType.SANS_SERIF,
                         "styled_content": InlineElementType.STYLED_CONTENT,
                     }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
                     inlines.append(

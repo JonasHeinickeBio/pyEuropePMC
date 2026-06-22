@@ -172,7 +172,7 @@ def run_benchmark(
     cs = overall.get("composite_score", "N/A")
     if isinstance(cs, dict):
         print(f"  Composite score  : {cs.get('mean', 'N/A'):.3f} (mean)")
-    elif isinstance(cs, (int, float)):
+    elif isinstance(cs, int | float):
         print(f"  Composite score  : {cs:.3f}")
     else:
         print(f"  Composite score  : {cs}")

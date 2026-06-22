@@ -367,6 +367,8 @@ _INLINE_TYPE_TO_XML_TAG: dict[str, str] = {
     "named_content": "named-content",
     "strikethrough": "strike",
     "small_caps": "sc",
+    "styled_content": "styled-content",
+    "sans_serif": "sans-serif",
     "unkown_inline": "unknown-inline",
     # Direct matches handled as pass-through below
 }
