@@ -153,6 +153,9 @@ ignore = ["E203", "E266", "E731"]
 "semantic_scholar.py" = [
   "E501",
 ] # Allow long lines for long URLs
+"*/cli/*.py" = [
+  "B008",
+] # Typer uses function calls in argument defaults
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15
