@@ -17,6 +17,7 @@
 * [Full-Text Retrieval](features/fulltext/README.md)
 * [XML Parsing](features/parsing/README.md)
 * [XML Parser Guide](features/parsing/xml-parser-guide.md)
+* [JATS Normalization](features/parsing/jats-normalization.md)
 * [Query Builder](features/query-builder-load-save-translate.md)
 * [Systematic Review Tracking](features/systematic-review-tracking.md)
 * [Caching](features/caching/README.md)
