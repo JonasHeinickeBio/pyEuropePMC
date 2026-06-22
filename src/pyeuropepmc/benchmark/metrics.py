@@ -513,11 +513,30 @@ def _get_expected_metadata(root: ET.Element) -> dict[str, Any]:
     return expected
 
 
-def _count_inline_elements_in_xml(root: ET.Element) -> dict[str, int]:
-    """Count inline content elements in raw XML."""
+def _count_inline_elements_in_xml(
+    root: ET.Element,
+    *,
+    body_only: bool = True,
+) -> dict[str, int]:
+    """Count inline content elements in raw XML.
+
+    Parameters
+    ----------
+    root:
+        Root XML element.
+    body_only:
+        If True (default), only count inline elements within ``<body>``.
+        This matches the parser's extraction scope and avoids penalizing
+        the parser for inline elements in ``<front>`` (metadata, abstract
+        formatting) or ``<back>`` (reference list formatting).
+    """
+    scope = root.find(".//body") if body_only else root
+    if scope is None:
+        # No <body> element — fall back to full root
+        scope = root
     counts: dict[str, int] = {}
     for tag in _INLINE_CONTENT_TAGS:
-        elements = _findall_with_local_tag(root, tag)
+        elements = _findall_with_local_tag(scope, tag)
         count = len(elements)
         if count > 0:
             counts[tag] = count

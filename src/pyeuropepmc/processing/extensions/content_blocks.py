@@ -807,12 +807,8 @@ class ContentBlockExtractor(BaseParser):
                 blocks = self._handler_map[handler_name](child)
                 content_blocks.extend(blocks)
             else:
-                # Preserve unknown blocks as fallback
-                text = XMLHelper.get_text_content(child)
-                if text.strip():
-                    content_blocks.append(
-                        ContentBlock.unknown_block(jats_tag=tag, text=text.strip())
-                    )
+                extra = self._handle_special_section_child(child, tag)
+                content_blocks.extend(extra)
 
         return StructuredSection(
             title=title,
@@ -820,6 +816,44 @@ class ContentBlockExtractor(BaseParser):
             section_type="body",
             section_path=section_path,
         )
+
+    def _handle_special_section_child(self, child: ET.Element, tag: str) -> list[ContentBlock]:
+        """Handle section children that are not standard JATS block tags."""
+        if tag == "supplementary-material":
+            # Traverse into supplementary-material → caption → p
+            blocks: list[ContentBlock] = []
+            for caption in child.findall("caption"):
+                for p_elem in caption.findall(".//p"):
+                    blocks.extend(self._handle_paragraph(p_elem))
+            return blocks
+        if tag == "fn-group":
+            return self._extract_fn_group_blocks(child)
+        # Preserve unknown blocks as fallback
+        text = XMLHelper.get_text_content(child)
+        if text.strip():
+            return [ContentBlock.unknown_block(jats_tag=tag, text=text.strip())]
+        return []
+
+    def _extract_fn_group_blocks(self, fn_group: ET.Element) -> list[ContentBlock]:
+        """Extract footnotes from a ``<fn-group>`` with inline tracking."""
+        blocks: list[ContentBlock] = []
+        for fn in fn_group.findall("fn"):
+            fn_text, fn_inlines, _ = self._extract_inlines_recursive(fn, 0)
+            joined = "".join(fn_text).strip()
+            if not joined:
+                continue
+            label_elem = fn.find("label")
+            prefix = ""
+            if label_elem is not None:
+                prefix = XMLHelper.get_text_content(label_elem) + " "
+            full_text = f"{prefix}{joined}"
+            if fn_inlines:
+                blocks.append(
+                    ContentBlock.paragraph_with_inlines(text=full_text, inlines=fn_inlines)
+                )
+            else:
+                blocks.append(ContentBlock.paragraph(full_text))
+        return blocks
 
     def _handle_paragraph(self, elem: ET.Element) -> list[ContentBlock]:  # noqa: C901
         """
@@ -1655,12 +1689,21 @@ class ContentBlockExtractor(BaseParser):
         return None
 
     def _extract_footnotes(self) -> list[StructuredSection]:
-        """Extract footnotes (fn-group) from front/back matter."""
+        """Extract footnotes (fn-group) from back matter only.
+
+        Fn-groups inside ``<body>`` sections are already extracted by
+        ``_extract_structured_section``.  This method only processes
+        fn-groups that live outside ``<body>`` (typically in ``<back>``).
+        """
         fn_sections: list[StructuredSection] = []
         if self.root is None:
             return fn_sections
 
         for fn_group in self.root.findall(".//fn-group"):
+            # Skip fn-groups that are inside <body> — they are handled
+            # by the section extraction (avoid double-counting).
+            if self._is_inside_body(fn_group):
+                continue
             fn_blocks: list[ContentBlock] = []
             for fn in fn_group.findall("fn"):
                 _fn_id = fn.get("id", "")
@@ -1673,7 +1716,13 @@ class ContentBlockExtractor(BaseParser):
                 joined = "".join(text).strip()
                 if joined:
                     prefix = f"{fn_label} " if fn_label else ""
-                    fn_blocks.append(ContentBlock.paragraph(f"{prefix}{joined}"))
+                    full_text = f"{prefix}{joined}"
+                    if inlines:
+                        fn_blocks.append(
+                            ContentBlock.paragraph_with_inlines(text=full_text, inlines=inlines)
+                        )
+                    else:
+                        fn_blocks.append(ContentBlock.paragraph(full_text))
 
             if fn_blocks:
                 fn_sections.append(
@@ -1847,6 +1896,16 @@ class ContentBlockExtractor(BaseParser):
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _is_inside_body(self, elem: ET.Element) -> bool:
+        """Check whether *elem* is a descendant of a ``<body>`` element."""
+        if self.root is None:
+            return False
+        for body in self.root.findall(".//body"):
+            for desc in body.iter():
+                if desc is elem:
+                    return True
+        return False
 
     @staticmethod
     def _get_local_tag(tag: str) -> str:
