@@ -38,6 +38,7 @@
 
 ## Guides
 
+* [Benchmarking & Profiling](guides/benchmarking.md)
 * [Enrichment](guides/enrichment.md)
 * [Feature Suggester](guides/feature-suggester.md)
 

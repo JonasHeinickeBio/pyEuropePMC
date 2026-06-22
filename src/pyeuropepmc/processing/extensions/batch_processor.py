@@ -156,7 +156,9 @@ class BatchProcessor:
         """Sleep to respect the rate limit (thread-safe)."""
         time.sleep(1.0 / self.rate_limit)
 
-    def _process_file_one(self, file_path: str, extraction_fn: Callable[[FullTextXMLParser], dict[str, Any]] | None) -> ProcessingResult:
+    def _process_file_one(
+        self, file_path: str, extraction_fn: Callable[[FullTextXMLParser], dict[str, Any]] | None
+    ) -> ProcessingResult:
         """Process a single file with rate limiting (called from thread pool)."""
         self._rate_sleep()
         t0 = time.time()
@@ -166,11 +168,15 @@ class BatchProcessor:
             parser = FullTextXMLParser(xml_content)
             data = self._extract_data(parser, extraction_fn)
             duration = time.time() - t0
-            result = ProcessingResult(identifier=file_path, success=True, data=data, duration=duration)
+            result = ProcessingResult(
+                identifier=file_path, success=True, data=data, duration=duration
+            )
         except Exception as e:
             duration = time.time() - t0
             logger.error(f"Error processing {file_path}: {e}")
-            result = ProcessingResult(identifier=file_path, success=False, error=str(e), duration=duration)
+            result = ProcessingResult(
+                identifier=file_path, success=False, error=str(e), duration=duration
+            )
             if self.error_callback:
                 self.error_callback(file_path, e)
 
@@ -180,7 +186,12 @@ class BatchProcessor:
                 self.progress_callback(self._completed, self._total, file_path)
         return result
 
-    def _process_xml_one(self, identifier: str, xml_content: str, extraction_fn: Callable[[FullTextXMLParser], dict[str, Any]] | None) -> ProcessingResult:
+    def _process_xml_one(
+        self,
+        identifier: str,
+        xml_content: str,
+        extraction_fn: Callable[[FullTextXMLParser], dict[str, Any]] | None,
+    ) -> ProcessingResult:
         """Process a single XML string with rate limiting (called from thread pool)."""
         self._rate_sleep()
         t0 = time.time()
@@ -188,11 +199,15 @@ class BatchProcessor:
             parser = FullTextXMLParser(xml_content)
             data = self._extract_data(parser, extraction_fn)
             duration = time.time() - t0
-            result = ProcessingResult(identifier=identifier, success=True, data=data, duration=duration)
+            result = ProcessingResult(
+                identifier=identifier, success=True, data=data, duration=duration
+            )
         except Exception as e:
             duration = time.time() - t0
             logger.error(f"Error processing {identifier}: {e}")
-            result = ProcessingResult(identifier=identifier, success=False, error=str(e), duration=duration)
+            result = ProcessingResult(
+                identifier=identifier, success=False, error=str(e), duration=duration
+            )
             if self.error_callback:
                 self.error_callback(identifier, e)
 
@@ -230,8 +245,7 @@ class BatchProcessor:
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = {
-                executor.submit(self._process_file_one, fp, extraction_fn): fp
-                for fp in file_paths
+                executor.submit(self._process_file_one, fp, extraction_fn): fp for fp in file_paths
             }
             results: list[ProcessingResult] = []
             for future in concurrent.futures.as_completed(futures):

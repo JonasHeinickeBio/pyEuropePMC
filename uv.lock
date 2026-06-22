@@ -2274,7 +2274,7 @@ requires-dist = [
     { name = "tenacity", specifier = ">=8.2.0,<9.0.0" },
     { name = "tornado", specifier = ">=6.5.1,<7.0.0" },
     { name = "tqdm", specifier = ">=4.67.1,<5.0.0" },
-    { name = "typer", specifier = ">=0.12.5,<0.13.0" },
+    { name = "typer", specifier = ">=0.12.5" },
     { name = "xlsxwriter", specifier = ">=3.2.9,<4.0.0" },
 ]
 

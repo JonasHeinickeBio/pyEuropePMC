@@ -40,7 +40,7 @@ rdflib-jsonld = ">=0.5"
 rdflib = ">=6.0"
 python-dotenv = ">=0.19"
 requests = "^2.32.5"
-typer = ">=0.12.5,<0.13.0"
+typer = ">=0.12.5"
 backoff = "^2.2.1"
 tornado = "^6.5.1"
 flask = "^3.1.1"
@@ -78,6 +78,9 @@ memory-profiler = "^0.61.0"
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"
+
+[project.scripts]
+pyeuropepmc = "pyeuropepmc.cli:app"
 
 [build-system]
 requires = ["poetry-core"]

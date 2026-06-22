@@ -1,0 +1,1271 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="pro70647" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style superscripted?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Protein Sci</journal-id><journal-id journal-id-type="iso-abbrev">Protein Sci</journal-id><journal-id journal-id-type="pmc-domain-id">507</journal-id><journal-id journal-id-type="pmc-domain">prosci</journal-id><journal-id journal-id-type="publisher-id">PRO</journal-id><journal-title-group><journal-title>Protein Science : A Publication of the Protein Society</journal-title></journal-title-group><issn pub-type="ppub">0961-8368</issn><issn pub-type="epub">1469-896X</issn><publisher><publisher-name>Wiley</publisher-name></publisher></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13240100</article-id><article-id pub-id-type="pmcid-ver">PMC13240100.1</article-id><article-id pub-id-type="pmcaid">13240100</article-id><article-id pub-id-type="pmcaiid">13240100</article-id><article-id pub-id-type="pmid">42227275</article-id><article-id pub-id-type="doi">10.1002/pro.70647</article-id><article-id pub-id-type="publisher-id">PRO70647</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Description of the rate‐limiting hydrogen tunneling mechanism for plant 9‐ and 13‐lipoxygenases</article-title><alt-title alt-title-type="left-running-head">Kockler et al.</alt-title></title-group><contrib-group><contrib id="pro70647-cr-0001" contrib-type="author"><name name-style="western"><surname>Kockler</surname><given-names initials="A">Alex</given-names></name><xref rid="pro70647-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="pro70647-cr-0002" contrib-type="author"><name name-style="western"><surname>Ray</surname><given-names initials="K">Katherine</given-names></name><xref rid="pro70647-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="pro70647-cr-0003" contrib-type="author"><name name-style="western"><surname>King</surname><given-names initials="J">Jordan</given-names></name><xref rid="pro70647-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="pro70647-cr-0004" contrib-type="author"><name name-style="western"><surname>Anderson</surname><given-names initials="E">Eric</given-names></name><xref rid="pro70647-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="pro70647-cr-0005" contrib-type="author"><name name-style="western"><surname>Walker</surname><given-names initials="J">Joi</given-names></name><xref rid="pro70647-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="pro70647-cr-0006" contrib-type="author"><name name-style="western"><surname>Gilbert</surname><given-names initials="N">Nathaniel</given-names></name><xref rid="pro70647-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="pro70647-cr-0007" contrib-type="author"><name name-style="western"><surname>Horn</surname><given-names initials="P">Patrick</given-names></name><xref rid="pro70647-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="pro70647-cr-0008" contrib-type="author" corresp="yes"><name name-style="western"><surname>Offenbacher</surname><given-names initials="AR">Adam R.</given-names></name><xref rid="pro70647-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>offenbachera17@ecu.edu</email></address></contrib></contrib-group><aff id="pro70647-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Chemistry</named-content>
+<institution>East Carolina University</institution>
+<city>Greenville</city>
+<named-content content-type="country-part">North Carolina</named-content>
+<country country="US">USA</country>
+</aff><aff id="pro70647-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Chemistry and BioDiscovery Institute</named-content>
+<institution>University of North Texas</institution>
+<city>Denton</city>
+<named-content content-type="country-part">Texas</named-content>
+<country country="US">USA</country>
+</aff><aff id="pro70647-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Department of Biology</named-content>
+<institution>East Carolina University</institution>
+<city>Greenville</city>
+<named-content content-type="country-part">North Carolina</named-content>
+<country country="US">USA</country>
+</aff><aff id="pro70647-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Department of Biology</named-content>
+<institution>Louisiana State University</institution>
+<city>Baton Rouge</city>
+<named-content content-type="country-part">Louisiana</named-content>
+<country country="US">USA</country>
+</aff><aff id="pro70647-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<named-content content-type="organisation-division">Department of Biological Sciences and BioDiscovery Institute</named-content>
+<institution>University of North Texas</institution>
+<city>Denton</city>
+<named-content content-type="country-part">Texas</named-content>
+<country country="US">USA</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence</bold>
+<break/>
+Adam R. Offenbacher, Department of Chemistry, East Carolina University, Greenville, NC, USA.<break/>
+Email: <email>offenbachera17@ecu.edu</email>
+<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>02</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="collection"><month>7</month><year>2026</year></pub-date><volume>35</volume><issue seq="60">7</issue><issue-id pub-id-type="pmc-issue-id">515036</issue-id><issue-id pub-id-type="doi">10.1002/pro.v35.7</issue-id><elocation-id>e70647</elocation-id><history>
+<date date-type="rev-recd"><day>26</day><month>4</month><year>2026</year></date>
+<date date-type="received"><day>30</day><month>1</month><year>2026</year></date>
+<date date-type="accepted"><day>15</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>02</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>06</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-06 10:25:18.137"><day>06</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Protein Science</italic> published by Wiley Periodicals LLC on behalf of The Protein Society.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbynclicense">https://creativecommons.org/licenses/by-nc/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc/4.0/">http://creativecommons.org/licenses/by-nc/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited and is not used for commercial purposes.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="PRO-35-e70647.pdf"><?pdf-name PRO-35-e70647.pdf?><?pdf-size 4577125?><?pdf-md5 38dfa44f199b0e27a1dd487ecbea9802?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:8bc0/13240100/38dfa44f199b/PRO-35-e70647.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:PRO-35-e70647.pdf"/><abstract><title>Abstract</title><p>Soybean lipoxygenase (GmLOX1), a plant 13‐LOX, has long been considered a model protein for non‐trivial, quantum hydrogen tunneling in enzyme catalysis. Hydrogen tunneling mechanisms have also been confirmed for LOXs across mammalian, fungal, and bacterial kingdoms. Notably, GmLOX1 exhibits a low activation energy (E<sub>
+<italic toggle="no">a</italic>
+</sub>) for catalysis relative to characterized non‐plant LOXs. In the present study, we examined three additional plant isozymes, including representatives of both 9‐ and 13‐LOXs. All plant LOXs show large primary deuterium kinetic isotope effects associated with rate‐limiting hydrogen tunneling during cleavage of a carbon‐hydrogen bond on substrate linoleic acid. The monomeric plant 9‐LOXs studied herein uniquely display kinetic cooperativity in their steady‐state kinetics, while GmLOX1 does not. These data implicate fatty acid‐dependent structural regulation of plant 9‐LOX catalysis in a similar manner to mammalian LOXs. In lieu of experimental structures of these plant LOXs with substrate, we predicted representative 9‐ and 13‐LOX isoforms in AlphaFold3 (AF3) with fatty acids and compared them with their crystal structures to better predict modes of substrate acquisition that could support the alternative kinetic models. Further, we find that two 9‐LOXs have larger E<sub>
+<italic toggle="no">a</italic>
+</sub> values relative to GmLOX1. To understand this property, we also present a visualization of LOX evolutionary conservation across the plant kingdom. The data provide deeper insights into the reaction mechanisms of plant LOXs in the context of the activation barriers for catalysis and the relationships to the thermal activation of hydrogen tunneling.</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="pro70647-kwd-0006">activation energy</kwd><kwd id="pro70647-kwd-0007">allostery</kwd><kwd id="pro70647-kwd-0004">enzyme catalysis</kwd><kwd id="pro70647-kwd-0003">fatty acid oxidation</kwd><kwd id="pro70647-kwd-0001">hydrogen tunneling</kwd><kwd id="pro70647-kwd-0002">lipoxygenase</kwd><kwd id="pro70647-kwd-0005">protein dynamics</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>National Science Foundation</institution><institution-id institution-id-type="doi">10.13039/100000001</institution-id></institution-wrap>
+</funding-source><award-id>22‐31079</award-id></award-group></funding-group><counts><fig-count count="8"/><table-count count="3"/><page-count count="16"/><word-count count="11700"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY-NC</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:05.06.2026</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="pro70647-cit-9001">
+<string-name name-style="western">
+<surname>Kockler</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ray</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>King</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Anderson</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Walker</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gilbert</surname>
+<given-names>N</given-names>
+</string-name>, et al. <article-title>Description of the rate‐limiting hydrogen tunneling mechanism for plant 9‐ and 13‐lipoxygenases</article-title>. <source>Protein Science</source>. <year>2026</year>;<volume>35</volume>(<issue>7</issue>):<elocation-id>e70647</elocation-id>. <pub-id pub-id-type="doi">10.1002/pro.70647</pub-id>
+<pub-id pub-id-type="pmid">42227275</pub-id>
+<pub-id pub-id-type="pmcid">PMC13240100</pub-id></mixed-citation>
+</p><fn-group id="pro70647-ntgp-0001"><fn id="pro70647-note-0001"><p>
+<bold>Review Editor:</bold> Nir Ben‐Tal</p></fn></fn-group></notes></front><body id="pro70647-body-0001"><sec id="pro70647-sec-0001"><label>1</label><title>INTRODUCTION</title><p>The concept of quantum mechanical barrier penetration (i.e., tunneling) was first described nearly 100 years ago (Hund, <xref rid="pro70647-bib-0032" ref-type="bibr">1927a</xref>, <xref rid="pro70647-bib-0033" ref-type="bibr">1927b</xref>). However, it was not until 1989 that the quantum mechanical phenomenon associated with hydrogen atom transfer in enzyme catalysis was reported from the observation of anomalous secondary kinetic isotope effects for the oxidation of benzyl alcohol by yeast alcohol dehydrogenase (Cha et al., <xref rid="pro70647-bib-0012" ref-type="bibr">1989</xref>). Since the pinnacle study, several case studies have emerged from various laboratories that manifest varying degrees of hydrogen tunneling in enzymatic reactions. Among these systems, the reaction of the isoform‐1 lipoxygenase from soybean seeds has demonstrated some of the most prominent and compelling kinetic features for non‐classical behavior and has thus emerged as a paradigm H‐tunneling enzyme (Glickman et al., <xref rid="pro70647-bib-0025" ref-type="bibr">1994</xref>; Hu et al., <xref rid="pro70647-bib-0031" ref-type="bibr">2014</xref>; Knapp et al., <xref rid="pro70647-bib-0043" ref-type="bibr">2002</xref>).</p><p>Lipoxygenases (LOXs) are well‐represented enzymes in the plant, animal, fungi, and prokaryotic kingdoms that oxidize polyunsaturated fatty acids (PUFAs) to form a diverse set of hydroperoxides (Brash, <xref rid="pro70647-bib-0007" ref-type="bibr">1999</xref>; Liavonchanka &amp; Feussner, <xref rid="pro70647-bib-0049" ref-type="bibr">2006</xref>). In plants, LOX‐derived hydroperoxides participate in a broad range of physiological roles, including seed germination, plant growth and development, pathogenic defense, and wound healing (Feussner &amp; Wasternack, <xref rid="pro70647-bib-0019" ref-type="bibr">2002</xref>; Viswanath et al., <xref rid="pro70647-bib-0071" ref-type="bibr">2020</xref>). The various physiological responses are mediated by different LOX isozymes, resulting from gene duplications and paralog specialization (Camargo et al., <xref rid="pro70647-bib-0009" ref-type="bibr">2023</xref>). These isoforms are expressed and distributed in specific plant tissues and can produce different oxidized products. For example, five soybean LOX isoforms have been isolated and characterized in vitro, with several more potential LOX genes encoded in the soybean genome (Axelrod et al., <xref rid="pro70647-bib-0002" ref-type="bibr">1981</xref>; Shin et al., <xref rid="pro70647-bib-0067" ref-type="bibr">2008</xref>; Youn et al., <xref rid="pro70647-bib-0076" ref-type="bibr">2006</xref>).</p><p>The initial step in the LOX reaction mechanism is the cleavage of a bis‐allylic carbon‐hydrogen bond by the ferric hydroxide (Scheme <xref rid="pro70647-fig-0007" ref-type="fig">1</xref>). Hydrogen abstraction from C‐H bond of substrate leads to a delocalized carbon‐centered radical that is subsequently quenched by molecular oxygen. One of the most common and simplest fatty acid substrates in plants is linoleic acid (LA). The oxidation of LA leads to the formation of four possible hydroperoxide products (9<italic toggle="yes">S</italic>, 9<italic toggle="yes">R</italic>, 13<italic toggle="yes">S</italic>, and 13<italic toggle="yes">R</italic>‐HpODE), though only one of these products is generally synthesized by a given LOX. As such, LOXs are named and differentiated by their regioselectivity (e.g., 9<italic toggle="yes">S</italic>‐ and 13<italic toggle="yes">S</italic>‐LOX).</p><fig position="float" fig-type="SCHEME" id="pro70647-fig-0007" orientation="portrait"><label>SCHEME 1</label><caption><p>General reaction mechanism of plant LOX reactions for the oxidation of LA. Oxygen is inserted antarafacially (opposite side of hydrogen abstraction). Plant LOXs mainly produce one of two products, 9S‐ or 13<italic toggle="yes">S</italic>‐HpODE.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="PRO-35-e70647-g004.jpg"><?image-name PRO-35-e70647-g004.jpg?><?image-size 61248?><?image-md5 cc17a086f7f8887040099771e5c75449?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 870?><?image-original-width 1064?><?image-scaled-height 580?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/cc17a086f7f8/PRO-35-e70647-g004.jpg?><?thumb-name PRO-35-e70647-g004.gif?><?thumb-size 2764?><?thumb-md5 abe8a615462157ea77f59bfc8096d7da?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 82?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/abe8a6154621/PRO-35-e70647-g004.gif?></graphic></fig><p>Plant (and animal) LOXs are structurally comprised of two domains in a single polypeptide: an N‐terminal PLAT (Polycystin‐1, Lipoxygenase, Alpha‐Toxin) domain, which can facilitate regulation of the enzyme, and a C‐terminal catalytic domain (Newcomer &amp; Brash, <xref rid="pro70647-bib-0055" ref-type="bibr">2014</xref>). The C‐terminal domain houses a deeply buried mononuclear, non‐heme iron that mediates fatty acid oxidation. Common only to plant LOXs is the lid domain situated below the π‐helix reported to be dynamic for catalysis (Bradshaw &amp; Gaffney, <xref rid="pro70647-bib-0006" ref-type="bibr">2014</xref>). This π‐helix is situated in helix alpha‐2 (Ha2) that is also considered to be a gating helix. For example, Ha2 in human 5‐LOX was reported in a “closed” conformation and must undergo a conformational change for substrate to access the active site (Gilbert et al., <xref rid="pro70647-bib-0022" ref-type="bibr">2011</xref>). Within the catalytic pocket of plant LOXs, an arched helix containing an invariant Leu residue serves to orient the PUFA for precise oxygenation. This positional specificity is further refined by a “regiospecificity switch” eleven amino acids downstream of the invariant Leu, a concept pioneered by Ivo Feussner's group (Hornung et al., <xref rid="pro70647-bib-0029" ref-type="bibr">1999</xref>). Deep in the substrate pocket of 13‐LOXs lies a conserved threonine (Thr‐556 in GmLOX1) followed by a bulky phenylalanine (Phe‐557), which only allows “tail‐first” substrate entry into the U‐shaped active site (Andreou &amp; Feussner, <xref rid="pro70647-bib-0001" ref-type="bibr">2009</xref>). Conversely, in 9‐LOXs, the substitution of the bulky phenylalanine with a smaller valine could allow the substrate's larger carboxylate head to penetrate past the valine and potentially interact with an invariant arginine, resulting in “head‐first” (inverse) orientation and 9‐product formation. Thus, the F and V sidechains are often referred to as the “switch residue”.</p><p>The most well characterized plant LOX is the isoform‐1 from soybean (designated as GmLOX1 in this report, but also commonly referred to as “SLO‐1”). The GmLOX1 reaction with LA is associated with a very large primary deuterium kinetic isotope effect on the first order rate constant (<sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> = <italic toggle="yes">k</italic>
+<sub>cat</sub>(H)/<italic toggle="yes">k</italic>
+<sub>cat</sub>(D) ~ 60–80) (Glickman et al., <xref rid="pro70647-bib-0025" ref-type="bibr">1994</xref>; Hwang &amp; Grissom, <xref rid="pro70647-bib-0034" ref-type="bibr">1994</xref>). A large <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> demonstrates that the chemical step, namely the C‐H bond cleavage step, is rate‐limiting for the reaction. Further, the <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> value is weakly temperature dependent, indicating that the hydrogen transfer occurs quantum mechanically (i.e., via hydrogen tunneling) (Hatcher et al., <xref rid="pro70647-bib-0026" ref-type="bibr">2006</xref>; Knapp et al., <xref rid="pro70647-bib-0043" ref-type="bibr">2002</xref>). Kinetic isotope effect studies have also been reported for select mammalian, fungal and prokaryotic LOXs, with <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> values reported in the range of 20–100. There are also weakly temperature dependent effects, when reported, supporting a conserved tunneling mechanism across the LOX family (Carr &amp; Klinman, <xref rid="pro70647-bib-0011" ref-type="bibr">2014</xref>; Kostenko et al., <xref rid="pro70647-bib-0045" ref-type="bibr">2019</xref>; Seagraves &amp; Holman, <xref rid="pro70647-bib-0066" ref-type="bibr">2003</xref>).</p><p>One of the distinctive features of enzymatic hydrogen tunneling is the inherent temperature independent nature of wave function overlap as measured by the temperature invariance of the kinetic isotope effect (Klinman &amp; Offenbacher, <xref rid="pro70647-bib-0041" ref-type="bibr">2018</xref>; Sutcliffe &amp; Scrutton, <xref rid="pro70647-bib-0068" ref-type="bibr">2009</xref>). The observation of temperature <italic toggle="yes">dependent</italic> enzyme rates (i.e., <italic toggle="yes">E</italic>
+<sub>a</sub> &gt;0 kcal/mol) reflect the involvement of protein thermal motions that are required to help bring the donor (carbon‐11 of substrate) and acceptor (metal‐bound hydroxide) into the proper distance(s) and geometries for effective hydrogen wave function overlap (Klinman et al., <xref rid="pro70647-bib-0042" ref-type="bibr">2017</xref>). The GmLOX1 reaction is associated with a relatively small <italic toggle="yes">E</italic>
+<sub>a</sub> of ca. 2 kcal/mol (Knapp et al., <xref rid="pro70647-bib-0043" ref-type="bibr">2002</xref>), whereas several examples of non‐plant LOX reactions exhibit elevated <italic toggle="yes">E</italic>
+<sub>a</sub> values ranging from 8 to 13 kcal/mol (see Table <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S1</xref>). While plant LOXs have been studied previously in vitro (Boeglin et al., <xref rid="pro70647-bib-0005" ref-type="bibr">2008</xref>; Lorenzi et al., <xref rid="pro70647-bib-0050" ref-type="bibr">2006</xref>; Park et al., <xref rid="pro70647-bib-0063" ref-type="bibr">2010</xref>), to our knowledge, GmLOX1 is the only plant LOX to have been well characterized for its tunneling properties. Thus, it is hitherto undetermined if the kinetic properties ascribed to GmLOX1 are common across the diverse family of plant LOXs.</p><p>In this study, we present an investigation of the hydrogen tunneling properties for select LOX orthologs from various plant species. Enzyme kinetic assays, including temperature and isotope effects, were performed for three plant LOXs to determine insights into the reaction mechanism. The kinetic isotope effect data indicate that the plant LOX reactions are associated with an initial, rate‐limiting hydrogen tunneling mechanism, consistent with GmLOX1. Other kinetic properties, including activation barriers and kinetic cooperativity effects, were surprisingly varied. AlphaFold3 (AF3) models of representative 9‐LOX and 13‐LOX isoforms, complexed with fatty acids, successfully recapitulate the established head‐ or tail‐first binding orientations for each respective isoform. Furthermore, these predicted structures reveal distinct substrate access portals. Spatial mapping of evolutionary sequence analyses onto GmLOX1 shows conserved and variable residues within this active site. Altogether, these results provide deeper insights into the relationship between non‐trivial quantum mechanics and the role of the LOX structure and its corresponding protein thermal motions to optimize these features.</p></sec><sec sec-type="results" id="pro70647-sec-0002"><label>2</label><title>RESULTS</title><p>Table <xref rid="pro70647-tbl-0001" ref-type="table">1</xref> presents the series of plant LOXs that were targeted for this study. Our goal was to obtain a library of plant LOXs that represented both 9‐ and 13‐LOXs and sequence variability across the diverse plant kingdom. The work was initiated as a Course‐based Undergraduate Research Experience (CURE) laboratory sequence at East Carolina University, involving upper‐level undergraduate laboratories in the Departments of Biology (Biotechnology II; BIOL 3110) and Chemistry (Biological Chemistry; CHEM 3771). In the Biotechnology II CURE, students sub‐cloned plant LOX genes into bacterial expression vectors and screened protein expression using SDS‐PAGE. While several genes were sub‐cloned, only the vector encoding OsLOX1 successfully produced substantive protein levels from these tests. Students in the Biological Chemistry CURE performed large‐scale expressions and protein isolation methods that were followed by in vitro kinetic assays including kinetic isotope effects to determine the rate‐limiting step(s) of catalysis. During these CUREs, students were able to screen the activity and test preliminary mechanisms of these enzymes. For example, ZmLOX5 was characterized with poor enzyme activity and was not pursued further. Importantly, the collective aim of this CURE was to make quantum mechanical phenomena in the context of biological processes accessible and relevant to undergraduate students. The assessment of student outcomes is currently underway. Two other plant LOXs (AtLOX1 and SlLOXA), as well as more thorough biochemical analyses, were supplemented from parallel efforts outside of the CURE labs.</p><table-wrap position="float" id="pro70647-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Information on select plant LOXs<xref rid="pro70647-note-0002" ref-type="table-fn">
+<sup>a</sup>
+</xref>.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Plant LOX</th><th align="left" valign="bottom" rowspan="1" colspan="1">No. amino acids</th><th align="left" valign="bottom" rowspan="1" colspan="1">Product</th><th align="left" valign="bottom" rowspan="1" colspan="1">“Switch residue”</th><th align="left" valign="bottom" rowspan="1" colspan="1">Identity (%)<xref rid="pro70647-note-0002" ref-type="table-fn">
+<sup>b</sup>
+</xref>
+</th><th align="left" valign="bottom" rowspan="1" colspan="1">Cotyledon<xref rid="pro70647-note-0002" ref-type="table-fn">
+<sup>c</sup>
+</xref>
+</th><th align="left" valign="bottom" rowspan="1" colspan="1">Accession (UniProt)</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>
+<bold>GmLOX1</bold>
+</p>
+<p>Soybean</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">839</td><td align="left" valign="top" rowspan="1" colspan="1">13</td><td align="left" valign="top" rowspan="1" colspan="1">F557</td><td align="left" valign="top" rowspan="1" colspan="1">—</td><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-protein" xlink:href="P08170">P08170</ext-link></td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>
+<bold>AtLOX1</bold>
+</p>
+<p>Arabidopsis</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">859</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V577</td><td align="left" valign="top" rowspan="1" colspan="1">57</td><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-protein" xlink:href="Q06327">Q06327</ext-link></td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>
+<bold>SlLOXA</bold>
+</p>
+<p>Tomato</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">860</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V579</td><td align="left" valign="top" rowspan="1" colspan="1">59</td><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-protein" xlink:href="P38415">P38415</ext-link></td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>
+<bold>OsLOX1</bold>
+</p>
+<p>Rice</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">863</td><td align="left" valign="top" rowspan="1" colspan="1">9/13</td><td align="left" valign="top" rowspan="1" colspan="1">V576</td><td align="left" valign="top" rowspan="1" colspan="1">54</td><td align="left" valign="top" rowspan="1" colspan="1">M</td><td align="left" valign="top" rowspan="1" colspan="1"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-protein" xlink:href="Q76I22">Q76I22</ext-link></td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>GhLOX2</p>
+<p>Cotton</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">877</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V591</td><td align="left" valign="top" rowspan="1" colspan="1">57</td><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1">A0A1U8LI71</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">NtLOX1 Tobacco</td><td align="left" valign="top" rowspan="1" colspan="1">862</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V581</td><td align="left" valign="top" rowspan="1" colspan="1">60</td><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-protein" xlink:href="Q43800">Q43800</ext-link></td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>StLOX1</p>
+<p>Potato</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">861</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V580</td><td align="left" valign="top" rowspan="1" colspan="1">58</td><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1"><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-protein" xlink:href="P37831">P37831</ext-link></td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>TaLOX3</p>
+<p>Wheat</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">878</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V587</td><td align="left" valign="top" rowspan="1" colspan="1">53</td><td align="left" valign="top" rowspan="1" colspan="1">M</td><td align="left" valign="top" rowspan="1" colspan="1">A0A3B6IJT8</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>ZmLOX5</p>
+<p>Corn</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">887</td><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="left" valign="top" rowspan="1" colspan="1">V595</td><td align="left" valign="top" rowspan="1" colspan="1">53</td><td align="left" valign="top" rowspan="1" colspan="1">M</td><td align="left" valign="top" rowspan="1" colspan="1">A1XCI0</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<p>ZmLOX10</p>
+<p>Corn</p>
+</td><td align="left" valign="top" rowspan="1" colspan="1">905</td><td align="left" valign="top" rowspan="1" colspan="1">13</td><td align="left" valign="top" rowspan="1" colspan="1">F622</td><td align="left" valign="top" rowspan="1" colspan="1">43</td><td align="left" valign="top" rowspan="1" colspan="1">M</td><td align="left" valign="top" rowspan="1" colspan="1">A1XCI5</td></tr></tbody></table><table-wrap-foot id="pro70647-ntgp-0002"><fn id="pro70647-note-0002"><label>
+<sup>a</sup>
+</label><p>Boldface represents isoforms examined in this study. <sup>b</sup>Relative to GmLOX1. <sup>c</sup>D: dicotyledon, M: monocotyledon.</p></fn></table-wrap-foot></table-wrap><p>AtLOX1, GmLOX1, OsLOX1, and SlLOXA were expressed in and successfully isolated to near homogeneity from <italic toggle="yes">E. coli</italic> bacterial cultures (see Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S1a</xref> for SDS‐PAGE). AtLOX1 and SlLOXA isoforms are 9‐LOXs (Boeglin et al., <xref rid="pro70647-bib-0005" ref-type="bibr">2008</xref>). OsLOX1 is predicted to be a 9‐LOX (Mizuno et al., <xref rid="pro70647-bib-0052" ref-type="bibr">2003</xref>), consistent with its switch residue (Table <xref rid="pro70647-tbl-0001" ref-type="table">1</xref>); however, there is biochemical evidence that this plant LOX produces 13‐hydroperoxides with LA (Wang, Shen, Liu, Jiang, Liu et al. <xref rid="pro70647-bib-0072" ref-type="bibr">2008</xref>). Consistent with the latter, OsLOX1 has been considered a 9/13‐LOX or a “type‐II” LOX (Wang, Shen, Liu, Jian, Zhai et al. <xref rid="pro70647-bib-0073" ref-type="bibr">2008</xref>). Circular dichroism (CD) spectroscopic experiments indicated that these proteins all exhibited secondary structure similar to that of the well‐characterized GmLOX1 protein (see Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S1b</xref>), and the ferrozine assay (see Methods) showed 0.6–0.85 iron atoms per protein monomer for these LOXs. Size exclusion chromatography (SEC) confirmed that all four LOXs are monomeric, based on the SEC calibration curve using protein standards (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S1c</xref>). Despite many efforts (including various cell lines and expression media tested), other plant LOX isoforms, such as GhLOX2, NtLOX1, StLOX1, TaLOX3, and ZmLOX5, failed to produce sufficient protein (determined by kinetic screens following purification). ZmLOX10 was isolated as a dimer and had minimal LOX activity. These latter LOXs were excluded from the remainder of the studies.</p><p>Steady‐state kinetic assays were performed to monitor LA oxidation by the LOX reaction. These experiments were performed with single wavelength kinetics mode (λ = 234 nm). Initial studies focused on the pH profiles of the reactions, in which the activity was examined from pH 5 to 9. We selected a common pH 7.0 buffer to analyze the kinetics of AtLOX1, OsLOX1, and SlLOXA. At this pH, the activities of these three enzymes are at (or nearly at) their peak activity; further, AtLOX1 and SlLOXA are confirmed as 9‐LOXs under these conditions (Bild et al., <xref rid="pro70647-bib-0004" ref-type="bibr">1977</xref>; Boeglin et al., <xref rid="pro70647-bib-0005" ref-type="bibr">2008</xref>). Note that the GmLOX1 kinetics were performed at pH 9, where the first‐ and second‐order rate constants and 13‐HpODE production are maximal (Gardner, <xref rid="pro70647-bib-0021" ref-type="bibr">1989</xref>; Glickman &amp; Klinman, <xref rid="pro70647-bib-0023" ref-type="bibr">1995</xref>).</p><p>The kinetic parameters for LA oxidation by the plant LOXs at 25°C are listed in Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>. The first‐order rate constant, <italic toggle="yes">k</italic>
+<sub>cat</sub>, and Michaelis constant, K<sub>m</sub>, of GmLOX1 are determined as 253 s<sup>−1</sup> and 22 μM. AtLOX1, OsLOX1, and SlLOXA exhibit <italic toggle="yes">k</italic>
+<sub>cat</sub> values in the range of 230–400 s<sup>−1</sup> (Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>). The plots of the initial velocity versus LA substrate concentrations for GmLOX1 reaction produced a hyperbolic trace consistent with Michaelis–Menten kinetic behavior (Figure <xref rid="pro70647-fig-0002" ref-type="fig">2a</xref>). Conversely, the reactions of the other three plant LOXs, AtLOX1, OsLOX1, and SlLOXA, give rise to a distinct, sigmoidal kinetic response, which is modeled well by the Hill equation (Figure <xref rid="pro70647-fig-0002" ref-type="fig">2b–d</xref>). This kinetic model for these plant LOXs was validated using Akaike Information Criterion (AIC) analysis. The corresponding Hill coefficients (<italic toggle="yes">n</italic>) were 2.3 for OsLOX1 to nearly 4 for AtLOX1 and SlLOXA (Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>). Values of <italic toggle="yes">n</italic> &gt; 1 are associated with positive cooperativity. Similarly, monomeric forms of humanStable‐5‐LOX have also been reported with Hill coefficient between 2 and 3 for the oxidation of arachidonic acid (Gallegos et al., <xref rid="pro70647-bib-0020" ref-type="bibr">2022</xref>).</p><table-wrap position="float" id="pro70647-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>Kinetic parameters of LOXs and their reactions with LA<xref rid="pro70647-note-0003" ref-type="table-fn">
+<sup>a</sup>
+</xref>.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">LOX</th><th align="left" valign="bottom" rowspan="1" colspan="1">LA<xref rid="pro70647-note-0004" ref-type="table-fn">
+<sup>b</sup>
+</xref>
+</th><th align="left" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">n</italic>
+</th><th align="left" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">k</italic>
+<sub>cat</sub> (s<sup>−1</sup>)</th><th align="left" valign="bottom" rowspan="1" colspan="1">K<sub>m</sub> (μM)</th><th align="left" valign="bottom" rowspan="1" colspan="1">
+<sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>
+</th><th align="left" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">E</italic>
+<sub>a</sub> (kcal/mol)</th></tr></thead><tbody valign="top"><tr><td rowspan="2" align="left" valign="top" colspan="1">GmLOX1</td><td align="left" valign="top" rowspan="1" colspan="1">H</td><td align="left" valign="top" rowspan="1" colspan="1">1</td><td align="left" valign="top" rowspan="1" colspan="1">253 ± 8</td><td align="left" valign="top" rowspan="1" colspan="1">22 ± 2</td><td rowspan="2" align="left" valign="top" colspan="1">72 ± 3</td><td align="left" valign="top" rowspan="1" colspan="1">2.2 ± 0.4</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1">1</td><td align="left" valign="top" rowspan="1" colspan="1">3.5 ± 0.1</td><td align="left" valign="top" rowspan="1" colspan="1">7.3 ± 0.8</td><td align="left" valign="top" rowspan="1" colspan="1">3.1 ± 0.3</td></tr><tr><td rowspan="2" align="left" valign="top" colspan="1">OsLOX1</td><td align="left" valign="top" rowspan="1" colspan="1">H</td><td align="left" valign="top" rowspan="1" colspan="1">2.3 ± 0.2</td><td align="left" valign="top" rowspan="1" colspan="1">388 ± 13</td><td align="left" valign="top" rowspan="1" colspan="1">21 ± 1</td><td rowspan="2" align="left" valign="top" colspan="1">37 ± 2</td><td align="left" valign="top" rowspan="1" colspan="1">1.2 ± 0.2</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1">4.1 ± 0.7</td><td align="left" valign="top" rowspan="1" colspan="1">10.5 + 0.4</td><td align="left" valign="top" rowspan="1" colspan="1">35 + 2<xref rid="pro70647-note-0005" ref-type="table-fn">
+<sup>c</sup>
+</xref>
+</td><td align="left" valign="top" rowspan="1" colspan="1">N.M.<xref rid="pro70647-note-0006" ref-type="table-fn">
+<sup>d</sup>
+</xref>
+</td></tr><tr><td rowspan="2" align="left" valign="top" colspan="1">SlLOXA</td><td align="left" valign="top" rowspan="1" colspan="1">H</td><td align="left" valign="top" rowspan="1" colspan="1">3.7 ± 0.8</td><td align="left" valign="top" rowspan="1" colspan="1">362 ± 15</td><td align="left" valign="top" rowspan="1" colspan="1">19 ± 1</td><td rowspan="2" align="left" valign="top" colspan="1">62 ± 7</td><td align="left" valign="top" rowspan="1" colspan="1">6.0 ± 0.3</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1">3.7 ± 1</td><td align="left" valign="top" rowspan="1" colspan="1">5.8 ± 0.6</td><td align="left" valign="top" rowspan="1" colspan="1">43 ± 4<xref rid="pro70647-note-0005" ref-type="table-fn">
+<sup>c</sup>
+</xref>
+</td><td align="left" valign="top" rowspan="1" colspan="1">N.M.<xref rid="pro70647-note-0006" ref-type="table-fn">
+<sup>d</sup>
+</xref>
+</td></tr><tr><td rowspan="2" align="left" valign="top" colspan="1">AtLOX1</td><td align="left" valign="top" rowspan="1" colspan="1">H</td><td align="left" valign="top" rowspan="1" colspan="1">3.9 ± 0.5</td><td align="left" valign="top" rowspan="1" colspan="1">228 ± 5</td><td align="left" valign="top" rowspan="1" colspan="1">12.1 ± 0.4</td><td rowspan="2" align="left" valign="top" colspan="1">50 ± 1</td><td align="left" valign="top" rowspan="1" colspan="1">7.2 ± 0.6</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">D</td><td align="left" valign="top" rowspan="1" colspan="1">3.3 ± 0.3</td><td align="left" valign="top" rowspan="1" colspan="1">4.59 ± 0.08</td><td align="left" valign="top" rowspan="1" colspan="1">17.8 ± 0.4</td><td align="left" valign="top" rowspan="1" colspan="1">6.9 ± 0.1</td></tr></tbody></table><table-wrap-foot id="pro70647-ntgp-0003"><fn id="pro70647-note-0003"><label>
+<sup>a</sup>
+</label><p>The temperature was 25°C.</p></fn><fn id="pro70647-note-0004"><label>
+<sup>b</sup>
+</label><p>H represents natural abundance substrate, D represents 11,11‐D<sub>2</sub>‐LA.</p></fn><fn id="pro70647-note-0005"><label>
+<sup>c</sup>
+</label><p>Value is an estimate as the K<sub>m</sub> for the deuterated substrate (D<sub>2</sub>‐LA) approaches or exceeds the critical micelle concentration of substrate.</p></fn><fn id="pro70647-note-0006"><label>
+<sup>d</sup>
+</label><p>N.M., not measured because of the elevated K<sub>m</sub> value. The buffer for GmLOX1 was 100 mM sodium borate, pH 9.0, while all other plant LOXs were assayed in 50 mM HEPES, 150 mM NaCl, pH 7.0 buffer. The data represent the average ± s.e.m. from at least three separate measurements.</p></fn></table-wrap-foot></table-wrap><p>To better understand this sigmoidal behavior of 9‐LOX catalysis, we investigated the impact of pre‐activating the enzyme, using AtLOX1 as an example. As isolated, the catalytically essential non‐heme iron center of LOXs is in the resting 2+ oxidation state but becomes activated during catalysis. We pre‐activated the iron center of AtLOX1 to the ferric (Fe<sup>3+</sup>) state and then examined the kinetic properties upon removal of HPODE (see Methods for details); this sample was associated with a slight decrease in the <italic toggle="yes">k</italic>
+<sub>cat</sub> (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S2a</xref>). Metal analysis of the pre‐activated AtLOX1 revealed 0.62 iron atoms per LOX compared to 0.84 iron atoms for AtLOX1 as isolated. Thus, this reduced activity of pre‐activated AtLOX1 sample is due at least in part to a slight loss of the metal during the activation procedure, similar to our previous reports for GmLOX1 (Hill et al., <xref rid="pro70647-bib-0028" ref-type="bibr">2025</xref>). Importantly, the reaction was still sigmoidal with a Hill coefficient of ca. 3.0 ± 0.4. We also explored the effect of detergents on AtLOX1 activity. The K<sub>m</sub> values for AtLOX1 and SlLOXA (12 and 19 μM, respectively; see Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>) are lower than the critical micelle concentration (CMC) of LA at pH 7, which was determined as ca. 32 μM by the fluorescence‐based assay using 1,6‐diphenyl‐1,3,5‐hexatriene dye (Chattopadhyay &amp; London, <xref rid="pro70647-bib-0013" ref-type="bibr">1989</xref>). In the presence of 0.01% Triton X‐100 (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S2b</xref>), the <italic toggle="yes">k</italic>
+<sub>cat</sub> (i.e., maximal velocity) was found to be unaffected by the presence of detergent, though the Hill coefficient decreased to near unity (<italic toggle="yes">n</italic> = 1.4 ± 0.2). However, we chose to avoid the use of detergents for the remainder of the kinetic experiments to prevent any potential complications from co‐contaminants (e.g., peroxides and aldehydes) that often accompany commercial detergents and the non‐physiological nature of Triton X‐100 in plant systems.</p><p>We next explored the primary deuterium kinetic isotope effects of these reactions using a commercially available per‐deuterated substrate (D<sub>31</sub>‐LA) and a synthetic di‐deuterated (11,11‐D<sub>2</sub>‐LA) substrate (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S2a</xref>). The <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> was determined by dividing the first‐order rate constants for the natural abundance substrate by that of the deuterated substrate. For reference, the GmLOX1 reaction revealed a <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> of ~70 at 25°C and pH 9, which is in good agreement with reported literature values (Glickman et al., <xref rid="pro70647-bib-0025" ref-type="bibr">1994</xref>; Hwang &amp; Grissom, <xref rid="pro70647-bib-0034" ref-type="bibr">1994</xref>). The <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> values for the other plant LOXs follow a similar trend, in the range of ~40–60. These values indicate that the chemical step is rate‐limiting for the first‐order rate constant. It is important to note that the K<sub>m</sub> for the deuterated substrate was elevated in the 9‐LOXs. For example, the K<sub>m</sub> of D<sub>31</sub>‐LA for the AtLOX1 reaction was found to be ca. 20 μM (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S2c</xref>). The use of the di‐deuterated substrate at the reactive carbon (11,11‐D<sub>2</sub>‐LA) resulted in nearly identical kinetic properties to the perdeuterated substrate (cf. Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S2c</xref> and Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>). Thus, the additional deuterium labels did not greatly influence the kinetic parameters. This overall behavior is distinct from the GmLOX1 reaction, in which the K<sub>m</sub> value of the deuterated substrate (7 μM at 25°C; see Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>) is reduced from the natural abundance (22 μM).</p><p>Next, we determined the first‐order rate constants for these reactions across a temperature range of 10–40°C. Differential scanning calorimetry (DSC) was employed to validate that the proteins were structurally stable across this temperature range. The corresponding melting temperatures (T<sub>m</sub>) for this group of plant LOXs were determined from these DSC experiments to be in the range of 59–71°C (Table <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S2</xref>), which is at least 20°C above the temperature range explored in the kinetic experiments herein. Arrhenius plots were generated from the temperature‐dependent kinetic data to extract the activation energies (<italic toggle="yes">E</italic>
+<sub>a</sub>) from the linear slopes (Figure <xref rid="pro70647-fig-0003" ref-type="fig">3</xref> and Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>). For the protium substrate, the <italic toggle="yes">E</italic>
+<sub>a</sub> value of the GmLOX1 reaction was determined as 2.2 ± 0.4 kcal/mol for LA. OsLOX1, which represents our (“type II”) 9/13‐LOX, also exhibited a low <italic toggle="yes">E</italic>
+<sub>a</sub> value of ~1 kcal/mol. In contrast, both AtLOX1 and SlLOXA reactions gave rise to elevated <italic toggle="yes">E</italic>
+<sub>a</sub> values of 6–7 kcal/mol.</p><p>The activation energies for the reactions with the deuterated substrate are also informative. The so‐called temperature dependence of the kinetic isotope effect, Δ<italic toggle="yes">E</italic>
+<sub>a</sub> (Δ<italic toggle="yes">E</italic>
+<sub>a</sub> = <italic toggle="yes">E</italic>
+<sub>a</sub>(D) − <italic toggle="yes">E</italic>
+<sub>a</sub>(H)), serves as a powerful kinetic probe for hydrogen tunneling (Klinman &amp; Offenbacher, <xref rid="pro70647-bib-0041" ref-type="bibr">2018</xref>). Reactions involving naturally evolved enzymes dominated by hydrogen tunneling are associated with near‐zero Δ<italic toggle="yes">E</italic>
+<sub>a</sub> values, while enzymes with impaired or modest tunneling are associated with larger Δ<italic toggle="yes">E</italic>
+<sub>a</sub> values. For example, one impairing variant of GmLOX1, I553G, was associated with a modest impact on <italic toggle="yes">k</italic>
+<sub>cat</sub>, but exhibited a Δ<italic toggle="yes">E</italic>
+<sub>a</sub> value of 5 kcal/mol (Meyer et al., <xref rid="pro70647-bib-0051" ref-type="bibr">2008</xref>). Thus, the Δ<italic toggle="yes">E</italic>
+<sub>a</sub> can serve as a ruler for tunneling efficiency in enzymes. The GmLOX1 reaction has a weak temperature dependence for the kinetic isotope effect, Δ<italic toggle="yes">E</italic>
+<sub>a</sub> = 0.9 ± 0.5 kcal/mol (Figure <xref rid="pro70647-fig-0003" ref-type="fig">3a</xref>). The Δ<italic toggle="yes">E</italic>
+<sub>a</sub> for AtLOX1 with LA is found to be −0.3 ± 0.6 kcal/mol (Figure <xref rid="pro70647-fig-0003" ref-type="fig">3b</xref>), which is within uncertainty to zero. The near‐zero Δ<italic toggle="yes">E</italic>
+<sub>a</sub> value for AtLOX1 corroborates that tunneling is dominant for its hydrogen transfer reaction, despite being associated with a larger <italic toggle="yes">E</italic>
+<sub>a</sub> for the protium substrate. Because the K<sub>m</sub> values for the reactions of SlLOXA and OsLOX1 with D‐LA exceeded the CMC of LA at pH 7, we did not attempt to determine the Δ<italic toggle="yes">E</italic>
+<sub>a</sub> for these reactions.</p><p>It is important to note that the LOX reactions presented in this work have focused on using LA as the primary substrate. LA was used due to its accessible deuteration to follow kinetic isotope effects for mechanistic studies. In addition, LA is typically the most predominant fatty acid in many plants, including soybean (45%–70%), rice (35%–40%), and tomatoes (48%–54%) (see Table <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref> and references [Taira, <xref rid="pro70647-bib-0069" ref-type="bibr">1983</xref>, Weber, <xref rid="pro70647-bib-0074" ref-type="bibr">1983</xref>, O'Neill et al., <xref rid="pro70647-bib-0062" ref-type="bibr">2003</xref>, Ivanov et al., <xref rid="pro70647-bib-0035" ref-type="bibr">2010</xref>, Yoshida et al., <xref rid="pro70647-bib-0075" ref-type="bibr">2011</xref>, Chaudhary et al., <xref rid="pro70647-bib-0014" ref-type="bibr">2014</xref>, Teh et al., <xref rid="pro70647-bib-0070" ref-type="bibr">2019</xref>, Li et al., <xref rid="pro70647-bib-0048" ref-type="bibr">2020</xref>]). Notably, alpha‐linolenic acid, ALA, is highly abundant (20%–30%) in <italic toggle="yes">A. thaliana</italic>. ALA comprises about 5%–12% of fatty acid content in soybeans. Note that the relative composition of LA and ALA varies among plant tissues (e.g., seeds vs. vegetative tissues) where individual LOX isoenzymes are active. We therefore examined the steady‐state kinetics for the GmLOX1 and AtLOX1 reactions with ALA to determine any impact from a different FA substrate. As listed in Table <xref rid="pro70647-tbl-0003" ref-type="table">3</xref>, both the reaction rates and activation energies for GmLOX1 and AtLOX1 were found to be comparable for both LA and ALA substrates. Thus, we can conclude that the kinetic properties are comparable for both ALA and LA in AtLOX1 and GmLOX1.</p><table-wrap position="float" id="pro70647-tbl-0003" content-type="TABLE" orientation="portrait"><label>TABLE 3</label><caption><p>Steady‐state kinetic parameters for LA and ALA substrates.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><col align="left" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Plant LOX</th><th align="left" valign="bottom" rowspan="1" colspan="1">Substrate</th><th align="left" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">k</italic>
+<sub>cat</sub> (s<sup>−1</sup>)</th><th align="left" valign="bottom" rowspan="1" colspan="1">K<sub>m</sub> (μM)</th><th align="left" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">E</italic>
+<sub>a</sub> (kcal/mol)</th></tr></thead><tbody valign="top"><tr><td rowspan="2" align="left" valign="top" colspan="1">GmLOX1</td><td align="left" valign="top" rowspan="1" colspan="1">LA</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">253 ± 8</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">22 ± 2</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">2.2 ± 0.4</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">αLA</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">263 ± 21</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">24 ± 5</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">1.0 ± 0.2</td></tr><tr><td rowspan="2" align="left" valign="top" colspan="1">AtLOX1</td><td align="left" valign="top" rowspan="1" colspan="1">LA</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">228 ± 5</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">12.1 ± 0.4</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">7.2 ± 0.6</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">αLA</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">272 ± 20</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">24 ± 3</td><td align="char" char="±" valign="top" rowspan="1" colspan="1">7.7 ± 0.4</td></tr></tbody></table></table-wrap><p>To gain some molecular insight into the interactions of these LOXs with their fatty acids, we utilized AlphaFold 3 (AF3) to predict structural models for AtLOX1 and GmLOX1 in the presence of zero, one, or three oleic acid (OA) molecules. These predictions were performed without structural templates to allow the diffusion model to explore novel or less common conformational states. For GmLOX1, template‐based modeling yielded highly consistent results (without pruning any amino acids, RMSD 1.1 Å across five predictions to the crystal structure PDB: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/1YGE/pdb" ext-link-type="uri">1YGE</ext-link>); however, omitting templates increased the RMSD to 2.2–2.3 Å. The regions of greatest divergence were localized to the loops of the PLAT domain and the catalytic domain lid, which shifts the N‐terminus of the gating π‐helix. The addition of fatty acids (OA) did not significantly alter the global architecture of GmLOX1 (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4a,b</xref>), with RMSDs of 2.1–2.3 Å for single‐OA predictions and 2.6–3.0 Å for triple‐OA predictions. The primary conformational fluctuations remained centered in the PLAT domain loops and the catalytic lid (not shown). In all single‐OA predictions for GmLOX1, the fatty acid was positioned within the U‐shaped channel in a tail‐first orientation (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4a,b</xref>). This supports the hypothesis that the bulky F557 residue, part of the “regiospecificity switch,” sterically blocks the carboxylate head from deep penetration into the channel. Notably, predictions of the GmLOX1 F557V variant resulted in three out of 10 models adopting a head‐first carboxylate orientation. This structural finding closely mirrors the kinetic data reported by Hershelman et al., who observed 33% 9‐LOX product formation for this variant (Hershelman et al., <xref rid="pro70647-bib-0027" ref-type="bibr">2019</xref>). Predictions involving three OA molecules did not identify a second highly reproducible binding site; the OA molecule with the highest pLDDT (a measure of local accuracy) was consistently located in the U‐shaped channel. However, AF3 predicted a hydrophobic cleft between the π‐helix and the parallel helix alpha 21 (residues 741–754). This potential substrate access portal represents a novel entry point for soluble LOXs.</p><p>Parallel predictions were performed for the 9‐LOX AtLOX1, for which a crystal structure has become recently available for comparison (PDB: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/8I6Y/pdb" ext-link-type="uri">8I6Y</ext-link>). To promote conformational flexibility, these predictions were also performed without templates. RMSD values for apo‐AtLOX1, single‐OA, and triple‐OA models were 1.5–1.6 Å, 2.5–2.8 Å, and 2.7–3.3 Å, respectively (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4c,d</xref>). Similar to GmLOX1, the most mobile regions were the PLAT domain loops and the catalytic domain lid; these regions are frequently disordered or absent in plant LOX crystal structures due to high B‐factors. In AtLOX1, the OA orientation was more promiscuous, with both head‐first and tail‐first orientations predicted. The smaller V557 residue in AtLOX1 appears to allow the carboxylate head of the fatty acid to bypass the isopropyl side chain, whereas the bulkier benzyl group of F557 in GmLOX1 prevents this entry. Unexpectedly, the typically bent π‐helix elongated into a straight conformation in the prediction with OA (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4c,d</xref>), resembling the structure of human 5‐LOX in an “open” conformation. This elongation facilitated the formation of a substrate access portal above the gating helix, adjacent to the arched helix. This architecture is reminiscent of the crystal structures of coral (<italic toggle="yes">Plexaura homomalla</italic>) 8<italic toggle="yes">R</italic>‐LOX bound to substrate and human 15‐LOX‐2 bound to the substrate mimetic C<sub>8</sub>E<sub>4</sub> (Kobe et al., <xref rid="pro70647-bib-0044" ref-type="bibr">2014</xref>; Neau et al., <xref rid="pro70647-bib-0054" ref-type="bibr">2014</xref>).</p></sec><sec sec-type="discussion" id="pro70647-sec-0003"><label>3</label><title>DISCUSSION</title><p>In this study, we have undertaken a kinetic investigation into the tunneling properties for three plant LOXs and compared them to the well‐characterized model tunneling enzyme from soybean (GmLOX1). While the sampling size was limited due to moderate success in isolation of purified protein, the results reveal three new key features. First, GmLOX1, the canonical hydrogen tunneling enzyme, exhibits Michaelis–Menten kinetic behavior as expected, while the kinetic traces of AtLOX1, SlLOXA, and OsLOX1 all follow sigmoidal behavior that is consistent with positive kinetic cooperativity. A recently published kinetic and structural study of a grape LOXA, which was determined to be a 13‐LOX, similarly showed sigmoidal kinetics (Pilati et al., <xref rid="pro70647-bib-0064" ref-type="bibr">2024</xref>). The grape LOXA enzyme was isolated as a functional dimer, and the positive cooperativity was suggested to be controlled by this oligomerization. The plant LOXs reported herein, however, are different from the grape LOXA as they were isolated as functional monomers (Figure <xref rid="pro70647-fig-0001" ref-type="fig">1c</xref>). The enzyme activity of the grape LOX was further shown to be influenced by the presence of detergents that mimic a lipid surface (Pilati et al., <xref rid="pro70647-bib-0064" ref-type="bibr">2024</xref>). Similarly, in our hands, we observed an effect from detergent on the Hill coefficient for the AtLOX1 reaction that decreased to near unity. Note that the inclusion of detergents did not influence the maximal velocity of the enzyme at elevated LA concentrations. The most notable effect was therefore only on the lower concentrations of substrate that were in the solubility range in the absence of detergent. Detergent is likely influencing the protein structure in a way that eliminates the apparent kinetic cooperativity observed with LA. Thus, the interpretation of LOX reactions in the presence of detergents could be complicated and needs to be carefully investigated.</p><fig position="float" fig-type="FIGURE" id="pro70647-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Model of plant LOX structure. (a) Global architecture of plant LOX includes two domains: An N‐terminal, C2‐like PLAT domain and primarily alpha‐helical catalytic domain. The arched helix and helix a2 are labeled for reference. (b) Active site of plant LOXs is displayed with a C18 fatty acid (modeled for reference). Panel (b) was rotated by 150° along the x axis, relative to (a). The representative structure is of soybean LOX‐1 (PDB: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/3PZW/pdb" ext-link-type="uri">3PZW</ext-link>).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="PRO-35-e70647-g007.jpg"><?image-name PRO-35-e70647-g007.jpg?><?image-size 134914?><?image-md5 dbb48e8748af7eef687cd7e65d4d3cfe?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1085?><?image-original-width 995?><?image-scaled-height 723?><?image-scaled-width 663?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/dbb48e8748af/PRO-35-e70647-g007.jpg?><?thumb-name PRO-35-e70647-g007.gif?><?thumb-size 16900?><?thumb-md5 52d5e04a5b0e9d2693e1593e3eb3630a?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 109?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/52d5e04a5b0e/PRO-35-e70647-g007.gif?></graphic></fig><p>To explore the possibility that fatty acids might potentially regulate an open‐to‐close (allosteric) conformational transition in the plant LOXs tested here, we carried out a series of AF3 predictions by varying the number of fatty acids included in the predictions (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4</xref>). Predictions with AF3 did not reveal a reproducible fatty acid binding site with high predictive values outside of the U‐shaped channel. However, another interpretation for positive cooperativity was first addressed with glucokinase, a monomeric, single substrate binding enzyme. The sigmoidal kinetics are thought to arise from shifting of ensemble populations at different substrate concentrations (Larion &amp; Miller, <xref rid="pro70647-bib-0047" ref-type="bibr">2012</xref>). More simply put for positive cooperativity with a Hill coefficient above one, a significant population of enzymes at low substrate concentrations will adopt a conformation less favorable for turnover. However, as substrate concentration is increased, there is a shift of the ensemble population to the more catalytically competent conformation resulting in the sigmoidal curve. This kinetic cooperativity (mnemonic) occurs in monomeric enzymes due to slow, ligand‐induced conformational changes (hysteretic) that create the population shift at higher substrate concentrations. A stable form of the human 5‐LOX exhibits this type of sigmoidal kinetic traces for the oxidation of arachidonic acid. Cooperativity in 5‐LOX was hypothesized to be modulated by a protein conformation of Ha2 (Gallegos et al., <xref rid="pro70647-bib-0020" ref-type="bibr">2022</xref>). Mutations to residues along the gating helix to shift the ensemble populations from the “closed” kinetically sluggish conformation to “open” conformations not only resulted in lowering K<sub>half</sub>, the ligand concentration at half‐maximal saturation, but also increased <italic toggle="yes">k</italic>
+<sub>cat</sub>. Positive cooperativity is maintained for these variants reinforcing the theory that the ensemble population of protein conformers (open vs. closed) are just shifting with changes in substrate concentration. This behavior is also notable in the AF3 models of AtLOX1 (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4c,d</xref>), in which addition of fatty acids does not change the global architecture of the enzyme, but is predicted to shift the ensemble populations of the gating helix (π‐helix) from bent to fully elongated forming a fully accessible substrate portal as the amount of fatty acid is increased. These structural fluctuations of the gating helix may be responsible for the positive cooperativity observed in the kinetics of plant 9‐LOXs, by a similar mechanism previously detailed for human 5‐LOX.</p><p>Another plausible explanation for the apparent kinetic cooperativity observed mainly for the 9‐LOXs and not the 13‐LOXs is that multiple substrate‐binding modes could occur for the 9‐LOXs at different substrate concentrations. Structural and kinetic studies on LOXs have shown that substrate can bind in distinct productive and nonproductive orientations within the active‐site cavity, and that ligand binding can alter substrate inhibition or product regio‐specificity(reviewed in Brash &amp; Oliw, <xref rid="pro70647-bib-0008" ref-type="bibr">2026</xref>). Removal of anchoring residues such as arginine for binding of the carboxylate of the substrate can minorly alter product specificity but increase substrate inhibition as observed for 8R‐LOX (Neau et al., <xref rid="pro70647-bib-0054" ref-type="bibr">2014</xref>).</p><p>The second kinetic feature to emerge from this study is the observation of K<sub>m</sub> values for the 9‐LOX reactions with deuterated substrates that are larger than the K<sub>m</sub> values for the natural abundant substrates. In comparison, the K<sub>m</sub> of GmLOX1 reaction is reduced from 22 to 7 μM for the deuterated substrate. The increased K<sub>m</sub>(D) values for the 9‐LOX are attributed to kinetic complexity of the LOX reaction coordinate, as previously described for GmLOX1 as follows (Offenbacher et al., <xref rid="pro70647-bib-0058" ref-type="bibr">2018</xref>):</p><p>Note that the LOX reaction is considered to be virtually irreversible (Glickman &amp; Klinman, <xref rid="pro70647-bib-0024" ref-type="bibr">1996</xref>); thus, the apparent isotope effect on K<sub>m</sub> is not caused by an equilibrium effect from a reverse reaction (Cleland, <xref rid="pro70647-bib-0015" ref-type="bibr">2003</xref>). From Scheme <xref rid="pro70647-fig-0008" ref-type="fig">2</xref>, when <italic toggle="yes">k</italic>
+<sub>2</sub> (i.e., <italic toggle="yes">k</italic>
+<sub>cat</sub>) is reduced upon isotopic substitution, the commitment to catalysis also becomes small and, as a consequence, the kinetic isotope effect of the second‐order rate constant (<sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>/K<sub>m</sub> = <italic toggle="yes">k</italic>
+<sub>cat</sub>/K<sub>m</sub>(D)/<italic toggle="yes">k</italic>
+<sub>cat</sub>/K<sub>m</sub>(H)) approaches <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>. For example, at 25°C, the <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>/K<sub>m</sub> for GmLOX1 is ca. 24 (from data in Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>). This value increases with increasing temperature to nearly match <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub> at elevated temperatures (Glickman &amp; Klinman, <xref rid="pro70647-bib-0023" ref-type="bibr">1995</xref>). K<sub>m</sub> will not only reflect on and off rates, which would be regulated in part by the conformational change included in the Hill coefficient, but is also a composite of the partitioning of the enzyme from an initially bound, unproductive enzyme‐substrate complex (ES in Scheme <xref rid="pro70647-fig-0008" ref-type="fig">2</xref>) to a productive complex (ES′). This pre‐chemical reorganization of the substrate, denoted by K<sub>eq</sub>, is large for wild‐type GmLOX1, though can be modulated by select active site mutations or the presence of an effector (Hu et al., <xref rid="pro70647-bib-0030" ref-type="bibr">2019</xref>; Mogul et al., <xref rid="pro70647-bib-0053" ref-type="bibr">2000</xref>; Offenbacher et al., <xref rid="pro70647-bib-0058" ref-type="bibr">2018</xref>). The K<sub>eq</sub> for plant 9‐LOXs, based on the <sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>/K<sub>m</sub>, is expected to be smaller, and sensitive to isotopic substitution on substrate. From a structural perspective, the head‐first binding orientation of the substrate in 9‐LOXs may place the pentadiene scaffold in a binding pose that is less optimal for hydrogen abstraction. In this model, the 9‐LOX enzyme would sample multiple substrate conformations before reaching the optimal geometry for catalysis (i.e., ES'), and the deuterated substrate would affect this conformational search, resulting in a larger apparent K<sub>m</sub> for this substrate without influencing the cooperative behavior of the enzyme. Consistent with this, the Hill coefficient (<italic toggle="yes">n</italic>) is retained with the deuterated substrate, indicating that the 9‐LOXs maintain sigmoidal kinetics despite the use of elevated enzyme concentrations (90‐to‐120 nM for D‐LA compared to 2–4 nM for H‐LA) necessary for the kinetic measurements.</p><fig position="float" fig-type="SCHEME" id="pro70647-fig-0008" orientation="portrait"><label>SCHEME 2</label><caption><p>Reaction coordinate for GmLOX1. E and S represent the enzyme (LOX) and substrate (LA), respectively. K<sub>eq</sub> represents a pre‐chemical internal reorganization from the initial enzyme‐substrate (ES) complex to a productive (ES′) complex.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="PRO-35-e70647-g008.jpg"><?image-name PRO-35-e70647-g008.jpg?><?image-size 10062?><?image-md5 0a6fbae3e42a1507ae47f3c3ed391552?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 138?><?image-original-width 998?><?image-scaled-height 92?><?image-scaled-width 665?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/0a6fbae3e42a/PRO-35-e70647-g008.jpg?><?thumb-name PRO-35-e70647-g008.gif?><?thumb-size 2133?><?thumb-md5 5dfc2d3fde364ed86800f0e93b71f42d?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 28?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/5dfc2d3fde36/PRO-35-e70647-g008.gif?></graphic></fig><p>The third feature to emerge is that the activation energies for the two established 9‐LOXs, AtLOX1 and SlLOXA, are elevated with respect to GmLOX1. Because hydrogen wave function overlap is inherently temperature independent, the weak temperature dependence of hydrogen transfer in GmLOX1 (i.e., <italic toggle="yes">E</italic>
+<sub>a</sub>(H) of 2 kcal/mol) corresponds to a functional role for thermal motions of the protein to modulate the donor and acceptor distances to promote efficient tunneling. GmLOX1 was previously characterized with a defined thermal network (Figure <xref rid="pro70647-fig-0005" ref-type="fig">5a</xref>) that originates at the ferric hydroxide cofactor and the invariant Leu clamp residue (L546 in GmLOX1) and terminates at a loop (residues 317–334); the latter was identified to exhibit activation energies in hydrogen deuterium exchange (HDX) experiments that correlated with <italic toggle="yes">E</italic>
+<sub>a</sub> values for hydrogen tunneling for a series of activity‐altered protein variants (Offenbacher et al., <xref rid="pro70647-bib-0057" ref-type="bibr">2017</xref>). Room temperature x‐ray analysis identified several bulky aliphatic residues, mostly Ile, Leu, Phe, and Val, connecting the active site to the thermal loop in a cone‐like arrangement (Figure <xref rid="pro70647-fig-0005" ref-type="fig">5a</xref>) (Zaragoza et al., <xref rid="pro70647-bib-0077" ref-type="bibr">2023</xref>). Clusters of leucine, isoleucine, and valine (ILV) sidechains have been supported to play an important role in protein stability for high‐energy protein states (Kathuria et al., <xref rid="pro70647-bib-0038" ref-type="bibr">2016</xref>), and have been implicated in the thermal activation of enzyme catalysis (Offenbacher &amp; Guy, <xref rid="pro70647-bib-0056" ref-type="bibr">2024</xref>; Zaragoza et al., <xref rid="pro70647-bib-0077" ref-type="bibr">2023</xref>). In GmLOX1, functional role of this network has been proposed to facilitate the anisotropic transmission of thermal energy from the solvent at the protein surface to the active site via a productive conformational restructuring of the protein promoting effective wave function overlap for tunneling. This thermally‐initiated restructuring of the protein likely represents the origin of the <italic toggle="yes">E</italic>
+<sub>a</sub> for catalysis in GmLOX1 (Zaragoza et al., <xref rid="pro70647-bib-0077" ref-type="bibr">2023</xref>).</p><p>The observation of elevated <italic toggle="yes">E</italic>
+<sub>a</sub> values for AtLOX1 and SlLOXA, presented herein, raises the question into the detailed mechanism(s) of thermal activation of hydrogen tunneling for plant 9‐LOXs. A structure of AtLOX1 was recently deposited in the Protein Data Bank (PDB: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/8I6Y/pdb" ext-link-type="uri">8I6Y</ext-link>; 3.26 Å). Similar to GmLOX1, this structure of AtLOX1 has a loop‐like feature in a homologous positioning to the “thermal loop” of GmLOX1 (Figure <xref rid="pro70647-fig-0005" ref-type="fig">5b</xref>). Further, analysis of the amino acids reveals a high propensity of bulky and/or aliphatic sidechains, including Ile, Leu, Phe, and Val, lining the interface between the thermal loop and the active site.</p><p>Evolutionary conserved residues typically indicate they are critical to an enzyme's structure, function, and/or regulation. Phylogenetic analyses and sequence conservation have been explored previously for plant LOXs, albeit at a smaller scale (Bannenberg et al., <xref rid="pro70647-bib-0003" ref-type="bibr">2009</xref>; Brash, <xref rid="pro70647-bib-0007" ref-type="bibr">1999</xref>; Feussner &amp; Wasternack, <xref rid="pro70647-bib-0019" ref-type="bibr">2002</xref>). Here, we investigated whether surface mapping of phylogenetic sequence conservation for the reference GmLOX1 protein may reveal new insights into this thermal network at a broader scale than possible by deep biochemical analyses of many individual LOXs. To this extent, we used BLASTP analysis of <italic toggle="yes">Arabidopsis</italic> LOX1 against 200+ publicly available genomes and reference transcriptomes that revealed 3582 putative LOX homologs (see Data <xref rid="pro70647-supitem-0004" ref-type="supplementary-material">S2</xref>). Not surprisingly, residues closer to the catalytic site were much more conserved than surface residues among all phylogenetic groups (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref>). This is particularly true for the side chains that line the arched helix (535–557 of GmLOX1; Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3c</xref>) that have considerable conservation, with a clear exception of the “switch residue” that is predominantly a Phe (&gt;95%) for putative 13‐LOXs and a Val (&gt;90%) for putative 9‐LOXs and defines the C‐terminus of the arched helix. Important sequence differences in the thermal network and active site regions were revealed (Figure <xref rid="pro70647-fig-0006" ref-type="fig">6</xref>, and Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref>) by using inferred phylogeny to help group putative 9<italic toggle="yes">S</italic> vs. 13<italic toggle="yes">S</italic> LOXs. After clustering these based on phylogenetic group (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S44</xref>) it was apparent that key conserved (or non‐conserved) residues in the active site (relative to GmLOX1) are relatively consistent whether we are analyzing LOX from closely related species (e.g., dicots) or more diverged species (e.g., algae).</p><p>Figure <xref rid="pro70647-fig-0006" ref-type="fig">6</xref> and Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref> present a detailed phylogenic analysis of the GmLOX1‐detected thermal network. It is worth highlighting the conservation of invariant Leu546 (across the &gt;3500 putative LOX sequences) that positions the reactive carbon for catalysis in LOXs and is expected to be the critical mediator of long‐range thermal energy transfer from the protein surface (Offenbacher et al., <xref rid="pro70647-bib-0057" ref-type="bibr">2017</xref>). In these phylogenic models, the conservation of the thermal loop (317–334 in GmLOX1) is moderately low. One notable exception is the high occurrence of a bulky hydrophobic residue at position 317. Previous mutational analysis of Y317 in GmLOX1 to smaller aliphatic residues resulted in altered activation energies and a disturbance of the substrate binding (Offenbacher et al., <xref rid="pro70647-bib-0057" ref-type="bibr">2017</xref>; Offenbacher et al., <xref rid="pro70647-bib-0059" ref-type="bibr">2020</xref>). Interestingly, we found an invariant proline sidechain at position 330 and a highly conserved proline at 309 in GmLOX1 that bookend the loop feature, presumably to disrupt the flanking helical segments. These proline residues could serve as a target for future studies aimed at investigating loop structure and dynamics as it relates to tunneling proficiency in plant LOXs.</p><p>Moving from the surface loop to the active site, the network passes through two major helices: α2 and α21 (Figure <xref rid="pro70647-fig-0005" ref-type="fig">5</xref> and Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref>). There is considerable sequence variation in helix α2 and helix α21 (residues 741–754 in GmLOX1), which runs parallel to the arched helix at the active site. However, the residues that are expected and/or predicted to play a role in productive energy transfer (i.e., 262, 266, 270 in helix α2 and 742, 746, and 750 in helix α21) are predominantly Ile, Leu, or Val (and sometimes Phe) side chains (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref>). A recent molecular dynamics (MD) simulation study incorporating a correlated‐motion protocol revealed that there could be two prominent pathways for thermal energy transfer from the loop to L546 in GmLOX1 (Jiang et al., <xref rid="pro70647-bib-0037" ref-type="bibr">2026</xref>). Both pathways proceed through I552. Further, potential alternative routes all predicted to converge to L266 in helix α2 of GmLOX1, prior to accessing the common pathway to L546. Both the L266 and I252 sidechains are represented by high occurrences of Leu, Ile, or Val residues across the plant LOXs (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3c,d</xref>).</p><p>The existence of a primary thermal conduit proceeding through Ha2 in GmLOX1 could provide one potential rationale for the altered catalytic behavior seen in AtLOX1. Our AF3 models of AtLOX1 predict a fatty acid‐mediated regulation of the ensemble of helix α2 conformations (Figure <xref rid="pro70647-fig-0004" ref-type="fig">4b</xref>), which is supported by the observation of sigmoidal kinetics (Figure <xref rid="pro70647-fig-0002" ref-type="fig">2c</xref>). The kinetic consequence of this dynamic sampling of Ha2 conformers could translate to a larger apparent enthalpic barrier for catalysis. Because both the thermal activation network and substrate binding seem to intersect at the same helix (namely, helix α2), the dynamics of this helix may be balanced to serve as a vital regulatory mechanism in vivo for controlling proper levels of 9‐hydroperoxide output. While the mechanism(s) of the thermal activation of the plant 9‐LOXs (e.g., AtLOX1) remain to be experimentally resolved, we can conclude from our results that the presence of a loop, homologous to the thermal loop in GmLOX1, and a conserved network enriched in bulky, aliphatic residues to mediate thermal energy transfer from the solvent to the active site is not correlated with low activation barriers for hydrogen tunneling across all plant LOXs, as previously hypothesized (Offenbacher et al., <xref rid="pro70647-bib-0057" ref-type="bibr">2017</xref>; Ohler et al., <xref rid="pro70647-bib-0061" ref-type="bibr">2024</xref>).</p><fig position="float" fig-type="FIGURE" id="pro70647-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>Kinetic saturation plots, with the rates corrected for enzyme concentration, for the reactions involving (a) GmLOX1, (b) OsLOX1, (c) AtLOX1, and (d) SlLOXA with varying LA concentrations. The solid lines represent fit to (a) Michaelis–Menten and (b‐d) Hill equations. For reference, the dashed lines in (b–d) represent the data fit to the Michaelis–Menten equation. The reactions were collected at 25°C in (a) 100 mM sodium borate (pH 9.0) or (b–d) 50 mM HEPES (pH 7.0) and 150 mM sodium chloride buffer. The data are averages from three independent measurements with the error bars representing ±s.e.m.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="PRO-35-e70647-g006.jpg"><?image-name PRO-35-e70647-g006.jpg?><?image-size 87639?><?image-md5 4f5258059029a220f5db08fb54d7a9dc?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 772?><?image-original-width 1064?><?image-scaled-height 514?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/4f5258059029/PRO-35-e70647-g006.jpg?><?thumb-name PRO-35-e70647-g006.gif?><?thumb-size 11225?><?thumb-md5 fd6566861b353a3cfbc3188d5044069f?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 110?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/fd6566861b35/PRO-35-e70647-g006.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="pro70647-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Arrhenius plots for the first‐order rate constants, <italic toggle="yes">k</italic>
+<sub>cat</sub>, of A) GmLOX1 and B) AtLOX1 reactions with natural abundance (H‐LA) and perdeuterated (D<sub>31</sub>‐LA) substrates.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-9" orientation="portrait" xlink:href="PRO-35-e70647-g005.jpg"><?image-name PRO-35-e70647-g005.jpg?><?image-size 59267?><?image-md5 90faaf757e5c83825cc766b81f45bb8e?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 761?><?image-original-width 1064?><?image-scaled-height 507?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/90faaf757e5c/PRO-35-e70647-g005.jpg?><?thumb-name PRO-35-e70647-g005.gif?><?thumb-size 9165?><?thumb-md5 5b62b36fbf9afca7d88076e3c72ccc94?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 79?><?thumb-scaled-width 111?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/5b62b36fbf9a/PRO-35-e70647-g005.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="pro70647-fig-0004" orientation="portrait"><label>FIGURE 4</label><caption><p>AF3 predicted models of plant LOXs with OA. (a,b) Five predictions of GmLOX1 (cartoon loop) with 1 OA or 3 OA (sticks) colored by pLDDT (60 red, 80 white, 100 blue) superimposed on GmLOX1 x‐ray structure (green, cartoon loops). Fe is shown as orange sphere with Lid domain removed for clarity. Key helices are highlighted. OA is predicted to bind “tail‐first” for GmLOX1 in the U‐shaped channel with additional OAs binding between and below Hα2 and Hα21. (c,d) Similar AF3 predictions were made for AtLOX1 superimposed on x‐ray structure (green, cartoon loops). OA was predicted both “head and tail‐first” for AtLOX1 in U‐shaped channel with additional OAs binding above Hα2 and under the “arched helix.” OAs in U‐shaped channel had higher predictive values (colored white to light red) as compared to 3 OA predictions (dark red, sticks) illustrating the confidence values.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-11" orientation="portrait" xlink:href="PRO-35-e70647-g002.jpg"><?image-name PRO-35-e70647-g002.jpg?><?image-size 218327?><?image-md5 8ad01aaf651d4a9f950b50f03968b0ec?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 985?><?image-original-width 1064?><?image-scaled-height 656?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/8ad01aaf651d/PRO-35-e70647-g002.jpg?><?thumb-name PRO-35-e70647-g002.gif?><?thumb-size 23725?><?thumb-md5 8189beeb940ce5d7d8dc1c9226d33734?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 93?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/8189beeb940c/PRO-35-e70647-g002.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="pro70647-fig-0005" orientation="portrait"><label>FIGURE 5</label><caption><p>Analysis of the thermal network of GmLOX1 and the structural homology to AtLOX1. The thermal loop of GmLOX1 (residues 317–334) is colored in firebrick; AtLOX1 structure has a similar loop feature (residues 337–354; salmon). The green and cyan spheres represent sidechains in the putative thermal networks of GmLOX1 and AtLOX1, respectively.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-13" orientation="portrait" xlink:href="PRO-35-e70647-g001.jpg"><?image-name PRO-35-e70647-g001.jpg?><?image-size 146393?><?image-md5 2e0c9f9c0483f93ae118ab9f37a18855?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 870?><?image-original-width 1064?><?image-scaled-height 580?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/2e0c9f9c0483/PRO-35-e70647-g001.jpg?><?thumb-name PRO-35-e70647-g001.gif?><?thumb-size 16465?><?thumb-md5 c45adcc026d7027596f2ad9005d0e039?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 82?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/c45adcc026d7/PRO-35-e70647-g001.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="pro70647-fig-0006" orientation="portrait"><label>FIGURE 6</label><caption><p>Surface mapping of phylogenetic sequence conservation on GmLOX1. (a) Sequence identity conservation is mapped on GmLOX1 model (PDH: 1f8n modeled with LA and Fe) with (top) all LOX sequences from 200+ plant genomes/transcriptomes, (middle) putative 9<italic toggle="yes">S</italic> LOX proteins, and (bottom) putative 13S‐LOX proteins. (b) Sequence conservation mapped on only thermal loop 317–334 (all structural features shown in Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref>). (c) Sequence logos for thermal loop. Details of genomes/transcriptomes analyzed, individual protein IDs, sequences, and conservation analyses are provided in Data <xref rid="pro70647-supitem-0004" ref-type="supplementary-material">S2</xref>.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-15" orientation="portrait" xlink:href="PRO-35-e70647-g003.jpg"><?image-name PRO-35-e70647-g003.jpg?><?image-size 139154?><?image-md5 c05fa76c78dfa68dbe3efedbcd228e35?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1241?><?image-original-width 1064?><?image-scaled-height 827?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/c05fa76c78df/PRO-35-e70647-g003.jpg?><?thumb-name PRO-35-e70647-g003.gif?><?thumb-size 16055?><?thumb-md5 94df05f0f14a2b7dad363e3355cdfce8?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 117?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/94df05f0f14a/PRO-35-e70647-g003.gif?></graphic></fig><p>Finally, it is worth noting that OsLOX1 exhibits a reduced <italic toggle="yes">E</italic>
+<sub>a</sub> of ca. 1 kcal/mol that is comparable to the 13‐LOX of GmLOX1. However, the activity of OsLOX1 followed sigmoidal behavior consistent with positive cooperativity. A 13‐LOX from Arabidopsis (isoform 2) was also characterized with Hill coefficients greater than 1 (Kaur et al., <xref rid="pro70647-bib-0040" ref-type="bibr">2024</xref>). It is unclear if the sigmoidal behavior for AtLOX2 is attributed to its oligomeric status or if it is due to pH/buffer conditions explored, as the Hill coefficient approached unity with increasing pH. Further biochemical and structural studies may be required to resolve these kinetic properties.</p></sec><sec sec-type="conclusions" id="pro70647-sec-0004"><label>4</label><title>CONCLUSIONS</title><p>Sigmoidal kinetics coupled with protein modeling by AF3 predict that the monomeric plant LOXs, investigated in the current work, are likely regulated by fatty acids entailing the restructuring of the gating helix α2. These findings present a new model for substrate acquisition in plant LOX catalysis. In addition, the two 9‐LOX representatives exhibited activation energies that were elevated from that of GmLOX1. Broad phylogenic analysis of LOX sequences across the plant kingdom was spatially mapped onto available x‐ray crystal structures. This analysis points toward a central basis for the mechanism of thermal activation of H‐tunneling in plant LOXs that includes a conserved loop‐like structure and an intermediary network enriched in Ile, Leu, and Val sidechains. This work builds on the growing body of evidence that spotlights a role for classical thermal motions of the protein in mediating and enhancing quantum mechanical phenomena in biological function.</p></sec><sec sec-type="materials-and-methods" id="pro70647-sec-0005"><label>5</label><title>MATERIALS AND METHODS</title><sec sec-type="materials" id="pro70647-sec-0006"><label>5.1</label><title>Materials</title><p>Genes encoding ZmLOX5 and ZmLOX10 were synthesized by GenScript (Piscataway, NJ). The vector encoding SlLOXA was a generous gift from Prof. Alan Brash. All other plant LOX (see Table <xref rid="pro70647-tbl-0001" ref-type="table">1</xref>) genes were subcloned by PCR into a pET28 bacterial expression vector in line with an N‐terminal hexa‐histidine (His<sub>6</sub>) tag. The perdeuterated substrate (D<sub>31</sub>LA) was obtained as the methyl ester from Cambridge Isotope Labs (Tewksbury, MA). The 11,11‐D<sub>2</sub>‐LA substrate was synthesized (Offenbacher et al., <xref rid="pro70647-bib-0060" ref-type="bibr">2016</xref>).</p></sec><sec id="pro70647-sec-0007"><label>5.2</label><title>Plant <styled-content style="fixed-case" toggle="no">LOX</styled-content> expression and purification</title><p>
+<italic toggle="yes">Gm</italic>LOX1 was expressed and purified as described previously (Jakobowski et al., <xref rid="pro70647-bib-0036" ref-type="bibr">2024</xref>). For all other plant LOXs, the LOX vectors were transformed in <italic toggle="yes">E. coli</italic> BL21(DE3) Codon Plus RIL competent cells and added to overnight starter cultures supplemented with 0.4% (w/v) glucose and the appropriate antibiotic. The starter culture was incubated at 30°C overnight with shaking. After 16–20 h, the starter cultures were used to inoculate large scale ZYM‐5052 autoinduction media (supplemented with antibiotic) in 2.8 L Fernbach flasks. The cultures were incubated at 37°C and 180 rpm, until the optical density (OD<sub>600</sub>) reached 1.0, at which point the temperature was decreased to 18°C for continual shaking for 24–40 h. Cell pellets were harvested and resuspended in 100 mL lysis buffer (50 mM sodium phosphate, 100 mM NaCl, pH 8, 8% (w/v) glycerol, and 2 mM magnesium sulfate supplemented with 10 mg lysozyme, 4 μL DNAse I, and 20 mg AEBSF protease inhibitor). The cell suspensions were lysed by sonication and the cell debris was removed by centrifugation. From the supernatant, the LOX proteins were captured and purified by Ni‐NTA using gravity. Briefly, after loading the protein onto the column (10 mL), the material was washed with 10 column volumes (CVs) of buffer A (20 mM TRIS, pH 8, 500 mM NaCl, and 20 mM imidazole) and then eluted with 32–5 CVs of buffer B (20 mM TRIS, pH 8, 500 mM NaCl, and 200 mM imidazole). The eluted protein was collected using a fraction collector. The presence of protein was confirmed with enzyme activity and SDS‐PAGE. LOXs were further purified using SEC with a HiPrep Sephacryl™ S‐200 HR preparative column on an ÄKTA go fast‐protein liquid chromatography (FPLC). The protein was eluted with the running buffer (50 mM HEPES, 150 mM NaCl, pH 7.5). Aliquots were frozen in liquid N<sub>2</sub>, and stored at −80°C until further use. The iron content in the LOX samples was determined by the ferrozine (spectrophotometric) assay as described elsewhere (Jakobowski et al., <xref rid="pro70647-bib-0036" ref-type="bibr">2024</xref>).</p></sec><sec id="pro70647-sec-0008"><label>5.3</label><title>Steady‐state enzyme kinetics</title><p>Steady‐state kinetics for the LOX reactions with LA were monitored continuously at a single wavelength for the detection of product formation (λ = 234 nm) using a UV–vis spectrometer equipped with a temperature‐controlled, circulating water bath. Initial experiments were performed at 25°C across a series of pH values from 6.0 (50 mM MES), 7.0 and 8.0 (50 mM HEPES), and 9.0 (50 mM sodium borate), supplemented with 150 mM sodium chloride. For a typical LOX reaction, six to eight LA concentrations were tested, ranging from 2 to 100 μM, at a constant temperature, using the natural abundance substrate. The Michaelis‐Menton kinetic parameters (<italic toggle="yes">k</italic>
+<sub>cat</sub> and K<sub>m</sub>) were determined and reported in Table <xref rid="pro70647-tbl-0002" ref-type="table">2</xref>. Steady‐state kinetics of the LOX reactions were performed across a temperature range (10, 15, 20, 25, 30, 35, and 40°C). The activation energy, E<sub>a</sub>, was determined from the slope of the corresponding Arrhenius equation (in the format of y = mx + b):<disp-formula id="pro70647-disp-0001">
+<label>(1)</label>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-1" display="block" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>ln</mml:mi><mml:msub><mml:mi>k</mml:mi><mml:mi mathvariant="italic">cat</mml:mi></mml:msub><mml:mo linebreak="goodbreak">=</mml:mo><mml:mo linebreak="goodbreak">−</mml:mo><mml:mfrac><mml:msub><mml:mi>E</mml:mi><mml:mi>a</mml:mi></mml:msub><mml:mi>R</mml:mi></mml:mfrac><mml:mfrac><mml:mn>1</mml:mn><mml:mi>T</mml:mi></mml:mfrac><mml:mo linebreak="goodbreak">+</mml:mo><mml:mi>ln</mml:mi><mml:mi>A</mml:mi></mml:mrow></mml:mrow></mml:math>
+</disp-formula>where inverse temperature is the <italic toggle="yes">x</italic>‐axis, R is the ideal gas law constant (in kcal/mol K), and A is the Arrhenius pre‐factor.</p><p>Primary deuterium kinetic isotope effects were determined for the first‐order (<sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>) and second‐order (<sup>D</sup>
+<italic toggle="yes">k</italic>
+<sub>cat</sub>/K<sub>M</sub>) rate constants, using the comparison of the natural abundance and deuterium‐labeled (D<sub>31</sub> or 11,11‐D<sub>2</sub>) LA substrates. For reactions with D‐LA, the substrate concentrations were the same as for natural abundance LA but the enzyme concentration was increased by 10‐ to 20‐fold over the unlabeled substrate to ensure the reaction was completed in a timely manner. The primary deuterium kinetic isotope effects were calculated by the ratio of the rate constant of the light isotope over the heavy isotope:<disp-formula id="pro70647-disp-0002">
+<label>(2)</label>
+<inline-graphic xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="PRO-35-e70647-e002.jpg"><?image-name PRO-35-e70647-e002.jpg?><?image-size 2920?><?image-md5 b7a61186cb37d2851031ced29147e25b?><?image-image-server-status NEVER_LOAD?><?image-cloudpmc-urn urn:cdn:blobs/8bc0/13240100/b7a61186cb37/PRO-35-e70647-e002.jpg?></inline-graphic>
+</disp-formula>
+</p><p>Igor Prov (v5.0) was used to plot kinetic data and perform fitting analyses. All kinetic parameters are reported as the mean ± standard error (s.e.). AIC analysis was performed with GraphPad Prism (GraphPad software).</p></sec><sec id="pro70647-sec-0009"><label>5.4</label><title>Circular dichroism (<styled-content style="fixed-case" toggle="no">CD</styled-content>) spectroscopy</title><p>The structural integrity of the isolated plant LOXs was assessed using a Jasco model J‐815 CD spectrometer at room temperature with bandwidths of 2 nm and with a Starna cell (pathlength of 0.1 cm). The samples were diluted to about 2 μM using 25 mM potassium phosphate, pH 7.0, so that the PMT high voltage (HT) remained ≤600 V in the range of 190–260 nm. Samples were recorded at 25°C.</p></sec><sec id="pro70647-sec-0010"><label>5.5</label><title>Differential scanning calorimetry</title><p>LOX protein thermodynamics were measured using a TA‐instruments Nano‐DSC microcalorimeter. The proteins were prepared at 30 μM concentrations in 50 mM HEPES, 150 mM NaCl, pH 7.5 buffer. For comparison, GmLOX1 was prepared in 50 mM borate, pH 9.0 buffer. The DSC experiments were conducted in “heat” only mode over a temperature range of 30–90°C at a rate of 1°C/min and constant pressure of 3 atm. The raw data were converted to molar heat capacity and analyzed using TA‐instruments NanoAnalyze software. The baseline was integrated using a 4th order polynomial to determine the melting temperature (T<sub>m</sub>) and enthalpy of unfolding (ΔH°). Experiments were run in duplicate.</p></sec><sec id="pro70647-sec-0011"><label>5.6</label><title>Structural model predictions</title><p>AlphaFold3 (AF3) was used to predict the structures of GmLOX1 and AtLOX1. For both proteins, predictions were conducted with and without structural templates to assess possible variations in conformation. When templates were included for GmLOX1, the predicted structures closely matched existing crystal structures, with root mean square deviations (RMSDs) of approximately 1.0 Å. In contrast, predictions without templates resulted in higher RMSDs of 2.2–2.3 Å, indicating greater conformational flexibility. Five structural models were predicted for each plant LOX with the catalytic iron (Fe), Fe and one OA, and Fe and 3 OAs. The predicted template modeling (pTM) score for the protein has confidence values consistently scored above 90% for all model protein predictions. The interface predicted template modeling score (ipTM) for predictions of LOXs with Fe<sup>3+</sup> ion is 0.99. In single OA co‐predictions, the ipTM scores are close to 0.9 for both plant LOXs. However, the three OAs co‐predictions were near 0.8 for all models. The two additionally fatty acids had lower ipTMs with little reproducibility of binding sites. From the AF3 server website: “Values higher than 0.8 represent confident high‐quality predictions, while values below 0.6 suggest likely a failed prediction.” Models were analyzed in PyMOL 3.1.6.1 with RMSDs calculated by alignment without pruning amino acids (cycles = 0). GmLOX1 was aligned to the x‐ray model of Soybean LOX‐1 (PDB ID: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/3PZW/pdb" ext-link-type="uri">3PZW</ext-link>), and AtLOX1 to the x‐ray model of <italic toggle="yes">Arabidopsis</italic> LOX1 (PDB ID: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/8I6Y/pdb" ext-link-type="uri">8I6Y</ext-link>).</p></sec><sec id="pro70647-sec-0012"><label>5.7</label><title>Sequence conservation analysis</title><p>LOX homologs of AtLOX1 were identified from predicted protein sequences from over 227 plant genomes and reference transcriptomes (see Data <xref rid="pro70647-supitem-0004" ref-type="supplementary-material">S2</xref>) using BLASTP and structural‐based sequence conservation analyses as described previously (Cannon &amp; Horn, <xref rid="pro70647-bib-0010" ref-type="bibr">2024</xref>). Very similar BLASTP datasets (~98% overlap) were determined using other Arabidopsis LOX as queries (only LOX1 homologs were used for further analysis). From the initial BLASTP search, unique predicted protein sequences between 600 and 1200 amino acids long and an (query vs. subject) E‐Value ≤1 × 10<sup>−10</sup> were retained for further analysis (total of 3582 sequences) to filter out low‐quality assembled sequences. Sequences were initially binned into one of five phylogenetic groups: (1) eudicots, (2) monocots, (3) Archaeplastida and Chlorophyta, (4) Bryophyta, Lycopodiophyta, and Marchantiophyta, and (5) gymnosperms (see Data <xref rid="pro70647-supitem-0004" ref-type="supplementary-material">S2</xref>). To aid global sequence alignments via MUSCLE (Edgar, <xref rid="pro70647-bib-0017" ref-type="bibr">2004</xref>) and sequence conservation analysis to a single reference protein structure GmLOX1 across diverse phylogenetic groupings, Arabidopsis and Soybean LOX isoenzymes were initially included for all alignments. A MAFFT global sequence alignment (Katoh et al., <xref rid="pro70647-bib-0039" ref-type="bibr">2017</xref>) was performed using default parameters (FFT‐NS‐2). After alignments for non‐eudicot groups, all soybean and Arabidopsis LOX were removed other than GmLOX1. The phylogeny was inferred using the Neighbor‐Joining method with bootstrap analysis performed in MEGA12 (Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S5</xref> with tree data in Data <xref rid="pro70647-supitem-0004" ref-type="supplementary-material">S2</xref>) (Felsenstein, <xref rid="pro70647-bib-0018" ref-type="bibr">1985</xref>; Kumar et al., <xref rid="pro70647-bib-0046" ref-type="bibr">2024</xref>; Saitou &amp; Nei, <xref rid="pro70647-bib-0065" ref-type="bibr">1987</xref>; Zuckerkandl &amp; Pauling, <xref rid="pro70647-bib-0078" ref-type="bibr">1965</xref>). 9<italic toggle="yes">S</italic>‐ and 13<italic toggle="yes">S</italic>‐LOX protein groups were predicted based on the clustering around Arabidopsis 9<italic toggle="yes">S</italic>‐LOX (LOX1, LOX5) and 13<italic toggle="yes">S</italic>‐LOX (LOX2‐4, LOX6, GmLOX1) and used for additional sequence alignment filtering. A sequence identity, BLOSUM62, and hydrophobicity score for each amino acid in alignment were calculated using the GmLOX1 as a reference. These values were used as PDB “beta‐factors” and overlaid on the GmLOX1 PDB <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/1f8n/pdb" ext-link-type="uri">1f8n</ext-link>, with sequence conservation mapping visualized using PyMOL. Sequence conservation logos were created using WebLogo (Crooks et al., <xref rid="pro70647-bib-0016" ref-type="bibr">2004</xref>).</p></sec></sec><sec id="pro70647-sec-0016"><title>AUTHOR CONTRIBUTIONS</title><p>
+<bold>Patrick Horn:</bold> Investigation; data curation; formal analysis; writing – original draft. <bold>Jordan King:</bold> Investigation. <bold>Katherine Ray:</bold> Writing – review and editing; investigation. <bold>Adam R. Offenbacher:</bold> Conceptualization; supervision; project administration; writing – original draft; funding acquisition. <bold>Alex Kockler:</bold> Investigation; methodology; formal analysis; writing – review and editing. <bold>Joi Walker:</bold> Data curation; formal analysis. <bold>Eric Anderson:</bold> Investigation. <bold>Nathaniel Gilbert:</bold> Investigation; formal analysis; writing – original draft.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="pro70647-supitem-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S1.</bold> Biochemical characterization of the isolated plant LOXs: panel (a) SDS‐PAGE and panel (b) CD spectra of the plant LOXs, normalized based on their protein concentration and residue number (MRE, mean residue ellipticity). The buffer was 25 mM potassium phosphate (pH 7.5). Panel C: calibration curve for analytical Superdex 200 increase 10/300 with the peak elution volumes plotted for plant LOXs examined in this report. Protein size standards are represented as black circles. Raw analytical SEC traces are presented in Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S6</xref>.</p><p>
+<bold>Figure S2.</bold> Kinetic saturation plots for the reaction of AtLOX1 with (a) LA following pre‐activation of AtLOX1 to Fe<sup>3+</sup> form, (b) LA in buffer supplemented with 0.01% Triton X‐100, and (c) deuterium‐labeled substrates (D<sub>2</sub>LA: 11,11‐D<sub>2</sub>‐LA; and D<sub>31</sub>LA). The experiments represent reactions collected at 25°C in 50 mM HEPES (pH 7.0) and 150 mM sodium chloride buffer. The data represent the average from three to four measurements, with each data set collected on three to four separate days.</p><p>
+<bold>Figure S3.</bold> Extended surface mapping of phylogenetic sequence conservation on GmLOX1. (a) Similar to Figure 6, sequence identity conservation is mapped on entire GmLOX1 model (PDB: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/1f8n/pdb" ext-link-type="uri">1f8n</ext-link> modeled with LA and Fe). Figure <xref rid="pro70647-supitem-0001" ref-type="supplementary-material">S3</xref> is continued on the next page. (b) Zoomed in on active site with (top) all LOX proteins, (middle) putative 9S LOX proteins, and (bottom) putative 13S‐LOX proteins. (c‐g) Sequence conservation mapped on individual structure features from (b) with positions shown and associated sequence logos. Details of genomes/transcriptomes analyzed, individual protein IDs, sequences, and conservation analyses are provided in Data S2. <bold>Figure S4.</bold> Surface mapping of phylogenetic sequence conservation on GmLOX1 active site. Similar to Figure 6, sequence identity conservation is mapped on entire GmLOX1 model (PDB: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.2210/1f8n/pdb" ext-link-type="uri">1f8n</ext-link> modeled with LA and Fe). Zoomed in on active site but in this case scored based on phylogenetic groups (a) All LOX (<italic toggle="yes">N</italic> = 3582 LOX sequences), (b) Dicots (<italic toggle="yes">N</italic> = 2592), (c) Monocots (<italic toggle="yes">N</italic> = 664), (d) Gymnosperms (<italic toggle="yes">N</italic> = 62), (e) Bryophytes (<italic toggle="yes">N</italic> = 97) and Algae (<italic toggle="yes">N</italic> = 21). Details of genomes/transcriptomes analyzed, individual protein IDs, sequences, and conservation analyses are provided in Data S2.</p><p>
+<bold>Figure S5.</bold> Phylogenetic Tree Analysis: Evolutionary relationships of 3582 taxa.</p><p>
+<bold>Figure S6.</bold> SEC elution profiles of (a) GmLOX1, (b) OsLOX1, (c) SlLOXA, and (d) AtLOX1. The running buffer was 50 mM HEPES (pH 7.5) buffer with 150 mM sodium chloride.</p><p>
+<bold>Table S1.</bold> Literature reported Activation energies for various LOX reactions.</p><p>
+<bold>Table S2.</bold> Protein stability thermodynamic parameters of plant LOXs by DSC<sup>
+<italic toggle="yes">a</italic>
+</sup>.</p><p>
+<bold>Table S3.</bold> Fatty acid content (in percentage of total fats) in select plants.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="PRO-35-e70647-s002.docx" position="float" orientation="portrait"><?suppdata-name PRO-35-e70647-s002.docx?><?suppdata-size 10495191?><?suppdata-md5 3bc5106912d954fb0eb94ba59143509e?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:8bc0/13240100/3bc5106912d9/PRO-35-e70647-s002.docx?></media></supplementary-material><supplementary-material id="pro70647-supitem-0002" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Data S1.</bold> Supporting information.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="PRO-35-e70647-s003.xlsx" position="float" orientation="portrait"><?suppdata-name PRO-35-e70647-s003.xlsx?><?suppdata-size 1742304?><?suppdata-md5 7c57e62c0a51c37f61de614851c241c5?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.spreadsheetml.sheet?><?suppdata-cloudpmc-urn urn:app:8bc0/13240100/7c57e62c0a51/PRO-35-e70647-s003.xlsx?></media></supplementary-material><supplementary-material id="pro70647-supitem-0003" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S4.</bold> Supporting information.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="PRO-35-e70647-s001.png" position="float" orientation="portrait"><?suppdata-name PRO-35-e70647-s001.png?><?suppdata-size 4965412?><?suppdata-md5 de65c05cc0e8073c2705f3542614f40d?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type png?><?suppdata-cloudpmc-urn urn:app:8bc0/13240100/de65c05cc0e8/PRO-35-e70647-s001.png?></media></supplementary-material><supplementary-material id="pro70647-supitem-0004" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Data S2.</bold> Supporting information.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="PRO-35-e70647-s004.xlsx" position="float" orientation="portrait"><?suppdata-name PRO-35-e70647-s004.xlsx?><?suppdata-size 17990?><?suppdata-md5 cec3eded89925a8ece9f4628b4cb0ddd?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.spreadsheetml.sheet?><?suppdata-cloudpmc-urn urn:app:8bc0/13240100/cec3eded8992/PRO-35-e70647-s004.xlsx?></media></supplementary-material></sec></body><back><ack id="pro70647-sec-0013"><title>ACKNOWLEDGMENTS</title><p>The work was supported by the National Science Foundation to J.W. (DUE 2013358) and to A.R.O (MCB 2231079). The authors thank Kaelie Bernard (LSU) for assistance with the AIC analysis.</p></ack><sec sec-type="data-availability" id="pro70647-sec-0015"><title>DATA AVAILABILITY STATEMENT</title><p>The data that supports the findings of this study are available in the supplementary material of this article.</p></sec><ref-list id="pro70647-bibl-0001" content-type="cited-references"><title>REFERENCES</title><ref id="pro70647-bib-0001"><mixed-citation publication-type="journal" id="pro70647-cit-0001">
+<string-name name-style="western">
+<surname>Andreou</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Feussner</surname>
+<given-names>I</given-names>
+</string-name>. <article-title>Lipoxygenases – structure and reaction mechanism</article-title>. <source>Phytochemistry</source>. <year>2009</year>;<volume>70</volume>:<fpage>1504</fpage>–<lpage>1510</lpage>.<pub-id pub-id-type="pmid">19767040</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.phytochem.2009.05.008</pub-id></mixed-citation></ref><ref id="pro70647-bib-0002"><mixed-citation publication-type="journal" id="pro70647-cit-0002">
+<string-name name-style="western">
+<surname>Axelrod</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Cheesbrough</surname>
+<given-names>TM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Laakso</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Lipoxygenase from soybeans: EC 1.13.11.12 linoleate:oxygen oxidoreductase</article-title>. <source>Methods Enzymol</source>. <year>1981</year>;<volume>71</volume>:<fpage>441</fpage>–<lpage>451</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0003"><mixed-citation publication-type="journal" id="pro70647-cit-0003">
+<string-name name-style="western">
+<surname>Bannenberg</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Martinez</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hamberg</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Castresana</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>Diversity of the enzymatic activity in the lipoxygenase gene family of <italic toggle="yes">Arabidopsis thaliana</italic>
+</article-title>. <source>Lipids</source>. <year>2009</year>;<volume>44</volume>:<fpage>85</fpage>–<lpage>95</lpage>.<pub-id pub-id-type="pmid">18949503</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s11745-008-3245-7</pub-id></mixed-citation></ref><ref id="pro70647-bib-0004"><mixed-citation publication-type="journal" id="pro70647-cit-0004">
+<string-name name-style="western">
+<surname>Bild</surname>
+<given-names>GS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ramadoss</surname>
+<given-names>CS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Axelrod</surname>
+<given-names>B</given-names>
+</string-name>. <article-title>Multiple dioxygenation by lipoxygenase of lipids containing all‐<italic toggle="yes">cis‐</italic>1,4,7‐octatriene moieties</article-title>. <source>Arch Biochem Biophys</source>. <year>1977</year>;<volume>184</volume>:<fpage>36</fpage>–<lpage>41</lpage>.<pub-id pub-id-type="pmid">21632</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/0003-9861(77)90323-x</pub-id></mixed-citation></ref><ref id="pro70647-bib-0005"><mixed-citation publication-type="journal" id="pro70647-cit-0005">
+<string-name name-style="western">
+<surname>Boeglin</surname>
+<given-names>WE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Itoh</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Zheng</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Coffa</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Howe</surname>
+<given-names>GA</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Brash</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Investigation of substrate binding and product stereochemistry issues in two linoleate 9‐lipoxygenases</article-title>. <source>Lipids</source>. <year>2008</year>;<volume>43</volume>:<fpage>979</fpage>–<lpage>987</lpage>.<pub-id pub-id-type="pmid">18795358</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s11745-008-3230-1</pub-id><pub-id pub-id-type="pmcid">PMC4710486</pub-id></mixed-citation></ref><ref id="pro70647-bib-0006"><mixed-citation publication-type="journal" id="pro70647-cit-0006">
+<string-name name-style="western">
+<surname>Bradshaw</surname>
+<given-names>MD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gaffney</surname>
+<given-names>BJ</given-names>
+</string-name>. <article-title>Fluctuations of an exposed p‐helix involved in lipoxygenase substrate recognition</article-title>. <source>Biochemistry</source>. <year>2014</year>;<volume>53</volume>:<fpage>5102</fpage>–<lpage>5110</lpage>.<pub-id pub-id-type="pmid">25036469</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/bi500768c</pub-id><pub-id pub-id-type="pmcid">PMC4131896</pub-id></mixed-citation></ref><ref id="pro70647-bib-0007"><mixed-citation publication-type="journal" id="pro70647-cit-0007">
+<string-name name-style="western">
+<surname>Brash</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Lipoxygenases: occurrence, functions, catalysis, and acquisition of substrate</article-title>. <source>J Biol Chem</source>. <year>1999</year>;<volume>274</volume>:<fpage>23679</fpage>–<lpage>23682</lpage>.<pub-id pub-id-type="pmid">10446122</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1074/jbc.274.34.23679</pub-id></mixed-citation></ref><ref id="pro70647-bib-0008"><mixed-citation publication-type="journal" id="pro70647-cit-0008">
+<string-name name-style="western">
+<surname>Brash</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Oliw</surname>
+<given-names>EH</given-names>
+</string-name>. <article-title>Activation and execution of lipoxygenase catalysis</article-title>. <source>Redox Biochem Chem</source>. <year>2026</year>;<volume>16</volume>:<elocation-id>100076</elocation-id>.<pub-id pub-id-type="pmid">41959689</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.rbc.2026.100076</pub-id><pub-id pub-id-type="pmcid">PMC13059375</pub-id></mixed-citation></ref><ref id="pro70647-bib-0009"><mixed-citation publication-type="journal" id="pro70647-cit-0009">
+<string-name name-style="western">
+<surname>Camargo</surname>
+<given-names>PO</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Calzado</surname>
+<given-names>NF</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Budzinski</surname>
+<given-names>IGF</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Domingues</surname>
+<given-names>DS</given-names>
+</string-name>. <article-title>Genome‐wide analysis of lipoxygenase (LOX) genes in angiosperms</article-title>. <source>Plants</source>. <year>2023</year>;<volume>12</volume>:<elocation-id>398</elocation-id>.<pub-id pub-id-type="pmid">36679110</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/plants12020398</pub-id><pub-id pub-id-type="pmcid">PMC9867167</pub-id></mixed-citation></ref><ref id="pro70647-bib-0010"><mixed-citation publication-type="journal" id="pro70647-cit-0010">
+<string-name name-style="western">
+<surname>Cannon</surname>
+<given-names>AE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Horn</surname>
+<given-names>PJ</given-names>
+</string-name>. <article-title>The molecular frequency, conservation and role of reactive cysteins in plant lipid metabolism</article-title>. <source>Plant Cell Physiol</source>. <year>2024</year>;<volume>65</volume>:<fpage>826</fpage>–<lpage>844</lpage>.<pub-id pub-id-type="pmid">38113384</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/pcp/pcad163</pub-id></mixed-citation></ref><ref id="pro70647-bib-0011"><mixed-citation publication-type="journal" id="pro70647-cit-0011">
+<string-name name-style="western">
+<surname>Carr</surname>
+<given-names>CAM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Hydrogen tunneling in a prokaryotic lipoxygenase</article-title>. <source>Biochemistry</source>. <year>2014</year>;<volume>53</volume>:<fpage>2212</fpage>–<lpage>2214</lpage>.<pub-id pub-id-type="pmid">24641705</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/bi500070q</pub-id><pub-id pub-id-type="pmcid">PMC4004258</pub-id></mixed-citation></ref><ref id="pro70647-bib-0012"><mixed-citation publication-type="journal" id="pro70647-cit-0012">
+<string-name name-style="western">
+<surname>Cha</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Murray</surname>
+<given-names>CJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Hydrogen tunneling in enzyme reactions</article-title>. <source>Science</source>. <year>1989</year>;<volume>243</volume>:<fpage>1325</fpage>–<lpage>1330</lpage>.<pub-id pub-id-type="pmid">2646716</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1126/science.2646716</pub-id></mixed-citation></ref><ref id="pro70647-bib-0013"><mixed-citation publication-type="journal" id="pro70647-cit-0013">
+<string-name name-style="western">
+<surname>Chattopadhyay</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>London</surname>
+<given-names>E</given-names>
+</string-name>. <article-title>Fluorimetric determination of critical micelle concentration avoiding interference from detergent charge</article-title>. <source>Anal Biochemistry</source>. <year>1989</year>;<volume>139</volume>:<fpage>408</fpage>–<lpage>412</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/0003-2697(84)90026-5</pub-id><pub-id pub-id-type="pmid">6476378</pub-id></mixed-citation></ref><ref id="pro70647-bib-0014"><mixed-citation publication-type="journal" id="pro70647-cit-0014">
+<string-name name-style="western">
+<surname>Chaudhary</surname>
+<given-names>SDP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sreevastava</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Saha</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rajenderan</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sekhar</surname>
+<given-names>JC</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Chikkappa</surname>
+<given-names>GK</given-names>
+</string-name>. <article-title>Comparison of fatty acid profile of specialty maize to normal maize</article-title>. <source>J Am Oil Chem Soc</source>. <year>2014</year>;<volume>91</volume>:<fpage>1001</fpage>–<lpage>1005</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0015"><mixed-citation publication-type="journal" id="pro70647-cit-0015">
+<string-name name-style="western">
+<surname>Cleland</surname>
+<given-names>WW</given-names>
+</string-name>. <article-title>The use of isotope effects to determine enzyme mechanisms</article-title>. <source>J Biol Chem</source>. <year>2003</year>;<volume>278</volume>(<issue>52</issue>):<fpage>51975</fpage>–<lpage>51984</lpage>.<pub-id pub-id-type="pmid">14583616</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1074/jbc.X300005200</pub-id></mixed-citation></ref><ref id="pro70647-bib-0016"><mixed-citation publication-type="journal" id="pro70647-cit-0016">
+<string-name name-style="western">
+<surname>Crooks</surname>
+<given-names>GE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hon</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Chandonia</surname>
+<given-names>JM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Brenner</surname>
+<given-names>SE</given-names>
+</string-name>. <article-title>WebLogo: a sequence logo generator</article-title>. <source>Genome Res</source>. <year>2004</year>;<volume>14</volume>:<fpage>1188</fpage>–<lpage>1190</lpage>.<pub-id pub-id-type="pmid">15173120</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1101/gr.849004</pub-id><pub-id pub-id-type="pmcid">PMC419797</pub-id></mixed-citation></ref><ref id="pro70647-bib-0017"><mixed-citation publication-type="journal" id="pro70647-cit-0017">
+<string-name name-style="western">
+<surname>Edgar</surname>
+<given-names>R</given-names>
+</string-name>. <article-title>MUSCLE: multiple sequence alignment with high accuracy and high throughput</article-title>. <source>Nucleic Acids Res</source>. <year>2004</year>;<volume>32</volume>:<fpage>1792</fpage>–<lpage>1797</lpage>.<pub-id pub-id-type="pmid">15034147</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/nar/gkh340</pub-id><pub-id pub-id-type="pmcid">PMC390337</pub-id></mixed-citation></ref><ref id="pro70647-bib-0018"><mixed-citation publication-type="journal" id="pro70647-cit-0018">
+<string-name name-style="western">
+<surname>Felsenstein</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Confidence limits on phylogenies: an approach using the bootstrap</article-title>. <source>Evol</source>. <year>1985</year>;<volume>39</volume>:<fpage>783</fpage>–<lpage>791</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1558-5646.1985.tb00420.x</pub-id><pub-id pub-id-type="pmid">28561359</pub-id></mixed-citation></ref><ref id="pro70647-bib-0019"><mixed-citation publication-type="journal" id="pro70647-cit-0019">
+<string-name name-style="western">
+<surname>Feussner</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wasternack</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>The lipoxygenase pathway</article-title>. <source>Annu Rev Plant Biol</source>. <year>2002</year>;<volume>53</volume>:<fpage>275</fpage>–<lpage>297</lpage>.<pub-id pub-id-type="pmid">12221977</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1146/annurev.arplant.53.100301.135248</pub-id></mixed-citation></ref><ref id="pro70647-bib-0020"><mixed-citation publication-type="journal" id="pro70647-cit-0020">
+<string-name name-style="western">
+<surname>Gallegos</surname>
+<given-names>EM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Reed</surname>
+<given-names>TD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mathes</surname>
+<given-names>FA</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Guevara</surname>
+<given-names>NV</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Neau</surname>
+<given-names>DB</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Huang</surname>
+<given-names>W</given-names>
+</string-name>, et al. <article-title>Helical remodeling augments 5‐lipoxygenase activity in the synthesis of proinflammatory mediators</article-title>. <source>J Biol Chem</source>. <year>2022</year>;<volume>298</volume>:<elocation-id>102282</elocation-id>.<pub-id pub-id-type="pmid">35863431</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jbc.2022.102282</pub-id><pub-id pub-id-type="pmcid">PMC9418500</pub-id></mixed-citation></ref><ref id="pro70647-bib-0021"><mixed-citation publication-type="journal" id="pro70647-cit-0021">
+<string-name name-style="western">
+<surname>Gardner</surname>
+<given-names>HW</given-names>
+</string-name>. <article-title>Soybean lipoxygenase‐1 enzymatically forms both (9S)‐ and (13S)‐hydroperoxides from linoleic acid by a pH‐dependent mechanism</article-title>. <source>Biochim Biophys Acta</source>. <year>1989</year>;<volume>1001</volume>:<fpage>274</fpage>–<lpage>281</lpage>.<pub-id pub-id-type="pmid">2492826</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/0005-2760(89)90111-2</pub-id></mixed-citation></ref><ref id="pro70647-bib-0022"><mixed-citation publication-type="journal" id="pro70647-cit-0022">
+<string-name name-style="western">
+<surname>Gilbert</surname>
+<given-names>NC</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bartlett</surname>
+<given-names>SG</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Waight</surname>
+<given-names>MT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Neau</surname>
+<given-names>DB</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Boeglin</surname>
+<given-names>WE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Brash</surname>
+<given-names>AR</given-names>
+</string-name>, et al. <article-title>The structure of human 5‐lipoxygenase</article-title>. <source>Science</source>. <year>2011</year>;<volume>331</volume>:<fpage>217</fpage>–<lpage>219</lpage>.<pub-id pub-id-type="pmid">21233389</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1126/science.1197203</pub-id><pub-id pub-id-type="pmcid">PMC3245680</pub-id></mixed-citation></ref><ref id="pro70647-bib-0023"><mixed-citation publication-type="journal" id="pro70647-cit-0023">
+<string-name name-style="western">
+<surname>Glickman</surname>
+<given-names>MH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Nature of rate‐limiting steps in the soybean lipoxygenase‐1 reaction</article-title>. <source>Biochemistry</source>. <year>1995</year>;<volume>34</volume>:<fpage>14077</fpage>–<lpage>14092</lpage>.<pub-id pub-id-type="pmid">7578005</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/bi00043a013</pub-id></mixed-citation></ref><ref id="pro70647-bib-0024"><mixed-citation publication-type="journal" id="pro70647-cit-0024">
+<string-name name-style="western">
+<surname>Glickman</surname>
+<given-names>MH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Lipoxygenase reaction mechanism: demonstration that hydrogen abstraction from substrate precedes dioxygen binding during catalytic turnover</article-title>. <source>Biochemistry</source>. <year>1996</year>;<volume>35</volume>:<fpage>12882</fpage>–<lpage>12892</lpage>.<pub-id pub-id-type="pmid">8841132</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/bi960985q</pub-id></mixed-citation></ref><ref id="pro70647-bib-0025"><mixed-citation publication-type="journal" id="pro70647-cit-0025">
+<string-name name-style="western">
+<surname>Glickman</surname>
+<given-names>MH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wiseman</surname>
+<given-names>JS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Extremely large isotope effects in the soybean lipoxygenase‐linoleic acid reaction</article-title>. <source>J Am Chem Soc</source>. <year>1994</year>;<volume>116</volume>:<fpage>793</fpage>–<lpage>794</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0026"><mixed-citation publication-type="journal" id="pro70647-cit-0026">
+<string-name name-style="western">
+<surname>Hatcher</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Soudackov</surname>
+<given-names>AV</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hammes‐Schiffer</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Proton‐coupled electron transfer in soybean lipoxygenase: dynamical behavior and temperature dependence of kinetic isotope effects</article-title>. <source>J Am Chem Soc</source>. <year>2006</year>;<volume>129</volume>:<fpage>187</fpage>–<lpage>196</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/ja0667211</pub-id><pub-id pub-id-type="pmid">17199298</pub-id></mixed-citation></ref><ref id="pro70647-bib-0027"><mixed-citation publication-type="journal" id="pro70647-cit-0027">
+<string-name name-style="western">
+<surname>Hershelman</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kahler</surname>
+<given-names>KM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Price</surname>
+<given-names>MJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lu</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Fu</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Plumeri</surname>
+<given-names>PA</given-names>
+</string-name>, et al. <article-title>Oxygenation reactions catalyzed by the F557V mutant of soybean lipoxygenase‐1: evidence for two orientations of substrate binding</article-title>. <source>Arch Biochem Biophys</source>. <year>2019</year>;<volume>674</volume>:<elocation-id>108082</elocation-id>.<pub-id pub-id-type="pmid">31473191</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.abb.2019.108082</pub-id></mixed-citation></ref><ref id="pro70647-bib-0028"><mixed-citation publication-type="journal" id="pro70647-cit-0028">
+<string-name name-style="western">
+<surname>Hill</surname>
+<given-names>SG</given-names>
+</string-name>, <string-name name-style="western">
+<surname>DeFeo</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Biochemical consequences of a leucine‐to‐cysteine clamp substitution in lipoxygenases</article-title>. <source>Biomolecules</source>. <year>2025</year>;<volume>15</volume>:<elocation-id>1153</elocation-id>.<pub-id pub-id-type="pmid">40867598</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/biom15081153</pub-id><pub-id pub-id-type="pmcid">PMC12383934</pub-id></mixed-citation></ref><ref id="pro70647-bib-0029"><mixed-citation publication-type="journal" id="pro70647-cit-0029">
+<string-name name-style="western">
+<surname>Hornung</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Walther</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kuhn</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Feussner</surname>
+<given-names>I</given-names>
+</string-name>. <article-title>Conversion of cucumber linoleate 13‐lipoxygenase to a 9‐lipoxygenating species by site‐directed mutagenesis</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>1999</year>;<volume>96</volume>:<fpage>4192</fpage>–<lpage>4197</lpage>.<pub-id pub-id-type="pmid">10097186</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1073/pnas.96.7.4192</pub-id><pub-id pub-id-type="pmcid">PMC22443</pub-id></mixed-citation></ref><ref id="pro70647-bib-0030"><mixed-citation publication-type="journal" id="pro70647-cit-0030">
+<string-name name-style="western">
+<surname>Hu</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lu</surname>
+<given-names>ED</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Comparative kinetic isotope effects on first‐ and second‐order rate constants of soybean lipoxygenase variants uncover a substrate‐binding network</article-title>. <source>J Biol Chem</source>. <year>2019</year>;<volume>294</volume>:<fpage>18069</fpage>–<lpage>18076</lpage>.<pub-id pub-id-type="pmid">31624150</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1074/jbc.RA119.010826</pub-id><pub-id pub-id-type="pmcid">PMC6885649</pub-id></mixed-citation></ref><ref id="pro70647-bib-0031"><mixed-citation publication-type="journal" id="pro70647-cit-0031">
+<string-name name-style="western">
+<surname>Hu</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sharma</surname>
+<given-names>SC</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Scouras</surname>
+<given-names>AD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Soudackov</surname>
+<given-names>AV</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Carr</surname>
+<given-names>CAM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hammes‐Schiffer</surname>
+<given-names>S</given-names>
+</string-name>, et al. <article-title>Extremely elevated room‐temperature kinetic isotope effects quantify the critical role of barrier width in enzymatic C‐H activation</article-title>. <source>J Am Chem Soc</source>. <year>2014</year>;<volume>136</volume>:<fpage>8157</fpage>–<lpage>8160</lpage>.<pub-id pub-id-type="pmid">24884374</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/ja502726s</pub-id><pub-id pub-id-type="pmcid">PMC4188422</pub-id></mixed-citation></ref><ref id="pro70647-bib-0032"><mixed-citation publication-type="journal" id="pro70647-cit-0032">
+<string-name name-style="western">
+<surname>Hund</surname>
+<given-names>F</given-names>
+</string-name>. <article-title>Zur Deutung der Molekelspektren. I</article-title>. <source>Z Phys</source>. <year>1927a</year>;<volume>40</volume>:<fpage>742</fpage>–<lpage>764</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0033"><mixed-citation publication-type="journal" id="pro70647-cit-0033">
+<string-name name-style="western">
+<surname>Hund</surname>
+<given-names>F</given-names>
+</string-name>. <article-title>Zur Deutung der Molekelspektren. III</article-title>. <source>Z Phys</source>. <year>1927b</year>;<volume>43</volume>:<fpage>805</fpage>–<lpage>826</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0034"><mixed-citation publication-type="journal" id="pro70647-cit-0034">
+<string-name name-style="western">
+<surname>Hwang</surname>
+<given-names>C‐C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Grissom</surname>
+<given-names>CB</given-names>
+</string-name>. <article-title>Unusually large deuterium isotope effect in soybean lipoxygenase</article-title>. <source>J Am Chem Soc</source>. <year>1994</year>;<volume>116</volume>:<fpage>795</fpage>–<lpage>796</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0035"><mixed-citation publication-type="journal" id="pro70647-cit-0035">
+<string-name name-style="western">
+<surname>Ivanov</surname>
+<given-names>DS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Levic</surname>
+<given-names>JD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sredanovic</surname>
+<given-names>SA</given-names>
+</string-name>. <article-title>Fatty acid composition of various soybean products</article-title>. <source>Food Feed Res</source>. <year>2010</year>;<volume>37</volume>:<fpage>65</fpage>–<lpage>70</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0036"><mixed-citation publication-type="journal" id="pro70647-cit-0036">
+<string-name name-style="western">
+<surname>Jakobowski</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hill</surname>
+<given-names>SG</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Guy</surname>
+<given-names>SW</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Substitution of the mononuclear, non‐heme iron cofactor in lipoxygenases fro structural studies</article-title>. <source>Methods Enzymol</source>. <year>2024</year>;<volume>704</volume>:<fpage>59</fpage>–<lpage>87</lpage>.<pub-id pub-id-type="pmid">39300657</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/bs.mie.2024.05.011</pub-id></mixed-citation></ref><ref id="pro70647-bib-0037"><mixed-citation publication-type="journal" id="pro70647-cit-0037">
+<string-name name-style="western">
+<surname>Jiang</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Cordova</surname>
+<given-names>JP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Computational method for the detection of communication pathways in enzymes that correlate with experimentally defined thermal activation networks</article-title>. <source>J. Phys. Chem. Lett</source>. <year>2026</year>;<volume>17</volume>:<fpage>5541</fpage>–<lpage>5551</lpage>.<pub-id pub-id-type="pmid">42066108</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acs.jpclett.6c00143</pub-id><pub-id pub-id-type="pmcid">PMC13175590</pub-id></mixed-citation></ref><ref id="pro70647-bib-0038"><mixed-citation publication-type="journal" id="pro70647-cit-0038">
+<string-name name-style="western">
+<surname>Kathuria</surname>
+<given-names>SV</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Chan</surname>
+<given-names>YH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Nobrega</surname>
+<given-names>RP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ozen</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Matthews</surname>
+<given-names>CR</given-names>
+</string-name>. <article-title>Clusters of isoleucine, leucine, and valine side chains define cores of stability in high‐energy states of globular proteins: sequence determinants of sturcture and stability</article-title>. <source>Protein Sci</source>. <year>2016</year>;<volume>25</volume>:<fpage>662</fpage>–<lpage>675</lpage>.<pub-id pub-id-type="pmid">26660714</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/pro.2860</pub-id><pub-id pub-id-type="pmcid">PMC4815418</pub-id></mixed-citation></ref><ref id="pro70647-bib-0039"><mixed-citation publication-type="journal" id="pro70647-cit-0039">
+<string-name name-style="western">
+<surname>Katoh</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rozewicki</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yamada</surname>
+<given-names>KD</given-names>
+</string-name>. <article-title>MAFFT online service: multiple sequence alignment, interactive sequence choice and visualization</article-title>. <source>Brief Bioinformatics</source>. <year>2017</year>;<volume>20</volume>:<fpage>1160</fpage>–<lpage>1166</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/bib/bbx108</pub-id><pub-id pub-id-type="pmcid">PMC6781576</pub-id><pub-id pub-id-type="pmid">28968734</pub-id></mixed-citation></ref><ref id="pro70647-bib-0040"><mixed-citation publication-type="journal" id="pro70647-cit-0040">
+<string-name name-style="western">
+<surname>Kaur</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Dorian</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Jmii</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Cappadocia</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bede</surname>
+<given-names>JC</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rivoal</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Pseudophosphorylation of <italic toggle="yes">Arabidopsis</italic> jasmonate biosynthesis enzyme lipoxygenase 2 via mutation of Ser<sup>600</sup> inhibits enzyme activity</article-title>. <source>J Biol Chem</source>. <year>2024</year>;<volume>299</volume>:<elocation-id>102898</elocation-id>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jbc.2023.102898</pub-id><pub-id pub-id-type="pmcid">PMC9947334</pub-id><pub-id pub-id-type="pmid">36639029</pub-id></mixed-citation></ref><ref id="pro70647-bib-0041"><mixed-citation publication-type="journal" id="pro70647-cit-0041">
+<string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Understanding biological hydrogen transfer through the lens of temperature independent kinetic isotope effects</article-title>. <source>Acc Chem Res</source>. <year>2018</year>;<volume>51</volume>:<fpage>1966</fpage>–<lpage>1974</lpage>.<pub-id pub-id-type="pmid">30152685</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acs.accounts.8b00226</pub-id><pub-id pub-id-type="pmcid">PMC6258190</pub-id></mixed-citation></ref><ref id="pro70647-bib-0042"><mixed-citation publication-type="journal" id="pro70647-cit-0042">
+<string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hu</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Origins of enzyme catalysis: experimental findings for C‐H activation, new models, and their relevance to prevailing theoretical constructs</article-title>. <source>J Am Chem Soc</source>. <year>2017</year>;<volume>139</volume>:<fpage>18409</fpage>–<lpage>18427</lpage>.<pub-id pub-id-type="pmid">29244501</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/jacs.7b08418</pub-id><pub-id pub-id-type="pmcid">PMC5812730</pub-id></mixed-citation></ref><ref id="pro70647-bib-0043"><mixed-citation publication-type="journal" id="pro70647-cit-0043">
+<string-name name-style="western">
+<surname>Knapp</surname>
+<given-names>MJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rickert</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Temperature‐dependent isotope effects in soybean lipoxygenase‐1: correlating hydrogen tunneling with protein dynamics</article-title>. <source>J Am Chem Soc</source>. <year>2002</year>;<volume>124</volume>:<fpage>3865</fpage>–<lpage>3874</lpage>.<pub-id pub-id-type="pmid">11942823</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/ja012205t</pub-id></mixed-citation></ref><ref id="pro70647-bib-0044"><mixed-citation publication-type="journal" id="pro70647-cit-0044">
+<string-name name-style="western">
+<surname>Kobe</surname>
+<given-names>MJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Neau</surname>
+<given-names>DB</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mitchell</surname>
+<given-names>CE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bartlett</surname>
+<given-names>SG</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Newcomer</surname>
+<given-names>ME</given-names>
+</string-name>. <article-title>The structure of human 15‐lipoxygenase‐2 with a substrate mimic</article-title>. <source>J Biol Chem</source>. <year>2014</year>;<volume>289</volume>:<fpage>8562</fpage>–<lpage>8569</lpage>.<pub-id pub-id-type="pmid">24497644</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1074/jbc.M113.543777</pub-id><pub-id pub-id-type="pmcid">PMC3961679</pub-id></mixed-citation></ref><ref id="pro70647-bib-0045"><mixed-citation publication-type="journal" id="pro70647-cit-0045">
+<string-name name-style="western">
+<surname>Kostenko</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ray</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Iavarone</surname>
+<given-names>AT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Kinetic characterization of the C‐H activation step for the lipoxygenase from pathogenic fungus <italic toggle="yes">Magnaporthe oryzae</italic>: impact of N‐linked glycosylation</article-title>. <source>Biochemistry</source>. <year>2019</year>;<volume>58</volume>:<fpage>3193</fpage>–<lpage>3203</lpage>.<pub-id pub-id-type="pmid">31264852</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acs.biochem.9b00467</pub-id></mixed-citation></ref><ref id="pro70647-bib-0046"><mixed-citation publication-type="journal" id="pro70647-cit-0046">
+<string-name name-style="western">
+<surname>Kumar</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Stecher</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Suleski</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sanderford</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sharma</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Tamura</surname>
+<given-names>K</given-names>
+</string-name>. <article-title>Molecular evolution genetics analysis version 12 for adaptive and green computing</article-title>. <source>Mol Biol Evol</source>. <year>2024</year>;<volume>41</volume>:<fpage>1</fpage>–<lpage>9</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/molbev/msae263</pub-id><pub-id pub-id-type="pmcid">PMC11683415</pub-id><pub-id pub-id-type="pmid">39708372</pub-id></mixed-citation></ref><ref id="pro70647-bib-0047"><mixed-citation publication-type="journal" id="pro70647-cit-0047">
+<string-name name-style="western">
+<surname>Larion</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Miller</surname>
+<given-names>BM</given-names>
+</string-name>. <article-title>Homotropic allosteric regulation in monomeric mammalian glucokinase <italic toggle="yes">arch</italic>
+</article-title>. <source>Biochem Biophys</source>. <year>2012</year>;<volume>519</volume>:<fpage>103</fpage>–<lpage>111</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.abb.2011.11.007</pub-id><pub-id pub-id-type="pmcid">PMC3294010</pub-id><pub-id pub-id-type="pmid">22107947</pub-id></mixed-citation></ref><ref id="pro70647-bib-0048"><mixed-citation publication-type="journal" id="pro70647-cit-0048">
+<string-name name-style="western">
+<surname>Li</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yuan</surname>
+<given-names>F</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wu</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Zhang</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gao</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yu</surname>
+<given-names>L</given-names>
+</string-name>. <article-title>Triacylglycerols and fatty acid compositions of cucumber, tomato, pumpkin, and carrot seed oils by ultra‐performance convergence chromatography combined with quadrapole time‐of‐flight mass spectrometry</article-title>. <source>Foods</source>. <year>2020</year>;<volume>9</volume>:<fpage>970</fpage>.<pub-id pub-id-type="pmid">32707916</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/foods9080970</pub-id><pub-id pub-id-type="pmcid">PMC7466086</pub-id></mixed-citation></ref><ref id="pro70647-bib-0049"><mixed-citation publication-type="journal" id="pro70647-cit-0049">
+<string-name name-style="western">
+<surname>Liavonchanka</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Feussner</surname>
+<given-names>I</given-names>
+</string-name>. <article-title>Lipoxygenases: occurrence, functions and catalysis</article-title>. <source>J Plant Physiol</source>. <year>2006</year>;<volume>163</volume>:<fpage>348</fpage>–<lpage>357</lpage>.<pub-id pub-id-type="pmid">16386332</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jplph.2005.11.006</pub-id></mixed-citation></ref><ref id="pro70647-bib-0050"><mixed-citation publication-type="journal" id="pro70647-cit-0050">
+<string-name name-style="western">
+<surname>Lorenzi</surname>
+<given-names>V</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Maury</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Casanova</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Berti</surname>
+<given-names>L</given-names>
+</string-name>. <article-title>Purification, product characterization and kinetic properties of lipoxygenase from olive fruit (<italic toggle="yes">Oleaeuropea</italic> L.)</article-title>. <source>Plant Physiol Biochem</source>. <year>2006</year>;<volume>44</volume>:<fpage>450</fpage>–<lpage>454</lpage>.<pub-id pub-id-type="pmid">17011785</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.plaphy.2006.09.001</pub-id></mixed-citation></ref><ref id="pro70647-bib-0051"><mixed-citation publication-type="journal" id="pro70647-cit-0051">
+<string-name name-style="western">
+<surname>Meyer</surname>
+<given-names>MP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Tomchick</surname>
+<given-names>DR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Enzyme structure and dynamics affect hydrogen tunneling: the impact of a remote side chain (I553) in soybean lipoxygenase‐1</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2008</year>;<volume>105</volume>:<fpage>1146</fpage>–<lpage>1151</lpage>.<pub-id pub-id-type="pmid">18216254</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1073/pnas.0710643105</pub-id><pub-id pub-id-type="pmcid">PMC2234106</pub-id></mixed-citation></ref><ref id="pro70647-bib-0052"><mixed-citation publication-type="journal" id="pro70647-cit-0052">
+<string-name name-style="western">
+<surname>Mizuno</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Iida</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Takano</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yokoyama</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Fujimura</surname>
+<given-names>T</given-names>
+</string-name>. <article-title>A new 9‐lipoxygenase cDNA from developing rice seeds</article-title>. <source>Plant Cell Physiol</source>. <year>2003</year>;<volume>44</volume>:<fpage>1168</fpage>–<lpage>1175</lpage>.<pub-id pub-id-type="pmid">14634153</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/pcp/pcg142</pub-id></mixed-citation></ref><ref id="pro70647-bib-0053"><mixed-citation publication-type="journal" id="pro70647-cit-0053">
+<string-name name-style="western">
+<surname>Mogul</surname>
+<given-names>R</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Johansen</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Holman</surname>
+<given-names>TR</given-names>
+</string-name>. <article-title>Oleyl sulfate reveals allosteric inhibition of soybean lipoxygenase‐1 and human 15‐lipoxygenase</article-title>. <source>Biochemistry</source>. <year>2000</year>;<volume>39</volume>:<fpage>4801</fpage>–<lpage>4807</lpage>.<pub-id pub-id-type="pmid">10769137</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/bi992805t</pub-id></mixed-citation></ref><ref id="pro70647-bib-0054"><mixed-citation publication-type="journal" id="pro70647-cit-0054">
+<string-name name-style="western">
+<surname>Neau</surname>
+<given-names>DB</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bender</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Boeglin</surname>
+<given-names>WE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bartlett</surname>
+<given-names>SG</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Brash</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Newcomer</surname>
+<given-names>ME</given-names>
+</string-name>. <article-title>Crystal structure of a lipoxygenase in complex with substrate</article-title>. <source>J Biol Chem</source>. <year>2014</year>;<volume>289</volume>:<fpage>31905</fpage>–<lpage>31913</lpage>.<pub-id pub-id-type="pmid">25231982</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1074/jbc.M114.599662</pub-id><pub-id pub-id-type="pmcid">PMC4231669</pub-id></mixed-citation></ref><ref id="pro70647-bib-0055"><mixed-citation publication-type="journal" id="pro70647-cit-0055">
+<string-name name-style="western">
+<surname>Newcomer</surname>
+<given-names>ME</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Brash</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>The structural basis for specificity in lipoxygenase catalysis</article-title>. <source>Protein Sci</source>. <year>2014</year>;<volume>24</volume>:<fpage>298</fpage>–<lpage>309</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/pro.2626</pub-id><pub-id pub-id-type="pmcid">PMC4353356</pub-id><pub-id pub-id-type="pmid">25524168</pub-id></mixed-citation></ref><ref id="pro70647-bib-0056"><mixed-citation publication-type="book" id="pro70647-cit-0056">
+<string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Guy</surname>
+<given-names>SW</given-names>
+</string-name>. <part-title>Lipoxygenase dynamics and catalysis studied by temperature‐dependent hydrogen deuterium exchange</part-title>. In: <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Scott</surname>
+<given-names>RA</given-names>
+</string-name>
+</person-group>, editor. <source>Encyclopedia of Inorganic and Bioinorganic Chemistry</source>. <year>2024</year>:<fpage>1</fpage>–<lpage>19</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0057"><mixed-citation publication-type="journal" id="pro70647-cit-0057">
+<string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hu</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Poss</surname>
+<given-names>EM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Carr</surname>
+<given-names>CAM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Scouras</surname>
+<given-names>AD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Prigozhin</surname>
+<given-names>DM</given-names>
+</string-name>, et al. <article-title>Hydrogen‐deuterium exchange of lipoxygenase uncovers a relationship between distal, solvent exposed protein motions and the thermal activation barrier for catalytic proton‐coupled electron tunneling</article-title>. <source>ACS Cent Sci</source>. <year>2017</year>;<volume>3</volume>:<fpage>570</fpage>–<lpage>579</lpage>.<pub-id pub-id-type="pmid">28691068</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acscentsci.7b00142</pub-id><pub-id pub-id-type="pmcid">PMC5492416</pub-id></mixed-citation></ref><ref id="pro70647-bib-0058"><mixed-citation publication-type="journal" id="pro70647-cit-0058">
+<string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Iavarone</surname>
+<given-names>AT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Hydrogen‐deuterium exchange reveals long‐range dynamical allostery in soybean lipoxygenase</article-title>. <source>J Biol Chem</source>. <year>2018</year>;<volume>293</volume>:<fpage>1138</fpage>–<lpage>1148</lpage>.<pub-id pub-id-type="pmid">29191828</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1074/jbc.M117.817197</pub-id><pub-id pub-id-type="pmcid">PMC5787793</pub-id></mixed-citation></ref><ref id="pro70647-bib-0059"><mixed-citation publication-type="journal" id="pro70647-cit-0059">
+<string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sharma</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Doan</surname>
+<given-names>PE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hoffman</surname>
+<given-names>BM</given-names>
+</string-name>. <article-title>The soybean lipoxygenase‐substrate complex: correlation between the properties of tunneling‐ready state and ENDOR‐detected structures of ground states</article-title>. <source>Biochemistry</source>. <year>2020</year>;<volume>59</volume>:<fpage>901</fpage>–<lpage>910</lpage>.<pub-id pub-id-type="pmid">32022556</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acs.biochem.9b00861</pub-id><pub-id pub-id-type="pmcid">PMC7188194</pub-id></mixed-citation></ref><ref id="pro70647-bib-0060"><mixed-citation publication-type="journal" id="pro70647-cit-0060">
+<string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Zhu</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Klinman</surname>
+<given-names>JP</given-names>
+</string-name>. <article-title>Synthesis of site‐specifically <sup>13</sup>C labeled linoleic acids</article-title>. <source>Tetrahedron Lett</source>. <year>2016</year>;<volume>57</volume>:<fpage>4537</fpage>–<lpage>4540</lpage>.<pub-id pub-id-type="pmid">28260819</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.tetlet.2016.08.071</pub-id><pub-id pub-id-type="pmcid">PMC5333924</pub-id></mixed-citation></ref><ref id="pro70647-bib-0061"><mixed-citation publication-type="journal" id="pro70647-cit-0061">
+<string-name name-style="western">
+<surname>Ohler</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Taylor</surname>
+<given-names>PE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bledsoe</surname>
+<given-names>JA</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Iavarone</surname>
+<given-names>AT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gilbert</surname>
+<given-names>NC</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>. <article-title>Identification of the thermal activation network in human 15‐lipoxygenase‐2: divergence from plant orthologs and its relationship to hydrogen tunneling activation barriers</article-title>. <source>ACS Catal</source>. <year>2024</year>;<volume>14</volume>:<fpage>5444</fpage>–<lpage>5457</lpage>.<pub-id pub-id-type="pmid">38601784</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acscatal.4c00439</pub-id><pub-id pub-id-type="pmcid">PMC11003420</pub-id></mixed-citation></ref><ref id="pro70647-bib-0062"><mixed-citation publication-type="journal" id="pro70647-cit-0062">
+<string-name name-style="western">
+<surname>O'Neill</surname>
+<given-names>CM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gill</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hobbs</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Morgan</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bancroft</surname>
+<given-names>I</given-names>
+</string-name>. <article-title>Natural variation for seed oil composition in <italic toggle="yes">Arabidsopsis thaliana</italic>
+</article-title>. <source>Phytochemistry</source>. <year>2003</year>;<volume>64</volume>:<fpage>1077</fpage>–<lpage>1090</lpage>.<pub-id pub-id-type="pmid">14568074</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/s0031-9422(03)00351-0</pub-id></mixed-citation></ref><ref id="pro70647-bib-0063"><mixed-citation publication-type="journal" id="pro70647-cit-0063">
+<string-name name-style="western">
+<surname>Park</surname>
+<given-names>Y‐S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kunze</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ni</surname>
+<given-names>X</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Feussner</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kolomiets</surname>
+<given-names>MV</given-names>
+</string-name>. <article-title>Comparative molecular and biochemical characterization of sementally duplicated 9‐lipoxygenase genes ZmLOX4 and ZmLOX5 of maize</article-title>. <source>Planta</source>. <year>2010</year>;<volume>231</volume>:<fpage>1425</fpage>–<lpage>1437</lpage>.<pub-id pub-id-type="pmid">20349083</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s00425-010-1143-8</pub-id></mixed-citation></ref><ref id="pro70647-bib-0064"><mixed-citation publication-type="journal" id="pro70647-cit-0064">
+<string-name name-style="western">
+<surname>Pilati</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wild</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gumiero</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Holdermann</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hackmann</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Serra</surname>
+<given-names>MD</given-names>
+</string-name>, et al. <article-title>
+<italic toggle="yes">Vitis vinifera</italic> lipoxygenase LoxA is an allosteric dimer activated by lipidic surfaces</article-title>. <source>J Mol Biol</source>. <year>2024</year>;<volume>436</volume>:<elocation-id>168821</elocation-id>.<pub-id pub-id-type="pmid">39424098</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jmb.2024.168821</pub-id></mixed-citation></ref><ref id="pro70647-bib-0065"><mixed-citation publication-type="journal" id="pro70647-cit-0065">
+<string-name name-style="western">
+<surname>Saitou</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Nei</surname>
+<given-names>M</given-names>
+</string-name>. <article-title>The neighbor‐joining method: a new method for reconstructing phylogenic trees</article-title>. <source>Mol Biol Evol</source>. <year>1987</year>;<volume>4</volume>:<fpage>406</fpage>–<lpage>425</lpage>.<pub-id pub-id-type="pmid">3447015</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/oxfordjournals.molbev.a040454</pub-id></mixed-citation></ref><ref id="pro70647-bib-0066"><mixed-citation publication-type="journal" id="pro70647-cit-0066">
+<string-name name-style="western">
+<surname>Seagraves</surname>
+<given-names>EN</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Holman</surname>
+<given-names>TR</given-names>
+</string-name>. <article-title>Kinetic investigations of the rate‐limiting step in human 12‐ and 15‐lipoxygenase</article-title>. <source>Biochemistry</source>. <year>2003</year>;<volume>42</volume>:<fpage>5236</fpage>–<lpage>5243</lpage>.<pub-id pub-id-type="pmid">12731864</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/bi0273462</pub-id></mixed-citation></ref><ref id="pro70647-bib-0067"><mixed-citation publication-type="journal" id="pro70647-cit-0067">
+<string-name name-style="western">
+<surname>Shin</surname>
+<given-names>JH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Van</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kim</surname>
+<given-names>DH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kim</surname>
+<given-names>KD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Jang</surname>
+<given-names>YE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Choi</surname>
+<given-names>B‐S</given-names>
+</string-name>, et al. <article-title>The lipoxygenase gene family: a genomic fossil of shared polyploidy between <italic toggle="yes">Glycine max</italic> and <italic toggle="yes">Medicago truncatula</italic>
+</article-title>. <source>BMC Plant Biol</source>. <year>2008</year>;<volume>8</volume>:<elocation-id>133</elocation-id>.<pub-id pub-id-type="pmid">19105811</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/1471-2229-8-133</pub-id><pub-id pub-id-type="pmcid">PMC2644698</pub-id></mixed-citation></ref><ref id="pro70647-bib-0068"><mixed-citation publication-type="journal" id="pro70647-cit-0068">
+<string-name name-style="western">
+<surname>Sutcliffe</surname>
+<given-names>MJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Scrutton</surname>
+<given-names>NS</given-names>
+</string-name>. <article-title>A new conceptual framework for enzyme catalysis</article-title>. <source>Eur J Biochem</source>. <year>2009</year>;<volume>269</volume>:<fpage>3096</fpage>–<lpage>3102</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1046/j.1432-1033.2002.03020.x</pub-id><pub-id pub-id-type="pmid">12084049</pub-id></mixed-citation></ref><ref id="pro70647-bib-0069"><mixed-citation publication-type="journal" id="pro70647-cit-0069">
+<string-name name-style="western">
+<surname>Taira</surname>
+<given-names>H</given-names>
+</string-name>. <article-title>Lipid content and fatty acid composition of rice</article-title>. <source>JARQ</source>. <year>1983</year>;<volume>16</volume>:<fpage>273</fpage>–<lpage>280</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0070"><mixed-citation publication-type="journal" id="pro70647-cit-0070">
+<string-name name-style="western">
+<surname>Teh</surname>
+<given-names>HE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yokoyama</surname>
+<given-names>WH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>German</surname>
+<given-names>JB</given-names>
+</string-name>, <string-name name-style="western">
+<surname>McHugh</surname>
+<given-names>TH</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Pan</surname>
+<given-names>Z</given-names>
+</string-name>. <article-title>Hypocholesterolemic effects of expeller‐pressed and solvent‐extracted fruit seed oils and defatted pomegranate seed meals</article-title>. <source>J Agric Food Chem</source>. <year>2019</year>;<volume>67</volume>:<fpage>6150</fpage>–<lpage>6159</lpage>.<pub-id pub-id-type="pmid">31117552</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1021/acs.jafc.8b07186</pub-id></mixed-citation></ref><ref id="pro70647-bib-0071"><mixed-citation publication-type="journal" id="pro70647-cit-0071">
+<string-name name-style="western">
+<surname>Viswanath</surname>
+<given-names>KK</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Varakumar</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Pamuru</surname>
+<given-names>RR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Basha</surname>
+<given-names>SJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mehta</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rao</surname>
+<given-names>AD</given-names>
+</string-name>. <article-title>Plant lipoxygenases and their role in plant physiology</article-title>. <source>J Plant Physiol</source>. <year>2020</year>;<volume>63</volume>:<fpage>83</fpage>–<lpage>95</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0072"><mixed-citation publication-type="journal" id="pro70647-cit-0072">
+<string-name name-style="western">
+<surname>Wang</surname>
+<given-names>R</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Shen</surname>
+<given-names>W</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Liu</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Jiang</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Liu</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Su</surname>
+<given-names>N</given-names>
+</string-name>, et al. <article-title>A novel lipoxygenase gene from developing rice seeds confers dual position specificity and responds to wounding and insect attack</article-title>. <source>Plant Mol Biol</source>. <year>2008</year>;<volume>66</volume>:<fpage>401</fpage>–<lpage>414</lpage>.<pub-id pub-id-type="pmid">18185911</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s11103-007-9278-0</pub-id></mixed-citation></ref><ref id="pro70647-bib-0073"><mixed-citation publication-type="journal" id="pro70647-cit-0073">
+<string-name name-style="western">
+<surname>Wang</surname>
+<given-names>R</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Shen</surname>
+<given-names>W</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Liu</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Jiang</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Zhai</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wan</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Prokaryotic expression, purification and characterization of a novel rice seed lipoxygenase gene OsLOX1</article-title>. <source>Rice Sci</source>. <year>2008</year>;<volume>15</volume>:<fpage>88</fpage>–<lpage>94</lpage>.</mixed-citation></ref><ref id="pro70647-bib-0074"><mixed-citation publication-type="journal" id="pro70647-cit-0074">
+<string-name name-style="western">
+<surname>Weber</surname>
+<given-names>EJ</given-names>
+</string-name>. <article-title>Variation in corn (<italic toggle="yes">Zea mays</italic> L.) for fatty acid compositions of triglycerides and phospholipids</article-title>. <source>Biochem Genetics</source>. <year>1983</year>;<volume>21</volume>:<fpage>1</fpage>–<lpage>13</lpage>.<pub-id pub-id-type="pmid">6838482</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/BF02395387</pub-id></mixed-citation></ref><ref id="pro70647-bib-0075"><mixed-citation publication-type="journal" id="pro70647-cit-0075">
+<string-name name-style="western">
+<surname>Yoshida</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Tanigawa</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kuriyama</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yoshida</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Tomiyama</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mizushina</surname>
+<given-names>Y</given-names>
+</string-name>. <article-title>Variation in fatty acid distribution of different acyl lipids in rice (<italic toggle="yes">Oryzae sativa</italic> L.) brans</article-title>. <source>Nutrients</source>. <year>2011</year>;<volume>3</volume>:<fpage>505</fpage>–<lpage>514</lpage>.<pub-id pub-id-type="pmid">22254108</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/nu3040505</pub-id><pub-id pub-id-type="pmcid">PMC3257686</pub-id></mixed-citation></ref><ref id="pro70647-bib-0076"><mixed-citation publication-type="journal" id="pro70647-cit-0076">
+<string-name name-style="western">
+<surname>Youn</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sellhorn</surname>
+<given-names>GE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mirchel</surname>
+<given-names>RJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gaffney</surname>
+<given-names>BJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Grimes</surname>
+<given-names>HD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kang</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>Crystal structures of vegetative soybean lipoxygenase VLX‐B and VLX‐D, and comparisons with seed isoforms LOX‐1 and LOX‐3</article-title>. <source>Proteins</source>. <year>2006</year>;<volume>65</volume>:<fpage>1008</fpage>–<lpage>1020</lpage>.<pub-id pub-id-type="pmid">17022084</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/prot.21182</pub-id><pub-id pub-id-type="pmcid">PMC2777516</pub-id></mixed-citation></ref><ref id="pro70647-bib-0077"><mixed-citation publication-type="journal" id="pro70647-cit-0077">
+<string-name name-style="western">
+<surname>Zaragoza</surname>
+<given-names>JPT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenbacher</surname>
+<given-names>AR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hu</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gee</surname>
+<given-names>CL</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Firestein</surname>
+<given-names>ZM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Minnetian</surname>
+<given-names>N</given-names>
+</string-name>, et al. <article-title>Temporal and spatial resolution of distal protein motions that activate hydrogen tunneling in soybean lipoxygenase</article-title>. <source>Proc Natl Acad Sci USA</source>. <year>2023</year>;<volume>120</volume>:<elocation-id>e2211630120</elocation-id>.<pub-id pub-id-type="pmid">36867685</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1073/pnas.2211630120</pub-id><pub-id pub-id-type="pmcid">PMC10013837</pub-id></mixed-citation></ref><ref id="pro70647-bib-0078"><mixed-citation publication-type="book" id="pro70647-cit-0078">
+<string-name name-style="western">
+<surname>Zuckerkandl</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Pauling</surname>
+<given-names>L</given-names>
+</string-name>. <part-title>Evolutionary divergence and convergence in proteins</part-title>. In: <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Bryson</surname>
+<given-names>V</given-names>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Vogel</surname>
+<given-names>HJ</given-names>
+</string-name>
+</person-group>, editors. <source>Evolving genes and protein</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Academic Press</publisher-name>; <year>1965</year>.</mixed-citation></ref></ref-list></back></article>

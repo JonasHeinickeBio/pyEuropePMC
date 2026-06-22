@@ -53,6 +53,9 @@ class InlineElementType(str, Enum):
     STRIKETHROUGH = "strikethrough"
     UNDERLINE = "underline"
     MONOSPACE = "monospace"
+    SMALL_CAPS = "small_caps"
+    ROMAN = "roman"
+    STYLED_CONTENT = "styled_content"
     UNKNOWN_INLINE = "unknown_inline"
 
 
@@ -131,6 +134,7 @@ class ContentBlockType(str, Enum):
     HEADING = "heading"
     FIGURE = "figure"
     TABLE = "table"
+    QUOTE = "quote"
     MATHML = "mathml"
     PEER_REVIEW = "peer_review"
     DEFINITION_LIST = "definition_list"
@@ -205,6 +209,7 @@ class ContentBlock:
     quality_score: float = 1.0
     parser_notes: list[str] = field(default_factory=list)
     definition_terms: list[dict[str, str]] = field(default_factory=list)
+    rows: list[list[str]] = field(default_factory=list)
     schema_version: str = SCHEMA_VERSION
 
     # Block types that carry items (list-like structure)
@@ -224,7 +229,7 @@ class ContentBlock:
         ContentBlockType.FORMULA,
     }
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> dict[str, Any]:  # noqa: C901
         """
         Serialize to a plain dictionary, omitting empty fields.
 
@@ -263,6 +268,8 @@ class ContentBlock:
             base["inlines"] = [i.to_dict() for i in self.inlines]
         if self.definition_terms:
             base["definition_terms"] = self.definition_terms
+        if self.rows:
+            base["rows"] = self.rows
         if self.metadata:
             base["metadata"] = self.metadata
         if self.parse_status != "success":
@@ -314,6 +321,11 @@ class ContentBlock:
         return cls(type=ContentBlockType.BOXED_TEXT, text=text)
 
     @classmethod
+    def quote(cls, text: str, inlines: list[InlineElement] | None = None) -> ContentBlock:
+        """Create a quote block (for disp-quote elements)."""
+        return cls(type=ContentBlockType.QUOTE, text=text, inlines=inlines or [])
+
+    @classmethod
     def figure(cls, label: str, caption: str, uri: str = "", target_id: str = "") -> ContentBlock:
         """Create a figure block."""
         return cls(
@@ -325,13 +337,16 @@ class ContentBlock:
         )
 
     @classmethod
-    def table_block(cls, label: str, caption: str, text: str = "") -> ContentBlock:
-        """Create a table block."""
+    def table_block(
+        cls, label: str, caption: str, text: str = "", rows: list[list[str]] | None = None
+    ) -> ContentBlock:
+        """Create a table block with optional cell structure."""
         return cls(
             type=ContentBlockType.TABLE,
             label=label,
             caption=caption,
             text=text,
+            rows=rows or [],
         )
 
     @classmethod
@@ -382,15 +397,19 @@ class StructuredSection:
     title: str
     content: list[ContentBlock] = field(default_factory=list)
     section_type: str = "body"
+    section_path: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         """Serialize to a plain dictionary with schema version."""
-        return {
+        result: dict[str, Any] = {
             "title": self.title,
             "content": [block.to_dict() for block in self.content],
             "section_type": self.section_type,
             "schema_version": SCHEMA_VERSION,
         }
+        if self.section_path:
+            result["section_path"] = self.section_path
+        return result
 
     def to_chunks(
         self,
@@ -479,8 +498,10 @@ class StructuredSection:
         return chunks
 
     @staticmethod
-    def _block_text(block: ContentBlock) -> str:
-        """Extract the primary text content from a block."""
+    def _block_text(block: ContentBlock | dict[str, Any]) -> str:
+        """Extract the primary text content from a block (object or dict)."""
+        if isinstance(block, dict):
+            return block.get("text") or ""
         if block.text:
             return block.text
         if block.items:
@@ -599,8 +620,9 @@ class ContentBlockExtractor(BaseParser):
         "boxed-text": "boxed_text",
         "sec": "section",
         "table": "table",
-        "disp-quote": "paragraph",
+        "disp-quote": "quote",
         "preformat": "code",
+        "media": "media",
     }
 
     def __init__(
@@ -620,6 +642,8 @@ class ContentBlockExtractor(BaseParser):
             "code": self._handle_code,
             "boxed_text": self._handle_boxed_text,
             "section": self._handle_subsection,
+            "media": self._handle_media,
+            "quote": self._handle_quote,
         }
 
     # ------------------------------------------------------------------
@@ -642,26 +666,64 @@ class ContentBlockExtractor(BaseParser):
         "styled-content": "styled_content",
     }
 
+    @staticmethod
+    def _get_multipart_title(title_elem: ET.Element | None) -> str:
+        """
+        Reconstruct a section title from its child elements (handles inline formatting).
+
+        Some JATS titles contain ``<italic>``, ``<bold>``, ``<sup>``, etc. inside
+        the title element. This captures all text content in document order.
+        """
+        if title_elem is None:
+            return ""
+        # Gather text from the element and all descendants in document order
+        parts: list[str] = []
+        if title_elem.text:
+            parts.append(title_elem.text)
+        for child in title_elem:
+            child_text = XMLHelper.get_text_content(child)
+            if child_text.strip():
+                parts.append(child_text)
+            if child.tail:
+                parts.append(child.tail)
+        return "".join(parts).strip()
+
     def extract_sections(self) -> list[StructuredSection]:
         """
         Extract all body sections with structured content blocks.
 
+        Recursively walks nested ``<sec>`` elements, building ``section_path``
+        for provenance tracking (e.g. ``"Methods/Statistical Analysis"``).
+        Each nested section is returned as its own ``StructuredSection`` in a flat list,
+        preserving its ``section_path`` for downstream matching.
+
         Returns
         -------
         list[StructuredSection]
-            List of sections with typed content blocks preserving document structure.
+            Flat list of sections with typed content blocks.
         """
         self._require_root()
 
         sections: list[StructuredSection] = []
 
-        # Extract from main body
+        # Recursively collect all sec elements (including nested)
         if self.root is not None:
             for body_elem in self.root.findall(".//body"):
-                for sec in body_elem.findall("sec"):
-                    structured_sec = self._extract_structured_section(sec)
-                    if structured_sec.content:
-                        sections.append(structured_sec)
+                self._collect_sections(body_elem, sections)
+
+        # Extract article title section (appears first in output)
+        article_title_section = self._extract_article_title()
+        if article_title_section is not None:
+            sections.insert(0, article_title_section)
+
+        # Extract abstract from front matter (appears after title in output)
+        abstract_section = self._extract_abstract()
+        if abstract_section is not None:
+            sections.insert(1 if article_title_section else 0, abstract_section)
+
+        # Extract footnotes from back matter
+        fn_sections = self._extract_footnotes()
+        sections.extend(fn_sections)
 
         # Extract additional content structures
         sections.extend(self._extract_additional_structures())
@@ -669,12 +731,61 @@ class ContentBlockExtractor(BaseParser):
         logger.debug(f"Extracted {len(sections)} structured sections")
         return sections
 
-    def _extract_structured_section(self, sec_element: ET.Element) -> StructuredSection:
-        """Extract a single section as structured content blocks."""
-        title = ""
+    def _collect_sections(
+        self,
+        parent: ET.Element,
+        sections: list[StructuredSection],
+        parent_path: str = "",
+    ) -> None:
+        """
+        Recursively walk an element tree, collecting all ``<sec>`` elements
+        as ``StructuredSection`` entries into the ``sections`` list.
+
+        Nested sections each get their own entry with a ``section_path``
+        that tracks the hierarchy (e.g. ``"Methods/Statistical Analysis"``),
+        rather than being flattened into the parent section.
+        """
+        for child in parent:
+            tag = self._get_local_tag(child.tag)
+            if tag == "sec":
+                section = self._extract_structured_section(child, parent_path)
+                if section.content:
+                    sections.append(section)
+                # Recurse into nested sections
+                self._collect_sections(child, sections, section.section_path)
+            elif tag == "body":
+                # Descend into body elements
+                self._collect_sections(child, sections, parent_path)
+
+    def _extract_structured_section(
+        self,
+        sec_element: ET.Element,
+        parent_path: str = "",
+    ) -> StructuredSection:
+        """Extract a single section as structured content blocks.
+
+        Parameters
+        ----------
+        sec_element : ET.Element
+            The ``<sec>`` element to extract.
+        parent_path : str, optional
+            Path of the parent section (e.g. ``"Methods"``) for nesting.
+
+        Returns
+        -------
+        StructuredSection
+            Section with typed content blocks and full section_path.
+        """
         title_elem = sec_element.find("title")
-        if title_elem is not None:
-            title = XMLHelper.get_text_content(title_elem)
+        title = self._get_multipart_title(title_elem)
+
+        # Build hierarchical section path
+        if parent_path and title:
+            section_path = f"{parent_path}/{title}"
+        elif title:
+            section_path = title
+        else:
+            section_path = parent_path
 
         content_blocks: list[ContentBlock] = []
 
@@ -683,6 +794,11 @@ class ContentBlockExtractor(BaseParser):
             tag = self._get_local_tag(child.tag)
             if tag == "title":
                 continue  # Already handled
+
+            # Nested <sec> elements are handled by _collect_sections
+            # to preserve them as separate entries with section_path
+            if tag == "sec":
+                continue
 
             handler_name = self.JATS_BLOCK_TAGS.get(tag)
             if handler_name and handler_name in self._handler_map:
@@ -700,9 +816,10 @@ class ContentBlockExtractor(BaseParser):
             title=title,
             content=content_blocks,
             section_type="body",
+            section_path=section_path,
         )
 
-    def _handle_paragraph(self, elem: ET.Element) -> list[ContentBlock]:
+    def _handle_paragraph(self, elem: ET.Element) -> list[ContentBlock]:  # noqa: C901
         """
         Handle ``<p>`` elements with inline element tracking.
 
@@ -742,6 +859,9 @@ class ContentBlockExtractor(BaseParser):
                             length=len(child_text),
                         )
                     )
+                    # Track nested inlines inside xref (e.g., <sup>1</sup>)
+                    nested = self._collect_nested_inlines(child, pos)
+                    inlines.extend(nested)
                     pos += len(child_text)
 
             elif inline_handler == "inline_formula":
@@ -761,93 +881,13 @@ class ContentBlockExtractor(BaseParser):
                 )
                 pos += len(display_text)
 
-            elif inline_handler == "bold":
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                if child_text:
-                    parts.append(child_text)
-                    inlines.append(
-                        InlineElement(
-                            type=InlineElementType.BOLD,
-                            text=child_text,
-                            position=pos,
-                            length=len(child_text),
-                        )
-                    )
-                    pos += len(child_text)
-
-            elif inline_handler == "italic":
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                if child_text:
-                    parts.append(child_text)
-                    inlines.append(
-                        InlineElement(
-                            type=InlineElementType.ITALIC,
-                            text=child_text,
-                            position=pos,
-                            length=len(child_text),
-                        )
-                    )
-                    pos += len(child_text)
-
-            elif inline_handler == "superscript":
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                if child_text:
-                    parts.append(child_text)
-                    inlines.append(
-                        InlineElement(
-                            type=InlineElementType.SUP,
-                            text=child_text,
-                            position=pos,
-                            length=len(child_text),
-                        )
-                    )
-                    pos += len(child_text)
-
-            elif inline_handler == "subscript":
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                if child_text:
-                    parts.append(child_text)
-                    inlines.append(
-                        InlineElement(
-                            type=InlineElementType.SUB,
-                            text=child_text,
-                            position=pos,
-                            length=len(child_text),
-                        )
-                    )
-                    pos += len(child_text)
-
-            elif inline_handler == "chemical_structure":
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                display_text = child_text or "[chem-struct]"
-                parts.append(display_text)
-                inlines.append(
-                    InlineElement(
-                        type=InlineElementType.CHEMICAL_STRUCTURE,
-                        text=child_text,
-                        position=pos,
-                        length=len(display_text),
-                    )
-                )
-                pos += len(display_text)
-
-            elif inline_handler == "named_content":
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                lang = child.get("{http://www.w3.org/XML/1998/namespace}lang", "")
-                if child_text:
-                    parts.append(child_text)
-                    inlines.append(
-                        InlineElement(
-                            type=InlineElementType.NAMED_CONTENT,
-                            text=child_text,
-                            language=lang,
-                            position=pos,
-                            length=len(child_text),
-                        )
-                    )
-                    pos += len(child_text)
-
             elif inline_handler in (
+                "bold",
+                "italic",
+                "superscript",
+                "subscript",
+                "chemical_structure",
+                "named_content",
                 "strikethrough",
                 "underline",
                 "monospace",
@@ -859,34 +899,45 @@ class ContentBlockExtractor(BaseParser):
                 if child_text:
                     parts.append(child_text)
                     ie_type = {
+                        "bold": InlineElementType.BOLD,
+                        "italic": InlineElementType.ITALIC,
+                        "superscript": InlineElementType.SUP,
+                        "subscript": InlineElementType.SUB,
+                        "chemical_structure": InlineElementType.CHEMICAL_STRUCTURE,
+                        "named_content": InlineElementType.NAMED_CONTENT,
                         "strikethrough": InlineElementType.STRIKETHROUGH,
                         "underline": InlineElementType.UNDERLINE,
                         "monospace": InlineElementType.MONOSPACE,
+                        "small_caps": InlineElementType.SMALL_CAPS,
+                        "roman": InlineElementType.ROMAN,
+                        "styled_content": InlineElementType.STYLED_CONTENT,
                     }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
+                    # Extract xml:lang attribute for named-content
+                    lang = ""
+                    if inline_handler == "named_content":
+                        lang = child.get("{http://www.w3.org/XML/1998/namespace}lang", "")
                     inlines.append(
                         InlineElement(
                             type=ie_type,
                             text=child_text,
+                            language=lang,
                             position=pos,
                             length=len(child_text),
                         )
                     )
+                    # Track nested inlines (e.g., <xref> inside <sup>)
+                    nested = self._collect_nested_inlines(child, pos)
+                    inlines.extend(nested)
                     pos += len(child_text)
 
             else:
-                # Unknown inline element - include its text
-                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
-                if child_text:
-                    parts.append(child_text)
-                    inlines.append(
-                        InlineElement(
-                            type=InlineElementType.UNKNOWN_INLINE,
-                            text=child_text,
-                            position=pos,
-                            length=len(child_text),
-                        )
-                    )
-                    pos += len(child_text)
+                # Unknown block element (e.g., <fig> inside <p>) —
+                # recursively walk for inline elements instead of flattening
+                child_parts, child_inlines, pos = self._extract_inlines_recursive(
+                    child, pos, parent_inlines=inlines
+                )
+                parts.extend(child_parts)
+                inlines.extend(child_inlines)
 
             # Tail text after this child
             if child.tail:
@@ -908,30 +959,313 @@ class ContentBlockExtractor(BaseParser):
         block = ContentBlock.paragraph_with_inlines(text=full_text, inlines=inlines)
         return [block]
 
+    def _collect_nested_inlines(
+        self,
+        elem: ET.Element,
+        base_offset: int,
+    ) -> list[InlineElement]:
+        """
+        Walk an element's children to find nested inline elements (e.g., <xref>
+        inside <sup>), returning InlineElements with positions relative to
+        the paragraph text.
+
+        This is used after a formatting wrapper (bold, sup, etc.) has already
+        been tracked — we also need to track any inlines nested within it.
+        """
+        inlines: list[InlineElement] = []
+        inner_pos = 0  # offset within elem's text (relative to elem start)
+
+        # elem.text contributes first
+        if elem.text:
+            inner_pos += len(elem.text)
+
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            inline_handler = self.INLINE_TAG_MAP.get(tag)
+
+            child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+
+            if inline_handler == "xref" and child_text:
+                ref_type = child.get("ref-type", "")
+                rid = child.get("rid", "")
+                inlines.append(
+                    InlineElement(
+                        type=InlineElementType.XREF,
+                        text=child_text,
+                        ref_type=ref_type,
+                        target_id=rid,
+                        position=base_offset + inner_pos,
+                        length=len(child_text),
+                    )
+                )
+                inner_pos += len(child_text)
+
+            elif inline_handler == "inline_formula" and child_text:
+                inlines.append(
+                    InlineElement(
+                        type=InlineElementType.INLINE_FORMULA,
+                        text=child_text,
+                        position=base_offset + inner_pos,
+                        length=len(child_text),
+                    )
+                )
+                inner_pos += len(child_text)
+
+            elif inline_handler == "named_content" and child_text:
+                lang = child.get("{http://www.w3.org/XML/1998/namespace}lang", "")
+                inlines.append(
+                    InlineElement(
+                        type=InlineElementType.NAMED_CONTENT,
+                        text=child_text,
+                        language=lang,
+                        position=base_offset + inner_pos,
+                        length=len(child_text),
+                    )
+                )
+                inner_pos += len(child_text)
+
+            elif inline_handler in (
+                "bold",
+                "italic",
+                "superscript",
+                "subscript",
+                "chemical_structure",
+                "strikethrough",
+                "underline",
+                "monospace",
+                "small_caps",
+                "roman",
+                "styled_content",
+            ):
+                if child_text:
+                    ie_type = {
+                        "bold": InlineElementType.BOLD,
+                        "italic": InlineElementType.ITALIC,
+                        "superscript": InlineElementType.SUP,
+                        "subscript": InlineElementType.SUB,
+                        "chemical_structure": InlineElementType.CHEMICAL_STRUCTURE,
+                        "named_content": InlineElementType.NAMED_CONTENT,
+                        "strikethrough": InlineElementType.STRIKETHROUGH,
+                        "underline": InlineElementType.UNDERLINE,
+                        "monospace": InlineElementType.MONOSPACE,
+                        "small_caps": InlineElementType.SMALL_CAPS,
+                        "roman": InlineElementType.ROMAN,
+                        "styled_content": InlineElementType.STYLED_CONTENT,
+                    }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
+                    inlines.append(
+                        InlineElement(
+                            type=ie_type,
+                            text=child_text,
+                            position=base_offset + inner_pos,
+                            length=len(child_text),
+                        )
+                    )
+                    # Recurse into this inline wrapper for deeper nesting
+                    nested = self._collect_nested_inlines(child, base_offset + inner_pos)
+                    inlines.extend(nested)
+                    inner_pos += len(child_text)
+
+            else:
+                # Unknown child — skip text but recurse
+                if child_text:
+                    inner_pos += len(child_text)
+                inlines.extend(
+                    self._collect_nested_inlines(
+                        child, base_offset + inner_pos - (len(child_text) if child_text else 0)
+                    )
+                )
+
+            if child.tail:
+                tail_len = len(self._resolve_entities(child.tail))
+                inner_pos += tail_len
+
+        return inlines
+
+    def _extract_inlines_recursive(
+        self,
+        elem: ET.Element,
+        pos: int,
+        parent_inlines: list[InlineElement] | None = None,
+    ) -> tuple[list[str], list[InlineElement], int]:
+        """
+        Recursively walk an element tree and extract inline elements.
+
+        Used when ``_handle_paragraph`` encounters a block-level element
+        (e.g., ``<fig>``) as a child — instead of flattening all descendants
+        into an ``UNKNOWN_INLINE``, this tracks nested inlines properly.
+
+        Parameters
+        ----------
+        elem : ET.Element
+            Element to walk recursively.
+        pos : int
+            Starting character position.
+        parent_inlines : list[InlineElement] | None
+            Existing inline list for cross-referencing.
+
+        Returns
+        -------
+        tuple of (parts, inlines, new_pos)
+        """
+        parts: list[str] = []
+        inlines: list[InlineElement] = []
+
+        # Capture elem.text
+        if elem.text:
+            text = self._resolve_entities(elem.text)
+            parts.append(text)
+            pos += len(text)
+
+        # Walk children
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            inline_handler = self.INLINE_TAG_MAP.get(tag)
+
+            if inline_handler == "xref":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                ref_type = child.get("ref-type", "")
+                rid = child.get("rid", "")
+                if child_text:
+                    parts.append(child_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.XREF,
+                            text=child_text,
+                            ref_type=ref_type,
+                            target_id=rid,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    # Track nested inlines inside xref (e.g., <sup>1</sup>)
+                    nested = self._collect_nested_inlines(child, pos)
+                    inlines.extend(nested)
+                    pos += len(child_text)
+
+            elif inline_handler == "inline_formula":
+                formula_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if formula_text:
+                    parts.append(formula_text)
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.INLINE_FORMULA,
+                            text=formula_text,
+                            position=pos,
+                            length=len(formula_text),
+                        )
+                    )
+                    pos += len(formula_text)
+
+            elif inline_handler == "named_content":
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    lang = child.get("{http://www.w3.org/XML/1998/namespace}lang", "")
+                    inlines.append(
+                        InlineElement(
+                            type=InlineElementType.NAMED_CONTENT,
+                            text=child_text,
+                            language=lang,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    nested = self._collect_nested_inlines(child, pos)
+                    inlines.extend(nested)
+                    pos += len(child_text)
+
+            elif inline_handler in (
+                "bold",
+                "italic",
+                "superscript",
+                "subscript",
+                "chemical_structure",
+                "strikethrough",
+                "underline",
+                "monospace",
+                "small_caps",
+                "roman",
+                "styled_content",
+            ):
+                child_text = self._resolve_entities(XMLHelper.get_text_content(child))
+                if child_text:
+                    parts.append(child_text)
+                    ie_type = {
+                        "bold": InlineElementType.BOLD,
+                        "italic": InlineElementType.ITALIC,
+                        "superscript": InlineElementType.SUP,
+                        "subscript": InlineElementType.SUB,
+                        "chemical_structure": InlineElementType.CHEMICAL_STRUCTURE,
+                        "strikethrough": InlineElementType.STRIKETHROUGH,
+                        "underline": InlineElementType.UNDERLINE,
+                        "monospace": InlineElementType.MONOSPACE,
+                        "small_caps": InlineElementType.SMALL_CAPS,
+                        "roman": InlineElementType.ROMAN,
+                        "styled_content": InlineElementType.STYLED_CONTENT,
+                    }.get(inline_handler, InlineElementType.UNKNOWN_INLINE)
+                    inlines.append(
+                        InlineElement(
+                            type=ie_type,
+                            text=child_text,
+                            position=pos,
+                            length=len(child_text),
+                        )
+                    )
+                    # Track nested inlines within this wrapper (e.g., <xref> inside <sup>)
+                    nested = self._collect_nested_inlines(child, pos)
+                    inlines.extend(nested)
+                    pos += len(child_text)
+
+            else:
+                # Unknown child — recurse into it
+                nested_parts, nested_inlines, pos = self._extract_inlines_recursive(
+                    child, pos, parent_inlines=inlines
+                )
+                parts.extend(nested_parts)
+                inlines.extend(nested_inlines)
+
+            # Tail text after this child
+            if child.tail:
+                tail = self._resolve_entities(child.tail)
+                parts.append(tail)
+                pos += len(tail)
+
+        return parts, inlines, pos
+
     def _handle_list(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <list> elements."""
+        """Handle <list> elements with inline-aware item extraction."""
         list_type = elem.get("list-type", "unordered")
         items: list[str] = []
+        item_inlines: list[list[dict[str, Any]]] = []
         for item in elem.findall("list-item"):
-            item_text = XMLHelper.get_text_content(item)
-            if item_text.strip():
-                items.append(item_text.strip())
+            parts, inlines, _ = self._extract_inlines_recursive(item, 0)
+            text = "".join(parts).strip()
+            if text:
+                items.append(text)
+                if inlines:
+                    item_inlines.append([i.to_dict() for i in inlines])
         if items:
-            return [ContentBlock.list_block(items=items, list_type=list_type)]
+            block = ContentBlock.list_block(items=items, list_type=list_type)
+            if item_inlines:
+                block.metadata = block.metadata or {}
+                block.metadata["item_inlines"] = item_inlines
+            return [block]
         return []
 
     def _handle_def_list(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <def-list> elements (definition lists with term/def pairs)."""
+        """Handle <def-list> elements with inline-aware term/def extraction."""
         terms: list[dict[str, str]] = []
         for def_item in elem.findall("def-item"):
             term_elems = def_item.findall("term")
             def_elems = def_item.findall("def")
             term_text = ""
             if term_elems:
-                term_text = XMLHelper.get_text_content(term_elems[0]).strip()
+                term_parts, _, _ = self._extract_inlines_recursive(term_elems[0], 0)
+                term_text = "".join(term_parts).strip()
             def_text = ""
             if def_elems:
-                def_text = XMLHelper.get_text_content(def_elems[0]).strip()
+                def_parts, _, _ = self._extract_inlines_recursive(def_elems[0], 0)
+                def_text = "".join(def_parts).strip()
             if term_text or def_text:
                 terms.append({"term": term_text, "def": def_text})
         if terms:
@@ -969,7 +1303,7 @@ class ContentBlockExtractor(BaseParser):
         return [block]
 
     def _handle_figure(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <fig> elements."""
+        """Handle <fig> elements with inline-aware caption extraction."""
         fig_id = elem.get("id", "")
 
         label = ""
@@ -977,10 +1311,18 @@ class ContentBlockExtractor(BaseParser):
         if label_elem is not None:
             label = XMLHelper.get_text_content(label_elem)
 
+        # Inline-aware caption: walk caption children for inline elements
         caption = ""
+        caption_inlines: list[InlineElement] = []
         caption_elem = elem.find("caption")
         if caption_elem is not None:
-            caption = XMLHelper.get_text_content(caption_elem)
+            # Use recursive extraction for inline tracking within caption
+            cap_parts, cap_inlines, _ = self._extract_inlines_recursive(caption_elem, 0)
+            if cap_parts:
+                caption = "".join(cap_parts).strip()
+                caption_inlines = cap_inlines
+            else:
+                caption = XMLHelper.get_text_content(caption_elem)
 
         uri = ""
         graphic = elem.find(".//graphic")
@@ -989,17 +1331,47 @@ class ContentBlockExtractor(BaseParser):
                 graphic.get("{http://www.w3.org/1999/xlink}href", "") or graphic.get("href", "")
             )
 
-        return [
-            ContentBlock.figure(
-                label=label,
-                caption=caption,
-                uri=uri,
-                target_id=fig_id,
-            )
-        ]
+        block = ContentBlock.figure(
+            label=label,
+            caption=caption,
+            uri=uri,
+            target_id=fig_id,
+        )
+        if caption_inlines:
+            block.inlines = caption_inlines
+        return [block]
+
+    def _extract_table_rows(
+        self, elem: ET.Element
+    ) -> tuple[list[list[str]], list[list[list[dict[str, Any]]]]]:
+        """Extract cell rows and inlines from a table element."""
+        rows: list[list[str]] = []
+        cell_inlines: list[list[list[dict[str, Any]]]] = []
+        for tbody in elem.iter():
+            if self._get_local_tag(tbody.tag) in ("tbody", "thead"):
+                for tr in tbody:
+                    if self._get_local_tag(tr.tag) != "tr":
+                        continue
+                    row_cells: list[str] = []
+                    row_inlines: list[list[dict[str, Any]]] = []
+                    for cell in tr:
+                        tag = self._get_local_tag(cell.tag)
+                        if tag in ("td", "th"):
+                            cell_parts, cell_ils, _ = self._extract_inlines_recursive(cell, 0)
+                            cell_text = "".join(cell_parts).strip()
+                            if not cell_text:
+                                cell_text = XMLHelper.get_text_content(cell).strip()
+                            row_cells.append(cell_text)
+                            if cell_ils:
+                                row_inlines.append([i.to_dict() for i in cell_ils])
+                    if row_cells:
+                        rows.append(row_cells)
+                        if row_inlines:
+                            cell_inlines.append(row_inlines)
+        return rows, cell_inlines
 
     def _handle_table(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <table-wrap> and <table> elements."""
+        """Handle <table-wrap> and <table> elements with cell structure."""
         label = ""
         label_elem = elem.find("label")
         if label_elem is not None:
@@ -1012,7 +1384,30 @@ class ContentBlockExtractor(BaseParser):
 
         text = XMLHelper.get_text_content(elem).strip()
 
-        return [ContentBlock.table_block(label=label, caption=caption, text=text)]
+        rows, cell_inlines = self._extract_table_rows(elem)
+
+        block = ContentBlock.table_block(label=label, caption=caption, text=text, rows=rows)
+        if cell_inlines:
+            block.metadata = block.metadata or {}
+            block.metadata["cell_inlines"] = cell_inlines
+            all_cell_inlines: list[InlineElement] = []
+            for row in cell_inlines:
+                for cell_inline_list in row:
+                    if isinstance(cell_inline_list, list):
+                        for cell_inline_dict in cell_inline_list:
+                            if isinstance(cell_inline_dict, dict):
+                                all_cell_inlines.append(
+                                    InlineElement(
+                                        type=InlineElementType(
+                                            cell_inline_dict.get("type", "unknown_inline")
+                                        ),
+                                        text=cell_inline_dict.get("text", ""),
+                                        position=cell_inline_dict.get("position", 0),
+                                        length=cell_inline_dict.get("length", 0),
+                                    )
+                                )
+            block.inlines = all_cell_inlines
+        return [block]
 
     def _handle_code(self, elem: ET.Element) -> list[ContentBlock]:
         """Handle <code> and <preformat> elements."""
@@ -1022,22 +1417,99 @@ class ContentBlockExtractor(BaseParser):
             return [ContentBlock.code(text=text.strip(), language=language)]
         return []
 
+    def _handle_media(self, elem: ET.Element) -> list[ContentBlock]:
+        """Handle ``<media>`` elements with inline-aware caption extraction."""
+        # Determine MIME type
+        mime = elem.get("mimetype", "")
+        mime_subtype = elem.get("mime-subtype", "")
+        full_mime = f"{mime}/{mime_subtype}" if mime and mime_subtype else mime
+
+        # Extract caption and label
+        label = ""
+        label_elem = elem.find("label")
+        if label_elem is not None:
+            label = XMLHelper.get_text_content(label_elem)
+
+        caption_inlines: list[InlineElement] = []
+        caption = ""
+        caption_elem = elem.find("caption")
+        if caption_elem is not None:
+            caption_parts, caption_inlines_dicts, _ = self._extract_inlines_recursive(
+                caption_elem, 0
+            )
+            caption = "".join(caption_parts).strip()
+            caption_inlines = caption_inlines_dicts
+        else:
+            caption = XMLHelper.get_text_content(elem).strip()[:200]
+
+        # Extract text description
+        text = XMLHelper.get_text_content(elem).strip()
+
+        # Get URI from the element
+        uri = ""
+        xlink_href = self._get_xlink_href(elem)
+        if xlink_href:
+            uri = xlink_href
+
+        if not text and not caption and not uri:
+            return []
+
+        meta: dict[str, str] = {}
+        if full_mime:
+            meta["mime_type"] = full_mime
+        if uri:
+            meta["uri"] = uri
+
+        return [
+            ContentBlock(
+                type=ContentBlockType.FIGURE,
+                label=label,
+                caption=caption or text[:200],
+                uri=uri,
+                metadata=meta,
+                inlines=caption_inlines,
+            )
+        ]
+
     def _handle_boxed_text(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <boxed-text> elements."""
-        text = XMLHelper.get_text_content(elem)
-        if text.strip():
-            return [ContentBlock.boxed_text(text.strip())]
+        """Handle <boxed-text> elements with inline-aware text extraction."""
+        parts, inlines, _ = self._extract_inlines_recursive(elem, 0)
+        text = "".join(parts).strip()
+        if text:
+            block = ContentBlock(text=text, type=ContentBlockType.UNKNOWN_BLOCK)
+            if inlines:
+                block.inlines = inlines
+            return [block]
+        text = XMLHelper.get_text_content(elem).strip()
+        if text:
+            return [ContentBlock(text=text, type=ContentBlockType.UNKNOWN_BLOCK)]
+        return []
+
+    def _handle_quote(self, elem: ET.Element) -> list[ContentBlock]:
+        """Handle ``<disp-quote>`` elements as QUOTE blocks with inline tracking."""
+        parts, inlines, _ = self._extract_inlines_recursive(elem, 0)
+        text = "".join(parts).strip()
+        if text:
+            return [ContentBlock.quote(text=text, inlines=inlines)]
+        text = XMLHelper.get_text_content(elem).strip()
+        if text:
+            return [ContentBlock.quote(text=text)]
         return []
 
     def _handle_subsection(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle nested <sec> elements as a flat heading + content."""
+        """Handle nested <sec> elements as flat heading + content.
+
+        Note: Main body extraction uses ``_extract_structured_section``
+        which recursively handles nested ``<sec>`` with section paths.
+        This method is still used for appendix extraction and other
+        contexts that need flat block output.
+        """
         blocks: list[ContentBlock] = []
 
         title_elem = elem.find("title")
-        if title_elem is not None:
-            title_text = XMLHelper.get_text_content(title_elem)
-            if title_text.strip():
-                blocks.append(ContentBlock.heading(title_text.strip()))
+        title = self._get_multipart_title(title_elem)
+        if title:
+            blocks.append(ContentBlock.heading(title))
 
         # Recurse into subsection children
         for child in elem:
@@ -1050,13 +1522,212 @@ class ContentBlockExtractor(BaseParser):
 
         return blocks
 
-    def _extract_additional_structures(self) -> list[StructuredSection]:
-        """Extract back-matter structures (acknowledgments, appendices, glossary)."""
+    def _extract_article_title(self) -> StructuredSection | None:
+        """Extract the article title from front matter as a structured section.
+
+        Creates a section with the article title as a heading block,
+        providing inline tracking for any formatted elements in the title.
+        """
+        if self.root is None:
+            return None
+        for title_group in self.root.findall(".//title-group"):
+            title_el = title_group.find("article-title")
+            if title_el is not None:
+                title_text = "".join(title_el.itertext()).strip()
+                if title_text:
+                    # Check for inlines in the title
+                    inlines: list[InlineElement] = []
+                    pos = 0
+                    parts: list[str] = []
+                    self._walk_inline_children(title_el, parts, inlines, pos)
+                    # Only produce heading if title non-empty
+                    if title_text:
+                        if inlines:
+                            block = ContentBlock.paragraph_with_inlines(
+                                text=title_text, inlines=inlines
+                            )
+                        else:
+                            block = ContentBlock.heading(title_text)
+                        return StructuredSection(
+                            title="Article Title",
+                            content=[block],
+                            section_type="body",
+                            section_path="Article Title",
+                        )
+        return None
+
+    def _walk_inline_children(
+        self,
+        elem: ET.Element,
+        parts: list[str],
+        inlines: list[InlineElement],
+        pos: int,
+    ) -> None:
+        """Walk element children to collect text parts and inline elements.
+
+        Used for inline tracking in titles and other non-paragraph contexts.
+        """
+        # elem.text before first child
+        if elem.text:
+            parts.append(elem.text)
+            pos += len(elem.text)
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            inline_type = self.INLINE_TAG_MAP.get(tag)
+            child_text = "".join(child.itertext())
+            if child_text and inline_type:
+                try:
+                    ie_type = InlineElementType(inline_type)
+                except ValueError:
+                    ie_type = InlineElementType.UNKNOWN_INLINE
+                inlines.append(
+                    InlineElement(
+                        type=ie_type,
+                        text=child_text,
+                        position=pos,
+                        length=len(child_text),
+                    )
+                )
+                parts.append(child_text)
+                pos += len(child_text)
+            elif child_text:
+                parts.append(child_text)
+                pos += len(child_text)
+            # tail text
+            if child.tail:
+                parts.append(child.tail)
+                pos += len(child.tail)
+
+    def _extract_abstract(self) -> StructuredSection | None:
+        """Extract abstract from front matter as a structured section."""
+        if self.root is None:
+            return None
+        for abstract in self.root.findall(".//abstract"):
+            # Get the title (usually "Abstract" or a structured sub-title)
+            title = "Abstract"
+            titled = abstract.find("title")
+            if titled is not None:
+                title = self._get_multipart_title(titled)
+
+            # Extract inlines from all paragraph children
+            blocks: list[ContentBlock] = []
+            for child in abstract:
+                tag = self._get_local_tag(child.tag)
+                if tag == "p":
+                    # Use _handle_paragraph-like logic
+                    text, inlines, _ = self._extract_inlines_recursive(child, 0)
+                    joined = "".join(text).strip()
+                    if joined:
+                        if inlines:
+                            blocks.append(
+                                ContentBlock.paragraph_with_inlines(text=joined, inlines=inlines)
+                            )
+                        else:
+                            blocks.append(ContentBlock.paragraph(joined))
+                elif tag == "sec":
+                    # Structured abstract with sub-sections
+                    sub_title = ""
+                    st = child.find("title")
+                    if st is not None:
+                        sub_title = self._get_multipart_title(st)
+                    for p in child.findall("p"):
+                        text, inlines, _ = self._extract_inlines_recursive(p, 0)
+                        joined = "".join(text).strip()
+                        if joined:
+                            prefix = f"{sub_title}: " if sub_title else ""
+                            blocks.append(ContentBlock.paragraph(f"{prefix}{joined}"))
+
+            if blocks:
+                return StructuredSection(
+                    title=title,
+                    content=blocks,
+                    section_type="body",
+                    section_path=title,
+                )
+        return None
+
+    def _extract_footnotes(self) -> list[StructuredSection]:
+        """Extract footnotes (fn-group) from front/back matter."""
+        fn_sections: list[StructuredSection] = []
+        if self.root is None:
+            return fn_sections
+
+        for fn_group in self.root.findall(".//fn-group"):
+            fn_blocks: list[ContentBlock] = []
+            for fn in fn_group.findall("fn"):
+                _fn_id = fn.get("id", "")
+                fn_label = ""
+                label_elem = fn.find("label")
+                if label_elem is not None:
+                    fn_label = XMLHelper.get_text_content(label_elem)
+
+                text, inlines, _ = self._extract_inlines_recursive(fn, 0)
+                joined = "".join(text).strip()
+                if joined:
+                    prefix = f"{fn_label} " if fn_label else ""
+                    fn_blocks.append(ContentBlock.paragraph(f"{prefix}{joined}"))
+
+            if fn_blocks:
+                fn_sections.append(
+                    StructuredSection(
+                        title="Footnotes",
+                        content=fn_blocks,
+                        section_type="back",
+                        section_path="Footnotes",
+                    )
+                )
+        return fn_sections
+
+    def _extract_reference_sections(self) -> list[StructuredSection]:
+        """Extract references (ref-list) from back matter."""
         structures: list[StructuredSection] = []
         if self.root is None:
             return structures
 
-        # Acknowledgments
+        for ref_list in self.root.findall(".//ref-list"):
+            title = ""
+            title_elem = ref_list.find("title")
+            if title_elem is not None:
+                title = XMLHelper.get_text_content(title_elem)
+
+            ref_blocks: list[ContentBlock] = []
+            for ref in ref_list.findall("ref"):
+                _ref_id = ref.get("id", "")
+                ref_label = ""
+                label_elem = ref.find("label")
+                if label_elem is not None:
+                    ref_label = XMLHelper.get_text_content(label_elem)
+
+                ref_parts, ref_inlines, _ = self._extract_inlines_recursive(ref, 0)
+                ref_text = "".join(ref_parts).strip()
+
+                if ref_label:
+                    ref_text = f"{ref_label} {ref_text}"
+                if ref_text:
+                    if ref_inlines:
+                        ref_blocks.append(
+                            ContentBlock.paragraph_with_inlines(text=ref_text, inlines=ref_inlines)
+                        )
+                    else:
+                        ref_blocks.append(ContentBlock.paragraph(ref_text))
+
+            if ref_blocks:
+                structures.append(
+                    StructuredSection(
+                        title=title or "References",
+                        content=ref_blocks,
+                        section_type="back",
+                        section_path=title or "References",
+                    )
+                )
+        return structures
+
+    def _extract_acknowledgment_sections(self) -> list[StructuredSection]:
+        """Extract acknowledgments from back matter."""
+        structures: list[StructuredSection] = []
+        if self.root is None:
+            return structures
+
         for ack in self.root.findall(".//ack"):
             text = XMLHelper.get_text_content(ack)
             if text.strip():
@@ -1065,15 +1736,20 @@ class ContentBlockExtractor(BaseParser):
                         title="Acknowledgments",
                         content=[ContentBlock.paragraph(text.strip())],
                         section_type="back",
+                        section_path="Acknowledgments",
                     )
                 )
+        return structures
 
-        # Appendices
+    def _extract_appendix_sections(self) -> list[StructuredSection]:
+        """Extract appendices from back matter."""
+        structures: list[StructuredSection] = []
+        if self.root is None:
+            return structures
+
         for app in self.root.findall(".//app"):
-            title = ""
             title_elem = app.find("title")
-            if title_elem is not None:
-                title = XMLHelper.get_text_content(title_elem)
+            title = self._get_multipart_title(title_elem)
             blocks = self._extract_appendix_blocks(app)
             structures.append(
                 StructuredSection(
@@ -1082,22 +1758,68 @@ class ContentBlockExtractor(BaseParser):
                     section_type="appendix",
                 )
             )
+        return structures
 
-        # Glossary
+    def _extract_glossary_sections(self) -> list[StructuredSection]:
+        """Extract glossary from back matter."""
+        structures: list[StructuredSection] = []
+        if self.root is None:
+            return structures
+
         for gloss in self.root.findall(".//glossary"):
-            title = ""
             title_elem = gloss.find("title")
-            if title_elem is not None:
-                title = XMLHelper.get_text_content(title_elem)
+            title = self._get_multipart_title(title_elem)
             text = XMLHelper.get_text_content(gloss)
             structures.append(
                 StructuredSection(
                     title=title or "Glossary",
-                    content=[ContentBlock.paragraph(text.strip())] if text.strip() else [],
+                    content=([ContentBlock.paragraph(text.strip())] if text.strip() else []),
                     section_type="back",
+                    section_path=title or "Glossary",
                 )
             )
+        return structures
 
+    def _extract_notes_sections(self) -> list[StructuredSection]:
+        """Extract notes from back matter."""
+        structures: list[StructuredSection] = []
+        if self.root is None:
+            return structures
+
+        for notes_elem in self.root.findall(".//notes"):
+            title_elem = notes_elem.find("title")
+            title = self._get_multipart_title(title_elem)
+            note_blocks: list[ContentBlock] = []
+            for child in notes_elem:
+                tag = self._get_local_tag(child.tag)
+                if tag == "title":
+                    continue
+                handler_name = self.JATS_BLOCK_TAGS.get(tag)
+                if handler_name and handler_name in self._handler_map:
+                    note_blocks.extend(self._handler_map[handler_name](child))
+                elif tag not in ("label",):
+                    text = XMLHelper.get_text_content(child)
+                    if text.strip():
+                        note_blocks.append(ContentBlock.paragraph(text.strip()))
+            if note_blocks:
+                structures.append(
+                    StructuredSection(
+                        title=title or "Notes",
+                        content=note_blocks,
+                        section_type="back",
+                        section_path=title or "Notes",
+                    )
+                )
+        return structures
+
+    def _extract_additional_structures(self) -> list[StructuredSection]:
+        """Extract back-matter structures (references, acknowledgments, appendices, glossary)."""
+        structures: list[StructuredSection] = []
+        structures.extend(self._extract_reference_sections())
+        structures.extend(self._extract_acknowledgment_sections())
+        structures.extend(self._extract_appendix_sections())
+        structures.extend(self._extract_glossary_sections())
+        structures.extend(self._extract_notes_sections())
         return structures
 
     def _extract_appendix_blocks(self, app_elem: ET.Element) -> list[ContentBlock]:
@@ -1124,6 +1846,11 @@ class ContentBlockExtractor(BaseParser):
         if tag.startswith("{"):
             return tag.split("}", 1)[1]
         return tag
+
+    @staticmethod
+    def _get_xlink_href(elem: ET.Element) -> str:
+        """Get the xlink:href attribute from an element."""
+        return elem.get("{http://www.w3.org/1999/xlink}href") or elem.get("href") or ""
 
     @staticmethod
     def _get_namespace_map() -> dict[str, str]:

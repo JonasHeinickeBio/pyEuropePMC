@@ -5,6 +5,7 @@ This module provides specialized parsing for references and citations.
 """
 
 import logging
+import re
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.processing.config.element_patterns import ElementPatterns
@@ -12,6 +13,22 @@ from pyeuropepmc.processing.parsers.base_parser import BaseParser
 from pyeuropepmc.processing.utils.xml_helpers import XMLHelper
 
 logger = logging.getLogger(__name__)
+
+# Pre-compiled regex patterns for reference parsing
+_RE_REF_ID = re.compile(r'<ref[^>]+id="([^"]*)"[^>]*>(.*?)</ref>', re.DOTALL)
+_RE_SUPPLIED_PMID = re.compile(r"<\?supplied-pmid\s+([^?>]+)\?>")
+_RE_AUTHOR_ET_AL = re.compile(r"^(.+?et al\.)\s+")
+_RE_AUTHOR_SINGLE = re.compile(r"^([^.]+?\.)\s+")
+_RE_AUTHOR_FALLBACK = re.compile(r"^(.+?)\s+([A-Z][a-z]+.*)")
+_RE_ET_AL_CLEANUP = re.compile(r"\s+et\s+al\.?$", re.IGNORECASE)
+_RE_TITLE_SOURCE = re.compile(r"^(.+?)\.\s+([A-Z][^0-9]*?)(?=\.|\d|\s+\d{4}|\s*$)")
+_RE_TITLE_YEAR = re.compile(r"^(.+?)\s*\(\s*(\d{4})\s*\)")
+_RE_WHITESPACE = re.compile(r"\s+")
+_RE_YEAR = re.compile(r"\b(19|20)\d{2}\b")
+_RE_VOL_PAGE = re.compile(r"\b(\d+)\s*[,:]\s*(\d+(?:-\d+)?)\b")
+_RE_VOL_YEAR = re.compile(r"\b(\d+)\s*\(\s*(\d{4})\s*\)")
+_RE_DOI = re.compile(r"(?:doi:\s*|https?://doi\.org/)([^\s,]+)", re.IGNORECASE)
+_RE_PMID = re.compile(r"pmid:\s*(\d+)", re.IGNORECASE)
 
 
 class ReferenceParser(BaseParser):
@@ -75,18 +92,14 @@ class ReferenceParser(BaseParser):
         if not self.raw_xml or not ref_id:
             return None
 
-        import re
-
         # Find the ref element with this ID in the raw XML and extract supplied-pmid within it
         # Pattern: <ref id="ref_id">...</ref> containing <?supplied-pmid ...?>
-        ref_pattern = rf'<ref[^>]+id="{re.escape(ref_id)}"[^>]*>(.*?)</ref>'
-        ref_match = re.search(ref_pattern, self.raw_xml, re.DOTALL)
+        ref_pat = rf'<ref[^>]+id="{re.escape(ref_id)}"[^>]*>(.*?)</ref>'
+        ref_match = re.search(ref_pat, self.raw_xml, re.DOTALL)
 
         if ref_match:
             ref_content = ref_match.group(1)
-            # Look for supplied-pmid within this ref's content
-            pmid_pattern = r"<\?supplied-pmid\s+([^?>]+)\?>"
-            pmid_match = re.search(pmid_pattern, ref_content)
+            pmid_match = _RE_SUPPLIED_PMID.search(ref_content)
             if pmid_match:
                 return pmid_match.group(1).strip()
 
@@ -129,23 +142,18 @@ class ReferenceParser(BaseParser):
 
     def _extract_authors_from_text(self, text: str) -> tuple[str | None, str]:
         """Extract authors from citation text and return remaining text."""
-        import re
-
         # First try with et al.
-        author_pattern_et_al = r"^(.+?et al\.)\s+"
-        author_match = re.match(author_pattern_et_al, text)
+        author_match = _RE_AUTHOR_ET_AL.match(text)
         if not author_match:
             # Fallback to single author with period
-            author_pattern_single = r"^([^.]+?\.)\s+"
-            author_match = re.match(author_pattern_single, text)
+            author_match = _RE_AUTHOR_SINGLE.match(text)
         if not author_match:
             # Fallback for multiple authors without period, assuming title starts with capital word
-            author_pattern_fallback = r"^(.+?)\s+([A-Z][a-z]+.*)"
-            author_match = re.match(author_pattern_fallback, text)
+            author_match = _RE_AUTHOR_FALLBACK.match(text)
         if author_match:
             authors_text = author_match.group(1).strip()
             # Clean up common endings
-            authors_text = re.sub(r"\s+et\s+al\.?$", "", authors_text, flags=re.IGNORECASE)
+            authors_text = _RE_ET_AL_CLEANUP.sub("", authors_text)
             authors = authors_text.rstrip(".,")
             if len(author_match.groups()) > 1:
                 remaining_text = author_match.group(2) + text[len(author_match.group(0)) :]
@@ -158,11 +166,8 @@ class ReferenceParser(BaseParser):
         self, text: str
     ) -> tuple[str | None, str | None, str | None, str]:
         """Extract title, source, and year from citation text and return remaining text."""
-        import re
-
         # Pattern: Title. Journal...
-        title_pattern = r"^(.+?)\.\s+([A-Z][^0-9]*?)(?=\.|\d|\s+\d{4}|\s*$)"
-        title_match = re.match(title_pattern, text)
+        title_match = _RE_TITLE_SOURCE.match(text)
         if title_match:
             title = title_match.group(1).strip()
             source = title_match.group(2).strip().rstrip(".")
@@ -170,8 +175,7 @@ class ReferenceParser(BaseParser):
             return title, source, None, remaining_text
         else:
             # Fallback: look for title before year in parentheses
-            title_year_pattern = r"^(.+?)\s*\(\s*(\d{4})\s*\)"
-            title_year_match = re.match(title_year_pattern, text)
+            title_year_match = _RE_TITLE_YEAR.match(text)
             if title_year_match:
                 title = title_year_match.group(1).strip()
                 year = title_year_match.group(2)
@@ -183,17 +187,13 @@ class ReferenceParser(BaseParser):
         self, citation: ET.Element, ref_data: dict[str, str | None]
     ) -> None:
         """Parse text content from mixed-citation elements using regex patterns."""
-        import re
-
-        from pyeuropepmc.processing.utils.xml_helpers import XMLHelper
-
         # Get the text content of the mixed-citation element
         text = XMLHelper.get_text_content(citation)
         if not text.strip():
             return
 
         # Clean up the text (remove extra whitespace, normalize)
-        text = re.sub(r"\s+", " ", text.strip())
+        text = _RE_WHITESPACE.sub(" ", text.strip())
 
         # Extract authors
         authors, text = self._extract_authors_from_text(text)
@@ -220,38 +220,31 @@ class ReferenceParser(BaseParser):
 
     def _extract_additional_patterns(self, text: str, ref_data: dict[str, str | None]) -> None:
         """Extract additional patterns from citation text."""
-        import re
-
         # Pattern 3: Year - look for 4-digit year, often in parentheses or after journal
-        year_pattern = r"\b(19|20)\d{2}\b"
-        year_match = re.search(year_pattern, text)
+        year_match = _RE_YEAR.search(text)
         if year_match and not ref_data.get("year"):
             ref_data["year"] = year_match.group(0)
 
         # Pattern 4: Volume and pages - look for patterns like "12, 345" or "12:345-678"
-        vol_page_pattern = r"\b(\d+)\s*[,:]\s*(\d+(?:-\d+)?)\b"
-        vol_page_match = re.search(vol_page_pattern, text)
+        vol_page_match = _RE_VOL_PAGE.search(text)
         if vol_page_match:
             ref_data["volume"] = vol_page_match.group(1)
             ref_data["pages"] = vol_page_match.group(2)
         else:
             # Fallback: look for volume(year) pattern
-            vol_year_pattern = r"\b(\d+)\s*\(\s*(\d{4})\s*\)"
-            vol_year_match = re.search(vol_year_pattern, text)
+            vol_year_match = _RE_VOL_YEAR.search(text)
             if vol_year_match:
                 ref_data["volume"] = vol_year_match.group(1)
                 if not ref_data.get("year"):
                     ref_data["year"] = vol_year_match.group(2)
 
         # Pattern 5: DOI - look for doi: or http patterns
-        doi_pattern = r"(?:doi:\s*|https?://doi\.org/)([^\s,]+)"
-        doi_match = re.search(doi_pattern, text, re.IGNORECASE)
+        doi_match = _RE_DOI.search(text)
         if doi_match:
             ref_data["doi"] = doi_match.group(1).strip(".,")
 
         # Pattern 6: PMID - look for PMID: followed by numbers
-        pmid_pattern = r"pmid:\s*(\d+)"
-        pmid_match = re.search(pmid_pattern, text, re.IGNORECASE)
+        pmid_match = _RE_PMID.search(text)
         if pmid_match:
             ref_data["pmid"] = pmid_match.group(1)
 

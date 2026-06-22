@@ -1,0 +1,1065 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="bdi70127" xml:lang="en" article-type="review-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Bipolar Disord</journal-id><journal-id journal-id-type="iso-abbrev">Bipolar Disord</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">BDI</journal-id><journal-title-group><journal-title>Bipolar Disorders</journal-title></journal-title-group><issn pub-type="ppub">1398-5647</issn><issn pub-type="epub">1399-5618</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13251348</article-id><article-id pub-id-type="pmcid-ver">PMC13251348.1</article-id><article-id pub-id-type="pmcaid">13251348</article-id><article-id pub-id-type="pmcaiid">13251348</article-id><article-id pub-id-type="pmid">42267732</article-id><article-id pub-id-type="doi">10.1111/bdi.70127</article-id><article-id pub-id-type="publisher-id">BDI70127</article-id><article-id pub-id-type="other">BDI-2025-0129</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Review</subject></subj-group><subj-group subj-group-type="heading"><subject>Review</subject></subj-group></article-categories><title-group><article-title>Clinical and Sociodemographic Correlates of Poor Medication Adherence in People With Bipolar Disorder: A Systematic Review and Meta‐Analysis</article-title></title-group><contrib-group><contrib id="bdi70127-cr-0001" contrib-type="author" corresp="yes"><name name-style="western"><surname>Bartoli</surname><given-names initials="F">Francesco</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-2612-4119</contrib-id><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>francesco.bartoli@unimib.it</email></address></contrib><contrib id="bdi70127-cr-0002" contrib-type="author"><name name-style="western"><surname>Cavaleri</surname><given-names initials="D">Daniele</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-5342-9394</contrib-id><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0003" contrib-type="author"><name name-style="western"><surname>Riboldi</surname><given-names initials="I">Ilaria</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-8188-800X</contrib-id><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0004" contrib-type="author"><name name-style="western"><surname>Capogrosso</surname><given-names initials="CA">Chiara Alessandra</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-2307-2560</contrib-id><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0005" contrib-type="author"><name name-style="western"><surname>Bassetti</surname><given-names initials="C">Carlo</given-names></name><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0006" contrib-type="author"><name name-style="western"><surname>Broccia</surname><given-names initials="M">Marco</given-names></name><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0007" contrib-type="author"><name name-style="western"><surname>Cucchi</surname><given-names initials="G">Giorgio</given-names></name><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0008" contrib-type="author"><name name-style="western"><surname>Crocamo</surname><given-names initials="C">Cristina</given-names></name><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bdi70127-cr-0009" contrib-type="author"><name name-style="western"><surname>Sajatovic</surname><given-names initials="M">Martha</given-names></name><xref rid="bdi70127-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="bdi70127-cr-0010" contrib-type="author"><name name-style="western"><surname>Carrà</surname><given-names initials="G">Giuseppe</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-6877-6169</contrib-id><xref rid="bdi70127-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib></contrib-group><aff id="bdi70127-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">School of Medicine and Surgery</named-content>
+<institution>University of Milano‐Bicocca</institution>
+<city>Monza</city>
+<country country="IT">Italy</country>
+</aff><aff id="bdi70127-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Neurological and Behavioral Outcomes Center</named-content>
+<institution>University Hospitals Cleveland Medical Center, Case Western Reserve University</institution>
+<city>Cleveland</city>
+<named-content content-type="country-part">Ohio</named-content>
+<country country="US">USA</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Francesco Bartoli (<email>francesco.bartoli@unimib.it</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>10</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>8</month><year>2026</year></pub-date><volume>28</volume><issue seq="40">5</issue><issue-id pub-id-type="pmc-issue-id">515330</issue-id><issue-id pub-id-type="doi">10.1111/bdi.v28.5</issue-id><elocation-id>e70127</elocation-id><history>
+<date date-type="rev-recd"><day>23</day><month>4</month><year>2026</year></date>
+<date date-type="received"><day>24</day><month>4</month><year>2025</year></date>
+<date date-type="accepted"><day>29</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>10</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>11</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-11 17:25:17.213"><day>11</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Bipolar Disorders</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="BDI-28-0.pdf"><?pdf-name BDI-28-0.pdf?><?pdf-size 1487659?><?pdf-md5 df62833d4b7105a5a925017a060c28cd?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:8036/13251348/df62833d4b71/BDI-28-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:BDI-28-0.pdf"/><abstract><title>ABSTRACT</title><sec id="bdi70127-sec-0001"><title>Objectives</title><p>Poor adherence to psychopharmacological treatment may contribute to relapses in bipolar disorder (BD). We performed a systematic review and meta‐analysis to identify factors associated with poor adherence in BD.</p></sec><sec id="bdi70127-sec-0002"><title>Methods</title><p>The protocol was registered in Open Science Framework Registries (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.17605/OSF.IO/2KZFJ" ext-link-type="uri">https://doi.org/10.17605/OSF.IO/2KZFJ</ext-link>). We searched main electronic databases through March 2025. Random‐effects meta‐analyses were performed to obtain pooled odds ratios (ORs) and standardized mean differences (SMDs) for relevant correlates.</p></sec><sec id="bdi70127-sec-0003"><title>Results</title><p>We included 19 studies. Subjects with poor adherence were more likely to be younger (SMD = <bold>−</bold>0.22, 95% CI: <bold>−</bold>0.42–<bold>−</bold>0.02) and to have lower education (SMD = <bold>−</bold>0.34, 95% CI: <bold>−</bold>0.55–<bold>−</bold>0.12), and less likely to be in a relationship (OR = 0.54, 95% CI: 0.34–0.86). Moreover, earlier age at onset (SMD = <bold>−</bold>0.29, 95% CI: <bold>−</bold>0.53–<bold>−</bold>0.04), psychotic features (OR = 1.58, 95% CI: 1.30–1.92), a history of suicide attempts (OR = 1.36, 95% CI: 1.03–1.78), a higher number of manic (SMD = 0.34, 95% CI: 0.08–0.61) and mixed (SMD = 0.16, 95% CI: 0.03–0.28) episodes, and more hospitalizations (SMD = 0.53, 95% CI: 0.32–0.73) all emerged as correlates of poor adherence. Also, cannabis (OR = 2.34, 95% CI: 1.79–3.07) and alcohol use disorders (OR = 1.71, 95% CI: 1.39–2.12), comorbid generalized anxiety disorder (OR = 3.70, 95% CI: 1.90–7.22), and comorbid personality disorders (OR = 5.54, 95% CI: 1.32–23.15) were associated with poor adherence. Finally, poorly adherent individuals had higher global severity (SMD = 0.21, 95% CI: 0.01–0.41), lower insight (SMD = <bold>−</bold>0.74, 95% CI: <bold>−</bold>1.08–<bold>−</bold>0.41), and lower global functioning (SMD = <bold>−</bold>0.60, 95% CI: <bold>−</bold>0.87–<bold>−</bold>0.34). No differences were estimated for other variables.</p></sec><sec id="bdi70127-sec-0004"><title>Conclusions</title><p>This meta‐analysis showed that poor adherence in people with BD is associated with specific correlates. Although evidence was generally weak due to small effect sizes, imprecision, inconsistency, and potential publication bias, our findings highlight the importance of strategies to improve adherence.</p></sec></abstract><kwd-group kwd-group-type="author-generated"><kwd id="bdi70127-kwd-0001">adherence</kwd><kwd id="bdi70127-kwd-0002">bipolar disorder</kwd><kwd id="bdi70127-kwd-0003">clinical correlates</kwd><kwd id="bdi70127-kwd-0004">meta‐analysis</kwd></kwd-group><counts><fig-count count="1"/><table-count count="3"/><page-count count="13"/><word-count count="9400"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>August 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:10.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body id="bdi70127-body-0001"><sec id="bdi70127-sec-0005"><label>1</label><title>Introduction</title><p>Bipolar disorder (BD) is a severe and chronic condition, affecting around 2% of the general population [<xref rid="bdi70127-bib-0001" ref-type="bibr">1</xref>, <xref rid="bdi70127-bib-0002" ref-type="bibr">2</xref>]. The clinical course is characterized by mood recurrences, in which manic or hypomanic episodes may alternate to depressive episodes [<xref rid="bdi70127-bib-0003" ref-type="bibr">3</xref>]. Notwithstanding the availability of several effective therapeutic options for BD, research has shown that different individual and environmental factors are associated with clinical relapses in BD [<xref rid="bdi70127-bib-0004" ref-type="bibr">4</xref>]. Among them, poor or suboptimal adherence to psychopharmacological treatment [<xref rid="bdi70127-bib-0005" ref-type="bibr">5</xref>, <xref rid="bdi70127-bib-0006" ref-type="bibr">6</xref>], despite attempts based on focused clinical interventions [<xref rid="bdi70127-bib-0007" ref-type="bibr">7</xref>, <xref rid="bdi70127-bib-0008" ref-type="bibr">8</xref>], remains common in BD, involving around half of patients [<xref rid="bdi70127-bib-0009" ref-type="bibr">9</xref>, <xref rid="bdi70127-bib-0010" ref-type="bibr">10</xref>]. Different reasons can explain this condition, including forgetting to take medications, fear of side effects, disorganized home environments, concern regarding long‐term treatment, and insufficient knowledge regarding BD and its treatment [<xref rid="bdi70127-bib-0011" ref-type="bibr">11</xref>]. Recent systematic evidence, though based on limited research, has shown that individual patient's behaviors, lack of social support, and illness‐related factors may impair adherence in people with BD [<xref rid="bdi70127-bib-0010" ref-type="bibr">10</xref>]. Nonetheless, poor adherence in BD is a complex phenomenon that may be influenced by several additional factors. Therefore, it is important to identify the full range of determinants of poor adherence [<xref rid="bdi70127-bib-0012" ref-type="bibr">12</xref>]. These may involve patient‐ and illness‐related characteristics, such as educational level, marital status, duration of illness, severity of mood episodes, and the presence of comorbid conditions [<xref rid="bdi70127-bib-0013" ref-type="bibr">13</xref>, <xref rid="bdi70127-bib-0014" ref-type="bibr">14</xref>, <xref rid="bdi70127-bib-0015" ref-type="bibr">15</xref>]. However, no systematic analyses of socio‐demographic, disease‐related, and individual characteristics influencing adherence in BD are available so far. To address this gap, we performed a systematic review and meta‐analysis of observational studies aimed at identifying correlates of poor adherence in BD. We also assessed the quality of the emerging evidence by evaluating strength, precision, consistency of findings, as well as the risk of publication bias.</p></sec><sec sec-type="materials-and-methods" id="bdi70127-sec-0006"><label>2</label><title>Materials and Methods</title><sec id="bdi70127-sec-0007"><label>2.1</label><title>Study Design and Protocol</title><p>We followed the Meta‐analysis Of Observational Studies in Epidemiology (MOOSE) guidelines to report this systematic review and meta‐analysis [<xref rid="bdi70127-bib-0016" ref-type="bibr">16</xref>]. The study protocol was registered on September 2nd, 2024 in Open Science Framework (OSF) registries and updated on March 27th, 2025: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.17605/OSF.IO/2KZFJ" ext-link-type="uri">https://doi.org/10.17605/OSF.IO/2KZFJ</ext-link>.</p></sec><sec id="bdi70127-sec-0008"><label>2.2</label><title>Eligibility Criteria</title><p>We included any observational studies: (i) involving subjects diagnosed with BD as per standardized diagnostic criteria (e.g., Diagnostic and Statistical Manual of Mental Disorders (DSM), Fourth (DSM‐IV) [<xref rid="bdi70127-bib-0017" ref-type="bibr">17</xref>] or Fifth Edition (DSM‐5) [<xref rid="bdi70127-bib-0018" ref-type="bibr">18</xref>]; International Classification of Diseases (ICD), 10th revision (ICD‐10) [<xref rid="bdi70127-bib-0019" ref-type="bibr">19</xref>] or 11th revision (ICD‐11) [<xref rid="bdi70127-bib-0020" ref-type="bibr">20</xref>]); (ii) including samples with a mean age ≥ 18 years; (iii) focusing on adherence to psychopharmacological treatment in BD, considering any drug type/class used to treat the disorder (mood stabilizers, oral or long‐acting antipsychotics, antidepressants); (iv) distinguishing good and poor adherence according to a clearly defined measurement, either by clinical evaluation/rating or with objective assessments (e.g., blood, urine, or hair concentration) methods, to enhance reliability and avoid self‐report bias; (v) reporting on at least one socio‐demographic (e.g., age, sex, socio‐economic status) or clinical (e.g., symptom severity, comorbidities, treatment factors) correlate of treatment adherence; (vi) including at least 10 individuals in each group.</p><p>We excluded studies: (i) not exploring exclusively subjects with BD (e.g., mixed psychiatric populations without separate data for BD); (ii) investigating samples with a mean age &lt; 18 years, unless there was a subgroup ≥ 18 years old and it was reported on separately; (iii) focusing on non‐pharmacological treatments (e.g., psychoeducation, psychotherapy, lifestyle interventions) without analysis of psychopharmacotherapy adherence; (iv) not reporting on adherence or lacking a clear definition/measurement of adherence to psychopharmacotherapy treatment; (v) using exclusively measures of adherence, such as self‐report questionnaires, drug dispensing assessment, or medication possession ratio, as these methods are susceptible to self‐report bias and do not provide direct or clinically verifiable evidence of actual drug intake; (vi) reporting adherence as continuous scores without clearly separating high vs. low adherence; (vii) not assessing the association between socio‐demographic or clinical factors and adherence; (viii) published before the release of DSM‐IV (1994); (ix) case reports and case series; (x) scientific reports not undergoing peer‐review process, such as conference abstracts, dissertations/theses, and gray literature.</p><p>To reduce the risk of selective reporting bias, two investigators (F.B. and D.C.) contacted the corresponding authors of studies that were not eligible—e.g., because participants were not classified into distinct categories of poor vs. good adherence—in order to obtain additional unpublished data for inclusion in our meta‐analyses.</p><p>Moreover, in order to avoid duplicate results, we excluded multiple publications on the same sample, including only the study that provided the most comprehensive amount of information.</p></sec><sec id="bdi70127-sec-0009"><label>2.3</label><title>Article Search and Screening</title><p>We searched MEDLINE (via Ovid), Embase (via Embase), and APA PsycInfo (via ProQuest) for articles indexed from 1994 up to March 27th, 2025, without any language restrictions. We used the following search phrases adapted for each database: (i) MEDLINE (via Ovid): “(bipolar OR mania OR manic).ti,ab AND (adherence OR compliance).ti,ab”; (ii) Embase (via Embase): “(bipolar:ti,ab OR mania:ti,ab OR manic:ti,ab) AND (adherence:ti,ab OR compliance:ti,ab)”; (iii) APA PsycInfo (via ProQuest): “TI,AB(bipolar OR mania OR manic) AND TI,AB(adherence OR compliance)”.</p><p>An additional manual search of studies included in relevant reviews [<xref rid="bdi70127-bib-0010" ref-type="bibr">10</xref>, <xref rid="bdi70127-bib-0012" ref-type="bibr">12</xref>, <xref rid="bdi70127-bib-0021" ref-type="bibr">21</xref>, <xref rid="bdi70127-bib-0022" ref-type="bibr">22</xref>] was carried out to check for further potentially eligible studies. References were managed using Zotero 7 (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.zotero.org/" ext-link-type="uri">https://www.zotero.org/</ext-link>). After the preliminary screening based on titles and abstracts, full texts were retrieved to assess the final eligibility of studies. These procedures were completed by three authors (F.B., C.B., and M.B.) independently, and reasons for exclusion after full‐text review were recorded. Disagreements concerning suitability for inclusion were resolved by discussion and consensus involving all authors.</p></sec><sec id="bdi70127-sec-0010"><label>2.4</label><title>Data Extraction</title><p>Data were extracted and inserted into standard .xls templates by six authors (D.C., I.R., C.A.C., C.B., M.B., and G.Cu.) independently and subsequently blindly cross‐checked for accuracy.</p><p>Key article information and sample characteristics (including year of publication, country, setting, inclusion and exclusion criteria, sample size, mean age, sex proportion, and assessment of adherence to psychopharmacological treatment) were collected from all eligible studies.</p><p>Data on socio‐demographic and clinical correlates of poor adherence to psychopharmacological treatment were extracted.</p></sec><sec id="bdi70127-sec-0011"><label>2.5</label><title>Data Analysis</title><p>In order to compare, as for relevant correlates, people with BD who had poor or good medication adherence according to each included paper's criteria and cutoff, random‐effects meta‐analyses were conducted for variables with data available from at least three different studies. A <italic toggle="yes">p</italic>‐value below 0.05 was the chosen threshold for statistical significance. We used odds ratio (OR) and Hedges' g (standardized mean difference—SMD), with their 95% CI, for categorical and continuous variables, respectively. Odds ratios were estimated comparing the number of positive cases for a tested variable in non‐adherent vs. adherent groups. Hedges' g values were estimated comparing the reported means and standard deviations (SD) of continuous variables in each group. When data were reported as medians with minimum/maximum values or interquartile ranges, we converted them to the corresponding means and SDs using the recommended formulas for conversion [<xref rid="bdi70127-bib-0023" ref-type="bibr">23</xref>, <xref rid="bdi70127-bib-0024" ref-type="bibr">24</xref>]. When means and/or SDs could not be obtained, we used <italic toggle="yes">Practical Meta Analysis Effect Size Calculator</italic> [<xref rid="bdi70127-bib-0025" ref-type="bibr">25</xref>] to convert available data into effect sizes. Heterogeneity across studies was evaluated according to standard cut‐offs for I<sup>2</sup> statistics to measure inconsistency of meta‐analyses [<xref rid="bdi70127-bib-0026" ref-type="bibr">26</xref>]. Publication bias was assessed using Egger's test for meta‐analyses with data available from at least 10 studies [<xref rid="bdi70127-bib-0027" ref-type="bibr">27</xref>]. To evaluate the magnitude and precision of the effects, each OR of categorical variables was converted into SMD dividing the relevant ln(OR) by 1.81 [<xref rid="bdi70127-bib-0028" ref-type="bibr">28</xref>]. Based on conventional cut‐offs [<xref rid="bdi70127-bib-0029" ref-type="bibr">29</xref>], we used the following intervals to interpret the magnitude of the effects: very small: &lt; 0.2; small: ≥ 0.2 to &lt; 0.35; small‐to‐medium: ≥ 0.35 to &lt; 0.50; medium: ≥ 0.50 to &lt; 0.65; medium‐to‐large: ≥ 0.65–0.80; large: ≥ 0.80. Data analyses were performed using Stata statistical software, release 18 [<xref rid="bdi70127-bib-0030" ref-type="bibr">30</xref>].</p></sec><sec id="bdi70127-sec-0012"><label>2.6</label><title>Grading of the Evidence</title><p>Following an approach similarly used in recent meta‐analyses [<xref rid="bdi70127-bib-0031" ref-type="bibr">31</xref>], we used GRADE (Grading of Recommendations, Assessment, Development, and Evaluations) items [<xref rid="bdi70127-bib-0032" ref-type="bibr">32</xref>], adapted for observational studies, to classify the quality of evidence as high, moderate, low, or very low. Accordingly, for each variable showing a statistically significant pooled estimate (<italic toggle="yes">p</italic> &lt; 0.05), we evaluated consistency and precision of meta‐analytic findings, the risk of publication bias, as well as the magnitude of the effect estimate.</p><p>First, we assessed the ‘<italic toggle="yes">consistency</italic>’ of findings according to the I<sup>2</sup> value. We downgraded by one level the quality of evidence if inconsistency was estimated (I<sup>2</sup> ≥ 50%).</p><p>Second, we evaluated the ‘<italic toggle="yes">precision</italic>’ of findings by checking the width of the equivalent effect size's 95% CI. We downgraded the quality of evidence by one level if (i) 95% CI width of the equivalent effect size was ≥ 0.40.</p><p>Third, we assessed the risk of ‘<italic toggle="yes">publication bias</italic>’, downgrading the quality of evidence by one level if (i) meta‐analyses included less than 10 studies or (ii) the Egger's test <italic toggle="yes">p</italic> &lt; 0.10 for meta‐analyses including at least 10 studies.</p><p>Finally, we evaluated the ‘<italic toggle="yes">magnitude of the effect</italic>’, upgrading the quality of evidence by one level if the effect size was large (SMD ≥ 0.80) or downgrading by one level if it was small (SMD &lt; 0.35).</p></sec></sec><sec sec-type="results" id="bdi70127-sec-0013"><label>3</label><title>Results</title><sec id="bdi70127-sec-0014"><label>3.1</label><title>Study Selection</title><p>The systematic search on relevant databases generated 6088 records, namely 1665 from MEDLINE, 3201 from EMBASE, and 1222 from APA PsycInfo. After deduplication, 3351 articles were retained for screening. In addition, 79 studies were retrieved from the reference lists of four reviews [<xref rid="bdi70127-bib-0010" ref-type="bibr">10</xref>, <xref rid="bdi70127-bib-0012" ref-type="bibr">12</xref>, <xref rid="bdi70127-bib-0021" ref-type="bibr">21</xref>, <xref rid="bdi70127-bib-0022" ref-type="bibr">22</xref>]. After screening by titles and abstracts, 211 studies from databases and 17 from reviews were identified as potentially eligible. Following the full text screening, 19 studies met the eligibility criteria and were included in the meta‐analysis [<xref rid="bdi70127-bib-0015" ref-type="bibr">15</xref>, <xref rid="bdi70127-bib-0033" ref-type="bibr">33</xref>, <xref rid="bdi70127-bib-0034" ref-type="bibr">34</xref>, <xref rid="bdi70127-bib-0035" ref-type="bibr">35</xref>, <xref rid="bdi70127-bib-0036" ref-type="bibr">36</xref>, <xref rid="bdi70127-bib-0037" ref-type="bibr">37</xref>, <xref rid="bdi70127-bib-0038" ref-type="bibr">38</xref>, <xref rid="bdi70127-bib-0039" ref-type="bibr">39</xref>, <xref rid="bdi70127-bib-0040" ref-type="bibr">40</xref>, <xref rid="bdi70127-bib-0041" ref-type="bibr">41</xref>, <xref rid="bdi70127-bib-0042" ref-type="bibr">42</xref>, <xref rid="bdi70127-bib-0043" ref-type="bibr">43</xref>, <xref rid="bdi70127-bib-0044" ref-type="bibr">44</xref>, <xref rid="bdi70127-bib-0045" ref-type="bibr">45</xref>, <xref rid="bdi70127-bib-0046" ref-type="bibr">46</xref>, <xref rid="bdi70127-bib-0047" ref-type="bibr">47</xref>, <xref rid="bdi70127-bib-0048" ref-type="bibr">48</xref>, <xref rid="bdi70127-bib-0049" ref-type="bibr">49</xref>, <xref rid="bdi70127-bib-0050" ref-type="bibr">50</xref>].</p><p>We obtained additional, unpublished data for three studies [<xref rid="bdi70127-bib-0033" ref-type="bibr">33</xref>, <xref rid="bdi70127-bib-0035" ref-type="bibr">35</xref>, <xref rid="bdi70127-bib-0048" ref-type="bibr">48</xref>].</p><p>A flow chart with screening details, study selection process, and reasons for exclusion is presented in Figure <xref rid="bdi70127-fig-0001" ref-type="fig">1</xref>.</p><fig position="float" fig-type="FIGURE" id="bdi70127-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Flow chart of study inclusion process. <italic toggle="yes">Source:</italic> Page MJ, et al. BMJ 2021; 372: N71. Doi: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://doi.org/10.1136/bmj.n71" ext-link-type="uri">10.1136/bmj.n71</ext-link>.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="BDI-28-0-g001.jpg"><?image-name BDI-28-0-g001.jpg?><?image-size 84360?><?image-md5 736ab0abaa0bfb64be5472141e6f5384?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 627?><?image-original-width 1064?><?image-scaled-height 418?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/8036/13251348/736ab0abaa0b/BDI-28-0-g001.jpg?><?thumb-name BDI-28-0-g001.gif?><?thumb-size 11036?><?thumb-md5 14c300ec33b534ed826a2af779109c00?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 135?><?thumb-cloudpmc-urn urn:cdn:blobs/8036/13251348/14c300ec33b5/BDI-28-0-g001.gif?></graphic></fig></sec><sec id="bdi70127-sec-0015"><label>3.2</label><title>Study Characteristics</title><p>Studies were published between 1997 [<xref rid="bdi70127-bib-0044" ref-type="bibr">44</xref>] and 2023 [<xref rid="bdi70127-bib-0033" ref-type="bibr">33</xref>, <xref rid="bdi70127-bib-0035" ref-type="bibr">35</xref>] (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S1</xref>).</p><p>The sample sizes varied between 44 [<xref rid="bdi70127-bib-0039" ref-type="bibr">39</xref>] and 2205 [<xref rid="bdi70127-bib-0034" ref-type="bibr">34</xref>].</p><p>The populations studied varied in age (mean values between 27.1 ± 7.2 and 52.5 ± 14.8 years) and gender distribution (male participants ranging from 20.2% to 71.1%).</p><p>The majority of studies (k = 17) were conducted in Europe, with Spain contributing the highest number of studies (k = 9) [<xref rid="bdi70127-bib-0015" ref-type="bibr">15</xref>, <xref rid="bdi70127-bib-0036" ref-type="bibr">36</xref>, <xref rid="bdi70127-bib-0039" ref-type="bibr">39</xref>, <xref rid="bdi70127-bib-0040" ref-type="bibr">40</xref>, <xref rid="bdi70127-bib-0041" ref-type="bibr">41</xref>, <xref rid="bdi70127-bib-0046" ref-type="bibr">46</xref>, <xref rid="bdi70127-bib-0047" ref-type="bibr">47</xref>, <xref rid="bdi70127-bib-0048" ref-type="bibr">48</xref>, <xref rid="bdi70127-bib-0049" ref-type="bibr">49</xref>] followed by Italy (k = 4) [<xref rid="bdi70127-bib-0033" ref-type="bibr">33</xref>, <xref rid="bdi70127-bib-0035" ref-type="bibr">35</xref>, <xref rid="bdi70127-bib-0038" ref-type="bibr">38</xref>, <xref rid="bdi70127-bib-0050" ref-type="bibr">50</xref>].</p><p>The assessments of adherence included clinical evaluation (k = 9) [<xref rid="bdi70127-bib-0033" ref-type="bibr">33</xref>, <xref rid="bdi70127-bib-0034" ref-type="bibr">34</xref>, <xref rid="bdi70127-bib-0035" ref-type="bibr">35</xref>, <xref rid="bdi70127-bib-0038" ref-type="bibr">38</xref>, <xref rid="bdi70127-bib-0039" ref-type="bibr">39</xref>, <xref rid="bdi70127-bib-0041" ref-type="bibr">41</xref>, <xref rid="bdi70127-bib-0045" ref-type="bibr">45</xref>, <xref rid="bdi70127-bib-0047" ref-type="bibr">47</xref>, <xref rid="bdi70127-bib-0050" ref-type="bibr">50</xref>], measurement of blood concentrations of psychotropic drugs (k = 4) [<xref rid="bdi70127-bib-0037" ref-type="bibr">37</xref>, <xref rid="bdi70127-bib-0042" ref-type="bibr">42</xref>, <xref rid="bdi70127-bib-0043" ref-type="bibr">43</xref>, <xref rid="bdi70127-bib-0049" ref-type="bibr">49</xref>], or both (k = 6) [<xref rid="bdi70127-bib-0015" ref-type="bibr">15</xref>, <xref rid="bdi70127-bib-0036" ref-type="bibr">36</xref>, <xref rid="bdi70127-bib-0040" ref-type="bibr">40</xref>, <xref rid="bdi70127-bib-0044" ref-type="bibr">44</xref>, <xref rid="bdi70127-bib-0046" ref-type="bibr">46</xref>, <xref rid="bdi70127-bib-0048" ref-type="bibr">48</xref>].</p><p>Poor adherence rates widely varied across studies, ranging from 13.9% to 69.3%, reflecting variability in samples, settings, and assessment methods.</p><p>Study characteristics are reported in Table <xref rid="bdi70127-tbl-0001" ref-type="table">1</xref>.</p><table-wrap position="float" id="bdi70127-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Characteristics of the included studies.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Author(s), year</th><th align="center" valign="bottom" rowspan="1" colspan="1">Country</th><th align="center" valign="bottom" rowspan="1" colspan="1">Study design</th><th align="center" valign="bottom" rowspan="1" colspan="1">Setting</th><th align="center" valign="bottom" rowspan="1" colspan="1">Sample size <italic toggle="yes">N</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Age (years) mean ± SD</th><th align="center" valign="bottom" rowspan="1" colspan="1">Male gender <italic toggle="yes">N</italic> (%)</th><th align="center" valign="bottom" rowspan="1" colspan="1">Assessment of adherence</th><th align="center" valign="bottom" rowspan="1" colspan="1">Poor adherence <italic toggle="yes">N (%)</italic>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Bartoli et al., 2023</td><td align="center" valign="top" rowspan="1" colspan="1">Italy</td><td align="center" valign="top" rowspan="1" colspan="1">mirror‐image</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient and outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">71</td><td align="center" valign="top" rowspan="1" colspan="1">46.2 ± 13.4</td><td align="center" valign="top" rowspan="1" colspan="1">38 (53.5%)</td><td align="center" valign="top" rowspan="1" colspan="1">Compliance Rating Scale</td><td align="center" valign="top" rowspan="1" colspan="1">27 (38.0%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Bellivier et al., 2011</td><td align="center" valign="top" rowspan="1" colspan="1">France</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient and outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">2205</td><td align="center" valign="top" rowspan="1" colspan="1">44.7 ± 13.3<xref rid="bdi70127-note-0001" ref-type="table-fn">*</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">932 (42.0%)<xref rid="bdi70127-note-0001" ref-type="table-fn">*</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">Clinician evaluation</td><td align="center" valign="top" rowspan="1" colspan="1">605 (27.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Benatti et al., 2023</td><td align="center" valign="top" rowspan="1" colspan="1">Italy</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient and outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">108</td><td align="center" valign="top" rowspan="1" colspan="1">50.3 ± 16.2</td><td align="center" valign="top" rowspan="1" colspan="1">33 (30.6%)</td><td align="center" valign="top" rowspan="1" colspan="1">Compliance Rating Scale</td><td align="center" valign="top" rowspan="1" colspan="1">33 (30.6%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Colom et al., 2000</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">200</td><td align="center" valign="top" rowspan="1" colspan="1">43.5 ± 15.3</td><td align="center" valign="top" rowspan="1" colspan="1">88 (44.0%)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<p>1. Blood concentrations of mood stabilizers during the previous 2 years</p>
+<p>2. Clinical interview to patient and relatives/caregivers</p>
+</td><td align="center" valign="top" rowspan="1" colspan="1">79 (39.5%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Darling et al., 2008</td><td align="center" valign="top" rowspan="1" colspan="1">USA</td><td align="center" valign="top" rowspan="1" colspan="1">case–control</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">100</td><td align="center" valign="top" rowspan="1" colspan="1">42.8<xref rid="bdi70127-note-0002" ref-type="table-fn">**</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">40 (40.0%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers during the previous 6 months (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">50 (50.0%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Fornaro et al., 2013</td><td align="center" valign="top" rowspan="1" colspan="1">Italy</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">220</td><td align="center" valign="top" rowspan="1" colspan="1">39.0 ± 12.5</td><td align="center" valign="top" rowspan="1" colspan="1">91 (41.3%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Compliance Rating Scale (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">49 (22.3%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">García et al., 2019</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient<xref rid="bdi70127-note-0003" ref-type="table-fn">***</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">44</td><td align="center" valign="top" rowspan="1" colspan="1">27.1 ± 7.2</td><td align="center" valign="top" rowspan="1" colspan="1">31 (71.1%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Clinician evaluation (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">16 (36.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">González‐Pinto et al., 2006</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient</td><td align="center" valign="top" rowspan="1" colspan="1">72</td><td align="center" valign="top" rowspan="1" colspan="1">52.5 ± 14.8</td><td align="center" valign="top" rowspan="1" colspan="1">33 (45.8%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of lithium (bimonthly for 5 years) 2. Semi‐structured clinical evaluation with patient and relatives/caregivers</td><td align="center" valign="top" rowspan="1" colspan="1">16 (22.2%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">González‐Pinto et al., 2010</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient and outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">1831</td><td align="center" valign="top" rowspan="1" colspan="1">44.8 ± 13.2</td><td align="center" valign="top" rowspan="1" colspan="1">787 (43.0%)</td><td align="center" valign="top" rowspan="1" colspan="1">Clinician evaluation</td><td align="center" valign="top" rowspan="1" colspan="1">429 (23.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Gutiérrez‐Rojas et al., 2020</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient and outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">108</td><td align="center" valign="top" rowspan="1" colspan="1">48.2 ± 14.1</td><td align="center" valign="top" rowspan="1" colspan="1">33 (30.6%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers 2. Clinical interview to patient and relatives/caregivers</td><td align="center" valign="top" rowspan="1" colspan="1">18 (16.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Jónsdóttir et al., 2013</td><td align="center" valign="top" rowspan="1" colspan="1">Norway</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">101</td><td align="center" valign="top" rowspan="1" colspan="1">38.8 ± 12.1</td><td align="center" valign="top" rowspan="1" colspan="1">41 (40.6%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of psychotropic drugs and concentration/dose ratio (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">15 (13.9%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Karadağ et al., 2019</td><td align="center" valign="top" rowspan="1" colspan="1">Turkey</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">117</td><td align="center" valign="top" rowspan="1" colspan="1">38.9 ± 11.3</td><td align="center" valign="top" rowspan="1" colspan="1">48 (41.0%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">19 (16.2%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Keck et al., 1997</td><td align="center" valign="top" rowspan="1" colspan="1">USA</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient</td><td align="center" valign="top" rowspan="1" colspan="1">140</td><td align="center" valign="top" rowspan="1" colspan="1">28.9 ± 6.5</td><td align="center" valign="top" rowspan="1" colspan="1">71 (50.7%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers 2. Clinical report (3. Self‐report by patient and relatives/caregivers)</td><td align="center" valign="top" rowspan="1" colspan="1">43 (30.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Kutzelnigg et al., 2014</td><td align="center" valign="top" rowspan="1" colspan="1">Austria</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">891</td><td align="center" valign="top" rowspan="1" colspan="1">43.3 ± 12.8</td><td align="center" valign="top" rowspan="1" colspan="1">378 (42.4%)</td><td align="center" valign="top" rowspan="1" colspan="1">Clinician evaluation</td><td align="center" valign="top" rowspan="1" colspan="1">297 (33.3%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Martinez‐Aran et al., 2009</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient</td><td align="center" valign="top" rowspan="1" colspan="1">103</td><td align="center" valign="top" rowspan="1" colspan="1">39.7 ± 10.7</td><td align="center" valign="top" rowspan="1" colspan="1">47 (45.6%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers during the previous 2 years 2. Clinical interview to patient and relatives/caregivers</td><td align="center" valign="top" rowspan="1" colspan="1">42 (40.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Montes et al., 2013</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">303</td><td align="center" valign="top" rowspan="1" colspan="1">45.9 ± 12.8</td><td align="center" valign="top" rowspan="1" colspan="1">122 (40.3%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Compliance Rating Scale (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">210 (69.3%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Murru et al., 2013</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">150</td><td align="center" valign="top" rowspan="1" colspan="1">Not reported</td><td align="center" valign="top" rowspan="1" colspan="1">73 (48.7%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers 2. Clinical interview to patient and relatives/caregivers</td><td align="center" valign="top" rowspan="1" colspan="1">49 (32.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Navarro et al., 2016</td><td align="center" valign="top" rowspan="1" colspan="1">Spain</td><td align="center" valign="top" rowspan="1" colspan="1">cross‐sectional</td><td align="center" valign="top" rowspan="1" colspan="1">outpatient</td><td align="center" valign="top" rowspan="1" colspan="1">76</td><td align="center" valign="top" rowspan="1" colspan="1">49.2 ± 11.3</td><td align="center" valign="top" rowspan="1" colspan="1">28 (36.8%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Blood concentrations of mood stabilizers (2. Self‐report)</td><td align="center" valign="top" rowspan="1" colspan="1">28 (36.8%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Niolu et al., 2015</td><td align="center" valign="top" rowspan="1" colspan="1">Italy</td><td align="center" valign="top" rowspan="1" colspan="1">prospective</td><td align="center" valign="top" rowspan="1" colspan="1">inpatient</td><td align="center" valign="top" rowspan="1" colspan="1">89</td><td align="center" valign="top" rowspan="1" colspan="1">Not reported</td><td align="center" valign="top" rowspan="1" colspan="1">18 (20.2%)</td><td align="center" valign="top" rowspan="1" colspan="1">1. Clinician evaluation (2. Self‐report by patient and relatives/caregivers)</td><td align="center" valign="top" rowspan="1" colspan="1">33 (37.1%)</td></tr></tbody></table><table-wrap-foot id="bdi70127-ntgp-0001"><fn id="bdi70127-note-0001"><label>*</label><p>For the total sample.</p></fn><fn id="bdi70127-note-0002"><label>**</label><p>SD not reported.</p></fn><fn id="bdi70127-note-0003"><label>***</label><p>First recruited in an inpatient setting.</p></fn></table-wrap-foot></table-wrap></sec><sec id="bdi70127-sec-0016"><label>3.3</label><title>Correlates of Poor Adherence to Treatment in People With Bipolar Disorder</title><sec id="bdi70127-sec-0017"><label>3.3.1</label><title>Socio‐Demographic Correlates</title><p>The meta‐analysis showed that subjects with poor adherence to treatment were more likely to be younger (k = 14; <italic toggle="yes">N</italic> = 4220; SMD = <bold>−</bold>0.22, 95% CI: −0.42 to −0.02, <italic toggle="yes">p</italic> = 0.031; I<sup>2</sup> = 83.5%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S2</xref>), with no evidence of publication bias (Egger's <italic toggle="yes">p</italic> = 0.430). No differences between subjects with poor and those with good adherence in terms of gender emerged (k = 16; <italic toggle="yes">N</italic> = 4517; OR = 1.02, 95% CI: 0.81 to 1.28, <italic toggle="yes">p</italic> = 0.867; I<sup>2</sup> = 47.8%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S3</xref>), without any evidence of publication bias (Egger's <italic toggle="yes">p</italic> = 0.837). The relevant meta‐regression analysis showed no influence of age (<italic toggle="yes">p</italic> = 0.511).</p><p>In addition, subjects with poor adherence to treatment had fewer years of education (k = 9; <italic toggle="yes">N</italic> = 2675; SMD = <bold>−</bold>0.34, 95% CI: −0.55 to −0.12, <italic toggle="yes">p</italic> = 0.002; I<sup>2</sup> = 60.2%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S4</xref>) and were less likely to reach higher educational levels (k = 5; <italic toggle="yes">N</italic> = 2249; OR = 0.71, 95% CI: 0.55 to 0.92, <italic toggle="yes">p</italic> = 0.010; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S5</xref>) as compared with their adherent counterpart.</p><p>Also, subjects with poor adherence to treatment were less likely to be in a relationship (k = 9; <italic toggle="yes">N</italic> = 1056; OR = 0.54, 95% CI: 0.34 to 0.86, <italic toggle="yes">p</italic> = 0.009; I<sup>2</sup> = 56.0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S6</xref>).</p><p>No statistically significant differences in rates of unemployment (k = 8; <italic toggle="yes">N</italic> = 1730; OR = 1.51, 95% CI: 0.83 to 2.76, <italic toggle="yes">p</italic> = 0.177; I<sup>2</sup> = 70.0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S7</xref>) as well as in the likelihood of living alone (k = 6; <italic toggle="yes">N</italic> = 814; OR = 0.89, 95% CI: 0.52 to 1.52, <italic toggle="yes">p</italic> = 0.664; I<sup>2</sup> = 33.7%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S8</xref>) were shown.</p></sec><sec id="bdi70127-sec-0018"><label>3.3.2</label><title>Clinical Correlates</title><p>Poorly adherent subjects had a younger age at onset (k = 9; <italic toggle="yes">N</italic> = 2761; SMD = <bold>−</bold>0.29, 95% CI: −0.53 to −0.04, <italic toggle="yes">p</italic> = 0.023; I<sup>2</sup> = 79.2%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S9</xref>), although no significant differences in illness duration were found (k = 6; <italic toggle="yes">N</italic> = 739; SMD = <bold>−</bold>0.12, 95% CI: −0.28 to 0.05, <italic toggle="yes">p</italic> = 0.168; I<sup>2</sup> = 9.2%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S10</xref>).</p><p>Poorly adherent subjects were more likely to show psychotic features (k = 4; <italic toggle="yes">N</italic> = 2210; OR = 1.58, 95% CI: 1.30 to 1.92, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S11</xref>) and to have a history of suicide attempts (k = 7; <italic toggle="yes">N</italic> = 4609; OR = 1.36, 95% CI: 1.03 to 1.78, <italic toggle="yes">p</italic> = 0.030; I<sup>2</sup> = 37.0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S12</xref>). On the other hand, no statistically significant differences in the likelihood of having a family history of mood disorders (k = 4; <italic toggle="yes">N</italic> = 419; OR = 0.79, 95% CI: 0.53 to 1.18, <italic toggle="yes">p</italic> = 0.249; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S13</xref>), a diagnosis of BD‐I (k = 3; <italic toggle="yes">N</italic> = 606; OR = 1.28, 95% CI: 0.51 to 3.21, <italic toggle="yes">p</italic> = 0.599; I<sup>2</sup> = 80.1%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S14</xref>), and a rapid cycling course (k = 4; <italic toggle="yes">N</italic> = 2368; OR = 2.40, 95% CI: 0.58 to 9.89, <italic toggle="yes">p</italic> = 0.705; I<sup>2</sup> = 89.3%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S15</xref>) emerged between the two groups.</p><p>Individuals with poor adherence were more likely to report more previous manic (k = 6; <italic toggle="yes">N</italic> = 2432; SMD = 0.34, 95% CI: 0.08 to 0.61, <italic toggle="yes">p</italic> = 0.011; I<sup>2</sup> = 79.8%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S16</xref>) and mixed episodes (k = 6; <italic toggle="yes">N</italic> = 2432; SMD = 0.16, 95% CI: 0.03 to 0.28, <italic toggle="yes">p</italic> = 0.013; I<sup>2</sup> = 9.1%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S17</xref>). However, no differences in the number of total (k = 6; <italic toggle="yes">N</italic> = 718; SMD = 0.33, 95% CI: −0.07 to 0.73, <italic toggle="yes">p</italic> = 0.106; I<sup>2</sup> = 82.8%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S18</xref>) or depressive (k = 6; <italic toggle="yes">N</italic> = 2432; SMD = 0.08, 95% CI: −0.13 to 0.30, <italic toggle="yes">p</italic> = 0.429; I<sup>2</sup> = 68.0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S19</xref>) relapses were found. Poorly adherent subjects had also a higher number of previous hospitalizations (k = 4; <italic toggle="yes">N</italic> = 413; SMD = 0.53, 95% CI: 0.32 to 0.73, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S20</xref>) than those with good adherence to treatment, although no statistically significant difference was found between the two groups in the likelihood of having had at least one previous hospitalization (k = 4; <italic toggle="yes">N</italic> = 2086; OR = 1.17, 95% CI: 0.66 to 2.08, <italic toggle="yes">p</italic> = 0.583; I<sup>2</sup> = 51.1%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S21</xref>).</p><p>Poorly adherent subjects were more likely to have a substance use disorder (k = 10; <italic toggle="yes">N</italic> = 1159; OR = 3.32, 95% CI: 1.94 to 5.70, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 58.7%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S22</xref>), with no evidence of publication bias (Egger's <italic toggle="yes">p</italic> = 0.236). More specifically, poorly adherent individuals were more likely to have a cannabis use disorder (k = 4; <italic toggle="yes">N</italic> = 2281; OR = 2.34, 95% CI: 1.79 to 3.07, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S23</xref>) and an alcohol use disorder (k = 5; <italic toggle="yes">N</italic> = 2352; OR = 1.71, 95% CI: 1.39 to 2.12, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S24</xref>).</p><p>Poorly adherent subjects were more likely to have also comorbid generalized anxiety disorder (k = 3; <italic toggle="yes">N</italic> = 375; OR = 3.70, 95% CI: 1.90 to 7.22, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 3.9%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S25</xref>) and personality disorder (k = 4; <italic toggle="yes">N</italic> = 605; OR = 5.54, 95% CI: 1.32 to 23.15, <italic toggle="yes">p</italic> = 0.019; I<sup>2</sup> = 84.4%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S26</xref>).</p></sec><sec id="bdi70127-sec-0019"><label>3.3.3</label><title>Treatment Correlates</title><p>No differences were found between the two groups as for the likelihood of being prescribed with polytherapy (k = 3; <italic toggle="yes">N</italic> = 347; OR = 0.95, 95% CI: 0.42 to 2.16, <italic toggle="yes">p</italic> = 0.905; I<sup>2</sup> = 49.4%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S27</xref>).</p><p>Also, our meta‐analyses did not show any differences in the likelihood of being on lithium (k = 8; <italic toggle="yes">N</italic> = 2706; OR = 1.25, 95% CI: 0.83 to 1.88, <italic toggle="yes">p</italic> = 0.293; I<sup>2</sup> = 51.0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S28</xref>), valproate (k = 6; <italic toggle="yes">N</italic> = 2463; OR = 1.28, 95% CI: 0.69 to 2.38, <italic toggle="yes">p</italic> = 0.428; I<sup>2</sup> = 68.6%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S29</xref>), carbamazepine (k = 4; <italic toggle="yes">N</italic> = 544; OR = 1.32, 95% CI: 0.90 to 1.94, <italic toggle="yes">p</italic> = 0.157; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S30</xref>), antidepressants (k = 6; <italic toggle="yes">N</italic> = 2386; OR = 1.13, 95% CI: 0.90 to 1.41, <italic toggle="yes">p</italic> = 0.312; I<sup>2</sup> = 0%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S31</xref>), and antipsychotics (k = 3; <italic toggle="yes">N</italic> = 250; OR = 1.40, 95% CI: 0.78 to 2.50, <italic toggle="yes">p</italic> = 0.258; I<sup>2</sup> = 16.5%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S32</xref>) – regardless of whether of first‐ (k = 4; <italic toggle="yes">N</italic> = 2239; OR = 1.00, 95% CI: 0.72 to 1.39, <italic toggle="yes">p</italic> = 0.980; I<sup>2</sup> = 18.6%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S33</xref>) or second‐generation (k = 5; <italic toggle="yes">N</italic> = 2463; OR = 1.75, 95% CI: 0.78 to 3.89, <italic toggle="yes">p</italic> = 0.174; I<sup>2</sup> = 87.5%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S34</xref>) – between subjects with poor and good adherence.</p></sec><sec id="bdi70127-sec-0020"><label>3.3.4</label><title>Other Correlates</title><p>Poorly adherent subjects had higher global severity (k = 5; <italic toggle="yes">N</italic> = 3321; SMD = 0.21, 95% CI: 0.01 to 0.41, <italic toggle="yes">p</italic> = 0.042; I<sup>2</sup> = 74.2%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S35</xref>) than those with good adherence.</p><p>Moreover, poorly adherent individuals showed lower insight (k = 4; <italic toggle="yes">N</italic> = 1219; SMD = <bold>−</bold>0.74, 95% CI: −1.08 to −0.41, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 61.8%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S36</xref>) and global functioning (k = 4; <italic toggle="yes">N</italic> = 599; SMD = <bold>−</bold>0.60, 95% CI: −0.87 to −0.34, <italic toggle="yes">p</italic> &lt; 0.001; I<sup>2</sup> = 45.3%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S37</xref>).</p><p>No statistically significant differences in terms of general medical comorbidities (k = 4; <italic toggle="yes">N</italic> = 427; OR = 0.70, 95% CI: 0.34 to 1.43, <italic toggle="yes">p</italic> = 0.324; I<sup>2</sup> = 41.6%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S38</xref>) between the two groups were found.</p><p>Finally, no significant differences in drug attitude scores (k = 3; <italic toggle="yes">N</italic> = 1038; SMD = <bold>−</bold>0.59, 95% CI: −1.19 to 0.00, <italic toggle="yes">p</italic> = 0.052; I<sup>2</sup> = 86.8%) (Figure <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">S39</xref>) were observed.</p><p>The forest plots of the meta‐analyses are reported in <xref rid="bdi70127-supitem-0001" ref-type="supplementary-material">Supporting Information</xref>.</p><p>A summary of findings is provided in Table <xref rid="bdi70127-tbl-0002" ref-type="table">2</xref>.</p><table-wrap position="float" id="bdi70127-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>Correlates of poor adherence to treatment in people with bipolar disorder: Meta‐analyses.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Correlate</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">k</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">N</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Effect size [95% CI]</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">I<sup>2</sup>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Age</td><td align="center" valign="top" rowspan="1" colspan="1">14</td><td align="center" valign="top" rowspan="1" colspan="1">4220</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.22 [−0.42 to −0.02]</td><td align="center" valign="top" rowspan="1" colspan="1">0.031</td><td align="center" valign="top" rowspan="1" colspan="1">83.5%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Male gender</td><td align="center" valign="top" rowspan="1" colspan="1">16</td><td align="center" valign="top" rowspan="1" colspan="1">4517</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.02 [0.81 to 1.28]</td><td align="center" valign="top" rowspan="1" colspan="1">0.867</td><td align="center" valign="top" rowspan="1" colspan="1">47.8%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Years of education</td><td align="center" valign="top" rowspan="1" colspan="1">9</td><td align="center" valign="top" rowspan="1" colspan="1">2675</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.34 [−0.55 to −0.12]</td><td align="center" valign="top" rowspan="1" colspan="1">0.002</td><td align="center" valign="top" rowspan="1" colspan="1">60.2%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Higher education</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">2249</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 0.71 [0.55 to 0.92]</td><td align="center" valign="top" rowspan="1" colspan="1">0.010</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Unemployed</td><td align="center" valign="top" rowspan="1" colspan="1">8</td><td align="center" valign="top" rowspan="1" colspan="1">1730</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.51 [0.83 to 2.76]</td><td align="center" valign="top" rowspan="1" colspan="1">0.177</td><td align="center" valign="top" rowspan="1" colspan="1">70.0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Living alone</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">814</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 0.89 [0.52 to 1.52]</td><td align="center" valign="top" rowspan="1" colspan="1">0.664</td><td align="center" valign="top" rowspan="1" colspan="1">33.7%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">In a relationship</td><td align="center" valign="top" rowspan="1" colspan="1">9</td><td align="center" valign="top" rowspan="1" colspan="1">1056</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 0.54 [0.34 to 0.86]</td><td align="center" valign="top" rowspan="1" colspan="1">0.009</td><td align="center" valign="top" rowspan="1" colspan="1">56.0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Age at onset</td><td align="center" valign="top" rowspan="1" colspan="1">9</td><td align="center" valign="top" rowspan="1" colspan="1">2761</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.29 [−0.53 to −0.04]</td><td align="center" valign="top" rowspan="1" colspan="1">0.023</td><td align="center" valign="top" rowspan="1" colspan="1">79.2%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Duration of illness</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">739</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.12 [−0.28 to 0.05]</td><td align="center" valign="top" rowspan="1" colspan="1">0.168</td><td align="center" valign="top" rowspan="1" colspan="1">9.2%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Diagnosis of bipolar disorder type I</td><td align="center" valign="top" rowspan="1" colspan="1">3</td><td align="center" valign="top" rowspan="1" colspan="1">606</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.28 [0.51 to 3.21]</td><td align="center" valign="top" rowspan="1" colspan="1">0.599</td><td align="center" valign="top" rowspan="1" colspan="1">80.1%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Family history of mood disorders</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">419</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 0.79 [0.53 to 1.18]</td><td align="center" valign="top" rowspan="1" colspan="1">0.249</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Psychotic features</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">2210</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.58 [1.30 to 1.92]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Rapid cycling</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">2368</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 2.40 [0.58 to 9.89]</td><td align="center" valign="top" rowspan="1" colspan="1">0.705</td><td align="center" valign="top" rowspan="1" colspan="1">89.3%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of suicide attempts</td><td align="center" valign="top" rowspan="1" colspan="1">7</td><td align="center" valign="top" rowspan="1" colspan="1">4609</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.36 [1.03 to 1.78]</td><td align="center" valign="top" rowspan="1" colspan="1">0.030</td><td align="center" valign="top" rowspan="1" colspan="1">37.0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Total number of previous mood episodes</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">718</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = 0.33 [−0.07 to 0.73]</td><td align="center" valign="top" rowspan="1" colspan="1">0.106</td><td align="center" valign="top" rowspan="1" colspan="1">82.8%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous manic episodes</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">2432</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = 0.34 [0.08 to 0.61]</td><td align="center" valign="top" rowspan="1" colspan="1">0.011</td><td align="center" valign="top" rowspan="1" colspan="1">79.8%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous mixed episodes</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">2432</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = 0.16 [0.03 to 0.28]</td><td align="center" valign="top" rowspan="1" colspan="1">0.013</td><td align="center" valign="top" rowspan="1" colspan="1">9.1%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous depressive episodes</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">2432</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = 0.08 [−0.13 to 0.30]</td><td align="center" valign="top" rowspan="1" colspan="1">0.429</td><td align="center" valign="top" rowspan="1" colspan="1">68.0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of hospitalization</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">2086</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.17 [0.66 to 2.08]</td><td align="center" valign="top" rowspan="1" colspan="1">0.583</td><td align="center" valign="top" rowspan="1" colspan="1">51.1%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous hospitalizations</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">413</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = 0.53 [0.32 to 0.73]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Substance use disorder</td><td align="center" valign="top" rowspan="1" colspan="1">10</td><td align="center" valign="top" rowspan="1" colspan="1">1159</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 3.32 [1.94 to 5.70]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">58.7%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Cannabis use disorder</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">2281</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 2.34 [1.79 to 3.07]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Alcohol use disorder</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">2352</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.71 [1.39 to 2.12]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Comorbid generalized anxiety disorder</td><td align="center" valign="top" rowspan="1" colspan="1">3</td><td align="center" valign="top" rowspan="1" colspan="1">375</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 3.70 [1.90 to 7.22]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">3.9%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Comorbid personality disorder</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">605</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 5.54 [1.32 to 23.15]</td><td align="center" valign="top" rowspan="1" colspan="1">0.019</td><td align="center" valign="top" rowspan="1" colspan="1">84.4%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Polytherapy</td><td align="center" valign="top" rowspan="1" colspan="1">3</td><td align="center" valign="top" rowspan="1" colspan="1">347</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 0.95 [0.42 to 2.16]</td><td align="center" valign="top" rowspan="1" colspan="1">0.905</td><td align="center" valign="top" rowspan="1" colspan="1">49.4%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Lithium prescription</td><td align="center" valign="top" rowspan="1" colspan="1">8</td><td align="center" valign="top" rowspan="1" colspan="1">2706</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.25 [0.83 to 1.88]</td><td align="center" valign="top" rowspan="1" colspan="1">0.293</td><td align="center" valign="top" rowspan="1" colspan="1">51.0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Valproate prescription</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">2463</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.28 [0.69 to 2.38]</td><td align="center" valign="top" rowspan="1" colspan="1">0.428</td><td align="center" valign="top" rowspan="1" colspan="1">68.6%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Carbamazepine prescription</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">544</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.32 [0.90 to 1.94]</td><td align="center" valign="top" rowspan="1" colspan="1">0.157</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Antidepressants prescription</td><td align="center" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">2386</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.13 [0.90 to 1.41]</td><td align="center" valign="top" rowspan="1" colspan="1">0.312</td><td align="center" valign="top" rowspan="1" colspan="1">0%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Antipsychotics prescription</td><td align="center" valign="top" rowspan="1" colspan="1">3</td><td align="center" valign="top" rowspan="1" colspan="1">250</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.40 [0.78 to 2.50]</td><td align="center" valign="top" rowspan="1" colspan="1">0.258</td><td align="center" valign="top" rowspan="1" colspan="1">16.5%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">First‐generation antipsychotics prescription</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">2239</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.00 [0.72 to 1.39]</td><td align="center" valign="top" rowspan="1" colspan="1">0.980</td><td align="center" valign="top" rowspan="1" colspan="1">18.6%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Second‐generation antipsychotics prescription</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">2463</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 1.75 [0.78 to 3.89]</td><td align="center" valign="top" rowspan="1" colspan="1">0.174</td><td align="center" valign="top" rowspan="1" colspan="1">87.5%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Global severity</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">3321</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = 0.21 [0.01 to 0.41]</td><td align="center" valign="top" rowspan="1" colspan="1">0.042</td><td align="center" valign="top" rowspan="1" colspan="1">74.2%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Insight</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">1219</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.74 [−1.08 to −0.41]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">61.8%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Global functioning</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">599</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.60 [−0.87 to −0.34]</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td><td align="center" valign="top" rowspan="1" colspan="1">45.3%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">General medical comorbidities</td><td align="center" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">427</td><td align="center" valign="top" rowspan="1" colspan="1">OR = 0.70 [0.34 to 1.43]</td><td align="center" valign="top" rowspan="1" colspan="1">0.324</td><td align="center" valign="top" rowspan="1" colspan="1">41.6%</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Drug attitude scores</td><td align="center" valign="top" rowspan="1" colspan="1">3</td><td align="center" valign="top" rowspan="1" colspan="1">1038</td><td align="center" valign="top" rowspan="1" colspan="1">SMD = <bold>−</bold>0.59 [−1.19 to 0.00]</td><td align="center" valign="top" rowspan="1" colspan="1">0.052</td><td align="center" valign="top" rowspan="1" colspan="1">86.8%</td></tr></tbody></table><table-wrap-foot id="bdi70127-ntgp-0002"><fn id="bdi70127-note-0004"><p>Abbreviations: 95% CI, 95% confidence interval; <italic toggle="yes">k</italic>, number of studies; <italic toggle="yes">N</italic>, number of subjects; OR, odds ratio; SMD, standardized mean difference.</p></fn></table-wrap-foot></table-wrap></sec></sec><sec id="bdi70127-sec-0021"><label>3.4</label><title>Grading of the Evidence</title><p>Following evidence grading criteria, including effect size, precision, consistency, and publication bias, no body of evidence could be deemed of high quality. The evidence of higher rates of cannabis use disorder in poorly adherent patients was considered of moderate quality. All evidence on the remaining correlates was graded as of low or very low quality.</p><p>The overall assessment of the quality of evidence with item‐by‐item report is shown in Table <xref rid="bdi70127-tbl-0003" ref-type="table">3</xref>.</p><table-wrap position="float" id="bdi70127-tbl-0003" content-type="TABLE" orientation="portrait"><label>TABLE 3</label><caption><p>Grading of the evidence.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Variable</th><th align="center" valign="bottom" rowspan="1" colspan="1">Consistency</th><th align="center" valign="bottom" rowspan="1" colspan="1">Precision</th><th align="center" valign="bottom" rowspan="1" colspan="1">Publication bias</th><th align="center" valign="bottom" rowspan="1" colspan="1">Magnitude</th><th align="center" valign="bottom" rowspan="1" colspan="1">Evidence</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Age</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Very low ⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Years of education</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Very low ⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Higher education</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">In a relationship</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Very low ⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Age at onset</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Very low ⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Psychotic features</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of suicide attempts</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous manic episodes</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Very low ⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous mixed episodes</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Number of previous hospitalizations</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Substance use disorder</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Cannabis use disorder</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">Moderate ⊕ ⊕ ⊕◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Alcohol use disorder</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Comorbid generalized anxiety disorder</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Comorbid personality disorder</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↑</td><td align="center" valign="top" rowspan="1" colspan="1">Low ⊕ ⊕ ◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Global severity</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">Very low⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Insight</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">Very low⊕◯◯◯</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Global functioning</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">↓</td><td align="center" valign="top" rowspan="1" colspan="1">=</td><td align="center" valign="top" rowspan="1" colspan="1">Low⊕ ⊕ ◯◯</td></tr></tbody></table></table-wrap></sec></sec><sec sec-type="discussion" id="bdi70127-sec-0022"><label>4</label><title>Discussion</title><sec id="bdi70127-sec-0023"><label>4.1</label><title>Summary and Interpretation of Findings</title><p>To our knowledge, this is the first systematic review and meta‐analysis specifically examining factors associated with poor medication adherence in people with BD. Identifying correlates of adherence could guide clinicians in the identification of those individuals who may most benefit from psychoeducational and behavioral interventions aimed at enhancing patients' awareness of the disorder [<xref rid="bdi70127-bib-0007" ref-type="bibr">7</xref>, <xref rid="bdi70127-bib-0051" ref-type="bibr">51</xref>]. Based on data from 19 studies including a total of 38 variables of interest, our work provides valuable insights into factors associated with poor adherence in this clinical population, suggesting that adherence issues may vary across distinct subgroups of people with BD. Specifically, we found that individuals with poorer adherence tend to be younger, less educated, and less likely to be in a relationship. Also, they have an earlier age of onset and are more likely to show psychotic features, manic and mixed recurrences, with more hospital admissions, and a history of suicide attempts. In addition, poor adherence is associated with any substance use disorder (including alcohol and cannabis), as well as with other comorbid conditions, such as generalized anxiety and personality disorders, although for most of them resulting evidence was based on few studies and uncertain publication bias. Consistently, it is not surprising that these subjects also have higher global severity scores, less insight, and less global functioning than people adherent to medications. Interestingly, no gender differences were estimated in treatment adherence. This seems consistent with evidence that men and women with BD show no differences in factors known to impair adherence, such as self‐stigmatizing attitudes and perception of stigma [<xref rid="bdi70127-bib-0052" ref-type="bibr">52</xref>]. This may also reflect possible differences in sampling procedures and gender distribution across studies.</p><p>However, it is important to interpret the findings of our work with caution, as the quality of evidence for most variables could be rated only as low or very low, with just cannabis use disorder based on moderate‐quality evidence, albeit derived from a limited number of studies. Issues such as small effects, imprecision, and inconsistency of overall estimates, together with the impossibility to rule out publication bias in most cases, must be considered.</p><p>Nonetheless, several important clinical considerations can be derived from these findings. A key point emerging from this meta‐analysis is that adherence in BD appears to be “time‐sensitive”. Specifically, younger patients tend to have poorer adherence. The association of poor adherence with earlier age at onset may be related to a combination of individual and clinical factors. Younger patients may be less likely to develop sufficient insight and awareness on the need for treatments. Moreover, this may also depend on specific clinical patterns of BD, as it is known that people with an earlier age at onset are more prone to develop a predominantly manic course [<xref rid="bdi70127-bib-0031" ref-type="bibr">31</xref>], which often may impair adherence [<xref rid="bdi70127-bib-0053" ref-type="bibr">53</xref>]. Our findings underscore the importance of delivering interventions designed to improve adherence since the first phases of the disorder. Early interventions may mitigate the negative outcomes associated with poor adherence, possibly reducing relapses and suicidal behaviors while enhancing psychosocial functioning. In particular, the relationship between poorer adherence and a history of suicide attempts from our findings is particularly noteworthy, considering that full adherence to lithium, the gold standard treatment for BD [<xref rid="bdi70127-bib-0054" ref-type="bibr">54</xref>], might significantly reduce suicide risk [<xref rid="bdi70127-bib-0055" ref-type="bibr">55</xref>]. Interestingly, poor medication adherence seems to correlate with a higher number of previous manic and mixed episodes but not of depressive ones.</p><p>A possible explanation is that individuals with BD may perceive depressive episodes as more distressful and problematic than manic ones [<xref rid="bdi70127-bib-0056" ref-type="bibr">56</xref>, <xref rid="bdi70127-bib-0057" ref-type="bibr">57</xref>]. The subjective discomfort associated with depressive states may increase help‐seeking behavior and promote better adherence to treatment. In contrast, manic or mixed episodes are often experienced as less distressing due to elevated mood, heightened energy, and a temporary boost in psychosocial functioning [<xref rid="bdi70127-bib-0057" ref-type="bibr">57</xref>, <xref rid="bdi70127-bib-0058" ref-type="bibr">58</xref>]: this relative lack of perceived impairment may contribute to poorer treatment engagement in individuals with a history of more mixed and manic episodes, as shown by our meta‐analysis. Further, recurrent mood episodes may reduce patients' confidence in the efficacy of mood stabilizers and other prescribed treatments for BD. It may thus be hypothesized that individuals with poorer adherence may also be those for whom maintenance treatment is less effective. This could also explain why patients with poor adherence seem more likely to misuse alcohol and illicit substances. Chronic substance use can induce neurobiological changes that may impair the clinical response to mood stabilizing drugs. Alternatively, individuals with poorer adherence may use alcohol and illicit substances to alleviate mood symptoms, particularly the depressive ones [<xref rid="bdi70127-bib-0059" ref-type="bibr">59</xref>]. This can be true especially for cannabis use, that seems to be associated with poor adherence as well as manic relapses [<xref rid="bdi70127-bib-0060" ref-type="bibr">60</xref>] and other negative outcomes, such as suicide [<xref rid="bdi70127-bib-0061" ref-type="bibr">61</xref>]. Our findings suggest that personality disorders can also affect treatment adherence, since comorbid individuals are more prone to misusing alcohol and illicit substances [<xref rid="bdi70127-bib-0062" ref-type="bibr">62</xref>]. Moreover, medications prescribed for BD do not have substantial effects on the dysfunctional personality traits potentially leading to low medication adherence [<xref rid="bdi70127-bib-0063" ref-type="bibr">63</xref>]. However, our meta‐analysis was unable to differentiate between personality clusters, which likely contribute to treatment adherence in a heterogeneous manner. Moreover, there were not enough studies assessing affective temperaments, despite their potential influence on treatment adherence [<xref rid="bdi70127-bib-0064" ref-type="bibr">64</xref>].</p><p>Overall, specific symptoms and co‐occurring conditions offer deeper understanding on reasons for poor adherence among individuals with BD. First, the presence of psychotic features in BD seems related to poor adherence to medications. Although non‐adherence is common across all psychiatric diagnoses, disorders characterized by psychotic symptoms pose additional challenges that further elevate the risk [<xref rid="bdi70127-bib-0065" ref-type="bibr">65</xref>]. Psychotic features can directly impact the patient's insight, trust in medications, and ability to follow treatment recommendations. Moreover, our meta‐analysis reveals that individuals with generalized anxiety disorder are nearly four times more likely to exhibit poor adherence compared to those without. Comorbid anxiety disorders may worsen both the severity and clinical course of BD, potentially resulting in poorer outcomes and impaired functioning [<xref rid="bdi70127-bib-0066" ref-type="bibr">66</xref>]. Indeed, anxiety may increase concerns about somatic symptoms, making these individuals more sensitive to medication side effects, which further leads to treatment discontinuation. It is essential to acknowledge that medication adherence can fluctuate with changes in the mental state of subjects with BD. Both psychotic features and anxiety, particularly when combined with affective symptoms, can significantly hinder treatment adherence [<xref rid="bdi70127-bib-0005" ref-type="bibr">5</xref>, <xref rid="bdi70127-bib-0065" ref-type="bibr">65</xref>]. In addition, these clinical presentations often require complex treatments, which may further reduce patients' compliance.</p><p>While the relationship of adherence with both functioning and insight—some of the major correlates of therapeutic alliance and treatment outcomes in BD [<xref rid="bdi70127-bib-0067" ref-type="bibr">67</xref>, <xref rid="bdi70127-bib-0068" ref-type="bibr">68</xref>]—might seem obvious, the lack of any association between negative attitudes and poor adherence is worth noting. This is surprising as negative attitudes have been generally considered to be closely related to adherence in BD [<xref rid="bdi70127-bib-0069" ref-type="bibr">69</xref>]. However, this counterintuitive finding was mainly based on markedly inconsistent data on patients' attitude towards medications from three studies which used heterogeneous assessment methods.</p><p>Another interesting finding emerging from our meta‐analysis is that people with poorer adherence are less likely to be married. This is consistent with evidence emerging from a seminal meta‐analysis highlighting that, along with other social factors, being married, especially in a context of cohesive families, might improve adherence to prescribed treatments [<xref rid="bdi70127-bib-0070" ref-type="bibr">70</xref>]. Our findings may indirectly support the hypothesis that psychoeducation might play a key role in improving outcomes of patients with BD, enhancing their attitude towards medications, and favoring their compliance to treatments [<xref rid="bdi70127-bib-0009" ref-type="bibr">9</xref>, <xref rid="bdi70127-bib-0071" ref-type="bibr">71</xref>]. Finally, being less educated seems to correlate with poorer adherence, possibly because lower educational attainments may affect the understanding of the disorder, the need for treatment, and the characteristics of prescribed medications, overall impacting adherence [<xref rid="bdi70127-bib-0072" ref-type="bibr">72</xref>, <xref rid="bdi70127-bib-0073" ref-type="bibr">73</xref>].</p><p>However, because of the low‐to‐very low evidence emerging from our meta‐analysis, additional studies are needed to explore possible factors influencing the relationship between these variables and medication adherence in BD. In addition, research should also target potential factors associated with poor adherence to non‐pharmacological treatments, since different psychotherapeutic interventions, such as psychoeducation and cognitive‐behavioral treatments, are key components of BD management [<xref rid="bdi70127-bib-0074" ref-type="bibr">74</xref>]. Moreover, as this meta‐analysis explores clinical and psychosocial correlates of poor adherence, further studies are needed to explore additional neurobiological correlates. For instance, network‐based alterations in task‐induced functional connectivity recently described in BD [<xref rid="bdi70127-bib-0075" ref-type="bibr">75</xref>] may represent determinants of poor adherence worthy of future investigation.</p></sec></sec><sec id="bdi70127-sec-0024"><label>5</label><title>Limitations</title><p>The findings of the current systematic review and meta‐analysis should be interpreted with caution considering some limitations. First, since our work investigated cross‐sectional differences between poor and good adherence, we cannot draw any conclusions about the possible causal relationships between the tested variable and outcomes. Second, although we included only studies using clearly defined and reliable assessments for adherence in order to limit the risk of inconsistency and misclassification, we estimated a high between‐study heterogeneity (I<sup>2</sup> &gt; 80%) for several analyses. While this degree of heterogeneity is not unexpected in behavioral research, it may be due to several factors, including assessment methods (e.g., clinical rating scales vs. objective biological measures), variability in population characteristics (e.g., illness severity and treatment regimens), and geographical or cultural differences across study settings, which may influence both adherence behaviors and their clinical determinants. Moreover, it is worth mentioning that there is no gold standard approach for measuring adherence in individuals with BD [<xref rid="bdi70127-bib-0076" ref-type="bibr">76</xref>] and mental disorders in general [<xref rid="bdi70127-bib-0065" ref-type="bibr">65</xref>]. As highlighted in other research based on a similar approach [<xref rid="bdi70127-bib-0031" ref-type="bibr">31</xref>, <xref rid="bdi70127-bib-0077" ref-type="bibr">77</xref>], other sources of bias such as poor sample representativeness and recall bias (due to the nature of some of tested variables), may have affected the results of our meta‐analysis. Third, due to the observational design of the included studies, we should consider that, at least for some variables, the likelihood of selective reporting bias may have somehow influenced the meta‐analytic estimates. In addition, although our meta‐analysis uncovered several clinical and sociodemographic correlates, there were no sufficient data to test other important variables that may have a potential effect on adherence in people with BD, such as the occurrence of side effects [<xref rid="bdi70127-bib-0009" ref-type="bibr">9</xref>], the predominant polarity [<xref rid="bdi70127-bib-0078" ref-type="bibr">78</xref>, <xref rid="bdi70127-bib-0079" ref-type="bibr">79</xref>], and affective temperaments [<xref rid="bdi70127-bib-0064" ref-type="bibr">64</xref>].</p></sec><sec sec-type="conclusions" id="bdi70127-sec-0025"><label>6</label><title>Conclusions</title><p>This systematic review and meta‐analysis provides a comprehensive overview of the factors associated with poor medication adherence in individuals with BD, highlighting key sociodemographic and clinical characteristics of this population that may guide targeted early interventions in high‐risk groups. Future research should also explore the causal pathways linking clinical factors to poor adherence and examine additional determinants to help refine adherence‐enhancing strategies in BD.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="bdi70127-supitem-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S1:</bold> Distribution of included studies by year of publication.</p><p>
+<bold>Figure S2:</bold> Mean age of participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S3:</bold> Male gender in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S4:</bold> Mean years of education of participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S5:</bold> Higher education in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S6:</bold> Being in a relationship in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S7:</bold> Unemployment in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S8:</bold> Living alone in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S9:</bold> Age at onset in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S10:</bold> Duration of illness in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S11:</bold> Psychotic features in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S12:</bold> History of suicide attempts in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S13:</bold> Family history of mood disorders in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S14:</bold> Diagnosis of bipolar disorder type I in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S15:</bold> rapid cycling course in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S16:</bold> Number of previous manic episodes in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S17:</bold> Number of previous mixed episodes in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S18:</bold> Total number of previous mood episodes in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S19:</bold> Number of previous depressive episodes in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S20:</bold> Number of previous hospitalizations in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S21:</bold> Having had at least one previous hospitalization in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S22:</bold> Substance use disorder in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S23:</bold> Cannabis use disorder in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S24:</bold> Alcohol use disorder in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S25:</bold> Comorbid generalized anxiety disorder in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S26:</bold> Comorbid personality disorder in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S27:</bold> Polypharmacotherapy in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S28:</bold> Lithium use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S29:</bold> Valproate use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S30:</bold> Carbamazepine use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S31:</bold> Antidepressant use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S32:</bold> Antipsychotic use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S33:</bold> First‐generation antipsychotic use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S34:</bold> Second‐generation antipsychotic use in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S35:</bold> Global severity scores in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S36:</bold> Insight scores in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S37:</bold> Global functioning scores in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S38:</bold> Presence of general medical comorbidities in participants with poor adherence as compared with those with good adherence.</p><p>
+<bold>Figure S39:</bold> Drug attitude scores in participants with poor adherence as compared with those with good adherence.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="BDI-28-0-s001.docx" position="float" orientation="portrait"><?suppdata-name BDI-28-0-s001.docx?><?suppdata-size 2079510?><?suppdata-md5 578fb0f8bf0722aeb1f523b54591527f?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:8036/13251348/578fb0f8bf07/BDI-28-0-s001.docx?></media></supplementary-material></sec></body><back><ack id="bdi70127-sec-0026"><title>Acknowledgments</title><p>We thank all the authors of the studies included in this systematic review and meta‐analysis. A special acknowledgement to Beatrice Benatti and Andrea Murru for having provided additional information through correspondence. Open access publishing facilitated by Universita degli Studi di Milano‐Bicocca, as part of the Wiley ‐ CRUI‐CARE agreement.</p></ack><sec sec-type="data-availability" id="bdi70127-sec-0028"><title>Data Availability Statement</title><p>The data that support the findings of this study are available from the corresponding author upon reasonable request.</p></sec><ref-list content-type="cited-references" id="bdi70127-bibl-0001"><title>References</title><ref id="bdi70127-bib-0001"><label>1</label><mixed-citation publication-type="journal" id="bdi70127-cit-0001">
+<string-name name-style="western">
+<given-names>R. S.</given-names>
+<surname>McIntyre</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Berk</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Brietzke</surname>
+</string-name>, et al., “<article-title>Bipolar Disorders</article-title>,” <source>Lancet</source>
+<volume>396</volume>, no. <issue>10265</issue> (<year>2020</year>): <fpage>1841</fpage>–<lpage>1856</lpage>.<pub-id pub-id-type="pmid">33278937</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/S0140-6736(20)31544-0</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0002"><label>2</label><mixed-citation publication-type="journal" id="bdi70127-cit-0002">
+<string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Vieta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Berk</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. G.</given-names>
+<surname>Schulze</surname>
+</string-name>, et al., “<article-title>Bipolar Disorders</article-title>,” <source>Nature Reviews. Disease Primers</source>
+<volume>4</volume>, no. <issue>1</issue> (<year>2018</year>): <fpage>1</fpage>–<lpage>16</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1038/nrdp.2018.8</pub-id><pub-id pub-id-type="pmid">29516993</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0003"><label>3</label><mixed-citation publication-type="book" id="bdi70127-cit-0003">
+<collab collab-type="authors">American Psychiatric Association</collab>
+, <source>Diagnostic and Statistical Manual of Mental Disorders: DSM‐5‐TR</source> (<publisher-name>American Psychiatric Association Publishing</publisher-name>, <year>2022</year>).</mixed-citation></ref><ref id="bdi70127-bib-0004"><label>4</label><mixed-citation publication-type="journal" id="bdi70127-cit-0004">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Hett</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Morales‐Muñoz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B. B.</given-names>
+<surname>Durdurak</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Carlish</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Marwaha</surname>
+</string-name>, “<article-title>Rates and Associations of Relapse Over 5 Years of 2649 People With Bipolar Disorder: A Retrospective UK Cohort Study</article-title>,” <source>International Journal of Bipolar Disorders</source>
+<volume>11</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>23</fpage>.<pub-id pub-id-type="pmid">37391627</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s40345-023-00302-x</pub-id><pub-id pub-id-type="pmcid">PMC10313572</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0005"><label>5</label><mixed-citation publication-type="journal" id="bdi70127-cit-0005">
+<string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Jawad</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Watson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. M.</given-names>
+<surname>Haddad</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. S.</given-names>
+<surname>Talbot</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. H.</given-names>
+<surname>McAllister‐Williams</surname>
+</string-name>, “<article-title>Medication Nonadherence in Bipolar Disorder: A Narrative Review</article-title>,” <source>Therapeutic Advances in Psychopharmacology</source>
+<volume>8</volume>, no. <issue>12</issue> (<year>2018</year>): <fpage>349</fpage>–<lpage>363</lpage>.<pub-id pub-id-type="pmid">30524703</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1177/2045125318804364</pub-id><pub-id pub-id-type="pmcid">PMC6278745</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0006"><label>6</label><mixed-citation publication-type="journal" id="bdi70127-cit-0006">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Sajatovic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Briggs</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Adeniyi</surname>
+</string-name>, et al., “<article-title>Association Between Symptom Severity and Medication Adherence in Adults With Bipolar Disorder Reporting Adherence Challenges</article-title>,” <source>Psychopharmacology Bulletin</source>
+<volume>54</volume>, no. <issue>3</issue> (<year>2024</year>): <fpage>60</fpage>–<lpage>72</lpage>.<pub-id pub-id-type="pmid">38993661</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.64719/pb.4494</pub-id><pub-id pub-id-type="pmcid">PMC11235580</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0007"><label>7</label><mixed-citation publication-type="journal" id="bdi70127-cit-0007">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>MacDonald</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chapman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Syrett</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Bowskill</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Horne</surname>
+</string-name>, “<article-title>Improving Medication Adherence in Bipolar Disorder: A Systematic Review and Meta‐Analysis of 30 Years of Intervention Trials</article-title>,” <source>Journal of Affective Disorders</source>
+<volume>194</volume> (<year>2016</year>): <fpage>202</fpage>–<lpage>221</lpage>.<pub-id pub-id-type="pmid">26851552</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jad.2016.01.002</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0008"><label>8</label><mixed-citation publication-type="journal" id="bdi70127-cit-0008">
+<string-name name-style="western">
+<given-names>M. E.</given-names>
+<surname>Thase</surname>
+</string-name>, “<article-title>Strategies for Increasing Treatment Adherence in Bipolar Disorder</article-title>,” <source>Journal of Clinical Psychiatry</source>
+<volume>73</volume>, no. <issue>2</issue> (<year>2012</year>): <elocation-id>e08</elocation-id>.<pub-id pub-id-type="pmid">22401485</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.4088/JCP.10060tx3cc</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0009"><label>9</label><mixed-citation publication-type="journal" id="bdi70127-cit-0009">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chakrabarti</surname>
+</string-name>, “<article-title>Treatment‐Adherence in Bipolar Disorder: A Patient‐Centred Approach</article-title>,” <source>World Journal of Psychiatry</source>
+<volume>6</volume>, no. <issue>4</issue> (<year>2016</year>): <fpage>399</fpage>–<lpage>409</lpage>.<pub-id pub-id-type="pmid">28078204</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.5498/wjp.v6.i4.399</pub-id><pub-id pub-id-type="pmcid">PMC5183992</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0010"><label>10</label><mixed-citation publication-type="journal" id="bdi70127-cit-0010">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Semahegn</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Torpey</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Manu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Assefa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Tesfaye</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Ankomah</surname>
+</string-name>, “<article-title>Psychotropic Medication Non‐Adherence and Its Associated Factors Among Patients With Major Psychiatric Disorders: A Systematic Review and Meta‐Analysis</article-title>,” <source>Systematic Reviews</source>
+<volume>9</volume> (<year>2020</year>): <fpage>1</fpage>–<lpage>18</lpage>.<pub-id pub-id-type="pmid">31948489</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s13643-020-1274-3</pub-id><pub-id pub-id-type="pmcid">PMC6966860</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0011"><label>11</label><mixed-citation publication-type="journal" id="bdi70127-cit-0011">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Sajatovic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Levin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Fuentes‐Casiano</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. A.</given-names>
+<surname>Cassidy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Tatsuoka</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. H.</given-names>
+<surname>Jenkins</surname>
+</string-name>, “<article-title>Illness Experience and Reasons for Nonadherence Among Individuals With Bipolar Disorder Who Are Poorly Adherent With Medication</article-title>,” <source>Comprehensive Psychiatry</source>
+<volume>52</volume>, no. <issue>3</issue> (<year>2011</year>): <fpage>280</fpage>–<lpage>287</lpage>.<pub-id pub-id-type="pmid">21497222</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.comppsych.2010.07.002</pub-id><pub-id pub-id-type="pmcid">PMC3140848</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0012"><label>12</label><mixed-citation publication-type="journal" id="bdi70127-cit-0012">
+<string-name name-style="western">
+<given-names>A. R.</given-names>
+<surname>Prajapati</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Dima</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Mosa</surname>
+</string-name>, et al., “<article-title>Mapping Modifiable Determinants of Medication Adherence in Bipolar Disorder (BD) to the Theoretical Domains Framework (TDF): A Systematic Review</article-title>,” <source>Psychological Medicine</source>
+<volume>51</volume>, no. <issue>7</issue> (<year>2021</year>): <fpage>1082</fpage>–<lpage>1098</lpage>.<pub-id pub-id-type="pmid">34006337</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1017/S0033291721001446</pub-id><pub-id pub-id-type="pmcid">PMC8188530</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0013"><label>13</label><mixed-citation publication-type="journal" id="bdi70127-cit-0013">
+<string-name name-style="western">
+<given-names>K. K.</given-names>
+<surname>Busby</surname>
+</string-name> and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Sajatovic</surname>
+</string-name>, “<article-title>Patient, Treatment, and Systems‐Level Factors in Bipolar Disorder Nonadherence: A Summary of the Literature</article-title>,” <source>CNS Neuroscience &amp; Therapeutics</source>
+<volume>16</volume>, no. <issue>5</issue> (<year>2010</year>): <fpage>308</fpage>–<lpage>315</lpage>.<pub-id pub-id-type="pmid">21050421</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1755-5949.2010.00191.x</pub-id><pub-id pub-id-type="pmcid">PMC6493896</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0014"><label>14</label><mixed-citation publication-type="journal" id="bdi70127-cit-0014">
+<string-name name-style="western">
+<given-names>M. Y.</given-names>
+<surname>Elhosary</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Merranko</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. R.</given-names>
+<surname>Goldstein</surname>
+</string-name>, et al., “<article-title>Examining Factors Associated With Medication Adherence in Youth With Bipolar Disorder</article-title>,” <source>Journal of the American Academy of Child &amp; Adolescent Psychiatry Open</source>
+<volume>1</volume>, no. <issue>2</issue> (<year>2023</year>): <fpage>105</fpage>–<lpage>115</lpage>.<pub-id pub-id-type="pmid">39381188</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jaacop.2023.06.001</pub-id><pub-id pub-id-type="pmcid">PMC11460791</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0015"><label>15</label><mixed-citation publication-type="journal" id="bdi70127-cit-0015">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Gutiérrez‐Rojas</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Martínez‐Ortega</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Pérez‐Costillas</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Jiménez‐Fernández</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. D.</given-names>
+<surname>Carretero</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Gurpegui</surname>
+</string-name>, “<article-title>Illness Insight and Medication Adherence Among Patients With Bipolar Disorder</article-title>,” <source>Journal of Nervous and Mental Disease</source>
+<volume>208</volume>, no. <issue>6</issue> (<year>2020</year>): <fpage>481</fpage>–<lpage>487</lpage>.<pub-id pub-id-type="pmid">32040060</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/NMD.0000000000001151</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0016"><label>16</label><mixed-citation publication-type="journal" id="bdi70127-cit-0016">
+<string-name name-style="western">
+<given-names>B. S.</given-names>
+<surname>Brooke</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. A.</given-names>
+<surname>Schwartz</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T. M.</given-names>
+<surname>Pawlik</surname>
+</string-name>, “<article-title>MOOSE Reporting Guidelines for Meta‐Analyses of Observational Studies</article-title>,” <source>JAMA Surgery</source>
+<volume>156</volume>, no. <issue>8</issue> (<year>2021</year>): <fpage>787</fpage>–<lpage>788</lpage>.<pub-id pub-id-type="pmid">33825847</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1001/jamasurg.2021.0522</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0017"><label>17</label><mixed-citation publication-type="book" id="bdi70127-cit-0017">
+<collab collab-type="authors">American Psychiatric Association</collab>
+, <source>Diagnostic and Statistical Manual of Mental Disorders</source>, <edition designator="4">4th ed.</edition> (<publisher-name>American Psychiatric Publishing</publisher-name>, <year>1994</year>).</mixed-citation></ref><ref id="bdi70127-bib-0018"><label>18</label><mixed-citation publication-type="book" id="bdi70127-cit-0018">
+<collab collab-type="authors">American Psychiatric Association</collab>
+, <source>Diagnostic and Statistical Manual of Mental Disorders</source>, <edition designator="5">5th ed.</edition> (<publisher-name>American Psychiatric Publishing</publisher-name>, <year>2013</year>).</mixed-citation></ref><ref id="bdi70127-bib-0019"><label>19</label><mixed-citation publication-type="book" id="bdi70127-cit-0019">
+<collab collab-type="authors">World Health Organization</collab>
+, <source>ICD‐10: International Statistical Classification of Diseases and Related Health Problems: Tenth Revision</source> (<publisher-name>World Health Organization</publisher-name>, <year>2004</year>).<pub-id pub-id-type="pmid">3376487</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0020"><label>20</label><mixed-citation publication-type="book" id="bdi70127-cit-0020">
+<collab collab-type="authors">World Health Organization</collab>
+, <source>ICD‐11: International Statistical Classification of Diseases and Related Health Problems: Eleventh Revision</source> (<publisher-name>World Health Organization</publisher-name>, <year>2019</year>).</mixed-citation></ref><ref id="bdi70127-bib-0021"><label>21</label><mixed-citation publication-type="journal" id="bdi70127-cit-0021">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>García</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Martínez‐Cengotitabengoa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>López‐Zurbano</surname>
+</string-name>, et al., “<article-title>Adherence to Antipsychotic Medication in Bipolar Disorder and Schizophrenic Patients: A Systematic Review</article-title>,” <source>Journal of Clinical Psychopharmacology</source>
+<volume>36</volume>, no. <issue>4</issue> (<year>2016</year>): <fpage>355</fpage>–<lpage>371</lpage>.<pub-id pub-id-type="pmid">27307187</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/JCP.0000000000000523</pub-id><pub-id pub-id-type="pmcid">PMC4932152</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0022"><label>22</label><mixed-citation publication-type="journal" id="bdi70127-cit-0022">
+<string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Leclerc</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. B.</given-names>
+<surname>Mansur</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Brietzke</surname>
+</string-name>, “<article-title>Determinants of Adherence to Treatment in Bipolar Disorder: A Comprehensive Review</article-title>,” <source>Journal of Affective Disorders</source>
+<volume>149</volume>, no. <issue>1–3</issue> (<year>2013</year>): <fpage>247</fpage>–<lpage>252</lpage>.<pub-id pub-id-type="pmid">23489403</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jad.2013.01.036</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0023"><label>23</label><mixed-citation publication-type="book" id="bdi70127-cit-0023">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Luo</surname>
+</string-name>, <source>Statistical Learning of Median in Meta‐Analysis</source> (<publisher-name>Hong Kong Baptist University</publisher-name>, <year>2017</year>), <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://scholars.hkbu.edu.hk/ws/portalfiles/portal/55001559/OA-0469.pdf" ext-link-type="uri">https://scholars.hkbu.edu.hk/ws/portalfiles/portal/55001559/OA‐0469.pdf</ext-link>.</mixed-citation></ref><ref id="bdi70127-bib-0024"><label>24</label><mixed-citation publication-type="journal" id="bdi70127-cit-0024">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Wan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Liu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Tong</surname>
+</string-name>, “<article-title>Estimating the Sample Mean and Standard Deviation From the Sample Size, Median, Range and/or Interquartile Range</article-title>,” <source>BMC Medical Research Methodology</source>
+<volume>14</volume> (<year>2014</year>): <fpage>1</fpage>–<lpage>13</lpage>.<pub-id pub-id-type="pmid">25524443</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/1471-2288-14-135</pub-id><pub-id pub-id-type="pmcid">PMC4383202</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0025"><label>25</label><mixed-citation publication-type="miscellaneous" id="bdi70127-cit-0025">
+<string-name name-style="western">
+<given-names>D. B.</given-names>
+<surname>Wilson</surname>
+</string-name>, <article-title>“Practical Meta‐Analysis Effect Size Calculator (Version 2023.11.27),”</article-title> (<year>2023</year>), <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.campbellcollaboration.org/calculator/" ext-link-type="uri">https://www.campbellcollaboration.org/calculator/</ext-link>.</mixed-citation></ref><ref id="bdi70127-bib-0026"><label>26</label><mixed-citation publication-type="journal" id="bdi70127-cit-0026">
+<string-name name-style="western">
+<given-names>J. P.</given-names>
+<surname>Higgins</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. G.</given-names>
+<surname>Thompson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. J.</given-names>
+<surname>Deeks</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. G.</given-names>
+<surname>Altman</surname>
+</string-name>, “<article-title>Measuring Inconsistency in Meta‐Analyses</article-title>,” <source>BMJ (Clinical Research ed.)</source>
+<volume>327</volume>, no. <issue>7414</issue> (<year>2003</year>): <fpage>557</fpage>–<lpage>560</lpage>, <pub-id pub-id-type="doi">10.1136/bmj.327.7414.557</pub-id>.<pub-id pub-id-type="pmcid">PMC192859</pub-id><pub-id pub-id-type="pmid">12958120</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0027"><label>27</label><mixed-citation publication-type="book" id="bdi70127-cit-0027">
+<string-name name-style="western">
+<given-names>M. J.</given-names>
+<surname>Page</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. P. T.</given-names>
+<surname>Higgins</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. A. C.</given-names>
+<surname>Sterne</surname>
+</string-name>, “<part-title>Assessing Risk of Bias due to Missing Results in a Synthesis</part-title>,” in <source>Cochrane Handbook for Systematic Reviews of Interventions</source> (<publisher-name>Wiley</publisher-name>, <year>2019</year>), <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://training.cochrane.org/handbook/current/chapter-13" ext-link-type="uri">https://training.cochrane.org/handbook/current/chapter‐13</ext-link>.</mixed-citation></ref><ref id="bdi70127-bib-0028"><label>28</label><mixed-citation publication-type="journal" id="bdi70127-cit-0028">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chinn</surname>
+</string-name>, “<article-title>A Simple Method for Converting an Odds Ratio to Effect Size for Use in Meta‐Analysis</article-title>,” <source>Statistics in Medicine</source>
+<volume>19</volume>, no. <issue>22</issue> (<year>2000</year>): <fpage>3127</fpage>–<lpage>3131</lpage>.<pub-id pub-id-type="pmid">11113947</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/1097-0258(20001130)19:22&lt;3127::aid-sim784&gt;3.0.co;2-m</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0029"><label>29</label><mixed-citation publication-type="journal" id="bdi70127-cit-0029">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Andrade</surname>
+</string-name>, “<article-title>Mean Difference, Standardized Mean Difference (SMD), and Their Use in Meta‐Analysis: As Simple as It Gets</article-title>,” <source>Journal of Clinical Psychiatry</source>
+<volume>81</volume>, no. <issue>5</issue> (<year>2020</year>): <elocation-id>11349</elocation-id>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.4088/JCP.20f13681</pub-id><pub-id pub-id-type="pmid">32965803</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0030"><label>30</label><mixed-citation publication-type="book" id="bdi70127-cit-0030">
+<collab collab-type="authors">StataCorp LLC</collab>
+, <source>Stata Longitudinal‐Data/Panel‐Data Reference Manual Release</source> (<publisher-name>StateCorp LLC</publisher-name>, <year>2023</year>).</mixed-citation></ref><ref id="bdi70127-bib-0031"><label>31</label><mixed-citation publication-type="journal" id="bdi70127-cit-0031">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bartoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Bassetti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Gazzola</surname>
+</string-name>, et al., “<article-title>Prevalence and Correlates of Manic/Hypomanic and Depressive Predominant Polarity in Bipolar Disorder: Systematic Review and Meta‐Analysis</article-title>,” <source>BJPsych Open</source>
+<volume>10</volume>, no. <issue>3</issue> (<year>2024</year>): <elocation-id>e100</elocation-id>.<pub-id pub-id-type="pmid">38708573</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1192/bjo.2024.51</pub-id><pub-id pub-id-type="pmcid">PMC11094450</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0032"><label>32</label><mixed-citation publication-type="book" id="bdi70127-cit-0032">
+<string-name name-style="western">
+<given-names>H. J.</given-names>
+<surname>Schünemann</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. P. T.</given-names>
+<surname>Higgins</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. E.</given-names>
+<surname>Vist</surname>
+</string-name>, et al., “<part-title>Completing ‘Summary of Findings’ Tables and Grading the Certainty of the Evidence</part-title>,” in <source>Cochrane Handbook for Systematic Reviews of Interventions</source> (<publisher-name>Wiley</publisher-name>, <year>2019</year>), <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://training.cochrane.org/handbook/current/chapter-14" ext-link-type="uri">https://training.cochrane.org/handbook/current/chapter‐14</ext-link>.</mixed-citation></ref><ref id="bdi70127-bib-0033"><label>33</label><mixed-citation publication-type="journal" id="bdi70127-cit-0033">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bartoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Callovini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Cavaleri</surname>
+</string-name>, et al., “<article-title>Effect of Long‐Acting Injectable Antipsychotics on 1‐Year Hospitalization in Bipolar Disorder: A Mirror‐Image Study</article-title>,” <source>European Archives of Psychiatry and Clinical Neuroscience</source>
+<volume>273</volume>, no. <issue>7</issue> (<year>2023</year>): <fpage>1579</fpage>–<lpage>1586</lpage>.<pub-id pub-id-type="pmid">36436121</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s00406-022-01522-5</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0034"><label>34</label><mixed-citation publication-type="journal" id="bdi70127-cit-0034">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bellivier</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Luquiens</surname>
+</string-name>, et al., “<article-title>Suicidal Attempts in Bipolar Disorder: Results From an Observational Study (EMBLEM)</article-title>,” <source>Bipolar Disorders</source>
+<volume>13</volume>, no. <issue>4</issue> (<year>2011</year>): <fpage>377</fpage>–<lpage>386</lpage>.<pub-id pub-id-type="pmid">21843277</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1399-5618.2011.00926.x</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0035"><label>35</label><mixed-citation publication-type="journal" id="bdi70127-cit-0035">
+<string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Benatti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Girone</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Conti</surname>
+</string-name>, et al., “<article-title>The Role of Lifestyle on Adherence to Treatment in a Sample of Patients With Unipolar and Bipolar Depression</article-title>,” <source>International Journal of Environmental Research and Public Health</source>
+<volume>20</volume>, no. <issue>3</issue> (<year>2023</year>): <fpage>1994</fpage>.<pub-id pub-id-type="pmid">36767361</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/ijerph20031994</pub-id><pub-id pub-id-type="pmcid">PMC9915922</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0036"><label>36</label><mixed-citation publication-type="journal" id="bdi70127-cit-0036">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Colom</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Vieta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Martinez‐Aran</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Reinares</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Benabarre</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Gasto</surname>
+</string-name>, “<article-title>Clinical Factors Associated With Treatment Noncompliance in Euthymic Bipolar Patients</article-title>,” <source>Journal of Clinical Psychiatry</source>
+<volume>61</volume>, no. <issue>8</issue> (<year>2000</year>): <fpage>549</fpage>–<lpage>555</lpage>.<pub-id pub-id-type="pmid">10982196</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.4088/jcp.v61n0802</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0037"><label>37</label><mixed-citation publication-type="journal" id="bdi70127-cit-0037">
+<string-name name-style="western">
+<given-names>C. A.</given-names>
+<surname>Darling</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. B.</given-names>
+<surname>Olmstead</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V. E.</given-names>
+<surname>Lund</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. F.</given-names>
+<surname>Fairclough</surname>
+</string-name>, “<article-title>Bipolar Disorder: Medication Adherence and Life Contentment</article-title>,” <source>Archives of Psychiatric Nursing</source>
+<volume>22</volume>, no. <issue>3</issue> (<year>2008</year>): <fpage>113</fpage>–<lpage>126</lpage>.<pub-id pub-id-type="pmid">18505693</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.apnu.2008.02.004</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0038"><label>38</label><mixed-citation publication-type="journal" id="bdi70127-cit-0038">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Fornaro</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>De Berardis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Iasevoli</surname>
+</string-name>, et al., “<article-title>Treatment Adherence Towards Prescribed Medications in Bipolar‐II Acute Depressed Patients: Relationship With Cyclothymic Temperament and “Therapeutic Sensation Seeking” in Response Towards Subjective Intolerance to Pain</article-title>,” <source>Journal of Affective Disorders</source>
+<volume>151</volume>, no. <issue>2</issue> (<year>2013</year>): <fpage>596</fpage>–<lpage>604</lpage>.<pub-id pub-id-type="pmid">23906864</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jad.2013.07.004</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0039"><label>39</label><mixed-citation publication-type="journal" id="bdi70127-cit-0039">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>García</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Alberich</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. S.</given-names>
+<surname>MacDowell</surname>
+</string-name>, et al., “<article-title>Association Between Medication Adherence and Oxidative Stress in Patients With First‐Episode Mania</article-title>,” <source>Frontiers in Psychiatry</source>
+<volume>10</volume> (<year>2019</year>): <elocation-id>162</elocation-id>.<pub-id pub-id-type="pmid">30971964</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fpsyt.2019.00162</pub-id><pub-id pub-id-type="pmcid">PMC6445053</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0040"><label>40</label><mixed-citation publication-type="journal" id="bdi70127-cit-0040">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Gonzalez‐Pinto</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Mosquera</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Alonso</surname>
+</string-name>, et al., “<article-title>Suicidal Risk in Bipolar I Disorder Patients and Adherence to Long‐Term Lithium Treatment</article-title>,” <source>Bipolar Disorders</source>
+<volume>8</volume>, no. <issue>5 Pt 2</issue> (<year>2006</year>): <fpage>618</fpage>–<lpage>624</lpage>.<pub-id pub-id-type="pmid">17042834</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1399-5618.2006.00368.x</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0041"><label>41</label><mixed-citation publication-type="journal" id="bdi70127-cit-0041">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Gonzalez‐Pinto</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Reed</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Novick</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Bertsch</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Haro</surname>
+</string-name>, “<article-title>Assessment of Medication Adherence in a Cohort of Patients With Bipolar Disorder</article-title>,” <source>Pharmacopsychiatry</source>
+<volume>43</volume>, no. <issue>7</issue> (<year>2010</year>): <fpage>263</fpage>–<lpage>270</lpage>.<pub-id pub-id-type="pmid">20842617</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1055/s-0030-1263169</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0042"><label>42</label><mixed-citation publication-type="journal" id="bdi70127-cit-0042">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Jónsdóttir</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Opjordsmoen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. B.</given-names>
+<surname>Birkenaes</surname>
+</string-name>, et al., “<article-title>Predictors of Medication Adherence in Patients With Schizophrenia and Bipolar Disorder</article-title>,” <source>Acta Psychiatrica Scandinavica</source>
+<volume>127</volume>, no. <issue>1</issue> (<year>2013</year>): <fpage>23</fpage>–<lpage>33</lpage>.<pub-id pub-id-type="pmid">22900964</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1600-0447.2012.01911.x</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0043"><label>43</label><mixed-citation publication-type="journal" id="bdi70127-cit-0043">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Karadağ</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Kokurcan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. O.</given-names>
+<surname>Güriz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Atmar</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Örsel</surname>
+</string-name>, “<article-title>Assessing the Treatment Adherence and Clinical Correlates of Low Adherence Among Bipolar Disorder Outpatients: A Cross‐Sectional Study</article-title>,” <source>Psychiatry and Clinical Psychopharmacology</source>
+<volume>29</volume>, no. <issue>4</issue> (<year>2019</year>): <fpage>558</fpage>–<lpage>564</lpage>.</mixed-citation></ref><ref id="bdi70127-bib-0044"><label>44</label><mixed-citation publication-type="journal" id="bdi70127-cit-0044">
+<string-name name-style="western">
+<given-names>P. E.</given-names>
+<surname>Keck</surname>, <suffix>Jr.</suffix>
+</string-name>, <string-name name-style="western">
+<given-names>S. L.</given-names>
+<surname>McElroy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. M.</given-names>
+<surname>Strakowski</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. L.</given-names>
+<surname>Bourne</surname>
+</string-name>, “<article-title>Compliance With Maintenance Treatment in Bipolar Disorder</article-title>,” <source>Psychopharmacology Bulletin</source>
+<volume>33</volume>, no. <issue>1</issue> (<year>1997</year>): <fpage>87</fpage>–<lpage>91</lpage>.<pub-id pub-id-type="pmid">9133756</pub-id>
+</mixed-citation></ref><ref id="bdi70127-bib-0045"><label>45</label><mixed-citation publication-type="journal" id="bdi70127-cit-0045">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Kutzelnigg</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kopeinig</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. K.</given-names>
+<surname>Chen</surname>
+</string-name>, et al., “<article-title>Compliance as a Stable Function in the Treatment Course of Bipolar Disorder in Patients Stabilized on Olanzapine: Results From a 24‐Month Observational Study</article-title>,” <source>International Journal of Bipolar Disorders</source>
+<volume>2</volume>, no. <issue>1</issue> (<year>2014</year>): <fpage>1</fpage>–<lpage>14</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s40345-014-0013-x</pub-id><pub-id pub-id-type="pmcid">PMC4206769</pub-id><pub-id pub-id-type="pmid">25360398</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0046"><label>46</label><mixed-citation publication-type="journal" id="bdi70127-cit-0046">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Martinez‐Aran</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Scott</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Colom</surname>
+</string-name>, et al., “<article-title>Treatment Nonadherence and Neurocognitive Impairment in Bipolar Disorder</article-title>,” <source>Journal of Clinical Psychiatry</source>
+<volume>70</volume>, no. <issue>7</issue> (<year>2009</year>): <fpage>1017</fpage>–<lpage>1023</lpage>.<pub-id pub-id-type="pmid">19497247</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.4088/JCP.08m04408</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0047"><label>47</label><mixed-citation publication-type="journal" id="bdi70127-cit-0047">
+<string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Montes</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Maurino</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>de Dios</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Medina</surname>
+</string-name>, “<article-title>Suboptimal Treatment Adherence in Bipolar Disorder: Impact on Clinical Outcomes and Functioning</article-title>,” <source>Patient Preference and Adherence</source>
+<volume>7</volume> (<year>2013</year>): <fpage>89</fpage>–<lpage>94</lpage>.<pub-id pub-id-type="pmid">23378745</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.2147/PPA.S39290</pub-id><pub-id pub-id-type="pmcid">PMC3553333</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0048"><label>48</label><mixed-citation publication-type="journal" id="bdi70127-cit-0048">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Murru</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Pacchiarotti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B. L.</given-names>
+<surname>Amann</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. M. A.</given-names>
+<surname>Nivoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Vieta</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Colom</surname>
+</string-name>, “<article-title>Treatment Adherence in Bipolar I and Schizoaffective Disorder, Bipolar Type</article-title>,” <source>Journal of Affective Disorders</source>
+<volume>151</volume>, no. <issue>3</issue> (<year>2013</year>): <fpage>1003</fpage>–<lpage>1008</lpage>.<pub-id pub-id-type="pmid">24099884</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jad.2013.08.026</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0049"><label>49</label><mixed-citation publication-type="journal" id="bdi70127-cit-0049">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Navarro</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Rodríguez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F. J.</given-names>
+<surname>Acosta</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>García‐Bello</surname>
+</string-name>, “<article-title>Variables Associated With Nonadherence in Clinically Stable Patients With Bipolar Disorder</article-title>,” <source>Actas Españolas de Psiquiatría</source>
+<volume>44</volume>, no. <issue>5</issue> (<year>2016</year>): <fpage>157</fpage>–<lpage>165</lpage>.<pub-id pub-id-type="pmid">27644097</pub-id>
+</mixed-citation></ref><ref id="bdi70127-bib-0050"><label>50</label><mixed-citation publication-type="journal" id="bdi70127-cit-0050">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Niolu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Barone</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Bianciardi</surname>
+</string-name>, et al., “<article-title>Predictors of Poor Adherence to Treatment in Inpatients With Bipolar and Psychotic Spectrum Disorders</article-title>,” <source>Rivista di Psichiatria</source>
+<volume>50</volume>, no. <issue>6</issue> (<year>2015</year>): <fpage>285</fpage>–<lpage>294</lpage>.<pub-id pub-id-type="pmid">26780202</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1708/2098.22686</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0051"><label>51</label><mixed-citation publication-type="journal" id="bdi70127-cit-0051">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Luciano</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Sampogna</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Del Vecchio</surname>
+</string-name>, et al., “<article-title>Medium and Long‐Term Efficacy of Psychoeducational Family Intervention for Bipolar I Disorder: Results From a Real‐World, Multicentric Study</article-title>,” <source>Bipolar Disorders</source>
+<volume>24</volume>, no. <issue>6</issue> (<year>2022</year>): <fpage>647</fpage>–<lpage>657</lpage>.<pub-id pub-id-type="pmid">35114727</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/bdi.13182</pub-id><pub-id pub-id-type="pmcid">PMC9790519</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0052"><label>52</label><mixed-citation publication-type="journal" id="bdi70127-cit-0052">
+<string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Kriegshauser</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Sajatovic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. H.</given-names>
+<surname>Jenkins</surname>
+</string-name>, et al., “<article-title>Gender Differences in Subjective Experience and Treatment of Bipolar Disorder</article-title>,” <source>Journal of Nervous and Mental Disease</source>
+<volume>198</volume>, no. <issue>5</issue> (<year>2010</year>): <fpage>370</fpage>–<lpage>372</lpage>.<pub-id pub-id-type="pmid">20458200</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/NMD.0b013e3181da8ef7</pub-id><pub-id pub-id-type="pmcid">PMC3148587</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0053"><label>53</label><mixed-citation publication-type="journal" id="bdi70127-cit-0053">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Ghosal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Mallik</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Acharya</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Dasgupta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. K.</given-names>
+<surname>Mondal</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Pal</surname>
+</string-name>, “<article-title>Medication Adherence in Bipolar Disorder: Exploring the Role of Predominant Polarity</article-title>,” <source>International Journal of Psychiatry in Medicine</source> (<year>2021</year>): <elocation-id>912174211030163</elocation-id>.<pub-id pub-id-type="pmid">34196229</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1177/00912174211030163</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0054"><label>54</label><mixed-citation publication-type="journal" id="bdi70127-cit-0054">
+<string-name name-style="western">
+<given-names>S. N.</given-names>
+<surname>Ghaemi</surname>
+</string-name>, “<article-title>Symptomatic Versus Disease‐Modifying Effects of Psychiatric Drugs</article-title>,” <source>Acta Psychiatrica Scandinavica</source>
+<volume>146</volume>, no. <issue>3</issue> (<year>2022</year>): <fpage>251</fpage>–<lpage>257</lpage>.<pub-id pub-id-type="pmid">35653111</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/acps.13459</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0055"><label>55</label><mixed-citation publication-type="journal" id="bdi70127-cit-0055">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Cipriani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Hawton</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Stockton</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. R.</given-names>
+<surname>Geddes</surname>
+</string-name>, “<article-title>Lithium in the Prevention of Suicide in Mood Disorders: Updated Systematic Review and Meta‐Analysis</article-title>,” <source>BMJ</source>
+<volume>346</volume> (<year>2013</year>): <elocation-id>f3646</elocation-id>.<pub-id pub-id-type="pmid">23814104</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1136/bmj.f3646</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0056"><label>56</label><mixed-citation publication-type="journal" id="bdi70127-cit-0056">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Pascual‐Sánchez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Montes‐Rodríguez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Jenaro‐Río</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Saiz‐Ruiz</surname>
+</string-name>, “<article-title>Validation of a Brief Scale for the Assessment of Distress Associated to Bipolar Disorder</article-title>,” <source>European Journal of Psychiatry</source>
+<volume>33</volume>, no. <issue>1</issue> (<year>2019</year>): <fpage>32</fpage>–<lpage>37</lpage>.</mixed-citation></ref><ref id="bdi70127-bib-0057"><label>57</label><mixed-citation publication-type="journal" id="bdi70127-cit-0057">
+<string-name name-style="western">
+<given-names>J. F.</given-names>
+<surname>Goldberg</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. D.</given-names>
+<surname>McLeod</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. E.</given-names>
+<surname>Fehnel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V. S.</given-names>
+<surname>Williams</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. R.</given-names>
+<surname>Hamm</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Gilchrist</surname>
+</string-name>, “<article-title>Development and Psychometric Evaluation of the Bipolar Functional Status Questionnaire (BFSQ)</article-title>,” <source>Bipolar Disorders</source>
+<volume>12</volume>, no. <issue>1</issue> (<year>2010</year>): <fpage>32</fpage>–<lpage>44</lpage>.<pub-id pub-id-type="pmid">20148865</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1399-5618.2009.00775.x</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0058"><label>58</label><mixed-citation publication-type="journal" id="bdi70127-cit-0058">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Pascual‐Sánchez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Jenaro</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Montes</surname>
+</string-name>, “<article-title>Performance of a Measure to Assess Distress in Bipolar Disorder</article-title>,” <source>Spanish Journal of Psychiatry and Mental Health</source>
+<volume>16</volume>, no. <issue>4</issue> (<year>2023</year>): <fpage>209</fpage>–<lpage>214</lpage>.<pub-id pub-id-type="pmid">32682666</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.rpsm.2020.05.007</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0059"><label>59</label><mixed-citation publication-type="journal" id="bdi70127-cit-0059">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Carrà</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bartoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Brambilla</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Crocamo</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Clerici</surname>
+</string-name>, “<article-title>Comorbid Addiction and Major Mental Illness in Europe: A Narrative Review</article-title>,” <source>Substance Abuse</source>
+<volume>36</volume>, no. <issue>1</issue> (<year>2015</year>): <fpage>75</fpage>–<lpage>81</lpage>.<pub-id pub-id-type="pmid">25222286</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1080/08897077.2014.960551</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0060"><label>60</label><mixed-citation publication-type="journal" id="bdi70127-cit-0060">
+<string-name name-style="western">
+<given-names>R. S.</given-names>
+<surname>Patel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Cheema</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Singla</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Cornejo</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Verma</surname>
+</string-name>, “<article-title>Cannabis Use Is an Independent Risk Factor for Manic Episode: A Report From 380,265 Bipolar Inpatients</article-title>,” <source>Substance Use &amp; Misuse</source>
+<volume>57</volume>, no. <issue>3</issue> (<year>2022</year>): <fpage>344</fpage>–<lpage>349</lpage>.<pub-id pub-id-type="pmid">34895014</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1080/10826084.2021.2012690</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0061"><label>61</label><mixed-citation publication-type="journal" id="bdi70127-cit-0061">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bartoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Crocamo</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Carrà</surname>
+</string-name>, “<article-title>Cannabis Use Disorder and Suicide Attempts in Bipolar Disorder: A Meta‐Analysis</article-title>,” <source>Neuroscience and Biobehavioral Reviews</source>
+<volume>103</volume> (<year>2019</year>): <fpage>14</fpage>–<lpage>20</lpage>.<pub-id pub-id-type="pmid">31121199</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.neubiorev.2019.05.017</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0062"><label>62</label><mixed-citation publication-type="journal" id="bdi70127-cit-0062">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Carrà</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Scioli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Monti</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Marinoni</surname>
+</string-name>, “<article-title>Severity Profiles of Substance‐Abusing Patients in Italian Community Addiction Facilities: Influence of Psychiatric Concurrent Disorders</article-title>,” <source>European Addiction Research</source>
+<volume>12</volume>, no. <issue>2</issue> (<year>2006</year>): <fpage>96</fpage>–<lpage>101</lpage>.<pub-id pub-id-type="pmid">16543745</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1159/000090429</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0063"><label>63</label><mixed-citation publication-type="journal" id="bdi70127-cit-0063">
+<string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Mirhaj Mohammadabadi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Mohammadsadeghi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Eftekhar Adrebili</surname>
+</string-name>, et al., “<article-title>Factors Associated With Pharmacological and Psychotherapy Treatments Adherence in Patients With Borderline Personality Disorder</article-title>,” <source>Frontiers in Psychiatry</source>
+<volume>13</volume> (<year>2022</year>): <elocation-id>1056050</elocation-id>.<pub-id pub-id-type="pmid">36582255</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fpsyt.2022.1056050</pub-id><pub-id pub-id-type="pmcid">PMC9793988</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0064"><label>64</label><mixed-citation publication-type="journal" id="bdi70127-cit-0064">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Visalli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Longobardi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Iazzolino</surname>
+</string-name>, et al., “<article-title>The Role of Affective Temperaments in Self‐Care and Medication Adherence Among Individuals With Bipolar Disorder: A Moderation Analysis</article-title>,” <source>Frontiers in Psychiatry</source>
+<volume>15</volume> (<year>2024</year>): <elocation-id>1443278</elocation-id>.<pub-id pub-id-type="pmid">39323967</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fpsyt.2024.1443278</pub-id><pub-id pub-id-type="pmcid">PMC11422117</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0065"><label>65</label><mixed-citation publication-type="journal" id="bdi70127-cit-0065">
+<string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Kane</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Kishimoto</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C. U.</given-names>
+<surname>Correll</surname>
+</string-name>, “<article-title>Non‐Adherence to Medication in Patients With Psychotic Disorders: Epidemiology, Contributing Factors and Management Strategies</article-title>,” <source>World Psychiatry</source>
+<volume>12</volume>, no. <issue>3</issue> (<year>2013</year>): <fpage>216</fpage>–<lpage>226</lpage>.<pub-id pub-id-type="pmid">24096780</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/wps.20060</pub-id><pub-id pub-id-type="pmcid">PMC3799245</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0066"><label>66</label><mixed-citation publication-type="journal" id="bdi70127-cit-0066">
+<string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Spoorthy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chakrabarti</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Grover</surname>
+</string-name>, “<article-title>Comorbidity of Bipolar and Anxiety Disorders: An Overview of Trends in Research</article-title>,” <source>World Journal of Psychiatry</source>
+<volume>9</volume>, no. <issue>1</issue> (<year>2019</year>): <fpage>7</fpage>–<lpage>29</lpage>.<pub-id pub-id-type="pmid">30631749</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.5498/wjp.v9.i1.7</pub-id><pub-id pub-id-type="pmcid">PMC6323556</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0067"><label>67</label><mixed-citation publication-type="journal" id="bdi70127-cit-0067">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Novick</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Montgomery</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Treuer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Aguado</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Kraemer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Haro</surname>
+</string-name>, “<article-title>Relationship of Insight With Medication Adherence and the Impact on Outcomes in Patients With Schizophrenia and Bipolar Disorder: Results From a 1‐Year European Outpatient Observational Study</article-title>,” <source>BMC Psychiatry</source>
+<volume>15</volume> (<year>2015</year>): <fpage>1</fpage>–<lpage>8</lpage>.<pub-id pub-id-type="pmid">26239486</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s12888-015-0560-4</pub-id><pub-id pub-id-type="pmcid">PMC4524170</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0068"><label>68</label><mixed-citation publication-type="journal" id="bdi70127-cit-0068">
+<string-name name-style="western">
+<given-names>E. B.</given-names>
+<surname>Yilmaz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. N. T.</given-names>
+<surname>Dikmen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Yüksel</surname>
+</string-name>, “<article-title>Medication Adherence and Functioning in Individuals With Bipolar Disorder Type I</article-title>,” <source>Journal of Psychosocial Nursing and Mental Health Services</source>
+<volume>63</volume>, no. <issue>2</issue> (<year>2025</year>): <fpage>25</fpage>–<lpage>33</lpage>.<pub-id pub-id-type="pmid">39373726</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3928/02793695-20240930-01</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0069"><label>69</label><mixed-citation publication-type="journal" id="bdi70127-cit-0069">
+<string-name name-style="western">
+<given-names>J. B.</given-names>
+<surname>Levin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. E.</given-names>
+<surname>Aebi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Howland</surname>
+</string-name>, et al., “<article-title>The Relationship Between Medication Attitudes and Medication Adherence Behavior in Adults With Bipolar Disorder</article-title>,” <source>Journal of Nervous and Mental Disease</source>
+<volume>208</volume>, no. <issue>2</issue> (<year>2020</year>): <fpage>87</fpage>–<lpage>93</lpage>.<pub-id pub-id-type="pmid">31929465</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/NMD.0000000000001083</pub-id><pub-id pub-id-type="pmcid">PMC7316161</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0070"><label>70</label><mixed-citation publication-type="journal" id="bdi70127-cit-0070">
+<string-name name-style="western">
+<given-names>M. R.</given-names>
+<surname>DiMatteo</surname>
+</string-name>, “<article-title>Social Support and Patient Adherence to Medical Treatment: A Meta‐Analysis</article-title>,” <source>Health Psychology</source>
+<volume>23</volume>, no. <issue>2</issue> (<year>2004</year>): <fpage>207</fpage>–<lpage>218</lpage>.<pub-id pub-id-type="pmid">15008666</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1037/0278-6133.23.2.207</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0071"><label>71</label><mixed-citation publication-type="journal" id="bdi70127-cit-0071">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Fiorillo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Del Vecchio</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Luciano</surname>
+</string-name>, et al., “<article-title>Efficacy of Psychoeducational Family Intervention for Bipolar I Disorder: A Controlled, Multicentric, Real‐World Study</article-title>,” <source>Journal of Affective Disorders</source>
+<volume>172</volume> (<year>2015</year>): <fpage>291</fpage>–<lpage>299</lpage>.<pub-id pub-id-type="pmid">25451428</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jad.2014.10.021</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0072"><label>72</label><mixed-citation publication-type="journal" id="bdi70127-cit-0072">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Lemay</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Waheedi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Al‐Sharqawi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Bayoud</surname>
+</string-name>, “<article-title>Medication Adherence in Chronic Illness: do Beliefs About Medications Play a Role?</article-title>,” <source>Patient Preference and Adherence</source>
+<volume>12</volume> (<year>2018</year>): <fpage>1687</fpage>–<lpage>1698</lpage>.<pub-id pub-id-type="pmid">30233149</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.2147/PPA.S169236</pub-id><pub-id pub-id-type="pmcid">PMC6130270</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0073"><label>73</label><mixed-citation publication-type="journal" id="bdi70127-cit-0073">
+<string-name name-style="western">
+<given-names>T. A.</given-names>
+<surname>Miller</surname>
+</string-name>, “<article-title>Health Literacy and Adherence to Medical Treatment in Chronic and Acute Illness: A Meta‐Analysis</article-title>,” <source>Patient Education and Counseling</source>
+<volume>99</volume>, no. <issue>7</issue> (<year>2016</year>): <fpage>1079</fpage>–<lpage>1086</lpage>.<pub-id pub-id-type="pmid">26899632</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.pec.2016.01.020</pub-id><pub-id pub-id-type="pmcid">PMC4912447</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0074"><label>74</label><mixed-citation publication-type="journal" id="bdi70127-cit-0074">
+<string-name name-style="western">
+<given-names>F. S.</given-names>
+<surname>Goes</surname>
+</string-name>, “<article-title>Diagnosis and Management of Bipolar Disorders</article-title>,” <source>BMJ</source>
+<volume>381</volume> (<year>2023</year>): <elocation-id>e073591</elocation-id>.<pub-id pub-id-type="pmid">37045450</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1136/bmj-2022-073591</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0075"><label>75</label><mixed-citation publication-type="journal" id="bdi70127-cit-0075">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Lim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. Y.</given-names>
+<surname>Dong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B. X.</given-names>
+<surname>Tran</surname>
+</string-name>, et al., “<article-title>Network‐Based Alterations in Task‐Induced Functional Connectivity in Bipolar Disorder: An Functional Near‐Infrared Spectroscopy Study</article-title>,” <source>Journal of Affective Disorders</source>
+<volume>389</volume> (<year>2025</year>): <elocation-id>119637</elocation-id>.<pub-id pub-id-type="pmid">40499819</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jad.2025.119637</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0076"><label>76</label><mixed-citation publication-type="journal" id="bdi70127-cit-0076">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Sajatovic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. I.</given-names>
+<surname>Velligan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. J.</given-names>
+<surname>Weiden</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Valenstein</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Ogedegbe</surname>
+</string-name>, “<article-title>Measurement of Psychiatric Treatment Adherence</article-title>,” <source>Journal of Psychosomatic Research</source>
+<volume>69</volume>, no. <issue>6</issue> (<year>2010</year>): <fpage>591</fpage>–<lpage>599</lpage>.<pub-id pub-id-type="pmid">21109048</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jpsychores.2009.05.007</pub-id><pub-id pub-id-type="pmcid">PMC3930068</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0077"><label>77</label><mixed-citation publication-type="journal" id="bdi70127-cit-0077">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bartoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Nasti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Palpella</surname>
+</string-name>, et al., “<article-title>Characterizing the Clinical Profile of Mania Without Major Depressive Episodes: A Systematic Review and Meta‐Analysis of Factors Associated With Unipolar Mania</article-title>,” <source>Psychological Medicine</source>
+<volume>53</volume>, no. <issue>15</issue> (<year>2023</year>): <fpage>7277</fpage>–<lpage>7286</lpage>.<pub-id pub-id-type="pmid">37016793</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1017/S0033291723000831</pub-id><pub-id pub-id-type="pmcid">PMC10719688</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0078"><label>78</label><mixed-citation publication-type="journal" id="bdi70127-cit-0078">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bartoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. S.</given-names>
+<surname>Malhi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Carrà</surname>
+</string-name>, “<article-title>Combining Predominant Polarity and Affective Spectrum Concepts in Bipolar Disorder: Towards a Novel Theoretical and Clinical Perspective</article-title>,” <source>International Journal of Bipolar Disorders</source>
+<volume>12</volume>, no. <issue>1</issue> (<year>2024</year>): <fpage>14</fpage>.<pub-id pub-id-type="pmid">38696069</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s40345-024-00336-9</pub-id><pub-id pub-id-type="pmcid">PMC11065836</pub-id></mixed-citation></ref><ref id="bdi70127-bib-0079"><label>79</label><mixed-citation publication-type="journal" id="bdi70127-cit-0079">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Cavaleri</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Crocamo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Riboldi</surname>
+</string-name>, et al., “<article-title>Exploring the Predictive Role of the First Mood Episode on the Predominant Polarity in Bipolar Disorder: Insights From a Path Analysis</article-title>,” <source>Annals of General Psychiatry</source>
+<volume>24</volume>, no. <issue>1</issue> (<year>2025</year>): <fpage>19</fpage>.<pub-id pub-id-type="pmid">40165214</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s12991-025-00556-y</pub-id><pub-id pub-id-type="pmcid">PMC11959847</pub-id></mixed-citation></ref></ref-list></back></article>

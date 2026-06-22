@@ -276,8 +276,18 @@ class TestContentBlocks:
         parser = FullTextXMLParser(SIMPLE_ARTICLE_XML)
         sections = parser.get_full_text_sections_structured()
 
-        assert len(sections) >= 2  # Introduction, Methods, + back matter
-        intro = sections[0]
+        assert len(sections) >= 4  # Article Title, Abstract, Introduction, Methods, + back matter
+
+        # First section should be article title
+        assert sections[0]["title"] == "Article Title"
+
+        # Second section should be abstract
+        abstract = sections[1]
+        assert abstract["title"] == "Abstract"
+        assert abstract["section_type"] == "body"
+
+        # Third section should be Introduction
+        intro = sections[2]
         assert intro["title"] == "Introduction"
         assert intro["section_type"] == "body"
 
@@ -321,10 +331,15 @@ class TestContentBlocks:
         extractor = ContentBlockExtractor(root)
         sections = extractor.extract_sections()
 
-        assert len(sections) >= 2
-        assert sections[0].title == "Introduction"
-        assert sections[0].section_type == "body"
-        assert len(sections[0].content) >= 3
+        assert len(sections) >= 4
+        # First section is article title
+        assert sections[0].title == "Article Title"
+        # Second section is abstract
+        assert sections[1].title == "Abstract"
+        # Third section is Introduction
+        assert sections[2].title == "Introduction"
+        assert sections[2].section_type == "body"
+        assert len(sections[2].content) >= 3
 
     def test_flat_sections_still_work(self):
         """Verify backward compatibility of get_full_text_sections()."""
@@ -428,8 +443,11 @@ class TestMathMLConverter:
         parser = FullTextXMLParser(ARTICLE_WITH_MATHML)
         sections = parser.get_full_text_sections_structured()
 
-        assert len(sections) >= 1
-        blocks = sections[0]["content"]
+        assert len(sections) >= 2
+        # First section is article title (no formulas)
+        assert sections[0]["title"] == "Article Title"
+        # Second section is "Math Section" with formulas
+        blocks = sections[1]["content"]
 
         # Should have paragraphs and a formula block
         formula_blocks = [b for b in blocks if b["type"] == "formula"]

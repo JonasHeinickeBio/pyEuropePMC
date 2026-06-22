@@ -389,9 +389,7 @@ def process_single_pmc(
 
         except urllib.error.HTTPError as e:
             if e.code == 404:
-                raise ConnectionError(
-                    f"Article {pmcid} not found at Europe PMC"
-                ) from e
+                raise ConnectionError(f"Article {pmcid} not found at Europe PMC") from e
             last_error = e
         except (urllib.error.URLError, ConnectionError, TimeoutError) as e:
             last_error = e
@@ -399,7 +397,7 @@ def process_single_pmc(
             last_error = e
 
         if attempt < max_retries:
-            wait = 2 ** attempt  # Exponential backoff: 2, 4, 8...
+            wait = 2**attempt  # Exponential backoff: 2, 4, 8...
             logger.debug(f"Retry {attempt}/{max_retries} for {pmcid} in {wait}s")
             time.sleep(wait)
 
@@ -436,7 +434,7 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
     """
     import xml.etree.ElementTree as ET2  # nosec B405
 
-    with open(manifest_path, "r", encoding="utf-8") as f:
+    with open(manifest_path, encoding="utf-8") as f:
         manifest_xml = f.read()
 
     root = ET2.fromstring(manifest_xml)
@@ -458,11 +456,9 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
                 )
 
                 resolver = ReferenceResolver()
-                resolved = resolver._lookup_by_doi(doi)  # type: ignore[union-attr]
+                resolved = resolver._lookup_by_doi(doi)
                 if resolved and resolved.resolved_pmid:
-                    parser = process_single_pmc(
-                        resolved.resolved_pmid, **kwargs
-                    )
+                    parser = process_single_pmc(resolved.resolved_pmid, **kwargs)
                     parsers.append(parser)
             except Exception as e:
                 logger.warning(f"Failed to download article with DOI {doi}: {e}")
@@ -497,7 +493,7 @@ def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
     """
     xml_content: str
     if Path(filepath_or_xml).is_file():
-        with open(filepath_or_xml, "r", encoding="utf-8") as f:
+        with open(filepath_or_xml, encoding="utf-8") as f:
             xml_content = f.read()
     else:
         xml_content = filepath_or_xml

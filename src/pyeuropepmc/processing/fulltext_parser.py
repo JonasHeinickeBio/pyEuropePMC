@@ -835,6 +835,23 @@ class FullTextXMLParser:
             "month",
             "day",
             "object-id",
+            "disp-quote",
+            "notes",
+            "history",
+            "pub-history",
+            "copyright-statement",
+            "copyright-year",
+            "corresp",
+            "self-uri",
+            "kwd-group",
+            "institution-wrap",
+            "page-count",
+            "figure-count",
+            "table-count",
+            "equation-count",
+            "word-count",
+            "counts",
+            "email",
         }
 
     # =========================================================================

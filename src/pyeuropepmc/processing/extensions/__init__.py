@@ -44,8 +44,11 @@ from pyeuropepmc.processing.extensions.jats4r import (
 from pyeuropepmc.processing.extensions.local_processing import (
     LocalXMLProcessor,
     extract_article_id_from_xml,
+    parse_bits_book,
     parse_xml_directory,
     parse_xml_file,
+    process_biorxiv_manifest,
+    process_single_pmc,
 )
 from pyeuropepmc.processing.extensions.lxml_backend import (
     LXMLParser,
@@ -110,8 +113,11 @@ __all__ = [
     # Local Processing
     "LocalXMLProcessor",
     "extract_article_id_from_xml",
+    "parse_bits_book",
     "parse_xml_directory",
     "parse_xml_file",
+    "process_biorxiv_manifest",
+    "process_single_pmc",
 ]
 
 # Conditionally include pydantic helpers only when available

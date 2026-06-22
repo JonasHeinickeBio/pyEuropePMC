@@ -1,0 +1,1126 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="glia70185" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Glia</journal-id><journal-id journal-id-type="iso-abbrev">Glia</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">GLIA</journal-id><journal-title-group><journal-title>Glia</journal-title></journal-title-group><issn pub-type="ppub">0894-1491</issn><issn pub-type="epub">1098-1136</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13262022</article-id><article-id pub-id-type="pmcid-ver">PMC13262022.1</article-id><article-id pub-id-type="pmcaid">13262022</article-id><article-id pub-id-type="pmcaiid">13262022</article-id><article-id pub-id-type="pmid">42283414</article-id><article-id pub-id-type="doi">10.1002/glia.70185</article-id><article-id pub-id-type="publisher-id">GLIA70185</article-id><article-id pub-id-type="other">7363165</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Yin Yang 1 Specifically Supports the Development of Olig2 Positive Cerebellar Astrocytes</article-title></title-group><contrib-group><contrib id="glia70185-cr-0001" contrib-type="author"><name name-style="western"><surname>Zarei‐Kheirabadi</surname><given-names initials="M">Masoumeh</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0002" contrib-type="author"><name name-style="western"><surname>Tyc</surname><given-names initials="KM">Katarzyna M.</given-names></name><xref rid="glia70185-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="glia70185-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="glia70185-cr-0003" contrib-type="author"><name name-style="western"><surname>Dain</surname><given-names initials="L">Lauren</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0004" contrib-type="author"><name name-style="western"><surname>Kheirabadi</surname><given-names initials="MA">Maryam Ashrafi</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0005" contrib-type="author"><name name-style="western"><surname>Hanco</surname><given-names initials="J">Jennifer</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0006" contrib-type="author"><name name-style="western"><surname>Mockenhaupt</surname><given-names initials="K">Karli</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0007" contrib-type="author"><name name-style="western"><surname>Munir</surname><given-names initials="S">Soha</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0008" contrib-type="author"><name name-style="western"><surname>McQuiston</surname><given-names initials="A">Adam</given-names></name><xref rid="glia70185-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="glia70185-cr-0009" contrib-type="author"><name name-style="western"><surname>Singh</surname><given-names initials="SK">Sandeep K.</given-names></name><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="glia70185-cr-0010" contrib-type="author" corresp="yes"><name name-style="western"><surname>Kordula</surname><given-names initials="T">Tomasz</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-1141-0331</contrib-id><xref rid="glia70185-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>tomasz.kordula@vcuhealth.org</email></address></contrib></contrib-group><aff id="glia70185-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Cellular, Molecular, and Genetic Medicine</named-content>
+<institution>Virginia Commonwealth University</institution>
+<city>Richmond</city>
+<named-content content-type="country-part">Virginia</named-content>
+<country country="US">USA</country>
+</aff><aff id="glia70185-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Biostatistics</named-content>
+<institution>Virginia Commonwealth University</institution>
+<city>Richmond</city>
+<named-content content-type="country-part">Virginia</named-content>
+<country country="US">USA</country>
+</aff><aff id="glia70185-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Bioinformatics Shared Resource Core</named-content>
+<institution>Virginia Commonwealth University</institution>
+<city>Richmond</city>
+<named-content content-type="country-part">Virginia</named-content>
+<country country="US">USA</country>
+</aff><aff id="glia70185-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Department of Neuroscience and Anatomy, School of Medicine and the Massey Comprehensive Cancer Center</named-content>
+<institution>Virginia Commonwealth University</institution>
+<city>Richmond</city>
+<named-content content-type="country-part">Virginia</named-content>
+<country country="US">USA</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Tomasz Kordula (<email>tomasz.kordula@vcuhealth.org</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>12</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>8</month><year>2026</year></pub-date><volume>74</volume><issue seq="110">8</issue><issue-id pub-id-type="pmc-issue-id">515466</issue-id><issue-id pub-id-type="doi">10.1002/glia.v74.8</issue-id><elocation-id>e70185</elocation-id><history>
+<date date-type="rev-recd"><day>26</day><month>5</month><year>2026</year></date>
+<date date-type="received"><day>19</day><month>9</month><year>2025</year></date>
+<date date-type="accepted"><day>29</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>12</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>13</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-13 11:25:19.600"><day>13</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">GLIA</italic> published by Wiley Periodicals LLC.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="GLIA-74-0.pdf"><?pdf-name GLIA-74-0.pdf?><?pdf-size 17753165?><?pdf-md5 0ac2257fabb520c7bffe3694eefbf035?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:c434/13262022/0ac2257fabb5/GLIA-74-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:GLIA-74-0.pdf"/><abstract><title>ABSTRACT</title><p>Astrocytes regulate the assembly and functions of neural circuits, contribute to synaptic homeostasis, provide metabolic support to neurons, and control ion balance and blood–brain barrier integrity. These cells are morphologically and molecularly very heterogeneous and perform unique functions to accommodate the needs of subsets of neurons. In this study, we identified and characterized a subpopulation of cerebellar astrocytes expressing the transcription factor Olig2 (O2AST). We defined their molecular identity and transcriptional divergence from other well‐established subpopulations of cerebellar astrocytes and cells of the oligodendrocyte lineage that also express Olig2. Specific deletion of Olig2 from astrocytes in vivo affects the locomotion of mice. We found that cerebellar O2AST are relatively abundant in the cerebellar nuclei but not in the cerebellar lobes. Cerebellar O2AST highly express a set of unique genes, including <italic toggle="no">Slc6a11, Gpc5, Igsf1, Alpl,</italic> and <italic toggle="no">Egfl6</italic>. Furthermore, we examined the regulatory influence of the transcription factor Yin Yang 1 (YY1), known to control maturation of cerebellar astrocytes, on O2AST differentiation and morphology. Specific deletion of <italic toggle="no">Yy1</italic> from astrocytes increases the number of O2AST in the cerebellar nuclei, affects O2AST differentiation, and cross‐communication with the cells of oligodendrocyte lineage, diminishing differentiation of oligodendrocyte precursor cells (OPCs) to mature oligodendrocytes. In sum, our findings reveal a distinct, transcriptionally unique subpopulation of astrocytes expressing Olig2 in the cerebellum, uncovering novel regulatory mechanisms orchestrated by Yy1 during postnatal development.</p></abstract><abstract abstract-type="graphical"><p>
+<list list-type="bullet" id="glia70185-list-0001"><list-item id="glia70185-li-0001"><p>Cerebellar Olig2 positive astrocytes are most abundant in the cerebellar nuclei.</p></list-item><list-item id="glia70185-li-0002"><p>Cerebellar astrocytes expressing Olig2 have unique gene expression profiles.</p></list-item><list-item id="glia70185-li-0003"><p>Yin Yang 1 specifically supports the development of astrocytes expressing Olig2.</p></list-item><list-item id="glia70185-li-0004"><p>Deletion of YY1 during development increases numbers of astrocytes expressing Olig2 but hinders their differentiation.</p></list-item></list>
+<boxed-text position="anchor" content-type="graphic" id="glia70185-blkfxd-0001" orientation="portrait"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="GLIA-74-0-g006.jpg"><?image-name GLIA-74-0-g006.jpg?><?image-size 62676?><?image-md5 7f42cbdc24c32ecea579ff0af3803584?><?image-image-server-status NEVER_LOAD?><?image-original-height 244?><?image-original-width 472?><?image-scaled-height 244?><?image-scaled-width 472?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/7f42cbdc24c3/GLIA-74-0-g006.jpg?></graphic></boxed-text>
+</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="glia70185-kwd-0001">astrocytes</kwd><kwd id="glia70185-kwd-0002">cerebellum</kwd><kwd id="glia70185-kwd-0003">Olig2</kwd><kwd id="glia70185-kwd-0004">YY1</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>National Institutes of Health</institution><institution-id institution-id-type="doi">10.13039/100000002</institution-id></institution-wrap>
+</funding-source><award-id>R01NS122986</award-id><award-id>R21NS102802</award-id><award-id>R21NS118359</award-id><award-id>R01NS126504</award-id><award-id>P30 CA016059</award-id></award-group></funding-group><counts><fig-count count="9"/><table-count count="0"/><page-count count="19"/><word-count count="11100"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>August 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:12.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body id="glia70185-body-0001"><sec id="glia70185-sec-0001"><label>1</label><title>Introduction</title><p>Astrocytes, the most abundant glial cells in the central nervous system (CNS), are critical regulators of neural function, contributing to synaptic homeostasis, metabolic support, ion balance, and blood–brain barrier maintenance (Khakh and Sofroniew <xref rid="glia70185-bib-0034" ref-type="bibr">2015</xref>; Rupareliya et al. <xref rid="glia70185-bib-0050" ref-type="bibr">2023</xref>; Verkhratsky et al. <xref rid="glia70185-bib-0059" ref-type="bibr">2021</xref>). Recent advances in single‐cell RNA sequencing (scRNA‐seq) have revealed that astrocytes are far from homogeneous, exhibiting molecular and functional diversity across CNS regions, during development, and progression of neurodegenerative diseases (Batiuk et al. <xref rid="glia70185-bib-0004" ref-type="bibr">2020</xref>; Chai et al. <xref rid="glia70185-bib-0015" ref-type="bibr">2017</xref>; Farmer and Murai <xref rid="glia70185-bib-0023" ref-type="bibr">2017</xref>; Qian et al. <xref rid="glia70185-bib-0048" ref-type="bibr">2023</xref>). During development, the specialized functions of astrocytes are fine‐tuned to the local requirements of neurons (Ben Haim et al. <xref rid="glia70185-bib-0007" ref-type="bibr">2015</xref>; Chai et al. <xref rid="glia70185-bib-0015" ref-type="bibr">2017</xref>; Farmer and Murai <xref rid="glia70185-bib-0023" ref-type="bibr">2017</xref>; Khakh <xref rid="glia70185-bib-0033" ref-type="bibr">2019</xref>; Khakh and Sofroniew <xref rid="glia70185-bib-0034" ref-type="bibr">2015</xref>). The heterogeneous subpopulations of astrocytes are generated by both the intrinsic patterning programs (Farmer et al. <xref rid="glia70185-bib-0022" ref-type="bibr">2016</xref>; Farmer and Murai <xref rid="glia70185-bib-0023" ref-type="bibr">2017</xref>; Ge et al. <xref rid="glia70185-bib-0024" ref-type="bibr">2012</xref>; Hochstim et al. <xref rid="glia70185-bib-0027" ref-type="bibr">2008</xref>) and region‐specific communications with neurons (Farmer and Murai <xref rid="glia70185-bib-0023" ref-type="bibr">2017</xref>; Ge et al. <xref rid="glia70185-bib-0024" ref-type="bibr">2012</xref>; Hochstim et al. <xref rid="glia70185-bib-0027" ref-type="bibr">2008</xref>; Huang et al. <xref rid="glia70185-bib-0029" ref-type="bibr">2020</xref>; Morel et al. <xref rid="glia70185-bib-0042" ref-type="bibr">2017</xref>). Among these diverse astrocyte populations, a subset of astrocytes characterized by the expression of the transcription factor Olig2 has recently emerged (Cai et al. <xref rid="glia70185-bib-0013" ref-type="bibr">2007</xref>; Marshall et al. <xref rid="glia70185-bib-0037" ref-type="bibr">2005</xref>; Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>; Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; H. Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). Although Olig2 has traditionally been associated with the oligodendrocyte lineage in adult animals, including oligodendrocyte precursor cells (OPCs) and mature oligodendrocytes (OLs) (Selcen et al. <xref rid="glia70185-bib-0052" ref-type="bibr">2023</xref>; Yu et al. <xref rid="glia70185-bib-0066" ref-type="bibr">2013</xref>), Olig2 is expressed by astrocytes during development and also after injury (Cai et al. <xref rid="glia70185-bib-0013" ref-type="bibr">2007</xref>; Chen et al. <xref rid="glia70185-bib-0017" ref-type="bibr">2008</xref>; Yu et al. <xref rid="glia70185-bib-0066" ref-type="bibr">2013</xref>; Zhang et al. <xref rid="glia70185-bib-0068" ref-type="bibr">2022</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>), challenging traditional views of glial identity. The subpopulations of Olig2‐expressing astrocytes (O2AST) have been identified in the olfactory bulb, cortex, midbrain, thalamus, medulla, cerebellum, and spinal cord (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). The O2AST subpopulation accounts for a relatively small fraction (~4.3%) of all astrocytes in normal physiological conditions (Yang et al. <xref rid="glia70185-bib-0065" ref-type="bibr">2011</xref>). However, Olig2 is expressed by reactive astrocytes (Marumo et al. <xref rid="glia70185-bib-0038" ref-type="bibr">2013</xref>) and supports their proliferation and glial scar formation (Chen et al. <xref rid="glia70185-bib-0017" ref-type="bibr">2008</xref>). Curiously, deletion of Olig2 during postnatal development results in conversion of OPCs into astrocytes (Zuo et al. <xref rid="glia70185-bib-0071" ref-type="bibr">2018</xref>). The O2AST express low levels of a glial fibrillary acidic protein (GFAP) (Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>), tend to occupy exclusive territories with GFAP‐positive astrocytes (Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>; Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>), are characterized by unique transcriptional profiles that distinguish them from other astrocyte subpopulations (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>), and are likely involved in inhibitory neuronal transmission (Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>). Recently, it has been shown that cortical astrocytes expressing Olig2 show unique spatial distribution, derive from a distinct Emx1<sup>low</sup> radial glia cell population, are generated at earlier stages of the corticogenesis, are present in adult cortex, and also exist in lower vertebrates (Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>).</p><p>The cerebellum is a brain structure essential for motor coordination and cognitive processes (Prati et al. <xref rid="glia70185-bib-0046" ref-type="bibr">2024</xref>). Since the cerebellum undergoes significant postnatal development, it offers a unique opportunity to investigate the dynamics of generation and maturation of astrocyte subpopulations. The major subpopulations of cerebellar astrocytes include Bergmann glia (BG) supporting Purkinje neurons, velate astrocytes (VA) supporting granular neurons, and fibrous astrocytes (FA) located in the white matter (Araujo et al. <xref rid="glia70185-bib-0002" ref-type="bibr">2019</xref>). While the presence of O2AST in the cerebellum has also been reported (Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>), the locations of these O2AST residing within the cerebellum, their morphologies, functions, and specific markers have not been established.</p><p>Yin Yang 1 (YY1) is a ubiquitously expressed architectural transcription factor that creates active loops of chromatin (Atchison <xref rid="glia70185-bib-0003" ref-type="bibr">2014</xref>; Weintraub et al. <xref rid="glia70185-bib-0063" ref-type="bibr">2017</xref>) and regulates transcription by several distinct mechanisms (Atchison <xref rid="glia70185-bib-0003" ref-type="bibr">2014</xref>; Bengani et al. <xref rid="glia70185-bib-0008" ref-type="bibr">2013</xref>; Chiang and Roeder <xref rid="glia70185-bib-0018" ref-type="bibr">1995</xref>; Lee et al. <xref rid="glia70185-bib-0036" ref-type="bibr">1995</xref>; Rezai‐Zadeh et al. <xref rid="glia70185-bib-0049" ref-type="bibr">2003</xref>; Srinivasan et al. <xref rid="glia70185-bib-0053" ref-type="bibr">2005</xref>; Wang et al. <xref rid="glia70185-bib-0061" ref-type="bibr">2018</xref>; Weintraub et al. <xref rid="glia70185-bib-0063" ref-type="bibr">2017</xref>). YY1 regulates the development of the neuroepithelium (Dong and Kwan <xref rid="glia70185-bib-0020" ref-type="bibr">2020</xref>), orchestrates chromatin looping during neural lineage commitment (Beagan et al. <xref rid="glia70185-bib-0005" ref-type="bibr">2017</xref>; Weintraub et al. <xref rid="glia70185-bib-0063" ref-type="bibr">2017</xref>), and supports proliferation and survival of neural progenitor cells (Zurkirchen et al. <xref rid="glia70185-bib-0072" ref-type="bibr">2019</xref>). YY1 is highly expressed in astrocytes (Karki et al. <xref rid="glia70185-bib-0031" ref-type="bibr">2015</xref>; Waters et al. <xref rid="glia70185-bib-0062" ref-type="bibr">2019</xref>), provides protection against apoptosis, oxidative stress, and inflammation (Pajarillo et al. <xref rid="glia70185-bib-0045" ref-type="bibr">2022</xref>), is required for proper maturation of cerebellar astrocytes (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>), and its deletion from astrocytes causes cerebellar neurodegeneration (Mockenhaupt et al. <xref rid="glia70185-bib-0040" ref-type="bibr">2025</xref>). However, specific roles of YY1 in cerebellar O2AST, particularly in the context of development, are poorly understood.</p><p>In this study, we utilized scRNA‐seq data to identify and characterize O2AST in the developing cerebellum. We defined their molecular identity, transcriptional divergence from other well‐established subpopulations of astrocytes, OPCs, and OLs, and defined their spatial distribution within the cerebellum. We show the functional importance of O2AST since specific deletion of Olig2 from astrocytes in vivo affects the locomotion of mice. Furthermore, we assessed the regulatory influence of YY1 on O2AST differentiation and morphology. Our findings reveal a distinct, transcriptionally unique population of O2AST in the cerebellum, uncovering novel regulatory mechanisms orchestrated by YY1 during postnatal development.</p></sec><sec sec-type="materials-and-methods" id="glia70185-sec-0002"><label>2</label><title>Materials and Methods</title><sec id="glia70185-sec-0003"><label>2.1</label><title>Mice</title><p>The Yy1<sup>GFAP‐CRE</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice have been described before (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). These mice were obtained by crossing mice carrying the Yy1 allele flanked by loxP sites (Jackson Laboratory; strain B6;129S4‐Yy1tm2Yshi/J) with Gfap‐Cre mice (Jackson Laboratory; strain 77.6mGFAPcre). To generate <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> mice, <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice were bred with <italic toggle="yes">Aldh1L1‐EGFP</italic> mice (provided by Dr. Cagla Eroglu, Duke University). Rosa26‐floxed STOP‐Cas9‐EGFP knock‐in mice (Jackson Laboratory; strain 024857, B6;129‐<italic toggle="yes">Gt(ROSA)26Sor</italic>
+<sup>
+<italic toggle="yes">tm1(CAG‐cas9*,‐EGFP)Fezh</italic>
+</sup>/J) were used to knock out astrocytic Olig2 using GEARBOCS AAVs (Bindu et al. <xref rid="glia70185-bib-0009" ref-type="bibr">2024</xref>). All mice were housed at Virginia Commonwealth University in compliance with Institutional Animal Care and Use Committee (IACUC) guidelines (protocol AD10000521). They were maintained on a 12‐h light/dark cycle, provided standard laboratory chow, and had unrestricted access to water. Mice displaying severe symptoms received DietGel76A (ClearH2O). Both male and female littermates were randomly assigned to experimental groups, with sample sizes detailed in the figure legends.</p></sec><sec id="glia70185-sec-0004"><label>2.2</label><title>Balance Beam Experiments</title><p>Mice were trained on a balance beam two times a day for 2 days. The beam was 12 mm thick and had a dark box at the end with food and bedding. On the day of testing, the time to cross the beam was recorded.</p></sec><sec id="glia70185-sec-0005"><label>2.3</label><title>Astrocyte Cultures/<styled-content style="fixed-case" toggle="no">AAV</styled-content> Infection</title><p>Cerebral cortices were dissected from P2–P4 pups, meninges were removed, mechanically dissociated, incubated in serum free Dulbecco's Modified Eagle's Medium (Gibco) with trypsin for 30 min at 37°C, and centrifuged. Then, the tissue was titrated and filtered through 70 μm filters, re‐centrifuged, and resuspended in Neurobasal (NB) medium (Gibco) supplemented with 1% fetal bovine serum, penicillin/streptomycin, and non‐essential amino acids, and plated in tissue culture flasks for 24 h. Then, the cells were split and plated onto coverslips (coated with poly‐D‐lysine and laminin) in serum‐free astrocyte medium (NB medium containing sodium pyruvate, glutamine, penicillin/streptomycin, and B27 supplement), and incubated for 2 days at 37°C with 5% CO<sub>2</sub>. Subsequently, cells were infected with AAVs, cultured for an additional 4 days, and then analyzed by immunofluorescence.</p></sec><sec id="glia70185-sec-0006"><label>2.4</label><title>Quantitative <styled-content style="fixed-case" toggle="no">PCR</styled-content>
+</title><p>Total RNA was extracted from flash‐frozen tissue samples using Trizol reagent (Life Technologies) and subsequently reverse transcribed with the High‐Capacity cDNA Reverse Transcription Kit (Applied Biosystems). Quantitative PCR was performed on the Bio‐Rad CFX Connect Real‐Time System using SYBR Green intron‐spanning pre‐designed qPCR primers (Bio‐Rad). Gene expression levels were normalized to GAPDH and presented as fold change relative to control.</p></sec><sec id="glia70185-sec-0007"><label>2.5</label><title>Immunofluorescence and Image Analysis</title><p>Animals were perfused with 0.9% sodium chloride, followed by 4% paraformaldehyde (PFA). Brains were post‐fixed overnight in PFA and cryopreserved in 30% sucrose in PBS for 48 h at 4°C. Tissue was then embedded in optimal cutting medium (Tissue‐Tek, Fisher Scientific), and 50 μm frozen sections were prepared on Probe Plus microscopy slides (Fisher Scientific). For permeabilization, sections were incubated in 1% Triton X‐100 in PBS for 1 h, followed by blocking in 0.5% Triton X‐100 and 10% goat serum in PBS for 1 h. Primary antibodies: Chicken Anti‐GFAP (GFAP, Aves Labs), Mouse Anti‐GFAP (3670S, Cell Signaling), Chicken Anti‐EGFP (AB16901, Abcam), Rabbit Anti‐IBA1 (019–19,741, Wako), Rabbit Anti‐Aquaporin (AQP‐004, CiteAB), Rabbit Anti‐OLIG2 (PA5‐85734, ThermoFisher), Rabbit Anti‐S100β (E7C3A, Cell Signaling), Mouse Anti‐GS (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-nucleotide" xlink:href="G11055">G11055</ext-link>, Invitrogen), Rabbit Anti‐Aldh1L1 (ab87117, Abcam), Goat Anti‐SPARCL1 (AF2836, R&amp;D), Rabbit Anti‐MBP (NE1019, Millipore), Rabbit Anti‐CC1 (OP80, Millipore), Rabbit Anti‐SOX10 (D5V9L, R&amp;D), and Chicken Anti‐OLIG2 (OLIG2‐0100, Aves Lab.) were diluted in blocking buffer, applied to sections, and incubated overnight at 4°C. Sections were then washed three times and incubated with Alexa Fluor‐488, −594, or −633 secondary antibodies (1:1000, Invitrogen) for 45 min at 37°C. After another three washes, slides were mounted using Vectashield mounting medium (Vector Laboratories) and imaged on a Zeiss LSM 880 confocal microscope. Maximum projection images were generated from z‐stacks, ensuring no fluorescence crossover between channels. Image analysis was performed using ImageJ or IMARIS.</p></sec><sec id="glia70185-sec-0008"><label>2.6</label><title>Cell Clustering and Data Visualization</title><p>P10 and P17 (WT and <italic toggle="yes">Yy1</italic> KO) datasets (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-geo" xlink:href="GSE166792">GSE166792</ext-link>) (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>) were integrated into a single Seurat object and normalized using NormalizeData(). Highly variable genes (2000 genes) were identified with FindVariableFeatures(), followed by data scaling using ScaleData() and principal component analysis (PCA) with RunPCA(). Cell clustering was performed using FindNeighbors(seurat_norm, dims = 1:40) and FindClusters(seurat_norm, resolution = 0.5). For visualization, uniform manifold approximation and projection (UMAP) (Becht et al. <xref rid="glia70185-bib-0006" ref-type="bibr">2018</xref>) was applied using RunUMAP(), and DimPlot() was used to generate cluster representations. Differential gene expression analysis and biomarker discovery of each cluster of interest was performed following an established procedure using R/Seurat package. Briefly, FindMarkers() was applied to identify genes distinguishing between two different clusters and to generate a volcano plot. Venn diagrams were generated to assess gene expression overlap between the O2AST cluster and published astrocyte datasets <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-geo" xlink:href="GSE152223">GSE152223</ext-link> (Lattke et al. <xref rid="glia70185-bib-0035" ref-type="bibr">2021</xref>), <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-geo" xlink:href="GSE215336">GSE215336</ext-link> (Borgenheimer et al. <xref rid="glia70185-bib-0011" ref-type="bibr">2022</xref>), and PRJNA1027603 (Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). Astrocytes were identified in these data sets as cells expressing <italic toggle="yes">Sox9</italic> and <italic toggle="yes">Aldh1L1</italic>. Subsequently, astrocytes were divided into those either expressing <italic toggle="yes">Olig2</italic> or not, and differential gene expression analysis was performed, as described above. The top significantly changed genes (<italic toggle="yes">p</italic> &lt; 0.05 and avg_log2FC &gt; 0.25) in astrocytes expressing <italic toggle="yes">Olig2</italic> were compared in these data sets and O2AST. O2AST identified using current approach were previously included in cluster 6 at P10 and cluster 10 at P17 (VA and FA astrocytes) and “unknown” clusters 11 and 14 (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). Overlaps were calculated using R, and Venn diagrams were created with the <italic toggle="yes">VennDiagram</italic> or <italic toggle="yes">ggVennDiagram</italic> packages.</p></sec><sec id="glia70185-sec-0009"><label>2.7</label><title>Gene Ontology (<styled-content style="fixed-case" toggle="no">GO</styled-content>) Analysis</title><p>GO enrichment analysis for Biological Process, Molecular Function, and Cellular Component categories was performed using the <italic toggle="yes">clusterProfiler</italic> package in R. Differentially expressed genes (DEGs) between O2AST‐P17‐WT and BG‐P17‐WT were identified. Genes with an adjusted <italic toggle="yes">p</italic>‐value &lt; 0.05 and log2FC threshold = 0.25 were selected for downstream analysis.</p></sec><sec id="glia70185-sec-0010"><label>2.8</label><title>Astrocyte‐Specific Knock‐Out of Olig2 Using <styled-content style="fixed-case" toggle="no">GEARBOCS</styled-content>
+</title><p>Two previously published gRNAs targeting mouse Olig2 (Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>), 5′‐GCAGCAGCGGCTTCACAGGA‐3′ and 5′‐CTCCTCGTCCACGTCCTCGG‐3′ were incorporated into primers overlapping GEARBOCS sequences (Bindu et al. <xref rid="glia70185-bib-0009" ref-type="bibr">2024</xref>), gRNA scaffold, and human cysteine tRNA (hCtRNA) sequence, as described (Yuan and Gao <xref rid="glia70185-bib-0067" ref-type="bibr">2022</xref>). The resulting two primers: 5‐AAAGGACGAAACACCGCAGCAGCGGCTTCACAGGAGTTTTAGAGCTAGAAATAGCAAGT‐3′ and 5′‐TTCTAGCTCTAAAACCCGAGGACGTGGACGAGGAGAGGGGGCACCCGGATTTG‐3′ were subsequently used to amplify a 221 bp long product using the hCtRNA‐FT plasmid (Addgene, 186715) as a template. The PCR product was subsequently cloned into SapI‐digested GEARBOCS by InFusion cloning (Takara Bio). GEARBOCS packaging was performed as described (Uezu et al. <xref rid="glia70185-bib-0058" ref-type="bibr">2016</xref>). Briefly, ~1 × 10<sup>8</sup> HEK293T cells (ATCC #CRL 3216) were transfected using Lipofectamine (Thermo Fisher Sci.), the helper plasmid pAd‐ΔF6 (Addgene, 112867), and the serotype plasmid AAV‐PHP.eB. The media were changed after 24 h, cells were cultured for an additional 48 h, scraped, pelleted, and resuspended in 15 mM NaCl, 5 mM Tris–HCl, pH 8.5, followed by 3, 10‐min freeze–thaw cycles. Cell lysates were treated with benzonase (50 U/mL) for 30 min at 37°C, and centrifuged at 4500 rcf for 30 min at 4°C. The supernatant was applied onto a 15%, 25%, 40%, and 60% iodixanol gradient (25% and 60% layers contained 1% phenol red) in polypropylene ultracentrifuge tubes, and samples were ultracentrifuged at 67,000 rpm using a Beckman Ti‐70 rotor for 1 h at 18°C. The AAVs were collected, washed four times with DPBS and concentrated (Millipore, 100 kDa MW) at 4000 g for 10 min each. 200 μL of AAVs suspension (~10<sup>13</sup> vg/mL) was recovered from the column, aliquoted, and stored at −80°C. 4 μL of AAVs (~2 × 10<sup>12</sup> vg) were diluted with 46 μL PBS, and retro‐orbitally injected into anesthetized Rosa26‐floxed STOP‐Cas9‐EGFP knock‐in mice. Subsequently, knock‐out of Olig2 was analyzed by immunofluorescence 3 weeks after AAV administration.</p></sec><sec id="glia70185-sec-0011"><label>2.9</label><title>Statistical Analysis</title><p>For statistical analysis, GraphPad Prism 9 was used. Values are displayed as mean ± standard error. <italic toggle="yes">T</italic>‐tests or ANOVA were performed as indicated.</p></sec></sec><sec sec-type="results" id="glia70185-sec-0012"><label>3</label><title>Results</title><sec id="glia70185-sec-0013"><label>3.1</label><title>Identification of Astrocytes Expressing Olig2 in the Cerebellum</title><p>Recently, it became evident that astrocytes expressing <italic toggle="yes">Olig2</italic> are present in several regions of the brain and spinal cord (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>, <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). We have previously reported expression profiles for three major cerebellar astrocyte subpopulations: Bergmann glia, velate, and fibrous astrocytes (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>); however, expression profiles of cerebellar astrocytes expressing <italic toggle="yes">Olig2</italic> have not been identified. To examine whether <italic toggle="yes">Olig2</italic> expressing astrocytes reside in the cerebellum, we re‐analyzed our publicly available data (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). Indeed, this analysis revealed a subpopulation of astrocytes expressing <italic toggle="yes">Olig2</italic>, which appeared transcriptionally distinct from both OPCs and OLs (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1A</xref>). To further examine these cells, we subclustered astrocytes (expressing <italic toggle="yes">Aldh1L1</italic> and <italic toggle="yes">Sox9</italic>) along with OPCs and OLs. This subsequent analysis identified two molecularly distinct subtypes of astrocytes either expressing <italic toggle="yes">Olig2</italic> (O2AST) or not (nO2AST) (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1B</xref>). We validated the identity of the populations using markers of astrocytes (<italic toggle="yes">Gfap, Aldh1l1, Sox9, Glul, S1pr1, Slc1a2, Slc1a3</italic>, and <italic toggle="yes">Apoe</italic>), previously described markers of astrocytes expressing <italic toggle="yes">Olig2</italic> (<italic toggle="yes">Slc6a11, Slc7a11, Grm3, Fam212b</italic>, and <italic toggle="yes">Kcnip3</italic>) (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>), OPCs (<italic toggle="yes">Cspg4</italic> and <italic toggle="yes">Pdgfra</italic>), OLs (<italic toggle="yes">Sox10, Olig2, Olig1, Mog, Opalin, Mbp</italic>, and <italic toggle="yes">Mag</italic>), and also <italic toggle="yes">Yy1</italic> (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1B</xref>). Uniform Manifold Approximation and Projection (UMAP) visualization further revealed distinct populations of O2AST and nO2AST based on Olig2 expression, developmental stage, and WT or <italic toggle="yes">Yy</italic>1 genotype with P10 and P17 WT O2AST clustering together with P10 <italic toggle="yes">Yy1</italic>‐deficient O2AST (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1C</xref>). To identify the molecular differences between O2AST and nO2AST, we performed differential gene expression analysis of WT cells. First, we noted that O2AST are much less abundant than nO2AST as previously reported for the other CNS regions (Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>) (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1C,E</xref>). Second, this analysis revealed many significantly upregulated and downregulated genes in O2AST (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1D,E</xref>). These molecular changes were more pronounced during O2AST differentiation/maturation (Figure <xref rid="glia70185-supitem-0001" ref-type="supplementary-material">S1</xref>). To identify genes uniquely enriched in O2AST, we examined the expression of the top differentially expressed O2AST genes in nO2AST, OPCs, and OLs. Nine genes were identified as specifically upregulated in O2AST (<italic toggle="yes">Foxb1, Slc6a11, Sall3, Hey1, Alpl, Gpc5, Igsf1, Egfl6</italic>, and <italic toggle="yes">Igfbp2</italic>) and three genes were specifically downregulated in O2AST (<italic toggle="yes">Hopx, Vim</italic>, and <italic toggle="yes">Thyn1</italic>) (Figure <xref rid="glia70185-supitem-0002" ref-type="supplementary-material">S2A</xref>, Figure <xref rid="glia70185-fig-0001" ref-type="fig">1F</xref>). These genes were largely not expressed by OPCs and OLs, underscoring their specificity to O2AST (Figure <xref rid="glia70185-fig-0001" ref-type="fig">1F</xref>). Further expression analysis of other CNS cell types (Figure <xref rid="glia70185-supitem-0002" ref-type="supplementary-material">S2B</xref>) indicated that <italic toggle="yes">Foxb1, Slc6a11, Gpc5, Igsf1, Alpl, Egfl6</italic>, and <italic toggle="yes">Igfbp2</italic> were expressed at high levels by cerebellar O2AST and <italic toggle="yes">Hoxp</italic> expression was downregulated in O2AST. Together, these findings establish a distinct population of cerebellar O2AST that exhibit a unique molecular signature, potentially governed by the transcription factor Olig2, distinguishing them from canonical astrocytes, OPCs, and OLs.</p><fig position="float" fig-type="FIGURE" id="glia70185-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Molecular identification of cerebellar astrocytes expressing Olig2 during cerebellar development. (A–F) Data downloaded from (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). (A) UMAP visualization of Olig2 expression in developing <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">loxP/loxP</italic>
+</sup> and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mouse cerebella. (B) Expression of <italic toggle="yes">Olig2</italic>, <italic toggle="yes">Yy1</italic>, and selected markers of each cluster across developmental stages (P10 and P17) and genotypes (<italic toggle="yes">Yy1</italic> WT and KO). Oligodendrocytes (OL), oligodendrocyte precursor cells (OPC), Olig2‐expressing astrocytes (O2AST), and non‐Olig2‐expressing astrocytes (nO2AST). General astrocyte markers (<italic toggle="yes">Gfap, Aldh1l1, Sox9, Glul, S1pr1, Slc1a2, Slc1a3, Apoe</italic>), O2AST markers (<italic toggle="yes">Slc6a11, Slc7a10, Grm3, Fam212b, Kcnip3</italic>), OPC markers (<italic toggle="yes">Cspg4, Pdgfra</italic>), OL markers (<italic toggle="yes">Sox10, Olig2, Olig1, Mog, Opalin, Mbp, Mag</italic>). (C) UMAP visualization delineating nO2AST and O2AST (P10 and P17, WT and <italic toggle="yes">Yy1</italic> KO). (D) Volcano plot comparing WT nO2AST to WT O2AST. (E) Heatmap depicting differentially expressed genes across nO2AST, O2AST, OPC, and OL WT populations. (F) Violin plot visualization of candidate markers expression (<italic toggle="yes">Foxb1, Sall3, Hey1, Slc6a11, Gpc5, Alpl, Igsf1, Egfl6, Igfbp2, Hopx, Vim, Thyn1</italic>) in nO2AST, O2AST, OPC, and OL WT populations.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="GLIA-74-0-g009.jpg"><?image-name GLIA-74-0-g009.jpg?><?image-size 172838?><?image-md5 e097fea490ad4538f4bb6ec937b918b6?><?image-image-server-status NEED_LOADING?><?image-original-height 1331?><?image-original-width 1064?><?image-scaled-height 887?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/e097fea490ad/GLIA-74-0-g009.jpg?><?thumb-name GLIA-74-0-g009.gif?><?thumb-size 15227?><?thumb-md5 9c8f6f855de8bbe8d179c7af102ce7c2?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 125?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/9c8f6f855de8/GLIA-74-0-g009.gif?></graphic></fig></sec><sec id="glia70185-sec-0014"><label>3.2</label><title>
+<styled-content style="fixed-case" toggle="no">YY1</styled-content> Supports <styled-content style="fixed-case" toggle="no">O2AST</styled-content> Differentiation/Maturation</title><p>Astrocyte acquire specific gene expression profiles during their differentiation and maturation (Lattke et al. <xref rid="glia70185-bib-0035" ref-type="bibr">2021</xref>). To examine the differentiation trajectories of both O2AST and nO2AST during postnatal development, we conducted differential expression analyses at P10 and P17. While significant transcriptional reprogramming occurs during differentiation of nO2AST (Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3</xref>), O2AST exhibited many fewer transcriptional changes during their differentiation (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2A</xref>), suggesting that transcriptional changes are less pronounced during the postnatal differentiation of O2AST. Subsequently, we evaluated <italic toggle="yes">Gfap</italic> and <italic toggle="yes">Yy1</italic> expression in both O2AST and nO2AST at P10 and P17 since the scRNA‐seq were obtained from WT and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">Gfap‐CRE</italic>
+</sup> cerebella. Although the majority (~80%) of nO2AST expressed <italic toggle="yes">Gfap</italic> at P10 leading to the loss of <italic toggle="yes">Yy1</italic> expression in the KO subpopulations, only about 50% of O2AST expressed <italic toggle="yes">Gfap</italic> at lower levels, which corresponded to the persistent <italic toggle="yes">Yy1</italic> expression in these cells (Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3B–E</xref>). Nevertheless, at P17, the majority of both O2AST and nO2AST KOs lost the expression of <italic toggle="yes">Yy1</italic> (Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3B–E</xref>). These observations revealed distinct timing of knockout initiation in O2AST and nO2AST <italic toggle="yes">Yy1</italic> KO. Building on these findings, we focused on comparing gene expression between WT and <italic toggle="yes">Yy1</italic>‐deficient profiles of O2AST and nO2AST at P17. Differential gene expression analysis showed that <italic toggle="yes">Yy1</italic> deletion led to significant transcriptional changes in O2AST (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2B,C</xref>) and nO2AST at P17 (Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3F</xref>). However, expression profiles of both WT and <italic toggle="yes">Yy1</italic>‐deficient O2AST were very different than other cerebellar astrocytes, including Bergmann glia (BG) (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2C</xref>). Gene ontology (GO) analysis of O2AST and BG revealed that these subpopulations of cerebellar astrocytes likely perform unique functions with O2AST involved in lipid catabolic processes and GABAergic synaptic transmission (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2E</xref>). Comparison of O2AST gene expression to adult cerebellar astrocytes expressing Olig2 (Borgenheimer et al. <xref rid="glia70185-bib-0011" ref-type="bibr">2022</xref>) demonstrated that O2AST become increasingly differentiated during cerebellar development, exhibiting greater divergence in gene expression (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2F</xref>). Furthermore, expression profiles of cerebellar O2AST showed similarities with cortical and striatal O2AST gene expression profiles, which were more evident at early stages of brain development (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2F</xref> and Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3G,H</xref>). To fully assess the effects of <italic toggle="yes">Yy1</italic> deletion on O2AST expression profiles, we examined expression of the most upregulated genes (<italic toggle="yes">Mt1, Atp1b2, Psap, Grina</italic>) and the most downregulated genes (<italic toggle="yes">Fabp7, Rps29</italic>) during O2AST differentiation (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2A,D</xref>). We also examined the expression of the most affected genes by the <italic toggle="yes">Yy1</italic> deletion (<italic toggle="yes">Tenm4, Txndc15, Cd38, Clu, Fgfr3, Aqp4</italic>) (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2B–D</xref>) and newly identified O2AST markers (<italic toggle="yes">Slc6a11, Gpc5, Igsf1, Alpl, Hopx</italic>) (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2D</xref>). This analysis revealed that <italic toggle="yes">Yy1</italic> controls the expression of key genes expressed in O2AST, emphasizing the critical role of <italic toggle="yes">Yy1</italic> in acquisition and maintenance of the transcriptional identity of O2AST.</p><fig position="float" fig-type="FIGURE" id="glia70185-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>Differential gene expression profiles of O2AST. (A–D) Data downloaded from (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). (A) Volcano plot visualization of differentially expressed genes during differentiation of WT O2AST (P17 vs. P10). (B) Volcano plot visualization of differentially expressed genes between WT and <italic toggle="yes">Yy1</italic> KO O2AST at P17. Blue dots indicate new markers of cerebellar O2AST. (C) Heatmap (unsupervised) depicting differentially expressed genes between WT and <italic toggle="yes">Yy1</italic> KO O2AST at P17. WT Bergmann glia (BG) included for comparison. n; cell number. (D) Violin expression plots of WT and <italic toggle="yes">Yy1</italic> KO O2AST at P17. Selected up‐regulated differentiation markers (Dif.‐up) (<italic toggle="yes">Mt1, Atp1b2, Psap, and Grina</italic>), down‐regulated differentiation markers (Dif.‐down) (<italic toggle="yes">Fabp7 and Rps29</italic>), most affected genes affected by Yy1 knockout (KO‐markers) (<italic toggle="yes">Tenm4, Txndc15, Cd38, Clu, Fgfr3, and AQP4</italic>), and O2AST markers (<italic toggle="yes">Slc6a11, Gpc5, Alpl, Igsf1, and Hopx</italic>) are shown. (E) Pathway analysis of biological processes regulated by differentially expressed genes in WT O2AST vs. WT BG. (F) Overlap of top significantly changed O2AST genes at P10, P17, and adult cerebellar O2AST (Borgenheimer et al. <xref rid="glia70185-bib-0011" ref-type="bibr">2022</xref>) (top). P3 (Lattke et al. <xref rid="glia70185-bib-0035" ref-type="bibr">2021</xref>), P7 (Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>), and P10 O2AST (bottom left). P17, adult (Lattke et al. <xref rid="glia70185-bib-0035" ref-type="bibr">2021</xref>), and adult (Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>) O2AST (bottom right).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="GLIA-74-0-g003.jpg"><?image-name GLIA-74-0-g003.jpg?><?image-size 185693?><?image-md5 1548201ab1c87fa844773ef0103861f0?><?image-image-server-status NEED_LOADING?><?image-original-height 1434?><?image-original-width 1064?><?image-scaled-height 956?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/1548201ab1c8/GLIA-74-0-g003.jpg?><?thumb-name GLIA-74-0-g003.gif?><?thumb-size 15609?><?thumb-md5 d7e5e3d5cd151693b7165c8795ce0086?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 135?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/d7e5e3d5cd15/GLIA-74-0-g003.gif?></graphic></fig></sec><sec id="glia70185-sec-0015"><label>3.3</label><title>Spatial Localization of <styled-content style="fixed-case" toggle="no">O2AST</styled-content> in the Cerebellum</title><p>To determine the spatial distribution of O2AST in the cerebellum and the effect of Yy1 deletion on these cells, we utilized 6–7 weeks old <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> mice taking advantage of EGFP expression in astrocytes. We examined Olig2 expression by IF (Figure <xref rid="glia70185-fig-0003" ref-type="fig">3A</xref>) and performed quantification across different cerebellar regions, including the cerebellar nuclei (CN), granule cell layer (GCL), white matter (WM), and molecular layer (MOL). The O2AST (Olig2+EGFP+ cells) were predominantly localized in the CN and their numbers significantly increased with <italic toggle="yes">Yy1</italic> deletion (Figure <xref rid="glia70185-fig-0003" ref-type="fig">3B,E</xref>), with increases also found in WM and MOL. Interestingly, the number of OPCs and OLs (Olig2+EGFP‐ cells) and overall numbers of Olig2+ cells also increased upon <italic toggle="yes">Yy1</italic> deletion (Figure <xref rid="glia70185-fig-0003" ref-type="fig">3C,D</xref>), suggesting that <italic toggle="yes">Yy1</italic> deletion in astrocytes also impacts other Olig2‐expressing cells, particularly in the CN. While O2AST account for 4.9% of all astrocytes in the WT CN, their numbers drastically increase with Yy1 deletion (Figure <xref rid="glia70185-fig-0003" ref-type="fig">3F</xref>). Importantly, O2AST within the CN expressed Olig2 protein and other proteins known to be expressed in astrocytes, including ALDH1L1, SPARCL1, S100β, glutamine synthase, and low levels of GFAP (Figure <xref rid="glia70185-fig-0004" ref-type="fig">4A,E</xref>). Morphological analysis revealed increased complexity (Figure <xref rid="glia70185-fig-0004" ref-type="fig">4B</xref>) and increased GFAP expression (Figure <xref rid="glia70185-fig-0004" ref-type="fig">4E</xref>) of <italic toggle="yes">Yy1</italic>‐deficient O2AST. In contrast, complexity of nO2AST was reduced upon Yy1 deletion (Figure <xref rid="glia70185-fig-0004" ref-type="fig">4C</xref>). Consistent with the profound morphological changes of O2AST, expression of their newly identified markers, <italic toggle="yes">Alpl</italic>, <italic toggle="yes">Slc6a11</italic>, and <italic toggle="yes">Igsf1</italic> was diminished in the CN of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice (Figure <xref rid="glia70185-fig-0004" ref-type="fig">4D</xref>), highlighting the regulatory role of <italic toggle="yes">Yy1</italic> in O2AST.</p><fig position="float" fig-type="FIGURE" id="glia70185-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Regional and morphological characterization of Olig2‐positive cells in 6–7‐weeks old cerebella. (A) Representative IF images of Olig2 immunostaining of cerebella of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at 6–7 weeks of age. The cerebellar nuclei (CN), granule cell layer (GCL), white matter (WM), and molecular layer (MOL). Scale bars = 100 μm and 20 μm, as indicated. (B) Quantification of Olig2+/EGFP+ cells (O2AST) across cerebellar regions (CN, GCL, WM, and MOL). (C) Quantification of Olig2+/EGFP− cells (OL + OPC) in the cerebellar regions. (D) Total number of Olig2+ cells in the cerebellar regions. (E) The number of O2AST in the indicated regions in the WT and <italic toggle="yes">Yy1</italic> KO cerebella. (F) The percentage of O2AST relative to all astrocytes in the CN of WT and <italic toggle="yes">Yy1</italic> KO cerebella. (B–F) Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, **<italic toggle="yes">p</italic> &lt; 0.01, ***<italic toggle="yes">p</italic> &lt; 0.001, ****<italic toggle="yes">p</italic> &lt; 0.0001, and non‐significant (ns). Image analysis, <italic toggle="yes">n</italic> = 9–15, 9–12, 3 animals per group.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="GLIA-74-0-g004.jpg"><?image-name GLIA-74-0-g004.jpg?><?image-size 184314?><?image-md5 85bc6b9cea4be36ff21f1366d10bca29?><?image-image-server-status NEED_LOADING?><?image-original-height 1038?><?image-original-width 1064?><?image-scaled-height 692?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/85bc6b9cea4b/GLIA-74-0-g004.jpg?><?thumb-name GLIA-74-0-g004.gif?><?thumb-size 20702?><?thumb-md5 288814ba39a5124b7ee072f1419e387c?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 98?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/288814ba39a5/GLIA-74-0-g004.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="glia70185-fig-0004" orientation="portrait"><label>FIGURE 4</label><caption><p>Characterization of Olig2‐positive cells in 6–7 weeks cerebellar nuclei. (A) Representative IF images of Olig2, ALDH1L1, SPARCL1, GFAP, GS, and S100β immunostaining of CN of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at 6–7 weeks of age. Scale bars = 20 μm. (B) Morphological analysis of O2AST. (C) Morphological analysis of nO2AST (Olig2−/EGFP+). (D) qPCR expression analysis of the indicated O2AST marker in the WT and <italic toggle="yes">Yy1</italic> KO CN at 6–7 weeks of age. (E) Quantification of O2AST from panel A. (B–E) Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, **<italic toggle="yes">p</italic> &lt; 0.01, and non‐significant (ns). Image analysis, <italic toggle="yes">n</italic> = 9–15, 9–12, 3 animals per group. qPCR, <italic toggle="yes">n</italic> = 6, 6, 3 animals per group. qPCR, <italic toggle="yes">n</italic> = 6, 6, 3 animals per group.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-9" orientation="portrait" xlink:href="GLIA-74-0-g008.jpg"><?image-name GLIA-74-0-g008.jpg?><?image-size 231950?><?image-md5 c0b08c5929467dbfda04d87104fd50d5?><?image-image-server-status NEED_LOADING?><?image-original-height 1262?><?image-original-width 1064?><?image-scaled-height 841?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/c0b08c592946/GLIA-74-0-g008.jpg?><?thumb-name GLIA-74-0-g008.gif?><?thumb-size 21423?><?thumb-md5 f09580775f5494710d4e64e9748f2e37?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 119?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/f09580775f54/GLIA-74-0-g008.gif?></graphic></fig></sec><sec id="glia70185-sec-0016"><label>3.4</label><title>Differential Developmental Effects of Yy1 on Morphologies of <styled-content style="fixed-case" toggle="no">O2AST</styled-content> and <styled-content style="fixed-case" toggle="no">nO2AST</styled-content>
+</title><p>Since <italic toggle="yes">Yy1</italic> deletion exerts distinct effects on morphologies of O2AST and nO2AST in adult mice, we examined morphologies of these cells at P10 and P17 to establish whether these differences manifest during astrocyte differentiation. There were no significant changes in the numbers of O2AST or nO2AST or their morphologies at P10 (Figure <xref rid="glia70185-supitem-0004" ref-type="supplementary-material">S4</xref>). This agrees with our previous report for BG, VA, and FA (collectively nO2AST) (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). The lack of the effects on O2AST was also not surprising since <italic toggle="yes">Yy1</italic> deletion has not yet initiated at P10 in these cells (Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3B,C</xref>). In contrast, there was a significant increase in the numbers of O2AST in the CN and MOL at P17 (Figure <xref rid="glia70185-fig-0005" ref-type="fig">5A,B</xref>), indicating that <italic toggle="yes">Yy1</italic> exerts its effects already at this stage of development. The numbers of OPCs+OLs and the total Olig2<sup>+</sup> cells also increased in the MOL and the CN (Figure <xref rid="glia70185-fig-0005" ref-type="fig">5C,D</xref>). Subsequent morphological analysis of the CN revealed that <italic toggle="yes">Yy1</italic>‐deficient O2AST exhibited no significant morphological changes at P17 (Figure <xref rid="glia70185-fig-0005" ref-type="fig">5E</xref>), while nO2AST showed marked morphological alterations (Figure <xref rid="glia70185-fig-0005" ref-type="fig">5F</xref>). Nevertheless, Imaris rendering indicated that <italic toggle="yes">Yy1</italic>‐deficient O2AST acquired significant time‐dependent morphological alternations by 6–7 weeks (Figure <xref rid="glia70185-fig-0005" ref-type="fig">5G</xref>). Further analysis confirmed continuous presence of O2AST in CN of 6–7 months old mice (Figure <xref rid="glia70185-fig-0006" ref-type="fig">6A</xref>). It also revealed that morphological changes manifested at 6–7 weeks in <italic toggle="yes">Yy1‐</italic>deficient astrocytes were lasting for at least 7 months (Figure <xref rid="glia70185-fig-0006" ref-type="fig">6B–E</xref>). These findings suggest that effects of <italic toggle="yes">Yy1</italic> on the development of both O2AST and nO2AST begin to manifest by P17, but the distinct responses of O2AST in comparison to nO2AST highlight the nuanced and subtype‐specific role of <italic toggle="yes">Yy1</italic> in astrocyte differentiation and function. To begin addressing functional importance of O2AST, we specifically knocked‐out expression of Olig2 in astrocytes using an AAV‐GEARBOCS tool (Bindu et al. <xref rid="glia70185-bib-0009" ref-type="bibr">2024</xref>) (Figure <xref rid="glia70185-fig-0006" ref-type="fig">6F</xref>) and Rosa26‐floxed STOP‐Cas9‐EGFP knock‐in mice. GEARBOCS‐mediated targeting of Olig2 drastically diminished expression of Olig2 in both astrocytes in vitro (Figure <xref rid="glia70185-supitem-0005" ref-type="supplementary-material">S5A,B</xref>) and in CN astrocytes in vivo (Figure <xref rid="glia70185-fig-0006" ref-type="fig">6G,H</xref>) but not in CC1‐positive cells of the oligodendrocyte linage (Figure <xref rid="glia70185-supitem-0005" ref-type="supplementary-material">S5C,D</xref>). importantly, deletion of Olig2 from astrocytes impacted locomotion of mice (Figure <xref rid="glia70185-fig-0006" ref-type="fig">6I</xref>) demonstrating that O2AST are play physiological functions.</p><fig position="float" fig-type="FIGURE" id="glia70185-fig-0005" orientation="portrait"><label>FIGURE 5</label><caption><p>Regional and morphological characterization of Olig2‐positive cells in the cerebella at P17. (A) Representative IF images of Olig2 immunostaining of cerebella of the <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at P17. The cerebellar nuclei (CN), granule cell layer (GCL), white matter (WM), and molecular layer (MOL). Scale bars = 20 μm. (B) Quantification of Olig2+/EGFP+ cells (O2AST) across cerebellar regions (CN, GCL, WM, and MOL). (C) Quantification of Olig2+/EGFP− cells (OL + OPC) in the cerebellar regions. (D) Total number of Olig2+ cells in the cerebellar regions. (E) Morphological analysis of O2AST (F) Morphological analysis of nO2AST (Olig2−/EGFP+). (G) Representative, confocal max‐projection O2AST (Olig2+/EGFP+; yellow), nO2AST (Olig2‐/EGFP+; blue) and OLs (CC1/EGFOP−; magenta), IMARIS rendered surface traces and filament traces in the CN at P10, P17, and 6–7‐week‐old animals. (B–F) Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, and non‐significant (ns). Image analysis, <italic toggle="yes">n</italic> = 15, 14–15, 3 animals per group.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-11" orientation="portrait" xlink:href="GLIA-74-0-g001.jpg"><?image-name GLIA-74-0-g001.jpg?><?image-size 202326?><?image-md5 19e5848078bf9441e68f15994f62ea6a?><?image-image-server-status NEED_LOADING?><?image-original-height 1352?><?image-original-width 1064?><?image-scaled-height 901?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/19e5848078bf/GLIA-74-0-g001.jpg?><?thumb-name GLIA-74-0-g001.gif?><?thumb-size 17973?><?thumb-md5 090856dae0231eed81ee85c10b0520cf?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 127?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/090856dae023/GLIA-74-0-g001.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="glia70185-fig-0006" orientation="portrait"><label>FIGURE 6</label><caption><p>Characterization of O2AST during CN development. (A) Representative IF images of Olig2, ALDH1L1, and GFAP immunostaining of CN of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at 6–7 months of age. Scale bars = 20 μm. (B) Morphological analysis of O2AST in CN. (C) Representative IF images of Olig2 immunostaining of cerebella of the <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at P10, P17, and 6–7 weeks, and 6–7 months. (D) Morphological analysis (filament length) of O2AST at P10, P17, 6–7 weeks, and 6–7 months. (E) Sholl analysis of O2AST. (B–E) Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, ***<italic toggle="yes">p</italic> &lt; 0.001, ****<italic toggle="yes">p</italic> &lt; 0.0001, and non‐significant (ns). Image analysis, (B–E) <italic toggle="yes">n</italic> = 15, 14–15, 3 animals per group. (F) Model of the GEARBOCS targeting mouse Olig2. sc, scaffold sequences; hCtRNA, human cysteine tRNA sequence. (G) Representative IF images of Olig2 immunostaining of CN of Rosa26‐floxed STOP‐Cas9 knock‐in mice infected either with control GEARBOCS (Ctrl‐G) or GEARBOCS targeting Olig2 (Olig2‐G). Scale bars = 20 μm. (H) Quantification of Olig2+/EGFP+ cells in the CN. <italic toggle="yes">n</italic> = 230, 107, 3 animals per group; mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.5. (I) Time to cross the balance beam. Mean ± SEM, (<italic toggle="yes">n</italic> = 9, 9; <italic toggle="yes">t</italic>‐test; **<italic toggle="yes">p</italic> &lt; 0.01).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-13" orientation="portrait" xlink:href="GLIA-74-0-g005.jpg"><?image-name GLIA-74-0-g005.jpg?><?image-size 192965?><?image-md5 3c8df2e350745c1b252a19ba5cb44c11?><?image-image-server-status NEED_LOADING?><?image-original-height 978?><?image-original-width 1064?><?image-scaled-height 652?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/3c8df2e35074/GLIA-74-0-g005.jpg?><?thumb-name GLIA-74-0-g005.gif?><?thumb-size 19815?><?thumb-md5 66c089989ca73ca78d6b1833ca84c6bc?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 92?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/66c089989ca7/GLIA-74-0-g005.gif?></graphic></fig></sec><sec id="glia70185-sec-0017"><label>3.5</label><title>Development of Neuroinflammation in the Cerebella Containing Yy1‐Deficient Astrocytes</title><p>Since deletion of <italic toggle="yes">Yy1</italic> from astrocytes induces microglia activation in the cerebellar lobes in adult mice (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>), we assessed inflammation at P17 and in adult animals in the CN as a primary location of O2AST. We found small but significant increases in the numbers of IBA1+ cells in the CN already at P17 and also in adult animals (Figure <xref rid="glia70185-fig-0007" ref-type="fig">7A–C</xref>). Furthermore, morphological analysis of these IBA1+ cells indicated changes in the morphology of microglia in adult animals (Figure <xref rid="glia70185-fig-0007" ref-type="fig">7D</xref>). We also found increased expression of mRNAs encoding proinflammatory mediators in <italic toggle="yes">Yy1</italic>‐deficient CN, including those encoding IL‐1β, iNOS, CCL5, and CXCL10 (Figure <xref rid="glia70185-fig-0007" ref-type="fig">7E</xref>). Given that AQP4 expression was downregulated in <italic toggle="yes">Yy1</italic>‐deficient O2AST (Figure <xref rid="glia70185-fig-0002" ref-type="fig">2B</xref>), we examined AQP4 levels in P17 and adult animals in the CN (Figure <xref rid="glia70185-fig-0007" ref-type="fig">7F–H</xref>). However, AQP4 protein levels were comparable in WT and <italic toggle="yes">Yy1</italic>‐deficient astrocytes of the CN, likely due to unaffected AQP4 expression in nO2AST that account for the majority of all astrocytes.</p><fig position="float" fig-type="FIGURE" id="glia70185-fig-0007" orientation="portrait"><label>FIGURE 7</label><caption><p>Activation of microglia in the Yy1<sup>ΔAST</sup> cerebellar nuclei. (A, F) Representative IF images of IBA1 (A) and AQP4 (F) immunostaining of cerebellar nuclei of the <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at P17 or 6–7 weeks. (B, C) Quantification of the number of IBA1+ cells at P17 (B) and 6–7 weeks (C). (D) Morphological analysis of IBA1+ cells in cerebellar nuclei of 6–7 weeks animals. (E) qPCR expression analysis of the indicated genes in the WT and <italic toggle="yes">Yy1</italic> KO CN at 6–7 weeks of age. (G‐H) Quantification of AQP4 IF from F at P17 (G) and 6–7 weeks (H). (B–G) Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, **<italic toggle="yes">p</italic> &lt; 0.01, and non‐significant (ns). Image analysis, <italic toggle="yes">n</italic> = 15, 14–15, 3 animals per group.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-15" orientation="portrait" xlink:href="GLIA-74-0-g002.jpg"><?image-name GLIA-74-0-g002.jpg?><?image-size 205477?><?image-md5 b527a2fe85dd7823a84601993fc38409?><?image-image-server-status NEED_LOADING?><?image-original-height 1196?><?image-original-width 1064?><?image-scaled-height 797?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/b527a2fe85dd/GLIA-74-0-g002.jpg?><?thumb-name GLIA-74-0-g002.gif?><?thumb-size 20748?><?thumb-md5 892cbf2721caa89cdc345dc75a527fd5?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 112?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/892cbf2721ca/GLIA-74-0-g002.gif?></graphic></fig></sec><sec id="glia70185-sec-0018"><label>3.6</label><title>
+<styled-content style="fixed-case" toggle="no">YY1</styled-content>‐Controlled Astrocyte‐Oligodendrocyte Interactions Are Critical for Oligodendrocyte Differentiation</title><p>Our findings reveal that astrocytic <italic toggle="yes">Yy1</italic> deletion exerts significant morphological and transcriptional alterations on O2AST and nO2AST within the CN of adult mice, triggers neuroinflammation, and also significantly increases the number of the oligodendrocyte lineage Olig2<sup>+</sup> cells (Figure <xref rid="glia70185-fig-0003" ref-type="fig">3A–E</xref>). Subsequently, we examined both OLs and OPCs stained for MBP, CC1, Sox10, and Olig2 in 6–7 weeks old CN (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8A</xref>). While MBP expression and OLs numbers were not significantly affected by <italic toggle="yes">Yy1</italic> deletion in astrocytes within the CN (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8B,C</xref>), the numbers of OPCs were significantly increased (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8D</xref>), suggesting either increased OPC generation or inhibition of differentiation of OPCs to OLs. Since YY1 is not deleted in OPCs or OLs (Figure <xref rid="glia70185-supitem-0003" ref-type="supplementary-material">S3B</xref>), we conclude that this is not a direct effect of YY1 deletion in either glial precursors or their progeny of the OL lineage. To further assess whether changes within astrocytes, along with the modified microenvironment, affect the differentiation of OPCs into myelinating OLs, we first examined the Olig2<sup>+</sup> oligodendrocyte lineage cells in our scRNA‐seq data (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). Subcluster identities were validated using both general (<italic toggle="yes">Sox10, Olig2, Olig1</italic>) and stage‐specific markers for OPCs (<italic toggle="yes">Cspg4, Pdgfra</italic>), premyelinating‐OLs (<italic toggle="yes">Bmp4, Gpr17, Bcas1, Apc, Nkx2‐2, Tcf4, Smarca4, Cnp, Zfp24, Galc, Zfp488, Zfp536, Nkx6‐2, Cd82, Ugt8a, Enpp6, Dusp15</italic>) and mature OLs (<italic toggle="yes">Plp1, Mbp, Mog, Mag, Mal, Opalin</italic>) (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8E</xref>). The expression levels of OPC markers (<italic toggle="yes">Cspg4, Pdgfra</italic>) were similar in OPCs of WT and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8E</xref>), suggesting that the observed changes in OLs (Figure <xref rid="glia70185-fig-0003" ref-type="fig">3C</xref>) may indeed be induced by astrocytes and are not a result of unexpected recombination in the OPC lineage. In contrast to OPCs, significant differences were observed in premyelinating‐OLs and mature OLs of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8F</xref>, Figure <xref rid="glia70185-supitem-0006" ref-type="supplementary-material">S6A</xref>), indicating that <italic toggle="yes">Yy1</italic>‐deficient astrocytes impair OPC differentiation. Since scRNAseq data derive from the entire cerebella, we subsequently analyzed expression of markers of OPCs, premyelinating‐OLs, and mature OLs specifically in the CN. We found significantly increased expression of <italic toggle="yes">Smoc1</italic> and trending increase in the expression of <italic toggle="yes">Cspg4</italic> suggesting accumulation of OPCs, but there were no differences in the expression levels of markers of premyelinating‐OLs and mature OLs (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8G</xref>). These data are congruent with IF analysis (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8A–D</xref>) and suggest deficient OPC differentiation in <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice.</p><fig position="float" fig-type="FIGURE" id="glia70185-fig-0008" orientation="portrait"><label>FIGURE 8</label><caption><p>Astrocyte‐oligodendrocyte interactions are critical for OL maturation. (A) Representative IF images of MBP, CC1 and Sox10 immunostaining of CN of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at 6–7 weeks of age. Scale bars = 100 μm and 20 μm. (B–D) Quantification of images in A. (E, F, H) Data downloaded from (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>). (E) Expression of selected markers during development (P10 and P17) in OL and OPC in <italic toggle="yes">Yy1</italic>
+<sup>LoxP/LoxP</sup> and <italic toggle="yes">Yy1</italic>
+<sup>ΔAST</sup> cerebella. General OL markers (<italic toggle="yes">Sox10, Olig2, Olig1</italic>), OPC markers (<italic toggle="yes">Cspg4, Pdgfra</italic>), Pre‐OL markers (<italic toggle="yes">Bmp4, Gpr17, Bcas1, Apc, Nkx2‐2, Tcf4, Smarca4, Cnp, Zfp24, Galc, Zfp488, Zfp536, Nkx6‐2, Cd82, Ugt8a, Enpp6, Dusp15</italic>), and Mature OL markers (<italic toggle="yes">Plp1, Mbp, Mog, Mag, Mal, Opalin</italic>). (F) Violin plot visualization of the expression patterns of selected OPC and OL markers in <italic toggle="yes">Yy1</italic>
+<sup>LoxP/LoxP</sup> and <italic toggle="yes">Yy1</italic>
+<sup>ΔAST</sup> cerebella. (G) qPCR expression analysis of selected markers for OPCs, premyelinating‐OLs and mature‐OL at CN at P17. <italic toggle="yes">n</italic> = 8 and 8, 3 animals. Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, and non‐significant (ns). (H) Violin plot visualization of the expression of <italic toggle="yes">Nfe2l2</italic> (Nrf2), <italic toggle="yes">Nqo1</italic>, and selected cholesterol biosynthesis genes across clusters of cells expressing Olig2. (I) qPCR analysis of the <italic toggle="yes">Dhcr24</italic> and <italic toggle="yes">Dhcr7</italic> expression at cerebellar nuclei at P17.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-17" orientation="portrait" xlink:href="GLIA-74-0-g007.jpg"><?image-name GLIA-74-0-g007.jpg?><?image-size 223114?><?image-md5 fc27f37e41aceb0d33877a029e8ea19d?><?image-image-server-status NEED_LOADING?><?image-original-height 1394?><?image-original-width 1064?><?image-scaled-height 929?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/c434/13262022/fc27f37e41ac/GLIA-74-0-g007.jpg?><?thumb-name GLIA-74-0-g007.gif?><?thumb-size 18148?><?thumb-md5 707573886be9dba2194089eb0cf92fca?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 131?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/c434/13262022/707573886be9/GLIA-74-0-g007.gif?></graphic></fig><p>Astrocyte‐oligodendrocyte interactions play a pivotal role in the development and maintenance of OLs, which is critical for the maintenance of normal CNS function and regeneration (Domingues et al. <xref rid="glia70185-bib-0019" ref-type="bibr">2016</xref>; Hu et al. <xref rid="glia70185-bib-0028" ref-type="bibr">2023</xref>; Molina‐Gonzalez et al. <xref rid="glia70185-bib-0041" ref-type="bibr">2023</xref>). Notably, activation of Nrf2 in astrocytes has been implicated in OL development and remyelination (Molina‐Gonzalez et al. <xref rid="glia70185-bib-0041" ref-type="bibr">2023</xref>) with enhanced astrocytic Nrf2 expression impairing OL differentiation. Astrocytes support the survival of regenerating OLs in part through the downregulation of the Nrf2 pathway, which results in an increase of astrocytic cholesterol biosynthesis (Molina‐Gonzalez et al. <xref rid="glia70185-bib-0041" ref-type="bibr">2023</xref>). Interestingly, <italic toggle="yes">Nfe2l2</italic> mRNA expression (encoding Nrf2) was significantly upregulated in both <italic toggle="yes">Yy1</italic>‐deficient O2AST and nO2AST at P17 (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8H</xref>). Furthermore, expression of <italic toggle="yes">Nqo1</italic>, a canonical Nrf2 target gene, was upregulated in astrocytes of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8H</xref>). It has been shown that suppression of Nrf2 activity in astrocytes facilitates cholesterol biosynthesis (Molina‐Gonzalez et al. <xref rid="glia70185-bib-0041" ref-type="bibr">2023</xref>). We examined expression of key cholesterol biosynthesis genes, including <italic toggle="yes">Hmgcs1</italic>, <italic toggle="yes">Hmgcs2</italic>, <italic toggle="yes">Dhcr7</italic>, <italic toggle="yes">Dhcr24</italic>, <italic toggle="yes">Hmox1</italic>, and <italic toggle="yes">Fdft1</italic>. Indeed, expression of <italic toggle="yes">Dhcr7</italic>, <italic toggle="yes">Dhcr24</italic>, and <italic toggle="yes">Fdft1</italic> was decreased in Yy1‐deficient O2AST at P17 (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8H</xref>). qPCR analysis further confirmed significant downregulation of Dhcr7 and Dhcr24 in the CN of Yy1<sup>ΔAST</sup> mice (Figure <xref rid="glia70185-fig-0008" ref-type="fig">8I</xref>). In addition, gap junction proteins, including connexins 43 and 30 expressed by astrocytes are critical for astrocyte‐oligodendrocyte communication (Domingues et al. <xref rid="glia70185-bib-0019" ref-type="bibr">2016</xref>). Our analysis showed diminished expression of <italic toggle="yes">Gja1</italic> (encoding Cx43) and Gjb6 (encoding Cx30) in <italic toggle="yes">Yy1</italic>‐deficient O2AST and nO2AST (Figure <xref rid="glia70185-supitem-0006" ref-type="supplementary-material">S6B</xref>), which likely disrupts astrocyte‐OLs gap junctions, potentially leading to delayed OL maturation. Overall, these data suggest that <italic toggle="yes">Yy1</italic>‐deficient astrocytes likely fail to support proper OL differentiation and this effect may be mediated through key molecular pathways involving Nrf2 and gap junction proteins. These results highlight the broader impact of astrocytic <italic toggle="yes">Yy1</italic> on cerebellar cellular dynamics.</p></sec></sec><sec sec-type="discussion" id="glia70185-sec-0019"><label>4</label><title>Discussion</title><p>The identification of cerebellar O2AST provides new insights into astrocyte heterogeneity in the cerebellum and highlights the unique characteristics of these astrocyte subpopulation. Although Olig2 has been a historical marker of OPCs and OLs, it is now evident that unique subpopulations of astrocytes within multiple regions of the brain and spinal cord express Olig2 (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>, <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>) and that Olig2 expression is also induced in reactive astrocytes (Chen et al. <xref rid="glia70185-bib-0017" ref-type="bibr">2008</xref>; Marumo et al. <xref rid="glia70185-bib-0038" ref-type="bibr">2013</xref>). Our study identifies cerebellar O2AST as a unique subpopulation of astrocytes sparsely localized throughout the cerebellar lobes but relatively abundant (4.9%) in the CN. Cerebellar O2AST are characterized by a transcriptional profile that sets them apart from other nO2AST that include BG, VA, FA, and myocilin expressing astrocytes. Cerebellar O2AST express classical astrocyte markers, such as <italic toggle="yes">Aldh1L1, Sox9, Slc1a2, Slc1A3, Glul, Sparcl1, Apoe, Aqp4</italic>, and lower low levels of <italic toggle="yes">Gfap</italic>. This agrees with previously published expression profiles of O2AST from other CNS regions (Borgenheimer et al. <xref rid="glia70185-bib-0011" ref-type="bibr">2022</xref>; Lattke et al. <xref rid="glia70185-bib-0035" ref-type="bibr">2021</xref>; Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>, <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). It has been previously reported that spinal cord O2AST also express unique markers, such as <italic toggle="yes">inka2</italic>, <italic toggle="yes">slc7a10, grm3</italic>, and <italic toggle="yes">kcnip3</italic> (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>), while brain O2AST express <italic toggle="yes">slc7a10</italic> (Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>). O2AST also express <italic toggle="yes">S100B</italic> in some brain regions, including olfactory bulb and thalamus (Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>). Interestingly, overlapping expression pattern for GAT‐3 (Slc6a11) and location of O2AST has previously been reported (Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>). <italic toggle="yes">Slc6a11</italic> expression was also reported for spinal cord astrocytes (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>). Our current studies also identify <italic toggle="yes">Slc6a11</italic> as one of the specific markers of cerebellar O2AST besides <italic toggle="yes">Gpc5, Igsf1, Alpl, Hopx</italic> defining O2AST as a transcriptionally distinct subpopulation likely exhibiting specialized functions influenced by Olig2. Notably, the upregulation of <italic toggle="yes">Slc6a11</italic> expression in O2AST emphasizes their likely role in regulating GABAergic neurotransmission, as previously reported (Tatsumi et al. <xref rid="glia70185-bib-0056" ref-type="bibr">2018</xref>), and a conserved function of O2AST in maintaining inhibitory synaptic balance and overall homeostasis. Enhanced expression of <italic toggle="yes">Foxb1</italic> and <italic toggle="yes">Hey1</italic> suggests that O2AST may be implicated in cerebellar circuit refinement during postnatal developmental (Sakamoto et al. <xref rid="glia70185-bib-0051" ref-type="bibr">2003</xref>; Zhang et al. <xref rid="glia70185-bib-0069" ref-type="bibr">2017</xref>), while expression of <italic toggle="yes">Gpc5</italic> and <italic toggle="yes">Igfbp2</italic> implies their pivotal role in synapse maturation, extracellular matrix remodeling, and neurotrophic support (Bosworth et al. <xref rid="glia70185-bib-0012" ref-type="bibr">2025</xref>; Sun et al. <xref rid="glia70185-bib-0054" ref-type="bibr">2024</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). Conversely, downregulation of <italic toggle="yes">Hopx</italic> and <italic toggle="yes">Vim</italic> aligns with the differentiation of O2AST and suggests that it occurs earlier than that of nO2AST. Notably, the O2AST gene signature showed minimal overlap with OPCs and Ols, reinforcing the conclusion that O2AST are not intermediates of the oligodendroglial lineage. Instead, the persistent expression of Olig2 in astrocytes may reflect a lineage imprint or a regulatory mechanism that confers distinct functional properties. Collectively cerebellar O2AST are a specialized astrocyte subpopulation with distinct molecular profiles. Our initial experiments addressing putative physiological functions of O2AST demonstrate that deletion of Olig2 from astrocytes diminishes locomotion of mice. While this finding cannot be specifically attributed to astrocytes localized in the CN, it demonstrates that deletion of Olig2 specifically from astrocytes has functional consequences.</p><p>The differentiation and maturation of astrocyte subpopulations involves activation of unique transcriptional programs that are essential for acquiring specialized functions (Bocchi et al. <xref rid="glia70185-bib-0010" ref-type="bibr">2025</xref>; Chaboub and Deneen <xref rid="glia70185-bib-0014" ref-type="bibr">2012</xref>; Farmer and Murai <xref rid="glia70185-bib-0023" ref-type="bibr">2017</xref>). In this study, we observed upregulated expression of <italic toggle="yes">Mt1</italic>, <italic toggle="yes">Psap</italic>, and <italic toggle="yes">Cd81</italic> in all astrocyte subpopulations at P17, in comparison to P10, underscoring their ongoing differentiation and maturation. These genes are critical for cellular processes, such as metal ion homeostasis, synaptic support, and intercellular communication (Hidalgo et al. <xref rid="glia70185-bib-0026" ref-type="bibr">2001</xref>; Kelic et al. <xref rid="glia70185-bib-0032" ref-type="bibr">2001</xref>; West et al. <xref rid="glia70185-bib-0064" ref-type="bibr">2008</xref>). Conversely, the downregulation of immature astrocyte genes, <italic toggle="yes">Fabp7</italic> and <italic toggle="yes">Gm42418</italic>, signifies the transition to a more differentiated state (Ali et al. <xref rid="glia70185-bib-0001" ref-type="bibr">2024</xref>; Ebrahimi et al. <xref rid="glia70185-bib-0021" ref-type="bibr">2016</xref>).</p><p>While nO2AST, encompassing BG, VA, FA, and myocilin‐expressing astrocytes, follow their own differentiation programs, differentiation of O2AST exhibits additional unique transcriptional changes, as evidenced by the upregulation of genes such as <italic toggle="yes">Atp1b2</italic>, <italic toggle="yes">Aldoc</italic>, <italic toggle="yes">Grina</italic>, and <italic toggle="yes">Aatk</italic>, which contribute to metabolic regulation, glycolytic function, synaptic modulation, and cell survival (Batiuk et al. <xref rid="glia70185-bib-0004" ref-type="bibr">2020</xref>; Bocchi et al. <xref rid="glia70185-bib-0010" ref-type="bibr">2025</xref>; Jimenez‐Gonzalez et al. <xref rid="glia70185-bib-0030" ref-type="bibr">2019</xref>). Thus, O2AST seems to follow a distinct differentiation trajectory compared with nO2AST during cerebellar development, which is likely regulated by Olig2.</p><p>Although YY1 differentially affects maturation of cerebellar astrocyte subpopulations (Mockenhaupt et al. <xref rid="glia70185-bib-0039" ref-type="bibr">2023</xref>), its effects on O2AST have not been previously reported. Downregulation of <italic toggle="yes">Mt1</italic>, <italic toggle="yes">Psap</italic>, and <italic toggle="yes">Grina</italic> expression and upregulation of <italic toggle="yes">Fabp7</italic> and <italic toggle="yes">Hopx</italic> in <italic toggle="yes">Yy1</italic>‐deficient O2AST suggests impaired maturation in the absence of <italic toggle="yes">Yy1</italic>. <italic toggle="yes">Yy1</italic> deletion in O2AST also diminished expression of <italic toggle="yes">Cd38</italic>, <italic toggle="yes">Fgfr3</italic>, <italic toggle="yes">Clu</italic>, and <italic toggle="yes">Aqp4</italic>, which promote synaptogenesis (Hattori et al. <xref rid="glia70185-bib-0025" ref-type="bibr">2023</xref>), fibroblast growth factor signaling (Pringle et al. <xref rid="glia70185-bib-0047" ref-type="bibr">2003</xref>), extracellular matrix interactions (Chen et al. <xref rid="glia70185-bib-0016" ref-type="bibr">2021</xref>), and water homeostasis (Szczygielski et al. <xref rid="glia70185-bib-0055" ref-type="bibr">2021</xref>), respectively. Thus, <italic toggle="yes">Yy1</italic> appears to play a central role in regulating distinct molecular pathways in O2AST. Furthermore, the predominance of O2AST in the CN and their temporal response to <italic toggle="yes">Yy1</italic> deletion underscore the complex role of YY1 in regulating astrocyte identity and function. The observed increase in the numbers of O2AST (OLIG2<sup>+</sup>EGFP<sup>+</sup> cells) within the CN and MOL at P17 and in adult animals point to a temporally and spatially regulated influence of <italic toggle="yes">Yy1</italic> on O2AST differentiation. Morphological analyses further emphasize a subtype‐specific impact of <italic toggle="yes">Yy1</italic> deletion, with O2AST exhibiting increased complexity and GFAP expression, while nO2AST displayed reduced complexity. Downregulation of cerebellar O2AST markers, including <italic toggle="yes">Slc6a11</italic>, <italic toggle="yes">Igsf1</italic>, <italic toggle="yes">Hopx</italic>, and <italic toggle="yes">Alpl</italic>, following <italic toggle="yes">Yy1</italic> deletion suggests that <italic toggle="yes">Yy1</italic> is critical for preserving O2AST identity and function. The observed development of inflammatory response in the CN of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> animals highlights an additional functional consequence of <italic toggle="yes">Yy1</italic> deletion. Given the established role of astrocytes in maintaining homeostasis and modulating neuroinflammation, this response likely arises from compromised astrocytic support functions (Pajarillo et al. <xref rid="glia70185-bib-0044" ref-type="bibr">2020</xref>, <xref rid="glia70185-bib-0045" ref-type="bibr">2022</xref>).</p><p>We did identify significant increases in numbers of OPCs in the CN of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> mice; however, <italic toggle="yes">Yy1</italic> was not deleted in OPCs or OLs. Our expression analysis of markers of OPCs, premyelinating‐OLs, and mature OLs in the CN also indicated accumulation of OPCs, but no effect of premyelinating‐OLs, and mature OLs. These data suggest that <italic toggle="yes">Yy1</italic> deletion from astrocytes induces astrocyte‐driven secondary changes during OPC differentiation. This also supports previous reports indicating that astrocyte‐oligodendrocyte interactions are fundamental to the development and maintenance of OLs, as well as remyelination in the CNS (Hu et al. <xref rid="glia70185-bib-0028" ref-type="bibr">2023</xref>; Molina‐Gonzalez et al. <xref rid="glia70185-bib-0041" ref-type="bibr">2023</xref>). Indeed, <italic toggle="yes">Nfe2l2</italic> (encoding Nrf2) expression was significantly upregulated in both O2AST and nO2AST in the cerebella of <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> animals. This agrees with previous reports that elevated Nrf2 levels in astrocytes impair OL development, as Nrf2 disrupts the delicate balance required for myelination (Molina‐Gonzalez et al. <xref rid="glia70185-bib-0041" ref-type="bibr">2023</xref>). Thus, <italic toggle="yes">Yy1</italic> controls astrocytic Nrf2 expression to maintain an optimal environment for OL differentiation. We also found diminished <italic toggle="yes">Gja1</italic> (encoding Connexin 43, Cx43) expression beginning at P10 in nO2AST and at P17 in O2AST, coinciding with timing of astrocytic <italic toggle="yes">Yy1</italic> deletion. Since communication by gap junctions, involving particularly Cx43 and Cx30 are essential for astrocyte‐oligodendrocyte communication during CNS development (Domingues et al. <xref rid="glia70185-bib-0019" ref-type="bibr">2016</xref>), the decline in Cx43 expression likely disrupts gap junction‐mediated signaling between astrocytes and oligodendrocytes, contributing to delayed OLs maturation and functional deficits. These findings suggest that astrocytic <italic toggle="yes">Yy1</italic> is essential for proper structure and functions of astrocytes and its absence may lead to astrocyte dysfunction, inflammation, and improper myelination.</p><p>Our current findings add additional information to several previous reports describing O2AST (Ohayon et al. <xref rid="glia70185-bib-0043" ref-type="bibr">2021</xref>; Tatsumi et al. <xref rid="glia70185-bib-0057" ref-type="bibr">2021</xref>; Wang et al. <xref rid="glia70185-bib-0060" ref-type="bibr">2021</xref>; Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>). While our current data suggest that this relatively rare subset of astrocytes is present in the CN, it remains possible that sustained expression of Olig2 by these cells is induced by non‐physiological stimuli, such as ongoing inflammation (Chen et al. <xref rid="glia70185-bib-0017" ref-type="bibr">2008</xref>; Marumo et al. <xref rid="glia70185-bib-0038" ref-type="bibr">2013</xref>).</p><p>In summary, our current studies identify a subpopulation of cerebellar Olig2 expressing astrocytes that are abundant in the CN. These cells exhibit unique transcriptional profiles that are distinct from other cerebellar astrocyte subpopulations. They are likely involved in GABAergic neurotransmission, synaptic modulation, and neurodevelopment. Ablation of Olig2 expression from astrocytes impacted locomotion of mice, demonstrating their importance. Furthermore, <italic toggle="yes">Yy1</italic> emerges as a critical regulator of these cells that controls their numbers and allows for their proper differentiation. Deletion of astrocytic <italic toggle="yes">Yy1</italic> disrupts proper OL differentiation, likely by affecting cross‐communication with OPCs. These findings not only advance our understanding of astrocyte diversity in the cerebellum but also provide new insights into the interplay between astrocytes and cells of oligodendrocyte lineage.</p></sec><sec id="glia70185-sec-0022"><title>Author Contributions</title><p>M.Z.‐K. planned and performed most experiments, with assistance from K.M.T., L.D., M.A.K., J.H., K.M., S.M., A.M., and S.K.S. T.K. conceived the study and contributed to planning of the experiments. T.K. and M.Z.‐K. drafted the manuscript. All authors read and approved the final manuscript.</p></sec><sec id="glia70185-sec-0020"><title>Funding</title><p>This work was supported by NIH grants R01NS122986, R21NS102802, and R21NS118359 (to T.K.) and R01NS126504 (to S.K.S.). Microscopy was performed at the VCU Microscopy Facility, supported in part by funding from NIH‐NCI Cancer Center Support Grant P30 CA016059.</p></sec><sec id="glia70185-sec-0023"><title>Ethics Statement</title><p>Mice were housed at Virginia Commonwealth University according to guidelines of the Institutional Animal Care and Use Committee (IACUC). The mouse protocols were approved by IACUC.</p></sec><sec sec-type="conclusions" id="glia70185-sec-0024"><title>Consent</title><p>The authors have nothing to report.</p></sec><sec sec-type="COI-statement" id="glia70185-sec-0021"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="glia70185-supitem-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S1:</bold> Differential expression profiles of O2AST and nO2AST. Volcano plot visualization of differentially expressed genes in O2AST versus nO2AST at P10 (A) and P17 (B).</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="GLIA-74-0-s005.tif" position="float" orientation="portrait"><?suppdata-name GLIA-74-0-s005.tif?><?suppdata-size 4372724?><?suppdata-md5 687150060949a47d35ae51c8ad6564fb?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type tiff?><?suppdata-cloudpmc-urn urn:app:c434/13262022/687150060949/GLIA-74-0-s005.tif?></media></supplementary-material><supplementary-material id="glia70185-supitem-0002" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S2:</bold> Analysis of O2AST candidate gene expression. (A) Violin plot visualization of expression of the top 30 genes identified by unsupervised analysis in O2AST, nO2AST, OPC, and OL in WT (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) animals (P10 and P17 combined). (B) Dot plot expression analysis for the top 12 O2AST genes in other subtypes of cells (Neurons, Prog‐Neuron, Epithelial cells, Pericytes, and Microglia).</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="GLIA-74-0-s002.jpg" position="float" orientation="portrait"><?suppdata-name GLIA-74-0-s002.jpg?><?suppdata-size 1743792?><?suppdata-md5 9f69e2cb1388da45dfdcb689d3631e1d?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type jpeg?><?suppdata-cloudpmc-urn urn:app:c434/13262022/9f69e2cb1388/GLIA-74-0-s002.jpg?></media></supplementary-material><supplementary-material id="glia70185-supitem-0003" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S3:</bold> Correlation of GFAP and YY1 expression in astrocytes. (A) Volcano plot visualization of differentially expressed genes during differentiation of nO2AST (P17 vs. P10) in WT (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) animals. (B) Violin plot visualization of expression of <italic toggle="yes">Gfap</italic>, <italic toggle="yes">Yy1</italic>, and <italic toggle="yes">Olig2</italic> expression in O2AST, nO2AST, OPC, and OL in WT (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) animals at P10 and P17. (C) <italic toggle="yes">Gfap +</italic> and <italic toggle="yes">Gfap−</italic> cells per cluster (percentages). (D) <italic toggle="yes">Yy1</italic>+ and <italic toggle="yes">Yy1−</italic> cells per cluster (percentages). (E) Correlation between <italic toggle="yes">Gfap</italic> expression percentage and mean <italic toggle="yes">Yy1</italic> expression. (F) Volcano plot visualization of differentially expressed genes in nO2AST in <italic toggle="yes">Yy1ΔAST</italic> versus WT (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) animals at P17. (G, H) UMAP visualization of Olig2 expression in P3 and adult astrocytes (Lattke et al. <xref rid="glia70185-bib-0035" ref-type="bibr">2021</xref>) and P7 and adult astrocytes (Zhou et al. <xref rid="glia70185-bib-0070" ref-type="bibr">2025</xref>).</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="GLIA-74-0-s001.tif" position="float" orientation="portrait"><?suppdata-name GLIA-74-0-s001.tif?><?suppdata-size 18786792?><?suppdata-md5 6dc477d1732dba9662ff1f786d16d099?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type tiff?><?suppdata-cloudpmc-urn urn:app:c434/13262022/6dc477d1732d/GLIA-74-0-s001.tif?></media></supplementary-material><supplementary-material id="glia70185-supitem-0004" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S4:</bold> Regional and morphological characterization of Olig2‐possitive cells in the cerebella at P10. (A) Representative IF images of Olig2 immunostaining of cerebella of the <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup>) and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST; Aldh1L1‐EGFP</italic>
+</sup> (<italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup>) mice at P10. The cerebellar nuclei (CN), granule cell layer (GCL), white matter (WM), and molecular layer (MOL). Scale bars = 100 and 20 μm. (B) Quantification of Olig2+/EGFP+ cells (O2AST) across cerebellar regions (CN, GCL, WM, and MOL). (C) Quantification of Olig2+/EGFP− cells (OL + OPC) in the cerebellar regions. (D) Total number of Olig2+ cells in the cerebellar regions. (E) Morphological analysis of O2AST. (F) Morphological analysis of nO2AST (Olig2−/EGFP+). (B–F) Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, non‐significant (ns), <italic toggle="yes">n</italic> = 3 biological replicates per group.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="GLIA-74-0-s004.tif" position="float" orientation="portrait"><?suppdata-name GLIA-74-0-s004.tif?><?suppdata-size 41371740?><?suppdata-md5 9195055b9915597b84c693475ae64a22?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type tiff?><?suppdata-cloudpmc-urn urn:app:c434/13262022/9195055b9915/GLIA-74-0-s004.tif?></media></supplementary-material><supplementary-material id="glia70185-supitem-0005" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S5:</bold> Knock out of Olig2 expression in astrocytes in vitro but not CC1‐positive cells in vivo. (A) Representative IF images of Olig2, GFAP, and EGFP immunostaining of primary astrocyte cultures from Rosa26‐floxed STOP‐Cas9 knock‐in mice infected either with control GEARBOCS (Ctrl‐G) or GEARBOCS targeting Olig2 (Olig2‐G). Scale bars = 20 μm. (B) Quantification of Olig2+/EGFP+ cells. <italic toggle="yes">n</italic> = 9 and 8; mean ± SEM, <italic toggle="yes">t</italic>‐test, ***<italic toggle="yes">p</italic> &lt; 0.001. (C) Representative IF images of Olig2, CC1, and EGFP immunostaining of CN of Rosa26‐floxed STOP‐Cas9 knock‐in mice infected either with control GEARBOCS (Ctrl‐G) or GEARBOCS targeting Olig2 (Olig2‐G). Scale bars = 20 μm. (D) Quantification of Olig2+/CC1+ cells in the CN. <italic toggle="yes">n</italic> = 7, 8; 3 animals per group; mean ± SEM, <italic toggle="yes">t</italic>‐test, ns, non‐specific.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="GLIA-74-0-s003.jpg" position="float" orientation="portrait"><?suppdata-name GLIA-74-0-s003.jpg?><?suppdata-size 5419233?><?suppdata-md5 233aa1e0c466ccd416b21a53a0074a36?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type jpeg?><?suppdata-cloudpmc-urn urn:app:c434/13262022/233aa1e0c466/GLIA-74-0-s003.jpg?></media></supplementary-material><supplementary-material id="glia70185-supitem-0006" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Figure S6:</bold> Deletion of astrocytic <italic toggle="yes">Yy1</italic> affects the expression of oligodendrocyte markers. (A) Expression analysis of markers associated with various stages of the oligodendrocyte lineage differentiation in <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">LoxP/LoxP</italic>
+</sup> and <italic toggle="yes">Yy1</italic>
+<sup>
+<italic toggle="yes">ΔAST</italic>
+</sup> animals at P10 and P17. Data are presented as mean ± SEM, <italic toggle="yes">t</italic>‐test, *<italic toggle="yes">p</italic> &lt; 0.05, **<italic toggle="yes">p</italic> &lt; 0.01, ***<italic toggle="yes">p</italic> &lt; 0.001. (B) Violin plot visualization of the expression of <italic toggle="yes">Gja1</italic> (connexin 43, Cx43), and <italic toggle="yes">Gjb6</italic> (Cx30) across clusters of cells expressing Olig2.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="GLIA-74-0-s006.jpg" position="float" orientation="portrait"><?suppdata-name GLIA-74-0-s006.jpg?><?suppdata-size 4238013?><?suppdata-md5 affaf314ef88daabb4bce4969f7fb7b4?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type image?><?suppdata-mime-sub-type jpeg?><?suppdata-cloudpmc-urn urn:app:c434/13262022/affaf314ef88/GLIA-74-0-s006.jpg?></media></supplementary-material></sec></body><back><ack id="glia70185-sec-1022"><title>Acknowledgments</title><p>The authors have nothing to report.</p></ack><sec sec-type="data-availability" id="glia70185-sec-0027"><title>Data Availability Statement</title><p>The data that support the findings of this study are available from the corresponding author upon reasonable request. scRNAseq data publicly available/deposited, <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmc:entrez-geo" xlink:href="GSE166792">GSE166792</ext-link>. Individual requests for shipment of mice to AAALAC accredited institutions will be honored. An appropriately signed MTA will be required, as well as permission from original source of the Aldh1l1‐EGFP mice (Dr. Cagla Eroglu).</p></sec><ref-list content-type="cited-references" id="glia70185-bibl-0001"><title>References</title><ref id="glia70185-bib-0001"><mixed-citation publication-type="journal" id="glia70185-cit-0001">
+<string-name name-style="western">
+<surname>Ali</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Garcia</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. P.</given-names>
+<surname>Lunkes</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>Single Cell Transcriptome Analysis of the THY‐Tau22 Mouse Model of Alzheimer's Disease Reveals Sex‐Dependent Dysregulations</article-title>.” <source>Cell Death Discovery</source>
+<volume>10</volume>, no. <issue>1</issue>: <fpage>119</fpage>. <pub-id pub-id-type="doi">10.1038/s41420-024-01885-9</pub-id>.<pub-id pub-id-type="pmid">38453894</pub-id>
+<pub-id pub-id-type="pmcid">PMC10920792</pub-id></mixed-citation></ref><ref id="glia70185-bib-0002"><mixed-citation publication-type="journal" id="glia70185-cit-0002">
+<string-name name-style="western">
+<surname>Araujo</surname>, <given-names>A. P. B.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Carpi‐Santos</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F. C. A.</given-names>
+<surname>Gomes</surname>
+</string-name>. <year>2019</year>. “<article-title>The Role of Astrocytes in the Development of the Cerebellum</article-title>.” <source>Cerebellum</source>
+<volume>18</volume>, no. <issue>6</issue>: <fpage>1017</fpage>–<lpage>1035</lpage>. <pub-id pub-id-type="doi">10.1007/s12311-019-01046-0</pub-id>.<pub-id pub-id-type="pmid">31218566</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0003"><mixed-citation publication-type="journal" id="glia70185-cit-0003">
+<string-name name-style="western">
+<surname>Atchison</surname>, <given-names>M. L.</given-names>
+</string-name>
+<year>2014</year>. “<article-title>Function of YY1 in Long‐Distance DNA Interactions</article-title>.” <source>Frontiers in Immunology</source>
+<volume>5</volume>: <elocation-id>45</elocation-id>. <pub-id pub-id-type="doi">10.3389/fimmu.2014.00045</pub-id>.<pub-id pub-id-type="pmid">24575094</pub-id>
+<pub-id pub-id-type="pmcid">PMC3918653</pub-id></mixed-citation></ref><ref id="glia70185-bib-0004"><mixed-citation publication-type="journal" id="glia70185-cit-0004">
+<string-name name-style="western">
+<surname>Batiuk</surname>, <given-names>M. Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Martirosyan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Wahis</surname>
+</string-name>, et al. <year>2020</year>. “<article-title>Identification of Region‐Specific Astrocyte Subtypes at Single Cell Resolution</article-title>.” <source>Nature Communications</source>
+<volume>11</volume>, no. <issue>1</issue>: <fpage>1220</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-019-14198-8</pub-id>.<pub-id pub-id-type="pmcid">PMC7058027</pub-id><pub-id pub-id-type="pmid">32139688</pub-id></mixed-citation></ref><ref id="glia70185-bib-0005"><mixed-citation publication-type="journal" id="glia70185-cit-0005">
+<string-name name-style="western">
+<surname>Beagan</surname>, <given-names>J. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. T.</given-names>
+<surname>Duong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. R.</given-names>
+<surname>Titus</surname>
+</string-name>, et al. <year>2017</year>. “<article-title>YY1 and CTCF Orchestrate a 3D Chromatin Looping Switch During Early Neural Lineage Commitment</article-title>.” <source>Genome Research</source>
+<volume>27</volume>, no. <issue>7</issue>: <fpage>1139</fpage>–<lpage>1152</lpage>. <pub-id pub-id-type="doi">10.1101/gr.215160.116</pub-id>.<pub-id pub-id-type="pmid">28536180</pub-id>
+<pub-id pub-id-type="pmcid">PMC5495066</pub-id></mixed-citation></ref><ref id="glia70185-bib-0006"><mixed-citation publication-type="journal" id="glia70185-cit-0006">
+<string-name name-style="western">
+<surname>Becht</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>McInnes</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Healy</surname>
+</string-name>, et al. <year>2018</year>. “<article-title>Dimensionality Reduction for Visualizing Single‐Cell Data Using UMAP</article-title>.” <source>Nature Biotechnology</source>
+<volume>37</volume>: <fpage>38</fpage>–<lpage>44</lpage>. <pub-id pub-id-type="doi">10.1038/nbt.4314</pub-id>.<pub-id pub-id-type="pmid">30531897</pub-id></mixed-citation></ref><ref id="glia70185-bib-0007"><mixed-citation publication-type="journal" id="glia70185-cit-0007">
+<string-name name-style="western">
+<surname>Ben Haim</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Ceyzeriat</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Carrillo‐de Sauvage</surname>
+</string-name>, et al. <year>2015</year>. “<article-title>The JAK/STAT3 Pathway Is a Common Inducer of Astrocyte Reactivity in Alzheimer's and Huntington's Diseases</article-title>.” <source>Journal of Neuroscience</source>
+<volume>35</volume>, no. <issue>6</issue>: <fpage>2817</fpage>–<lpage>2829</lpage>. <pub-id pub-id-type="doi">10.1523/JNEUROSCI.3516-14.2015</pub-id>.<pub-id pub-id-type="pmid">25673868</pub-id>
+<pub-id pub-id-type="pmcid">PMC6605603</pub-id></mixed-citation></ref><ref id="glia70185-bib-0008"><mixed-citation publication-type="journal" id="glia70185-cit-0008">
+<string-name name-style="western">
+<surname>Bengani</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Mendiratta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Maini</surname>
+</string-name>, et al. <year>2013</year>. “<article-title>Identification and Validation of a Putative Polycomb Responsive Element in the Human Genome</article-title>.” <source>PLoS One</source>
+<volume>8</volume>, no. <issue>6</issue>: <elocation-id>e67217</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pone.0067217</pub-id>.<pub-id pub-id-type="pmid">23805300</pub-id>
+<pub-id pub-id-type="pmcid">PMC3689693</pub-id></mixed-citation></ref><ref id="glia70185-bib-0009"><mixed-citation publication-type="journal" id="glia70185-cit-0009">
+<string-name name-style="western">
+<surname>Bindu</surname>, <given-names>D. S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J. T.</given-names>
+<surname>Savage</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Brose</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>GEARBOCS: An Adeno Associated Virus Tool for In Vivo Gene Editing in Astrocytes</article-title>.” <source>BioRxiv</source>. <pub-id pub-id-type="doi">10.1101/2023.01.17.524433</pub-id>.</mixed-citation></ref><ref id="glia70185-bib-0010"><mixed-citation publication-type="journal" id="glia70185-cit-0010">
+<string-name name-style="western">
+<surname>Bocchi</surname>, <given-names>R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Thorwirth</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Simon‐Ebert</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Astrocyte Heterogeneity Reveals Region‐Specific Astrogenesis in the White Matter</article-title>.” <source>Nature Neuroscience</source>
+<volume>28</volume>, no. <issue>3</issue>: <fpage>457</fpage>–<lpage>469</lpage>. <pub-id pub-id-type="doi">10.1038/s41593-025-01878-6</pub-id>.<pub-id pub-id-type="pmid">39994409</pub-id>
+<pub-id pub-id-type="pmcid">PMC11893471</pub-id></mixed-citation></ref><ref id="glia70185-bib-0011"><mixed-citation publication-type="journal" id="glia70185-cit-0011">
+<string-name name-style="western">
+<surname>Borgenheimer</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Hamel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Sheeler</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>Single Nuclei RNA Sequencing Investigation of the Purkinje Cell and Glial Changes in the Cerebellum of Transgenic Spinocerebellar Ataxia Type 1 Mice</article-title>.” <source>Frontiers in Cellular Neuroscience</source>
+<volume>16</volume>: <elocation-id>998408</elocation-id>. <pub-id pub-id-type="doi">10.3389/fncel.2022.998408</pub-id>.<pub-id pub-id-type="pmid">36457352</pub-id>
+<pub-id pub-id-type="pmcid">PMC9706545</pub-id></mixed-citation></ref><ref id="glia70185-bib-0012"><mixed-citation publication-type="journal" id="glia70185-cit-0012">
+<string-name name-style="western">
+<surname>Bosworth</surname>, <given-names>A. P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Contreras</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Sancho</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Astrocyte Glypican 5 Regulates Synapse Maturation and Stabilization</article-title>.” <source>Cell Reports</source>
+<volume>44</volume>, no. <issue>3</issue>: <elocation-id>115374</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.celrep.2025.115374</pub-id>.<pub-id pub-id-type="pmid">40048429</pub-id>
+<pub-id pub-id-type="pmcid">PMC12013928</pub-id></mixed-citation></ref><ref id="glia70185-bib-0013"><mixed-citation publication-type="journal" id="glia70185-cit-0013">
+<string-name name-style="western">
+<surname>Cai</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W. H.</given-names>
+<surname>Cai</surname>
+</string-name>, et al. <year>2007</year>. “<article-title>A Crucial Role for Olig2 in White Matter Astrocyte Development</article-title>.” <source>Development</source>
+<volume>134</volume>, no. <issue>10</issue>: <fpage>1887</fpage>–<lpage>1899</lpage>. <pub-id pub-id-type="doi">10.1242/dev.02847</pub-id>.<pub-id pub-id-type="pmid">17428828</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0014"><mixed-citation publication-type="journal" id="glia70185-cit-0014">
+<string-name name-style="western">
+<surname>Chaboub</surname>, <given-names>L. S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Deneen</surname>
+</string-name>. <year>2012</year>. “<article-title>Developmental Origins of Astrocyte Heterogeneity: The Final Frontier of CNS Development</article-title>.” <source>Developmental Neuroscience</source>
+<volume>34</volume>, no. <issue>5</issue>: <fpage>379</fpage>–<lpage>388</lpage>. <pub-id pub-id-type="doi">10.1159/000343723</pub-id>.<pub-id pub-id-type="pmid">23147551</pub-id>
+<pub-id pub-id-type="pmcid">PMC3576470</pub-id></mixed-citation></ref><ref id="glia70185-bib-0015"><mixed-citation publication-type="journal" id="glia70185-cit-0015">
+<string-name name-style="western">
+<surname>Chai</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Diaz‐Castro</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Shigetomi</surname>
+</string-name>, et al. <year>2017</year>. “<article-title>Neural Circuit‐Specialized Astrocytes: Transcriptomic, Proteomic, Morphological, and Functional Evidence</article-title>.” <source>Neuron</source>
+<volume>95</volume>, no. <issue>3</issue>: <fpage>531</fpage>–<lpage>549.e539</lpage>. <pub-id pub-id-type="doi">10.1016/j.neuron.2017.06.029</pub-id>.<pub-id pub-id-type="pmid">28712653</pub-id>
+<pub-id pub-id-type="pmcid">PMC5811312</pub-id></mixed-citation></ref><ref id="glia70185-bib-0016"><mixed-citation publication-type="journal" id="glia70185-cit-0016">
+<string-name name-style="western">
+<surname>Chen</surname>, <given-names>F.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D. B.</given-names>
+<surname>Swartzlander</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Ghosh</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. D.</given-names>
+<surname>Fryer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Wang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Zheng</surname>
+</string-name>. <year>2021</year>. “<article-title>Clusterin Secreted From Astrocyte Promotes Excitatory Synaptic Transmission and Ameliorates Alzheimer's Disease Neuropathology</article-title>.” <source>Molecular Neurodegeneration</source>
+<volume>16</volume>, no. <issue>1</issue>: <fpage>5</fpage>. <pub-id pub-id-type="doi">10.1186/s13024-021-00426-7</pub-id>.<pub-id pub-id-type="pmid">33517893</pub-id>
+<pub-id pub-id-type="pmcid">PMC7849119</pub-id></mixed-citation></ref><ref id="glia70185-bib-0017"><mixed-citation publication-type="journal" id="glia70185-cit-0017">
+<string-name name-style="western">
+<surname>Chen</surname>, <given-names>Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D. K.</given-names>
+<surname>Miles</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Hoang</surname>
+</string-name>, et al. <year>2008</year>. “<article-title>The Basic Helix‐Loop‐Helix Transcription Factor olig2 Is Critical for Reactive Astrocyte Proliferation After Cortical Injury</article-title>.” <source>Journal of Neuroscience</source>
+<volume>28</volume>, no. <issue>43</issue>: <fpage>10983</fpage>–<lpage>10989</lpage>. <pub-id pub-id-type="doi">10.1523/JNEUROSCI.3545-08.2008</pub-id>.<pub-id pub-id-type="pmid">18945906</pub-id>
+<pub-id pub-id-type="pmcid">PMC2631240</pub-id></mixed-citation></ref><ref id="glia70185-bib-0018"><mixed-citation publication-type="journal" id="glia70185-cit-0018">
+<string-name name-style="western">
+<surname>Chiang</surname>, <given-names>C. M.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>R. G.</given-names>
+<surname>Roeder</surname>
+</string-name>. <year>1995</year>. “<article-title>Cloning of an Intrinsic Human TFIID Subunit That Interacts With Multiple Transcriptional Activators</article-title>.” <source>Science</source>
+<volume>267</volume>, no. <issue>5197</issue>: <fpage>531</fpage>–<lpage>536</lpage>.<pub-id pub-id-type="pmid">7824954</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1126/science.7824954</pub-id></mixed-citation></ref><ref id="glia70185-bib-0019"><mixed-citation publication-type="journal" id="glia70185-cit-0019">
+<string-name name-style="western">
+<surname>Domingues</surname>, <given-names>H. S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C. C.</given-names>
+<surname>Portugal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Socodato</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. B.</given-names>
+<surname>Relvas</surname>
+</string-name>. <year>2016</year>. “<article-title>Oligodendrocyte, Astrocyte, and Microglia Crosstalk in Myelin Development, Damage, and Repair</article-title>.” <source>Frontiers in Cell and Development Biology</source>
+<volume>4</volume>: <elocation-id>71</elocation-id>. <pub-id pub-id-type="doi">10.3389/fcell.2016.00071</pub-id>.<pub-id pub-id-type="pmcid">PMC4923166</pub-id><pub-id pub-id-type="pmid">27551677</pub-id></mixed-citation></ref><ref id="glia70185-bib-0020"><mixed-citation publication-type="journal" id="glia70185-cit-0020">
+<string-name name-style="western">
+<surname>Dong</surname>, <given-names>X.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>K. M.</given-names>
+<surname>Kwan</surname>
+</string-name>. <year>2020</year>. “<article-title>Yin Yang 1 Is Critical for Mid‐Hindbrain Neuroepithelium Development and Involved in Cerebellar Agenesis</article-title>.” <source>Molecular Brain</source>
+<volume>13</volume>, no. <issue>1</issue>: <fpage>104</fpage>. <pub-id pub-id-type="doi">10.1186/s13041-020-00643-z</pub-id>.<pub-id pub-id-type="pmid">32703236</pub-id>
+<pub-id pub-id-type="pmcid">PMC7376712</pub-id></mixed-citation></ref><ref id="glia70185-bib-0021"><mixed-citation publication-type="journal" id="glia70185-cit-0021">
+<string-name name-style="western">
+<surname>Ebrahimi</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Yamamoto</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Sharifi</surname>
+</string-name>, et al. <year>2016</year>. “<article-title>Astrocyte‐Expressed FABP7 Regulates Dendritic Morphology and Excitatory Synaptic Function of Cortical Neurons</article-title>.” <source>Glia</source>
+<volume>64</volume>, no. <issue>1</issue>: <fpage>48</fpage>–<lpage>62</lpage>. <pub-id pub-id-type="doi">10.1002/glia.22902</pub-id>.<pub-id pub-id-type="pmid">26296243</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0022"><mixed-citation publication-type="journal" id="glia70185-cit-0022">
+<string-name name-style="western">
+<surname>Farmer</surname>, <given-names>W. T.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Abrahamsson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chierzi</surname>
+</string-name>, et al. <year>2016</year>. “<article-title>Neurons Diversify Astrocytes in the Adult Brain Through Sonic Hedgehog Signaling</article-title>.” <source>Science</source>
+<volume>351</volume>, no. <issue>6275</issue>: <fpage>849</fpage>–<lpage>854</lpage>. <pub-id pub-id-type="doi">10.1126/science.aab3103</pub-id>.<pub-id pub-id-type="pmid">26912893</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0023"><mixed-citation publication-type="journal" id="glia70185-cit-0023">
+<string-name name-style="western">
+<surname>Farmer</surname>, <given-names>W. T.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Murai</surname>
+</string-name>. <year>2017</year>. “<article-title>Resolving Astrocyte Heterogeneity in the CNS</article-title>.” <source>Frontiers in Cellular Neuroscience</source>
+<volume>11</volume>: <elocation-id>300</elocation-id>. <pub-id pub-id-type="doi">10.3389/fncel.2017.00300</pub-id>.<pub-id pub-id-type="pmid">29021743</pub-id>
+<pub-id pub-id-type="pmcid">PMC5623685</pub-id></mixed-citation></ref><ref id="glia70185-bib-0024"><mixed-citation publication-type="journal" id="glia70185-cit-0024">
+<string-name name-style="western">
+<surname>Ge</surname>, <given-names>W. P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Miyawaki</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F. H.</given-names>
+<surname>Gage</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y. N.</given-names>
+<surname>Jan</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L. Y.</given-names>
+<surname>Jan</surname>
+</string-name>. <year>2012</year>. “<article-title>Local Generation of Glia Is a Major Astrocyte Source in Postnatal Cortex</article-title>.” <source>Nature</source>
+<volume>484</volume>, no. <issue>7394</issue>: <fpage>376</fpage>–<lpage>380</lpage>. <pub-id pub-id-type="doi">10.1038/nature10959</pub-id>.<pub-id pub-id-type="pmid">22456708</pub-id>
+<pub-id pub-id-type="pmcid">PMC3777276</pub-id></mixed-citation></ref><ref id="glia70185-bib-0025"><mixed-citation publication-type="journal" id="glia70185-cit-0025">
+<string-name name-style="western">
+<surname>Hattori</surname>, <given-names>T.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S. M.</given-names>
+<surname>Cherepanov</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Sakaga</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Postnatal Expression of CD38 in Astrocytes Regulates Synapse Formation and Adult Social Memory</article-title>.” <source>EMBO Journal</source>
+<volume>42</volume>, no. <issue>15</issue>: <elocation-id>e111247</elocation-id>. <pub-id pub-id-type="doi">10.15252/embj.2022111247</pub-id>.<pub-id pub-id-type="pmid">37357972</pub-id>
+<pub-id pub-id-type="pmcid">PMC10390870</pub-id></mixed-citation></ref><ref id="glia70185-bib-0026"><mixed-citation publication-type="journal" id="glia70185-cit-0026">
+<string-name name-style="western">
+<surname>Hidalgo</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Aschner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Zatta</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Vasak</surname>
+</string-name>. <year>2001</year>. “<article-title>Roles of the Metallothionein Family of Proteins in the Central Nervous System</article-title>.” <source>Brain Research Bulletin</source>
+<volume>55</volume>, no. <issue>2</issue>: <fpage>133</fpage>–<lpage>145</lpage>. <pub-id pub-id-type="doi">10.1016/s0361-9230(01)00452-x</pub-id>.<pub-id pub-id-type="pmid">11470309</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0027"><mixed-citation publication-type="journal" id="glia70185-cit-0027">
+<string-name name-style="western">
+<surname>Hochstim</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Deneen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Lukaszewicz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Zhou</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. J.</given-names>
+<surname>Anderson</surname>
+</string-name>. <year>2008</year>. “<article-title>Identification of Positionally Distinct Astrocyte Subtypes Whose Identities Are Specified by a Homeodomain Code</article-title>.” <source>Cell</source>
+<volume>133</volume>, no. <issue>3</issue>: <fpage>510</fpage>–<lpage>522</lpage>. <pub-id pub-id-type="doi">10.1016/j.cell.2008.02.046</pub-id>.<pub-id pub-id-type="pmid">18455991</pub-id>
+<pub-id pub-id-type="pmcid">PMC2394859</pub-id></mixed-citation></ref><ref id="glia70185-bib-0028"><mixed-citation publication-type="journal" id="glia70185-cit-0028">
+<string-name name-style="western">
+<surname>Hu</surname>, <given-names>X.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Yu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Liao</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Xiao</surname>
+</string-name>. <year>2023</year>. “<article-title>Interactions Between Astrocytes and Oligodendroglia in Myelin Development and Related Brain Diseases</article-title>.” <source>Neuroscience Bulletin</source>
+<volume>39</volume>, no. <issue>3</issue>: <fpage>541</fpage>–<lpage>552</lpage>. <pub-id pub-id-type="doi">10.1007/s12264-022-00981-z</pub-id>.<pub-id pub-id-type="pmid">36370324</pub-id>
+<pub-id pub-id-type="pmcid">PMC10043111</pub-id></mixed-citation></ref><ref id="glia70185-bib-0029"><mixed-citation publication-type="journal" id="glia70185-cit-0029">
+<string-name name-style="western">
+<surname>Huang</surname>, <given-names>A. Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Woo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Sardar</surname>
+</string-name>, et al. <year>2020</year>. “<article-title>Region‐Specific Transcriptional Control of Astrocyte Function Oversees Local Circuit Activities</article-title>.” <source>Neuron</source>
+<volume>106</volume>, no. <issue>6</issue>: <fpage>992</fpage>–<lpage>1008.e1009</lpage>. <pub-id pub-id-type="doi">10.1016/j.neuron.2020.03.025</pub-id>.<pub-id pub-id-type="pmid">32320644</pub-id>
+<pub-id pub-id-type="pmcid">PMC7879989</pub-id></mixed-citation></ref><ref id="glia70185-bib-0030"><mixed-citation publication-type="journal" id="glia70185-cit-0030">
+<string-name name-style="western">
+<surname>Jimenez‐Gonzalez</surname>, <given-names>V.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Ogalla‐Garcia</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Garcia‐Quintanilla</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Garcia‐Quintanilla</surname>
+</string-name>. <year>2019</year>. “<article-title>Deciphering GRINA/Lifeguard1: Nuclear Location, Ca(2+) Homeostasis and Vesicle Transport</article-title>.” <source>International Journal of Molecular Sciences</source>
+<volume>20</volume>, no. <issue>16</issue>: <elocation-id>4005</elocation-id>. <pub-id pub-id-type="doi">10.3390/ijms20164005</pub-id>.<pub-id pub-id-type="pmid">31426446</pub-id>
+<pub-id pub-id-type="pmcid">PMC6719933</pub-id></mixed-citation></ref><ref id="glia70185-bib-0031"><mixed-citation publication-type="journal" id="glia70185-cit-0031">
+<string-name name-style="western">
+<surname>Karki</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Kim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Smith</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. S.</given-names>
+<surname>Son</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Aschner</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Lee</surname>
+</string-name>. <year>2015</year>. “<article-title>Transcriptional Regulation of the Astrocytic Excitatory Amino Acid Transporter 1 (EAAT1) via NF‐kappaB and Yin Yang 1 (YY1)</article-title>.” <source>Journal of Biological Chemistry</source>
+<volume>290</volume>, no. <issue>39</issue>: <fpage>23725</fpage>–<lpage>23737</lpage>. <pub-id pub-id-type="doi">10.1074/jbc.M115.649327</pub-id>.<pub-id pub-id-type="pmid">26269591</pub-id>
+<pub-id pub-id-type="pmcid">PMC4583050</pub-id></mixed-citation></ref><ref id="glia70185-bib-0032"><mixed-citation publication-type="journal" id="glia70185-cit-0032">
+<string-name name-style="western">
+<surname>Kelic</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Levy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Suarez</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. E.</given-names>
+<surname>Weinstein</surname>
+</string-name>. <year>2001</year>. “<article-title>CD81 Regulates Neuron‐Induced Astrocyte Cell‐Cycle Exit</article-title>.” <source>Molecular and Cellular Neurosciences</source>
+<volume>17</volume>, no. <issue>3</issue>: <fpage>551</fpage>–<lpage>560</lpage>. <pub-id pub-id-type="doi">10.1006/mcne.2000.0955</pub-id>.<pub-id pub-id-type="pmid">11273649</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0033"><mixed-citation publication-type="journal" id="glia70185-cit-0033">
+<string-name name-style="western">
+<surname>Khakh</surname>, <given-names>B. S.</given-names>
+</string-name>
+<year>2019</year>. “<article-title>Astrocyte‐Neuron Interactions in the Striatum: Insights on Identity, Form, and Function</article-title>.” <source>Trends in Neurosciences</source>
+<volume>42</volume>, no. <issue>9</issue>: <fpage>617</fpage>–<lpage>630</lpage>. <pub-id pub-id-type="doi">10.1016/j.tins.2019.06.003</pub-id>.<pub-id pub-id-type="pmid">31351745</pub-id>
+<pub-id pub-id-type="pmcid">PMC6741427</pub-id></mixed-citation></ref><ref id="glia70185-bib-0034"><mixed-citation publication-type="journal" id="glia70185-cit-0034">
+<string-name name-style="western">
+<surname>Khakh</surname>, <given-names>B. S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M. V.</given-names>
+<surname>Sofroniew</surname>
+</string-name>. <year>2015</year>. “<article-title>Diversity of Astrocyte Functions and Phenotypes in Neural Circuits</article-title>.” <source>Nature Neuroscience</source>
+<volume>18</volume>, no. <issue>7</issue>: <fpage>942</fpage>–<lpage>952</lpage>. <pub-id pub-id-type="doi">10.1038/nn.4043</pub-id>.<pub-id pub-id-type="pmid">26108722</pub-id>
+<pub-id pub-id-type="pmcid">PMC5258184</pub-id></mixed-citation></ref><ref id="glia70185-bib-0035"><mixed-citation publication-type="journal" id="glia70185-cit-0035">
+<string-name name-style="western">
+<surname>Lattke</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Goldstone</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. K.</given-names>
+<surname>Ellis</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Extensive Transcriptional and Chromatin Changes Underlie Astrocyte Maturation In Vivo and in Culture</article-title>.” <source>Nature Communications</source>
+<volume>12</volume>, no. <issue>1</issue>: <fpage>4335</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-021-24624-5</pub-id>.<pub-id pub-id-type="pmcid">PMC8282848</pub-id><pub-id pub-id-type="pmid">34267208</pub-id></mixed-citation></ref><ref id="glia70185-bib-0036"><mixed-citation publication-type="journal" id="glia70185-cit-0036">
+<string-name name-style="western">
+<surname>Lee</surname>, <given-names>J. S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K. M.</given-names>
+<surname>Galvin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. H.</given-names>
+<surname>See</surname>
+</string-name>, et al. <year>1995</year>. “<article-title>Relief of YY1 Transcriptional Repression by Adenovirus E1A Is Mediated by E1A‐Associated Protein p300</article-title>.” <source>Genes &amp; Development</source>
+<volume>9</volume>, no. <issue>10</issue>: <fpage>1188</fpage>–<lpage>1198</lpage>.<pub-id pub-id-type="pmid">7758944</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1101/gad.9.10.1188</pub-id></mixed-citation></ref><ref id="glia70185-bib-0037"><mixed-citation publication-type="journal" id="glia70185-cit-0037">
+<string-name name-style="western">
+<surname>Marshall</surname>, <given-names>C. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>B. G.</given-names>
+<surname>Novitch</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. E.</given-names>
+<surname>Goldman</surname>
+</string-name>. <year>2005</year>. “<article-title>Olig2 Directs Astrocyte and Oligodendrocyte Formation in Postnatal Subventricular Zone Cells</article-title>.” <source>Journal of Neuroscience</source>
+<volume>25</volume>, no. <issue>32</issue>: <fpage>7289</fpage>–<lpage>7298</lpage>. <pub-id pub-id-type="doi">10.1523/JNEUROSCI.1924-05.2005</pub-id>.<pub-id pub-id-type="pmid">16093378</pub-id>
+<pub-id pub-id-type="pmcid">PMC6725308</pub-id></mixed-citation></ref><ref id="glia70185-bib-0038"><mixed-citation publication-type="journal" id="glia70185-cit-0038">
+<string-name name-style="western">
+<surname>Marumo</surname>, <given-names>T.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Takagi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Muraki</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Hashimoto</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Miyamoto</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Tanigaki</surname>
+</string-name>. <year>2013</year>. “<article-title>Notch Signaling Regulates Nucleocytoplasmic Olig2 Translocation in Reactive Astrocytes Differentiation After Ischemic Stroke</article-title>.” <source>Neuroscience Research</source>
+<volume>75</volume>, no. <issue>3</issue>: <fpage>204</fpage>–<lpage>209</lpage>. <pub-id pub-id-type="doi">10.1016/j.neures.2013.01.006</pub-id>.<pub-id pub-id-type="pmid">23396245</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0039"><mixed-citation publication-type="journal" id="glia70185-cit-0039">
+<string-name name-style="western">
+<surname>Mockenhaupt</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K. M.</given-names>
+<surname>Tyc</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>McQuiston</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Yin Yang 1 Controls Cerebellar Astrocyte Maturation</article-title>.” <source>Glia</source>
+<volume>71</volume>, no. <issue>10</issue>: <fpage>2437</fpage>–<lpage>2455</lpage>. <pub-id pub-id-type="doi">10.1002/glia.24434</pub-id>.<pub-id pub-id-type="pmid">37417428</pub-id>
+<pub-id pub-id-type="pmcid">PMC10529878</pub-id></mixed-citation></ref><ref id="glia70185-bib-0040"><mixed-citation publication-type="journal" id="glia70185-cit-0040">
+<string-name name-style="western">
+<surname>Mockenhaupt</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Zarei‐Kheirabadi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. K.</given-names>
+<surname>Gonsiewski</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Defective Astrocyte Maturation Drives Cerebellar Neuroinflammation and Degeneration</article-title>.” <source>FASEB Journal</source>
+<volume>39</volume>, no. <issue>14</issue>: <elocation-id>e70824</elocation-id>. <pub-id pub-id-type="doi">10.1096/fj.202501225RR</pub-id>.<pub-id pub-id-type="pmid">40641255</pub-id>
+<pub-id pub-id-type="pmcid">PMC12246771</pub-id></mixed-citation></ref><ref id="glia70185-bib-0041"><mixed-citation publication-type="journal" id="glia70185-cit-0041">
+<string-name name-style="western">
+<surname>Molina‐Gonzalez</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R. K.</given-names>
+<surname>Holloway</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Jiwaji</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Astrocyte‐Oligodendrocyte Interaction Regulates Central Nervous System Regeneration</article-title>.” <source>Nature Communications</source>
+<volume>14</volume>, no. <issue>1</issue>: <fpage>3372</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-023-39046-8</pub-id>.<pub-id pub-id-type="pmcid">PMC10250470</pub-id><pub-id pub-id-type="pmid">37291151</pub-id></mixed-citation></ref><ref id="glia70185-bib-0042"><mixed-citation publication-type="journal" id="glia70185-cit-0042">
+<string-name name-style="western">
+<surname>Morel</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. S. R.</given-names>
+<surname>Chiang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Higashimori</surname>
+</string-name>, et al. <year>2017</year>. “<article-title>Molecular and Functional Properties of Regional Astrocytes in the Adult Brain</article-title>.” <source>Journal of Neuroscience</source>
+<volume>37</volume>, no. <issue>36</issue>: <fpage>8706</fpage>–<lpage>8717</lpage>. <pub-id pub-id-type="doi">10.1523/JNEUROSCI.3956-16.2017</pub-id>.<pub-id pub-id-type="pmid">28821665</pub-id>
+<pub-id pub-id-type="pmcid">PMC5588463</pub-id></mixed-citation></ref><ref id="glia70185-bib-0043"><mixed-citation publication-type="journal" id="glia70185-cit-0043">
+<string-name name-style="western">
+<surname>Ohayon</surname>, <given-names>D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Aguirrebengoa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Escalas</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Jungas</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Soula</surname>
+</string-name>. <year>2021</year>. “<article-title>Transcriptome Profiling of the Olig2‐Expressing Astrocyte Subtype Reveals Their Unique Molecular Signature</article-title>.” <source>iScience</source>
+<volume>24</volume>, no. <issue>7</issue>: <elocation-id>102806</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.isci.2021.102806</pub-id>.<pub-id pub-id-type="pmid">34296073</pub-id>
+<pub-id pub-id-type="pmcid">PMC8281609</pub-id></mixed-citation></ref><ref id="glia70185-bib-0044"><mixed-citation publication-type="journal" id="glia70185-cit-0044">
+<string-name name-style="western">
+<surname>Pajarillo</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Johnson</surname>
+<suffix>Jr.</suffix>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Rizor</surname>
+</string-name>, et al. <year>2020</year>. “<article-title>Astrocyte‐Specific Deletion of the Transcription Factor Yin Yang 1 in Murine Substantia Nigra Mitigates Manganese‐Induced Dopaminergic Neurotoxicity</article-title>.” <source>Journal of Biological Chemistry</source>
+<volume>295</volume>, no. <issue>46</issue>: <fpage>15662</fpage>–<lpage>15676</lpage>. <pub-id pub-id-type="doi">10.1074/jbc.RA120.015552</pub-id>.<pub-id pub-id-type="pmid">32893191</pub-id>
+<pub-id pub-id-type="pmcid">PMC7667968</pub-id></mixed-citation></ref><ref id="glia70185-bib-0045"><mixed-citation publication-type="journal" id="glia70185-cit-0045">
+<string-name name-style="western">
+<surname>Pajarillo</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Nyarko‐Danquah</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Digman</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>Astrocytic Yin Yang 1 Is Critical for Murine Brain Development and Protection Against Apoptosis, Oxidative Stress, and Inflammation</article-title>.” <source>Glia</source>
+<volume>71</volume>: <fpage>450</fpage>–<lpage>466</lpage>. <pub-id pub-id-type="doi">10.1002/glia.24286</pub-id>.<pub-id pub-id-type="pmid">36300569</pub-id>
+<pub-id pub-id-type="pmcid">PMC9772165</pub-id></mixed-citation></ref><ref id="glia70185-bib-0046"><mixed-citation publication-type="journal" id="glia70185-cit-0046">
+<string-name name-style="western">
+<surname>Prati</surname>, <given-names>J. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Pontes‐Silva</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. C. L.</given-names>
+<surname>Gianlorenco</surname>
+</string-name>. <year>2024</year>. “<article-title>The Cerebellum and Its Connections to Other Brain Structures Involved in Motor and Non‐Motor Functions: A Comprehensive Review</article-title>.” <source>Behavioural Brain Research</source>
+<volume>465</volume>: <elocation-id>114933</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.bbr.2024.114933</pub-id>.<pub-id pub-id-type="pmid">38458437</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0047"><mixed-citation publication-type="journal" id="glia70185-cit-0047">
+<string-name name-style="western">
+<surname>Pringle</surname>, <given-names>N. P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>W. P.</given-names>
+<surname>Yu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Howell</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. S.</given-names>
+<surname>Colvin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. M.</given-names>
+<surname>Ornitz</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>W. D.</given-names>
+<surname>Richardson</surname>
+</string-name>. <year>2003</year>. “<article-title>Fgfr3 Expression by Astrocytes and Their Precursors: Evidence That Astrocytes and Oligodendrocytes Originate in Distinct Neuroepithelial Domains</article-title>.” <source>Development</source>
+<volume>130</volume>, no. <issue>1</issue>: <fpage>93</fpage>–<lpage>102</lpage>. <pub-id pub-id-type="doi">10.1242/dev.00184</pub-id>.<pub-id pub-id-type="pmid">12441294</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0048"><mixed-citation publication-type="journal" id="glia70185-cit-0048">
+<string-name name-style="western">
+<surname>Qian</surname>, <given-names>Z.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Qin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Lai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Zhang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Zhang</surname>
+</string-name>. <year>2023</year>. “<article-title>Large‐Scale Integration of Single‐Cell RNA‐Seq Data Reveals Astrocyte Diversity and Transcriptomic Modules Across Six Central Nervous System Disorders</article-title>.” <source>Biomolecules</source>
+<volume>13</volume>, no. <issue>4</issue>: <elocation-id>692</elocation-id>. <pub-id pub-id-type="doi">10.3390/biom13040692</pub-id>.<pub-id pub-id-type="pmid">37189441</pub-id>
+<pub-id pub-id-type="pmcid">PMC10135484</pub-id></mixed-citation></ref><ref id="glia70185-bib-0049"><mixed-citation publication-type="journal" id="glia70185-cit-0049">
+<string-name name-style="western">
+<surname>Rezai‐Zadeh</surname>, <given-names>N.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Namour</surname>
+</string-name>, et al. <year>2003</year>. “<article-title>Targeted Recruitment of a Histone H4‐Specific Methyltransferase by the Transcription Factor YY1</article-title>.” <source>Genes &amp; Development</source>
+<volume>17</volume>, no. <issue>8</issue>: <fpage>1019</fpage>–<lpage>1029</lpage>. <pub-id pub-id-type="doi">10.1101/gad.1068003</pub-id>.<pub-id pub-id-type="pmid">12704081</pub-id>
+<pub-id pub-id-type="pmcid">PMC196041</pub-id></mixed-citation></ref><ref id="glia70185-bib-0050"><mixed-citation publication-type="journal" id="glia70185-cit-0050">
+<string-name name-style="western">
+<surname>Rupareliya</surname>, <given-names>V. P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A. A.</given-names>
+<surname>Singh</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Butt</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Kumar</surname>
+</string-name>. <year>2023</year>. “<article-title>The “Molecular Soldiers” of the CNS: Astrocytes, A Comprehensive Review on Their Roles and Molecular Signatures</article-title>.” <source>European Journal of Pharmacology</source>
+<volume>959</volume>: <elocation-id>176048</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.ejphar.2023.176048</pub-id>.<pub-id pub-id-type="pmid">37758010</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0051"><mixed-citation publication-type="journal" id="glia70185-cit-0051">
+<string-name name-style="western">
+<surname>Sakamoto</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Hirata</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Ohtsuka</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Bessho</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Kageyama</surname>
+</string-name>. <year>2003</year>. “<article-title>The Basic Helix‐Loop‐Helix Genes Hesr1/Hey1 and Hesr2/Hey2 Regulate Maintenance of Neural Precursor Cells in the Brain</article-title>.” <source>Journal of Biological Chemistry</source>
+<volume>278</volume>, no. <issue>45</issue>: <fpage>44808</fpage>–<lpage>44815</lpage>. <pub-id pub-id-type="doi">10.1074/jbc.M300448200</pub-id>.<pub-id pub-id-type="pmid">12947105</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0052"><mixed-citation publication-type="journal" id="glia70185-cit-0052">
+<string-name name-style="western">
+<surname>Selcen</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Prentice</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Casaccia</surname>
+</string-name>. <year>2023</year>. “<article-title>The Epigenetic Landscape of Oligodendrocyte Lineage Cells</article-title>.” <source>Annals of the New York Academy of Sciences</source>
+<volume>1522</volume>, no. <issue>1</issue>: <fpage>24</fpage>–<lpage>41</lpage>. <pub-id pub-id-type="doi">10.1111/nyas.14959</pub-id>.<pub-id pub-id-type="pmid">36740586</pub-id>
+<pub-id pub-id-type="pmcid">PMC10085863</pub-id></mixed-citation></ref><ref id="glia70185-bib-0053"><mixed-citation publication-type="journal" id="glia70185-cit-0053">
+<string-name name-style="western">
+<surname>Srinivasan</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Pan</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. L.</given-names>
+<surname>Atchison</surname>
+</string-name>. <year>2005</year>. “<article-title>Transient Requirements of YY1 Expression for PcG Transcriptional Repression and Phenotypic Rescue</article-title>.” <source>Journal of Cellular Biochemistry</source>
+<volume>96</volume>, no. <issue>4</issue>: <fpage>689</fpage>–<lpage>699</lpage>. <pub-id pub-id-type="doi">10.1002/jcb.20562</pub-id>.<pub-id pub-id-type="pmid">16052488</pub-id>
+</mixed-citation></ref><ref id="glia70185-bib-0054"><mixed-citation publication-type="journal" id="glia70185-cit-0054">
+<string-name name-style="western">
+<surname>Sun</surname>, <given-names>W.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Liu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Jiang</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>Spatial Transcriptomics Reveal Neuron‐Astrocyte Synergy in Long‐Term Memory</article-title>.” <source>Nature</source>
+<volume>627</volume>, no. <issue>8003</issue>: <fpage>374</fpage>–<lpage>381</lpage>. <pub-id pub-id-type="doi">10.1038/s41586-023-07011-6</pub-id>.<pub-id pub-id-type="pmid">38326616</pub-id>
+<pub-id pub-id-type="pmcid">PMC10937396</pub-id></mixed-citation></ref><ref id="glia70185-bib-0055"><mixed-citation publication-type="journal" id="glia70185-cit-0055">
+<string-name name-style="western">
+<surname>Szczygielski</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kopanska</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Wysocka</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Oertel</surname>
+</string-name>. <year>2021</year>. “<article-title>Cerebral Microcirculation, Perivascular Unit, and Glymphatic System: Role of Aquaporin‐4 as the Gatekeeper for Water Homeostasis</article-title>.” <source>Frontiers in Neurology</source>
+<volume>12</volume>: <elocation-id>767470</elocation-id>. <pub-id pub-id-type="doi">10.3389/fneur.2021.767470</pub-id>.<pub-id pub-id-type="pmid">34966347</pub-id>
+<pub-id pub-id-type="pmcid">PMC8710539</pub-id></mixed-citation></ref><ref id="glia70185-bib-0056"><mixed-citation publication-type="journal" id="glia70185-cit-0056">
+<string-name name-style="western">
+<surname>Tatsumi</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Isonishi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Yamasaki</surname>
+</string-name>, et al. <year>2018</year>. “<article-title>Olig2‐Lineage Astrocytes: A Distinct Subtype of Astrocytes That Differs From GFAP Astrocytes</article-title>.” <source>Frontiers in Neuroanatomy</source>
+<volume>12</volume>: <elocation-id>8</elocation-id>. <pub-id pub-id-type="doi">10.3389/fnana.2018.00008</pub-id>.<pub-id pub-id-type="pmid">29497365</pub-id>
+<pub-id pub-id-type="pmcid">PMC5819569</pub-id></mixed-citation></ref><ref id="glia70185-bib-0057"><mixed-citation publication-type="journal" id="glia70185-cit-0057">
+<string-name name-style="western">
+<surname>Tatsumi</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Kinugawa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Isonishi</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Olig2‐Astrocytes Express Neutral Amino Acid Transporter SLC7A10 (Asc‐1) in the Adult Brain</article-title>.” <source>Molecular Brain</source>
+<volume>14</volume>, no. <issue>1</issue>: <fpage>163</fpage>. <pub-id pub-id-type="doi">10.1186/s13041-021-00874-8</pub-id>.<pub-id pub-id-type="pmid">34749773</pub-id>
+<pub-id pub-id-type="pmcid">PMC8573876</pub-id></mixed-citation></ref><ref id="glia70185-bib-0058"><mixed-citation publication-type="journal" id="glia70185-cit-0058">
+<string-name name-style="western">
+<surname>Uezu</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D. J.</given-names>
+<surname>Kanak</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. W.</given-names>
+<surname>Bradshaw</surname>
+</string-name>, et al. <year>2016</year>. “<article-title>Identification of an Elaborate Complex Mediating Postsynaptic Inhibition</article-title>.” <source>Science</source>
+<volume>353</volume>, no. <issue>6304</issue>: <fpage>1123</fpage>–<lpage>1129</lpage>. <pub-id pub-id-type="doi">10.1126/science.aag0821</pub-id>.<pub-id pub-id-type="pmid">27609886</pub-id>
+<pub-id pub-id-type="pmcid">PMC5432043</pub-id></mixed-citation></ref><ref id="glia70185-bib-0059"><mixed-citation publication-type="journal" id="glia70185-cit-0059">
+<string-name name-style="western">
+<surname>Verkhratsky</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Parpura</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Li</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Scuderi</surname>
+</string-name>. <year>2021</year>. “<article-title>Astrocytes: The Housekeepers and Guardians of the CNS</article-title>.” <source>Advances in Neurobiology</source>
+<volume>26</volume>: <fpage>21</fpage>–<lpage>53</lpage>. <pub-id pub-id-type="doi">10.1007/978-3-030-77375-5_2</pub-id>.<pub-id pub-id-type="pmid">34888829</pub-id>
+<pub-id pub-id-type="pmcid">PMC9004589</pub-id></mixed-citation></ref><ref id="glia70185-bib-0060"><mixed-citation publication-type="journal" id="glia70185-cit-0060">
+<string-name name-style="western">
+<surname>Wang</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Xu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Lai</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Region‐Specific Distribution of Olig2‐Expressing Astrocytes in Adult Mouse Brain and Spinal Cord</article-title>.” <source>Molecular Brain</source>
+<volume>14</volume>, no. <issue>1</issue>: <fpage>36</fpage>. <pub-id pub-id-type="doi">10.1186/s13041-021-00747-0</pub-id>.<pub-id pub-id-type="pmid">33618751</pub-id>
+<pub-id pub-id-type="pmcid">PMC7901088</pub-id></mixed-citation></ref><ref id="glia70185-bib-0061"><mixed-citation publication-type="journal" id="glia70185-cit-0061">
+<string-name name-style="western">
+<surname>Wang</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Wu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Wei</surname>
+</string-name>, et al. <year>2018</year>. “<article-title>YY1 Positively Regulates Transcription by Targeting Promoters and Super‐Enhancers Through the BAF Complex in Embryonic Stem Cells</article-title>.” <source>Stem Cell Reports</source>
+<volume>10</volume>, no. <issue>4</issue>: <fpage>1324</fpage>–<lpage>1339</lpage>. <pub-id pub-id-type="doi">10.1016/j.stemcr.2018.02.004</pub-id>.<pub-id pub-id-type="pmid">29503092</pub-id>
+<pub-id pub-id-type="pmcid">PMC5998734</pub-id></mixed-citation></ref><ref id="glia70185-bib-0062"><mixed-citation publication-type="journal" id="glia70185-cit-0062">
+<string-name name-style="western">
+<surname>Waters</surname>, <given-names>M. R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A. S.</given-names>
+<surname>Gupta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Mockenhaupt</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. N.</given-names>
+<surname>Brown</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. D.</given-names>
+<surname>Biswas</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Kordula</surname>
+</string-name>. <year>2019</year>. “<article-title>RelB Acts as a Molecular Switch Driving Chronic Inflammation in Glioblastoma Multiforme</article-title>.” <source>Oncogene</source>
+<volume>8</volume>, no. <issue>6</issue>: <fpage>37</fpage>. <pub-id pub-id-type="doi">10.1038/s41389-019-0146-y</pub-id>.<pub-id pub-id-type="pmcid">PMC6541631</pub-id><pub-id pub-id-type="pmid">31142741</pub-id></mixed-citation></ref><ref id="glia70185-bib-0063"><mixed-citation publication-type="journal" id="glia70185-cit-0063">
+<string-name name-style="western">
+<surname>Weintraub</surname>, <given-names>A. S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C. H.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. V.</given-names>
+<surname>Zamudio</surname>
+</string-name>, et al. <year>2017</year>. “<article-title>YY1 Is a Structural Regulator of Enhancer‐Promoter Loops</article-title>.” <source>Cell</source>
+<volume>171</volume>, no. <issue>7</issue>: <fpage>1573</fpage>–<lpage>1588.e1528</lpage>. <pub-id pub-id-type="doi">10.1016/j.cell.2017.11.008</pub-id>.<pub-id pub-id-type="pmid">29224777</pub-id>
+<pub-id pub-id-type="pmcid">PMC5785279</pub-id></mixed-citation></ref><ref id="glia70185-bib-0064"><mixed-citation publication-type="journal" id="glia70185-cit-0064">
+<string-name name-style="western">
+<surname>West</surname>, <given-names>A. K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Hidalgo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Eddins</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. D.</given-names>
+<surname>Levin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Aschner</surname>
+</string-name>. <year>2008</year>. “<article-title>Metallothionein in the Central Nervous System: Roles in Protection, Regeneration and Cognition</article-title>.” <source>Neurotoxicology</source>
+<volume>29</volume>, no. <issue>3</issue>: <fpage>489</fpage>–<lpage>503</lpage>. <pub-id pub-id-type="doi">10.1016/j.neuro.2007.12.006</pub-id>.<pub-id pub-id-type="pmid">18313142</pub-id>
+<pub-id pub-id-type="pmcid">PMC2486367</pub-id></mixed-citation></ref><ref id="glia70185-bib-0065"><mixed-citation publication-type="journal" id="glia70185-cit-0065">
+<string-name name-style="western">
+<surname>Yang</surname>, <given-names>Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Vidensky</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Jin</surname>
+</string-name>, et al. <year>2011</year>. “<article-title>Molecular Comparison of GLT1+ and ALDH1L1+ Astrocytes In Vivo in Astroglial Reporter Mice</article-title>.” <source>Glia</source>
+<volume>59</volume>, no. <issue>2</issue>: <fpage>200</fpage>–<lpage>207</lpage>. <pub-id pub-id-type="doi">10.1002/glia.21089</pub-id>.<pub-id pub-id-type="pmid">21046559</pub-id>
+<pub-id pub-id-type="pmcid">PMC3199134</pub-id></mixed-citation></ref><ref id="glia70185-bib-0066"><mixed-citation publication-type="journal" id="glia70185-cit-0066">
+<string-name name-style="western">
+<surname>Yu</surname>, <given-names>Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Kim</surname>
+</string-name>, et al. <year>2013</year>. “<article-title>Olig2 Targets Chromatin Remodelers to Enhancers to Initiate Oligodendrocyte Differentiation</article-title>.” <source>Cell</source>
+<volume>152</volume>, no. <issue>1–2</issue>: <fpage>248</fpage>–<lpage>261</lpage>. <pub-id pub-id-type="doi">10.1016/j.cell.2012.12.006</pub-id>.<pub-id pub-id-type="pmid">23332759</pub-id>
+<pub-id pub-id-type="pmcid">PMC3553550</pub-id></mixed-citation></ref><ref id="glia70185-bib-0067"><mixed-citation publication-type="journal" id="glia70185-cit-0067">
+<string-name name-style="western">
+<surname>Yuan</surname>, <given-names>Q.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Gao</surname>
+</string-name>. <year>2022</year>. “<article-title>Multiplex Base‐ and Prime‐Editing With Drive‐And‐Process CRISPR Arrays</article-title>.” <source>Nature Communications</source>
+<volume>13</volume>, no. <issue>1</issue>: <fpage>2771</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-022-30514-1</pub-id>.<pub-id pub-id-type="pmcid">PMC9120480</pub-id><pub-id pub-id-type="pmid">35589728</pub-id></mixed-citation></ref><ref id="glia70185-bib-0068"><mixed-citation publication-type="journal" id="glia70185-cit-0068">
+<string-name name-style="western">
+<surname>Zhang</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Yang</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>The Oligodendrocyte Transcription Factor 2 OLIG2 Regulates Transcriptional Repression During Myelinogenesis in Rodents</article-title>.” <source>Nature Communications</source>
+<volume>13</volume>, no. <issue>1</issue>: <fpage>1423</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-022-29068-z</pub-id>.<pub-id pub-id-type="pmcid">PMC8931116</pub-id><pub-id pub-id-type="pmid">35301318</pub-id></mixed-citation></ref><ref id="glia70185-bib-0069"><mixed-citation publication-type="journal" id="glia70185-cit-0069">
+<string-name name-style="western">
+<surname>Zhang</surname>, <given-names>Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Hoxha</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Zhou</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Alvarez‐Bolado</surname>
+</string-name>. <year>2017</year>. “<article-title>Foxb1 Regulates Negatively the Proliferation of Oligodendrocyte Progenitors</article-title>.” <source>Frontiers in Neuroanatomy</source>
+<volume>11</volume>: <elocation-id>53</elocation-id>. <pub-id pub-id-type="doi">10.3389/fnana.2017.00053</pub-id>.<pub-id pub-id-type="pmid">28725186</pub-id>
+<pub-id pub-id-type="pmcid">PMC5496944</pub-id></mixed-citation></ref><ref id="glia70185-bib-0070"><mixed-citation publication-type="journal" id="glia70185-cit-0070">
+<string-name name-style="western">
+<surname>Zhou</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Vitali</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Roig‐Puiggros</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Dual Lineage Origins Contribute to Neocortical Astrocyte Diversity</article-title>.” <source>Nature Communications</source>
+<volume>16</volume>, no. <issue>1</issue>: <fpage>6992</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-025-61829-4</pub-id>.<pub-id pub-id-type="pmcid">PMC12310952</pub-id><pub-id pub-id-type="pmid">40738880</pub-id></mixed-citation></ref><ref id="glia70185-bib-0071"><mixed-citation publication-type="journal" id="glia70185-cit-0071">
+<string-name name-style="western">
+<surname>Zuo</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>W. M.</given-names>
+<surname>Wood</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Sherafat</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. A.</given-names>
+<surname>Hill</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q. R.</given-names>
+<surname>Lu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Nishiyama</surname>
+</string-name>. <year>2018</year>. “<article-title>Age‐Dependent Decline in Fate Switch From NG2 Cells to Astrocytes After Olig2 Deletion</article-title>.” <source>Journal of Neuroscience</source>
+<volume>38</volume>, no. <issue>9</issue>: <fpage>2359</fpage>–<lpage>2371</lpage>. <pub-id pub-id-type="doi">10.1523/JNEUROSCI.0712-17.2018</pub-id>.<pub-id pub-id-type="pmid">29382710</pub-id>
+<pub-id pub-id-type="pmcid">PMC5830521</pub-id></mixed-citation></ref><ref id="glia70185-bib-0072"><mixed-citation publication-type="journal" id="glia70185-cit-0072">
+<string-name name-style="western">
+<surname>Zurkirchen</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Varum</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Giger</surname>
+</string-name>, et al. <year>2019</year>. “<article-title>Yin Yang 1 Sustains Biosynthetic Demands During Brain Development in a Stage‐Specific Manner</article-title>.” <source>Nature Communications</source>
+<volume>10</volume>, no. <issue>1</issue>: <fpage>2192</fpage>. <pub-id pub-id-type="doi">10.1038/s41467-019-09823-5</pub-id>.<pub-id pub-id-type="pmcid">PMC6522535</pub-id><pub-id pub-id-type="pmid">31097699</pub-id></mixed-citation></ref></ref-list></back></article>
