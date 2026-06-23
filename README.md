@@ -486,10 +486,31 @@ The XML full-text parser is continuously evaluated against a curated benchmark o
 
 **Parse speed:** 48.0 articles/s (median 0.021s per article)
 
+### PLOS XML Support
+
+The parser now handles PLOS articles that use bare `<p>` elements directly under `<body>` (without `<sec>` wrappers). This structure was previously ignored, causing near-zero scores on PLOS-only benchmarks.
+
+| Metric | Before Fix | After Fix |
+|--------|-----------|-----------|
+| **Composite Score** | **0.4734 (min)** | **0.9778 ± 0.0393** |
+| Metadata Accuracy | 0.6000 ± 0.0000 | 1.0000 ± 0.0000 |
+| Inline Recall | 0.0000 (min) | 1.0000 ± 0.0000 |
+| Text Fidelity | 0.3026 (min) | 1.0000 ± 0.0000 |
+| Section Accuracy | 0.5745 ± 0.1812 | 0.9272 ± 0.0870 |
+| Element Coverage | 0.9617 ± 0.0118 | 0.9617 ± 0.0118 |
+
+Key fixes:
+- **Section parser**: extract text from bare `<p>` elements directly under `<body>`
+- **Content blocks**: collect bare `<p>` paragraphs as a synthetic body section
+- **Plaintext converter**: include bare `<p>` elements in body text output
+- **Metadata matching**: empty-empty fields (e.g., no PMID/PMCID) count as matches
+- **Section accuracy**: detect bare `<p>` sections for correct section path tracking
+
 Run the benchmark yourself:
 
 ```bash
 pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --limit 55
+pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --dataset plos1000
 ```
 
 See the [Benchmarking Guide](docs/guides/benchmarking.md) for full methodology and profiling tools.
