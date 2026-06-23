@@ -443,9 +443,11 @@ def _get_section_titles_from_xml(root: ET.Element) -> list[dict[str, Any]]:
     sections: list[dict[str, Any]] = []
 
     def walk(parent: ET.Element, depth: int = 0, parent_path: str = "") -> None:
+        has_sec = False
         for child in parent:
             tag = _local_tag(child.tag)
             if tag == "sec":
+                has_sec = True
                 # Find title among children
                 title = ""
                 for sub in child:
@@ -465,6 +467,20 @@ def _get_section_titles_from_xml(root: ET.Element) -> list[dict[str, Any]]:
                 walk(child, depth + 1, section_path)
             elif tag in ("body",):
                 walk(child, depth, parent_path)
+
+        # Handle bare <p> elements directly under parent (no <sec> wrapper)
+        # Some publishers like PLOS use this structure
+        if not has_sec:
+            bare_ps = [c for c in parent if _local_tag(c.tag) == "p"]
+            if bare_ps:
+                section_path = parent_path or "body"
+                sections.append(
+                    {
+                        "title": "",
+                        "section_path": section_path,
+                        "depth": depth,
+                    }
+                )
 
     walk(root)
     return sections
@@ -1142,7 +1158,11 @@ def compute_metadata_accuracy(
         total_fields += 1
         exp = expected.get(field, "")
         ext = extracted.get(field, "")
-        match = bool(exp) and bool(ext) and exp.strip().lower() == ext.strip().lower()
+        # Both empty: field not present in article, not a parsing failure
+        if not exp and not ext:
+            match = True
+        else:
+            match = bool(exp) and bool(ext) and exp.strip().lower() == ext.strip().lower()
         if match:
             exact_matches += 1
         fields[field] = {

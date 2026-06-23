@@ -25,18 +25,12 @@ def normalize_text(
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
     ),
-    no_entities: bool = typer.Option(
-        False, "--no-entities", help="Skip entity normalization"
-    ),
-    no_markup: bool = typer.Option(
-        False, "--no-markup", help="Skip display markup stripping"
-    ),
+    no_entities: bool = typer.Option(False, "--no-entities", help="Skip entity normalization"),
+    no_markup: bool = typer.Option(False, "--no-markup", help="Skip display markup stripping"),
     no_sections: bool = typer.Option(
         False, "--no-sections", help="Skip section type canonicalization"
     ),
-    no_ids: bool = typer.Option(
-        False, "--no-ids", help="Skip identifier normalization"
-    ),
+    no_ids: bool = typer.Option(False, "--no-ids", help="Skip identifier normalization"),
     remove_structural: bool = typer.Option(
         False, help="Remove fig/table-wrap/supplementary-material from body"
     ),
@@ -68,12 +62,8 @@ def normalize_sections_cmd(
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
     ),
-    no_entities: bool = typer.Option(
-        False, "--no-entities", help="Skip entity normalization"
-    ),
-    no_markup: bool = typer.Option(
-        False, "--no-markup", help="Skip display markup stripping"
-    ),
+    no_entities: bool = typer.Option(False, "--no-entities", help="Skip entity normalization"),
+    no_markup: bool = typer.Option(False, "--no-markup", help="Skip display markup stripping"),
     no_sections: bool = typer.Option(
         False, "--no-sections", help="Skip section type canonicalization"
     ),
@@ -118,9 +108,7 @@ def normalize_sections_cmd(
 
 @normalize_app.command("bioc")
 def normalize_bioc(
-    input_path: Path = typer.Argument(
-        ..., help="Path to a JATS XML file"
-    ),
+    input_path: Path = typer.Argument(..., help="Path to a JATS XML file"),
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
     ),
@@ -156,21 +144,11 @@ def classify_heading(
 
 @normalize_app.command("batch")
 def normalize_batch(
-    input_dir: Path = typer.Argument(
-        ..., help="Directory containing JATS XML files"
-    ),
-    output_dir: Path = typer.Argument(
-        ..., help="Output directory for normalized files"
-    ),
-    output_format: str = typer.Option(
-        "text", help="Output format: text, sections, bioc"
-    ),
-    no_entities: bool = typer.Option(
-        False, "--no-entities", help="Skip entity normalization"
-    ),
-    no_markup: bool = typer.Option(
-        False, "--no-markup", help="Skip display markup stripping"
-    ),
+    input_dir: Path = typer.Argument(..., help="Directory containing JATS XML files"),
+    output_dir: Path = typer.Argument(..., help="Output directory for normalized files"),
+    output_format: str = typer.Option("text", help="Output format: text, sections, bioc"),
+    no_entities: bool = typer.Option(False, "--no-entities", help="Skip entity normalization"),
+    no_markup: bool = typer.Option(False, "--no-markup", help="Skip display markup stripping"),
     no_sections: bool = typer.Option(
         False, "--no-sections", help="Skip section type canonicalization"
     ),
@@ -218,9 +196,7 @@ def normalize_batch(
                 )
             elif output_format == "bioc":
                 out_file.write_text(
-                    json.dumps(
-                        result.get("bio_c", result), indent=2, ensure_ascii=False
-                    ),
+                    json.dumps(result.get("bio_c", result), indent=2, ensure_ascii=False),
                     encoding="utf-8",
                 )
 

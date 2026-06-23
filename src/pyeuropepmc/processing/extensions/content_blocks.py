@@ -747,7 +747,13 @@ class ContentBlockExtractor(BaseParser):
         Nested sections each get their own entry with a ``section_path``
         that tracks the hierarchy (e.g. ``"Methods/Statistical Analysis"``),
         rather than being flattened into the parent section.
+
+        Also handles bare ``<p>`` elements directly under ``<body>`` (no ``<sec>`` wrapper),
+        which some publishers like PLOS use.
         """
+        # Collect bare <p> elements directly under this parent
+        # (not wrapped in <sec>), which some publishers like PLOS use
+        bare_ps: list[ET.Element] = []
         for child in parent:
             tag = self._get_local_tag(child.tag)
             if tag == "sec":
@@ -759,6 +765,27 @@ class ContentBlockExtractor(BaseParser):
             elif tag == "body":
                 # Descend into body elements
                 self._collect_sections(child, sections, parent_path)
+            elif tag == "p":
+                # Collect bare <p> elements for processing after the loop
+                bare_ps.append(child)
+
+        # Process bare <p> elements as a synthetic section (common in PLOS
+        # and some other publisher XML where paragraphs sit directly under
+        # <body> without a <sec> wrapper)
+        if bare_ps:
+            content_blocks: list[ContentBlock] = []
+            for p_elem in bare_ps:
+                blocks = self._handle_paragraph(p_elem)
+                content_blocks.extend(blocks)
+            if content_blocks:
+                section_path = parent_path or "body"
+                section = StructuredSection(
+                    title="",
+                    content=content_blocks,
+                    section_type="body",
+                    section_path=section_path,
+                )
+                sections.append(section)
 
     def _extract_structured_section(
         self,
