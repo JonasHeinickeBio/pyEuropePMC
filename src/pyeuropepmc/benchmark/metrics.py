@@ -1014,30 +1014,44 @@ def compute_section_accuracy(
 
     found_count = len(sections)
 
-    # Synthetic sections the parser adds (not from <sec> elements):
-    # Article Title, Abstract, References, Notes, Footnotes, Acknowledgments.
-    # These are valid content but shouldn't inflate the count comparison.
-    _SYNTHETIC_SECTIONS = frozenset(
-        {
-            "Article Title",
-            "Abstract",
-            "References",
-            "Reference",  # Some articles use singular (e.g., PLOS "<title>Reference</title>")
-            "Notes",
-            "Footnotes",
-            "Acknowledgments",
-        }
-    )
+    # Sections from front/back matter (not <sec> elements in <body>):
+    # These are synthetically created by the parser with distinct section_type
+    # values: "back" for references, acknowledgments, footnotes, notes, glossary;
+    # "appendix" for appendices.  Use the section_type field to reliably
+    # distinguish them from body <sec> sections, which have section_type="body".
+    #
+    # Synthetic body sections (section_type="body" but not from <sec> elements):
+    # "Article Title" and "Abstract" are always synthetic.
+    # "body" is synthetic when the XML has <sec> elements; otherwise it's the
+    # expected bare-<p> path (checked via expected_paths).
+    _SYNTHETIC_BODY_PATHS_LOWER = frozenset({"article title", "abstract", "body"})
+
+    def _get_section_type(sec: Any) -> str:
+        if isinstance(sec, dict):
+            return sec.get("section_type", "body")
+        return getattr(sec, "section_type", "body")
+
+    def _get_section_path(sec: Any) -> str:
+        if isinstance(sec, dict):
+            return sec.get("section_path", "") or sec.get("title", "")
+        return getattr(sec, "section_path", "") or getattr(sec, "title", "")
+
+    def _is_synthetic_body_path(path: str) -> bool:
+        """Check if a path is a known synthetic body path, excluding cases
+        where the path is expected (e.g., "body" for PLOS bare-<p> articles)."""
+        lower = path.lower()
+        if lower not in _SYNTHETIC_BODY_PATHS_LOWER:
+            return False
+        # "body" is only synthetic when it's NOT in the expected paths
+        if lower == "body" and "body" in expected_paths:
+            return False
+        return True
+
     body_section_count = sum(
         1
         for sec in sections
-        if (isinstance(sec, dict) and sec.get("section_path", "") not in _SYNTHETIC_SECTIONS)
-        or (hasattr(sec, "section_path") and sec.section_path not in _SYNTHETIC_SECTIONS)
-        or (
-            hasattr(sec, "title")
-            and sec.title not in _SYNTHETIC_SECTIONS
-            and not hasattr(sec, "section_path")
-        )
+        if _get_section_type(sec) == "body"
+        and not _is_synthetic_body_path(_get_section_path(sec))
     )
 
     # Path matching: direct match + parent prefix matching
