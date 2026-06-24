@@ -532,12 +532,24 @@ def _get_expected_metadata(root: ET.Element) -> dict[str, Any]:
     return expected
 
 
+def _has_content_text(elem: ET.Element) -> bool:
+    """Check if an element (or any descendant) has non-whitespace text content."""
+    if elem.text and elem.text.strip():
+        return True
+    return any(_has_content_text(child) for child in elem)
+
+
 def _count_inline_elements_in_xml(
     root: ET.Element,
     *,
     body_only: bool = True,
 ) -> dict[str, int]:
     """Count inline content elements in raw XML.
+
+    Only counts inline elements that have meaningful text content
+    (non-whitespace in the element or its descendants). This excludes
+    whitespace-only layout elements (e.g., ``<bold>\\u00a0</bold>`` used
+    for table cell alignment) that the parser correctly discards.
 
     Parameters
     ----------
@@ -556,7 +568,8 @@ def _count_inline_elements_in_xml(
     counts: dict[str, int] = {}
     for tag in _INLINE_CONTENT_TAGS:
         elements = _findall_with_local_tag(scope, tag)
-        count = len(elements)
+        # Only count elements that have non-whitespace text content
+        count = sum(1 for e in elements if _has_content_text(e))
         if count > 0:
             counts[tag] = count
     return counts
