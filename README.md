@@ -477,14 +477,14 @@ The XML full-text parser is continuously evaluated against a curated benchmark o
 
 | Metric | Mean | Min | Max | Std Dev |
 |--------|------|-----|-----|---------|
-| **Composite Score** | **0.9506** | 0.8607 | 0.9908 | 0.0250 |
+| **Composite Score** | **0.9871** | 0.9643 | 0.9992 | 0.0086 |
 | Metadata Accuracy | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
 | Text Fidelity | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
 | Element Coverage | 0.9925 | 0.9655 | 1.0000 | 0.0087 |
-| Section Accuracy | 0.9339 | 0.7692 | 1.0000 | 0.0518 |
-| Inline Recall | 0.8267 | 0.4286 | 0.9732 | 0.1140 |
+| Section Accuracy | 0.9431 | 0.8333 | 1.0000 | 0.0445 |
+| Inline Recall | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
 
-**Parse speed:** 48.0 articles/s (median 0.021s per article)
+**Parse speed:** 55.0 articles in 2.05s (26.8 articles/s)
 
 ### PLOS XML Support
 
