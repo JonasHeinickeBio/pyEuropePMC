@@ -860,9 +860,20 @@ class ContentBlockExtractor(BaseParser):
     def _handle_special_section_child(self, child: ET.Element, tag: str) -> list[ContentBlock]:
         """Handle section children that are not standard JATS block tags."""
         if tag == "supplementary-material":
-            # Traverse into supplementary-material → caption → p
+            # Traverse into supplementary-material → caption → p and title
             blocks: list[ContentBlock] = []
             for caption in child.findall("caption"):
+                # Extract <title> children with inline formatting
+                for title_elem in caption.findall("title"):
+                    title_parts, title_ils, _ = self._extract_inlines_recursive(title_elem, 0)
+                    title_text = "".join(title_parts).strip()
+                    if title_text:
+                        blocks.append(
+                            ContentBlock.paragraph_with_inlines(
+                                text=title_text, inlines=title_ils
+                            )
+                        )
+                # Process <p> elements within caption (existing behavior)
                 for p_elem in caption.findall(".//p"):
                     blocks.extend(self._handle_paragraph(p_elem))
             return blocks
@@ -1480,25 +1491,40 @@ class ContentBlockExtractor(BaseParser):
             label = XMLHelper.get_text_content(label_elem)
 
         caption = ""
+        caption_inlines: list[InlineElement] = []
         caption_elem = elem.find("caption")
         if caption_elem is not None:
-            caption = XMLHelper.get_text_content(caption_elem)
+            caption_parts, caption_il_dicts, _ = self._extract_inlines_recursive(caption_elem, 0)
+            caption = "".join(caption_parts).strip()
+            caption_inlines = caption_il_dicts
+            if not caption:
+                caption = XMLHelper.get_text_content(caption_elem)
 
         text = XMLHelper.get_text_content(elem).strip()
 
         rows, cell_inlines = self._extract_table_rows(elem)
 
+        # Extract inlines from table-wrap-foot (fn elements with inline formatting)
+        foot_inlines: list[InlineElement] = []
+        for twf in elem.iter():
+            if self._get_local_tag(twf.tag) == "table-wrap-foot":
+                for fn in twf:
+                    if self._get_local_tag(fn.tag) == "fn":
+                        fn_parts, fn_ils, _ = self._extract_inlines_recursive(fn, 0)
+                        foot_inlines.extend(fn_ils)
+
         block = ContentBlock.table_block(label=label, caption=caption, text=text, rows=rows)
+        # Aggregate all inlines: cell inlines + caption inlines + foot inlines
+        all_inlines: list[InlineElement] = list(caption_inlines) + list(foot_inlines)
         if cell_inlines:
             block.metadata = block.metadata or {}
             block.metadata["cell_inlines"] = cell_inlines
-            all_cell_inlines: list[InlineElement] = []
             for row in cell_inlines:
                 for cell_inline_list in row:
                     if isinstance(cell_inline_list, list):
                         for cell_inline_dict in cell_inline_list:
                             if isinstance(cell_inline_dict, dict):
-                                all_cell_inlines.append(
+                                all_inlines.append(
                                     InlineElement(
                                         type=InlineElementType(
                                             cell_inline_dict.get("type", "unknown_inline")
@@ -1508,7 +1534,8 @@ class ContentBlockExtractor(BaseParser):
                                         length=cell_inline_dict.get("length", 0),
                                     )
                                 )
-            block.inlines = all_cell_inlines
+        if all_inlines:
+            block.inlines = all_inlines
         return [block]
 
     def _handle_code(self, elem: ET.Element) -> list[ContentBlock]:
