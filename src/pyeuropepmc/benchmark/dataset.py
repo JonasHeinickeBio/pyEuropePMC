@@ -99,7 +99,7 @@ DATASETS: dict[str, DatasetInfo] = {
             "1000 PLOS articles with publisher JATS XML. "
             "Randomly selected from PLOS Open Access collection."
         ),
-        filename_glob="*.nxml",
+        filename_glob="*.xml",
         expected_subdir="",
     ),
     "eLife_984": DatasetInfo(

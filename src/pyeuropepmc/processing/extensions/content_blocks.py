@@ -709,9 +709,13 @@ class ContentBlockExtractor(BaseParser):
 
         sections: list[StructuredSection] = []
 
-        # Recursively collect all sec elements (including nested)
+        # Recursively collect all sec elements (including nested).
+        # NOTE: Use find(".//body") not findall — PLOS ONE XML has <sub-article>
+        # elements with their own <body> (editorial correspondence). Processing
+        # sub-article bodies inflates section counts and degrades accuracy.
         if self.root is not None:
-            for body_elem in self.root.findall(".//body"):
+            body_elem = self.root.find(".//body")
+            if body_elem is not None:
                 self._collect_sections(body_elem, sections)
 
         # Extract article title section (appears first in output)
@@ -754,6 +758,7 @@ class ContentBlockExtractor(BaseParser):
         # Collect bare <p> elements directly under this parent
         # (not wrapped in <sec>), which some publishers like PLOS use
         bare_ps: list[ET.Element] = []
+        other_children: list[tuple[ET.Element, str]] = []
         for child in parent:
             tag = self._get_local_tag(child.tag)
             if tag == "sec":
@@ -768,14 +773,24 @@ class ContentBlockExtractor(BaseParser):
             elif tag == "p":
                 # Collect bare <p> elements for processing after the loop
                 bare_ps.append(child)
+            else:
+                # Handle other block-level elements directly under <body>
+                # (fig, disp-quote, table-wrap, etc.) — dispatch via handler map
+                handler_name = self.JATS_BLOCK_TAGS.get(tag)
+                if handler_name and handler_name in self._handler_map:
+                    other_children.append((child, handler_name))
 
-        # Process bare <p> elements as a synthetic section (common in PLOS
-        # and some other publisher XML where paragraphs sit directly under
-        # <body> without a <sec> wrapper)
-        if bare_ps:
+        # Process bare <p> elements as a synthetic section.
+        # ONLY for <body> parents — <sec> parents already capture their
+        # content via _extract_structured_section, and duplicating bare <p>
+        # inside <sec> would inflate section counts.
+        if (bare_ps or other_children) and self._get_local_tag(parent.tag) == "body":
             content_blocks: list[ContentBlock] = []
             for p_elem in bare_ps:
                 blocks = self._handle_paragraph(p_elem)
+                content_blocks.extend(blocks)
+            for child_elem, handler_name in other_children:
+                blocks = self._handler_map[handler_name](child_elem)
                 content_blocks.extend(blocks)
             if content_blocks:
                 section_path = parent_path or "body"

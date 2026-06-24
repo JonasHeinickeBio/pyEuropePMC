@@ -468,9 +468,12 @@ def _get_section_titles_from_xml(root: ET.Element) -> list[dict[str, Any]]:
             elif tag in ("body",):
                 walk(child, depth, parent_path)
 
-        # Handle bare <p> elements directly under parent (no <sec> wrapper)
-        # Some publishers like PLOS use this structure
-        if not has_sec:
+        # Handle bare <p> elements directly under <body> (no <sec> wrapper).
+        # Some publishers like PLOS use this structure.
+        # IMPORTANT: Only apply to <body> parent, not to <sec> elements that
+        # contain <p> text but no nested <sec> — those already get section_path
+        # from their parent <sec> title, and duplicating them inflates expected_count.
+        if not has_sec and _local_tag(parent.tag) == "body":
             bare_ps = [c for c in parent if _local_tag(c.tag) == "p"]
             if bare_ps:
                 section_path = parent_path or "body"
@@ -1006,6 +1009,7 @@ def compute_section_accuracy(
             "Article Title",
             "Abstract",
             "References",
+            "Reference",  # Some articles use singular (e.g., PLOS "<title>Reference</title>")
             "Notes",
             "Footnotes",
             "Acknowledgments",
