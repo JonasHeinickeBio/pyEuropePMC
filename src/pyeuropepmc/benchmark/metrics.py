@@ -1031,13 +1031,13 @@ def compute_section_accuracy(
 
     def _get_section_type(sec: Any) -> str:
         if isinstance(sec, dict):
-            return sec.get("section_type", "body")
-        return getattr(sec, "section_type", "body")
+            return str(sec.get("section_type", "body"))
+        return str(getattr(sec, "section_type", "body"))
 
     def _get_section_path(sec: Any) -> str:
         if isinstance(sec, dict):
-            return sec.get("section_path", "") or sec.get("title", "")
-        return getattr(sec, "section_path", "") or getattr(sec, "title", "")
+            return str(sec.get("section_path", "") or sec.get("title", ""))
+        return str(getattr(sec, "section_path", "") or getattr(sec, "title", ""))
 
     def _is_synthetic_body_path(path: str) -> bool:
         """Check if a path is a known synthetic body path, excluding cases

@@ -324,7 +324,7 @@ def _try_huggingface_download(
     ``huggingface_hub`` is unavailable.
     """
     try:
-        from huggingface_hub import snapshot_download  # type: ignore[import-untyped]
+        from huggingface_hub import snapshot_download
     except ImportError:
         try:
             return _try_huggingface_load_dataset(name, target_dir, force)
