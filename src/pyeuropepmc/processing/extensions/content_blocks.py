@@ -869,9 +869,7 @@ class ContentBlockExtractor(BaseParser):
                     title_text = "".join(title_parts).strip()
                     if title_text:
                         blocks.append(
-                            ContentBlock.paragraph_with_inlines(
-                                text=title_text, inlines=title_ils
-                            )
+                            ContentBlock.paragraph_with_inlines(text=title_text, inlines=title_ils)
                         )
                 # Process <p> elements within caption (existing behavior)
                 for p_elem in caption.findall(".//p"):
