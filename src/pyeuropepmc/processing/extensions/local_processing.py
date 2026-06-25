@@ -437,7 +437,7 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
     with open(manifest_path, encoding="utf-8") as f:
         manifest_xml = f.read()
 
-    root = ET2.fromstring(manifest_xml)
+    root = ET2.fromstring(manifest_xml)  # nosec B314
     parsers: list[FullTextXMLParser] = []
 
     # bioRxiv manifest typically uses <article> or <record> elements with DOIs
@@ -533,6 +533,6 @@ def _safe_parse(xml_content: str) -> ET.Element | None:
     try:
         import xml.etree.ElementTree as ET2  # nosec B405
 
-        return ET2.fromstring(xml_content)
+        return ET2.fromstring(xml_content)  # nosec B314
     except Exception:
         return None

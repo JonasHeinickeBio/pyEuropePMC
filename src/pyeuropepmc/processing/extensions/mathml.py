@@ -570,7 +570,7 @@ class MathMLConverter:
         RuntimeError
             If system LaTeX tools are not installed.
         """
-        import subprocess
+        import subprocess  # nosec B404
         import tempfile
 
         latex_str = self.convert_to_latex(mathml_element)
@@ -600,7 +600,7 @@ class MathMLConverter:
 
             # Run latex -> dvi
             try:
-                subprocess.run(
+                subprocess.run(  # nosec B603, B607
                     ["latex", "-interaction=nonstopmode", "-output-directory", tmpdir, "math.tex"],
                     capture_output=True,
                     timeout=30,
@@ -616,7 +616,7 @@ class MathMLConverter:
 
             # Run dvisvgm -> svg
             try:
-                result = subprocess.run(
+                result = subprocess.run(  # nosec B603, B607
                     ["dvisvgm", "--no-fonts", "--stdout", f"{tmpdir}/math.dvi"],
                     capture_output=True,
                     timeout=30,

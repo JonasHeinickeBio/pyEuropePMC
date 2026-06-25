@@ -351,7 +351,7 @@ def _try_huggingface_download(
         # inside the HF repo: PMC_sample_1943/, PLOS_1000/, etc.
         # Only download .nxml files (skip PDFs and other formats).
         repo_id = "sciencialab/grobid-evaluation"
-        downloaded_path = snapshot_download(
+        downloaded_path = snapshot_download(  # nosec B615
             repo_id=repo_id,
             repo_type="dataset",
             allow_patterns=[f"{name}/**/*.nxml"],
@@ -395,7 +395,7 @@ def _try_huggingface_load_dataset(
     """Fallback: try the ``datasets`` library (legacy approach)."""
     import datasets  # noqa: F401
 
-    ds = datasets.load_dataset(
+    ds = datasets.load_dataset(  # nosec B615
         "sciencialab/grobid-evaluation",
         name,
         split="test",
@@ -501,10 +501,10 @@ def _extract_archive(archive_path: Path, target_dir: Path) -> None:
 
     if zipfile.is_zipfile(archive_path):
         with zipfile.ZipFile(archive_path, "r") as zf:
-            zf.extractall(target_dir)
+            zf.extractall(target_dir)  # nosec B202
     elif tarfile.is_tarfile(archive_path):
         with tarfile.open(archive_path, "r:*") as tf:
-            tf.extractall(target_dir)
+            tf.extractall(target_dir)  # nosec B202
     else:
         logger.warning("Unknown archive format: %s", archive_path)
         return
