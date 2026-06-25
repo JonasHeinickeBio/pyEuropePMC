@@ -19,9 +19,7 @@ console = Console()
 
 @normalize_app.command("text")
 def normalize_text(
-    input_path: Path = typer.Argument(
-        ..., help="Path to a JATS XML file"
-    ),
+    input_path: Path = typer.Argument(..., help="Path to a JATS XML file"),
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
     ),
@@ -56,9 +54,7 @@ def normalize_text(
 
 @normalize_app.command("sections")
 def normalize_sections_cmd(
-    input_path: Path = typer.Argument(
-        ..., help="Path to a JATS XML file"
-    ),
+    input_path: Path = typer.Argument(..., help="Path to a JATS XML file"),
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
     ),
@@ -173,8 +169,12 @@ def normalize_batch(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
-    if output_format not in ("text", "sections", "bioc"):
-        console.print(f"[red]Invalid output format: {output_format}. Expected one of: text, sections, bioc[/red]")
+    valid_formats = ("text", "sections", "bioc")
+    if output_format not in valid_formats:
+        console.print(
+            f"[red]Invalid output format: {output_format}."
+            f" Expected one of: text, sections, bioc[/red]"
+        )
         raise typer.Exit(code=1)
 
     console.print(f"Processing {len(xml_files)} files...")
@@ -226,6 +226,9 @@ def _read_xml(path: Path) -> str:
         console.print(f"[red]File not found: {path}[/red]")
         raise typer.Exit(code=1)
     if path.is_dir():
-        console.print(f"[red]Expected a file, got directory: {path}. Use the 'batch' command for directory processing.[/red]")
+        console.print(
+            f"[red]Expected a file, got directory: {path}."
+            f" Use the 'batch' command for directory processing.[/red]"
+        )
         raise typer.Exit(code=1)
     return path.read_text(encoding="utf-8")

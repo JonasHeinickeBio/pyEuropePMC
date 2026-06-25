@@ -1043,15 +1043,12 @@ def compute_section_accuracy(
         if lower not in _SYNTHETIC_BODY_PATHS_LOWER:
             return False
         # "body" is only synthetic when it's NOT in the expected paths
-        if lower == "body" and "body" in expected_paths:
-            return False
-        return True
+        return not (lower == "body" and "body" in expected_paths)
 
     body_section_count = sum(
         1
         for sec in sections
-        if _get_section_type(sec) == "body"
-        and not _is_synthetic_body_path(_get_section_path(sec))
+        if _get_section_type(sec) == "body" and not _is_synthetic_body_path(_get_section_path(sec))
     )
 
     # Path matching: direct match + parent prefix matching
