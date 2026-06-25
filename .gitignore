@@ -4,6 +4,9 @@ benchmark_cache/
 benchmark_xmls/benchmark_results.json
 benchmark_xmls/metrics_report.json
 benchmark_xmls/benchmark_results_*.json
+benchmark_xmls/*_report.json
+benchmark_results_*.json
+results.json
 
 /aid_pais_knowledgegraph/downloaded_pdfs/
 /aid_pais_knowledgegraph/processed_jsons/

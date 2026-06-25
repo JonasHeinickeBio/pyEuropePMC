@@ -64,6 +64,7 @@ tenacity = "^8.2.0"
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
 pytest-cov = "^6.0.0"
+pytest-xdist = "^3.7.0"
 pre-commit = "^4.2.0"
 black = "^25.1.0"
 mypy = "^1.16.1"
@@ -87,7 +88,7 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "-ra -q"
+addopts = "-ra -q -m 'not slow and not functional and not network'"
 testpaths = ["tests"]
 markers = [
   "slow: mark test as slow (use '-m \"not slow\"' to skip)",

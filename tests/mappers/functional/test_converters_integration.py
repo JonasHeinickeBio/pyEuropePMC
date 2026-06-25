@@ -359,8 +359,9 @@ class TestConvertersErrorHandling:
                 convert_incremental_to_rdf(invalid_graph, sample_enrichment_data)
 
 
+@pytest.mark.slow
 class TestConvertersPerformance:
-    """Performance tests for converters."""
+    """Performance tests for converters (slow — converts 100 items)."""
 
     def test_large_search_results_conversion(self):
         """Test conversion of large search results."""

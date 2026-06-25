@@ -9,8 +9,9 @@ from pyeuropepmc.mappers import RDFMapper
 from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
 
 
+@pytest.mark.slow
 class TestRDFPerformanceAndScalability:
-    """Performance and scalability tests for RDF mapping."""
+    """Performance and scalability tests for RDF mapping (slow — 100+ entities)."""
 
     @pytest.fixture
     def mapper(self):

@@ -17,8 +17,10 @@ from pyeuropepmc.mappers.converters import (
 )
 
 
+@pytest.mark.slow
+@pytest.mark.network
 class TestConvertersWithRealAPI:
-    """Tests using real Europe PMC API calls."""
+    """Tests using real Europe PMC API calls (slow — hits network)."""
 
     @pytest.fixture
     def search_client(self):
