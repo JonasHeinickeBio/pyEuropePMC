@@ -335,6 +335,18 @@ def _try_huggingface_download(
     try:
         target_dir.mkdir(parents=True, exist_ok=True)
 
+        # Load HF token from .env if available
+        token: str | None = None
+        try:
+            import os
+
+            from dotenv import load_dotenv
+
+            load_dotenv()
+            token = os.environ.get("HUGGINGFACE_API_KEY") or os.environ.get("HF_TOKEN")
+        except ImportError:
+            token = None
+
         # The GROBID evaluation datasets are stored as subdirectories
         # inside the HF repo: PMC_sample_1943/, PLOS_1000/, etc.
         # Only download .nxml files (skip PDFs and other formats).
@@ -344,6 +356,7 @@ def _try_huggingface_download(
             repo_type="dataset",
             allow_patterns=[f"{name}/**/*.nxml"],
             local_dir=str(target_dir),
+            token=token,
         )
 
         logger.info(
