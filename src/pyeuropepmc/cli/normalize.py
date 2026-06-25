@@ -20,7 +20,7 @@ console = Console()
 @normalize_app.command("text")
 def normalize_text(
     input_path: Path = typer.Argument(
-        ..., help="Path to a JATS XML file or directory of XML files"
+        ..., help="Path to a JATS XML file"
     ),
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
@@ -57,7 +57,7 @@ def normalize_text(
 @normalize_app.command("sections")
 def normalize_sections_cmd(
     input_path: Path = typer.Argument(
-        ..., help="Path to a JATS XML file or directory of XML files"
+        ..., help="Path to a JATS XML file"
     ),
     output_path: Path | None = typer.Option(
         None, "--output", "-o", help="Output file path (stdout if omitted)"
@@ -173,6 +173,10 @@ def normalize_batch(
 
     output_dir.mkdir(parents=True, exist_ok=True)
 
+    if output_format not in ("text", "sections", "bioc"):
+        console.print(f"[red]Invalid output format: {output_format}. Expected one of: text, sections, bioc[/red]")
+        raise typer.Exit(code=1)
+
     console.print(f"Processing {len(xml_files)} files...")
 
     success = 0
@@ -183,9 +187,13 @@ def normalize_batch(
             xml_content = xml_file.read_text(encoding="utf-8")
             result = normalizer.normalize_xml(xml_content)
 
-            out_file = output_dir / xml_file.with_suffix(
+            # Build output path relative to input_dir to avoid leaking
+            # nested directory structure when using recursive glob
+            rel_path = xml_file.relative_to(input_dir)
+            out_file = output_dir / rel_path.with_suffix(
                 f".{output_format}.json" if output_format != "text" else ".txt"
             )
+            out_file.parent.mkdir(parents=True, exist_ok=True)
 
             if output_format == "text":
                 out_file.write_text(result["body_text"], encoding="utf-8")
@@ -216,5 +224,8 @@ def _read_xml(path: Path) -> str:
     """Read XML content from a file."""
     if not path.exists():
         console.print(f"[red]File not found: {path}[/red]")
+        raise typer.Exit(code=1)
+    if path.is_dir():
+        console.print(f"[red]Expected a file, got directory: {path}. Use the 'batch' command for directory processing.[/red]")
         raise typer.Exit(code=1)
     return path.read_text(encoding="utf-8")

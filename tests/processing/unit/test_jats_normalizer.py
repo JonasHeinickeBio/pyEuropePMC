@@ -16,6 +16,8 @@ import json
 
 import pytest
 
+from xml.etree.ElementTree import ParseError
+
 from pyeuropepmc.processing.jats_normalizer import (
     JATSNormalizer,
     NormalizationConfig,
@@ -23,6 +25,8 @@ from pyeuropepmc.processing.jats_normalizer import (
     normalize_jats_text,
     normalize_jats_xml,
 )
+
+pytestmark = pytest.mark.unit
 
 # ---------------------------------------------------------------------------
 # Fixtures: Minimal JATS XML documents for testing
@@ -445,7 +449,7 @@ class TestStructuralRemoval:
         normalizer = JATSNormalizer(remove_structural=True)
         result = normalizer.normalize_xml(_FULL_FEATURE_JATS)
         assert "Fig 1." not in result["body_text"]
-        assert "caption" not in result["body_text"].lower() or "caption" in result["body_text"]
+        assert "Results" not in result["body_text"]
 
     def test_structural_removal_disabled(self) -> None:
         """When disabled, structural elements remain."""
@@ -832,7 +836,7 @@ class TestEdgeCases:
     def test_malformed_xml(self) -> None:
         """Malformed XML raises parsing error."""
         normalizer = JATSNormalizer()
-        with pytest.raises(Exception):
+        with pytest.raises(ParseError):
             normalizer.normalize_xml("<article><body><unclosed>")
 
     def test_only_metadata_no_body(self) -> None:

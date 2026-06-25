@@ -69,7 +69,7 @@ The normalizer canonicalizes ~30 heading patterns to standard types:
 | `ack` | Acknowledgments, Acknowledgements |
 | `funding` | Funding, Funding Source, Financial Support |
 | `ethics` | Ethics, Ethical Approval, Conflict of Interest |
-| `refs` | References, Bibliography, Literature Cited |
+| `references` | References, Bibliography, Literature Cited |
 
 ```python
 from pyeuropepmc.processing.jats_normalizer import classify_section
