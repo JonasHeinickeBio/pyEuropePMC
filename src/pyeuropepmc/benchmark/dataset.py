@@ -316,52 +316,101 @@ def _try_huggingface_download(
     force: bool = False,
     progress_callback: Any | None = None,
 ) -> bool:
-    """Try downloading from Hugging Face datasets library."""
-    try:
-        import datasets
-    except ImportError:
-        return False
+    """Try downloading from Hugging Face repository.
 
-    logger.debug("Attempting Hugging Face download for %s", name)
+    Uses ``huggingface_hub.snapshot_download`` to fetch the subdirectory
+    (e.g. ``PMC_sample_1943/``) from the ``sciencialab/grobid-evaluation``
+    repository.  Falls back to ``datasets.load_dataset`` only if
+    ``huggingface_hub`` is unavailable.
+    """
+    try:
+        from huggingface_hub import snapshot_download  # type: ignore[import-untyped]
+    except ImportError:
+        try:
+            return _try_huggingface_load_dataset(name, target_dir, force)
+        except Exception:
+            return False
+
+    logger.debug("Attempting Hugging Face snapshot_download for %s", name)
     try:
         target_dir.mkdir(parents=True, exist_ok=True)
 
-        # The GROBID evaluation datasets are on Hugging Face as:
-        # sciencialab/grobid-evaluation
-        ds = datasets.load_dataset(
-            "sciencialab/grobid-evaluation",
-            name,
-            split="test",
-            trust_remote_code=True,
+        # The GROBID evaluation datasets are stored as subdirectories
+        # inside the HF repo: PMC_sample_1943/, PLOS_1000/, etc.
+        # Only download .nxml files (skip PDFs and other formats).
+        repo_id = "sciencialab/grobid-evaluation"
+        downloaded_path = snapshot_download(
+            repo_id=repo_id,
+            repo_type="dataset",
+            allow_patterns=[f"{name}/**/*.nxml"],
+            local_dir=str(target_dir),
         )
-
-        # The dataset returns article metadata; actual files
-        # are stored in the cache. We'll index them.
-        manifest: list[dict[str, Any]] = []
-        for i, article in enumerate(ds):
-            manifest.append(
-                {
-                    "index": i,
-                    "pmcid": article.get("pmcid", f"article_{i:04d}"),
-                    "path": article.get("path", ""),
-                }
-            )
-
-        manifest_path = target_dir / "hf_manifest.json"
-        with open(manifest_path, "w") as f:
-            json.dump(manifest, f, indent=2)
 
         logger.info(
-            "Hugging Face dataset %s indexed %d articles at %s",
+            "Hugging Face dataset %s downloaded to %s",
             name,
-            len(manifest),
-            target_dir,
+            downloaded_path,
         )
+
+        # snapshot_download places files under target_dir/<name>/
+        # but iter_articles expects files directly under target_dir.
+        # Move files up one level if the subdirectory exists.
+        subdir = target_dir / name
+        if subdir.is_dir():
+            import shutil
+
+            for item in subdir.iterdir():
+                dest = target_dir / item.name
+                if item.is_dir():
+                    shutil.move(str(item), str(dest))
+                else:
+                    shutil.move(str(item), str(dest))
+            subdir.rmdir()
+
         return True
 
     except Exception as e:
         logger.warning("Hugging Face download failed: %s", e)
         return False
+
+
+def _try_huggingface_load_dataset(
+    name: str,
+    target_dir: Path,
+    force: bool = False,
+) -> bool:
+    """Fallback: try the ``datasets`` library (legacy approach)."""
+    import datasets  # noqa: F401
+
+    ds = datasets.load_dataset(
+        "sciencialab/grobid-evaluation",
+        name,
+        split="test",
+        trust_remote_code=True,
+    )
+
+    manifest: list[dict[str, Any]] = []
+    for i, article in enumerate(ds):
+        manifest.append(
+            {
+                "index": i,
+                "pmcid": article.get("pmcid", f"article_{i:04d}"),
+                "path": article.get("path", ""),
+            }
+        )
+
+    target_dir.mkdir(parents=True, exist_ok=True)
+    manifest_path = target_dir / "hf_manifest.json"
+    with open(manifest_path, "w") as f:
+        json.dump(manifest, f, indent=2)
+
+    logger.info(
+        "Hugging Face dataset %s indexed %d articles at %s",
+        name,
+        len(manifest),
+        target_dir,
+    )
+    return True
 
 
 def _try_http_download(
