@@ -7,6 +7,8 @@ from unittest.mock import Mock
 import pytest
 from rdflib import Graph
 
+pytestmark = pytest.mark.functional
+
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
@@ -122,6 +124,7 @@ def sample_enrichment_data():
     }
 
 
+@pytest.mark.slow
 class TestConvertersEndToEnd:
 
     def test_search_to_rdf_complete_conversion(self, sample_search_data):
@@ -248,6 +251,7 @@ class TestConvertersEndToEnd:
         assert len(prov_triples) > 0
 
 
+@pytest.mark.slow
 class TestConvertersCachingIntegration:
     """Integration tests for caching functionality."""
 
@@ -426,6 +430,7 @@ class TestConvertersPerformance:
         assert all(count == doi_counts[0] for count in doi_counts)
 
 
+@pytest.mark.slow
 class TestConvertersSerialization:
     """Tests for RDF serialization in converters."""
 
@@ -474,6 +479,7 @@ class TestConvertersSerialization:
         assert "doi.org" in turtle1
 
 
+@pytest.mark.slow
 class TestConvertersFileOperations:
     """Tests for file operations in converters."""
 

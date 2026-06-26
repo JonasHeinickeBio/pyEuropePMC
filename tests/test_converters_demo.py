@@ -113,6 +113,7 @@ class TestConvertersWithRealAPI:
         assert len(graph) > 0
 
 
+@pytest.mark.slow
 class TestConvertersTTLOutput:
     """Tests for TTL serialization output展示."""
 
@@ -375,6 +376,7 @@ class TestConvertersEdgeCases:
         assert len(graph) > 0
 
 
+@pytest.mark.slow
 class TestConvertersWithMockedData:
     """Tests for converter functions using mock data."""
 

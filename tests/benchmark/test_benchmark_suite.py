@@ -200,6 +200,7 @@ class TestLocalDataset:
         with pytest.raises(ValueError, match="cannot be downloaded"):
             ds.download()
 
+    @pytest.mark.slow
     def test_known_dataset_name(self):
         """Known dataset can be created by name."""
         ds = BenchmarkDataset("PMC_sample_1943")
@@ -607,6 +608,7 @@ class TestWithFixtures:
                 xmls[fname] = fpath.read_text(encoding="utf-8")
         return xmls
 
+    @pytest.mark.slow
     def test_metrics_on_real_xml(self, fixture_xmls):
         """All five metrics should produce valid results on real XML."""
         for fname, xml in fixture_xmls.items():
