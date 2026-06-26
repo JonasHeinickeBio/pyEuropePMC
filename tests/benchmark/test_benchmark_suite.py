@@ -392,6 +392,54 @@ class TestBenchmarkReport:
         assert loaded.title == "Roundtrip"
         assert len(loaded.article_results) == 1
 
+    def test_set_metadata(self):
+        """set_metadata should update report metadata."""
+        report = BenchmarkReport()
+        report.set_metadata(parser_version="1.0", config={"option": True})
+        assert report.metadata["parser_version"] == "1.0"
+        assert report.metadata["config"]["option"] is True
+
+    def test_print_summary(self, capsys):
+        """print_summary should output report contents."""
+        report = BenchmarkReport(title="Test Summary")
+        report.add_article_result("ds1", "A001", {
+            "composite_score": 0.85,
+            "per_metric": {"element_coverage": 0.9, "text_fidelity": 0.8,
+                           "section_accuracy": 0.85, "inline_recall": 0.9,
+                           "metadata_accuracy": 0.8},
+        })
+        report.print_summary()
+        captured = capsys.readouterr()
+        assert "Test Summary" in captured.out
+        assert "ds1" in captured.out
+        assert "0.9" in captured.out
+
+    def test_print_summary_with_articles(self, capsys):
+        """print_summary with include_articles should list per-article scores."""
+        report = BenchmarkReport(title="Article Test")
+        for i in range(3):
+            report.add_article_result("ds1", f"A{i:03d}", {
+                "composite_score": 0.9 - i * 0.1,
+                "per_metric": {"element_coverage": 0.9 - i * 0.1},
+            })
+        report.print_summary(include_articles=True)
+        captured = capsys.readouterr()
+        assert "A001" in captured.out
+        assert "A002" in captured.out
+
+    def test_aggregate_overall_empty(self):
+        """aggregate_overall with no articles should return no composite."""
+        report = BenchmarkReport()
+        overall = report.aggregate_overall()
+        assert overall == {"total_articles": 0}
+
+    def test_summarize_values_empty(self):
+        """_summarize_values with empty list should return zeros."""
+        from pyeuropepmc.benchmark.report import _summarize_values
+        result = _summarize_values([])
+        assert result == {"mean": 0.0, "median": 0.0, "min": 0.0,
+                          "max": 0.0, "std": 0.0, "count": 0}
+
 
 # ============================================================================
 # Tests: Runner
