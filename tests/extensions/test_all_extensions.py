@@ -232,6 +232,33 @@ class TestContentBlocks:
         assert fig.label == "Fig. 1"
         assert fig.uri == "f1.jpg"
 
+        # Remaining factory methods: figure_ref, table_block, table_ref, code, boxed_text, quote
+        fr = ContentBlock.figure_ref("Fig. 1")
+        assert fr.type == ContentBlockType.FIGURE_REF
+        assert fr.target_id == "Fig. 1"
+
+        tbl = ContentBlock.table_block(label="Table 1", caption="A table", rows=[["a"]])
+        assert tbl.type == ContentBlockType.TABLE
+        assert tbl.caption == "A table"
+        assert tbl.rows == [["a"]]
+
+        tr = ContentBlock.table_ref("Table 1")
+        assert tr.type == ContentBlockType.TABLE_REF
+        assert tr.target_id == "Table 1"
+
+        cb = ContentBlock.code("print('hello')", language="python")
+        assert cb.type == ContentBlockType.CODE
+        assert cb.text == "print('hello')"
+        assert cb.language == "python"
+
+        bt = ContentBlock.boxed_text("Note content")
+        assert bt.type == ContentBlockType.BOXED_TEXT
+        assert bt.text == "Note content"
+
+        q = ContentBlock.quote("Quoted text")
+        assert q.type == ContentBlockType.QUOTE
+        assert q.text == "Quoted text"
+
     def test_content_block_to_dict(self):
         """Verify to_dict omits empty fields."""
         from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
@@ -270,6 +297,65 @@ class TestContentBlocks:
         assert ub.type == ContentBlockType.UNKNOWN_BLOCK
         assert ub.jats_tag == "custom-elem"
         assert ub.text == "custom data"
+
+    def test_content_block_to_dict_fields(self):
+        """Verify to_dict includes non-empty optional fields."""
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            ContentBlock,
+            ContentBlockType,
+        )
+
+        # Code block with language
+        cb = ContentBlock.code("print('hello')", language="python")
+        d = cb.to_dict()
+        assert d.get("language") == "python"
+
+        # Block with metadata (set attribute directly)
+        block = ContentBlock.paragraph("with metadata")
+        block.metadata = {"source": "test"}
+        d = block.to_dict()
+        assert d.get("metadata") == {"source": "test"}
+
+        # Block with parser_notes (set attribute directly)
+        block2 = ContentBlock.paragraph("with note")
+        block2.parser_notes = ["note"]
+        d = block2.to_dict()
+        assert d.get("parser_notes") == ["note"]
+
+        # Block with non-success parse_status
+        block3 = ContentBlock.paragraph("partial")
+        block3.parse_status = "partial"
+        d = block3.to_dict()
+        assert d.get("parse_status") == "partial"
+
+    def test_structured_section_to_dict(self):
+        """Verify StructuredSection.to_dict works with section_path and content."""
+        from pyeuropepmc.processing.extensions.content_blocks import (
+            ContentBlock,
+            StructuredSection,
+        )
+
+        block = ContentBlock.paragraph("content")
+        sec = StructuredSection(
+            title="Test",
+            content=[block],
+            section_type="body",
+            section_path="parent/Test",
+        )
+        d = sec.to_dict()
+        assert d["title"] == "Test"
+        assert d["section_path"] == "parent/Test"
+        assert d["section_type"] == "body"
+        assert len(d["content"]) == 1
+        assert d["content"][0]["text"] == "content"
+
+        # Section without section_path omits the key
+        sec2 = StructuredSection(
+            title="No Path",
+            content=[block],
+        )
+        d2 = sec2.to_dict()
+        assert "section_path" not in d2
 
     def test_extract_structured_sections_simple(self):
         """Test basic structured section extraction from simple XML."""
