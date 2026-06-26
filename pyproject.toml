@@ -60,6 +60,7 @@ rdfizer = ">=4.7.5,<5"
 cryptography = "^46.0.3"
 semanticscholar = "^0.12.0"
 tenacity = "^8.2.0"
+click = ">=8.0,<8.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
