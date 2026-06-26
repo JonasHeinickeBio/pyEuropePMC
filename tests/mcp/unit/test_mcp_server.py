@@ -141,10 +141,12 @@ class TestHandleListTools:
         schema = get_paper_details["inputSchema"]
         assert "properties" in schema
         props = schema["properties"]
-        # All ID fields should be optional
-        assert props["pmid"]["optional"] is True
-        assert props["pmcid"]["optional"] is True
-        assert props["doi"]["optional"] is True
+        # In JSON Schema, optional means not in "required"
+        assert "required" not in schema or "pmid" not in schema.get("required", [])
+        assert "required" not in schema or "pmcid" not in schema.get("required", [])
+        assert "required" not in schema or "doi" not in schema.get("required", [])
+        # At least one ID must be provided via anyOf
+        assert "anyOf" in schema
 
 
 class TestHandleCallTool:

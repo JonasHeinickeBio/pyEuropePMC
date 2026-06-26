@@ -7,6 +7,10 @@ setup_graph, setup_dataset, _bind_fallback_namespaces, and create_named_graph.
 
 from __future__ import annotations
 
+import pytest
+
+pytestmark = pytest.mark.unit
+
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
@@ -256,10 +260,9 @@ class TestRebindNamespaces:
         mock_dataset.bind.assert_called_once()
         # Default graph bound
         mock_dataset.default_graph.bind.assert_called_once()
-        # Each named graph bound
-        assert mock_dataset.default_graph.bind.call_count <= len(
-            mock_dataset.graphs()
-        )
+        # Each named graph must be rebound (not zero)
+        for named_graph in mock_dataset.graphs():
+            named_graph.bind.assert_called_once()
 
     def test_rebind_failure_handled(self, mock_graph: MagicMock) -> None:
         """Exception during rebind is caught gracefully."""

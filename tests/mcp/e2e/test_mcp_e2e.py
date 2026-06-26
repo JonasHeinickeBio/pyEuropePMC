@@ -9,25 +9,29 @@ import asyncio
 import json
 import subprocess
 import sys
-from pathlib import Path
 
 import pytest
+
+pytestmark = [
+    pytest.mark.slow,
+    pytest.mark.integration,
+]
 
 
 @pytest.fixture
 def mcp_server_process():
     """Start MCP server as a subprocess for e2e testing."""
-    # Get the module path
-    module_path = Path(__file__).parent.parent.parent.parent / "src" / "pyeuropepmc" / "mcp" / "server.py"
+    # Use module entrypoint instead of file path
+    module = "pyeuropepmc.mcp.server"
 
     # Start the server as a subprocess
     proc = subprocess.Popen(
-        [sys.executable, str(module_path)],
+        [sys.executable, "-m", module],
         stdin=subprocess.PIPE,
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
         text=True,
-        bufsize=1
+        bufsize=1,
     )
 
     yield proc

@@ -576,10 +576,10 @@ class TestBenchmarkRunner:
         assert runner.stats["failed"] >= 1
         assert "bad.xml" in str(runner.stats["parse_errors"])
 
-    def test_runner_print_profile_summary_no_data(self, capsys):
+    def test_runner_print_profile_summary_no_data(self, capsys, tmp_path):
         """print_profile_summary with no profiling data prints message."""
         from pyeuropepmc.benchmark.report import BenchmarkReport
-        runner = BenchmarkRunner(BenchmarkDataset("local", local_path=Path("/tmp")))
+        runner = BenchmarkRunner(BenchmarkDataset("local", local_path=tmp_path))
         report = BenchmarkReport(title="Empty Profile")
         runner.print_profile_summary(report)
         captured = capsys.readouterr()

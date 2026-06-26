@@ -399,7 +399,7 @@ def _try_huggingface_load_dataset(
         "sciencialab/grobid-evaluation",
         name,
         split="test",
-        trust_remote_code=True,
+        trust_remote_code=False,
     )
 
     manifest: list[dict[str, Any]] = []
@@ -501,9 +501,19 @@ def _extract_archive(archive_path: Path, target_dir: Path) -> None:
 
     if zipfile.is_zipfile(archive_path):
         with zipfile.ZipFile(archive_path, "r") as zf:
+            # Validate all member paths before extraction
+            for member_name in zf.namelist():
+                resolved = (target_dir / member_name).resolve()
+                if not str(resolved).startswith(str(target_dir.resolve())):
+                    raise ValueError(f"Zip entry escapes target directory: {member_name}")
             zf.extractall(target_dir)  # nosec B202
     elif tarfile.is_tarfile(archive_path):
         with tarfile.open(archive_path, "r:*") as tf:
+            # Validate all member paths before extraction
+            for member in tf.getmembers():
+                resolved = (target_dir / member.name).resolve()
+                if not str(resolved).startswith(str(target_dir.resolve())):
+                    raise ValueError(f"Tar entry escapes target directory: {member.name}")
             tf.extractall(target_dir)  # nosec B202
     else:
         logger.warning("Unknown archive format: %s", archive_path)

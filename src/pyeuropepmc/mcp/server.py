@@ -42,19 +42,34 @@ def parse_mcp_request(line: str) -> dict[str, Any]:
 
 
 def create_response(
-    request_id: int, result: Any = None, error: str | None = None
+    request_id: int,
+    result: Any = None,
+    error: str | dict[str, Any] | None = None,
 ) -> dict[str, Any]:
-    """Create MCP response"""
-    response = {
+    """Create MCP response.
+
+    Parameters
+    ----------
+    request_id : int
+        Request ID from the JSON-RPC request.
+    result : Any, optional
+        Successful result payload.
+    error : str or dict, optional
+        Error message or a pre-built error dict with ``code`` and ``message``.
+    """
+    response: dict[str, Any] = {
         "jsonrpc": "2.0",
         "id": request_id,
     }
 
     if error:
-        response["error"] = {
-            "code": -32603,
-            "message": error,
-        }
+        if isinstance(error, dict):
+            response["error"] = error
+        else:
+            response["error"] = {
+                "code": -32603,
+                "message": error,
+            }
     else:
         response["result"] = result
 
@@ -88,18 +103,15 @@ def handle_list_tools(params: dict[str, Any]) -> dict[str, Any]:
                         "query": {"type": "string", "description": "Search query"},
                         "limit": {
                             "type": "integer",
-                            "description": "Number of results",
-                            "default": 20,
+                            "description": "Number of results (default: 25)",
                         },
                         "sort": {
                             "type": "string",
                             "description": "Sort order (cited, date)",
-                            "optional": True,
                         },
                         "result_type": {
                             "type": "string",
-                            "description": "Result type",
-                            "optional": True,
+                            "description": "Result type (default: core)",
                         },
                     },
                     "required": ["query"],
@@ -107,14 +119,19 @@ def handle_list_tools(params: dict[str, Any]) -> dict[str, Any]:
             },
             {
                 "name": "get_paper_details",
-                "description": "Get detailed information about a paper",
+                "description": "Get detailed information about a paper (requires at least one ID)",
                 "inputSchema": {
                     "type": "object",
                     "properties": {
-                        "pmid": {"type": "string", "description": "PubMed ID", "optional": True},
-                        "pmcid": {"type": "string", "description": "PMCID", "optional": True},
-                        "doi": {"type": "string", "description": "DOI", "optional": True},
+                        "pmid": {"type": "string", "description": "PubMed ID"},
+                        "pmcid": {"type": "string", "description": "PMCID"},
+                        "doi": {"type": "string", "description": "DOI"},
                     },
+                    "anyOf": [
+                        {"required": ["pmid"]},
+                        {"required": ["pmcid"]},
+                        {"required": ["doi"]},
+                    ],
                 },
             },
             {
@@ -260,28 +277,49 @@ async def main() -> None:
             method = request.get("method")
             params = request.get("params", {})
 
+            # Skip response for notifications (no request_id per JSON-RPC 2.0)
+            is_notification = request_id is None
+
             if method == "initialize":
-                result = handle_initialize(params)
+                response_json = json.dumps(
+                    create_response(request_id, result=handle_initialize(params))
+                )
             elif method == "tools/list":
-                result = handle_list_tools(params)
+                response_json = json.dumps(
+                    create_response(request_id, result=handle_list_tools(params))
+                )
             elif method == "tools/call":
-                result = handle_call_tool(params)
+                response_json = json.dumps(
+                    create_response(request_id, result=handle_call_tool(params))
+                )
             else:
-                result = {"error": {"code": -32601, "message": f"Method not found: {method}"}}
+                response_json = json.dumps(
+                    create_response(
+                        request_id,
+                        error={
+                            "code": -32601,
+                            "message": f"Method not found: {method}",
+                        },
+                    )
+                )
 
-            # Send response
-            response = {
-                "jsonrpc": "2.0",
-                "id": request_id,
-                "result": result,
-            }
-
-            response_json = json.dumps(response)
-            print(response_json, flush=True)
+            if not is_notification:
+                print(response_json, flush=True)
 
         except Exception as e:
-            print(f"Error: {e}", file=sys.stderr)
+            # Send JSON-RPC error response for exceptions if we have a request_id
+            import traceback
+
+            traceback.print_exc(file=sys.stderr)
             sys.stderr.flush()
+            if request_id is not None:
+                error_response = json.dumps(
+                    create_response(
+                        request_id,
+                        error={"code": -32603, "message": f"Internal error: {e}"},
+                    )
+                )
+                print(error_response, flush=True)
 
 
 if __name__ == "__main__":
