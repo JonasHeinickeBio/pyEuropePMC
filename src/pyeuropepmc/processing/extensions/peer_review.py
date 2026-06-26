@@ -181,7 +181,7 @@ class PeerReviewExtractor(BaseParser):
         review_set.article_id = self._extract_article_id()
 
         # Find all sub-articles with review types
-        if self.root is None:
+        if self.root is None:  # pragma: no cover
             return review_set
 
         for sub_article in self.root.findall(".//sub-article"):

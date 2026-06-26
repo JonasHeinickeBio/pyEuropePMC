@@ -7,6 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-200%2B%20passed-green.svg)](tests/)
 [![Coverage](https://img.shields.io/badge/coverage-90%2B%25-brightgreen.svg)](htmlcov/)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jonasheinickebio.github.io/pyEuropePMC/)
+[![MCP Server](https://img.shields.io/badge/MCP_Server-available-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 ## 🔄 Build Status
 
@@ -38,6 +39,7 @@
 - 📈 **Advanced Analytics** - Publication trends, citation analysis, quality metrics, and duplicate detection
 - 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
 - 🔗 **External API Enrichment** - Enhance metadata with CrossRef, Unpaywall, Semantic Scholar, and OpenAlex
+- 🤖 **MCP Server Support** - Model Context Protocol integration for LLM tool usage
 
 ## 📁 Project Structure
 
@@ -529,3 +531,69 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 - **📦 PyPI Package**: [pyeuropepmc](https://pypi.org/project/pyeuropepmc/) - Install with pip
 - **💻 GitHub Repository**: [pyEuropePMC](https://github.com/JonasHeinickeBio/pyEuropePMC) - Source code
 - **🐛 Issue Tracker**: [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues) - Report bugs or request features
+
+## 🤖 MCP Server
+
+PyEuropePMC includes a Model Context Protocol (MCP) server for use with LLMs and AI assistants.
+
+### Installation
+
+```bash
+pip install pyeuropepmc
+```
+
+### Usage
+
+The MCP server provides four tools:
+
+- **`search_papers`** - Search for papers in Europe PMC
+- **`get_paper_details`** - Get detailed information about a paper (by PMID, PMCID, or DOI)
+- **`search_authors`** - Search for authors in Europe PMC
+- **`get_paper_citations`** - Get citations for a paper
+
+#### Running the MCP Server
+
+```bash
+# As a standalone server
+pyeuropepmc-mcp
+
+# Or using Python directly
+python -m pyeuropepmc.mcp.server
+```
+
+#### Using with LLMs
+
+The server implements the MCP protocol and can be configured in your LLM application:
+
+```json
+{
+  "mcpServers": {
+    "pyeuropepmc": {
+      "command": "python",
+      "args": ["/path/to/pyeuropepmc-mcp"]
+    }
+  }
+}
+```
+
+### Example API Calls
+
+```python
+from pyeuropepmc.mcp.server import EuropePMCClient
+
+client = EuropePMCClient()
+
+# Search for papers
+results = client.search_papers("CRISPR gene editing", limit=10)
+
+# Get paper details by PMID
+paper = client.get_paper_details(pmid="35658636")
+
+# Search for authors
+authors = client.search_authors("Smith")
+
+# Get citations for a paper
+citations = client.get_paper_citations(pmid="35658636", source="MED")
+```
+
+See the [MCP Server Documentation](docs/guides/mcp-server.md) for more details.

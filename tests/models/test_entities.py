@@ -1,9 +1,102 @@
-"""Tests for model entities: GrantEntity, MeSH entities, SectionEntity."""
+"""Tests for model entities: BaseEntity, GrantEntity, MeSH entities, SectionEntity."""
 import pytest
 
 from pyeuropepmc.models import GrantEntity
+from pyeuropepmc.models.base import BaseEntity
 from pyeuropepmc.models.mesh import MeSHHeadingEntity, MeSHQualifierEntity
 from pyeuropepmc.models.section import SectionEntity
+
+
+# ── BaseEntity ──
+
+
+class TestBaseEntity:
+    """Tests for BaseEntity."""
+
+    def test_merge_from_source_basic(self):
+        """merge_from_source tracks data source and sets timestamp."""
+        entity = BaseEntity(id="test-1", label="Original")
+        source_data = {"label": "Updated"}
+        entity.merge_from_source(source_data, "search_api")
+        assert "search_api" in entity.data_sources
+        assert entity.last_updated is not None
+        assert entity.last_updated.endswith("Z")
+
+    def test_merge_from_source_only_updates_none(self):
+        """merge_from_source only overwrites when current value is None."""
+        entity = BaseEntity(label="Existing")
+        entity.merge_from_source({"label": "New"}, "source")
+        assert entity.label == "Existing"  # Not overwritten
+
+    def test_merge_from_source_overwrites_empty_string(self):
+        """merge_from_source overwrites empty string values."""
+        entity = BaseEntity(label="")
+        entity.merge_from_source({"label": "NonEmpty"}, "source")
+        assert entity.label == "NonEmpty"
+
+    def test_merge_from_source_overwrites_whitespace(self):
+        """merge_from_source overwrites whitespace-only string values."""
+        entity = BaseEntity(label="   ")
+        entity.merge_from_source({"label": "Clean"}, "source")
+        assert entity.label == "Clean"
+
+    def test_merge_from_source_skips_none_values(self):
+        """merge_from_source skips keys where value is None."""
+        entity = BaseEntity(label="Keep")
+        entity.merge_from_source({"label": None, "source_uri": "http://example.com"}, "source")
+        assert entity.label == "Keep"  # Not overwritten by None
+        assert entity.source_uri == "http://example.com"  # Set by non-None value
+
+    def test_merge_from_source_skips_unknown_attr(self):
+        """merge_from_source silently skips non-existent attributes."""
+        entity = BaseEntity()
+        entity.merge_from_source({"nonexistent": "value"}, "source")
+        # Should not raise, data_sources still tracked
+        assert "source" in entity.data_sources
+
+    def test_is_valid_uri_scheme_required(self):
+        """_is_valid_uri requires a scheme (://)."""
+        assert BaseEntity._is_valid_uri("http://example.com") is True
+        assert BaseEntity._is_valid_uri("https://example.org/path") is True
+        assert BaseEntity._is_valid_uri("ftp://files.example.com") is True
+        assert BaseEntity._is_valid_uri("no-scheme-string") is False
+
+    def test_is_valid_uri_empty_or_non_string(self):
+        """_is_valid_uri returns False for empty or non-string input."""
+        assert BaseEntity._is_valid_uri("") is False
+        assert BaseEntity._is_valid_uri(None) is False
+        assert BaseEntity._is_valid_uri(12345) is False
+
+    def test_mint_uri_generates_id(self):
+        """mint_uri generates UUID when id is None."""
+        entity = BaseEntity()
+        uri = entity.mint_uri("paper")
+        assert str(uri).startswith("http://example.org/data/paper/")
+        assert entity.id is not None  # UUID assigned
+
+    def test_mint_uri_uses_existing_id(self):
+        """mint_uri uses existing id when available."""
+        entity = BaseEntity(id="abc-123")
+        uri = entity.mint_uri("author")
+        assert str(uri) == "http://example.org/data/author/abc-123"
+
+    def test_to_dict(self):
+        """to_dict returns dataclass fields."""
+        entity = BaseEntity(id="x", label="Test", confidence=0.9)
+        d = entity.to_dict()
+        assert d["id"] == "x"
+        assert d["label"] == "Test"
+        assert d["confidence"] == 0.9
+
+    def test_validate_noop(self):
+        """validate is a no-op for BaseEntity."""
+        entity = BaseEntity()
+        entity.validate()  # Should not raise
+
+    def test_normalize_noop(self):
+        """normalize is a no-op for BaseEntity."""
+        entity = BaseEntity()
+        entity.normalize()  # Should not raise
 
 
 # ── GrantEntity ──

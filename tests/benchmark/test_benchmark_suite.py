@@ -162,6 +162,50 @@ class TestLocalDataset:
         with pytest.raises(ValueError, match="local_path"):
             BenchmarkDataset("local")
 
+    def test_iter_articles_cache(self, tmp_dir):
+        """Second call to iter_articles should use cache."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "a.xml": SIMPLE_ARTICLE,
+            "b.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        # First call populates cache
+        paths1 = list(ds.iter_articles())
+        assert len(paths1) == 2
+        # Second call hits cache
+        paths2 = list(ds.iter_articles())
+        assert len(paths2) == 2
+
+    def test_get_article_paths_with_limit(self, tmp_dir):
+        """get_article_paths respects the limit parameter."""
+        articles = {f"PMC{i:03d}.xml": SIMPLE_ARTICLE for i in range(10)}
+        xml_dir = _make_local_dataset(tmp_dir, articles)
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        paths = ds.get_article_paths(limit=3)
+        assert len(paths) == 3
+
+    def test_reset_cache(self, tmp_dir):
+        """reset_cache clears the article path cache."""
+        xml_dir = _make_local_dataset(tmp_dir, {"a.xml": SIMPLE_ARTICLE})
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        list(ds.iter_articles())  # populate cache
+        assert ds._article_cache is not None
+        ds.reset_cache()
+        assert ds._article_cache is None
+
+    def test_download_local_name_raises(self, tmp_dir):
+        """download() on 'local' dataset raises because it's not a remote dataset."""
+        nonexistent = tmp_dir / "nonexistent"
+        ds = BenchmarkDataset("local", local_path=nonexistent)
+        with pytest.raises(ValueError, match="cannot be downloaded"):
+            ds.download()
+
+    def test_known_dataset_name(self):
+        """Known dataset can be created by name."""
+        ds = BenchmarkDataset("PMC_sample_1943")
+        assert ds.name == "PMC_sample_1943"
+        assert not ds.is_downloaded  # not downloaded yet
+
 
 # ============================================================================
 # Tests: Metrics (XML-level)
@@ -503,6 +547,43 @@ class TestBenchmarkRunner:
         for key in ("element_coverage", "text_fidelity", "section_accuracy",
                     "inline_recall", "metadata_accuracy", "composite_score"):
             assert key in metrics
+
+    def test_runner_multiple_datasets(self, tmp_dir):
+        """Runner accepts a list of datasets."""
+        (tmp_dir / "ds1").mkdir()
+        (tmp_dir / "ds2").mkdir()
+        xml_dir1 = _make_local_dataset(tmp_dir / "ds1", {
+            "a.xml": SIMPLE_ARTICLE,
+        })
+        xml_dir2 = _make_local_dataset(tmp_dir / "ds2", {
+            "b.xml": SIMPLE_ARTICLE.replace("Smith", "Jones"),
+        })
+        ds1 = BenchmarkDataset("local", local_path=xml_dir1)
+        ds2 = BenchmarkDataset("local", local_path=xml_dir2)
+        runner = BenchmarkRunner([ds1, ds2])
+        report = runner.run_all()
+        assert runner.stats["successful"] == 2
+        assert runner.stats["total_articles"] == 2
+
+    def test_runner_read_error(self, tmp_dir):
+        """Runner handles file read errors gracefully."""
+        xml_dir = _make_local_dataset(tmp_dir, {"good.xml": SIMPLE_ARTICLE})
+        # Write a binary file (with .xml extension to match the glob) that fails on UTF-8 read
+        (xml_dir / "bad.xml").write_bytes(b"\xff\xfe\x00\x01")
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, skip_errors=True)
+        report = runner.run_all()
+        assert runner.stats["failed"] >= 1
+        assert "bad.xml" in str(runner.stats["parse_errors"])
+
+    def test_runner_print_profile_summary_no_data(self, capsys):
+        """print_profile_summary with no profiling data prints message."""
+        from pyeuropepmc.benchmark.report import BenchmarkReport
+        runner = BenchmarkRunner(BenchmarkDataset("local", local_path=Path("/tmp")))
+        report = BenchmarkReport(title="Empty Profile")
+        runner.print_profile_summary(report)
+        captured = capsys.readouterr()
+        assert "No profiling data" in captured.out
 
 
 # ============================================================================

@@ -603,6 +603,589 @@ class TestPeerReview:
         )
         assert "methodology" in all_text.lower()
 
+    # ------------------------------------------------------------------
+    # Edge case tests
+    # ------------------------------------------------------------------
+
+    def test_to_dict_methods(self):
+        """Test to_dict on PeerReviewMaterial and PeerReviewSet."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewMaterial,
+            PeerReviewSet,
+            PeerReviewType,
+        )
+
+        material = PeerReviewMaterial(
+            review_type=PeerReviewType.DECISION_LETTER,
+            title="Decision",
+            contributors=[{"name": "Ed", "type": "editor"}],
+            revision_round=2,
+            metadata={"received_date": "2024-01-15"},
+        )
+        d = material.to_dict()
+        assert d["review_type"] == "decision-letter"
+        assert d["title"] == "Decision"
+        assert d["revision_round"] == 2
+        assert d["metadata"]["received_date"] == "2024-01-15"
+
+        review_set = PeerReviewSet(
+            article_id="PMC123",
+            reviews=[material],
+            revision_rounds={2: [material]},
+        )
+        sd = review_set.to_dict()
+        assert sd["article_id"] == "PMC123"
+        assert len(sd["reviews"]) == 1
+        assert "2" in sd["revision_rounds"]
+
+    def test_block_extractor_lazy(self):
+        """Test that block_extractor is lazily initialized."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        extractor = PeerReviewExtractor()
+        # Before access, _block_extractor should be None
+        assert extractor._block_extractor is None  # noqa: SLF001
+        # Access triggers lazy init with None root
+        be = extractor.block_extractor
+        assert be is not None
+        # Now _block_extractor should be cached
+        assert extractor._block_extractor is be  # noqa: SLF001
+
+    def test_root_is_none(self):
+        """Test _extract_article_id with no root (line 210)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        extractor = PeerReviewExtractor()
+        result = extractor._extract_article_id()  # noqa: SLF001
+        assert result == ""
+
+    def test_unknown_article_type(self):
+        """Test sub-article with unmapped article-type is skipped."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="unknown-type" id="sa1">
+        <front-stub>
+        <title-group><article-title>Unknown</article-title></title-group>
+        </front-stub>
+        <body><sec><title>Content</title><p>Text.</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert len(result.reviews) == 0
+
+    def test_doi_article_id(self):
+        """Test extraction when article has DOI (no PMID)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="doi">10.1234/test.2024.001</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub><title-group><article-title>Decision</article-title></title-group></front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert result.article_id == "10.1234/test.2024.001"
+        assert len(result.reviews) == 1
+
+    def test_no_article_id(self):
+        """Test extraction when article has no article-id elements."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert result.article_id == ""
+
+    def test_no_title_group(self):
+        """Test sub-article without title-group."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <contrib-group>
+        <contrib contrib-type="editor">
+        <name><surname>E</surname><given-names>Ed</given-names></name>
+        </contrib>
+        </contrib-group>
+        </front-stub>
+        <body><sec><title>Comments</title><p>Text.</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert len(result.reviews) == 1
+        assert result.reviews[0].title == ""
+
+    def test_version_parse_error(self):
+        """Test sub-article with non-numeric version falls through."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <version>not-a-number</version>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        # Should default to round 1 (no rev-received fn)
+        assert result.reviews[0].revision_round == 1
+
+    def test_rev_received_fn(self):
+        """Test revision round detection from rev-received fn with R label."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <fn fn-type="rev-received"><label>R2</label></fn>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert result.reviews[0].revision_round == 2
+
+    def test_contrib_without_name(self):
+        """Test sub-article with contrib but no name element."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <contrib-group>
+        <contrib contrib-type="editor"/>
+        </contrib-group>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert len(result.reviews[0].contributors) == 0
+
+    def test_contrib_with_empty_name(self):
+        """Test contrib with name but empty surname and given-names."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <contrib-group>
+        <contrib contrib-type="editor">
+        <name><surname></surname><given-names></given-names></name>
+        </contrib>
+        </contrib-group>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert len(result.reviews[0].contributors) == 0
+
+    def test_no_body(self):
+        """Test sub-article without body element."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        </front-stub>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert len(result.reviews[0].sections) == 0
+
+    def test_sec_without_content(self):
+        """Test sub-article with sec element that has no content blocks."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        </front-stub>
+        <body>
+        <sec><title>Empty Section</title></sec>
+        </body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        # The empty sec won't make the cut (no content), and no bare p after it
+        assert len(result.reviews[0].sections) == 0
+
+    def test_object_id_metadata(self):
+        """Test extraction of object-id metadata."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <object-id pub-id-type="doi">10.1234/review.001</object-id>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert result.reviews[0].metadata.get("object_id_doi") == "10.1234/review.001"
+
+    def test_get_local_tag_with_namespace(self):
+        """Test _get_local_tag strips namespace prefix."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        extractor = PeerReviewExtractor()
+        result = extractor._get_local_tag("{http://example.com/ns}element")  # noqa: SLF001
+        assert result == "element"
+        # No namespace should pass through unchanged
+        result2 = extractor._get_local_tag("element")  # noqa: SLF001
+        assert result2 == "element"
+
+    def test_block_extractor_cached(self):
+        """Test that block_extractor property returns cached instance on
+        subsequent access (branch 156->159)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        extractor = PeerReviewExtractor()
+        # First access triggers creation (True branch of 156)
+        _ = extractor.block_extractor
+        # Second access returns cached (False branch of 156)
+        be2 = extractor.block_extractor
+        assert be2 is not None
+
+    def test_article_id_empty_text(self):
+        """Test extraction when article-id has empty text (branch 215->213)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid"> </article-id>
+        <article-id pub-id-type="doi">10.1234/test</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub><title-group><article-title>D</article-title></title-group></front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        # pmid has whitespace-only text — should skip to DOI
+        assert result.article_id == "10.1234/test"
+
+    def test_title_with_article_meta(self):
+        """Test title extraction when sub-article uses article-meta (line 228)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Parent</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <article-meta>
+        <title-group><article-title>Decision Letter Title</article-title></title-group>
+        </article-meta>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert result.reviews[0].title == "Decision Letter Title"
+
+    def test_rev_received_label_no_number(self):
+        """Test rev-received fn with R label but no number (266->273, 270->273)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <!-- Label with R but no number — falls through to default round 1 -->
+        <fn fn-type="rev-received"><label>R</label></fn>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert result.reviews[0].revision_round == 1
+
+    def test_rev_received_label_without_r(self):
+        """Test rev-received fn without 'R' in label (branch 266->273)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <fn fn-type="rev-received"><label>Version 1</label></fn>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        # Label doesn't contain "R" — falls through to default round 1
+        assert result.reviews[0].revision_round == 1
+
+    def test_bare_p_whitespace_only(self):
+        """Test bare p with whitespace-only text (branch 316->312)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        </front-stub>
+        <body>
+        <!-- Bare p with only whitespace — should be skipped -->
+        <p>   </p>
+        </body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        assert len(result.reviews[0].sections) == 0
+
+    def test_object_id_empty_text(self):
+        """Test object-id with empty text (branch 349->347)."""
+        from pyeuropepmc.processing.extensions.peer_review import (
+            PeerReviewExtractor,
+        )
+
+        xml = """<?xml version="1.0"?>
+        <article>
+        <front>
+        <article-meta>
+        <article-id pub-id-type="pmid">123</article-id>
+        <title-group><article-title>Test</article-title></title-group>
+        </article-meta>
+        </front>
+        <body><sec><title>Main</title><p>Body.</p></sec></body>
+        <sub-article article-type="decision-letter" id="sa1">
+        <front-stub>
+        <title-group><article-title>Decision</article-title></title-group>
+        <object-id pub-id-type="doi"></object-id>
+        </front-stub>
+        <body><sec><title>C</title><p>T</p></sec></body>
+        </sub-article>
+        </article>
+        """
+        root = ET.fromstring(xml)
+        extractor = PeerReviewExtractor(root)
+        result = extractor.extract_peer_reviews()
+        # Empty object-id text -> shouldn't appear in metadata
+        assert "object_id_doi" not in result.reviews[0].metadata
+
 
 # ============================================================================
 # Tests: JATS4R Validator
