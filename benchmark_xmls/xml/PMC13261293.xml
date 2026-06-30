@@ -1,0 +1,418 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="vms371021" xml:lang="en" article-type="case-study" dtd-version="1.4"><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Vet Med Sci</journal-id><journal-id journal-id-type="iso-abbrev">Vet Med Sci</journal-id><journal-id journal-id-type="pmc-domain-id">3144</journal-id><journal-id journal-id-type="pmc-domain">vetmedsci</journal-id><journal-id journal-id-type="publisher-id">VMS3</journal-id><journal-title-group><journal-title>Veterinary Medicine and Science</journal-title></journal-title-group><issn pub-type="epub">2053-1095</issn><publisher><publisher-name>Wiley</publisher-name></publisher></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13261293</article-id><article-id pub-id-type="pmcid-ver">PMC13261293.1</article-id><article-id pub-id-type="pmcaid">13261293</article-id><article-id pub-id-type="pmcaiid">13261293</article-id><article-id pub-id-type="pmid">42281515</article-id><article-id pub-id-type="doi">10.1002/vms3.71021</article-id><article-id pub-id-type="publisher-id">VMS371021</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Case Report</subject></subj-group><subj-group subj-group-type="heading"><subject>Case Report</subject><subj-group subj-group-type="heading"><subject>Dogs</subject></subj-group></subj-group></article-categories><title-group><article-title>Hypertrophic Osteopathy Associated With Primary Pulmonary Histiocytic Sarcoma in a Dog</article-title></title-group><contrib-group><contrib id="vms371021-cr-0001" contrib-type="author" corresp="yes"><name name-style="western"><surname>Rinaldi</surname><given-names initials="V">Valentina</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-5651-1358</contrib-id><xref rid="vms371021-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>vrinaldi@unite.it</email></address></contrib><contrib id="vms371021-cr-0002" contrib-type="author"><name name-style="western"><surname>Ridolfi</surname><given-names initials="F">Francesca</given-names></name><xref rid="vms371021-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="vms371021-cr-0003" contrib-type="author"><name name-style="western"><surname>Finotello</surname><given-names initials="R">Riccardo</given-names></name><xref rid="vms371021-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="vms371021-cr-0004" contrib-type="author"><name name-style="western"><surname>Rosto</surname><given-names initials="M">Martina</given-names></name><xref rid="vms371021-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="vms371021-cr-0005" contrib-type="author"><name name-style="western"><surname>Luciani</surname><given-names initials="A">Alessia</given-names></name><xref rid="vms371021-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="vms371021-cr-0006" contrib-type="author"><name name-style="western"><surname>Boari</surname><given-names initials="A">Andrea</given-names></name><xref rid="vms371021-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="vms371021-cr-0007" contrib-type="author"><name name-style="western"><surname>Crisi</surname><given-names initials="PE">Paolo Emidio</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-5993-0059</contrib-id><xref rid="vms371021-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib></contrib-group><aff id="vms371021-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Veterinary Medicine</named-content>
+<institution>University of Teramo</institution>
+<city>Teramo</city>
+<country country="IT">Italy</country>
+</aff><aff id="vms371021-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<institution>Dipartimento di Scienze Umane, Università degli Studi Link, Via Del Casale di San Pio V</institution>
+<city>Roma</city>
+<country country="IT">Italy</country>
+</aff><pub-date pub-type="epub"><day>12</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="collection"><month>7</month><year>2026</year></pub-date><volume>12</volume><issue seq="190">4</issue><issue-id pub-id-type="pmc-issue-id">515059</issue-id><issue-id pub-id-type="doi">10.1002/vms3.v12.4</issue-id><elocation-id>e71021</elocation-id><history>
+<date date-type="rev-recd"><day>02</day><month>4</month><year>2026</year></date>
+<date date-type="received"><day>02</day><month>4</month><year>2026</year></date>
+<date date-type="accepted"><day>18</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>12</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>13</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-13 10:25:17.177"><day>13</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Veterinary Medicine and Science</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="VMS3-12-e71021.pdf"><?pdf-name VMS3-12-e71021.pdf?><?pdf-size 568488?><?pdf-md5 b6c5eb679a03b831e0483688f42d2022?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:2fb7/13261293/b6c5eb679a03/VMS3-12-e71021.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:VMS3-12-e71021.pdf"/><abstract><title>ABSTRACT</title><p>Hypertrophic osteopathy (HO) is a paraneoplastic or parainflammatory syndrome characterised by painful periosteal new bone formation and soft tissue swelling, most commonly associated with thoracic neoplasia. The pathogenesis of HO remains incompletely understood and may involve neurovascular mechanisms, altered pulmonary filtration of megakaryocytes and platelets and increased release of growth factors such as vascular endothelial growth factor (VEGF) and platelet‐derived growth factor (PDGF). This report describes the first documented case of HO associated with primary pulmonary histiocytic sarcoma (PHS) in a dog. A 7‐year‐old male Golden Retriever was referred for evaluation of diffuse pain, limb swelling and lameness. Diagnostic imaging revealed bilateral periosteal proliferation affecting the forelimbs and a pulmonary mass within the right caudal lung lobe. Histopathology and immunohistochemistry following lung lobectomy and lymphadenectomy confirmed a diagnosis of PHS with nodal metastasis. Surgical excision resulted in complete clinical resolution of pain despite persistent radiographic evidence of HO. Subsequent disease progression occurred despite multiple chemotherapy protocols, including lomustine, vinorelbine, and metronomic chemotherapy; however, the dog remained consistently pain‐free throughout follow‐up. Overall survival time was 450 days. This case expands the spectrum of neoplasms associated with HO and further supports the hypothesis that tumour location, rather than histotype, plays a central role in the development of this syndrome. Moreover, the sustained absence of pain despite persistent periosteal lesions and metastatic progression suggests that tumour burden and tumour microenvironment may significantly influence clinical manifestations of HO.</p></abstract><abstract abstract-type="highlights"><title>Summary</title><p>Hypertrophic osteopathy (HO) is a syndrome characterised by painful periosteal proliferation and limb swelling. While typically associated with pulmonary neoplasia, either primary or metastatic, its pathogenesis remains unclear. Proposed mechanisms include vagal stimulation, altered pulmonary filtration of megakaryocytes and platelets and the peripheral release of growth factors such as VEGF and PDGF. This report documents a case of paraneoplastic HO in a dog, secondary to a pulmonary histiocytic sarcoma (PHS). A 7‐year‐old Golden Retriever presented with limb pain and swelling classified as paraneoplastic HO; surgical excision of the PHS temporarily resolved clinical signs, but radiological features of HO persisted. PHS progressed despite chemotherapy; however, the dog remained clinically stable, with no reported pain. This case expands the spectrum of neoplasms associated with HO and highlights the complex, multifactorial nature of its pathogenesis and pain management.</p></abstract><abstract id="vms371014-abs-0001" abstract-type="graphical"><p>
+<boxed-text position="anchor" content-type="graphic" orientation="portrait"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="VMS3-12-e71021-g001.jpg"><?image-name VMS3-12-e71021-g001.jpg?><?image-size 17560?><?image-md5 9927f4c03522409230b279172d101ba8?><?image-image-server-status NEVER_LOAD?><?image-original-height 119?><?image-original-width 180?><?image-scaled-height 119?><?image-scaled-width 180?><?image-cloudpmc-urn urn:cdn:blobs/2fb7/13261293/9927f4c03522/VMS3-12-e71021-g001.jpg?></graphic></boxed-text>
+</p></abstract><counts><fig-count count="2"/><table-count count="1"/><page-count count="5"/><word-count count="3411"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:12.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body><sec id="vms371021-sec-0010"><label>1</label><title>Introduction</title><p>Hypertrophic osteopathy (HO) is a paraneoplastic or proinflammatory syndrome characterised by periosteal new bone formation affecting the distal limbs, typically progressing proximally over time (Withers et al. <xref rid="vms371021-bib-0031" ref-type="bibr">2015</xref>). Although its pathogenesis remains incompletely understood, current hypotheses suggest that alterations in neural signalling may induce abnormal vascular responses within the periosteum, promoting cortical bone deposition (Withers et al. <xref rid="vms371021-bib-0031" ref-type="bibr">2015</xref>).</p><p>HO has been associated with a wide range of thoracic and abdominal diseases. Thoracic disorders are the most frequent underlying causes and include primary or metastatic pulmonary tumours, rib tumours, oesophageal sarcomas related to parasitic infection, lung abscessation, mycobacterial pneumonia, bronchial foreign bodies with secondary pneumonia, congenital anomalies such as patent ductus arteriosus or megaoesophagus and infective endocarditis (Wylie et al. <xref rid="vms371021-bib-0032" ref-type="bibr">1993</xref>; Hesselink and van den Tweel <xref rid="vms371021-bib-0012" ref-type="bibr">1990</xref>; Foster and Armstrong <xref rid="vms371021-bib-0008" ref-type="bibr">2006</xref>; Dunn et al. <xref rid="vms371021-bib-0006" ref-type="bibr">2007</xref>; Kim and Kim <xref rid="vms371021-bib-0013" ref-type="bibr">2024</xref>). Abdominal conditions, including renal and prostatic neoplasms and other intra‐abdominal masses, have also been implicated. Clinical improvement and regression of periosteal proliferation often follow successful treatment of the primary disease process (Withers et al. <xref rid="vms371021-bib-0031" ref-type="bibr">2015</xref>; Grillo et al. <xref rid="vms371021-bib-0010" ref-type="bibr">2007</xref>; Halliwell and Ackerman <xref rid="vms371021-bib-0011" ref-type="bibr">1974</xref>).</p><p>Clinical manifestations typically include progressive limb thickening, lameness and pain on palpation. Early recognition of HO is essential to prompt investigation for underlying thoracic or abdominal pathology (Withers et al. <xref rid="vms371021-bib-0031" ref-type="bibr">2015</xref>; Brodey <xref rid="vms371021-bib-0001" ref-type="bibr">1971</xref>). This case report describes, for the first time, paraneoplastic HO associated with primary pulmonary histiocytic sarcoma (PHS) in a dog.</p></sec><sec id="vms371021-sec-0020"><label>2</label><title>Case History</title><p>A 7‐year‐old male Golden Retriever was referred to the Veterinary Teaching Hospital (VTH) of the University of Teramo for an oncological consultation. One month earlier, the referring veterinarian had evaluated the dog for generalised pain, initially treated with non‐steroidal anti‐inflammatory drugs (NSAIDs), Piroxicam 0.3 mg/kg SID, which were subsequently discontinued due to gastrointestinal adverse effects. The pain was more pronounced on limb manipulation, along with elbow joint swelling and lameness. Comprehensive blood tests, limb and thoracic radiographs revealed a periosteal reaction in the forelimbs and the presence of a thoracic mass. A computed tomography (CT) scan confirmed a pulmonary mass in the right caudal lung lobe (6 cm CrCd × 3.6 cm DV × 5.3 cm ML) and a diffuse periosteal reaction, consistent with HO. Figure <xref rid="vms371021-fig-0001" ref-type="fig">1</xref>.</p><fig position="float" fig-type="FIGURE" id="vms371021-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Computed tomography (CT) findings in a dog with pulmonary histiocytic sarcoma and hypertrophic osteopathy. (A) Transverse CT image of the thorax (lung window). A large pulmonary mass is present dorsally within the right caudal lung lobe (arrow). The lesion is well marginated, of soft‐tissue attenuation, and cavitary. (B) Transverse CT image at the level of the temporomandibular region including both antebrachia (bone window). Arrows indicate bilateral, symmetric periosteal new bone formation along the diaphyses of the radius and ulna. The periosteal reaction is thick and smooth, with mild circumferential soft‐tissue swelling. (C) Parasagittal CT image of the right forelimb (bone window). The arrow indicates smooth periosteal new bone formation involving the diaphyseal and metaphyseal regions of the ulna, associated with adjacent soft‐tissue swelling. (D) Parasagittal CT image of the thorax (lung window) showing the large pulmonary mass (arrow) in the right caudal lung lobe (same lesion as in panel A).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="VMS3-12-e71021-g002.jpg"><?image-name VMS3-12-e71021-g002.jpg?><?image-size 39935?><?image-md5 72b8b07f4869aeb5d3e518a55733bc4d?><?image-image-server-status NEED_LOADING?><?image-original-height 438?><?image-original-width 840?><?image-scaled-height 292?><?image-scaled-width 560?><?image-cloudpmc-urn urn:cdn:blobs/2fb7/13261293/72b8b07f4869/VMS3-12-e71021-g002.jpg?><?thumb-name VMS3-12-e71021-g002.gif?><?thumb-size 7026?><?thumb-md5 32e2f017d53e6477e05f48848b817312?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 153?><?thumb-cloudpmc-urn urn:cdn:blobs/2fb7/13261293/32e2f017d53e/VMS3-12-e71021-g002.gif?></graphic></fig><p>The dog underwent right caudal lung lobectomy and ipsilateral tracheobronchial lymphadenectomy, and the excised mass and lymph nodes were submitted for histopathological evaluation. After surgery, the owner reported clinical improvement and resolution of pain. Microscopic examination suggested an undifferentiated neoplasm. Immunohistochemical analysis revealed diffuse positivity for IBA‐1, MHC‐II, and vimentin, while neoplastic cells were negative for pan‐cytokeratin and HBME. Based on these findings, a diagnosis of PHS with metastatic lymph node was made. A few days after surgery, the dog was referred to the VTH. At clinical examination, the patient had a body condition score of 5/9 and a muscle condition score of A (Freeman and Becvarova <xref rid="vms371021-bib-0009" ref-type="bibr">2011</xref>). Contrary to what had been reported by the referring veterinarian and the owner prior to surgery, the dog showed no evidence of pain at the post‐surgical oncology consultation according to the Glasgow Composite Measure Pain Scale Short Form (ICMPS‐SF; Della Rocca et al. <xref rid="vms371021-bib-0003" ref-type="bibr">2018</xref>). No other clinically relevant abnormalities were detected. Adjuvant oral lomustine (80 mg/m<sup>2</sup> PO, q3W) was initiated. However, due to a significant elevation in ALT levels, lomustine‐induced hepatotoxicity was suspected (grade 3 VCOG‐CTCAE v2; LeBlanc et al. <xref rid="vms371021-bib-0015" ref-type="bibr">2021</xref>), leading to its discontinuation. As an alternative, vinorelbine (15 mg/m<sup>2</sup>, IV, q1W) was administered, and silymarin was prescribed as a supplement for liver support.</p><p>After four vinorelbine treatments, a staging work‐up, including haematobiochemical profile and a total‐body CT, was performed. Treatment response was assessed according to RECIST criteria (Nguyen et al. <xref rid="vms371021-bib-0021" ref-type="bibr">2015</xref>). Biochemical results indicated that serum ALT activity was within the reference interval and other laboratory findings were unremarkable. The CT revealed a newly developed 0.4 cm soft‐tissue nodule in the accessory lung lobe, suggestive of metastases, and therefore compatible with progressive disease (PD). Due to the small lesion size, and the risks associated with diagnostic sampling, fine needle aspiration was not performed. HO persisted on CT; however, the dog remained pain‐free (Della Rocca et al. <xref rid="vms371021-bib-0003" ref-type="bibr">2018</xref>). Consequently, vinorelbine was discontinued, and lomustine was reintroduced as a rescue treatment. Radiographic evidence of HO remained unchanged, compared with the previous CT examination, and despite the development of metastatic disease, the dog continued to show no evidence of pain.</p><p>A follow‐up CT performed 4 months later revealed further PD, characterised by an increase in size (0.61 cm) of the previously documented pulmonary nodule and the emergence of multiple additional pulmonary nodules, with soft tissue density. HO persisted unchanged with no signs of pain detected (Della Rocca et al. <xref rid="vms371021-bib-0003" ref-type="bibr">2018</xref>). In response, a metronomic chemotherapy protocol was initiated, consisting of thalidomide (2 mg/kg PO, q24h) and cyclophosphamide (10 mg/m<sup>2</sup> PO, q48h). After 3 months of treatment, a three‐view thoracic radiographic examination showed that the largest pulmonary lesion remained of similar size, compared to the previous CT, while HO persisted unchanged. The dog developed bilateral ocular mucopurulent discharge and episodes of coughing triggered by physical activity. Pain remained unreported, and no additional analgesic treatments were required. The overall survival time was 450 days.</p></sec><sec id="vms371021-sec-0030"><label>3</label><title>Discussion</title><p>To the best of our knowledge, this is the first reported case of HO associated with PHS.</p><p>HO is characterised by painful periosteal proliferation and soft tissue swelling and has been described in association with infectious, inflammatory, congenital and neoplastic conditions (Hesselink and van den Tweel <xref rid="vms371021-bib-0012" ref-type="bibr">1990</xref>; Foster and Armstrong <xref rid="vms371021-bib-0008" ref-type="bibr">2006</xref>; Dunn et al. <xref rid="vms371021-bib-0006" ref-type="bibr">2007</xref>; Caywood et al. <xref rid="vms371021-bib-0002" ref-type="bibr">1985</xref>). Nevertheless, it is most frequently recognised as a paraneoplastic syndrome linked to primary or metastatic pulmonary tumours.<sup>1</sup> Extrapulmonary neoplasms, including urinary bladder and other urinary tract tumours, have also been reported (Grillo et al. <xref rid="vms371021-bib-0010" ref-type="bibr">2007</xref>; Halliwell and Ackerman <xref rid="vms371021-bib-0011" ref-type="bibr">1974</xref>). The pathogenesis of HO remains incompletely understood. One widely accepted hypothesis suggests that stimulation of the vagus nerve induces peripheral vasodilation, leading to increased periosteal perfusion and subsequent bone proliferation. This theory is supported by reports of regression of periosteal lesions following vagotomy (Flavell <xref rid="vms371021-bib-0007" ref-type="bibr">1956</xref>). An additional proposed mechanism involves abnormal passage of platelet aggregates and megakaryocytes into the systemic circulation. Under normal physiological conditions, these elements are fragmented within the pulmonary capillary bed; however, in HO, this filtering function may be bypassed, allowing them to reach the peripheral circulation (Dickinson and Martin <xref rid="vms371021-bib-0005" ref-type="bibr">1987</xref>). In the distal limbs, these cells may release platelet‐derived growth factor, promoting fibroblast proliferation, neovascularisation and increased vascular permeability, ultimately leading to periosteal new bone formation (Dickinson and Martin <xref rid="vms371021-bib-0005" ref-type="bibr">1987</xref>; Martinez‐Lavin <xref rid="vms371021-bib-0016" ref-type="bibr">2007</xref>; Martinez‐Lavin et al. <xref rid="vms371021-bib-0017" ref-type="bibr">2008</xref>; Thomas <xref rid="vms371021-bib-0028" ref-type="bibr">1996</xref>). Vascular endothelial growth factor (VEGF) has also been implicated in the pathogenesis of HO. Released by platelets, VEGF is a potent mediator of angiogenesis and osteoblastic differentiation, and its expression is often upregulated in hypoxic or neoplastic environments (Martinez‐Lavin <xref rid="vms371021-bib-0016" ref-type="bibr">2007</xref>). Increased circulating VEGF levels have been documented in both primary and secondary forms of HO, particularly in cases associated with pulmonary malignancies (Martinez‐Lavin et al. <xref rid="vms371021-bib-0017" ref-type="bibr">2008</xref>). An alternative hypothesis implicates chronic peripheral hypoxaemia, secondary to congenital or acquired arteriovenous shunting, as a contributing factor to periosteal new bone formation. This process may be mediated through upregulation of VEGF, which stimulates angiogenesis and osteoblastic activity (Midy and Plouët <xref rid="vms371021-bib-0018" ref-type="bibr">1994</xref>). VEGF expression may be enhanced by local hypoxia or impaired pulmonary inactivation, resulting in increased peripheral concentrations of circulating vasodilators and growth factors (Thomas <xref rid="vms371021-bib-0028" ref-type="bibr">1996</xref>). Furthermore, VEGF is constitutively produced and released by megakaryocytes and platelets (Möhle et al. <xref rid="vms371021-bib-0019" ref-type="bibr">1997</xref>). Histiocytic sarcoma is a malignant neoplasm arising from dendritic cells or macrophages (Skorupski et al. <xref rid="vms371021-bib-0026" ref-type="bibr">2007</xref>; Dervisis et al. <xref rid="vms371021-bib-0004" ref-type="bibr">2017</xref>) and may present as either a localised or disseminated form (Dervisis et al. <xref rid="vms371021-bib-0004" ref-type="bibr">2017</xref>; Klahn et al. <xref rid="vms371021-bib-0014" ref-type="bibr">2011</xref>; Murray et al. <xref rid="vms371021-bib-0020" ref-type="bibr">2022</xref>). Dose‐intense chemotherapy is consistently recommended, both as neoadjuvant therapy in localised disease and as the gold standard for disseminated forms. Lomustine remains the most commonly used chemotherapeutic agent (Skorupski et al. <xref rid="vms371021-bib-0026" ref-type="bibr">2007</xref>); however, recent studies have also demonstrated the efficacy of vinorelbine, which shows activity against this specific histotype and favourable pulmonary tissue penetration (Vigevani et al. <xref rid="vms371021-bib-0030" ref-type="bibr">2025</xref>; Rinaldi et al. <xref rid="vms371021-bib-0023" ref-type="bibr">2023</xref>).</p><p>Consistent with previous reports, this case further supports the hypothesis that tumour histotype may be less relevant than tumour location in the development of HO (Withers et al. <xref rid="vms371021-bib-0031" ref-type="bibr">2015</xref>; Halliwell and Ackerman <xref rid="vms371021-bib-0011" ref-type="bibr">1974</xref>; Roux et al. <xref rid="vms371021-bib-0024" ref-type="bibr">2022</xref>). In the literature, HO is regarded as a paraneoplastic or parainflammatory syndrome in which pulmonary disease acts as the primary trigger through neurogenic, vascular and humoral mechanisms. This concept explains why removal or effective treatment of the pulmonary lesion frequently results in regression of the clinical signs associated with HO (Pourmorteza et al. <xref rid="vms371021-bib-0022" ref-type="bibr">2015</xref>; Thapa <xref rid="vms371021-bib-0027" ref-type="bibr">2025</xref>). In this case report, the authors aim to place particular emphasis on pain management in this patient. Resolution of pain occurred after surgical removal of the primary pulmonary mass. Following surgery, the dog did not exhibit pain at any subsequent follow‐up examinations, despite persistent radiographic evidence of HO on both CT and radiographic imaging. Notably, pain remained absent even as the disease progressed with the development of new metastatic lesions. The absence of pain was consistently observed both during dose‐intense chemotherapy and during metronomic treatment. These findings suggest that pain resolution was not primarily related to the specific chemotherapeutic agents administered but rather to removal of the initial large pulmonary tumour mass. Emerging evidence indicates that cancer pain is not solely a consequence of structural lesions such as bone metastases but is also strongly mediated by the tumour microenvironment. Mediators released by cancer, stromal and immune cells within the tumour microenvironment, including cytokines and chemokines, contribute to neuroinflammation and nociceptor sensitisation independent of metastatic anatomical damage. This supports the notion that the absence of pain in the present case may be more closely related to changes in the tumour microenvironment following removal of the primary tumour than to the mere presence of radiographically detectable skeletal lesions (Santoni et al. <xref rid="vms371021-bib-0025" ref-type="bibr">2022</xref>; Varrassi et al. <xref rid="vms371021-bib-0029" ref-type="bibr">2025</xref>). In conclusion, HO appears to be a paraneoplastic syndrome primarily related to the location of the primary tumour rather than to tumour histotype. Pain management in affected patients may be influenced by tumour burden; therefore, surgical debulking of the primary tumour may be a reasonable therapeutic approach in selected cases.</p></sec><sec id="vms371021-sec-0040"><title>Author Contributions</title><p>
+<bold>Valentina Rinaldi</bold>: conceptualisation, writing – original draft, methodology, investigation. <bold>Paolo Emidio Crisi</bold>: validation, supervision, resources. <bold>Alessia Luciani</bold>: supervision. <bold>Martina Rosto</bold>: investigation. <bold>Francesca Ridolfi</bold>: investigation. <bold>Riccardo Finotello</bold>: writing – review and editing. <bold>Andrea Boari</bold>: supervision.</p></sec><sec id="vms371021-sec-0060"><title>Funding</title><p>The authors have nothing to report.</p></sec><sec sec-type="COI-statement" id="vms371021-sec-0070"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec></body><back><ack id="vms371021-sec-0050"><title>Acknowledgements</title><p>The authors would like to thank Domenico Santori for his valuable support.</p></ack><sec sec-type="data-availability" id="vms371021-sec-0090"><title>Data Availability Statement</title><p>The data that support the findings of this study are available from the corresponding author upon reasonable request.</p></sec><ref-list id="vms371021-bibl-0001"><title>References</title><ref id="vms371021-bib-0001"><mixed-citation publication-type="journal" id="vms371021-cite-0001">
+<string-name name-style="western">
+<surname>Brodey</surname>, <given-names>R. S.</given-names>
+</string-name>
+<year>1971</year>. “<article-title>Hypertrophic Osteoarthropathy in the Dog: A Clinicopathologic Survey of 60 Cases</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>159</volume>, no. <issue>10</issue>: <fpage>1242</fpage>–<lpage>1256</lpage>.<pub-id pub-id-type="pmid">5166001</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0002"><mixed-citation publication-type="journal" id="vms371021-cite-0002">
+<string-name name-style="western">
+<surname>Caywood</surname>, <given-names>D. D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>B. A.</given-names>
+<surname>Kramek</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. A.</given-names>
+<surname>Feeney</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G. R</given-names>
+<surname>Johnston</surname>
+</string-name>. <year>1985</year>. “<article-title>Hypertrophic Osteopathy Associated With a Bronchial Foreign Body and Lobar Pneumonia in a Dog</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>186</volume>, no. <issue>7</issue>: <fpage>698</fpage>–<lpage>700</lpage>.<pub-id pub-id-type="pmid">3988602</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0003"><mixed-citation publication-type="journal" id="vms371021-cite-0003">
+<string-name name-style="western">
+<surname>Della Rocca</surname>, <given-names>G.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Colpo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Reid</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Di Salvo</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Scott</surname>
+</string-name>. <year>2018</year>. “<article-title>Creation and Validation of the Italian Version of the Glasgow Composite Measure Pain Scale‐Short Form (ICMPS‐SF)</article-title>.” <source>Veterinaria Italiana</source>
+<volume>54</volume>, no. <issue>3</issue>: <fpage>251</fpage>–<lpage>260</lpage>. <pub-id pub-id-type="doi">10.12834/VetIt.699.3421.3</pub-id>.<pub-id pub-id-type="pmid">30575003</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0004"><mixed-citation publication-type="journal" id="vms371021-cite-0004">
+<string-name name-style="western">
+<surname>Dervisis</surname>, <given-names>N. G.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kiupel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Qin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Cesario</surname>
+</string-name>. <year>2017</year>. “<article-title>Clinical Prognostic Factors in Canine Histiocytic Sarcoma</article-title>.” <source>Veterinary and Comparative Oncology</source>
+<volume>15</volume>, no. <issue>4</issue>: <fpage>1171</fpage>–<lpage>1180</lpage>. <pub-id pub-id-type="doi">10.1111/vco.12252</pub-id>.<pub-id pub-id-type="pmid">27334037</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0005"><mixed-citation publication-type="journal" id="vms371021-cite-0005">
+<string-name name-style="western">
+<surname>Dickinson</surname>, <given-names>C. J.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. F.</given-names>
+<surname>Martin</surname>
+</string-name>. <year>1987</year>. “<article-title>Megakaryocytes and Platelet Clumps as the Cause of Finger Clubbing</article-title>.” <source>Lancet</source>
+<volume>2</volume>, no. <issue>8573</issue>: <fpage>1434</fpage>–<lpage>1435</lpage>. <pub-id pub-id-type="doi">10.1016/s0140-6736(87)91132-9</pub-id>.<pub-id pub-id-type="pmid">2891996</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0006"><mixed-citation publication-type="journal" id="vms371021-cite-0006">
+<string-name name-style="western">
+<surname>Dunn</surname>, <given-names>M. E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Blond</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Letard</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>DiFruscia</surname>
+</string-name>. <year>2007</year>. “<article-title>Hypertrophic Osteopathy Associated With Infective Endocarditis in an Adult Boxer Dog</article-title>.” <source>Journal of Small Animal Practice</source>
+<volume>48</volume>, no. <issue>2</issue>: <fpage>99</fpage>–<lpage>103</lpage>. <pub-id pub-id-type="doi">10.1111/j.1748-5827.2006.00159.x</pub-id>.<pub-id pub-id-type="pmid">17286663</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0007"><mixed-citation publication-type="journal" id="vms371021-cite-0007">
+<string-name name-style="western">
+<surname>Flavell</surname>, <given-names>G.</given-names>
+</string-name>
+<year>1956</year>. “<article-title>Reversal of Pulmonary Hypertrophic Osteoarthropathy by Vagotomy</article-title>.” <source>Lancet</source>
+<volume>270</volume>, no. <issue>6911</issue>: <fpage>260</fpage>–<lpage>262</lpage>. <pub-id pub-id-type="doi">10.1016/s0140-6736(56)91186-2</pub-id>.<pub-id pub-id-type="pmid">13287123</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0008"><mixed-citation publication-type="journal" id="vms371021-cite-0008">
+<string-name name-style="western">
+<surname>Foster</surname>, <given-names>W. K.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Armstrong</surname>
+</string-name>. <year>2006</year>. “<article-title>Hypertrophic Osteopathy Associated With Pulmonary <italic toggle="yes">Eikenella corrodens</italic> Infection in a Dog</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>228</volume>, no. <issue>9</issue>: <fpage>1366</fpage>–<lpage>1369</lpage>. <pub-id pub-id-type="doi">10.2460/javma.228.9.1366</pub-id>.<pub-id pub-id-type="pmid">16649940</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0009"><mixed-citation publication-type="journal" id="vms371021-cite-0009">
+<collab collab-type="authors">WSAVA Nutritional Assessment Guidelines Task Force Members</collab>
+. <string-name name-style="western">
+<surname>Freeman</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Becvarova</surname>
+</string-name>, et al. <year>2011</year>. “<article-title>WSAVA Nutritional Assessment Guidelines</article-title>.” <source>Journal of Small Animal Practice</source>
+<volume>52</volume>, no. <issue>7</issue>: <fpage>385</fpage>–<lpage>396</lpage>. <pub-id pub-id-type="doi">10.1111/j.1748-5827.2011.01079.x</pub-id>.<pub-id pub-id-type="pmid">21649660</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0010"><mixed-citation publication-type="journal" id="vms371021-cite-0010">
+<string-name name-style="western">
+<surname>Grillo</surname>, <given-names>T. P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C. V. S.</given-names>
+<surname>Brandão</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. J.</given-names>
+<surname>Mamprim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. M. N.</given-names>
+<surname>de Jesus</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. C.</given-names>
+<surname>Santos</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B. W.</given-names>
+<surname>Minto</surname>
+</string-name>. <year>2007</year>. “<article-title>Hypertrophic Osteopathy Associated With Renal Pelvis Transitional Cell Carcinoma in a Dog</article-title>.” <source>Canadian Veterinary Journal</source>
+<volume>48</volume>, no. <issue>7</issue>: <fpage>745</fpage>–<lpage>747</lpage>.<pub-id pub-id-type="pmcid">PMC1899852</pub-id><pub-id pub-id-type="pmid">17824162</pub-id></mixed-citation></ref><ref id="vms371021-bib-0011"><mixed-citation publication-type="journal" id="vms371021-cite-0011">
+<string-name name-style="western">
+<surname>Halliwell</surname>, <given-names>W. H.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Ackerman</surname>
+</string-name>. <year>1974</year>. “<article-title>Botryoid Rhabdomyosarcoma of the Urinary Bladder and Hypertrophic Osteoarthropathy in a Young Dog</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>165</volume>, no. <issue>10</issue>: <fpage>911</fpage>–<lpage>913</lpage>.<pub-id pub-id-type="pmid">4473190</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0012"><mixed-citation publication-type="journal" id="vms371021-cite-0012">
+<string-name name-style="western">
+<surname>Hesselink</surname>, <given-names>J. W.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. G.</given-names>
+<surname>van den Tweel</surname>
+</string-name>. <year>1990</year>. “<article-title>Hypertrophic Osteopathy in a Dog With a Chronic Lung Abscess</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>196</volume>, no. <issue>5</issue>: <fpage>760</fpage>–<lpage>762</lpage>.<pub-id pub-id-type="pmid">2407705</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0013"><mixed-citation publication-type="journal" id="vms371021-cite-0013">
+<string-name name-style="western">
+<surname>Kim</surname>, <given-names>Y. R.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. H.</given-names>
+<surname>Kim</surname>
+</string-name>. <year>2024</year>. “<article-title>Hypertrophic Osteopathy Concurrent With an Aberrant Right Subclavian Artery in a Dog</article-title>.” <source>Veterinary Sciences</source>
+<volume>11</volume>, no. <issue>6</issue>: <elocation-id>263</elocation-id>. <pub-id pub-id-type="doi">10.3390/vetsci11060263</pub-id>.<pub-id pub-id-type="pmid">38922010</pub-id>
+<pub-id pub-id-type="pmcid">PMC11209225</pub-id></mixed-citation></ref><ref id="vms371021-bib-0014"><mixed-citation publication-type="journal" id="vms371021-cite-0014">
+<string-name name-style="western">
+<surname>Klahn</surname>, <given-names>S. L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>B. E.</given-names>
+<surname>Kitchell</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N. G.</given-names>
+<surname>Dervisis</surname>
+</string-name>. <year>2011</year>. “<article-title>Evaluation and Comparison of Outcomes in Dogs With Periarticular and Nonperiarticular Histiocytic Sarcoma</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>239</volume>, no. <issue>1</issue>: <fpage>90</fpage>–<lpage>96</lpage>. <pub-id pub-id-type="doi">10.2460/javma.239.1.90</pub-id>.<pub-id pub-id-type="pmid">21718201</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0015"><mixed-citation publication-type="journal" id="vms371021-cite-0015">
+<string-name name-style="western">
+<surname>LeBlanc</surname>, <given-names>A. K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Atherton</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. T.</given-names>
+<surname>Bentley</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Veterinary Cooperative Oncology Group‐Common Terminology Criteria for Adverse Events (VCOG‐CTCAE v2) Following Investigational Therapy in Dogs and Cats</article-title>.” <source>Veterinary and Comparative Oncology</source>
+<volume>19</volume>, no. <issue>2</issue>: <fpage>311</fpage>–<lpage>352</lpage>. <pub-id pub-id-type="doi">10.1111/vco.12677</pub-id>.<pub-id pub-id-type="pmid">33427378</pub-id>
+<pub-id pub-id-type="pmcid">PMC8248125</pub-id></mixed-citation></ref><ref id="vms371021-bib-0016"><mixed-citation publication-type="journal" id="vms371021-cite-0016">
+<string-name name-style="western">
+<surname>Martinez‐Lavin</surname>, <given-names>M.</given-names>
+</string-name>
+<year>2007</year>. “<article-title>Exploring the Cause of the Most Ancient Clinical Sign of Medicine: Finger Clubbing</article-title>.” <source>Seminars in Arthritis and Rheumatism</source>
+<volume>36</volume>, no. <issue>6</issue>: <fpage>380</fpage>–<lpage>385</lpage>. <pub-id pub-id-type="doi">10.1016/j.semarthrit.2006.11.004</pub-id>.<pub-id pub-id-type="pmid">17276498</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0017"><mixed-citation publication-type="journal" id="vms371021-cite-0017">
+<string-name name-style="western">
+<surname>Martinez‐Lavin</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Vargas</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Rivera‐Viñas</surname>
+</string-name>. <year>2008</year>. “<article-title>Hypertrophic Osteoarthropathy: A Palindrome With a Pathogenic Connotation</article-title>.” <source>Current Opinion in Rheumatology</source>
+<volume>20</volume>, no. <issue>1</issue>: <fpage>88</fpage>–<lpage>91</lpage>. <pub-id pub-id-type="doi">10.1097/BOR.0b013e3282f14a5a</pub-id>.<pub-id pub-id-type="pmid">18281863</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0018"><mixed-citation publication-type="journal" id="vms371021-cite-0018">
+<string-name name-style="western">
+<surname>Midy</surname>, <given-names>V.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Plouët</surname>
+</string-name>. <year>1994</year>. “<article-title>Vasculotropin/Vascular Endothelial Growth Factor Induces Differentiation in Cultured Osteoblasts</article-title>.” <source>Biochemical and Biophysical Research Communications</source>
+<volume>199</volume>, no. <issue>1</issue>: <fpage>380</fpage>–<lpage>386</lpage>. <pub-id pub-id-type="doi">10.1006/bbrc.1994.1240</pub-id>.<pub-id pub-id-type="pmid">8123039</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0019"><mixed-citation publication-type="journal" id="vms371021-cite-0019">
+<string-name name-style="western">
+<surname>Möhle</surname>, <given-names>R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Green</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Moore</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. L.</given-names>
+<surname>Nachman</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Rafii</surname>
+</string-name>. <year>1997</year>. “<article-title>Constitutive Production and Thrombin‐Induced Release of Vascular Endothelial Growth Factor by Human Megakaryocytes and Platelets</article-title>.” <source>PNAS</source>
+<volume>94</volume>, no. <issue>2</issue>: <fpage>663</fpage>–<lpage>668</lpage>. <pub-id pub-id-type="doi">10.1073/pnas.94.2.663</pub-id>.<pub-id pub-id-type="pmid">9012841</pub-id>
+<pub-id pub-id-type="pmcid">PMC19570</pub-id></mixed-citation></ref><ref id="vms371021-bib-0020"><mixed-citation publication-type="journal" id="vms371021-cite-0020">
+<string-name name-style="western">
+<surname>Murray</surname>, <given-names>C. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J. L.</given-names>
+<surname>Willcox</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>De</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. H.</given-names>
+<surname>Souza</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>Outcome in Dogs With Curative‐Intent Treatment of Localized Primary Pulmonary Histiocytic Sarcoma</article-title>.” <source>Veterinary and Comparative Oncology</source>
+<volume>20</volume>, no. <issue>2</issue>: <fpage>458</fpage>–<lpage>464</lpage>. <pub-id pub-id-type="doi">10.1111/vco.12791</pub-id>.<pub-id pub-id-type="pmid">34878710</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0021"><mixed-citation publication-type="journal" id="vms371021-cite-0021">
+<string-name name-style="western">
+<surname>Nguyen</surname>, <given-names>S. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D. H.</given-names>
+<surname>Thamm</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. M.</given-names>
+<surname>Vail</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C. A.</given-names>
+<surname>London</surname>
+</string-name>. <year>2015</year>. “<article-title>Response Evaluation Criteria for Solid Tumours in Dogs (v1.0): A Veterinary Cooperative Oncology Group (VCOG) Consensus Document</article-title>.” <source>Veterinary and Comparative Oncology</source>
+<volume>13</volume>, no. <issue>3</issue>: <fpage>176</fpage>–<lpage>183</lpage>. <pub-id pub-id-type="doi">10.1111/vco.12032</pub-id>.<pub-id pub-id-type="pmid">23534501</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0022"><mixed-citation publication-type="journal" id="vms371021-cite-0022">
+<string-name name-style="western">
+<surname>Pourmorteza</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S. J.</given-names>
+<surname>Baumrucker</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Al‐Sheyyab</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Da Silva</surname>
+</string-name>. <year>2015</year>. “<article-title>Hypertrophic Pulmonary Osteoarthropathy: A Rare but Treatable Condition in Palliative Medicine</article-title>.” <source>Journal of Pain and Symptom Management</source>
+<volume>50</volume>, no. <issue>2</issue>: <fpage>263</fpage>–<lpage>267</lpage>. <pub-id pub-id-type="doi">10.1016/j.jpainsymman.2015.02.005</pub-id>.<pub-id pub-id-type="pmid">25701054</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0023"><mixed-citation publication-type="journal" id="vms371021-cite-0023">
+<string-name name-style="western">
+<surname>Rinaldi</surname>, <given-names>V.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Finotello</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Boari</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Emanuele</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Paolo Emidio</surname>
+</string-name>. <year>2023</year>. “<article-title>Vinorelbine as First‐Line Treatment in Stage IV Canine Primary Pulmonary Carcinoma</article-title>.” <source>Veterinary Sciences</source>
+<volume>10</volume>, no. <issue>12</issue>: <elocation-id>664</elocation-id>. <pub-id pub-id-type="doi">10.3390/vetsci10120664</pub-id>.<pub-id pub-id-type="pmid">38133215</pub-id>
+<pub-id pub-id-type="pmcid">PMC10747721</pub-id></mixed-citation></ref><ref id="vms371021-bib-0024"><mixed-citation publication-type="journal" id="vms371021-cite-0024">
+<string-name name-style="western">
+<surname>Roux</surname>, <given-names>F. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Deseille</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Fusellier</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Rohel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Branchereau</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. Y.</given-names>
+<surname>Deschamps</surname>
+</string-name>. <year>2022</year>. “<article-title>Hypertrophic Osteopathy Associated With a Prostatic Adenocarcinoma in a Castrated Dog</article-title>.” <source>Veterinary Sciences</source>
+<volume>9</volume>, no. <issue>9</issue>: <elocation-id>466</elocation-id>. <pub-id pub-id-type="doi">10.3390/vetsci9090466</pub-id>.<pub-id pub-id-type="pmid">36136682</pub-id>
+<pub-id pub-id-type="pmcid">PMC9504403</pub-id></mixed-citation></ref><ref id="vms371021-bib-0025"><mixed-citation publication-type="journal" id="vms371021-cite-0025">
+<string-name name-style="western">
+<surname>Santoni</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Santoni</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Arcuri</surname>
+</string-name>. <year>2022</year>. “<article-title>Chronic Cancer Pain: Opioids Within Tumor Microenvironment Affect Neuroinflammation, Tumor and Pain Evolution</article-title>.” <source>Cancers</source>
+<volume>14</volume>, no. <issue>9</issue>: <elocation-id>2253</elocation-id>. <pub-id pub-id-type="doi">10.3390/cancers14092253</pub-id>.<pub-id pub-id-type="pmid">35565382</pub-id>
+<pub-id pub-id-type="pmcid">PMC9104169</pub-id></mixed-citation></ref><ref id="vms371021-bib-0026"><mixed-citation publication-type="journal" id="vms371021-cite-0026">
+<string-name name-style="western">
+<surname>Skorupski</surname>, <given-names>K. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C. A.</given-names>
+<surname>Clifford</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Paoloni</surname>
+</string-name>, et al. <year>2007</year>. “<article-title>CCNU for the Treatment of Dogs With Histiocytic Sarcoma</article-title>.” <source>Journal of Veterinary Internal Medicine</source>
+<volume>21</volume>, no. <issue>1</issue>: <fpage>121</fpage>–<lpage>126</lpage>. <pub-id pub-id-type="doi">10.1892/0891-6640(2007)</pub-id>21[121:cfttod]2.0.co;2.<pub-id pub-id-type="pmid">17338159</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0027"><mixed-citation publication-type="miscellaneous" id="vms371021-cite-0027">
+<string-name name-style="western">
+<surname>Thapa</surname>, <given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Mahendraker</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Ramphul</surname>
+</string-name>. <year>2025</year>. <article-title>
+<italic toggle="yes">Paraneoplastic Syndromes</italic>. StatPearls Publishing</article-title>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.ncbi.nlm.nih.gov/books/NBK507890/" ext-link-type="uri">http://www.ncbi.nlm.nih.gov/books/NBK507890/</ext-link>.<pub-id pub-id-type="pmid">29939667</pub-id></mixed-citation></ref><ref id="vms371021-bib-0028"><mixed-citation publication-type="journal" id="vms371021-cite-0028">
+<string-name name-style="western">
+<surname>Thomas</surname>, <given-names>K. A.</given-names>
+</string-name>
+<year>1996</year>. “<article-title>Vascular Endothelial Growth Factor, a Potent and Selective Angiogenic Agent</article-title>.” <source>Journal of Biological Chemistry</source>
+<volume>271</volume>, no. <issue>2</issue>: <fpage>603</fpage>–<lpage>606</lpage>. <pub-id pub-id-type="doi">10.1074/jbc.271.2.603</pub-id>.<pub-id pub-id-type="pmid">8557658</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0029"><mixed-citation publication-type="journal" id="vms371021-cite-0029">
+<string-name name-style="western">
+<surname>Varrassi</surname>, <given-names>G.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. L. G.</given-names>
+<surname>Leoni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Farì</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Neurobiology of Cancer Pain: A Narrative Review</article-title>.” <source>OBM Neurobiology</source>
+<volume>9</volume>, no. <issue>4</issue>: <elocation-id>315</elocation-id>. <pub-id pub-id-type="doi">10.21926/obm.neurobiol.2504315</pub-id>.</mixed-citation></ref><ref id="vms371021-bib-0030"><mixed-citation publication-type="journal" id="vms371021-cite-0030">
+<string-name name-style="western">
+<surname>Vigevani</surname>, <given-names>N.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Chalfon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Guillén</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Vinorelbine as a Rescue Treatment for Canine Histiocytic Sarcoma: A Multicentre Retrospective Study of 18 Dogs</article-title>.” <source>Veterinary and Comparative Oncology</source>
+<volume>23</volume>, no. <issue>3</issue>: <fpage>358</fpage>–<lpage>365</lpage>. <pub-id pub-id-type="doi">10.1111/vco.13060</pub-id>.<pub-id pub-id-type="pmid">40260858</pub-id>
+</mixed-citation></ref><ref id="vms371021-bib-0031"><mixed-citation publication-type="journal" id="vms371021-cite-0031">
+<string-name name-style="western">
+<surname>Withers</surname>, <given-names>S. S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E. G.</given-names>
+<surname>Johnson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W. T. N.</given-names>
+<surname>Culp</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. O.</given-names>
+<surname>Rodriguez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. A.</given-names>
+<surname>Skorupski</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. B.</given-names>
+<surname>Rebhun</surname>
+</string-name>. <year>2015</year>. “<article-title>Paraneoplastic Hypertrophic Osteopathy in 30 Dogs</article-title>.” <source>Veterinary and Comparative Oncology</source>
+<volume>13</volume>, no. <issue>3</issue>: <fpage>157</fpage>–<lpage>165</lpage>. <pub-id pub-id-type="doi">10.1111/vco.12026</pub-id>.<pub-id pub-id-type="pmid">23489591</pub-id>
+<pub-id pub-id-type="pmcid">PMC5012418</pub-id></mixed-citation></ref><ref id="vms371021-bib-0032"><mixed-citation publication-type="journal" id="vms371021-cite-0032">
+<string-name name-style="western">
+<surname>Wylie</surname>, <given-names>K. B.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D. D.</given-names>
+<surname>Lewis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. D.</given-names>
+<surname>Pechman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. Y.</given-names>
+<surname>Cho</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Roy</surname>
+</string-name>. <year>1993</year>. “<article-title>Hypertrophic Osteopathy Associated With <italic toggle="yes">Mycobacterium fortuitum</italic> Pneumonia in a Dog</article-title>.” <source>Journal of the American Veterinary Medical Association</source>
+<volume>202</volume>, no. <issue>12</issue>: <fpage>1986</fpage>–<lpage>1988</lpage>.<pub-id pub-id-type="pmid">8360093</pub-id>
+</mixed-citation></ref></ref-list></back></article>

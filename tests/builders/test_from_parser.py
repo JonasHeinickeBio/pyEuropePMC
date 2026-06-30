@@ -1,7 +1,10 @@
 """Integration tests for builder layer."""
 
+import pytest
+
 from pyeuropepmc.builders import build_paper_entities
-from pyeuropepmc.models import JournalEntity
+from pyeuropepmc.builders.from_parser import _build_author_entity, _create_grant_entities
+from pyeuropepmc.models import AuthorEntity, GrantEntity, JournalEntity
 from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
 
 # Sample XML for testing
@@ -201,3 +204,170 @@ class TestBuildPaperEntities:
         assert isinstance(sections, list)
         assert isinstance(tables, list)
         assert isinstance(references, list)
+
+
+class TestCreateGrantEntities:
+    """Tests for _create_grant_entities helper."""
+
+    def test_create_grant_entities_none(self):
+        """Test with None funding data."""
+        assert _create_grant_entities(None) is None
+
+    def test_create_grant_entities_empty(self):
+        """Test with empty funding data."""
+        assert _create_grant_entities([]) is None
+
+    def test_create_grant_entities_with_recipients(self):
+        """Test creating grant entities with recipients."""
+        funding_data = [
+            {
+                "fundref_doi": "10.13039/100000001",
+                "source": "NSF",
+                "award_id": "12345",
+                "recipients": [
+                    {"full_name": "Dr. Smith", "given_names": "John", "surname": "Smith"}
+                ],
+            }
+        ]
+        grants = _create_grant_entities(funding_data)
+        assert grants is not None
+        assert len(grants) == 1
+        grant = grants[0]
+        assert isinstance(grant, GrantEntity)
+        assert grant.funding_source == "NSF"
+        assert grant.award_id == "12345"
+        assert grant.recipients is not None
+        assert len(grant.recipients) == 1
+        assert grant.recipients[0].full_name == "Dr. Smith"
+
+    def test_create_grant_entities_no_recipients(self):
+        """Test creating grant entities without recipients."""
+        funding_data = [
+            {"fundref_doi": "10.13039/100000002", "source": "NIH", "award_id": "67890"}
+        ]
+        grants = _create_grant_entities(funding_data)
+        assert grants is not None
+        assert len(grants) == 1
+        assert grants[0].recipients is None
+
+    def test_create_grant_entities_recipient_string_fallback(self):
+        """Test fallback to recipient_full/recipient_name for legacy data."""
+        funding_data = [
+            {"source": "Wellcome Trust", "recipient_full": "Dr. Jane Doe"}
+        ]
+        grants = _create_grant_entities(funding_data)
+        assert grants is not None
+        assert grants[0].recipient == "Dr. Jane Doe"
+
+    def test_create_grant_entities_malformed_funder(self):
+        """Test malformed funder (not a dict) is skipped."""
+        funding_data = [None, {"source": "Valid"}]
+        grants = _create_grant_entities(funding_data)
+        assert grants is not None
+        assert len(grants) == 1
+        assert grants[0].funding_source == "Valid"
+
+
+class TestBuildAuthorEntity:
+    """Tests for _build_author_entity helper."""
+
+    def test_build_author_string(self):
+        """Test building author from string (backward compat)."""
+        author = _build_author_entity("John Smith", [])
+        assert isinstance(author, AuthorEntity)
+        assert author.full_name == "John Smith"
+
+    def test_build_author_with_affiliations(self):
+        """Test building author with affiliation references."""
+        author_data = {
+            "full_name": "John Smith",
+            "given_names": "John",
+            "surname": "Smith",
+            "orcid": "https://orcid.org/0000-0003-3442-7216",
+            "affiliation_refs": ["aff1", "aff2"],
+        }
+        affiliations = [
+            {
+                "id": "aff1",
+                "institution": "University of Test",
+                "institution_text": "Dept of Biology, University of Test, City",
+                "city": "City",
+                "country": "USA",
+                "text": "Dept of Biology, University of Test, City, USA",
+            },
+            {
+                "id": "aff2",
+                "institution": "Research Lab",
+                "text": "Research Lab, Other City",
+            },
+        ]
+        author = _build_author_entity(author_data, affiliations)
+        assert author.full_name == "John Smith"
+        assert author.first_name == "John"
+        assert author.last_name == "Smith"
+        assert author.orcid == "https://orcid.org/0000-0003-3442-7216"
+        assert author.affiliation_text is not None
+        assert "University of Test" in author.affiliation_text
+        assert "Research Lab" in author.affiliation_text
+        assert author.institutions is not None
+        assert len(author.institutions) == 2
+
+    def test_build_author_missing_name_raises(self):
+        """Test that missing full_name raises ValueError."""
+        with pytest.raises(ValueError, match="Author data must contain full_name"):
+            _build_author_entity({"given_names": "John"}, [])
+
+    def test_build_author_no_affiliations(self):
+        """Test building author with no affiliation refs."""
+        author_data = {
+            "full_name": "Jane Doe",
+            "orcid": "0000-0003-3442-7216",
+        }
+        author = _build_author_entity(author_data, [])
+        assert author.affiliation_text is None
+        assert author.institutions is None or author.institutions == []
+
+
+class TestBuildPaperEntitiesExtended:
+    """Extended tests for build_paper_entities."""
+
+    def test_build_with_search_data(self):
+        """Test building entities with search API data merged in."""
+        parser = FullTextXMLParser(SAMPLE_XML)
+        search_data = {
+            "pmid": "12345678",
+            "citedByCount": 42,
+            "pubType": "journal article",
+            "journalIssn": "1234-5678",
+            "isOpenAccess": "Y",
+            "inEPMC": "Y",
+            "inPMC": "Y",
+            "hasPDF": "Y",
+            "hasSuppl": "Y",
+            "hasReferences": "Y",
+            "hasTextMinedTerms": "Y",
+            "hasDbCrossReferences": "N",
+            "hasLabsLinks": "Y",
+            "hasTMAccessionNumbers": "Y",
+            "firstIndexDate": "2021-01-01",
+            "firstPublicationDate": "2021-01-15",
+            "pubYear": "2021",
+        }
+        paper, authors, sections, tables, figures, references = build_paper_entities(
+            parser, search_data
+        )
+        assert paper.pmid == "12345678"
+        assert paper.cited_by_count == 42
+        assert paper.pub_type == "journal article"
+        assert paper.is_oa is True
+        assert paper.in_epmc is True
+        assert paper.in_pmc is True
+        assert paper.has_pdf is True
+        assert paper.has_supplementary is True
+        assert paper.has_references is True
+        assert paper.has_text_mined_terms is True
+        # NOTE: the code sets has_db_cross_references = True when hasDbCrossReferences == "N"
+        # (see comment in from_parser.py about API using "N" for no)
+        assert paper.has_db_cross_references is True
+        assert paper.first_index_date == "2021-01-01"
+        assert paper.publication_year == 2021

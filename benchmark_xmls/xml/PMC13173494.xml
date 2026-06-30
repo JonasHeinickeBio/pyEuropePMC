@@ -1,0 +1,612 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="rcm70105" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Rapid Commun Mass Spectrom</journal-id><journal-id journal-id-type="iso-abbrev">Rapid Commun Mass Spectrom</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">RCM</journal-id><journal-title-group><journal-title>Rapid Communications in Mass Spectrometry</journal-title></journal-title-group><issn pub-type="ppub">0951-4198</issn><issn pub-type="epub">1097-0231</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13173494</article-id><article-id pub-id-type="pmcid-ver">PMC13173494.1</article-id><article-id pub-id-type="pmcaid">13173494</article-id><article-id pub-id-type="pmcaiid">13173494</article-id><article-id pub-id-type="pmid">42131973</article-id><article-id pub-id-type="doi">10.1002/rcm.70105</article-id><article-id pub-id-type="publisher-id">RCM70105</article-id><article-id pub-id-type="other">6072161</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Enhancing IR‐MALDESI MSI Spatial Resolution Through Beam Constriction With a Ring‐Actuated Iris</article-title></title-group><contrib-group><contrib id="rcm70105-cr-0001" contrib-type="author"><name name-style="western"><surname>Ashbacher</surname><given-names initials="SM">Sarah M.</given-names></name><xref rid="rcm70105-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="rcm70105-cr-0002" contrib-type="author"><name name-style="western"><surname>Eisenberg</surname><given-names initials="SM">Seth M.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-7144-7657</contrib-id><xref rid="rcm70105-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="rcm70105-cr-0003" contrib-type="author"><name name-style="western"><surname>Wainwright</surname><given-names initials="AAC">Alexander A. C.</given-names></name><xref rid="rcm70105-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="rcm70105-cr-0004" contrib-type="author"><name name-style="western"><surname>Gu</surname><given-names initials="A">Aosheng</given-names></name><xref rid="rcm70105-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="rcm70105-cr-0005" contrib-type="author"><name name-style="western"><surname>Mahdia</surname><given-names initials="SN">Syeda N.</given-names></name><xref rid="rcm70105-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="rcm70105-cr-0006" contrib-type="author"><name name-style="western"><surname>Miller</surname><given-names initials="RJD">R. J. Dwayne</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-0884-0541</contrib-id><xref rid="rcm70105-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="rcm70105-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="rcm70105-cr-0007" contrib-type="author" corresp="yes"><name name-style="western"><surname>Muddiman</surname><given-names initials="DC">David C.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-2216-499X</contrib-id><xref rid="rcm70105-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>dcmuddim@ncsu.edu</email></address></contrib></contrib-group><aff id="rcm70105-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Biological Imaging Laboratory for Disease and Exposure Research (BILDER), Department of Chemistry</named-content>
+<institution>North Carolina State University</institution>
+<city>Raleigh</city>
+<named-content content-type="country-part">North Carolina</named-content>
+<country country="US">USA</country>
+</aff><aff id="rcm70105-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Physics</named-content>
+<institution>University of Toronto</institution>
+<city>Toronto</city>
+<named-content content-type="country-part">Ontario</named-content>
+<country country="CA">Canada</country>
+</aff><aff id="rcm70105-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Department of Chemistry</named-content>
+<institution>University of Toronto</institution>
+<city>Toronto</city>
+<named-content content-type="country-part">Ontario</named-content>
+<country country="CA">Canada</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+David C. Muddiman (<email>dcmuddim@ncsu.edu</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>14</day><month>5</month><year>2026</year></pub-date><pub-date pub-type="ppub"><day>30</day><month>8</month><year>2026</year></pub-date><volume>40</volume><issue-id pub-id-type="pmc-issue-id">513625</issue-id><elocation-id>e70105</elocation-id><history>
+<date date-type="rev-recd"><day>02</day><month>5</month><year>2026</year></date>
+<date date-type="received"><day>28</day><month>1</month><year>2026</year></date>
+<date date-type="accepted"><day>05</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>14</day><month>05</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>15</day><month>05</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-05-15 00:25:16.557"><day>15</day><month>05</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Rapid Communications in Mass Spectrometry</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbynclicense">https://creativecommons.org/licenses/by-nc/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc/4.0/">http://creativecommons.org/licenses/by-nc/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited and is not used for commercial purposes.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="RCM-40-e70105.pdf"><?pdf-name RCM-40-e70105.pdf?><?pdf-size 3334632?><?pdf-md5 7c09744ff29a8b5f81c4cac68d1e4aa2?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:976b/13173494/7c09744ff29a/RCM-40-e70105.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:RCM-40-e70105.pdf"/><abstract><title>ABSTRACT</title><sec id="rcm70105-sec-0001"><title>Rationale</title><p>Infrared matrix‐assisted laser desorption electrospray ionization (IR‐MALDESI) mass spectrometry imaging (MSI) enables label‐free, spatially resolved molecular analysis of biological tissues under ambient conditions. While improving spatial resolution is important for mapping fine tissue structures, mid‐infrared (IR) lasers are diffraction limited to laser spot sizes greater than ~5 μm, necessitating creative approaches to enhance spatial detail for subcellular MSI.</p></sec><sec id="rcm70105-sec-0002"><title>Methods</title><p>An adjustable, ring‐actuated iris combined with a reflective objective was integrated into the IR‐MALDESI MSI platform, replacing the conventional beam expander and collimator assembly. Laser beam diameter on target was systematically varied, and ion abundances were measured using high‐resolution mass spectrometry. Normalized ion abundances were fitted to a linear model as a function of beam diameter to predict signal at increasing spatial resolutions.</p></sec><sec id="rcm70105-sec-0003"><title>Results</title><p>Ion abundance decreased linearly with decreasing laser beam diameter across the tested range. Linear regression of normalized ion abundances enabled prediction of signal levels at progressively higher spatial resolutions. The tunable aperture provided stable beam control and reproducible ablation, allowing quantitative assessment of sensitivity trade‐offs associated with reduced laser spot size.</p></sec><sec id="rcm70105-sec-0004"><title>Conclusions</title><p>Controlled beam restriction using an adjustable iris enables fine tuning of spatial resolution in IR‐MALDESI MSI by deliberately discarding a large fraction of high laser power while maintaining measurable ion abundance. Far‐field diffraction and tissue ablation thresholds confine material removal beyond simple geometric scaling, and linear modeling of ion abundance versus beam diameter enables quantitative prediction of signal loss at high spatial resolution.</p></sec></abstract><kwd-group kwd-group-type="author-generated"><kwd id="rcm70105-kwd-0001">beam trimming</kwd><kwd id="rcm70105-kwd-0002">IR‐MALDESI</kwd><kwd id="rcm70105-kwd-0003">mass spectrometry imaging</kwd><kwd id="rcm70105-kwd-0004">spatial resolution</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>National Institutes of Health</institution><institution-id institution-id-type="doi">10.13039/100000002</institution-id></institution-wrap>
+</funding-source><award-id>R01GM087964</award-id></award-group><award-group id="funding-0002"><funding-source>
+<institution-wrap><institution>Natural Sciences and Engineering Research Council of Canada</institution><institution-id institution-id-type="doi">10.13039/501100000038</institution-id></institution-wrap>
+</funding-source></award-group></funding-group><counts><fig-count count="6"/><table-count count="0"/><page-count count="9"/><word-count count="6700"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY-NC</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>30 August 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.7.6 mode:remove_FC converted:14.05.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body id="rcm70105-body-0001"><sec id="rcm70105-sec-0005"><label>1</label><title>Introduction</title><p>Mass spectrometry imaging (MSI) has emerged as an effective technique for spatially resolved molecular analysis, offering insights into the distribution of a variety of biomolecules directly from tissues. Among various MSI modalities, infrared matrix‐assisted laser desorption electrospray ionization (IR‐MALDESI) has gained prominence due to its ability to analyze hydrated or frozen tissues under near‐native conditions with little to no sample preparation [<xref rid="rcm70105-bib-0001" ref-type="bibr">1</xref>]. By combining mid‐infrared (IR) laser desorption with orthogonal electrospray post‐ionization, IR‐MALDESI enables ablation of neutral molecules while maintaining molecular integrity and minimizing fragmentation [<xref rid="rcm70105-bib-0002" ref-type="bibr">2</xref>, <xref rid="rcm70105-bib-0003" ref-type="bibr">3</xref>, <xref rid="rcm70105-bib-0004" ref-type="bibr">4</xref>, <xref rid="rcm70105-bib-0005" ref-type="bibr">5</xref>]. As with most laser‐based imaging modalities, the achievable spatial resolution is inherently limited by the wavelength, causing unique challenges in IR‐MALDESI, as the mid‐IR laser is longer than the more commonly used ultraviolet (UV) lasers [<xref rid="rcm70105-bib-0004" ref-type="bibr">4</xref>, <xref rid="rcm70105-bib-0006" ref-type="bibr">6</xref>].</p><p>One of the ongoing challenges in MSI is the balance between spatial resolution and ion abundance. High spatial resolution is crucial for accurately mapping molecular distributions at the cellular or subcellular level, resolving microanatomical features such as tissue boundaries, vascular structures, and heterogeneous cell populations [<xref rid="rcm70105-bib-0007" ref-type="bibr">7</xref>, <xref rid="rcm70105-bib-0008" ref-type="bibr">8</xref>, <xref rid="rcm70105-bib-0009" ref-type="bibr">9</xref>, <xref rid="rcm70105-bib-0010" ref-type="bibr">10</xref>, <xref rid="rcm70105-bib-0011" ref-type="bibr">11</xref>, <xref rid="rcm70105-bib-0012" ref-type="bibr">12</xref>]. Such resolution is particularly important for studies of disease progression, tumor microenvironments, or localized metabolic changes, where subtle chemical profiles can provide key biological insights [<xref rid="rcm70105-bib-0013" ref-type="bibr">13</xref>, <xref rid="rcm70105-bib-0014" ref-type="bibr">14</xref>, <xref rid="rcm70105-bib-0015" ref-type="bibr">15</xref>]. Matrix‐assisted laser desorption/ionization (MALDI) MSI routinely achieves spatial resolutions below 10 μm and as low as 1 μm due to the use of short‐wavelength UV lasers [<xref rid="rcm70105-bib-0016" ref-type="bibr">16</xref>, <xref rid="rcm70105-bib-0017" ref-type="bibr">17</xref>, <xref rid="rcm70105-bib-0018" ref-type="bibr">18</xref>, <xref rid="rcm70105-bib-0019" ref-type="bibr">19</xref>]. While laser‐based techniques like MALDI are widely utilized, other ionization modalities, including DESI and nano‐DESI, play significant roles in biological MSI. These techniques achieve spatial resolutions on the order of approximately 20–100 μm for DESI [<xref rid="rcm70105-bib-0020" ref-type="bibr">20</xref>] and as low as 7 μm for nano‐DESI [<xref rid="rcm70105-bib-0021" ref-type="bibr">21</xref>] under optimized conditions. Alternative geometries, such as transmission mode MSI, can enable higher spatial resolution by allowing small focal length lenses to be placed very close to the sample of interest without blocking the path towards the mass spectrometer. Transmission mode MSI has demonstrated subcellular resolution, achieving a pixel size of 600 nm to precisely localize lipids in the mouse brain and kidney [<xref rid="rcm70105-bib-0022" ref-type="bibr">22</xref>, <xref rid="rcm70105-bib-0023" ref-type="bibr">23</xref>].</p><p>Mid‐IR lasers are commonly utilized in MSI because they can selectively excite the O‐H stretching bands in water, eliminating the need for external matrices or vacuum conditions [<xref rid="rcm70105-bib-0024" ref-type="bibr">24</xref>, <xref rid="rcm70105-bib-0025" ref-type="bibr">25</xref>]. However, their longer wavelength results in a larger diffraction‐limited spot size and broader energy deposition, making it more difficult to ablate microscale regions of the tissue [<xref rid="rcm70105-bib-0018" ref-type="bibr">18</xref>]. As a result, achieving 10‐μm spatial resolution with an IR laser often requires specialized optical designs or beam‐shaping strategies. Infrared matrix‐assisted laser desorption/ionization (IR‐MALDI) has achieved 30‐μm spatial resolution through optimization of beam focusing [<xref rid="rcm70105-bib-0026" ref-type="bibr">26</xref>], and other IR laser ablation systems have demonstrated sub‐50‐μm spatial resolution by extending the laser beam path to overfill the focus lens, increasing fluence at the sample surface [<xref rid="rcm70105-bib-0027" ref-type="bibr">27</xref>]. Within IR‐MALDESI, spatial resolution has previously been improved to 50 μm using a Schwarzschild reflective objective [<xref rid="rcm70105-bib-0028" ref-type="bibr">28</xref>], as well as an adjustable iris [<xref rid="rcm70105-bib-0029" ref-type="bibr">29</xref>]. In this current study, we combine these optical approaches. In addition to optical modifications, spatial resolution improvements have been achieved through alternative acquisition strategies, such as oversampling, which has enabled effective pixel sizes approaching approximately 10 μm for IR‐based systems [<xref rid="rcm70105-bib-0006" ref-type="bibr">6</xref>] and about 6 μm for UV‐based systems [<xref rid="rcm70105-bib-0030" ref-type="bibr">30</xref>, <xref rid="rcm70105-bib-0031" ref-type="bibr">31</xref>]. Oversampling improves apparent spatial resolution by stepping the sample stage in smaller increments than the beam diameter, but does not reduce ablation diameter, leading to nonuniform sampling and limiting true spatial resolution. Oversampling also complicates data analysis as each laser spot does not contain the same volume of ablated tissue, making it difficult to compare relative abundances. Separately, the use of a mid‐IR laser with improved beam quality, with a M<sup>2</sup> of 4, recently enabled 20‐μm resolution in IR‐MALDESI [<xref rid="rcm70105-bib-0032" ref-type="bibr">32</xref>], demonstrating the additional advantages possible when advanced laser sources are employed.</p><p>Building upon these developments, we explore a complementary strategy for improving spatial resolution by using a high‐power mid‐IR laser and discarding most of its energy through an adjustable iris to modulate beam diameter prior to focusing. Using this approach, we demonstrate high spatial resolution MSI of mouse brain tissue at 25 μm, enabling detailed visualization of regional molecular heterogeneity while maintaining sufficient ion abundance for robust annotation. This configuration allows controlled reduction of effective spot size by limiting the divergent spatial modes from the diffraction limit, producing a quantifiable relationship between iris diameter, ablation characteristics, and ion abundance. Rather than defining absolute performance limits, these experiments quantify how desorbed mass, ion abundance, and annotation counts scale with beam restriction. By fitting normalized ion abundances to a linear model across iris diameters (5–2.5‐mm and 67–23‐μm spot sizes), we establish a framework that describes the rate of signal loss with increasing spatial resolution. This approach provides practical guidance for balancing sensitivity and resolution in IR‐MALDESI and offers a simple means to adjust the excitation beam diameter over the area of interest to fine‐tune imaging performance.</p></sec><sec id="rcm70105-sec-0006"><label>2</label><title>Experimental</title><sec sec-type="materials" id="rcm70105-sec-0007"><label>2.1</label><title>Materials</title><p>LC–MS grade water, acetonitrile (ACN), methanol (MeOH), and formic acid for the electrospray solvent composition were purchased from Thermo Fisher Scientific (Nazareth, PA). Nitrogen gas was purchased from Arc3 gases (Raleigh, NC). One millimeter microscope glass slides (plain) and coverslips were purchased from Fisher Scientific (Pittsburgh, PA). Liver tissue was stained with Arcturus HistoGene Staining Solution and Permount, both of which were purchased from Fisher Scientific. Burn paper for qualitative beam diameter measurements was purchased from ZAP‐IT (Barrington, NJ).</p></sec><sec id="rcm70105-sec-0008"><label>2.2</label><title>Sample Information</title><p>Mouse liver and brain tissue were used for iris optimization experiments. Samples were obtained from the Ghashghaei Laboratory at North Carolina State University (NCSU), Department of Molecular Biomedical Sciences, where animals were maintained in accordance with the NCSU Institutional Animal Care and Use Committee (IACUC) guidelines. Following sacrifice, the tissues were harvested, flash‐frozen on dry ice, and stored at −80°C until sectioning. Liver (7 μm thick) and brain (10 μm thick) sections were cut using a Leica CM1950 cryostat (Buffalo Grove, IL) at −15°C and thaw‐mounted onto plain glass microscope slides (1 mm).</p></sec><sec id="rcm70105-sec-0009"><label>2.3</label><title>Laser Optical Train Setup</title><p>In the present work, we aim to further enhance spatial resolution by simplifying the optical setup, specifically, by removing the beam expander and collimator and instead incorporating a graduated ring‐actuated iris (ThorLabs, Newton, NJ, SM1D12C) positioned directly before a Schwarzschild reflective objective (ThorLabs, Newton, NJ, LMM15X‐P01). The system used a burst‐mode laser (JGMA Associates, Burlington, MA, USA) at a wavelength of 2.97 μm, delivering 7‐ns pulses with an energy of 500 μJ per pulse at a 10‐kHz repetition rate within each burst, and a burst frequency of 50 Hz. The optical apparatus is shown in Figure <xref rid="rcm70105-fig-0001" ref-type="fig">1A</xref>. The adjustable iris allows precise control of the beam diameter in millimeter‐scale increments (Figure <xref rid="rcm70105-fig-0001" ref-type="fig">1B</xref>), enabling dynamic tuning of the laser spot size at the sample surface. During experiments, the iris aperture was varied to select the desired beam diameter, which was then delivered to the sample through the reflective objective, without requiring additional optical alignment steps. Corresponding laser fluence at the sample surface varied as a function of iris diameter and was calculated based on measured beam diameters on target. All other laser parameters (pulse energy, repetition rate, and focusing geometry) were held constant unless otherwise noted.</p><fig position="float" fig-type="FIGURE" id="rcm70105-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>(A) Schematic of the conventional, high spatial resolution, and higher spatial resolution IR‐MALDESI optical configurations in which the beam expander and collimator are removed and replaced with a ring‐actuated iris (SM1D12C) positioned before a Schwarzschild‐like reflective objective (LMM15X‐P01). The adjustable iris enables fine control of beam diameter in millimeter increments, allowing systematic tuning of the laser spot size. (B) Larger iris openings (e.g., 5 mm) produce larger ablation spot sizes, resulting in lower spatial resolution. Conversely, smaller iris openings (e.g., 3 mm) yield a more tightly focused beam, enabling smaller spot sizes and higher spatial resolution.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="RCM-40-e70105-g001.jpg"><?image-name RCM-40-e70105-g001.jpg?><?image-size 52767?><?image-md5 30b5c94d2a18ce4a8aeadb1ace1aeebc?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 511?><?image-original-width 1064?><?image-scaled-height 341?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/976b/13173494/30b5c94d2a18/RCM-40-e70105-g001.jpg?><?thumb-name RCM-40-e70105-g001.gif?><?thumb-size 5791?><?thumb-md5 496057574f10dbb11d99a82bc65fe5a3?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 166?><?thumb-cloudpmc-urn urn:cdn:blobs/976b/13173494/496057574f10/RCM-40-e70105-g001.gif?></graphic></fig></sec><sec id="rcm70105-sec-0010"><label>2.4</label><title>IR‐MALDESI MSI</title><p>All MSI experiments were conducted using the Next Generation IR‐MALDESI source coupled to an Orbitrap Exploris 240 mass spectrometer (Thermo Fisher Scientific, Bremen, Germany) [<xref rid="rcm70105-bib-0033" ref-type="bibr">33</xref>]. A 2.97‐μm mid‐IR laser (JGM Associates Inc., Burlington, MA) with a Gaussian beam profile (M<sup>2</sup> ≈ 5) was employed to desorb neutral species from regions of interest (ROI) across the tissue surface. The laser operated at a repetition rate of 10 kHz and delivered energy in bursts of up to 10 pulses per burst. Neutral molecules were subsequently post‐ionized via an orthogonal electrospray plume composed of 60:40 (v/v) acetonitrile/water with 0.2% formic acid. The electrospray was maintained at a flow rate between 1 and 2 μL/min with a 3–4‐kV potential applied for stable ionization.</p><p>Mass spectra were acquired in positive ion mode over an <italic toggle="yes">m/z</italic> range of 100–1000 at a resolving power of 240 000 (FWHM at <italic toggle="yes">m/z</italic> 200) in native centroid mode. Internal calibration was enabled using the EASY‐IC source with fluoranthene ([M•<sup>+</sup>], <italic toggle="yes">m/z</italic> 202.0777) as the reference ion, ensuring a mass measurement accuracy (MMA) within ±2.5 ppm. To synchronize ablation events with spectral acquisition and minimize the accumulation of ambient ions, automatic gain control (AGC) was disabled, and the injection time was fixed at 15 ms [<xref rid="rcm70105-bib-0034" ref-type="bibr">34</xref>]. Prior to tissue analysis, the laser was focused on burn paper mounted on a glass slide to verify alignment for each optical configuration.</p></sec><sec id="rcm70105-sec-0011"><label>2.5</label><title>Data Analysis</title><p>Tissue sections were optically imaged and measured immediately after analysis with a Leica LMD 7000 microscope (Leica Microsystems, Buffalo Grove, IL). XCalibur (Thermo Fisher Scientific) was used to analyze raw mass spectra. For imaging analysis, .RAW files were converted to .mzML files with MSConvert [<xref rid="rcm70105-bib-0035" ref-type="bibr">35</xref>] then to .imzML files with imzMLConverter [<xref rid="rcm70105-bib-0036" ref-type="bibr">36</xref>]. MSiReader [<xref rid="rcm70105-bib-0037" ref-type="bibr">37</xref>, <xref rid="rcm70105-bib-0038" ref-type="bibr">38</xref>] v3.10 (MSI Software Solutions LLC, Raleigh, NC) was used for ion abundance extraction. Annotations were generated by uploading the converted .imzML files to METASPACE and annotating using the LIPIDMAPS database with an <italic toggle="yes">m/z</italic> tolerance of 3 ppm and a false discovery rate (FDR) of 10%. All provided annotations were manually compared against background signals to ensure each ion was specifically observed on‐tissue, rather than only in the ambient environment.</p></sec></sec><sec id="rcm70105-sec-0012"><label>3</label><title>Results and Discussion</title><p>To evaluate how beam restriction influences ablation characteristics and spatial resolution in IR‐MALDESI, a series of experiments were performed using adjustable iris diameters to modulate the beam power and size prior to focusing. These adjustments affect the beam waist and fluence distribution at the sample surface. By systematically varying the iris diameter, we aimed to determine the smallest achievable spot size capable of complete tissue ablation while maintaining sufficient sensitivity for imaging applications. As shown in Figure <xref rid="rcm70105-fig-0002" ref-type="fig">2A</xref>, reducing the iris diameter from 5 to 2.5 mm systematically decreased the average ablation spot size from approximately 67 to 23 μm, as measured by optical microscopy. These results highlight that ablation size can be modulated through changes in iris diameter. The corresponding laser fluence for each iris diameter decreases monotonically with reduced aperture size due to the combined effects of beam restriction and reduced pulse energy. Laser fluence is defined as the energy delivered per unit area at the sample surface (J/cm<sup>2</sup>), representing the spatial energy density of the laser. In this work, fluence was calculated as the energy per pulse divided by the effective beam area at the focal plane (π<italic toggle="yes">r</italic>
+<sup>2</sup>) on a per‐pulse basis assuming the burst energy (0.5 mJ) is distributed across 10 pulses. Corresponding pulse energies (J) and effective beam areas (cm<sup>2</sup>) for each iris‐defined spot size are provided to enable quantitative comparison of irradiation conditions. Because laser fluence is defined as the energy delivered per unit area at the sample surface, concentrating the laser energy into a smaller spot size increases the local energy density even when the total pulse energy is reduced. The adjustable iris acts as a circular aperture which diffracts the low beam quality laser pulse (M<sup>2</sup> &gt; 5) far away from the focusing objective to improve the focusing of the optical system. In combination with the reduced power on target, this confines material removal to a smaller ablation area. The relationship between iris diameter and ablation spot size is approximately linear within this range, demonstrating that finer laser focusing can be achieved without major modifications to the optical components.</p><fig position="float" fig-type="FIGURE" id="rcm70105-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>(A) Average ablation spot size and respective laser fluences as a function of iris diameter observed on mouse liver tissue, demonstrating that reducing the iris from 5 to 2.5 mm decreases the spot size from ~67 to ~23 μm. Laser fluence values are reported on a per‐burst basis and were calculated from the measured spot diameters assuming a circular beam profile, with a 0.5‐mJ burst energy distributed across 10 pulses (fluence = energy per pulse/beam area [π<italic toggle="no">r</italic>
+<sup>2</sup>]). Measurements were obtained via Leica optical microscopy. (B) Representative ablation spots at 3‐ and 2.5‐mm iris diameters showing that at 2.5 mm, there is not full ablation of the tissue. (C) Effect of step size on sampling at a fixed 3‐mm iris diameter. Step sizes of 30, 35, and 40 μm were tested; 35 μm provides sufficient ablation overlap without oversampling, 30 μm introduces partial overlap, and 40 μm leaves unsampled regions.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="RCM-40-e70105-g003.jpg"><?image-name RCM-40-e70105-g003.jpg?><?image-size 94404?><?image-md5 a1904dd37ee87ddeb0d335d89c5fb024?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 588?><?image-original-width 1064?><?image-scaled-height 392?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/976b/13173494/a1904dd37ee8/RCM-40-e70105-g003.jpg?><?thumb-name RCM-40-e70105-g003.gif?><?thumb-size 9475?><?thumb-md5 5c12346dd15f4af15f841c5fadff09e0?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 144?><?thumb-cloudpmc-urn urn:cdn:blobs/976b/13173494/5c12346dd15f/RCM-40-e70105-g003.gif?></graphic></fig><p>A closer examination in Figure <xref rid="rcm70105-fig-0002" ref-type="fig">2B</xref> compares ablation at 3‐ and 2.5‐mm iris diameters. While the 2.5‐mm setting produced the smallest observed ablation spots, it did not fully ablate through the tissue, reflecting diffraction losses from the iris and lowering of fluence at beam focus. With higher pulse energy and a different beam profile, complete ablation at comparable spot sizes should be achievable despite diffraction losses. In contrast, the 3‐mm iris produced consistently well‐defined craters (~32–36 μm) that fully penetrated the tissue, indicating an optimal balance between resolution and ablation efficiency. To assess the ideal step size at the lowest achievable iris diameter, Figure <xref rid="rcm70105-fig-0002" ref-type="fig">2C</xref> demonstrates the effect of step size at a fixed 3 mm. Stage step sizes of 30, 35, and 40 μm were evaluated to assess overlap and sampling density. The 35‐μm step size provided sufficient ablation overlap without oversampling, while the 30‐μm step introduced partial overlap and the 40‐μm step left unsampled regions between ablation spots. These results identify practical operating parameters for achieving high spatial resolution in IR‐MALDESI under the current laser configuration, while maintaining consistent ablation and sampling efficiency. We note here that these parameters are specific to the laser used but provide a simple, general procedure for optimizing IR laser performance to improve spatial resolution.</p><p>This approach is distinct from conventional focusing strategies, typically used for MSI. Rather than optimizing spot size through lens adjustment or beam expansion, the high energy output of the laser is partially blocked by the iris, effectively discarding a large portion of the beam's energy. This unconventional use of a high‐power laser highlights a simple yet powerful means of achieving better spatial resolution using lasers with low beam quality (M<sup>2</sup> &gt; 2), which are more typical in the IR wavelength range.</p><p>The diffraction‐based method used improves spatial resolution by reducing the power on target, allowing for a smaller sampling size for the same focal spot, and producing a far‐field diffraction pattern, which can be focused more tightly than the same system without the iris. This behavior can be understood in terms of Gaussian beam propagation and diffraction, where the iris modifies both the effective beam waist and angular divergence of the beam. This can be demonstrated using Fraunhofer diffraction modeling in LightPipes 2.1.5, of a perfect Gaussian beam (M<sup>2</sup> = 1), a Gaussian beam shape with random phase, and a circular beam with random intensity to represent a system with poor beam quantity, as shown in Figure <xref rid="rcm70105-fig-0003" ref-type="fig">3</xref>.</p><fig position="float" fig-type="FIGURE" id="rcm70105-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>(A) Comparison of laser root‐mean‐square (RMS) spot size as a function of iris size. The symbol w<sub>0</sub> represents the beam diameter at the iris position. (B) Comparison of power transmission as a function of iris size. The perfect Gaussian beam and Gaussian beam with random phase variation overlap.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="RCM-40-e70105-g002.jpg"><?image-name RCM-40-e70105-g002.jpg?><?image-size 42300?><?image-md5 d800d058c29d1bd7256d95d8db6c8082?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 358?><?image-original-width 1064?><?image-scaled-height 239?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/976b/13173494/d800d058c29d/RCM-40-e70105-g002.jpg?><?thumb-name RCM-40-e70105-g002.gif?><?thumb-size 5019?><?thumb-md5 36e419056ef869e6e02201bdd072e5bd?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 67?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/976b/13173494/36e419056ef8/RCM-40-e70105-g002.gif?></graphic></fig><p>We model the effect of far‐field diffraction of an iris on beam focusing with an initial beam width of 2 mm. We consider an ideal Gaussian beam and two degraded cases in which random noise is added either to the phase profile (phase distortion) or to the intensity profile (speckle or multimode effects). These perturbations are used to simulate poor beam quality systems (lasers with high M<sup>2</sup> values). For Figure <xref rid="rcm70105-fig-0003" ref-type="fig">3A</xref>, the RMS laser spot size is plotted as a ratio to compare the beam spot size with and without the iris. For apertures 1.5× larger than the 1/e<sup>2</sup> radius of the incoming beam (<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-1" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>ω</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>), the beam is largely unperturbed and all three modeled cases (ideal Gaussian, random phase, and random intensity beams) converge to a spot size ratio of 1.</p><p>As the iris is reduced to the range of 0.7–1.2 <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-2" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>ω</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, the focal spot decreases because the aperture transmits the high‐intensity central part of the beam and blocks distorted or low‐intensity outer regions and diffracts the incoming beam. With this, the iris acts as a spatial filter, preferentially transmitting the central Gaussian portion of the beam while suppressing distorted or divergent components. The reduction is strongest for an ideal Gaussian beam (red), and weakest for the random phase beam (blue) due to its larger angular spread induced by random phase. For very small apertures (&lt; 0.5 <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-3" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>ω</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>), the spot size ratio increases as diffraction from the aperture dominates, becoming the limiting factor, increasing the beam divergence and broadening the focal spot size. Figure <xref rid="rcm70105-fig-0003" ref-type="fig">3B</xref> shows the power transmission associated with the iris closing. The power increases monotonically with iris radius and saturates near unity once the iris is larger than the beam. The perfect Gaussian and random phase beams have similar transmission curves, while the random intensity beam (green) loses more power for a given iris diameter because more of its energy is in the outer wing of the beam.</p><p>For the IR‐MALDESI laser with a high M<sup>2</sup> value, both phase and intensity distortion exist. Within this framework, the iris simultaneously acts as a spatial filter (removing low intensity or distorted beam components) and a diffraction aperture (introducing angular broadening as the aperture approaches or becoming smaller than <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-4" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>ω</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>). Combining both plots together, we can see that diffraction and aperture induced power truncation through the iris both contribute to the manipulation of laser spot size. Picking an iris diameter around or slightly larger than the diameter (FWHM) of the laser beam improves the focused spot size after the lens, avoiding diffraction broadening.</p><p>In this work, spatial resolution and the number of molecular annotations are shown to be controlled by iris diameter through its effective laser spot size and resulting tissue ablation volume. Figure <xref rid="rcm70105-fig-0004" ref-type="fig">4</xref> illustrates the relationship between spatial resolution and the number of molecular annotations obtained in IR‐MALDESI MSI experiments as a function of spot size. Each stacked column represents the distribution of major lipid classes, fatty acids (FA) and conjugates, glycerolipids (GL), glycerophospholipids (GP), sphingolipids (SP), sterol lipids (ST), prenol lipids (PR), and polyketides (PK), detected at a given iris diameter. A total of 115, 113, 75, and 53 lipid annotations were identified at increasing spatial resolutions, demonstrating a steady decline in molecular coverage as the iris was constricted. Over half of the lipid annotations observed at the lowest spatial resolution were lost at the highest resolution, indicating the strong impact of beam diameter on overall ion abundance and possible competition effects, described below.</p><fig position="float" fig-type="FIGURE" id="rcm70105-fig-0004" orientation="portrait"><label>FIGURE 4</label><caption><p>Relationship between spot size, spatial resolution, and molecular annotations in IR‐MALDESI MSI. Each stacked column shows the distribution of major lipid classes (FA, GL, GP, SP, ST, PR, and PK) at different iris diameters. A total of 115, 113, 75, and 53 annotations were detected at 67‐, 51‐, 34‐, and 23‐μm spatial resolution, respectively. Ten equivalent on‐tissue spots were used per spatial resolution condition for annotation comparison.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="RCM-40-e70105-g005.jpg"><?image-name RCM-40-e70105-g005.jpg?><?image-size 42405?><?image-md5 a640def484a41742a0eae1dd46bac934?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 892?><?image-original-width 998?><?image-scaled-height 594?><?image-scaled-width 665?><?image-cloudpmc-urn urn:cdn:blobs/976b/13173494/a640def484a4/RCM-40-e70105-g005.jpg?><?thumb-name RCM-40-e70105-g005.gif?><?thumb-size 2940?><?thumb-md5 2114c9059e863faa6f9bc6dc10b5e2a9?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 89?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/976b/13173494/2114c9059e86/RCM-40-e70105-g005.gif?></graphic></fig><p>As the iris diameter decreased, producing smaller laser spots, ion abundances across all lipid classes are reduced. Beyond confirming the expected decrease in signal with smaller ablation volumes, our results quantify this relationship, showing how ion abundance scales with effective spot size under a controlled beam restriction approach. Larger iris diameters produce higher ion signals and capture a broader range of lipid species, while smaller diameters increase spatial detail but reduce the number of detectable annotations. While the relative proportions of lipid classes remain broadly consistent, all classes show reduced representation at smaller iris diameters, reflecting a general loss of sensitivity. In other words, this effect is linear, where reducing the spot size decreases the sampled volume, causing ion abundances for some species to fall below signal‐to‐noise limits.</p><p>As the beam diameter decreases, fewer analytes are ejected into the electrospray plume, reducing the total number of molecules available for ionization. By fitting the data from the four iris settings to a linear model of the form <italic toggle="yes">y = mx</italic> + <italic toggle="yes">b</italic>, where <italic toggle="yes">x</italic> represents spot size and <italic toggle="yes">y</italic> represents normalized ion abundance, we obtained the slope and y‐intercept to estimate theoretical ion abundances at intermediate spatial resolution, using the previously described laser parameters. Normalized ion abundances were calculated as the absolute ion abundance measured at each spot size divided by the maximum abundance observed across those four conditions, such that normalized abundance = <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-5" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>I</mml:mi><mml:mo>/</mml:mo><mml:msub><mml:mi>I</mml:mi><mml:mi mathvariant="italic">max</mml:mi></mml:msub></mml:mrow></mml:mrow></mml:math>. In most cases, the maximum value corresponded to the 67‐μm spatial resolution, which evaluates to 1 in the normalized plots.</p><p>The linear model provides a theoretical estimate of ion abundance as a function of spot size and is not constrained by detector sensitivity. As a result, the model predicts nonzero abundances even at spot sizes where experimental detection reaches zero, so measured cutoffs are dictated by limited analyte availability and instrument sensitivity rather than fundamental desorption or ionization efficiency. This approach allows quantification of the rate of signal loss with increasing spatial resolution. In Figure <xref rid="rcm70105-fig-0005" ref-type="fig">5A</xref>, four representative lipids were chosen to illustrate the overall trend observed across most detected species: Ion abundance decreases as spatial resolution increases. The theoretical line hits zero only as spatial resolution nears the submicron range, whereas the experimental data reach zero abundance around 20 μm. This reflects detection limits rather than true molecular absence. At very small beam diameters, the desorbed plume contains fewer neutral molecules overall, reducing the total number of analytes that can reach the electrospray region. While a smaller number of neutrals could, in theory, lessen competition for charge and slightly improve ionization efficiency, the absolute number of ions generated still decreases because of the limited material available for post‐ionization. The lower plume density also reduces overlap with the electrospray, and the smaller ablation volume may lead to incomplete desorption. These effects cause the measured abundance to drop to zero more rapidly than predicted by the ideal theoretical model, emphasizing that spatial resolution improvements are ultimately constrained by both desorption volume and total analyte availability rather than ionization inefficiency alone.</p><fig position="float" fig-type="FIGURE" id="rcm70105-fig-0005" orientation="portrait"><label>FIGURE 5</label><caption><p>Normalized ion abundances of selected lipids as a function of spatial resolution in IR‐MALDESI MSI of mouse liver tissue. (A) Four representative lipids are shown from the majority class of detected ions (80 annotations; 70%), which display decreasing relative ion abundance with increasing spatial resolution, consistent with reduced ablation volume and ion yield. (B) A smaller subset of analytes (10 annotations; 8%) exhibits increased abundance at higher resolution, likely due to reduced ion suppression and more efficient ionization under lower total ion flux. (C) The remaining ions (25 annotations; 22%) are relatively constant across resolutions, suggesting ionization efficiencies that are less affected by ablation volume or plume density.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-9" orientation="portrait" xlink:href="RCM-40-e70105-g004.jpg"><?image-name RCM-40-e70105-g004.jpg?><?image-size 51625?><?image-md5 a524d60cbb3547ee7efdf01e17882466?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 374?><?image-original-width 1064?><?image-scaled-height 249?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/976b/13173494/a524d60cbb35/RCM-40-e70105-g004.jpg?><?thumb-name RCM-40-e70105-g004.gif?><?thumb-size 5303?><?thumb-md5 dfc68c3d75b62cff67a535b7a6fbd8f7?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 70?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/976b/13173494/dfc68c3d75b6/RCM-40-e70105-g004.gif?></graphic></fig><p>As expected, reducing the iris diameter generally decreased signal intensity due to ablation of a smaller tissue volume. Interestingly, some lipids showed increased relative abundance at smaller iris diameters (Figure <xref rid="rcm70105-fig-0005" ref-type="fig">5B</xref>). This may reflect reduced ionization competition in the electrospray plume, where lower‐abundance species experience less suppression and ionize more efficiently. At smaller spot sizes, fewer high‐abundance or easily ionized species are present to dominate the electrospray process, allowing otherwise suppressed lipids to ionize more efficiently. These results point to possible ionization competition effects, where reduced co‐desorption of dominant species favors the detection of less abundant lipids [<xref rid="rcm70105-bib-0039" ref-type="bibr">39</xref>, <xref rid="rcm70105-bib-0040" ref-type="bibr">40</xref>]. Local tissue heterogeneity may also contribute, as smaller ablation volumes can preferentially sample regions enriched in specific metabolites. Figure <xref rid="rcm70105-fig-0005" ref-type="fig">5C</xref> suggests balanced opposing effects where some lipid classes reflect constant ion abundances across all spatial resolutions. Similar to the previous observation, these particular lipids may maintain efficient ionization due to favorable chemical properties or uniform tissue composition. The lack of a strong dependence on spatial resolution indicates that their ionization dynamics are less sensitive to changes in ablation volume or plume density compared to other lipid types.</p><p>All annotated species observed at the smallest iris diameter condition (2.5 mm) were also detected and annotated at the larger iris diameter condition (5 mm). No additional species were uniquely observed at either condition, indicating that the primary effect of increasing spatial resolution under the conditions used here is a reduction in ion abundance rather than a change in qualitative molecular coverage. These results emphasize the complexity of how spatial resolution influences both desorption efficiency and downstream ionization behavior in IR‐MALDESI. While most species show the expected loss in ion abundance at higher resolution, deviations from this trend highlight the role of chemical composition, competition effects, and microenvironmental factors in ion abundance.</p><p>Figure <xref rid="rcm70105-fig-0006" ref-type="fig">6A</xref> presents representative ion images acquired at 25‐μm spatial resolution, highlighting the spatial localization of selected lipid species across a mouse brain tissue section. The lipid species studied include FA 18:2 (<italic toggle="yes">m/z</italic> 279.2330), FA 18:1 (<italic toggle="yes">m/z</italic> 281.2486), and FA 22:6 (<italic toggle="yes">m/z</italic> 327.2330), along with phosphatidylserine PS 40:6 (<italic toggle="yes">m/z</italic> 834.5291). Collectively, these species exhibit broad and partially overlapping distributions across tissue, with no distinct localization to discrete anatomical regions. However, subtle differences in their spatial abundance patterns contribute to a contrast that helps distinguish overall tissue structure. Despite reduced signal associated with smaller ablation volume at higher spatial resolution, the data demonstrate that major anatomical features remain discernible. The increased spatial resolution at 25 μm improves the visualization of fine structural heterogeneity within the brain tissue that may otherwise be undetectable at lower spatial resolutions. When compared with the corresponding optical image (Figure <xref rid="rcm70105-fig-0006" ref-type="fig">6B</xref>) and the annotated tissue atlas (Figure <xref rid="rcm70105-fig-0006" ref-type="fig">6C</xref>) [<xref rid="rcm70105-bib-0041" ref-type="bibr">41</xref>, <xref rid="rcm70105-bib-0042" ref-type="bibr">42</xref>], the ion images show general agreement with known structural regions, including broad cortical and subcortical areas. The spatial patterns enhance the ability to differentiate anatomical features and resolve tissue heterogeneity at higher resolution.</p><fig position="float" fig-type="FIGURE" id="rcm70105-fig-0006" orientation="portrait"><label>FIGURE 6</label><caption><p>(A) Representative ion images of selected lipid species at 25‐μm spatial resolution acquired from a mouse brain tissue section. (B) Corresponding optical image of the same tissue section used for imaging with (C) annotated mouse brain anatomy. Labels are cerebral cortex (CTX), corpus collosum (cc), ventricles (VL), caudate putamen (CP), anterior commissure (aco), and hypothalamus (HY).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-11" orientation="portrait" xlink:href="RCM-40-e70105-g006.jpg"><?image-name RCM-40-e70105-g006.jpg?><?image-size 107764?><?image-md5 be554b56480d05e04fe2c5a5eb5efc99?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 486?><?image-original-width 1064?><?image-scaled-height 324?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/976b/13173494/be554b56480d/RCM-40-e70105-g006.jpg?><?thumb-name RCM-40-e70105-g006.gif?><?thumb-size 16889?><?thumb-md5 e75f5b581f450761d6715a90125fa04f?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 175?><?thumb-cloudpmc-urn urn:cdn:blobs/976b/13173494/e75f5b581f45/RCM-40-e70105-g006.gif?></graphic></fig></sec><sec sec-type="conclusions" id="rcm70105-sec-0013"><label>4</label><title>Conclusions</title><p>This work introduces a novel strategy for tuning spatial resolution in IR‐MALDESI MSI through controlled beam restriction. By deliberately discarding a large fraction of a high‐power laser via an adjustable iris, the most intense portion of the Gaussian beam is delivered to the tissue, enabling fine control over effective spot size while maintaining measurable ion abundance. Additionally, far‐field diffraction from the iris reshapes the focal fluence distribution. In combination with the ablation threshold of the tissue, material removal is confined to a smaller area than would be expected from the total energy of the laser. Combining this approach with linear modeling of ion abundance versus beam diameter provides a quantitative framework for predicting signal loss at smaller spot sizes. The observed effect does not follow simple geometric effects alone (i.e., the differences in volume ablated) but instead reflects molecule‐dependent efficiency and well‐documented nonlinear and competitive ion generation processes. This concept emphasizes how optical energy distribution can be leveraged to balance structural detail and sensitivity, offering a flexible and applicable method for optimizing IR‐MALDESI performance under diverse experimental conditions.</p></sec><sec id="rcm70105-sec-0018"><title>Author Contributions</title><p>
+<bold>Sarah M. Ashbacher:</bold> formal analysis, visualization, writing – review and editing, writing – original draft. <bold>Seth M. Eisenberg:</bold> formal analysis, visualization, writing – review and editing, writing – original draft, methodology. <bold>Alexander A. C. Wainwright:</bold> formal analysis, visualization, writing – review and editing, methodology, conceptualization. <bold>Aosheng Gu:</bold> formal analysis, visualization, writing – review and editing, methodology, conceptualization. <bold>Syeda N. Mahdia:</bold> software, formal analysis. <bold>R. J. Dwayne Miller:</bold> supervision, methodology, conceptualization. <bold>David C. Muddiman:</bold> conceptualization, investigation, funding acquisition, writing – review and editing, supervision, resources.</p></sec><sec sec-type="COI-statement" id="rcm70105-sec-0015"><title>Conflicts of Interest</title><p>David C. Muddiman is a partial‐owner of MSI Software Solutions, LLC. R.J. Dwayne Miller holds a patent related to Pulsed IR ablation for mass spectrometry.</p></sec></body><back><ack id="rcm70105-sec-0014"><title>Acknowledgments</title><p>The authors gratefully acknowledge financial support from the National Institutes of Health (R01GM087964) and the Natural Sciences and Engineering Research Council of Canada (RJDM). All mass spectrometry measurements were conducted at the Molecular Education, Technology and Research Innovation Center (METRIC) at NC State University.</p></ack><sec sec-type="data-availability" id="rcm70105-sec-0017"><title>Data Availability Statement</title><p>The data that support the findings of this study are available on request from the corresponding author.</p></sec><ref-list content-type="cited-references" id="rcm70105-bibl-0001"><title>References</title><ref id="rcm70105-bib-0001"><label>1</label><mixed-citation publication-type="journal" id="rcm70105-cit-0001">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Caleb Bagley</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. P.</given-names>
+<surname>Garrard</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>The Development and Application of Matrix Assisted Laser Desorption Electrospray Ionization: The Teenage Years</article-title>,” <source>Mass Spectrometry Reviews</source>
+<volume>42</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>35</fpage>–<lpage>66</lpage>, <pub-id pub-id-type="doi">10.1002/mas.21696</pub-id>.<pub-id pub-id-type="pmid">34028071</pub-id>
+<pub-id pub-id-type="pmcid">PMC11609267</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0002"><label>2</label><mixed-citation publication-type="journal" id="rcm70105-cit-0002">
+<string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Barry</surname>
+</string-name> and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Global Optimization of the Infrared Matrix‐Assisted Laser Desorption Electrospray Ionization (IR MALDESI) Source for Mass Spectrometry Using Statistical Design of Experiments</article-title>,” <source>Rapid Communications in Mass Spectrometry</source>
+<volume>25</volume>, no. <issue>23</issue> (<year>2011</year>): <fpage>3527</fpage>–<lpage>3536</lpage>, <pub-id pub-id-type="doi">10.1002/rcm.5262</pub-id>.<pub-id pub-id-type="pmid">22095501</pub-id>
+<pub-id pub-id-type="pmcid">PMC3781580</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0003"><label>3</label><mixed-citation publication-type="journal" id="rcm70105-cit-0003">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Tu</surname>
+</string-name> and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Internal Energy Deposition in Infrared Matrix‐Assisted Laser Desorption Electrospray Ionization With and Without the Use of Ice as a Matrix</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>30</volume>, no. <issue>11</issue> (<year>2019</year>): <fpage>2380</fpage>–<lpage>2391</lpage>, <pub-id pub-id-type="doi">10.1007/s13361-019-02323-2</pub-id>.<pub-id pub-id-type="pmid">31502226</pub-id>
+<pub-id pub-id-type="pmcid">PMC6937789</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0004"><label>4</label><mixed-citation publication-type="journal" id="rcm70105-cit-0004">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Robichaud</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Barry</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>IR‐MALDESI Mass Spectrometry Imaging of Biological Tissue Sections Using Ice as a Matrix</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>25</volume>, no. <issue>3</issue> (<year>2014</year>): <fpage>319</fpage>–<lpage>328</lpage>, <pub-id pub-id-type="doi">10.1007/s13361-013-0787-6</pub-id>.<pub-id pub-id-type="pmid">24385399</pub-id>
+<pub-id pub-id-type="pmcid">PMC3950934</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0005"><label>5</label><mixed-citation publication-type="journal" id="rcm70105-cit-0005">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Nemes</surname>
+</string-name> and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Vertes</surname>
+</string-name>, “<article-title>Laser Ablation Electrospray Ionization for Atmospheric Pressure, In Vivo, and Imaging Mass Spectrometry</article-title>,” <source>Analytical Chemistry</source>
+<volume>79</volume>, no. <issue>21</issue> (<year>2007</year>): <fpage>8098</fpage>–<lpage>8106</lpage>, <pub-id pub-id-type="doi">10.1021/ac071181r</pub-id>.<pub-id pub-id-type="pmid">17900146</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0006"><label>6</label><mixed-citation publication-type="journal" id="rcm70105-cit-0006">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Nazari</surname>
+</string-name> and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Cellular‐Level Mass Spectrometry Imaging Using Infrared Matrix‐Assisted Laser Desorption Electrospray Ionization (IR‐MALDESI) by Oversampling</article-title>,” <source>Analytical and Bioanalytical Chemistry</source>
+<volume>407</volume>, no. <issue>8</issue> (<year>2015</year>): <fpage>2265</fpage>–<lpage>2271</lpage>, <pub-id pub-id-type="doi">10.1007/s00216-014-8376-5</pub-id>.<pub-id pub-id-type="pmid">25486925</pub-id>
+<pub-id pub-id-type="pmcid">PMC4359048</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0007"><label>7</label><mixed-citation publication-type="journal" id="rcm70105-cit-0007">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Zhang</surname>
+</string-name> and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Vertes</surname>
+</string-name>, “<article-title>Single‐Cell Mass Spectrometry Approaches to Explore Cellular Heterogeneity</article-title>,” <source>Angewandte Chemie, International Edition</source>
+<volume>57</volume>, no. <issue>17</issue> (<year>2018</year>): <fpage>4466</fpage>–<lpage>4477</lpage>, <pub-id pub-id-type="doi">10.1002/anie.201709719</pub-id>.<pub-id pub-id-type="pmid">29218763</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0008"><label>8</label><mixed-citation publication-type="journal" id="rcm70105-cit-0008">
+<string-name name-style="western">
+<given-names>E. H.</given-names>
+<surname>Seeley</surname>
+</string-name> and <string-name name-style="western">
+<given-names>R. M.</given-names>
+<surname>Caprioli</surname>
+</string-name>, “<article-title>Molecular Imaging of Proteins in Tissues by Mass Spectrometry</article-title>,” <source>Proceedings of the National Academy of Sciences</source>
+<volume>105</volume>, no. <issue>47</issue> (<year>2008</year>): <fpage>18126</fpage>–<lpage>18131</lpage>, <pub-id pub-id-type="doi">10.1073/pnas.0801374105</pub-id>.<pub-id pub-id-type="pmcid">PMC2587620</pub-id><pub-id pub-id-type="pmid">18776051</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0009"><label>9</label><mixed-citation publication-type="journal" id="rcm70105-cit-0009">
+<string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Chughtai</surname>
+</string-name> and <string-name name-style="western">
+<given-names>R. M. A.</given-names>
+<surname>Heeren</surname>
+</string-name>, “<article-title>Mass Spectrometric Imaging for Biomedical Tissue Analysis</article-title>,” <source>Chemical Reviews</source>
+<volume>110</volume>, no. <issue>5</issue> (<year>2010</year>): <fpage>3237</fpage>–<lpage>3277</lpage>, <pub-id pub-id-type="doi">10.1021/cr100012c</pub-id>.<pub-id pub-id-type="pmid">20423155</pub-id>
+<pub-id pub-id-type="pmcid">PMC2907483</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0010"><label>10</label><mixed-citation publication-type="journal" id="rcm70105-cit-0010">
+<string-name name-style="western">
+<given-names>S. T. P.</given-names>
+<surname>Mezger</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. M. A.</given-names>
+<surname>Mingels</surname>
+</string-name>, <string-name name-style="western">
+<given-names>O.</given-names>
+<surname>Bekers</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Cillero‐Pastor</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. M. A.</given-names>
+<surname>Heeren</surname>
+</string-name>, “<article-title>Trends in Mass Spectrometry Imaging for Cardiovascular Diseases</article-title>,” <source>Analytical and Bioanalytical Chemistry</source>
+<volume>411</volume>, no. <issue>17</issue> (<year>2019</year>): <fpage>3709</fpage>–<lpage>3720</lpage>, <pub-id pub-id-type="doi">10.1007/s00216-019-01780-8</pub-id>.<pub-id pub-id-type="pmid">30980090</pub-id>
+<pub-id pub-id-type="pmcid">PMC6594994</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0011"><label>11</label><mixed-citation publication-type="journal" id="rcm70105-cit-0011">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Martin‐Lorenzo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Alvarez‐Llamas</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. A.</given-names>
+<surname>McDonnell</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Vivanco</surname>
+</string-name>, “<article-title>Molecular Histology of Arteries: Mass Spectrometry Imaging as a Novel Ex Vivo Tool to Investigate Atherosclerosis</article-title>,” <source>Expert Review of Proteomics</source>
+<volume>13</volume>, no. <issue>1</issue> (<year>2016</year>): <fpage>69</fpage>–<lpage>81</lpage>, <pub-id pub-id-type="doi">10.1586/14789450.2016.1116944</pub-id>.<pub-id pub-id-type="pmid">26558814</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0012"><label>12</label><mixed-citation publication-type="journal" id="rcm70105-cit-0012">
+<string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Bien</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Koerfer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Schwenzfeier</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Dreisewerd</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Soltwisch</surname>
+</string-name>, “<article-title>Mass Spectrometry Imaging to Explore Molecular Heterogeneity in Cell Culture</article-title>,” <source>Proceedings of the National Academy of Sciences</source>
+<volume>119</volume>, no. <issue>29</issue> (<year>2022</year>): <elocation-id>e2114365119</elocation-id>, <pub-id pub-id-type="doi">10.1073/pnas.2114365119</pub-id>.<pub-id pub-id-type="pmcid">PMC9303856</pub-id><pub-id pub-id-type="pmid">35858333</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0013"><label>13</label><mixed-citation publication-type="journal" id="rcm70105-cit-0013">
+<string-name name-style="western">
+<given-names>K. D.</given-names>
+<surname>Duncan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Pětrošová</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. J.</given-names>
+<surname>Lum</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. R.</given-names>
+<surname>Goodlett</surname>
+</string-name>, “<article-title>Mass Spectrometry Imaging Methods for Visualizing Tumor Heterogeneity</article-title>,” <source>Current Opinion in Biotechnology</source>
+<volume>86</volume> (<year>2024</year>): <elocation-id>103068</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.copbio.2024.103068</pub-id>.<pub-id pub-id-type="pmid">38310648</pub-id>
+<pub-id pub-id-type="pmcid">PMC11520788</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0014"><label>14</label><mixed-citation publication-type="journal" id="rcm70105-cit-0014">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Schwaiger‐Haber</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Stancliffe</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. S.</given-names>
+<surname>Anbukumar</surname>
+</string-name>, et al., “<article-title>Using Mass Spectrometry Imaging to Map Fluxes Quantitatively in the Tumor Ecosystem</article-title>,” <source>Nature Communications</source>
+<volume>14</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>2876</fpage>, <pub-id pub-id-type="doi">10.1038/s41467-023-38403-x</pub-id>.<pub-id pub-id-type="pmcid">PMC10199024</pub-id><pub-id pub-id-type="pmid">37208361</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0015"><label>15</label><mixed-citation publication-type="journal" id="rcm70105-cit-0015">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Ma</surname>
+</string-name> and <string-name name-style="western">
+<given-names>F. M.</given-names>
+<surname>Fernández</surname>
+</string-name>, “<article-title>Advances in Mass Spectrometry Imaging for Spatial Cancer Metabolomics</article-title>,” <source>Mass Spectrometry Reviews</source>
+<volume>43</volume>, no. <issue>2</issue> (<year>2024</year>): <fpage>235</fpage>–<lpage>268</lpage>, <pub-id pub-id-type="doi">10.1002/mas.21804</pub-id>.<pub-id pub-id-type="pmid">36065601</pub-id>
+<pub-id pub-id-type="pmcid">PMC9986357</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0016"><label>16</label><mixed-citation publication-type="journal" id="rcm70105-cit-0016">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. H.</given-names>
+<surname>Lu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Ebbini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Huang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Lu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Li</surname>
+</string-name>, “<article-title>Mass Spectrometry Imaging for Spatially Resolved Multi‐Omics Molecular Mapping</article-title>,” <source>Npj Imaging</source>
+<volume>2</volume>, no. <issue>1</issue> (<year>2024</year>): <elocation-id>20</elocation-id>, <pub-id pub-id-type="doi">10.1038/s44303-024-00025-3</pub-id>.<pub-id pub-id-type="pmid">39036554</pub-id>
+<pub-id pub-id-type="pmcid">PMC11254763</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0017"><label>17</label><mixed-citation publication-type="journal" id="rcm70105-cit-0017">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Römpp</surname>
+</string-name> and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Spengler</surname>
+</string-name>, “<article-title>Mass Spectrometry Imaging With High Resolution in Mass and Space</article-title>,” <source>Histochemistry and Cell Biology</source>
+<volume>139</volume>, no. <issue>6</issue> (<year>2013</year>): <fpage>759</fpage>–<lpage>783</lpage>, <pub-id pub-id-type="doi">10.1007/s00418-013-1097-6</pub-id>.<pub-id pub-id-type="pmid">23652571</pub-id>
+<pub-id pub-id-type="pmcid">PMC3656243</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0018"><label>18</label><mixed-citation publication-type="journal" id="rcm70105-cit-0018">
+<string-name name-style="western">
+<given-names>S. L.</given-names>
+<surname>Luxembourg</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. H.</given-names>
+<surname>Mize</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. A.</given-names>
+<surname>McDonnell</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. M. A.</given-names>
+<surname>Heeren</surname>
+</string-name>, “<article-title>High‐Spatial Resolution Mass Spectrometric Imaging of Peptide and Protein Distributions on a Surface</article-title>,” <source>Analytical Chemistry</source>
+<volume>76</volume>, no. <issue>18</issue> (<year>2004</year>): <fpage>5339</fpage>–<lpage>5344</lpage>, <pub-id pub-id-type="doi">10.1021/ac049692q</pub-id>.<pub-id pub-id-type="pmid">15362890</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0019"><label>19</label><mixed-citation publication-type="journal" id="rcm70105-cit-0019">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kompauer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Heiles</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Spengler</surname>
+</string-name>, “<article-title>Atmospheric Pressure MALDI Mass Spectrometry Imaging of Tissues and Cells at 1.4‐Μm Lateral Resolution</article-title>,” <source>Nature Methods</source>
+<volume>14</volume>, no. <issue>1</issue> (<year>2017</year>): <fpage>90</fpage>–<lpage>96</lpage>, <pub-id pub-id-type="doi">10.1038/nmeth.4071</pub-id>.<pub-id pub-id-type="pmid">27842060</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0020"><label>20</label><mixed-citation publication-type="journal" id="rcm70105-cit-0020">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Yin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. E.</given-names>
+<surname>Burnum‐Johnson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Sun</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. K.</given-names>
+<surname>Dey</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Laskin</surname>
+</string-name>, “<article-title>High Spatial Resolution Imaging of Biological Tissues Using Nanospray Desorption Electrospray Ionization Mass Spectrometry</article-title>,” <source>Nature Protocols</source>
+<volume>14</volume>, no. <issue>12</issue> (<year>2019</year>): <fpage>3445</fpage>–<lpage>3470</lpage>, <pub-id pub-id-type="doi">10.1038/s41596-019-0237-4</pub-id>.<pub-id pub-id-type="pmid">31723300</pub-id>
+<pub-id pub-id-type="pmcid">PMC6941488</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0021"><label>21</label><mixed-citation publication-type="journal" id="rcm70105-cit-0021">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Unsihuay</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Hu</surname>
+</string-name>, et al., “<article-title>Nano‐DESI Mass Spectrometry Imaging of Proteoforms in Biological Tissues With High Spatial Resolution</article-title>,” <source>Analytical Chemistry</source>
+<volume>95</volume>, no. <issue>12</issue> (<year>2023</year>): <fpage>5214</fpage>–<lpage>5222</lpage>, <pub-id pub-id-type="doi">10.1021/acs.analchem.2c04795</pub-id>.<pub-id pub-id-type="pmid">36917636</pub-id>
+<pub-id pub-id-type="pmcid">PMC11330692</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0022"><label>22</label><mixed-citation publication-type="journal" id="rcm70105-cit-0022">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Niehaus</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Soltwisch</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. E.</given-names>
+<surname>Belov</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Dreisewerd</surname>
+</string-name>, “<article-title>Transmission‐Mode MALDI‐2 Mass Spectrometry Imaging of Cells and Tissues at Subcellular Resolution</article-title>,” <source>Nature Methods</source>
+<volume>16</volume>, no. <issue>9</issue> (<year>2019</year>): <fpage>925</fpage>–<lpage>931</lpage>, <pub-id pub-id-type="doi">10.1038/s41592-019-0536-2</pub-id>.<pub-id pub-id-type="pmid">31451764</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0023"><label>23</label><mixed-citation publication-type="journal" id="rcm70105-cit-0023">
+<string-name name-style="western">
+<given-names>A. L.</given-names>
+<surname>Richards</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. B.</given-names>
+<surname>Lietz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. B.</given-names>
+<surname>Wager‐Miller</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Mackie</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Trimpin</surname>
+</string-name>, “<article-title>Imaging Mass Spectrometry in Transmission Geometry</article-title>,” <source>Rapid Communications in Mass Spectrometry</source>
+<volume>25</volume>, no. <issue>6</issue> (<year>2011</year>): <fpage>815</fpage>–<lpage>820</lpage>, <pub-id pub-id-type="doi">10.1002/rcm.4927</pub-id>.<pub-id pub-id-type="pmid">21337644</pub-id>
+<pub-id pub-id-type="pmcid">PMC3677958</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0024"><label>24</label><mixed-citation publication-type="journal" id="rcm70105-cit-0024">
+<string-name name-style="western">
+<given-names>J. S.</given-names>
+<surname>Sampson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Hawkridge</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Generation and Detection of Multiply‐Charged Peptides and Proteins by Matrix‐Assisted Laser Desorption Electrospray Ionization (MALDESI) Fourier Transform Ion Cyclotron Resonance Mass Spectrometry</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>17</volume>, no. <issue>12</issue> (<year>2006</year>): <fpage>1712</fpage>–<lpage>1716</lpage>, <pub-id pub-id-type="doi">10.1016/j.jasms.2006.08.003</pub-id>.<pub-id pub-id-type="pmid">16952462</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0025"><label>25</label><mixed-citation publication-type="journal" id="rcm70105-cit-0025">
+<string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Franjic</surname>
+</string-name> and <string-name name-style="western">
+<given-names>R. J. D.</given-names>
+<surname>Miller</surname>
+</string-name>, “<article-title>Vibrationally Excited Ultrafast Thermodynamic Phase Transitions at the Water/Air Interface</article-title>,” <source>Physical Chemistry Chemical Physics</source>
+<volume>12</volume>, no. <issue>20</issue> (<year>2010</year>): <fpage>5225</fpage>–<lpage>5239</lpage>, <pub-id pub-id-type="doi">10.1039/c000359j</pub-id>.<pub-id pub-id-type="pmid">20431828</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0026"><label>26</label><mixed-citation publication-type="journal" id="rcm70105-cit-0026">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Römpp</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. C.</given-names>
+<surname>Schäfer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Guenther</surname>
+</string-name>, et al., “<article-title>High‐Resolution Atmospheric Pressure Infrared Laser Desorption/Ionization Mass Spectrometry Imaging of Biological Tissue</article-title>,” <source>Analytical and Bioanalytical Chemistry</source>
+<volume>405</volume>, no. <issue>22</issue> (<year>2013</year>): <fpage>6959</fpage>–<lpage>6968</lpage>, <pub-id pub-id-type="doi">10.1007/s00216-013-7180-y</pub-id>.<pub-id pub-id-type="pmid">23877173</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0027"><label>27</label><mixed-citation publication-type="journal" id="rcm70105-cit-0027">
+<string-name name-style="western">
+<given-names>J.‐P.</given-names>
+<surname>Hieta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Vaikkinen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Auno</surname>
+</string-name>, et al., “<article-title>A Simple Method for Improving the Spatial Resolution in Infrared Laser Ablation Mass Spectrometry Imaging</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>28</volume>, no. <issue>6</issue> (<year>2017</year>): <fpage>1060</fpage>–<lpage>1065</lpage>, <pub-id pub-id-type="doi">10.1007/s13361-016-1578-7</pub-id>.<pub-id pub-id-type="pmid">28078485</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0028"><label>28</label><mixed-citation publication-type="journal" id="rcm70105-cit-0028">
+<string-name name-style="western">
+<given-names>A. N.</given-names>
+<surname>Joignant</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Bai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. G.</given-names>
+<surname>Manni</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Improved Spatial Resolution of Infrared Matrix‐Assisted Laser Desorption Electrospray Ionization Mass Spectrometry Imaging Using a Reflective Objective</article-title>,” <source>Rapid Communications in Mass Spectrometry</source>
+<volume>36</volume>, no. <issue>23</issue> (<year>2022</year>): <elocation-id>e9392</elocation-id>, <pub-id pub-id-type="doi">10.1002/rcm.9392</pub-id>.<pub-id pub-id-type="pmid">36057935</pub-id>
+<pub-id pub-id-type="pmcid">PMC9643617</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0029"><label>29</label><mixed-citation publication-type="journal" id="rcm70105-cit-0029">
+<string-name name-style="western">
+<given-names>M. T.</given-names>
+<surname>Bokhart</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Manni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. P.</given-names>
+<surname>Garrard</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Ekelöf</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Nazari</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>IR‐MALDESI Mass Spectrometry Imaging at 50 Micron Spatial Resolution</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>28</volume>, no. <issue>10</issue> (<year>2017</year>): <fpage>2099</fpage>–<lpage>2107</lpage>, <pub-id pub-id-type="doi">10.1007/s13361-017-1740-x</pub-id>.<pub-id pub-id-type="pmid">28721672</pub-id>
+<pub-id pub-id-type="pmcid">PMC5693761</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0030"><label>30</label><mixed-citation publication-type="journal" id="rcm70105-cit-0030">
+<string-name name-style="western">
+<given-names>A. P.</given-names>
+<surname>Bowman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. F. J.</given-names>
+<surname>Bogie</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. J. A.</given-names>
+<surname>Hendriks</surname>
+</string-name>, et al., “<article-title>Evaluation of Lipid Coverage and High Spatial Resolution MALDI‐Imaging Capabilities of Oversampling Combined With Laser Post‐Ionisation</article-title>,” <source>Analytical and Bioanalytical Chemistry</source>
+<volume>412</volume>, no. <issue>10</issue> (<year>2020</year>): <fpage>2277</fpage>–<lpage>2289</lpage>, <pub-id pub-id-type="doi">10.1007/s00216-019-02290-3</pub-id>.<pub-id pub-id-type="pmid">31879798</pub-id>
+<pub-id pub-id-type="pmcid">PMC7118047</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0031"><label>31</label><mixed-citation publication-type="journal" id="rcm70105-cit-0031">
+<string-name name-style="western">
+<given-names>J. C.</given-names>
+<surname>Jurchen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. S.</given-names>
+<surname>Rubakhin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. V.</given-names>
+<surname>Sweedler</surname>
+</string-name>, “<article-title>MALDI‐MS Imaging of Features Smaller Than the Size of the Laser Beam</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>16</volume>, no. <issue>10</issue> (<year>2005</year>): <fpage>1654</fpage>–<lpage>1659</lpage>, <pub-id pub-id-type="doi">10.1016/j.jasms.2005.06.006</pub-id>.<pub-id pub-id-type="pmid">16095912</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0032"><label>32</label><mixed-citation publication-type="journal" id="rcm70105-cit-0032">
+<string-name name-style="western">
+<given-names>S. M.</given-names>
+<surname>Eisenberg</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. N.</given-names>
+<surname>Joignant</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. T.</given-names>
+<surname>Knizner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. G.</given-names>
+<surname>Manni</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Obtaining 20 Μm Spatial Resolution With a 2940 Nm Laser by IR‐MALDESI Mass Spectrometry Imaging</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>35</volume>, no. <issue>12</issue> (<year>2024</year>): <fpage>2942</fpage>–<lpage>2949</lpage>, <pub-id pub-id-type="doi">10.1021/jasms.4c00276</pub-id>.<pub-id pub-id-type="pmid">39513655</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0033"><label>33</label><mixed-citation publication-type="journal" id="rcm70105-cit-0033">
+<string-name name-style="western">
+<given-names>K. T.</given-names>
+<surname>Knizner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. P.</given-names>
+<surname>Guymon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. P.</given-names>
+<surname>Garrard</surname>
+</string-name>, et al., “<article-title>Next‐Generation Infrared Matrix‐Assisted Laser Desorption Electrospray Ionization Source for Mass Spectrometry Imaging and High‐Throughput Screening</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>33</volume>, no. <issue>11</issue> (<year>2022</year>): <fpage>2070</fpage>–<lpage>2077</lpage>, <pub-id pub-id-type="doi">10.1021/jasms.2c00178</pub-id>.<pub-id pub-id-type="pmid">36173393</pub-id>
+<pub-id pub-id-type="pmcid">PMC9944128</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0034"><label>34</label><mixed-citation publication-type="journal" id="rcm70105-cit-0034">
+<string-name name-style="western">
+<given-names>K. T.</given-names>
+<surname>Knizner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Bagley</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. P.</given-names>
+<surname>Garrard</surname>
+</string-name>, et al., “<article-title>Optimized C‐Trap Timing of an Orbitrap 240 Mass Spectrometer for High‐Throughput Screening and Native MS by IR‐MALDESI</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>33</volume>, no. <issue>2</issue> (<year>2022</year>): <fpage>328</fpage>–<lpage>334</lpage>, <pub-id pub-id-type="doi">10.1021/jasms.1c00319</pub-id>.<pub-id pub-id-type="pmid">35073091</pub-id>
+<pub-id pub-id-type="pmcid">PMC9944060</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0035"><label>35</label><mixed-citation publication-type="journal" id="rcm70105-cit-0035">
+<string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Chambers</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Maclean</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Burke</surname>
+</string-name>, et al., “<article-title>A Cross‐Platform Toolkit for Mass Spectrometry and Proteomics</article-title>,” <source>Nature Biotechnology</source>
+<volume>30</volume>, no. <issue>10</issue> (<year>2012</year>): <fpage>918</fpage>–<lpage>920</lpage>, <pub-id pub-id-type="doi">10.1038/nbt.2377</pub-id>.<pub-id pub-id-type="pmcid">PMC3471674</pub-id><pub-id pub-id-type="pmid">23051804</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0036"><label>36</label><mixed-citation publication-type="journal" id="rcm70105-cit-0036">
+<string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Race</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I. B.</given-names>
+<surname>Styles</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Bunch</surname>
+</string-name>, “<article-title>Inclusive Sharing of Mass Spectrometry Imaging Data Requires a Converter for All</article-title>,” <source>Journal of Proteomics</source>
+<volume>75</volume>, no. <issue>16</issue> (<year>2012</year>): <fpage>5111</fpage>–<lpage>5112</lpage>, <pub-id pub-id-type="doi">10.1016/j.jprot.2012.05.035</pub-id>.<pub-id pub-id-type="pmid">22641155</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0037"><label>37</label><mixed-citation publication-type="journal" id="rcm70105-cit-0037">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Robichaud</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. P.</given-names>
+<surname>Garrard</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Barry</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>MSiReader: An Open‐Source Interface to View and Analyze High Resolving Power MS Imaging Files on Matlab Platform</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>24</volume>, no. <issue>5</issue> (<year>2013</year>): <fpage>718</fpage>–<lpage>721</lpage>, <pub-id pub-id-type="doi">10.1007/s13361-013-0607-z</pub-id>.<pub-id pub-id-type="pmid">23536269</pub-id>
+<pub-id pub-id-type="pmcid">PMC3693088</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0038"><label>38</label><mixed-citation publication-type="journal" id="rcm70105-cit-0038">
+<string-name name-style="western">
+<given-names>M. T.</given-names>
+<surname>Bokhart</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Nazari</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. P.</given-names>
+<surname>Garrard</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>MSiReader v1.0: Evolving Open‐Source Mass Spectrometry Imaging Software for Targeted and Untargeted Analyses</article-title>,” <source>Journal of the American Society for Mass Spectrometry</source>
+<volume>29</volume>, no. <issue>1</issue> (<year>2018</year>): <fpage>8</fpage>–<lpage>16</lpage>, <pub-id pub-id-type="doi">10.1007/s13361-017-1809-6</pub-id>.<pub-id pub-id-type="pmid">28932998</pub-id>
+<pub-id pub-id-type="pmcid">PMC5786496</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0039"><label>39</label><mixed-citation publication-type="journal" id="rcm70105-cit-0039">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Cao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Liu</surname>
+</string-name>, et al., “<article-title>Characterizing and Alleviating Ion Suppression Effects in Atmospheric Pressure Matrix‐Assisted Laser Desorption/Ionization</article-title>,” <source>Rapid Communications in Mass Spectrometry</source>
+<volume>33</volume>, no. <issue>4</issue> (<year>2019</year>): <fpage>327</fpage>–<lpage>335</lpage>, <pub-id pub-id-type="doi">10.1002/rcm.8358</pub-id>.<pub-id pub-id-type="pmid">30430670</pub-id>
+<pub-id pub-id-type="pmcid">PMC6353668</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0040"><label>40</label><mixed-citation publication-type="journal" id="rcm70105-cit-0040">
+<string-name name-style="western">
+<given-names>A. J.</given-names>
+<surname>Taylor</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Dexter</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Bunch</surname>
+</string-name>, “<article-title>Exploring Ion Suppression in Mass Spectrometry Imaging of a Heterogeneous Tissue</article-title>,” <source>Analytical Chemistry</source>
+<volume>90</volume>, no. <issue>9</issue> (<year>2018</year>): <fpage>5637</fpage>–<lpage>5645</lpage>, <pub-id pub-id-type="doi">10.1021/acs.analchem.7b05005</pub-id>.<pub-id pub-id-type="pmid">29461803</pub-id>
+</mixed-citation></ref><ref id="rcm70105-bib-0041"><label>41</label><mixed-citation publication-type="journal" id="rcm70105-cit-0041">
+<string-name name-style="western">
+<given-names>M. F.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Ouyang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Segura</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Muddiman</surname>
+</string-name>, “<article-title>Optimizing Neurotransmitter Pathway Detection by IR‐MALDESI‐MSI in Mouse Brain</article-title>,” <source>Analytical and Bioanalytical Chemistry</source>
+<volume>416</volume>, no. <issue>18</issue> (<year>2024</year>): <fpage>4207</fpage>–<lpage>4218</lpage>, <pub-id pub-id-type="doi">10.1007/s00216-024-05354-1</pub-id>.<pub-id pub-id-type="pmid">38822822</pub-id>
+<pub-id pub-id-type="pmcid">PMC11609309</pub-id></mixed-citation></ref><ref id="rcm70105-bib-0042"><label>42</label><mixed-citation publication-type="book" id="rcm70105-cit-0042">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Hawrylycz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Ng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Feng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Sunkin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Szafer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Dang</surname>
+</string-name>, “<part-title>The Allen Brain Atlas</part-title>,” in <source>Springer Handbook of Bio‐/Neuroinformatics</source> (<publisher-name>Springer Berlin Heidelberg</publisher-name>, <year>2014</year>), <fpage>1111</fpage>–<lpage>1126</lpage>, <pub-id pub-id-type="doi">10.1007/978-3-642-30574-0_62</pub-id>.</mixed-citation></ref></ref-list></back></article>

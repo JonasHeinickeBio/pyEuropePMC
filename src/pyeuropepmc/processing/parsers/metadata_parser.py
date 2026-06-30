@@ -4,6 +4,7 @@ Metadata parser for extracting article metadata from XML.
 This module provides specialized parsing for article metadata.
 """
 
+import contextlib
 import logging
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
@@ -77,7 +78,11 @@ class MetadataParser(BaseParser):
         }
 
     def _add_article_identifiers(self, metadata: dict[str, Any]) -> None:
-        """Add article identifiers to metadata dict."""
+        """Add article identifiers to metadata dict.
+
+        Populates both the ``identifiers`` dict (all pub-id types) and
+        top-level ``pmid`` field for backward compatibility.
+        """
         article_meta_result = self.extract_elements_by_patterns(
             {"article_meta": ".//article-meta"}, return_type="element"
         )
@@ -86,6 +91,10 @@ class MetadataParser(BaseParser):
             identifiers = self._extract_all_pub_ids(article_meta, "article-id")
             if identifiers:
                 metadata["identifiers"] = identifiers
+                # Also expose pmid as a top-level field for consumers
+                # that expect metadata["pmid"] (e.g. benchmark ground truth)
+                if "pmid" in identifiers and identifiers["pmid"]:
+                    metadata["pmid"] = identifiers["pmid"]
             break
 
     def _extract_journal_metadata(self) -> dict[str, Any]:
@@ -230,6 +239,31 @@ class MetadataParser(BaseParser):
         if categories:
             metadata["categories"] = categories
 
+        # Copyright information
+        copyright_info = self._extract_copyright()
+        if copyright_info:
+            metadata["copyright"] = copyright_info
+
+        # History dates (received, accepted, revised)
+        history = self._extract_history_dates()
+        if history:
+            metadata["history"] = history
+
+        # Correspondence information
+        corresp = self._extract_corresp()
+        if corresp:
+            metadata["correspondence"] = corresp
+
+        # Self URI (article landing page)
+        self_uri = self._extract_self_uri()
+        if self_uri:
+            metadata["self_uri"] = self_uri
+
+        # Document structure counts
+        counts = self._extract_counts()
+        if counts:
+            metadata["counts"] = counts
+
         # Add extended metadata
         extended = self._extract_extended_metadata()
         if extended:
@@ -303,6 +337,129 @@ class MetadataParser(BaseParser):
 
         return extended
 
+    def _extract_copyright(self) -> dict[str, str | None] | None:
+        """Extract copyright statement and year from article-meta."""
+        assert self.root is not None  # nosec
+        copyright_info: dict[str, str | None] = {}
+
+        statement = self._extract_with_fallbacks(self.root, [".//copyright-statement"])
+        if statement:
+            copyright_info["statement"] = statement
+
+        year = self._extract_with_fallbacks(self.root, [".//copyright-year"])
+        if year:
+            copyright_info["year"] = year
+
+        return copyright_info if copyright_info else None
+
+    def _extract_history_dates(self) -> list[dict[str, str]] | None:
+        """Extract publication history dates (received, accepted, revised)."""
+        assert self.root is not None  # nosec
+        history_dates: list[dict[str, str]] = []
+
+        # Try <history> first (JATS standard)
+        for history_elem in self.root.findall(".//history"):
+            for date_elem in history_elem.findall("date"):
+                date_type = date_elem.get("date-type", "")
+                year = date_elem.findtext("year", "")
+                month = date_elem.findtext("month", "")
+                day = date_elem.findtext("day", "")
+                if year:
+                    date_str = year
+                    if month:
+                        date_str += f"-{month.zfill(2)}"
+                    if day:
+                        date_str += f"-{day.zfill(2)}"
+                    history_dates.append(
+                        {
+                            "type": date_type,
+                            "date": date_str,
+                        }
+                    )
+
+        # Also try <pub-history> (alternative JATS placement)
+        for pub_hist in self.root.findall(".//pub-history"):
+            for date_elem in pub_hist.findall("date"):
+                date_type = date_elem.get("date-type", "")
+                year = date_elem.findtext("year", "")
+                month = date_elem.findtext("month", "")
+                day = date_elem.findtext("day", "")
+                if year:
+                    date_str = year
+                    if month:
+                        date_str += f"-{month.zfill(2)}"
+                    if day:
+                        date_str += f"-{day.zfill(2)}"
+                    history_dates.append(
+                        {
+                            "type": date_type,
+                            "date": date_str,
+                        }
+                    )
+
+        return history_dates if history_dates else None
+
+    def _extract_corresp(self) -> list[dict[str, str]] | None:
+        """Extract correspondence information (email, address)."""
+        assert self.root is not None  # nosec
+        corresp_entries: list[dict[str, str]] = []
+
+        for corresp_elem in self.root.findall(".//corresp"):
+            entry: dict[str, str] = {}
+            corresp_id = corresp_elem.get("id", "")
+            if corresp_id:
+                entry["id"] = corresp_id
+
+            # Extract email
+            email_elem = corresp_elem.find("email")
+            if email_elem is not None and email_elem.text:
+                entry["email"] = email_elem.text.strip()
+
+            # Extract full text
+            full_text = "".join(corresp_elem.itertext()).strip()
+            if full_text:
+                entry["text"] = full_text
+
+            if entry:
+                corresp_entries.append(entry)
+
+        return corresp_entries if corresp_entries else None
+
+    def _extract_self_uri(self) -> str | None:
+        """Extract the article's self-uri (landing page URL)."""
+        assert self.root is not None  # nosec
+        for self_uri in self.root.findall(".//self-uri"):
+            href = self_uri.get(
+                "{http://www.w3.org/1999/xlink}href",
+                self_uri.get("href", ""),
+            )
+            if href:
+                return href
+        return None
+
+    def _extract_counts(self) -> dict[str, int] | None:
+        """Extract document structure counts (pages, figures, tables, equations, words)."""
+        assert self.root is not None  # nosec
+        counts: dict[str, int] = {}
+
+        # Map JATS count tag names to our output keys
+        count_mapping = {
+            "page-count": "pages",
+            "figure-count": "figures",
+            "table-count": "tables",
+            "equation-count": "equations",
+            "word-count": "words",
+        }
+
+        for jats_tag, output_key in count_mapping.items():
+            for elem in self.root.findall(f".//{jats_tag}"):
+                count_str = elem.get("count", "")
+                if count_str:
+                    with contextlib.suppress(ValueError, TypeError):
+                        counts[output_key] = int(count_str)
+
+        return counts if counts else None
+
     def extract_pub_date(self) -> str | None:
         """Extract publication date from XML."""
         self._require_root()
@@ -333,12 +490,40 @@ class MetadataParser(BaseParser):
         return None
 
     def extract_keywords(self) -> list[str]:
-        """Extract keywords from XML."""
+        """Extract keywords from XML (flat list of keyword strings)."""
         self._require_root()
         root = self.root if self.root is not None else ET.Element("empty")
         keywords = self._extract_flat_texts(root, ".//kwd")
         logger.debug(f"Extracted keywords: {keywords}")
         return keywords
+
+    def extract_keywords_detailed(self) -> list[dict[str, Any]]:
+        """Extract keywords with kwd-group type awareness.
+
+        Returns a list of keyword groups, each with:
+        - ``type``: The ``kwd-group-type`` attribute (e.g. ``"author"``, ``"mesh"``)
+        - ``keywords``: List of keyword strings in that group
+        """
+        self._require_root()
+        root = self.root if self.root is not None else ET.Element("empty")
+        kwd_groups: list[dict[str, Any]] = []
+
+        for kwd_group in root.findall(".//kwd-group"):
+            group_type = kwd_group.get("kwd-group-type", "")
+            kwds = self._extract_flat_texts(kwd_group, ".//kwd", filter_empty=True)
+            if kwds:
+                group: dict[str, Any] = {"keywords": kwds}
+                if group_type:
+                    group["type"] = group_type
+                kwd_groups.append(group)
+
+        # Fallback: if no kwd-group wrapper, extract all kwd elements directly
+        if not kwd_groups:
+            kwds = self._extract_flat_texts(root, ".//kwd", filter_empty=True)
+            if kwds:
+                kwd_groups.append({"keywords": kwds})
+
+        return kwd_groups
 
     def extract_funding(self) -> list[dict[str, Any]]:
         """Extract funding information from the full text XML."""

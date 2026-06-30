@@ -1,5 +1,13 @@
 # PyEuropePMC Benchmarking Suite
 
+> **Note**: In addition to this pipeline-based benchmarking (search → download → parse → RDF),
+> the project now includes a **formal XML parser benchmark suite** at ``src/pyeuropepmc/benchmark/``
+> with standardized GROBID datasets, XML-level quality metrics (element coverage, text fidelity,
+> section accuracy, inline recall, metadata accuracy), and function-level profiling.
+>
+> See the [Benchmarking & Profiling guide](../docs/guides/benchmarking.md) for details.
+> CLI: ``pyeuropepmc benchmark --help``
+
 A comprehensive, modular benchmarking system for testing the complete PyEuropePMC pipeline from search to RDF Knowledge Graph generation.
 
 ## Overview

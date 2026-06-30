@@ -42,16 +42,9 @@ jobs:
       - name: Install dependencies
         run: poetry install --with dev --no-interaction --no-ansi
 
-      - name: Install GitHub CLI
-        run: |
-          curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
-          echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" | sudo tee /etc/apt/sources.list.d/github-cli.list > /dev/null
-          sudo apt update
-          sudo apt install gh
-
       - name: Run functional tests
         id: tests
-        run: poetry run pytest -v
+        run: poetry run pytest -v -m "functional"
         continue-on-error: true
 
       - name: Create issue on test failure
@@ -63,7 +56,7 @@ jobs:
           DATE=$(date +'%Y-%m-%d')
 
           # Extract test failure summary from pytest output
-          FAILURE_SUMMARY=$(poetry run pytest -v --tb=short 2>&1 | tail -20)
+          FAILURE_SUMMARY=$(poetry run pytest -v -m "functional" --tb=short 2>&1 | tail -20)
 
           # Create a unique identifier for this failure type
           FAILURE_HASH=$(echo "$FAILURE_SUMMARY" | sha256sum | cut -d' ' -f1 | head -c 16)

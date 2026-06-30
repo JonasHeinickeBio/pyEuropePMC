@@ -1029,7 +1029,7 @@ def test_modular_benchmark_system(benchmark):
     print(report)
 
     # Save detailed results
-    with open("/home/jhe24/AID-PAIS/pyEuropePMC_project/MODULAR_BENCHMARK_RESULTS.json", "w") as f:
+    with open("MODULAR_BENCHMARK_RESULTS.json", "w") as f:
         # Build a serializable results structure and include pytest-like aggregates
         serializable_results = {}
         for name, results in suite_result.results.items():
@@ -1081,7 +1081,7 @@ def test_modular_benchmark_system(benchmark):
         }, f, indent=2, default=str)
 
     # Save report
-    with open("/home/jhe24/AID-PAIS/pyEuropePMC_project/MODULAR_PERFORMANCE_REPORT.md", "w") as f:
+    with open("MODULAR_PERFORMANCE_REPORT.md", "w") as f:
         f.write(report)
 
     print("\n📊 Modular report saved to: MODULAR_PERFORMANCE_REPORT.md")

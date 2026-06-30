@@ -58,3 +58,8 @@ repos:
         entry: bash -c 'poetry export -f requirements.txt -o requirements.txt --without-hashes'
         language: system
         pass_filenames: false
+      - id: uv-lock
+        name: Ensure uv.lock is up-to-date
+        entry: bash -c 'uv lock && git diff --exit-code uv.lock'
+        language: system
+        pass_filenames: false

@@ -17,6 +17,7 @@
 * [Full-Text Retrieval](features/fulltext/README.md)
 * [XML Parsing](features/parsing/README.md)
 * [XML Parser Guide](features/parsing/xml-parser-guide.md)
+* [JATS Normalization](features/parsing/jats-normalization.md)
 * [Query Builder](features/query-builder-load-save-translate.md)
 * [Systematic Review Tracking](features/systematic-review-tracking.md)
 * [Caching](features/caching/README.md)
@@ -29,6 +30,7 @@
 * [ArticleClient](api/article-client.md)
 * [QueryBuilder](api/query-builder.md)
 * [XML Parser](api/xml-parser.md)
+* [XML Parser Extensions](api/xml-parser-extensions.md)
 * [EuropePMCParser](api/parser.md)
 * [FTPDownloader](api/ftp-downloader.md)
 * [Analytics & Visualization](api/analytics-visualization.md)
@@ -37,6 +39,7 @@
 
 ## Guides
 
+* [Benchmarking & Profiling](guides/benchmarking.md)
 * [Enrichment](guides/enrichment.md)
 * [Feature Suggester](guides/feature-suggester.md)
 
@@ -71,6 +74,7 @@
 * [RML Mappings Guide](reference/rml_mappings_guide.md)
 * [XML Element Types](reference/xml_element_types_documentation.md)
 * [XML Element Coverage](reference/xml_element_coverage_analysis.md)
+* [XML Parser Extensions](reference/xml-parser-extensions.md)
 * [Performance Benchmarks](reference/MODULAR_PERFORMANCE_REPORT.md)
 
 ## Development

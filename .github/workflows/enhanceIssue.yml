@@ -9,7 +9,6 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
-      models: read
       contents: read
 
     steps:
@@ -37,14 +36,10 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ORIGINAL_TITLE: ${{ github.event.issue.title }}
+          AI_RESPONSE: ${{ steps.inference.outputs.response }}
         run: |
-          echo "AI Response:"
-
-          # Write AI response to file using here-document with single-quoted delimiter
-          # This prevents shell interpolation and handles special characters safely
-          cat > ai_response.json <<'AI_JSON'
-          ${{ steps.inference.outputs.response }}
-          AI_JSON
+          # Write AI response to file via env var (avoids shell interpolation issues)
+          printf '%s' "$AI_RESPONSE" > ai_response.json
 
           # Validate JSON before parsing
           if ! jq empty ai_response.json 2>/dev/null; then

@@ -157,6 +157,23 @@ class TestAnnotationRDF:
         assert len(g) > 0
         assert uri is not None
 
+    def test_entity_annotation_to_rdf_with_context(self):
+        """Test RDF conversion with prefix, postfix, and confidence."""
+        entity = EntityAnnotation(
+            exact="malaria",
+            prefix="has ",
+            postfix=" in humans",
+            confidence=0.95,
+            section="abstract",
+        )
+
+        g = Graph()
+        mapper = RDFMapper()
+        uri = entity.to_rdf(g, mapper=mapper)
+
+        assert len(g) > 0
+        assert uri is not None
+
     def test_relationship_annotation_to_rdf(self):
         """Test converting relationship annotation to RDF."""
         relationship = RelationshipAnnotation(

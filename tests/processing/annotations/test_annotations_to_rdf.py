@@ -3,7 +3,8 @@ Tests for annotations to RDF conversion.
 """
 
 import pytest
-from rdflib import Graph
+from rdflib import Graph, Literal, Namespace, URIRef
+from rdflib.namespace import OWL, RDF, RDFS
 
 from pyeuropepmc.processing.annotations_to_rdf import (
     annotations_to_entities,
@@ -11,6 +12,11 @@ from pyeuropepmc.processing.annotations_to_rdf import (
     entity_annotation_to_model,
     relationship_annotation_to_model,
 )
+
+OA = Namespace("http://www.w3.org/ns/oa#")
+PROV = Namespace("http://www.w3.org/ns/prov#")
+VOCAB = Namespace("https://w3id.org/pyeuropepmc/vocab#")
+NIF = Namespace("http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#")
 
 
 @pytest.fixture
@@ -170,6 +176,157 @@ class TestAnnotationsToRDF:
 
         assert isinstance(g, Graph)
         assert len(g) > 0
+
+
+class TestRDFEdgeCases:
+    """Edge case tests for annotations_to_rdf function."""
+
+    def test_entity_with_http_id(self):
+        """Entity ID starting with http:// triggers URIRef path and OWL.sameAs."""
+        parsed = {
+            "entities": [
+                {
+                    "annotation_id": "http://example.org/ann/1",
+                    "id": "http://purl.obolibrary.org/obo/DOID_12365",
+                    "name": "malaria",
+                    "type": "Disease",
+                    "exact": "malaria",
+                    "section": "abstract",
+                    "provider": "Europe PMC",
+                }
+            ],
+            "relationships": [],
+        }
+        g = annotations_to_rdf(parsed)
+        assert len(g) > 0
+        # Annotation subject uses annotation_id (http URI) as subject
+        ann_uri = URIRef("http://example.org/ann/1")
+        entity_uri = URIRef("http://purl.obolibrary.org/obo/DOID_12365")
+        # OWL.sameAs links annotation to entity URI
+        assert (ann_uri, OWL.sameAs, entity_uri) in g
+        # OA.hasBody links annotation to entity URI
+        assert (ann_uri, OA.hasBody, entity_uri) in g
+        # RDFS.label from entity name
+        assert (ann_uri, RDFS.label, Literal("malaria")) in g
+        # NIF.anchorOf from exact text
+        assert (ann_uri, NIF.anchorOf, Literal("malaria")) in g
+
+    def test_entity_with_http_article_uri(self):
+        """article_uri starting with http:// triggers OA.hasTarget with URIRef."""
+        parsed = {
+            "entities": [
+                {
+                    "id": "DOID:12365",
+                    "name": "malaria",
+                    "type": "Disease",
+                    "exact": "malaria",
+                    "article_uri": "http://example.org/articles/PMC12345",
+                }
+            ],
+            "relationships": [],
+        }
+        g = annotations_to_rdf(parsed)
+        assert len(g) > 0
+        # Check OA.hasTarget with URIRef article_uri
+        article_uri = URIRef("http://example.org/articles/PMC12345")
+        has_targets = list(g.triples((None, OA.hasTarget, article_uri)))
+        assert len(has_targets) == 1, (
+            f"Expected 1 OA.hasTarget for {article_uri}, got {len(has_targets)}"
+        )
+        # Also check PROV.wasDerivedFrom
+        derived_from = list(g.triples((None, PROV.wasDerivedFrom, article_uri)))
+        assert len(derived_from) == 1
+
+    def test_entity_with_prefix_postfix(self):
+        """Entity with prefix/postfix triggers VOCAB.textPrefix/Postfix."""
+        parsed = {
+            "entities": [
+                {
+                    "id": "DOID:12365",
+                    "name": "malaria",
+                    "type": "Disease",
+                    "exact": "malaria",
+                    "section": "abstract",
+                    "prefix": "text before ",
+                    "postfix": " text after",
+                }
+            ],
+            "relationships": [],
+        }
+        g = annotations_to_rdf(parsed)
+        assert len(g) > 0
+        # Check VOCAB.textPrefix and VOCAB.textPostfix
+        prefix_triples = list(g.triples((None, VOCAB.textPrefix, None)))
+        assert len(prefix_triples) == 1
+        assert str(prefix_triples[0][2]) == "text before "
+        postfix_triples = list(g.triples((None, VOCAB.textPostfix, None)))
+        assert len(postfix_triples) == 1
+        assert str(postfix_triples[0][2]) == " text after"
+
+    def test_entity_without_exact(self):
+        """Entity missing exact triggers entity_name fallback (NIF.anchorOf)."""
+        parsed = {
+            "entities": [
+                {
+                    "id": "DOID:12365",
+                    "name": "malaria",
+                    "type": "Disease",
+                    "section": "abstract",
+                    # no "exact" key
+                }
+            ],
+            "relationships": [],
+        }
+        g = annotations_to_rdf(parsed)
+        assert len(g) > 0
+        # Without exact, NIF.anchorOf should use entity_name ("malaria")
+        anchor_triples = list(g.triples((None, NIF.anchorOf, None)))
+        assert len(anchor_triples) == 1
+        assert str(anchor_triples[0][2]) == "malaria"
+        # RDFS.label should also be "malaria" (from entity_name)
+        label_triples = list(g.triples((None, RDFS.label, None)))
+        assert len(label_triples) >= 1
+        assert str(label_triples[0][2]) == "malaria"
+
+
+class TestAnnotationsToEntitiesEdgeCases:
+    """Edge case tests for annotations_to_entities."""
+
+    def _get_ann_mod(self):
+        """Get annotations_to_rdf module via sys.modules (avoids __init__ shadowing)."""
+        import sys
+
+        return sys.modules["pyeuropepmc.processing.annotations_to_rdf"]
+
+    def test_entity_conversion_failure(self, monkeypatch):
+        """Test exception handling in entity loop (l.149-153)."""
+        mod = self._get_ann_mod()
+
+        def failing_entity(d: dict):
+            raise ValueError("bad entity")
+
+        monkeypatch.setattr(mod, "entity_annotation_to_model", failing_entity)
+        parsed = {
+            "entities": [{"id": "BAD"}],
+            "relationships": [],
+        }
+        entities = annotations_to_entities(parsed)
+        assert len(entities) == 0  # entity failed but didn't crash
+
+    def test_relationship_conversion_failure(self, monkeypatch):
+        """Test exception handling in relationship loop (l.160-164)."""
+        mod = self._get_ann_mod()
+
+        def failing_rel(d: dict):
+            raise ValueError("bad relation")
+
+        monkeypatch.setattr(mod, "relationship_annotation_to_model", failing_rel)
+        parsed = {
+            "entities": [],
+            "relationships": [{"subject": {}, "object": {}}],
+        }
+        entities = annotations_to_entities(parsed)
+        assert len(entities) == 0  # relationship failed but didn't crash
 
 
 class TestIntegration:

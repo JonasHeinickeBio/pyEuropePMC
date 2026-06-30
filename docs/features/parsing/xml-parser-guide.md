@@ -10,6 +10,7 @@ The `FullTextXMLParser` provides comprehensive functionality for parsing and ext
 - **Reference Extraction**: Extract bibliography with complete citation information
 - **Section Extraction**: Get structured body sections with titles and content
 - **Robust Error Handling**: Proper error handling with informative error messages
+- **Parser Extensions**: 10 extension modules for content blocks, MathML, peer review, JATS4R validation, and more
 
 ## Installation
 
@@ -299,6 +300,128 @@ print("Top 5 cited journals:")
 for source, count in source_counts.most_common(5):
     print(f"  {source}: {count}")
 ```
+
+## Extension Modules
+
+The parser includes 10 extension modules for advanced XML processing. Each module is importable from `pyeuropepmc.processing.extensions`.
+
+### Structured Content Blocks (for RAG/LLM)
+
+```python
+from pyeuropepmc.processing.extensions import ContentBlockExtractor
+
+extractor = ContentBlockExtractor(parser.root)
+sections = extractor.extract_sections()
+for section in sections:
+    print(f"Section: {section.title}")
+    for block in section.content:
+        print(f"  [{block.type.value}] {block.text[:80]}")
+```
+
+Or use the built-in method on the parser:
+
+```python
+structured = parser.get_full_text_sections_structured()
+for section in structured:
+    for block in section.content:
+        print(f"[{block.type.value}] {block.text[:80]}")
+```
+
+### JATS4R Compliance Validation
+
+```python
+from pyeuropepmc.processing.extensions import JATS4RValidator
+
+report = JATS4RValidator(parser.root).validate()
+print(f"Compliance: {report.compliance_score:.0%}")
+for finding in report.findings:
+    print(f"  [{finding.severity}] {finding.category}: {finding.message}")
+```
+
+### Peer Review Extraction
+
+```python
+from pyeuropepmc.processing.extensions import PeerReviewExtractor
+
+review_sets = PeerReviewExtractor(parser.root).extract_all()
+for round_set in review_sets:
+    print(f"Revision round {round_set.revision_round}:")
+    for review in round_set.reviews:
+        print(f"  {review.review_type.value} by {review.author}")
+```
+
+### MathML → LaTeX Conversion
+
+```python
+from pyeuropepmc.processing.extensions import MathMLConverter
+
+converter = MathMLConverter()
+for formula_elem in parser.root.findall(".//disp-formula"):
+    mathml = formula_elem.find(".//mml:math", converter.namespaces)
+    if mathml is not None:
+        latex = converter.convert_element(mathml)
+        print(f"LaTeX: {latex}")
+```
+
+### Batch Processing Multiple Files
+
+```python
+from pyeuropepmc.processing.extensions import BatchProcessor
+
+processor = BatchProcessor(rate_per_second=5, on_progress=lambda i,t: print(f"{i}/{t}"))
+results = processor.process_files(["doc1.xml", "doc2.xml", "doc3.xml"])
+print(f"Processed: {results.total_count} files in {results.total_time:.2f}s")
+```
+
+### Local Processing Convenience
+
+```python
+from pyeuropepmc.processing.extensions import LocalXMLProcessor
+
+# Parse a file directly
+parser = LocalXMLProcessor.parse_file("article.xml")
+
+# Quick Markdown export
+LocalXMLProcessor.write_markdown(xml_content, "article.md")
+
+# Batch process a directory
+results = LocalXMLProcessor.batch_process_files(["file1.xml", "file2.xml"])
+```
+
+### Reference Resolution via API
+
+```python
+from pyeuropepmc.processing.extensions import ReferenceResolver
+
+resolver = ReferenceResolver()
+refs = resolver.resolve_references(parser)
+for ref in refs:
+    if ref.resolved:
+        print(f"[{ref.label}] {ref.title} — DOI: {ref.doi}")
+```
+
+### Asset Extraction
+
+```python
+from pyeuropepmc.processing.extensions import ImageFetcher
+
+assets = ImageFetcher(parser.root).extract_assets()
+for asset in assets:
+    print(f"[{asset.type.value}] {asset.label}: {asset.uri}")
+```
+
+### lxml Backend (Optional)
+
+```python
+from pyeuropepmc.processing.extensions import LXMLParser, is_lxml_available
+
+if is_lxml_available():
+    lxml_root = LXMLParser().parse(xml_content)
+    # Or enable directly on the parser
+    LXMLParser.enable_for(parser)
+```
+
+See the **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** for complete documentation.
 
 ## Error Handling
 

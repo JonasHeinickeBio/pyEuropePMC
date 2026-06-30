@@ -1,0 +1,1327 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="pro70648" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style superscripted?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Protein Sci</journal-id><journal-id journal-id-type="iso-abbrev">Protein Sci</journal-id><journal-id journal-id-type="pmc-domain-id">507</journal-id><journal-id journal-id-type="pmc-domain">prosci</journal-id><journal-id journal-id-type="publisher-id">PRO</journal-id><journal-title-group><journal-title>Protein Science : A Publication of the Protein Society</journal-title></journal-title-group><issn pub-type="ppub">0961-8368</issn><issn pub-type="epub">1469-896X</issn><publisher><publisher-name>Wiley</publisher-name></publisher></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13239990</article-id><article-id pub-id-type="pmcid-ver">PMC13239990.1</article-id><article-id pub-id-type="pmcaid">13239990</article-id><article-id pub-id-type="pmcaiid">13239990</article-id><article-id pub-id-type="pmid">42231137</article-id><article-id pub-id-type="doi">10.1002/pro.70648</article-id><article-id pub-id-type="publisher-id">PRO70648</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Understanding chemical reactions through multimedia resolution data artistic educational tool (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">MRDAET</italic>
+</styled-content>)</article-title><alt-title alt-title-type="left-running-head">Pokojná et al.</alt-title></title-group><contrib-group><contrib id="pro70648-cr-0001" contrib-type="author" corresp="yes"><name name-style="western"><surname>Pokojná</surname><given-names initials="H">Hana</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-7854-2596</contrib-id><xref rid="pro70648-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>hana.pokojna@gmail.com</email></address></contrib><contrib id="pro70648-cr-0002" contrib-type="author"><name name-style="western"><surname>Kozlíková</surname><given-names initials="B">Barbora</given-names></name><xref rid="pro70648-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="pro70648-cr-0003" contrib-type="author"><name name-style="western"><surname>Furmanová</surname><given-names initials="K">Katarína</given-names></name><xref rid="pro70648-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="pro70648-cr-0004" contrib-type="author"><name name-style="western"><surname>Štěpánek</surname><given-names initials="A">Adam</given-names></name><xref rid="pro70648-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="pro70648-cr-0005" contrib-type="author"><name name-style="western"><surname>Kriglstein</surname><given-names initials="S">Simone</given-names></name><xref rid="pro70648-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="pro70648-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib></contrib-group><aff id="pro70648-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Faculty of Informatics</named-content>
+<institution>Masaryk University</institution>
+<city>Brno</city>
+<country country="CZ">Czech Republic</country>
+</aff><aff id="pro70648-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<institution>Austrian Institute of Technology GmbHs</institution>
+<city>Vienna</city>
+<country country="AT">Austria</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence</bold>
+<break/>
+Hana Pokojná, Faculty of Informatics, Masaryk University, Botanická 68a, Brno, Czech Republic.<break/>
+Email: <email>hana.pokojna@gmail.com</email>
+<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>02</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="collection"><month>7</month><year>2026</year></pub-date><volume>35</volume><issue seq="560">7</issue><issue-id pub-id-type="pmc-issue-id">515036</issue-id><issue-id pub-id-type="doi">10.1002/pro.v35.7</issue-id><issue-title content-type="special-issue-title">Honoring David Goodsell</issue-title><elocation-id>e70648</elocation-id><history>
+<date date-type="rev-recd"><day>26</day><month>4</month><year>2026</year></date>
+<date date-type="received"><day>29</day><month>11</month><year>2025</year></date>
+<date date-type="accepted"><day>15</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>02</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>06</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-06 10:25:18.137"><day>06</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Protein Science</italic> published by Wiley Periodicals LLC on behalf of The Protein Society.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="PRO-35-e70648.pdf"><?pdf-name PRO-35-e70648.pdf?><?pdf-size 4510769?><?pdf-md5 db066a0cb8a7c10e33e703f5ed2d8cad?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:193d/13239990/db066a0cb8a7/PRO-35-e70648.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:PRO-35-e70648.pdf"/><abstract><title>Abstract</title><p>Through the integration of science, art, and technology, we present Multimedia Resolution Data Artistic Educational Tool (<italic toggle="no">MRDAET</italic>), an interactive installation designed to support the visualization and understanding of molecular reactions. The installation focuses on ATP synthesis and the electron transport chain—core biochemical processes that are often difficult to grasp due to their complexity and abstract nature. Inspired by David Goodsell's fusion of scientific accuracy and artistic expression, <italic toggle="no">MRDAET</italic> employs physical 3D models derived from structural data in the Protein Data Bank, augmented with projection mapping and enhanced with illustrations. The installation encourages users to explore molecular processes through layered interactivity that combines tangible models with animated visual overlays. <italic toggle="no">MRDAET</italic> was evaluated at an art and technology event, where user feedback indicated that the installation was both enjoyable and perceived as helpful in education. Participants reported improved understanding of the presented biochemical concepts and expressed interest in increased interactivity, particularly through Mixed Reality integration connecting physical models and dynamic animations. While individual and combined visual modalities have been shown to be effective in science education, immersive interactive installations of this type remain underexplored in this context. This paper presents <italic toggle="no">MRDAET</italic> as the third iteration following prior designs, offering a science‐driven educational approach that warrants further study and application to additional scientific areas.</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="pro70648-kwd-0001">biochemistry education</kwd><kwd id="pro70648-kwd-0002">biomedical art</kwd><kwd id="pro70648-kwd-0003">interactive education</kwd><kwd id="pro70648-kwd-0004">multimedia installation</kwd><kwd id="pro70648-kwd-0005">public outreach</kwd><kwd id="pro70648-kwd-0006">science communication</kwd><kwd id="pro70648-kwd-0007">scientific visualization</kwd></kwd-group><counts><fig-count count="13"/><table-count count="0"/><page-count count="20"/><word-count count="13500"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:05.06.2026</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="pro70648-cit-9001">
+<string-name name-style="western">
+<surname>Pokojná</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Furmanová</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Štěpánek</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kriglstein</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Understanding chemical reactions through multimedia resolution data artistic educational tool (<styled-content style="fixed-case" toggle="no">
+<italic toggle="no">MRDAET</italic>
+</styled-content>)</article-title>. <source>Protein Science</source>. <year>2026</year>;<volume>35</volume>(<issue>7</issue>):<elocation-id>e70648</elocation-id>. <pub-id pub-id-type="doi">10.1002/pro.70648</pub-id>
+<pub-id pub-id-type="pmid">42231137</pub-id>
+<pub-id pub-id-type="pmcid">PMC13239990</pub-id></mixed-citation>
+</p><fn-group id="pro70665-ntgp-0001"><fn id="pro70665-note-0002"><p>
+<bold>Review Editor:</bold> Nir Ben‐Tal</p></fn></fn-group></notes></front><body id="pro70648-body-0001"><sec id="pro70648-sec-0001"><label>1</label><title>INTRODUCTION</title><p>Biochemical education presents specific challenges, including the need to reason about microscopic particles that are invisible to the naked eye and complex processes that often occur simultaneously. Biochemistry classes are a mandatory part of European curricula (Jones et al., <xref rid="pro70648-bib-0050" ref-type="bibr">2014</xref>); however, high school students often experience difficulties in understanding this discipline (Dreyfus et al., <xref rid="pro70648-bib-0023" ref-type="bibr">2014</xref>; Gayford, <xref rid="pro70648-bib-0029" ref-type="bibr">1986</xref>). This issues arise from limited understanding of spatial arrangements (Wu &amp; Shah, <xref rid="pro70648-bib-0107" ref-type="bibr">2004</xref>), the integration of biology and chemistry, and the inherently abstract nature of the subject (Green et al., <xref rid="pro70648-bib-0038" ref-type="bibr">2021</xref>). To address this, we developed a multimodal tool aimed at enhancing comprehension of biochemistry, designed not only for high school students but for a broader audience as well.</p><p>The issues with understanding these complex topics were successfully approached by a biochemist and molecular artist, David Goodsell, whose watercolor paintings revolutionized visualization of crowded cellular spaces. By marrying art with science, Goodsell's visualizations distinguish components within the cell and foreshadow their function through color (Goodsell, <xref rid="pro70648-bib-0036" ref-type="bibr">2016</xref>). The science‐based product also serves as an aesthetic piece that mirrors real life through artistic expression. Earlier examples of Goodsell's work (Goodsell, <xref rid="pro70648-bib-0035" ref-type="bibr">2009</xref>) showcase the perfect balance between science and art that benefits both disciplines. His approach to using color that harmonizes with function or hierarchical division of molecules within a cell brought to life so‐called “Goodsell coloring,” which is nowadays used in applications for biochemical visualization and education, for example, by Johnson et al. (<xref rid="pro70648-bib-0049" ref-type="bibr">2015</xref>) and Alharbi et al. (<xref rid="pro70648-bib-0004" ref-type="bibr">2023</xref>).</p><p>Previous empirical evidence has shown that concrete examples of chemical compounds, such as physical models (e.g., double‐helix (Watson &amp; Crick, <xref rid="pro70648-bib-0105" ref-type="bibr">1953</xref>)) and computer‐generated visualizations (Rayan &amp; Rayan, <xref rid="pro70648-bib-0083" ref-type="bibr">2017</xref>), improve spatial understanding of biochemical data (Ferk et al., <xref rid="pro70648-bib-0025" ref-type="bibr">2003</xref>). Accessibility to understanding abstract scientific concepts can be achieved through art, as demonstrated by Goodsell's work, (e.g., Goodsell, <xref rid="pro70648-bib-0035" ref-type="bibr">2009</xref>; Goodsell, <xref rid="pro70648-bib-0036" ref-type="bibr">2016</xref>). Visual media have been proven to be helpful in facilitating both education and outreach, especially because molecular occurrences that happen on a smaller level can be difficult to grasp as people do not always understand the relationship between the cells, molecules, atoms, and the timescales at which these structures are working in Jenkinson (<xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>). To improve understanding of scientific concepts, scientific literacy needs to be improved, for example through combining multiple modalities and supporting students' engagement with topics (Krajcik &amp; Sutherland, <xref rid="pro70648-bib-0053" ref-type="bibr">2010</xref>).</p><p>In this study, we depict the adenosine triphosphate (ATP) synthesis and its closely related preceding process, the electron transport chain, a series of molecules that carry out chemical reactions providing molecules for ATP Synthesis. In our prototype installation, called Multimedia Resolution Data Artistic Educational Tool—<italic toggle="yes">MRDAET</italic> for short—we designed a mixture of 2D illustrations, 3D interactive movable physicalizations, and 2.5D animation that overlays 3D physical models to recreate the human cell. While the first two iterations (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>) of this project, briefly described in Section <xref rid="pro70648-sec-0003" ref-type="sec">3</xref>, focused on mechanism of the main model (ATP synthase) and the interactions of the surrounding molecules (electron transport chain), this iteration aims to help with understanding the electron exchange, molecular grouping by function, as well as spatial placement of the organelles and molecules within the cell. This is achieved by layering interactivity with the visualization and combining multiple modalities. In this design, the learner “enters” the cell at the lowest magnification and continues to “zoom in” to the mitochondrial wall, where the electron transport chain and ATP synthase are located. With increased magnification, the design increases in interaction, that is, starting with 2D illustrations and ending with interaction with physicalizations—3D physical and tangible representations of data (Jansen et al., <xref rid="pro70648-bib-0045" ref-type="bibr">2015</xref>). Each of the iterations increases with the complexity (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>) of the chemical concepts and visualizations that explain them. This combination was decided based on conducted user studies and previous research into illustrations, animation, and physicalizations, and aims to harvest the benefits of each modality. This paper describes the third iteration and prototype of immersive experience with layered interactivity and evaluates the following research questions (RQs):<statement content-type="RQ1" id="pro70648-mthst-0001"><p>
+<italic toggle="yes">In what ways does multi‐modal, data‐based art installation with different levels of interaction influence users' enjoyment when learning about complex chemical reactions?</italic>
+</p></statement>
+<statement content-type="RQ2" id="pro70648-mthst-0002"><p>
+<italic toggle="yes">In what ways is a multi‐modal, data‐based art installation with different levels of interaction perceived as helpful in learning about complex chemical reactions?</italic>
+</p></statement>
+</p><p>We have investigated these questions by exhibiting <italic toggle="yes">MRDAET</italic> at a popular science, art, and technology event, a setting where science creates art and art is based on science, similarly to Goodsell's molecular art ethos. With our subsequent survey‐based study, we demonstrate the applicability and feasibility of installation, such as <italic toggle="yes">MRDAET</italic>, and that it provides an alternative direction to presenting scientific concepts. Because our study focused on testing the prototype and whether this type of visualization is worthy of investigating further, we offer recommendations for future and more controlled research on visualizations similar to <italic toggle="yes">MRDAET</italic>, informed by our observations.</p></sec><sec id="pro70648-sec-0002"><label>2</label><title>RELATED WORK</title><p>This section discusses the research related to the importance of Science, Technology, Engineering, Arts, and Mathematics (STEAM) education that extends beyond classrooms. Learning can take place in museums or science festivals and focuses on the subject by leveraging the power of visualization and human–computer interactions (HCI). We then follow with insights into the benefits of each modality and the benefits of using art to enhance science.</p><p>Museums are becoming places to interact with science rather than passively consume information (Sayffaerth et al., <xref rid="pro70648-bib-0086" ref-type="bibr">2024</xref>). They provide a new type of education through arts and interaction, successfully teaching science subjects due to the interdisciplinary approach to communicating information (Lin et al., <xref rid="pro70648-bib-0058" ref-type="bibr">2019</xref>). A great example is the field of medical art, which facilitates the understanding of complex biomedical subjects through the variety of modalities it provides (Erolin, <xref rid="pro70648-bib-0024" ref-type="bibr">2020</xref>), such as 3D digital models, 3D physical models, animations, and illustrations. The principles of STEAM education also relate to the notion of “Exploranation,” an approach tailored for museums where knowledge is encouraged to be learned through exploration of real data, which can be presented through the use of standard GPU renderings (Ynnerman et al., <xref rid="pro70648-bib-0108" ref-type="bibr">2018</xref>). Another commonly employed approach in playful education is the concept of “embodied experience,” where learning is enhanced by physically interacting with abstract concepts, which allows learners to connect mental representations with tangible actions (Reiner, <xref rid="pro70648-bib-0084" ref-type="bibr">1999</xref>). In this paper, we adhere to all three, STEAM, Exploranation, and embodied experience principles, by using real data, making them visually appealing <italic toggle="yes">and</italic> tangible, while not utilizing immense computational power. An example of an immersive educational institution that heavily relies on art and technology to help understand science through visualizations is museum ARTIS‐Micropia (ARTIS Zoo, <xref rid="pro70648-bib-0005" ref-type="bibr">2014</xref>) in Amsterdam (Netherlands). This museum provides understanding of the invisible world of microbes around us through various types of visualizations. These range from interactive applications, through the use of microscopes, projections, 3D physical models, animated projections, and even artistic pieces like <italic toggle="yes">The Fungal Wall</italic> (2021) by Lizan Freijsen, showing mold‐inspired hand‐tufted large‐scale installation on the wall, or the <italic toggle="yes">Glass Microbiology</italic> by Luke Jerram, the glass‐blown transparent sculptures of viruses such as Ebola.</p><p>Museum‐based visualizations present science through approaches that contrast with the conventional instruction commonly used in schools. The standard 2‐dimensional (2D) written formulas are often used primarily in educational setting to represent chemical compounds and chemical reactions, which differ from the enhanced 2D renders, for example, in Goodsell's detailed illustrations. As an example, consider insulin export from the cell. Standard written formula for describing the structure of insulin monomer alone (<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-1" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi mathvariant="normal">C</mml:mi><mml:mn>257</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">H</mml:mi><mml:mn>383</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">N</mml:mi><mml:mn>65</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">O</mml:mi><mml:mn>77</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">S</mml:mi><mml:mn>6</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>) may come across a lot less visually appealing than a picture showing the same molecule. Both the written formula and the accompanying image provide a visual description of molecular structures and their interactions. Yet looking at the image (Figure <xref rid="pro70648-fig-0001" ref-type="fig">1</xref>) showing insulin being processed in a cell, one can clearly tell the various structures apart by color grouping and spatial placement within the cell (e.g., intra‐ and extracellular matrices) due to composition. Despite the illustration being a static image, the movement of vesicles coming towards the cell membrane and exiting the cell is clearly shown. While the standard written formulas should not be replaced by artistic renders alone, individuals without a background in chemistry may be cognitively overwhelmed and potentially discouraged to learn about the topic when presented with the formulas alone. On the other hand, being presented with an image of crystals of insulin carried in vesicles from pancreatic beta cells to the extracellular matrix may enhance understanding of the concept <italic toggle="yes">and</italic> spark interest in the topic due to its aesthetic depiction of real data, which would lead to studying more standardized ways of noting them.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Goodsell's illustration of Insulin Release (2022), demonstrating insulin crystals being carried to the extracellular space in vesicles. This image (Goodsell, <xref rid="pro70648-bib-0037" ref-type="bibr">2022</xref>) is one of many in the Molecular Landscapes series, published on the RCSB Protein Data Bank and Scripps Research. Image used for educational purposes under CC‐BY‐4.0 license.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="PRO-35-e70648-g011.jpg"><?image-name PRO-35-e70648-g011.jpg?><?image-size 363385?><?image-md5 d357f8f3ef10180adafe78d0b50f09f7?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1713?><?image-original-width 1004?><?image-scaled-height 1141?><?image-scaled-width 669?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/d357f8f3ef10/PRO-35-e70648-g011.jpg?><?thumb-name PRO-35-e70648-g011.gif?><?thumb-size 27644?><?thumb-md5 7dbcf3ac1b065f9ca61bd25540249e77?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 171?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/7dbcf3ac1b06/PRO-35-e70648-g011.gif?></graphic></fig><p>Illustrations have been the original way of representing scientific concepts, for example, Johannes Kepler's sphere arrangements (Kepler, <xref rid="pro70648-bib-0051" ref-type="bibr">1966</xref>) in six‐sided starlets making up a snowflake, which was a predecessor to molecular illustration. Molecular and cellular illustrations, other than the traditional watercolors by David Goodsell, can also be rendered digitally based on real data. With 3D‐modeling and animation software and plugins, such as Molecular Maya (mMaya) (mMaya, <xref rid="pro70648-bib-0064" ref-type="bibr">n.d.</xref>) or BioBlender (BioBlender, <xref rid="pro70648-bib-0017" ref-type="bibr">2025</xref>) specifically made for accurate visual representation, molecular visualizations can be made with cinematic quality.</p><p>Entire cellular landscapes (e.g., when utilizing cellPack (Johnson et al., <xref rid="pro70648-bib-0049" ref-type="bibr">2015</xref>)) or standalone molecules can be visualized based on their raw Protein Data Bank (PDB) data (Berman et al., <xref rid="pro70648-bib-0011" ref-type="bibr">2000</xref>), obtained from a global database of experimental structures. Their structural architecture and movements can be presented through 3D digital models in animations (Jenkinson &amp; McGill, <xref rid="pro70648-bib-0047" ref-type="bibr">2012</xref>; Iwasa, <xref rid="pro70648-bib-0042" ref-type="bibr">2015</xref>). Examples include the works of Drew Berry (Berry, <xref rid="pro70648-bib-0012" ref-type="bibr">2007</xref>; Berry, <xref rid="pro70648-bib-0013" ref-type="bibr">2015</xref>; Berry &amp; Tétaz, <xref rid="pro70648-bib-0014" ref-type="bibr">2018</xref>), that, similarly to Goodsell's work, leverage art to popularize science and make art educational. Numerous studies have shown that molecular animations help students grasp bimolecular concepts that are otherwise unseen to the naked eye (Jenkinson, <xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>; McClean et al., <xref rid="pro70648-bib-0062" ref-type="bibr">2005</xref>). These visual aids can take many forms, from videos to illustrations segmented to various lengths and levels of detail to fit their target audience (Pokojná, Kozlíková, et al., <xref rid="pro70648-bib-0077" ref-type="bibr">2023a</xref>). These can even be explained through a visual metaphor, such as showing metabolic pathways as a city, making the science more understandable and enjoyable (Adnan, <xref rid="pro70648-bib-0002" ref-type="bibr">2020</xref>), a strategy that is often used in the designing of scientific infographics (Pokojná et al., <xref rid="pro70648-bib-0081" ref-type="bibr">2025</xref>). While infographics are often used to make science more available to novices, the use of animation can also simulate data to help visualize hypotheses (Nayak et al., <xref rid="pro70648-bib-0066" ref-type="bibr">2020</xref>).</p><p>Other educational modalities include 3‐dimensional (3D) physical models, such as sticks‐and‐balls models, that are standardly used in high schools to visualize molecular structures (Copolo &amp; Hounshell, <xref rid="pro70648-bib-0021" ref-type="bibr">1995</xref>). A more modern way of creating physicalizations is to 3D print (Gardner &amp; Olson, <xref rid="pro70648-bib-0028" ref-type="bibr">2016</xref>) the scientifically accurate structures also obtained from the PDB data (Berman et al., <xref rid="pro70648-bib-0011" ref-type="bibr">2000</xref>). Scientific 3D prints already gained popularity in education (Minshall &amp; Ford, <xref rid="pro70648-bib-0063" ref-type="bibr">2019</xref>). Accurate molecular 3D physical models can be designed to move and represent molecular movements by adjusting them in 3D modeling software, for example, Blender (Online Community Blender, <xref rid="pro70648-bib-0071" ref-type="bibr">2018</xref>), to represent spinning of the motor (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>) or docking (Alderighi et al., <xref rid="pro70648-bib-0003" ref-type="bibr">2021</xref>). Similarly to the concept of making science accessible through 2D art as in Goodsell's paintings, data sculptures provide information through 3D art by bridging different areas of knowledge, for example, information visualization and art, among others (Dragicevic et al., <xref rid="pro70648-bib-0022" ref-type="bibr">2021</xref>). The use of physicalizations is especially useful as it facilitates learning through making abstract concepts visible (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>). This is also relevant to the embodied learning (Reiner, <xref rid="pro70648-bib-0084" ref-type="bibr">1999</xref>), a different teaching method that uses the same principle—making abstract concepts more concrete—through guided and purposeful body movements (Abrahamson &amp; Lindgren, <xref rid="pro70648-bib-0001" ref-type="bibr">2014</xref>). Physicalizations can also be leveraged by being situated within the target context (Perovich et al., <xref rid="pro70648-bib-0074" ref-type="bibr">2021</xref>), a project where data were visualized and made more accessible through physicalization, which was placed within the environmental context (polluted creek), making it a site‐specific event. Their other benefit is to provide a collaborative learning environment (Shaer &amp; Hornecker, <xref rid="pro70648-bib-0090" ref-type="bibr">2010</xref>), which contributes to social, psychological, academic, and assessment‐related benefits (Laal &amp; Ghodsi, <xref rid="pro70648-bib-0055" ref-type="bibr">2012</xref>). Their interactive properties also aid in understanding dynamic processes that change over time (Pahr et al., <xref rid="pro70648-bib-0072" ref-type="bibr">2024</xref>). The multi‐sensory input helps with spatial reasoning and later recall (Jansen et al., <xref rid="pro70648-bib-0045" ref-type="bibr">2015</xref>), which ultimately supports learning.</p><p>Technology today also provides digital enhancements that help us understand these complex biochemical structures through Augmented Reality (AR) (Woźniak et al., <xref rid="pro70648-bib-0106" ref-type="bibr">2020</xref>; Irwansyah et al., <xref rid="pro70648-bib-0041" ref-type="bibr">2018</xref>) and Virtual Reality (VR) (Kut'ák et al., <xref rid="pro70648-bib-0054" ref-type="bibr">2021</xref>; Ramírez &amp; Bueno, <xref rid="pro70648-bib-0082" ref-type="bibr">2020</xref>). The design of the virtual environments goes beyond individual experiences by presenting collaborative virtual environments allowing exploration of molecular worlds (Kut'ák et al., <xref rid="pro70648-bib-0054" ref-type="bibr">2021</xref>; Pokojná, Rasheed, &amp; Schönborn, <xref rid="pro70648-bib-0078" ref-type="bibr">2023b</xref>).</p><p>The above outlined benefits of individual modalities (illustrations, animation, physicalizations, and even mixed reality (MR)) make a significant contribution to learning, particularly in STEM disciplines, where they facilitate the understanding of abstract concepts. While the modalities have been studied individually or compared with each other, to our knowledge, their combination in the context of biochemistry has not been researched yet. Investigations of individual modalities also suggests (Krajcik &amp; Sutherland, <xref rid="pro70648-bib-0053" ref-type="bibr">2010</xref>; Pokojná, Kozlíková, et al., <xref rid="pro70648-bib-0077" ref-type="bibr">2023a</xref>) that layering multiple modalities can be beneficial to learners. Therefore, we designed <italic toggle="yes">MRDAET</italic> to examine how participants respond to such an art installation. The research methods used to evaluate this prototype were similar to other studies investigating novel visualizations in biomedicine for public outreach (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>; Pokojná, Kozlíková, et al., <xref rid="pro70648-bib-0080" ref-type="bibr">2024b</xref>) and are further discussed in Section <xref rid="pro70648-sec-0010" ref-type="sec">4.2</xref>.</p></sec><sec id="pro70648-sec-0003"><label>3</label><title>DESIGN OF <styled-content style="fixed-case" toggle="no">
+<italic toggle="no">MRDAET</italic>
+</styled-content>
+</title><p>In the following section, we explain why we selected these specific chemical reactions, describe the previous two design iterations presented in our earlier publication (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>), and justify the design decisions of the current iteration.</p><sec id="pro70648-sec-0004"><label>3.1</label><title>Why <styled-content style="fixed-case" toggle="no">ATP</styled-content> production</title><p>The mitochondria, colloquially referred to as the “Powerhouse of the cell,” became the focus for <italic toggle="yes">MRDAET</italic> visualization as it is the site of ATP production. Because of its essential part in the high school curriculum, we assumed its importance as general knowledge. We previously investigated the best practices to represent chemical reactions (and used the ATP synthesis as a test subject) in 2D in the form of illustrations and animations (Pokojná, Kozlíková, et al., <xref rid="pro70648-bib-0077" ref-type="bibr">2023a</xref>). We then tested two iterations of 3D physicalizations (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>) that yielded this third iteration. This study continues to explore the best way to present complex information by combining various modalities and their benefits to make information retention more accessible for novices in biochemistry.</p></sec><sec id="pro70648-sec-0005"><label>3.2</label><title>Biochemistry illustrated in <styled-content style="fixed-case" toggle="no">
+<italic toggle="no">MRDAET</italic>
+</styled-content>
+</title><p>In the illustrated book <italic toggle="yes">Machinery of Life</italic> (Goodsell, <xref rid="pro70648-bib-0035" ref-type="bibr">2009</xref>), Goodsell paints his render of ATP Synthase in shades of red, blue, and orange, and describes it as “a molecule‐sized generator that converts electrochemical energy into chemical energy.” During chemical reaction, the large molecule combines the adenosine diphosphate (ADP) molecule with the phosphate molecule (P<sub>
+<italic toggle="yes">i</italic>
+</sub>) in its catalytic knob (head). Other parts of the molecular machine are made of the spinning axle and motor below it, which also provide entrances for Hydrogen molecule. These three stacked structures are stabilized by a stator connected to the catalytic knob. The individual parts of the ATP Synthase can be seen in Figure <xref rid="pro70648-fig-0002" ref-type="fig">2</xref>. The ATP creation process is preceded by an entire chain of reactions involving protein channels and cytochromes embedded in the phospholipid bilayer dividing the inside and outside of the mitochondria. Other than the electrons transferred within the phospholipid bilayer through cytochromes and protein channels, the protein channels also allow transport of Hydrogen from one side of the organelle to the other side with a different charge. On top of that, molecules such as NAD+, FAD, and Oxygen combine with Hydrogen to create NADH, FADH<sub>2</sub>, and H<sub>2</sub>O molecules that release electrons that enter the electron transport chain. For the sake of clarity and to suit the intended target audience, the installation focuses on key molecules involved in the electron transport chain and ATP synthesis, represented through physicalizations, animation, and diagrams. This choice was made deliberately to reduce complexity and emphasize the overall process by highlighting conceptual inputs and outputs rather than detailed internal pathways. Consequently, certain chemical components were omitted, such as the prosthetic groups <italic toggle="yes">within</italic> electron transport complexes that play a role in electron transfer (e.g., iron sulfur clusters, hemes, and copper centers). The entire process is represented in a simple illustration in Figure <xref rid="pro70648-fig-0003" ref-type="fig">3</xref>.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>The model with simplified shapes and a mechanism to be assembled. The white parts (poles and tunnels inside the biochemical models) were created for the model to be able to move.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="PRO-35-e70648-g013.jpg"><?image-name PRO-35-e70648-g013.jpg?><?image-size 74311?><?image-md5 f0361cee25861c2aac152aacffab56b6?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 652?><?image-original-width 1064?><?image-scaled-height 434?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/f0361cee2586/PRO-35-e70648-g013.jpg?><?thumb-name PRO-35-e70648-g013.gif?><?thumb-size 10500?><?thumb-md5 473bfbfc3489d307e2e022ff94dc00bc?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 130?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/473bfbfc3489/PRO-35-e70648-g013.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="pro70648-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Set of chemical reactions in the electron transport chain and ATP synthesis.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="PRO-35-e70648-g012.jpg"><?image-name PRO-35-e70648-g012.jpg?><?image-size 81065?><?image-md5 35cc27edccaeae1b49d17e35e1e66b8f?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 444?><?image-original-width 1064?><?image-scaled-height 296?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/35cc27edccae/PRO-35-e70648-g012.jpg?><?thumb-name PRO-35-e70648-g012.gif?><?thumb-size 14078?><?thumb-md5 9cdc294e2d5d634a3705b3b03ca87f8a?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 191?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/9cdc294e2d5d/PRO-35-e70648-g012.gif?></graphic></fig></sec><sec id="pro70648-sec-0006"><label>3.3</label><title>Previous iterations</title><p>Empirical evidence has shown that playful education has a positive effect on the learners. Examples specifically in biochemistry include tales that rely on narrative storytelling (Surapaneni, <xref rid="pro70648-bib-0094" ref-type="bibr">2024</xref>) or activity‐based learning for public outreach (Roth et al., <xref rid="pro70648-bib-0085" ref-type="bibr">2023</xref>). Visual literacy (Schönborn &amp; Anderson, <xref rid="pro70648-bib-0088" ref-type="bibr">2006</xref>; Schönborn &amp; Anderson, <xref rid="pro70648-bib-0089" ref-type="bibr">2010</xref>) has been proven as an essential part of understanding biochemistry and visual storytelling has been proven to help disseminate scientific findings (Botsis et al., <xref rid="pro70648-bib-0018" ref-type="bibr">2020</xref>). These practices also inspired the iterations of previously published studies (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>) that led to the current design of this installation, discussed in detail in later (Section <xref rid="pro70648-sec-0007" ref-type="sec">3.4</xref>).</p><p>The first design, shown in Figure <xref rid="pro70648-fig-0004" ref-type="fig">4</xref>, consisted of a 3D physical tangible prototype of the ATP synthase, the most prominent enzyme in the ATP reaction. It was based on PDB (Berman et al., <xref rid="pro70648-bib-0011" ref-type="bibr">2000</xref>) molecular data and was further adjusted in 3D modeling software (e.g., Online Community Blender, <xref rid="pro70648-bib-0071" ref-type="bibr">2018</xref>) so its components can rotate as in real life (Figure <xref rid="pro70648-fig-0002" ref-type="fig">2</xref>). Its movements resemble the motions depicted in Johnson's (Johnson, <xref rid="pro70648-bib-0048" ref-type="bibr">2015</xref>) or Berry's (Berry &amp; Tétaz, <xref rid="pro70648-bib-0014" ref-type="bibr">2018</xref>; Berry, <xref rid="pro70648-bib-0013" ref-type="bibr">2015</xref>) molecular animations. Doing this allowed us to tackle the common issue with 3D physical models, which are accurate but rigid by default, and do not show any movement. It was then presented at a data visualization conference focusing on biology, where we collected feedback from experts in biology, medicine, and visualization, through a short survey. Overall, this representation was well received (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>), as it made previously inaccessible scientific phenomena both tangible and engaging. The main takeaway message from the first iteration was to create an entire transport chain, not just one enzyme concluding the series of extensive reactions.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0004" orientation="portrait"><label>FIGURE 4</label><caption><p>A photograph of a participant interacting with the first iteration of this design by spinning the motor of the ATP Synthase molecule (green arrow). The motor also has crevices (in yellow circles) shaped like cubes specifically for small parts that represent Hydrogen molecules. The ATP Synthase enzyme was tested as a standalone product at this initial design stage.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="PRO-35-e70648-g006.jpg"><?image-name PRO-35-e70648-g006.jpg?><?image-size 183339?><?image-md5 32605ee2b9a7d4bcddd0707f552e33b3?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1184?><?image-original-width 1004?><?image-scaled-height 789?><?image-scaled-width 669?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/32605ee2b9a7/PRO-35-e70648-g006.jpg?><?thumb-name PRO-35-e70648-g006.gif?><?thumb-size 21179?><?thumb-md5 1fe5d41e7345bae703d53f17d2c67f9a?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 118?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/1fe5d41e7345/PRO-35-e70648-g006.gif?></graphic></fig><p>Our second iteration, shown in Figure <xref rid="pro70648-fig-0005" ref-type="fig">5</xref>, was inspired by experts' feedback from the first ATP Synthase testing. The suggestion that we applied in our second iteration was to expand the apparatus and show the entire electron transport chain, as it is closely linked to the ATP Synthesis. The design was tested at Researchers' Night, an event where research institutions across Europe open their doors to the general public and present their research. The collected feedback (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>) was once again positive, and some of the suggestions included representing the electrons exchanged between the molecules. The main direction for our next iteration was to combine three modalities: illustrations, animation, and 3D physical models to reap the benefits of all three in order to show this set of biochemical processes.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0005" orientation="portrait"><label>FIGURE 5</label><caption><p>A photograph of a participant interacting with the second iteration of this design. This second design consisted not just of the ATP Synthase enzyme (right) but also the electron transport chain and molecules involved. Here, the participant puts a small Hydrogen proton in the shape of a cube into a 3D‐printed oval of an FAD molecule to create an FADH<sub>2</sub> molecule.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-9" orientation="portrait" xlink:href="PRO-35-e70648-g004.jpg"><?image-name PRO-35-e70648-g004.jpg?><?image-size 116885?><?image-md5 36e18b2cd189dcfa7dcbcdc8eaa023fe?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 726?><?image-original-width 1064?><?image-scaled-height 484?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/36e18b2cd189/PRO-35-e70648-g004.jpg?><?thumb-name PRO-35-e70648-g004.gif?><?thumb-size 15915?><?thumb-md5 9155be820dbd558f2b2e70dbac2379d4?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 117?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/9155be820dbd/PRO-35-e70648-g004.gif?></graphic></fig><p>Participant feedback was purposefully chosen as an indicator for the next step of the iteration because the presented artifacts were meant to evolve in the way users would see as most beneficial. Hence, formal testing with specific knowledge questions and user scales is yet to be carried out once the prototype is fully developed.</p></sec><sec id="pro70648-sec-0007"><label>3.4</label><title>Installation</title><p>The <italic toggle="yes">MRDAET</italic> prototype is a collection of enhancements from the initial iterations that is scaffolded by the previous positive feedback on interaction, tangibility, and movability of the model. The details and justification for using physical objects to represent chemical reactions are discussed in previous work (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>). In summary, the use of 3D printed models helps with spatial understanding in the chemistry domain (Biner et al., <xref rid="pro70648-bib-0016" ref-type="bibr">2018</xref>; Stieff et al., <xref rid="pro70648-bib-0092" ref-type="bibr">2012</xref>). This is supported by research that found usability of physical models to be similar to virtual chemistry models (Stull et al., <xref rid="pro70648-bib-0093" ref-type="bibr">2013</xref>). The additional modalities that were used in this installation, the third iteration, include illustrations and an animation overlay. Illustrations and diagrams used for biochemistry have resulted in students' better conceptual understanding compared to just using textual descriptions (Offerdahl et al., <xref rid="pro70648-bib-0069" ref-type="bibr">2017</xref>; Adnan, <xref rid="pro70648-bib-0002" ref-type="bibr">2020</xref>). Scientific animations affect viewers' thinking and motivation (Barak et al., <xref rid="pro70648-bib-0008" ref-type="bibr">2011</xref>) and include examples from Drew Berry, whose work is intended to both teach and aesthetically appeal (Berry, <xref rid="pro70648-bib-0012" ref-type="bibr">2007</xref>; Berry, <xref rid="pro70648-bib-0013" ref-type="bibr">2015</xref>). Animated representations convey molecular dynamics, such as binding or protein conformations, more clearly compared to static images (Jenkinson, <xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>). Molecular animations also improve information retention and motivation (McClean et al., <xref rid="pro70648-bib-0062" ref-type="bibr">2005</xref>). Moreover, the use of alternative ways of visualizing text‐heavy material (e.g., animations (Taylor et al., <xref rid="pro70648-bib-0096" ref-type="bibr">2007</xref>)) are also beneficial for people with reading difficulties, such as dyslexia, because they offload mental load by making information visible and touchable (Sweller, <xref rid="pro70648-bib-0095" ref-type="bibr">2011</xref>). Hence, we decided to combine all three modalities into a multimedia resolution data with interactive components to obtain the benefits of all three modalities, as it makes science information more accessible in a multitude of ways.</p><p>We would like to emphasize that this type of visualization is designed to convey the science and principles of the electron transport chain and ATP synthesis to non‐experts in biochemistry, inspired by the difficulty (Dreyfus et al., <xref rid="pro70648-bib-0023" ref-type="bibr">2014</xref>; Gayford, <xref rid="pro70648-bib-0029" ref-type="bibr">1986</xref>; Wu &amp; Shah, <xref rid="pro70648-bib-0107" ref-type="bibr">2004</xref>; Green et al., <xref rid="pro70648-bib-0038" ref-type="bibr">2021</xref>) of understanding the subject at high school level (Jones et al., <xref rid="pro70648-bib-0050" ref-type="bibr">2014</xref>). As a result, certain details that would be obvious or essential for biochemists may be omitted, prioritizing clarity and helping the audience grasp the fundamental concepts without being overwhelmed.</p><p>In addition to utilizing the previously tested 3D physicalization (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>), the next step was to improve it. This consisted of adding color to the physical models, incorporating 2.5D video overlay, including magnets to represent electron transfer, and floor stickers, which contributed to the <italic toggle="yes">MRDAET</italic>'s overall unique setup of “walking into” the cell. The apparatus is deliberately designed to increase in complexity (information and visual) as the user progresses to facilitate retention (Offerdahl et al., <xref rid="pro70648-bib-0069" ref-type="bibr">2017</xref>). Figure <xref rid="pro70648-fig-0006" ref-type="fig">6</xref> shows the design of the installation.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0006" orientation="portrait"><label>FIGURE 6</label><caption><p>The layout of <italic toggle="yes">MRDAET</italic> installation containing large‐scale illustrations leading to 3D physical interactive models with 2.5D animation overlay. Image based on previous publication (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-11" orientation="portrait" xlink:href="PRO-35-e70648-g010.jpg"><?image-name PRO-35-e70648-g010.jpg?><?image-size 62325?><?image-md5 66d3d9a677221851f788068c8891a2fa?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 546?><?image-original-width 1064?><?image-scaled-height 364?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/66d3d9a67722/PRO-35-e70648-g010.jpg?><?thumb-name PRO-35-e70648-g010.gif?><?thumb-size 9740?><?thumb-md5 58080111b9dc9538c178c0201d630cf5?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 155?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/58080111b9dc/PRO-35-e70648-g010.gif?></graphic></fig><p>We have created an “entrance” to the apparatus through a large, 1 m × 1 m floor sticker. The colorful, 2D illustrated diagrams with the names of components of an animal cell and mitochondria were intended to help the learners realize how small the scale of chemical reactions is and where they take place, as scales and relations of molecules and cells have been problematic to understand (Jenkinson, <xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>). The overall design is set up (Figure <xref rid="pro70648-fig-0007" ref-type="fig">7</xref>) in a way where the viewer walks into the animal cell (lowest magnification) by observing a cell diagram, then continues to increase the magnification onto mitochondria by exploring another large floor sticker. The size of this installation was carefully considered as the benefit of larger physicalizations is adding an “extra” value by adding metaphorical meaning (García &amp; Hornecker, <xref rid="pro70648-bib-0026" ref-type="bibr">2022</xref>). This zooming‐in effect continued as the viewer approaches the table within the interactive components with the highest magnification, focusing on a mitochondrial wall. The design has immersive components by “walking into the cell” that also makes the display more attractive, which increases the motivation to learn (Mayer, <xref rid="pro70648-bib-0060" ref-type="bibr">2014</xref>). The zooming‐in was inspired by the ARTIS‐Micropia museum's (ARTIS Zoo, <xref rid="pro70648-bib-0005" ref-type="bibr">2014</xref>) beginning of entrance through an elevator that simulates increased magnification under the microscope. The installation was deliberately set up this way as the physical environment impacts people's thinking (Perovich et al., <xref rid="pro70648-bib-0075" ref-type="bibr">2023</xref>).</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0007" orientation="portrait"><label>FIGURE 7</label><caption><p>Setup of the installation consisting of a 2D illustration of the cell (lowest magnification) and mitochondria (higher magnification) on the ground. The table carries the 3D printed interactive apparatus of the electron transport chain and ATP synthesis (highest magnification), enhanced with 2.5D animation overlay.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-13" orientation="portrait" xlink:href="PRO-35-e70648-g003.jpg"><?image-name PRO-35-e70648-g003.jpg?><?image-size 207132?><?image-md5 fd54b8e6b47d5e4b307c1e7f337355c5?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1495?><?image-original-width 1004?><?image-scaled-height 996?><?image-scaled-width 669?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/fd54b8e6b47d/PRO-35-e70648-g003.jpg?><?thumb-name PRO-35-e70648-g003.gif?><?thumb-size 18420?><?thumb-md5 d719faeebd40c0444468be43187a96dc?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 149?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/d719faeebd40/PRO-35-e70648-g003.gif?></graphic></fig><p>The second part of the installation is the animation overlaying the entire 3D printed apparatus. This overlay with 2.5D animation enhances the 3D physical models and is intended to illustrate how busy the two sides of the mitochondrial wall are by showing molecules moving throughout the Inter‐ and Intracellular space. Augmenting 3D molecular prints with projection was previously successfully used to depict molecular movement (Brenner, <xref rid="pro70648-bib-0019" ref-type="bibr">2015</xref>; Gillet et al., <xref rid="pro70648-bib-0032" ref-type="bibr">2004</xref>; Gillet et al., <xref rid="pro70648-bib-0033" ref-type="bibr">2005</xref>). Figure <xref rid="pro70648-fig-0008" ref-type="fig">8</xref> shows a screenshot of the video used in <italic toggle="yes">MRDAET</italic>: the blue background represents the Intramembrane space of mitochondria separated from the orange Intermembrane mitochondrial space by the yellow stripe—the phospholipid bilayer. The phospholipid bilayer is not visually detailed as its structure was provided by the 3D printed model that the animation was overlaying. The Inter and Intra mitochondrial spaces both have Hydrogen (white cubes), and the Intramembrane space contains pink spherical NADH, purple ellipsoid FADH<sub>2</sub>, red cuboid Phosphate, and brown prism ADP molecules. The models in the animation corresponded with the shape and color of the 3D physical models overlaid with this animation.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0008" orientation="portrait"><label>FIGURE 8</label><caption><p>A screenshot of the 2.5D overlay video projected over the 3D physical models.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-15" orientation="portrait" xlink:href="PRO-35-e70648-g009.jpg"><?image-name PRO-35-e70648-g009.jpg?><?image-size 46258?><?image-md5 700545a517b9fa0b3300b1d9ba4a0e3e?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 561?><?image-original-width 1064?><?image-scaled-height 374?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/700545a517b9/PRO-35-e70648-g009.jpg?><?thumb-name PRO-35-e70648-g009.gif?><?thumb-size 9267?><?thumb-md5 6b98c6d32ff3894dd202b9784272fbc6?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 151?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/6b98c6d32ff3/PRO-35-e70648-g009.gif?></graphic></fig><p>The third part, made up of the 3D physical models, served as the centerpiece of this installation because of their benefits outlined in Section <xref rid="pro70648-sec-0002" ref-type="sec">2</xref>. Compared to the previous iterations, the 3D physical models shown in Figure <xref rid="pro70648-fig-0009" ref-type="fig">9</xref> were enhanced with colors, inspired by the Goodsell coloring schemes (Goodsell, <xref rid="pro70648-bib-0035" ref-type="bibr">2009</xref>), to (1) distinguish between models, (2) show the individual structures' functional similarity to each other, and (3) point to an important part of a multi‐colored model by choosing semantic colors (Schloss, <xref rid="pro70648-bib-0087" ref-type="bibr">2024</xref>).</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0009" orientation="portrait"><label>FIGURE 9</label><caption><p>Setup of the 3D printed chemical machines included in the electron transport chain and ATP synthesis. They are placed on a board, representing the mitochondrial wall, and overlaid with animation.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-17" orientation="portrait" xlink:href="PRO-35-e70648-g008.jpg"><?image-name PRO-35-e70648-g008.jpg?><?image-size 85858?><?image-md5 c963f910808af2d663e05cadac6a37a8?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 518?><?image-original-width 1064?><?image-scaled-height 345?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/c963f910808a/PRO-35-e70648-g008.jpg?><?thumb-name PRO-35-e70648-g008.gif?><?thumb-size 16205?><?thumb-md5 83ea8f3740fc96c64d6ead0526cf067d?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 164?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/83ea8f3740fc/PRO-35-e70648-g008.gif?></graphic></fig><p>Color design for illustrative visualization (Wang et al., <xref rid="pro70648-bib-0104" ref-type="bibr">2008</xref>) was previously employed in visual bioinformatics to distinguish between particles within molecules as well as to show hierarchy (Waldin et al., <xref rid="pro70648-bib-0102" ref-type="bibr">2019</xref>; Waldin et al., <xref rid="pro70648-bib-0101" ref-type="bibr">2016</xref>). Hues were used to distinguish between different types of structures with different functions (e.g., protein channels and H<sub>2</sub>O molecules). For example, the NAD+ and FAD molecules both carry electrons that were released to the electron transport chain upon binding with one Hydrogen proton. The FAD and NAD+ molecules are not only shaped similarly (round oval and sphere) but also colored with analogous colors (purple and pink). Similarly, despite there being four different protein channels in the electron transport chain, they have a similar function (to allow electrons to pass through the phospholipid bilayer) and hence they are grouped by the same hue. However, the protein channels (turquoise) and cytochromes (beige) also share a similar function to transfer electrons within the electron transport chain; hence, they were colored with less saturated colors, which visually grouped them into the electron transport chain step. This is opposed to the ATP synthase, which concludes the ATP synthesis after the electron transport chain step. This model applied visual hierarchy principles (Tufte &amp; Graves‐Morris, <xref rid="pro70648-bib-0098" ref-type="bibr">1983</xref>) by using several highly saturated colors within the same structure—red for the catalytic knob, blue for the axle, yellow for the motor, and green for the stator. These vivid colors emphasized the enzyme's importance, visually distinguishing it from its less saturated surroundings, such as neighboring proteins in the electron transport chain and the broader cellular environment, including the membrane interior, exterior, and the phospholipid bilayer. The use of four different colors also pointed out four different functions of the four different parts of the enzyme. Lastly, red and yellow semantic colors (Schloss, <xref rid="pro70648-bib-0087" ref-type="bibr">2024</xref>) were purposefully used to guide the user to the catalytic knob and motor of the enzyme, where the most important chemical reactions take place, and where they should interact with the model by inserting other molecular pieces, similar to cellular building blocks (Garden, <xref rid="pro70648-bib-0027" ref-type="bibr">2022</xref>). Similarly, the electron binding sites were represented by metal parts and colored yellow to attract the user's attention. We have also added magnet strips between the molecules on the electron transport chain to create a path for the round yellow magnets, representing electrons. The magnets could be removed from individual molecules and placed onto other molecules to represent electron transfer. This was an important step, as this electron transfer was not shown in the previous iterations.</p></sec></sec><sec id="pro70648-sec-0008"><label>4</label><title>USER STUDY</title><p>The following section details the participants and experimental design of the conducted user study.</p><sec id="pro70648-sec-0009"><label>4.1</label><title>Participants</title><p>In total, the data was collected from 35 participants. Eight participants were eliminated from the experimental analysis due to missing data (specifically, signed consent). The participants were aged 19–60 (mean average = 30.083). Of the 27 participants whose data were analyzed, 12 were female, 10 male, 1 non‐binary person, and 4 people who did not specify their gender.</p></sec><sec id="pro70648-sec-0010"><label>4.2</label><title>Experimental design</title><p>The data was collected through observation and a short survey at a popular international annual event focused on art and technology. The short survey and observation were chosen because they allowed us to collect qualitative data with short‐answer questions and Likert scales from people interacting with the installation at the event. The questions focused on three areas: the enjoyment of the installation (addressing the first RQ), the helpfulness of the installation in learning (second RQ), and future improvements. Examples of questions for each theme were: “Do you like the installation of chemical reactions? Please explain why (1‐3 sentences),” “How useful do you find this in learning about chemical reactions? And why?,” and “What would you improve?”</p><p>The Likert scales gave us ordinal measures (Likert, <xref rid="pro70648-bib-0057" ref-type="bibr">1932</xref>; Jamieson, <xref rid="pro70648-bib-0043" ref-type="bibr">2004</xref>) that accompanied qualitative data from open‐ended responses from the short‐answer questions. The short answers were then analyzed with the qualitative content analysis (Mayring, <xref rid="pro70648-bib-0061" ref-type="bibr">2015</xref>) and can be found in Section <xref rid="pro70648-sec-0011" ref-type="sec">5</xref>. This approach has been previously employed in the evaluation of similar prototypes (Pokojná, Kriglstein, et al., <xref rid="pro70648-bib-0079" ref-type="bibr">2024a</xref>; Pokojná, Kozlíková, et al., <xref rid="pro70648-bib-0080" ref-type="bibr">2024b</xref>), as it enables rapid feedback with low participant burden. These characteristics make it particularly well‐suited for prototype evaluation and iterative testing.</p><p>The short, open‐ended questions were employed to guide participants' attention towards specific features under investigation. As the study aimed to assess the perceived effectiveness of predefined design choices rather than to measure neutral attitudes, this approach ensured that responses directly addressed the research question. While leading questions can introduce bias, in this context, they were used deliberately to support formative evaluation. Potential bias was mitigated by pairing structured questions with open‐ended qualitative feedback, allowing participants to elaborate or challenge the evoked perspective.</p><p>The event at which we presented <italic toggle="yes">MRDAET</italic> was specifically chosen for data collection because it featured technology‐art installations, attracting people who were interested in interactive displays and exploring scientific topics in non‐standard ways. These people were a representative sample of users who would choose to visit a science museum, interact with the installations, and benefit the most from such displays. As part of our research, we wanted to observe whether this visualization would get participants without a biochemical background interested in the biochemistry topic. Since this was a large‐scale international event, we had participants from various professional backgrounds, ages, and nationalities, which provided interesting insight.</p></sec></sec><sec sec-type="results" id="pro70648-sec-0011"><label>5</label><title>RESULTS</title><p>Here, we present quantitative scores from Likert scales and themes identified with the Qualitative Content Analyses (Mayring, <xref rid="pro70648-bib-0061" ref-type="bibr">2015</xref>). This consisted of grouping topics occurring in written answers from questionnaires into themes.</p><sec id="pro70648-sec-0012"><label>5.1</label><title>Enjoyment of the installation</title><p>The enjoyment of <italic toggle="yes">MRDAET</italic> was measured by a question: <italic toggle="yes">Do you like the installation of chemical reactions? And why?</italic> This question received an average of 4.12 out of 5 points on a Likert scale, where 1 indicated “very boring” and 5 “very fun.” The results are shown in Figure <xref rid="pro70648-fig-0010" ref-type="fig">10</xref>. The extracted themes from the short answer questions were as follows: interactivity and being able to touch the models (mentioned by 7 people), interesting concept (3 people), color (mentioned by 3 people), visualizing something otherwise unseen (3 people), making understanding of complex topic easier (2 people), and creative way to do so and engagement of the visualization (1 person). The critique included installation being too overwhelming or having too much information presented (2 people) and needing more guidance through the objects (1 person) or video explanation (3 people).</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0010" orientation="portrait"><label>FIGURE 10</label><caption><p>Bar chart showing identified themes for enjoyment of <italic toggle="yes">MRDAET</italic>. Green (bottom 4 bars) showing positive and orange (top 2 bars) critique categories.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-19" orientation="portrait" xlink:href="PRO-35-e70648-g005.jpg"><?image-name PRO-35-e70648-g005.jpg?><?image-size 59284?><?image-md5 40dca09a792a06e011930d432499d9d7?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 683?><?image-original-width 1004?><?image-scaled-height 455?><?image-scaled-width 669?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/40dca09a792a/PRO-35-e70648-g005.jpg?><?thumb-name PRO-35-e70648-g005.gif?><?thumb-size 9177?><?thumb-md5 32fa785a47ea97360d129da794a6eef3?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 117?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/32fa785a47ea/PRO-35-e70648-g005.gif?></graphic></fig></sec><sec id="pro70648-sec-0013"><label>5.2</label><title>Helpfulness of the installation</title><p>The perceived helpfulness of the installation in understanding the biochemical process was measured with two short‐answer questions and multiple‐choice questions focusing on which part of the installation was most helpful and finding out whether the combined setup was better than the stand‐alone parts of the installation. In the following subsection, we summarize the outcomes for individual questions we posed to the participants. The results are also shown in Figure <xref rid="pro70648-fig-0011" ref-type="fig">11</xref>.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0011" orientation="portrait"><label>FIGURE 11</label><caption><p>Helpfulness of <italic toggle="yes">MRDAET</italic> in (a) categories where green (bottom 6 bars) indicates positives and orange (top 4 bars) critiques; (b) shows the bar chart comparison between the usefulness of individual modalities within <italic toggle="yes">MRDAET</italic>.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-21" orientation="portrait" xlink:href="PRO-35-e70648-g007.jpg"><?image-name PRO-35-e70648-g007.jpg?><?image-size 54690?><?image-md5 c1dbeb5f44524deb239d5730379bb858?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 359?><?image-original-width 1064?><?image-scaled-height 239?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/c1dbeb5f4452/PRO-35-e70648-g007.jpg?><?thumb-name PRO-35-e70648-g007.gif?><?thumb-size 8796?><?thumb-md5 0ccb5380dbca7e1b06774e5314b4661b?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 67?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/0ccb5380dbca/PRO-35-e70648-g007.gif?></graphic></fig><p>
+<italic toggle="yes">How useful do you find this installation to learn about chemical reactions? And why?</italic> The installation received an average of 4.24 out of 5 points on a Likert scale, where 1 indicated “not useful at all” and 5 “very useful.” The reasons for this were collected in the following themes: learning more by touch or playing with models (5 people), a better understanding of the concept (3 people), increased motivation (2 people), better than 2D representation (2 people), interesting to learn with the models but not necessarily about biochemistry (2 people), interesting and necessary to learn about—referring to biochemistry (2 people), and appreciation of the artistic approach (1 person). The suggested improvements comprised better labeling (2 people), further segmentation of the steps (2 people), and improvement of 3D physical models—cavities (1 person). The themes of why the installation is or is not helpful are summarized in Figure <xref rid="pro70648-fig-0011" ref-type="fig">11a</xref>.</p><p>
+<italic toggle="yes">Which part of the installation do you find most helpful in learning about complex processes? And why?</italic> In this multiple‐choice question, 22 people chose that the most useful component was the 3D physical interactive model, 4 appreciated a 2D illustration of mitochondria and the cell, and 4 liked a 2.5D animation of molecules. Of these, one person voted for all three, and one voted for the 3D physical models with the animation overlay. The reasoning for these choices was grouped into the following themes: touch involved in learning (9 people), 2.5D animation overlay was useful in understanding (3 people), 2D illustrations were the clearest to understand (2 people), a combination of all three modalities was most helpful to learning (2 people), spatial understanding/enzyme architecture with 3D models (2 people), enjoy going into the cell and then scaling down to mitochondrial wall (1 person).</p><p>
+<italic toggle="yes">Do you think installation is better than stand‐alone 3D models, animation, or illustrations? Why?</italic> Of the 25 people who answered this question, 22 people agreed that the mix of modalities is the most helpful. The reasons for this are interaction (6 people), which “brings it to life,” increased engagement (3 people), introducing fun/playful aspects (2 people), better understanding (2 people), and making it more memorable (2 people). One person mentioned that it “depends on circumstances,” and one suggested that having a teacher first walk the students through the process before showing them this installation would make it the most effective in learning. The results are also shown in Figure <xref rid="pro70648-fig-0011" ref-type="fig">11b</xref>.</p></sec><sec id="pro70648-sec-0014"><label>5.3</label><title>Future improvements</title><p>The information about future improvements was collected through three questions: one short‐answer question and two multiple‐choice questions. These questions asked about what the participants would like to improve, what people find most suitable, and which type of place/institution this installation is most appropriate for.</p><p>
+<italic toggle="yes">What would you improve?</italic> The short answer questions collected suggestions for improvements, which were grouped into several themes. To optimize the installation experience, the participants suggested: making the animation projection as a guide, segmenting the steps more clearly, adding labels and functions to 3D physical models and models in animation (4 people), gamification, for example, adding checkpoints, making the 3D physical models more intuitive to interact with, or use of audio guide (2 people), and adding more interaction (4 people). Out of those four, two people specified interaction between animations and physical objects.</p><p>
+<italic toggle="yes">What group of people would you imagine this installation for?</italic> In this multiple‐choice question, 24 people voted for high‐school students, 18 people voted for anyone interested in science, and 12 people voted for a primary school, where two people noted that it should show simpler themes. The results are shown in Figure <xref rid="pro70648-fig-0012" ref-type="fig">12a</xref>.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0012" orientation="portrait"><label>FIGURE 12</label><caption><p>Bar charts showing aspects to be considered for real‐life application of <italic toggle="yes">MRDAET</italic>. Bar chart (a) shows the perceived target group and (b) the appropriate placement of <italic toggle="yes">MRDAET</italic>.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-23" orientation="portrait" xlink:href="PRO-35-e70648-g002.jpg"><?image-name PRO-35-e70648-g002.jpg?><?image-size 46232?><?image-md5 4f60028df809a46065fc173eac599cc8?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 364?><?image-original-width 1064?><?image-scaled-height 243?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/4f60028df809/PRO-35-e70648-g002.jpg?><?thumb-name PRO-35-e70648-g002.gif?><?thumb-size 8410?><?thumb-md5 247398334b571854628352df94139430?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 68?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/247398334b57/PRO-35-e70648-g002.gif?></graphic></fig><p>
+<italic toggle="yes">Which setting would you expect this installation to be best suited to?</italic> In this multiple‐choice question, 19 people voted for this installation to be set in a science museum, 18 people for a classroom at the school and university level, and 8 people voted for a science festival. The results can be seen in Figure <xref rid="pro70648-fig-0012" ref-type="fig">12b</xref>.</p></sec><sec id="pro70648-sec-0015"><label>5.4</label><title>Other observations</title><p>The researchers also noted down the participants' behaviors and comments. The criticism includes 4 people standing on stickers but not looking at them, 1 person asked which one of the models is protein, despite all of the physicalizations being proteins, and 15 people expected the animation to change when they interacted with the models.</p><p>The positive observations included: eight people saying that the animation is eye‐catching, one participant in particular appreciated the representation due to personal reasons because of illnesses relevant to mitochondrial malfunction.</p><p>Suggestions by participants that were said out loud and not written down included: one person suggested describing each step of a chemical reaction into a separate poster with illustration, and one suggestion to use this apparatus at Montessori School (a place where children learn by exploration from a prepared environment (Montessori, <xref rid="pro70648-bib-0065" ref-type="bibr">1949</xref>)), and one person suggested making the presentation more “linear and more explicit.”</p><p>Other observations and comments were that people who were exhibiting their works at the conference gave more feedback overall, and that the <italic toggle="yes">MRDAET</italic> reminded three people of the cartoon program for children, “Once Upon a Time…Life” (Barillé, <xref rid="pro70648-bib-0009" ref-type="bibr">1987</xref>). Interestingly, five participants were observed trying to connect the models in a way they were not intended to and admitted out loud that they were looking for a way to connect the different pieces of the molecules in a way that is not described in the instructions. A photograph of participants interacting with the apparatus can be seen in Figure <xref rid="pro70648-fig-0013" ref-type="fig">13</xref>.</p><fig position="float" fig-type="FIGURE" id="pro70648-fig-0013" orientation="portrait"><label>FIGURE 13</label><caption><p>Participants observing the interactive 3D printed molecules with 2.5D animation overlay. (a) and (b) show participants filling out a paper questionnaire attached to a clipboard. (c) shows a participant taking a picture of the interactive part of the installation on the opening night.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-25" orientation="portrait" xlink:href="PRO-35-e70648-g001.jpg"><?image-name PRO-35-e70648-g001.jpg?><?image-size 67722?><?image-md5 057e341701f04accca5c7fa1ad524e10?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 318?><?image-original-width 1064?><?image-scaled-height 212?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/193d/13239990/057e341701f0/PRO-35-e70648-g001.jpg?><?thumb-name PRO-35-e70648-g001.gif?><?thumb-size 15737?><?thumb-md5 b074fb9a8fbcd217bfb440002149598e?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 60?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/193d/13239990/b074fb9a8fbc/PRO-35-e70648-g001.gif?></graphic></fig></sec></sec><sec sec-type="discussion" id="pro70648-sec-0016"><label>6</label><title>DISCUSSION</title><p>Here, we discuss the implications of the collected data in terms of the <italic toggle="yes">MRDAET</italic> installation regarding enjoyment, perceived helpfulness in learning, and suggested improvement.</p><sec id="pro70648-sec-0017"><label>6.1</label><title>
+<styled-content style="fixed-case" toggle="no">RQ1</styled-content>: Enjoyment</title><p>The first research question was addressed with a survey question about enjoyment of the installation: <italic toggle="yes">Do you like the installation of chemical reactions? And why?</italic> Based on the responses from the participants, the enjoyment of the installation being used as a learning tool for complex biochemical processes was positive. Overall, there is an indication that the combination of these modalities successfully captured the viewers' attention and helped them understand complex and difficult‐to‐see material. Based on this feedback, we can conclude that the <italic toggle="yes">MRDAET</italic> installation provided an enjoyable learning experience. Previous studies have shown that using tangible devices for learning influences emotion positively (Li et al., <xref rid="pro70648-bib-0056" ref-type="bibr">2022</xref>), as well as that the physical environment, which plays a great role in immersive experiences, has an impact on people's thought processes (Perovich et al., <xref rid="pro70648-bib-0075" ref-type="bibr">2023</xref>, García &amp; Hornecker, <xref rid="pro70648-bib-0026" ref-type="bibr">2022</xref>). The enjoyment is also attributed to the aesthetics of the installation that may have removed the negative association to learning by increasing motivation through its aesthetics (Mayer, <xref rid="pro70648-bib-0060" ref-type="bibr">2014</xref>). The success of interactive science museums, such as ARTIS‐Micropia (ARTIS Zoo, <xref rid="pro70648-bib-0005" ref-type="bibr">2014</xref>), demonstrates the usefulness of alternative scientific education. Individual modalities, such as scientific illustrations (Offerdahl et al., <xref rid="pro70648-bib-0069" ref-type="bibr">2017</xref>; Adnan, <xref rid="pro70648-bib-0002" ref-type="bibr">2020</xref>), animation (Jenkinson, <xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>, Iwasa, <xref rid="pro70648-bib-0042" ref-type="bibr">2015</xref>), and physicalizations (Copolo &amp; Hounshell, <xref rid="pro70648-bib-0021" ref-type="bibr">1995</xref>, Alderighi et al., <xref rid="pro70648-bib-0003" ref-type="bibr">2021</xref>), have been proven to be useful for information retention and motivation, by which they improve scientific education (Mayer, <xref rid="pro70648-bib-0060" ref-type="bibr">2014</xref>). To the best of our knowledge, a combination of the three modalities that vary in their level of interactivity was not yet tested; hence, our contribution demonstrates that this type of visualization is worthy of further investigation.</p></sec><sec id="pro70648-sec-0018"><label>6.2</label><title>
+<styled-content style="fixed-case" toggle="no">RQ2</styled-content>: Helpfulness in learning</title><p>The second research question regarding perceived helpfulness and particular ways in which it is helpful was investigated with two open‐ended questions and a multiple‐choice question. The open‐ended questions were: <italic toggle="yes">How useful do you find this in learning about chemical reactions? And why?</italic> and <italic toggle="yes">Which part of the installation do you find most helpful in learning about complex processes? And why?</italic> The multiple‐choice question aimed to identify the most helpful component (one of the three modalities used) within the installation and asked: <italic toggle="yes">Do you think installation is better than stand‐alone 3D models, animation, or illustrations? Why?</italic> For the first question, the installation received high scores for helpfulness in learning. Most participants stated that the 3D physical models were very helpful, which shows that tactile exploration plays a role in the learning process of abstract structures (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>). This is consistent with the principles of STEAM, Exploranation (Ynnerman et al., <xref rid="pro70648-bib-0108" ref-type="bibr">2018</xref>) and embodied experience (Reiner, <xref rid="pro70648-bib-0084" ref-type="bibr">1999</xref>). Our results adhere to previous research, particularly the comments from participants, where 22 out of 25 participants agreed that using a combination of modalities was better than using just a single modality. This is consistent with previous findings about using multiple modalities (Krajcik &amp; Sutherland, <xref rid="pro70648-bib-0053" ref-type="bibr">2010</xref>) and learning through dual encoding (Paivio, <xref rid="pro70648-bib-0073" ref-type="bibr">1986</xref>) without overwhelming the cognitive load (Sweller, <xref rid="pro70648-bib-0095" ref-type="bibr">2011</xref>). The different modalities contribute to visual literacy, which is fundamental for understanding biochemical concepts through external representations such as diagrams, animations, and dynamic models (Schönborn &amp; Anderson, <xref rid="pro70648-bib-0089" ref-type="bibr">2010</xref>), and visual literacy should be taught and leveraged not just for lay people but also for biochemists (Schönborn &amp; Anderson, <xref rid="pro70648-bib-0088" ref-type="bibr">2006</xref>). Despite the physicalizations being the most preferred modality individually if one had to be chosen (22 people) relating it to learning by touch (9 people), the other modalities were also well perceived. Animation was chosen as the most helpful by four people, as well as four people voting for the illustration. Animations were helpful because they helped understand the understanding of the concept (Iwasa, <xref rid="pro70648-bib-0042" ref-type="bibr">2015</xref>; Jenkinson &amp; McGill, <xref rid="pro70648-bib-0047" ref-type="bibr">2012</xref>) and illustrations were helpful as they were easy to understand (2 people), which is consistent with previous findings (Offerdahl et al., <xref rid="pro70648-bib-0069" ref-type="bibr">2017</xref>, Adnan, <xref rid="pro70648-bib-0002" ref-type="bibr">2020</xref>).</p><p>A lot of the learning aspect is also attributed to the interaction through touch that helped explain the architecture of proteins, their movement, and molecular interactions by making abstract concepts visible (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>). These results are also consistent with the idea of “embodied experience,” which emphasizes that learning is enhanced when people physically interact with abstract concepts, allowing them to connect mental representations with tangible actions (Reiner, <xref rid="pro70648-bib-0084" ref-type="bibr">1999</xref>). This was demonstrated numerous times in scientific education (Minshall, <xref rid="pro70648-bib-0063" ref-type="bibr">2019</xref>), for example, in bio‐design (Okerlund et al., <xref rid="pro70648-bib-0070" ref-type="bibr">2016</xref>) or gene editing (Verish et al., <xref rid="pro70648-bib-0099" ref-type="bibr">2018</xref>). Its success can be attributed to hands‐on interaction (Hutmacher &amp; Kuhbandner, <xref rid="pro70648-bib-0040" ref-type="bibr">2018</xref>; Novak &amp; Schwan, <xref rid="pro70648-bib-0068" ref-type="bibr">2021</xref>) because it enhances memory and understanding of objects. A meta‐analysis (Li et al., <xref rid="pro70648-bib-0056" ref-type="bibr">2022</xref>) shows that tangible education is useful since it can influence emotions and relies on multiple senses. The same study also showed that tangible educational resources are particularly useful in collaborative settings, such as this one, as they facilitate cooperation and communication (Shaer &amp; Hornecker, <xref rid="pro70648-bib-0090" ref-type="bibr">2010</xref>; Laal &amp; Ghodsi, <xref rid="pro70648-bib-0055" ref-type="bibr">2012</xref>). However, the haptic input may be effective for learning only at the immediate time of learning and may not persist over time (Novak &amp; Schwan, <xref rid="pro70648-bib-0068" ref-type="bibr">2021</xref>). From these answers, we can conclude that people enjoy and find it useful to employ tactile learning, especially when it comes to learning about hard‐to‐visualize topics, such as molecules (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>; Schönborn &amp; Anderson, <xref rid="pro70648-bib-0089" ref-type="bibr">2010</xref>).</p><p>Other collected data pointed out that the visualization approach with multiple modalities was most helpful in learning about ATP synthesis and the electron transport chain. We attribute this to the increased engagement and playful aspects not just through tactile exploration (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>; Novak &amp; Schwan, <xref rid="pro70648-bib-0068" ref-type="bibr">2021</xref>), but also by employing attractive visuals (Mayer, <xref rid="pro70648-bib-0060" ref-type="bibr">2014</xref>). Studies support that multi‐sensory experiences increase learning, whether it be in a digital environment like Virtual Reality (VR) (Philippe et al., <xref rid="pro70648-bib-0076" ref-type="bibr">2020</xref>) or even the environment created for STEM education specifically for children (Tsoukala, <xref rid="pro70648-bib-0097" ref-type="bibr">2021</xref>).</p><p>In practice, <italic toggle="yes">MRDAET</italic> is intended for the general public and hence only the fundamental information, such as main actors within the chemical reactions, is presented, as described in Sections <xref rid="pro70648-sec-0005" ref-type="sec">3.2</xref> and <xref rid="pro70648-sec-0007" ref-type="sec">3.4</xref>. While maintaining accuracy is important, this type of visualization heavily relies on aesthetics and interaction in order to make the information attractive and hence evoke motivation to learn (Mayer, <xref rid="pro70648-bib-0060" ref-type="bibr">2014</xref>). The goal is to lead the users to understand the basics before continuing to more difficult concepts and perhaps returning to more traditional and more detailed means of learning.</p></sec><sec id="pro70648-sec-0019"><label>6.3</label><title>Lessons learned</title><p>Based on our observations, we offer several suggestions for creating similar installations in other contexts, such as different subjects (e.g., physics) or additional biochemical topics (e.g., the Krebs cycle (Kornberg, <xref rid="pro70648-bib-0052" ref-type="bibr">2000</xref>)). First, we highly recommend several smaller iterations, especially for the interactive parts. Our original design consisted just of the movable ATP model, and by adding more components to it throughout several rounds of iteration, we went from a hand‐held apparatus to an interactive installation. This approach allows us to create a user‐centered apparatus tailored to their needs. This relates to our second recommendation, that suggest taking advantage of people's knowledge that can lead to improvements. Therefore, we would recommend that the design be tested at an event that combines science, art, and technology, as it attracts people who are experts in all these fields and can provide valuable feedback, where expert suggestions and user needs are discussed. At the same time, it also attracts the general public, who can aid with user design improvements from observation. Third, we recommend 3D printing with sturdy materials, such as Acrylonitrile Butadiene Styrene (ABS) instead of Polylactic Acid (PLA). We observed three participants aggressively interacting with our apparatus when the researchers were further away from the installation. At one point the molecules were assembled incorrectly, forming an indistinct, blob‐like structure, despite the diagram clearly illustrating the proper arrangement. This was reinforced by five participants who attempted to arrange the 3D models in ways they were not meant to be put together, while outwardly stating their intention.</p><p>An open‐ended question “<italic toggle="yes">What would you improve?</italic>,” combined with observational data of participants interacting with the apparatus and multiple‐choice responses (indicating target audience and site) informed the identification of areas for future development in the next iteration. In general, the themes for improvement varied, but the most prominent one was adding an interaction between the 2.5D animation and the 3D models, for example, through embedded sensors (Vincke et al., <xref rid="pro70648-bib-0100" ref-type="bibr">2020</xref>), which would take it from the current augmented overlay to mixed reality (MR). MR would allow users to manipulate virtual objects anchored in the real world with a higher level of interaction (Speicher et al., <xref rid="pro70648-bib-0091" ref-type="bibr">2019</xref>). Taking this direction would be the next step, as it was not only suggested by the participants in their short answers, but especially indicated by their behavior. The researcher has observed 15 participants looking for a change in animation when they interacted with the physical 3D models, similar to 3D prints changing their augmentation as in the work by Gillet et al. (<xref rid="pro70648-bib-0032" ref-type="bibr">2004</xref>). The benefits of this approach would be higher engagement (Guo et al., <xref rid="pro70648-bib-0039" ref-type="bibr">2017</xref>), immediate feedback (Geller et al., <xref rid="pro70648-bib-0031" ref-type="bibr">2021</xref>), and offering a collaboration opportunity in virtual space (Goagoses et al., <xref rid="pro70648-bib-0034" ref-type="bibr">2025</xref>; Brůža et al., <xref rid="pro70648-bib-0020" ref-type="bibr">2025</xref>). However, implementing this can raise several other issues. For example, having multiple people interacting in the same digital space may lead to conflicting interactions (Billinghurst et al., <xref rid="pro70648-bib-0015" ref-type="bibr">2002</xref>) where one participant may carry out an action that would be undone by another participant. This issue could be solved by preventing simultaneous interactions on the same objects through turn‐taking or role allocation. Visual cues would also be helpful to indicate if an action has already been performed on a specific object. Too much engagement can also lead to less learning (Makransky et al., <xref rid="pro70648-bib-0059" ref-type="bibr">2019</xref>), as the participants would prioritize immersion that would essentially be a distraction, instead of a learning tool. Another problem may arise when too many inputs would lead to participants' cognitive overload (Sweller, <xref rid="pro70648-bib-0095" ref-type="bibr">2011</xref>). Several participants have already indicated that they would prefer more guidance (4 people) or that there was too much information provided already (2 people), and experienced cognitive overload (Sweller, <xref rid="pro70648-bib-0095" ref-type="bibr">2011</xref>). These could be solved by segmenting the steps in the chemical reaction more explicitly (Perovich et al., <xref rid="pro70648-bib-0075" ref-type="bibr">2023</xref>), for example, through posters for individual steps, also suggested by one participant. Alternative ways of segmenting the already existing information could be by adding a guided tour through video projections or an “audio tour.” These aspects would have to be considered in the early stages of planning the next, more complex iteration of <italic toggle="yes">MRDAET</italic> to be executed effectively.</p><p>Given the success of various visual media aiding in the understanding of biochemistry knowledge, we assumed that an interactive art installation grounded in real data could serve as an effective alternative for learning about biochemical processes. As the results from our prototype testing indicate, using a multimedia tool, such as this one, carries the benefits of all included modalities. These observations are consistent with previous research. The floor stickers illustrating the cell and mitochondria helped to give an overview of the structure and placement of individual components, which is in line with previous findings about diagrams employing scaffolding in order to support learning (Offerdahl et al., <xref rid="pro70648-bib-0069" ref-type="bibr">2017</xref>), for example, through gradually increasing complexity and focusing on the key components. The progressive increase in magnification also supported understanding of the relative scales of the cell, mitochondria, and molecules, as such size relationships can be challenging to understand (Jenkinson, <xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>). Moreover, the animation overlay helped with visualizing molecular crowding and dynamics within the cell (Jenkinson, <xref rid="pro70648-bib-0046" ref-type="bibr">2018</xref>; Jenkinson &amp; McGill, <xref rid="pro70648-bib-0047" ref-type="bibr">2012</xref>) as these can be challenging to grasp. The results also indicated that the physicalizations helped with explaining the spatial placement of individual molecules in the electron transport chain, as well as the shape of individual molecules (Ferk et al., <xref rid="pro70648-bib-0025" ref-type="bibr">2003</xref>). Overall, the physicalizations supported the understanding of abstract unseen concepts (Norooz et al., <xref rid="pro70648-bib-0067" ref-type="bibr">2015</xref>).</p></sec><sec id="pro70648-sec-0020"><label>6.4</label><title>Limitations and future work</title><p>Despite generally positive participant feedback, the prototype exhibits several limitations. A design issue that could easily be improved would be by signposting the floor stickers, as some participants were observed to simply walk over them without noticing them. An effective and visually appealing technique would be using light to emphasize the mitochondria within the cell to highlight it as a region of interest, as well as mark the beginning of the installation. The themes for improvement varied, but the most prominent one was adding an interaction between the 2.5D animation and the 3D models, which would take it from the current augmented overlay to interactive MR. This interaction could be achieved by having the 3D physical objects acting as controllers that would signal to the sound system to make a sound (Bae et al., <xref rid="pro70648-bib-0007" ref-type="bibr">2023</xref>) or play a different animation (Jansen &amp; Dragicevic, <xref rid="pro70648-bib-0044" ref-type="bibr">2013</xref>). Another way to build on this project would be through interaction and gamification by adding a point system that counts every time a chemical reaction is “achieved” by connecting proper physical molecules in the right order. A meta‐analysis of science education through gamification has shown that well‐designed gamified environments can enhance motivation and engagement if correctly integrated into the learning process (Baah et al., <xref rid="pro70648-bib-0006" ref-type="bibr">2024</xref>). An example of doing so would be balancing the gamification in a way that does not distract from actual learning (Makransky et al., <xref rid="pro70648-bib-0059" ref-type="bibr">2019</xref>).</p><p>It is important to recognize the limitations inherent to the modalities. For example, the 3D printed models are rigid and show simple movements such as rotation and molecular reaction sites. However, a movement where the reaction site moves and the molecule's transformation and transition contribute to a follow‐up process is not easy to show in rigid 3D printed models. A specific example is the movement of Hydrogen binding to the motor of the ATP synthase and moving <italic toggle="yes">from</italic> one side of the phospholipid bilayer <italic toggle="yes">to another</italic>. This movement then helps to rotate the axle of the ATP synthase, which in turn causes the ADP and P to combine in the reaction sites in the head of the protein to create the ATP molecule. While the Hydrogen enters the motor of synthase in this iteration of <italic toggle="yes">MRDAET</italic>, the crossing of bilayer could be visualized more explicitly in a future iteration. That could involve a mechanism to move the Hydrogen and perhaps a signpost of its impact onto the head of the protein animation overlay light or some other movement of the protein head, such as quivering.</p><p>Considering the positive response from the users towards their enjoyment of the apparatus and their perceived helpfulness of it, we believe that it is worth investigating in the future in the context of science visualization. Science museum (voted by 19 people) would benefit from this the most, followed by use in classroom (18 people) and science festivals (8 people). In either case, it would benefit novices to learn about biochemistry, whether it be high‐school students (24 people), anyone interested in science (18 people), or primary school children (12 people), for example, even in Montessori school focused on learning through exploration (Montessori, <xref rid="pro70648-bib-0065" ref-type="bibr">1949</xref>). The principles and combination of modalities, intentionally showing various scales, as well as using various levels of interaction, could be applied to other STEM subjects, such as biology or physics. It would be interesting to show, for example, traversing scales from matter through the atom to the nucleus or the Krebs cycle (Kornberg, <xref rid="pro70648-bib-0052" ref-type="bibr">2000</xref>).</p><p>In terms of different modalities, <italic toggle="yes">MRDAET</italic> relies on interactivity and immersivity thanks to technology, but without being totally digitally immersed, like in Virtual Reality. There are many VR applications that benefit understanding concepts in biology and chemistry, such as virtual labs (Barrow et al., <xref rid="pro70648-bib-0010" ref-type="bibr">2024</xref>), a combination of VR with feedback devices (Gebhardt et al., <xref rid="pro70648-bib-0030" ref-type="bibr">2022</xref>), allowing a virtual tour inside of molecules (Johnson et al., <xref rid="pro70648-bib-0049" ref-type="bibr">2015</xref>; Alharbi et al., <xref rid="pro70648-bib-0004" ref-type="bibr">2023</xref>), or building nanostructures (Kut'ák et al., <xref rid="pro70648-bib-0054" ref-type="bibr">2021</xref>). However, these applications rely on a headset to be immersed in virtual space, which is different from apparatus like <italic toggle="yes">MRDAET</italic>, which relies on immersivity through tactile exploration and visual inspection in the real world (e.g., illustrations and physical objects). While VR is a modality that is developing rapidly and is a powerful immersive visualization tool, it comes with several setbacks such as discomfort (motion sickness), limited tactile feedback, accessibility, and cost, as well as cognitive overload (Wang, <xref rid="pro70648-bib-0103" ref-type="bibr">2025</xref>). VR offers valuable advantages for education and visualizations, but its limitations highlight the importance of exploring other modalities, for instance physicalizations, because they are more cost‐effective and do not require users to have advanced technical skills.</p><p>We also highlight the importance of collaboration with the domain experts (in this case, biochemistry) to prevent factual mistakes. In our installation, the physical and animated representation of the FAD molecule has a site for accepting one electron, despite the fact that the molecule accepts up to two electrons (the correct representation is depicted in Figure <xref rid="pro70648-fig-0003" ref-type="fig">3</xref>). While this inaccuracy does not significantly affect the perception of visualization and its impact on learning, it concerns objective data representation and should be addressed in future iterations. Thanks to the digital nature of these modalities, the issue can be readily corrected within the 3D modeling software before 3D printing.</p></sec></sec><sec sec-type="conclusions" id="pro70648-sec-0021"><label>7</label><title>CONCLUSION</title><p>In this paper, we presented <italic toggle="yes">MRDAET</italic>, a multimedia artistic tool aimed at science education. Based on our survey, we evaluated that using multi‐modal interactive approaches, such as <italic toggle="yes">MRDAET</italic>, in educational settings (e.g., science museums) would benefit the users who are new to the hidden world of biochemistry. We posed questions to explore the perception of the installation that shows science through art. To answer RQ1 concerning enjoyment, the combination of several modalities makes it enjoyable to interact and retain information. This would be especially helpful for novices in the topic, whether it be the general public or high school students who struggle with grasping these concepts. Regarding RQ2, which focused on perceived helpfulness in learning, the interaction with 3D physical models, enhanced through a 2.5D animation overlay and supported by clear, intuitive visual cues, made this multimodal approach particularly valuable for education. It addressed several key challenges in molecular learning: understanding complex spatial arrangements, visualizing the movement of otherwise unseen molecules, representing the dynamic and crowded nature of the cell, clarifying the spatial location of processes within it, and the grouping of molecules by function.</p><p>The input from participants about the improvement of the tool helped us determine the next iteration of the installation., The participants' feedback has guided us through three iterations. The unexpected, yet most helpful comments were regarding the 2.5D animation by adding interactivity through the 3D models and music, or a guide to the experience. Another component that could be added would be gamification, which would increase mental stimulation and incentive to learn. The findings further suggested overarching guidance for such interactions, such as providing more direction to the participant and preparing the interactive pieces for heavy use by using sturdy materials. We believe that multimedia interactive installations represent a valuable addition to STEAM education by offering an engaging alternative for learning about abstract scientific processes. Based on the collected user feedback, our findings suggest that multimodal visualizations combining art and science have the potential to enhance learning through interactivity and aesthetic appeal and warrant further development and a more detailed study.</p></sec><sec id="pro70648-sec-0025"><title>AUTHOR CONTRIBUTIONS</title><p>
+<bold>Hana Pokojná:</bold> Conceptualization; investigation; writing – original draft; methodology; validation; visualization; writing – review and editing; formal analysis; project administration; data curation; funding acquisition; resources. <bold>Barbora Kozlíková:</bold> Writing – review and editing; supervision; writing – original draft. <bold>Katarína Furmanová:</bold> Writing – review and editing; supervision; writing – original draft. <bold>Adam Štěpánek:</bold> Writing – review and editing. <bold>Simone Kriglstein:</bold> Conceptualization; writing – review and editing; supervision; writing – original draft.</p></sec></body><back><ack id="pro70648-sec-0022"><title>ACKNOWLEDGMENTS</title><p>We thank the participants for their time and valuable feedback. Open access publishing facilitated by Masarykova univerzita, as part of the Wiley ‐ CzechELib agreement.</p></ack><sec sec-type="data-availability" id="pro70648-sec-0024"><title>DATA AVAILABILITY STATEMENT</title><p>Research data are not shared.</p></sec><ref-list id="pro70648-bibl-0001" content-type="cited-references"><title>REFERENCES</title><ref id="pro70648-bib-0001"><mixed-citation publication-type="book" id="pro70648-cit-0001">
+<string-name name-style="western">
+<surname>Abrahamson</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lindgren</surname>
+<given-names>R</given-names>
+</string-name>. <part-title>Embodiment and embodied design</part-title>. In: <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Sawyer</surname>
+<given-names>RK</given-names>
+</string-name>
+</person-group>, editor. <source>The Cambridge handbook of the learning sciences</source>. <edition designator="2">2nd ed.</edition>
+<publisher-loc>Cambridge, United Kingdom</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>; <year>2014</year>. p. <fpage>358</fpage>–<lpage>376</lpage>. <pub-id pub-id-type="doi">10.1017/CBO9781139519526.022</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0002"><mixed-citation publication-type="journal" id="pro70648-cit-0002">
+<string-name name-style="western">
+<surname>Adnan</surname>
+<given-names>A</given-names>
+</string-name>. <article-title>The use of illustration in biochemistry teaching and learning</article-title>. <source>MALIM: Jurnal Pengajian Umum Asia Tenggara (SEA J Gen Stud)</source>. <year>2020</year>;<volume>21</volume>:<fpage>142</fpage>–<lpage>149</lpage>. <pub-id pub-id-type="doi">10.17576/malim-2020-2101-11</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0003"><mixed-citation publication-type="journal" id="pro70648-cit-0003">
+<string-name name-style="western">
+<surname>Alderighi</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Giorgi</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Malomo</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Cignoni</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Zoppè</surname>
+<given-names>M</given-names>
+</string-name>. <article-title>Computational design, fabrication and evaluation of rubber protein models</article-title>. <source>Comput Graph</source>. <year>2021</year>;<volume>98</volume>:<fpage>177</fpage>–<lpage>187</lpage>. <pub-id pub-id-type="doi">10.1016/j.cag.2021.05.010</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0004"><mixed-citation publication-type="journal" id="pro70648-cit-0004">
+<string-name name-style="western">
+<surname>Alharbi</surname>
+<given-names>R</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Strnad</surname>
+<given-names>O</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Luidolt</surname>
+<given-names>LR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Waldner</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kouril</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bohak</surname>
+<given-names>C</given-names>
+</string-name>, et al. <article-title>Nanotilus: generator of immersive guided‐Tours in Crowded 3D environments</article-title>. <source>IEEE Trans Vis Comput Graph</source>. <year>2023</year>;<volume>29</volume>(<issue>3</issue>):<fpage>1860</fpage>–<lpage>1875</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2021.3133592</pub-id>
+<pub-id pub-id-type="pmid">34882555</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0005"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0005">
+<collab collab-type="authors">ARTIS Zoo</collab>
+. <article-title>ARTIS‐Micropia, Amsterdam, Netherlands</article-title>. <year>2014</year>. Accessed October, 2025 <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.artis.nl/en/artis-micropia" ext-link-type="uri">https://www.artis.nl/en/artis-micropia</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0006"><mixed-citation publication-type="journal" id="pro70648-cit-0006">
+<string-name name-style="western">
+<surname>Baah</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Govender</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Subramaniam</surname>
+<given-names>PR</given-names>
+</string-name>. <article-title>Enhancing learning engagement: a study on Gamification's influence on motivation and cognitive load</article-title>. <source>Educ Sci</source>. <year>2024</year>;<volume>14</volume>(<issue>10</issue>):<elocation-id>1115</elocation-id>. <pub-id pub-id-type="doi">10.3390/educsci14101115</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0007"><mixed-citation publication-type="journal" id="pro70648-cit-0007">
+<string-name name-style="western">
+<surname>Bae</surname>
+<given-names>SS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Fujiwara</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ynnerman</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Do</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rivera</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Szafir</surname>
+<given-names>D</given-names>
+</string-name>. <article-title>A computational design pipeline to fabricate sensing network physicalizations</article-title>. <source>IEEE Trans Vis Comput Graph (Proc IEEE VIS 2023)</source>. <year>2023</year>;<volume>30</volume>:<fpage>1</fpage>–<lpage>11</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2023.3327198</pub-id>
+<pub-id pub-id-type="pmid">37906495</pub-id></mixed-citation></ref><ref id="pro70648-bib-0008"><mixed-citation publication-type="journal" id="pro70648-cit-0008">
+<string-name name-style="western">
+<surname>Barak</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ashkar</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Dori</surname>
+<given-names>YJ</given-names>
+</string-name>. <article-title>Learning science via animated movies: its effect on students' thinking and motivation</article-title>. <source>Comput Educ</source>. <year>2011</year>;<volume>56</volume>(<issue>3</issue>):<fpage>839</fpage>–<lpage>846</lpage>. <pub-id pub-id-type="doi">10.1016/j.compedu.2010.10.025</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0009"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0009">
+<string-name name-style="western">
+<surname>Barillé</surname>
+<given-names>A</given-names>
+</string-name>. <article-title>Once Upon A Time… Life. Studio Procidis and Eiken Studi, 1987–1988. Video series</article-title>. <year>1987</year>
+<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://hellomaestro.fr/en/universe/life" ext-link-type="uri">hellomaestro.fr/en/universe/life</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0010"><mixed-citation publication-type="journal" id="pro70648-cit-0010">
+<string-name name-style="western">
+<surname>Barrow</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hurst</surname>
+<given-names>W</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Edman</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ariesen</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Krampe</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>Virtual reality for biochemistry education: the cellular factory</article-title>. <source>Educ Inform Technol</source>. <year>2024</year>;<volume>29</volume>(<issue>2</issue>):<fpage>1647</fpage>–<lpage>1672</lpage>. <pub-id pub-id-type="doi">10.1007/s10639-023-11826-1</pub-id>
+<pub-id pub-id-type="pmcid">PMC10182538</pub-id><pub-id pub-id-type="pmid">37361784</pub-id></mixed-citation></ref><ref id="pro70648-bib-0011"><mixed-citation publication-type="journal" id="pro70648-cit-0011">
+<string-name name-style="western">
+<surname>Berman</surname>
+<given-names>HM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Westbrook</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Feng</surname>
+<given-names>Z</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gilliland</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bhat</surname>
+<given-names>TN</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Weissig</surname>
+<given-names>H</given-names>
+</string-name>, et al. <article-title>The Protein Data Bank</article-title>. <source>Nucleic Acids Res</source>. <year>2000</year>;<volume>28</volume>(<issue>1</issue>):<fpage>235</fpage>–<lpage>242</lpage>. <pub-id pub-id-type="doi">10.1093/nar/28.1.235</pub-id>
+<pub-id pub-id-type="pmid">10592235</pub-id>
+<pub-id pub-id-type="pmcid">PMC102472</pub-id></mixed-citation></ref><ref id="pro70648-bib-0012"><mixed-citation publication-type="journal" id="pro70648-cit-0012">
+<string-name name-style="western">
+<surname>Berry</surname>
+<given-names>D</given-names>
+</string-name>. <article-title>Molecular animation of cell death mediated by the Fas pathway</article-title>. <source>Sci STKE</source>. <year>2007</year>;<volume>2007</volume>(<issue>380</issue>):<elocation-id>tr1</elocation-id>. <pub-id pub-id-type="doi">10.1126/stke.3802007tr1</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0013"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0013">
+<string-name name-style="western">
+<surname>Berry</surname>
+<given-names>D</given-names>
+</string-name>. <article-title>MendelTheLegacy, “Drew Berry on Mendel: the Legacy,” YouTube, May</article-title>. <year>2015</year>
+<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.youtube.com/watch?v=urUq8g-qWYk" ext-link-type="uri">https://www.youtube.com/watch?v=urUq8g-qWYk</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0014"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0014">
+<string-name name-style="western">
+<surname>Berry</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Tétaz</surname>
+<given-names>F</given-names>
+</string-name>. <article-title>Synthesis of ATP. YouTube video</article-title>. <year>2018</year>. Accessed October 29, 2021 <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.youtube.com/watch?v=OT5AXGS1aL8" ext-link-type="uri">https://www.youtube.com/watch?v=OT5AXGS1aL8</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0015"><mixed-citation publication-type="journal" id="pro70648-cit-0015">
+<string-name name-style="western">
+<surname>Billinghurst</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kato</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Poupyrev</surname>
+<given-names>I</given-names>
+</string-name>. <article-title>The MagicBook—moving seamlessly between reality and Virtuality</article-title>. <source>IEEE Comput Graph Appl</source>. <year>2002</year>;<volume>21</volume>(<issue>3</issue>):<fpage>6</fpage>–<lpage>8</lpage>. <pub-id pub-id-type="doi">10.1109/38.9206210</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0016"><mixed-citation publication-type="journal" id="pro70648-cit-0016">
+<string-name name-style="western">
+<surname>Biner</surname>
+<given-names>O</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Schick</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ganguin</surname>
+<given-names>AA</given-names>
+</string-name>, <string-name name-style="western">
+<surname>von Ballmoos</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>Towards a synthetic mitochondrion</article-title>. <source>Chimia</source>. <year>2018</year>;<volume>72</volume>(<issue>5</issue>):<elocation-id>291</elocation-id>. <pub-id pub-id-type="doi">10.2533/chimia.2018.291</pub-id>
+<pub-id pub-id-type="pmid">29789065</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0017"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0017">
+<collab collab-type="authors">BioBlender</collab>
+. <article-title>BioBlender, “BioBlender: A tool for molecular visualization”</article-title>. <year>2025</year>. Accessed October, 2025 <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.bioblender.org/" ext-link-type="uri">http://www.bioblender.org/</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0018"><mixed-citation publication-type="journal" id="pro70648-cit-0018">
+<string-name name-style="western">
+<surname>Botsis</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Fairman</surname>
+<given-names>JE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Moran</surname>
+<given-names>MB</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Anagnostou</surname>
+<given-names>V</given-names>
+</string-name>. <article-title>Visual storytelling enhances knowledge dissemination in biomedical science</article-title>. <source>J Biomed Inform</source>. <year>2020</year>;<volume>107</volume>:<elocation-id>103458</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.jbi.2020.103458</pub-id>
+<pub-id pub-id-type="pmid">32445856</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0019"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0019">
+<string-name name-style="western">
+<surname>Brenner</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Projector‐based textures for 3D‐printed models (Ph.D. thesis)</article-title>. <year>2015</year>
+<pub-id pub-id-type="doi">10.34726/hss.2015.27629</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0020"><mixed-citation publication-type="journal" id="pro70648-cit-0020">
+<string-name name-style="western">
+<surname>Brůža</surname>
+<given-names>V</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Šašinková</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Šašinka</surname>
+<given-names>Č</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Stachoň</surname>
+<given-names>Z</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Chmelík</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Immersive and interactive learning with eDIVE: a solution for creating collaborative VR education experiences</article-title>. <source>Comput Graph Forum</source>. <year>2025</year>;<volume>44</volume>(<issue>1</issue>):<elocation-id>e70001</elocation-id>. <pub-id pub-id-type="doi">10.1111/cgf.70001</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0021"><mixed-citation publication-type="journal" id="pro70648-cit-0021">
+<string-name name-style="western">
+<surname>Copolo</surname>
+<given-names>CE</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hounshell</surname>
+<given-names>PB</given-names>
+</string-name>. <article-title>Using three‐dimensional models to teach molecular structures in high school chemistry</article-title>. <source>J Sci Educ Technol</source>. <year>1995</year>;<volume>4</volume>(<issue>4</issue>):<fpage>295</fpage>–<lpage>305</lpage>. <pub-id pub-id-type="doi">10.1007/BF02211261</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0022"><mixed-citation publication-type="book" id="pro70648-cit-0022">
+<string-name name-style="western">
+<surname>Dragicevic</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Jansen</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Vande Moere</surname>
+<given-names>A</given-names>
+</string-name>. <part-title>Data physicalization</part-title>. In: <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Vanderdonckt</surname>
+<given-names>J</given-names>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Palanque</surname>
+<given-names>P</given-names>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Winckler</surname>
+<given-names>M</given-names>
+</string-name>
+</person-group>, editors. <source>Handbook of human computer interaction</source>. <publisher-loc>Cham</publisher-loc>: <publisher-name>Springer</publisher-name>; <year>2021</year>. <pub-id pub-id-type="doi">10.1007/978-3-319-27648-9_94-1</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0023"><mixed-citation publication-type="journal" id="pro70648-cit-0023">
+<string-name name-style="western">
+<surname>Dreyfus</surname>
+<given-names>BW</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sawtelle</surname>
+<given-names>V</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Turpen</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gouvea</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Redish</surname>
+<given-names>EF</given-names>
+</string-name>. <article-title>Students' reasoning about “high‐energy bonds” and ATP: a vision of interdisciplinary education</article-title>. <source>Phys Rev Special Top Phys Educ Res</source>. <year>2014</year>;<volume>10</volume>(<issue>1</issue>):<elocation-id>010115</elocation-id>. <pub-id pub-id-type="doi">10.1103/PhysRevSTPER.10.010115</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0024"><mixed-citation publication-type="journal" id="pro70648-cit-0024">
+<string-name name-style="western">
+<surname>Erolin</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>Medical illustration in the 21st century and beyond</article-title>. <source>Med Writ</source>. <year>2020</year>;<volume>29</volume>(<issue>1</issue>):<fpage>6</fpage>–<lpage>10</lpage>.</mixed-citation></ref><ref id="pro70648-bib-0025"><mixed-citation publication-type="journal" id="pro70648-cit-0025">
+<string-name name-style="western">
+<surname>Ferk</surname>
+<given-names>V</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Vrtacnik</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Blejec</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gril</surname>
+<given-names>A</given-names>
+</string-name>. <article-title>Students' understanding of molecular structure representations</article-title>. <source>Int J Sci Educ</source>. <year>2003</year>;<volume>25</volume>(<issue>10</issue>):<fpage>1227</fpage>–<lpage>1245</lpage>. <pub-id pub-id-type="doi">10.1080/0950069022000038231</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0026"><mixed-citation publication-type="book" id="pro70648-cit-0026">
+<string-name name-style="western">
+<surname>García</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hornecker</surname>
+<given-names>E</given-names>
+</string-name>. <part-title>Scaling data physicalization—how does size influence experience?</part-title>
+<source>Proceedings of the 2022 CHI conference on human factors in computing systems</source>. <publisher-loc>New York, NY, USA</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2022</year>. <pub-id pub-id-type="doi">10.1145/3491102.3501855</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0027"><mixed-citation publication-type="journal" id="pro70648-cit-0027">
+<string-name name-style="western">
+<surname>Garden</surname>
+<given-names>CLP</given-names>
+</string-name>. <article-title>Lego serious play: building engagement with cell biology</article-title>. <source>Biochem Mol Biol Educ</source>. <year>2022</year>;<volume>50</volume>(<issue>2</issue>):<fpage>216</fpage>–<lpage>228</lpage>. <pub-id pub-id-type="doi">10.1002/bmb.21608</pub-id>
+<pub-id pub-id-type="pmid">35099845</pub-id>
+<pub-id pub-id-type="pmcid">PMC9303253</pub-id></mixed-citation></ref><ref id="pro70648-bib-0028"><mixed-citation publication-type="journal" id="pro70648-cit-0028">
+<string-name name-style="western">
+<surname>Gardner</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Olson</surname>
+<given-names>A</given-names>
+</string-name>. <article-title>3D printing of molecular models</article-title>. <source>J Biocommun</source>. <year>2016</year>;<volume>40</volume>(<issue>1</issue>):<elocation-id>e5</elocation-id>. <pub-id pub-id-type="doi">10.5210/jbc.v40i1.6626</pub-id>
+<pub-id pub-id-type="pmid">36407824</pub-id>
+<pub-id pub-id-type="pmcid">PMC9139400</pub-id></mixed-citation></ref><ref id="pro70648-bib-0029"><mixed-citation publication-type="journal" id="pro70648-cit-0029">
+<string-name name-style="western">
+<surname>Gayford</surname>
+<given-names>CG</given-names>
+</string-name>. <article-title>Some aspects of the problems of teaching about energy in school biology</article-title>. <source>Eur J Sci Educ</source>. <year>1986</year>;<volume>8</volume>(<issue>4</issue>):<fpage>443</fpage>–<lpage>450</lpage>. <pub-id pub-id-type="doi">10.1080/0140528860080410</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0030"><mixed-citation publication-type="book" id="pro70648-cit-0030">
+<string-name name-style="western">
+<surname>Gebhardt</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yu</surname>
+<given-names>X</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Köhn</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sedlmair</surname>
+<given-names>M</given-names>
+</string-name>. <part-title>MolecuSense: using force‐feedback gloves for creating and interacting with ball‐and‐stick molecules in VR</part-title>. <source>Proceedings of the 15th international symposium on visual information communication and interaction (VINCI '22)</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>ACM</publisher-name>; <year>2022</year>. p. <fpage>1</fpage>–<lpage>5</lpage>. <pub-id pub-id-type="doi">10.1145/3554944.3554956</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0031"><mixed-citation publication-type="journal" id="pro70648-cit-0031">
+<string-name name-style="western">
+<surname>Geller</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Stein</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Du</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Webb</surname>
+<given-names>JR</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lieberman</surname>
+<given-names>Z</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Shreiber</surname>
+<given-names>D</given-names>
+</string-name>, et al. <article-title>Impact of mixed reality presentation on STEM engagement and comprehension: a pilot study on adult scientists</article-title>. <source>Biomed Eng Educ</source>. <year>2021</year>;<volume>1</volume>(<issue>2</issue>):<fpage>277</fpage>–<lpage>290</lpage>. <pub-id pub-id-type="doi">10.1007/s43683-021-00049-w</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0032"><mixed-citation publication-type="book" id="pro70648-cit-0032">
+<string-name name-style="western">
+<surname>Gillet</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sanner</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Stoffler</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Olson</surname>
+<given-names>A</given-names>
+</string-name>. <part-title>Augmented reality with tangible auto‐fabricated models for molecular biology applications</part-title>. <source>Proceedings of IEEE visualization 2004</source>. <publisher-loc>D.C., USA</publisher-loc>: <publisher-name>IEEE Computer Society in Washington</publisher-name>; <year>2004</year>. p. <fpage>235</fpage>–<lpage>241</lpage>. <pub-id pub-id-type="doi">10.1109/VISUAL.2004.7</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0033"><mixed-citation publication-type="journal" id="pro70648-cit-0033">
+<string-name name-style="western">
+<surname>Gillet</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sanner</surname>
+<given-names>MF</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Stoffler</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Olson</surname>
+<given-names>AJ</given-names>
+</string-name>. <article-title>Tangible augmented interfaces for structural molecular biology</article-title>. <source>IEEE Comput Graph Appl</source>. <year>2005</year>;<volume>25</volume>(<issue>2</issue>):<fpage>13</fpage>–<lpage>17</lpage>. <pub-id pub-id-type="doi">10.1016/j.str.2005.01.009</pub-id>
+<pub-id pub-id-type="pmid">15794144</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0034"><mixed-citation publication-type="journal" id="pro70648-cit-0034">
+<string-name name-style="western">
+<surname>Goagoses</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Winschiers‐Theophilus</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Auala</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Pope</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rötkönen</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Itenge</surname>
+<given-names>H</given-names>
+</string-name>, et al. <article-title>Teachers and students envisioning mixed reality remote learning: a qualitative exploration on fostering academic engagement</article-title>. <source>Technol Knowl Learn</source>. <year>2025</year>;<volume>30</volume>(<issue>2</issue>):<fpage>685</fpage>–<lpage>709</lpage>. <pub-id pub-id-type="doi">10.1007/s10758-024-09797-4</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0035"><mixed-citation publication-type="book" id="pro70648-cit-0035">
+<string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>DS</given-names>
+</string-name>. <source>The machinery of life</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Springer</publisher-name>; <year>2009</year>. <pub-id pub-id-type="doi">10.1007/978-0-387-84925-6</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0036"><mixed-citation publication-type="journal" id="pro70648-cit-0036">
+<string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>DS</given-names>
+</string-name>. <article-title>Cellular landscapes in watercolor</article-title>. <source>J Biocommun</source>. <year>2016</year>;<volume>40</volume>(<issue>1</issue>):<elocation-id>e6</elocation-id>. <pub-id pub-id-type="doi">10.5210/jbc.v40i1.6627</pub-id>
+<pub-id pub-id-type="pmid">36407827</pub-id>
+<pub-id pub-id-type="pmcid">PMC9138463</pub-id></mixed-citation></ref><ref id="pro70648-bib-0037"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0037">
+<string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>DS</given-names>
+</string-name>. <article-title>Insulin release</article-title>. <year>2022</year>. Accessed October 8, 2025 <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pdb101.rcsb.org/sci-art/goodsell-gallery/insulin-release" ext-link-type="uri">https://pdb101.rcsb.org/sci-art/goodsell-gallery/insulin-release</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0038"><mixed-citation publication-type="journal" id="pro70648-cit-0038">
+<string-name name-style="western">
+<surname>Green</surname>
+<given-names>AI</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Parent</surname>
+<given-names>KN</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Underwood</surname>
+<given-names>SM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Matz</surname>
+<given-names>RL</given-names>
+</string-name>. <article-title>Connecting ideas across courses: relating energy, bonds &amp; how ATP hydrolysis powers a molecular motor</article-title>. <source>Am Biol Teach</source>. <year>2021</year>;<volume>83</volume>(<issue>5</issue>):<fpage>303</fpage>–<lpage>310</lpage>. <pub-id pub-id-type="doi">10.1525/abt.2021.83.5.303</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0039"><mixed-citation publication-type="book" id="pro70648-cit-0039">
+<string-name name-style="western">
+<surname>Guo</surname>
+<given-names>W</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Xue</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sun</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Chen</surname>
+<given-names>W</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Long</surname>
+<given-names>S</given-names>
+</string-name>. <part-title>Utilizing augmented reality to support students' learning in popular science courses</part-title>. <source>2017 International conference of educational innovation through technology (EITT)</source>. <publisher-loc>D.C., USA</publisher-loc>: <publisher-name>IEEE Computer Society in Washington</publisher-name>; <year>2017</year>. p. <fpage>311</fpage>–<lpage>315</lpage>. <pub-id pub-id-type="doi">10.1109/EITT.2017.81</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0040"><mixed-citation publication-type="journal" id="pro70648-cit-0040">
+<string-name name-style="western">
+<surname>Hutmacher</surname>
+<given-names>F</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kuhbandner</surname>
+<given-names>C</given-names>
+</string-name>. <article-title>Long‐term memory for Haptically explored objects: Fidelity, durability, incidental encoding, and cross‐modal transfer</article-title>. <source>Psychol Sci</source>. <year>2018</year>;<volume>29</volume>(<issue>12</issue>):<fpage>2031</fpage>–<lpage>2038</lpage>. <pub-id pub-id-type="doi">10.1177/0956797618803644</pub-id>
+<pub-id pub-id-type="pmid">30376424</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0041"><mixed-citation publication-type="journal" id="pro70648-cit-0041">
+<string-name name-style="western">
+<surname>Irwansyah</surname>
+<given-names>FS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Yusuf</surname>
+<given-names>YM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Farida</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ramdhani</surname>
+<given-names>MA</given-names>
+</string-name>. <article-title>Augmented reality (AR) technology on the android operating system in chemistry learning</article-title>. <source>IOP Conf Ser Mater Sci Eng</source>. <year>2018</year>;<volume>288</volume>:<elocation-id>012068</elocation-id>. <pub-id pub-id-type="doi">10.1088/1757-899X/288/1/012068</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0042"><mixed-citation publication-type="journal" id="pro70648-cit-0042">
+<string-name name-style="western">
+<surname>Iwasa</surname>
+<given-names>JH</given-names>
+</string-name>. <article-title>Bringing macromolecular machinery to life using 3D animation</article-title>. <source>Curr Opin Struct Biol</source>. <year>2015</year>;<volume>31</volume>:<fpage>84</fpage>–<lpage>88</lpage>. <pub-id pub-id-type="doi">10.1016/j.sbi.2015.03.015</pub-id>
+<pub-id pub-id-type="pmid">25889615</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0043"><mixed-citation publication-type="journal" id="pro70648-cit-0043">
+<string-name name-style="western">
+<surname>Jamieson</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Likert scales: how to (ab)use them</article-title>. <source>Med Educ</source>. <year>2004</year>;<volume>38</volume>(<issue>12</issue>):<fpage>1217</fpage>–<lpage>1218</lpage>. <pub-id pub-id-type="doi">10.1111/j.1365-2929.2004.02012</pub-id>
+<pub-id pub-id-type="pmid">15566531</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0044"><mixed-citation publication-type="journal" id="pro70648-cit-0044">
+<string-name name-style="western">
+<surname>Jansen</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Dragicevic</surname>
+<given-names>P</given-names>
+</string-name>. <article-title>An interaction model for visualizations beyond the desktop</article-title>. <source>IEEE Trans Vis Comput Graph</source>. <year>2013</year>;<volume>19</volume>(<issue>12</issue>):<fpage>2396</fpage>–<lpage>2405</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2013.134</pub-id>
+<pub-id pub-id-type="pmid">24051806</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0045"><mixed-citation publication-type="book" id="pro70648-cit-0045">
+<string-name name-style="western">
+<surname>Jansen</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Dragicevic</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Isenberg</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Alexander</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Karnik</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kildal</surname>
+<given-names>J</given-names>
+</string-name>, et al. <part-title>Opportunities and challenges for data physicalization</part-title>. <source>Proceedings of the 33rd annual ACM conference on human factors in computing systems (CHI 2015)</source>. <publisher-loc>New York, NY, USA</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2015</year>. p. <fpage>3227</fpage>–<lpage>3236</lpage>. <pub-id pub-id-type="doi">10.1145/2702123.2702180</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0046"><mixed-citation publication-type="journal" id="pro70648-cit-0046">
+<string-name name-style="western">
+<surname>Jenkinson</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Molecular biology meets the learning sciences: visualizations in education and outreach</article-title>. <source>J Mol Biol</source>. <year>2018</year>;<volume>430</volume>(<issue>21</issue>):<fpage>4013</fpage>–<lpage>4027</lpage>. <pub-id pub-id-type="doi">10.1016/j.jmb.2018.08.020</pub-id>
+<pub-id pub-id-type="pmid">30170006</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0047"><mixed-citation publication-type="journal" id="pro70648-cit-0047">
+<string-name name-style="western">
+<surname>Jenkinson</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>McGill</surname>
+<given-names>G</given-names>
+</string-name>. <article-title>Visualizing protein interactions and dynamics: evolving a visual language for molecular animation</article-title>. <source>CBE Life Sci Educ</source>. <year>2012</year>;<volume>11</volume>(<issue>1</issue>):<fpage>103</fpage>–<lpage>110</lpage>. <pub-id pub-id-type="doi">10.1187/cbe.11-08-0071</pub-id>
+<pub-id pub-id-type="pmid">22383622</pub-id>
+<pub-id pub-id-type="pmcid">PMC3292069</pub-id></mixed-citation></ref><ref id="pro70648-bib-0048"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0048">
+<string-name name-style="western">
+<surname>Johnson</surname>
+<given-names>GT</given-names>
+</string-name>. <article-title>ATP synthase. YouTube video</article-title>. <year>2015</year>. Accessed February 27, 2025 <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.youtube.com/watch?v=PjdPTY1wHdQ" ext-link-type="uri">https://www.youtube.com/watch?v=PjdPTY1wHdQ</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0049"><mixed-citation publication-type="journal" id="pro70648-cit-0049">
+<string-name name-style="western">
+<surname>Johnson</surname>
+<given-names>GT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Autin</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Al‐Alusi</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>DS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sanner</surname>
+<given-names>MF</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Olson</surname>
+<given-names>AJ</given-names>
+</string-name>. <article-title>cellPACK: a virtual mesoscope to model and visualize structural systems biology</article-title>. <source>Nat Methods</source>. <year>2015</year>;<volume>12</volume>(<issue>1</issue>):<fpage>85</fpage>–<lpage>91</lpage>. <pub-id pub-id-type="doi">10.1038/nmeth.3204</pub-id>
+<pub-id pub-id-type="pmid">25437435</pub-id>
+<pub-id pub-id-type="pmcid">PMC4281296</pub-id></mixed-citation></ref><ref id="pro70648-bib-0050"><mixed-citation publication-type="book" id="pro70648-cit-0050">
+<string-name name-style="western">
+<surname>Jones</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Fosbery</surname>
+<given-names>R</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gregory</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Taylor</surname>
+<given-names>D</given-names>
+</string-name>. <source>Cambridge international AS and a level biology Coursebook with CD‐ROM</source>. <publisher-loc>Cambridge</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>; <year>2014</year>.</mixed-citation></ref><ref id="pro70648-bib-0051"><mixed-citation publication-type="book" id="pro70648-cit-0051">
+<string-name name-style="western">
+<surname>Kepler</surname>
+<given-names>J</given-names>
+</string-name>. <part-title>1611. Strena, Seu de Nive Sexangula</part-title>. <source>English translation (C. Hardie) the six‐cornered snowflake</source>. <publisher-loc>Oxford</publisher-loc>: <publisher-name>Clarendon Press</publisher-name>; <year>1966</year>.</mixed-citation></ref><ref id="pro70648-bib-0052"><mixed-citation publication-type="journal" id="pro70648-cit-0052">
+<string-name name-style="western">
+<surname>Kornberg</surname>
+<given-names>H</given-names>
+</string-name>. <article-title>Krebs and his trinity of cycles</article-title>. <source>Nat Rev Mol Cell Biol</source>. <year>2000</year>;<volume>1</volume>(<issue>3</issue>):<fpage>225</fpage>–<lpage>228</lpage>. <pub-id pub-id-type="doi">10.1038/35043073</pub-id>
+<pub-id pub-id-type="pmid">11252898</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0053"><mixed-citation publication-type="journal" id="pro70648-cit-0053">
+<string-name name-style="western">
+<surname>Krajcik</surname>
+<given-names>JS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Sutherland</surname>
+<given-names>LM</given-names>
+</string-name>. <article-title>Supporting students in developing literacy in science</article-title>. <source>Science</source>. <year>2010</year>;<volume>328</volume>(<issue>5977</issue>):<fpage>456</fpage>–<lpage>459</lpage>. <pub-id pub-id-type="doi">10.1126/science.1182593</pub-id>
+<pub-id pub-id-type="pmid">20413490</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0054"><mixed-citation publication-type="journal" id="pro70648-cit-0054">
+<string-name name-style="western">
+<surname>Kut'ák</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Selzer</surname>
+<given-names>MN</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Byška</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ganuza</surname>
+<given-names>ML</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Barišić</surname>
+<given-names>I</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, et al. <article-title>Vivern—a virtual environment for multiscale visualization and modeling of DNA nanostructures</article-title>. <source>IEEE Trans Vis Comput Graph</source>. <year>2021</year>;<volume>28</volume>(<issue>12</issue>):<fpage>4825</fpage>–<lpage>4838</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2021.3106328</pub-id>
+<pub-id pub-id-type="pmid">34437064</pub-id></mixed-citation></ref><ref id="pro70648-bib-0055"><mixed-citation publication-type="journal" id="pro70648-cit-0055">
+<string-name name-style="western">
+<surname>Laal</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ghodsi</surname>
+<given-names>SM</given-names>
+</string-name>. <article-title>Benefits of collaborative learning</article-title>. <source>Proc Soc Behav Sci</source>. <year>2012</year>;<volume>31</volume>:<fpage>486</fpage>–<lpage>490</lpage>. <pub-id pub-id-type="doi">10.1016/j.sbspro.2011.12.091</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0056"><mixed-citation publication-type="book" id="pro70648-cit-0056">
+<string-name name-style="western">
+<surname>Li</surname>
+<given-names>Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Liang</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Preissing</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bachl</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Dutoit</surname>
+<given-names>MM</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Weber</surname>
+<given-names>T</given-names>
+</string-name>, et al. <part-title>A meta‐analysis of tangible learning studies from the TEI conference</part-title>. <source>Proceedings of the sixteenth international conference on tangible, embedded, and embodied interaction (TEI '22)</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2022</year>. p. <fpage>7</fpage>–<lpage>17</lpage>. <pub-id pub-id-type="doi">10.1145/3490149.3501313</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0057"><mixed-citation publication-type="journal" id="pro70648-cit-0057">
+<string-name name-style="western">
+<surname>Likert</surname>
+<given-names>R</given-names>
+</string-name>. <article-title>A technique for the measurement of attitudes</article-title>. <source>Arch Psychol</source>. <year>1932</year>;<volume>140</volume>:<fpage>1</fpage>–<lpage>55</lpage>. <pub-id pub-id-type="doi">10.1016/j.ergon.2024.103660</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0058"><mixed-citation publication-type="book" id="pro70648-cit-0058">
+<string-name name-style="western">
+<surname>Lin</surname>
+<given-names>J‐L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hsiao</surname>
+<given-names>K‐H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lin</surname>
+<given-names>L‐C</given-names>
+</string-name>. <part-title>The role of museum to promote STEM education and teacher interdisciplinary training: introducing the experience of National Science and technology museum</part-title>. <source>Recent developments on information and communication technology (ICT) engineering</source>. Volume <volume>43</volume>. <publisher-loc>Singapore</publisher-loc>: <publisher-name>International Institute of Knowledge Innovation</publisher-name>; <year>2019</year>. <pub-id pub-id-type="doi">10.35745/icice2018v2.043</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0059"><mixed-citation publication-type="journal" id="pro70648-cit-0059">
+<string-name name-style="western">
+<surname>Makransky</surname>
+<given-names>G</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Terkildsen</surname>
+<given-names>TS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mayer</surname>
+<given-names>RE</given-names>
+</string-name>. <article-title>Adding immersive virtual reality to a science lab simulation causes more presence but less learning</article-title>. <source>Learn Instr</source>. <year>2019</year>;<volume>60</volume>:<fpage>225</fpage>–<lpage>236</lpage>. <pub-id pub-id-type="doi">10.1016/j.learninstruc.2017.12.007</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0060"><mixed-citation publication-type="journal" id="pro70648-cit-0060">
+<string-name name-style="western">
+<surname>Mayer</surname>
+<given-names>RE</given-names>
+</string-name>. <article-title>Incorporating motivation into multimedia learning</article-title>. <source>Learn Instr</source>. <year>2014</year>;<volume>29</volume>:<fpage>171</fpage>–<lpage>173</lpage>. <pub-id pub-id-type="doi">10.1016/j.learninstruc.2013.04.003</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0061"><mixed-citation publication-type="book" id="pro70648-cit-0061">
+<string-name name-style="western">
+<surname>Mayring</surname>
+<given-names>P</given-names>
+</string-name>. <part-title>Qualitative content analysis: theoretical background and procedures</part-title>. <source>Approaches to qualitative research in mathematics education: examples of methodology and methods</source>. <publisher-loc>Dordrecht</publisher-loc>: <publisher-name>Springer</publisher-name>; <year>2015</year>. p. <fpage>365</fpage>–<lpage>380</lpage>. <pub-id pub-id-type="doi">10.1007/978-94-017-9181-6_13</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0062"><mixed-citation publication-type="journal" id="pro70648-cit-0062">
+<string-name name-style="western">
+<surname>McClean</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Johnson</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rogers</surname>
+<given-names>R</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Daniels</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Reber</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Slator</surname>
+<given-names>BM</given-names>
+</string-name>, et al. <article-title>Molecular and cellular biology animations: development and impact on student learning</article-title>. <source>Cell Biol Educ</source>. <year>2005</year>;<volume>4</volume>(<issue>2</issue>):<fpage>169</fpage>–<lpage>179</lpage>. <pub-id pub-id-type="doi">10.1187/cbe.04-07-0047</pub-id>
+<pub-id pub-id-type="pmid">15917875</pub-id>
+<pub-id pub-id-type="pmcid">PMC1103718</pub-id></mixed-citation></ref><ref id="pro70648-bib-0063"><mixed-citation publication-type="journal" id="pro70648-cit-0063">
+<string-name name-style="western">
+<surname>Minshall</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ford</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Invited review article: where and how 3D printing is used in teaching and education</article-title>. <source>Addit Manuf</source>. <year>2019</year>;<volume>25</volume>:<fpage>131</fpage>–<lpage>150</lpage>. <pub-id pub-id-type="doi">10.1016/j.addma.2018.10.028</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0064"><mixed-citation publication-type="miscellaneous" id="pro70648-cit-0064">
+<collab collab-type="authors">mMaya</collab>
+. <article-title>Clarafi.com, “Tools—Clarafi: scientific visualization and Molecular Maya (mMaya)”</article-title>. n.d. Accessed October 2025 <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://clarafi.com/tools/" ext-link-type="uri">https://clarafi.com/tools/</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0065"><mixed-citation publication-type="book" id="pro70648-cit-0065">
+<string-name name-style="western">
+<surname>Montessori</surname>
+<given-names>M</given-names>
+</string-name>. <source>The absorbent mind</source>. Claremont C, trans. <publisher-loc>New York</publisher-loc>: <publisher-name>Dell Publishing</publisher-name>; <year>1949</year> (Original work published 1949).</mixed-citation></ref><ref id="pro70648-bib-0066"><mixed-citation publication-type="journal" id="pro70648-cit-0066">
+<string-name name-style="western">
+<surname>Nayak</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Liu</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hsu</surname>
+<given-names>GI</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Iwasa</surname>
+<given-names>JH</given-names>
+</string-name>. <article-title>Using 3D animation to visualize hypotheses</article-title>. <source>Trends Biochem Sci</source>. <year>2020</year>;<volume>45</volume>(<issue>7</issue>):<fpage>633</fpage>–<lpage>634</lpage>. <pub-id pub-id-type="doi">10.1016/j.tibs.2020.04.009</pub-id>
+<pub-id pub-id-type="pmid">32423744</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0067"><mixed-citation publication-type="book" id="pro70648-cit-0067">
+<string-name name-style="western">
+<surname>Norooz</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mauriello</surname>
+<given-names>ML</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Jorgensen</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>McNally</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Froehlich</surname>
+<given-names>JE</given-names>
+</string-name>. <part-title>BodyVis: a new approach to body learning through wearable sensing and visualization</part-title>. <source>Proceedings of the 33rd annual ACM conference on human factors in computing systems (CHI '15)</source>. <publisher-loc>New York, NY, USA</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2015</year>. p. <fpage>1025</fpage>–<lpage>1034</lpage>. <pub-id pub-id-type="doi">10.1145/2702123.2702299</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0068"><mixed-citation publication-type="journal" id="pro70648-cit-0068">
+<string-name name-style="western">
+<surname>Novak</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Schwan</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>Does touching real objects affect learning?</article-title>
+<source>Educ Psychol Rev</source>. <year>2021</year>;<volume>33</volume>(<issue>2</issue>):<fpage>637</fpage>–<lpage>665</lpage>. <pub-id pub-id-type="doi">10.1007/s10648-020-09551-z</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0069"><mixed-citation publication-type="journal" id="pro70648-cit-0069">
+<string-name name-style="western">
+<surname>Offerdahl</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Arneson</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bybee</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Lighten the load: scaffolding visual literacy in biochemistry and molecular biology</article-title>. <source>CBE Life Sci Educ</source>. <year>2017</year>;<volume>16</volume>(<issue>1</issue>):<elocation-id>ar7</elocation-id>. <pub-id pub-id-type="doi">10.1187/cbe.16-06-0193</pub-id>
+<pub-id pub-id-type="pmid">28130273</pub-id>
+<pub-id pub-id-type="pmcid">PMC5332056</pub-id></mixed-citation></ref><ref id="pro70648-bib-0070"><mixed-citation publication-type="book" id="pro70648-cit-0070">
+<string-name name-style="western">
+<surname>Okerlund</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Segreto</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Grote</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Westendorf</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Scholze</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Littrell</surname>
+<given-names>R</given-names>
+</string-name>, et al. <part-title>SynFlo: a tangible museum exhibit for exploring bio‐design</part-title>. <source>Proceedings of the TEI '16: tenth international conference on tangible, embedded, and embodied interaction</source>. <publisher-loc>Stockholm</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2016</year>. p. <fpage>141</fpage>–<lpage>149</lpage>. <pub-id pub-id-type="doi">10.1145/2839462.2839488</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0071"><mixed-citation publication-type="book" id="pro70648-cit-0071">
+<collab collab-type="authors">Online Community Blender</collab>
+. <source>Blender—a 3D modelling and rendering package</source>. <publisher-loc>Amsterdam</publisher-loc>: <publisher-name>Blender Foundation, Stichting Blender Foundation</publisher-name>; <year>2018</year>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.blender.org" ext-link-type="uri">http://www.blender.org</ext-link>
+</mixed-citation></ref><ref id="pro70648-bib-0072"><mixed-citation publication-type="journal" id="pro70648-cit-0072">
+<string-name name-style="western">
+<surname>Pahr</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ehlers</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wu</surname>
+<given-names>H‐Y</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Waldner</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Raidou</surname>
+<given-names>RG</given-names>
+</string-name>. <article-title>Investigating the effect of operation mode and manifestation on physicalizations of dynamic processes</article-title>. <source>Comput Graph Forum</source>. <year>2024</year>;<volume>43</volume>(<issue>3</issue>):<elocation-id>e15106</elocation-id>. <pub-id pub-id-type="doi">10.1111/cgf.15106</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0073"><mixed-citation publication-type="book" id="pro70648-cit-0073">
+<string-name name-style="western">
+<surname>Paivio</surname>
+<given-names>A</given-names>
+</string-name>. <source>Mental representations: a dual coding approach</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Oxford University Press</publisher-name>; <year>1986</year>. <pub-id pub-id-type="doi">10.1093/acprof:oso/9780195066661.001.0001</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0074"><mixed-citation publication-type="journal" id="pro70648-cit-0074">
+<string-name name-style="western">
+<surname>Perovich</surname>
+<given-names>LJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Wylie</surname>
+<given-names>SA</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bongiovanni</surname>
+<given-names>R</given-names>
+</string-name>. <article-title>Chemicals in the Creek: designing a situated data physicalization of open government data with the community</article-title>. <source>IEEE Trans Vis Comput Graph</source>. <year>2021</year>;<volume>27</volume>(<issue>2</issue>):<fpage>913</fpage>–<lpage>923</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2020.3030472</pub-id>
+<pub-id pub-id-type="pmid">33079668</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0075"><mixed-citation publication-type="book" id="pro70648-cit-0075">
+<string-name name-style="western">
+<surname>Perovich</surname>
+<given-names>LJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rogowitz</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Crabb</surname>
+<given-names>V</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Vogelsang</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hartleben</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Offenhuber</surname>
+<given-names>D</given-names>
+</string-name>. <part-title>The tactile dimension: a method for physicalizing touch behaviors</part-title>. <source>Proceedings of the 2023 CHI conference on human factors in computing systems (CHI '23)</source>. Volume <volume>842</volume>. <publisher-loc>New York</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2023</year>. p. <fpage>1</fpage>–<lpage>15</lpage>. <pub-id pub-id-type="doi">10.1145/3544548.3581137</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0076"><mixed-citation publication-type="journal" id="pro70648-cit-0076">
+<string-name name-style="western">
+<surname>Philippe</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Souchet</surname>
+<given-names>AD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lameras</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Petridis</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Caporal</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Coldeboeuf</surname>
+<given-names>G</given-names>
+</string-name>, et al. <article-title>Multimodal teaching, learning and training in virtual reality: a review and case study</article-title>. <source>Virt Real Intell Hardw</source>. <year>2020</year>;<volume>2</volume>(<issue>5</issue>):<fpage>421</fpage>–<lpage>442</lpage>. <pub-id pub-id-type="doi">10.1016/j.vrih.2020.07.008</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0077"><mixed-citation publication-type="journal" id="pro70648-cit-0077">
+<string-name name-style="western">
+<surname>Pokojná</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Berry</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kriglstein</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Furmanová</surname>
+<given-names>K</given-names>
+</string-name>. <article-title>Seeing the unseen: comparison study of representation approaches for biochemical processes in education</article-title>. <source>PLoS One</source>. <year>2023a</year>;<volume>18</volume>(<issue>11</issue>):<elocation-id>0293592</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pone.0293592</pub-id>
+<pub-id pub-id-type="pmcid">PMC10627439</pub-id><pub-id pub-id-type="pmid">37930950</pub-id></mixed-citation></ref><ref id="pro70648-bib-0078"><mixed-citation publication-type="book" id="pro70648-cit-0078">
+<string-name name-style="western">
+<surname>Pokojná</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rasheed</surname>
+<given-names>F</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Schönborn</surname>
+<given-names>KJ</given-names>
+</string-name>. <part-title>Effect of the rings: a visual story design comparing three chemical characters</part-title>. <source>Approaches for science illustration and communication</source>. <publisher-loc>Cham</publisher-loc>: <publisher-name>Springer</publisher-name>; <year>2023b</year>. p. <fpage>133</fpage>–<lpage>156</lpage>. <pub-id pub-id-type="doi">10.1007/978-3-031-41652-1_6</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0079"><mixed-citation publication-type="book" id="pro70648-cit-0079">
+<string-name name-style="western">
+<surname>Pokojná</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kriglstein</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Echeverri Giraldo</surname>
+<given-names>DR</given-names>
+</string-name>. <part-title>Make some energy: tangible and interactive chemical reactions</part-title>. <source>In proceedings of expanded animation conference on animation and interactive art (expanded '24)</source>. <publisher-loc>Linz, Austria</publisher-loc>: <publisher-name>Ars Electronica</publisher-name>; <year>2024a</year>. p. <fpage>19</fpage>–<lpage>25</lpage>. <pub-id pub-id-type="doi">10.5281/zenodo.1338283</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0080"><mixed-citation publication-type="journal" id="pro70648-cit-0080">
+<string-name name-style="western">
+<surname>Pokojná</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Furmanová</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kriglstein</surname>
+<given-names>S</given-names>
+</string-name>. <article-title>ProjectAnatomy: a handy tool for learning forearm anatomy with augmented physicalisations</article-title>. <source>Behav Inform Technol</source>. <year>2024b</year>;<volume>43</volume>(<issue>14</issue>):<fpage>3389</fpage>–<lpage>3406</lpage>. <pub-id pub-id-type="doi">10.1080/0144929X.2024.2413161</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0081"><mixed-citation publication-type="journal" id="pro70648-cit-0081">
+<string-name name-style="western">
+<surname>Pokojná</surname>
+<given-names>H</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Isenberg</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bruckner</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Kozlíková</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Garrison</surname>
+<given-names>L</given-names>
+</string-name>. <article-title>The language of infographics: toward understanding conceptual metaphor use in scientific storytelling</article-title>. <source>IEEE Trans Vis Comput Graph</source>. <year>2025</year>;<volume>31</volume>(<issue>1</issue>):<fpage>371</fpage>–<lpage>381</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2024.3456327</pub-id>
+<pub-id pub-id-type="pmid">39288063</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0082"><mixed-citation publication-type="book" id="pro70648-cit-0082">
+<string-name name-style="western">
+<surname>Ramírez</surname>
+<given-names>JÁ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bueno</surname>
+<given-names>AMV</given-names>
+</string-name>. <part-title>Learning organic chemistry with virtual reality</part-title>. <source>2020 IEEE international conference on engineering Veracruz (ICEV)</source>. <publisher-loc>D.C., USA</publisher-loc>: <publisher-name>IEEE Computer Society in Washington</publisher-name>; <year>2020</year>. p. <fpage>1</fpage>–<lpage>4</lpage>. <pub-id pub-id-type="doi">10.1109/ICEV50249.2020.9289672</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0083"><mixed-citation publication-type="journal" id="pro70648-cit-0083">
+<string-name name-style="western">
+<surname>Rayan</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rayan</surname>
+<given-names>A</given-names>
+</string-name>. <article-title>Avogadro program for chemistry education: to what extent can molecular visualization and three‐dimensional simulations enhance meaningful chemistry learning?</article-title>
+<source>World J Chem Educ</source>. <year>2017</year>;<volume>5</volume>(<issue>4</issue>):<fpage>136</fpage>–<lpage>141</lpage>. <pub-id pub-id-type="doi">10.12691/wjce-5-4-4</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0084"><mixed-citation publication-type="journal" id="pro70648-cit-0084">
+<string-name name-style="western">
+<surname>Reiner</surname>
+<given-names>M</given-names>
+</string-name>. <article-title>Conceptual construction of fields through tactile Interface</article-title>. <source>Interact Learn Environ</source>. <year>1999</year>;<volume>7</volume>(<issue>1</issue>):<fpage>31</fpage>–<lpage>55</lpage>. <pub-id pub-id-type="doi">10.1076/ilee.7.1.31.3598</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0085"><mixed-citation publication-type="journal" id="pro70648-cit-0085">
+<string-name name-style="western">
+<surname>Roth</surname>
+<given-names>KS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bannerman</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gopalan</surname>
+<given-names>V</given-names>
+</string-name>. <article-title>An outreach activity to enhance biochemistry pedagogy</article-title>. <source>Trends Biochem Sci</source>. <year>2023</year>;<volume>48</volume>(<issue>5</issue>):<fpage>410</fpage>–<lpage>413</lpage>. <pub-id pub-id-type="doi">10.1016/j.tibs.2023.02.003</pub-id>
+<pub-id pub-id-type="pmid">36925316</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0086"><mixed-citation publication-type="book" id="pro70648-cit-0086">
+<string-name name-style="western">
+<surname>Sayffaerth</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Rasch</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Müller</surname>
+<given-names>F</given-names>
+</string-name>. <part-title>“Tele” me more: using telepresence charades to connect strangers and exhibits in different museums</part-title>. <source>Extended abstracts of the CHI conference on human factors in computing systems</source>, Article no. 389. <publisher-loc>New York</publisher-loc>: <publisher-name>ACM</publisher-name>; <year>2024</year>. p. <fpage>8</fpage>. <pub-id pub-id-type="doi">10.1145/3613905.3650834</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0087"><mixed-citation publication-type="journal" id="pro70648-cit-0087">
+<string-name name-style="western">
+<surname>Schloss</surname>
+<given-names>KB</given-names>
+</string-name>. <article-title>Color semantics in human cognition</article-title>. <source>Curr Dir Psychol Sci</source>. <year>2024</year>;<volume>33</volume>(<issue>1</issue>):<fpage>58</fpage>–<lpage>67</lpage>. <pub-id pub-id-type="doi">10.1177/09637214231208189</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0088"><mixed-citation publication-type="journal" id="pro70648-cit-0088">
+<string-name name-style="western">
+<surname>Schönborn</surname>
+<given-names>KJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Anderson</surname>
+<given-names>TR</given-names>
+</string-name>. <article-title>The importance of visual literacy in the education of biochemists</article-title>. <source>Biochem Mol Biol Educ</source>. <year>2006</year>;<volume>34</volume>(<issue>2</issue>):<fpage>94</fpage>–<lpage>102</lpage>. <pub-id pub-id-type="doi">10.1002/bmb.2006.49403402094</pub-id>
+<pub-id pub-id-type="pmid">21638645</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0089"><mixed-citation publication-type="journal" id="pro70648-cit-0089">
+<string-name name-style="western">
+<surname>Schönborn</surname>
+<given-names>KJ</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Anderson</surname>
+<given-names>TR</given-names>
+</string-name>. <article-title>Bridging the educational research–teaching practice gap: foundations for assessing and developing biochemistry students' visual literacy</article-title>. <source>Biochem Mol Biol Educ</source>. <year>2010</year>;<volume>38</volume>(<issue>5</issue>):<fpage>347</fpage>–<lpage>354</lpage>. <pub-id pub-id-type="doi">10.1002/bmb.20436</pub-id>
+<pub-id pub-id-type="pmid">21567860</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0090"><mixed-citation publication-type="journal" id="pro70648-cit-0090">
+<string-name name-style="western">
+<surname>Shaer</surname>
+<given-names>O</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hornecker</surname>
+<given-names>E</given-names>
+</string-name>. <article-title>Tangible user interfaces: past, present, and future directions</article-title>. <source>Found Trends Hum Comput Interact</source>. <year>2010</year>;<volume>3</volume>(<issue>1–2</issue>):<fpage>1</fpage>–<lpage>137</lpage>. <pub-id pub-id-type="doi">10.1561/1100000026</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0091"><mixed-citation publication-type="book" id="pro70648-cit-0091">
+<string-name name-style="western">
+<surname>Speicher</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hall</surname>
+<given-names>BD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Nebeling</surname>
+<given-names>M</given-names>
+</string-name>. <part-title>What is mixed reality?</part-title>
+<source>Proceedings of the 2019 CHI conference on human factors in computing systems (CHI '19)</source>. <publisher-loc>New York</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2019</year>. p. <fpage>1</fpage>–<lpage>15</lpage>. <pub-id pub-id-type="doi">10.1145/3290605.3300767</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0092"><mixed-citation publication-type="journal" id="pro70648-cit-0092">
+<string-name name-style="western">
+<surname>Stieff</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ryu</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Dixon</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hegarty</surname>
+<given-names>M</given-names>
+</string-name>. <article-title>The role of spatial ability and strategy preference for spatial problem solving in organic chemistry</article-title>. <source>J Chem Educ</source>. <year>2012</year>;<volume>89</volume>(<issue>7</issue>):<fpage>854</fpage>–<lpage>859</lpage>. <pub-id pub-id-type="doi">10.1021/ed200071d</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0093"><mixed-citation publication-type="journal" id="pro70648-cit-0093">
+<string-name name-style="western">
+<surname>Stull</surname>
+<given-names>AT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Barrett</surname>
+<given-names>T</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hegarty</surname>
+<given-names>M</given-names>
+</string-name>. <article-title>Usability of concrete and virtual models in chemistry instruction</article-title>. <source>Comput Hum Behav</source>. <year>2013</year>;<volume>29</volume>(<issue>6</issue>):<fpage>2546</fpage>–<lpage>2556</lpage>. <pub-id pub-id-type="doi">10.1016/j.chb.2013.06.012</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0094"><mixed-citation publication-type="journal" id="pro70648-cit-0094">
+<string-name name-style="western">
+<surname>Surapaneni</surname>
+<given-names>KM</given-names>
+</string-name>. <article-title>An idea to explore: introduction of ‘biochemical tales’ in medical education—learning made fun</article-title>. <source>Biochem Mol Biol Educ</source>. <year>2024</year>;<volume>52</volume>(<issue>2</issue>):<fpage>249</fpage>–<lpage>251</lpage>. <pub-id pub-id-type="doi">10.1002/bmb.21819</pub-id>
+<pub-id pub-id-type="pmid">38319132</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0095"><mixed-citation publication-type="journal" id="pro70648-cit-0095">
+<string-name name-style="western">
+<surname>Sweller</surname>
+<given-names>J</given-names>
+</string-name>. <article-title>Cognitive load theory</article-title>. <source>Psychol Learn Motivat</source>. <year>2011</year>;<volume>55</volume>:<fpage>37</fpage>–<lpage>76</lpage>. <pub-id pub-id-type="doi">10.1016/B978-0-12-387691-1.00002-8</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0096"><mixed-citation publication-type="journal" id="pro70648-cit-0096">
+<string-name name-style="western">
+<surname>Taylor</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Duffy</surname>
+<given-names>S</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Hughes</surname>
+<given-names>G</given-names>
+</string-name>. <article-title>The use of animation in higher education teaching to support students with dyslexia</article-title>. <source>Educ Train</source>. <year>2007</year>;<volume>49</volume>(<issue>1</issue>):<fpage>25</fpage>–<lpage>35</lpage>. <pub-id pub-id-type="doi">10.1108/00400910710729857</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0097"><mixed-citation publication-type="journal" id="pro70648-cit-0097">
+<string-name name-style="western">
+<surname>Tsoukala</surname>
+<given-names>CK</given-names>
+</string-name>. <article-title>STEM integrated education and multimodal educational material</article-title>. <source>Adv Mob Learn Educ Res</source>. <year>2021</year>;<volume>1</volume>(<issue>2</issue>):<fpage>96</fpage>–<lpage>113</lpage>. <pub-id pub-id-type="doi">10.25082/AMLER.2021.02.005</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0098"><mixed-citation publication-type="book" id="pro70648-cit-0098">
+<string-name name-style="western">
+<surname>Tufte</surname>
+<given-names>ER</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Graves‐Morris</surname>
+<given-names>PR</given-names>
+</string-name>. <source>The visual display of quantitative information</source>. Vol <volume>2</volume>. <publisher-loc>Cheshire</publisher-loc>: <publisher-name>Graphics Press</publisher-name>; <year>1983</year>.</mixed-citation></ref><ref id="pro70648-bib-0099"><mixed-citation publication-type="book" id="pro70648-cit-0099">
+<string-name name-style="western">
+<surname>Verish</surname>
+<given-names>C</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Strawhacker</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Bers</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Shaer</surname>
+<given-names>O</given-names>
+</string-name>. <part-title>CRISPEE: a tangible gene editing platform for early childhood</part-title>. <source>Proceedings of the twelfth international conference on tangible, embedded, and embodied interaction (TEI '18)</source>. <publisher-loc>Stockholm</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2018</year>. p. <fpage>101</fpage>–<lpage>107</lpage>. <pub-id pub-id-type="doi">10.1145/3173225.3173236</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0100"><mixed-citation publication-type="journal" id="pro70648-cit-0100">
+<string-name name-style="western">
+<surname>Vincke</surname>
+<given-names>B</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ghaoui</surname>
+<given-names>MA</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Férey</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Martinez</surname>
+<given-names>X</given-names>
+</string-name>. <article-title>Physical, modular and articulated Interface for interactive molecular manipulation</article-title>. <source>Sensors</source>. <year>2020</year>;<volume>20</volume>(<issue>18</issue>):<elocation-id>5415</elocation-id>. <pub-id pub-id-type="doi">10.3390/s20185415</pub-id>
+<pub-id pub-id-type="pmid">32967319</pub-id>
+<pub-id pub-id-type="pmcid">PMC7570834</pub-id></mixed-citation></ref><ref id="pro70648-bib-0101"><mixed-citation publication-type="book" id="pro70648-cit-0101">
+<string-name name-style="western">
+<surname>Waldin</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Le Muzic</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Waldner</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gröller</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>D</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Autin</surname>
+<given-names>L</given-names>
+</string-name>, et al. <part-title>Chameleon: dynamic color mapping for multi‐scale structural biology models</part-title>. <source>Eurographics workshop on visual computing for biomedicine</source>. Volume <volume>2016</volume>. <publisher-loc>The Netherlands</publisher-loc>: <publisher-name>Eurographics Association in Eindhoven</publisher-name>; <year>2016</year>. p. <fpage>10</fpage>–<lpage>2312</lpage>. <pub-id pub-id-type="doi">10.2312/vcbm.20161266</pub-id>
+<pub-id pub-id-type="pmcid">PMC5370176</pub-id><pub-id pub-id-type="pmid">28361008</pub-id></mixed-citation></ref><ref id="pro70648-bib-0102"><mixed-citation publication-type="journal" id="pro70648-cit-0102">
+<string-name name-style="western">
+<surname>Waldin</surname>
+<given-names>N</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Waldner</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Le Muzic</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Gröller</surname>
+<given-names>E</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Goodsell</surname>
+<given-names>DS</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Autin</surname>
+<given-names>L</given-names>
+</string-name>, et al. <article-title>Cuttlefish: color mapping for dynamic multi‐scale visualizations</article-title>. <source>Comput Graph Forum</source>. <year>2019</year>;<volume>38</volume>(<issue>6</issue>):<fpage>150</fpage>–<lpage>164</lpage>. <pub-id pub-id-type="doi">10.1111/cgf.13611</pub-id>
+<pub-id pub-id-type="pmid">31736528</pub-id>
+<pub-id pub-id-type="pmcid">PMC6850082</pub-id></mixed-citation></ref><ref id="pro70648-bib-0103"><mixed-citation publication-type="book" id="pro70648-cit-0103">
+<string-name name-style="western">
+<surname>Wang</surname>
+<given-names>Z</given-names>
+</string-name>. <part-title>Brilliant but bounded: the limitations and future insights of virtual reality applications in education, healthcare, and workplace</part-title>. <source>Proceedings of the 2nd international conference on engineering management, information technology and intelligence (EMITI)</source>. <publisher-loc>Setúbal</publisher-loc>: <publisher-name>SCITEPRESS – Science and Technology Publications, Lda</publisher-name>; <year>2025</year>. p. <fpage>540</fpage>–<lpage>544</lpage>. <pub-id pub-id-type="doi">10.5220/0014362500004718</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0104"><mixed-citation publication-type="journal" id="pro70648-cit-0104">
+<string-name name-style="western">
+<surname>Wang</surname>
+<given-names>L</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Giesen</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>McDonnell</surname>
+<given-names>KT</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Zolliker</surname>
+<given-names>P</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Mueller</surname>
+<given-names>K</given-names>
+</string-name>. <article-title>Color design for illustrative visualization</article-title>. <source>IEEE Trans Vis Comput Graph</source>. <year>2008</year>;<volume>14</volume>(<issue>6</issue>):<fpage>1739</fpage>–<lpage>1754</lpage>. <pub-id pub-id-type="doi">10.1109/TVCG.2008.118</pub-id>
+<pub-id pub-id-type="pmid">18989033</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0105"><mixed-citation publication-type="journal" id="pro70648-cit-0105">
+<string-name name-style="western">
+<surname>Watson</surname>
+<given-names>JD</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Crick</surname>
+<given-names>FHC</given-names>
+</string-name>. <article-title>Molecular structure of nucleic acids: a structure for deoxyribose nucleic acid</article-title>. <source>Nature</source>. <year>1953</year>;<volume>171</volume>(<issue>4356</issue>):<fpage>737</fpage>–<lpage>738</lpage>. <pub-id pub-id-type="doi">10.1038/171737a0</pub-id>
+<pub-id pub-id-type="pmid">13054692</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0106"><mixed-citation publication-type="book" id="pro70648-cit-0106">
+<string-name name-style="western">
+<surname>Woźniak</surname>
+<given-names>MP</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Lewczuk</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Adamkiewicz</surname>
+<given-names>K</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Józiewicz</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Malaya</surname>
+<given-names>M</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Ladonski</surname>
+<given-names>P</given-names>
+</string-name>. <part-title>Archemist: aiding experimental chemistry education using augmented reality technology</part-title>. <source>Extended abstracts of the 2020 CHI conference on human factors in computing systems</source>. <publisher-loc>New York, NY, USA</publisher-loc>: <publisher-name>Association for Computing Machinery</publisher-name>; <year>2020</year>. p. <fpage>1</fpage>–<lpage>6</lpage>. <pub-id pub-id-type="doi">10.1145/3334480.3381441</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0107"><mixed-citation publication-type="journal" id="pro70648-cit-0107">
+<string-name name-style="western">
+<surname>Wu</surname>
+<given-names>HK</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Shah</surname>
+<given-names>P</given-names>
+</string-name>. <article-title>Exploring visuospatial thinking in chemistry learning</article-title>. <source>Sci Educ</source>. <year>2004</year>;<volume>88</volume>(<issue>3</issue>):<fpage>465</fpage>–<lpage>492</lpage>. <pub-id pub-id-type="doi">10.1002/sce.10126</pub-id>
+</mixed-citation></ref><ref id="pro70648-bib-0108"><mixed-citation publication-type="journal" id="pro70648-cit-0108">
+<string-name name-style="western">
+<surname>Ynnerman</surname>
+<given-names>A</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Löwgren</surname>
+<given-names>J</given-names>
+</string-name>, <string-name name-style="western">
+<surname>Tibell</surname>
+<given-names>L</given-names>
+</string-name>. <article-title>Exploranation: a new science communication paradigm</article-title>. <source>IEEE Comput Graph Appl</source>. <year>2018</year>;<volume>38</volume>(<issue>3</issue>):<fpage>13</fpage>–<lpage>20</lpage>. <pub-id pub-id-type="doi">10.1109/MCG.2018.032421649</pub-id>
+<pub-id pub-id-type="pmid">29877800</pub-id>
+</mixed-citation></ref></ref-list></back></article>
