@@ -393,7 +393,11 @@ def _try_huggingface_load_dataset(
     force: bool = False,
 ) -> bool:
     """Fallback: try the ``datasets`` library (legacy approach)."""
-    import datasets  # noqa: F401
+    try:
+        import datasets  # noqa: F401
+    except ImportError:
+        logger.debug("datasets library not available, skipping Hugging Face load")
+        return False
 
     try:
         ds = datasets.load_dataset(  # nosec B615
