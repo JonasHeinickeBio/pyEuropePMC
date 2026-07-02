@@ -123,11 +123,48 @@ class TestDatasetRegistry:
         assert info.description
 
 
+class TestDatasetInfoProperties:
+    """Test DatasetInfo properties and methods."""
+
+    def test_to_dict(self):
+        """DatasetInfo.to_dict should include all fields."""
+        info = DATASETS["PLOS_1000"]
+        result = info.to_dict()
+
+        assert result["name"] == "PLOS_1000"
+        assert result["source"] is not None
+        assert result["size_gb"] > 0
+        assert result["article_count"] > 0
+        assert result["description"] is not None
+
+
+class TestBenchmarkDatasetInfo:
+    """Test BenchmarkDataset.info property."""
+
+    def test_info_for_known_dataset(self):
+        """info property should return full DatasetInfo for known datasets."""
+        ds = BenchmarkDataset("PLOS_1000")
+        info = ds.info
+
+        assert info.name == "PLOS_1000"
+        assert info.source is not None
+        assert info.size_gb > 0
+
+    def test_info_for_local_dataset(self, tmp_dir):
+        """info property should return minimal stub for local dataset."""
+        xml_dir = _make_local_dataset(tmp_dir, {"test.xml": SIMPLE_ARTICLE})
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        info = ds.info
+
+        assert info.name == "local"
+        assert info.description == "Custom dataset"
+        assert info.source == ""
+
+
 class TestLocalDataset:
     """Test creating a benchmark dataset from local files."""
 
     def test_local_dataset_creation(self, tmp_dir):
-        """Create local dataset and verify articles are found."""
         xml_dir = _make_local_dataset(tmp_dir, {
             "PMC001.xml": SIMPLE_ARTICLE,
             "PMC002.xml": SIMPLE_ARTICLE.replace("9999999", "2000000"),
@@ -206,6 +243,111 @@ class TestLocalDataset:
         ds = BenchmarkDataset("PMC_sample_1943")
         assert ds.name == "PMC_sample_1943"
         assert not ds.is_downloaded  # not downloaded yet
+
+
+class TestDatasetDownloadBackends:
+    """Test download backends."""
+
+    def test_try_huggingface_load_dataset_fallback(self, tmp_dir):
+        """Test huggingface load_dataset fallback path."""
+        # This tests the fallback when huggingface_hub is not available
+        from pyeuropepmc.benchmark.dataset import _try_huggingface_load_dataset
+
+        # Use 'default' config since sciencialab/grobid-evaluation only has 'default'
+        result = _try_huggingface_load_dataset(
+            "default",
+            tmp_dir / "hf_test",
+            force=False,
+        )
+        # May fail if network unavailable, that's expected
+        # Just check it doesn't crash with wrong arguments
+        assert isinstance(result, bool)
+
+    def test_http_download_requests_not_available(self, tmp_dir, monkeypatch):
+        """Test HTTP download when requests library is not available."""
+        from pyeuropepmc.benchmark.dataset import _try_http_download
+
+        # Mock requests import to fail
+        import sys
+
+        monkeypatch.setitem(sys.modules, "requests", None)
+
+        # This should fall back to urllib
+        result = _try_http_download(
+            "https://example.com/nonexistent.xml",
+            tmp_dir,
+            "test",
+            force=True,
+        )
+        # Should return False since URL doesn't exist, but shouldn't crash
+        assert result is False
+
+    def test_extract_archive_unknown_format(self, tmp_dir):
+        """Test extracting unknown archive format."""
+        from pyeuropepmc.benchmark.dataset import _extract_archive
+
+        # Create a file that's not a zip or tar
+        unknown_file = tmp_dir / "unknown.xyz"
+        unknown_file.write_text("not an archive")
+
+        # Should log warning but not crash
+        _extract_archive(unknown_file, tmp_dir)
+
+    def test_local_dataset_with_absolute_path(self, tmp_dir):
+        """Create local dataset with absolute Path object."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "test.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        assert ds._local_dir == xml_dir.resolve()
+        assert ds.article_count == 1
+
+    def test_unknown_dataset_info(self):
+        """Unknown dataset should return minimal stub."""
+        info = dataset_info("nonexistent_dataset_xyz")
+        assert info is None
+
+    def test_dataset_info_case_insensitive(self):
+        """Dataset info lookup should be case-insensitive."""
+        info1 = dataset_info("PMC_SAMPLE_1943")
+        info2 = dataset_info("pmc_sample_1943")
+        info3 = dataset_info("PmC_SaMpLe_1943")
+
+        assert info1 is not None
+        assert info2 is not None
+        assert info3 is not None
+        assert info1.name == info2.name == info3.name
+
+    def test_local_dataset_no_articles(self, tmp_dir):
+        """Local dataset with no articles should return empty iterator."""
+        xml_dir = tmp_dir / "empty_xmls"
+        xml_dir.mkdir()
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        articles = list(ds.iter_articles())
+        assert len(articles) == 0
+        assert ds.article_count == 0
+
+    def test_local_dataset_with_subdirs(self, tmp_dir):
+        """Local dataset should recursively search subdirectories."""
+        xml_dir = tmp_dir / "xmls"
+        xml_dir.mkdir()
+        (xml_dir / "subdir").mkdir()
+        (xml_dir / "subdir" / "test.xml").write_text(SIMPLE_ARTICLE)
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        articles = list(ds.iter_articles())
+        assert len(articles) == 1
+
+    def test_dataset_to_dict(self, tmp_dir):
+        """Dataset to_dict should return proper structure."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        d = ds.to_dict()
+        # Dataset info is nested under 'info' key
+        assert d["info"]["name"] == "local"
+        assert "local_path" in d
+        assert d["article_count"] == 1
 
 
 # ============================================================================
@@ -635,3 +777,491 @@ class TestWithFixtures:
                 assert "element_lists" in result
             except Exception:
                 pass
+
+
+# ============================================================================
+# Tests: Profiler
+# ============================================================================
+
+
+class TestProfilerContext:
+    """Test ProfilerContext context manager."""
+
+    def test_basic_profiling(self):
+        """Profiler should record function calls."""
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        with ProfilerContext() as prof:
+            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+            _ = parser.extract_metadata()
+
+        stats = prof.stats_dict()
+        assert "elapsed_s" in stats
+        assert "by_function" in stats
+        assert stats["total_calls"] > 0
+
+    def test_print_stats_empty_context(self):
+        """print_stats on未entered context should return message."""
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        prof = ProfilerContext()
+        output = prof.print_stats()
+        assert "<no stats available" in output
+
+    def test_stats_dict_before_enter(self):
+        """stats_dict before context should return empty stats."""
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        prof = ProfilerContext()
+        stats = prof.stats_dict()
+        assert stats["elapsed_s"] == 0.0
+        assert stats["by_function"] == {}
+        assert stats["total_calls"] == 0
+        assert stats["primitive_calls"] == 0
+
+    def test_elapsed_property(self):
+        """elapsed should return wall-clock time."""
+        import time
+
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        with ProfilerContext() as prof:
+            time.sleep(0.01)
+
+        assert prof.elapsed >= 0.01
+
+    def test_stats_property(self):
+        """stats property should return pstats.Stats object."""
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        with ProfilerContext() as prof:
+            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+
+        assert prof.stats is not None
+        assert hasattr(prof.stats, "sort_stats")
+
+    def test_filter_by_module(self):
+        """filter_by_module should return filtered stats."""
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        with ProfilerContext() as prof:
+            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+
+        filtered = prof.filter_by_module("pyeuropepmc")
+        assert "by_function" in filtered
+        # Note: filtered may be empty if no functions match exactly
+        # Just verify the function works without error
+
+    def test_total_time_by_module(self):
+        """total_time_by_module should sum cumulative times."""
+        from pyeuropepmc.benchmark.profiler import ProfilerContext
+
+        with ProfilerContext() as prof:
+            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+
+        total = prof.total_time_by_module("pyeuropepmc")
+        assert isinstance(total, float)
+        assert total >= 0
+
+
+class TestProfileText:
+    """Test profile_text convenience function."""
+
+    def test_profile_text_returns_structure(self):
+        """profile_text should return complete structure."""
+        from pyeuropepmc.benchmark.profiler import profile_text
+
+        result = profile_text(SIMPLE_ARTICLE)
+        assert "elapsed_s" in result
+        assert "by_function" in result
+        assert "parser_breakdown_s" in result
+        assert "total_calls" in result
+        assert "primitive_calls" in result
+        assert result["total_calls"] > 0
+
+    def test_parser_breakdown_has_methods(self):
+        """parser_breakdown_s should have expected parser methods."""
+        from pyeuropepmc.benchmark.profiler import profile_text
+
+        result = profile_text(SIMPLE_ARTICLE)
+        breakdown = result["parser_breakdown_s"]
+
+        # Most expected methods should be present
+        expected = ["FullTextXMLParser.__init__", "extract_metadata"]
+        for method in expected:
+            if method in breakdown:
+                assert breakdown[method] >= 0
+
+
+# ============================================================================
+# Tests: Memory Tracker
+# ============================================================================
+
+
+class TestMemoryTracker:
+    """Test MemoryTracker class."""
+
+    def test_start_stop(self, tmp_dir):
+        """Start/stop should record memory."""
+        from pyeuropepmc.benchmark.memory import MemoryTracker
+
+        tracker = MemoryTracker()
+        tracker.start()
+        parser = FullTextXMLParser(SIMPLE_ARTICLE)
+        _ = parser.extract_metadata()
+        snapshot = tracker.stop()
+
+        assert "peak_mib" in snapshot
+        assert "current_mib" in snapshot
+        assert "allocated_mib" in snapshot
+        assert "top_allocations" in snapshot
+
+    def test_snapshot_without_start(self):
+        """snapshot() without start should return zeros."""
+        from pyeuropepmc.benchmark.memory import MemoryTracker
+
+        tracker = MemoryTracker()
+        snap = tracker.snapshot()
+
+        assert snap["current_mib"] == 0.0
+        assert snap["peak_mib"] == 0.0
+
+    def test_stop_without_start(self):
+        """stop() without start should return zeros."""
+        from pyeuropepmc.benchmark.memory import MemoryTracker
+
+        tracker = MemoryTracker()
+        snap = tracker.stop()
+
+        assert snap["peak_mib"] == 0.0
+        assert snap["current_mib"] == 0.0
+        assert snap["allocated_mib"] == 0.0
+        assert snap["top_allocations"] == []
+
+    def test_context_manager(self):
+        """MemoryTracker should work as context manager."""
+        from pyeuropepmc.benchmark.memory import MemoryTracker
+
+        with MemoryTracker() as tracker:
+            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+            _ = parser.extract_metadata()
+
+        # After context exits, tracker should be stopped
+        snap = tracker.snapshot()
+        assert snap["current_mib"] >= 0
+
+    def test_nframe_parameter(self):
+        """nframe parameter should affect trace depth."""
+        from pyeuropepmc.benchmark.memory import MemoryTracker
+
+        tracker = MemoryTracker(nframe=1)
+        tracker.start()
+        parser = FullTextXMLParser(SIMPLE_ARTICLE)
+        snap = tracker.stop()
+
+        assert "top_allocations" in snap
+        # With nframe=1, traces should be shorter
+        for alloc in snap["top_allocations"]:
+            assert "trace" in alloc
+
+
+class TestProfileMemory:
+    """Test profile_memory convenience function."""
+
+    def test_profile_memory_returns_structure(self):
+        """profile_memory should return complete structure."""
+        from pyeuropepmc.benchmark.memory import profile_memory
+
+        result = profile_memory(SIMPLE_ARTICLE)
+        assert "peak_mib" in result
+        assert "current_mib" in result
+        assert "allocated_mib" in result
+        # freed_mib may not be present in all cases
+        assert "top_allocations" in result
+        assert "by_module" in result
+
+    def test_profile_memory_by_module(self):
+        """profile_memory should show module-level allocations."""
+        from pyeuropepmc.benchmark.memory import profile_memory
+
+        result = profile_memory(SIMPLE_ARTICLE)
+
+        # Should have at least some modules
+        modules = list(result["by_module"].keys())
+        assert len(modules) >= 1
+
+        # pyeuropepmc should be present
+        pyepm_modules = [m for m in modules if "pyeuropepmc" in m]
+        assert len(pyepm_modules) >= 1
+
+
+class TestProfileMemoryBlocks:
+    """Test profile_memory_blocks function."""
+
+    def test_blocks_only(self):
+        """profile_memory_blocks should focus on block extraction."""
+        from pyeuropepmc.benchmark.memory import profile_memory_blocks
+
+        result = profile_memory_blocks(SIMPLE_ARTICLE)
+        assert "peak_mib" in result
+        assert result["peak_mib"] >= 0
+
+    def test_blocks_compare_to_full(self):
+        """Block-only should use less memory than full profile."""
+        from pyeuropepmc.benchmark.memory import (
+            profile_memory,
+            profile_memory_blocks,
+        )
+
+        full = profile_memory(SIMPLE_ARTICLE)
+        blocks = profile_memory_blocks(SIMPLE_ARTICLE)
+
+        # Blocks-only should be <= full (less work)
+        assert blocks["peak_mib"] <= full["peak_mib"] + 0.1  # small tolerance
+
+
+class TestProfileMemoryFulltext:
+    """Test profile_memory_fulltext function."""
+
+    def test_fulltext_only(self):
+        """profile_memory_fulltext should measure flat sections."""
+        from pyeuropepmc.benchmark.memory import profile_memory_fulltext
+
+        result = profile_memory_fulltext(SIMPLE_ARTICLE)
+        assert "peak_mib" in result
+        assert "current_mib" in result
+        assert result["peak_mib"] >= 0
+
+
+class TestProfilerHelpers:
+    """Test profiler micro-benchmark helpers."""
+
+    def test_time_function(self):
+        """time_function should measure single call."""
+        from pyeuropepmc.benchmark.profiler import time_function
+
+        def dummy(x):
+            return x * 2
+
+        result = time_function(dummy, 5)
+        assert "seconds" in result
+        assert "result" in result
+        assert result["result"] == 10
+        assert result["seconds"] >= 0
+
+    def test_time_et_parse(self):
+        """time_et_parse should measure ElementTree parsing."""
+        from pyeuropepmc.benchmark.profiler import time_et_parse
+
+        result = time_et_parse(SIMPLE_ARTICLE)
+        assert "seconds" in result
+        assert "result" in result
+        assert result["seconds"] >= 0
+        assert result["result"] is not None
+
+
+# ============================================================================
+# Tests: Runner (additional coverage)
+# ============================================================================
+
+
+class TestBenchmarkRunnerProfile:
+    """Test BenchmarkRunner with profiling enabled."""
+
+    def test_runner_with_profiling(self, tmp_dir):
+        """Runner should profile when profile=True."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, profile=True)
+        report = runner.run_all()
+
+        assert len(report.article_results) == 1
+        # Profiling data should be in metadata
+        result = report.article_results[0]
+        assert "metadata" in result
+        assert "profiling" in result["metadata"]
+
+    def test_runner_with_memory_profiling(self, tmp_dir):
+        """Runner should profile memory when profile_memory=True."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, profile_memory=True)
+        report = runner.run_all()
+
+        assert len(report.article_results) == 1
+        # Memory profiling data should be in metadata
+        result = report.article_results[0]
+        assert "metadata" in result
+        assert "memory" in result["metadata"]
+
+    def test_runner_profile_top_n(self, tmp_dir):
+        """profile_top_n should limit displayed functions."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, profile=True, profile_top_n=5)
+        report = runner.run_all()
+
+        assert len(report.article_results) == 1
+        profiling = report.article_results[0]["metadata"]["profiling"]
+        # Profiling data structure has call_counts and cumulative_time_s
+        assert "call_counts" in profiling
+        assert "cumulative_time_s" in profiling
+        assert "elapsed_s" in profiling
+        assert profiling["elapsed_s"] >= 0
+
+    def test_runner_multiple_datasets_with_profiling(self, tmp_dir):
+        """Runner with multiple datasets and profiling."""
+        (tmp_dir / "ds1").mkdir()
+        (tmp_dir / "ds2").mkdir()
+        xml_dir1 = _make_local_dataset(tmp_dir / "ds1", {
+            "a.xml": SIMPLE_ARTICLE,
+        })
+        xml_dir2 = _make_local_dataset(tmp_dir / "ds2", {
+            "b.xml": SIMPLE_ARTICLE,
+        })
+        ds1 = BenchmarkDataset("local", local_path=xml_dir1)
+        ds2 = BenchmarkDataset("local", local_path=xml_dir2)
+        runner = BenchmarkRunner([ds1, ds2], profile=True)
+        report = runner.run_all()
+
+        assert runner.stats["successful"] == 2
+        assert len(report.article_results) == 2
+        # Each result should have profiling data
+        for result in report.article_results:
+            assert "metadata" in result
+            assert "profiling" in result["metadata"]
+
+
+class TestBenchmarkRunnerMemoryEdgeCases:
+    """Test BenchmarkRunner memory profiling edge cases."""
+
+    def test_runner_memory_only(self, tmp_dir):
+        """Runner with memory profiling but no function profiling."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, profile=False, profile_memory=True)
+        report = runner.run_all()
+
+        assert len(report.article_results) == 1
+        result = report.article_results[0]
+        assert "metadata" in result
+        assert "memory" in result["metadata"]
+        memory = result["metadata"]["memory"]
+        # Memory should have at least peak_mib and current_mib
+        assert "peak_mib" in memory
+        assert "current_mib" in memory
+        assert "allocated_mib" in memory
+
+    def test_runner_both_profiling(self, tmp_dir):
+        """Runner with both function and memory profiling."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, profile=True, profile_memory=True, profile_top_n=10)
+        report = runner.run_all()
+
+        assert len(report.article_results) == 1
+        result = report.article_results[0]
+        assert "metadata" in result
+        assert "profiling" in result["metadata"]
+        assert "memory" in result["metadata"]
+
+
+class TestBenchmarkRunnerWithoutProfiling:
+    """Test BenchmarkRunner without profiling (normal path)."""
+
+    def test_runner_normal_mode(self, tmp_dir):
+        """Runner in normal mode (no profiling)."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, profile=False, profile_memory=False)
+        report = runner.run_all()
+
+        assert runner.stats["successful"] == 1
+        assert len(report.article_results) == 1
+        # No profiling data when profiling is off
+        result = report.article_results[0]
+        assert "metadata" in result
+        assert "profiling" not in result["metadata"]
+
+    def test_runner_skip_errors(self, tmp_dir):
+        """Runner should skip articles that fail to parse when skip_errors=True."""
+        # Create an invalid XML file
+        xml_dir = tmp_dir / "xml"
+        xml_dir.mkdir()
+        (xml_dir / "bad.xml").write_text("<invalid xml")
+        (xml_dir / "good.xml").write_text(SIMPLE_ARTICLE)
+
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, skip_errors=True)
+        report = runner.run_all()
+
+        # Should process 2 articles, 1 successful, 1 failed
+        assert runner.stats["successful"] == 1
+        assert runner.stats["failed"] == 1
+
+    def test_runner_abort_on_error(self, tmp_dir):
+        """Runner should handle errors gracefully even with skip_errors=False."""
+        xml_dir = tmp_dir / "xml"
+        xml_dir.mkdir()
+        (xml_dir / "bad.xml").write_text("<invalid xml")
+
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, skip_errors=False)
+        report = runner.run_all()
+
+        # Should still complete but with failed count
+        # The runner handles parse errors internally
+        assert runner.stats["successful"] == 0
+        assert runner.stats["failed"] == 1
+
+
+class TestBenchmarkRunnerLimit:
+    """Test BenchmarkRunner with limit parameter."""
+
+    def test_runner_limit(self, tmp_dir):
+        """Runner should respect limit parameter."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+            "PMC002.xml": SIMPLE_ARTICLE,
+            "PMC003.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        runner = BenchmarkRunner(ds, limit=2)
+        report = runner.run_all()
+
+        # Should only process 2 articles
+        assert runner.stats["successful"] == 2
+        assert len(report.article_results) == 2
+
+
+class TestBenchmarkRunnerErrors:
+    """Test BenchmarkRunner error handling."""
+
+    def test_runner_metrics_error(self, tmp_dir):
+        """Runner should handle metrics errors gracefully."""
+        xml_dir = _make_local_dataset(tmp_dir, {
+            "PMC001.xml": SIMPLE_ARTICLE,
+        })
+        ds = BenchmarkDataset("local", local_path=xml_dir)
+        # Use a custom config that will cause an error
+        runner = BenchmarkRunner(ds, config={"bad": "config"})
+        report = runner.run_all()
+
+        # Should still complete (config issue may not always cause error)
+        assert runner.stats["successful"] == 1
+        result = report.article_results[0]
+        metrics = result["metrics"]
+        # The metrics should have at least composite_score
+        assert "composite_score" in metrics

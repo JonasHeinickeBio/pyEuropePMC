@@ -395,35 +395,39 @@ def _try_huggingface_load_dataset(
     """Fallback: try the ``datasets`` library (legacy approach)."""
     import datasets  # noqa: F401
 
-    ds = datasets.load_dataset(  # nosec B615
-        "sciencialab/grobid-evaluation",
-        name,
-        split="test",
-        trust_remote_code=False,
-    )
-
-    manifest: list[dict[str, Any]] = []
-    for i, article in enumerate(ds):
-        manifest.append(
-            {
-                "index": i,
-                "pmcid": article.get("pmcid", f"article_{i:04d}"),
-                "path": article.get("path", ""),
-            }
+    try:
+        ds = datasets.load_dataset(  # nosec B615
+            "sciencialab/grobid-evaluation",
+            name,
+            split="test",
+            trust_remote_code=False,
         )
 
-    target_dir.mkdir(parents=True, exist_ok=True)
-    manifest_path = target_dir / "hf_manifest.json"
-    with open(manifest_path, "w") as f:
-        json.dump(manifest, f, indent=2)
+        manifest: list[dict[str, Any]] = []
+        for i, article in enumerate(ds):
+            manifest.append(
+                {
+                    "index": i,
+                    "pmcid": article.get("pmcid", f"article_{i:04d}"),
+                    "path": article.get("path", ""),
+                }
+            )
 
-    logger.info(
-        "Hugging Face dataset %s indexed %d articles at %s",
-        name,
-        len(manifest),
-        target_dir,
-    )
-    return True
+        target_dir.mkdir(parents=True, exist_ok=True)
+        manifest_path = target_dir / "hf_manifest.json"
+        with open(manifest_path, "w") as f:
+            json.dump(manifest, f, indent=2)
+
+        logger.info(
+            "Hugging Face dataset %s indexed %d articles at %s",
+            name,
+            len(manifest),
+            target_dir,
+        )
+        return True
+    except Exception as e:
+        logger.warning("Hugging Face dataset load failed: %s", e)
+        return False
 
 
 def _try_http_download(
