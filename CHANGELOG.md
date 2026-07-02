@@ -2,46 +2,38 @@
 
 All notable changes to PyEuropePMC are documented here.
 
-## [Unreleased] - XML Parser Extensions
+## [1.18.0] - 2026-07-03
 
 ### ✨ Features
 
-- **Parser Extension System**: Added 10 extension modules for advanced XML processing
-  - **Content Block Model**: Typed content blocks (paragraph, list, formula, figure, etc.)
-    preserving document structure for RAG/LLM pipelines
-  - **lxml Backend**: Optional high-performance lxml parser with secure defaults
-  - **Peer Review Extraction**: Extract peer review materials from `<sub-article>` elements
-    organized by revision round
-  - **MathML → LaTeX**: Convert MathML expressions to LaTeX with 15+ element types
-  - **JATS4R Validation**: Compliance checking against NISO JATS4R recommendations
-    (6 categories: authors, affiliations, abstracts, funding, citations, data availability)
-  - **Batch Processing**: Rate-limited concurrent XML processing with callbacks
-  - **Image/Asset Fetcher**: Extract and download figure/supplementary/media assets
-  - **Reference Resolver**: Enrich references via Europe PMC API with caching
-  - **Pydantic Helpers**: Convert dataclasses to Pydantic v2 models dynamically
-  - **Local Processing**: Convenience utilities for file/directory/string parsing
+- **PaperProcessingPipeline Context Manager**: Added `__enter__` and `__exit__` methods
+  - Pipeline now supports `with` statement for automatic resource cleanup
+  - Consistent with other enrichment clients (`PaperEnricher`, `BatchEnricher`)
 
-- **LinkML Schema**: Added `schemas/linkml/article_content_schema.yaml` for content block model
-  - Generated Python models at `src/pyeuropepmc/processing/extensions/linkml_models.py`
-  - Connects to `biomedical-knowledge-lookup` ontology
+### 🐛 Bug Fixes
 
-### 📚 Documentation
-
-- **XML Parser Extensions Reference**: New `docs/reference/xml-parser-extensions.md`
-  with complete module-by-module reference
-- **API Reference**: New `docs/api/xml-parser-extensions.md` with full API signatures
-- **Feature Guide Update**: Extended `docs/features/parsing/README.md` with extensions section
-- **Parser Guide Update**: Added extension usage examples to
-  `docs/features/parsing/xml-parser-guide.md`
-- **Skills Guide Update**: Extended `docs/guides/skills/fulltext_parser.md` with all
-  10 extension modules
+- **Hugging Face Dataset Loading**: Fixed dataset config name and import handling
+  - Changed config name from `"PMC_sample_1943"` to `"default"` in tests
+  - Added try-except around `datasets` module import in `_try_huggingface_load_dataset()`
+  - Graceful fallback when datasets library is not installed
 
 ### 🧪 Testing
 
-- **94 new tests**: 41 unit + 53 functional tests covering all 10 extension modules
-- **Functional tests run against 5 real XML papers** (PMC12311175, PMC12738713,
-  PMC3258128, PMC3359999 + synthetic)
-- All 617 tests pass with 0 failures
+- **Benchmark Suite**: Added 35 new tests for profiler, memory tracker, dataset, and runner
+  - Profiler tests: context manager, time function, time et parse
+  - Memory tests: start/stop flow, snapshot structure with peak/current/allocated
+  - Runner tests: normal, profiling, memory profiling, multiple datasets, limits
+  - Dataset tests: local subdirs, empty dataset, to_dict structure
+- **Pipeline Context Manager Test**: Added test for `PaperProcessingPipeline` with cleanup
+
+### 🔧 Maintenance
+
+- **Version Bump**: Updated to version 1.18.0
+  - Updated pyproject.toml version from 1.17.0 to 1.18.0
+  - Updated src/pyeuropepmc/__init__.py __version__ to 1.18.0
+  - Created git tag v1.18.0 for release
+
+- **All Tests Pass**: 3203 tests pass, 11 skipped, 75.20% coverage
 
 ## [1.17.0] - 2026-06-17
 
