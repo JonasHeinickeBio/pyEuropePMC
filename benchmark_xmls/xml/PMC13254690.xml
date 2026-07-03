@@ -1,0 +1,1447 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="edm270249" xml:lang="en" article-type="review-article" dtd-version="1.4"><?da-xref-anchor-style superscripted?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Endocrinol Diabetes Metab</journal-id><journal-id journal-id-type="iso-abbrev">Endocrinol Diabetes Metab</journal-id><journal-id journal-id-type="pmc-domain-id">3614</journal-id><journal-id journal-id-type="pmc-domain">edm</journal-id><journal-id journal-id-type="publisher-id">EDM2</journal-id><journal-title-group><journal-title>Endocrinology, Diabetes &amp; Metabolism</journal-title></journal-title-group><issn pub-type="epub">2398-9238</issn><publisher><publisher-name>Wiley</publisher-name></publisher></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13254690</article-id><article-id pub-id-type="pmcid-ver">PMC13254690.1</article-id><article-id pub-id-type="pmcaid">13254690</article-id><article-id pub-id-type="pmcaiid">13254690</article-id><article-id pub-id-type="pmid">42273841</article-id><article-id pub-id-type="doi">10.1002/edm2.70249</article-id><article-id pub-id-type="publisher-id">EDM270249</article-id><article-id pub-id-type="other">8651607</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Review Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Review Article</subject></subj-group></article-categories><title-group><article-title>Advances in the Study of Endometrial Receptivity and Glucose Metabolism Mechanisms in Insulin Resistance</article-title></title-group><contrib-group><contrib id="edm270249-cr-0001" contrib-type="author"><name name-style="western"><surname>Huang</surname><given-names initials="SY">Si‐yan</given-names></name><xref rid="edm270249-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="edm270249-cr-0002" contrib-type="author"><name name-style="western"><surname>Chen</surname><given-names initials="SR">Shao‐rong</given-names></name><xref rid="edm270249-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="edm270249-cr-0003" contrib-type="author"><name name-style="western"><surname>Chen</surname><given-names initials="WH">Wei‐hong</given-names></name><xref rid="edm270249-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="edm270249-cr-0004" contrib-type="author"><name name-style="western"><surname>Zheng</surname><given-names initials="LT">Ling‐tao</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0009-0009-6576-7484</contrib-id><xref rid="edm270249-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="edm270249-cr-0005" contrib-type="author"><name name-style="western"><surname>Xu</surname><given-names initials="J">Jing</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0009-0003-3867-9442</contrib-id><xref rid="edm270249-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="edm270249-cr-0006" contrib-type="author"><name name-style="western"><surname>Shi</surname><given-names initials="YC">Yan‐Chuan</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-8368-6735</contrib-id><xref rid="edm270249-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="edm270249-cr-0007" contrib-type="author" corresp="yes"><name name-style="western"><surname>Lin</surname><given-names initials="S">Shu</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-4239-2028</contrib-id><xref rid="edm270249-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="edm270249-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref><address><email>shulin1956@126.com</email></address></contrib><contrib id="edm270249-cr-0008" contrib-type="author" corresp="yes"><name name-style="western"><surname>Shi</surname><given-names initials="QR">Qi‐rong</given-names></name><xref rid="edm270249-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>wsqy214@163.com</email></address></contrib></contrib-group><aff id="edm270249-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Gynaecology and Obstetrics</named-content>
+<institution>The Second Affiliated Hospital of Fujian Medical University</institution>
+<city>Quanzhou</city>
+<named-content content-type="country-part">Fujian</named-content>
+<country country="CN">China</country>
+</aff><aff id="edm270249-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Group of Neuroendocrinology</named-content>
+<institution>Garvan Institute of Medical Research</institution>
+<city>Sydney</city>
+<country country="AU">Australia</country>
+</aff><aff id="edm270249-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Centre of Neurological and Metabolic Research</named-content>
+<institution>The Second Affiliated Hospital of Fujian Medical University</institution>
+<city>Quanzhou</city>
+<named-content content-type="country-part">Fujian</named-content>
+<country country="CN">China</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Shu Lin (<email>shulin1956@126.com</email>)<break/>
+Qi‐rong Shi (<email>wsqy214@163.com</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>11</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="collection"><month>7</month><year>2026</year></pub-date><volume>9</volume><issue seq="150">4</issue><issue-id pub-id-type="pmc-issue-id">515049</issue-id><issue-id pub-id-type="doi">10.1002/edm2.v9.4</issue-id><elocation-id>e70249</elocation-id><history>
+<date date-type="rev-recd"><day>09</day><month>4</month><year>2026</year></date>
+<date date-type="received"><day>18</day><month>11</month><year>2025</year></date>
+<date date-type="accepted"><day>30</day><month>4</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>11</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>12</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-12 13:25:19.767"><day>12</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Endocrinology, Diabetes &amp; Metabolism</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="EDM2-9-e70249.pdf"><?pdf-name EDM2-9-e70249.pdf?><?pdf-size 1631202?><?pdf-md5 90920d5834a65a63d92f810104d48b21?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:11ad/13254690/90920d5834a6/EDM2-9-e70249.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:EDM2-9-e70249.pdf"/><abstract><title>ABSTRACT</title><sec id="edm270249-sec-0001"><title>Introduction</title><p>Insulin resistance (IR) is one of the important pathologic bases of polycystic ovary syndrome (PCOS) and an important factor contributing to infertility. In patients with PCOS, IR acts not only on insulin‐sensitive tissues, such as skeletal muscle, adipose tissue, and liver, but also on the ovaries and endometrium. Localised endometrial IR is closely associated with impaired endometrial receptivity, and proper glucose metabolism is a key factor for embryo implantation.</p></sec><sec id="edm270249-sec-0002"><title>Methods</title><p>This paper describes the signalling pathways of endometrial glucose metabolism and the transcription factors regulated by endometrial glucose metabolism signalling pathways.</p></sec><sec id="edm270249-sec-0003"><title>Results</title><p>The purpose of this paper is to explore the mechanism of endometrial glucose uptake in local IR and find key intersections in this mechanism. For example, Foxo1, as the intersection of the Insulin Receptor Substrate‐Phosphatidylinositol3‐kinase‐Protein Kinase B‐Glucose Transporters (IRS‐PI3K‐Akt‐GLUTs) pathway and the Cyclic Adenosine Monophosphate‐ Protein Kinase A‐ Calcium ion (cAMP‐PKA‐Ca<sup>2+</sup>) pathway, and as an important biomarker for evaluating endometrial receptivity. It is of great significance for studying the improvement of endometrial receptivity.</p></sec><sec id="edm270249-sec-0004"><title>Conclusions</title><p>This article summarises the therapeutic approaches targeting insulin resistance and the enhancement of endometrial receptivity based on the above pathways, so as to provide references and suggestions for future therapeutic strategies.</p></sec></abstract><abstract abstract-type="graphical"><p>This article systematically reviews how insulin resistance (IR) disrupts endometrial receptivity by interfering with glucose metabolism mechanisms, ultimately leading to infertility in patients with Polycystic Ovary Syndrome (PCOS).<boxed-text position="anchor" content-type="graphic" id="edm270249-blkfxd-0001" orientation="portrait"><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="EDM2-9-e70249-g003.jpg"><?image-name EDM2-9-e70249-g003.jpg?><?image-size 73228?><?image-md5 ab07b84cc69596333152cebadb29d19a?><?image-image-server-status NEVER_LOAD?><?image-original-height 345?><?image-original-width 331?><?image-scaled-height 345?><?image-scaled-width 331?><?image-cloudpmc-urn urn:cdn:blobs/11ad/13254690/ab07b84cc695/EDM2-9-e70249-g003.jpg?></graphic></boxed-text>
+</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="edm270249-kwd-0001">endometrial glucose metabolism</kwd><kwd id="edm270249-kwd-0002">endometrial receptivity</kwd><kwd id="edm270249-kwd-0003">insulin resistance</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>the Science and technology project of Fujian Provincial Health Commission</institution></institution-wrap>
+</funding-source><award-id>2020CXB027</award-id><award-id>2022CXA038</award-id></award-group><award-group id="funding-0002"><funding-source>
+<institution-wrap><institution>the Youth Research Project of Fujian Provincial Health Commission</institution></institution-wrap>
+</funding-source><award-id>2022QNA067</award-id></award-group><award-group id="funding-0003"><funding-source>
+<institution-wrap><institution>Fujian Province Science and Technology Innovation Joint Fund Project</institution></institution-wrap>
+</funding-source><award-id>2023Y9254</award-id></award-group></funding-group><counts><fig-count count="4"/><table-count count="2"/><page-count count="14"/><word-count count="9800"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:11.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body id="edm270249-body-0001"><def-list list-content="abbreviations" id="edm270249-dl-0001"><title>Abbreviations</title><def-item><term id="edm270249-li-0001">3D PDUS</term><def id="edm270249-li-0002"><p>three‐dimensional power Doppler ultrasound</p></def></def-item><def-item><term id="edm270249-li-0003">Akt</term><def id="edm270249-li-0004"><p>protein Kinase B (PKB)</p></def></def-item><def-item><term id="edm270249-li-0005">AMH</term><def id="edm270249-li-0006"><p>anti‐Müllerian hormone</p></def></def-item><def-item><term id="edm270249-li-0007">AMPK</term><def id="edm270249-li-0008"><p>adenosine 5′‐monophosphate (AMP)‐activated protein kinase</p></def></def-item><def-item><term id="edm270249-li-0009">AR</term><def id="edm270249-li-0010"><p>androgen receptor</p></def></def-item><def-item><term id="edm270249-li-0011">AS160</term><def id="edm270249-li-0012"><p>Akt 160 kDa substrate</p></def></def-item><def-item><term id="edm270249-li-0013">BMP2</term><def id="edm270249-li-0014"><p>bone morphogenetic protein2</p></def></def-item><def-item><term id="edm270249-li-0015">Ca<sup>2+</sup>
+</term><def id="edm270249-li-0016"><p>calcium ion</p></def></def-item><def-item><term id="edm270249-li-0017">cAMP</term><def id="edm270249-li-0018"><p>cyclic adenosine monophosphate</p></def></def-item><def-item><term id="edm270249-li-0019">CYP19A1</term><def id="edm270249-li-0020"><p>cytochrome P450 family 19 subfamily A Member 1</p></def></def-item><def-item><term id="edm270249-li-0021">EMT</term><def id="edm270249-li-0022"><p>epithelial‐mesenchymal transition</p></def></def-item><def-item><term id="edm270249-li-0023">ER</term><def id="edm270249-li-0024"><p>oestrogen receptor</p></def></def-item><def-item><term id="edm270249-li-0025">ERK</term><def id="edm270249-li-0026"><p>extracellular regulated protein kinases</p></def></def-item><def-item><term id="edm270249-li-0027">FFA</term><def id="edm270249-li-0028"><p>free fatty acids</p></def></def-item><def-item><term id="edm270249-li-0029">Foxo1</term><def id="edm270249-li-0030"><p>Forkhead Box O1</p></def></def-item><def-item><term id="edm270249-li-0031">FSH</term><def id="edm270249-li-0032"><p>follicle‐stimulating hormone</p></def></def-item><def-item><term id="edm270249-li-0033">FSHR</term><def id="edm270249-li-0034"><p>Follicle‐stimulating hormone receptor</p></def></def-item><def-item><term id="edm270249-li-0035">GLP‐1</term><def id="edm270249-li-0036"><p>glucagon‐like peptide‐1</p></def></def-item><def-item><term id="edm270249-li-0037">GLUT</term><def id="edm270249-li-0038"><p>glucose transporter</p></def></def-item><def-item><term id="edm270249-li-0039">GPER</term><def id="edm270249-li-0040"><p>G protein‐coupled Oestrogen Receptor</p></def></def-item><def-item><term id="edm270249-li-0041">GSIS</term><def id="edm270249-li-0042"><p>glucose‐stimulated insulin secretion</p></def></def-item><def-item><term id="edm270249-li-0043">hESC</term><def id="edm270249-li-0044"><p>human embryonic stem cell</p></def></def-item><def-item><term id="edm270249-li-0045">HI</term><def id="edm270249-li-0046"><p>hyperinsulinaemia</p></def></def-item><def-item><term id="edm270249-li-0047">HIF‐1α</term><def id="edm270249-li-0048"><p>hypoxia inducible factor 1alpha</p></def></def-item><def-item><term id="edm270249-li-0049">HOXA10</term><def id="edm270249-li-0050"><p>homeobox A10</p></def></def-item><def-item><term id="edm270249-li-0051">IGFBP‐7</term><def id="edm270249-li-0052"><p>insulin‐like growth factor binding protein 7</p></def></def-item><def-item><term id="edm270249-li-0053">IR</term><def id="edm270249-li-0054"><p>insulin resistance</p></def></def-item><def-item><term id="edm270249-li-0055">IRS</term><def id="edm270249-li-0056"><p>insulin receptor substrate</p></def></def-item><def-item><term id="edm270249-li-0057">IVF</term><def id="edm270249-li-0058"><p>in vitro fertilisation</p></def></def-item><def-item><term id="edm270249-li-0059">LH</term><def id="edm270249-li-0060"><p>luteinising hormone</p></def></def-item><def-item><term id="edm270249-li-0061">LHCGR</term><def id="edm270249-li-0062"><p>luteinising hormone/choriogonadotropin receptor</p></def></def-item><def-item><term id="edm270249-li-0063">LPAR3</term><def id="edm270249-li-0064"><p>lysophosphatidic acid receptor 3</p></def></def-item><def-item><term id="edm270249-li-0065">MAPK</term><def id="edm270249-li-0066"><p>mitogen‐activated protein kinase</p></def></def-item><def-item><term id="edm270249-li-0067">MEF‐2A</term><def id="edm270249-li-0068"><p>myocyte enhancer factor 2A</p></def></def-item><def-item><term id="edm270249-li-0069">MSCs</term><def id="edm270249-li-0070"><p>mesenchymal stem cells</p></def></def-item><def-item><term id="edm270249-li-0071">mTOR</term><def id="edm270249-li-0072"><p>mammalian target of rapamycin</p></def></def-item><def-item><term id="edm270249-li-0073">NR4A1</term><def id="edm270249-li-0074"><p>nuclear receptor 4 A1</p></def></def-item><def-item><term id="edm270249-li-0075">NR4A2</term><def id="edm270249-li-0076"><p>nuclear receptor 4 A2</p></def></def-item><def-item><term id="edm270249-li-0077">OS</term><def id="edm270249-li-0078"><p>oxidative stress</p></def></def-item><def-item><term id="edm270249-li-0079">OXPHOS</term><def id="edm270249-li-0080"><p>oxidative phosphorylation</p></def></def-item><def-item><term id="edm270249-li-0081">PCOS</term><def id="edm270249-li-0082"><p>polycystic ovary syndrome</p></def></def-item><def-item><term id="edm270249-li-0083">PGRMC1</term><def id="edm270249-li-0084"><p>progesterone receptor membrane component 1</p></def></def-item><def-item><term id="edm270249-li-0085">PI3K</term><def id="edm270249-li-0086"><p>phosphatidylinositol 3‐kinase</p></def></def-item><def-item><term id="edm270249-li-0087">PKA</term><def id="edm270249-li-0088"><p>protein kinase A</p></def></def-item><def-item><term id="edm270249-li-0089">p‐mTOR</term><def id="edm270249-li-0090"><p>phosphorylated mTOR</p></def></def-item><def-item><term id="edm270249-li-0091">PR</term><def id="edm270249-li-0092"><p>progesterone receptor</p></def></def-item><def-item><term id="edm270249-li-0093">PRL</term><def id="edm270249-li-0094"><p>prolactin</p></def></def-item><def-item><term id="edm270249-li-0095">PYGB</term><def id="edm270249-li-0096"><p>glycogen phosphorylase B</p></def></def-item><def-item><term id="edm270249-li-0097">RIF</term><def id="edm270249-li-0098"><p>recurrent implantation failure</p></def></def-item><def-item><term id="edm270249-li-0099">ROS</term><def id="edm270249-li-0100"><p>reactive oxygen species</p></def></def-item><def-item><term id="edm270249-li-0101">SIK2</term><def id="edm270249-li-0102"><p>salt‐inducible kinase 2</p></def></def-item><def-item><term id="edm270249-li-0103">TBC1D4</term><def id="edm270249-li-0104"><p>TBC1 domain family member 4</p></def></def-item><def-item><term id="edm270249-li-0105">TCA</term><def id="edm270249-li-0106"><p>tricarboxylic acid</p></def></def-item><def-item><term id="edm270249-li-0107">TCM</term><def id="edm270249-li-0108"><p>traditional Chinese medicine</p></def></def-item><def-item><term id="edm270249-li-0109">VEGFA</term><def id="edm270249-li-0110"><p>vascular endothelial growth factor A</p></def></def-item></def-list><sec id="edm270249-sec-0005"><label>1</label><title>Introduction</title><p>Insulin resistance (IR) has been widely recognised as one of the heterogeneous clinical manifestations of polycystic ovary syndrome (PCOS), as demonstrated by numerous studies [<xref rid="edm270249-bib-0001" ref-type="bibr">1</xref>]. It is closely associated with other clinical features of PCOS, particularly hyperinsulinaemia (HI). Both IR and HI are considered fundamental contributors to the pathophysiology of PCOS and play critical roles in the development of reproductive dysfunction through various mechanisms [<xref rid="edm270249-bib-0001" ref-type="bibr">1</xref>, <xref rid="edm270249-bib-0002" ref-type="bibr">2</xref>]. However, the precise relationship between IR and HI remains controversial. Some studies suggest that HI is a compensatory response to IR, while others propose that HI may precede and potentially induce IR. Despite these differing viewpoints, the strong association between IR and HI is widely acknowledged.</p><p>In the reproductive system, the endometrium, which contains insulin receptors, can develop IR, thereby disrupting local glucose homeostasis [<xref rid="edm270249-bib-0003" ref-type="bibr">3</xref>, <xref rid="edm270249-bib-0004" ref-type="bibr">4</xref>]. Under conditions of IR, GLUTs on the cell membrane fail to respond adequately, impairing glucose uptake into cells. This results in hyperglycaemia, which in turn contributes to the development of HI through compensatory mechanisms [<xref rid="edm270249-bib-0005" ref-type="bibr">5</xref>]. Insulin also plays a crucial regulatory role in the HPO axis. By activating insulin receptors in the pituitary, it modulates gonadotropin secretion and promotes androgen production in the ovaries [<xref rid="edm270249-bib-0006" ref-type="bibr">6</xref>]. Additionally, insulin interacts with FSH and LH signalling pathways in the ovary, thereby influencing ovarian function and directly modulating glucose metabolism in the endometrium [<xref rid="edm270249-bib-0007" ref-type="bibr">7</xref>].</p><p>Endometrial glucose metabolism is essential for maintaining endometrial receptivity, which is a prerequisite for successful embryo implantation. Adequate glucose utilisation ensures sufficient energy supply and supports the structural and functional integrity of the endometrium. Accumulating evidence indicates that IR impairs endometrial function and disrupts embryo implantation, ultimately contributing to infertility. In PCOS, IR is commonly associated with metabolic disturbances such as obesity, chronic inflammation, and hyperandrogenism. These factors collectively impair the translocation of GLUT‐4 to the cell membrane, thereby contributing to abnormal endometrial glucose metabolism [<xref rid="edm270249-bib-0008" ref-type="bibr">8</xref>]. Furthermore, IR and HI influence the local secretion of insulin‐like growth factors and their binding proteins within the endometrium, leading to dysregulated endometrial proliferation and functional deficiencies [<xref rid="edm270249-bib-0009" ref-type="bibr">9</xref>]. Inadequate glucose metabolism also compromises energy availability in endometrial tissue, further impairing the implantation process. These alterations result in a significant decline in endometrial receptivity. Proteomic and bioinformatic analyses of human endometrial tissue have suggested that local IR may represent a critical mechanism underlying impaired endometrial receptivity in individuals with PCOS [<xref rid="edm270249-bib-0010" ref-type="bibr">10</xref>].</p><p>Several signalling pathways have been identified as being associated with local endometrial IR, including the IRS–PI3K–Akt–GLUTs pathway, the mitogen‐activated protein kinase/extracellular signal‐regulated kinase (MAPK/ERK) pathway, the adenosine 5′‐monophosphate‐activated protein kinase/mammalian target of rapamycin (AMPK‐mTOR) pathway, and the FSH‐cAMP‐PKA‐Ca<sup>2+</sup> pathway [<xref rid="edm270249-bib-0011" ref-type="bibr">11</xref>, <xref rid="edm270249-bib-0012" ref-type="bibr">12</xref>, <xref rid="edm270249-bib-0013" ref-type="bibr">13</xref>]. These pathways play distinct roles in regulating endometrial glycolysis and decidualisation, both of which are critical for establishing a receptive endometrium. In this review, we examine the physiological mechanisms governing endometrial glucose metabolism, as well as the pathological alterations associated with IR. We summarise the transcription factors that modulate these signalling cascades and influence endometrial receptivity. In addition, we discuss recent advances in therapeutic strategies targeting these mechanisms to improve endometrial function in the context of IR.</p></sec><sec id="edm270249-sec-0006"><label>2</label><title>IR</title><sec id="edm270249-sec-0007"><label>2.1</label><title>A Brief Introduction of Glucose‐Stimulated Insulin Secretion in Reproductive System</title><sec id="edm270249-sec-0008"><label>2.1.1</label><title>Steroid Hormones Play a Coordinated Part in Glucose‐Stimulated Insulin Secretion (<styled-content style="fixed-case" toggle="no">GSIS</styled-content>)</title><p>The endometrium must attain a minimum threshold of energy reserves to initiate reproductive processes, making glucose metabolism and insulin secretion critical components of endometrial function. Hormones that regulate the endometrial growth cycle—oestrogen, androgen, and progesterone—are closely associated with insulin signalling, as their corresponding steroid receptors are also expressed in pancreatic β‐cells (Figure <xref rid="edm270249-fig-0001" ref-type="fig">1a</xref>). Among these, oestrogen receptors (ERs) play a particularly important role in modulating insulin secretion and have been widely studied for therapeutic applications. Specifically, ERα promotes insulin gene transcription and enhances glucose‐stimulated insulin secretion (GSIS), while ERβ and G protein‐coupled oestrogen receptor (GPER) also facilitate GSIS through distinct mechanisms [<xref rid="edm270249-bib-0014" ref-type="bibr">14</xref>, <xref rid="edm270249-bib-0015" ref-type="bibr">15</xref>]. The androgen receptor (AR) directly influences both the endometrium and ovarian function. Experimental models have demonstrated that androgens can be used to induce PCOS‐like phenotypes in mice, highlighting their role in reproductive pathology. AR has also been shown to downregulate ER expression, thereby attenuating its regulatory effects on the endometrium and β‐cell function [<xref rid="edm270249-bib-0016" ref-type="bibr">16</xref>]. However, recent studies have identified AR as a positive modulator of GSIS, particularly by enhancing the insulinotropic action of glucagon‐like peptide‐1 (GLP‐1) [<xref rid="edm270249-bib-0017" ref-type="bibr">17</xref>]. Progesterone receptor membrane component 1 (PGRMC1), a membrane‐associated isoform of the progesterone receptor (PR), mediates non‐genomic P4 signalling and has been shown to facilitate GLP‐1‐induced insulin secretion. Additionally, islet β‐cells exhibit adaptive responses when PR antagonises the delayed proliferative effects of prolactin (PRL) [<xref rid="edm270249-bib-0014" ref-type="bibr">14</xref>, <xref rid="edm270249-bib-0018" ref-type="bibr">18</xref>].</p><fig position="float" fig-type="FIGURE" id="edm270249-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>The roles of sex hormone receptors in endometrial and islet cells. This figure outlines insulin resistance mechanisms in the endometrium. (a) Pancreatic β‐cell insulin gene transcription is regulated by oestrogen (via ERα and ERβ), androgen (via AR), and progesterone (via PR). (b) Endometrial insulin resistance involves interactions of receptors and hormones (ER, AR, FSHR, LH, AMH) affecting glucose metabolism. The figure also shows pancreatic β‐cell and endometrial interactions, including insulin receptor and GSIS, which influence endometrial insulin resistance development.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="EDM2-9-e70249-g002.jpg"><?image-name EDM2-9-e70249-g002.jpg?><?image-size 71210?><?image-md5 47ad6f35927cb9cc8a03469dd6170b02?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 474?><?image-original-width 1064?><?image-scaled-height 316?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/11ad/13254690/47ad6f35927c/EDM2-9-e70249-g002.jpg?><?thumb-name EDM2-9-e70249-g002.gif?><?thumb-size 12234?><?thumb-md5 442ea69b2ac86d496690529f1ea5b4c3?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 179?><?thumb-cloudpmc-urn urn:cdn:blobs/11ad/13254690/442ea69b2ac8/EDM2-9-e70249-g002.gif?></graphic></fig><p>Recent studies have indicated that FSH plays a central role in regulating steroid hormone activity within the reproductive system. Its binding to FSH receptors (FSHR) on pancreatic β‐cells has been shown to influence insulin secretion. Notably, FSH‐induced GSIS follows a bell‐shaped dose–response curve. Both FSHR knockout mouse models and in vitro studies have demonstrated that disruption of FSH signalling results in impaired insulin secretion, subsequently leading to dysregulated glucose metabolism [<xref rid="edm270249-bib-0019" ref-type="bibr">19</xref>]. Beyond its metabolic implications, the primary physiological role of FSH is to regulate the female reproductive system through interactions with steroid hormones. For instance, FSHR expression is positively correlated with AR expression at both the protein and mRNA levels [<xref rid="edm270249-bib-0020" ref-type="bibr">20</xref>]. These interactions constitute a dual triangular regulatory network involving AMH, FSHR, ER, and AR, which collectively control endometrial proliferation and shedding (Figure <xref rid="edm270249-fig-0001" ref-type="fig">1b</xref>). Given these interconnections, mapping glucose metabolism pathways with FSH as a central regulatory node provides valuable insights and a promising direction for future research in reproductive and metabolic health [<xref rid="edm270249-bib-0021" ref-type="bibr">21</xref>].</p></sec><sec id="edm270249-sec-0009"><label>2.1.2</label><title>Glucose and Glucose Transporters in Endometrium</title><p>The translocation of GLUT4 represents a critical step in insulin‐stimulated glucose uptake and is mediated directly via the Akt‐TBC1 domain family member 4 (TBC1D4) signalling axis. Phosphoproteomic analyses have revealed that impaired GLUT4 translocation is a key signalling alteration observed in IR conditions [<xref rid="edm270249-bib-0022" ref-type="bibr">22</xref>]. As an insulin‐dependent glucose transporter, GLUT4 exhibits peak expression in the follicular phase of the menstrual cycle, whereas the insulin‐independent transporter GLUT1 is most abundantly expressed during the luteal phase [<xref rid="edm270249-bib-0023" ref-type="bibr">23</xref>]. Data feedback on whether GLUT 4 is expressed on the endometrium is inconsistent [<xref rid="edm270249-bib-0024" ref-type="bibr">24</xref>]. Despite this, numerous studies have reported that GLUT4 expression is significantly downregulated in the presence of hyperinsulinemia, while treatment with metformin has been shown to increase both mRNA and protein levels of GLUT4. Additionally, evidence suggests that steroid hormones may participate in the regulation of GLUT4 expression and activity [<xref rid="edm270249-bib-0025" ref-type="bibr">25</xref>]. GLUT1 was the first glucose transporter identified in the endometrium and is responsible for the transport of various hexoses, including glucose, mannose, galactose, glucosamine, and reduced ascorbic acid. In addition to its expression in the endometrium, GLUT1 is also highly expressed in the placenta and is considered the most abundantly transcribed glucose transporter in endometrial tissue. Its presence is essential for endometrial decidualisation and functional transformation during the menstrual cycle [<xref rid="edm270249-bib-0023" ref-type="bibr">23</xref>, <xref rid="edm270249-bib-0026" ref-type="bibr">26</xref>, <xref rid="edm270249-bib-0027" ref-type="bibr">27</xref>]. GLUT3, in contrast, shows elevated expression during menstruation and early pregnancy. Compared with GLUT1, GLUT3 expression declines significantly in the second trimester, suggesting its critical role in early embryonic development following implantation. For instance, progesterone has been shown to modulate GLUT3 expression via the upregulation of miR‐152, thereby inhibiting early embryo development and implantation through downregulation of GLUT3 in the endometrium [<xref rid="edm270249-bib-0028" ref-type="bibr">28</xref>].</p></sec><sec id="edm270249-sec-0010"><label>2.1.3</label><title>Characteristics of Glycolysis</title><p>As the primary metabolic pathway in the endometrium, glycolysis plays an essential role in energy metabolism during the menstrual cycle and throughout pregnancy. Inhibition of glycolysis has been shown to reduce inflammation and impair endometrial repair during the menstrual phase. In mouse models, stable expression of hypoxia‐inducible factor 1 alpha (HIF‐1α) under hypoxic conditions was found to be associated with the inhibition of glycolysis rather than hypoxia‐induced disruption of endometrial repair, confirming the independent effect of glycolysis on endometrial function [<xref rid="edm270249-bib-0029" ref-type="bibr">29</xref>]. In addition, HIF‐1α has been shown to increase the expression of GLUT1 and multiple glycolytic enzymes, with expression levels peaking at 7 weeks of gestation and declining between 10 and 12 weeks. These dynamic changes in HIF‐1α expression indicate that glycolysis is functionally involved in early pregnancy. Moreover, glycolysis has been shown to promote the proliferation, migration, and invasion of trophoblast cells, and to influence the process of endometrial decidualisation. It is also required for the proliferation, secretion, and cytotoxic activity of decidual natural killer (dNK) cells [<xref rid="edm270249-bib-0030" ref-type="bibr">30</xref>].</p></sec></sec><sec id="edm270249-sec-0011"><label>2.2</label><title>
+<styled-content style="fixed-case" toggle="no">IR</styled-content> and Related‐<styled-content style="fixed-case" toggle="no">HI</styled-content>
+</title><sec id="edm270249-sec-0012"><label>2.2.1</label><title>
+<styled-content style="fixed-case" toggle="no">IR</styled-content> Effect the Insulin Secretion: The Dynamic Clustering of Insulin Receptor</title><p>As previously mentioned, the endometrium expresses insulin receptors, and prolonged exposure to elevated insulin levels leads to reduced insulin sensitivity and impaired insulin signalling, ultimately resulting in insulin resistance (IR). In IR cells, the ability of insulin receptors to aggregate into clusters under acute insulin stimulation is diminished, indicating altered receptor dynamics. However, metformin has been shown to restore insulin receptor dynamics by decreasing the levels of reactive oxygen species (ROS), highlighting its therapeutic value in the management of IR [<xref rid="edm270249-bib-0004" ref-type="bibr">4</xref>, <xref rid="edm270249-bib-0031" ref-type="bibr">31</xref>].</p></sec><sec id="edm270249-sec-0013"><label>2.2.2</label><title>
+<styled-content style="fixed-case" toggle="no">HI</styled-content> Is Often Both a Result and a Driver of Insulin Resistance</title><p>Several studies have confirmed that long‐term exposure to elevated insulin levels leads to decreased tyrosine and serine autophosphorylation of insulin receptors, a reduction that is not reversed even after insulin withdrawal. Recent findings have demonstrated that during the decidualisation of human endometrial stromal cells (hESC), Nuclear Receptor 4A1 (NR4A1) and Nuclear Receptor 4A2 (NR4A2) function as metabolic mediators of insulin signalling within the PI3K‐AKT pathway. This provides the first evidence that insulin interferes with the decidualisation process of hESC through the PI3K/AKT‐NR4A axis [<xref rid="edm270249-bib-0032" ref-type="bibr">32</xref>]. Whether due to insulin receptor dysfunction or interference with downstream insulin signalling pathways, the consequence is reduced tissue insulin sensitivity, ultimately leading to insulin resistance (IR). Hyperinsulinemia (HI) further contributes to the development of IR, creating a self‐reinforcing cycle. At the same time, HI is also a consequence of IR. In vivo studies involving sustained insulin infusion have confirmed that HI can induce IR. Specifically, persistent HI for 40 h significantly reduces glucose uptake and overall glucose metabolism, even when plasma insulin concentrations are below maximal or maximally effective levels [<xref rid="edm270249-bib-0033" ref-type="bibr">33</xref>].</p></sec></sec></sec><sec id="edm270249-sec-0014"><label>3</label><title>Local Endometrial <styled-content style="fixed-case" toggle="no">IR</styled-content>
+</title><sec id="edm270249-sec-0015"><label>3.1</label><title>The Introduction of Endometrial Receptivity</title><sec sec-type="background" id="edm270249-sec-0016"><label>3.1.1</label><title>Background</title><p>The concept of endometrial receptivity refers to the specific period within the menstrual cycle during which the endometrium becomes capable of receiving and supporting the implantation of a developing embryo. This process is dynamic and stringently regulated through a complex interplay of molecular, cellular, and hormonal mechanisms. The successful establishment of endometrial receptivity is essential for embryo implantation, and any disruption may lead to implantation failure or early pregnancy loss [<xref rid="edm270249-bib-0034" ref-type="bibr">34</xref>]. In recent years, considerable progress has been made in elucidating the underlying mechanisms of endometrial receptivity. The subsequent sections will summarise various influencing factors, including environmental cues, hormonal regulation, receptor signalling, and molecular biomarkers. However, effective diagnostic tools and therapeutic strategies remain limited. One of the recent research focuses has been the application of mesenchymal stem cells (MSCs) in the treatment of endometrial dysfunction. Owing to their multipotent differentiation capacity and immunomodulatory properties, in vivo studies have confirmed that MSCs can effectively increase endometrial thickness and improve endometrial receptivity after transplantation [<xref rid="edm270249-bib-0035" ref-type="bibr">35</xref>, <xref rid="edm270249-bib-0036" ref-type="bibr">36</xref>].</p></sec><sec id="edm270249-sec-0017"><label>3.1.2</label><title>Influencing Factors (Table <xref rid="edm270249-tbl-0001" ref-type="table">1</xref>)</title><table-wrap position="float" id="edm270249-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Factors affecting endometrial receptivity and their corresponding mechanisms.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="left" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Category</th><th align="center" valign="bottom" rowspan="1" colspan="1">Factor</th><th align="center" valign="bottom" rowspan="1" colspan="1">Pathway of influence</th><th align="center" valign="bottom" rowspan="1" colspan="1">References</th></tr></thead><tbody valign="top"><tr><td align="left" rowspan="2" valign="top" colspan="1">Environment</td><td align="center" valign="top" rowspan="1" colspan="1">Age</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0001"><list-item id="edm270249-li-0111"><p>Cellular senescence.</p></list-item><list-item id="edm270249-li-0112"><p>Increased pro‐inflammatory and tissue fibrosis.</p></list-item><list-item id="edm270249-li-0113"><p>Affects epigenetic regulation of the endometrium.</p></list-item><list-item id="edm270249-li-0114"><p>Impaired decidualisation of endometrial stromal cells.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0037" ref-type="bibr">37</xref>, <xref rid="edm270249-bib-0038" ref-type="bibr">38</xref>, <xref rid="edm270249-bib-0039" ref-type="bibr">39</xref>]</td></tr><tr><td align="center" valign="top" rowspan="1" colspan="1">obesity</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0002"><list-item id="edm270249-li-0115"><p>Fatty acid‐related pro‐inflammatory response mediated by prostaglandin signalling.</p></list-item><list-item id="edm270249-li-0116"><p>Phospholipid‐derived mediators.</p></list-item><list-item id="edm270249-li-0117"><p>Synergistically mediated by steroid hormones progesterone and oestrogen.</p></list-item><list-item id="edm270249-li-0118"><p>Delayed WOI.</p></list-item><list-item id="edm270249-li-0119"><p>Impairs endometrial decidualisation.</p></list-item><list-item id="edm270249-li-0120"><p>Affects the activity and function of chemokines, cytokines and the immune system as well as structural extracellular matrix and protein‐binding molecules.</p></list-item><list-item id="edm270249-li-0121"><p>Changes the abundance of endometrium‐specific proteins.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0040" ref-type="bibr">40</xref>, <xref rid="edm270249-bib-0041" ref-type="bibr">41</xref>, <xref rid="edm270249-bib-0042" ref-type="bibr">42</xref>, <xref rid="edm270249-bib-0043" ref-type="bibr">43</xref>, <xref rid="edm270249-bib-0044" ref-type="bibr">44</xref>, <xref rid="edm270249-bib-0045" ref-type="bibr">45</xref>, <xref rid="edm270249-bib-0046" ref-type="bibr">46</xref>]</td></tr><tr><td align="left" rowspan="4" valign="top" colspan="1">Receptor</td><td align="center" valign="top" rowspan="1" colspan="1">IGFR</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0003"><list-item id="edm270249-li-0122"><p>miR‐145 affects embryo attachment by reducing IGFR in the endometrium.</p></list-item><list-item id="edm270249-li-0123"><p>miR‐140 inhibits embryo implantation by downregulating IGFR expression.</p></list-item><list-item id="edm270249-li-0124"><p>The H19/Let‐7/IGF1R regulatory pathway affects the proliferation of endometrial cells.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0047" ref-type="bibr">47</xref>, <xref rid="edm270249-bib-0048" ref-type="bibr">48</xref>]</td></tr><tr><td align="center" valign="top" rowspan="1" colspan="1">ER</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0004"><list-item id="edm270249-li-0125"><p>Affects endometrial implantation window.</p></list-item><list-item id="edm270249-li-0126"><p>Participates in human endometrial stromal cell cycle regulation, progesterone response and stromal growth together with E2 activation.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0049" ref-type="bibr">49</xref>, <xref rid="edm270249-bib-0050" ref-type="bibr">50</xref>]</td></tr><tr><td align="center" valign="top" rowspan="1" colspan="1">PR</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0005"><list-item id="edm270249-li-0127"><p>A genomic region that regulates the receptivity and key functional processes of the uterus.</p></list-item><list-item id="edm270249-li-0128"><p>Involved in P4 signal transduction during embryo implantation.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0051" ref-type="bibr">51</xref>, <xref rid="edm270249-bib-0052" ref-type="bibr">52</xref>]</td></tr><tr><td align="center" valign="top" rowspan="1" colspan="1">AR</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0006"><list-item id="edm270249-li-0129"><p>Differential expression of endometrial receptivity and decidualisation genes in early and mid‐pregnancy.</p></list-item><list-item id="edm270249-li-0130"><p>Regulation of gene expression in decidualising stromal cells.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0053" ref-type="bibr">53</xref>, <xref rid="edm270249-bib-0054" ref-type="bibr">54</xref>]</td></tr><tr><td align="left" rowspan="2" valign="top" colspan="1">Biomarker</td><td align="center" valign="top" rowspan="1" colspan="1">integrin</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0007"><list-item id="edm270249-li-0131"><p>Affects endometrial receptivity during high androgen states.</p></list-item><list-item id="edm270249-li-0132"><p>Indirectly acts via endometrial fluid.</p></list-item><list-item id="edm270249-li-0133"><p>Plays an important role in the trophoblast‐endometrial adhesion of embryo implantation.</p></list-item><list-item id="edm270249-li-0134"><p>Down‐regulation of oestrogen and progesterone receptors is related to it.</p></list-item><list-item id="edm270249-li-0135"><p>Integrin beta8 (ITGB8) promotes endometrial receptivity by activating the VAV‐RAC1 signalling axis through FAK.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0054" ref-type="bibr">54</xref>, <xref rid="edm270249-bib-0055" ref-type="bibr">55</xref>, <xref rid="edm270249-bib-0056" ref-type="bibr">56</xref>]</td></tr><tr><td align="center" valign="top" rowspan="1" colspan="1">GLUT4</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0008"><list-item id="edm270249-li-0136"><p>Expression increases during implantation window.</p></list-item><list-item id="edm270249-li-0137"><p>Impairs endometrial receptivity by increasing the concentration of glucose in uterine fluid, inhibiting isoprene formation and the expression of leukaemia inhibitory factor (LIF) and integrin β3.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">[<xref rid="edm270249-bib-0009" ref-type="bibr">9</xref>, <xref rid="edm270249-bib-0057" ref-type="bibr">57</xref>]</td></tr></tbody></table></table-wrap><p>
+<list list-type="order" id="edm270249-list-0009"><list-item id="edm270249-li-0138"><p>Environment: age [<xref rid="edm270249-bib-0037" ref-type="bibr">37</xref>, <xref rid="edm270249-bib-0038" ref-type="bibr">38</xref>, <xref rid="edm270249-bib-0039" ref-type="bibr">39</xref>]/obesity [<xref rid="edm270249-bib-0040" ref-type="bibr">40</xref>, <xref rid="edm270249-bib-0041" ref-type="bibr">41</xref>, <xref rid="edm270249-bib-0042" ref-type="bibr">42</xref>, <xref rid="edm270249-bib-0043" ref-type="bibr">43</xref>, <xref rid="edm270249-bib-0044" ref-type="bibr">44</xref>, <xref rid="edm270249-bib-0045" ref-type="bibr">45</xref>, <xref rid="edm270249-bib-0046" ref-type="bibr">46</xref>]/inflammation</p></list-item><list-item id="edm270249-li-0139"><p>Receptor: insulin receptor/IGFR [<xref rid="edm270249-bib-0047" ref-type="bibr">47</xref>, <xref rid="edm270249-bib-0048" ref-type="bibr">48</xref>]/ER [<xref rid="edm270249-bib-0049" ref-type="bibr">49</xref>, <xref rid="edm270249-bib-0050" ref-type="bibr">50</xref>]/PR [<xref rid="edm270249-bib-0051" ref-type="bibr">51</xref>]/AR [<xref rid="edm270249-bib-0053" ref-type="bibr">53</xref>, <xref rid="edm270249-bib-0054" ref-type="bibr">54</xref>].</p></list-item><list-item id="edm270249-li-0140"><p>Biomarker: integrin [<xref rid="edm270249-bib-0055" ref-type="bibr">55</xref>, <xref rid="edm270249-bib-0056" ref-type="bibr">56</xref>, <xref rid="edm270249-bib-0058" ref-type="bibr">58</xref>]/GLUT4 [<xref rid="edm270249-bib-0009" ref-type="bibr">9</xref>, <xref rid="edm270249-bib-0057" ref-type="bibr">57</xref>]/pps/HOXA‐10/Foxo1.</p></list-item></list>
+</p></sec></sec><sec id="edm270249-sec-0018"><label>3.2</label><title>The Character of Endometrial <styled-content style="fixed-case" toggle="no">IR</styled-content>
+</title><sec id="edm270249-sec-0019"><label>3.2.1</label><title>Affect the Expression of Endometrial Receptivity‐Related Molecules</title><p>Local endometrial insulin resistance (IR) is associated with hyperandrogenemia, obesity, and chronic low‐grade inflammation, particularly with imbalances in oxidative stress (OS), which contribute to reactive oxygen species (ROS)‐mediated OS elevation and pregnancy complications [<xref rid="edm270249-bib-0059" ref-type="bibr">59</xref>]. Endometrial IR primarily results from impaired key components of the local insulin signalling pathway and disrupted downstream transduction, ultimately reducing glucose uptake. These impairments include downregulation of glucose transporter 4 (GLUT‐4), decreased phosphorylation of insulin receptor substrates (INSR), and transcriptional inhibition of forkhead box O1 (FOXO1) in the endometrium. Transcription factors such as adenosine monophosphate‐activated protein kinase (AMPK) and myocyte enhancer factor 2A (MEF‐2A) have been identified as regulators of GLUT‐4 expression. In addition, molecules such as the Akt substrate of 160 kDa (AS160), which mediate GLUT‐4 translocation to the cell membrane, are reduced in endometrial IR, further compromising endometrial receptivity (ER) [<xref rid="edm270249-bib-0060" ref-type="bibr">60</xref>]. Expression levels of components in the mammalian target of rapamycin (mTOR) signalling pathway are closely linked to ER. In maternal hyperinsulinemia mouse models, the expression of phosphorylated mTOR (p‐mTOR) and phosphorylated p70S6 kinase (p‐p70S6K) is decreased, accompanied by dysregulation of ER‐related genes such as Esr1, Pgr, Hoxa10, and Esr2. Notably, insulin treatment was able to restore ER function and normalise gene expression, indicating that local endometrial IR directly affects the transcriptional regulation of ER‐associated genes [<xref rid="edm270249-bib-0059" ref-type="bibr">59</xref>].</p></sec><sec id="edm270249-sec-0020"><label>3.2.2</label><title>Influence the Pathway of Glucose Uptake by Endometrium</title><p>One of the key features of local insulin resistance (IR) in the endometrium is impairment of the insulin receptor substrate (IRS)‐phosphoinositide 3‐kinase (PI3K)‐protein kinase B (Akt) signalling pathway. The PI3K/Akt cascade is central to endometrial glucose uptake and plays a critical role in regulating cellular proliferation, survival, and differentiation [<xref rid="edm270249-bib-0061" ref-type="bibr">61</xref>]. Most insulin signal transduction is mediated through this pathway, with Akt acting as the central effector. This pathway facilitates the translocation of glucose transporters (GLUTs) to the cell membrane, enabling glucose uptake and supporting various cellular processes. In patients with IR, elevated insulin levels modulate apoptosis via the PI3K/phosphorylated‐Akt (p‐Akt) axis, leading to a significant reduction in the expression of decidual markers such as bone morphogenetic protein 2 (BMP2), oestrogen receptor (ER), and progesterone receptor (PR) at embryo implantation sites and within the endometrium. Moreover, this dysregulation compromises uterine stromal cell function and increases mitochondrial membrane potential, thereby impairing decidualisation in early pregnancy models [<xref rid="edm270249-bib-0062" ref-type="bibr">62</xref>]. Currently, it is widely accepted that the primary mechanism of IR involves disruptions in signal transduction downstream of insulin receptor binding. Aberrations in molecules such as IRS, Akt, and GLUTs are considered major contributors to local endometrial IR in patients with polycystic ovary syndrome (PCOS) [<xref rid="edm270249-bib-0063" ref-type="bibr">63</xref>]. Such impairments compromise endometrial receptivity and are a critical cause of infertility.</p></sec></sec><sec id="edm270249-sec-0021"><label>3.3</label><title>Infertility Caused by <styled-content style="fixed-case" toggle="no">IR</styled-content> via Destroyed Endometrial Receptivity</title><p>Studies have demonstrated that under conditions of hyperinsulinemia and elevated blood glucose, the expression levels of decidualisation markers, such as bone morphogenetic protein 2 (BMP2) and prolactin (PRL), are significantly downregulated. Furthermore, vascular endothelial growth factor A (VEGFA), a key regulator of endometrial angiogenesis, is markedly reduced both in vivo and in vitro, suggesting that hyperinsulinemia impairs endometrial vascular remodelling during early pregnancy in mice [<xref rid="edm270249-bib-0064" ref-type="bibr">64</xref>]. As discussed previously, local insulin resistance (IR) disrupts the expression of molecules associated with endometrial receptivity and key components of the glucose metabolic pathway, resulting in glucose deficiency within endometrial tissue. Such metabolic disturbances compromise endometrial proliferation and differentiation, leading to failed embryo implantation or an elevated risk of pregnancy loss. Meanwhile, in vitro studies have indicated that cortisol impairs endometrial insulin sensitivity, reduces glucose uptake by endometrial cells, and interferes with endometrial receptivity, implying that the significantly decreased pregnancy rate in patients with IR is primarily attributed to impaired endometrial function and defective embryo attachment [<xref rid="edm270249-bib-0065" ref-type="bibr">65</xref>].</p></sec></sec><sec id="edm270249-sec-0022"><label>4</label><title>
+<styled-content style="fixed-case" toggle="no">IR</styled-content> Affects Endometrial Receptivity via Regulating Glucose Metabolism</title><sec sec-type="background" id="edm270249-sec-0023"><label>4.1</label><title>Background</title><p>Endometrial glucose metabolism involves several tightly regulated steps. Glucose is primarily transported via glucose transporter 4 (GLUT4), facilitating its diffusion across the epithelium into the uterine cavity or its conversion into fructose and lactate through the polyol pathway or glycolysis, followed by secretion into the uterine lumen. Once glucose enters epithelial cells, it is stored as glycogen and subsequently mobilised via glycogenolysis. Decidualisation significantly alters glucose metabolism in the endometrial stroma. During this process, glucose flux through the pentose phosphate pathway increases to support nucleic acid synthesis and NADPH production. Post‐decidualisation, cells shift toward a metabolism dominated by aerobic glycolysis, with reduced activity of the tricarboxylic acid (TCA) cycle and oxidative phosphorylation (OXPHOS). Additionally, decidualisation is accompanied by extensive glycosylation of extracellular proteins, including N‐glycan and O‐linked β‐N‐acetylglucosamine (O‐GlcNAc) modifications. The decidua also accumulates substantial glycogen reserves to support early pregnancy demands [<xref rid="edm270249-bib-0066" ref-type="bibr">66</xref>].</p></sec><sec id="edm270249-sec-0024"><label>4.2</label><title>The <styled-content style="fixed-case" toggle="no">IRS</styled-content>‐<styled-content style="fixed-case" toggle="no">PI3K</styled-content>‐<styled-content style="fixed-case" toggle="no">Akt</styled-content>‐<styled-content style="fixed-case" toggle="no">GLUTs</styled-content> Pathway (Figure <xref rid="edm270249-fig-0002" ref-type="fig">2</xref>)</title><fig position="float" fig-type="FIGURE" id="edm270249-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>The mechanisms of insulin resistance in the endometrium.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="EDM2-9-e70249-g001.jpg"><?image-name EDM2-9-e70249-g001.jpg?><?image-size 103529?><?image-md5 e7d96404d3bb54ceab88a0b90e35e253?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 741?><?image-original-width 1064?><?image-scaled-height 494?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/11ad/13254690/e7d96404d3bb/EDM2-9-e70249-g001.jpg?><?thumb-name EDM2-9-e70249-g001.gif?><?thumb-size 13078?><?thumb-md5 904ca1addf78333640767d9735b5a19f?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 79?><?thumb-scaled-width 114?><?thumb-cloudpmc-urn urn:cdn:blobs/11ad/13254690/904ca1addf78/EDM2-9-e70249-g001.gif?></graphic></fig><p>Schematic representation of the molecular mechanisms involved in insulin resistance, hyperinsulinaemia, and GSIS. The diagram illustrates the role of insulin signalling pathways, including the activation and inhibition of key molecules such as IRS‐1, PI3K, Akt, and mTOR. The regulation of GLUT4 translocation and glucose uptake is also depicted, with specific emphasis on the impact of growth factors, inflammatory responses, and metabolic imbalance. Downregulation (−) and upregulation (+) of key molecular factors are indicated. The effects of metformin on endometrial function and the involvement of steroid hormone receptors (PR, AR, ER) are also highlighted.</p><sec id="edm270249-sec-0025"><label>4.2.1</label><title>
+<styled-content style="fixed-case" toggle="no">IRS</styled-content>
+</title><p>Insulin receptor substrates 1 and 2 (IRS1/IRS2) are essential mediators in the early stages of insulin signalling and are impaired in endometrial insulin resistance (IR). Immunohistochemical analysis of endometrial tissue from polycystic ovary syndrome (PCOS) patients with normoinsulinemia (PCOSE‐NI) and hyperinsulinemia (PCOSE‐HI) demonstrated no significant differences in insulin receptor (INSR) expression among groups. However, Western blot analysis revealed significantly reduced IRS1 expression in the PCOSE‐HI group compared to the PCOSE‐NI group [<xref rid="edm270249-bib-0067" ref-type="bibr">67</xref>]. Although IRS1 is critical for transmitting insulin signals, its overexpression or abnormal serine phosphorylation may contribute to the development of IR. For example, salt‐inducible kinase 2 (SIK2), a member of the AMP‐activated protein kinase (AMPK) family, can phosphorylate IRS1 at Ser789, impairing its function. Similarly, the mammalian target of rapamycin (mTOR) pathway modulates IRS1 activity through phosphorylation at Ser636/639, further disrupting downstream insulin signalling [<xref rid="edm270249-bib-0068" ref-type="bibr">68</xref>].</p></sec><sec id="edm270249-sec-0026"><label>4.2.2</label><title>
+<styled-content style="fixed-case" toggle="no">PI3K</styled-content>‐<styled-content style="fixed-case" toggle="no">Akt</styled-content>
+</title><p>Insulin can directly promote cell proliferation via the PI3K/Akt signalling pathway. Under insulin resistance (IR), impairment of this pathway leads to reduced expression of key components, thereby affecting endometrial cell proliferation and differentiation, ultimately diminishing endometrial receptivity. Increasing evidence suggests that various pharmacological agents can alleviate IR by modulating the PI3K/Akt pathway [<xref rid="edm270249-bib-0063" ref-type="bibr">63</xref>]. Akt, also known as protein kinase B (PKB), is a cytoplasmic serine/threonine kinase essential for cell survival and proliferation, both of which are critical for successful implantation. There are three isoforms of Akt: Akt1 (PKBα), Akt2 (PKBβ), and Akt3 (PKBγ), each playing distinct roles in metabolic and physiological regulation. Akt1 deficiency in mice results in reduced cell survival and increased perinatal mortality. Loss of Akt2 impairs insulin‐stimulated glucose uptake in skeletal muscle and adipose tissue, leading to systemic insulin intolerance. Although Akt3 deficiency does not affect glucose metabolism, it leads to a marked reduction in brain volume, total cell number, and average cell size. All three isoforms are activated by PI3K and mediate growth factor signalling [<xref rid="edm270249-bib-0069" ref-type="bibr">69</xref>].</p></sec><sec id="edm270249-sec-0027"><label>4.2.3</label><title>
+<styled-content style="fixed-case" toggle="no">GLUTs</styled-content>
+</title><p>Of the 14 known GLUTs, 9 have been detected in the uterus (Table <xref rid="edm270249-tbl-0002" ref-type="table">2</xref>, especially in GLUT4). To date, 14 glucose transporter (GLUT) isoforms have been identified, of which nine have been detected in the uterus. This section details their localisation, expression levels, and functional significance, as summarised in Table <xref rid="edm270249-tbl-0002" ref-type="table">2</xref> [<xref rid="edm270249-bib-0066" ref-type="bibr">66</xref>].</p><table-wrap position="float" id="edm270249-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>The localisation, level of expression, and representative significance of common glucose transporters in the endometrium.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="left" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">GLUT type</th><th align="center" valign="bottom" rowspan="1" colspan="1">Location</th><th align="center" valign="bottom" rowspan="1" colspan="1">Level of expression</th><th align="center" valign="bottom" rowspan="1" colspan="1">Representative meaning</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">GLUT1</td><td align="center" valign="top" rowspan="1" colspan="1">All cell types of the endometrium contain</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0010"><list-item id="edm270249-li-0141"><p>The endometrial epithelial cell content is greater than the stromal cell content.</p></list-item><list-item id="edm270249-li-0142"><p>It increases tenfold during decidualisation.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">During the process of decidualisation, glucose uptake increases accordingly. During this period, abnormal glucose metabolism can affect the amount of GLUT1, leading to a decrease in endometrial receptivity.</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">GLUT3</td><td align="center" valign="top" rowspan="1" colspan="1">High‐glucose‐requiring tissues</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0011"><list-item id="edm270249-li-0143"><p>Constant levels are expressed in the proliferative phase of menstruation or early pregnancy and in the decidua.</p></list-item><list-item id="edm270249-li-0144"><p>It is expressed in the trophoblast in early pregnancy and is not expressed in the placenta.</p></list-item><list-item id="edm270249-li-0145"><p>A slight decrease is observed in the second trimester.</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">Decline in the second trimester</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">GLUT4</td><td align="center" valign="top" rowspan="1" colspan="1">Endometrial epithelial cells and endometrial stromal cells</td><td align="left" valign="top" rowspan="1" colspan="1">
+<list list-type="order" id="edm270249-list-0012"><list-item id="edm270249-li-0146"><p>Expression is elevated during the follicular phase</p></list-item><list-item id="edm270249-li-0147"><p>GLUT4 is significantly decreased in hyperinsulinemia</p></list-item><list-item id="edm270249-li-0148"><p>During the menstrual cycle, P4 induces the expression of GLUT4 in the endometrium</p></list-item></list>
+</td><td align="center" valign="top" rowspan="1" colspan="1">PCOS can disrupt the P4‐induced GLUT4 expression pathway. New therapeutic targets can be found by studying this pathway.</td></tr></tbody></table></table-wrap><p>GLUT1, the first identified in the endometrium, is present in all three major endometrial cell types. In the non‐pregnant uterus, SLC2A1 (GLUT1) expression is higher in epithelial cells than in stromal cells [<xref rid="edm270249-bib-0027" ref-type="bibr">27</xref>]. During pregnancy, GLUT1 levels are markedly elevated in the decidua. Decidualisation induces a tenfold increase in GLUT1 protein, accompanied by a corresponding rise in glucose uptake. During this process, progesterone (P4) upregulates GLUT1, while 17β‐estradiol (E2) downregulates it, suggesting a possible antagonistic interaction. In vivo GLUT1 knockout leads to implantation failure, underscoring the critical role of glucose metabolism in endometrial receptivity [<xref rid="edm270249-bib-0023" ref-type="bibr">23</xref>, <xref rid="edm270249-bib-0026" ref-type="bibr">26</xref>].</p><p>GLUT3, typically expressed in tissues with high glucose demand, is stably expressed during the proliferative phase and in the decidua during early pregnancy. In early gestation, GLUT3 is restricted to trophoblasts and is absent in term placenta. Its expression slightly declines in the second trimester, indicating reduced involvement at later stages. Moreover, GLUT3 expression in the uterus and placenta correlates with serum progesterone levels during early pregnancy [<xref rid="edm270249-bib-0024" ref-type="bibr">24</xref>].</p><p>GLUT4, a key insulin‐responsive transporter, shows low expression in the endometrium [<xref rid="edm270249-bib-0024" ref-type="bibr">24</xref>, <xref rid="edm270249-bib-0026" ref-type="bibr">26</xref>]. Although current data on endometrial GLUT4 expression are scarce and inconsistent, its importance in the endometrium is widely recognised. It is localised to both epithelial and stromal cells [<xref rid="edm270249-bib-0070" ref-type="bibr">70</xref>], with significantly higher mRNA expression during the follicular phase and a decrease in the luteal phase [<xref rid="edm270249-bib-0071" ref-type="bibr">71</xref>]. Compared with PCOS patients without insulin resistance (IR), endometrial GLUT4 levels are markedly lower in both hyperinsulinemic and obese PCOS patients, suggesting that hyperinsulinemia and obesity contribute to GLUT4 downregulation, which has also been confirmed by in vivo studies [<xref rid="edm270249-bib-0072" ref-type="bibr">72</xref>]. Insulin signals GLUT4 translocation in insulin‐sensitive tissues, including the endometrial stroma, via insulin and IGF‐I receptors. Dysregulated GLUT4 expression may alter the metabolic and hormonal milieu in hyperinsulinemic PCOS. Although P4 modulates endometrial GLUT4 expression throughout the menstrual cycle, this regulation is disrupted in PCOS, impairing normal GLUT4 dynamics [<xref rid="edm270249-bib-0025" ref-type="bibr">25</xref>]. A deeper understanding of insulin signalling and GLUT4 regulation in the endometrium may provide valuable insights into the pathophysiology of PCOS and offer potential therapeutic targets [<xref rid="edm270249-bib-0067" ref-type="bibr">67</xref>].</p></sec></sec><sec id="edm270249-sec-0028"><label>4.3</label><title>The <styled-content style="fixed-case" toggle="no">cAMP</styled-content>‐<styled-content style="fixed-case" toggle="no">PKA</styled-content>‐<styled-content style="fixed-case" toggle="no">Ca</styled-content>
+<sup>2+</sup> Pathway</title><p>Follicle‐stimulating hormone (FSH) exerts its reproductive function by binding to the FSH receptor (FSHR) and activating the cAMP–PKA signalling pathway [<xref rid="edm270249-bib-0073" ref-type="bibr">73</xref>]. Beyond its classical role, FSH also influences other tissues. Recent studies have detected FSHR expression in pancreatic islet β‐cells in both humans and mice, where FSH regulates glucose‐stimulated insulin secretion (GSIS) in a bell‐shaped dose–response curve. Mechanistically, FSH primarily signals through FSHR by activating Gαs, thereby stimulating the cAMP/PKA and calcium signalling pathways to enhance GSIS. However, at higher concentrations, FSH activates Gαi, which suppresses the cAMP/PKA pathway and intensifies its regulatory effects on insulin secretion [<xref rid="edm270249-bib-0019" ref-type="bibr">19</xref>]. Moreover, FSH concentrations below 10 IU/L modulate intracellular cAMP levels in a dose‐dependent manner. Concurrently, FSH promotes calcium influx from extracellular sources via membrane‐bound Ca<sup>2+</sup>channels, forming a complete transcriptional cascade that contributes to β‐cell function.</p></sec></sec><sec id="edm270249-sec-0029"><label>5</label><title>New Direction of Treatment: Preclinical and Clinical Examples (Figure <xref rid="edm270249-fig-0003" ref-type="fig">3</xref>)</title><fig position="float" fig-type="FIGURE" id="edm270249-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Infertility treatment related to IR.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="EDM2-9-e70249-g004.jpg"><?image-name EDM2-9-e70249-g004.jpg?><?image-size 89064?><?image-md5 3b0e18462f3d677325a1cf4f66cbfd9e?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 752?><?image-original-width 1064?><?image-scaled-height 501?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/11ad/13254690/3b0e18462f3d/EDM2-9-e70249-g004.jpg?><?thumb-name EDM2-9-e70249-g004.gif?><?thumb-size 11409?><?thumb-md5 03d8d7dda32c0d169f13b40f6bac6adb?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 113?><?thumb-cloudpmc-urn urn:cdn:blobs/11ad/13254690/03d8d7dda32c/EDM2-9-e70249-g004.gif?></graphic></fig><p>This figure outlines various infertility treatments linked to IR. It highlights how Vitamin D, Metformin, TCM, and surgical interventions contribute to improving fertility outcomes. Vitamin D enhances endometrial receptivity and insulin sensitivity through its receptors and calcium channels in endometrial cells. Metformin ameliorates IR by boosting endometrial GLUT4 expression and reducing androgens, thereby improving ovarian function. TCM approaches, such as kidney‐tonifying and phlegm‐resolving therapies, acupuncture, and berberine use, address the root of women's menstrual issues. Surgical treatments, particularly bariatric surgery, effectively lower glucose levels and enhance insulin sensitivity. The figure encapsulates the diverse mechanisms and benefits of these treatments in managing infertility associated with insulin resistance.</p><sec id="edm270249-sec-0030"><label>5.1</label><title>Pharmacological Treatments</title><sec id="edm270249-sec-0031"><label>5.1.1</label><title>Vitamin <styled-content style="fixed-case" toggle="no">D</styled-content>
+</title><p>Recent studies have indicated that co‐administration of vitamin D and metformin provides superior therapeutic outcomes compared to metformin alone. Emerging evidence supports a critical role of vitamin D deficiency in the pathogenesis of metabolic dysfunction and infertility in women with polycystic ovary syndrome (PCOS). For optimal reproductive outcomes, low‐dose vitamin D supplementation may be most effective when administered to selected populations at specific stages of the ovarian cycle [<xref rid="edm270249-bib-0074" ref-type="bibr">74</xref>, <xref rid="edm270249-bib-0075" ref-type="bibr">75</xref>]. The presence of vitamin D receptors in the endometrium suggests a regulatory role in endometrial receptivity via both calcium‐dependent and independent signalling pathways [<xref rid="edm270249-bib-0076" ref-type="bibr">76</xref>]. Preliminary prospective studies have demonstrated a potential association between vitamin D supplementation and improved IVF implantation rates, although larger, well‐designed trials are warranted to validate these findings [<xref rid="edm270249-bib-0076" ref-type="bibr">76</xref>]. Furthermore, in patients with recurrent implantation failure (RIF), vitamin D has been shown to enhance endometrial receptivity by modulating progesterone receptor (PR) expression. Specifically, vitamin D increases PR mRNA and protein levels, as well as phosphorylation at Ser294, in isolated endometrial stromal cells (eSCs) from both RIF patients and healthy controls [<xref rid="edm270249-bib-0077" ref-type="bibr">77</xref>, <xref rid="edm270249-bib-0078" ref-type="bibr">78</xref>].</p></sec><sec id="edm270249-sec-0032"><label>5.1.2</label><title>Metformin</title><p>Metformin, a biguanide and first‐line therapeutic agent for type 2 diabetes mellitus, reduces insulin resistance and inhibits hepatic gluconeogenesis by enhancing insulin sensitivity [<xref rid="edm270249-bib-0079" ref-type="bibr">79</xref>]. Several studies have demonstrated that metformin improves endometrial receptivity, potentially by upregulating endometrial receptivity markers such as HOXA10 and leukaemia inhibitory factor (LIF) [<xref rid="edm270249-bib-0080" ref-type="bibr">80</xref>]. A reliable meta‐analysis provides compelling evidence that metformin enhances endometrial receptivity by increasing endometrial thickness (EMT) and reducing endometrial arterial resistance index (RI). Further studies are warranted to evaluate molecular markers of receptivity, alongside large‐scale, multicentre, randomised controlled trials [<xref rid="edm270249-bib-0081" ref-type="bibr">81</xref>]. In PCOS mouse models, metformin treatment was associated with increased EMT and myometrial thickness, alongside a reduction in the length of normal glands and blood vessels, suggesting a possible correlation with localised endometrial insulin resistance (IR). Consistent findings from three‐dimensional power Doppler ultrasonography (3DPDUS) in patients treated with metformin for 6 months indicated a significant increase in both endometrial thickness and volume [<xref rid="edm270249-bib-0082" ref-type="bibr">82</xref>]. Moreover, all parameters related to uterine vascularisation were significantly improved in metformin‐treated PCOS patients [<xref rid="edm270249-bib-0083" ref-type="bibr">83</xref>]. Related evidence suggests that early intervention with liraglutide, a GLUT1 agonist, may enhance fertility potential by more than doubling IVF pregnancy rates compared to metformin. However, its direct effect on endometrial receptivity remains to be elucidated. Further investigation is required to clarify the role of GLUT1 in endometrial physiology, especially in relation to previous findings on GLUT1 expression [<xref rid="edm270249-bib-0084" ref-type="bibr">84</xref>]. Mechanistically, metformin enhances endometrial insulin sensitivity by upregulating GLUT4 expression through the PI3K‐Akt and AMPK‐Rab4 signalling pathways. Rab4, activated by metformin, facilitates the translocation of GLUT4 to the plasma membrane, highlighting the significance of metformin's direct action on endometrial cells [<xref rid="edm270249-bib-0085" ref-type="bibr">85</xref>]. Additionally, metformin can act synergistically with other treatments. For example, its combination with a carbohydrate‐controlled diet has been shown to improve endometrial function partly via modulation of DNA methylation at the HOXA10 gene promoter [<xref rid="edm270249-bib-0086" ref-type="bibr">86</xref>]. Beyond its endometrial effects, metformin also improves ovarian function and reduces androgen levels, which is particularly beneficial in the treatment of PCOS. Targeting localised endometrial IR may represent a novel therapeutic approach for PCOS‐associated infertility. Current evidence suggests that insulin‐sensitising pharmacologic strategies, including metformin, could play a central role in future infertility treatments for patients with PCOS [<xref rid="edm270249-bib-0087" ref-type="bibr">87</xref>].</p></sec></sec><sec id="edm270249-sec-0033"><label>5.2</label><title>Surgical Treatment: Bariatric Surgery</title><p>As previously discussed, obesity is closely associated with insulin resistance. Adipose tissue accumulation leads to the release of lipotoxic substances, resulting in organelle dysfunction, elevated levels of reactive oxygen species (ROS), and a chronic low‐grade inflammatory state, ultimately disrupting glucose homeostasis [<xref rid="edm270249-bib-0088" ref-type="bibr">88</xref>]. A significant proportion of infertile women with polycystic ovary syndrome (PCOS) are obese, suggesting a potential link between obesity and infertility [<xref rid="edm270249-bib-0089" ref-type="bibr">89</xref>]. Multiple mechanisms have been proposed to explain this relationship. First, elevated levels of toxic lipids, leptin, and free fatty acids (FFA) may impair endometrial function and reduce endometrial receptivity. Second, obesity contributes to peripheral insulin resistance and enhances androgen production, leading to functional hyperandrogenism and impaired fertility [<xref rid="edm270249-bib-0090" ref-type="bibr">90</xref>]. However, the extent to which obesity‐related endometrial dysfunction accounts for infertility in women remains unclear and warrants further investigation [<xref rid="edm270249-bib-0091" ref-type="bibr">91</xref>]. From a metabolic perspective, bariatric surgery exerts potent glucose‐lowering effects and significantly improves insulin sensitivity. Given the role of insulin resistance in endometrial dysfunction and infertility, bariatric surgery presents a promising therapeutic approach for infertile women with obesity and PCOS [<xref rid="edm270249-bib-0092" ref-type="bibr">92</xref>].</p></sec><sec id="edm270249-sec-0034"><label>5.3</label><title>Traditional <styled-content style="fixed-case" toggle="no">C</styled-content>hinese Medicine Treatment</title><p>In Traditional Chinese Medicine (TCM), menstruation is believed to originate from kidney function. Deficiency in kidney essence may lead to irregular or absent menstruation. Infertility in obese women is traditionally attributed to uterine obstruction caused by excessive adipose tissue, with treatment strategies focused on resolving phlegm and tonifying the kidneys. Based on this theory, TCM recommends the use of kidney‐tonifying and phlegm‐resolving therapies for infertile patients with PCOS and obesity [<xref rid="edm270249-bib-0093" ref-type="bibr">93</xref>]. Recent evidence supports the efficacy of acupuncture in improving reproductive outcomes in PCOS. In animal models, acupuncture was shown to promote endometrial angiogenesis by activating the PI3K‐Akt signalling pathway, aligning with the TCM concept of replenishing qi and nourishing the blood [<xref rid="edm270249-bib-0094" ref-type="bibr">94</xref>]. From a metabolic standpoint, berberine—a major bioactive compound derived from Coptis chinensis—has demonstrated the ability to ameliorate insulin resistance in murine models. This effect is mediated, at least in part, by activation of the GLP‐1/GLP‐1R/PKA signalling cascade [<xref rid="edm270249-bib-0095" ref-type="bibr">95</xref>]. Given the role of insulin resistance in PCOS‐associated infertility, berberine may offer therapeutic potential. Emerging clinical studies have shown that berberine improves fertility and pregnancy outcomes in affected individuals [<xref rid="edm270249-bib-0096" ref-type="bibr">96</xref>]. Mechanistically, berberine has been found to enhance ovulatory function in PCOS by upregulating luteinising hormone/choriogonadotropin receptor (LHCGR) and cytochrome P450 family 19 subfamily A member 1 (CYP19A1). Additionally, it improves endometrial receptivity by downregulating integrin αvβ3 and lysophosphatidic acid receptor 3 (LPAR3), further supporting its role in fertility management [<xref rid="edm270249-bib-0097" ref-type="bibr">97</xref>].</p></sec></sec><sec id="edm270249-sec-0035"><label>6</label><title>Conclusion and Prospective</title><p>This review integrates the physiological and pathological aspects of endometrial glucose metabolism, particularly in the context of insulin resistance. It highlights the roles of hormonal regulation, glucose transporters (GLUTs), and glycolytic pathways, and mechanistically elucidates how local insulin resistance impairs endometrial receptivity. Central pathways such as IRS–PI3K–Akt and cAMP–PKA are emphasised for their involvement in this process. Under normal physiological conditions, glucose metabolism ensures adequate energy supply for the endometrium during the ‘implantation window’, thus supporting successful implantation. However, in states of insulin resistance, hyperinsulinaemia disrupts glucose homeostasis, impairs endometrial function, and contributes to implantation failure and subsequent infertility. Studies have indicated that patients with polycystic ovary syndrome (PCOS) undergoing assisted reproductive technology (ART) exhibit low embryo transfer success rates, which are closely associated with insulin resistance and hyperinsulinaemia. For instance, a clinical trial conducted by Daimin Wei et al. in PCOS patients confirmed that preconception impaired glucose tolerance (IGT), independent of body mass index (BMI), is associated with adverse pregnancy outcomes compared with individuals with isolated impaired fasting glucose (i‐IFG) and those with normoglycemia [<xref rid="edm270249-bib-0098" ref-type="bibr">98</xref>].</p><p>For long‐term therapeutic strategies, it is crucial to identify key metabolic targets associated with glucose utilisation. Interventions during the window of implantation should focus on molecules closely related to endometrial receptivity, including GLUT1, GLUT4, FOXO1, FSH, and HOXA10. Targeted modulation of these factors may improve embryo implantation. This suggests that future controlled clinical studies could categorise patients into recurrent embryo transfer and non‐recurrent embryo transfer groups to compare endometrial GLUT expression, as well as to evaluate clinical outcomes such as embryo implantation rate and pregnancy rate, thereby establishing the association between GLUTs and embryo implantation.</p><p>Moreover, future research should aim to establish reliable biomarkers for the evaluation of endometrial receptivity, which remains a significant gap in clinical diagnostics and treatment monitoring. Proteomic analyses have demonstrated that metformin modulates the expression of several endometrium‐associated proteins, including IGFBP‐7, integrin αvβ3, LIF, apolipoprotein D, angiomodulin, and PYGB. Among these, the upregulation of IGFBP‐7 is the most prominent, suggesting its potential as a biomarker for endometrial receptivity. Nevertheless, its clinical utility requires further validation in expanded studies, and we hypothesise that it may be correlated with implantation outcomes [<xref rid="edm270249-bib-0099" ref-type="bibr">99</xref>]. To date, a number of interventional studies have evaluated the effects of metabolic therapy on endometrial receptivity. For example, Yugang Chi et al. reported that following transcervical adhesiolysis, patients with intrauterine adhesions exhibited significantly increased expression of the endometrial receptivity markers αvβ3 and laminin, which enhanced endometrial receptivity and helped improve reproductive prognosis in these patients [<xref rid="edm270249-bib-0100" ref-type="bibr">100</xref>]. Accordingly, assessing the impact of metabolic therapy on endometrial receptivity holds considerable clinical promise.</p></sec><sec id="edm270249-sec-0036"><label>7</label><title>Search Strategy and the Inclusion/Exclusion Criteria</title><sec id="edm270249-sec-0037"><label>7.1</label><title>Inclusion Criteria</title><p>Literature screening was performed based on keywords, abstracts, figures, tables, and conclusions, with the following specific requirements:
+<list list-type="order" id="edm270249-list-0013"><list-item id="edm270249-li-0149"><p>Search strategy: Keywords ‘Endometrial receptivity’, ‘glucose metabolism’, and ‘insulin resistance’ were searched in PubMed.</p></list-item><list-item id="edm270249-li-0150"><p>Publication time: Literature and studies published within the recent decade.</p></list-item><list-item id="edm270249-li-0151"><p>Research objective: Studies investigating the influencing factors and mechanisms underlying endometrial receptivity and glucose metabolism under insulin resistance.</p></list-item><list-item id="edm270249-li-0152"><p>Study type: Mechanistic studies, animal experiments, cell experiments, clinical studies, and reviews (selected according to the research objective).</p></list-item><list-item id="edm270249-li-0153"><p>Outcome: Studies are consistent with the conclusion that insulin resistance affects endometrial receptivity.</p></list-item></list>
+</p></sec><sec id="edm270249-sec-0038"><label>7.2</label><title>Exclusion Criteria</title><p>
+<list list-type="order" id="edm270249-list-0014"><list-item id="edm270249-li-0154"><p>Duplicate publications were removed after importing literature into EndNote.</p></list-item><list-item id="edm270249-li-0155"><p>Literature published more than 10 years ago.</p></list-item><list-item id="edm270249-li-0156"><p>Literature irrelevant to the research objective and outcome measures.</p></list-item><list-item id="edm270249-li-0157"><p>Literature with serious data missing, inappropriate statistical methods, uninterpretable results, duplicate publication, or redundant submission.</p></list-item><list-item id="edm270249-li-0158"><p>Case reports, commentaries, expert consensuses, editorials, and abstract‐only publications.</p></list-item></list>
+</p></sec></sec><sec id="edm270249-sec-0044"><title>Author Contributions</title><p>
+<bold>Shao‐rong Chen:</bold> writing – review and editing, project administration, supervision, investigation, validation, conceptualization, visualization. <bold>Qi‐rong Shi:</bold> methodology, supervision, resources, writing – review and editing. <bold>Ling‐tao Zheng:</bold> writing – review and editing, supervision, methodology, conceptualization, investigation. <bold>Si‐yan Huang:</bold> writing – original draft, writing – review and editing, conceptualization, methodology, investigation, formal analysis, visualization. <bold>Shu Lin:</bold> project administration, formal analysis, supervision, writing – review and editing. <bold>Jing Xu:</bold> conceptualization, writing – review and editing, methodology, supervision, visualization. <bold>Wei‐hong Chen:</bold> conceptualization, supervision, visualization, resources, writing – review and editing. <bold>Yan‐Chuan Shi:</bold> conceptualization, methodology, writing – review and editing, investigation, supervision, project administration.</p></sec><sec id="edm270249-sec-0040"><title>Funding</title><p>This work was supported by the Science and technology project of Fujian Provincial Health Commission (grant number 2020CXB027,2022CXA038), the Youth Research Project of Fujian Provincial Health Commission (No. 2022QNA067), Fujian Province Science and Technology Innovation Joint Fund Project (Grant number 2023Y9254).</p></sec><sec sec-type="COI-statement" id="edm270249-sec-0041"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec></body><back><ack id="edm270249-sec-0039"><title>Acknowledgements</title><p>This manuscript was polished with the assistance of ChatGPT. The figures were created using Figdraw.</p></ack><sec sec-type="data-availability" id="edm270249-sec-0043"><title>Data Availability Statement</title><p>Data sharing not applicable to this article as no datasets were generated or analysed during the current study.</p></sec><ref-list content-type="cited-references" id="edm270249-bibl-0001"><title>References</title><ref id="edm270249-bib-0001"><label>1</label><mixed-citation publication-type="journal" id="edm270249-cit-0001">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Herman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Sikonja</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Jensterle</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Janez</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Dolzan</surname>
+</string-name>, “<article-title>Insulin Metabolism in Polycystic Ovary Syndrome: Secretion, Signaling, and Clearance</article-title>,” <source>International Journal of Molecular Sciences</source>
+<volume>24</volume>, no. <issue>4</issue> (<year>2023</year>): <fpage>3140</fpage>.<pub-id pub-id-type="pmid">36834549</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/ijms24043140</pub-id><pub-id pub-id-type="pmcid">PMC9962893</pub-id></mixed-citation></ref><ref id="edm270249-bib-0002"><label>2</label><mixed-citation publication-type="journal" id="edm270249-cit-0002">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Cheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Nie</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>He</surname>
+</string-name>, “<article-title>Insulin Resistance in Polycystic Ovary Syndrome Across Various Tissues: An Updated Review of Pathogenesis, Evaluation, and Treatment</article-title>,” <source>Journal of Ovarian Research</source>
+<volume>16</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>9</fpage>.<pub-id pub-id-type="pmid">36631836</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s13048-022-01091-0</pub-id><pub-id pub-id-type="pmcid">PMC9832677</pub-id></mixed-citation></ref><ref id="edm270249-bib-0003"><label>3</label><mixed-citation publication-type="miscellaneous" id="edm270249-cit-0003">
+<string-name name-style="western">
+<given-names>A. D. G. A. R.</given-names>
+<surname>Genazzani</surname>
+</string-name>, <article-title>“Polycystic Ovary Syndrome as Metabolic Disease New Insights on Insulin Resistance,”</article-title> 2023.<pub-id pub-id-type="doi" assigning-authority="pmc">10.17925/EE.2023.19.1.71</pub-id><pub-id pub-id-type="pmcid">PMC10258623</pub-id><pub-id pub-id-type="pmid">37313240</pub-id></mixed-citation></ref><ref id="edm270249-bib-0004"><label>4</label><mixed-citation publication-type="journal" id="edm270249-cit-0004">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Dall'Agnese</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Platt</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. M.</given-names>
+<surname>Zheng</surname>
+</string-name>, et al., “<article-title>The Dynamic Clustering of Insulin Receptor Underlies its Signaling and is Disrupted in Insulin Resistance</article-title>,” <source>Nature Communications</source>
+<volume>13</volume>, no. <issue>1</issue> (<year>2022</year>): <fpage>7522</fpage>, <pub-id pub-id-type="doi">10.1038/s41467-022-35176-7</pub-id>.<pub-id pub-id-type="pmcid">PMC9727033</pub-id><pub-id pub-id-type="pmid">36473871</pub-id></mixed-citation></ref><ref id="edm270249-bib-0005"><label>5</label><mixed-citation publication-type="journal" id="edm270249-cit-0005">
+<string-name name-style="western">
+<given-names>A. I.</given-names>
+<surname>Aedh</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Alshahrani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Huneif</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I. F.</given-names>
+<surname>Pryme</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Oruch</surname>
+</string-name>, “<article-title>A Glimpse Into Milestones of Insulin Resistance and an Updated Review of Its Management</article-title>,” <source>Nutrients</source>
+<volume>15</volume>, no. <issue>4</issue> (<year>2023</year>): <fpage>921</fpage>.<pub-id pub-id-type="pmid">36839279</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/nu15040921</pub-id><pub-id pub-id-type="pmcid">PMC9960458</pub-id></mixed-citation></ref><ref id="edm270249-bib-0006"><label>6</label><mixed-citation publication-type="journal" id="edm270249-cit-0006">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>An</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Sun</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Ji</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Lian</surname>
+</string-name>, “<article-title>The Crucial Role and Mechanism of Insulin Resistance in Metabolic Disease</article-title>,” <source>Frontiers in Endocrinology</source>
+<volume>14</volume> (<year>2023</year>): <elocation-id>1149239</elocation-id>, <pub-id pub-id-type="doi">10.3389/fendo.2023.1149239</pub-id>.<pub-id pub-id-type="pmid">37056675</pub-id>
+<pub-id pub-id-type="pmcid">PMC10086443</pub-id></mixed-citation></ref><ref id="edm270249-bib-0007"><label>7</label><mixed-citation publication-type="journal" id="edm270249-cit-0007">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Dupont</surname>
+</string-name> and <string-name name-style="western">
+<given-names>R. J.</given-names>
+<surname>Scaramuzzi</surname>
+</string-name>, “<article-title>Insulin Signalling and Glucose Transport in the Ovary and Ovarian Function During the Ovarian Cycle</article-title>,” <source>Biochemical Journal</source>
+<volume>473</volume>, no. <issue>11</issue> (<year>2016</year>): <fpage>1483</fpage>–<lpage>1501</lpage>.<pub-id pub-id-type="pmid">27234585</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1042/BCJ20160124</pub-id><pub-id pub-id-type="pmcid">PMC4888492</pub-id></mixed-citation></ref><ref id="edm270249-bib-0008"><label>8</label><mixed-citation publication-type="journal" id="edm270249-cit-0008">
+<string-name name-style="western">
+<given-names>N.‐X.</given-names>
+<surname>Jiang</surname>
+</string-name> and <string-name name-style="western">
+<given-names>X.‐L.</given-names>
+<surname>Li</surname>
+</string-name>, “<article-title>The Disorders of Endometrial Receptivity in PCOS and Its Mechanisms</article-title>,” <source>Reproductive Sciences</source>
+<volume>29</volume>, no. <issue>9</issue> (<year>2021</year>): <fpage>2465</fpage>–<lpage>2476</lpage>.<pub-id pub-id-type="pmid">34046867</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s43032-021-00629-9</pub-id></mixed-citation></ref><ref id="edm270249-bib-0009"><label>9</label><mixed-citation publication-type="journal" id="edm270249-cit-0009">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Qin</surname>
+</string-name>, et al., “<article-title>Talin1 Regulates Glucose Metabolism and Endometrial Receptivity via GLUT‐4 in Patients With Polycystic Ovary Syndrome and Insulin Resistance</article-title>,” <source>Gynecological Endocrinology</source>
+<volume>39</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>2231085</fpage>.<pub-id pub-id-type="pmid">37395213</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1080/09513590.2023.2231085</pub-id></mixed-citation></ref><ref id="edm270249-bib-0010"><label>10</label><mixed-citation publication-type="journal" id="edm270249-cit-0010">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Xiaoping</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Nan</surname>
+</string-name>, et al., “<article-title>Proteomic and Bioinformatic Analysis of Human Endometrium From Polycystic Ovarian Syndrome With and Without Insulin Resistance</article-title>,” <source>Gynecological Endocrinology</source>
+<volume>39</volume>, no. <issue>1</issue> (<year>2023</year>): <elocation-id>2173948</elocation-id>, <pub-id pub-id-type="doi">10.1080/09513590.2023.2173948</pub-id>.<pub-id pub-id-type="pmid">36750132</pub-id>
+</mixed-citation></ref><ref id="edm270249-bib-0011"><label>11</label><mixed-citation publication-type="journal" id="edm270249-cit-0011">
+<string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Tamura</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Shiroshita</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Fujimura</surname>
+</string-name>, et al., “<article-title>Glucose and Lipid Metabolisms in Human Endometrial Stromal Cells During Decidualization</article-title>,” <source>Endocrine Journal</source>
+<volume>70</volume>, no. <issue>5</issue> (<year>2023</year>): <fpage>465</fpage>–<lpage>472</lpage>.<pub-id pub-id-type="pmid">37081638</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1507/endocrj.EJ23-0099</pub-id></mixed-citation></ref><ref id="edm270249-bib-0012"><label>12</label><mixed-citation publication-type="journal" id="edm270249-cit-0012">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Bai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Zheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Li</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Xu</surname>
+</string-name>, “<article-title>Research Progress of Endometrial Receptivity in Patients With Polycystic Ovary Syndrome: A Systematic Review</article-title>,” <source>Reproductive Biology and Endocrinology</source>
+<volume>19</volume>, no. <issue>1</issue> (<year>2021</year>): <fpage>122</fpage>.<pub-id pub-id-type="pmid">34362377</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s12958-021-00802-4</pub-id><pub-id pub-id-type="pmcid">PMC8344130</pub-id></mixed-citation></ref><ref id="edm270249-bib-0013"><label>13</label><mixed-citation publication-type="journal" id="edm270249-cit-0013">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Huang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Fan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Yu</surname>
+</string-name>, et al., “<article-title>Glucose Metabolic Reprogramming and Its Therapeutic Potential in Obesity‐Associated Endometrial Cancer</article-title>,” <source>Journal of Translational Medicine</source>
+<volume>21</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>94</fpage>.<pub-id pub-id-type="pmid">36750868</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s12967-022-03851-4</pub-id><pub-id pub-id-type="pmcid">PMC9906873</pub-id></mixed-citation></ref><ref id="edm270249-bib-0014"><label>14</label><mixed-citation publication-type="journal" id="edm270249-cit-0014">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Mauvais‐Jarvis</surname>
+</string-name>, “<article-title>Role of Sex Steroids in β Cell Function, Growth, and Survival</article-title>,” <source>Trends in Endocrinology and Metabolism</source>
+<volume>27</volume>, no. <issue>12</issue> (<year>2016</year>): <fpage>844</fpage>–<lpage>855</lpage>.<pub-id pub-id-type="pmid">27640750</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.tem.2016.08.008</pub-id><pub-id pub-id-type="pmcid">PMC5116277</pub-id></mixed-citation></ref><ref id="edm270249-bib-0015"><label>15</label><mixed-citation publication-type="journal" id="edm270249-cit-0015">
+<string-name name-style="western">
+<given-names>J. P.</given-names>
+<surname>Tiano</surname>
+</string-name> and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Mauvais‐Jarvis</surname>
+</string-name>, “<article-title>Importance of Oestrogen Receptors to Preserve Functional β‐Cell Mass in Diabetes</article-title>,” <source>Nature Reviews Endocrinology</source>
+<volume>8</volume>, no. <issue>6</issue> (<year>2012</year>): <fpage>342</fpage>–<lpage>351</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1038/nrendo.2011.242</pub-id><pub-id pub-id-type="pmid">22330739</pub-id></mixed-citation></ref><ref id="edm270249-bib-0016"><label>16</label><mixed-citation publication-type="journal" id="edm270249-cit-0016">
+<string-name name-style="western">
+<given-names>A. C.</given-names>
+<surname>Lissaman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. E.</given-names>
+<surname>Girling</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. M.</given-names>
+<surname>Cree</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. E.</given-names>
+<surname>Campbell</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. P.</given-names>
+<surname>Ponnampalam</surname>
+</string-name>, “<article-title>Androgen Signalling in the Ovaries and Endometrium</article-title>,” <source>Molecular Human Reproduction</source>
+<volume>29</volume>, no. <issue>6</issue> (<year>2023</year>): <elocation-id>gaad017</elocation-id>, <pub-id pub-id-type="doi">10.1093/molehr/gaad017</pub-id>.<pub-id pub-id-type="pmid">37171897</pub-id>
+<pub-id pub-id-type="pmcid">PMC10663053</pub-id></mixed-citation></ref><ref id="edm270249-bib-0017"><label>17</label><mixed-citation publication-type="journal" id="edm270249-cit-0017">
+<string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Xu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. M. F.</given-names>
+<surname>Qadir</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Nasteska</surname>
+</string-name>, et al., “<article-title>Architecture of Androgen Receptor Pathways Amplifying Glucagon‐Like Peptide‐1 Insulinotropic Action in Male Pancreatic β Cells</article-title>,” <source>Cell Reports</source>
+<volume>42</volume>, no. <issue>5</issue> (<year>2023</year>): <elocation-id>112529</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.celrep.2023.112529</pub-id>.<pub-id pub-id-type="pmid">37200193</pub-id>
+<pub-id pub-id-type="pmcid">PMC10312392</pub-id></mixed-citation></ref><ref id="edm270249-bib-0018"><label>18</label><mixed-citation publication-type="journal" id="edm270249-cit-0018">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Enríquez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Sosa‐Larios</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Díaz‐Díaz</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Morimoto</surname>
+</string-name>, “<article-title>The Potent Contraceptive Gestodene Exerts Insulinotropic Effects Through Its A‐Ring Reduced Metabolites With Intrinsic Estrogen‐Like Activity in Pancreatic β‐Cells</article-title>,” <source>Journal of Endocrinological Investigation</source>
+<volume>46</volume>, no. <issue>7</issue> (<year>2023</year>): <fpage>1333</fpage>–<lpage>1341</lpage>.<pub-id pub-id-type="pmid">36705838</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s40618-022-01977-2</pub-id></mixed-citation></ref><ref id="edm270249-bib-0019"><label>19</label><mixed-citation publication-type="journal" id="edm270249-cit-0019">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Cheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Zhu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Ren</surname>
+</string-name>, et al., “<article-title>Follicle‐Stimulating Hormone Orchestrates Glucose‐Stimulated Insulin Secretion of Pancreatic Islets</article-title>,” <source>Nature Communications</source>
+<volume>14</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>6991</fpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1038/s41467-023-42801-6</pub-id><pub-id pub-id-type="pmcid">PMC10620214</pub-id><pub-id pub-id-type="pmid">37914684</pub-id></mixed-citation></ref><ref id="edm270249-bib-0020"><label>20</label><mixed-citation publication-type="journal" id="edm270249-cit-0020">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Dewailly</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Robin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Peigne</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Decanter</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Pigny</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Catteau‐Jonard</surname>
+</string-name>, “<article-title>Interactions Between Androgens, FSH, Anti‐Müllerian Hormone and Estradiol During Folliculogenesis in the Human Normal and Polycystic Ovary</article-title>,” <source>Human Reproduction Update</source>
+<volume>22</volume>, no. <issue>6</issue> (<year>2016</year>): <fpage>709</fpage>–<lpage>724</lpage>.<pub-id pub-id-type="pmid">27566840</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humupd/dmw027</pub-id></mixed-citation></ref><ref id="edm270249-bib-0021"><label>21</label><mixed-citation publication-type="journal" id="edm270249-cit-0021">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Devis‐Jauregui</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Eritja</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. L.</given-names>
+<surname>Davis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Matias‐Guiu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Llobet‐Navàs</surname>
+</string-name>, “<article-title>Autophagy in the Physiological Endometrium and Cancer</article-title>,” <source>Autophagy</source>
+<volume>17</volume>, no. <issue>5</issue> (<year>2021</year>): <fpage>1077</fpage>–<lpage>1095</lpage>, <pub-id pub-id-type="doi">10.1080/15548627.2020.1752548</pub-id>.<pub-id pub-id-type="pmid">32401642</pub-id>
+<pub-id pub-id-type="pmcid">PMC8143243</pub-id></mixed-citation></ref><ref id="edm270249-bib-0022"><label>22</label><mixed-citation publication-type="journal" id="edm270249-cit-0022">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>van Gerwen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. S.</given-names>
+<surname>Shun‐Shion</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. J.</given-names>
+<surname>Fazakerley</surname>
+</string-name>, “<article-title>Insulin Signalling and GLUT4 Trafficking in Insulin Resistance</article-title>,” <source>Biochemical Society Transactions</source>
+<volume>51</volume>, no. <issue>3</issue> (<year>2023</year>): <fpage>1057</fpage>–<lpage>1069</lpage>.<pub-id pub-id-type="pmid">37248992</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1042/BST20221066</pub-id><pub-id pub-id-type="pmcid">PMC10317183</pub-id></mixed-citation></ref><ref id="edm270249-bib-0023"><label>23</label><mixed-citation publication-type="journal" id="edm270249-cit-0023">
+<string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Vrhovac Madunić</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Karin‐Kujundžić</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Madunić</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I. M.</given-names>
+<surname>Šola</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Šerman</surname>
+</string-name>, “<article-title>Endometrial Glucose Transporters in Health and Disease</article-title>,” <source>Frontiers in Cell and Developmental Biology</source>
+<volume>9</volume> (<year>2021</year>): <fpage>9</fpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fcell.2021.703671</pub-id><pub-id pub-id-type="pmcid">PMC8450505</pub-id><pub-id pub-id-type="pmid">34552924</pub-id></mixed-citation></ref><ref id="edm270249-bib-0024"><label>24</label><mixed-citation publication-type="journal" id="edm270249-cit-0024">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>von Wolff</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Ursel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>U.</given-names>
+<surname>Hahn</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Steldinger</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Strowitzki</surname>
+</string-name>, “<article-title>Glucose Transporter Proteins (GLUT) in Human Endometrium: Expression, Regulation, and Function Throughout the Menstrual Cycle and in Early Pregnancy</article-title>,” <source>Journal of Clinical Endocrinology &amp; Metabolism</source>
+<volume>88</volume>, no. <issue>8</issue> (<year>2003</year>): <fpage>3885</fpage>–<lpage>3892</lpage>.<pub-id pub-id-type="pmid">12915684</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1210/jc.2002-021890</pub-id></mixed-citation></ref><ref id="edm270249-bib-0025"><label>25</label><mixed-citation publication-type="journal" id="edm270249-cit-0025">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Cui</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Wang</surname>
+</string-name>, et al., “<article-title>Lack of Cyclical Fluctuations of Endometrial GLUT4 Expression in Women With Polycystic Ovary Syndrome: Evidence for Direct Regulation of GLUT4 by Steroid Hormones</article-title>,” <source>BBA Clinical</source>
+<volume>4</volume> (<year>2015</year>): <fpage>85</fpage>–<lpage>91</lpage>.<pub-id pub-id-type="pmid">26675316</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.bbacli.2015.08.004</pub-id><pub-id pub-id-type="pmcid">PMC4661728</pub-id></mixed-citation></ref><ref id="edm270249-bib-0026"><label>26</label><mixed-citation publication-type="journal" id="edm270249-cit-0026">
+<string-name name-style="western">
+<given-names>K. H.</given-names>
+<surname>Moley</surname>
+</string-name> and <string-name name-style="western">
+<given-names>A. I.</given-names>
+<surname>Frolova</surname>
+</string-name>, “<article-title>Quantitative Analysis of Glucose Transporter mRNAs in Endometrial Stromal Cells Reveals Critical Role of GLUT1 in Uterine Receptivity</article-title>,” <source>Endocrinology</source>
+<volume>152</volume>, no. <issue>5</issue> (<year>2011</year>): <fpage>2123</fpage>–<lpage>2128</lpage>.<pub-id pub-id-type="pmid">21343253</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1210/en.2010-1266</pub-id><pub-id pub-id-type="pmcid">PMC3075937</pub-id></mixed-citation></ref><ref id="edm270249-bib-0027"><label>27</label><mixed-citation publication-type="journal" id="edm270249-cit-0027">
+<string-name name-style="western">
+<given-names>A. I.</given-names>
+<surname>Frolova</surname>
+</string-name> and <string-name name-style="western">
+<given-names>K. H.</given-names>
+<surname>Moley</surname>
+</string-name>, “<article-title>Glucose Transporters in the Uterus: An Analysis of Tissue Distribution and Proposed Physiological Roles</article-title>,” <source>Reproduction</source>
+<volume>142</volume>, no. <issue>2</issue> (<year>2011</year>): <fpage>211</fpage>–<lpage>220</lpage>.<pub-id pub-id-type="pmid">21642384</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1530/REP-11-0114</pub-id><pub-id pub-id-type="pmcid">PMC5028205</pub-id></mixed-citation></ref><ref id="edm270249-bib-0028"><label>28</label><mixed-citation publication-type="journal" id="edm270249-cit-0028">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Nie</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y. B.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Zhao</surname>
+</string-name>, et al., “<article-title>Progesterone‐Induced miR‐152 Interferes With Embryonic Implantation by Downregulating GLUT3 in Endometrial Epithelium</article-title>,” <source>American Journal of Physiology. Endocrinology and Metabolism</source>
+<volume>316</volume>, no. <issue>4</issue> (<year>2019</year>): <fpage>E557</fpage>–<lpage>E567</lpage>.<pub-id pub-id-type="pmid">30668148</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1152/ajpendo.00245.2018</pub-id></mixed-citation></ref><ref id="edm270249-bib-0029"><label>29</label><mixed-citation publication-type="journal" id="edm270249-cit-0029">
+<string-name name-style="western">
+<given-names>K. T.</given-names>
+<surname>Rytkönen</surname>
+</string-name>, “<article-title>Glycolysis and Heavy Menstrual Bleeding</article-title>,” <source>Reproductive Sciences</source>
+<volume>30</volume>, no. <issue>6</issue> (<year>2022</year>): <fpage>2016</fpage>–<lpage>2018</lpage>.<pub-id pub-id-type="pmid">36574146</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s43032-022-01150-3</pub-id><pub-id pub-id-type="pmcid">PMC10229729</pub-id></mixed-citation></ref><ref id="edm270249-bib-0030"><label>30</label><mixed-citation publication-type="journal" id="edm270249-cit-0030">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Gou</surname>
+</string-name> and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Zhang</surname>
+</string-name>, “<article-title>Glycolysis: A Fork in the Path of Normal and Pathological Pregnancy</article-title>,” <source>FASEB Journal</source>
+<volume>37</volume>, no. <issue>12</issue> (<year>2023</year>): <fpage>e23263</fpage>.<pub-id pub-id-type="pmid">37889786</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1096/fj.202301230R</pub-id></mixed-citation></ref><ref id="edm270249-bib-0031"><label>31</label><mixed-citation publication-type="journal" id="edm270249-cit-0031">
+<string-name name-style="western">
+<given-names>S. T.</given-names>
+<surname>Lewis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Greenway</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. R.</given-names>
+<surname>Tucker</surname>
+</string-name>, et al., “<article-title>A Receptor Story: Insulin Resistance Pathophysiology and Physiologic Insulin Resensitization's Role as a Treatment Modality</article-title>,” <source>International Journal of Molecular Sciences</source>
+<volume>24</volume>, no. <issue>13</issue> (<year>2023</year>): <fpage>10927</fpage>.<pub-id pub-id-type="pmid">37446104</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/ijms241310927</pub-id><pub-id pub-id-type="pmcid">PMC10341609</pub-id></mixed-citation></ref><ref id="edm270249-bib-0032"><label>32</label><mixed-citation publication-type="journal" id="edm270249-cit-0032">
+<string-name name-style="western">
+<given-names>N.‐X.</given-names>
+<surname>Jiang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W. J.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H. R.</given-names>
+<surname>Shen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. F.</given-names>
+<surname>du</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>X. L.</given-names>
+<surname>Li</surname>
+</string-name>, “<article-title>Hyperinsulinemia Impairs Decidualization via AKT‐NR4A1 Signaling: New Insight Into Polycystic Ovary Syndrome (PCOS)‐Related Infertility</article-title>,” <source>Journal of Ovarian Research</source>
+<volume>17</volume>, no. <issue>1</issue> (<year>2024</year>): <fpage>31</fpage>.<pub-id pub-id-type="pmid">38310251</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s13048-023-01334-8</pub-id><pub-id pub-id-type="pmcid">PMC10837998</pub-id></mixed-citation></ref><ref id="edm270249-bib-0033"><label>33</label><mixed-citation publication-type="journal" id="edm270249-cit-0033">
+<string-name name-style="western">
+<given-names>M. H.</given-names>
+<surname>Shanik</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Xu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Škrha</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Dankner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Zick</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Roth</surname>
+</string-name>, “<article-title>Insulin Resistance and Hyperinsulinemia</article-title>,” <source>Diabetes Care</source>
+<volume>31</volume>, no. <issue>Supplement_2</issue> (<year>2008</year>): <fpage>S262</fpage>–<lpage>S268</lpage>.<pub-id pub-id-type="pmid">18227495</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.2337/dc08-s264</pub-id></mixed-citation></ref><ref id="edm270249-bib-0034"><label>34</label><mixed-citation publication-type="journal" id="edm270249-cit-0034">
+<string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Bajpai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Acharya</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Prasad</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. B.</given-names>
+<surname>Wanjari</surname>
+</string-name>, “<article-title>Endometrial Receptivity During the Preimplantation Period: A Narrative Review</article-title>,” <source>Cureus</source>
+<volume>15</volume> (<year>2023</year>): <fpage>e37753</fpage>.<pub-id pub-id-type="pmid">37214054</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.7759/cureus.37753</pub-id><pub-id pub-id-type="pmcid">PMC10198587</pub-id></mixed-citation></ref><ref id="edm270249-bib-0035"><label>35</label><mixed-citation publication-type="journal" id="edm270249-cit-0035">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Liu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Wang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Liu</surname>
+</string-name>, “<article-title>Effects of Mesenchymal Stem Cells on Repair of Injured Endometrium in Mice</article-title>,” <source>Tissue &amp; Cell</source>
+<volume>95</volume> (<year>2025</year>): <fpage>102827</fpage>.<pub-id pub-id-type="pmid">40054304</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.tice.2025.102827</pub-id></mixed-citation></ref><ref id="edm270249-bib-0036"><label>36</label><mixed-citation publication-type="journal" id="edm270249-cit-0036">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Ma</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Yi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Guan</surname>
+</string-name>, “<article-title>Menstrual Blood‐Derived Mesenchymal Stem Cells Improve Endometrial Receptivity in a Mouse Model of Embryonic Implantation Dysfunction</article-title>,” <source>Cellular Reprogramming</source>
+<volume>27</volume>, no. <issue>3</issue> (<year>2025</year>): <fpage>124</fpage>–<lpage>133</lpage>.<pub-id pub-id-type="pmid">40260492</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1089/cell.2024.0071</pub-id></mixed-citation></ref><ref id="edm270249-bib-0037"><label>37</label><mixed-citation publication-type="journal" id="edm270249-cit-0037">
+<string-name name-style="western">
+<given-names>A. D. S.</given-names>
+<surname>Pathare</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Loid</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Saare</surname>
+</string-name>, et al., “<article-title>Endometrial Receptivity in Women of Advanced Age: An Underrated Factor in Infertility</article-title>,” <source>Human Reproduction Update</source>
+<volume>29</volume>, no. <issue>6</issue> (<year>2023</year>): <fpage>773</fpage>–<lpage>793</lpage>.<pub-id pub-id-type="pmid">37468438</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humupd/dmad019</pub-id><pub-id pub-id-type="pmcid">PMC10628506</pub-id></mixed-citation></ref><ref id="edm270249-bib-0038"><label>38</label><mixed-citation publication-type="journal" id="edm270249-cit-0038">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Wu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Zhang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Wang</surname>
+</string-name>, “<article-title>Unveiling Uterine Aging: Much More to Learn</article-title>,” <source>Ageing Research Reviews</source>
+<volume>86</volume> (<year>2023</year>): <fpage>101879</fpage>.<pub-id pub-id-type="pmid">36764360</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.arr.2023.101879</pub-id></mixed-citation></ref><ref id="edm270249-bib-0039"><label>39</label><mixed-citation publication-type="journal" id="edm270249-cit-0039">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Lv</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Mao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Bai</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Yang</surname>
+</string-name>, “<article-title>Fecundity Disorders in Older Women: Declines in Follicular Development and Endometrial Receptivity</article-title>,” <source>BMC Womens Health</source>
+<volume>20</volume>, no. <issue>1</issue> (<year>2020</year>): <fpage>115</fpage>.<pub-id pub-id-type="pmid">32487204</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s12905-020-00979-7</pub-id><pub-id pub-id-type="pmcid">PMC7268486</pub-id></mixed-citation></ref><ref id="edm270249-bib-0040"><label>40</label><mixed-citation publication-type="journal" id="edm270249-cit-0040">
+<string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Zhao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Liu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Li</surname>
+</string-name>, “<article-title>Lipid Metabolism and Endometrial Receptivity</article-title>,” <source>Human Reproduction Update</source>
+<volume>28</volume>, no. <issue>6</issue> (<year>2022</year>): <fpage>858</fpage>–<lpage>889</lpage>.<pub-id pub-id-type="pmid">35639910</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humupd/dmac026</pub-id></mixed-citation></ref><ref id="edm270249-bib-0041"><label>41</label><mixed-citation publication-type="journal" id="edm270249-cit-0041">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Bellver</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Marín</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. B.</given-names>
+<surname>Lathi</surname>
+</string-name>, et al., “<article-title>Obesity Affects Endometrial Receptivity by Displacing the Window of Implantation</article-title>,” <source>Reproductive Sciences</source>
+<volume>28</volume>, no. <issue>11</issue> (<year>2021</year>): <fpage>3171</fpage>–<lpage>3180</lpage>.<pub-id pub-id-type="pmid">34033112</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s43032-021-00631-1</pub-id></mixed-citation></ref><ref id="edm270249-bib-0042"><label>42</label><mixed-citation publication-type="journal" id="edm270249-cit-0042">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Bergant</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Abdulkhalikova</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Šuštaršič</surname>
+</string-name>, et al., “<article-title>Expression of Markers of Endometrial Receptivity in Obese Infertile PCOS Women Before and After the Weight Loss Program‐A Preliminary Study</article-title>,” <source>Cells</source>
+<volume>12</volume>, no. <issue>1</issue> (<year>2022</year>): <fpage>164</fpage>, <pub-id pub-id-type="doi">10.3390/cells12010164</pub-id>.<pub-id pub-id-type="pmid">36611958</pub-id>
+<pub-id pub-id-type="pmcid">PMC9818464</pub-id></mixed-citation></ref><ref id="edm270249-bib-0043"><label>43</label><mixed-citation publication-type="journal" id="edm270249-cit-0043">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Zheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Shen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Li</surname>
+</string-name>, et al., “<article-title>Qi Gong Wan Ameliorates Adipocyte Hypertrophy and Inflammation in Adipose Tissue in a PCOS Mouse Model Through the Nrf2/HO‐1/Cyp1b1 Pathway: Integrating Network Pharmacology and Experimental Validation In Vivo</article-title>,” <source>Journal of Ethnopharmacology</source>
+<volume>301</volume> (<year>2023</year>): <fpage>115824</fpage>.<pub-id pub-id-type="pmid">36273747</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jep.2022.115824</pub-id></mixed-citation></ref><ref id="edm270249-bib-0044"><label>44</label><mixed-citation publication-type="journal" id="edm270249-cit-0044">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kasum</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Orešković</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Čehić</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Lila</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Ejubović</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Soldo</surname>
+</string-name>, “<article-title>The Role of Female Obesity on In Vitro Fertilization Outcomes</article-title>,” <source>Gynecological Endocrinology</source>
+<volume>34</volume>, no. <issue>3</issue> (<year>2018</year>): <fpage>184</fpage>–<lpage>188</lpage>, <pub-id pub-id-type="doi">10.1080/09513590.2017.1391209</pub-id>.<pub-id pub-id-type="pmid">29037105</pub-id>
+</mixed-citation></ref><ref id="edm270249-bib-0045"><label>45</label><mixed-citation publication-type="journal" id="edm270249-cit-0045">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Abdulkhalikova</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Sustarsic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Vrtačnik Bokal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Jancar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Jensterle</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Burnik Papler</surname>
+</string-name>, “<article-title>The Lifestyle Modifications and Endometrial Proteome Changes of Women With Polycystic Ovary Syndrome and Obesity</article-title>,” <source>Front Endocrinol (Lausanne)</source>
+<volume>13</volume> (<year>2022</year>): <fpage>888460</fpage>.<pub-id pub-id-type="pmid">35813634</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fendo.2022.888460</pub-id><pub-id pub-id-type="pmcid">PMC9258031</pub-id></mixed-citation></ref><ref id="edm270249-bib-0046"><label>46</label><mixed-citation publication-type="journal" id="edm270249-cit-0046">
+<string-name name-style="western">
+<given-names>I. A.</given-names>
+<surname>Comstock</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Diaz‐Gimeno</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Cabanillas</surname>
+</string-name>, et al., “<article-title>Does an Increased Body Mass Index Affect Endometrial Gene Expression Patterns in Infertile Patients? A Functional Genomics Analysis</article-title>,” <source>Fertility and Sterility</source>
+<volume>107</volume>, no. <issue>3</issue> (<year>2017</year>): <fpage>740</fpage>–<lpage>748.e2</lpage>, <pub-id pub-id-type="doi">10.1016/j.fertnstert.2016.11.009</pub-id>.<pub-id pub-id-type="pmid">27919438</pub-id>
+</mixed-citation></ref><ref id="edm270249-bib-0047"><label>47</label><mixed-citation publication-type="journal" id="edm270249-cit-0047">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Ghazal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>McKinnon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Zhou</surname>
+</string-name>, et al., “<article-title>H19 lncRNA Alters Stromal Cell Growth via IGF Signaling in the Endometrium of Women With Endometriosis</article-title>,” <source>EMBO Molecular Medicine</source>
+<volume>7</volume>, no. <issue>8</issue> (<year>2015</year>): <fpage>996</fpage>–<lpage>1003</lpage>.<pub-id pub-id-type="pmid">26089099</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.15252/emmm.201505245</pub-id><pub-id pub-id-type="pmcid">PMC4551339</pub-id></mixed-citation></ref><ref id="edm270249-bib-0048"><label>48</label><mixed-citation publication-type="journal" id="edm270249-cit-0048">
+<string-name name-style="western">
+<given-names>Y. J.</given-names>
+<surname>Kang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Lees</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. C.</given-names>
+<surname>Matthews</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. J.</given-names>
+<surname>Kimber</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Forbes</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. D.</given-names>
+<surname>Aplin</surname>
+</string-name>, “<article-title>MiR‐145 Suppresses Embryo‐Epithelial Juxtacrine Communication at Implantation by Modulating Maternal IGF1R</article-title>,” <source>Journal of Cell Science</source>
+<volume>128</volume>, no. <issue>4</issue> (<year>2015</year>): <fpage>804</fpage>–<lpage>814</lpage>.<pub-id pub-id-type="pmid">25609710</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1242/jcs.164004</pub-id></mixed-citation></ref><ref id="edm270249-bib-0049"><label>49</label><mixed-citation publication-type="journal" id="edm270249-cit-0049">
+<string-name name-style="western">
+<given-names>V. K.</given-names>
+<surname>Sirohi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Gupta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Kumar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Shukla</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Dwivedi</surname>
+</string-name>, “<article-title>Selective Estrogen Receptor Modulator Ormeloxifene Suppresses Embryo Implantation via Inducing miR‐140 and Targeting Insulin‐Like Growth Factor 1 Receptor in Rat Uterus</article-title>,” <source>Journal of Steroid Biochemistry and Molecular Biology</source>
+<volume>178</volume> (<year>2018</year>): <fpage>272</fpage>–<lpage>282</lpage>.<pub-id pub-id-type="pmid">29330027</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jsbmb.2018.01.006</pub-id></mixed-citation></ref><ref id="edm270249-bib-0050"><label>50</label><mixed-citation publication-type="journal" id="edm270249-cit-0050">
+<string-name name-style="western">
+<given-names>L. C.</given-names>
+<surname>Giudice</surname>
+</string-name>, “<article-title>Endometrium in PCOS: Implantation and Predisposition to Endocrine CA</article-title>,” <source>Best Practice &amp; Research. Clinical Endocrinology &amp; Metabolism</source>
+<volume>20</volume>, no. <issue>2</issue> (<year>2006</year>): <fpage>235</fpage>–<lpage>244</lpage>.<pub-id pub-id-type="pmid">16772154</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.beem.2006.03.005</pub-id></mixed-citation></ref><ref id="edm270249-bib-0051"><label>51</label><mixed-citation publication-type="journal" id="edm270249-cit-0051">
+<string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Labarta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Sebastian‐Leon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Devesa‐Peiro</surname>
+</string-name>, et al., “<article-title>Analysis of Serum and Endometrial Progesterone in Determining Endometrial Receptivity</article-title>,” <source>Human Reproduction</source>
+<volume>36</volume>, no. <issue>11</issue> (<year>2021</year>): <fpage>2861</fpage>–<lpage>2870</lpage>.<pub-id pub-id-type="pmid">34382075</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humrep/deab184</pub-id></mixed-citation></ref><ref id="edm270249-bib-0052"><label>52</label><mixed-citation publication-type="journal" id="edm270249-cit-0052">
+<string-name name-style="western">
+<given-names>Z. H.</given-names>
+<surname>Zheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. L.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. F.</given-names>
+<surname>Jiang</surname>
+</string-name>, et al., “<article-title>METTL3 Is Essential for Normal Progesterone Signaling During Embryo Implantation via m(6)A‐Mediated Translation Control of Progesterone Receptor</article-title>,” <source>Proceedings of the National Academy of Sciences of the United States of America</source>
+<volume>120</volume>, no. <issue>5</issue> (<year>2023</year>): <fpage>e2214684120</fpage>.<pub-id pub-id-type="pmid">36693099</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1073/pnas.2214684120</pub-id><pub-id pub-id-type="pmcid">PMC9945998</pub-id></mixed-citation></ref><ref id="edm270249-bib-0053"><label>53</label><mixed-citation publication-type="journal" id="edm270249-cit-0053">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Hu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Yang</surname>
+</string-name>, et al., “<article-title>Increased Uterine Androgen Receptor Protein Abundance Results in Implantation and Mitochondrial Defects in Pregnant Rats With Hyperandrogenism and Insulin Resistance</article-title>,” <source>Journal of Molecular Medicine (Berlin, Germany)</source>
+<volume>99</volume>, no. <issue>10</issue> (<year>2021</year>): <fpage>1427</fpage>–<lpage>1446</lpage>.<pub-id pub-id-type="pmid">34180022</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s00109-021-02104-z</pub-id><pub-id pub-id-type="pmcid">PMC8455403</pub-id></mixed-citation></ref><ref id="edm270249-bib-0054"><label>54</label><mixed-citation publication-type="book" id="edm270249-cit-0054">
+<string-name name-style="western">
+<given-names>N. R.</given-names>
+<surname>Adams</surname>
+</string-name> and <string-name name-style="western">
+<given-names>F. J.</given-names>
+<surname>DeMayo</surname>
+</string-name>, “<part-title>The Role of Steroid Hormone Receptors in the Establishment of Pregnancy in Rodents</part-title>,” in <source>Regulation of Implantation and Establishment of Pregnancy in Mammals</source> (<publisher-name>Springer International Publishing</publisher-name>, <year>2015</year>), <fpage>27</fpage>–<lpage>50</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/978-3-319-15856-3_3</pub-id><pub-id pub-id-type="pmid">26450493</pub-id></mixed-citation></ref><ref id="edm270249-bib-0055"><label>55</label><mixed-citation publication-type="journal" id="edm270249-cit-0055">
+<string-name name-style="western">
+<given-names>A. N. M.</given-names>
+<surname>Yusuf</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. F.</given-names>
+<surname>Amri</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Ugusman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. A.</given-names>
+<surname>Hamid</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. A.</given-names>
+<surname>Wahab</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. H.</given-names>
+<surname>Mokhtar</surname>
+</string-name>, “<article-title>Hyperandrogenism and Its Possible Effects on Endometrial Receptivity: A Review</article-title>,” <source>International Journal of Molecular Sciences</source>
+<volume>24</volume>, no. <issue>15</issue> (<year>2023</year>): <fpage>12026</fpage>.<pub-id pub-id-type="pmid">37569402</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/ijms241512026</pub-id><pub-id pub-id-type="pmcid">PMC10419014</pub-id></mixed-citation></ref><ref id="edm270249-bib-0056"><label>56</label><mixed-citation publication-type="journal" id="edm270249-cit-0056">
+<string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Kumar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>U. K.</given-names>
+<surname>Soni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V. K.</given-names>
+<surname>Maurya</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Singh</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. K.</given-names>
+<surname>Jha</surname>
+</string-name>, “<article-title>Integrin beta8 (ITGB8) Activates VAV‐RAC1 Signaling via FAK in the Acquisition of Endometrial Epithelial Cell Receptivity for Blastocyst Implantation</article-title>,” <source>Scientific Reports</source>
+<volume>7</volume>, no. <issue>1</issue> (<year>2017</year>): <fpage>1885</fpage>.<pub-id pub-id-type="pmid">28507287</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1038/s41598-017-01764-7</pub-id><pub-id pub-id-type="pmcid">PMC5432530</pub-id></mixed-citation></ref><ref id="edm270249-bib-0057"><label>57</label><mixed-citation publication-type="journal" id="edm270249-cit-0057">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Long</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y. C.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. Z.</given-names>
+<surname>Yuan</surname>
+</string-name>, et al., “<article-title>GLUT4 in Mouse Endometrial Epithelium: Roles in Embryonic Development and Implantation</article-title>,” <source>Frontiers in Physiology</source>
+<volume>12</volume> (<year>2021</year>): <fpage>674924</fpage>.<pub-id pub-id-type="pmid">34248664</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fphys.2021.674924</pub-id><pub-id pub-id-type="pmcid">PMC8267529</pub-id></mixed-citation></ref><ref id="edm270249-bib-0058"><label>58</label><mixed-citation publication-type="journal" id="edm270249-cit-0058">
+<string-name name-style="western">
+<given-names>A. R.</given-names>
+<surname>Alves</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. F.</given-names>
+<surname>Dias</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Silvestre</surname>
+</string-name>, “<article-title>Endometrial Fluid Biomarkers and Their Potential as Predictors of Successful Embryo Implantation</article-title>,” <source>Biomedicine (Taipei)</source>
+<volume>13</volume>, no. <issue>3</issue> (<year>2023</year>): <fpage>1</fpage>–<lpage>8</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.37796/2211-8039.1413</pub-id><pub-id pub-id-type="pmcid">PMC10627212</pub-id><pub-id pub-id-type="pmid">37937060</pub-id></mixed-citation></ref><ref id="edm270249-bib-0059"><label>59</label><mixed-citation publication-type="journal" id="edm270249-cit-0059">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Shan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Luo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Guo</surname>
+</string-name>, et al., “<article-title>Abnormal Endometrial Receptivity and Oxidative Stress in Polycystic Ovary Syndrome</article-title>,” <source>Frontiers in Pharmacology</source>
+<volume>13</volume> (<year>2022</year>): <fpage>904942</fpage>.<pub-id pub-id-type="pmid">35959444</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fphar.2022.904942</pub-id><pub-id pub-id-type="pmcid">PMC9357999</pub-id></mixed-citation></ref><ref id="edm270249-bib-0060"><label>60</label><mixed-citation publication-type="journal" id="edm270249-cit-0060">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Palomba</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. T.</given-names>
+<surname>Piltonen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L. C.</given-names>
+<surname>Giudice</surname>
+</string-name>, “<article-title>Endometrial Function in Women With Polycystic Ovary Syndrome: A Comprehensive Review</article-title>,” <source>Human Reproduction Update</source>
+<volume>27</volume>, no. <issue>3</issue> (<year>2021</year>): <fpage>584</fpage>–<lpage>618</lpage>.<pub-id pub-id-type="pmid">33302299</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humupd/dmaa051</pub-id></mixed-citation></ref><ref id="edm270249-bib-0061"><label>61</label><mixed-citation publication-type="journal" id="edm270249-cit-0061">
+<article-title>Retracted: TJZYF Improves Endometrial Receptivity Through Regulating VEGF and PI3K/AKT Signaling Pathway</article-title>,” <source>BioMed Research International</source>
+<volume>2023</volume> (<year>2023</year>): <fpage>1</fpage>–<lpage>1</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1155/2023/9846512</pub-id><pub-id pub-id-type="pmcid">PMC10769636</pub-id><pub-id pub-id-type="pmid">38188825</pub-id></mixed-citation></ref><ref id="edm270249-bib-0062"><label>62</label><mixed-citation publication-type="journal" id="edm270249-cit-0062">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Li</surname>
+</string-name>, et al., “<article-title>Elevated Insulin Levels Compromise Endometrial Decidualization in Mice With Decrease in Uterine Apoptosis in Early‐Stage Pregnancy</article-title>,” <source>Archives of Toxicology</source>
+<volume>93</volume>, no. <issue>12</issue> (<year>2019</year>): <fpage>3601</fpage>–<lpage>3615</lpage>.<pub-id pub-id-type="pmid">31642978</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s00204-019-02601-8</pub-id></mixed-citation></ref><ref id="edm270249-bib-0063"><label>63</label><mixed-citation publication-type="journal" id="edm270249-cit-0063">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Tong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Wu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Zhang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Yu</surname>
+</string-name>, “<article-title>Insulin Resistance, Autophagy and Apoptosis in Patients With Polycystic Ovary Syndrome: Association With PI3K Signaling Pathway</article-title>,” <source>Frontiers in Endocrinology</source>
+<volume>13</volume> (<year>2022</year>): <fpage>1091147</fpage>.<pub-id pub-id-type="pmid">36589825</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fendo.2022.1091147</pub-id><pub-id pub-id-type="pmcid">PMC9800521</pub-id></mixed-citation></ref><ref id="edm270249-bib-0064"><label>64</label><mixed-citation publication-type="journal" id="edm270249-cit-0064">
+<string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Lu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Yang</surname>
+</string-name>, et al., “<article-title>Hyperinsulinemia Restrains Endometrial Angiogenesis During Decidualization in Early Pregnancy</article-title>,” <source>Journal of Endocrinology</source>
+<volume>243</volume>, no. <issue>2</issue> (<year>2019</year>): <fpage>137</fpage>–<lpage>148</lpage>.<pub-id pub-id-type="pmid">31412315</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1530/JOE-19-0127</pub-id></mixed-citation></ref><ref id="edm270249-bib-0065"><label>65</label><mixed-citation publication-type="journal" id="edm270249-cit-0065">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Lei</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Chen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Li</surname>
+</string-name>, “<article-title>Advances in the Study of the Correlation Between Insulin Resistance and Infertility</article-title>,” <source>Frontiers in Endocrinology</source>
+<volume>15</volume> (<year>2024</year>): <fpage>1288326</fpage>.<pub-id pub-id-type="pmid">38348417</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3389/fendo.2024.1288326</pub-id><pub-id pub-id-type="pmcid">PMC10860338</pub-id></mixed-citation></ref><ref id="edm270249-bib-0066"><label>66</label><mixed-citation publication-type="journal" id="edm270249-cit-0066">
+<string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Chen</surname>
+</string-name> and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Dean</surname>
+</string-name>, “<article-title>Endometrial Glucose Metabolism During Early Pregnancy</article-title>,” <source>Reproduction &amp; Fertility</source>
+<volume>4</volume>, no. <issue>4</issue> (<year>2023</year>): <elocation-id>e230016</elocation-id>, <pub-id pub-id-type="doi">10.1530/RAF-23-0016</pub-id>.<pub-id pub-id-type="pmid">37934727</pub-id>
+<pub-id pub-id-type="pmcid">PMC10762551</pub-id></mixed-citation></ref><ref id="edm270249-bib-0067"><label>67</label><mixed-citation publication-type="journal" id="edm270249-cit-0067">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Fornes</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Ormazabal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Rosas</surname>
+</string-name>, et al., “<article-title>Changes in the Expression of Insulin Signaling Pathway Molecules in Endometria from Polycystic Ovary Syndrome Women With or Without Hyperinsulinemia</article-title>,” <source>Molecular Medicine</source>
+<volume>16</volume>, no. <issue>3‐4</issue> (<year>2010</year>): <fpage>129</fpage>–<lpage>136</lpage>, <pub-id pub-id-type="doi">10.2119/molmed.2009.00118</pub-id>.<pub-id pub-id-type="pmid">20011249</pub-id>
+<pub-id pub-id-type="pmcid">PMC2792869</pub-id></mixed-citation></ref><ref id="edm270249-bib-0068"><label>68</label><mixed-citation publication-type="journal" id="edm270249-cit-0068">
+<string-name name-style="western">
+<given-names>A. S.</given-names>
+<surname>McCampbell</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H. A.</given-names>
+<surname>Harris</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. S.</given-names>
+<surname>Crabtree</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. C.</given-names>
+<surname>Winneker</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. L.</given-names>
+<surname>Walker</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. R.</given-names>
+<surname>Broaddus</surname>
+</string-name>, “<article-title>Loss of Inhibitory Insulin Receptor Substrate‐1 Phosphorylation Is an Early Event in Mammalian Target of Rapamycin–Dependent Endometrial Hyperplasia and Carcinoma</article-title>,” <source>Cancer Prevention Research</source>
+<volume>3</volume>, no. <issue>3</issue> (<year>2010</year>): <fpage>290</fpage>–<lpage>300</lpage>.<pub-id pub-id-type="pmid">20179297</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1158/1940-6207.CAPR-09-0199</pub-id><pub-id pub-id-type="pmcid">PMC4103009</pub-id></mixed-citation></ref><ref id="edm270249-bib-0069"><label>69</label><mixed-citation publication-type="journal" id="edm270249-cit-0069">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Fabi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Grenier</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Parent</surname>
+</string-name>, et al., “<article-title>Regulation of the PI3K/Akt Pathway During Decidualization of Endometrial Stromal Cells</article-title>,” <source>PLoS One</source>
+<volume>12</volume>, no. <issue>5</issue> (<year>2017</year>): <elocation-id>e0177387</elocation-id>, <pub-id pub-id-type="doi">10.1371/journal.pone.0177387</pub-id>.<pub-id pub-id-type="pmid">28475617</pub-id>
+<pub-id pub-id-type="pmcid">PMC5419658</pub-id></mixed-citation></ref><ref id="edm270249-bib-0070"><label>70</label><mixed-citation publication-type="journal" id="edm270249-cit-0070">
+<string-name name-style="western">
+<given-names>B.</given-names>
+<surname>McKinnon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Bertschi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Wotzkow</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. A.</given-names>
+<surname>Bersinger</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Evers</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. D.</given-names>
+<surname>Mueller</surname>
+</string-name>, “<article-title>Glucose Transporter Expression in Eutopic Endometrial Tissue and Ectopic Endometriotic Lesions</article-title>,” <source>Journal of Molecular Endocrinology</source>
+<volume>52</volume>, no. <issue>2</issue> (<year>2014</year>): <fpage>169</fpage>–<lpage>179</lpage>.<pub-id pub-id-type="pmid">24412827</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1530/JME-13-0194</pub-id></mixed-citation></ref><ref id="edm270249-bib-0071"><label>71</label><mixed-citation publication-type="journal" id="edm270249-cit-0071">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Mioni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Mozzanega</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Granzotto</surname>
+</string-name>, et al., “<article-title>Insulin Receptor and Glucose Transporters mRNA Expression Throughout the Menstrual Cycle in Human Endometrium: Aphysiological and Cyclical Condition of Tissue Insulin Resistance</article-title>,” <source>Gynecological Endocrinology</source>
+<volume>28</volume>, no. <issue>12</issue> (<year>2012</year>): <fpage>1014</fpage>–<lpage>1018</lpage>.<pub-id pub-id-type="pmid">22971162</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3109/09513590.2012.705367</pub-id></mixed-citation></ref><ref id="edm270249-bib-0072"><label>72</label><mixed-citation publication-type="journal" id="edm270249-cit-0072">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Rosas</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Gabler</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Vantman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Romero</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Vega</surname>
+</string-name>, “<article-title>Levels of Rabs and WAVE Family Proteins Associated With Translocation of GLUT4 to the Cell Surface in Endometria From Hyperinsulinemic PCOS Women</article-title>,” <source>Human Reproduction</source>
+<volume>25</volume>, no. <issue>11</issue> (<year>2010</year>): <fpage>2870</fpage>–<lpage>2877</lpage>.<pub-id pub-id-type="pmid">20843777</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humrep/deq232</pub-id></mixed-citation></ref><ref id="edm270249-bib-0073"><label>73</label><mixed-citation publication-type="journal" id="edm270249-cit-0073">
+<string-name name-style="western">
+<given-names>F.‐D.</given-names>
+<surname>Ni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.‐L.</given-names>
+<surname>Hao</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>W.‐X.</given-names>
+<surname>Yang</surname>
+</string-name>, “<article-title>Molecular Insights Into Hormone Regulation via Signaling Pathways in Sertoli Cells: With Discussion on Infertility and Testicular Tumor</article-title>,” <source>Gene</source>
+<volume>753</volume> (<year>2020</year>): <fpage>144812</fpage>.<pub-id pub-id-type="pmid">32470507</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.gene.2020.144812</pub-id></mixed-citation></ref><ref id="edm270249-bib-0074"><label>74</label><mixed-citation publication-type="journal" id="edm270249-cit-0074">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Menichini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Forte</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Orrù</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Gullo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Unfer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Facchinetti</surname>
+</string-name>, “<article-title>The Role of Vitamin D in Metabolic and Reproductive Disturbances of Polycystic Ovary Syndrome: A Narrative Mini‐Review</article-title>,” <source>International Journal for Vitamin and Nutrition Research</source>
+<volume>92</volume>, no. <issue>2</issue> (<year>2022</year>): <fpage>126</fpage>–<lpage>133</lpage>.<pub-id pub-id-type="pmid">33284035</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1024/0300-9831/a000691</pub-id></mixed-citation></ref><ref id="edm270249-bib-0075"><label>75</label><mixed-citation publication-type="journal" id="edm270249-cit-0075">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Cozzolino</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Busnelli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Pellegrini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Riviello</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Vitagliano</surname>
+</string-name>, “<article-title>How Vitamin D Level Influences In Vitro Fertilization Outcomes: Results of a Systematic Review and Meta‐Analysis</article-title>,” <source>Fertility and Sterility</source>
+<volume>114</volume>, no. <issue>5</issue> (<year>2020</year>): <fpage>1014</fpage>–<lpage>1025</lpage>.<pub-id pub-id-type="pmid">33012554</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.fertnstert.2020.05.040</pub-id></mixed-citation></ref><ref id="edm270249-bib-0076"><label>76</label><mixed-citation publication-type="journal" id="edm270249-cit-0076">
+<string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Bezerra Espinola</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Bilotta</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Aragona</surname>
+</string-name>, “<article-title>Positive Effect of a New Supplementation of Vitamin D3 With Myo‐Inositol, Folic Acid and Melatonin on IVF Outcomes: A Prospective Randomized and Controlled Pilot Study</article-title>,” <source>Gynecological Endocrinology</source>
+<volume>37</volume>, no. <issue>3</issue> (<year>2020</year>): <fpage>251</fpage>–<lpage>254</lpage>.<pub-id pub-id-type="pmid">32367738</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1080/09513590.2020.1760820</pub-id></mixed-citation></ref><ref id="edm270249-bib-0077"><label>77</label><mixed-citation publication-type="journal" id="edm270249-cit-0077">
+<string-name name-style="western">
+<given-names>M. H.</given-names>
+<surname>Saxtorph</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Hallager</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Persson</surname>
+</string-name>, et al., “<article-title>Assessing Endometrial Receptivity After Recurrent Implantation Failure: A Prospective Controlled Cohort Study</article-title>,” <source>Reproductive Biomedicine Online</source>
+<volume>41</volume>, no. <issue>6</issue> (<year>2020</year>): <fpage>998</fpage>–<lpage>1006</lpage>.<pub-id pub-id-type="pmid">32978074</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.rbmo.2020.08.015</pub-id></mixed-citation></ref><ref id="edm270249-bib-0078"><label>78</label><mixed-citation publication-type="journal" id="edm270249-cit-0078">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Hosseinirad</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. G.</given-names>
+<surname>Novin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Hosseini</surname>
+</string-name>, et al., “<article-title>Effect of 1,25(OH)2‐Vitamin D3 on Expression and Phosphorylation of Progesterone Receptor in Cultured Endometrial Stromal Cells of Patients With Repeated Implantation Failure</article-title>,” <source>Acta Histochemica</source>
+<volume>122</volume>, no. <issue>2</issue> (<year>2020</year>): <fpage>151489</fpage>.<pub-id pub-id-type="pmid">31879032</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.acthis.2019.151489</pub-id></mixed-citation></ref><ref id="edm270249-bib-0079"><label>79</label><mixed-citation publication-type="journal" id="edm270249-cit-0079">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Fruzzetti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Perini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Russo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Bucci</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Gadducci</surname>
+</string-name>, “<article-title>Comparison of Two Insulin Sensitizers, Metformin and Myo‐Inositol, in Women With Polycystic Ovary Syndrome (PCOS)</article-title>,” <source>Gynecological Endocrinology</source>
+<volume>33</volume>, no. <issue>1</issue> (<year>2017</year>): <fpage>39</fpage>–<lpage>42</lpage>.<pub-id pub-id-type="pmid">27808588</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1080/09513590.2016.1236078</pub-id></mixed-citation></ref><ref id="edm270249-bib-0080"><label>80</label><mixed-citation publication-type="journal" id="edm270249-cit-0080">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Cheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Ying</surname>
+</string-name>, et al., “<article-title>Metformin Alleviates Endometriosis and Potentiates Endometrial Receptivity via Decreasing VEGF and MMP9 and Increasing Leukemia Inhibitor Factor and HOXA10</article-title>,” <source>Frontiers in Pharmacology</source>
+<volume>13</volume> (<year>2022</year>): <elocation-id>750208</elocation-id>, <pub-id pub-id-type="doi">10.3389/fphar.2022.750208</pub-id>.<pub-id pub-id-type="pmid">35273494</pub-id>
+<pub-id pub-id-type="pmcid">PMC8902464</pub-id></mixed-citation></ref><ref id="edm270249-bib-0081"><label>81</label><mixed-citation publication-type="journal" id="edm270249-cit-0081">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yuan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Wu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Huang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Bi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Qin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Yang</surname>
+</string-name>, “<article-title>The Function of Metformin in Endometrial Receptivity (ER) of Patients With Polycyclic Ovary Syndrome (PCOS): A Systematic Review and Meta‐Analysis</article-title>,” <source>Reproductive Biology and Endocrinology</source>
+<volume>19</volume>, no. <issue>1</issue> (<year>2021</year>): <fpage>89</fpage>.<pub-id pub-id-type="pmid">34127011</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/s12958-021-00772-7</pub-id><pub-id pub-id-type="pmcid">PMC8201680</pub-id></mixed-citation></ref><ref id="edm270249-bib-0082"><label>82</label><mixed-citation publication-type="journal" id="edm270249-cit-0082">
+<string-name name-style="western">
+<given-names>I. A.</given-names>
+<surname>Mohsen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Elkattan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Nabil</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Khattab</surname>
+</string-name>, “<article-title>Effect of Metformin Treatment on Endometrial Vascular Indices in Anovulatory Obese/Overweight Women With Polycystic Ovarian Syndrome Using Three‐Dimensional Power Doppler Ultrasonography</article-title>,” <source>Journal of Clinical Ultrasound</source>
+<volume>41</volume>, no. <issue>5</issue> (<year>2013</year>): <fpage>275</fpage>–<lpage>282</lpage>.<pub-id pub-id-type="pmid">23124626</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/jcu.22006</pub-id></mixed-citation></ref><ref id="edm270249-bib-0083"><label>83</label><mixed-citation publication-type="journal" id="edm270249-cit-0083">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Palomba</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Russo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Orio</surname>, <suffix>Jr.</suffix>
+</string-name>, et al., “<article-title>Uterine Effects of Metformin Administration in Anovulatory Women With Polycystic Ovary Syndrome</article-title>,” <source>Human Reproduction</source>
+<volume>21</volume>, no. <issue>2</issue> (<year>2006</year>): <fpage>457</fpage>–<lpage>465</lpage>.<pub-id pub-id-type="pmid">16253975</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1093/humrep/dei351</pub-id></mixed-citation></ref><ref id="edm270249-bib-0084"><label>84</label><mixed-citation publication-type="journal" id="edm270249-cit-0084">
+<string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Salamun</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Jensterle</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Janez</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Vrtacnik Bokal</surname>
+</string-name>, “<article-title>Liraglutide Increases IVF Pregnancy Rates in Obese PCOS Women With Poor Response to First‐Line Reproductive Treatments: A Pilot Randomized Study</article-title>,” <source>European Journal of Endocrinology</source>
+<volume>179</volume>, no. <issue>1</issue> (<year>2018</year>): <fpage>1</fpage>–<lpage>11</lpage>.<pub-id pub-id-type="pmid">29703793</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1530/EJE-18-0175</pub-id></mixed-citation></ref><ref id="edm270249-bib-0085"><label>85</label><mixed-citation publication-type="journal" id="edm270249-cit-0085">
+<string-name name-style="western">
+<given-names>G. D.</given-names>
+<surname>Ferreira</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Germeyer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>de Barros Machado</surname>
+</string-name>, et al., “<article-title>Metformin Modulates PI3K and GLUT4 Expression and Akt/PKB Phosphorylation in Human Endometrial Stromal Cells After Stimulation With Androgen and Insulin</article-title>,” <source>European Journal of Obstetrics &amp; Gynecology and Reproductive Biology</source>
+<volume>175</volume> (<year>2014</year>): <fpage>157</fpage>–<lpage>162</lpage>.<pub-id pub-id-type="pmid">24480115</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.ejogrb.2014.01.009</pub-id></mixed-citation></ref><ref id="edm270249-bib-0086"><label>86</label><mixed-citation publication-type="journal" id="edm270249-cit-0086">
+<string-name name-style="western">
+<given-names>E.</given-names>
+<surname>García‐Gómez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y. I.</given-names>
+<surname>Gómez‐Viais</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. M.</given-names>
+<surname>Cruz‐Aranda</surname>
+</string-name>, et al., “<article-title>The Effect of Metformin and Carbohydrate‐Controlled Diet on DNA Methylation and Gene Expression in the Endometrium of Women With Polycystic Ovary Syndrome</article-title>,” <source>International Journal of Molecular Sciences</source>
+<volume>24</volume>, no. <issue>7</issue> (<year>2023</year>): <fpage>6857</fpage>.<pub-id pub-id-type="pmid">37047828</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/ijms24076857</pub-id><pub-id pub-id-type="pmcid">PMC10094785</pub-id></mixed-citation></ref><ref id="edm270249-bib-0087"><label>87</label><mixed-citation publication-type="journal" id="edm270249-cit-0087">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Sparić</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Andjić</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Rakić</surname>
+</string-name>, et al., “<article-title>Insulin‐Sensitizing Agents for Infertility Treatment in Woman With Polycystic Ovary Syndrome: A Narrative Review of Current Clinical Practice</article-title>,” <source>Hormones (Athens, Greece)</source>
+<volume>23</volume>, no. <issue>1</issue> (<year>2024</year>): <fpage>49</fpage>–<lpage>58</lpage>, <pub-id pub-id-type="doi">10.1007/s42000-023-00494-y</pub-id>.<pub-id pub-id-type="pmid">37792213</pub-id>
+</mixed-citation></ref><ref id="edm270249-bib-0088"><label>88</label><mixed-citation publication-type="journal" id="edm270249-cit-0088">
+<string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Ahmed</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Sultana</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. W.</given-names>
+<surname>Greene</surname>
+</string-name>, “<article-title>Adipose Tissue and Insulin Resistance in Obese</article-title>,” <source>Biomedicine &amp; Pharmacotherapy</source>
+<volume>137</volume> (<year>2021</year>): <fpage>111315</fpage>.<pub-id pub-id-type="pmid">33561645</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.biopha.2021.111315</pub-id></mixed-citation></ref><ref id="edm270249-bib-0089"><label>89</label><mixed-citation publication-type="journal" id="edm270249-cit-0089">
+<string-name name-style="western">
+<given-names>A. A.</given-names>
+<surname>Choudhury</surname>
+</string-name> and <string-name name-style="western">
+<given-names>V. D.</given-names>
+<surname>Rajeswari</surname>
+</string-name>, “<article-title>Polycystic Ovary Syndrome (PCOS) Increases the Risk of Subsequent Gestational Diabetes Mellitus (GDM): A Novel Therapeutic Perspective</article-title>,” <source>Life Sciences</source>
+<volume>310</volume> (<year>2022</year>): <fpage>121069</fpage>.<pub-id pub-id-type="pmid">36243118</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.lfs.2022.121069</pub-id></mixed-citation></ref><ref id="edm270249-bib-0090"><label>90</label><mixed-citation publication-type="journal" id="edm270249-cit-0090">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Gambineri</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Laudisio</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Marocco</surname>
+</string-name>, et al., “<article-title>Female Infertility: Which Role for Obesity?</article-title>,” <source>International journal of obesity supplements</source>
+<volume>9</volume>, no. <issue>1</issue> (<year>2019</year>): <fpage>65</fpage>–<lpage>72</lpage>, <pub-id pub-id-type="doi">10.1038/s41367-019-0009-1</pub-id>.<pub-id pub-id-type="pmid">31391925</pub-id>
+<pub-id pub-id-type="pmcid">PMC6683114</pub-id></mixed-citation></ref><ref id="edm270249-bib-0091"><label>91</label><mixed-citation publication-type="journal" id="edm270249-cit-0091">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Armstrong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Berger</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Al‐Safi</surname>
+</string-name>, “<article-title>Obesity and Reproduction</article-title>,” <source>Current Opinion in Obstetrics &amp; Gynecology</source>
+<volume>34</volume>, no. <issue>4</issue> (<year>2022</year>): <fpage>184</fpage>–<lpage>189</lpage>.<pub-id pub-id-type="pmid">35895959</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/GCO.0000000000000794</pub-id></mixed-citation></ref><ref id="edm270249-bib-0092"><label>92</label><mixed-citation publication-type="journal" id="edm270249-cit-0092">
+<string-name name-style="western">
+<given-names>D. A.</given-names>
+<surname>Sandoval</surname>
+</string-name> and <string-name name-style="western">
+<given-names>M. E.</given-names>
+<surname>Patti</surname>
+</string-name>, “<article-title>Glucose Metabolism After Bariatric Surgery: Implications for T2DM Remission and Hypoglycaemia</article-title>,” <source>Nature Reviews Endocrinology</source>
+<volume>19</volume>, no. <issue>3</issue> (<year>2022</year>): <fpage>164</fpage>–<lpage>176</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1038/s41574-022-00757-5</pub-id><pub-id pub-id-type="pmcid">PMC10805109</pub-id><pub-id pub-id-type="pmid">36289368</pub-id></mixed-citation></ref><ref id="edm270249-bib-0093"><label>93</label><mixed-citation publication-type="journal" id="edm270249-cit-0093">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Xu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Lu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Liu</surname>
+</string-name>, et al., “<article-title>An Analysis of the Clinical Medication Rules of Traditional Chinese Medicine for Polycystic Ovary Syndrome Based on Data Mining</article-title>,” <source>Evidence‐Based Complementary and Alternative Medicine</source>
+<volume>2023</volume> (<year>2023</year>): <fpage>1</fpage>–<lpage>11</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1155/2023/6198001</pub-id><pub-id pub-id-type="pmcid">PMC9974250</pub-id><pub-id pub-id-type="pmid">36865746</pub-id></mixed-citation></ref><ref id="edm270249-bib-0094"><label>94</label><mixed-citation publication-type="journal" id="edm270249-cit-0094">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Xing</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>He</surname>
+</string-name>, et al., “<article-title>Acupuncture Improves Endometrial Angiogenesis by Activating PI3K/AKT Pathway in a Rat Model With PCOS</article-title>,” <source>Evidence‐Based Complementary and Alternative Medicine</source>
+<volume>2022</volume> (<year>2022</year>): <fpage>1</fpage>–<lpage>15</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1155/2022/1790041</pub-id><pub-id pub-id-type="pmcid">PMC9433287</pub-id><pub-id pub-id-type="pmid">36062171</pub-id></mixed-citation></ref><ref id="edm270249-bib-0095"><label>95</label><mixed-citation publication-type="journal" id="edm270249-cit-0095">
+<string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Wu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Xia</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Guo</surname>
+</string-name>, et al., “<article-title>Berberine Enhances the Function of Db/Db Mice Islet β Cell Through GLP‐1/GLP‐1R/PKA Signaling Pathway in Intestinal L Cell and Islet α Cell</article-title>,” <source>Frontiers in Pharmacology</source>
+<volume>14</volume> (<year>2023</year>): <elocation-id>1228722</elocation-id>, <pub-id pub-id-type="doi">10.3389/fphar.2023.1228722</pub-id>.<pub-id pub-id-type="pmid">37469873</pub-id>
+<pub-id pub-id-type="pmcid">PMC10352779</pub-id></mixed-citation></ref><ref id="edm270249-bib-0096"><label>96</label><mixed-citation publication-type="journal" id="edm270249-cit-0096">
+<string-name name-style="western">
+<given-names>O.‐M.</given-names>
+<surname>Ionescu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Frincu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Mehedintu</surname>
+</string-name>, et al., “<article-title>Berberine—A Promising Therapeutic Approach to Polycystic Ovary Syndrome in Infertile/Pregnant Women</article-title>,” <source>Life</source>
+<volume>13</volume>, no. <issue>1</issue> (<year>2023</year>): <fpage>125</fpage>.<pub-id pub-id-type="pmid">36676074</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/life13010125</pub-id><pub-id pub-id-type="pmcid">PMC9864590</pub-id></mixed-citation></ref><ref id="edm270249-bib-0097"><label>97</label><mixed-citation publication-type="journal" id="edm270249-cit-0097">
+<string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Nie</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Su</surname>
+</string-name>, et al., “<article-title>Berberine Improves Ovulation and Endometrial Receptivity in Polycystic Ovary Syndrome</article-title>,” <source>Phytomedicine</source>
+<volume>91</volume> (<year>2021</year>): <fpage>153654</fpage>.<pub-id pub-id-type="pmid">34333328</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.phymed.2021.153654</pub-id></mixed-citation></ref><ref id="edm270249-bib-0098"><label>98</label><mixed-citation publication-type="journal" id="edm270249-cit-0098">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Wei</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Zhang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Shi</surname>
+</string-name>, et al., “<article-title>Effect of Preconception Impaired Glucose Tolerance on Pregnancy Outcomes in Women With Polycystic Ovary Syndrome</article-title>,” <source>Journal of Clinical Endocrinology and Metabolism</source>
+<volume>102</volume>, no. <issue>10</issue> (<year>2017</year>): <fpage>3822</fpage>–<lpage>3829</lpage>.<pub-id pub-id-type="pmid">28938429</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1210/jc.2017-01294</pub-id></mixed-citation></ref><ref id="edm270249-bib-0099"><label>99</label><mixed-citation publication-type="journal" id="edm270249-cit-0099">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Huang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Xiao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Long</surname>
+</string-name>, et al., “<article-title>Comparative Proteomic Analysis Reveals Metformin Improves the Expression of Biomarkers of Endometrial Receptivity in Infertile Women With Minimal/Mild Endometriosis</article-title>,” <source>Reproductive Sciences</source>
+<volume>29</volume>, no. <issue>9</issue> (<year>2022</year>): <fpage>2593</fpage>–<lpage>2606</lpage>.<pub-id pub-id-type="pmid">35088363</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1007/s43032-022-00869-3</pub-id></mixed-citation></ref><ref id="edm270249-bib-0100"><label>100</label><mixed-citation publication-type="journal" id="edm270249-cit-0100">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Chi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>He</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Lei</surname>
+</string-name>, et al., “<article-title>Transdermal Estrogen Gel and Oral Aspirin Combination Therapy Improves Fertility Prognosis via the Promotion of Endometrial Receptivity in Moderate to Severe Intrauterine Adhesion</article-title>,” <source>Molecular Medicine Reports</source>
+<volume>17</volume>, no. <issue>5</issue> (<year>2018</year>): <fpage>6337</fpage>–<lpage>6344</lpage>.<pub-id pub-id-type="pmid">29512784</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3892/mmr.2018.8685</pub-id><pub-id pub-id-type="pmcid">PMC5928622</pub-id></mixed-citation></ref></ref-list></back></article>

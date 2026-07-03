@@ -2,6 +2,47 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [Unreleased] - XML Parser Extensions
+
+### ✨ Features
+
+- **Parser Extension System**: Added 10 extension modules for advanced XML processing
+  - **Content Block Model**: Typed content blocks (paragraph, list, formula, figure, etc.)
+    preserving document structure for RAG/LLM pipelines
+  - **lxml Backend**: Optional high-performance lxml parser with secure defaults
+  - **Peer Review Extraction**: Extract peer review materials from `<sub-article>` elements
+    organized by revision round
+  - **MathML → LaTeX**: Convert MathML expressions to LaTeX with 15+ element types
+  - **JATS4R Validation**: Compliance checking against NISO JATS4R recommendations
+    (6 categories: authors, affiliations, abstracts, funding, citations, data availability)
+  - **Batch Processing**: Rate-limited concurrent XML processing with callbacks
+  - **Image/Asset Fetcher**: Extract and download figure/supplementary/media assets
+  - **Reference Resolver**: Enrich references via Europe PMC API with caching
+  - **Pydantic Helpers**: Convert dataclasses to Pydantic v2 models dynamically
+  - **Local Processing**: Convenience utilities for file/directory/string parsing
+
+- **LinkML Schema**: Added `schemas/linkml/article_content_schema.yaml` for content block model
+  - Generated Python models at `src/pyeuropepmc/processing/extensions/linkml_models.py`
+  - Connects to `biomedical-knowledge-lookup` ontology
+
+### 📚 Documentation
+
+- **XML Parser Extensions Reference**: New `docs/reference/xml-parser-extensions.md`
+  with complete module-by-module reference
+- **API Reference**: New `docs/api/xml-parser-extensions.md` with full API signatures
+- **Feature Guide Update**: Extended `docs/features/parsing/README.md` with extensions section
+- **Parser Guide Update**: Added extension usage examples to
+  `docs/features/parsing/xml-parser-guide.md`
+- **Skills Guide Update**: Extended `docs/guides/skills/fulltext_parser.md` with all
+  10 extension modules
+
+### 🧪 Testing
+
+- **94 new tests**: 41 unit + 53 functional tests covering all 10 extension modules
+- **Functional tests run against 5 real XML papers** (PMC12311175, PMC12738713,
+  PMC3258128, PMC3359999 + synthetic)
+- All 617 tests pass with 0 failures
+
 ## [1.17.0] - 2026-06-17
 
 ### 🐛 Bug Fixes

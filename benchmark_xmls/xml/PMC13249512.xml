@@ -1,0 +1,443 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="aas70273" xml:lang="en" article-type="review-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Acta Anaesthesiol Scand</journal-id><journal-id journal-id-type="iso-abbrev">Acta Anaesthesiol Scand</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">AAS</journal-id><journal-title-group><journal-title>Acta Anaesthesiologica Scandinavica</journal-title></journal-title-group><issn pub-type="ppub">0001-5172</issn><issn pub-type="epub">1399-6576</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13249512</article-id><article-id pub-id-type="pmcid-ver">PMC13249512.1</article-id><article-id pub-id-type="pmcaid">13249512</article-id><article-id pub-id-type="pmcaiid">13249512</article-id><article-id pub-id-type="pmid">42263780</article-id><article-id pub-id-type="doi">10.1111/aas.70273</article-id><article-id pub-id-type="publisher-id">AAS70273</article-id><article-id pub-id-type="other">6995638</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Review Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Review Article</subject></subj-group></article-categories><title-group><article-title>Perioperative Antibiotic Prophylaxis in Burn Patients: Protocol for a Systematic Review</article-title></title-group><contrib-group><contrib id="aas70273-cr-0001" contrib-type="author" corresp="yes"><name name-style="western"><surname>Christensen</surname><given-names initials="GBB">Gustav Borghegn Blak</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0009-0001-6018-4222</contrib-id><xref rid="aas70273-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>gustav.borghegn.blak.christensen.03@regionh.dk</email></address></contrib><contrib id="aas70273-cr-0002" contrib-type="author"><name name-style="western"><surname>Jørgensen</surname><given-names initials="HK">Hanna Kjems</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0009-0001-6800-5858</contrib-id><xref rid="aas70273-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="aas70273-cr-0003" contrib-type="author"><name name-style="western"><surname>Tsuchiya</surname><given-names initials="EA">Emma Atsuko</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0009-0004-1612-0223</contrib-id><xref rid="aas70273-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="aas70273-cr-0004" contrib-type="author"><name name-style="western"><surname>Helleberg</surname><given-names initials="M">Marie</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-2370-1657</contrib-id><xref rid="aas70273-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="aas70273-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="aas70273-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="aas70273-cr-0005" contrib-type="author"><name name-style="western"><surname>Krag</surname><given-names initials="M">Mette</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-5246-8727</contrib-id><xref rid="aas70273-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aas70273-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="aas70273-cr-0006" contrib-type="author"><name name-style="western"><surname>Haase</surname><given-names initials="N">Nicolai</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-8176-404X</contrib-id><xref rid="aas70273-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="aas70273-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="aas70273-cr-0007" contrib-type="author"><name name-style="western"><surname>Møller</surname><given-names initials="MH">Morten Hylander</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-6378-9673</contrib-id><xref rid="aas70273-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="aas70273-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="aas70273-cr-0008" contrib-type="author"><name name-style="western"><surname>Vestergaard</surname><given-names initials="MR">Martin Risom</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-7980-7979</contrib-id><xref rid="aas70273-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="aas70273-cr-0009" contrib-type="author"><name name-style="western"><surname>Holmgaard</surname><given-names initials="R">Rikke</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-6579-461X</contrib-id><xref rid="aas70273-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><xref rid="aas70273-aff-0006" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib id="aas70273-cr-0010" contrib-type="author"><name name-style="western"><surname>Heiberg</surname><given-names initials="J">Johan</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-7466-5545</contrib-id><xref rid="aas70273-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="aas70273-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib></contrib-group><aff id="aas70273-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Anaesthesiology, Surgery and Trauma Centre</named-content>
+<institution>Copenhagen University Hospital ‐ Rigshospitalet</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><aff id="aas70273-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Clinical Medicine</named-content>
+<institution>University of Copenhagen</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><aff id="aas70273-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Department of Infectious Diseases</named-content>
+<institution>Copenhagen University Hospital ‐ Rigshospitalet</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><aff id="aas70273-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Centre of Excellence for Health, Immunity and Infections</named-content>
+<institution>Copenhagen University Hospital ‐ Rigshospitalet</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><aff id="aas70273-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<named-content content-type="organisation-division">Department of Intensive Care</named-content>
+<institution>Copenhagen University Hospital ‐ Rigshospitalet</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><aff id="aas70273-aff-0006">
+<label>
+<sup>6</sup>
+</label>
+<named-content content-type="organisation-division">Department of Plastic Surgery and Burn Treatment</named-content>
+<institution>Copenhagen University Hospital ‐ Rigshospitalet</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Gustav Borghegn Blak Christensen (<email>gustav.borghegn.blak.christensen.03@regionh.dk</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>09</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>7</month><year>2026</year></pub-date><volume>70</volume><issue seq="310">6</issue><issue-id pub-id-type="pmc-issue-id">515250</issue-id><issue-id pub-id-type="doi">10.1111/aas.v70.6</issue-id><elocation-id>e70273</elocation-id><history>
+<date date-type="rev-recd"><day>22</day><month>5</month><year>2026</year></date>
+<date date-type="received"><day>29</day><month>4</month><year>2026</year></date>
+<date date-type="accepted"><day>28</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>09</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>10</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-12 09:25:19.353"><day>12</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Acta Anaesthesiologica Scandinavica</italic> published by John Wiley &amp; Sons Ltd on behalf of Acta Anaesthesiologica Scandinavica Foundation.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbyncndlicense">https://creativecommons.org/licenses/by-nc-nd/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc-nd/4.0/">http://creativecommons.org/licenses/by-nc-nd/4.0/</ext-link> License, which permits use and distribution in any medium, provided the original work is properly cited, the use is non‐commercial and no modifications or adaptations are made.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="AAS-70-0.pdf"><?pdf-name AAS-70-0.pdf?><?pdf-size 342644?><?pdf-md5 c7d4f3f54125e16752a7994bfbe204fb?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:1a0f/13249512/c7d4f3f54125/AAS-70-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:AAS-70-0.pdf"/><abstract><title>ABSTRACT</title><sec id="aas70273-sec-0001"><title>Background</title><p>Burn injuries are associated with substantial morbidity and mortality worldwide, with infections representing a major complication. The desirable and undesirable effects of perioperative antibiotic prophylaxis in burn patients are unresolved.</p></sec><sec id="aas70273-sec-0002"><title>Methods/Design</title><p>We will conduct a systematic review with meta‐analysis and trial sequential analysis of randomized clinical trials assessing the desirable and undesirable effects of systemic antibiotic prophylaxis in burn patients undergoing surgery, compared with placebo or no prophylaxis/standard of care. The primary outcome will be the number of patients with one or more bloodstream infections. Secondary outcomes include 30‐day and 90‐day mortality, the number of patients with one or more skin and soft tissue infections, ventilator‐associated pneumonias, <styled-content style="fixed-case" toggle="no">
+<italic toggle="no">clostridium difficile</italic>
+</styled-content> infections, antimicrobial‐resistant bacteria, serious adverse events, days alive without organ support (renal replacement therapy, mechanical ventilation, vasopressor), ICU‐ and hospital‐free days. We will search the following databases: CENTRAL, MEDLINE, EMBASE, BIOSIS, Web of Science, and CINAHL. The review will follow the recommendations provided by the Cochrane Handbook for Systematic Reviews of Interventions and the Preferred Reporting Items for Systematic Reviews and Meta‐Analyses guidelines. The certainty of evidence will be assessed using the Grading of Recommendations Assessment, Development and Evaluation approach.</p></sec><sec id="aas70273-sec-0003"><title>Discussion</title><p>The outlined systematic review and meta‐analysis will evaluate the desirable and undesirable effects of perioperative antibiotic prophylaxis on patient‐important outcomes and may inform clinical practice and future research in this area.</p><p>
+<bold>Trial Registration:</bold> ClinicalTrials.gov identifier: CRD420261378296</p></sec></abstract><counts><fig-count count="0"/><table-count count="1"/><page-count count="7"/><word-count count="4500"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY-NC-ND</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:09.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body id="aas70273-body-0001"><sec id="aas70273-sec-0004"><label>1</label><title>Introduction</title><p>Globally, burns are estimated to cause approximately 180,000 deaths each year [<xref rid="aas70273-bib-0001" ref-type="bibr">1</xref>]. Infections constitute a major complication and are among the leading causes of mortality in burn patients primarily due to disruption of the skin barrier and immune dysfunction. These infections may result from microbial invasion of the burn wound, bacterial translocation across the intestinal mucosa, and invasive procedures. Burn wounds are frequently colonized by microorganisms, and surgical procedures may facilitate bacterial translocation into the bloodstream, leading to bacteremia. Consequently, patients with severe burns are at increased risk of developing sepsis and multiple organ dysfunction [<xref rid="aas70273-bib-0002" ref-type="bibr">2</xref>, <xref rid="aas70273-bib-0003" ref-type="bibr">3</xref>]. Surgical procedures are essential for the life‐saving management of burn patients. However, they may also induce a secondary immune response, potentially worsening the patient's condition prior to wound healing. In this context, increased inflammatory markers are commonly observed [<xref rid="aas70273-bib-0004" ref-type="bibr">4</xref>].</p><p>Perioperative antibiotic prophylaxis is the intervention of systemic antibiotics administrated right before or during surgery with the intention of preventing infections. It is applied in a wide variety of surgical procedures, such as thoracic, abdominal, orthopedic, plastic and neurosurgery, where the indications and criteria for use vary depending on the type of surgery [<xref rid="aas70273-bib-0005" ref-type="bibr">5</xref>]. In orthopedic surgery the efficacy has been proven for arthroplasty and traumatology for the prevention of surgical site infections and further bloodstream infections [<xref rid="aas70273-bib-0006" ref-type="bibr">6</xref>].</p><p>Despite the clinical burden in burn patients, practices regarding the use of perioperative systemic antibiotic prophylaxis in this population vary substantially, and the evidence supporting specific treatment regimens is limited [<xref rid="aas70273-bib-0007" ref-type="bibr">7</xref>]. Few studies have investigated the effect of systemic antibiotics in patients undergoing surgical procedures for burns, and the findings are inconsistent. Some studies have demonstrated no statistically significant benefit [<xref rid="aas70273-bib-0008" ref-type="bibr">8</xref>, <xref rid="aas70273-bib-0009" ref-type="bibr">9</xref>], while others suggest a potential advantage in outcomes such as graft survival [<xref rid="aas70273-bib-0007" ref-type="bibr">7</xref>, <xref rid="aas70273-bib-0010" ref-type="bibr">10</xref>, <xref rid="aas70273-bib-0011" ref-type="bibr">11</xref>]. However, concerns regarding colonization with antibiotic‐resistant microorganisms have also been raised. Evidence for this is still lacking [<xref rid="aas70273-bib-0007" ref-type="bibr">7</xref>, <xref rid="aas70273-bib-0012" ref-type="bibr">12</xref>], but one retrospective study among 5524 burn patients found that bacteria became increasingly resistant as time from admission increased [<xref rid="aas70273-bib-0013" ref-type="bibr">13</xref>].</p><p>Given the high risk of infection‐related complications in this population and the inconsistency in evidence and clinical practice, a systematic synthesis of the existing evidence is warranted. We will therefore conduct a systematic review with meta‐analysis and trial sequential analysis (TSA). This approach will synthesize the available evidence on the desirable and undesirable effects of perioperative systemic antibiotic prophylaxis in burn patients and provide a foundation for the design of future trials aimed at informing evidence‐based clinical guidelines in this area.</p></sec><sec id="aas70273-sec-0005"><label>2</label><title>Objectives</title><p>To evaluate the desirable and undesirable effects of perioperative systemic antibiotic prophylaxis in burn patients compared with placebo or standard care. We hypothesize that the effects of perioperative systemic antibiotic prophylaxis on pre‐specified patient‐important outcomes are uncertain due to limited and heterogeneous evidence.</p><p>Overall Research Question:</p><p>What are the desirable and undesirable effects of perioperative systemic antibiotic prophylaxis on patient‐important outcomes compared with standard care or placebo in burn patients?</p></sec><sec sec-type="methods" id="aas70273-sec-0006"><label>3</label><title>Methods</title><sec id="aas70273-sec-0007"><label>3.1</label><title>Study Design</title><p>This systematic review will include randomized clinical trials (RCTs) and will incorporate both meta‐analysis and TSA. The methodology described in the Cochrane Handbook for Systematic Reviews of Interventions will be applied [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>]. The completed systematic review will be reported according to the Preferred Reporting Items for Systematic Reviews and Meta‐Analyses (PRISMA) 2020 statement [<xref rid="aas70273-bib-0015" ref-type="bibr">15</xref>, <xref rid="aas70273-bib-0016" ref-type="bibr">16</xref>]. The certainty of evidence for each outcome will be assessed using the Grading of Recommendations Assessment, Development and Evaluation GRADE framework [<xref rid="aas70273-bib-0017" ref-type="bibr">17</xref>].</p></sec><sec id="aas70273-sec-0008"><label>3.2</label><title>Registration</title><p>The protocol for this systematic review is registered in the International Prospective Register of Systematic Reviews (PROSPERO; <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.crd.york.ac.uk/prospero" ext-link-type="uri">www.crd.york.ac.uk/prospero</ext-link>) [<xref rid="aas70273-bib-0018" ref-type="bibr">18</xref>] with the ID: CRD420261378296.</p></sec><sec id="aas70273-sec-0009"><label>3.3</label><title>Study Types</title><p>We will include RCTs assessing the effects of perioperative systemic antibiotic prophylaxis in burn patients. Both individually randomized, cluster‐randomized, and quasi‐randomized trials will be eligible. Studies will be included regardless of language, geographical location, source, and publication date. All other study designs will be excluded.</p></sec><sec id="aas70273-sec-0010"><label>3.4</label><title>Population</title><p>We will include adult and pediatric burn patients, as defined in the included trials, undergoing surgical procedures regardless of total body surface area (TBSA) affected.</p></sec><sec id="aas70273-sec-0011"><label>3.5</label><title>Intervention and Comparator</title><p>Trials in which the intervention consists of perioperative antibiotic prophylaxis will be included, regardless of route of administration, timing, agent, dose, or duration. Perioperative antibiotic prophylaxis will be defined as systemic antibiotic administration given before or during a surgical procedure with the intention of preventing procedure‐related infection, with or without continuation into the immediate postoperative period. The comparator will be placebo or no prophylaxis.</p></sec><sec id="aas70273-sec-0012"><label>3.6</label><title>Outcomes</title><sec id="aas70273-sec-0013"><label>3.6.1</label><title>Primary Outcome</title><p>
+<list list-type="bullet" id="aas70273-list-0001"><list-item id="aas70273-li-0001"><p>Number of patients with one or more episodes of bloodstream infection (as defined and reported by each trial)</p></list-item></list>
+</p></sec><sec id="aas70273-sec-0014"><label>3.6.2</label><title>Secondary Outcomes</title><p>
+<list list-type="bullet" id="aas70273-list-0002"><list-item id="aas70273-li-0002"><p>30‐day and 90‐day mortality (or closest approximation provided)</p></list-item><list-item id="aas70273-li-0003"><p>Number of patients with one or more episodes of skin and soft tissue infection (as defined and reported by each trial)</p></list-item><list-item id="aas70273-li-0004"><p>Number of patients with loss of skin graft after surgery (as defined and reported by each trial)</p></list-item><list-item id="aas70273-li-0005"><p>Number of patients with one or more episodes of ventilator‐associated pneumonia</p></list-item><list-item id="aas70273-li-0006"><p>Number of patients with one or more episodes of detection of antimicrobial‐resistant microorganisms (as defined and reported by each trial)</p></list-item><list-item id="aas70273-li-0007"><p>Number of patients with one or more episodes of <styled-content style="fixed-case" toggle="no">
+<italic toggle="no">clostridium difficile</italic>
+</styled-content> infections</p></list-item><list-item id="aas70273-li-0008"><p>Days alive and free from ICU (as defined and reported by each trial; if not reported, ICU length of stay)</p></list-item><list-item id="aas70273-li-0009"><p>Days without organ support including renal replacement therapy, mechanical ventilation, and/or vasopressor</p></list-item><list-item id="aas70273-li-0010"><p>Days alive and free from hospital (as defined and reported by each trial; if not reported, hospital length of stay)</p></list-item><list-item id="aas70273-li-0011"><p>Number of patients with one or more serious adverse events (as defined and reported by each trial)</p></list-item></list>
+</p></sec></sec><sec id="aas70273-sec-0015"><label>3.7</label><title>Study Search Strategy</title><p>A systematic and sensitive electronic database search will be conducted in collaboration with an information specialist. Databases will be searched with no restrictions regarding publication format, date, language, or study design. The full search strategy is available in Appendix <xref rid="aas70273-app-0001" ref-type="app">1</xref>.</p><sec id="aas70273-sec-0016"><label>3.7.1</label><title>Databases</title><p>The following databases will be searched:
+<list list-type="bullet" id="aas70273-list-0003"><list-item id="aas70273-li-0012"><p>MEDLINE (1946 to present)</p></list-item><list-item id="aas70273-li-0013"><p>Cochrane Central Register of Controlled Trials (CENTRAL)</p></list-item><list-item id="aas70273-li-0014"><p>EMBASE (1974 to present)</p></list-item><list-item id="aas70273-li-0015"><p>Web of Science.</p></list-item><list-item id="aas70273-li-0016"><p>BIOSIS (via Web of Science)</p></list-item><list-item id="aas70273-li-0017"><p>CINAHL (Cumulative Index to Nursing and Allied Health Literature; EBSCOhost)</p></list-item></list>
+</p><p>Furthermore, a search for ongoing RCTs and unpublished studies will be conducted at the following sites:
+<list list-type="bullet" id="aas70273-list-0004"><list-item id="aas70273-li-0018"><p>Current Controlled Trials (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://clinicaltrials.gov" ext-link-type="uri">Clinicaltrials.gov</ext-link>)</p></list-item><list-item id="aas70273-li-0019"><p>The World Health Organization International Clinical Trials Registry Platform (ICTRP) Search Portal (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://trialsearch.who.int" ext-link-type="uri">trialsearch.who.int</ext-link>)</p></list-item><list-item id="aas70273-li-0020"><p>The International Standard Randomised Controlled Trial Number registry (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://www.isrctn.com" ext-link-type="uri">www.isrctn.com</ext-link>)</p></list-item><list-item id="aas70273-li-0021"><p>The Australian New Zealand Clinical Trials Registry (<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://anzctr.org.au" ext-link-type="uri">anzctr.org.au</ext-link>)</p></list-item><list-item id="aas70273-li-0022"><p>Clinical Trials Information System (CTIS)</p></list-item><list-item id="aas70273-li-0023"><p>European Union Drug Regulating Authorities Clinical Trials Databases (EudraCT).</p></list-item></list>
+</p><p>Studies published in languages other than English will be assessed if accurate translation into English can be ensured using Google Translate. Reference lists of relevant reviews will be screened to identify additional eligible studies. The full search strategy for the included databases will be provided in the manuscript and reported in compliance with PRISMA search methodology [<xref rid="aas70273-bib-0019" ref-type="bibr">19</xref>]. The search will be updated before submission of the review for publication.</p></sec><sec id="aas70273-sec-0017"><label>3.7.2</label><title>Study Selection</title><p>The study selection process will adhere to the methodology outlined in the Cochrane Handbook for Systematic Reviews of Interventions [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>]. Using Covidence, two review authors will independently screen titles and abstracts to identify potentially eligible studies. Studies that do not meet the predefined inclusion criteria will be excluded. Full‐text versions of all potentially eligible studies will be retrieved and assessed independently by the same two reviewers to determine final eligibility for data extraction. In cases of duplicate publications, the report with the longest follow‐up period will be included. Studies will be included regardless of how outcome data are reported. Reasons for exclusion at the full‐text stage will be documented.</p><p>Disagreements between reviewers will be resolved through discussion and, if necessary, by consultation with a third review author. The study selection process will be presented using a PRISMA flow diagram. Inter‐reviewer agreement will be quantified using Cohen's kappa statistic.</p></sec></sec><sec id="aas70273-sec-0018"><label>3.8</label><title>Data Collection and Analysis</title><sec id="aas70273-sec-0019"><label>3.8.1</label><title>Data Extraction</title><p>Two reviewers will independently identify, extract, and collect data on a structured, standardized electronic form. Disagreements will be resolved through discussion or, if necessary, by consultation with a third review author. Reviewers will not be blinded to aspects of the reports including study authors, institutions, or journals. To retrieve additional data not reported in the included trials, as well as data from ongoing studies, corresponding authors will be contacted via e‐mail. In cases where multiple publications of the same trial are identified, data extraction will follow the guidance outlined in Chapter 5.5.4 of the Cochrane Handbook for Systematic Reviews of Interventions [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>].</p><p>We will extract the following data from the included trials: trial characteristics, population characteristics, intervention/control group specifics, pre‐specified outcomes, results data, and methodological details necessary for risk of bias assessment.</p></sec><sec id="aas70273-sec-0020"><label>3.8.2</label><title>Risk of Bias</title><p>Two review authors will independently assess the risk of bias in the included studies using the revised Cochrane risk‐of‐bias tool for randomized trials (RoB 2) [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>].</p><p>The RoB 2 tool evaluates the following domains:
+<list list-type="bullet" id="aas70273-list-0005"><list-item id="aas70273-li-0024"><p>Bias arising from the randomization process</p></list-item><list-item id="aas70273-li-0025"><p>Bias due to deviations from the intended interventions</p></list-item><list-item id="aas70273-li-0026"><p>Bias due to missing outcome data</p></list-item><list-item id="aas70273-li-0027"><p>Bias in measurement of the outcome</p></list-item><list-item id="aas70273-li-0028"><p>Bias in selection of the reported result</p></list-item></list>
+</p><p>Each domain will be judged as “low risk of bias,” “some concerns,” or “high risk of bias” according to the RoB2‐algorithm based on the responses to the signaling questions. An overall risk‐of‐bias judgment will then be assigned for each study: “Low risk of bias” if all domains are rated as low risk. “Some concerns” if at least one domain raises some concerns, but none are at high risk. “High risk of bias” if at least one domain is rated as high risk or multiple domains raise some concerns.</p><p>A summary figure and detailed tables will be presented to justify the risk‐of‐bias judgements for all included studies. Primary conclusions will be based on trials assessed as having an overall low risk of bias. If no such trials are available, conclusions will be based on all eligible studies, with these limitations clearly stated.</p></sec></sec><sec id="aas70273-sec-0021"><label>3.9</label><title>Measures of Intervention Effect</title><p>Continuous outcomes will be summarized using means and standard deviations when normally distributed, and medians with interquartile ranges when non‐normally distributed. Categorical outcomes will be summarized as numbers and percentages. For dichotomous outcomes, treatment effects will be expressed as risk ratios with 95% confidence intervals (CIs). For continuous outcomes, treatment effects will be expressed as mean differences with 95% CIs when outcomes are measured using the same scale, or standardized mean differences with 95% CIs when different scales are used to measure the same outcome.</p></sec><sec id="aas70273-sec-0022"><label>3.10</label><title>Missing Data</title><p>We will contact trial authors to obtain any missing outcome data. The primary analysis will include all available data from the intention‐to‐treat populations. Missing data will be assessed according to the Cochrane Handbook. Additionally, we will perform sensitivity analysis using both best‐case and worst‐case scenario assumptions [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>, <xref rid="aas70273-bib-0020" ref-type="bibr">20</xref>].</p></sec><sec id="aas70273-sec-0023"><label>3.11</label><title>Heterogeneity</title><p>Statistical heterogeneity will be assessed by visual inspection of forest plots and quantified using measures of inconsistency (<italic toggle="yes">I</italic>
+<sup>2</sup>) and diversity (<italic toggle="yes">D</italic>
+<sup>2</sup>) across included trials [<xref rid="aas70273-bib-0021" ref-type="bibr">21</xref>].</p><p>Meta‐analyses will primarily be conducted using a random‐effects model; fixed‐effect models will be used in sensitivity analyses [<xref rid="aas70273-bib-0020" ref-type="bibr">20</xref>]. In cases of substantial heterogeneity, potential sources will be explored through sensitivity analyses. Where meta‐analysis is deemed inappropriate, results will be presented descriptively instead. Lastly, the clinical diversity will be measured using the CDIM‐tool, including four domains (setting, population, interventions, and outcome) with 11 items overall [<xref rid="aas70273-bib-0022" ref-type="bibr">22</xref>].</p></sec><sec id="aas70273-sec-0024"><label>3.12</label><title>Publication Bias</title><p>Publication bias will be assessed by visually inspecting funnel plots if 10 or more trials are included. Additionally, the Harbord test will be performed for dichotomous outcomes, while the regression asymmetry test will be applied for continuous outcomes [<xref rid="aas70273-bib-0023" ref-type="bibr">23</xref>, <xref rid="aas70273-bib-0024" ref-type="bibr">24</xref>].</p></sec><sec id="aas70273-sec-0025"><label>3.13</label><title>Data Analysis</title><p>Statistical analyses will be conducted using Review Manager (RevMan) or R (R Core Team, R Foundation for statistical Computing, Vienna, Austria) and the TSA program (Copenhagen Trial Unit, Copenhagen, Denmark). Meta‐analyses will be used to generate pooled estimates for outcome measures that are comparable across at least two studies, provided that the degree of heterogeneity allows for statistical pooling. Forest plots will be generated to display individual trial effect estimates and corresponding study weights for pre‐specified outcomes, as well as the overall pooled effect estimate. When outcome data are unsuitable for meta‐analysis, results will be summarized descriptively. In trials with multiple intervention or control groups, relevant groups will be combined to create a single pairwise comparison between one intervention group and one control group [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>].</p><p>For cluster‐randomized trials, we will account for the clustered design to avoid unit‐of‐analysis errors. When available, we will extract effect estimates (odds ratios with CIs) and corresponding standard errors from analyses that appropriately account for clustering (multilevel models or generalized estimating equations). If clustering has not been accounted for, we will adjust the results using recommended methods by applying a design effect. Effect estimates will be pooled using the generic inverse‐variance method (section 23.1.3, Cochrane Handbook for Systematic Reviews of Interventions) [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>].</p></sec><sec id="aas70273-sec-0026"><label>3.14</label><title>Trial Sequential Analysis</title><p>To control the risks of random errors due to sparse data and repeated significance testing, TSA will be performed [<xref rid="aas70273-bib-0020" ref-type="bibr">20</xref>, <xref rid="aas70273-bib-0025" ref-type="bibr">25</xref>]. For dichotomous outcomes, trial sequential monitoring boundaries will be constructed based on anticipated relative risk reduction or increase of 15%. For continuous outcomes, a difference of 1 day in ICU‐ or hospital‐free days will be considered the minimal clinically important difference. The type I error rate (alpha) will be set at 5%, and the type II error rate (beta) at 10% (corresponding to 90% power). TSA will be performed for outcomes included in meta‐analyses comprising two or more trials.</p></sec><sec id="aas70273-sec-0027"><label>3.15</label><title>Subgroup Analyses</title><p>The following predefined subgroup analyses of the primary outcome will be performed:
+<list list-type="bullet" id="aas70273-list-0006"><list-item id="aas70273-li-0029"><p>Risk of bias: Trials will be categorized as having “low risk of bias,” “some concerns,” or “high risk of bias”. The “some concerns” and “high risk of bias” categories may be combined if either category includes fewer than 10 trials. We hypothesize a reduced effect of perioperative systemic antibiotic prophylaxis in the low risk of bias trials.</p></list-item><list-item id="aas70273-li-0030"><p>TBSA: Trials will be divided into major burns (<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-1" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mo>≥</mml:mo></mml:mrow></mml:mrow></mml:math> 20% TBSA) and minor burns (<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-2" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mo>&lt;</mml:mo></mml:mrow></mml:mrow></mml:math> 20% TBSA). We hypothesize increased effect of perioperative systemic antibiotic prophylaxis in major burn trials.</p></list-item><list-item id="aas70273-li-0031"><p>Mechanical ventilation: Trials including mechanically ventilated patients will be compared with trials including non‐mechanically ventilated patients. Trials that incorporated both mechanically and non‐mechanically ventilated patients will be divided into two groups based on the percentage of patients being mechanically ventilated (higher than 50% or lower than 50% of included population). We hypothesize an increased effect of perioperative systemic antibiotic prophylaxis in trials incorporating mechanically ventilated patients.</p></list-item><list-item id="aas70273-li-0032"><p>Non‐invasive ventilation (NIV): Trials that include patients treated with NIV will be compared with trials that do not. We hypothesize an increased effect of perioperative systemic antibiotic prophylaxis in trials with NIV.</p></list-item><list-item id="aas70273-li-0033"><p>Intervention: Trials including intravenous administration will be compared with trials including oral administration. We hypothesize an increased effect of perioperative systemic antibiotic prophylaxis in trials incorporating intravenous administration.</p></list-item><list-item id="aas70273-li-0034"><p>Population: Trials including adults will be compared with trials including children. In case of trials including both children and adults, they will be assigned to one of two groups depending on whether children or adults constitute the majority of the population. We hypothesize an increased effect of perioperative systemic antibiotic prophylaxis in trials with adults.</p></list-item><list-item id="aas70273-li-0035"><p>Single‐ versus multidrug therapy: Trials using monotherapy will be compared to trials using combination therapy. We hypothesize an increased effect of perioperative systemic antibiotic prophylaxis in trials with multidrug therapy.</p></list-item><list-item id="aas70273-li-0036"><p>Duration of prophylaxis: Trials using systemic antibiotic prophylaxis for ≤ 24 h will be compared with trials using prophylaxis for &gt; 24 h, irrespective of whether prolonged administration was preoperative, postoperative, or both. We hypothesize an increased effect of perioperative systemic antibiotic prophylaxis in trials administering prophylaxis for &gt; 24 h.</p></list-item></list>
+</p><p>The primary effect measure will be risk ratios (RR) with 95% CI. Subgroup analyses will be based on pooled RR estimates within each subgroup. Statistical heterogeneity between subgroups will be assessed using a chi‐squared test, with a <italic toggle="yes">p</italic>‐value below 0.05 considered statistically significant. Given the limited power of this test when few studies are included, results will be interpreted cautiously, with greater emphasis placed on the <italic toggle="yes">I</italic>
+<sup>2</sup> statistic. Moreover, the credibility of the subgroup analyses will be assessed using the ICEMAN‐criteria [<xref rid="aas70273-bib-0026" ref-type="bibr">26</xref>].</p></sec><sec id="aas70273-sec-0028"><label>3.16</label><title>Certainty of Evidence</title><p>We will assess the certainty of evidence according to the GRADE approach incorporating the five domains: risk of bias, inconsistency, indirectness, imprecision, and publication bias [<xref rid="aas70273-bib-0017" ref-type="bibr">17</xref>]. A minimum of two authors will independently evaluate the pre‐specified outcomes based on GRADE guidelines. Relevant outcomes will be categorized into one of four levels of certainty regarding the body of evidence: high, moderate, low, or very low. GRADE assessments will be conducted using GRADEpro software, which will also be used to generate the “Summary of Findings” table. We will use the statements described by Santesso et al. to communicate our findings [<xref rid="aas70273-bib-0027" ref-type="bibr">27</xref>].</p></sec></sec><sec sec-type="discussion" id="aas70273-sec-0029"><label>4</label><title>Discussion</title><p>The proposed systematic review will provide a comprehensive evaluation of the evidence on perioperative systemic antibiotic prophylaxis in burn patients compared with placebo or no prophylaxis and will report on patient‐relevant outcomes. We aim to strengthen the reliability of the systematic review through a rigorous methodological approach conducted in accordance with the PRISMA and GRADE guidelines [<xref rid="aas70273-bib-0014" ref-type="bibr">14</xref>, <xref rid="aas70273-bib-0016" ref-type="bibr">16</xref>, <xref rid="aas70273-bib-0017" ref-type="bibr">17</xref>]. The meta‐analysis and subgroup analyses are based on a pre‐specified plan that incorporates patient‐important outcomes. To further support these findings, TSA will be applied to reduce the risk of random errors or premature conclusions and to evaluate the need for additional trials [<xref rid="aas70273-bib-0025" ref-type="bibr">25</xref>].</p><p>We aim to include all trials assessing systemic perioperative antibiotic prophylaxis and have therefore adopted a broad definition of the intervention. While this approach increases inclusivity, it may also introduce methodological heterogeneity that could limit the comparability of studies and the interpretability of pooled estimates. Specifically, heterogeneity may arise from differences in patient populations, antibiotic selection, timing and dosage of interventions, as well as outcome definitions and measurements. Therefore, we have implemented our subgroup analyses, the conduction of sensitivity analyses, and measurement of clinical diversity through the CDIM‐tool. The findings of this review may support clinical practice on perioperative antibiotic strategies in burn surgery and identify areas where evidence remains insufficient. Furthermore, the review may highlight the need for greater standardization in future primary studies, particularly regarding antibiotic timing and dosage, outcome definitions, and reporting practices to improve comparability and strengthen the evidence base.</p></sec><sec id="aas70273-sec-0032"><title>Author Contributions</title><p>All authors have contributed to the conception and design of the protocol. Gustav Borghegn Blak Christensen drafted the manuscript. Johan Heiberg is the guarantor. All authors participated in the revision of the manuscript and approved the final protocol.</p></sec><sec id="aas70273-sec-0031"><title>Funding</title><p>The authors have nothing to report.</p></sec><sec sec-type="COI-statement" id="aas70273-sec-0033"><title>Disclosure</title><p>Final version, version 3.</p></sec><sec id="aas70273-sec-0035"><title>Ethics Statement</title><p>The authors have nothing to report.</p></sec><sec sec-type="COI-statement" id="aas70273-sec-0030"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec></body><back><ack id="aas70273-sec-0034"><title>Acknowledgments</title><p>We would like to express our sincere appreciation to Trine Lacoppidan Kæstel, information specialist at Rigshospitalet—Copenhagen University Hospital, for the valuable assistance in phrasing our search strategy.</p></ack><sec sec-type="data-availability" id="aas70273-sec-0037"><title>Data Availability Statement</title><p>Data sharing not applicable to this article as no datasets were generated or analysed during the current study.</p></sec><ref-list content-type="cited-references" id="aas70273-bibl-0001"><title>References</title><ref id="aas70273-bib-0001"><label>1</label><mixed-citation publication-type="miscellaneous" id="aas70273-cit-0001">
+<collab collab-type="authors">WHO</collab>
+, <article-title>“Burns,”</article-title> 2023, <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.who.int/news-room/fact-sheets/detail/burns" ext-link-type="uri">https://www.who.int/news‐room/fact‐sheets/detail/burns</ext-link>.</mixed-citation></ref><ref id="aas70273-bib-0002"><label>2</label><mixed-citation publication-type="journal" id="aas70273-cit-0002">
+<string-name name-style="western">
+<given-names>D. G.</given-names>
+<surname>Greenhalgh</surname>
+</string-name> and <string-name name-style="western">
+<given-names>J. L.</given-names>
+<surname>Kiley</surname>
+</string-name>, “<article-title>Diagnosis and Treatment of Infections in the Burn Patient</article-title>,” <source>European Burn Journal</source>
+<volume>5</volume> (<year>2024</year>): <fpage>296</fpage>–<lpage>308</lpage>, <pub-id pub-id-type="doi">10.3390/ebj5030028</pub-id>.<pub-id pub-id-type="pmid">39599952</pub-id>
+<pub-id pub-id-type="pmcid">PMC11544804</pub-id></mixed-citation></ref><ref id="aas70273-bib-0003"><label>3</label><mixed-citation publication-type="journal" id="aas70273-cit-0003">
+<string-name name-style="western">
+<given-names>L. H.</given-names>
+<surname>Evers</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Bhavsar</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Mailänder</surname>
+</string-name>, “<article-title>The Biology of Burn Injury</article-title>,” <source>Experimental Dermatology</source>
+<volume>19</volume> (<year>2010</year>): <fpage>777</fpage>–<lpage>783</lpage>, <pub-id pub-id-type="doi">10.1111/j.1600-0625.2010.01105.x</pub-id>.<pub-id pub-id-type="pmid">20629737</pub-id>
+</mixed-citation></ref><ref id="aas70273-bib-0004"><label>4</label><mixed-citation publication-type="journal" id="aas70273-cit-0004">
+<string-name name-style="western">
+<given-names>M. B.</given-names>
+<surname>Makowska‐Rezaie</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Jeleń</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Bartoszewicz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Korzeniowski</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. K.</given-names>
+<surname>Klimeczek‐Chrapusta</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Chrapusta</surname>
+</string-name>, “<article-title>Influence of Surgical Procedures on C‐Reactive Protein Levels in Severely Burned Patients: Preliminary Analysis on Implications for Early Sepsis Diagnosis</article-title>,” <source>International Journal of Molecular Sciences</source>
+<volume>26</volume> (<year>2025</year>): <elocation-id>5158</elocation-id>.<pub-id pub-id-type="pmid">40507966</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.3390/ijms26115158</pub-id><pub-id pub-id-type="pmcid">PMC12154434</pub-id></mixed-citation></ref><ref id="aas70273-bib-0005"><label>5</label><mixed-citation publication-type="journal" id="aas70273-cit-0005">
+<string-name name-style="western">
+<given-names>D. W.</given-names>
+<surname>Bratzler</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. P.</given-names>
+<surname>Dellinger</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. M.</given-names>
+<surname>Olsen</surname>
+</string-name>, et al., “<article-title>Clinical Practice Guidelines for Antimicrobial Prophylaxis in Surgery</article-title>,” <source>American Journal of Health‐System Pharmacy</source>
+<volume>70</volume> (<year>2013</year>): <fpage>195</fpage>–<lpage>283</lpage>.<pub-id pub-id-type="pmid">23327981</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.2146/ajhp120568</pub-id></mixed-citation></ref><ref id="aas70273-bib-0006"><label>6</label><mixed-citation publication-type="journal" id="aas70273-cit-0006">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Gaudias</surname>
+</string-name>, “<article-title>Antibiotic Prophylaxis in Orthopedics‐Traumatology</article-title>,” <source>Orthopaedics &amp; Traumatology, Surgery &amp; Research</source>
+<volume>107</volume> (<year>2021</year>): <fpage>1</fpage>–<lpage>5</lpage>, <pub-id pub-id-type="doi">10.1016/j.otsr.2020.102751</pub-id>.<pub-id pub-id-type="pmid">33316449</pub-id></mixed-citation></ref><ref id="aas70273-bib-0007"><label>7</label><mixed-citation publication-type="journal" id="aas70273-cit-0007">
+<string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Avni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Levcovich</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. D.</given-names>
+<surname>Ad‐El</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Leibovici</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Paul</surname>
+</string-name>, “<article-title>Prophylactic Antibiotics for Burns Patients: Systematic Review and Meta‐Analysis</article-title>,” <source>BMJ (Online)</source>
+<volume>340</volume> (<year>2010</year>): <elocation-id>c241</elocation-id>, <pub-id pub-id-type="doi">10.1136/bmj.c241</pub-id>.<pub-id pub-id-type="pmcid">PMC2822136</pub-id><pub-id pub-id-type="pmid">20156911</pub-id></mixed-citation></ref><ref id="aas70273-bib-0008"><label>8</label><mixed-citation publication-type="journal" id="aas70273-cit-0008">
+<string-name name-style="western">
+<given-names>G. L.</given-names>
+<surname>Rodgers</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Fischer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Lo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Cresswell</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S. S.</given-names>
+<surname>Long</surname>
+</string-name>, “<article-title>Study of Antibiotic Prophylaxis During Burn Wound Debridement in Children</article-title>,” <source>Journal of Burn Care &amp; Rehabilitation</source>
+<volume>18</volume> (<year>1997</year>): <fpage>342</fpage>–<lpage>346</lpage>.<pub-id pub-id-type="pmid">9261702</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/00004630-199707000-00012</pub-id></mixed-citation></ref><ref id="aas70273-bib-0009"><label>9</label><mixed-citation publication-type="journal" id="aas70273-cit-0009">
+<article-title>Randomized Placebo‐Controlled Trial of Teicoplanin in the Antibiotic Prophylaxis of Infection Following Manipulation of Burn Wounds</article-title>,” <source>British Journal of Surgery</source>
+<volume>84</volume> (<year>1997</year>): <fpage>1752</fpage>–<lpage>1853</lpage>, <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://academic.oup.com/bjs/article/84/6/848/6189366" ext-link-type="uri">https://academic.oup.com/bjs/article/84/6/848/6189366</ext-link>.<pub-id pub-id-type="pmid">9189106</pub-id>
+</mixed-citation></ref><ref id="aas70273-bib-0010"><label>10</label><mixed-citation publication-type="journal" id="aas70273-cit-0010">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Ramos</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Resta</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. M.</given-names>
+<surname>Delgado</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Durlach</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. F.</given-names>
+<surname>Canigia</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Benaim</surname>
+</string-name>, “<article-title>Systemic Perioperative Antibiotic Prophylaxis May Improve Skin Autograft Survival in Patients With Acute Burns</article-title>,” <source>Journal of Burn Care &amp; Research</source>
+<volume>29</volume> (<year>2008</year>): <fpage>917</fpage>–<lpage>923</lpage>.<pub-id pub-id-type="pmid">18849849</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/BCR.0b013e31818b9e5c</pub-id></mixed-citation></ref><ref id="aas70273-bib-0011"><label>11</label><mixed-citation publication-type="journal" id="aas70273-cit-0011">
+<string-name name-style="western">
+<given-names>J. W.</given-names>
+<surname>Alexander</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B. G.</given-names>
+<surname>MacMillan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. J.</given-names>
+<surname>Law</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Krummel</surname>
+</string-name>, “<article-title>Prophylactic Antibiotics as an Adjunct for Skin Grafting in Clean Reconstructive Surgery Following Burn Injury</article-title>,” <source>Journal of Trauma</source>
+<volume>22</volume> (<year>1982</year>): <fpage>687</fpage>–<lpage>690</lpage>.<pub-id pub-id-type="pmid">7050403</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1097/00005373-198208000-00006</pub-id></mixed-citation></ref><ref id="aas70273-bib-0012"><label>12</label><mixed-citation publication-type="journal" id="aas70273-cit-0012">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Ramos</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Cornistein</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. T.</given-names>
+<surname>Cerino</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Nacif</surname>
+</string-name>, “<article-title>Systemic Antimicrobial Prophylaxis in Burn Patients: Systematic Review</article-title>,” <source>Journal of Hospital Infection</source>
+<volume>97</volume> (<year>2017</year>): <fpage>105</fpage>–<lpage>114</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhin.2017.06.015</pub-id>.<pub-id pub-id-type="pmid">28629932</pub-id>
+</mixed-citation></ref><ref id="aas70273-bib-0013"><label>13</label><mixed-citation publication-type="journal" id="aas70273-cit-0013">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>van Duin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. D.</given-names>
+<surname>Strassle</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. M.</given-names>
+<surname>DiBiase</surname>
+</string-name>, et al., “<article-title>Timeline of Health Care–Associated Infections and Pathogens After Burn Injuries</article-title>,” <source>American Journal of Infection Control</source>
+<volume>44</volume> (<year>2016</year>): <fpage>1511</fpage>–<lpage>1516</lpage>.<pub-id pub-id-type="pmid">27742146</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.ajic.2016.07.027</pub-id><pub-id pub-id-type="pmcid">PMC5388443</pub-id></mixed-citation></ref><ref id="aas70273-bib-0014"><label>14</label><mixed-citation publication-type="miscellaneous" id="aas70273-cit-0014">
+<article-title>“Cochrane Handbook for Systematic Reviews of Interventions,”</article-title> 2024, <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://training.cochrane.org/handbook/current" ext-link-type="uri">https://training.cochrane.org/handbook/current</ext-link>.</mixed-citation></ref><ref id="aas70273-bib-0015"><label>15</label><mixed-citation publication-type="journal" id="aas70273-cit-0015">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Moher</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Shamseer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Clarke</surname>
+</string-name>, et al., “<article-title>Preferred Reporting Items for Systematic Review and Meta‐Analysis Protocols (PRISMA‐P) 2015 Statement</article-title>,” <source>Revista Espanola de Nutricion Humana y Dietetica</source>
+<volume>20</volume> (<year>2016</year>): <fpage>148</fpage>–<lpage>160</lpage>.</mixed-citation></ref><ref id="aas70273-bib-0016"><label>16</label><mixed-citation publication-type="journal" id="aas70273-cit-0016">
+<string-name name-style="western">
+<given-names>M. J.</given-names>
+<surname>Page</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. E.</given-names>
+<surname>McKenzie</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. M.</given-names>
+<surname>Bossuyt</surname>
+</string-name>, et al., “<article-title>The PRISMA 2020 Statement: An Updated Guideline for Reporting Systematic Reviews</article-title>,” <source>Journal of Clinical Epidemiology</source>
+<volume>134</volume> (<year>2021</year>): <fpage>178</fpage>–<lpage>189</lpage>.<pub-id pub-id-type="pmid">33789819</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jclinepi.2021.03.001</pub-id></mixed-citation></ref><ref id="aas70273-bib-0017"><label>17</label><mixed-citation publication-type="journal" id="aas70273-cit-0017">
+<string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Al Duhailib</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Leung</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Alhazzani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Jaeschke</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Rochwerg</surname>
+</string-name>, “<article-title>GRADE Pearls and Pitfalls—Part 1: Systematic Reviews and Meta‐Analyses</article-title>,” <source>Acta Anaesthesiologica Scandinavica</source>
+<volume>68</volume> (<year>2024</year>): <fpage>584</fpage>–<lpage>592</lpage>, <pub-id pub-id-type="doi">10.1111/aas.14386</pub-id>.<pub-id pub-id-type="pmid">38351600</pub-id>
+</mixed-citation></ref><ref id="aas70273-bib-0018"><label>18</label><mixed-citation publication-type="miscellaneous" id="aas70273-cit-0018">
+<collab collab-type="authors">University of York</collab>
+. <article-title>“PROSPERO: International Prospective Register of Systematic Reviews,”</article-title>
+<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.crd.york.ac.uk/prospero/" ext-link-type="uri">https://www.crd.york.ac.uk/prospero/</ext-link>.</mixed-citation></ref><ref id="aas70273-bib-0019"><label>19</label><mixed-citation publication-type="journal" id="aas70273-cit-0019">
+<string-name name-style="western">
+<given-names>M. L.</given-names>
+<surname>Rethlefsen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Kirtley</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Waffenschmidt</surname>
+</string-name>, et al., “<article-title>PRISMA‐S: An Extension to the PRISMA Statement for Reporting Literature Searches in Systematic Reviews</article-title>,” <source>Journal of the Medical Library Association</source>
+<volume>109</volume> (<year>2021</year>): <fpage>174</fpage>–<lpage>200</lpage>.<pub-id pub-id-type="pmid">34285662</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.5195/jmla.2021.962</pub-id><pub-id pub-id-type="pmcid">PMC8270366</pub-id></mixed-citation></ref><ref id="aas70273-bib-0020"><label>20</label><mixed-citation publication-type="journal" id="aas70273-cit-0020">
+<string-name name-style="western">
+<given-names>J. C.</given-names>
+<surname>Jakobsen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Wetterslev</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Winkel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Lange</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Gluud</surname>
+</string-name>, “<article-title>Thresholds for Statistical and Clinical Significance in Systematic Reviews With Meta‐Analytic Methods</article-title>,” <source>BMC Medical Research Methodology</source>
+<volume>14</volume> (<year>2014</year>): <elocation-id>120</elocation-id>.<pub-id pub-id-type="pmid">25416419</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1186/1471-2288-14-120</pub-id><pub-id pub-id-type="pmcid">PMC4251848</pub-id></mixed-citation></ref><ref id="aas70273-bib-0021"><label>21</label><mixed-citation publication-type="journal" id="aas70273-cit-0021">
+<string-name name-style="western">
+<given-names>J. P. T.</given-names>
+<surname>Higgins</surname>
+</string-name> and <string-name name-style="western">
+<given-names>S. G.</given-names>
+<surname>Thompson</surname>
+</string-name>, “<article-title>Quantifying Heterogeneity in a Meta‐Analysis</article-title>,” <source>Statistics in Medicine</source>
+<volume>21</volume> (<year>2002</year>): <fpage>1539</fpage>–<lpage>1558</lpage>.<pub-id pub-id-type="pmid">12111919</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/sim.1186</pub-id></mixed-citation></ref><ref id="aas70273-bib-0022"><label>22</label><mixed-citation publication-type="journal" id="aas70273-cit-0022">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Barbateskovic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. M.</given-names>
+<surname>Koster</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. J.</given-names>
+<surname>Eck</surname>
+</string-name>, et al., “<article-title>A New Tool to Assess Clinical Diversity in Meta‐Analyses (CDIM) of Interventions</article-title>,” <source>Journal of Clinical Epidemiology</source>
+<volume>135</volume> (<year>2021</year>): <fpage>29</fpage>–<lpage>41</lpage>.<pub-id pub-id-type="pmid">33561529</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jclinepi.2021.01.023</pub-id></mixed-citation></ref><ref id="aas70273-bib-0023"><label>23</label><mixed-citation publication-type="journal" id="aas70273-cit-0023">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Egger</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. D.</given-names>
+<surname>Smith</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Schneider</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Minder</surname>
+</string-name>, “<article-title>Bias in Meta‐Analysis Detected by a Simple, Graphical Test</article-title>,” <source>Journal</source>
+<volume>315</volume> (<year>1997</year>): <fpage>629</fpage>–<lpage>634</lpage>, <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.jstor.org/stable/25175671" ext-link-type="uri">https://www.jstor.org/stable/25175671</ext-link>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1136/bmj.315.7109.629</pub-id><pub-id pub-id-type="pmcid">PMC2127453</pub-id><pub-id pub-id-type="pmid">9310563</pub-id></mixed-citation></ref><ref id="aas70273-bib-0024"><label>24</label><mixed-citation publication-type="journal" id="aas70273-cit-0024">
+<string-name name-style="western">
+<given-names>R. M.</given-names>
+<surname>Harbord</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Egger</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. A. C.</given-names>
+<surname>Sterne</surname>
+</string-name>, “<article-title>A Modified Test for Small‐Study Effects in Meta‐Analyses of Controlled Trials With Binary Endpoints</article-title>,” <source>Statistics in Medicine</source>
+<volume>25</volume> (<year>2006</year>): <fpage>3443</fpage>–<lpage>3457</lpage>.<pub-id pub-id-type="pmid">16345038</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/sim.2380</pub-id></mixed-citation></ref><ref id="aas70273-bib-0025"><label>25</label><mixed-citation publication-type="miscellaneous" id="aas70273-cit-0025">
+<string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Thorlund</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Engstrøm</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Wetterslev</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Brok</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Imberger</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Gluud</surname>
+</string-name>, <article-title>“User Manual for Trial Sequential Analysis (TSA)”</article-title>.</mixed-citation></ref><ref id="aas70273-bib-0026"><label>26</label><mixed-citation publication-type="journal" id="aas70273-cit-0026">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Schandelmaier</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Briel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Varadhan</surname>
+</string-name>, et al., “<article-title>Development of the Instrument to Assess the Credibility of Effect Modification Analyses (ICEMAN) in Randomized Controlled Trials and Meta‐Analyses</article-title>,” <source>CMAJ</source>
+<volume>192</volume> (<year>2020</year>): <fpage>E901</fpage>–<lpage>E906</lpage>.<pub-id pub-id-type="pmid">32778601</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1503/cmaj.200077</pub-id><pub-id pub-id-type="pmcid">PMC7829020</pub-id></mixed-citation></ref><ref id="aas70273-bib-0027"><label>27</label><mixed-citation publication-type="journal" id="aas70273-cit-0027">
+<string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Santesso</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Glenton</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Dahm</surname>
+</string-name>, et al., “<article-title>GRADE Guidelines 26: Informative Statements to Communicate the Findings of Systematic Reviews of Interventions</article-title>,” <source>Journal of Clinical Epidemiology</source>
+<volume>119</volume> (<year>2020</year>): <fpage>126</fpage>–<lpage>135</lpage>.<pub-id pub-id-type="pmid">31711912</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.jclinepi.2019.10.014</pub-id></mixed-citation></ref></ref-list><app-group><app id="aas70273-app-0001" content-type="Appendix"><label>Appendix 1</label><title>Search Strategy</title><p>Ovid MEDLINE(R) ALL &lt;1946 to March 24, 2026&gt;<table-wrap position="anchor" id="jats-table-wrap-1" orientation="portrait"><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">1</td><td align="center" valign="top" rowspan="1" colspan="1">exp Burns/</td><td align="center" valign="top" rowspan="1" colspan="1">65,794</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">2</td><td align="center" valign="top" rowspan="1" colspan="1">(Burn* or Scald* or Thermal injur* or Inhalation injur* or Smoke inhal*).mp.</td><td align="center" valign="top" rowspan="1" colspan="1">173,369</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">3</td><td align="center" valign="top" rowspan="1" colspan="1">1 or 2</td><td align="center" valign="top" rowspan="1" colspan="1">176,383</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">4</td><td align="center" valign="top" rowspan="1" colspan="1">acute care surgery/or surgery, plastic/</td><td align="center" valign="top" rowspan="1" colspan="1">29,582</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">exp Surgical Procedures, Operative/</td><td align="center" valign="top" rowspan="1" colspan="1">3,811,108</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">6</td><td align="center" valign="top" rowspan="1" colspan="1">exp Transplants/</td><td align="center" valign="top" rowspan="1" colspan="1">34,695</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">7</td><td align="center" valign="top" rowspan="1" colspan="1">(operat* or Surg* or transplant* or perioperat* or debridement*).mp.</td><td align="center" valign="top" rowspan="1" colspan="1">5,655,014</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">8</td><td align="center" valign="top" rowspan="1" colspan="1">4 or 5 or 6 or 7</td><td align="center" valign="top" rowspan="1" colspan="1">6,764,057</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">9</td><td align="center" valign="top" rowspan="1" colspan="1">3 and 8</td><td align="center" valign="top" rowspan="1" colspan="1">42,061</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">10</td><td align="center" valign="top" rowspan="1" colspan="1">exp Anti‐Infective Agents/</td><td align="center" valign="top" rowspan="1" colspan="1">1,964,845</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">11</td><td align="center" valign="top" rowspan="1" colspan="1">(antibiotic* or anti‐biotic* or antibacterial* or anti‐bacterial* or antimicrobial* or anti‐microbial* or antiinfective* or anti‐infective*).mp.</td><td align="center" valign="top" rowspan="1" colspan="1">1,010,602</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">12</td><td align="center" valign="top" rowspan="1" colspan="1">exp Premedication/</td><td align="center" valign="top" rowspan="1" colspan="1">29,603</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">13</td><td align="center" valign="top" rowspan="1" colspan="1">(prophyla* or premedicat*).mp.</td><td align="center" valign="top" rowspan="1" colspan="1">251,389</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">14</td><td align="center" valign="top" rowspan="1" colspan="1">10 or 11 or 12 or 13</td><td align="center" valign="top" rowspan="1" colspan="1">2,521,324</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">15</td><td align="center" valign="top" rowspan="1" colspan="1">9 and 14</td><td align="center" valign="top" rowspan="1" colspan="1">3603</td></tr></tbody></table></table-wrap>
+</p></app></app-group></back></article>

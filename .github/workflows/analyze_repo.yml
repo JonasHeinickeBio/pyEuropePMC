@@ -8,7 +8,6 @@ on:
 permissions:
   contents: read
   issues: write
-  models: read  # For GitHub AI inference action
 
 jobs:
   analyze-and-suggest:
@@ -34,7 +33,7 @@ jobs:
       - name: Install additional analysis tools
         run: |
           # Install scc for code counting
-          curl -L https://github.com/boyter/scc/releases/download/v3.1.0/scc_Linux_x86_64.tar.gz | tar xz
+          curl -L https://github.com/boyter/scc/releases/download/v3.1.0/scc_3.1.0_Linux_x86_64.tar.gz | tar xz
           chmod +x scc
           sudo mv scc /usr/local/bin/
 
@@ -142,10 +141,15 @@ jobs:
 
       - name: Consolidate analysis results
         id: consolidate
+        env:
+          REPO: ${{ github.repository }}
+          BRANCH: ${{ github.ref_name }}
+          COMMIT_SHA: ${{ github.sha }}
         run: |
           python3 << 'PYTHON_SCRIPT'
           import json
           import os
+          from datetime import datetime, timezone
           from pathlib import Path
 
           # Read all analysis files
@@ -153,10 +157,10 @@ jobs:
 
           # Build consolidated summary
           summary = {
-              "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
-              "repository": "${{ github.repository }}",
-              "branch": "${{ github.ref_name }}",
-              "commit": "${{ github.sha }}",
+              "timestamp": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
+              "repository": os.environ.get("REPO", ""),
+              "branch": os.environ.get("BRANCH", ""),
+              "commit": os.environ.get("COMMIT_SHA", ""),
               "analysis": {}
           }
 
@@ -315,16 +319,15 @@ jobs:
         id: inference
         uses: actions/ai-inference@v2
         with:
-          prompt: ${{ steps.prepare_prompt.outputs.prompt || '' }}
           prompt-file: llm_prompt.txt
           max-tokens: 4000
 
       - name: Save LLM response
+        env:
+          AI_RESPONSE: ${{ steps.inference.outputs.response }}
         run: |
-          # Save the AI response to a file
-          cat > suggestion_output.json << 'LLM_JSON'
-          ${{ steps.inference.outputs.response }}
-          LLM_JSON
+          # Save AI response via env var to avoid shell interpolation issues
+          printf '%s' "$AI_RESPONSE" > suggestion_output.json
 
           echo "LLM response saved to suggestion_output.json"
           cat suggestion_output.json
@@ -333,9 +336,6 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # Make script executable
-          chmod +x scripts/create_suggestions.py
-
           # Validate JSON first
           if ! jq empty suggestion_output.json 2>/dev/null; then
             echo "Error: LLM response is not valid JSON"
@@ -344,12 +344,46 @@ jobs:
             exit 1
           fi
 
-          # Run the issue creation script
-          python3 scripts/create_suggestions.py
+          # Create issues from suggestions
+          python3 << 'CREATE_ISSUES'
+          import json
+          import subprocess
+          import sys
+
+          with open("suggestion_output.json") as f:
+              data = json.load(f)
+
+          suggestions = data.get("suggestions", [])
+          if not suggestions:
+              print("No suggestions found in LLM response")
+              sys.exit(0)
+
+          for suggestion in suggestions:
+              title = suggestion.get("title", "").strip()
+              body = suggestion.get("body", "").strip()
+              labels = suggestion.get("labels", ["suggestion"])
+
+              if not title or not body:
+                  print(f"Skipping suggestion with empty title or body: {title}")
+                  continue
+
+              label_args = []
+              for label in labels:
+                  label_args.extend(["--label", label])
+
+              cmd = ["gh", "issue", "create", "--title", title, "--body", body] + label_args
+              print(f"Creating issue: {title}")
+              result = subprocess.run(cmd, capture_output=True, text=True)
+              if result.returncode == 0:
+                  print(f"  Created: {result.stdout.strip()}")
+              else:
+                  print(f"  Failed: {result.stderr.strip()}")
+                  sys.exit(1)
+          CREATE_ISSUES
 
       - name: Upload analysis artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v4
         with:
           name: feature-suggester-analysis-${{ github.run_id }}
           path: |

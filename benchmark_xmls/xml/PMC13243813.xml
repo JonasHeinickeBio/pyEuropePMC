@@ -1,0 +1,1058 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="liv70733" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Liver Int</journal-id><journal-id journal-id-type="iso-abbrev">Liver Int</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">LIV</journal-id><journal-title-group><journal-title>Liver International</journal-title></journal-title-group><issn pub-type="ppub">1478-3223</issn><issn pub-type="epub">1478-3231</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13243813</article-id><article-id pub-id-type="pmcid-ver">PMC13243813.1</article-id><article-id pub-id-type="pmcaid">13243813</article-id><article-id pub-id-type="pmcaiid">13243813</article-id><article-id pub-id-type="pmid">42252667</article-id><article-id pub-id-type="doi">10.1111/liv.70733</article-id><article-id pub-id-type="publisher-id">LIV70733</article-id><article-id pub-id-type="other">4397498</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Original Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Original Article</subject></subj-group></article-categories><title-group><article-title>Sarcopenia Predicts Mortality and Hepatic Encephalopathy After <styled-content style="fixed-case" toggle="no">TIPS</styled-content> in Older Adults With Cirrhosis and Improves Prognostic Scores</article-title></title-group><contrib-group><contrib id="liv70733-cr-0001" contrib-type="author"><name name-style="western"><surname>Saltini</surname><given-names initials="D">Dario</given-names></name><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="liv70733-cr-0002" contrib-type="author"><name name-style="western"><surname>Nardelli</surname><given-names initials="S">Silvia</given-names></name><xref rid="liv70733-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="liv70733-cr-0003" contrib-type="author"><name name-style="western"><surname>Miraglia</surname><given-names initials="R">Roberto</given-names></name><xref rid="liv70733-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="liv70733-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="liv70733-cr-0004" contrib-type="author"><name name-style="western"><surname>Roccarina</surname><given-names initials="D">Davide</given-names></name><xref rid="liv70733-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="liv70733-cr-0005" contrib-type="author"><name name-style="western"><surname>Gioia</surname><given-names initials="S">Stefania</given-names></name><xref rid="liv70733-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="liv70733-cr-0006" contrib-type="author"><name name-style="western"><surname>Banchelli</surname><given-names initials="F">Federico</given-names></name><xref rid="liv70733-aff-0006" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib id="liv70733-cr-0007" contrib-type="author"><name name-style="western"><surname>Maruzzelli</surname><given-names initials="L">Luigi</given-names></name><xref rid="liv70733-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref><xref rid="liv70733-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="liv70733-cr-0008" contrib-type="author"><name name-style="western"><surname>Caporali</surname><given-names initials="C">Cristian</given-names></name><xref rid="liv70733-aff-0007" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="liv70733-cr-0009" contrib-type="author"><name name-style="western"><surname>Falcone</surname><given-names initials="G">Gianmarco</given-names></name><xref rid="liv70733-aff-0008" ref-type="aff">
+<sup>8</sup>
+</xref></contrib><contrib id="liv70733-cr-0010" contrib-type="author"><name name-style="western"><surname>Bianchini</surname><given-names initials="M">Marcello</given-names></name><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="liv70733-cr-0011" contrib-type="author"><name name-style="western"><surname>Guasconi</surname><given-names initials="T">Tomas</given-names></name><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="liv70733-cr-0012" contrib-type="author"><name name-style="western"><surname>Ingravallo</surname><given-names initials="A">Angelica</given-names></name><xref rid="liv70733-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="liv70733-cr-0013" contrib-type="author"><name name-style="western"><surname>Di Cola</surname><given-names initials="S">Simone</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-6414-4404</contrib-id><xref rid="liv70733-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="liv70733-cr-0014" contrib-type="author"><name name-style="western"><surname>Critelli</surname><given-names initials="RM">Rosina Maria</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-2313-2642</contrib-id><xref rid="liv70733-aff-0009" ref-type="aff">
+<sup>9</sup>
+</xref></contrib><contrib id="liv70733-cr-0015" contrib-type="author"><name name-style="western"><surname>Milosa</surname><given-names initials="F">Fabiola</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-9869-8819</contrib-id><xref rid="liv70733-aff-0009" ref-type="aff">
+<sup>9</sup>
+</xref></contrib><contrib id="liv70733-cr-0016" contrib-type="author"><name name-style="western"><surname>Piscopo</surname><given-names initials="A">Antonio</given-names></name><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="liv70733-aff-0010" ref-type="aff">
+<sup>10</sup>
+</xref></contrib><contrib id="liv70733-cr-0017" contrib-type="author"><name name-style="western"><surname>Casari</surname><given-names initials="F">Federico</given-names></name><xref rid="liv70733-aff-0007" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="liv70733-cr-0018" contrib-type="author"><name name-style="western"><surname>Mayorga</surname><given-names initials="ASV">Andrea Salomé Velasco</given-names></name><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="liv70733-aff-0010" ref-type="aff">
+<sup>10</sup>
+</xref></contrib><contrib id="liv70733-cr-0019" contrib-type="author"><name name-style="western"><surname>Scianò</surname><given-names initials="F">Filippo</given-names></name><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="liv70733-aff-0010" ref-type="aff">
+<sup>10</sup>
+</xref></contrib><contrib id="liv70733-cr-0020" contrib-type="author"><name name-style="western"><surname>Battinelli</surname><given-names initials="G">Giovanni</given-names></name><xref rid="liv70733-aff-0007" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="liv70733-cr-0021" contrib-type="author"><name name-style="western"><surname>Ascari</surname><given-names initials="F">Francesco</given-names></name><xref rid="liv70733-aff-0007" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="liv70733-cr-0022" contrib-type="author"><name name-style="western"><surname>Riggio</surname><given-names initials="O">Oliviero</given-names></name><xref rid="liv70733-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="liv70733-cr-0023" contrib-type="author"><name name-style="western"><surname>Marra</surname><given-names initials="F">Fabio</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-8629-0878</contrib-id><xref rid="liv70733-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="liv70733-cr-0024" contrib-type="author"><name name-style="western"><surname>Merli</surname><given-names initials="M">Manuela</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-3173-9767</contrib-id><xref rid="liv70733-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="liv70733-cr-0025" contrib-type="author"><name name-style="western"><surname>Vizzutti</surname><given-names initials="F">Francesco</given-names></name><xref rid="liv70733-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref><xref rid="liv70733-aff-0011" ref-type="aff">
+<sup>11</sup>
+</xref></contrib><contrib id="liv70733-cr-0026" contrib-type="author" corresp="yes"><name name-style="western"><surname>Schepis</surname><given-names initials="F">Filippo</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-6549-5102</contrib-id><xref rid="liv70733-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="liv70733-aff-0010" ref-type="aff">
+<sup>10</sup>
+</xref><address><email>fschepis@unimore.it</email></address></contrib></contrib-group><aff id="liv70733-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Severe Liver Diseases (M.E.C.) Departmental Unit, Department of Medical Specialties</named-content>
+<institution>University Hospital of Modena “Policlinico”, University of Modena and Reggio Emilia, European Reference Network on Rare Liver Disorders (ERN Rare‐Liver)</institution>
+<city>Modena</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Translational and Precision Medicine</named-content>
+<institution>Sapienza University of Rome</institution>
+<city>Rome</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<institution>IRCCS ISMETT, Radiology Service</institution>
+<city>Palermo</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<institution>UPMC Italy</institution>
+<city>Palermo</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<named-content content-type="organisation-division">Department of Experimental and Clinical Medicine</named-content>
+<institution>University of Florence</institution>
+<city>Florence</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0006">
+<label>
+<sup>6</sup>
+</label>
+<named-content content-type="organisation-division">Medical Statistics Unit, Department of Medical and Surgical Sciences</named-content>
+<institution>University of Modena and Reggio Emilia</institution>
+<city>Modena</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0007">
+<label>
+<sup>7</sup>
+</label>
+<named-content content-type="organisation-division">Division of Interventional Radiology</named-content>
+<institution>University Hospital of Modena “Policlinico”</institution>
+<city>Modena</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0008">
+<label>
+<sup>8</sup>
+</label>
+<named-content content-type="organisation-division">Department of Radiology, Interventional Radiology Unit</named-content>
+<institution>Careggi Hospital</institution>
+<city>Florence</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0009">
+<label>
+<sup>9</sup>
+</label>
+<named-content content-type="organisation-division">EpatoGastro Lab – RBA‐Labs CHIMOMO Department</named-content>
+<institution>University of Modena and Reggio Emilia</institution>
+<city>Modena</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0010">
+<label>
+<sup>10</sup>
+</label>
+<named-content content-type="organisation-division">Gastroenterology Unit</named-content>
+<institution>University Hospital of Modena “Policlinico”, University of Modena and Reggio Emilia</institution>
+<city>Modena</city>
+<country country="IT">Italy</country>
+</aff><aff id="liv70733-aff-0011">
+<label>
+<sup>11</sup>
+</label>
+<named-content content-type="organisation-division">Portal Hypertension Departmental Unit, Department of Experimental and Clinical Medicine</named-content>
+<institution>University of Florence</institution>
+<city>Florence</city>
+<country country="IT">Italy</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Filippo Schepis (<email>fschepis@unimore.it</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>07</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>7</month><year>2026</year></pub-date><volume>46</volume><issue seq="270">7</issue><issue-id pub-id-type="pmc-issue-id">515161</issue-id><issue-id pub-id-type="doi">10.1111/liv.v46.7</issue-id><elocation-id>e70733</elocation-id><history>
+<date date-type="rev-recd"><day>07</day><month>5</month><year>2026</year></date>
+<date date-type="received"><day>23</day><month>2</month><year>2026</year></date>
+<date date-type="accepted"><day>29</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>08</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>09</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-12 10:25:19.780"><day>12</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Liver International</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="LIV-46-0.pdf"><?pdf-name LIV-46-0.pdf?><?pdf-size 1899963?><?pdf-md5 31fcac9717b83cef5a293e20eaebca58?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:764f/13243813/31fcac9717b8/LIV-46-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:LIV-46-0.pdf"/><abstract><title>ABSTRACT</title><sec id="liv70733-sec-0001"><title>Background and Aims</title><p>The role of transjugular intrahepatic portosystemic shunt (TIPS) in older adults remains controversial because of limited risk‐stratification tools. We aimed to assess whether sarcopenia and myosteatosis are independently associated with post‐TIPS mortality and overt hepatic encephalopathy (OHE) in patients aged ≥ 70 years, and whether adding sarcopenia to established prognostic scores improves discrimination for post‐TIPS mortality.</p></sec><sec id="liv70733-sec-0002"><title>Methods</title><p>This multicenter retrospective study included 115 consecutive patients with cirrhosis aged ≥ 70 years undergoing TIPS for refractory ascites or secondary prophylaxis of variceal bleeding. Sarcopenia and myosteatosis were assessed by computed tomography at L3. Post‐TIPS mortality and time to first OHE episode were analysed using Kaplan–Meier and Cox regression. Sarcopenia was integrated into established prognostic scores, and predictive performance was evaluated using time‐dependent ROC analyses.</p></sec><sec id="liv70733-sec-0003"><title>Results</title><p>Sarcopenia and myosteatosis were present in 60% and 80% of patients, respectively. During follow‐up, 49% died and 45% developed OHE. Sarcopenia was independently associated with both mortality and OHE, whereas myosteatosis and adipose‐tissue indices were not. Incorporating sarcopenia improved the discriminative performance of all scores, with MELD 3.0–sarcopenia showing the highest accuracy (AUC 0.845). Predicted survival probabilities clearly separated patients across MELD 3.0 categories according to sarcopenia status. For OHE, sarcopenia increased the risk while underdilated TIPS was protective, defining four distinct risk profiles.</p></sec><sec id="liv70733-sec-0004"><title>Conclusions</title><p>Sarcopenia is highly prevalent and independently predicts both mortality and OHE after TIPS in older adults. Its integration into prognostic tools enhances risk stratification and supports individualised decision‐making in this vulnerable population.</p></sec></abstract><abstract abstract-type="highlights" id="liv70733-abs-5002"><title>Highlights</title><p>This study provides a scientific rationale for incorporating sarcopenia assessment into pre‐TIPS evaluation in patients aged ≥ 70 years, showing that reduced muscle mass independently predicts mortality and overt hepatic encephalopathy and improves the prognostic performance of standard liver‐severity scores. These findings are relevant for clinicians managing older adults with cirrhosis, in whom risk stratification before TIPS remains challenging. Integrating sarcopenia assessment into routine evaluation and procedural planning may support individualised decision‐making and patient counselling, although prospective validation is needed to confirm these results.</p></abstract><abstract abstract-type="plain-language-summary" id="liv70733-abs-5003"><title>Lay Summary</title><p>In older patients with cirrhosis being considered for a TIPS procedure, low muscle mass (sarcopenia) measured on a routine pre‐procedural CT scan independently predicts the risk of dying and of developing hepatic encephalopathy after TIPS. Adding this simple measurement to existing risk scores improves their accuracy and may help clinicians and patients make more informed decisions.</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="liv70733-kwd-0001">aged</kwd><kwd id="liv70733-kwd-0002">hepatic encephalopathy</kwd><kwd id="liv70733-kwd-0003">liver cirrhosis</kwd><kwd id="liv70733-kwd-0004">portosystemic shunt</kwd><kwd id="liv70733-kwd-0005">prognostic models</kwd><kwd id="liv70733-kwd-0006">skeletal muscle index</kwd></kwd-group><counts><fig-count count="5"/><table-count count="3"/><page-count count="14"/><word-count count="8200"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:08.06.2026</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="liv70733-cit-1001">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Saltini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Nardelli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Miraglia</surname>
+</string-name>, et al., “<article-title>Sarcopenia Predicts Mortality and Hepatic Encephalopathy After <styled-content style="fixed-case" toggle="no">TIPS</styled-content> in Older Adults With Cirrhosis and Improves Prognostic Scores</article-title>,” <source>Liver International</source>
+<volume>46</volume>, no. <issue>7</issue> (<year>2026</year>): <elocation-id>e70733</elocation-id>, <pub-id pub-id-type="doi">10.1111/liv.70733</pub-id>.<pub-id pub-id-type="pmid">42252667</pub-id></mixed-citation>
+</p><fn-group id="liv70733-ntgp-0001"><fn fn-type="generalState" id="liv70733-note-0001"><p>Dario Saltini and Silvia Nardelli share first authorship.</p></fn><fn fn-type="paperPresentation" id="liv70733-note-0002"><p>
+<bold>Presentation</bold>: Preliminary data at EASL Congress 2024 by Dario Saltini on Saturday June 8, 2024, in the session “Abstract session ‐ Cirrhosis and its complications: Portal hypertension” (OS‐099‐YI).</p></fn><fn fn-type="handlingEditor" id="liv70733-note-0003"><p>
+<bold>Handling Editor:</bold> Dr. Alejandro Forner</p></fn></fn-group></notes></front><body id="liv70733-body-0001"><def-list list-content="abbreviations" id="liv70733-dl-0001"><title>Abbreviations</title><def-item><term id="liv70733-li-0001">AUROC</term><def id="liv70733-li-0002"><p>area under the receiver operating characteristic curve</p></def></def-item><def-item><term id="liv70733-li-0003">CP</term><def id="liv70733-li-0004"><p>Child Pugh</p></def></def-item><def-item><term id="liv70733-li-0005">CT</term><def id="liv70733-li-0006"><p>computed tomography</p></def></def-item><def-item><term id="liv70733-li-0007">ExPeCT</term><def id="liv70733-li-0008"><p>Elderly Patients Calculator TIPS</p></def></def-item><def-item><term id="liv70733-li-0009">FIPS</term><def id="liv70733-li-0010"><p>Freiburg index of post‐TIPS survival</p></def></def-item><def-item><term id="liv70733-li-0011">HCC</term><def id="liv70733-li-0012"><p>hepatocellular carcinoma</p></def></def-item><def-item><term id="liv70733-li-0013">HR</term><def id="liv70733-li-0014"><p>hazard ratio</p></def></def-item><def-item><term id="liv70733-li-0015">INR</term><def id="liv70733-li-0016"><p>international normalised ratio</p></def></def-item><def-item><term id="liv70733-li-0017">IQR</term><def id="liv70733-li-0018"><p>interquartile range</p></def></def-item><def-item><term id="liv70733-li-0019">LT</term><def id="liv70733-li-0020"><p>liver transplantation</p></def></def-item><def-item><term id="liv70733-li-0021">MALSD</term><def id="liv70733-li-0022"><p>metabolic dysfunction‐associated steatotic liver disease</p></def></def-item><def-item><term id="liv70733-li-0023">MELD</term><def id="liv70733-li-0024"><p>Model for End‐Stage Liver Disease</p></def></def-item><def-item><term id="liv70733-li-0025">OHE</term><def id="liv70733-li-0026"><p>overt hepatic encephalopathy</p></def></def-item><def-item><term id="liv70733-li-0027">PCPG</term><def id="liv70733-li-0028"><p>portocaval pressure gradient</p></def></def-item><def-item><term id="liv70733-li-0029">RA</term><def id="liv70733-li-0030"><p>refractory ascites</p></def></def-item><def-item><term id="liv70733-li-0031">RI‐TIPS</term><def id="liv70733-li-0032"><p>Italian TIPS registry</p></def></def-item><def-item><term id="liv70733-li-0033">ROC</term><def id="liv70733-li-0034"><p>receiver operating characteristic</p></def></def-item><def-item><term id="liv70733-li-0035">SATI</term><def id="liv70733-li-0036"><p>subcutaneous adipose tissue index</p></def></def-item><def-item><term id="liv70733-li-0037">SD</term><def id="liv70733-li-0038"><p>standard deviation</p></def></def-item><def-item><term id="liv70733-li-0039">TIPS</term><def id="liv70733-li-0040"><p>transjugular intrahepatic portosystemic shunt</p></def></def-item><def-item><term id="liv70733-li-0041">VATI</term><def id="liv70733-li-0042"><p>visceral adipose tissue index</p></def></def-item></def-list><sec id="liv70733-sec-0005"><label>1</label><title>Introduction</title><p>The concept of age‐based absolute contraindications has increasingly been questioned. Recent studies indicate that older adults may benefit from transjugular intrahepatic portosystemic shunt (TIPS), a well‐established treatment for complications of portal hypertension (PH) [<xref rid="liv70733-bib-0001" ref-type="bibr">1</xref>, <xref rid="liv70733-bib-0002" ref-type="bibr">2</xref>, <xref rid="liv70733-bib-0003" ref-type="bibr">3</xref>]. However, favourable outcomes depend on meticulous patient selection. Although biochemical parameters, such as creatinine and serum sodium levels, have been used to guide candidate selection, accurate risk stratification remains limited [<xref rid="liv70733-bib-0004" ref-type="bibr">4</xref>]. The survival benefit of TIPS in older adults has not been thoroughly characterised, and the risk of shunt‐related complications often complicates decision‐making, especially given the frequent unavailability of a transplant lifeline for this population [<xref rid="liv70733-bib-0005" ref-type="bibr">5</xref>].</p><p>Body composition has gained increasing attention as a prognostic factor in cirrhosis [<xref rid="liv70733-bib-0006" ref-type="bibr">6</xref>, <xref rid="liv70733-bib-0007" ref-type="bibr">7</xref>, <xref rid="liv70733-bib-0008" ref-type="bibr">8</xref>]. Sarcopenia [<xref rid="liv70733-bib-0009" ref-type="bibr">9</xref>]—characterised by reduced muscle mass, strength, and function—and myosteatosis [<xref rid="liv70733-bib-0010" ref-type="bibr">10</xref>]—a pathological fat infiltration into skeletal muscle—are highly prevalent in patients with cirrhosis [<xref rid="liv70733-bib-0011" ref-type="bibr">11</xref>] and contribute to morbidity and mortality [<xref rid="liv70733-bib-0012" ref-type="bibr">12</xref>, <xref rid="liv70733-bib-0013" ref-type="bibr">13</xref>]. Moreover, both are intrinsically linked to aging [<xref rid="liv70733-bib-0014" ref-type="bibr">14</xref>, <xref rid="liv70733-bib-0015" ref-type="bibr">15</xref>], further complicating their interpretation in older patients with cirrhosis. In the TIPS setting, sarcopenia may be particularly relevant: skeletal muscle is the primary extrahepatic site of ammonia metabolism, and reduced muscle reserve may impair the ability to tolerate the abrupt hemodynamic and metabolic changes induced by TIPS—a vulnerability magnified in older adults. Despite these considerations, data on body composition in TIPS candidates [<xref rid="liv70733-bib-0016" ref-type="bibr">16</xref>, <xref rid="liv70733-bib-0017" ref-type="bibr">17</xref>, <xref rid="liv70733-bib-0018" ref-type="bibr">18</xref>, <xref rid="liv70733-bib-0019" ref-type="bibr">19</xref>, <xref rid="liv70733-bib-0020" ref-type="bibr">20</xref>], particularly in older adults [<xref rid="liv70733-bib-0021" ref-type="bibr">21</xref>], remain limited.</p><p>The primary objective of this study was to assess whether sarcopenia and myosteatosis are independently associated with post‐TIPS mortality and time to first overt hepatic encephalopathy (OHE) episode in older adults with cirrhosis. The secondary objective was to evaluate whether incorporating sarcopenia into established prognostic scores improves discrimination for post‐TIPS mortality. As pre‐specified exploratory analyses, we examined predicted survival and OHE‐free survival profiles defined by sarcopenia status combined with key clinical covariates.</p></sec><sec id="liv70733-sec-0006"><label>2</label><title>Patients and Methods</title><p>We conducted a multicenter retrospective study on consecutive patients aged 70 years or older from the Italian TIPS registry (RI‐TIPS) who underwent TIPS for refractory ascites (RA) or secondary prophylaxis of PH‐related variceal bleeding at one of the four participating centers (Florence, Modena, Palermo, and Rome) between June 2015 and March 2023. Cirrhosis diagnosis was based on clinical history, histology, or morphological imaging features, and an abdominal computed tomography (CT) scan within 3 months before TIPS was required. Beyond clinical contraindications to TIPS [<xref rid="liv70733-bib-0022" ref-type="bibr">22</xref>], exclusion criteria were: (a) hepatocellular carcinoma (HCC) or any other active malignant neoplasm, with the exception of non‐melanoma skin cancers (basal‐ or squamous‐cell carcinomas, given their high prevalence in older adults, negligible impact on survival and body composition, and inconsistent reporting in RI‐TIPS); (b) active alcohol use per addiction‐center criteria; (c) concomitant neuromuscular disease; (d) loss to 6‐month follow‐up, unless liver transplant (LT) or death occurred; and (e) CT scan considered inadequate for muscle assessment.</p><p>TIPS was performed as previously described [<xref rid="liv70733-bib-0023" ref-type="bibr">23</xref>]. During the study period, patients were treated with first‐generation VIATORR endoprosthesis until 2018, followed by the new‐generation VCX (W.L. Gore, Flagstaff, AZ). All TIPS procedures were performed under deep sedation using remifentanil and midazolam. Porto‐caval pressure gradient (PCPG) was measured before and after TIPS, in accordance with both Italian [<xref rid="liv70733-bib-0022" ref-type="bibr">22</xref>] and international guidelines [<xref rid="liv70733-bib-0024" ref-type="bibr">24</xref>]. Before TIPS, the patients were treated with non‐selective beta‐blockers according to international guidelines [<xref rid="liv70733-bib-0024" ref-type="bibr">24</xref>]. Clinical and laboratory data—including age, sex, aetiology of liver disease, indication for TIPS, history of OHE and clinical ascites, comorbidities, biochemistry within 5 days before TIPS (serum bilirubin, albumin, creatinine, sodium, international normalised ratio [INR], white blood cells and platelet count), stent‐graft generation/diameter, and PCPG values—were recorded in an anonymised dedicated case report form. Prognostic scores—Model for End‐Stage Liver Disease‐Sodium (MELD) [<xref rid="liv70733-bib-0025" ref-type="bibr">25</xref>], MELD‐Na, MELD 3.0 [<xref rid="liv70733-bib-0026" ref-type="bibr">26</xref>], Child–Pugh score (CP), Freiburg index of post‐TIPS survival (FIPS) [<xref rid="liv70733-bib-0027" ref-type="bibr">27</xref>], and Elderly Patients Calculator TIPS (ExPecT) [<xref rid="liv70733-bib-0001" ref-type="bibr">1</xref>], were calculated according to previously reported formulas (<xref rid="liv70733-supitem-0001" ref-type="supplementary-material">Supporting Information</xref>).</p><p>Based on the RI‐TIPS protocol, no patients received primary OHE prophylaxis before or after TIPS; patients with prior OHE received secondary prophylaxis with oral non‐absorbable disaccharides ± rifaximin. Patients were followed up according to the RI‐TIPS protocol, with visits to the outpatient clinic scheduled at 1, 3, and 6‐months post‐TIPS, then every 6 months or as clinically indicated, until death or LT. At each visit, the same medical team assessed all patients for OHE, defined as grade II or higher on the West‐Haven scale; only patients developing post‐TIPS OHE started pharmacological prophylaxis according to international guidance [<xref rid="liv70733-bib-0024" ref-type="bibr">24</xref>]. Patients and caregivers were thoroughly educated on early OHE recognition and instructed to promptly notify the medical team for confirmation and hospitalisation.</p><p>The RI‐TIPS survey was approved by the Ethical Committee of the University of Florence (lead‐center protocol 93/2012) and by the ethical committees of all participating centers. This study complied with the Declaration of Helsinki; all patients provided data at the time of TIPS placement.</p><sec id="liv70733-sec-0007"><label>2.1</label><title>Muscle Changes Evaluation</title><p>CT images were transmitted to the referral center for muscle changes analysis (Rome), where two trained experts (98% interobserver correlation) used SliceOmatic V4.2 (Tomovision) to assess sarcopenia and myosteatosis. Total cross‐sectional area of the abdominal skeletal muscle and fat mass were evaluated at the L3 vertebra (psoas, paraspinal, and abdominal‐wall muscles, including rectus abdominis, transverse abdominis, and internal/external oblique). Muscle area was normalised for stature, resulting in L3 skeletal mass index (SMI, cm<sup>2</sup>/m<sup>2</sup>). Sarcopenia was defined as SMI &lt; 50 cm<sup>2</sup>/m<sup>2</sup> in men and &lt; 39 cm<sup>2</sup>/m<sup>2</sup> in women [<xref rid="liv70733-bib-0028" ref-type="bibr">28</xref>]. Myosteatosis was defined by mean muscle attenuation (MA) at the same image, using mortality‐associated cut‐offs: &lt; 41 HU in patients with a body mass index (BMI) &lt; 25 kg/m<sup>2</sup> and &lt; 33 HU for BMI ≥ 25 kg/m<sup>2</sup> [<xref rid="liv70733-bib-0029" ref-type="bibr">29</xref>]. Subcutaneous (SAT) and visceral (VAT) adipose tissue were defined by HU thresholds (−190 to −30 and −150 to −50, respectively) and normalised to stature, yielding the subcutaneous (SATI) and visceral (VATI) adipose tissue indices (cm<sup>2</sup>/m<sup>2</sup>) [<xref rid="liv70733-bib-0030" ref-type="bibr">30</xref>].</p></sec><sec id="liv70733-sec-0008"><label>2.2</label><title>Statistical Analysis</title><p>The two co‐primary outcomes were post‐TIPS all‐cause mortality (over total follow‐up) and time to first OHE episode after TIPS. The secondary outcome was the discriminative performance of sarcopenia‐augmented prognostic scores for post‐TIPS mortality. Analyses of predicted survival and OHE‐free survival profiles by clinically relevant covariate combinations were pre‐specified as exploratory and intended for descriptive risk stratification rather than for formal model derivation.</p><p>Continuous variables are reported as mean ± SD or median (IQR), and compared using Student's <italic toggle="yes">t</italic>‐test or the Mann–Whitney <italic toggle="yes">U</italic> test; categorical variables were compared with the chi‐squared or Fisher's exact test. Correlations between non‐normally distributed continuous variables were assessed using Spearman's rank coefficient. Time‐to‐event outcomes were analysed by Kaplan–Meier and log‐rank test, with follow‐up calculated from TIPS to last contact, death or LT. No specific time horizon was prespecified; 12‐ and 24‐month probabilities are reported as descriptive estimates. For OHE, time to first episode was considered, censoring at death or last follow‐up. Risk factors for both outcomes were evaluated using Cox proportional hazards models; variables with <italic toggle="yes">p</italic> &lt; 0.10 in univariable analysis, plus clinically relevant covariates (sex and history of ascites), entered multivariable models. To address death as a competing event for OHE, cumulative incidence functions (Aalen–Johansen) and Fine–Grey subdistribution hazards models were applied. Because OHE prophylaxis was administered only to patients with prior OHE (RI‐TIPS protocol), prior OHE and HE prophylaxis were considered collinear and not entered simultaneously. Sarcopenia was integrated into prognostic scores by two approaches: for MELD‐based scores (MELD, MELD‐Na, and MELD 3.0), sarcopenia was integrated using a previously validated formula [<xref rid="liv70733-bib-0007" ref-type="bibr">7</xref>], with sarcopenia coded as a binary variable (0 = absent, 1 = present); for non–MELD‐based scores (CP, FIPS, and ExPecT), sarcopenia was incorporated as a binary additive component (score + sarcopenia). This pragmatic strategy avoided recalibration or re‐estimation of the score coefficients and maintained comparability with the original validated models. Discriminative performance was evaluated using time‐dependent receiver operating characteristic (ROC) curves, calculated with the <italic toggle="yes">timeROC</italic> package, areas under the curve (AUCs) compared with DeLong's test, and Harrell's concordance index (C‐index). Predicted survival probabilities for clinically relevant risk profiles were derived from Cox models. Analyses were performed using R software (R Foundation for Statistical Computing, Vienna, Austria).</p></sec></sec><sec sec-type="results" id="liv70733-sec-0009"><label>3</label><title>Results</title><sec id="liv70733-sec-0010"><label>3.1</label><title>Characteristics of Patients</title><p>Of 516 patients with cirrhosis undergoing TIPS at the participating centers, 182 were aged ≥ 70 years; 134 met the indications for refractory ascites or secondary prophylaxis. After exclusion of patients with inadequate baseline CT (<italic toggle="yes">n</italic> = 7) or loss to follow‐up (<italic toggle="yes">n</italic> = 12), 115 patients were included (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S1</xref>). Baseline characteristics are shown in Table <xref rid="liv70733-tbl-0001" ref-type="table">1</xref>. Median age was 74 years (IQR 72–77); 62% were male. TIPS was performed for RA in 57% and for secondary prophylaxis of PH‐related bleeding in 43% of cases; 52% received under‐dilated TIPS (dilation diameter ≤ 7 mm). Median CP score was 8 (7, 8) and median MELD, MELD‐Na, and MELD 3.0 scores were 11 (10–15), 13 (11–17), and 14 (11–18), respectively. Sarcopenia was observed in 60% (mean SMI 42.5 ± 7.4 cm<sup>2</sup>/m<sup>2</sup> for females, 44.0 ± 7.7 cm<sup>2</sup>/m<sup>2</sup> for males) and myosteatosis in 80% (mean MA 31.8 ± 8.0 HU for BMI &lt; 25 kg/m<sup>2</sup> and 27.4 ± 7.8 HU for BMI ≥ 25 kg/m<sup>2</sup>). A combined analysis of sarcopenia and myosteatosis showed that only 8% had neither condition, 32% had myosteatosis without sarcopenia, 12% sarcopenia without myosteatosis and 48% both (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S2</xref>). Sarcopenic and non‐sarcopenic patients did not differ in liver disease aetiology, TIPS indications, liver function, or hemodynamic parameters (Table <xref rid="liv70733-tbl-0001" ref-type="table">1</xref>). Sarcopenia was significantly more prevalent in male patients (70% vs. 50%, <italic toggle="yes">p</italic> = 0.034), and sarcopenic patients had a lower baseline median dry BMI (23.8 vs. 27.2 kg/m<sup>2</sup>, <italic toggle="yes">p</italic> &lt; 0.001). Myosteatosis prevalence was similar across sarcopenia status (<italic toggle="yes">p</italic> = 0.924). Sarcopenic patients had reduced VATI [22.8 (IQR 10.6–43.6) vs. 42.2 (IQR 21.8–58.7) cm<sup>2</sup>/m<sup>2</sup>; <italic toggle="yes">p</italic> &lt; 0.001] and SATI [32.9 (IQR 20.7–58.3) vs. 69.3 (IQR 43.3–85.1) cm<sup>2</sup>/m<sup>2</sup>; <italic toggle="yes">p</italic> &lt; 0.001]. Baseline SMI was similar between RA and PH‐related bleeding indications (42.1 ± 7.6 vs. 42.9 ± 8.1 cm<sup>2</sup>/m<sup>2</sup>; <italic toggle="yes">p</italic> = 0.488), while MA was slightly lower in the RA group (28.6 ± 8.4 vs. 31.3 ± 7.6 HU; <italic toggle="yes">p</italic> = 0.053). Both SATI [38.7 (IQR 21.9–61.6) vs. 64.4 (IQR 36.3–88.0) cm<sup>2</sup>/m<sup>2</sup>; <italic toggle="yes">p</italic> = 0.002] and VATI [23.5 (IQR 13.5–40.9) vs. 44.9 (IQR 17.8–57.7) cm<sup>2</sup>/m<sup>2</sup>; <italic toggle="yes">p</italic> = 0.016] were significantly lower in patients with RA. Adipose tissue indices showed weak‐to‐moderate positive correlations with SMI, whereas SATI, but not VATI, was inversely correlated with MA (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S3</xref>).</p><table-wrap position="float" id="liv70733-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Clinical, biochemical, muscle and adipose tissue parameters for the entire cohort and stratified according to the presence of sarcopenia.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1"/><th align="center" valign="bottom" rowspan="1" colspan="1">No sarcopenia (<italic toggle="yes">N</italic> = 46)</th><th align="center" valign="bottom" rowspan="1" colspan="1">Sarcopenia (<italic toggle="yes">N</italic> = 69)</th><th align="center" valign="bottom" rowspan="1" colspan="1">Total (<italic toggle="yes">N</italic> = 115)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Male sex, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">23 (50%)</td><td align="center" valign="top" rowspan="1" colspan="1">48 (70%)</td><td align="center" valign="top" rowspan="1" colspan="1">71 (62%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.034</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Age, years (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">73 (71, 76)</td><td align="center" valign="top" rowspan="1" colspan="1">74 (72, 77)</td><td align="center" valign="top" rowspan="1" colspan="1">74 (72, 77)</td><td align="center" valign="top" rowspan="1" colspan="1">0.070</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Dry BMI, kg<sup>2</sup>/m<sup>2</sup>, (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">27.2 (24.2, 29.4)</td><td align="center" valign="top" rowspan="1" colspan="1">23.8 (22.4, 25.6)</td><td align="center" valign="top" rowspan="1" colspan="1">24.6 (22.6, 27.8)</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Patients with obesity, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">10 (22%)</td><td align="center" valign="top" rowspan="1" colspan="1">4 (6%)</td><td align="center" valign="top" rowspan="1" colspan="1">14 (12%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.010</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">SMI, cm<sup>2</sup>/m<sup>2</sup>, (±SD)</td><td align="center" valign="top" rowspan="1" colspan="1">48.1 (6.6)</td><td align="center" valign="top" rowspan="1" colspan="1">38.7 (6.1)</td><td align="center" valign="top" rowspan="1" colspan="1">42.5 (7.8)</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Muscle Attenuation, HU (±SD)</td><td align="center" valign="top" rowspan="1" colspan="1">27.5 (8.8)</td><td align="center" valign="top" rowspan="1" colspan="1">31.3 (7.4)</td><td align="center" valign="top" rowspan="1" colspan="1">29.8 (8.1)</td><td align="center" valign="top" rowspan="1" colspan="1">0.026</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Myosteatosis, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">37 (80.4%)</td><td align="center" valign="top" rowspan="1" colspan="1">55 (79.7%)</td><td align="center" valign="top" rowspan="1" colspan="1">92 (80.0%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.924</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">SATI, cm<sup>2</sup>/m<sup>2</sup>, (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">69.3 (43.3, 85.1)</td><td align="center" valign="top" rowspan="1" colspan="1">32.9 (20.7, 58.3)</td><td align="center" valign="top" rowspan="1" colspan="1">45.9 (27.0, 75.2)</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">VATI, cm<sup>2</sup>/m<sup>2</sup>, (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">42.2 (21.8, 58.7)</td><td align="center" valign="top" rowspan="1" colspan="1">22.8 (10.6, 43.6)</td><td align="center" valign="top" rowspan="1" colspan="1">30.4 (15.7, 49.9)</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.001</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Liver disease aetiology</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1">0.941</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">ALD, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">9 (20%)</td><td align="center" valign="top" rowspan="1" colspan="1">15 (22%)</td><td align="center" valign="top" rowspan="1" colspan="1">24 (21%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">Viral‐related, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">20 (43%)</td><td align="center" valign="top" rowspan="1" colspan="1">28 (40%)</td><td align="center" valign="top" rowspan="1" colspan="1">48 (42%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">MASLD, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">17 (37%)</td><td align="center" valign="top" rowspan="1" colspan="1">26 (38%)</td><td align="center" valign="top" rowspan="1" colspan="1">43 (37%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Diabetes, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">20 (44%)</td><td align="center" valign="top" rowspan="1" colspan="1">25 (36%)</td><td align="center" valign="top" rowspan="1" colspan="1">45 (39%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.435</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Chronic kidney disease, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">9 (20%)</td><td align="center" valign="top" rowspan="1" colspan="1">7 (10%)</td><td align="center" valign="top" rowspan="1" colspan="1">16 (14%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.153</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Prior OHE, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">9 (20%)</td><td align="center" valign="top" rowspan="1" colspan="1">10 (15%)</td><td align="center" valign="top" rowspan="1" colspan="1">19 (17%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.473</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Lactulose prophylaxis, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">9 (20%)</td><td align="center" valign="top" rowspan="1" colspan="1">9 (13%)</td><td align="center" valign="top" rowspan="1" colspan="1">18 (%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.434</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Rifaximin prophylaxis, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">7 (15%)</td><td align="center" valign="top" rowspan="1" colspan="1">10 (15%)</td><td align="center" valign="top" rowspan="1" colspan="1">17 (%)</td><td align="center" valign="top" rowspan="1" colspan="1">1.000</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of ascites<xref rid="liv70733-note-0005" ref-type="table-fn">
+<sup>a</sup>
+</xref>, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">25 (54%)</td><td align="center" valign="top" rowspan="1" colspan="1">49 (71%)</td><td align="center" valign="top" rowspan="1" colspan="1">74 (64%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.068</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Oesophageal varices, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">37 (80%)</td><td align="center" valign="top" rowspan="1" colspan="1">56 (81%)</td><td align="center" valign="top" rowspan="1" colspan="1">93 (81%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.923</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">TIPS main indication</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1">0.443</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">Refractory ascites, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">24 (52%)</td><td align="center" valign="top" rowspan="1" colspan="1">41 (59%)</td><td align="center" valign="top" rowspan="1" colspan="1">65 (57%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">II prophylaxis of VB, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">22 (48%)</td><td align="center" valign="top" rowspan="1" colspan="1">28 (41%)</td><td align="center" valign="top" rowspan="1" colspan="1">50 (43%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">TIPS underdilated<xref rid="liv70733-note-0006" ref-type="table-fn">
+<sup>b</sup>
+</xref>, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">28 (61%)</td><td align="center" valign="top" rowspan="1" colspan="1">32 (46%)</td><td align="center" valign="top" rowspan="1" colspan="1">60 (52%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.127</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Post‐TIPS PCPG &lt; 12 mmHg, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">31 (67%)</td><td align="center" valign="top" rowspan="1" colspan="1">41 (59%)</td><td align="center" valign="top" rowspan="1" colspan="1">72 (63%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.387</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Post‐TIPS PCPG &lt; 10 mmHg, <italic toggle="yes">n</italic> (%)</td><td align="center" valign="top" rowspan="1" colspan="1">27 (59%)</td><td align="center" valign="top" rowspan="1" colspan="1">31 (45%)</td><td align="center" valign="top" rowspan="1" colspan="1">58 (50%)</td><td align="center" valign="top" rowspan="1" colspan="1">0.148</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">PLTs count, 10<sup>9</sup>/L (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">92 (65, 124)</td><td align="center" valign="top" rowspan="1" colspan="1">81 (58, 122)</td><td align="center" valign="top" rowspan="1" colspan="1">87 (58, 123)</td><td align="center" valign="top" rowspan="1" colspan="1">0.477</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Albumin, g/L (±SD)</td><td align="center" valign="top" rowspan="1" colspan="1">3.1 (0.6)</td><td align="center" valign="top" rowspan="1" colspan="1">3.2 (0.6)</td><td align="center" valign="top" rowspan="1" colspan="1">3.2 (0.6)</td><td align="center" valign="top" rowspan="1" colspan="1">0.247</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Total bilirubin, mg/dL (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">1.25 (0.88, 1.78)</td><td align="center" valign="top" rowspan="1" colspan="1">1.21 (0.88, 1.67)</td><td align="center" valign="top" rowspan="1" colspan="1">1.21 (0.88, 1.71)</td><td align="center" valign="top" rowspan="1" colspan="1">0.882</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">INR (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">1.25 (1.19, 1.39)</td><td align="center" valign="top" rowspan="1" colspan="1">1.23 (1.10, 1.39)</td><td align="center" valign="top" rowspan="1" colspan="1">1.23 (1.14, 1.40)</td><td align="center" valign="top" rowspan="1" colspan="1">0.220</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Creatinine, mg/dL (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">1.11 (0.80, 1.37)</td><td align="center" valign="top" rowspan="1" colspan="1">1.15 (0.93, 1.50)</td><td align="center" valign="top" rowspan="1" colspan="1">1.15 (0.84, 1.42)</td><td align="center" valign="top" rowspan="1" colspan="1">0.282</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Serum sodium, mmol/L (±SD)</td><td align="center" valign="top" rowspan="1" colspan="1">138 (4)</td><td align="center" valign="top" rowspan="1" colspan="1">137 (5)</td><td align="center" valign="top" rowspan="1" colspan="1">137 (5)</td><td align="center" valign="top" rowspan="1" colspan="1">0.319</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">CP score (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">8 (7, 9)</td><td align="center" valign="top" rowspan="1" colspan="1">8 (7, 8)</td><td align="center" valign="top" rowspan="1" colspan="1">8 (7, 8)</td><td align="center" valign="top" rowspan="1" colspan="1">0.660</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">CP class</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1">0.559</td></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">A</td><td align="center" valign="top" rowspan="1" colspan="1">9 (20%)</td><td align="center" valign="top" rowspan="1" colspan="1">16 (23%)</td><td align="center" valign="top" rowspan="1" colspan="1">25 (22%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">B</td><td align="center" valign="top" rowspan="1" colspan="1">35 (76%)</td><td align="center" valign="top" rowspan="1" colspan="1">47 (68%)</td><td align="center" valign="top" rowspan="1" colspan="1">82 (71%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" style="padding-left:10%" valign="top" rowspan="1" colspan="1">C</td><td align="center" valign="top" rowspan="1" colspan="1">2 (4%)</td><td align="center" valign="top" rowspan="1" colspan="1">6 (9%)</td><td align="center" valign="top" rowspan="1" colspan="1">8 (7%)</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD score (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">11.5 (9.9, 14.5)</td><td align="center" valign="top" rowspan="1" colspan="1">11.4 (10.0, 14.6)</td><td align="center" valign="top" rowspan="1" colspan="1">11.4 (9.9, 14.5)</td><td align="center" valign="top" rowspan="1" colspan="1">0.984</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD‐Na score (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">13.0 (10.4, 15.1)</td><td align="center" valign="top" rowspan="1" colspan="1">13.0 (10.6, 17.8)</td><td align="center" valign="top" rowspan="1" colspan="1">13.0 (10.5, 17.0)</td><td align="center" valign="top" rowspan="1" colspan="1">0.644</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD 3.0 score (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">13.8 (11.3, 15.4)</td><td align="center" valign="top" rowspan="1" colspan="1">13.5 (10.7, 18.3)</td><td align="center" valign="top" rowspan="1" colspan="1">13.5 (10.8, 17.6)</td><td align="center" valign="top" rowspan="1" colspan="1">0.833</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">ExPeCT score (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">−0.51 (−0.79, −0.30)</td><td align="center" valign="top" rowspan="1" colspan="1">−0.48 (−0.71, −0.18)</td><td align="center" valign="top" rowspan="1" colspan="1">−0.48 (−0.76, −0.26)</td><td align="center" valign="top" rowspan="1" colspan="1">0.215</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">FIPS score (IQR)</td><td align="center" valign="top" rowspan="1" colspan="1">0.42 (0.23, 0.59)</td><td align="center" valign="top" rowspan="1" colspan="1">0.42 (0.11, 0.79)</td><td align="center" valign="top" rowspan="1" colspan="1">0.42 (0.12, 0.71)</td><td align="center" valign="top" rowspan="1" colspan="1">0.786</td></tr></tbody></table><table-wrap-foot id="liv70733-ntgp-0002"><fn id="liv70733-note-0004"><p>Abbreviations: BMI, body mass index; CP, Child Pugh; ExPeCT, Elderly Patients Calculator TIPS; FIPS, Freiburg index of post‐TIPS survival; HU, Hounsfield unit; INR, international normalised ratio; IQR, interquartile range; IQR, interquartile range; MASLD, metabolic dysfunction‐associated steatotic liver disease; MELD, Model for End‐Stage Liver Disease; OHE, overt hepatic encephalopathy; PCPG, portocaval pressure gradient; SATI, subcutaneous adipose tissue index; SD, standard deviation; SMI, skeletal muscle index; TIPS, transjugular intrahepatic portosystemic shunt; VATI, visceral adipose tissue index.</p></fn><fn id="liv70733-note-0005"><label>
+<sup>a</sup>
+</label><p>Ascites grade ≥ 2.</p></fn><fn id="liv70733-note-0006"><label>
+<sup>b</sup>
+</label><p>TIPS were defined “underdilated” when dilated with an angioplasty balloon‐catheter with a diameter less than or equal to 7 mm.</p></fn></table-wrap-foot></table-wrap></sec><sec id="liv70733-sec-0011"><label>3.2</label><title>Predictors of Post‐<styled-content style="fixed-case" toggle="no">TIPS</styled-content> Mortality</title><p>During a median follow‐up of 13 months (IQR 7–29), 56 patients (49%) died and none underwent LT. Median post‐TIPS survival was 36 months (IQR 7–68); 12‐ and 24‐month survival probabilities were 69% (95% CI 61–78) and 61% (95% CI 52–72), respectively (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S4</xref>). Sarcopenic patients had reduced 12‐month post‐TIPS survival (55% vs. 91%; log‐rank <italic toggle="yes">p</italic> = 0.005), whereas myosteatosis was not associated with survival (73% vs. 68%; log‐rank <italic toggle="yes">p</italic> = 0.650) (Figure <xref rid="liv70733-fig-0001" ref-type="fig">1</xref>). In univariate Cox analysis (Table <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S1</xref>), liver dysfunction (total bilirubin and INR), renal‐function indicators (creatinine, serum sodium), and prognostic scores (MELD, MELD‐Na, MELD 3.0, CP, FIPS, ExPeCT) were significantly associated with post‐TIPS mortality; sarcopenia, but not myosteatosis, was among the strongest predictors. Sarcopenia remained independently associated with mortality in multivariable models including selected clinically relevant covariates (sex, history of clinical ascites) and after addition to MELD 3.0, FIPS and CP scores, confirming its independent prognostic role (Table <xref rid="liv70733-tbl-0002" ref-type="table">2</xref>).</p><fig position="float" fig-type="FIGURE" id="liv70733-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Kaplan–Meier estimates of post‐TIPS overall survival stratified by the presence of sarcopenia (A) and myosteatosis (B). Differences between the groups were assessed using the log‐rank test. TIPS, transjugular intrahepatic portosystemic shunt.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="LIV-46-0-g004.jpg"><?image-name LIV-46-0-g004.jpg?><?image-size 77763?><?image-md5 180c0a661bd96af819d7d948e1d6da9b?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1601?><?image-original-width 1064?><?image-scaled-height 1067?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/764f/13243813/180c0a661bd9/LIV-46-0-g004.jpg?><?thumb-name LIV-46-0-g004.gif?><?thumb-size 3833?><?thumb-md5 dce6013b025efef5c4d033ec403074d2?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 150?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/764f/13243813/dce6013b025e/LIV-46-0-g004.gif?></graphic></fig><table-wrap position="float" id="liv70733-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>Multivariable Cox regression models assessing independent predictors of post‐TIPS mortality.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" rowspan="2" valign="bottom" colspan="1">Variable</th><th align="center" colspan="2" valign="bottom" rowspan="1">Multivariable analysis—individual variables</th><th align="center" colspan="2" valign="bottom" rowspan="1">Multivariable analysis—MELD 3.0</th><th align="center" colspan="2" valign="bottom" rowspan="1">Multivariable analysis—CP score</th><th align="center" colspan="2" valign="bottom" rowspan="1">Multivariable analysis—FIPS</th></tr><tr style="border-bottom:solid 1px #000000"><th align="center" valign="bottom" rowspan="1" colspan="1">HR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">HR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">HR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">HR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Male sex</td><td align="center" valign="top" rowspan="1" colspan="1">1.08 (0.59–1.96)</td><td align="center" valign="top" rowspan="1" colspan="1">0.810</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">0.99 (0.56–1.77)</td><td align="center" valign="top" rowspan="1" colspan="1">0.978</td><td align="center" valign="top" rowspan="1" colspan="1">1.05 (0.58–1.87)</td><td align="center" valign="top" rowspan="1" colspan="1">0.880</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Sarcopenia</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.39 (1.26–4.54)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.008</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.14 (1.15–3.96)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.016</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.21 (1.17–4.21)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.015</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.14 (1.14–4.01)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.018</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of ascites<xref rid="liv70733-note-0009" ref-type="table-fn">
+<sup>a</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.63 (0.82–3.24)</td><td align="center" valign="top" rowspan="1" colspan="1">0.160</td><td align="center" valign="top" rowspan="1" colspan="1">1.32 (0.69–2.54)</td><td align="center" valign="top" rowspan="1" colspan="1">0.402</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Total Bilirubin, mg/dL</td><td align="center" valign="top" rowspan="1" colspan="1">1.31 (0.96–1.80)</td><td align="center" valign="top" rowspan="1" colspan="1">0.088</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">INR</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>1.21 (1.07–1.36)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.003</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Creatinine, mg/dL</td><td align="center" valign="top" rowspan="1" colspan="1">1.19 (0.66–2.17)</td><td align="center" valign="top" rowspan="1" colspan="1">0.563</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.22 (0.67–2.23)</td><td align="center" valign="top" rowspan="1" colspan="1">0.516</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Sodium, mmol/mol</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.99 (0.92–1.05)</td><td align="center" valign="top" rowspan="1" colspan="1">0.687</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">CP score</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>1.32 (1.06–1.63)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.013</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD 3.0 score</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>1.09 (1.04–1.14)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.001</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">FIPS score</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.43 (1.33–4.46)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.004</bold>
+</td></tr></tbody></table><table-wrap-foot id="liv70733-ntgp-0003"><fn id="liv70733-note-0007"><p>
+<italic toggle="yes">Note:</italic> Cox proportional hazards regression was used to explore associations between baseline variables and the risk of post‐TIPS mortality. For each variable, hazard ratios (HR), 95% confidence intervals (CI), and <italic toggle="yes">p</italic> values are reported. Values in bold indicate statistically significant independent predictors (<italic toggle="yes">p</italic> &lt; 0.05). Prognostic scores were entered individually to avoid collinearity.</p></fn><fn id="liv70733-note-0008"><p>Abbreviations: CI, confidence interval; CP, Child Pugh; FIPS, Freiburg index of post‐TIPS survival; HR, hazard ratio; INR, international normalised ratio; MELD, Model for End‐Stage Liver Disease; TIPS, transjugular intrahepatic portosystemic shunt.</p></fn><fn id="liv70733-note-0009"><label>
+<sup>a</sup>
+</label><p>Ascites grade ≥ 2.</p></fn></table-wrap-foot></table-wrap></sec><sec id="liv70733-sec-0012"><label>3.3</label><title>Predictive Performance of Prognostic Scores and Impact of Sarcopenia</title><p>In an exploratory analysis, predicted survival probabilities according to three MELD 3.0‐based risk profiles (low: 10, intermediate: 13, and high: 18) showed that within each group, sarcopenia was consistently associated with lower predicted survival at 12 and 24 months (Figure <xref rid="liv70733-fig-0002" ref-type="fig">2</xref>; Table <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S2</xref>), refining risk stratification beyond liver‐disease severity alone. Established scores showed moderate‐to‐good discrimination at 12 months (AUC 0.641‐0.761; Figure <xref rid="liv70733-fig-0003" ref-type="fig">3</xref>). Addition of sarcopenia significantly improved discrimination for every score (DeLong's test; Figure <xref rid="liv70733-fig-0003" ref-type="fig">3</xref>), with the largest gains for scores with lower baseline performance. MELD 3.0–sarcopenia showed the highest discrimination at 12 months (AUC 0.845). Pairwise comparisons between sarcopenia‐augmented scores were significant only between the MELD 3.0‐ and MELD‐Na‐sarcopenia versus ExPeCT‐ and CP‐sarcopenia (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S5</xref>). Harrell's C‐index values are reported in Table <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S3</xref>.</p><fig position="float" fig-type="FIGURE" id="liv70733-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>Predicted post‐TIPS survival probabilities in older adult patients according to three MELD 3.0–based risk profiles. Green curve: Low risk (MELD 3.0 = 10); yellow curve: Intermediate risk (MELD 3.0 = 13); red curve: High risk (MELD 3.0 = 18). Dashed lines indicate the presence of sarcopenia, while solid lines indicate the absence of sarcopenia. MELD, Model for End‐Stage Liver Disease; TIPS, transjugular intrahepatic portosystemic shunt.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="LIV-46-0-g005.jpg"><?image-name LIV-46-0-g005.jpg?><?image-size 48591?><?image-md5 6831ec37291485de2cf8c9e4b2b260f5?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 888?><?image-original-width 1064?><?image-scaled-height 592?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/764f/13243813/6831ec372914/LIV-46-0-g005.jpg?><?thumb-name LIV-46-0-g005.gif?><?thumb-size 2519?><?thumb-md5 531b0de43b441adb7f1ef66d91502869?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 83?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/764f/13243813/531b0de43b44/LIV-46-0-g005.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="liv70733-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Time‐dependent ROC curves for 1‐year post‐TIPS mortality in older adult patients, comparing established prognostic scores with their sarcopenia‐augmented counterparts (dashed lines). Differences between AUROC were assessed using DeLong's test. AUROC, area under the receiver operating characteristic curve; CP, Child–Pugh score; ExPeCT, Elderly Patients Calculator TIPS; FIPS, Freiburg index of post‐TIPS survival; MELD, Model for End‐Stage Liver Disease; TIPS, transjugular intrahepatic portosystemic shunt.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="LIV-46-0-g001.jpg"><?image-name LIV-46-0-g001.jpg?><?image-size 50931?><?image-md5 89eb72c443c52e7fc6dc0f0db9440d12?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 527?><?image-original-width 1064?><?image-scaled-height 351?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/764f/13243813/89eb72c443c5/LIV-46-0-g001.jpg?><?thumb-name LIV-46-0-g001.gif?><?thumb-size 4393?><?thumb-md5 2827296a7a8c9b2661f022dd83682af5?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 161?><?thumb-cloudpmc-urn urn:cdn:blobs/764f/13243813/2827296a7a8c/LIV-46-0-g001.gif?></graphic></fig></sec><sec id="liv70733-sec-0013"><label>3.4</label><title>Risk Factors for Post‐<styled-content style="fixed-case" toggle="no">TIPS OHE</styled-content> and Exploratory Profiles</title><p>Fifty‐two patients (45%) developed OHE at a median 37 days (IQR 24–76) after TIPS (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S6</xref>). Cumulative OHE probability was higher in sarcopenic patients [62% (95% CI 47–73) vs. 29% (95% CI 14–42); log‐rank <italic toggle="yes">p</italic> = 0.002], whereas myosteatosis was not associated with OHE (log‐rank <italic toggle="yes">p</italic> = 0.770) (Figure <xref rid="liv70733-fig-0004" ref-type="fig">4</xref>). Accounting for death as a competing event, the 12‐month cumulative OHE incidence remained higher in sarcopenic patients [57% (44–67) vs. 28% (16–42); Grey's <italic toggle="yes">p</italic> = 0.004] (Figure <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S7</xref>). On multivariable Cox analysis, sarcopenia was independently associated with OHE (hazard ratio [HR] 2.06; 95% CI 1.07–3.96; <italic toggle="yes">p</italic> = 0.030), whereas underdilated TIPS reduced the risk (HR 0.55, 95% CI 0.31–0.96; <italic toggle="yes">p</italic> = 0.035) (Table <xref rid="liv70733-tbl-0003" ref-type="table">3</xref>). Findings were confirmed by competing‐risk Fine–Grey regression: sarcopenia (sHR 1.97; 1.03–3.76; <italic toggle="yes">p</italic> = 0.040) and underdilated TIPS (sHR 0.56; 0.32–0.98; <italic toggle="yes">p</italic> = 0.041) (Table <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">S4</xref>).</p><fig position="float" fig-type="FIGURE" id="liv70733-fig-0004" orientation="portrait"><label>FIGURE 4</label><caption><p>Kaplan–Meier estimates of time to first episode of OHE after TIPS, stratified by the presence of sarcopenia (A) and myosteatosis (B). Differences between groups were assessed using the log‐rank test. OHE, overt hepatic encephalopathy; TIPS, transjugular intrahepatic portosystemic shunt.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="LIV-46-0-g003.jpg"><?image-name LIV-46-0-g003.jpg?><?image-size 79191?><?image-md5 70750d0bbe7972bd80d4b6a841d9809a?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1611?><?image-original-width 1064?><?image-scaled-height 1073?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/764f/13243813/70750d0bbe79/LIV-46-0-g003.jpg?><?thumb-name LIV-46-0-g003.gif?><?thumb-size 3778?><?thumb-md5 a9292949a82a6fc0817bd94e76aebff4?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 151?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/764f/13243813/a9292949a82a/LIV-46-0-g003.gif?></graphic></fig><table-wrap position="float" id="liv70733-tbl-0003" content-type="TABLE" orientation="portrait"><label>TABLE 3</label><caption><p>Univariable and multivariable Cox regression analyses of risk factors for post‐TIPS overt hepatic encephalopathy.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" rowspan="2" valign="bottom" colspan="1">Variable</th><th align="center" colspan="2" valign="bottom" rowspan="1">Univariable analysis</th><th align="center" colspan="2" valign="bottom" rowspan="1">Multivariable analysis</th></tr><tr style="border-bottom:solid 1px #000000"><th align="center" valign="bottom" rowspan="1" colspan="1">HR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">HR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p</italic>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<bold>Male sex</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.15 (1.15–4.03)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.017</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">1.85 (0.97–3.51)</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">0.061</italic>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<bold>Sarcopenia</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.62 (1.39–4.91)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.003</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>2.06 (1.07–3.96)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.030</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Myosteatosis</td><td align="center" valign="top" rowspan="1" colspan="1">0.91 (0.47–1.76)</td><td align="center" valign="top" rowspan="1" colspan="1">0.8</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">SATI</td><td align="center" valign="top" rowspan="1" colspan="1">0.99 (0.99–1.00)</td><td align="center" valign="top" rowspan="1" colspan="1">0.14</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">VATI</td><td align="center" valign="top" rowspan="1" colspan="1">0.99 (0.98–1.01)</td><td align="center" valign="top" rowspan="1" colspan="1">0.3</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Diabetes</td><td align="center" valign="top" rowspan="1" colspan="1">1.53 (0.88–2.64)</td><td align="center" valign="top" rowspan="1" colspan="1">0.13</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<bold>TIPS underdilated</bold>
+<xref rid="liv70733-note-0012" ref-type="table-fn">
+<sup>a</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.50 (0.29–0.87)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.015</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.54 (0.31–0.96)</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.036</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Post‐TIPS PCPG &lt; 10 mmHg</td><td align="center" valign="top" rowspan="1" colspan="1">1.37 (0.79–2.39)</td><td align="center" valign="top" rowspan="1" colspan="1">0.3</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of OHE</td><td align="center" valign="top" rowspan="1" colspan="1">1.16 (0.56–2.38)</td><td align="center" valign="top" rowspan="1" colspan="1">0.7</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>—</bold>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">History of ascites<xref rid="liv70733-note-0013" ref-type="table-fn">
+<sup>b</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.50 (0.83–2.72)</td><td align="center" valign="top" rowspan="1" colspan="1">0.2</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.52–1.82)</td><td align="center" valign="top" rowspan="1" colspan="1">0.938</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">Total Bilirubin</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">1.28 (0.96–1.71)</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">0.090</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.18 (0.87–1.61)</td><td align="center" valign="top" rowspan="1" colspan="1">0.281</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">INR</td><td align="center" valign="top" rowspan="1" colspan="1">1.00 (0.27–3.68)</td><td align="center" valign="top" rowspan="1" colspan="1">&gt; 0.9</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Creatinine</td><td align="center" valign="top" rowspan="1" colspan="1">1.01 (0.56–1.82)</td><td align="center" valign="top" rowspan="1" colspan="1">&gt; 0.9</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">Serum sodium</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">0.95 (0.90–1.01)</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">
+<italic toggle="yes">0.091</italic>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.97 (0.92–1.03)</td><td align="center" valign="top" rowspan="1" colspan="1">0.295</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Albumin</td><td align="center" valign="top" rowspan="1" colspan="1">1.22 (0.75–1.99)</td><td align="center" valign="top" rowspan="1" colspan="1">0.4</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">CP score</td><td align="center" valign="top" rowspan="1" colspan="1">1.07 (0.88–1.31)</td><td align="center" valign="top" rowspan="1" colspan="1">0.5</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD score</td><td align="center" valign="top" rowspan="1" colspan="1">1.01 (0.94–1.08)</td><td align="center" valign="top" rowspan="1" colspan="1">0.8</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD‐Na score</td><td align="center" valign="top" rowspan="1" colspan="1">1.03 (0.97–1.08)</td><td align="center" valign="top" rowspan="1" colspan="1">0.3</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MELD 3.0 score</td><td align="center" valign="top" rowspan="1" colspan="1">1.02 (0.97–1.07)</td><td align="center" valign="top" rowspan="1" colspan="1">0.49</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">FIPS score</td><td align="center" valign="top" rowspan="1" colspan="1">1.02 (0.53–1.95)</td><td align="center" valign="top" rowspan="1" colspan="1">&gt; 0.9</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">ExPeCT score</td><td align="center" valign="top" rowspan="1" colspan="1">1.12 (0.67–1.87)</td><td align="center" valign="top" rowspan="1" colspan="1">0.7</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr></tbody></table><table-wrap-foot id="liv70733-ntgp-0004"><fn id="liv70733-note-0010"><p>
+<italic toggle="yes">Note:</italic> Time to first episode of overt hepatic encephalopathy was analysed using Cox proportional hazards regression. For each variable, hazard ratios (HR), 95% confidence intervals (CI), and <italic toggle="yes">p</italic> values are reported. Values in italics indicate <italic toggle="yes">p</italic> &lt; 0.10, while values in bold indicate statistically significant predictors (<italic toggle="yes">p</italic> &lt; 0.05). Variables with <italic toggle="yes">p</italic> &lt; 0.10 at univariable analysis were entered into the multivariable Cox regression model. Clinically relevant covariates (sex and history of ascites) were included regardless of statistical significance.</p></fn><fn id="liv70733-note-0011"><p>Abbreviations: CP, Child Pugh; ExPeCT, Elderly Patients Calculator TIPS; FIPS, Freiburg index of post‐TIPS survival; INR, international normalised ratio; MELD, Model for End‐Stage Liver Disease; OHE, overt hepatic encephalopathy; PCPG, portocaval pressure gradient; SATI, subcutaneous adipose tissue index; TIPS, transjugular intrahepatic portosystemic shunt.</p></fn><fn id="liv70733-note-0012"><label>
+<sup>a</sup>
+</label><p>TIPS were defined “underdilated” when dilated with an angioplasty balloon‐catheter with a diameter less than or equal to 7 mm.</p></fn><fn id="liv70733-note-0013"><label>
+<sup>b</sup>
+</label><p>Ascites grade ≥ 2.</p></fn></table-wrap-foot></table-wrap><p>In an exploratory analysis based on these dichotomous variables, four distinct 12‐month OHE risk profiles emerged (Figure <xref rid="liv70733-fig-0005" ref-type="fig">5</xref>). The most favourable profile—no sarcopenia combined with underdilated TIPS—was associated with a predicted OHE probability of 24%; the worst—sarcopenia with standard‐diameter TIPS—with 70%. Two intermediate profiles (no sarcopenia with standard TIPS and sarcopenia with underdilated TIPS) showed intermediate predicted risks (39% and 49%, respectively). These findings highlight the combined and opposing effects of sarcopenia and TIPS dilation diameter on post‐TIPS OHE risk and support their joint use for individualised risk stratification.</p><fig position="float" fig-type="FIGURE" id="liv70733-fig-0005" orientation="portrait"><label>FIGURE 5</label><caption><p>Predicted probabilities of 1‐year OHE‐free survival in older adult patients according to four risk profiles defined by sarcopenia status and TIPS dilation diameter. Solid green curve: Low‐risk profile (underdilated TIPS without sarcopenia); dashed green curve: Intermediate‐risk profile (underdilated TIPS with sarcopenia); solid red curve: Intermediate‐risk profile (standard‐diameter TIPS without sarcopenia); dashed red curve: High‐risk profile (standard‐diameter TIPS with sarcopenia). Dashed lines indicate the presence of sarcopenia, while solid lines indicate the absence of sarcopenia. OHE, overt hepatic encephalopathy; TIPS, transjugular intrahepatic portosystemic shunt.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-9" orientation="portrait" xlink:href="LIV-46-0-g002.jpg"><?image-name LIV-46-0-g002.jpg?><?image-size 66109?><?image-md5 1e712ef9055e20b429d6db2fae74f6e6?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1004?><?image-original-width 1064?><?image-scaled-height 669?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/764f/13243813/1e712ef9055e/LIV-46-0-g002.jpg?><?thumb-name LIV-46-0-g002.gif?><?thumb-size 2719?><?thumb-md5 04adc51566c9911e746c7ea3d60c9626?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 94?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/764f/13243813/04adc51566c9/LIV-46-0-g002.gif?></graphic></fig></sec></sec><sec sec-type="discussion" id="liv70733-sec-0014"><label>4</label><title>Discussion</title><p>The prevalence of cirrhosis among older adults has increased in recent years, driven by population aging, improved management of etiological factors and cirrhosis‐related complications and the rising incidence of MASLD‐related cirrhosis [<xref rid="liv70733-bib-0031" ref-type="bibr">31</xref>], decompensated cirrhosis is particularly prevalent in older patients [<xref rid="liv70733-bib-0032" ref-type="bibr">32</xref>]. Although TIPS is an established treatment for PH–related complications, evidence supporting its efficacy is largely derived from trials in younger populations (mean age ≈55 years) [<xref rid="liv70733-bib-0033" ref-type="bibr">33</xref>], leaving uncertainty regarding its safety and effectiveness in older adults, in whom LT is often unavailable. Physiological resilience to abrupt portal and systemic hemodynamic changes is reduced in older patients, in whom sarcopenia, frailty, and diminished cognitive and cardiac reserve may further increase the risk of post‐TIPS complications, including OHE and cardiac decompensation. The available literature, despite methodological limitations, often reports higher morbidity and mortality in older TIPS candidates [<xref rid="liv70733-bib-0002" ref-type="bibr">2</xref>, <xref rid="liv70733-bib-0034" ref-type="bibr">34</xref>]. We previously reported [<xref rid="liv70733-bib-0001" ref-type="bibr">1</xref>] favourable survival outcomes in patients aged ≥ 70 years undergoing TIPS, suggesting that age alone should not be an a priori exclusion criterion; however, optimal selection criteria for this population remains a significant challenge.</p><p>Data on the predictive value of sarcopenia in cirrhosis are partially conflicting [<xref rid="liv70733-bib-0011" ref-type="bibr">11</xref>, <xref rid="liv70733-bib-0035" ref-type="bibr">35</xref>]. In TIPS, some studies have highlighted sarcopenia as an independent risk factor for mortality [<xref rid="liv70733-bib-0019" ref-type="bibr">19</xref>, <xref rid="liv70733-bib-0036" ref-type="bibr">36</xref>], although evidence—generally in non‐elderly patients—remains inconsistent [<xref rid="liv70733-bib-0018" ref-type="bibr">18</xref>, <xref rid="liv70733-bib-0037" ref-type="bibr">37</xref>]. Moreover, sarcopenia is intrinsically linked to biological aging [<xref rid="liv70733-bib-0014" ref-type="bibr">14</xref>, <xref rid="liv70733-bib-0038" ref-type="bibr">38</xref>], and its impact may be amplified by diminished cognitive reserve in older patients with cirrhosis.</p><p>In this multicenter cohort of 115 patients with cirrhosis aged ≥ 70 years who underwent TIPS for refractory ascites or secondary prophylaxis of variceal bleeding, sarcopenia was highly prevalent and independently associated with both post‐TIPS mortality and OHE, indicating that sarcopenia assessment may refine the identification of suitable TIPS candidates among older patients. Beyond its independent prognostic value, the integration of sarcopenia into established prognostic scores significantly enhances their discrimination for mortality. The MELD–sarcopenia score was first proposed in 2015 [<xref rid="liv70733-bib-0007" ref-type="bibr">7</xref>], and Bai et al. later validated MELD–sarcopenia specifically in the TIPS, identifying sarcopenia as an independent risk factor for post‐TIPS mortality in a predominantly non‐elderly population [<xref rid="liv70733-bib-0036" ref-type="bibr">36</xref>]. Similar results were subsequently confirmed, further supporting the prognostic relevance of combining liver‐severity scores with muscle mass assessment [<xref rid="liv70733-bib-0021" ref-type="bibr">21</xref>]. Our study expands this evidence to patients aged ≥ 70 years, showing that the prognostic value of sarcopenia is preserved in this more biologically vulnerable population and that its integration into commonly used prognostic scores provides meaningful incremental information for mortality risk stratification.</p><p>Sarcopenia‐adjusted models consistently showed improved discrimination compared with conventional scores. Predicted survival probabilities derived from MELD 3.0–sarcopenia profiles separated patients into distinct risk categories, both across increasing MELD 3.0 values and within each class according to sarcopenia status. Beyond mortality prediction, our data demonstrated a central role for sarcopenia in post‐TIPS OHE: multivariable analyses identified sarcopenia and TIPS dilation diameter as independent determinants of post‐TIPS OHE, with opposite effects (sarcopenia increased the risk; TIPS underdilation was protective). Because the cohort comprised older adults with substantial mortality, we confirmed these findings in a competing‐risk analysis. Although the sarcopenia–OHE association was slightly attenuated in the Fine–Grey model—as expected, given the higher competing risk of death in the sarcopenic group—the relationship remained statistically and clinically relevant. Overall, incorporating sarcopenia into prognostic assessment may improve stratification and support a more personalised approach to TIPS in older adults.</p><p>Myosteatosis, isolated or combined with sarcopenia, was also highly prevalent (80%), consistent with rates reported among older adults with other chronic conditions, including chronic kidney disease, heart failure, and cancer [<xref rid="liv70733-bib-0015" ref-type="bibr">15</xref>, <xref rid="liv70733-bib-0039" ref-type="bibr">39</xref>, <xref rid="liv70733-bib-0040" ref-type="bibr">40</xref>, <xref rid="liv70733-bib-0041" ref-type="bibr">41</xref>, <xref rid="liv70733-bib-0042" ref-type="bibr">42</xref>, <xref rid="liv70733-bib-0043" ref-type="bibr">43</xref>]. Although myosteatosis and adipose‐tissue indices have been associated with worse outcomes in cirrhosis [<xref rid="liv70733-bib-0044" ref-type="bibr">44</xref>, <xref rid="liv70733-bib-0045" ref-type="bibr">45</xref>], we found no significant association with mortality or OHE. A possible explanation is that these parameters—more rapidly modifiable after TIPS—may exert their prognostic impact through short‐term dynamic changes rather than baseline values. Mean MA and VATI in our cohort were markedly lower than in younger patients [<xref rid="liv70733-bib-0030" ref-type="bibr">30</xref>], likely reflecting both age and the cumulative impact of chronic liver disease. Prospective studies with serial body‐composition assessments are needed to clarify the prognostic role of myosteatosis and adipose‐tissue distribution in older patients with cirrhosis.</p><p>Several mechanisms may underlie the association between sarcopenia and adverse post‐TIPS outcomes. Beyond the inability to cope with abrupt hemodynamic shifts, sarcopenia directly contributes to OHE: skeletal muscle is a key alternative site for ammonia detoxification, and its depletion exacerbates hyperammonemia [<xref rid="liv70733-bib-0016" ref-type="bibr">16</xref>, <xref rid="liv70733-bib-0046" ref-type="bibr">46</xref>]. Sarcopenia is also linked to systemic inflammation and immune dysfunction, predisposing to infections and clinical deterioration; these effects may be magnified in patients with reduced cardiac reserve and metabolic alterations, especially those with MASLD [<xref rid="liv70733-bib-0047" ref-type="bibr">47</xref>, <xref rid="liv70733-bib-0048" ref-type="bibr">48</xref>].</p><p>The onset of OHE represents a highly burdensome complication for both patients and caregivers; in older adults, OHE can trigger a definitive loss of functional autonomy and substantially increase the risk of permanent institutionalisation.</p><p>Within this broader context of biological vulnerability, Kabelitz et al. [<xref rid="liv70733-bib-0049" ref-type="bibr">49</xref>] recently highlighted the prognostic relevance of frailty—measured by the Liver Frailty Index—in patients with cirrhosis undergoing elective TIPS. As the authors note, sarcopenia is not equivalent to frailty: frailty encompasses muscle quantity, dynamic muscle function, and cognitive decline. Sarcopenia and frailty represent distinct but complementary dimensions of the same underlying vulnerability: sarcopenia provides an objective morphological metric readily available from routine pre‐procedural CT, whereas frailty assessments capture functional and physiological decline. Integration of CT‐derived muscle parameters with comprehensive functional frailty assessments may represent the future benchmark for pre‐TIPS risk stratification in the geriatric population, supporting individualised decision‐making and procedural tailoring. Whether sarcopenia in older patients with cirrhosis can be effectively addressed through nutritional or exercise interventions as part of prehabilitation programs remains uncertain [<xref rid="liv70733-bib-0046" ref-type="bibr">46</xref>], and additional studies are required to clarify the reversibility of muscle depletion and identify potential therapeutic targets.</p><p>Strengths of this study include its multicenter design, the focus on older adults—an underrepresented population in the TIPS literature—and the objective evaluation of muscle mass and quality. Several limitations should be acknowledged. First, although data were prospectively collected, the retrospective design and stringent inclusion criteria may have introduced selection bias. Second, sarcopenic and non‐sarcopenic patients differed in BMI and sex distribution; despite adjustment for clinically relevant covariates in multivariable models, residual confounding cannot be excluded, and generalisability to populations with different ethnic backgrounds, BMI distributions, or aetiologies may be limited. Third, per RI‐TIPS protocol, no patients received primary OHE prophylaxis—a strategy that may differ from other centres and could affect the generalisability of our OHE‐incidence estimates. Fourth, baseline serum ammonia was not routinely collected in our registry, precluding calculation of recently developed predictive models such as the AMMON‐OHE score [<xref rid="liv70733-bib-0050" ref-type="bibr">50</xref>]. Fifth, post‐TIPS changes in sarcopenia and myosteatosis were unavailable, precluding assessment of dynamic changes over time. Finally, sarcopenia was integrated using established scores using a pragmatic, uniform approach rather than score‐specific recalibration; although intentional to preserve interpretability and the original structure of validated scores, larger studies are needed for formal recalibration or external validation.</p><p>In conclusion, in this multicenter cohort of patients with cirrhosis aged ≥ 70 years undergoing TIPS, sarcopenia was highly prevalent and independently associated with both mortality and OHE. Although established prognostic scores retained acceptable performance, incorporating sarcopenia consistently improved discrimination and refined outcome stratification. The combined assessment of sarcopenia and TIPS dilation diameter further identified clinically distinct OHE risk profile, highlighting the interplay between patient‐related vulnerability and procedural strategy. These findings support routine sarcopenia evaluation in older TIPS candidates and suggest that its integration into established prognostic tools may enhance individualised risk assessment and clinical decision‐making.</p></sec><sec id="liv70733-sec-0015"><title>Author Contributions</title><p>Angelica Ingravallo: data curation. Antonio Piscopo: data curation. Andrea Salomé Velasco Mayorga: data curation. Cristian Caporali: investigation. Davide Roccarina: writing – review and editing. Dario Saltini: methodology, formal analysis, investigation, data curation, writing – original draft, visualization. Francesco Ascari: investigation. Federico Banchelli: methodology, formal analysis. Federico Casari: investigation. Fabio Marra: supervision. Fabiola Milosa: data curation. Filippo Scianò: data curation. Filippo Schepis: conceptualization, methodology, writing – review and editing, project administration, supervision, funding acquisition. Francesco Vizzutti: writing – review and editing. Giovanni Battinelli: investigation, data curation. Gianmarco Falcone: investigation. Luigi Maruzzelli: investigation, data curation. Marcello Bianchini: investigation, data curation. Manuela Merli: supervision. Oliviero Riggio: supervision. Roberto Miraglia: investigation, data curation. Rosina Maria Critelli: data curation. Simone Di Cola: investigation, data curation. Silvia Nardelli: investigation, software, data curation. Stefania Gioia: data curation. Tomas Guasconi: data curation.</p></sec><sec sec-type="COI-statement" id="liv70733-sec-0017"><title>Conflicts of Interest</title><p>Dario Saltini is supported by grants (CUP E53D23013280006) from the PRIN project (Prot. 2022N2KJAM) by the Italian Ministry of University and Research (MUR); Filippo Scianò is supported by grants from the Italian Ministry of Health under the “Ricerca Finalizzata” program (RF‐2021‐12372399); Filippo Schepis has served as a consultant for Cook Medical and Echosens; Dario Saltini, Filippo Schepis and Francesco Vizzutti received honoraria from Cook Medical and W. L. Gore &amp; Associates. Angelica Ingravallo, Antonio Piscopo, Andrea Salomé Velasco Mayorga, Cristian Caporali, Davide Roccarina, Francesco Ascari, Federico Banchelli, Federico Casari, Fabio Marra, Fabiola Milosa, Giovanni Battinelli, Gianmarco Falcone, Luigi Maruzzelli, Marcello Bianchini, Manuela Merli, Oliviero Riggio, Roberto Miraglia, Rosina Maria Critelli, Simone Di Cola, Stefania Gioia, Silvia Nardelli, Tomas Guasconi: no conflicts to declare.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="liv70733-supitem-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Table S1:</bold> Univariable Cox regression analysis for post‐TIPS mortality.</p><p>
+<bold>Table S2:</bold> Predicted post‐TIPS survival probabilities in older adult patients according to three MELD 3.0–based risk profiles at 12‐ and 24‐months.</p><p>
+<bold>Table S3:</bold> Harrell's C‐index of sarcopenia‐augmented prognostic scores.</p><p>
+<bold>Table S4:</bold> Univariable and multivariable Fine–Grey analysis predicting the overall cumulative incidence of post‐TIPS OHE, considering death as a competing event.</p><p>
+<bold>Figure S1:</bold> Study flowchart illustrating patient identification, screening and inclusion. A total of 516 patients with cirrhosis undergoing TIPS at one of the participating centers (Florence, Modena, Palermo, and Rome) between June 2015 and March 2023 were included. Of these, 182 were aged ≥ 70 years, and 134 had refractory ascites or secondary prophylaxis of variceal bleeding as the indication for TIPS. For 19 patients, no data on muscle condition were available. In total, 115 patients met all the inclusion criteria.</p><p>
+<bold>Figure S2:</bold> Distribution of sarcopenia and myosteatosis among the study cohort.</p><p>
+<bold>Figure S3:</bold> Scatter plots illustrating the correlations between muscle and adipose tissue indices. Specifically, correlation between: (A) muscle attenuation (MA) and subcutaneous adipose tissue index (SATI); (B) muscle attenuation (MA) and visceral adipose tissue index (VATI); (C) skeletal muscle index (SMI) and subcutaneous adipose tissue index (SATI); (D) skeletal muscle index (SMI) and visceral adipose tissue index (VATI).</p><p>
+<bold>Figure S4:</bold> Kaplan–Meier estimates of post‐TIPS overall survival for the entire study population.</p><p>
+<bold>Figure S5:</bold> Pairwise comparisons of AUROC values among sarcopenia‐augmented prognostic scores. Differences between AUROCs were assessed using DeLong's test. Pairwise comparisons that did not reach statistical significance are not shown.</p><p>
+<bold>Figure S6:</bold> Kaplan–Meier estimates of time to first episode of OHE after TIPS.</p><p>
+<bold>Figure S7:</bold> Cumulative incidence functions for OHE after TIPS, with death as competing event. Curves are stratified by presence of (A) sarcopenia and (B) myosteatosis. <italic toggle="yes">p</italic>‐value from Grey's test.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="LIV-46-0-s001.docx" position="float" orientation="portrait"><?suppdata-name LIV-46-0-s001.docx?><?suppdata-size 664611?><?suppdata-md5 3c7f28751b3bee52ec669e86662c346d?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:764f/13243813/3c7f28751b3b/LIV-46-0-s001.docx?></media></supplementary-material></sec></body><back><ack id="liv70733-sec-0016"><title>Acknowledgements</title><p>Declaration of Generative <styled-content style="fixed-case" toggle="no">AI</styled-content> and <styled-content style="fixed-case" toggle="no">AI</styled-content>‐Assisted Technologies in the Writing Process: During the preparation of this work, the authors used ChatGPT in order to improve style and readability. After using this tool, the authors reviewed and edited the content as needed and take full responsibility for the content of the publication. Open access publishing facilitated by Universita degli Studi di Modena e Reggio Emilia, as part of the Wiley ‐ CRUI‐CARE agreement.</p></ack><sec sec-type="data-availability" id="liv70733-sec-0019"><title>Data Availability Statement</title><p>All data supporting the findings of this study are available within the article and its <xref rid="liv70733-supitem-0001" ref-type="supplementary-material">Supporting Information</xref>. The individual‐level dataset is not publicly available due to privacy restrictions, but can be made available by the corresponding author upon reasonable request for academic and research purposes.</p></sec><ref-list content-type="cited-references" id="liv70733-bibl-0001"><title>References</title><ref id="liv70733-bib-0001"><label>1</label><mixed-citation publication-type="journal" id="liv70733-cit-0001">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Vizzutti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Celsa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Calvaruso</surname>
+</string-name>, et al., “<article-title>Mortality After Transjugular Intrahepatic Portosystemic Shunt in Older Adult Patients With Cirrhosis: A Validated Prediction Model</article-title>,” <source>Hepatology</source>
+<volume>77</volume>, no. <issue>2</issue> (<year>2023</year>): <fpage>476</fpage>–<lpage>488</lpage>, <pub-id pub-id-type="doi">10.1002/hep.32704</pub-id>.<pub-id pub-id-type="pmid">35921493</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0002"><label>2</label><mixed-citation publication-type="journal" id="liv70733-cit-0002">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Stockhoff</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Schultalbers</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. L.</given-names>
+<surname>Tergast</surname>
+</string-name>, et al., “<article-title>Safety and Feasibility of Transjugular Intrahepatic Portosystemic Shunt in Elderly Patients With Liver Cirrhosis and Refractory Ascites</article-title>,” <source>PLoS One</source>
+<volume>15</volume>, no. <issue>6</issue> (<year>2020</year>): <elocation-id>e0235199</elocation-id>, <pub-id pub-id-type="doi">10.1371/journal.pone.0235199</pub-id>.<pub-id pub-id-type="pmid">32584874</pub-id>
+<pub-id pub-id-type="pmcid">PMC7316253</pub-id></mixed-citation></ref><ref id="liv70733-bib-0003"><label>3</label><mixed-citation publication-type="journal" id="liv70733-cit-0003">
+<string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Meng</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Qin</surname>
+</string-name>, “<article-title>Short Outcome Comparison of Elderly Patients Versus Nonelderly Patients Treated With Transjugular Intrahepatic Portosystemic Stent Shunt: A Propensity Score Matched Cohort Study</article-title>,” <source>Medicine (Baltimore)</source>
+<volume>96</volume>, no. <issue>29</issue> (<year>2017</year>): <elocation-id>e7551</elocation-id>, <pub-id pub-id-type="doi">10.1097/MD.0000000000007551</pub-id>.<pub-id pub-id-type="pmid">28723777</pub-id>
+<pub-id pub-id-type="pmcid">PMC5521917</pub-id></mixed-citation></ref><ref id="liv70733-bib-0004"><label>4</label><mixed-citation publication-type="journal" id="liv70733-cit-0004">
+<string-name name-style="western">
+<given-names>R. X.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Vizzutti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Celsa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Schepis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. E.</given-names>
+<surname>Kaplan</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Mahmud</surname>
+</string-name>, “<article-title>Evaluating the Predictive Performance of the Elderly Patient Calculator TIPS Score in a North American Cohort</article-title>,” <source>Hepatology Communications</source>
+<volume>8</volume>, no. <issue>2</issue> (<year>2024</year>): <elocation-id>e0346</elocation-id>, <pub-id pub-id-type="doi">10.1097/HC9.0000000000000346</pub-id>.<pub-id pub-id-type="pmid">38251888</pub-id>
+<pub-id pub-id-type="pmcid">PMC10805419</pub-id></mixed-citation></ref><ref id="liv70733-bib-0005"><label>5</label><mixed-citation publication-type="journal" id="liv70733-cit-0005">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Saltini</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Indulti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Guasconi</surname>
+</string-name>, et al., “<article-title>Transjugular Intrahepatic Portosystemic Shunt: Devices Evolution, Technical Tips and Future Perspectives</article-title>,” <source>Journal of Clinical Medicine</source>
+<volume>12</volume>, no. <issue>21</issue> (<year>2023</year>): <elocation-id>6758</elocation-id>, <pub-id pub-id-type="doi">10.3390/jcm12216758</pub-id>.<pub-id pub-id-type="pmid">37959225</pub-id>
+<pub-id pub-id-type="pmcid">PMC10650044</pub-id></mixed-citation></ref><ref id="liv70733-bib-0006"><label>6</label><mixed-citation publication-type="journal" id="liv70733-cit-0006">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Praktiknjo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Book</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Luetkens</surname>
+</string-name>, et al., “<article-title>Fat‐Free Muscle Mass in Magnetic Resonance Imaging Predicts Acute‐On‐Chronic Liver Failure and Survival in Decompensated Cirrhosis</article-title>,” <source>Hepatology</source>
+<volume>67</volume>, no. <issue>3</issue> (<year>2018</year>): <fpage>1014</fpage>–<lpage>1026</lpage>, <pub-id pub-id-type="doi">10.1002/hep.29602</pub-id>.<pub-id pub-id-type="pmid">29059469</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0007"><label>7</label><mixed-citation publication-type="journal" id="liv70733-cit-0007">
+<string-name name-style="western">
+<given-names>A. J.</given-names>
+<surname>Montano‐Loza</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Duarte‐Rojo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Meza‐Junco</surname>
+</string-name>, et al., “<article-title>Inclusion of Sarcopenia Within MELD (MELD‐Sarcopenia) and the Prediction of Mortality in Patients With Cirrhosis</article-title>,” <source>Clinical and Translational Gastroenterology</source>
+<volume>6</volume>, no. <issue>7</issue> (<year>2015</year>): <elocation-id>e102</elocation-id>, <pub-id pub-id-type="doi">10.1038/ctg.2015.31</pub-id>.<pub-id pub-id-type="pmid">26181291</pub-id>
+<pub-id pub-id-type="pmcid">PMC4816259</pub-id></mixed-citation></ref><ref id="liv70733-bib-0008"><label>8</label><mixed-citation publication-type="journal" id="liv70733-cit-0008">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Ebadi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Tsien</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. A.</given-names>
+<surname>Bhanji</surname>
+</string-name>, et al., “<article-title>Skeletal Muscle Pathological Fat Infiltration (Myosteatosis) Is Associated With Higher Mortality in Patients With Cirrhosis</article-title>,” <source>Cells</source>
+<volume>11</volume>, no. <issue>8</issue> (<year>2022</year>): <elocation-id>1345</elocation-id>, <pub-id pub-id-type="doi">10.3390/cells11081345</pub-id>.<pub-id pub-id-type="pmid">35456024</pub-id>
+<pub-id pub-id-type="pmcid">PMC9030863</pub-id></mixed-citation></ref><ref id="liv70733-bib-0009"><label>9</label><mixed-citation publication-type="journal" id="liv70733-cit-0009">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Yuan</surname>
+</string-name> and <string-name name-style="western">
+<given-names>S. C.</given-names>
+<surname>Larsson</surname>
+</string-name>, “<article-title>Epidemiology of Sarcopenia: Prevalence, Risk Factors, and Consequences</article-title>,” <source>Metabolism</source>
+<volume>144</volume> (<year>2023</year>): <elocation-id>155533</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.metabol.2023.155533</pub-id>.<pub-id pub-id-type="pmid">36907247</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0010"><label>10</label><mixed-citation publication-type="journal" id="liv70733-cit-0010">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Henin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Loumaye</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I. A.</given-names>
+<surname>Leclercq</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Lanthier</surname>
+</string-name>, “<article-title>Myosteatosis: Diagnosis, Pathophysiology and Consequences in Metabolic Dysfunction‐Associated Steatotic Liver Disease</article-title>,” <source>JHEP Reports</source>
+<volume>6</volume>, no. <issue>2</issue> (<year>2024</year>): <elocation-id>100963</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.jhepr.2023.100963</pub-id>.<pub-id pub-id-type="pmid">38322420</pub-id>
+<pub-id pub-id-type="pmcid">PMC10844870</pub-id></mixed-citation></ref><ref id="liv70733-bib-0011"><label>11</label><mixed-citation publication-type="journal" id="liv70733-cit-0011">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Tantai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Liu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y. H.</given-names>
+<surname>Yeo</surname>
+</string-name>, et al., “<article-title>Effect of Sarcopenia on Survival in Patients With Cirrhosis: A Meta‐Analysis</article-title>,” <source>Journal of Hepatology</source>
+<volume>76</volume>, no. <issue>3</issue> (<year>2022</year>): <fpage>588</fpage>–<lpage>599</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2021.11.006</pub-id>.<pub-id pub-id-type="pmid">34785325</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0012"><label>12</label><mixed-citation publication-type="journal" id="liv70733-cit-0012">
+<string-name name-style="western">
+<given-names>J. C.</given-names>
+<surname>Lai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Tandon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Bernal</surname>
+</string-name>, et al., “<article-title>Malnutrition, Frailty, and Sarcopenia in Patients With Cirrhosis: 2021 Practice Guidance by the American Association for the Study of Liver Diseases</article-title>,” <source>Hepatology</source>
+<volume>74</volume>, no. <issue>3</issue> (<year>2021</year>): <fpage>1611</fpage>–<lpage>1644</lpage>, <pub-id pub-id-type="doi">10.1002/hep.32049</pub-id>.<pub-id pub-id-type="pmid">34233031</pub-id>
+<pub-id pub-id-type="pmcid">PMC9134787</pub-id></mixed-citation></ref><ref id="liv70733-bib-0013"><label>13</label><mixed-citation publication-type="journal" id="liv70733-cit-0013">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Tandon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. J.</given-names>
+<surname>Montano‐Loza</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. C.</given-names>
+<surname>Lai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Dasarathy</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Merli</surname>
+</string-name>, “<article-title>Sarcopenia and Frailty in Decompensated Cirrhosis</article-title>,” <source>Journal of Hepatology</source>
+<volume>75</volume>, no. <issue>Suppl 1</issue> (<year>2021</year>): <fpage>S147</fpage>–<lpage>S162</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2021.01.025</pub-id>.<pub-id pub-id-type="pmid">34039486</pub-id>
+<pub-id pub-id-type="pmcid">PMC9125684</pub-id></mixed-citation></ref><ref id="liv70733-bib-0014"><label>14</label><mixed-citation publication-type="journal" id="liv70733-cit-0014">
+<string-name name-style="western">
+<given-names>A. J.</given-names>
+<surname>Cruz‐Jentoft</surname>
+</string-name> and <string-name name-style="western">
+<given-names>A. A.</given-names>
+<surname>Sayer</surname>
+</string-name>, “<article-title>Sarcopenia</article-title>,” <source>Lancet</source>
+<volume>393</volume>, no. <issue>10191</issue> (<year>2019</year>): <fpage>2636</fpage>–<lpage>2646</lpage>, <pub-id pub-id-type="doi">10.1016/S0140-6736(19)31138-9</pub-id>.<pub-id pub-id-type="pmid">31171417</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0015"><label>15</label><mixed-citation publication-type="journal" id="liv70733-cit-0015">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Correa‐de‐Araujo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>O.</given-names>
+<surname>Addison</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Miljkovic</surname>
+</string-name>, et al., “<article-title>Myosteatosis in the Context of Skeletal Muscle Function Deficit: An Interdisciplinary Workshop at the National Institute on Aging</article-title>,” <source>Frontiers in Physiology</source>
+<volume>11</volume> (<year>2020</year>): <elocation-id>963</elocation-id>, <pub-id pub-id-type="doi">10.3389/fphys.2020.00963</pub-id>.<pub-id pub-id-type="pmid">32903666</pub-id>
+<pub-id pub-id-type="pmcid">PMC7438777</pub-id></mixed-citation></ref><ref id="liv70733-bib-0016"><label>16</label><mixed-citation publication-type="journal" id="liv70733-cit-0016">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Nardelli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Lattanzi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Torrisi</surname>
+</string-name>, et al., “<article-title>Sarcopenia Is Risk Factor for Development of Hepatic Encephalopathy After Transjugular Intrahepatic Portosystemic Shunt Placement</article-title>,” <source>Clinical Gastroenterology and Hepatology</source>
+<volume>15</volume>, no. <issue>6</issue> (<year>2017</year>): <fpage>934</fpage>–<lpage>936</lpage>, <pub-id pub-id-type="doi">10.1016/j.cgh.2016.10.028</pub-id>.<pub-id pub-id-type="pmid">27816756</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0017"><label>17</label><mixed-citation publication-type="journal" id="liv70733-cit-0017">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Liu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Ma</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Yang</surname>
+</string-name>, et al., “<article-title>Sarcopenia in Patients With Cirrhosis After Transjugular Intrahepatic Portosystemic Shunt Placement</article-title>,” <source>Radiology</source>
+<volume>303</volume>, no. <issue>3</issue> (<year>2022</year>): <fpage>711</fpage>–<lpage>719</lpage>, <pub-id pub-id-type="doi">10.1148/radiol.211172</pub-id>.<pub-id pub-id-type="pmid">35289658</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0018"><label>18</label><mixed-citation publication-type="journal" id="liv70733-cit-0018">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Benmassaoud</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Roccarina</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Arico</surname>
+</string-name>, et al., “<article-title>Sarcopenia Does Not Worsen Survival in Patients With Cirrhosis Undergoing Transjugular Intrahepatic Portosystemic Shunt for Refractory Ascites</article-title>,” <source>American Journal of Gastroenterology</source>
+<volume>115</volume>, no. <issue>11</issue> (<year>2020</year>): <fpage>1911</fpage>–<lpage>1914</lpage>, <pub-id pub-id-type="doi">10.14309/ajg.0000000000000959</pub-id>.<pub-id pub-id-type="pmid">33156111</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0019"><label>19</label><mixed-citation publication-type="journal" id="liv70733-cit-0019">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Praktiknjo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Clees</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Pigliacelli</surname>
+</string-name>, et al., “<article-title>Sarcopenia Is Associated With Development of Acute‐on‐Chronic Liver Failure in Decompensated Liver Cirrhosis Receiving Transjugular Intrahepatic Portosystemic Shunt</article-title>,” <source>Clinical and Translational Gastroenterology</source>
+<volume>10</volume>, no. <issue>4</issue> (<year>2019</year>): <elocation-id>e00025</elocation-id>, <pub-id pub-id-type="doi">10.14309/ctg.0000000000000025</pub-id>.<pub-id pub-id-type="pmid">30939488</pub-id>
+<pub-id pub-id-type="pmcid">PMC6602782</pub-id></mixed-citation></ref><ref id="liv70733-bib-0020"><label>20</label><mixed-citation publication-type="journal" id="liv70733-cit-0020">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. L.</given-names>
+<surname>Chu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W. F.</given-names>
+<surname>Lv</surname>
+</string-name>, et al., “<article-title>Contributory Roles of Sarcopenia and Myosteatosis in Development of Overt Hepatic Encephalopathy and Mortality After Transjugular Intrahepatic Portosystemic Shunt</article-title>,” <source>World Journal of Gastroenterology</source>
+<volume>29</volume>, no. <issue>18</issue> (<year>2023</year>): <fpage>2875</fpage>–<lpage>2887</lpage>, <pub-id pub-id-type="doi">10.3748/wjg.v29.i18.2875</pub-id>.<pub-id pub-id-type="pmid">37274064</pub-id>
+<pub-id pub-id-type="pmcid">PMC10237102</pub-id></mixed-citation></ref><ref id="liv70733-bib-0021"><label>21</label><mixed-citation publication-type="journal" id="liv70733-cit-0021">
+<string-name name-style="western">
+<given-names>M. G.</given-names>
+<surname>Delgado</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Mertineit</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Bosch</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Baumgartner</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Berzigotti</surname>
+</string-name>, “<article-title>Combination of Model for End‐Stage Liver Disease (MELD) and Sarcopenia Predicts Mortality After Transjugular Intrahepatic Portosystemic Shunt (TIPS)</article-title>,” <source>Digestive and Liver Disease</source>
+<volume>56</volume>, no. <issue>9</issue> (<year>2024</year>): <fpage>1544</fpage>–<lpage>1550</lpage>, <pub-id pub-id-type="doi">10.1016/j.dld.2024.03.003</pub-id>.<pub-id pub-id-type="pmid">38555198</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0022"><label>22</label><mixed-citation publication-type="journal" id="liv70733-cit-0022">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Fagiuoli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Bruno</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Debernardi Venon</surname>
+</string-name>, et al., “<article-title>Consensus Conference on TIPS Management: Techniques, Indications, Contraindications</article-title>,” <source>Digestive and Liver Disease</source>
+<volume>49</volume>, no. <issue>2</issue> (<year>2017</year>): <fpage>121</fpage>–<lpage>137</lpage>, <pub-id pub-id-type="doi">10.1016/j.dld.2016.10.011</pub-id>.<pub-id pub-id-type="pmid">27884494</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0023"><label>23</label><mixed-citation publication-type="journal" id="liv70733-cit-0023">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Schepis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Vizzutti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Garcia‐Tsao</surname>
+</string-name>, et al., “<article-title>Under‐Dilated TIPS Associate With Efficacy and Reduced Encephalopathy in a Prospective, Non‐Randomized Study of Patients With Cirrhosis</article-title>,” <source>Clinical Gastroenterology and Hepatology</source>
+<volume>16</volume>, no. <issue>7</issue> (<year>2018</year>): <fpage>1153</fpage>–<lpage>1162.e7</lpage>, <pub-id pub-id-type="doi">10.1016/j.cgh.2018.01.029</pub-id>.<pub-id pub-id-type="pmid">29378312</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0024"><label>24</label><mixed-citation publication-type="journal" id="liv70733-cit-0024">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>de Franchis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Bosch</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Garcia‐Tsao</surname>
+</string-name>, et al., “<article-title>Baveno VII—Renewing Consensus in Portal Hypertension</article-title>,” <source>Journal of Hepatology</source>
+<volume>76</volume>, no. <issue>4</issue> (<year>2022</year>): <fpage>959</fpage>–<lpage>974</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2021.12.022</pub-id>.<pub-id pub-id-type="pmid">35120736</pub-id>
+<pub-id pub-id-type="pmcid">PMC11090185</pub-id></mixed-citation></ref><ref id="liv70733-bib-0025"><label>25</label><mixed-citation publication-type="journal" id="liv70733-cit-0025">
+<string-name name-style="western">
+<given-names>P. S.</given-names>
+<surname>Kamath</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. H.</given-names>
+<surname>Wiesner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Malinchoc</surname>
+</string-name>, et al., “<article-title>A Model to Predict Survival in Patients With End‐Stage Liver Disease</article-title>,” <source>Hepatology</source>
+<volume>33</volume>, no. <issue>2</issue> (<year>2001</year>): <fpage>464</fpage>–<lpage>470</lpage>, <pub-id pub-id-type="doi">10.1053/jhep.2001.22172</pub-id>.<pub-id pub-id-type="pmid">11172350</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0026"><label>26</label><mixed-citation publication-type="journal" id="liv70733-cit-0026">
+<string-name name-style="western">
+<given-names>W. R.</given-names>
+<surname>Kim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Mannalithara</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. K.</given-names>
+<surname>Heimbach</surname>
+</string-name>, et al., “<article-title>MELD 3.0: The Model for End‐Stage Liver Disease Updated for the Modern Era</article-title>,” <source>Gastroenterology</source>
+<volume>161</volume>, no. <issue>6</issue> (<year>2021</year>): <fpage>1887</fpage>–<lpage>1895.e4</lpage>, <pub-id pub-id-type="doi">10.1053/j.gastro.2021.08.050</pub-id>.<pub-id pub-id-type="pmid">34481845</pub-id>
+<pub-id pub-id-type="pmcid">PMC8608337</pub-id></mixed-citation></ref><ref id="liv70733-bib-0027"><label>27</label><mixed-citation publication-type="journal" id="liv70733-cit-0027">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Bettinger</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Sturm</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Pfaff</surname>
+</string-name>, et al., “<article-title>Refining Prediction of Survival After TIPS With the Novel Freiburg Index of Post‐TIPS Survival</article-title>,” <source>Journal of Hepatology</source>
+<volume>74</volume>, no. <issue>6</issue> (<year>2021</year>): <fpage>1362</fpage>–<lpage>1372</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2021.01.023</pub-id>.<pub-id pub-id-type="pmid">33508376</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0028"><label>28</label><mixed-citation publication-type="journal" id="liv70733-cit-0028">
+<string-name name-style="western">
+<given-names>E. J.</given-names>
+<surname>Carey</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. C.</given-names>
+<surname>Lai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. W.</given-names>
+<surname>Wang</surname>
+</string-name>, et al., “<article-title>A Multicenter Study to Define Sarcopenia in Patients With End‐Stage Liver Disease</article-title>,” <source>Liver Transplantation</source>
+<volume>23</volume>, no. <issue>5</issue> (<year>2017</year>): <fpage>625</fpage>–<lpage>633</lpage>, <pub-id pub-id-type="doi">10.1002/lt.24750</pub-id>.<pub-id pub-id-type="pmid">28240805</pub-id>
+<pub-id pub-id-type="pmcid">PMC5762612</pub-id></mixed-citation></ref><ref id="liv70733-bib-0029"><label>29</label><mixed-citation publication-type="journal" id="liv70733-cit-0029">
+<string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Martin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Birdsell</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Macdonald</surname>
+</string-name>, et al., “<article-title>Cancer Cachexia in the Age of Obesity: Skeletal Muscle Depletion Is a Powerful Prognostic Factor, Independent of Body Mass Index</article-title>,” <source>Journal of Clinical Oncology</source>
+<volume>31</volume>, no. <issue>12</issue> (<year>2013</year>): <fpage>1539</fpage>–<lpage>1547</lpage>, <pub-id pub-id-type="doi">10.1200/JCO.2012.45.2722</pub-id>.<pub-id pub-id-type="pmid">23530101</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0030"><label>30</label><mixed-citation publication-type="journal" id="liv70733-cit-0030">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Gioia</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Ridola</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Cristofaro</surname>
+</string-name>, et al., “<article-title>The Improvement in Body Composition Including Subcutaneous and Visceral Fat Reduces Ammonia and Hepatic Encephalopathy After Transjugular Intrahepatic Portosystemic Shunt</article-title>,” <source>Liver International</source>
+<volume>41</volume>, no. <issue>12</issue> (<year>2021</year>): <fpage>2965</fpage>–<lpage>2973</lpage>, <pub-id pub-id-type="doi">10.1111/liv.15060</pub-id>.<pub-id pub-id-type="pmid">34543504</pub-id>
+<pub-id pub-id-type="pmcid">PMC9293456</pub-id></mixed-citation></ref><ref id="liv70733-bib-0031"><label>31</label><mixed-citation publication-type="journal" id="liv70733-cit-0031">
+<string-name name-style="western">
+<given-names>E. B.</given-names>
+<surname>Tapper</surname>
+</string-name> and <string-name name-style="western">
+<given-names>N. D.</given-names>
+<surname>Parikh</surname>
+</string-name>, “<article-title>Diagnosis and Management of Cirrhosis and Its Complications: A Review</article-title>,” <source>Journal of the American Medical Association</source>
+<volume>329</volume>, no. <issue>18</issue> (<year>2023</year>): <fpage>1589</fpage>–<lpage>1602</lpage>, <pub-id pub-id-type="doi">10.1001/jama.2023.5997</pub-id>.<pub-id pub-id-type="pmid">37159031</pub-id>
+<pub-id pub-id-type="pmcid">PMC10843851</pub-id></mixed-citation></ref><ref id="liv70733-bib-0032"><label>32</label><mixed-citation publication-type="journal" id="liv70733-cit-0032">
+<collab collab-type="authors">GBD 2017 Cirrhosis Collaborators</collab>
+, “<article-title>The Global, Regional, and National Burden of Cirrhosis by Cause in 195 Countries and Territories, 1990–2017: A Systematic Analysis for the Global Burden of Disease Study 2017</article-title>,” <source>Lancet Gastroenterology &amp; Hepatology</source>
+<volume>5</volume>, no. <issue>3</issue> (<year>2020</year>): <fpage>245</fpage>–<lpage>266</lpage>, <pub-id pub-id-type="doi">10.1016/S2468-1253(19)30349-8</pub-id>.<pub-id pub-id-type="pmid">31981519</pub-id>
+<pub-id pub-id-type="pmcid">PMC7026710</pub-id></mixed-citation></ref><ref id="liv70733-bib-0033"><label>33</label><mixed-citation publication-type="journal" id="liv70733-cit-0033">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Larrue</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>D'Amico</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Olivas</surname>
+</string-name>, et al., “<article-title>TIPS Prevents Further Decompensation and Improves Survival in Patients With Cirrhosis and Portal Hypertension in an Individual Patient Data Meta‐Analysis</article-title>,” <source>Journal of Hepatology</source>
+<volume>79</volume>, no. <issue>3</issue> (<year>2023</year>): <fpage>692</fpage>–<lpage>703</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2023.04.028</pub-id>.<pub-id pub-id-type="pmid">37141993</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0034"><label>34</label><mixed-citation publication-type="journal" id="liv70733-cit-0034">
+<string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Ahmed</surname>
+</string-name>, <string-name name-style="western">
+<given-names>U.</given-names>
+<surname>Farooq</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Faiza Arif</surname>
+</string-name>, et al., “<article-title>Transjugular Intrahepatic Portosystemic Shunt Outcomes in the Elderly Population: A Systematic Review and Meta‐Analysis</article-title>,” <source>Gastroenterology Research</source>
+<volume>15</volume>, no. <issue>6</issue> (<year>2022</year>): <fpage>325</fpage>–<lpage>333</lpage>, <pub-id pub-id-type="doi">10.14740/gr1571</pub-id>.<pub-id pub-id-type="pmid">36660467</pub-id>
+<pub-id pub-id-type="pmcid">PMC9822662</pub-id></mixed-citation></ref><ref id="liv70733-bib-0035"><label>35</label><mixed-citation publication-type="journal" id="liv70733-cit-0035">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Becchetti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Dajti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. L.</given-names>
+<surname>Su</surname>
+</string-name>, et al., “<article-title>The Impact of Sarcopenia and Frailty on Decompensation in Compensated Cirrhosis: A Systematic Review</article-title>,” <source>Hepatology Communications</source>
+<volume>9</volume>, no. <issue>11</issue> (<year>2025</year>): <elocation-id>e0811</elocation-id>, <pub-id pub-id-type="doi">10.1097/HC9.0000000000000811</pub-id>.<pub-id pub-id-type="pmid">41118290</pub-id>
+<pub-id pub-id-type="pmcid">PMC12548989</pub-id></mixed-citation></ref><ref id="liv70733-bib-0036"><label>36</label><mixed-citation publication-type="journal" id="liv70733-cit-0036">
+<string-name name-style="western">
+<given-names>Y. W.</given-names>
+<surname>Bai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. C.</given-names>
+<surname>Liu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C. T.</given-names>
+<surname>Yang</surname>
+</string-name>, et al., “<article-title>Inclusion of Sarcopenia Improves the Prognostic Value of MELD Score in Patients After Transjugular Intrahepatic Portosystemic Shunt</article-title>,” <source>European Journal of Gastroenterology &amp; Hepatology</source>
+<volume>34</volume>, no. <issue>9</issue> (<year>2022</year>): <fpage>948</fpage>–<lpage>955</lpage>, <pub-id pub-id-type="doi">10.1097/MEG.0000000000002391</pub-id>.<pub-id pub-id-type="pmid">35594511</pub-id>
+<pub-id pub-id-type="pmcid">PMC9345516</pub-id></mixed-citation></ref><ref id="liv70733-bib-0037"><label>37</label><mixed-citation publication-type="journal" id="liv70733-cit-0037">
+<string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Xiong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Zhou</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Wu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Huang</surname>
+</string-name>, “<article-title>TIPS Placement as the First‐Line Therapy to Prevent Variceal Rebleeding in Patients With Cirrhosis and Sarcopenia</article-title>,” <source>European Journal of Radiology</source>
+<volume>158</volume> (<year>2023</year>): <elocation-id>110630</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.ejrad.2022.110630</pub-id>.<pub-id pub-id-type="pmid">36455336</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0038"><label>38</label><mixed-citation publication-type="journal" id="liv70733-cit-0038">
+<string-name name-style="western">
+<given-names>S. L.</given-names>
+<surname>Allen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. I.</given-names>
+<surname>Quinlan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Dhaliwal</surname>
+</string-name>, et al., “<article-title>Sarcopenia in Chronic Liver Disease: Mechanisms and Countermeasures</article-title>,” <source>American Journal of Physiology. Gastrointestinal and Liver Physiology</source>
+<volume>320</volume>, no. <issue>3</issue> (<year>2021</year>): <fpage>G241</fpage>–<lpage>G257</lpage>, <pub-id pub-id-type="doi">10.1152/ajpgi.00373.2020</pub-id>.<pub-id pub-id-type="pmid">33236953</pub-id>
+<pub-id pub-id-type="pmcid">PMC8609568</pub-id></mixed-citation></ref><ref id="liv70733-bib-0039"><label>39</label><mixed-citation publication-type="journal" id="liv70733-cit-0039">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Springer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. I.</given-names>
+<surname>Springer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S. D.</given-names>
+<surname>Anker</surname>
+</string-name>, “<article-title>Muscle Wasting and Sarcopenia in Heart Failure and Beyond: Update 2017</article-title>,” <source>ESC Heart Failure</source>
+<volume>4</volume>, no. <issue>4</issue> (<year>2017</year>): <fpage>492</fpage>–<lpage>498</lpage>, <pub-id pub-id-type="doi">10.1002/ehf2.12237</pub-id>.<pub-id pub-id-type="pmid">29154428</pub-id>
+<pub-id pub-id-type="pmcid">PMC5695190</pub-id></mixed-citation></ref><ref id="liv70733-bib-0040"><label>40</label><mixed-citation publication-type="journal" id="liv70733-cit-0040">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Pacifico</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A. J.</given-names>
+<surname>Geerlings</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. M.</given-names>
+<surname>Reijnierse</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Phassouliotis</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W. K.</given-names>
+<surname>Lim</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. B.</given-names>
+<surname>Maier</surname>
+</string-name>, “<article-title>Prevalence of Sarcopenia as a Comorbid Disease: A Systematic Review and Meta‐Analysis</article-title>,” <source>Experimental Gerontology</source>
+<volume>131</volume> (<year>2020</year>): <elocation-id>110801</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.exger.2019.110801</pub-id>.<pub-id pub-id-type="pmid">31887347</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0041"><label>41</label><mixed-citation publication-type="journal" id="liv70733-cit-0041">
+<string-name name-style="western">
+<given-names>M. P.</given-names>
+<surname>Duarte</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. S.</given-names>
+<surname>Almeida</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. G. R.</given-names>
+<surname>Neri</surname>
+</string-name>, et al., “<article-title>Prevalence of Sarcopenia in Patients With Chronic Kidney Disease: A Global Systematic Review and Meta‐Analysis</article-title>,” <source>Journal of Cachexia, Sarcopenia and Muscle</source>
+<volume>15</volume>, no. <issue>2</issue> (<year>2024</year>): <fpage>501</fpage>–<lpage>512</lpage>, <pub-id pub-id-type="doi">10.1002/jcsm.13425</pub-id>.<pub-id pub-id-type="pmid">38263952</pub-id>
+<pub-id pub-id-type="pmcid">PMC10995263</pub-id></mixed-citation></ref><ref id="liv70733-bib-0042"><label>42</label><mixed-citation publication-type="journal" id="liv70733-cit-0042">
+<string-name name-style="western">
+<given-names>G. F. P.</given-names>
+<surname>Aleixo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. S.</given-names>
+<surname>Shachar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. A.</given-names>
+<surname>Nyrop</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H. B.</given-names>
+<surname>Muss</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Malpica</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G. R.</given-names>
+<surname>Williams</surname>
+</string-name>, “<article-title>Myosteatosis and Prognosis in Cancer: Systematic Review and Meta‐Analysis</article-title>,” <source>Critical Reviews in Oncology/Hematology</source>
+<volume>145</volume> (<year>2020</year>): <elocation-id>102839</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.critrevonc.2019.102839</pub-id>.<pub-id pub-id-type="pmid">31877534</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0043"><label>43</label><mixed-citation publication-type="journal" id="liv70733-cit-0043">
+<string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Lena</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Anker</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Springer</surname>
+</string-name>, “<article-title>Muscle Wasting and Sarcopenia in Heart Failure—The Current State of Science</article-title>,” <source>International Journal of Molecular Sciences</source>
+<volume>21</volume>, no. <issue>18</issue> (<year>2020</year>): <elocation-id>6549</elocation-id>, <pub-id pub-id-type="doi">10.3390/ijms21186549</pub-id>.<pub-id pub-id-type="pmid">32911600</pub-id>
+<pub-id pub-id-type="pmcid">PMC7555939</pub-id></mixed-citation></ref><ref id="liv70733-bib-0044"><label>44</label><mixed-citation publication-type="journal" id="liv70733-cit-0044">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Di Cola</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>D'Amico</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Caraceni</surname>
+</string-name>, et al., “<article-title>Myosteatosis Is Closely Associated With Sarcopenia and Significantly Worse Outcomes in Patients With Cirrhosis</article-title>,” <source>Journal of Hepatology</source>
+<volume>81</volume>, no. <issue>4</issue> (<year>2024</year>): <fpage>641</fpage>–<lpage>650</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2024.05.020</pub-id>.<pub-id pub-id-type="pmid">38782120</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0045"><label>45</label><mixed-citation publication-type="journal" id="liv70733-cit-0045">
+<string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Shi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Xu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Fan</surname>
+</string-name>, et al., “<article-title>Body Compositions Correlate With Overt Hepatic Encephalopathy After Transjugular Intrahepatic Portosystemic Shunt: A Multicentre Cohort Study</article-title>,” <source>Journal of Clinical Gastroenterology</source>
+<volume>59</volume>, no. <issue>3</issue> (<year>2025</year>): <fpage>262</fpage>–<lpage>268</lpage>, <pub-id pub-id-type="doi">10.1097/MCG.0000000000002014</pub-id>.<pub-id pub-id-type="pmid">38683235</pub-id>
+</mixed-citation></ref><ref id="liv70733-bib-0046"><label>46</label><mixed-citation publication-type="journal" id="liv70733-cit-0046">
+<string-name name-style="western">
+<given-names>H. E.</given-names>
+<surname>Johnston</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. G.</given-names>
+<surname>Takefala</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. T.</given-names>
+<surname>Kelly</surname>
+</string-name>, et al., “<article-title>The Effect of Diet and Exercise Interventions on Body Composition in Liver Cirrhosis: A Systematic Review</article-title>,” <source>Nutrients</source>
+<volume>14</volume>, no. <issue>16</issue> (<year>2022</year>): <elocation-id>3365</elocation-id>, <pub-id pub-id-type="doi">10.3390/nu14163365</pub-id>.<pub-id pub-id-type="pmid">36014871</pub-id>
+<pub-id pub-id-type="pmcid">PMC9414099</pub-id></mixed-citation></ref><ref id="liv70733-bib-0047"><label>47</label><mixed-citation publication-type="journal" id="liv70733-cit-0047">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Zheng</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. A.</given-names>
+<surname>Sechi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. P.</given-names>
+<surname>Navarese</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Casu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Vidili</surname>
+</string-name>, “<article-title>Metabolic Dysfunction‐Associated Steatotic Liver Disease and Cardiovascular Risk: A Comprehensive Review</article-title>,” <source>Cardiovascular Diabetology</source>
+<volume>23</volume>, no. <issue>1</issue> (<year>2024</year>): <elocation-id>346</elocation-id>, <pub-id pub-id-type="doi">10.1186/s12933-024-02434-5</pub-id>.<pub-id pub-id-type="pmid">39342178</pub-id>
+<pub-id pub-id-type="pmcid">PMC11439309</pub-id></mixed-citation></ref><ref id="liv70733-bib-0048"><label>48</label><mixed-citation publication-type="journal" id="liv70733-cit-0048">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Driessen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. M.</given-names>
+<surname>Francque</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. D.</given-names>
+<surname>Anker</surname>
+</string-name>, et al., “<article-title>Metabolic Dysfunction‐Associated Steatotic Liver Disease and the Heart</article-title>,” <source>Hepatology</source>
+<volume>82</volume>, no. <issue>2</issue> (<year>2025</year>): <fpage>487</fpage>–<lpage>503</lpage>, <pub-id pub-id-type="doi">10.1097/HEP.0000000000000735</pub-id>.<pub-id pub-id-type="pmid">38147315</pub-id>
+<pub-id pub-id-type="pmcid">PMC12266800</pub-id></mixed-citation></ref><ref id="liv70733-bib-0049"><label>49</label><mixed-citation publication-type="journal" id="liv70733-cit-0049">
+<string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Kabelitz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. J.</given-names>
+<surname>Gairing</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Tiede</surname>
+</string-name>, et al., “<article-title>Impact of Frailty on the Prognosis of Patients With Liver Cirrhosis Undergoing Insertion of a TIPS</article-title>,” <source>Alimentary Pharmacology &amp; Therapeutics</source>
+<volume>63</volume>, no. <issue>1</issue> (<year>2026</year>): <fpage>109</fpage>–<lpage>118</lpage>, <pub-id pub-id-type="doi">10.1111/apt.70315</pub-id>.<pub-id pub-id-type="pmid">40751304</pub-id>
+<pub-id pub-id-type="pmcid">PMC12690237</pub-id></mixed-citation></ref><ref id="liv70733-bib-0050"><label>50</label><mixed-citation publication-type="journal" id="liv70733-cit-0050">
+<string-name name-style="western">
+<given-names>M. P.</given-names>
+<surname>Ballester</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. H.</given-names>
+<surname>Tranah</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Balcar</surname>
+</string-name>, et al., “<article-title>Development and Validation of the AMMON‐OHE Model to Predict Risk of Overt Hepatic Encephalopathy Occurrence in Outpatients With Cirrhosis</article-title>,” <source>Journal of Hepatology</source>
+<volume>79</volume>, no. <issue>4</issue> (<year>2023</year>): <fpage>967</fpage>–<lpage>976</lpage>, <pub-id pub-id-type="doi">10.1016/j.jhep.2023.05.022</pub-id>.<pub-id pub-id-type="pmid">37277075</pub-id>
+</mixed-citation></ref></ref-list></back></article>

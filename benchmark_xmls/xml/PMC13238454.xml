@@ -1,0 +1,889 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="cars70043" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Can Rev Sociol</journal-id><journal-id journal-id-type="iso-abbrev">Can Rev Sociol</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">CARS</journal-id><journal-title-group><journal-title>Canadian Review of Sociology</journal-title></journal-title-group><issn pub-type="ppub">1755-6171</issn><issn pub-type="epub">1755-618X</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13238454</article-id><article-id pub-id-type="pmcid-ver">PMC13238454.1</article-id><article-id pub-id-type="pmcaid">13238454</article-id><article-id pub-id-type="pmcaiid">13238454</article-id><article-id pub-id-type="pmid">42244358</article-id><article-id pub-id-type="doi">10.1111/cars.70043</article-id><article-id pub-id-type="publisher-id">CARS70043</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Original Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Original Article</subject></subj-group></article-categories><title-group><article-title>Are Women Accepted at Work? Gender Discrimination in Chinese Firms</article-title></title-group><contrib-group><contrib id="cars70043-cr-0001" contrib-type="author" corresp="yes"><name name-style="western"><surname>Au</surname><given-names initials="A">Anson</given-names></name><xref rid="cars70043-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>anson-ch.au@polyu.edu.hk</email></address></contrib></contrib-group><aff id="cars70043-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Applied Social Sciences</named-content>
+<institution>The Hong Kong Polytechnic University</institution>
+<city>Hung Hom Kowloon</city>
+<country country="CN">People's Republic of China</country>
+</aff><pub-date pub-type="epub"><day>05</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>8</month><year>2026</year></pub-date><volume>63</volume><issue seq="20">3</issue><issue-id pub-id-type="pmc-issue-id">515015</issue-id><issue-id pub-id-type="doi">10.1111/cars.v63.3</issue-id><elocation-id>e70043</elocation-id><history>
+<date date-type="rev-recd"><day>16</day><month>3</month><year>2026</year></date>
+<date date-type="received"><day>30</day><month>5</month><year>2025</year></date>
+<date date-type="accepted"><day>22</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>05</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>06</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-06 10:25:18.137"><day>06</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Canadian Review of Sociology/Revue canadienne de sociologie</italic> published by Wiley Periodicals LLC on behalf of Canadian Sociological Association/La Société canadienne de sociologie.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="CARS-63-0.pdf"><?pdf-name CARS-63-0.pdf?><?pdf-size 852747?><?pdf-md5 a2cd46cd81b2b22e28d453380fa6e2fe?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:0481/13238454/a2cd46cd81b2/CARS-63-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:CARS-63-0.pdf"/><abstract><title>ABSTRACT</title><p>To what extent is women's employment accepted in modern Chinese firms? Drawing on pooled 2017 and 2021 nationally representative Chinese General Social Survey (CGSS) data, this article estimates the socioeconomic predictors and prevalence of the belief that women should be stay‐at‐home wives instead of working in Chinese firms. The results illustrate that women in Chinese firms have socioeconomic resources commensurate with men, but they remain targeted by the persistent patriarchal belief that women should marry and be relegated to the household instead of work. Contrasting against conventional accounts of private firms as anti‐discriminatory, private firm workers are observed to believe that women should be stay‐at‐home wives instead of working more than state firm workers. In particular, women workers are more likely to resist the traditional belief that women should be stay‐at‐home wives instead of working, whereas men appear more likely to endorse this belief, especially in private firms. The results suggest that women are not simply passive recipients of patriarchal beliefs, but exhibit a willingness to challenge their symbolic boundaries and reject traditional expectations of unequal gender relations in the workplace.</p></abstract><trans-abstract xml:lang="fr"><title>Résumé</title><p>Dans quelle mesure l'emploi des femmes est‐il accepté dans les entreprises chinoises modernes? S'appuyant sur des données regroupées de l'Enquête sociale générale chinoise (CGSS) de 2017 et 2021, représentatives à l'échelle nationale, cet article évalue les facteurs socio‐économiques prédictifs et la prévalence de la croyance selon laquelle les femmes devraient rester au foyer plutôt que de travailler dans les entreprises chinoises. Les résultats montrent que les femmes dans les entreprises chinoises disposent de ressources socio‐économiques comparables à celles des hommes, mais qu'elles restent la cible d'une croyance patriarcale persistante selon laquelle les femmes devraient se marier et se consacrer aux tâches ménagères plutôt que de travailler. Contrairement aux descriptions conventionnelles des entreprises privées comme étant non discriminatoires, on observe que les employés du secteur privé sont plus nombreux que ceux des entreprises publiques à croire que les femmes devraient être des épouses au foyer plutôt que de travailler. En particulier, les travailleuses sont plus susceptibles de s'opposer à la croyance traditionnelle selon laquelle les femmes devraient rester au foyer plutôt que de travailler, tandis que les hommes semblent plus enclins à adhérer à cette croyance, en particulier dans les entreprises privées. Les résultats suggèrent que les femmes ne sont pas simplement des réceptrices passives des croyances patriarcales, mais qu'elles manifestent une volonté de remettre en question leurs limites symboliques et de rejeter les attentes traditionnelles en matière de relations de genre inégales sur le lieu de travail.</p></trans-abstract><kwd-group kwd-group-type="author-generated"><kwd id="cars70043-kwd-0001">discrimination</kwd><kwd id="cars70043-kwd-0002">private firms</kwd><kwd id="cars70043-kwd-0003">state firms</kwd><kwd id="cars70043-kwd-0004">women's employment</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>Hong Kong Polytechnic University</institution><institution-id institution-id-type="doi">10.13039/501100004377</institution-id></institution-wrap>
+</funding-source><award-id>P0046151</award-id></award-group></funding-group><counts><fig-count count="3"/><table-count count="3"/><page-count count="14"/><word-count count="10257"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>August 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:05.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body><sec id="cars70043-sec-0010"><label>1</label><title>Introduction: Women's Paid and Unpaid Labour</title><p>Large bodies of evidence in social stratification, economic sociology, and economics have identified gendered disadvantages that disproportionately affect women in wages, hiring, and performance evaluations (Campero <xref rid="cars70043-bib-0016" ref-type="bibr">2021</xref>; Correll et al. <xref rid="cars70043-bib-0023" ref-type="bibr">2020</xref>; Rivera and Tilcsik <xref rid="cars70043-bib-0074" ref-type="bibr">2019</xref>). The patriarchal gender role beliefs that discriminate against women's employment are motivated by traditional patriarchal values that preclude their participation in paid labour (Charles et al. <xref rid="cars70043-bib-0018" ref-type="bibr">2023</xref>; Elliott and Reid <xref rid="cars70043-bib-0028" ref-type="bibr">2019</xref>; Ferree <xref rid="cars70043-bib-0032" ref-type="bibr">2020</xref>). The exclusion of women from paid employment and their relegation to unpaid labour through marriage has been widely documented as a trade‐off that economically disempowers them. Hochschild (2012) classically argued that women who elect to marry are often expected to undertake a “second shift,” namely, substantially greater amounts of unpaid housework that come at the cost of occupational attainment (see Quadlin and Doan <xref rid="cars70043-bib-0069" ref-type="bibr">2018</xref>). In addition, married women face severe penalties in income, education, and promotion opportunities (England et al. <xref rid="cars70043-bib-0030" ref-type="bibr">2020</xref>; Gonalons‐Pons and Gangl <xref rid="cars70043-bib-0037" ref-type="bibr">2021</xref>; Ludwig and Brüderl <xref rid="cars70043-bib-0056" ref-type="bibr">2018</xref>). Panel evidence shows that these gendered disadvantages have culminated in married women disproportionately choosing to turn to part‐time work or withdrawing from the workforce altogether (Biemann et al. <xref rid="cars70043-bib-0010" ref-type="bibr">2012</xref>).</p><p>Indeed, despite storied gains in women's participation in paid work over the past ten years in advanced capitalist economies around the world, rates of paid work among married women are consistently out of sync with those of their male counterparts. Cognizant of the gender wage gap (in part because of their married status and greater share of the housework), married women in developed economies have been increasing their hours of paid work in a bid to overcome their handicap (Jones et al. <xref rid="cars70043-bib-0044" ref-type="bibr">2015</xref>).</p><p>Women face disproportionately fewer opportunities for upward mobility on account of patriarchal cultural norms that constrain their place in the household (Seeberg and Luo <xref rid="cars70043-bib-0077" ref-type="bibr">2018</xref>). As a result, women disproportionately suffer from greater barriers to obtaining basic economic resources (education and income) and pathways to upward mobility (overcoming segregation in the labour market) that result in their being sorted into lower‐status occupations (Wang and Cheng <xref rid="cars70043-bib-0087" ref-type="bibr">2021</xref>; Wu and Qi <xref rid="cars70043-bib-0092" ref-type="bibr">2017</xref>). Moreover, it is increasingly apparent that these myriad forms of deprivation among women are affected by attitudes towards women's pathways for upward mobility and beliefs about gender equality within the workplace itself.</p><p>As Risman (<xref rid="cars70043-bib-0073" ref-type="bibr">2004</xref>, p.433) argues, there exist “cultural and institutional components” of the social structure of gender that shape the “interactional expectations” held of women's employment. Analytically focusing on gender as such a social structure has been fruitful for excavating patriarchal gender role beliefs about women's employment. Recent work within this scope has yielded insights into how these gendered beliefs are embedded in institutional design and sustained by cultural meanings attached to technical work, such as the masculinist construction of computer programming, hardware management, and engineering skills (Alegria and Branch <xref rid="cars70043-bib-0003" ref-type="bibr">2015</xref>; Alegria <xref rid="cars70043-bib-0002" ref-type="bibr">2019</xref>; Alfrey and Twine <xref rid="cars70043-bib-0004" ref-type="bibr">2017</xref>). Organizational contexts thus emerge as social spaces where such beliefs manifest and create knock‐on effects on women's income and prospects of upward mobility (Smith‐Doerr et al. <xref rid="cars70043-bib-0079" ref-type="bibr">2019</xref>), becoming one of the most consequential sites for the contemporary reproduction of gender inequality.</p><p>In formal organizational contexts, women are consistently evaluated lower than men for comparable levels of performance, resulting in less credit for the successes they achieve (Heilman et al. <xref rid="cars70043-bib-0041" ref-type="bibr">2019</xref>; Manzi and Heilman <xref rid="cars70043-bib-0057" ref-type="bibr">2021</xref>). Even with comparable amounts of technical skills as their male counterparts, women are implicitly held to unwritten standards such as how affable they appear to their male colleagues (Lee and Huang <xref rid="cars70043-bib-0051" ref-type="bibr">2018</xref>). Women who stray from such informal expectations are found to be punished in official performance assessments (Correll et al. <xref rid="cars70043-bib-0023" ref-type="bibr">2020</xref>), enabling implicit beliefs about patriarchal gender roles to influence formal evaluations of women's ability to be hired or promoted (Campero <xref rid="cars70043-bib-0016" ref-type="bibr">2021</xref>; Dobbin and Kalev <xref rid="cars70043-bib-0026" ref-type="bibr">2021</xref>; Rivera and Tilcsik <xref rid="cars70043-bib-0074" ref-type="bibr">2019</xref>).</p><p>Recent research on perceived group threat and exclusion demonstrates that individuals who perceive status erosion or competitive pressure may respond by endorsing more exclusionary norms (Borinca et al. <xref rid="cars70043-bib-0011" ref-type="bibr">2025</xref>). These dynamics help explain why men in rapidly modernizing labour markets may support traditionally patriarchal gender role beliefs, not solely due to cultural persistence but as a reaction to perceived competition from women.</p><p>In conversation with this literature, this article extends this work to the context of Chinese firms. As the world's largest national economy by the Organization for Economic Co‐operation and Development's (OECD, <xref rid="cars70043-bib-0063" ref-type="bibr">2023</xref>) GDP estimates (a GDP of US$30.09 trillion as of 2022, ahead of the U.S.’ $25.46 trillion), China constitutes a salient empirical case with which to examine gendered beliefs in contemporary market economies. Despite becoming a major driver of global economic growth and the largest trading partner for many liberal democracies with advanced capitalist economies, China experiences a unique dislocation between its advanced economic development and patriarchal beliefs against women, reporting nearly double the amount of organizational gender discrimination as the OECD average (OECD <xref rid="cars70043-bib-0062" ref-type="bibr">2022</xref>). Unlike Canada or other OECD countries, where public‐sector equity legislation constrains discriminatory practices, China's state‐sector governance ties employment stability to political legitimacy. This creates distinct organizational incentives: state firms may reproduce older values through stable workforces, whereas private firms may generate new tensions due to rapid turnover and competitive pressures.</p><p>This article foregrounds the role of organizational contexts as places of employment in shaping patriarchal beliefs about women across prominent types of firms in China, namely, state and private firms. Should women marry and relegate themselves to the household, as conventional patriarchal beliefs would hold, or should women be permitted to work? Analyzing nationally representative microdata in China, this article examines variations in these beliefs among state and private firms and the root socioeconomic causes underpinning them across intersections of gender and firm type.</p></sec><sec id="cars70043-sec-0020"><label>2</label><title>Theorizing Patriarchal Beliefs About Women's Employment</title><p>Classic lines of sociological research have suggested cognitive attachments to social scripts about patriarchal gender roles as a driving force behind intolerance against women in the workplace. In <italic toggle="yes">Distinction</italic>, Bourdieu (<xref rid="cars70043-bib-0012" ref-type="bibr">1984</xref>) seminally posited that class conditions imply “social conditioning” (p.101). This conditioning, like a <italic toggle="yes">habitus</italic>, drives members of a profession to enact “overtly or implicitly guiding co‐optation choices” based on “age, sex, social or ethnic origin” that gatekeep “entry into the profession and right through a career, so that members of the corps who lack these traits are excluded to marginalized… [especially] women” (p.105).</p><p>Although patriarchal beliefs are learned as scripts, they are at their core selectively activated, redefined, and may even be overlooked by individuals to obtain their desired outcomes (Swidler, 2003). Indeed, these beliefs (as scripts) are themselves inherited from individuals’ social environment as “a set of heuristics, hunches and shallow (but useful because they work most of the time) practical skills that allow persons to best interface externalized structures, contexts and institutions” (Lizardo and Strand <xref rid="cars70043-bib-0055" ref-type="bibr">2010</xref>, p.206). Put differently, patriarchal beliefs, like all scripts, tell individuals of possible courses of action or thought to achieve their desired ends, but do not decide these ends themselves nor do they offer rationales for such ends (Kaufman <xref rid="cars70043-bib-0046" ref-type="bibr">2004</xref>, p.340; Vaisey <xref rid="cars70043-bib-0083" ref-type="bibr">2008</xref>; Vaisey and Miles <xref rid="cars70043-bib-0084" ref-type="bibr">2014</xref>).</p><p>In China, these scripts become the basis of two polarized pathways for women: to marry and be relegated to the household, or to enter the workplace. For women in China, marriage has been widely seen as a rite of passage into adulthood throughout Chinese history, in part because of social dependence on the family as a source of welfare in a poor country committed to modernizing without foreign assistance (Wolf <xref rid="cars70043-bib-0089" ref-type="bibr">1984</xref>). In the throes of the civil war that preceded the foundation of the modern Chinese state, Mao (<xref rid="cars70043-bib-0058" ref-type="bibr">1953</xref>) observed in his <italic toggle="yes">1927 Report</italic>:
+<disp-quote content-type="quotation"><p>A man in China is usually subjected to the domination of three systems of authority: (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) the system of the state (political authority)… (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) the system of the clan (clan authority)… and (3) the systems of gods and spirits (theocratic authority)… as to women, apart from being dominated by the three systems above, they are further dominated by men (the authority of the husband). These four kinds of authority… represent the whole ideology and institution of feudalism and patriarchy, and are the four enormous cords that have bound the Chinese people. (1953, p.40)</p></disp-quote>
+</p><p>These “four cords” were predicated on marriage between a man and a woman, within which there existed a clearly defined hierarchy that not only subordinated women but also bound them to the household as a perceived source of sustenance for the family unit through their domestic labour and obedience to their husbands. Charged with a sense of moral worthiness and ordained by the other cords of authority, in all their ancestral gods and clan traditions, the bondage of women to the household through marriage was pseudo‐divine and historically institutionalized.</p><p>It was implied that men would be incapable of performing paid labour and children would not be raised sufficiently without this genre of unpaid domestic labour by women in the household (Liu <xref rid="cars70043-bib-0054" ref-type="bibr">2004</xref>). So powerful was this perception that statehood was contingent on the role of women in marriage, even subsequent attempts by the Chinese state to reform gender relations and liberate women to work were met with quiet resistance and later abandonment (Palmer <xref rid="cars70043-bib-0065" ref-type="bibr">1995</xref>).</p><p>The historical significance of marriage for women casts a long shadow on their life chances in the nation today, casting their life chances into domestic labour and paid labour as the only two, polarized possible outcomes. Recent 2022 data on national employment from the World Bank (<xref rid="cars70043-bib-0090" ref-type="bibr">2022</xref>), for instance, show that the paid labour force participation rate among women in China stands at 61.1%, notably lower than their male counterparts, who report a 72.6% participation rate. Data from sub‐national administrative regions within China said to be more liberal, such as Hong Kong, reveal a similar discrepancy between men and women, where the labour participation rate stands at 64.7% for men, but 52.9% for women (Census and Statistics Department of Hong Kong <xref rid="cars70043-bib-0017" ref-type="bibr">2023</xref>).</p><p>Moreover, follow‐up survey questions inquiring into reasons for women's economic inactivity (their low labour participation rate) found that a significant proportion of women (35.2% of all women) cited engagement with household duties as the reason for their inability to obtain a job, whereas men's reasons for economic activity were linked to attendance at educational institutions. The prospects of marriage (entry into unpaid domestic labour) and employment (entry into paid labour), therefore, represent separate and polarized pathways for women's life course.</p><p>It bears noting that women may also partake in gender discrimination, especially given the institutionalization of these patriarchal norms in the “four cords” of modern China. This work gains credence from and contributes to the literature on conflict against minorities by majority groups when the latter feel a sense of threat (see Bansak et al. <xref rid="cars70043-bib-0007" ref-type="bibr">2016</xref>; De Coninck <xref rid="cars70043-bib-0024" ref-type="bibr">2020</xref>; Olson et al. <xref rid="cars70043-bib-0061" ref-type="bibr">2007</xref>). Where much of this work has focused on racial and ethnic relations, the present article extends this dialogue to examine how men (and women) may react against women occupying paid roles in the workplace, rather than unpaid roles in the household.</p><sec id="cars70043-sec-0030"><label>2.1</label><title>Boundaries, Group Threat, and Patriarchal Beliefs About Women's Employment</title><p>Group threat theories posit that responses to perceived exclusion shape gender attitudes in the workplace, such that when people perceive their group as marginalized or threatened, they report stronger in‐group preferences and greater support for exclusionary norms (Borinca et al. <xref rid="cars70043-bib-0011" ref-type="bibr">2025</xref>; Emerson and Murphy <xref rid="cars70043-bib-0029" ref-type="bibr">2015</xref>; Von Hippel et al. <xref rid="cars70043-bib-0085" ref-type="bibr">2011</xref>). While this work is prominently couched in psychology, it aligns with sociological research that identifies the role of boundaries in the workplace to affect inequality (Lamont &amp; Molnar <xref rid="cars70043-bib-0050" ref-type="bibr">2002</xref>). Lamont and Fournier (<xref rid="cars70043-bib-0049" ref-type="bibr">1992</xref>) assert that symbolic boundaries are often erected in the workplace based on ascribed characteristics, including gender. These boundaries need not be spatial, but assume the form of words and categories that label women and render them socially distant (p.11).</p><p>So codified are these boundary distinctions that, as Epstein (<xref rid="cars70043-bib-0031" ref-type="bibr">2007</xref>) asserts, women are often forced to reassure their male counterparts in the workplace of their respect for traditional gender roles and commitment to family over work. These boundaries place at risk women's opportunities to accomplish job tasks, earn promotions, and retain job security, because they are reinforced when “repeatedly tested by people who are on the fringes of the group and repeatedly defended by those within it” (Stein <xref rid="cars70043-bib-0082" ref-type="bibr">2001</xref>, p.8). These actions, found to be performed by women even across class strata, recursively construct and reinforce their disadvantaged social position as the status quo (Yodanis <xref rid="cars70043-bib-0094" ref-type="bibr">2002</xref>, p.326).</p><p>In a similar fashion, such boundaries animate tension and conflict between men and women in Chinese firms. Within Chinese private firms, where promotion systems are competitive and evaluation criteria fluid, men work to erect and retain the symbolic boundaries dividing men and women, preserve the status quo, and ultimately enact social distance against women (Au <xref rid="cars70043-bib-0005" ref-type="bibr">2024a</xref>; Shen and Wang <xref rid="cars70043-bib-0078" ref-type="bibr">2023</xref>; Yang and Li <xref rid="cars70043-bib-0093" ref-type="bibr">2009</xref>). Au (<xref rid="cars70043-bib-0005" ref-type="bibr">2024a</xref>) finds that when faced with the prospect of a recession, for instance, male managers prefer to lay off women first in Chinese firms; an evocative example of men turning symbolic boundaries into spatial ones by evicting women from the shared space of the workplace.</p><p>The associations of job tasks and job roles with masculinity and femininity lead to a market‐wide segregation of men and women into different jobs. Kmec et al. (<xref rid="cars70043-bib-0047" ref-type="bibr">2010</xref>), for instance, find that job informants tend to make unsolicited job referrals (“nonsearching”) for their contacts based on gender stereotypicality: men and women contacts are segregated into “male‐typical” and “female‐typical” job referrals, whereas the women who defy this stereotypicality and work in male‐dominated fields are informally penalized with lower job rewards compared to fellow men. This penalty is explained by the fact that workers, who rely on gender stereotypicality to queue jobs and firms (Reskin and Roos <xref rid="cars70043-bib-0071" ref-type="bibr">1990</xref>), police gendered symbolic boundaries about job fits and stigmatize transgressions across gendered lines.</p><p>This preoccupation with ordering jobs by gender is accentuated in the Chinese labour market, where women's entry into paid labour has been a relatively recent phenomenon and relegation to the household has instead been their traditional life course (Wolf <xref rid="cars70043-bib-0089" ref-type="bibr">1984</xref>), compared to other societies with a longer history of women in the workplace (Aksu et al. <xref rid="cars70043-bib-0001" ref-type="bibr">2025</xref>). Moreover, Chinese firms possess a stagnant employee pool and few layoffs over decades (Au <xref rid="cars70043-bib-0005" ref-type="bibr">2024a</xref>), that amplifies the symbolic boundaries erected by the predominantly male groups in power (Lamont &amp; Fournier <xref rid="cars70043-bib-0049" ref-type="bibr">1992</xref>).</p><p>This article examines how socioeconomic resources might dampen the likelihood that these symbolic boundaries are invoked by men to penalize women. Socioeconomic resources are defined as income, education, job precarity, and job control. Taken to represent the financial security and social capital sufficient to secure their present job and improve job search outcomes (Lin <xref rid="cars70043-bib-0097" ref-type="bibr">2001</xref>), socioeconomic resources offer a proxy for the perceived threat that incoming women workers pose to the job security of existing workers. Having income provides a sufficient sense of stability that enables individuals to be tolerant of newcomers and other groups (Quillian <xref rid="cars70043-bib-0070" ref-type="bibr">1996</xref>; Rosenstein <xref rid="cars70043-bib-0075" ref-type="bibr">2008</xref>). In racially homogeneous work settings like China, dominant group members whose individual interests (economic or otherwise) are not directly threatened by an opposing group are less likely to express prejudice (Quillian <xref rid="cars70043-bib-0070" ref-type="bibr">1996</xref>).</p><p>These connections between socioeconomic resources and patriarchal beliefs about women's employment are especially prevalent in China, given that socioeconomic resources are often taken as positional cues (status signals) that contacts refer to when deciding whether to offer job referrals and social support (Burt <xref rid="cars70043-bib-0015" ref-type="bibr">2019</xref>; DiTomaso and Bian <xref rid="cars70043-bib-0025" ref-type="bibr">2018</xref>). Cross‐national studies have identified similar links between material well‐being and patriarchal beliefs about women's employment. In a cross‐national study of beliefs in equality for men and women in Europe and the U.S., Olson et al. (<xref rid="cars70043-bib-0061" ref-type="bibr">2007</xref>) observed that women were encouraged (discouraged) to enter the workplace when the national economy was growing (recessionary). The ability of women to obtain equality in the workplace was, therefore, contingent on the broader economic resources that they and their evaluators possessed. Pepin and Cotter (<xref rid="cars70043-bib-0067" ref-type="bibr">2018</xref>) echo these results by identifying rising support for gender egalitarianism from 1976 through to the end of the twentieth century, coincident with broader patterns of rising education, employment, and income.</p><p>Accordingly, this article hypothesizes that:
+<statement content-type="Hypothesis" id="cars70043-mthst-0001"><label>Hypothesis 1</label><p>Greater socioeconomic resources predict a lower likelihood of possessing the belief that women should be stay‐at‐home wives instead of working.</p></statement>
+</p></sec><sec id="cars70043-sec-0040"><label>2.2</label><title>Firm Effects and Patriarchal Beliefs About Women's Employment</title><p>This article further examines the organizational context in which patriarchal beliefs are exercised, namely, the type of firm in which individuals are employed. In organizations, firm structures constitute seedbeds for conditioning individual perceptions of competition that result in a sense of threat and possible hostility against newcomers. Sociological research on gender stereotypes finds that when the existing pool of workers perceives their status as challenged by the inclusion of subordinate groups, they may respond by endorsing exclusionary beliefs that legitimize existing hierarchies (Correll et al. <xref rid="cars70043-bib-0022" ref-type="bibr">2007</xref>; Gorman <xref rid="cars70043-bib-0040" ref-type="bibr">2005</xref>). The gender‐stereotypicality of hiring preferences is deeply institutionalized, according to Gorman (<xref rid="cars70043-bib-0040" ref-type="bibr">2005</xref>), who observes that selection criteria are often associated with stereotypically masculine or feminine qualities, which results in a greater proportion of same‐gender hires. Ultimately, this reinforces gender inequality in firms, especially among entry‐level hires, where male decision makers prefer to hire fellow men and fill fewer vacancies with women compared to female decision makers.</p><p>Within this scope, the type of firm affects experiences of discrimination in a workplace. Different firm types are theorized to embody different sets of organizational objectives, values, and behaviours that come to influence a firm's decisions on how to allocate financial and human capital on the ground (Fligstein and Goldstein <xref rid="cars70043-bib-0033" ref-type="bibr">2022</xref>). Embedded in these ideal types of firms, therefore, are powerful paradigms that orient the sense of group threat and patriarchal beliefs about women's employment, among all other facets of employee experiences.</p><p>Focused on China, this study foregrounds the distinctions between state and private firms as two of the most prominent ideal types of firms that account for the largest proportion of corporate asset ownership and employee hiring nationwide. Much of the Chinese economy began with state‐owned enterprises (SOEs) and collectively‐owned enterprises (COEs), defined by majority ownership by the government. From the modern foundation of China in 1949, these state firms were responsible for dispensing much of the goods and services consumed by citizens under a system of fixed prices and fixed quotas. From 1978 onward, however, then‐leader Deng Xiaoping implemented the “Open‐Door Policy” that consisted of a set of market‐oriented reforms that radically reorganized firms nationwide. As markets liberalized to replace quota‐driven production with demand‐driven production, state firms were forced to compete with a growing crop of private firms.</p><p>As a result, state firms have steadily declined in number compared to private firms, which account for about 96% of all firms (27.545 million out of 28.665 million firms in China) and are a major source of employment nationwide (National Bureau of Statistics of China <xref rid="cars70043-bib-0059" ref-type="bibr">2022</xref>). State firms have been relegated to managing key sectors of the economy responsible for essential goods and services. Oil and petroleum production in the entire nation, for instance, is monopolized by three SOEs alone (Sinopec, PetroChina, and China National Offshore Oil Corporation), while the natural gas distribution thereafter to cities for energy is coordinated by a handful of firms dependent on state contracts with these three SOEs. For their control over lucrative but smaller parts of the economy, state firms controlled over half of corporate assets nationwide in 2022, an amount that grew by about 10% annually since 1997 (Wang <xref rid="cars70043-bib-0088" ref-type="bibr">2022</xref>).</p><p>This history of the two firm types in Chinese markets imputes different attitudes toward (women's) employment in each. In state firms, state‐mandated constraints on profits reflect a firm logic that treats state firm assets as public goods, rather than private ones for profit. For this reason, even though preserving employee employment and well‐being is a capital expenditure, they are considered a proxy for the stability of the Chinese government and so remain resilient even during economic recessions (Guo et al. <xref rid="cars70043-bib-0039" ref-type="bibr">2017</xref>). State firms in China are much less likely to resort to layoffs to bolster profits during downturns, barring the prospect of severe economic depressions like the 1997 Financial Crisis (Wang and Luo <xref rid="cars70043-bib-0086" ref-type="bibr">2019</xref>). Given that layoffs are rare in state firms, the pool of workers in each firm is largely stable.</p><p>In other words, state firms may exhibit stronger patriarchal beliefs because their unchanging, aging labour pool that possesses them is resistant to demographic change across decades. This is augmented by a sense of threat that arises when faced with the prospect of new women workers who might disrupt the existing pool of predominantly male workers (Lamont &amp; Molnar <xref rid="cars70043-bib-0050" ref-type="bibr">2002</xref>). For similar reasons, women face a penalty when navigating the workplace because of motherhood, when other workers suspect they might benefit from favouritism (Duguid et al. <xref rid="cars70043-bib-0027" ref-type="bibr">2012</xref>) or perceived family‐work conflicts for their competing roles in the household and at work (Nohe et al. <xref rid="cars70043-bib-0060" ref-type="bibr">2014</xref>). These conflicts grow against the backdrop of Chinese patriarchal normative expectations of women to commit themselves to domestic labour at the <italic toggle="yes">exclusion</italic> of paid labour (Wolf <xref rid="cars70043-bib-0089" ref-type="bibr">1984</xref>).</p><p>Private firms, whether privately held or publicly listed on stock exchanges, remain majority owned by private shareholders who fulfil most of their financing needs. Where state firms are characterized by a firm logic that prioritizes the needs of the public and their employees, private firms are pushed to prioritize the fiduciary interests of their private shareholders. Fligstein and Goldstein (<xref rid="cars70043-bib-0033" ref-type="bibr">2022</xref>) conceptualize this private firm logic as an obsession with short‐term profitability and financial engineering (such as accounting practices to mask losses in a quarter) in order to bolster the company's share price (see also Jung and Dobbin <xref rid="cars70043-bib-0045" ref-type="bibr">2015</xref>). Moreover, private firms are typically isomorphic in order to be competitive, such that firm logics and employee management practices often spread across entire markets (Gathmann et al. <xref rid="cars70043-bib-0098" ref-type="bibr">2022</xref>).</p><p>Although private firms are more susceptible to layoffs than state firms, Becker (<xref rid="cars70043-bib-0008" ref-type="bibr">1957</xref>) seminally argued that private firms are less discriminatory (toward women and minorities) in order to survive, because discrimination yields higher unit net costs. Gender discrimination amounts to incorporating qualities that are not relevant to productivity. For private firms whose survival depends on productivity, weeding out employees based on their gender alone would detract from running firm operations efficiently and predispose firms to failure (Pager <xref rid="cars70043-bib-0064" ref-type="bibr">2016</xref>). Cognizant of these risks, private firms should strive to dismantle patriarchal beliefs in the workplace and seek to employ workers based on merit alone.</p><p>Indeed, contemporary women are challenging these social boundaries and traditional notions of femininity (Aksu et al. <xref rid="cars70043-bib-0001" ref-type="bibr">2025</xref>). Women are not passive recipients of patriarchal norms, even if their resistance may often be minimized in the context of the workplace, where boundary distinctions are institutionalized, and men hold superior decision‐making authority over their careers. In particular, many women challenge prevailing societal expectations of men and express a desire for alternative forms of masculinity that emphasize emotional openness and shared responsibilities. These findings highlight that women workers, especially those in private firms, may reject traditional expectations not only for strategic reasons, but because they hold competing visions of gender relations shaped by workplace inequality (Wu and Dong <xref rid="cars70043-bib-0091" ref-type="bibr">2019</xref>).</p><p>This feminist turn carries implications for private firms said to be internationalized into gender‐egalitarian norms, giving social space to women to challenge symbolic boundaries and disrupt the gender stereotypicality of job tasks within them. The rise of women entrepreneurs in the private Internet sector is evidence of this disruption, as women pursue independent careers outside of the household (Cong et al. <xref rid="cars70043-bib-0021" ref-type="bibr">2024</xref>). Indeed, women may be more active agents in reshaping cultural understandings of gender roles, often in direct response to the prevailing discriminatory environments in Chinese organizations writ large.</p><p>As a result, this article hypothesizes that:
+<statement content-type="Hypothesis" id="cars70043-mthst-0002"><label>Hypothesis 2</label><p>In private firms, women are associated with a lower likelihood of possessing the belief that women should be stay‐at‐home wives instead of working.</p></statement>
+</p></sec></sec><sec id="cars70043-sec-0050"><label>3</label><title>Data and Methods</title><p>This article uses the Chinese General Social Survey (CGSS), a nationally representative dataset administered by the Chinese Statistics Bureau that targets civilian Chinese adults aged 18 or older. The present study uses pooled data from two waves: the 2017 wave (<italic toggle="yes">N</italic> = 12,528) and the 2021 wave (<italic toggle="yes">N</italic> = 8,148). Representative of the general population in China, the CGSS regularly surveys more than 10,000 households in China on a battery of questions about social structures, social networks, attitudes about inequality, and experiences related to quality of life. Questionnaires are administered face‐to‐face for about 90 min, that ask about attitudes toward women and colleagues. The sampling framework followed a multi‐stage stratified design, covering all regional, geo‐administrative, and county‐level strata (Bian and Li <xref rid="cars70043-bib-0009" ref-type="bibr">2012</xref>). Survey participants were aged 18 or older.</p><p>To test for preferences for women to be stay‐at‐home wives compared to working as the outcome variable, this study draws on the CGSS question, “please indicate the extent to which you agree with this statement: it is better that women get married instead of working.” Responses were ordered on a 5‐point Likert scale: (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) strongly disagree, (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) disagree, (3) neither agree nor disagree, (4) agree, and (5) strongly agree. A higher score indicates a stronger belief that women should marry and be relegated to the household instead of working.</p><p>
+<italic toggle="yes">Socioeconomic resources</italic>.—Socioeconomic resources were conceptualized as independent variables based on (a) income, (b) education, (c) job security, and (d) job autonomy. Based on the total income a respondent received over the past twelve months, they were classified into the following income groups: (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) low class (≤ RMB25,000 per year), (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) lower middle class (RMB25,001–40,000 per year), (3) upper middle class (RMB40,001–100,000 per year), (4) upper class (RMB100,001–200,000 per year), (5) and elite (&gt;RMB200,000 per year).</p><p>The highest level of formal education for individuals was also recorded and coded into ordinal classifications: (0) no education, (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) high school or below, (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) technical college, (3) university, (4) postgraduate or above.</p><p>Capturing the job security that respondents had at the time of the survey, this study included the CGSS question, “What is your current employment type (full‐time, part‐time, etc.)?” and coded responses into (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) part‐time (or not full‐time) and (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) full‐time.</p><p>Similarly, this study accounted for job autonomy using the CGSS question, “for your current job, what role do you take on in terms of management?” Responses were recoded into ordinal classifications: (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) low job autonomy (only managed by others), (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) middle job autonomy (both managed by others and responsible for managing others), and (3) high job autonomy (only responsible for managing others).</p><p>
+<italic toggle="yes">Individual‐level demographic variables</italic>.— Given the prevalence of patriarchal beliefs in China, this article additionally accounts for individual‐level demographic variables that could have self‐selective effects on beliefs about women, namely, <italic toggle="yes">hukou</italic>, <italic toggle="yes">age</italic> and <italic toggle="yes">marital status</italic>.</p><p>
+<italic toggle="yes">Hukou</italic> was controlled for as a categorical variable consisting of four types of registration: urban <italic toggle="yes">hukou</italic>, resident <italic toggle="yes">hukou</italic> but who were previously urban, resident <italic toggle="yes">hukou</italic> but who were previously rural, and rural <italic toggle="yes">hukou</italic>. Nationwide, Chinese citizens are assigned types of citizenship based on their city or locality of birth. Introduced in the 1950s to restrict migration, the most common forms of <italic toggle="yes">hukou</italic> are the urban (<italic toggle="yes">feinongye</italic>) and rural (<italic toggle="yes">nongye</italic>) registrations. In 2014, an experimental policy reform was introduced in select cities, a new integrated “resident” (<italic toggle="yes">jumin</italic>) <italic toggle="yes">hukou</italic> registration, into which citizens are transitioned. Each type of <italic toggle="yes">hukou</italic> determines one's access to welfare, school registration, and even eligibility for job categories, producing restrictions on life chances. As such, <italic toggle="yes">hukou</italic> registrations constitute a unique form of socioeconomic resource, because of their unique effects on life chances. A rich body of evidence identifies a gap in income, occupational mobility, and wellbeing between urban and rural <italic toggle="yes">hukou</italic> (Chen et al. <xref rid="cars70043-bib-0019" ref-type="bibr">2018</xref>; Song and Smith <xref rid="cars70043-bib-0081" ref-type="bibr">2021</xref>; Zhong et al. <xref rid="cars70043-bib-0096" ref-type="bibr">2022</xref>). The relative deficiency of socioeconomic opportunities in rural regions thus amplifies their patriarchal values toward women, constraining educational and work opportunities, compared to urban regions with greater diversity (Au <xref rid="cars70043-bib-0005" ref-type="bibr">2024a</xref>,<xref rid="cars70043-bib-0006" ref-type="bibr">b</xref>).</p><p>Age was recoded into ordinal classifications: (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) aged 18 to 30, (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) aged 31 to 40, (3) aged 41 to 50, (4) aged 51 to 60, (5) aged 61 to 70, (6) aged 71 to 80, (7) aged 81 and above. This design takes stock of evidence that older adults are more inclined to believe in traditional patriarchal values, given that they spent their early lives in a socioeconomically deprived environment (a less prosperous China) with lower educational achievement that is not conducive to postmaterialist and liberalist values (Hu and Scott <xref rid="cars70043-bib-0042" ref-type="bibr">2016</xref>).</p><p>Marital status was additionally recorded as (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) married or (0) not married. Married individuals may be more likely to express gendered traditional beliefs in favour of marriage, because of self‐selective effects. Having elected to get married themselves, they likely hold a more favourable view of marriage reflective of the choice they themselves have made, compared to those who have not married.</p><p>
+<italic toggle="yes">Firm‐level effects</italic>, namely, firm size, were also controlled for. Just like firm type, the size of a firm is correlated with organizational cultures more or less tolerant toward women. The evidence, however, is mixed on this score. Some studies have identified larger firms as less discriminatory, because larger firms are likely to be under watch by a greater number of stakeholders. Stakeholder oversight, in turn, leads to the explicit enforcement of anti‐discriminatory policies and pressure to improve female representation per corporate social governance principles (Knight et al. <xref rid="cars70043-bib-0048" ref-type="bibr">2022</xref>; Patel &amp; Yates <xref rid="cars70043-bib-0066" ref-type="bibr">2023</xref>). Others, however, have argued that larger firms are led by male‐dominated boards who are unwilling to hire women, done with the implicit backing of large shareholders (Post and Byron <xref rid="cars70043-bib-0068" ref-type="bibr">2015</xref>). Specific evidence from China, for instance, finds that large firms are hotbeds of discrimination against women's employment (Gao et al. <xref rid="cars70043-bib-0035" ref-type="bibr">2016</xref>). Firm size was thus controlled for and classified into: (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>) micro firms (fewer than 10 employees), (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>) small firms (10 to 49 employees), (3) medium firms (50 to 249 employees), (4) large firms (250 to 9,999 employees), and (5) mega firms (10,000 employees or more).</p><p>The sample was stratified into two subsamples based on the type of firm in which respondents were employed at the time of the survey. The analytic subsample includes only employed respondents working in organizations classified by CGSS as state‐owned or private firms. Individuals who were unemployed, self‐employed, agricultural workers, or outside the labour force were excluded. The final analytic sample includes 1,897 state‐firm employees, including SOEs and COEs, and 2,488 private‐firm employees. This enabled a fine‐grained examination of how predictors of belief about women's employment varied across genders and firm types. Ordinal logistic regressions were conducted on beliefs about women's employment. I regress patriarchal beliefs about women <italic toggle="yes">Y<sub>gb</sub>
+</italic> against socioeconomic resources <italic toggle="yes">Y<sub>inc</sub>, Y<sub>edu</sub>, Y<sub>jsec</sub>, Y<sub>jau</sub>
+</italic>, <italic toggle="yes">hukou</italic> registration <italic toggle="yes">Y<sub>huk</sub>
+</italic>, and controlling for <italic toggle="yes">Y<sub>age</sub>
+</italic>, <italic toggle="yes">Y<sub>mar</sub>
+</italic>, firm size <italic toggle="yes">Y<sub>firm</sub>
+</italic>, and <italic toggle="yes">Y<sub>year</sub>
+</italic>. This is expressed as:
+<disp-formula id="cars70043-disp-0001">
+<label>(1)</label>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-1" display="block"><mml:mrow><mml:mtable displaystyle="true"><mml:mtr><mml:mtd columnalign="right"><mml:mrow><mml:mspace width="0.33em"/><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>g</mml:mi><mml:mi>b</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mtd><mml:mtd><mml:mo>=</mml:mo></mml:mtd><mml:mtd columnalign="left"><mml:mrow><mml:mi>α</mml:mi><mml:mo linebreak="badbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>i</mml:mi><mml:mi>n</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>e</mml:mi><mml:mi>d</mml:mi><mml:mi>u</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>3</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>j</mml:mi><mml:mi>s</mml:mi><mml:mi>e</mml:mi><mml:mi>c</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>4</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>j</mml:mi><mml:mi>a</mml:mi><mml:mi>u</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>5</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>h</mml:mi><mml:mi>u</mml:mi><mml:mi>k</mml:mi></mml:mrow></mml:msub></mml:mrow></mml:mtd></mml:mtr><mml:mtr><mml:mtd/><mml:mtd/><mml:mtd columnalign="left"><mml:mrow><mml:mo linebreak="badbreak">+</mml:mo><mml:mspace width="0.28em"/><mml:msub><mml:mi>β</mml:mi><mml:mn>6</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>a</mml:mi><mml:mi>g</mml:mi><mml:mi>e</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>7</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>m</mml:mi><mml:mi>a</mml:mi><mml:mi>r</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>8</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>f</mml:mi><mml:mi>i</mml:mi><mml:mi>r</mml:mi><mml:mi>m</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi>β</mml:mi><mml:mn>9</mml:mn></mml:msub><mml:msub><mml:mi>Y</mml:mi><mml:mrow><mml:mi>y</mml:mi><mml:mi>e</mml:mi><mml:mi>a</mml:mi><mml:mi>r</mml:mi></mml:mrow></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:mi>ε</mml:mi></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow></mml:math>
+</disp-formula>
+</p><p>Logistic regressions on ordinal conceptualizations create parameter estimates with low bias and high efficiency, allowing a straightforward interpretation of the odds of belief (support) that women should marry instead of work (Riedl and Geishecker <xref rid="cars70043-bib-0072" ref-type="bibr">2014</xref>). Missing values were handled using listwise deletion.</p><p>In addition, I statistically compare differences in belief between state and private firm employees using unequal variance <italic toggle="yes">t</italic>‐tests (Ruxton <xref rid="cars70043-bib-0076" ref-type="bibr">2006</xref>), given by:
+<disp-formula id="cars70043-disp-0002">
+<label>(2)</label>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-2" display="block"><mml:mrow><mml:mrow><mml:mi>t</mml:mi><mml:mo linebreak="badbreak">=</mml:mo><mml:mfrac><mml:mrow><mml:msub><mml:mi>μ</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mo>−</mml:mo><mml:msub><mml:mi>μ</mml:mi><mml:mn>2</mml:mn></mml:msub></mml:mrow><mml:msqrt><mml:mrow><mml:mfrac><mml:msubsup><mml:mi>s</mml:mi><mml:mn>1</mml:mn><mml:mn>2</mml:mn></mml:msubsup><mml:msub><mml:mi>n</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mfrac><mml:mo>+</mml:mo><mml:mfrac><mml:msubsup><mml:mi>s</mml:mi><mml:mn>2</mml:mn><mml:mn>2</mml:mn></mml:msubsup><mml:msub><mml:mi>n</mml:mi><mml:mn>2</mml:mn></mml:msub></mml:mfrac></mml:mrow></mml:msqrt></mml:mfrac><mml:mspace width="0.33em"/></mml:mrow></mml:mrow></mml:math>
+</disp-formula>where μ<sub>j</sub> is the mean of group <italic toggle="yes">j</italic>, s<italic toggle="yes">
+<sub>j</sub>
+</italic> indicates the variance, and n<italic toggle="yes">
+<sub>j</sub>
+</italic> is the size of group <italic toggle="yes">j</italic>. Unequal variance <italic toggle="yes">t</italic>‐tests are ideal for groups of different sizes, as with groups of state and private firm employees.</p></sec><sec id="cars70043-sec-0060"><label>4</label><title>Results</title><p>Table <xref rid="cars70043-tbl-0001" ref-type="table">1</xref> presents the descriptive statistics for the whole sample. Employees in state and private firms are generally comparable in terms of age groups, proportion of women workers, <italic toggle="yes">hukou</italic> registrations, job security, marital statuses, degree of job autonomy, and work in comparably sized firms (Table <xref rid="cars70043-tbl-0001" ref-type="table">1</xref>).</p><table-wrap position="float" id="cars70043-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Mean (standard deviation) of covariates by firm type.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead><tr style="border-bottom:solid 1px #000000"><th align="left" rowspan="1" colspan="1"/><th align="center" rowspan="1" colspan="1">State firms</th><th align="center" rowspan="1" colspan="1">Private firms</th></tr></thead><tbody><tr><td align="left" rowspan="1" colspan="1">Gender</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Men</td><td align="center" rowspan="1" colspan="1">959</td><td align="center" rowspan="1" colspan="1">938</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(43.0%)</td><td align="center" rowspan="1" colspan="1">(43.53%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Women</td><td align="center" rowspan="1" colspan="1">1,271</td><td align="center" rowspan="1" colspan="1">1,217</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(57.0%)</td><td align="center" rowspan="1" colspan="1">(56.47%)</td></tr><tr><td align="left" rowspan="1" colspan="1">Age group</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">18–30</td><td align="center" rowspan="1" colspan="1">346</td><td align="center" rowspan="1" colspan="1">646</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(18.2%)</td><td align="center" rowspan="1" colspan="1">(26.0%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">31–40</td><td align="center" rowspan="1" colspan="1">398</td><td align="center" rowspan="1" colspan="1">556</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(21.0%)</td><td align="center" rowspan="1" colspan="1">(22.3%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">41–50</td><td align="center" rowspan="1" colspan="1">430</td><td align="center" rowspan="1" colspan="1">496</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(22.7%)</td><td align="center" rowspan="1" colspan="1">(19.9%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">51–60</td><td align="center" rowspan="1" colspan="1">382</td><td align="center" rowspan="1" colspan="1">402</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(20.1%)</td><td align="center" rowspan="1" colspan="1">(16.2%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">61–70</td><td align="center" rowspan="1" colspan="1">217</td><td align="center" rowspan="1" colspan="1">263</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(11.4%)</td><td align="center" rowspan="1" colspan="1">(10.6%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">71–80</td><td align="center" rowspan="1" colspan="1">100</td><td align="center" rowspan="1" colspan="1">103</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(5.3%)</td><td align="center" rowspan="1" colspan="1">(4.1%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">81+</td><td align="center" rowspan="1" colspan="1">24</td><td align="center" rowspan="1" colspan="1">22</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(1.3%)</td><td align="center" rowspan="1" colspan="1">(0.9%)</td></tr><tr><td align="left" rowspan="1" colspan="1">Mean age group</td><td align="center" rowspan="1" colspan="1">2.79</td><td align="center" rowspan="1" colspan="1">3.06</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(1.51)</td><td align="center" rowspan="1" colspan="1">(1.52)</td></tr><tr><td align="left" rowspan="1" colspan="1">Highest education</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">No education</td><td align="center" rowspan="1" colspan="1">118</td><td align="center" rowspan="1" colspan="1">131</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(6.2%)</td><td align="center" rowspan="1" colspan="1">(5.3%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">High school or below</td><td align="center" rowspan="1" colspan="1">416</td><td align="center" rowspan="1" colspan="1">898</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(21.9%)</td><td align="center" rowspan="1" colspan="1">(36.1%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Technical college</td><td align="center" rowspan="1" colspan="1">560</td><td align="center" rowspan="1" colspan="1">710</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(29.5%)</td><td align="center" rowspan="1" colspan="1">(28.5%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">University</td><td align="center" rowspan="1" colspan="1">715</td><td align="center" rowspan="1" colspan="1">705</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(37.7%)</td><td align="center" rowspan="1" colspan="1">(28.3%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Postgraduate or above</td><td align="center" rowspan="1" colspan="1">88</td><td align="center" rowspan="1" colspan="1">44</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(4.6%)</td><td align="center" rowspan="1" colspan="1">(1.8%)</td></tr><tr><td align="left" rowspan="1" colspan="1">Mean education</td><td align="center" rowspan="1" colspan="1">2.13</td><td align="center" rowspan="1" colspan="1">1.85</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(1.01)</td><td align="center" rowspan="1" colspan="1">(0.951)</td></tr><tr><td align="left" rowspan="1" colspan="1">Income group</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Low class</td><td align="center" rowspan="1" colspan="1">327</td><td align="center" rowspan="1" colspan="1">616</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(18.0%)</td><td align="center" rowspan="1" colspan="1">(26.0%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Lower middle class</td><td align="center" rowspan="1" colspan="1">338</td><td align="center" rowspan="1" colspan="1">498</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(18.6%)</td><td align="center" rowspan="1" colspan="1">(21.0%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Upper middle class</td><td align="center" rowspan="1" colspan="1">869</td><td align="center" rowspan="1" colspan="1">948</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(47.7%)</td><td align="center" rowspan="1" colspan="1">(40.0%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Upper class</td><td align="center" rowspan="1" colspan="1">215</td><td align="center" rowspan="1" colspan="1">205</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(11.8%)</td><td align="center" rowspan="1" colspan="1">(8.6%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Elite</td><td align="center" rowspan="1" colspan="1">72</td><td align="center" rowspan="1" colspan="1">105</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(4.0%)</td><td align="center" rowspan="1" colspan="1">(4.4%)</td></tr><tr><td align="left" rowspan="1" colspan="1">Mean income group</td><td align="center" rowspan="1" colspan="1">2.65</td><td align="center" rowspan="1" colspan="1">2.45</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(1.03)</td><td align="center" rowspan="1" colspan="1">(1.10)</td></tr><tr><td align="left" rowspan="1" colspan="1">Marital status</td><td align="center" rowspan="1" colspan="1">0.810</td><td align="center" rowspan="1" colspan="1">0.726</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(0.392)</td><td align="center" rowspan="1" colspan="1">(0.446)</td></tr><tr><td align="left" rowspan="1" colspan="1">Firm size</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Micro</td><td align="center" rowspan="1" colspan="1">275</td><td align="center" rowspan="1" colspan="1">747</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(18.5%)</td><td align="center" rowspan="1" colspan="1">(37.1%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Small</td><td align="center" rowspan="1" colspan="1">466</td><td align="center" rowspan="1" colspan="1">645</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(31.4%)</td><td align="center" rowspan="1" colspan="1">(29.5%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Medium</td><td align="center" rowspan="1" colspan="1">551</td><td align="center" rowspan="1" colspan="1">431</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(37.2%)</td><td align="center" rowspan="1" colspan="1">(32.0%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Large</td><td align="center" rowspan="1" colspan="1">179</td><td align="center" rowspan="1" colspan="1">182</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(12.1%)</td><td align="center" rowspan="1" colspan="1">(21.4%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Mega</td><td align="center" rowspan="1" colspan="1">12</td><td align="center" rowspan="1" colspan="1">8</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(0.8%)</td><td align="center" rowspan="1" colspan="1">(0.4%)</td></tr><tr><td align="left" rowspan="1" colspan="1">Mean firm size</td><td align="center" rowspan="1" colspan="1">2.42</td><td align="center" rowspan="1" colspan="1">1.96</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(1.02)</td><td align="center" rowspan="1" colspan="1">(1.10)</td></tr><tr><td align="left" rowspan="1" colspan="1">Job security</td><td align="center" rowspan="1" colspan="1">1.96</td><td align="center" rowspan="1" colspan="1">1.93</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(0.205)</td><td align="center" rowspan="1" colspan="1">(0.251)</td></tr><tr><td align="left" rowspan="1" colspan="1">Job autonomy</td><td align="center" rowspan="1" colspan="1">1.92</td><td align="center" rowspan="1" colspan="1">1.86</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(0.797)</td><td align="center" rowspan="1" colspan="1">(0.834)</td></tr><tr><td align="left" rowspan="1" colspan="1">
+<italic toggle="yes">Hukou</italic>
+</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Rural</td><td align="center" rowspan="1" colspan="1">448</td><td align="center" rowspan="1" colspan="1">1,148</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(24.0%)</td><td align="center" rowspan="1" colspan="1">(46.3%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Resident (previously rural)</td><td align="center" rowspan="1" colspan="1">351</td><td align="center" rowspan="1" colspan="1">275</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(18.8%)</td><td align="center" rowspan="1" colspan="1">(11.1%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Resident (previously urban)</td><td align="center" rowspan="1" colspan="1">364</td><td align="center" rowspan="1" colspan="1">369</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(19.5%)</td><td align="center" rowspan="1" colspan="1">(14.9%)</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Urban</td><td align="center" rowspan="1" colspan="1">704</td><td align="center" rowspan="1" colspan="1">689</td></tr><tr><td align="left" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1">(37.7%)</td><td align="center" rowspan="1" colspan="1">(27.8%)</td></tr><tr><td align="left" rowspan="1" colspan="1">
+<italic toggle="yes">N</italic>
+</td><td align="center" rowspan="1" colspan="1">1,897</td><td align="center" rowspan="1" colspan="1">2,488</td></tr></tbody></table><permissions><copyright-holder>John Wiley &amp; Sons, Ltd.</copyright-holder></permissions></table-wrap><p>There are minor differences, whereby private firm employees appear to be older in age on average than state firm employees, but less educated than the latter. There appear to be more women than men in both types of firms, which invites a comparison of their socioeconomic resources within each firm type.</p><p>Using Equation (<xref rid="cars70043-disp-0002" ref-type="disp-formula">2</xref>), Figures <xref rid="cars70043-fig-0001" ref-type="fig">1</xref> and <xref rid="cars70043-fig-0002" ref-type="fig">2</xref> present the <italic toggle="yes">t</italic>‐test results comparing the distribution of socioeconomic resources among men and women within state and private firms. In state firms (Figure <xref rid="cars70043-fig-0001" ref-type="fig">1</xref>), we observe that women (<italic toggle="yes">x̄</italic> = 1.97) have statistically significant greater job autonomy than their male counterparts (<italic toggle="yes">x̄</italic> = 1.86), contrary to observations that women suffer pay disparities compared to their male counterparts in China (Wang and Cheng <xref rid="cars70043-bib-0087" ref-type="bibr">2021</xref>; Wu and Qi <xref rid="cars70043-bib-0092" ref-type="bibr">2017</xref>).</p><fig position="float" fig-type="FIGURE" id="cars70043-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Results of <italic toggle="yes">t</italic>‐tests comparing socioeconomic resources between men and women among state firms. [Colour figure can be viewed at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wileyonlinelibrary.com" ext-link-type="uri">wileyonlinelibrary.com</ext-link>]</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="CARS-63-0-g002.jpg"><?image-name CARS-63-0-g002.jpg?><?image-size 35782?><?image-md5 ba3d9722ff5f028aac476afee4e92a14?><?image-image-server-status NEVER_LOAD?><?image-original-height 318?><?image-original-width 520?><?image-scaled-height 318?><?image-scaled-width 520?><?image-cloudpmc-urn urn:cdn:blobs/0481/13238454/ba3d9722ff5f/CARS-63-0-g002.jpg?><?thumb-name CARS-63-0-g002.gif?><?thumb-size 3237?><?thumb-md5 581982789c2c38e3207f40446e3d30c8?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 130?><?thumb-cloudpmc-urn urn:cdn:blobs/0481/13238454/581982789c2c/CARS-63-0-g002.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="cars70043-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>Results of <italic toggle="yes">t</italic>‐tests comparing socioeconomic resources between men and women among private firms. [Colour figure can be viewed at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wileyonlinelibrary.com" ext-link-type="uri">wileyonlinelibrary.com</ext-link>]</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="CARS-63-0-g003.jpg"><?image-name CARS-63-0-g003.jpg?><?image-size 37111?><?image-md5 4f7c78c6e7714aca9f261bc37a8561b4?><?image-image-server-status NEVER_LOAD?><?image-original-height 319?><?image-original-width 520?><?image-scaled-height 319?><?image-scaled-width 520?><?image-cloudpmc-urn urn:cdn:blobs/0481/13238454/4f7c78c6e771/CARS-63-0-g003.jpg?><?thumb-name CARS-63-0-g003.gif?><?thumb-size 3140?><?thumb-md5 9ec478f93404e8acd144ceff6b5aa34a?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 130?><?thumb-cloudpmc-urn urn:cdn:blobs/0481/13238454/9ec478f93404/CARS-63-0-g003.gif?></graphic></fig><p>In private firms (Figure <xref rid="cars70043-fig-0002" ref-type="fig">2</xref>), we observe that women (<italic toggle="yes">x̄</italic> = 1.92) also have significantly greater job autonomy than men (<italic toggle="yes">x̄</italic> = 1.81). However, men (<italic toggle="yes">x̄</italic> = 1.86) also have a statistically significant lead in their educational achievement than women (<italic toggle="yes">x̄</italic> = 1.85), though the difference is comparatively small.</p><p>Using Equation (<xref rid="cars70043-disp-0001" ref-type="disp-formula">1</xref>), the statistical analyses add nuance to examining differences in the effect of socioeconomic resources on the belief that women should be stay‐at‐home wives instead of working across state and private firms. Table <xref rid="cars70043-tbl-0002" ref-type="table">2</xref> first parses out the effects of different predictors across the entire sample. Private firm employment is indeed associated with significantly higher odds (OR = 1.302) of supporting the belief that women should be stay‐at‐home wives instead of working. Being female is associated with lower odds of supporting the belief that women should be stay‐at‐home wives instead of working (OR = 0.753). However, socioeconomic resources generally diminish the odds of this belief, supporting Hypothesis <xref rid="cars70043-mthst-0001" ref-type="statement">1</xref>: income is associated with lower odds (OR = 0.819) of supporting this belief, as is resident <italic toggle="yes">hukou</italic> compared to rural <italic toggle="yes">hukou</italic> (OR = 0.816).</p><table-wrap position="float" id="cars70043-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>Regressing belief that women should marry and stay at home instead of work among all firms.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><thead><tr style="border-bottom:solid 1px #000000"><th align="left" rowspan="1" colspan="1">Predictor</th><th align="center" rowspan="1" colspan="1">
+<p>Odds Ratio</p>
+<p>(Standard Error)</p>
+</th></tr></thead><tbody><tr><td align="left" rowspan="1" colspan="1">Private firm</td><td align="center" rowspan="1" colspan="1">
+<p>1.302<xref rid="cars70043-tbl2-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.069)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Female</td><td align="center" rowspan="1" colspan="1">
+<p>0.753<xref rid="cars70043-tbl2-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.065)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Highest education</td><td align="center" rowspan="1" colspan="1">
+<p>0.949</p>
+<p>(0.038)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Age group</td><td align="center" rowspan="1" colspan="1">
+<p>0.986</p>
+<p>(0.025)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Income group</td><td align="center" rowspan="1" colspan="1">
+<p>0.819<xref rid="cars70043-tbl2-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.033)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">
+<italic toggle="yes">Hukou</italic> (ref: rural)</td><td align="center" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Resident (previously rural)</td><td align="center" rowspan="1" colspan="1">
+<p>0.816<xref rid="cars70043-tbl2-note-0001" ref-type="table-fn">
+<sup>*</sup>
+</xref>
+</p>
+<p>(0.102)</p>
+</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Resident (previously urban)</td><td align="center" rowspan="1" colspan="1">
+<p>1.040</p>
+<p>(0.101)</p>
+</td></tr><tr><td style="padding-left:10%" align="left" rowspan="1" colspan="1">Urban</td><td align="center" rowspan="1" colspan="1">
+<p>0.928</p>
+<p>(0.082)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Married</td><td align="center" rowspan="1" colspan="1">
+<p>1.508<xref rid="cars70043-tbl2-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.080)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Job security</td><td align="center" rowspan="1" colspan="1">
+<p>1.101</p>
+<p>(0.155)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Job autonomy</td><td align="center" rowspan="1" colspan="1">
+<p>0.920</p>
+<p>(0.045)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Firm size</td><td align="center" rowspan="1" colspan="1">
+<p>0.996</p>
+<p>(0.033)</p>
+</td></tr></tbody></table><table-wrap-foot><fn id="cars70043-tbl2-note-0001"><p>
+<sup>*</sup>
+<italic toggle="yes">P</italic> &lt; .05; <sup>**</sup>
+<italic toggle="yes">p</italic> &lt; .01; <sup>***</sup>
+<italic toggle="yes">p</italic> &lt; .001</p></fn></table-wrap-foot><permissions><copyright-holder>John Wiley &amp; Sons, Ltd.</copyright-holder></permissions></table-wrap><p>In state firms (Table <xref rid="cars70043-tbl-0003" ref-type="table">3</xref>), a different set of socioeconomic resources appears to matter: income is once more associated with lower odds of the belief that women should be stay‐at‐home wives instead of working (OR = 0.800), whereas education and <italic toggle="yes">hukou</italic> registrations are not significant, partially supporting Hypothesis <xref rid="cars70043-mthst-0001" ref-type="statement">1</xref>. However, having more job autonomy emerges as a predictor of lower support for the belief that women should be stay‐at‐home wives instead of working (OR = 0.826). Women themselves, moreover, do not appear to have any significant association with this belief.</p><table-wrap position="float" id="cars70043-tbl-0003" content-type="TABLE" orientation="portrait"><label>TABLE 3</label><caption><p>Regressing belief that women should marry and stay at home instead of work by firm type.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead><tr><th align="left" rowspan="1" colspan="1"/><th align="center" rowspan="1" colspan="1">State firms</th><th align="center" rowspan="1" colspan="1">Private firms</th></tr><tr style="border-bottom:solid 1px #000000"><th align="left" rowspan="1" colspan="1">Predictor</th><th align="center" rowspan="1" colspan="1">
+<p>Odds Ratio</p>
+<p>(Standard Error)</p>
+</th><th align="center" rowspan="1" colspan="1">
+<p>Odds Ratio</p>
+<p>(Standard Error)</p>
+</th></tr></thead><tbody><tr><td align="left" rowspan="1" colspan="1">Female</td><td align="center" rowspan="1" colspan="1">
+<p>0.856</p>
+<p>(0.099)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.685<xref rid="cars70043-tbl3-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.052)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Highest education</td><td align="center" rowspan="1" colspan="1">
+<p>0.906</p>
+<p>(0.056)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.976</p>
+<p>(0.034)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Age group</td><td align="center" rowspan="1" colspan="1">
+<p>0.946</p>
+<p>(0.039)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>1.015</p>
+<p>(0.335)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Income group</td><td align="center" rowspan="1" colspan="1">
+<p>0.800<xref rid="cars70043-tbl3-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.054)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.817<xref rid="cars70043-tbl3-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.043)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">
+<italic toggle="yes">Hukou</italic> (ref: rural)</td><td align="center" rowspan="1" colspan="1"/><td align="center" rowspan="1" colspan="1"/></tr><tr><td align="left" rowspan="1" colspan="1">Resident (previously rural)</td><td align="center" rowspan="1" colspan="1">
+<p>0.776</p>
+<p>(0.161)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.959</p>
+<p>(0.140)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Resident (previously urban)</td><td align="center" rowspan="1" colspan="1">
+<p>1.157</p>
+<p>(0.163)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.989</p>
+<p>(0.131)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Urban</td><td align="center" rowspan="1" colspan="1">
+<p>0.988</p>
+<p>(0.137)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.891</p>
+<p>(0.105)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Married</td><td align="center" rowspan="1" colspan="1">
+<p>1.513<xref rid="cars70043-tbl3-note-0001" ref-type="table-fn">
+<sup>**</sup>
+</xref>
+</p>
+<p>(0.136)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>1.488<xref rid="cars70043-tbl3-note-0001" ref-type="table-fn">
+<sup>***</sup>
+</xref>
+</p>
+<p>(0.099)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Job security</td><td align="center" rowspan="1" colspan="1">
+<p>0.816</p>
+<p>(0.306)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>1.239</p>
+<p>(0.179)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Job autonomy</td><td align="center" rowspan="1" colspan="1">
+<p>0.826<xref rid="cars70043-tbl3-note-0001" ref-type="table-fn">
+<sup>**</sup>
+</xref>
+</p>
+<p>(0.070)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>1.001</p>
+<p>(0.594)</p>
+</td></tr><tr><td align="left" rowspan="1" colspan="1">Firm size</td><td align="center" rowspan="1" colspan="1">
+<p>1.066</p>
+<p>(0.052)</p>
+</td><td align="center" rowspan="1" colspan="1">
+<p>0.941</p>
+<p>(0.042)</p>
+</td></tr></tbody></table><table-wrap-foot><fn id="cars70043-tbl3-note-0001"><p>
+<sup>*</sup>
+<italic toggle="yes">P</italic> &lt; .05; <sup>**</sup>
+<italic toggle="yes">p</italic> &lt; .01; <sup>***</sup>
+<italic toggle="yes">p</italic> &lt; .001</p></fn></table-wrap-foot><permissions><copyright-holder>John Wiley &amp; Sons, Ltd.</copyright-holder></permissions></table-wrap><p>In private firms, we observe that being female is associated with lower odds of the belief that women should be stay‐at‐home wives instead of working (OR = 0.685). Income is once more associated with significantly lower odds of possessing this belief against women's employment among employees (OR = 0.817). However, there is no influence from education, <italic toggle="yes">hukou</italic> registrations, or job resources on the odds of the belief that women should be stay‐at‐home wives instead of working.</p><p>Because coefficients from nonlinear models are not directly comparable across samples (Breen et al. <xref rid="cars70043-bib-0013" ref-type="bibr">2018</xref>), we refrain from interpreting cross‐model differences in coefficient magnitudes. Instead, we focus on the direction, statistical significance, and predicted patterns within each firm type. It appears that in private firms, there are fewer socioeconomic resource variables that are capable of significantly lowering patriarchal beliefs against women in the workplace.</p><p>Figure <xref rid="cars70043-fig-0003" ref-type="fig">3</xref> complements these results on socioeconomic resources by directly examining the belief that women should be stay‐at‐home wives instead of working within these firm types. The results reveal statistically significant differences between employees of the two firm types: private firm employees appear to agree with the belief that women should be stay‐at‐home wives instead of working (<italic toggle="yes">x̄</italic> = 2.80) to a much greater extent than their state firm counterparts (<italic toggle="yes">x̄</italic> = 2.63), which does not support Hypothesis <xref rid="cars70043-mthst-0002" ref-type="statement">2</xref>.</p><fig position="float" fig-type="FIGURE" id="cars70043-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Results of <italic toggle="yes">t</italic>‐tests comparing belief that women should marry instead of work between private and state firms. A higher score indicates a stronger belief that women should marry instead of work. [Colour figure can be viewed at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="http://wileyonlinelibrary.com" ext-link-type="uri">wileyonlinelibrary.com</ext-link>]</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="CARS-63-0-g001.jpg"><?image-name CARS-63-0-g001.jpg?><?image-size 31502?><?image-md5 5e81975786af5bf19d89cd2ac2efc5db?><?image-image-server-status NEVER_LOAD?><?image-original-height 327?><?image-original-width 400?><?image-scaled-height 327?><?image-scaled-width 400?><?image-cloudpmc-urn urn:cdn:blobs/0481/13238454/5e81975786af/CARS-63-0-g001.jpg?><?thumb-name CARS-63-0-g001.gif?><?thumb-size 2687?><?thumb-md5 1157b4cf48f6b1707f6586677fdf0452?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 82?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/0481/13238454/1157b4cf48f6/CARS-63-0-g001.gif?></graphic></fig></sec><sec id="cars70043-sec-0070"><label>5</label><title>Discussion</title><p>This article provides an important sociological account of contemporary gender disparities in Chinese firms. Contrary to research that suggests women are materially deprived in socioeconomic resources compared to men, this study observes few statistically significant differences in income, education, job security, and job autonomy between men and women. In fact, the results suggest that women have an even higher degree of job autonomy than men in both state and private firms.</p><p>This article identifies that heterogeneous types of socioeconomic resources wield differential effects on the belief that women should be stay‐at‐home wives instead of working between the two firm types, offering support for Hypothesis <xref rid="cars70043-mthst-0001" ref-type="statement">1</xref>. At the aggregate level in all firms, having a resident <italic toggle="yes">hukou</italic> registration predicts lower odds of supporting the belief that women should be stay‐at‐home wives instead of working compared to a rural <italic toggle="yes">hukou</italic>. Simultaneously, income is a powerfully consistent predictor of lower odds of supporting the belief that women should be stay‐at‐home wives instead of working in state and private firms at the subsample level. Job autonomy also predicts lower odds of this belief, but only in state firms.</p><p>Contrary to expectations, there are fewer forms of socioeconomic resources that are capable of motivating workers to lessen their patriarchal beliefs against women in the workplace in private firms (only income) compared to state firms (income <italic toggle="yes">and</italic> job autonomy). More directly, the results reveal that private firm workers profess stronger patriarchal beliefs against women's employment than their state firm counterparts. I theorize this may be why women also appear to be more agitated about patriarchal beliefs when they work in private firms, but not in state firms. To illustrate, women are opposed to the belief that women should be stay‐at‐home wives instead of working in private firms, but not in state firms. This suggests that women are not passive recipients of patriarchal norms. Research in comparable patriarchal contexts (Aksu et al. <xref rid="cars70043-bib-0001" ref-type="bibr">2025</xref>) shows that women articulate emerging ideals of masculinity emphasizing emotional openness and shared responsibility. These findings highlight that women workers, especially those in private firms, may reject traditional expectations not only for strategic reasons, but because they hold competing visions of gender relations shaped by workplace inequality.</p><p>The findings suggest that private firms are not the anti‐discriminatory workplaces they are believed to be, but seedbeds for patriarchal beliefs, especially as women appear to achieve greater job autonomy. Why, despite women's gains in employment and nationwide economic development, do workers still believe that women should be stay‐at‐home wives instead of working?</p><p>This work gains credence from and contributes to the literature on boundaries and group threat in organizations (Olson et al. <xref rid="cars70043-bib-0061" ref-type="bibr">2007</xref>). Where much of this work has focused on racial and ethnic relations, the present article extends this dialogue to examine how men may be disgruntled with women getting ahead and subsequently react in punitive ways in Chinese firms. These findings align with research showing that perceived exclusion strengthens adherence to traditional norms (Borinca et al. <xref rid="cars70043-bib-0011" ref-type="bibr">2025</xref>). In competitive private firms, men may perceive women's rising autonomy as encroaching on historically male‐dominated spaces, activating identity‐based defensive responses. Relatedly, women's stronger rejection of patriarchal norms in private firms is consistent with studies showing women articulate alternative visions of gender relations when confronting unequal treatment (Aksu et al. <xref rid="cars70043-bib-0001" ref-type="bibr">2025</xref>).</p><p>The present study highlights overlooked organizational contexts of gender discrimination where additional oversight is required. Private firms are left to their own devices under the auspices of market‐driven reforms in China, which dissuades extensive government interventions for misconduct. This, however, runs the risk of obscuring the extent of gender discrimination—risks that the present study reveals to be real and pressing.</p><p>Just as important, this article finds that women appear to be more empowered to resist patriarchal norms and gender stereotypicality in job roles, evinced by their willingness to express disagreement with the belief that they should simply marry and be stay‐at‐home wives. The evidence suggests an important portrait of women as not passive recipients of patriarchal beliefs, but prospective co‐creators of the symbolic boundaries that isolate them in the workplace (Lamont &amp; Molnar <xref rid="cars70043-bib-0050" ref-type="bibr">2002</xref>).</p><p>Recent discrimination cases uncovered at prominent information technology companies in China are telling of increasing awareness of gendered biases—and willingness to report it. Alibaba, an e‐commerce firm and China's second most valuable company, was found by the Human Rights Watch (<xref rid="cars70043-bib-0043" ref-type="bibr">2018</xref>) to engage in discriminatory hiring practices against women. Exemplar job ads from Alibaba requested female candidates to “possess fine personal image and qualities, [including]… physical characteristics like those of popular female Japanese porn star Sola Aoi” (p.38). In response, thousands of female Chinese tech workers signed petitions to urge the police and the company to investigate the incident (Liu <xref rid="cars70043-bib-0053" ref-type="bibr">2023</xref>). Given that the Internet sector in China is one of the most prolific sources of employment nationwide, representing close to 30% of economic output, they comprise a significant proxy for understanding female employee treatment within private firms at large.</p><p>Finally, although Becker (<xref rid="cars70043-bib-0008" ref-type="bibr">1957</xref>) argues that firms are less discriminatory towards women to have an advantage for survival, this article finds that private firms constitute organizational contexts that warrant additional monitoring, such as expanding meeting channels to review and evaluate compliance measures between firm directors and the Ministry of Human Resources and Social Security. The results suggest the importance of monitoring mechanisms, such as periodic audits of recruitment advertisements and third‐party reporting channels, particularly in private firms.</p></sec><sec id="cars70043-sec-0080"><label>6</label><title>Limitations and Future Directions</title><p>Although this study advances our understanding of patriarchal beliefs in Chinese firms, several limitations should be noted. First, the cross‐sectional nature of the data precludes causal inferences about how socioeconomic resources or firm ownership types may shape beliefs over time. The results thus offer a starting point for future longitudinal analyses, which could track belief changes amid economic shifts. This is especially important, though challenging, given the paucity of longitudinal data sufficient to track changes throughout the life course in advanced societies (Guinea‐Martin et al. <xref rid="cars70043-bib-0038" ref-type="bibr">2018</xref>).</p><p>Second, China is largely a racially homogeneous society that is characteristic of East Asian societies. While the results offer a useful point of comparison for other East Asian societies, future studies outside of East Asia have room to feature intersectional analyses that incorporate ethnicity or class alongside gender, which would enrich our understanding of how inequality compounds.</p><p>Third, the sample focuses on employed individuals in state and private firms, limiting generalizability to informal sectors or unemployed populations, where gender norms may differ. Finally, the reliance on quantitative measures captures broad patterns but overlooks nuanced interactions, such as how beliefs translate into discriminatory behaviours in daily organizational life. Qualitative studies, such as ethnographic observations or in‐depth interviews in firms, would illuminate micro‐level processes of symbolic boundary‐policing and discrimination.</p></sec><sec id="cars70043-sec-0100"><title>Funding</title><p>This research was funded by a Departmental Start‐up Grant (P0040982) and Applied Social Sciences Research Grant (P0046151) from the Department of Applied Social Sciences at The Hong Kong Polytechnic University.</p></sec></body><back><ack id="cars70043-sec-0090"><title>Acknowledgments</title><p>The author thanks Vincent Chua for comments and Isabel Li for research assistance.</p></ack><ref-list id="cars70043-bibl-0001"><title>References</title><ref id="cars70043-bib-0001"><mixed-citation publication-type="journal" id="cars70043-cite-0001">
+<string-name name-style="western">
+<surname>Aksu</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Koc</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Borinca</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Otten</surname>
+</string-name>. <year>2025</year>. “<article-title>Beyond Traditional Masculinities: Women's Perceptions of new Masculinities</article-title>.” <source>Psychology of Men &amp; Masculinities</source>
+<volume>26</volume>, no. <issue>3</issue>: <fpage>384</fpage>–<lpage>399</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0002"><mixed-citation publication-type="journal" id="cars70043-cite-0002">
+<string-name name-style="western">
+<surname>Alegria</surname>, <given-names>S.</given-names>
+</string-name>
+<year>2019</year>. “<article-title>Escalator or Step Stool? Gendered Labor and Token Processes in Tech Work</article-title>.” <source>Gender &amp; Society</source>
+<volume>33</volume>, no. <issue>5</issue>: <fpage>722</fpage>–<lpage>745</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0003"><mixed-citation publication-type="journal" id="cars70043-cite-0003">
+<string-name name-style="western">
+<surname>Alegria</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Branch</surname>
+</string-name>. <year>2015</year>. “<article-title>Causes and Consequences of Inequality in the STEM: Diversity and its Discontents</article-title>.” <source>International Journal of Gender, Science and Technology</source>
+<volume>7</volume>, no. <issue>3</issue>: <fpage>321</fpage>–<lpage>342</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0004"><mixed-citation publication-type="journal" id="cars70043-cite-0004">
+<string-name name-style="western">
+<surname>Alfrey</surname>, <given-names>L.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Twine</surname>
+</string-name>. <year>2017</year>. “<article-title>Gender‐Fluid Geek Girls: Negotiating Inequality Regimes in the Tech Industry</article-title>.” <source>Gender &amp; Society</source>
+<volume>31</volume>, no. <issue>1</issue>: <fpage>28</fpage>–<lpage>50</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0005"><mixed-citation publication-type="journal" id="cars70043-cite-0005">
+<string-name name-style="western">
+<surname>Au</surname>, <given-names>A.</given-names>
+</string-name>
+<year>2024a</year>. “<article-title>Attitudes Toward Women's Layoffs During Recessions: Evidence From Chinese Firms</article-title>.” <source>Socius: Sociological Research for a Dynamic World</source>
+<volume>10</volume>: <elocation-id>23780231241266733</elocation-id>.</mixed-citation></ref><ref id="cars70043-bib-0006"><mixed-citation publication-type="journal" id="cars70043-cite-0006">
+<string-name name-style="western">
+<surname>Au</surname>, <given-names>A.</given-names>
+</string-name>
+<year>2024b</year>. “<article-title>Digitalization in China: Who's Left behind?</article-title>.” <source>Information, Communication &amp; Society</source>
+<volume>27</volume>, no. <issue>6</issue>: <fpage>1247</fpage>–<lpage>1265</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0007"><mixed-citation publication-type="journal" id="cars70043-cite-0007">
+<string-name name-style="western">
+<surname>Bansak</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Hainmueller</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Hangartner</surname>
+</string-name>. <year>2016</year>. “<article-title>How Economic, Humanitarian, and Religious Concerns Shape European Attitudes Toward Asylum Seekers</article-title>.” <source>Science</source>
+<volume>354</volume>, no. <issue>6309</issue>: <fpage>217</fpage>–<lpage>222</lpage>.<pub-id pub-id-type="pmid">27708060</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1126/science.aag2147</pub-id></mixed-citation></ref><ref id="cars70043-bib-0008"><mixed-citation publication-type="book" id="cars70043-cite-0008">
+<string-name name-style="western">
+<surname>Becker</surname>, <given-names>G.</given-names>
+</string-name>
+<year>1957</year>. <source>The Economics of Discrimination</source>. <publisher-name>University of Chicago Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0009"><mixed-citation publication-type="journal" id="cars70043-cite-0009">
+<string-name name-style="western">
+<surname>Bian</surname>, <given-names>Y.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Li</surname>
+</string-name>. <year>2012</year>. “<article-title>The Chinese General Social Survey (2003–8) Sample Designs and Data Evaluation</article-title>.” <source>Chinese Sociological Review</source>
+<volume>45</volume>, no. <issue>1</issue>: <fpage>70</fpage>–<lpage>97</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0010"><mixed-citation publication-type="journal" id="cars70043-cite-0010">
+<string-name name-style="western">
+<surname>Biemann</surname>, <given-names>T.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Zacher</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>Feldman</surname>
+</string-name>. <year>2012</year>. “<article-title>Career Patterns: A Twenty‐Year Panel Study</article-title>.” <source>Journal of Vocational Behavior</source>
+<volume>81</volume>, no. <issue>2</issue>: <fpage>159</fpage>–<lpage>170</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0011"><mixed-citation publication-type="journal" id="cars70043-cite-0011">
+<string-name name-style="western">
+<surname>Borinca</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Guerra</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Uka</surname>
+</string-name>. <year>2025</year>. “<article-title>“Ins and Outs”: Ethnic Identity, the Need to Belong, and Responses to Inclusion and Exclusion in Inclusive Common Ingroups</article-title>.” <source>Group Processes &amp; Intergroup Relations</source>
+<volume>28</volume>, no. <issue>2</issue>: <fpage>324</fpage>–<lpage>354</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0012"><mixed-citation publication-type="book" id="cars70043-cite-0012">
+<string-name name-style="western">
+<surname>Bourdieu</surname>, <given-names>P.</given-names>
+</string-name>
+<year>1984</year>. <source>Distinction: A Social Critique of the Judgment of Taste</source>. <publisher-name>Routledge</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0013"><mixed-citation publication-type="journal" id="cars70043-cite-0013">
+<string-name name-style="western">
+<surname>Breen</surname>, <given-names>R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K. B.</given-names>
+<surname>Karlson</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Holm</surname>
+</string-name>. <year>2018</year>. “<article-title>Interpreting and Understanding Logits, Probits, and Other Nonlinear Probability Models</article-title>.” <source>Annual Review of Sociology</source>
+<volume>44</volume>, no. <issue>1</issue>: <fpage>39</fpage>–<lpage>54</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0015"><mixed-citation publication-type="journal" id="cars70043-cite-0015">
+<string-name name-style="western">
+<surname>Burt</surname>, <given-names>R.</given-names>
+</string-name>
+<year>2019</year>. “<article-title>The Networks and Success of Female Entrepreneurs in China</article-title>.” <source>Social Networks</source>
+<volume>58</volume>: <fpage>37</fpage>–<lpage>49</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0016"><mixed-citation publication-type="journal" id="cars70043-cite-0016">
+<string-name name-style="western">
+<surname>Campero</surname>, <given-names>S.</given-names>
+</string-name>
+<year>2021</year>. “<article-title>Hiring and Intra‐Occupational Gender Segregation in Software Engineering</article-title>.” <source>American Sociological Review</source>
+<volume>86</volume>, no. <issue>1</issue>: <fpage>60</fpage>–<lpage>92</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0017"><mixed-citation publication-type="book" id="cars70043-cite-0017">
+<collab collab-type="authors">Census and Statistics Department of Hong Kong</collab>
+. <year>2023</year>. <article-title>Women and Men in Hong Kong—Key Statistics: 2023 Edition</article-title>. <publisher-name>Census and Statistics Department of Hong Kong</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0018"><mixed-citation publication-type="journal" id="cars70043-cite-0018">
+<string-name name-style="western">
+<surname>Charles</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Friedland</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Afary</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Yang</surname>
+</string-name>. <year>2023</year>. “<article-title>Complicating Patriarchy: Gender Beliefs of Muslim Facebook Users in the Middle East North Africa, and South Asia</article-title>.” <source>Gender &amp; Society</source>
+<volume>37</volume>, no. <issue>1</issue>: <fpage>91</fpage>–<lpage>123</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0019"><mixed-citation publication-type="journal" id="cars70043-cite-0019">
+<string-name name-style="western">
+<surname>Chen</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>LeGates</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Zhao</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Fang</surname>
+</string-name>. <year>2018</year>. “<article-title>The Changing Rural‐Urban Divide in China's Megacities</article-title>.” <source>Cities</source>
+<volume>81</volume>: <fpage>81</fpage>–<lpage>90</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0021"><mixed-citation publication-type="book" id="cars70043-cite-0021">
+<string-name name-style="western">
+<surname>Cong</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Ponticelli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Yang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Zhang</surname>
+</string-name>. <year>2024</year>. <article-title>
+Bridging the Gender Gap in Entrepreneurship and Empowering Women via Digital Technologies
+</article-title>. Working Paper. <publisher-name>National Bureau of Economic Research</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0022"><mixed-citation publication-type="journal" id="cars70043-cite-0022">
+<string-name name-style="western">
+<surname>Correll</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Benard</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Paik</surname>
+</string-name>. <year>2007</year>. “<article-title>Getting a Job: Is There a Motherhood Penalty?</article-title>.” <source>American Journal of sociology</source>
+<volume>112</volume>, no. <issue>5</issue>: <fpage>1297</fpage>–<lpage>1338</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0023"><mixed-citation publication-type="journal" id="cars70043-cite-0023">
+<string-name name-style="western">
+<surname>Correll</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Weisshaar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Wynn</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Wehner</surname>
+</string-name>. <year>2020</year>. “<article-title>Inside the Black box of Organizational Life: The Gendered Language of Performance Assessment</article-title>.” <source>American Sociological Review</source>
+<volume>85</volume>, no. <issue>6</issue>: <fpage>1022</fpage>–<lpage>1050</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0024"><mixed-citation publication-type="journal" id="cars70043-cite-0024">
+<string-name name-style="western">
+<surname>De Coninck</surname>, <given-names>D.</given-names>
+</string-name>
+<year>2020</year>. “<article-title>Migrant Categorizations and European Public Opinion: Diverging Attitudes Towards Immigrants and Refugees</article-title>.” <source>Journal of Ethnic and Migration Studies</source>
+<volume>46</volume>, no. <issue>9</issue>: <fpage>1667</fpage>–<lpage>1686</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0025"><mixed-citation publication-type="journal" id="cars70043-cite-0025">
+<string-name name-style="western">
+<surname>DiTomaso</surname>, <given-names>N.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Bian</surname>
+</string-name>. <year>2018</year>. “<article-title>The Structure of Labor Markets in the US and China: Social capital and Guanxi</article-title>.” <source>Management and Organization Review</source>
+<volume>14</volume>, no. <issue>1</issue>: <fpage>5</fpage>–<lpage>36</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0026"><mixed-citation publication-type="journal" id="cars70043-cite-0026">
+<string-name name-style="western">
+<surname>Dobbin</surname>, <given-names>F.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Kalev</surname>
+</string-name>. <year>2021</year>. “<article-title>The Civil Rights Revolution at Work: What Went Wrong</article-title>.” <source>Annual Review of Sociology</source>
+<volume>47</volume>: <fpage>281</fpage>–<lpage>303</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0027"><mixed-citation publication-type="journal" id="cars70043-cite-0027">
+<string-name name-style="western">
+<surname>Duguid</surname>, <given-names>M. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D. L.</given-names>
+<surname>Loyd</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P. S.</given-names>
+<surname>Tolbert</surname>
+</string-name>. <year>2012</year>. “<article-title>The Impact of Categorical Status, Numeric Representation, and Work Group Prestige on Preference for Demographically Similar Others: A Value Threat Approach</article-title>.” <source>Organization Science</source>
+<volume>23</volume>, no. <issue>2</issue>: <fpage>386</fpage>–<lpage>401</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0028"><mixed-citation publication-type="journal" id="cars70043-cite-0028">
+<string-name name-style="western">
+<surname>Elliott</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Reid</surname>
+</string-name>. <year>2019</year>. “<article-title>Low‐Income Black Mothers Parenting Adolescents in the Mass Incarceration Era: The Long Reach of Criminalization</article-title>.” <source>American Sociological Review</source>
+<volume>84</volume>, no. <issue>2</issue>: <fpage>197</fpage>–<lpage>219</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0029"><mixed-citation publication-type="journal" id="cars70043-cite-0029">
+<string-name name-style="western">
+<surname>Emerson</surname>, <given-names>K. T.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Murphy</surname>
+</string-name>. <year>2015</year>. “<article-title>A Company I Can Trust? Organizational Lay Theories Moderate Stereotype Threat for Women</article-title>.” <source>Personality and Social Psychology Bulletin</source>
+<volume>41</volume>, no. <issue>2</issue>: <fpage>295</fpage>–<lpage>307</lpage>.<pub-id pub-id-type="pmid">25534242</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1177/0146167214564969</pub-id></mixed-citation></ref><ref id="cars70043-bib-0030"><mixed-citation publication-type="journal" id="cars70043-cite-0030">
+<string-name name-style="western">
+<surname>England</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Levine</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Mishel</surname>
+</string-name>. <year>2020</year>. “<article-title>Progress Toward Gender Equality in the United States has Slowed or Stalled</article-title>.” <source>Proceedings of the National Academy of Sciences</source>
+<volume>117</volume>, no. <issue>13</issue>: <fpage>6990</fpage>–<lpage>6997</lpage>.<pub-id pub-id-type="doi" assigning-authority="pmc">10.1073/pnas.1918891117</pub-id><pub-id pub-id-type="pmcid">PMC7132302</pub-id><pub-id pub-id-type="pmid">32229559</pub-id></mixed-citation></ref><ref id="cars70043-bib-0031"><mixed-citation publication-type="journal" id="cars70043-cite-0031">
+<string-name name-style="western">
+<surname>Epstein</surname>, <given-names>C. F.</given-names>
+</string-name>
+<year>2007</year>. “<article-title>Great Divides: the Cultural, Cognitive, and Social Bases of the Global Subordination of Women</article-title>.” <source>American Sociological Review</source>
+<volume>72</volume>, no. <issue>1</issue>: <fpage>1</fpage>–<lpage>22</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0032"><mixed-citation publication-type="journal" id="cars70043-cite-0032">
+<string-name name-style="western">
+<surname>Ferree</surname>, <given-names>M.</given-names>
+</string-name>
+<year>2020</year>. “<article-title>The Crisis of Masculinity for Gendered Democracies: Before, During, and After Trump</article-title>.” <source>Sociological Forum</source>
+<volume>35</volume>: <fpage>898</fpage>–<lpage>917</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0033"><mixed-citation publication-type="journal" id="cars70043-cite-0033">
+<string-name name-style="western">
+<surname>Fligstein</surname>, <given-names>N.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Goldstein</surname>
+</string-name>. <year>2022</year>. “<article-title>The Legacy of Shareholder Value Capitalism</article-title>.” <source>Annual Review of Sociology</source>
+<volume>48</volume>: <fpage>193</fpage>–<lpage>211</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0098"><mixed-citation publication-type="journal" id="cars70043-cite-0098">
+<string-name name-style="western">
+<surname>Gathmann</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Helm</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>U.</given-names>
+<surname>Schönberg</surname>
+</string-name>. <year>2020</year>. “<article-title>Spillover effects of mass layoffs</article-title>.” <source>Journal of the European Economic Association</source>
+<volume>18</volume>, no. <issue>1</issue>: <fpage>427</fpage>–<lpage>468</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0035"><mixed-citation publication-type="journal" id="cars70043-cite-0035">
+<string-name name-style="western">
+<surname>Gao</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Lin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Ma</surname>
+</string-name>. <year>2016</year>. “<article-title>Sex Discrimination and Female Top Managers: Evidence From China</article-title>.” <source>Journal of Business Ethics</source>
+<volume>138</volume>: <fpage>683</fpage>–<lpage>702</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0037"><mixed-citation publication-type="journal" id="cars70043-cite-0037">
+<string-name name-style="western">
+<surname>Gonalons‐Pons</surname>, <given-names>P.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Gangl</surname>
+</string-name>. <year>2021</year>. “<article-title>Marriage and Masculinity: Male‐Breadwinner Culture, Unemployment, and Separation Risk in 29 Countries</article-title>.” <source>American Sociological Review</source>
+<volume>86</volume>, no. <issue>3</issue>: <fpage>465</fpage>–<lpage>502</lpage>.<pub-id pub-id-type="pmid">34149053</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1177/00031224211012442</pub-id><pub-id pub-id-type="pmcid">PMC8211126</pub-id></mixed-citation></ref><ref id="cars70043-bib-0038"><mixed-citation publication-type="journal" id="cars70043-cite-0038">
+<string-name name-style="western">
+<surname>Guinea‐Martin</surname>, <given-names>D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Mora</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Ruiz‐Castillo</surname>
+</string-name>. <year>2018</year>. “<article-title>The Evolution of Gender Segregation Over the Life Course</article-title>.” <source>American Sociological Review</source>
+<volume>83</volume>, no. <issue>5</issue>: <fpage>983</fpage>–<lpage>1019</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0039"><mixed-citation publication-type="journal" id="cars70043-cite-0039">
+<string-name name-style="western">
+<surname>Guo</surname>, <given-names>Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Huy</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Xiao</surname>
+</string-name>. <year>2017</year>. “<article-title>How Middle Managers Manage the Political Environment to Achieve Market Goals: Insights From China's State‐Owned Enterprises</article-title>.” <source>Strategic Management Journal</source>
+<volume>38</volume>, no. <issue>3</issue>: <fpage>676</fpage>–<lpage>696</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0040"><mixed-citation publication-type="journal" id="cars70043-cite-0040">
+<string-name name-style="western">
+<surname>Gorman</surname>, <given-names>E. H.</given-names>
+</string-name>
+<year>2005</year>. “<article-title>Gender Stereotypes, Same‐Gender Preferences, and Organizational Variation in the Hiring of Women: Evidence From Law Firms</article-title>.” <source>American Sociological Review</source>
+<volume>70</volume>, no. <issue>4</issue>: <fpage>702</fpage>–<lpage>728</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0041"><mixed-citation publication-type="journal" id="cars70043-cite-0041">
+<string-name name-style="western">
+<surname>Heilman</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Manzi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Caleo</surname>
+</string-name>. <year>2019</year>. “<article-title>Updating Impressions: the Differential Effects of New Performance Information on Evaluations of Women and Men</article-title>.” <source>Organizational Behavior and Human Decision Processes</source>
+<volume>152</volume>: <fpage>105</fpage>–<lpage>121</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0042"><mixed-citation publication-type="journal" id="cars70043-cite-0042">
+<string-name name-style="western">
+<surname>Hu</surname>, <given-names>Y.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Scott</surname>
+</string-name>. <year>2016</year>. “<article-title>Family and Gender Values in China: Generational, Geographic, and Gender Differences</article-title>.” <source>Journal of Family Issues</source>
+<volume>37</volume>, no. <issue>9</issue>: <fpage>1267</fpage>–<lpage>1293</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0043"><mixed-citation publication-type="miscellaneous" id="cars70043-cite-0043">
+<collab collab-type="authors">Human Rights Watch</collab>
+. <year>2018</year>. <article-title>“Only Men Need Apply” Gender Discrimination in Job Advertisements in China. <italic toggle="yes">Human Rights Watch</italic>
+</article-title>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.hrw.org/report/2018/04/23/only-men-need-apply/gender-discrimination-job-advertisements-china" ext-link-type="uri">https://www.hrw.org/report/2018/04/23/only-men-need-apply/gender-discrimination-job-advertisements-china</ext-link>
+</mixed-citation></ref><ref id="cars70043-bib-0044"><mixed-citation publication-type="journal" id="cars70043-cite-0044">
+<string-name name-style="western">
+<surname>Jones</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Manuelli</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>McGrattan</surname>
+</string-name>. <year>2015</year>. “<article-title>Why are Married Women Working so Much?</article-title>.” <source>Journal of Demographic Economics</source>
+<volume>81</volume>, no. <issue>1</issue>: <fpage>75</fpage>–<lpage>114</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0045"><mixed-citation publication-type="journal" id="cars70043-cite-0045">
+<string-name name-style="western">
+<surname>Jung</surname>, <given-names>J.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Dobbin</surname>
+</string-name>. <year>2015</year>. “<article-title>Agency Theory as Prophecy: How Boards, Analysts, and Fund Managers Perform Their Roles</article-title>.” <source>Seattle University Law Review</source>
+<volume>39</volume>: <fpage>291</fpage>–<lpage>320</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0046"><mixed-citation publication-type="journal" id="cars70043-cite-0046">
+<string-name name-style="western">
+<surname>Kaufman</surname>, <given-names>J.</given-names>
+</string-name>
+<year>2004</year>. “<article-title>Endogenous Explanation in the Sociology of Culture</article-title>.” <source>Annual Review of Sociology</source>
+<volume>30</volume>: <fpage>355</fpage>–<lpage>387</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0047"><mixed-citation publication-type="journal" id="cars70043-cite-0047">
+<string-name name-style="western">
+<surname>Kmec</surname>, <given-names>J. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>McDonald</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Trimble</surname>
+</string-name>. <year>2010</year>. “<article-title>Making Gender fit and “Correcting” Gender Misfits: Sex Segregated Employment and the Nonsearch Process</article-title>.” <source>Gender &amp; Society</source>
+<volume>24</volume>, no. <issue>2</issue>: <fpage>213</fpage>–<lpage>236</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0048"><mixed-citation publication-type="journal" id="cars70043-cite-0048">
+<string-name name-style="western">
+<surname>Knight</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Dobbin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Kalev</surname>
+</string-name>. <year>2022</year>. “<article-title>Under the Radar: Visibility and the Effects of Discrimination Lawsuits in Small and Large Firms</article-title>.” <source>American Sociological Review</source>
+<volume>87</volume>, no. <issue>2</issue>: <fpage>175</fpage>–<lpage>201</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0049"><mixed-citation publication-type="book" id="cars70043-cite-0049">
+<person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Lamont</surname>
+<given-names>M.</given-names>
+</string-name>
+</person-group> and <person-group person-group-type="editor">
+<string-name name-style="western">
+<surname>Fournier</surname>
+<given-names>M.</given-names>
+</string-name>
+</person-group> (Eds.). <year>1992</year>. <source>Cultivating Differences: Symbolic Boundaries and the Making of Inequality</source>. <publisher-name>University of Chicago Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0050"><mixed-citation publication-type="journal" id="cars70043-cite-0050">
+<string-name name-style="western">
+<surname>Lamont</surname>, <given-names>M.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Molnár</surname>
+</string-name>. <year>2002</year>. “<article-title>The Study of Boundaries in the Social Sciences</article-title>.” <source>Annual Review of Sociology</source>
+<volume>28</volume>, no. <issue>1</issue>: <fpage>167</fpage>–<lpage>195</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0051"><mixed-citation publication-type="journal" id="cars70043-cite-0051">
+<string-name name-style="western">
+<surname>Lee</surname>, <given-names>M.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Huang</surname>
+</string-name>. <year>2018</year>. “<article-title>Gender Bias, Social Impact Framing, and Evaluation of Entrepreneurial Ventures</article-title>.” <source>Organization Science</source>
+<volume>29</volume>, no. <issue>1</issue>: <fpage>1</fpage>–<lpage>16</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0097"><mixed-citation publication-type="book" id="cars70043-cite-0097">
+<string-name name-style="western">
+<surname>Lin</surname>, <given-names>N.</given-names>
+</string-name>
+<year>2001</year>. <source>Social Capital: A Theory of Social Structure and Action</source>. <publisher-loc>Cambridge</publisher-loc>: <publisher-name>Cambridge University Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0053"><mixed-citation publication-type="journal" id="cars70043-cite-0053">
+<string-name name-style="western">
+<surname>Liu</surname>, <given-names>H. Y.</given-names>
+</string-name>
+<year>2023</year>. “<article-title>When Nobody Listens, go Onlineʼʼ: The “807” Labor Movement Against Workplace Sexism in China's Tech Industry</article-title>.” <source>Gender, Work &amp; Organization</source>
+<volume>30</volume>, no. <issue>1</issue>: <fpage>312</fpage>–<lpage>328</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0054"><mixed-citation publication-type="journal" id="cars70043-cite-0054">
+<string-name name-style="western">
+<surname>Liu</surname>, <given-names>J.</given-names>
+</string-name>
+<year>2004</year>. “<article-title>Holding up the Sky? Reflections on Marriage in Contemporary China</article-title>.” <source>Feminism &amp; Psychology</source>
+<volume>14</volume>, no. <issue>1</issue>: <fpage>195</fpage>–<lpage>202</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0055"><mixed-citation publication-type="journal" id="cars70043-cite-0055">
+<string-name name-style="western">
+<surname>Lizardo</surname>, <given-names>O.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Strand</surname>
+</string-name>. <year>2010</year>. “<article-title>Skills, Toolkits, Contexts and Institutions: Clarifying the Relationship Between Different Approaches to Cognition in Cultural Sociology</article-title>.” <source>Poetics</source>
+<volume>38</volume>, no. <issue>2</issue>: <fpage>205</fpage>–<lpage>228</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0056"><mixed-citation publication-type="journal" id="cars70043-cite-0056">
+<string-name name-style="western">
+<surname>Ludwig</surname>, <given-names>V.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Brüderl</surname>
+</string-name>. <year>2018</year>. “<article-title>Is There a Male Marital Wage Premium?ʼʼ New Evidence From the United States</article-title>.” <source>American Sociological Review</source>
+<volume>83</volume>, no. <issue>4</issue>: <fpage>744</fpage>–<lpage>770</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0057"><mixed-citation publication-type="journal" id="cars70043-cite-0057">
+<string-name name-style="western">
+<surname>Manzi</surname>, <given-names>F.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Heilman</surname>
+</string-name>. <year>2021</year>. “<article-title>Breaking the Glass Ceiling: for One and All?</article-title>.” <source>Journal of Personality and Social Psychology</source>
+<volume>120</volume>, no. <issue>2</issue>: <fpage>257</fpage>–<lpage>277</lpage>.<pub-id pub-id-type="pmid">33252976</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1037/pspa0000260</pub-id></mixed-citation></ref><ref id="cars70043-bib-0058"><mixed-citation publication-type="book" id="cars70043-cite-0058">
+<string-name name-style="western">
+<surname>Mao</surname>, <given-names>T.</given-names>
+</string-name>
+<year>1953</year>. <source>Report of an Investigation Into the Peasant Movement in Hunan</source>. <publisher-name>Foreign Languages Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0059"><mixed-citation publication-type="book" id="cars70043-cite-0059">
+<collab collab-type="authors">National Bureau of Statistics of China</collab>
+. <year>2022</year>. <source>2022 China Statistical Yearbook</source>. <publisher-name>National Bureau of Statistics of China</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0060"><mixed-citation publication-type="journal" id="cars70043-cite-0060">
+<string-name name-style="western">
+<surname>Nohe</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Michel</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Sonntag</surname>
+</string-name>. <year>2014</year>. “<article-title>Family–Work Conflict and Job Performance: A Diary Study of Boundary Conditions and Mechanisms</article-title>.” <source>Journal of Organizational Behavior</source>
+<volume>35</volume>, no. <issue>3</issue>: <fpage>339</fpage>–<lpage>357</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0061"><mixed-citation publication-type="journal" id="cars70043-cite-0061">
+<string-name name-style="western">
+<surname>Olson</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Frieze</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Wall</surname>
+</string-name>, et al. <year>2007</year>. “<article-title>Beliefs in Equality for Women and Men as Related to Economic Factors in Central and Eastern Europe and the United States</article-title>.” <source>Sex Roles</source>
+<volume>56</volume>: <fpage>297</fpage>–<lpage>308</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0062"><mixed-citation publication-type="book" id="cars70043-cite-0062">
+<collab collab-type="authors">Organisation for Economic Co‐operation and Development (OECD)</collab>
+. <year>2022</year>. <article-title>
+Social Institutions &amp; Gender Index
+</article-title>. <publisher-name>Organisation for Economic Co‐operation and Development</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0063"><mixed-citation publication-type="book" id="cars70043-cite-0063">
+<collab collab-type="authors">Organisation for Economic Co‐operation and Development (OECD)</collab>
+. <year>2023</year>. <article-title>
+OECD Economic Outlook, Interim Report
+</article-title>, <italic toggle="yes">March 2023</italic>. <publisher-name>Organisation for Economic Co‐operation and Development</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0064"><mixed-citation publication-type="journal" id="cars70043-cite-0064">
+<string-name name-style="western">
+<surname>Pager</surname>, <given-names>D.</given-names>
+</string-name>
+<year>2016</year>. “<article-title>Are Firms That Discriminate More Likely to Go out of Business?</article-title>.” <source>Sociological Science</source>
+<volume>3</volume>: <fpage>849</fpage>–<lpage>859</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0065"><mixed-citation publication-type="journal" id="cars70043-cite-0065">
+<string-name name-style="western">
+<surname>Palmer</surname>, <given-names>M.</given-names>
+</string-name>
+<year>1995</year>. “<article-title>The Re‐Emergence of Family Law in Post‐Mao China: Marriage, Divorce and Reproduction</article-title>.” <source>The China Quarterly</source>
+<volume>141</volume>: <fpage>110</fpage>–<lpage>134</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0066"><mixed-citation publication-type="journal" id="cars70043-cite-0066">
+<string-name name-style="western">
+<surname>Patel</surname>, <given-names>D.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Yates</surname>
+</string-name>. <year>2023</year>. “<article-title>How Does Firm Size and Sector Impact Female and Minority Representation</article-title>.” <source>The Journal of Business Diversity</source>
+<volume>23</volume>, no. <issue>2</issue>: <fpage>52</fpage>–<lpage>63</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0067"><mixed-citation publication-type="journal" id="cars70043-cite-0067">
+<string-name name-style="western">
+<surname>Pepin</surname>, <given-names>J.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Cotter</surname>
+</string-name>. <year>2018</year>. “<article-title>Separating Spheres? Diverging Trends in Youth's Gender Attitudes About Work and family</article-title>.” <source>Journal of Marriage and Family</source>
+<volume>80</volume>, no. <issue>1</issue>: <fpage>7</fpage>–<lpage>24</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0068"><mixed-citation publication-type="journal" id="cars70043-cite-0068">
+<string-name name-style="western">
+<surname>Post</surname>, <given-names>C.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Byron</surname>
+</string-name>. <year>2015</year>. “<article-title>Women on Boards and Firm Financial Performance: A Meta‐Analysis</article-title>.” <source>Academy of Management Journal</source>
+<volume>58</volume>, no. <issue>5</issue>: <fpage>1546</fpage>–<lpage>1571</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0069"><mixed-citation publication-type="journal" id="cars70043-cite-0069">
+<string-name name-style="western">
+<surname>Quadlin</surname>, <given-names>N.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Doan</surname>
+</string-name>. <year>2018</year>. “<article-title>Sex‐Typed Chores and the City: Gender, Urbanicity, and Housework</article-title>.” <source>Gender &amp; Society</source>
+<volume>32</volume>, no. <issue>6</issue>: <fpage>789</fpage>–<lpage>813</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0070"><mixed-citation publication-type="journal" id="cars70043-cite-0070">
+<string-name name-style="western">
+<surname>Quillian</surname>, <given-names>L.</given-names>
+</string-name>
+<year>1996</year>. “<article-title>Group Threat and Regional Change in Attitudes Toward African‐Americans</article-title>.” <source>American Journal of sociology</source>
+<volume>102</volume>, no. <issue>3</issue>: <fpage>816</fpage>–<lpage>860</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0071"><mixed-citation publication-type="book" id="cars70043-cite-0071">
+<string-name name-style="western">
+<surname>Reskin</surname>, <given-names>B.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>P. A.</given-names>
+<surname>Roos</surname>
+</string-name>. <year>1990</year>. <source>Job Queues, Gender Queues: Explaining Women's Inroads Into Male Occupations</source>. <publisher-name>Temple University Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0072"><mixed-citation publication-type="journal" id="cars70043-cite-0072">
+<string-name name-style="western">
+<surname>Riedl</surname>, <given-names>M.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Geishecker</surname>
+</string-name>. <year>2014</year>. “<article-title>Keep It Simple: Estimation Strategies for Ordered Response Models With Fixed Effects</article-title>.” <source>Journal of Applied Statistics</source>
+<volume>41</volume>, no. <issue>11</issue>: <fpage>2358</fpage>–<lpage>2374</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0073"><mixed-citation publication-type="journal" id="cars70043-cite-0073">
+<string-name name-style="western">
+<surname>Risman</surname>, <given-names>B.</given-names>
+</string-name>
+<year>2004</year>. “<article-title>Gender as a Social Structure: Theory Wrestling With Activism</article-title>.” <source>Gender &amp; Society</source>
+<volume>18</volume>, no. <issue>4</issue>: <fpage>429</fpage>–<lpage>450</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0074"><mixed-citation publication-type="journal" id="cars70043-cite-0074">
+<string-name name-style="western">
+<surname>Rivera</surname>, <given-names>L.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Tilcsik</surname>
+</string-name>. <year>2019</year>. “<article-title>Scaling Down Inequality: Rating Scales, Gender Bias, and the Architecture of Evaluation</article-title>.” <source>American Sociological Review</source>
+<volume>84</volume>, no. <issue>2</issue>: <fpage>248</fpage>–<lpage>274</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0075"><mixed-citation publication-type="journal" id="cars70043-cite-0075">
+<string-name name-style="western">
+<surname>Rosenstein</surname>, <given-names>J. E.</given-names>
+</string-name>
+<year>2008</year>. “<article-title>Individual Threat, Group Threat, and Racial Policy: Exploring the Relationship Between Threat and Racial Attitudes</article-title>.” <source>Social Science Research</source>
+<volume>37</volume>, no. <issue>4</issue>: <fpage>1130</fpage>–<lpage>1146</lpage>.<pub-id pub-id-type="pmid">19227695</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.ssresearch.2008.04.001</pub-id></mixed-citation></ref><ref id="cars70043-bib-0076"><mixed-citation publication-type="journal" id="cars70043-cite-0076">
+<string-name name-style="western">
+<surname>Ruxton</surname>, <given-names>G. D.</given-names>
+</string-name>
+<year>2006</year>. “<article-title>The Unequal Variance T‐Test Is an Underused Alternative to Student's T‐Test and the Mann–Whitney U Test</article-title>.” <source>Behavioral Ecology</source>
+<volume>17</volume>, no. <issue>4</issue>: <fpage>688</fpage>–<lpage>690</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0077"><mixed-citation publication-type="journal" id="cars70043-cite-0077">
+<string-name name-style="western">
+<surname>Seeberg</surname>, <given-names>V.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Luo</surname>
+</string-name>. <year>2018</year>. “<article-title>Migrating to the City in Northwest China: Young Rural Women's Empowerment</article-title>.” <source>Journal of Human Development and Capabilities</source>
+<volume>19</volume>, no. <issue>3</issue>: <fpage>289</fpage>–<lpage>307</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0078"><mixed-citation publication-type="journal" id="cars70043-cite-0078">
+<string-name name-style="western">
+<surname>Shen</surname>, <given-names>J.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Wang</surname>
+</string-name>. <year>2023</year>. “<article-title>Do Men and Women Discriminate Against Women for the Same Reason?ʼʼ Evidence From China</article-title>.” <source>China Economic Review</source>
+<volume>77</volume>: <elocation-id>101908</elocation-id>.</mixed-citation></ref><ref id="cars70043-bib-0079"><mixed-citation publication-type="journal" id="cars70043-cite-0079">
+<string-name name-style="western">
+<surname>Smith‐Doerr</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Alegria</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Husbands Fealing</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Fitzpatrick</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Tomaskovic‐Devey</surname>
+</string-name>. <year>2019</year>. “<article-title>Gender Pay Gaps in US Federal Science Agencies: An Organizational Approach</article-title>.” <source>American Journal of sociology</source>
+<volume>125</volume>, no. <issue>2</issue>: <fpage>534</fpage>–<lpage>576</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0081"><mixed-citation publication-type="journal" id="cars70043-cite-0081">
+<string-name name-style="western">
+<surname>Song</surname>, <given-names>Q.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Smith</surname>
+</string-name>. <year>2021</year>. “<article-title>The Citizenship Advantage in Psychological Well‐Being: An Examination of the Hukou System in China</article-title>.” <source>Demography</source>
+<volume>58</volume>, no. <issue>1</issue>: <fpage>165</fpage>–<lpage>189</lpage>.<pub-id pub-id-type="pmid">33834239</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1215/00703370-8913024</pub-id><pub-id pub-id-type="pmcid">PMC10186556</pub-id></mixed-citation></ref><ref id="cars70043-bib-0082"><mixed-citation publication-type="book" id="cars70043-cite-0082">
+<string-name name-style="western">
+<surname>Stein</surname>, <given-names>A.</given-names>
+</string-name>
+<year>2001</year>. <source>The Stranger Next Door: The Story of a Small Community's Battle over Sex, Faith, and Civil Rights</source>.<publisher-name>Beacon Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0200"><mixed-citation publication-type="book" id="cars70043-cite-0200">
+<string-name name-style="western">
+<surname>Swidler</surname>, <given-names>A.</given-names>
+</string-name>
+<year>2003</year>. <source>Talk of love: How culture matters</source>. <publisher-loc>Chicago, IL</publisher-loc>: <publisher-name>University of Chicago Press</publisher-name>.</mixed-citation></ref><ref id="cars70043-bib-0083"><mixed-citation publication-type="journal" id="cars70043-cite-0083">
+<string-name name-style="western">
+<surname>Vaisey</surname>, <given-names>S.</given-names>
+</string-name>
+<year>2008</year>. “<article-title>Socrates, Skinner, and Aristotle: ‘Three Ways of Thinking About Culture in Action’</article-title>.” <source>Sociological Forum</source>
+<volume>23</volume>, no. <issue>3</issue>: <fpage>603</fpage>–<lpage>613</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0084"><mixed-citation publication-type="journal" id="cars70043-cite-0084">
+<string-name name-style="western">
+<surname>Vaisey</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Miles</surname>
+</string-name>. <year>2014</year>. “<article-title>Tools From Moral Psychology for Measuring Personal Moral Culture</article-title>.” <source>Theory and Society</source>
+<volume>43</volume>, no. <issue>3</issue>: <fpage>311</fpage>–<lpage>332</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0085"><mixed-citation publication-type="journal" id="cars70043-cite-0085">
+<string-name name-style="western">
+<surname>Von Hippel</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Issa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Ma</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Stokes</surname>
+</string-name>. <year>2011</year>. “<article-title>Stereotype Threat: Antecedents and Consequences for Working Women</article-title>.” <source>European Journal of Social Psychology</source>
+<volume>41</volume>, no. <issue>2</issue>: <fpage>151</fpage>–<lpage>161</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0086"><mixed-citation publication-type="journal" id="cars70043-cite-0086">
+<string-name name-style="western">
+<surname>Wang</surname>, <given-names>D.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Luo</surname>
+</string-name>. <year>2019</year>. “<article-title>Retire in Peace: Officials' Political Incentives and Corporate Diversification in China</article-title>.” <source>Administrative Science Quarterly</source>
+<volume>64</volume>, no. <issue>4</issue>: <fpage>773</fpage>–<lpage>809</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0087"><mixed-citation publication-type="journal" id="cars70043-cite-0087">
+<string-name name-style="western">
+<surname>Wang</surname>, <given-names>H.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Cheng</surname>
+</string-name>. <year>2021</year>. “<article-title>Mama Loves You: The Gender Wage Gap and Expenditure on Children's Education in China</article-title>.” <source>Journal of Economic Behavior &amp; Organization</source>
+<volume>188</volume>: <fpage>1015</fpage>–<lpage>1034</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0088"><mixed-citation publication-type="miscellaneous" id="cars70043-cite-0088">
+<string-name name-style="western">
+<surname>Wang</surname>, <given-names>O.</given-names>
+</string-name>
+<year>2022</year>. <article-title>China's state Firms Needed to Provide ‘Economic Foundation’, but Pressure Mounting Due to ‘Hidden losses.’</article-title>. <italic toggle="yes">South China Morning Post</italic>. Retrieved online: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.scmp.com/economy/china-economy/article/3198859/chinas-state-firms-needed-provide-economic-foundation-pressure-mounting-due-hidden-losses" ext-link-type="uri">https://www.scmp.com/economy/china‐economy/article/3198859/chinas‐state‐firms‐needed‐provide‐economic‐foundation‐pressure‐mounting‐due‐hidden‐losses</ext-link>.</mixed-citation></ref><ref id="cars70043-bib-0089"><mixed-citation publication-type="journal" id="cars70043-cite-0089">
+<string-name name-style="western">
+<surname>Wolf</surname>, <given-names>M.</given-names>
+</string-name>
+<year>1984</year>. “<article-title>Marriage, Family, and the State in Contemporary China</article-title>.” <source>Pacific Affairs</source>
+<volume>57</volume>, no. <issue>2</issue>: <fpage>213</fpage>–<lpage>236</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0090"><mixed-citation publication-type="miscellaneous" id="cars70043-cite-0090">
+<collab collab-type="authors">World Bank</collab>
+. <year>2022</year>. <article-title>
+China: Gender Data Portal
+</article-title>. World Bank. Retrieved from: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://genderdata.worldbank.org/countries/china/#:~:text=In%20China%2C%20the%20labor%20force,labor%20force%20participation%20has%20decreased" ext-link-type="uri">https://genderdata.worldbank.org/countries/china/#:~:text=In%20China%2C%20the%20labor%20force,labor%20force%20participation%20has%20decreased</ext-link>.</mixed-citation></ref><ref id="cars70043-bib-0091"><mixed-citation publication-type="journal" id="cars70043-cite-0091">
+<string-name name-style="western">
+<surname>Wu</surname>, <given-names>A. X.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Dong</surname>
+</string-name>. <year>2019</year>. “<article-title>What Is Made‐in‐China Feminism (s)? Gender Discontent and Class Friction in Post‐Socialist China</article-title>.” <source>Critical Asian Studies</source>
+<volume>51</volume>, no. <issue>4</issue>: <fpage>471</fpage>–<lpage>492</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0092"><mixed-citation publication-type="journal" id="cars70043-cite-0092">
+<string-name name-style="western">
+<surname>Wu</surname>, <given-names>Y.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Qi</surname>
+</string-name>. <year>2017</year>. “<article-title>A Gender‐Based Analysis of Multidimensional Poverty in China</article-title>.” <source>Asian Journal of Women's Studies</source>
+<volume>23</volume>, no. <issue>1</issue>: <fpage>66</fpage>–<lpage>88</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0093"><mixed-citation publication-type="journal" id="cars70043-cite-0093">
+<string-name name-style="western">
+<surname>Yang</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Li</surname>
+</string-name>. <year>2009</year>. “<article-title>Legal Protection Against Gender Discrimination in the Workplace in China</article-title>.” <source>Gender &amp; Development</source>
+<volume>17</volume>, no. <issue>2</issue>: <fpage>295</fpage>–<lpage>308</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0094"><mixed-citation publication-type="journal" id="cars70043-cite-0094">
+<string-name name-style="western">
+<surname>Yodanis</surname>, <given-names>C. L.</given-names>
+</string-name>
+<year>2002</year>. “<article-title>Producing Social Class Representations: Women's Work in a Rural Town</article-title>.” <source>Gender &amp; Society</source>
+<volume>16</volume>, no. <issue>3</issue>: <fpage>323</fpage>–<lpage>344</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0095"><mixed-citation publication-type="journal" id="cars70043-cite-0095">
+<string-name name-style="western">
+<surname>Yucel</surname>, <given-names>D.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Chung</surname>
+</string-name>. <year>2023</year>. “<article-title>Working From Home, Work–Family Conflict, and the Role of Gender and Gender Role Attitudes</article-title>.” <source>Community, Work &amp; Family</source>
+<volume>26</volume>, no. <issue>2</issue>: <fpage>190</fpage>–<lpage>221</lpage>.</mixed-citation></ref><ref id="cars70043-bib-0096"><mixed-citation publication-type="journal" id="cars70043-cite-0096">
+<string-name name-style="western">
+<surname>Zhong</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Zhu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Chen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Huang</surname>
+</string-name>. <year>2022</year>. “<article-title>Urban Expansion and the Urban–Rural Income Gap: Empirical Evidence From China</article-title>.” <source>Cities</source>
+<volume>129</volume>: <elocation-id>103831</elocation-id>.</mixed-citation></ref></ref-list></back></article>

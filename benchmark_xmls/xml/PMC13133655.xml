@@ -1,0 +1,778 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="rcm70085" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Rapid Commun Mass Spectrom</journal-id><journal-id journal-id-type="iso-abbrev">Rapid Commun Mass Spectrom</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">RCM</journal-id><journal-title-group><journal-title>Rapid Communications in Mass Spectrometry</journal-title></journal-title-group><issn pub-type="ppub">0951-4198</issn><issn pub-type="epub">1097-0231</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13133655</article-id><article-id pub-id-type="pmcid-ver">PMC13133655.1</article-id><article-id pub-id-type="pmcaid">13133655</article-id><article-id pub-id-type="pmcaiid">13133655</article-id><article-id pub-id-type="pmid">42063337</article-id><article-id pub-id-type="doi">10.1002/rcm.70085</article-id><article-id pub-id-type="publisher-id">RCM70085</article-id><article-id pub-id-type="other">6689734</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Fast and Sensitive Measurement of Off‐Flavors in Recirculating Aquaculture Systems</article-title></title-group><contrib-group><contrib id="rcm70085-cr-0001" contrib-type="author"><name name-style="western"><surname>Noguera</surname><given-names initials="PM">Pedro Martínez</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-8289-907X</contrib-id><xref rid="rcm70085-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="rcm70085-cr-0002" contrib-type="author"><name name-style="western"><surname>Holt</surname><given-names initials="S">Sylvester</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-9958-0169</contrib-id><xref rid="rcm70085-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="rcm70085-cr-0003" contrib-type="author"><name name-style="western"><surname>Podduturi</surname><given-names initials="R">Raju</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-8395-7016</contrib-id><xref rid="rcm70085-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="rcm70085-cr-0004" contrib-type="author"><name name-style="western"><surname>Bredie</surname><given-names initials="WLP">Wender L. P.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0001-5145-4131</contrib-id><xref rid="rcm70085-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="rcm70085-cr-0005" contrib-type="author"><name name-style="western"><surname>Beauchamp</surname><given-names initials="JD">Jonathan D.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-1405-7625</contrib-id><xref rid="rcm70085-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="rcm70085-cr-0006" contrib-type="author" corresp="yes"><name name-style="western"><surname>Petersen</surname><given-names initials="MA">Mikael A.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-4106-7696</contrib-id><xref rid="rcm70085-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>map@food.ku.dk</email></address></contrib></contrib-group><aff id="rcm70085-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Design and Consumer Behaviour, Department of Food Science</named-content>
+<institution>University of Copenhagen</institution>
+<city>Frederiksberg</city>
+<country country="DK">Denmark</country>
+</aff><aff id="rcm70085-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Sensory Analytics and Technologies</named-content>
+<institution>Fraunhofer‐Institute for Process Engineering and Packaging IVV</institution>
+<city>Freising</city>
+<country country="DE">Germany</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Mikael A. Petersen (<email>map@food.ku.dk</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>01</day><month>5</month><year>2026</year></pub-date><pub-date pub-type="ppub"><day>15</day><month>8</month><year>2026</year></pub-date><volume>40</volume><issue-id pub-id-type="pmc-issue-id">512803</issue-id><elocation-id>e70085</elocation-id><history>
+<date date-type="rev-recd"><day>26</day><month>3</month><year>2026</year></date>
+<date date-type="received"><day>20</day><month>1</month><year>2026</year></date>
+<date date-type="accepted"><day>30</day><month>3</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>01</day><month>05</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>02</day><month>05</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-05-03 00:25:18.497"><day>03</day><month>05</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Rapid Communications in Mass Spectrometry</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="RCM-40-e70085.pdf"><?pdf-name RCM-40-e70085.pdf?><?pdf-size 2777724?><?pdf-md5 0376db79c9cc73543ad1f30c0c6872b2?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:9d64/13133655/0376db79c9cc/RCM-40-e70085.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:RCM-40-e70085.pdf"/><abstract><title>ABSTRACT</title><sec id="rcm70085-sec-1001"><title>Rationale</title><p>Geosmin and 2‐methylisoborneol (2‐MIB) are odor‐active compounds responsible for earthy off‐flavors in fish, creating significant quality concerns in recirculating aquaculture systems (RAS). Their extremely low odor thresholds make rapid and highly sensitive detection essential for maintaining product quality and consumer acceptance in aquaculture production.</p></sec><sec id="rcm70085-sec-1002"><title>Methods</title><p>A novel analytical method was developed using static headspace sampling combined with proton transfer reaction‐mass spectrometry (PTR‐MS) for the detection of geosmin and 2‐MIB in aquaculture water. Sample preparation was optimized by sodium chloride addition to enhance <italic toggle="yes">salting out</italic>, incubation at 90 °C, and maximization of headspace injection speed into the PTR‐MS system to improve analyte sensitivity.</p></sec><sec id="rcm70085-sec-1003"><title>Results</title><p>The optimized method achieved detection limits of 19 ng·L⁻¹ for geosmin and 4 ng·L⁻¹ for 2‐MIB with a total sample screening time of less than 10 minutes. Detection limits were within the same low ng·L⁻¹ range as the odor thresholds of these compounds, enabling quantification at sensorily relevant concentrations associated with off‐flavor perception.</p></sec><sec id="rcm70085-sec-1004"><title>Conclusions</title><p>This PTR‐MS‐based approach provides a rapid and sensitive method for objective detection of geosmin and 2‐MIB in aquaculture water at concentrations relevant to sensory off‐odor impairment. The method shows strong potential for routine monitoring in RAS and may be extended to other volatile compounds and aqueous analytical applications.</p></sec></abstract><kwd-group kwd-group-type="author-generated" id="Ace_Pre_7"><kwd id="rcm70085-kwd-0001">2‐methylisoborneol</kwd><kwd id="rcm70085-kwd-0002">direct injection</kwd><kwd id="rcm70085-kwd-0003">geosmin</kwd><kwd id="rcm70085-kwd-0004">headspace</kwd><kwd id="rcm70085-kwd-0005">off‐odor</kwd><kwd id="rcm70085-kwd-0006">PTR‐MS</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>European Union’s Framework Program for Research and Innovation Horizon 2020</institution></institution-wrap>
+</funding-source><award-id>956481</award-id></award-group><award-group id="funding-0002"><funding-source>
+<institution-wrap><institution>FOODHAY (Food and Health Open Innovation Laboratory, Danish Roadmap for Research Infrastructure)</institution></institution-wrap>
+</funding-source></award-group></funding-group><counts><fig-count count="5"/><table-count count="5"/><page-count count="12"/><word-count count="7800"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>15 August 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.7.6 mode:remove_FC converted:01.05.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body id="rcm70085-body-0001"><sec id="rcm70085-sec-0001"><label>1</label><title>Introduction</title><p>The semi‐volatile terpenoid‐based compounds geosmin and 2‐methylisoborneol (2‐MIB) are of significant detriment to the aquaculture industry, the fastest‐growing food production sector currently worldwide [<xref rid="rcm70085-bib-0001" ref-type="bibr">3</xref>, <xref rid="rcm70085-bib-0002" ref-type="bibr">5</xref>]. Geosmin and 2‐MIB, among other compounds, can cause unpleasant off‐flavors in aquaculture fish that are described as “earthy” and “musty” [<xref rid="rcm70085-bib-0003" ref-type="bibr">3</xref>, <xref rid="rcm70085-bib-0004" ref-type="bibr">4</xref>] and lead to consumer rejection. Recirculated aquaculture systems (RAS) are particularly affected by this problem, with repercussions on fish marketability and an associated negative impact on the economic sustainability of fish farms [<xref rid="rcm70085-bib-0005" ref-type="bibr">5</xref>]. Both compounds, which cannot be synthesized by the fish themselves and are thus of exogenous origin, have been detected in many RAS‐farmed fish species and are known to be produced by diverse aquatic microorganisms, including Actinobacteria, Cyanobacteria, and Myxobacteria (Myxococcota) [<xref rid="rcm70085-bib-0003" ref-type="bibr">3</xref>]. When present in aquaculture water, these lipophilic semi‐volatile terpenoid alcohols can accumulate in the fatty tissue of the animals and elicit undesired off‐flavor impressions [<xref rid="rcm70085-bib-0006" ref-type="bibr">6</xref>]. It is therefore crucial for the aquaculture industry to have at its disposal a robust and reliable analytical method to monitor these compounds to quickly and efficiently identify potential off‐flavor problems in their products. From an operational perspective, the development of an online analytical tool capable of dynamically monitoring these compounds during production or depuration would be highly beneficial for the sector.</p><p>The identification and quantification of these compounds in water has been hitherto reported only for chromatographic methods, predominantly gas chromatography (GC) but also liquid chromatography (LC) [<xref rid="rcm70085-bib-0007" ref-type="bibr">7</xref>]. A broad range of preconcentration techniques have been used, such as solid phase extraction (SPE; [<xref rid="rcm70085-bib-0008" ref-type="bibr">8</xref>]), stir‐bar sorptive extraction (SBSE; [<xref rid="rcm70085-bib-0009" ref-type="bibr">9</xref>]), or liquid–liquid extraction (LLE; [<xref rid="rcm70085-bib-0010" ref-type="bibr">10</xref>]), which are typically followed by GC separation and mass spectrometric (MS) detection. GC–MS represents the benchmark analytical technique for volatile organic compound (VOC) identification and quantification due to its robustness and its capability for unequivocal compound identification. Most of the preconditioning steps necessary for GC–MS, however, are labor‐intensive, time‐consuming, and requiring skilled personnel, and often large quantities of solvents [<xref rid="rcm70085-bib-0011" ref-type="bibr">11</xref>]. There is therefore an interest in developing more cost‐effective, rapid, simpler, and direct analytical methods to detect low quantities of off‐flavors in aquaculture water to increase sample throughput and offer a timely detection as a quality assurance measure in this sector.</p><p>This study proposes a novel approach for a targeted analysis of geosmin and 2‐MIB in water based on the direct injection of static headspace from the incubated sample using proton‐transfer‐reaction mass spectrometry (PTR‐MS). The sensitivity of the method is especially important due to the extremely low odor thresholds (OTs) of these off‐odor compounds, reported to be 3.8 ng·L<sup>−1</sup> for geosmin and 15 ng·L<sup>−1</sup> for 2‐MIB in water [<xref rid="rcm70085-bib-0012" ref-type="bibr">12</xref>]. PTR‐MS is a well‐established direct‐injection technology for real‐time analyses of VOCs that offers high sensitivity and fast analytical response [<xref rid="rcm70085-bib-0013" ref-type="bibr">16</xref>, <xref rid="rcm70085-bib-0014" ref-type="bibr">17</xref>]. Its operating principles are described in the literature [<xref rid="rcm70085-bib-0015" ref-type="bibr">18</xref>, <xref rid="rcm70085-bib-0016" ref-type="bibr">23</xref>] and are therefore only summarized here. Unlike GC–MS, which relies on chromatographic separation and compound fragmentation via highly energetic electron ionization (EI; typically at 70 eV) for chemical structure elucidation, PTR‐MS uses hydroxonium ions (H<sub>3</sub>O<sup>+</sup>) to protonate VOCs via soft chemical ionization (CI; typically 1–2 eV), with the ensuing ions detected by time‐of‐flight (TOF) mass spectrometry [<xref rid="rcm70085-bib-0017" ref-type="bibr">17</xref>]. In PTR‐MS there is no physical compound separation prior to detection, with VOCs directly injected and ionized in the reaction chamber (typically 100 ms from sampling to detection). The high resolution of the TOF‐MS detection system allows discrimination of nominally isobaric compounds, although structural isomers cannot be differentiated without prior GC separation [<xref rid="rcm70085-bib-0013" ref-type="bibr">13</xref>].</p><p>This paper reports on a method development and corresponding systematic study of the optimal detection of geosmin and 2‐methylisoborneol in aqueous solutions by PTR‐MS. The optimized method was compared analytically with a benchmark GC–MS method for the quantitation of geosmin in a set of RAS water samples. To our knowledge, this work represents the first investigation of the detection and quantitation of geosmin and 2‐MIB in water by PTR‐MS.</p></sec><sec sec-type="materials-and-methods" id="rcm70085-sec-0002"><label>2</label><title>Materials and Methods</title><sec id="rcm70085-sec-0003"><label>2.1</label><title>Chemicals</title><p>Pure reference standards of geosmin (≥ 97%) and 2‐methylisoborneol (≥ 98%) (both procured from Sigma Aldrich, Steinheim, Germany) were used for initial detectability and fragmentation studies. Certified chemical reference standards in methanol (Sigma Aldrich, Steinheim, Germany) were used for the headspace optimization study. Reference standards in methanol (but also the pure ones) were diluted in water to avoid detector saturation and signal suppression (due to high concentrations of methanol) and therefore optimize instrumental performance. Details of the physicochemical properties of the two compounds are given in Table <xref rid="rcm70085-tbl-0001" ref-type="table">1</xref>. Sodium chloride (NaCl, 99.5%; ThermoFisher Scientific, Denmark) was used for the headspace optimization experimental design and the final PTR‐MS measurements.</p><table-wrap position="float" id="rcm70085-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Physicochemical properties of geosmin and 2‐methylisoborneol.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Common name</th><th align="center" valign="bottom" rowspan="1" colspan="1">Elemental composition</th><th align="center" valign="bottom" rowspan="1" colspan="1">MW [g·mol<sup>−1</sup>]</th><th align="center" valign="bottom" rowspan="1" colspan="1">Log P/K<sub>ow</sub>
+<xref rid="rcm70085-note-0001" ref-type="table-fn">
+<sup>a</sup>
+</xref>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">K<sub>h</sub> [atm m<sup>3</sup>·mol<sup>−1</sup>]<xref rid="rcm70085-note-0002" ref-type="table-fn">
+<sup>b</sup>
+</xref>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Boiling point [°C]<xref rid="rcm70085-note-0003" ref-type="table-fn">
+<sup>c</sup>
+</xref>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Vapor pressure [atm]<xref rid="rcm70085-note-0002" ref-type="table-fn">
+<sup>b</sup>
+</xref>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Aqueous solubility [mg·L<sup>−1</sup>]<xref rid="rcm70085-note-0002" ref-type="table-fn">
+<sup>b</sup>
+</xref>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Odor quality<xref rid="rcm70085-note-0004" ref-type="table-fn">
+<sup>d</sup>
+</xref>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Geosmin</td><td align="center" valign="top" rowspan="1" colspan="1">C<sub>12</sub>H<sub>22</sub>O</td><td align="center" valign="top" rowspan="1" colspan="1">182.30</td><td align="center" valign="top" rowspan="1" colspan="1">3.7</td><td align="center" valign="top" rowspan="1" colspan="1">6.66 × 10<sup>−5</sup>
+</td><td align="center" valign="top" rowspan="1" colspan="1">270</td><td align="center" valign="top" rowspan="1" colspan="1">5.49 × 10<sup>−5</sup>
+</td><td align="center" valign="top" rowspan="1" colspan="1">150.2</td><td align="center" valign="top" rowspan="1" colspan="1">Musty, earthy, beetroot‐like</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">2‐MIB</td><td align="center" valign="top" rowspan="1" colspan="1">C<sub>11</sub>H<sub>20</sub>O</td><td align="center" valign="top" rowspan="1" colspan="1">168.28</td><td align="center" valign="top" rowspan="1" colspan="1">3.1</td><td align="center" valign="top" rowspan="1" colspan="1">5.76 × 10<sup>−5</sup>
+</td><td align="center" valign="top" rowspan="1" colspan="1">208</td><td align="center" valign="top" rowspan="1" colspan="1">6.68 × 10<sup>−5</sup>
+</td><td align="center" valign="top" rowspan="1" colspan="1">194.5</td><td align="center" valign="top" rowspan="1" colspan="1">Moldy, musty</td></tr></tbody></table><table-wrap-foot id="rcm70085-ntgp-0001"><fn id="rcm70085-note-0001"><label>
+<sup>a</sup>
+</label><p>Retrieved from <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://pubchem.ncbi.nlm.nih.gov/" ext-link-type="uri">PubChem (nih.gov</ext-link>).</p></fn><fn id="rcm70085-note-0002"><label>
+<sup>b</sup>
+</label><p>Retrieved from [<xref rid="rcm70085-bib-0018" ref-type="bibr">18</xref>].</p></fn><fn id="rcm70085-note-0003"><label>
+<sup>c</sup>
+</label><p>Retrieved from <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.chemicalbook.com/ProductIndex_EN.aspx?gad_source=1&amp;gad_campaignid=22304930072&amp;gclid=CjwKCAjw687NBhB4EiwAQ645dsFNVKt62kmmYqk38zRQJccbP5RX_u7AB1bJ1hXaIdsRWiR0ANgc6BoC9usQAvD_BwE" ext-link-type="uri">ChemicalBook</ext-link> (predicted).</p></fn><fn id="rcm70085-note-0004"><label>
+<sup>d</sup>
+</label><p>Retrieved from <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.leibniz-lsb.de/datenbanken/leibniz-lsbtum-odorant-database/odorantdb" ext-link-type="uri">OdorantDB</ext-link>.</p></fn></table-wrap-foot></table-wrap></sec><sec id="rcm70085-sec-0004"><label>2.2</label><title>Sample Preparation</title><sec id="rcm70085-sec-0005"><label>2.2.1</label><title>Aqueous Solutions for Fragmentation Studies and Calibrations</title><p>The first part of the investigation was conducted using a liquid calibration unit (LCU) (model LCU‐a; IONICON Analytik GmbH, Innsbruck, Austria) as the sample injection method, whereby aqueous samples are vaporized via a nebulizer into a heated evaporation chamber, creating a gas flow into the instrument at defined trace concentrations [<xref rid="rcm70085-bib-0019" ref-type="bibr">19</xref>]. Aqueous solutions containing standards of pure geosmin or 2‐MIB were prepared in ultrapure water to final concentrations of 17.28 and 15.95 mg·L<sup>−1</sup>, respectively. Aqueous‐phase concentrations were calculated to achieve gas‐phase concentrations in the LCU evaporation chamber of approximately 100 μg·L<sup>−1</sup> for each compound. Headspace glass vials of 20 mL were used to contain the solutions. The LCU was operated with a liquid sample flow of 5 μL·min<sup>−1</sup>, with the solutions vaporized into the evaporation chamber (110°C) and then transferred through a heated inlet hose (80°C) into the PTR‐TOF‐MS instrument.</p></sec><sec id="rcm70085-sec-0006"><label>2.2.2</label><title>Aqueous Solutions for Static Headspace Measurements</title><p>Aqueous solutions of 5 mL containing the target compounds were prepared in 20 mL headspace vials. For the headspace optimization study, 0.5 μg·L<sup>−1</sup> solutions containing both geosmin and 2‐MIB (50:50 v/v) in methanol were used. Sodium chloride (NaCl), after some preliminary analyses to test solubility limits at room temperature, was additionally added for static headspace measurements at concentrations of 0, 90 and 180 g·L<sup>−1</sup> and all injections were carried out using an MPS2 autosampler (Gerstel GmbH &amp; Co. KG, Mülheim an der Ruhr, Germany).</p></sec><sec id="rcm70085-sec-0007"><label>2.2.3</label><title>Stir‐Bar Sorptive Extraction (SBSE) for GC–MS Validation Analysis</title><p>Geosmin quantitation in water by GC–MS analysis was performed using a method adapted from [<xref rid="rcm70085-bib-0009" ref-type="bibr">9</xref>]. The method's validation data were compared with those from previous studies reporting the use of the same methodology [<xref rid="rcm70085-bib-0006" ref-type="bibr">6</xref>, <xref rid="rcm70085-bib-0020" ref-type="bibr">27</xref>, <xref rid="rcm70085-bib-0021" ref-type="bibr">28</xref>, <xref rid="rcm70085-bib-0022" ref-type="bibr">29</xref>] and metrics were highly comparable (LOD = 0.4 g·L<sup>−1</sup>; LOQ = 1.2 g·L<sup>−1</sup>, linearity (<italic toggle="yes">R</italic>
+<sup>2</sup>) = 0.9978 and Relative Standard Deviation (RSD) = 12%). In brief, a commercial stir bar (Twister; Gerstel GmbH &amp; Co. KG, Mülheim an der Ruhr, Germany) coated with polydimethylsiloxane (PDMS; length 2 cm and thickness of 1 mm) was added to 20 mL of the aqueous samples in a 50 mL glass vial and then covered with a plastic lid. Extraction was carried out at room temperature by rotating the stir bar at 1000 rpm for 120 min. After extraction, the stir bar was removed with forceps, rinsed with cold distilled water, dried with a lint‐free tissue, and transferred to thermal desorption tubes. External calibration curves were prepared from a GC‐grade mixture solution (1:1 v/v) of geosmin and 2‐MIB in a dilution series of 0, 50, 100, 250, and 500 ng·L<sup>−1</sup> in deionized water. All analyses were carried out in triplicates, for both the sample and calibration curve points.</p></sec></sec><sec id="rcm70085-sec-0008"><label>2.3</label><title>Headspace Optimization Study</title><p>Preliminary studies assessed and compared the sensitivities of the analyses via LCU and static headspace injections (see Supporting Information <xref rid="rcm70085-supitem-0001" ref-type="supplementary-material">S1</xref>: Supplementary Material 2); the latter was chosen for further optimization. The selection of factors and variables to maximize the sensitivity of the method was motivated by the physicochemical relationships described in Equations (<xref rid="rcm70085-disp-0001" ref-type="disp-formula">1</xref>) and (<xref rid="rcm70085-disp-0002" ref-type="disp-formula">2</xref>).</p><p>The amount of analyte in the gas phase (<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-1" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>C</mml:mi><mml:mi>g</mml:mi></mml:msub></mml:mrow></mml:mrow></mml:math>), which has an impact on the detection sensitivity, depends on its concentration in the liquid phase as well as its partition coefficient and phase ratio, as described by Equation (<xref rid="rcm70085-disp-0001" ref-type="disp-formula">1</xref>) [<xref rid="rcm70085-bib-0023" ref-type="bibr">23</xref>],<disp-formula id="rcm70085-disp-0001">
+<label>(1)</label>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-2" display="block" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>A</mml:mi><mml:mo>∝</mml:mo><mml:msub><mml:mi>C</mml:mi><mml:mi>g</mml:mi></mml:msub><mml:mo linebreak="goodbreak">=</mml:mo><mml:mfrac><mml:msub><mml:mi>C</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mrow><mml:mi>K</mml:mi><mml:mo>+</mml:mo><mml:mi>β</mml:mi></mml:mrow></mml:mfrac></mml:mrow></mml:mrow></mml:math>
+</disp-formula>where <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-3" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>A</mml:mi></mml:mrow></mml:mrow></mml:math> is the analyte signal intensity (e.g., peak area in GC–MS) in a given volume of headspace, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-4" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>C</mml:mi><mml:mi>g</mml:mi></mml:msub></mml:mrow></mml:mrow></mml:math> is the gas‐phase concentration of the analyte in headspace, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-5" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>C</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math> is the initial concentration of the analyte in the sample, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-6" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>K</mml:mi></mml:mrow></mml:mrow></mml:math> the partition coefficient, and <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-7" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>β</mml:mi></mml:mrow></mml:mrow></mml:math> is the phase ratio in the static system (e.g., the vial). In this study, optimization factors were only centered on K, which is described by Equation (<xref rid="rcm70085-disp-0002" ref-type="disp-formula">2</xref>) [<xref rid="rcm70085-bib-0023" ref-type="bibr">23</xref>],<disp-formula id="rcm70085-disp-0002">
+<label>(2)</label>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-8" display="block" overflow="scroll"><mml:mrow><mml:mrow><mml:mi mathvariant="normal">K</mml:mi><mml:mo>∝</mml:mo><mml:mfrac><mml:mn>1</mml:mn><mml:mrow><mml:msup><mml:msub><mml:mi>p</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>°</mml:mo></mml:msup><mml:mo>·</mml:mo><mml:msub><mml:mi>γ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mfrac></mml:mrow></mml:mrow></mml:math>
+</disp-formula>where <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-9" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msup><mml:msub><mml:mi>p</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>°</mml:mo></mml:msup></mml:mrow></mml:mrow></mml:math> is the vapor pressure (temperature‐ and time‐dependent) and <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-10" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>γ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mrow></mml:math> is the activity coefficient (matrix‐composition‐dependent) of the analyte.</p><p>Given their relevance in affecting the analyte concentration in headspace, factors selected to be investigated by means of a full factorial design were temperature, time (to maximize <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-11" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msup><mml:msub><mml:mi>p</mml:mi><mml:mi>i</mml:mi></mml:msub><mml:mo>°</mml:mo></mml:msup></mml:mrow></mml:mrow></mml:math>) and NaCl (to maximize <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-12" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>γ</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mrow></mml:math>) [<xref rid="rcm70085-bib-0023" ref-type="bibr">23</xref>]. Three levels of each factor were investigated and are detailed in Table <xref rid="rcm70085-tbl-0002" ref-type="table">2</xref>. NaCl was chosen because it is commonly used in analytical chemistry to promote the release of volatile compounds from aqueous solutions by the <italic toggle="yes">salting out</italic> phenomenon. Furthermore, findings previously reported suggest an increased volatilization potential of microbial metabolites by the addition of salt [<xref rid="rcm70085-bib-0007" ref-type="bibr">10</xref>, <xref rid="rcm70085-bib-0024" ref-type="bibr">31</xref>]. Additionally, the detection of low ppt concentrations of the target compounds was maximized by using a rapid headspace injection rate. Injection parameters were selected so that the largest headspace volume (syringe capacity: 2.5 mL) was injected at the fastest rate possible into the instrument. Based on the available conditions, 2.5 mL of the headspace of a 5 mL sample contained in 20 mL vial was injected at a rate of 1 mL·s<sup>−1</sup>, minimizing further dilution by the inlet sample gas flow. Overall, this experimental design implied 27 different experiments, which were performed in randomized order, in triplicates and on different days.</p><table-wrap position="float" id="rcm70085-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>Full factorial design: factors and levels.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th style="border-bottom:solid 1px #000000" align="left" valign="bottom" rowspan="1" colspan="1">Factors</th><th align="center" style="border-bottom:solid 1px #000000" valign="bottom" rowspan="1" colspan="1">Low level</th><th align="center" style="border-bottom:solid 1px #000000" valign="bottom" rowspan="1" colspan="1">Middle level</th><th align="center" style="border-bottom:solid 1px #000000" valign="bottom" rowspan="1" colspan="1">High level</th><th align="center" colspan="2" style="border-bottom:solid 1px #000000" valign="bottom" rowspan="1">Extra levels</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">x<sub>1</sub>: Incubation temperature (°C)</td><td align="center" valign="top" rowspan="1" colspan="1">50</td><td align="center" valign="top" rowspan="1" colspan="1">70</td><td align="center" valign="top" rowspan="1" colspan="1">90</td><td align="center" valign="top" rowspan="1" colspan="1">110</td><td align="center" valign="top" rowspan="1" colspan="1">130</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">x<sub>2</sub>: Incubation time (min)</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">10</td><td align="center" valign="top" rowspan="1" colspan="1">15</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">x<sub>3</sub>: Salt content (g·L<sup>−1</sup>)</td><td align="center" valign="top" rowspan="1" colspan="1">0</td><td align="center" valign="top" rowspan="1" colspan="1">90</td><td align="center" valign="top" rowspan="1" colspan="1">180</td><td align="center" valign="top" rowspan="1" colspan="1">—</td><td align="center" valign="top" rowspan="1" colspan="1">—</td></tr></tbody></table></table-wrap><p>After the first round of experiments, two extra levels for temperature as a factor were further investigated (detailed in Table <xref rid="rcm70085-tbl-0002" ref-type="table">2</xref>) to explore the limits of the system and method; this implied eight new experimental points, which were also performed in triplicates (105 measurements). In PTR‐MS, high sample humidity increases the concentration of hydrated hydroxonium ions, H<sub>3</sub>O<sup>+</sup>(H<sub>2</sub>O)<sub>n</sub>, which can alter the ion chemistry with the target VOCs and negatively affect the sensitivity towards certain compounds. Several studies have reported the decline in sensitivity for many compounds when humidity was increased, such as benzene and toluene, hydrogen sulfide, and formaldehyde, among others [<xref rid="rcm70085-bib-0025" ref-type="bibr">32</xref>, <xref rid="rcm70085-bib-0026" ref-type="bibr">33</xref>].</p></sec><sec id="rcm70085-sec-0009"><label>2.4</label><title>PTR‐TOF‐MS Analyses</title><sec id="rcm70085-sec-0010"><label>2.4.1</label><title>PTR‐TOF‐MS Instruments</title><p>The studies reported herein were performed on two different PTR‐TOF‐MS instruments: a PTR‐TOF 8000 and a PTR‐TOF 6000 × 2 (IONICON Analytik GmbH, Innsbruck, Austria). The fragmentation studies using the LCU for direct injection were made using the former, whereas the static headspace analyses were made using the latter.</p></sec><sec id="rcm70085-sec-0011"><label>2.4.2</label><title>Fragmentation Studies and Calibrations</title><p>The LCU injection studies used a PTR‐TOF‐MS operating with a drift tube temperature of 60°C and with ratios of voltage (U<sub>drift</sub>)/pressure (p<sub>drift</sub>) of 400 V/2.4 mbar, 550 V/2.0 mbar, 550 V/2.2 mbar and 600 V/2.0 mbar, respectively. This resulted in corresponding reduced electric fields E/N of 70, 85, 105 and 125 Td, respectively, whereby 1 Td = 10<sup>−17</sup> V·cm<sup>−2</sup>. The sampling inlet connecting the LCU with the instrument was kept at 80°C.</p></sec><sec id="rcm70085-sec-0012"><label>2.4.3</label><title>Static Headspace Study</title><p>Measurements under static headspace conditions were carried out with the PTR‐TOF‐MS drift tube operated at a pressure of 2.6 mbar, a temperature of 80°C, and a voltage (U<sub>drift</sub>) of 269 V (resulting in an E/N of 71 Td). This E/N was found in the fragmentation studies to yield the highest abundance of the dehydration products of geosmin and 2‐MIB and was therefore used in all subsequent analyses. Static headspace injection into the PTR‐TOF‐MS inlet was achieved using the injection port of a GC oven (in the absence of a chromatographic column), which was connected via a 1 mm ID polyether ether ketone (PEEK) inlet capillary to the PTR‐TOF‐MS instrument; both the inlet line and GC oven were kept at 80°C. For the experimental points with incubation temperatures of 110°C and 130°C, the sampling syringe, transfer line, and drift tube were kept at 130°C to avoid cold spots and minimize condensation; all other operating parameters were kept constant.</p></sec></sec><sec id="rcm70085-sec-0013"><label>2.5</label><title>Data Acquisition and Processing</title><p>For the LCU experiments, measurements were made to generate one spectrum every 2 s for the mass range <italic toggle="yes">m/z</italic> 10–207. Background and sample injection spectra were averaged over 200 cycles (400 s). The data were mass‐corrected with respect to two reference ion anchor points (<italic toggle="yes">m/z</italic> 21.022 (H<sub>3</sub>
+<sup>18</sup>O<sup>+</sup>) and <italic toggle="yes">m/z</italic> 203.943 (C<sub>6</sub>H<sub>5</sub>I<sup>+</sup>)), while an additional ion at <italic toggle="yes">m/z</italic> 330.848 (C<sub>6</sub>H<sub>5</sub>I<sub>2</sub>
+<sup>+</sup>) was used for the spectra calibration of the static headspace experiments. For the headspace experiments, spectra were collected every 0.5 s for the mass range <italic toggle="yes">m/z</italic> 10–367. Instrument‐specific compound transmission curves were used for both measurement approaches (LCU and static headspace). Signal integration and mass selection were achieved by fitting Gaussian curves to the averaged spectral peaks and automatically generating peak systems that could discriminate the exact <italic toggle="yes">m/z</italic> under investigation using the IONICON Data Analyzer (IDA) software (version 2.2.2.1, IONICON Analytik GmbH, Innsbruck, Austria). Extracted raw data were later normalized to the sum of hydroxonium, monohydrate and dihydrate cluster primary ions via their <sup>18</sup>O isotopologues to generate normalized counts per second [ncps].</p></sec><sec id="rcm70085-sec-0014"><label>2.6</label><title>SBSE‐GC–MS Analysis</title><p>VOCs adsorbed on the stir bars were desorbed through a two‐step procedure using an automatic thermal desorption unit (TurboMatrix 350, Perkin Elmer, Shelton, CT). First, primary desorption was carried out by heating the stir bar to 240°C for 15 min with a carrier gas flow of 50 mL H<sub>2</sub>·min<sup>−1</sup>. Second, the volatiles desorbed were trapped on Tenax TA held at 1°C and then rapidly heated to 280°C for 4 min to complete the secondary desorption. This resulted in the quick transfer of volatiles from the thermal desorption unit to the GC–MS system (a 8890 GC coupled to a 5977B MSD; Agilent Technologies, Palo Alto, CA) through a temperature‐controlled transfer line held at 225°C. A ZB‐Wax capillary column (30 m × 0.25 mm × 0.5 μm) was used for the separation of the transferred volatiles using H<sub>2</sub> as a carrier gas at an initial flow rate of 1.4 mL·min<sup>−1</sup>. The GC oven program was set as follows: at 35°C isothermal for the first 10 min, then raised to 240°C at a rate of 8°C/min and held for 10 min. Mass spectra of the separated volatile compounds were generated using standard EI settings (70 eV) and detected via a quadrupole mass spectrometer using hybrid settings that combined scan (SCAN) and selected ion monitoring (SIM) modes. SCAN mode scanned the range <italic toggle="yes">m/z</italic> 15–300, while SIM mode specifically targeted <italic toggle="yes">m/z</italic> 112 for enhanced sensitivity. After data acquisition, chromatograms were processed using the MSD ChemStation software (v.E.02.00, Agilent Technologies). The retention time of geosmin was determined through the calibration curve points and peak areas were calculated based on the SIM chromatograms.</p></sec><sec id="rcm70085-sec-0015"><label>2.7</label><title>Data Analysis</title><p>All data were visualized and further processed using MATLAB R2023b (MathWorks, Natick, MA). For the fragmentation studies via the LCU measurements, a mean of 200 cycles was calculated from the signal. For static headspace injections, the summation of data points containing the peak and background noise (30 cycles) was used as final intensity value (see Supporting Information <xref rid="rcm70085-supitem-0001" ref-type="supplementary-material">S1</xref>). All statistical analyses and data visualization of the headspace optimization study were performed using JMP Pro, version 18.0.0 (SAS Institute Inc., Cary, NC). For the comparison of quantitations between the two methods, an unpaired student <italic toggle="yes">t</italic>‐test analysis was performed using MATLAB R2023b (MathWorks). This is used to compare how different two means are from unrelated groups (e.g., same samples measured by two different methods).</p></sec></sec><sec id="rcm70085-sec-0016"><label>3</label><title>Results and Discussion</title><sec id="rcm70085-sec-0017"><label>3.1</label><title>Fragmentation Pattern Assessments of Geosmin and 2‐MIB</title><p>Geosmin and 2‐MIB underwent dissociative proton transfer reaction under all conditions tested, as observable in Figures <xref rid="rcm70085-fig-0001" ref-type="fig">1</xref> and <xref rid="rcm70085-fig-0002" ref-type="fig">2</xref>, respectively. Geosmin, whose protonated molecule is <italic toggle="yes">m/z</italic> 183.174, always yielded its dehydration product (‐H<sub>2</sub>O) at <italic toggle="yes">m/z</italic> 165.164 (9.3%, C<sub>12</sub>H<sub>21</sub>
+<sup>+</sup>, 14 ppm), as well as other smaller fragments in greater abundance, such as <italic toggle="yes">m/z</italic> 109.102 (38.4%, C<sub>8</sub>H<sub>13</sub>
+<sup>+</sup>, 7 ppm), <italic toggle="yes">m/z</italic> 95.086 (24.7%, C<sub>7</sub>H<sub>11</sub>
+<sup>+</sup>, 52 ppm), and <italic toggle="yes">m/z</italic> 83.086 (11.4%, C<sub>6</sub>H<sub>11</sub>
+<sup>+</sup>, 35 ppm). 2‐MIB showed a similar behavior, yielding its dehydration product at <italic toggle="yes">m/z</italic> 151.148 (14.6%, C<sub>11</sub>H<sub>19</sub>
+<sup>+</sup>, 5 ppm), but with the dominant product at <italic toggle="yes">m/z</italic> 95.086 (71.8%, C<sub>7</sub>H<sub>11</sub>
+<sup>+</sup>, 52 ppm). These observations align with the PTR‐MS data previously reported for these compounds in the literature, as dehydration is typically the only product channel for tertiary and higher alcohols in PTR‐MS [<xref rid="rcm70085-bib-0017" ref-type="bibr">24</xref>, <xref rid="rcm70085-bib-0027" ref-type="bibr">34</xref>, <xref rid="rcm70085-bib-0028" ref-type="bibr">35</xref>]. Exceptions have been reported in higher alcohols with neighboring double bonds, such as unsaturated alcohols or phenols, a phenomenon that could be explained due to the resonance stabilization or charge delocalization of the oxygen two lone pairs in a hydroxy group [<xref rid="rcm70085-bib-0029" ref-type="bibr">36</xref>, <xref rid="rcm70085-bib-0030" ref-type="bibr">37</xref>].</p><fig position="float" fig-type="FIGURE" id="rcm70085-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>(A) Main product ions of geosmin at E/N 105 Td. (B) Fragmentation pattern of the most abundant ions (&gt; 5% absolute abundance) at four E/N conditions. Absolute abundances are calculated as the percentage [%] of the signal intensity [ncps] of each ion with respect to the sum of intensities of all detected product ions.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="RCM-40-e70085-g004.jpg"><?image-name RCM-40-e70085-g004.jpg?><?image-size 45316?><?image-md5 868a78ad945c5dd8e4d211c6b7cac64c?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 562?><?image-original-width 1064?><?image-scaled-height 374?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/9d64/13133655/868a78ad945c/RCM-40-e70085-g004.jpg?><?thumb-name RCM-40-e70085-g004.gif?><?thumb-size 4029?><?thumb-md5 487d0815638cc90e75dada577764646b?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 151?><?thumb-cloudpmc-urn urn:cdn:blobs/9d64/13133655/487d0815638c/RCM-40-e70085-g004.gif?></graphic></fig><fig position="float" fig-type="FIGURE" id="rcm70085-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>(A) Main product ions of 2‐methylisoborneol (2‐MIB) at E/N 105 Td. (B) Fragmentation pattern of the most abundant ions (&gt; 5% absolute abundance) at four different E/N values. Absolute abundances are calculated as the percentage [%] of the signal intensity [ncps] of each ion with respect to the sum of intensities of all detected product ions.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="RCM-40-e70085-g005.jpg"><?image-name RCM-40-e70085-g005.jpg?><?image-size 39775?><?image-md5 45d1701eb10ff7ee89b5359f134930ff?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 558?><?image-original-width 1064?><?image-scaled-height 372?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/9d64/13133655/45d1701eb10f/RCM-40-e70085-g005.jpg?><?thumb-name RCM-40-e70085-g005.gif?><?thumb-size 3342?><?thumb-md5 c7c4a0896a9dfaa4ab80f354733aff0e?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 152?><?thumb-cloudpmc-urn urn:cdn:blobs/9d64/13133655/c7c4a0896a9d/RCM-40-e70085-g005.gif?></graphic></fig><p>To examine whether the protonated molecules of both compounds were visible under softer protonation conditions, measurements at four different reduced electric field (E/N) values were performed. E/N is an important parameter because it determines the energy at which proton transfer reactions occur (the greater the energy, the higher the likelihood of a dissociative reaction) as well as the production of H<sub>3</sub>O<sup>+</sup>(H<sub>2</sub>O)<sub>n</sub> clusters (the greater the energy, the greater the suppression of clustering). As is displayed in Figures <xref rid="rcm70085-fig-0001" ref-type="fig">1B</xref> and <xref rid="rcm70085-fig-0002" ref-type="fig">2B</xref>, proton transfer reactions for both geosmin and 2‐MIB generally vary little with E/N (within the tested range). A greater abundance of both dehydration products (<italic toggle="yes">m/z</italic> 165.162 and <italic toggle="yes">m/z</italic> 151.145) is reached at 70 Td and none of the conditions tested yielded the protonated molecule of the two target compounds. Figure <xref rid="rcm70085-fig-0003" ref-type="fig">3</xref> illustrates the chemical ionization reaction pathways for both compounds.</p><fig position="float" fig-type="FIGURE" id="rcm70085-fig-0003" orientation="portrait"><label>FIGURE 3</label><caption><p>Schematic of the reaction pathways of geosmin and 2‐methylisoborneol upon proton transfer reaction. Hydroxonium ions protonate the hydroxy group of the compounds, leading to a dehydration reaction and further fragmentation.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="RCM-40-e70085-g003.jpg"><?image-name RCM-40-e70085-g003.jpg?><?image-size 16990?><?image-md5 fc747ee9b7df0fb275e4f7314f30c7ee?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 117?><?image-original-width 1064?><?image-scaled-height 78?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/9d64/13133655/fc747ee9b7df/RCM-40-e70085-g003.jpg?><?thumb-name RCM-40-e70085-g003.gif?><?thumb-size 2363?><?thumb-md5 d177cb7018c4c003cfb4997e9ce1af6a?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 22?><?thumb-scaled-width 200?><?thumb-cloudpmc-urn urn:cdn:blobs/9d64/13133655/d177cb7018c4/RCM-40-e70085-g003.gif?></graphic></fig><p>The dehydration of geosmin into argosmin, which is odorless, has been reported under different acidic environments, such as hydrochloric [<xref rid="rcm70085-bib-0031" ref-type="bibr">38</xref>, <xref rid="rcm70085-bib-0032" ref-type="bibr">39</xref>], citric and acetic acid [<xref rid="rcm70085-bib-0033" ref-type="bibr">33</xref>], as well as an acidic algicide [<xref rid="rcm70085-bib-0034" ref-type="bibr">34</xref>]. Moreover, several studies have also reported the dehydration of 2‐MIB under acidic conditions, mostly yielding 2‐methylenebornane and 1‐methylcamphene, which are also odorless [<xref rid="rcm70085-bib-0033" ref-type="bibr">40</xref>, <xref rid="rcm70085-bib-0035" ref-type="bibr">42</xref>, <xref rid="rcm70085-bib-0036" ref-type="bibr">43</xref>]. As shown, previous findings align with the observations presented in this study. To our knowledge, however, our work represents the first time geosmin and 2‐MIB have been investigated by PTR‐MS. Understanding the ionization pathways of the target compounds upon proton transfer reaction is crucial when aiming to develop analytical methods capable of quantifying these compounds in matrices like water. Hence, this study uses the distinct dehydration products of geosmin and 2‐MIB (<italic toggle="yes">m/z</italic> 165.162 and <italic toggle="yes">m/z</italic> 151.148, respectively) for quantification purposes. Other fragmentation products, like <italic toggle="yes">m/z</italic> 109.101, <italic toggle="yes">m/z</italic> 95.091, <italic toggle="yes">m/z</italic> 83.089, and <italic toggle="yes">m/z</italic> 81.075, besides being common fragments of both compounds in PTR‐MS, are also typical fragments of several other mono‐ and sesquiterpenes [<xref rid="rcm70085-bib-0037" ref-type="bibr">44</xref>, <xref rid="rcm70085-bib-0038" ref-type="bibr">45</xref>]. Therefore, these smaller <italic toggle="yes">m/z</italic> were not considered further for the quantification method subsequently developed in this study (see Section <xref rid="rcm70085-sec-0018" ref-type="sec">3.2</xref>), as mass interferences and thus quantification over and/or underestimations are deemed more likely.</p></sec><sec id="rcm70085-sec-0018"><label>3.2</label><title>Headspace Sensitivity Optimization Study</title><p>The injection data from all static headspace experiments included in the factorial design are displayed in Figure <xref rid="rcm70085-fig-0004" ref-type="fig">4A</xref>. The incubation temperature clearly led to an increase in signal intensity, with the exception of the incubation temperature at 130°C, which has a negative impact on the signal. The measurement error for the experiments at an incubation temperature of 110°C was considered too high (CV<xref rid="rcm70085-note-0007" ref-type="fn">
+<sup>1</sup>
+</xref> ≈ 40%). These observations led to an exclusion of the experimental points with incubation temperatures of 110°C and 130°C. Weighted least squares (WLS) regression was used to model the data of the remaining 27 experimental points (grey‐colored experimental cube in Figure <xref rid="rcm70085-fig-0004" ref-type="fig">4B</xref>) to gain quantitative insights on the effect of the different factors studied. WLS is a parametric modeling method that minimizes the sum of squares of the residuals to estimate the linear parameters (<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-13" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mi>i</mml:mi></mml:msub></mml:mrow></mml:mrow></mml:math>) associated with the main factors and their interactions involved for a given response <italic toggle="yes">Y</italic>. The model is mostly used when residuals show heteroskedasticity (nonconstant variance) as observations are weighted based on this nonhomogeneity. After a comparison between ordinary least squares (OLS) and WLS, the latter was selected as the best fitting modeling method (for more details see Supporting Information <xref rid="rcm70085-supitem-0001" ref-type="supplementary-material">S1</xref>: Supplementary Material 4). The WLS model is specified in Equation [<xref rid="rcm70085-disp-0003" ref-type="disp-formula">3</xref>] and results are displayed in Table <xref rid="rcm70085-tbl-0003" ref-type="table">3</xref>.<disp-formula id="rcm70085-disp-0003">
+<label>(3)</label>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-14" display="block" overflow="scroll"><mml:mrow><mml:mrow><mml:mtable><mml:mtr><mml:mtd columnalign="left"><mml:mrow><mml:mi mathvariant="normal">y</mml:mi><mml:mo linebreak="goodbreak">=</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>0</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>3</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>3</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>4</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>5</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>3</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>6</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>3</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:msub><mml:mi mathvariant="normal">β</mml:mi><mml:mn>7</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mi mathvariant="normal">x</mml:mi><mml:mn>3</mml:mn></mml:msub><mml:mo linebreak="goodbreak">+</mml:mo><mml:mi mathvariant="normal">e</mml:mi></mml:mrow></mml:mtd></mml:mtr></mml:mtable></mml:mrow></mml:mrow></mml:math>
+</disp-formula>where <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-15" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-16" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, and <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-17" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>3</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math> are the main factors investigated (incubation temperature, incubation time and salt content), <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-18" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-19" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mn>3</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-20" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mn>3</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-21" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, and <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-22" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>x</mml:mi><mml:mn>1</mml:mn></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msub><mml:msub><mml:mi>x</mml:mi><mml:mn>3</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math> are the possible interactions (2nd and 3rd order), <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-23" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>y</mml:mi></mml:mrow></mml:mrow></mml:math> is the measured response (signal intensity [ncps]), <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-24" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>0</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-25" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>1</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-26" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>2</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>
+<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-27" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>3</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-28" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>4</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-29" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>5</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-30" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>6</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math>, and <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-31" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:msub><mml:mi>β</mml:mi><mml:mn>7</mml:mn></mml:msub></mml:mrow></mml:mrow></mml:math> are the model coefficients, and <mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" id="jats-math-32" display="inline" overflow="scroll"><mml:mrow><mml:mrow><mml:mi>e</mml:mi></mml:mrow></mml:mrow></mml:math> represents the residuals.</p><fig position="float" fig-type="FIGURE" id="rcm70085-fig-0004" orientation="portrait"><label>FIGURE 4</label><caption><p>(A) Experimental data of the factorial design for all 35 different experiments. Experiments are labelled by the code: <italic toggle="no">Incubation time_Incubation temperature_Salt content</italic> (i.e., 10_70_0 corresponds to an experimental point where incubation time was of 10 min, incubation temperature at 70°C and NaCl content of 0 g·L<sup>−1</sup>). (B) Comparison between nonoptimized (5_70_0, black circle) vs. optimized (15_90_180, white circle) static headspace methods and their sensitivities (linearity, LOD, and LOQ). The extra temperature levels studied are also displayed and colored red as these data points were not modeled.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-7" orientation="portrait" xlink:href="RCM-40-e70085-g002.jpg"><?image-name RCM-40-e70085-g002.jpg?><?image-size 100841?><?image-md5 dec7e1d331604af26f122f13bdc66683?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1136?><?image-original-width 1064?><?image-scaled-height 757?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/9d64/13133655/dec7e1d33160/RCM-40-e70085-g002.jpg?><?thumb-name RCM-40-e70085-g002.gif?><?thumb-size 4137?><?thumb-md5 4edce44e98cd9e3a8a247024b521be04?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 107?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/9d64/13133655/4edce44e98cd/RCM-40-e70085-g002.gif?></graphic></fig><table-wrap position="float" id="rcm70085-tbl-0003" content-type="TABLE" orientation="portrait"><label>TABLE 3</label><caption><p>Estimated parameters, standard error and <italic toggle="no">p</italic>‐value of the different factors investigated.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr><th align="left" valign="bottom" rowspan="1" colspan="1"/><th align="center" valign="bottom" rowspan="1" colspan="1"/><th align="center" colspan="3" style="border-bottom:solid 1px #000000" valign="bottom" rowspan="1">
+<italic toggle="no">m/z</italic> 165.162</th><th align="center" colspan="3" style="border-bottom:solid 1px #000000" valign="bottom" rowspan="1">
+<italic toggle="no">m/z</italic> 151.148</th></tr><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Factors</th><th align="center" valign="bottom" rowspan="1" colspan="1">Coefficients</th><th align="center" valign="bottom" rowspan="1" colspan="1">Estimate</th><th align="center" valign="bottom" rowspan="1" colspan="1">Std error</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="no">p</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">Estimate</th><th align="center" valign="bottom" rowspan="1" colspan="1">Std error</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="no">p</italic>
+</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Incubation temperature (°C)</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>1</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">11.76</td><td align="center" valign="top" rowspan="1" colspan="1">0.74</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">51.98</td><td align="center" valign="top" rowspan="1" colspan="1">3.04</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Incubation time (min)</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>2</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">2.50</td><td align="center" valign="top" rowspan="1" colspan="1">0.67</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.0003</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">10.49</td><td align="center" valign="top" rowspan="1" colspan="1">3.06</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.0010</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Salt content (g·L<sup>−1</sup>)</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>3</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">10.69</td><td align="center" valign="top" rowspan="1" colspan="1">0.75</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">35.46</td><td align="center" valign="top" rowspan="1" colspan="1">3.40</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Temperature*time</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>4</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">−1.52</td><td align="center" valign="top" rowspan="1" colspan="1">0.78</td><td align="center" valign="top" rowspan="1" colspan="1">0.0543</td><td align="center" valign="top" rowspan="1" colspan="1">2.11</td><td align="center" valign="top" rowspan="1" colspan="1">3.18</td><td align="center" valign="top" rowspan="1" colspan="1">0.0508</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Time*salt</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>5</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">2.37</td><td align="center" valign="top" rowspan="1" colspan="1">0.79</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.0036</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.83</td><td align="center" valign="top" rowspan="1" colspan="1">3.55</td><td align="center" valign="top" rowspan="1" colspan="1">0.6085</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Temperature*salt</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>6</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">5.91</td><td align="center" valign="top" rowspan="1" colspan="1">0.87</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">23.67</td><td align="center" valign="top" rowspan="1" colspan="1">3.51</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Temperature*time*salt</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>7</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">−1.08</td><td align="center" valign="top" rowspan="1" colspan="1">0.91</td><td align="center" valign="top" rowspan="1" colspan="1">0.2439</td><td align="center" valign="top" rowspan="1" colspan="1">−5.36</td><td align="center" valign="top" rowspan="1" colspan="1">3.72</td><td align="center" valign="top" rowspan="1" colspan="1">0.1541</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Intercept</td><td align="center" valign="top" rowspan="1" colspan="1">β<sub>0</sub>
+</td><td align="center" valign="top" rowspan="1" colspan="1">20.50</td><td align="center" valign="top" rowspan="1" colspan="1">0.64</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">71.70</td><td align="center" valign="top" rowspan="1" colspan="1">2.97</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>&lt; 0.0001</bold>
+<xref rid="rcm70085-note-0005" ref-type="table-fn">
+<bold>*</bold>
+</xref>
+</td></tr></tbody></table><table-wrap-foot id="rcm70085-ntgp-0002"><fn id="rcm70085-note-0005"><label>*</label><p>Denotes statistically significant values (<italic toggle="yes">p</italic> &lt; 0.05).</p></fn></table-wrap-foot></table-wrap><p>Incubation temperature was the leading factor (highest estimated parameters in both models) for increasing the headspace sensitivity of the method for both products monitored by PTR‐MS. This was expected, as temperature is a key parameter that increases the vapor pressure of volatile compounds in both open and closed systems [<xref rid="rcm70085-bib-0023" ref-type="bibr">23</xref>]. NaCl was the second most influential factor within the experimental design. The addition of NaCl and other inorganic salts is a common procedure in analytical methods to induce <italic toggle="yes">salting out</italic>. Moreover, the addition of large amounts of salt increases the sample volume, decreasing the phase ratio between the liquid and gas compartments. This can also boost the headspace sensitivity and cannot be ignored [<xref rid="rcm70085-bib-0023" ref-type="bibr">23</xref>]. The interaction between these two factors, temperature and salt content, also significantly affected the measured signal intensity of both products. Solubility of NaCl slightly increases with temperature, which may explain why this interaction effect is observed for both products. This is key information that can be studied by such an experimental design, as factors (or variables) do not always act additively towards a given response [<xref rid="rcm70085-bib-0039" ref-type="bibr">39</xref>]. Incubation time also significantly affected the measured response for <italic toggle="yes">m/z</italic> 151.148 (not for <italic toggle="yes">m/z</italic> 165.162). Nevertheless, incubation time contributes least to the signal response of both products. In technical terms, incubation time could be referred to as equilibration time, which is known to vary according to sample volume and compound solubility. Given the fixed phase ratio β and the relatively low solubility of these compounds in water (150.2 mg·L<sup>−1</sup> for geosmin and 194.5 mg·L<sup>−1</sup> for 2‐MIB), with correspondingly low partition coefficients (K), it is a logical consequence that the observed effect of time in the measured response was not as large as with the other factors studied.</p><p>After gaining a better understanding of the factors affecting signals of the target products in the static headspace measurements, the expected increased sensitivity of the static headspace method was tested under the optimal conditions (15_90_180) versus a nonoptimized experimental point (5_70_0). Optimal conditions were chosen by maximization, as specified in Supporting Information <xref rid="rcm70085-supitem-0001" ref-type="supplementary-material">S1</xref>: Supplementary Material 3. Calibration curves with 0, 5, 10, 25, 50, 100, 250, and 500 ng·L<sup>−1</sup> of geosmin and 2‐MIB were made in triplicates. Results are displayed in Figure <xref rid="rcm70085-fig-0004" ref-type="fig">4B</xref>. The limits of detection and quantitation (LOD and LOQ, respectively) of the optimized method for both compounds substantially decreased, with an LOD of 19 ng·L<sup>−1</sup> for geosmin (detected at <italic toggle="yes">m/z</italic> 165.162) and 4 ng·L<sup>−1</sup> for 2‐MIB (detected at <italic toggle="yes">m/z</italic> 151.148), respectively.</p><p>The responses at incubation temperatures of 110°C and 130°C did not follow the expected progression, with highly variable intensities observed for 110°C and almost no signal observed at 130°C. The latter could partly be attributed to the increased sample humidity under these conditions, whereby a significant increase in the primary water cluster was observed during injection (see Supporting Information <xref rid="rcm70085-supitem-0001" ref-type="supplementary-material">S1</xref>: Supplementary Material 4). To demonstrate this, the <sup>18</sup>O isotopologues <italic toggle="yes">m/z</italic> 21.022 (H<sub>3</sub>
+<sup>18</sup>O<sup>+</sup>) and <italic toggle="yes">m/z</italic> 39.033 (H<sub>3</sub>
+<sup>18</sup>O(H<sub>2</sub>O)<sup>+</sup>) and the <sup>16</sup>O isotopologue at <italic toggle="yes">m/z</italic> 55.039 (H<sub>3</sub>
+<sup>16</sup>O(H<sub>2</sub>O)<sub>2</sub>
+<sup>+</sup>) were monitored across all temperatures for both 0 and 180 g·L<sup>−1</sup> NaCl conditions. Here, it was observed that the increases of mono‐ and dihydrate clusters were significant after incubation at higher temperatures. It is not clear, however, why the signal at 110°C was relatively prominent compared to an almost zero signal at 130°C. The humidity dependence in PTR‐MS measurements to different VOCs is well documented and has been observed to vary greatly depending on the compound's chemical properties, as well as the PTR‐MS operating conditions [<xref rid="rcm70085-bib-0025" ref-type="bibr">32</xref>, <xref rid="rcm70085-bib-0026" ref-type="bibr">33</xref>]. It is hypothesized that besides the negative effect of water vapor during the reaction, the physical accumulation of condensed water vapor in the headspace vials—which occurs more rapidly and dominantly at 130°C—could have impeded the extraction of volatilized geosmin and 2‐MIB in the headspace. These observations highlight the experimental boundaries to the method.</p></sec><sec id="rcm70085-sec-0019"><label>3.3</label><title>Comparison Between the Rapid PTR‐MS Approach With a Benchmark GC–MS Method on RAS Samples</title><p>To determine the effectiveness of the method and to compare it analytically with a benchmark procedure, a set of five RAS water samples with unknown concentrations of geosmin, one control and four spiked samples, were analyzed using the two different approaches. 5‐point calibration curves (in triplicate) were used to predict the concentration of geosmin in the RAS samples (also measured in triplicate) using both methodologies (a total of 60 measurements). The rapid static headspace method using PTR‐TOF‐MS was selected (incubation time: 5 min), with a SBSE‐GC–MS method developed with the purpose of quantifying low concentrations of geosmin in water employed as a benchmark. The latter was adapted from [<xref rid="rcm70085-bib-0009" ref-type="bibr">9</xref>], whereby extraction conditions were retained but the use of longer stir bars (2 cm long) and a larger sample volume (20 mL) were applied to increase sensitivity (see Section <xref rid="rcm70085-sec-0007" ref-type="sec">2.2.3</xref>). Given the low relevance of incubation time in the headspace sensitivity of the PTR‐MS method (see Section <xref rid="rcm70085-sec-0019" ref-type="sec">3.3</xref>), the shortest incubation time was selected to shorten analytical time. Specifications of both methods are outlined in Table <xref rid="rcm70085-tbl-0004" ref-type="table">4</xref>.</p><table-wrap position="float" id="rcm70085-tbl-0004" content-type="TABLE" orientation="portrait"><label>TABLE 4</label><caption><p>Technical specifications of each of the analytical methods compared: PTR‐MS and SBSE‐GC–MS.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Specifications</th><th align="center" valign="bottom" rowspan="1" colspan="1">Static headspace PTR‐TOF‐MS</th><th align="center" valign="bottom" rowspan="1" colspan="1">SBSE‐GC–MS</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Incubation/extraction time (min)</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">120</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Incubation temperature (°C)</td><td align="center" valign="top" rowspan="1" colspan="1">90</td><td align="center" valign="top" rowspan="1" colspan="1">RT<xref rid="rcm70085-note-0006" ref-type="table-fn">
+<sup>a</sup>
+</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Agitation (yes/no)</td><td align="center" valign="top" rowspan="1" colspan="1">Yes</td><td align="center" valign="top" rowspan="1" colspan="1">Yes</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">NaCl (yes/no)</td><td align="center" valign="top" rowspan="1" colspan="1">Yes</td><td align="center" valign="top" rowspan="1" colspan="1">No</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Sample volume (mL)</td><td align="center" valign="top" rowspan="1" colspan="1">5</td><td align="center" valign="top" rowspan="1" colspan="1">20</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">MS</td><td align="center" valign="top" rowspan="1" colspan="1">TOF (SCAN)</td><td align="center" valign="top" rowspan="1" colspan="1">QMS (SIM <italic toggle="yes">m/z</italic> 112)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Separation/detection time (min)</td><td align="center" valign="top" rowspan="1" colspan="1">&lt; 0.1</td><td align="center" valign="top" rowspan="1" colspan="1">30</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Total analysis time per sample (min)</td><td align="center" valign="top" rowspan="1" colspan="1">≈5–6</td><td align="center" valign="top" rowspan="1" colspan="1">≈150</td></tr></tbody></table><table-wrap-foot id="rcm70085-ntgp-0003"><fn id="rcm70085-note-0006"><label>
+<sup>a</sup>
+</label><p>RT: Room temperature (20<bold>°</bold>C–25<bold>°</bold>C).</p></fn></table-wrap-foot></table-wrap><p>Both methods yielded comparable results across samples (Figure <xref rid="rcm70085-fig-0005" ref-type="fig">5</xref>). Three (samples 1–4) out of the four geosmin concentrations quantified in the spiked samples were not statistically different (unpaired student t‐test). This should encourage improvement to achieve better analytical qualities (higher accuracy, precision, sensitivity, and robustness). Even though the PTR‐MS method is approximately 25–30 times faster than its GC–MS counterpart, speed comes with compromises in sensitivity and analytical variability (poorer repeatability). The CV of the analytical replicates measured with PTR‐MS had a mean of approximately 20% across samples, while being 5% for the GC–MS analyses.</p><fig position="float" fig-type="FIGURE" id="rcm70085-fig-0005" orientation="portrait"><label>FIGURE 5</label><caption><p>Comparison of the calibration curves obtained via both methods (top) as well as the corresponding quantification of geosmin (bottom). Significant differences per sample (<italic toggle="no">p</italic> &lt; 0.05) between the results obtained with each method employed are marked with an asterisk (*).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-9" orientation="portrait" xlink:href="RCM-40-e70085-g001.jpg"><?image-name RCM-40-e70085-g001.jpg?><?image-size 50271?><?image-md5 c9b62e96d1715cf3d83e7aa87b9249a8?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 741?><?image-original-width 1064?><?image-scaled-height 494?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/9d64/13133655/c9b62e96d171/RCM-40-e70085-g001.jpg?><?thumb-name RCM-40-e70085-g001.gif?><?thumb-size 2917?><?thumb-md5 575b3ce837297c96eb794ce098535544?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 79?><?thumb-scaled-width 114?><?thumb-cloudpmc-urn urn:cdn:blobs/9d64/13133655/575b3ce83729/RCM-40-e70085-g001.gif?></graphic></fig><p>The detection limits of the developed static headspace PTR‐MS analysis method were within similar ranges to the odor thresholds of the two off‐odor target compounds, with an LOD below OT for 2‐MIB (4 ng·L<sup>−1</sup> LOD vs. 15 ng·L<sup>−1</sup> OT but an LOD above OT for geosmin (19 ng·L<sup>−1</sup> LOD vs. 4 ng·L<sup>−1</sup> OT)). Consequently, the method represents a prospective screening approach to detect the onset of off‐flavors spikes during production or under different experimental conditions. It is noteworthy to mention that this should be deemed as a method under development, considering the complexity in the lifecycle of analytical methods. Further validation procedures, including interlaboratory and revalidation procedures, would be the next steps to further develop this approach for prospective routine analysis [<xref rid="rcm70085-bib-0040" ref-type="bibr">40</xref>]. Moreover, several further improvements could be considered as future developments to achieve sub‐ng·L<sup>−1</sup> sensitivities. Besides instrumental sensitivity, sample preparation variables, such as headspace vial capacity, syringe capacity, sample volume, as well as the use of other salts, could be optimized to further refine the sensitivity of the PTR‐MS method. The notable higher sensitivity for 2‐MIB over geosmin, arguably, can be due to differences in the compounds' volatility as well as instrumental response factor. 2‐MIB is slightly more volatile and less sticky than geosmin, which may translate into a more efficient headspace build‐up and generally a cleaner and thus greater instrumental response.</p><p>Headspace analyses coupled with PTR‐MS have long been used as a targeted approach to detect aroma compounds in different aqueous matrices [<xref rid="rcm70085-bib-0041" ref-type="bibr">1</xref>, <xref rid="rcm70085-bib-0042" ref-type="bibr">2</xref>], albeit mainly for the detection of compounds at concentrations in the ppb range or higher. For the analysis of trace compounds dissolved in water, [<xref rid="rcm70085-bib-0043" ref-type="bibr">43</xref>] developed a direct aqueous injection analysis coupled to PTR‐MS that achieved detection limits of 100 ng·L<sup>−1</sup> for pyridine (<italic toggle="yes">m/z</italic> 80). However, more sensitive methods are required for the detection of aroma compounds with extremely low OTs in water, such as geosmin and 2‐MIB, as well as earthy‐smelling pyrazines, such as 2‐isobutyl‐3‐methoxypyrazine or 2‐isopropyl‐3‐methoxypyrazine, or haloanisoles, fenchol and fenchone [<xref rid="rcm70085-bib-0004" ref-type="bibr">7</xref>, <xref rid="rcm70085-bib-0044" ref-type="bibr">21</xref>, <xref rid="rcm70085-bib-0045" ref-type="bibr">22</xref>]. The results presented here therefore unlock the potential of static headspace PTR‐MS via fast injections to measure low concentrations of undesired off‐odor metabolites in water.</p></sec></sec><sec sec-type="conclusions" id="rcm70085-sec-0020"><label>4</label><title>Conclusions</title><p>Rapid chemical analytical methods are demanded across industries to reduce costs and offer a high sample throughput to provide a quicker screening of product quality. In the aquaculture industry, GC–MS is the current method of choice to quantify the prominent off‐odors geosmin and 2‐methylisoborneol in water. Although GC–MS offers high sensitivity, sample analysis can be laborious and time‐consuming. This study proposes the use of PTR‐MS as an alternative, faster method for the quantification of these two analytes in water. Optimized static headspace fast injection by PTR‐TOF‐MS yielded comparable results to an established SBSE‐GC–MS benchmark method. This study paves the way for the development of similar analytical methods based on fast injection headspace PTR‐MS detection for rapid monitoring of other relevant (undesired) metabolites in water. For the aquaculture industry, the availability of high‐throughput methods could help streamline off‐flavor detection in operations, achieve more continuous product quality monitoring, and support large‐scale screening aimed at mitigating the presence of these metabolites. Ideally, an online approach for the in situ detection of these compounds at the operations would be highly advantageous for RAS producers. The implementation of these methods in commercial operations is feasible yet is still associated with high costs of the initial investment, operation, and highly skilled human labor, which presents a challenge that must be overcome.</p></sec><sec id="rcm70085-sec-0026"><title>Author Contributions</title><p>
+<bold>Pedro Martínez Noguera:</bold> conceptualization, investigation, methodology, validation, formal analysis, data curation, writing – original draft, writing – review and editing, visualization. <bold>Sylvester Holt:</bold> conceptualization, methodology, writing – review and editing. <bold>Raju Podduturi:</bold> methodology, writing – review and editing. <bold>Wender L. P. Bredie:</bold> writing – review and editing. <bold>Jonathan D. Beauchamp:</bold> conceptualization, methodology, writing – review and editing. <bold>Mikael A. Petersen:</bold> conceptualization, methodology, writing – review and editing.</p></sec><sec id="rcm70085-sec-0022"><title>Funding</title><p>This research was funded by the European Union's Framework Program for Research and Innovation Horizon 2020 under the Marie Sklodowska‐Curie Training Network RASOPTA Grant Agreement No. 956 481. Part of the presented data were generated through accessing research infrastructure funded by FOODHAY (Food and Health Open Innovation Laboratory, Danish Roadmap for Research Infrastructure).</p></sec><sec sec-type="COI-statement" id="rcm70085-sec-0023"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="rcm70085-supitem-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Data S1:</bold> Supporting information.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="RCM-40-e70085-s001.docx" position="float" orientation="portrait"><?suppdata-name RCM-40-e70085-s001.docx?><?suppdata-size 31613?><?suppdata-md5 db2170c0fb4b576bda08c575596eb406?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:9d64/13133655/db2170c0fb4b/RCM-40-e70085-s001.docx?></media></supplementary-material></sec></body><back><ack id="rcm70085-sec-0021"><title>Acknowledgments</title><p>The authors wish to acknowledge the help of Steffanie Fechner for her technical support during the compound fragmentation assessment and Matteo Egiddi for providing RAS samples for the method comparison in the quantification of geosmin.</p></ack><fn-group id="rcm70085-ntgp-0004"><title>Endnotes</title><fn id="rcm70085-note-0007"><label>
+<sup>1</sup>
+</label><p>Coefficient of variation (CV, expressed in %) is defined as the ratio between the standard deviation and the mean of a set of measurements or data points.</p></fn></fn-group><sec sec-type="data-availability" id="rcm70085-sec-0025"><title>Data Availability Statement</title><p>The data that support the findings of this study are available from the corresponding author upon reasonable request.</p></sec><ref-list content-type="cited-references" id="rcm70085-bibl-0001"><title>References</title><ref id="rcm70085-bib-0041"><label>1</label><mixed-citation publication-type="journal" id="rcm70085-cit-0041">
+<string-name name-style="western">
+<given-names>M. E.</given-names>
+<surname>Abd El‐Hack</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. T.</given-names>
+<surname>El‐Saadony</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. R.</given-names>
+<surname>Elbestawy</surname>
+</string-name>, et al., “<article-title>Undesirable Odour Substances (Geosmin and 2‐Methylisoborneol) in Water Environment: Sources, Impacts and Removal Strategies</article-title>,” <source>Marine Pollution Bulletin</source>
+<volume>178</volume> (<year>2022</year>): <elocation-id>113579</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.marpolbul.2022.113579</pub-id>.<pub-id pub-id-type="pmid">35398689</pub-id>
+</mixed-citation></ref><ref id="rcm70085-bib-0042"><label>2</label><mixed-citation publication-type="journal" id="rcm70085-cit-0042">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Mustapha</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. O.</given-names>
+<surname>Tijani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Ndamitso</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. S.</given-names>
+<surname>Abdulkareem</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. T.</given-names>
+<surname>Shuaib</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. K.</given-names>
+<surname>Mohammed</surname>
+</string-name>, “<article-title>A Critical Review on Geosmin and 2‐Methylisoborneol in Water: Sources, Effects, Detection, and Removal Techniques</article-title>,” <source>Environmental Monitoring and Assessment</source>
+<volume>193</volume>, no. <issue>4</issue> (<year>2021</year>), <pub-id pub-id-type="doi">10.1007/s10661-021-08980-9</pub-id>.<pub-id pub-id-type="pmid">33751262</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0001"><label>3</label><mixed-citation publication-type="journal" id="rcm70085-cit-0001">
+<string-name name-style="western">
+<given-names>P. M.</given-names>
+<surname>Noguera</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Egiddi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Södergren</surname>
+</string-name>, et al., “<article-title>More Than Just Geosmin and 2‐Methylisoborneol? Off‐Flavours Associated With Recirculating Aquaculture Systems</article-title>,” <source>Reviews in Aquaculture</source>
+<volume>16</volume> (<year>2024</year>): <fpage>2034</fpage>–<lpage>2063</lpage>, <pub-id pub-id-type="doi">10.1111/raq.12949</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0040"><label>4</label><mixed-citation publication-type="journal" id="rcm70085-cit-0040">
+<string-name name-style="western">
+<given-names>P. C.</given-names>
+<surname>Lindholm‐Lehto</surname>
+</string-name>, “<article-title>Developing a Robust and Sensitive Analytical Method to Detect Off‐Flavor Compounds in Fish</article-title>,” <source>Environmental Science and Pollution Research</source>
+<volume>29</volume>, no. <issue>37</issue> (<year>2022</year>): <fpage>55866</fpage>–<lpage>55876</lpage>, <pub-id pub-id-type="doi">10.1007/s11356-022-19738-2</pub-id>.<pub-id pub-id-type="pmid">35322358</pub-id>
+<pub-id pub-id-type="pmcid">PMC9374641</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0002"><label>5</label><mixed-citation publication-type="journal" id="rcm70085-cit-0002">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Azaria</surname>
+</string-name> and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>van Rijn</surname>
+</string-name>, “<article-title>Off‐Flavor Compounds in Recirculating Aquaculture Systems (RAS): Production and Removal Processes</article-title>,” <source>Aquacultural Engineering</source>
+<volume>83</volume> (<year>2018</year>): <fpage>57</fpage>–<lpage>64</lpage>, <pub-id pub-id-type="doi">10.1016/j.aquaeng.2018.09.004</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0003"><label>6</label><mixed-citation publication-type="journal" id="rcm70085-cit-0003">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Podduturi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Petersen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Vestergaard</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Hyldig</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N. O. G.</given-names>
+<surname>Jorgensen</surname>
+</string-name>, “<article-title>Case Study on Depuration of RAS‐Produced Pikeperch (<italic toggle="yes">Sander lucioperca</italic>) for Removal of Geosmin and Other Volatile Organic Compounds (VOCs) and Its Impact on Sensory Quality</article-title>,” <source>Aquaculture</source>
+<volume>530</volume> (<year>2021</year>): <elocation-id>735754</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.aquaculture.2020.735754</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0004"><label>7</label><mixed-citation publication-type="journal" id="rcm70085-cit-0004">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Bedner</surname>
+</string-name> and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Saito</surname>
+</string-name>, “<article-title>Development of a Liquid Chromatography Atmospheric Pressure Chemical Ionization Mass Spectrometry Method for Determining Off‐Flavor Compounds and Its Application Toward Marine Recirculating Aquaculture System Monitoring and Evaluation of Aeration as a Depuration Approach</article-title>,” <source>Journal of Chromatography. A</source>
+<volume>1609</volume> (<year>2020</year>): <elocation-id>460499</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.chroma.2019.460499</pub-id>.<pub-id pub-id-type="pmid">31495509</pub-id>
+<pub-id pub-id-type="pmcid">PMC7188311</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0005"><label>8</label><mixed-citation publication-type="journal" id="rcm70085-cit-0005">
+<string-name name-style="western">
+<given-names>R. L.</given-names>
+<surname>Bristow</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Haworth‐Duff</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I. S.</given-names>
+<surname>Young</surname>
+</string-name>, et al., “<article-title>An Automated Micro Solid Phase Extraction Gas Chromatography‐Mass Spectrometry (muSPE‐GC‐MS) Detection Method for Geosmin and 2‐Methylisoborneol in Drinking Water</article-title>,” <source>Scientific Reports</source>
+<volume>13</volume>, no. <issue>1</issue> (<year>2023</year>): <elocation-id>1768</elocation-id>, <pub-id pub-id-type="doi">10.1038/s41598-023-28543-x</pub-id>.<pub-id pub-id-type="pmid">36720961</pub-id>
+<pub-id pub-id-type="pmcid">PMC9889310</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0006"><label>9</label><mixed-citation publication-type="journal" id="rcm70085-cit-0006">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Podduturi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Petersen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Vestergaard</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N. O. G.</given-names>
+<surname>Jorgensen</surname>
+</string-name>, “<article-title>Geosmin Fluctuations and Potential Hotspots for Elevated Levels in Recirculated Aquaculture System (RAS): A Case Study From Pikeperch (<italic toggle="yes">Stizostedion lucioperca</italic>) Production in Denmark</article-title>,” <source>Aquaculture</source>
+<volume>514</volume> (<year>2020</year>): <elocation-id>734501</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.aquaculture.2019.734501</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0007"><label>10</label><mixed-citation publication-type="journal" id="rcm70085-cit-0007">
+<string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Ma</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Gao</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Q.</given-names>
+<surname>Zhang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Gu</surname>
+</string-name>, “<article-title>Detection of Geosmin and 2‐Methylisoborneol by Liquid‐Liquid Extraction‐Gas Chromatograph Mass Spectrum (LLE‐GCMS) and Solid Phase Extraction‐Gas Chromatograph Mass Spectrum (SPE‐GCMS)</article-title>,” <source>Frontiers of Environmental Science &amp; Engineering in China</source>
+<volume>1</volume>, no. <issue>3</issue> (<year>2007</year>): <fpage>286</fpage>–<lpage>291</lpage>, <pub-id pub-id-type="doi">10.1007/s11783-007-0048-7</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0008"><label>11</label><mixed-citation publication-type="journal" id="rcm70085-cit-0008">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Koning</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.‐G.</given-names>
+<surname>Janssen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>U. A. T.</given-names>
+<surname>Brinkman</surname>
+</string-name>, “<article-title>Modern Methods of Sample Preparation for GC Analysis</article-title>,” <source>Chromatographia</source>
+<volume>69</volume>, no. <issue>S1</issue> (<year>2009</year>): <fpage>33</fpage>–<lpage>78</lpage>, <pub-id pub-id-type="doi">10.1365/s10337-008-0937-3</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0009"><label>12</label><mixed-citation publication-type="journal" id="rcm70085-cit-0009">
+<string-name name-style="western">
+<given-names>W. F.</given-names>
+<surname>Young</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Horth</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Crane</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Ogden</surname>
+</string-name> and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Arnott</surname>
+</string-name>, “<article-title>Taste and Odour Threshold Concentrations of Potential Potable Water Contaminants</article-title>,” <source>Water Research</source>
+<volume>30</volume>, no. <issue>2</issue> (<year>1996</year>): <fpage>331</fpage>–<lpage>340</lpage>.</mixed-citation></ref><ref id="rcm70085-bib-0010"><label>13</label><mixed-citation publication-type="journal" id="rcm70085-cit-0010">
+<string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Biasioli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Yeretzian</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. D.</given-names>
+<surname>Märk</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Dewulf</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Van Langenhove</surname>
+</string-name>, “<article-title>Direct‐Injection Mass Spectrometry Adds the Time Dimension to (B)VOC Analysis</article-title>,” <source>TrAC Trends in Analytical Chemistry</source>
+<volume>30</volume>, no. <issue>7</issue> (<year>2011</year>): <fpage>1003</fpage>–<lpage>1017</lpage>, <pub-id pub-id-type="doi">10.1016/j.trac.2011.04.005</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0011"><label>14</label><mixed-citation publication-type="journal" id="rcm70085-cit-0011">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Mazzucotelli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Farneti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Khomenko</surname>
+</string-name>, et al., “<article-title>Proton Transfer Reaction Mass Spectrometry: A Green Alternative for Food Volatilome Profiling</article-title>,” <source>Green Analytical Chemistry</source>
+<volume>3</volume> (<year>2022</year>): <elocation-id>100041</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.greeac.2022.100041</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0012"><label>15</label><mixed-citation publication-type="journal" id="rcm70085-cit-0012">
+<string-name name-style="western">
+<given-names>R. S.</given-names>
+<surname>Blake</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. S.</given-names>
+<surname>Monks</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Ellis</surname>
+</string-name>, “<article-title>Proton‐Transfer Reaction Mass Spectrometry</article-title>,” <source>Chemical Reviews</source>
+<volume>109</volume>, no. <issue>3</issue> (<year>2009</year>): <fpage>861</fpage>–<lpage>896</lpage>, <pub-id pub-id-type="doi">10.1021/cr800364q</pub-id>.<pub-id pub-id-type="pmid">19215144</pub-id>
+</mixed-citation></ref><ref id="rcm70085-bib-0013"><label>16</label><mixed-citation publication-type="journal" id="rcm70085-cit-0013">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Herbig</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Muller</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Schallhart</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Titzmann</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Graus</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Hansel</surname>
+</string-name>, “<article-title>On‐Line Breath Analysis With PTR‐TOF</article-title>,” <source>Journal of Breath Research</source>
+<volume>3</volume>, no. <issue>2</issue> (<year>2009</year>): <elocation-id>027004</elocation-id>, <pub-id pub-id-type="doi">10.1088/1752-7155/3/2/027004</pub-id>.<pub-id pub-id-type="pmid">21383459</pub-id>
+</mixed-citation></ref><ref id="rcm70085-bib-0014"><label>17</label><mixed-citation publication-type="book" id="rcm70085-cit-0014">
+<string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Ellis</surname>
+</string-name> and <string-name name-style="western">
+<given-names>C. A.</given-names>
+<surname>Mayhew</surname>
+</string-name>, <source>Proton Transfer Reaction Mass Spectrometry. Principles and applications</source> (<publisher-name>Wiley</publisher-name>, <year>2014</year>).</mixed-citation></ref><ref id="rcm70085-bib-0015"><label>18</label><mixed-citation publication-type="journal" id="rcm70085-cit-0015">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Pirbazari</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H. S.</given-names>
+<surname>Borow</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Craig</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Ravindran</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. J.</given-names>
+<surname>McGuire</surname>
+</string-name>, “<article-title>Physical Chemical Characterization of Five Earthy‐Musty‐Smelling Compounds</article-title>,” <source>Water Science and Technology</source>
+<volume>25</volume> (<year>1992</year>): <fpage>81</fpage>–<lpage>88</lpage>.</mixed-citation></ref><ref id="rcm70085-bib-0039"><label>19</label><mixed-citation publication-type="journal" id="rcm70085-cit-0039">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Beauchamp</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Biberacher</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Gao</surname>
+</string-name>, “<article-title>Rapid Quantitation of Phenolic Compounds in Islay Single Malt Scotch Wiskies by Direct Injection Mass Spectrometry</article-title>,” <source>ACS Symposium Series</source>
+<volume>1321</volume> (<year>2019</year>): <fpage>117</fpage>–<lpage>124</lpage>, <pub-id pub-id-type="doi">10.1021/bk-2019-1321.ch010</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0043"><label>20</label><mixed-citation publication-type="journal" id="rcm70085-cit-0043">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Podduturi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>da Silva David</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. J.</given-names>
+<surname>da Silva</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Hyldig</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. O. G.</given-names>
+<surname>Jørgensen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Agerlin Petersen</surname>
+</string-name>, “<article-title>Characterization and Finding the Origin of Off‐Flavor Compounds in Nile Tilapia Cultured in Net Cages in Hydroelectric Reservoirs, São Paulo State, Brazil</article-title>,” <source>Food Research International</source>
+<volume>173</volume> (<year>2023</year>): <elocation-id>113375</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.foodres.2023.113375</pub-id>.<pub-id pub-id-type="pmid">37803713</pub-id>
+</mixed-citation></ref><ref id="rcm70085-bib-0044"><label>21</label><mixed-citation publication-type="journal" id="rcm70085-cit-0044">
+<string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Södergren</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. M.</given-names>
+<surname>Noguera</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Petersen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. O. G.</given-names>
+<surname>Jørgensen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Podduturi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. H.</given-names>
+<surname>Nicolaisen</surname>
+</string-name>, “<article-title>Myxobacteria Isolated from Recirculating Aquaculture Systems (RAS): Ecology and Significance as Off‐Flavor Producers</article-title>,” <source>Applied and Environmental Microbiology</source>
+<volume>91</volume>, no. <issue>9</issue> (<year>2025</year>): <elocation-id>e00757‐25</elocation-id>, <pub-id pub-id-type="doi">10.1128/aem.00757-25</pub-id>.<pub-id pub-id-type="pmid">40757865</pub-id>
+<pub-id pub-id-type="pmcid">PMC12442409</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0045"><label>22</label><mixed-citation publication-type="journal" id="rcm70085-cit-0045">
+<string-name name-style="western">
+<given-names>M. R.</given-names>
+<surname>da Silva</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. M.</given-names>
+<surname>Noguera</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Debeuf</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Petersen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H. M.</given-names>
+<surname>Loos</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Buettner</surname>
+</string-name>, “<article-title>Distribution of Odorant Compounds in Recirculating Aquaculture Systems Used in Sturgeon Farming</article-title>,” <source>Aquaculture Research</source>
+<volume>2025</volume>, no <issue>1</issue> (<year>2025</year>): <elocation-id>2377886</elocation-id>, <pub-id pub-id-type="doi">10.1155/are/2377886</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0016"><label>23</label><mixed-citation publication-type="book" id="rcm70085-cit-0016">
+<string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Kolb</surname>
+</string-name> and <string-name name-style="western">
+<given-names>L. S.</given-names>
+<surname>Ettre</surname>
+</string-name>, <source>Static Headspace ‐ Gas Chromatography: Theory and Practice</source>, <edition>Second ed.</edition> (<publisher-name>John Wiley &amp; Sons, Inc</publisher-name>., <year>2006</year>), <pub-id pub-id-type="doi">10.1002/0471914584.ch2</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0017"><label>24</label><mixed-citation publication-type="journal" id="rcm70085-cit-0017">
+<string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Nam‐Koong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. P.</given-names>
+<surname>Schroeder</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Petrick</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Schulz</surname>
+</string-name>, “<article-title>Removal of the Off‐Flavor Compounds Geosmin and 2‐Methylisoborneol From Recirculating Aquaculture System Water by Ultrasonically Induced Cavitation</article-title>,” <source>Aquacultural Engineering</source>
+<volume>70</volume> (<year>2016</year>): <fpage>73</fpage>–<lpage>80</lpage>, <pub-id pub-id-type="doi">10.1016/j.aquaeng.2015.10.005</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0018"><label>25</label><mixed-citation publication-type="journal" id="rcm70085-cit-0018">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Li</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Warneke</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Graus</surname>
+</string-name>, et al., “<article-title>Measurements of Hydrogen Sulfide (H2S) Using PTR‐MS: Calibration, Humidity Dependence, Inter‐Comparison and Results From Field Studies in an Oil and Gas Production Region</article-title>,” <source>Atmospheric Measurement Techniques</source>
+<volume>7</volume>, no. <issue>10</issue> (<year>2014</year>): <fpage>3597</fpage>–<lpage>3610</lpage>, <pub-id pub-id-type="doi">10.5194/amt-7-3597-2014</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0019"><label>26</label><mixed-citation publication-type="journal" id="rcm70085-cit-0019">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Warneke</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>van der Veen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Luxembourg</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>de Gouw</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Kok</surname>
+</string-name>, “<article-title>Measurements of Benzene and Toluene in Ambient Air Using Proton‐Transfer‐Reaction Mass Spectrometry: Calibration, Humidity Dependence, and Field Intercomparison</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>207</volume> (<year>2001</year>): <fpage>167</fpage>–<lpage>182</lpage>, <pub-id pub-id-type="doi">10.1016/S1387-3806(01)00366-9</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0020"><label>27</label><mixed-citation publication-type="journal" id="rcm70085-cit-0020">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Brown</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Watts</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. D.</given-names>
+<surname>Märk</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C. A.</given-names>
+<surname>Mayhew</surname>
+</string-name>, “<article-title>Proton Transfer Reaction Mass Spectrometry Investigations on the Effects of Reduced Electric Field and Reagent Ion Internal Energy on Product Ion Branching Ratios for a Series of Saturated Alcohols</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>294</volume>, no. <issue>2–3</issue> (<year>2010</year>): <fpage>103</fpage>–<lpage>111</lpage>, <pub-id pub-id-type="doi">10.1016/j.ijms.2010.05.028</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0021"><label>28</label><mixed-citation publication-type="journal" id="rcm70085-cit-0021">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Demarcke</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Amelynck</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Schoon</surname>
+</string-name>, et al., “<article-title>Laboratory Studies in Support of the Detection of Biogenic Unsaturated Alcohols by Proton Transfer Reaction‐Mass Spectrometry</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>290</volume>, no. <issue>1</issue> (<year>2010</year>): <fpage>14</fpage>–<lpage>21</lpage>, <pub-id pub-id-type="doi">10.1016/j.ijms.2009.11.005</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0022"><label>29</label><mixed-citation publication-type="journal" id="rcm70085-cit-0022">
+<string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Buhr</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>van Ruth</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Delahunty</surname>
+</string-name>, “<article-title>Analysis of Volatile Flavour Compounds by Proton Transfer Reaction‐Mass Spectrometry: Fragmentation Patterns and Discrimination Between Isobaric and Isomeric Compounds</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>221</volume> (<year>2002</year>): <fpage>1</fpage>–<lpage>7</lpage>, <pub-id pub-id-type="doi">10.1016/S1387-3806(02)00896-5</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0023"><label>30</label><mixed-citation publication-type="journal" id="rcm70085-cit-0023">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Spanel</surname>
+</string-name> and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Smith</surname>
+</string-name>, “<article-title>SIFT Studies of the Reactions of H<sub>3</sub>O+, NO+ and O<sub>2</sub>+ With a Series of Alcohols</article-title>,” <source>International Journal of Mass Spectrometry and Ion Processes</source>
+<volume>167</volume>, no. <issue>168</issue> (<year>1997</year>): <fpage>375</fpage>–<lpage>388</lpage>, <pub-id pub-id-type="doi">10.1016/S0168-1176(97)00085-2</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0024"><label>31</label><mixed-citation publication-type="journal" id="rcm70085-cit-0024">
+<string-name name-style="western">
+<given-names>N. N.</given-names>
+<surname>Gerber</surname>
+</string-name>, “<article-title>Volatile Substances From Actinomycetes: Their Role in the Odor Pollution of Water</article-title>,” <source>CRC Critical Reviews in Microbiology</source>
+<volume>7</volume>, no. <issue>3</issue> (<year>1979</year>): <fpage>191</fpage>–<lpage>214</lpage>, <pub-id pub-id-type="doi">10.3109/10408417909082014</pub-id>.<pub-id pub-id-type="pmid">396107</pub-id>
+</mixed-citation></ref><ref id="rcm70085-bib-0025"><label>32</label><mixed-citation publication-type="journal" id="rcm70085-cit-0025">
+<string-name name-style="western">
+<given-names>N. N.</given-names>
+<surname>Gerber</surname>
+</string-name> and <string-name name-style="western">
+<given-names>H. A.</given-names>
+<surname>Lechevalier</surname>
+</string-name>, “<article-title>Geosmin, an Earthy‐Smelling Substance Isolated From Actinomycetes</article-title>,” <source>Applied Microbiology</source>
+<volume>13</volume>, no. <issue>6</issue> (<year>1965</year>): <fpage>935</fpage>–<lpage>938</lpage>, <pub-id pub-id-type="doi">10.1128/am.13.6.935-938.1965</pub-id>.<pub-id pub-id-type="pmid">5866039</pub-id>
+<pub-id pub-id-type="pmcid">PMC1058374</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0026"><label>33</label><mixed-citation publication-type="journal" id="rcm70085-cit-0026">
+<string-name name-style="western">
+<given-names>J. G.</given-names>
+<surname>Pahila</surname>
+</string-name> and <string-name name-style="western">
+<given-names>E. E. S.</given-names>
+<surname>Yap</surname>
+</string-name>, “<article-title>Reduction of Off‐Flavour Compounds (Geosmin and 2‐Methylisoborneol) Using Different Organic Acids</article-title>,” <source>Aquaculture, Aquarium, Conservation &amp; Legislation International Journal of the Bioflux Society</source>
+<volume>6</volume>, no. <issue>6</issue> (<year>2013</year>): <fpage>511</fpage>–<lpage>517</lpage>.</mixed-citation></ref><ref id="rcm70085-bib-0027"><label>34</label><mixed-citation publication-type="journal" id="rcm70085-cit-0027">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Hammond</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Murri</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Mastitsky</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Yang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Foster</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Schweitzer</surname>
+</string-name>, “<article-title>Geosmin Reduction by Algaecide Application to Drinking Water: Field Scale Efficacy and Mechanistic Insights</article-title>,” <source>Heliyon</source>
+<volume>7</volume>, no. <issue>8</issue> (<year>2021</year>): <elocation-id>e07706</elocation-id>, <pub-id pub-id-type="doi">10.1016/j.heliyon.2021.e07706</pub-id>.<pub-id pub-id-type="pmid">34409178</pub-id>
+<pub-id pub-id-type="pmcid">PMC8361076</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0028"><label>35</label><mixed-citation publication-type="journal" id="rcm70085-cit-0028">
+<string-name name-style="western">
+<given-names>P. N.</given-names>
+<surname>Forrester</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Prinyawiwatkul</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. S.</given-names>
+<surname>Godber</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L. C.</given-names>
+<surname>Plhak</surname>
+</string-name>, “<article-title>Treatment of Catfish Fillets With Citric Acid Causes Reduction of 2‐Methylisoborneol, but Not Musty Flavor</article-title>,” <source>Journal of Food Science</source>
+<volume>67</volume>, no. <issue>7</issue> (<year>2006</year>): <fpage>2615</fpage>–<lpage>2618</lpage>, <pub-id pub-id-type="doi">10.1111/j.1365-2621.2002.tb08787.x</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0029"><label>36</label><mixed-citation publication-type="journal" id="rcm70085-cit-0029">
+<string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Schumann</surname>
+</string-name> and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Pendleton</surname>
+</string-name>, “<article-title>Dehydration Products of 2‐Methylisoborneol</article-title>,” <source>Water Research</source>
+<volume>31</volume> (<year>1997</year>): <fpage>1243</fpage>–<lpage>1246</lpage>, <pub-id pub-id-type="doi">10.1016/S0043-1354(96)00330-2</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0030"><label>37</label><mixed-citation publication-type="journal" id="rcm70085-cit-0030">
+<string-name name-style="western">
+<given-names>P. K.</given-names>
+<surname>Misztal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. R.</given-names>
+<surname>Heal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Nemitz</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. N.</given-names>
+<surname>Cape</surname>
+</string-name>, “<article-title>Development of PTR‐MS Selectivity for Structural Isomers: Monoterpenes as a Case Study</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>310</volume> (<year>2012</year>): <fpage>10</fpage>–<lpage>19</lpage>, <pub-id pub-id-type="doi">10.1016/j.ijms.2011.11.001</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0031"><label>38</label><mixed-citation publication-type="journal" id="rcm70085-cit-0031">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Taiti</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Masi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Cicaloni</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Vinciguerra</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Salvini</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Garzoli</surname>
+</string-name>, “<article-title>SPME‐GC‐MS and PTR‐ToF‐MS Techniques for the Profiling of the Metabolomic Pattern of VOCs and GC‐MS for the Determination of the Cannabinoid Content of Three Cultivars of <italic toggle="yes">Cannabis sativa</italic> L. Pollen</article-title>,” <source>Molecules</source>
+<volume>27</volume>, no. <issue>24</issue> (<year>2022</year>): <elocation-id>8739</elocation-id>, <pub-id pub-id-type="doi">10.3390/molecules27248739</pub-id>.<pub-id pub-id-type="pmid">36557868</pub-id>
+<pub-id pub-id-type="pmcid">PMC9784944</pub-id></mixed-citation></ref><ref id="rcm70085-bib-0032"><label>39</label><mixed-citation publication-type="book" id="rcm70085-cit-0032">
+<string-name name-style="western">
+<given-names>G. E.</given-names>
+<surname>Box</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. S.</given-names>
+<surname>Hunter</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>W. G.</given-names>
+<surname>Hunter</surname>
+</string-name>, <source>Statistics for Experimenters. Design, Innovation, and Discovery</source>, <edition>Second Edition ed.</edition> (<publisher-name>John Wiley &amp; Sons</publisher-name>, <year>2005</year>).</mixed-citation></ref><ref id="rcm70085-bib-0033"><label>40</label><mixed-citation publication-type="journal" id="rcm70085-cit-0033">
+<string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Feinberg</surname>
+</string-name>, “<article-title>Validation of Analytical Methods Based on Accuracy Profiles</article-title>,” <source>Journal of Chromatography. A</source>
+<volume>1158</volume>, no. <issue>1–2</issue> (<year>2007</year>): <fpage>174</fpage>–<lpage>183</lpage>, <pub-id pub-id-type="doi">10.1016/j.chroma.2007.02.021</pub-id>.<pub-id pub-id-type="pmid">17343863</pub-id>
+</mixed-citation></ref><ref id="rcm70085-bib-0034"><label>41</label><mixed-citation publication-type="journal" id="rcm70085-cit-0034">
+<string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Aprea</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Biasioli</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. D.</given-names>
+<surname>Märk</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Gasperi</surname>
+</string-name>, “<article-title>PTR‐MS Study of Esters in Water and Water/Ethanol Solutions: Fragmentation Patterns and Partition Coefficients</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>262</volume>, no. <issue>1–2</issue> (<year>2007</year>): <fpage>114</fpage>–<lpage>121</lpage>, <pub-id pub-id-type="doi">10.1016/j.ijms.2006.10.016</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0035"><label>42</label><mixed-citation publication-type="journal" id="rcm70085-cit-0035">
+<string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Fiches</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Déléris</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Saint‐Eve</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Brunerie</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Souchon</surname>
+</string-name>, “<article-title>Modifying PTR‐MS Operating Conditions for Quantitative Headspace Analysis of Hydro‐Alcoholic Beverages. 2. Brandy Characterization and Discrimination by PTR‐MS</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>360</volume> (<year>2014</year>): <fpage>15</fpage>–<lpage>23</lpage>, <pub-id pub-id-type="doi">10.1016/j.ijms.2013.11.010</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0036"><label>43</label><mixed-citation publication-type="journal" id="rcm70085-cit-0036">
+<string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Jürschik</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Tani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Sulzer</surname>
+</string-name>, et al., “<article-title>Direct Aqueous Injection Analysis of Trace Compounds in Water With Proton‐Transfer‐Reaction Mass Spectrometry (PTR‐MS)</article-title>,” <source>International Journal of Mass Spectrometry</source>
+<volume>289</volume>, no. <issue>2–3</issue> (<year>2010</year>): <fpage>173</fpage>–<lpage>176</lpage>, <pub-id pub-id-type="doi">10.1016/j.ijms.2009.11.002</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0037"><label>44</label><mixed-citation publication-type="journal" id="rcm70085-cit-0037">
+<string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Moretto</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P. N. N.</given-names>
+<surname>Freitas</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. P.</given-names>
+<surname>Souza</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. M.</given-names>
+<surname>Oliveira</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Brites</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Pinto</surname>
+</string-name>, “<article-title>Off‐Flavors in Aquacultured Fish: Origins and Implications for Consumers</article-title>,” <source>Fishes</source>
+<volume>7</volume>, no. <issue>1</issue> (<year>2022</year>), <pub-id pub-id-type="doi">10.3390/fishes7010034</pub-id>.</mixed-citation></ref><ref id="rcm70085-bib-0038"><label>45</label><mixed-citation publication-type="journal" id="rcm70085-cit-0038">
+<string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Wang</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Yu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. L.</given-names>
+<surname>Gallagher</surname>
+</string-name>, et al., “<article-title>Pyrazines: A Diverse Class of Earthy‐Musty Odorants Impacting Drinking Water Quality and Consumer Satisfaction</article-title>,” <source>Water Research</source>
+<volume>182</volume> (<year>2020</year>): <elocation-id>115971</elocation-id>, <pub-id pub-id-type="doi">10.1016/J.WATRES.2020.115971</pub-id>.<pub-id pub-id-type="pmid">32554269</pub-id>
+</mixed-citation></ref></ref-list></back></article>

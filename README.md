@@ -7,6 +7,7 @@
 [![Tests](https://img.shields.io/badge/tests-200%2B%20passed-green.svg)](tests/)
 [![Coverage](https://img.shields.io/badge/coverage-90%2B%25-brightgreen.svg)](htmlcov/)
 [![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jonasheinickebio.github.io/pyEuropePMC/)
+[![MCP Server](https://img.shields.io/badge/MCP_Server-available-brightgreen.svg)](https://modelcontextprotocol.io/)
 
 ## 🔄 Build Status
 
@@ -38,6 +39,7 @@
 - 📈 **Advanced Analytics** - Publication trends, citation analysis, quality metrics, and duplicate detection
 - 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
 - 🔗 **External API Enrichment** - Enhance metadata with CrossRef, Unpaywall, Semantic Scholar, and OpenAlex
+- 🤖 **MCP Server Support** - Model Context Protocol integration for LLM tool usage
 
 ## 📁 Project Structure
 
@@ -471,17 +473,49 @@ Quick Links:
 
 > **Note:** Enable GitHub Pages first! See [Setup Guide](.github/SETUP_GITHUB_PAGES.md) for instructions.
 
-## 📊 Performance
+## 📊 Parser Quality Benchmark
 
-> Benchmarks run weekly on Monday at 02:00 UTC. Last updated: *Pending first run*
+The XML full-text parser is continuously evaluated against a curated benchmark of 55 open-access JATS articles from Europe PMC. Results demonstrate high-fidelity extraction across all quality dimensions:
 
-| Metric | Value |
-|--------|-------|
-| **Total Requests** | *Pending* |
-| **Average Response Time** | *Pending* |
-| **Success Rate** | *Pending* |
+| Metric | Mean | Min | Max | Std Dev |
+|--------|------|-----|-----|---------|
+| **Composite Score** | **0.9871** | 0.9643 | 0.9992 | 0.0086 |
+| Metadata Accuracy | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
+| Text Fidelity | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
+| Element Coverage | 0.9925 | 0.9655 | 1.0000 | 0.0087 |
+| Section Accuracy | 0.9431 | 0.8333 | 1.0000 | 0.0445 |
+| Inline Recall | 1.0000 | 1.0000 | 1.0000 | 0.0000 |
 
-*Benchmark results will be automatically updated weekly by GitHub Actions.*
+**Parse speed:** 55.0 articles in 2.05s (26.8 articles/s)
+
+### PLOS XML Support
+
+The parser now handles PLOS articles that use bare `<p>` elements directly under `<body>` (without `<sec>` wrappers). This structure was previously ignored, causing near-zero scores on PLOS-only benchmarks.
+
+| Metric | Before Fix | After Fix |
+|--------|-----------|-----------|
+| **Composite Score** | **0.4734 (min)** | **0.9778 ± 0.0393** |
+| Metadata Accuracy | 0.6000 ± 0.0000 | 1.0000 ± 0.0000 |
+| Inline Recall | 0.0000 (min) | 1.0000 ± 0.0000 |
+| Text Fidelity | 0.3026 (min) | 1.0000 ± 0.0000 |
+| Section Accuracy | 0.5745 ± 0.1812 | 0.9272 ± 0.0870 |
+| Element Coverage | 0.9617 ± 0.0118 | 0.9617 ± 0.0118 |
+
+Key fixes:
+- **Section parser**: extract text from bare `<p>` elements directly under `<body>`
+- **Content blocks**: collect bare `<p>` paragraphs as a synthetic body section
+- **Plaintext converter**: include bare `<p>` elements in body text output
+- **Metadata matching**: empty-empty fields (e.g., no PMID/PMCID) count as matches
+- **Section accuracy**: detect bare `<p>` sections for correct section path tracking
+
+Run the benchmark yourself:
+
+```bash
+pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --limit 55
+pyeuropepmc benchmark run local --local-path benchmark_xmls/xml --dataset plos1000
+```
+
+See the [Benchmarking Guide](docs/guides/benchmarking.md) for full methodology and profiling tools.
 
 ## 🤝 Contributing
 
@@ -497,3 +531,69 @@ Distributed under the MIT License. See [LICENSE](LICENSE) for more information.
 - **📦 PyPI Package**: [pyeuropepmc](https://pypi.org/project/pyeuropepmc/) - Install with pip
 - **💻 GitHub Repository**: [pyEuropePMC](https://github.com/JonasHeinickeBio/pyEuropePMC) - Source code
 - **🐛 Issue Tracker**: [GitHub Issues](https://github.com/JonasHeinickeBio/pyEuropePMC/issues) - Report bugs or request features
+
+## 🤖 MCP Server
+
+PyEuropePMC includes a Model Context Protocol (MCP) server for use with LLMs and AI assistants.
+
+### Installation
+
+```bash
+pip install pyeuropepmc
+```
+
+### Usage
+
+The MCP server provides four tools:
+
+- **`search_papers`** - Search for papers in Europe PMC
+- **`get_paper_details`** - Get detailed information about a paper (by PMID, PMCID, or DOI)
+- **`search_authors`** - Search for authors in Europe PMC
+- **`get_paper_citations`** - Get citations for a paper
+
+#### Running the MCP Server
+
+```bash
+# As a standalone server
+pyeuropepmc-mcp
+
+# Or using Python directly
+python -m pyeuropepmc.mcp.server
+```
+
+#### Using with LLMs
+
+The server implements the MCP protocol and can be configured in your LLM application:
+
+```json
+{
+  "mcpServers": {
+    "pyeuropepmc": {
+      "command": "python",
+      "args": ["/path/to/pyeuropepmc-mcp"]
+    }
+  }
+}
+```
+
+### Example API Calls
+
+```python
+from pyeuropepmc.mcp.server import EuropePMCClient
+
+client = EuropePMCClient()
+
+# Search for papers
+results = client.search_papers("CRISPR gene editing", limit=10)
+
+# Get paper details by PMID
+paper = client.get_paper_details(pmid="35658636")
+
+# Search for authors
+authors = client.search_authors("Smith")
+
+# Get citations for a paper
+citations = client.get_paper_citations(pmid="35658636", source="MED")
+```
+
+See the [MCP Server Documentation](docs/guides/mcp-server.md) for more details.

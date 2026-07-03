@@ -40,7 +40,7 @@ rdflib-jsonld = ">=0.5"
 rdflib = ">=6.0"
 python-dotenv = ">=0.19"
 requests = "^2.32.5"
-typer = ">=0.12.5,<0.13.0"
+typer = ">=0.12.5"
 backoff = "^2.2.1"
 tornado = "^6.5.1"
 flask = "^3.1.1"
@@ -60,10 +60,12 @@ rdfizer = ">=4.7.5,<5"
 cryptography = "^46.0.3"
 semanticscholar = "^0.12.0"
 tenacity = "^8.2.0"
+click = ">=8.0,<8.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
 pytest-cov = "^6.0.0"
+pytest-xdist = "^3.7.0"
 pre-commit = "^4.2.0"
 black = "^25.1.0"
 mypy = "^1.16.1"
@@ -79,12 +81,16 @@ memory-profiler = "^0.61.0"
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"
 
+[project.scripts]
+pyeuropepmc = "pyeuropepmc.cli:app"
+pyeuropepmc-mcp = "pyeuropepmc.mcp.server:_main_entry"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "-ra -q"
+addopts = "-ra -q -m 'not slow and not functional and not network'"
 testpaths = ["tests"]
 markers = [
   "slow: mark test as slow (use '-m \"not slow\"' to skip)",
@@ -150,6 +156,9 @@ ignore = ["E203", "E266", "E731"]
 "semantic_scholar.py" = [
   "E501",
 ] # Allow long lines for long URLs
+"*/cli/*.py" = [
+  "B008",
+] # Typer uses function calls in argument defaults
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15

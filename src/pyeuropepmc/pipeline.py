@@ -180,6 +180,16 @@ class PaperProcessingPipeline:
 
         logger.info("Paper processing pipeline initialized")
 
+    # Context manager support
+    def __enter__(self) -> "PaperProcessingPipeline":
+        """Enter context manager."""
+        return self
+
+    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
+        """Exit context manager, cleanup enrichment client if present."""
+        if self.enricher:
+            self.enricher.__exit__(exc_type, exc_val, exc_tb)
+
     def process_paper(
         self,
         xml_content: str | None = None,

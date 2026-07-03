@@ -190,6 +190,12 @@ class TestFigureEntity:
         assert figure.figure_label == "Figure 1"
         assert figure.graphic_uri == "https://example.com/fig.png"
 
+    def test_validate_with_graphic_uri(self):
+        """Test validate with a graphic_uri to hit the URI validation branch."""
+        figure = FigureEntity(graphic_uri="https://example.com/fig.png")
+        figure.validate()
+        assert figure.graphic_uri == "https://example.com/fig.png"
+
 
 class TestPaperEntity:
     """Tests for PaperEntity."""
@@ -267,6 +273,64 @@ class TestPaperEntity:
         assert paper.journal == "Journal"
         assert paper.pmcid == "PMC123"
 
+    def test_validate_with_counters_and_uris(self):
+        """Test validate with citation counters, is_oa, oa_url, and journal."""
+        from pyeuropepmc.models.journal import JournalEntity
+
+        journal = JournalEntity(title="Test Journal", issn="1234-5678")
+        paper = PaperEntity(
+            pmcid="PMC1234567",
+            citation_count=10,
+            influential_citation_count=5,
+            reference_count=20,
+            cited_by_count=30,
+            is_oa=True,
+            oa_url="https://example.com/paper.pdf",
+            journal=journal,
+        )
+        paper.validate()
+        paper.normalize()
+        assert paper.citation_count == 10
+        assert paper.is_oa is True
+        assert paper.journal.title == "Test Journal"
+
+    def test_from_enrichment_result(self):
+        """Test creating a PaperEntity from enrichment result dict."""
+        result = {
+            "doi": "10.1234/test.2021.001",
+            "pmcid": "PMC1234567",
+            "merged": {
+                "title": "Test Article",
+                "abstract": "Test abstract.",
+                "biblio": {
+                    "volume": "10",
+                    "issue": "5",
+                    "pages": "100-110",
+                    "issn": "1234-5678",
+                    "publisher": "Test Publisher",
+                    "type": "journal-article",
+                    "first_page": "100",
+                    "last_page": "110",
+                },
+                "references": {
+                    "count": 25,
+                    "cited_by_count": 50,
+                    "related_works": ["PMC7654321"],
+                },
+                "external_ids": {
+                    "doi": "10.1234/test.2021.001",
+                    "pmid": "12345678",
+                    "semantic_scholar_corpus_id": "S2CID12345",
+                    "openalex_id": "W123456789",
+                },
+            },
+        }
+        paper = PaperEntity.from_enrichment_result(result)
+        assert paper.doi == "10.1234/test.2021.001"
+        assert paper.pmcid == "PMC1234567"
+        assert paper.title == "Test Article"
+        assert paper.volume == "10"
+
 
 class TestReferenceEntity:
     """Tests for ReferenceEntity."""
@@ -305,6 +369,21 @@ class TestReferenceEntity:
         """Test that validate always passes (no validation rules)."""
         ref = ReferenceEntity()
         ref.validate()  # Should not raise
+
+    def test_validate_with_publication_year(self):
+        """Test validate with publication_year set (hits year validation in ref + parent)."""
+        ref = ReferenceEntity(publication_year=2021)
+        ref.validate()
+        assert ref.publication_year == 2021
+
+    def test_validate_with_doi_and_pmid(self):
+        """Test validate with doi (non-alnum) and pmid (hits parent validate branches)."""
+        ref = ReferenceEntity(
+            publication_year=2021,
+            doi="10.1000/doi_with_underscore",
+            pmid="12345678",
+        )
+        ref.validate()
 
     def test_normalize_doi_and_whitespace(self):
         """Test DOI normalization and whitespace trimming."""
@@ -462,6 +541,41 @@ class TestTableEntity:
         assert table.headers == ["Name", "Value"]
         assert table.rows[0].cells == ["A", "1"]
 
+    def test_validate_row_begin_end_indices(self):
+        """Test validation of row begin_index and end_index."""
+        class RowWithPositions:
+            """Duck-typed row like object with index attributes."""
+            def __init__(self, cells, begin_index=None, end_index=None):
+                self.cells = cells
+                self.begin_index = begin_index
+                self.end_index = end_index
+
+        rows = [
+            RowWithPositions(cells=["A", "1"], begin_index="3", end_index="5"),
+            RowWithPositions(cells=["B", "2"], begin_index="1", end_index="2"),
+        ]
+        table = TableEntity(rows=rows)
+        # Should validate begin_index and end_index
+        table.validate()
+        assert table.rows[0].begin_index == 3
+        assert table.rows[0].end_index == 5
+        assert table.rows[1].begin_index == 1
+        assert table.rows[1].end_index == 2
+
+    def test_validate_row_begin_index_none(self):
+        """Test that rows without begin_index/end_index are not validated."""
+        table = TableEntity(rows=[TableRowEntity(cells=["A"])])
+        table.validate()  # Should not raise (TableRowEntity lacks indices)
+
+    def test_validate_headers_trimmed_when_empty(self):
+        """Test normalize removes empty headers."""
+        table = TableEntity(
+            headers=["Name", "", "Value", ""],
+            rows=[TableRowEntity(cells=["A", "1", "B", "2"])]
+        )
+        table.normalize()
+        assert table.headers == ["Name", "Value"]
+
 
 class TestTableRowEntity:
     """Tests for TableRowEntity."""
@@ -578,6 +692,23 @@ class TestInstitutionEntity:
         assert institution.display_name == "Test University"
         assert institution.ror_id == "https://ror.org/abc"
         assert institution.city == "Test City"
+
+    def test_validate_with_optional_fields(self):
+        """Test validate with optional fields: ror_id, website, lat/lon, established."""
+        institution = InstitutionEntity(
+            display_name="Test University",
+            ror_id="https://ror.org/abc123",
+            website="https://example.edu",
+            latitude=40.7128,
+            longitude=-74.0060,
+            established=1850,
+        )
+        institution.validate()
+        assert institution.ror_id == "https://ror.org/abc123"
+        assert institution.website == "https://example.edu"
+        assert institution.latitude == 40.7128
+        assert institution.longitude == -74.0060
+        assert institution.established == 1850
 
     def test_from_enrichment_dict_full(self):
         """Test creating InstitutionEntity from enrichment dict with full data."""

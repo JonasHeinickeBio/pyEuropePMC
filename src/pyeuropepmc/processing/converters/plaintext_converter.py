@@ -86,11 +86,29 @@ class PlaintextConverter(BaseParser):
         )
         if body_results["body"]:
             body_elem = body_results["body"][0]
+            has_sec = False
             for sec in body_elem.iter():
                 if sec.tag == "sec":
+                    has_sec = True
                     section_text = self._process_section_plaintext(sec)
                     if section_text:
                         text_parts.append(f"{section_text}\n\n")
+
+            # Handle bare <p> elements directly under <body> (no <sec> wrapper)
+            # Some publishers like PLOS use this structure.
+            # Only process if no <sec> elements were found to avoid duplication.
+            if not has_sec:
+                bare_ps = body_elem.findall("./p")
+                if bare_ps:
+                    para_texts: list[str] = []
+                    for p in bare_ps:
+                        texts = self._extract_flat_texts(
+                            p, ".", filter_empty=True, use_full_text=True
+                        )
+                        if texts:
+                            para_texts.extend(texts)
+                    if para_texts:
+                        text_parts.append("\n".join(para_texts) + "\n\n")
 
     def _add_acknowledgments_to_text(self, text_parts: list[str]) -> None:
         """Add acknowledgments to text parts."""

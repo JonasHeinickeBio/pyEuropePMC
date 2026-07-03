@@ -1,0 +1,742 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="bem70056" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Bioelectromagnetics</journal-id><journal-id journal-id-type="iso-abbrev">Bioelectromagnetics</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">BEM</journal-id><journal-title-group><journal-title>Bioelectromagnetics</journal-title></journal-title-group><issn pub-type="ppub">0197-8462</issn><issn pub-type="epub">1521-186X</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13238366</article-id><article-id pub-id-type="pmcid-ver">PMC13238366.1</article-id><article-id pub-id-type="pmcaid">13238366</article-id><article-id pub-id-type="pmcaiid">13238366</article-id><article-id pub-id-type="pmid">42244435</article-id><article-id pub-id-type="doi">10.1002/bem.70056</article-id><article-id pub-id-type="publisher-id">BEM70056</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Exposure to 5G Radiofrequency and Physiological Effects in Healthy Young Adults: Insights Into Heart Rate Variability and Salivary Stress Biomarkers</article-title></title-group><contrib-group><contrib id="bem70056-cr-0001" contrib-type="author"><name name-style="western"><surname>Layla</surname><given-names initials="J">Jamal</given-names></name><xref rid="bem70056-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="bem70056-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="bem70056-cr-0002" contrib-type="author"><name name-style="western"><surname>Lisa</surname><given-names initials="M">Michelant</given-names></name><xref rid="bem70056-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="bem70056-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="bem70056-cr-0003" contrib-type="author"><name name-style="western"><surname>Stéphane</surname><given-names initials="D">Delanaud</given-names></name><xref rid="bem70056-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="bem70056-cr-0004" contrib-type="author"><name name-style="western"><surname>Raphaël</surname><given-names initials="B">Bodin</given-names></name><xref rid="bem70056-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="bem70056-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="bem70056-cr-0005" contrib-type="author"><name name-style="western"><surname>Laurent</surname><given-names initials="H">Hugueville</given-names></name><xref rid="bem70056-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib><contrib id="bem70056-cr-0006" contrib-type="author"><name name-style="western"><surname>Paul</surname><given-names initials="M">Mazet</given-names></name><xref rid="bem70056-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="bem70056-cr-0007" contrib-type="author"><name name-style="western"><surname>Philippe</surname><given-names initials="L">Lévêque</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-3687-436X</contrib-id><xref rid="bem70056-aff-0006" ref-type="aff">
+<sup>6</sup>
+</xref></contrib><contrib id="bem70056-cr-0008" contrib-type="author"><name name-style="western"><surname>Tamara</surname><given-names initials="B">Baz</given-names></name><xref rid="bem70056-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref></contrib><contrib id="bem70056-cr-0009" contrib-type="author"><name name-style="western"><surname>Erwan</surname><given-names initials="SB">Stephan‐Blanchard</given-names></name><xref rid="bem70056-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="bem70056-cr-0010" contrib-type="author" corresp="yes"><name name-style="western"><surname>Brahim</surname><given-names initials="S">Selmaoui</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-0953-8280</contrib-id><xref rid="bem70056-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="bem70056-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref><address><email>brahim.selmaoui@ineris.fr</email></address></contrib></contrib-group><aff id="bem70056-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Experimental Toxicology and Modeling (TEAM)</named-content>
+<institution>Institut National de l'Environnement Industriel et des Risques (INERIS), Parc Technologique Alata, BP 2</institution>
+<city>Verneuil‐en‐Halatte</city>
+<country country="FR">France</country>
+</aff><aff id="bem70056-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">PériTox laboratory (UMR_I 01), INERIS/UPJV</named-content>
+<institution>INERIS</institution>
+<city>Verneuil‐en‐Halatte</city>
+<country country="FR">France</country>
+</aff><aff id="bem70056-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">PériTox laboratory (UMR_I 01), UPJV/INERIS</named-content>
+<institution>University of Picardy Jules Verne</institution>
+<city>Amiens</city>
+<country country="FR">France</country>
+</aff><aff id="bem70056-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Paris Brain Institute (ICM), Center for NeuroImaging Research (CENIR)</named-content>
+<institution>Sorbonne University, INSERM U1127, CNRS UMR7225, Pitié‐Salpêtrière Hospital</institution>
+<city>Paris</city>
+<country country="FR">France</country>
+</aff><aff id="bem70056-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<institution>Technical Centre for Mechanical Industries (CETIM)</institution>
+<city>Senlis</city>
+<country country="FR">France</country>
+</aff><aff id="bem70056-aff-0006">
+<label>
+<sup>6</sup>
+</label>
+<named-content content-type="organisation-division">CNRS, XLIM, UMR 7252, 123 avenue Albert Thomas</named-content>
+<institution>University of Limoges</institution>
+<city>Limoges</city>
+<country country="FR">France</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold> Selmaoui Brahim (<email>brahim.selmaoui@ineris.fr</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>05</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>7</month><year>2026</year></pub-date><volume>47</volume><issue seq="20">5</issue><issue-id pub-id-type="pmc-issue-id">515015</issue-id><issue-id pub-id-type="doi">10.1002/bem.v47.5</issue-id><elocation-id>e70056</elocation-id><history>
+<date date-type="rev-recd"><day>06</day><month>3</month><year>2026</year></date>
+<date date-type="received"><day>03</day><month>6</month><year>2025</year></date>
+<date date-type="accepted"><day>12</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>05</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>06</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-06 10:25:18.137"><day>06</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Bioelectromagnetics</italic> published by Wiley Periodicals LLC on behalf of Bioelectromagnetics Society.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbyncndlicense">https://creativecommons.org/licenses/by-nc-nd/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by-nc-nd/4.0/">http://creativecommons.org/licenses/by-nc-nd/4.0/</ext-link> License, which permits use and distribution in any medium, provided the original work is properly cited, the use is non‐commercial and no modifications or adaptations are made.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="BEM-47-0.pdf"><?pdf-name BEM-47-0.pdf?><?pdf-size 1698744?><?pdf-md5 756187fb1d846045261fed57bf83677c?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:e48c/13238366/756187fb1d84/BEM-47-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:BEM-47-0.pdf"/><abstract><title>ABSTRACT</title><p>This study investigated the potential impact of fifth‐generation (5 G) radiofrequency (RF) on the autonomic nervous system (ANS). Electrocardiograms (<italic toggle="yes">n</italic> = 43) and salivary samples (<italic toggle="yes">n </italic>= 33) were collected from healthy young volunteers before, during, and after exposure to a 3.5 GHz frequency (electrical field intensity ~1–2 V/m) emitted by an antenna while participants were seated at rest. Heart‐rate (HR) and heart rate variability (HRV) indices, including time and frequency domain measures, were analyzed from short‐term epochs during both “real” and “sham” exposure sessions, under eyes‐open (EO) and eyes‐closed (EC) conditions. Initial variations in RR intervals and HR were observed during 5 G exposure; however, these effects were not confirmed by post‐hoc analyses after correction for multiple comparisons, suggesting the absence of consistent exposure‐related modulation. The only statistically significant result was a time‐by‐exposure interaction for the RMSSD parameter during the final exposure period. This effect was small in magnitude, limited to a single time point, and not supported by other parasympathetic indices, and should therefore be interpreted cautiously as it may reflect normal physiological variability or a statistical artifact. No consistent exposure‐related effects were detected in salivary stress biomarkers, including cortisol, alpha‐amylase, and chromogranin A. Although minor variations were observed in some measures, all values remained within normal physiological ranges, and their clinical relevance remains uncertain. These findings are restricted to the specific experimental conditions examined, namely short‐term far‐field exposure (25.5 min) at low specific absorption rate (SAR) levels (0.008 mW/kg in the brain). Overall, the results provide preliminary baseline human data at 3.5 GHz rather than confirmatory evidence of biological effects. Further studies involving larger cohorts and longer exposure durations are required to determine whether subtle or cumulative autonomic effects of 5 G exposure can be reliably detected. Bioelectromagnetics. 00:00–00, 2026. © 2026 Bioelectromagnetics Society.</p></abstract><abstract abstract-type="highlights"><title>Summary</title><p>
+<list list-type="bullet"><list-item><p>Exploratory study assessing autonomic responses to short‐term 3.5 GHz 5 G exposure in healthy young adults.</p></list-item><list-item><p>No robust or consistent effects were observed on heart rate variability or salivary stress biomarkers after statistical correction.</p></list-item><list-item><p>Findings provide preliminary baseline human data for low‐level 5 G exposure, highlighting the need for larger and longer studies.</p></list-item></list>
+</p></abstract><kwd-group><kwd id="bem70056-kwd-0001">5G</kwd><kwd id="bem70056-kwd-0002">autonomic nervous system</kwd><kwd id="bem70056-kwd-0003">electrocardiogram</kwd><kwd id="bem70056-kwd-0004">heart‐rate variability</kwd><kwd id="bem70056-kwd-0005">human</kwd><kwd id="bem70056-kwd-0006">radiofrequency</kwd><kwd id="bem70056-kwd-0007">stress‐biomarkers</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>European Union's Horizon Europe research and innovation program</institution></institution-wrap>
+</funding-source><award-id>101057262</award-id></award-group><award-group id="funding-0002"><funding-source>
+<institution-wrap><institution>program 190 of INERIS</institution></institution-wrap>
+</funding-source></award-group><award-group id="funding-0003"><funding-source>
+<institution-wrap><institution>European Union's Horizon Europe research and innovation program</institution></institution-wrap>
+</funding-source><award-id>101057262</award-id></award-group></funding-group><counts><fig-count count="3"/><table-count count="0"/><page-count count="11"/><word-count count="7627"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY-NC-ND</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:05.06.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body><sec id="bem70056-sec-0010"><label>1</label><title>Introduction</title><p>Global internet usage has increased by 24% since 2019 (International Telecommunication Union <xref rid="bem70056-bib-0026" ref-type="bibr">2023</xref>). In response to this escalating connectivity, cellular networks have undergone continuous technological evolution, culminating in the development of fifth‐generation (5 G) radiofrequency (RF) technologies. Among the newly introduced frequency bands, the first 5 G band oscillating around 3.5 GHz is currently being progressively deployed worldwide. However, this technological expansion has raised concerns and debates regarding the potential health effects associated with novel radiofrequency electromagnetic field (RF‐EMF) exposure scenarios arising from the widespread use of advanced wireless communication systems (Russell <xref rid="bem70056-bib-0044" ref-type="bibr">2018</xref>; Hardell and Carlberg <xref rid="bem70056-bib-0017" ref-type="bibr">2020</xref>; Selmaoui et al. <xref rid="bem70056-bib-0045" ref-type="bibr">2021</xref>; Weller and McCredden <xref rid="bem70056-bib-0056" ref-type="bibr">2024</xref>).</p><p>Among the studies investigating the health effects of RF exposure are those evaluating its impact on the autonomic nervous system (ANS) in humans. Although relatively few studies have addressed this topic, the available findings remain inconsistent. Some studies have reported significant RF‐induced changes in ANS‐related parameters (Esen and Esen <xref rid="bem70056-bib-0010" ref-type="bibr">2006</xref>; Misek et al. <xref rid="bem70056-bib-0034" ref-type="bibr">2018</xref>; Parizek et al. <xref rid="bem70056-bib-0041" ref-type="bibr">2023</xref>) while others have found no observable effect (Braune S. et al. <xref rid="bem70056-bib-0070" ref-type="bibr">2002</xref>; Selmaoui et al. <xref rid="bem70056-bib-0071" ref-type="bibr">2018</xref>; Wallace et al. <xref rid="bem70056-bib-0053" ref-type="bibr">2020</xref>). Variability in reported effects of RF exposure on autonomic nervous system outcomes likely reflects substantial methodological heterogeneity across studies, including differences in participant characteristics, exposure parameters, and experimental conditions (Michelant and Selmaoui <xref rid="bem70056-bib-0033" ref-type="bibr">2025</xref>). Studies using autonomic challenges or more controlled stimuli appear to have subtle effects (Esen and Esen <xref rid="bem70056-bib-0010" ref-type="bibr">2006</xref>); however, such challenges may themselves influence autonomic responses and therefore represent potential sources of bias. These considerations highlight the need for carefully designed experiments to accurately assess RF‐related modulation of autonomic function and evaluate their potential risks and ensure the safety of individuals exposed to these frequencies, especially with the expanding deployment of 5 G networks.</p><p>Understanding the influence of RF exposure on the ANS is of particular importance because this system regulates essential physiological functions, including heart rate (HR), blood pressure, and hormone secretion. Any disruption or alteration in this system's functioning may therefore have significant implications for health and well‐being. However, as highlighted above, studies investigating the effects of previous RF generations on the ANS have yielded limited and conflicting results (European Commission <xref rid="bem70056-bib-0011" ref-type="bibr">2022</xref>; Geronikolou et al. <xref rid="bem70056-bib-0015" ref-type="bibr">2020</xref>; Selmaoui and Touitou <xref rid="bem70056-bib-0046" ref-type="bibr">2021</xref>; Mansourian et al. <xref rid="bem70056-bib-0032" ref-type="bibr">2023</xref>).</p><p>In this context, the present exploratory study aims to investigate the effects of exposure to the newly deployed 5 G frequency band operating at 3.5 GHz on selected physiological parameters and biomarkers of ANS activity. To date, no studies have specifically addressed the impact of this frequency on ANS regulation. Given the complexity of ANS control and its sensitivity to environmental factors, heart rate (HR) and heart rate variability (HRV) are widely recognized as reliable indicators of autonomic function (Shaffer and Ginsberg <xref rid="bem70056-bib-0047" ref-type="bibr">2017</xref>). These parameters are valuable for assessing indirectly the balance between sympathetic and parasympathetic activity. Although ANS regulation involves multiple interacting pathways, HRV offers a non‐invasive and quantifiable measure of autonomic balance (Shaffer and Ginsberg <xref rid="bem70056-bib-0047" ref-type="bibr">2017</xref>). A reduction in HRV is generally indicative of impaired autonomic regulation and reduced homeostatic capacity, often observed under stress conditions (Kim et al. <xref rid="bem70056-bib-0031" ref-type="bibr">2018</xref>). Consequently, HR and HRV are considered essential parameters for assessing how external stimuli may influence sympathovagal balance (Heart rate variability: Standards of measurement, physiological interpretation and clinical use <xref rid="bem70056-bib-0019" ref-type="bibr">1996</xref>; Cygankiewicz and Zareba <xref rid="bem70056-bib-0007" ref-type="bibr">2013</xref>).</p><p>Additionally, ocular state has been shown to significantly influence ANS activity and HRV outcomes. Previous studies have demonstrated that eye state, whether open or closed, modulates autonomic responses (Hori et al. <xref rid="bem70056-bib-0072" ref-type="bibr">2005</xref>; Wallace et al. <xref rid="bem70056-bib-0053" ref-type="bibr">2020</xref>). Specifically, closed‐eye conditions are associated with increased parasympathetic activity and deeper relaxation, often resulting in higher HRV values. In contrast, open‐eye conditions tend to enhance sympathetic activation, likely due to increased vigilance and sustained visual attention, leading to reduced HRV. Therefore, distinguishing between open‐ and closed‐eye conditions is essential when evaluating HRV in order to better understand underlying autonomic mechanisms and minimize potential bias.</p><p>Beyond physiological measures, salivary biomarkers provide valuable insight into stress‐related autonomic activity. Salivary cortisol, reflecting activation of the hypothalamic‐pituitary‐adrenal (HPA) axis, is widely recognized as a reliable non‐invasive biomarker of stress. Cortisol levels typically increase approximately 20 min after stress onset and decline more gradually thereafter (Vining et al. <xref rid="bem70056-bib-0052" ref-type="bibr">1983</xref>; Hellhammer et al. <xref rid="bem70056-bib-0020" ref-type="bibr">2009</xref>). In contrast, salivary alpha‐amylase (AA) and chromogranin A (CgA), both markers of the sympathetic‐adrenal‐medullary system, display distinct response profiles. AA responds rapidly to stress, reaching peak levels within approximately 5 min and decreasing shortly after stress cessation (Takai et al. <xref rid="bem70056-bib-0048" ref-type="bibr">2004</xref>; Nater et al. 2006; <xref rid="bem70056-bib-0038" ref-type="bibr">2007</xref>). CgA, a more recently proposed stress biomarker, exhibits less consistent patterns. Current evidence on its diurnal rhythm and stress responsiveness reflects inter‐individual differences and sensitivity to factors such as age, sex, sleep quality, and the nature of the stressor (D'amico et al. <xref rid="bem70056-bib-0008" ref-type="bibr">2014</xref>).</p><p>Overall, this study aims to explore whether short‐term exposure to 5 G electromagnetic fields alters ANS balance in healthy young adults by integrating direct physiological measurements (HR and HRV) with biological stress markers. Specifically, the study examines whether HR and HRV (detailed in the Materials and methods section), as indicators of sympathovagal balance, remain stable during our experimental protocol, which included baseline, exposure, and post‐exposure phases during real and sham conditions, and whether concentrations of salivary stress biomarkers (Cortisol, AA and CgA) exhibit significant variations across these experimental conditions. Participants were exposed to a 3.5 GHz 5 G signal at levels below public regulatory limits (ICNIRP <xref rid="bem70056-bib-0025" ref-type="bibr">2020</xref>) and comparable to those encountered in outdoor environments (Selmaoui et al. <xref rid="bem70056-bib-0045" ref-type="bibr">2021</xref>; Hinrikus et al. <xref rid="bem70056-bib-0021" ref-type="bibr">2022</xref>).</p></sec><sec sec-type="materials-and-methods" id="bem70056-sec-0020"><label>2</label><title>Materials and Methods</title><sec id="bem70056-sec-0030"><label>2.1</label><title>Ethical Approval</title><p>Ethical approval for the experimental protocol (ID‐RCB no: 2020‐A03127‐32) was obtained from the French national ethical committee ‘CPP Sud‐Ouest et Outre‐Mer 1' and adhered to the principles of the Declaration of Helsinki.</p></sec><sec id="bem70056-sec-0040"><label>2.2</label><title>Participants</title><p>A total of 43 individuals (24 males and 19 females) who met strict inclusion criteria and with an average age of 26.6 (mean) ± 4.8 (SD) years and body mass index of 22.6 (mean) ± 3.7 (SD) were recruited for the study. These participants maintained regular sleeping patterns (11 p.m. to 8 a.m. ± 1 h) and had no chronic or acute illnesses or disabilities. They were non‐smokers and did not report electromagnetic hypersensitivity. Nursing or pregnant women, as confirmed by NADAL® hCG pregnancy urine test (ref: 152002, nal von minden GmbH, Moers, Germany), and individuals using drugs or narcotics, as confirmed by NarcoCheck® urine test (ref: DOA‐M10‐3B, Kappa City Biotech SAS, Montluçon, France), were excluded. Female participants were required to have regular menstrual cycles (25‐32 days) with no use of hormonal contraception. Their inclusion sessions were scheduled during the follicular phase of their menses.</p><p>The experimental protocol (ID‐RCB n°:2020‐A03127‐32) adhered to the principles of the Declaration of Helsinki and obtained approval from the French national ethical committee “CPP Sud‐Ouest et Outre‐Mer 1”. Only volunteers who provided informed written consent were permitted to participate. Additionally, participants were instructed to abstain from consuming any stimulating/depressant beverages or substances (e.g., caffeine, alcohol, chocolate) for 24 h prior to each experimental session.</p></sec><sec id="bem70056-sec-0050"><label>2.3</label><title>Exposure Protocol and System</title><p>In a triple‐blinded study design, which means that participants, experimenters and data analysts were unaware of the session assignments, participants engaged in two randomly assigned counterbalanced cross‐over “real” and “sham” exposure sessions. These sessions were scheduled within a maximum interval of 1 week. They occurred at consistent times of the day either in the morning (9 am to 11 am ± 30 min) or in the afternoon (2 pm to 4 pm ± 30 min). This was done to minimize potential disruptions due to the circadian rhythm.</p><p>This study was carried out using an experimental protocol that had been established and validated in our laboratory (Ghosn et al. <xref rid="bem70056-bib-0016" ref-type="bibr">2015</xref>; Wallace et al. <xref rid="bem70056-bib-0053" ref-type="bibr">2020</xref>, <xref rid="bem70056-bib-0055" ref-type="bibr">2022</xref>; Jamal et al. <xref rid="bem70056-bib-0027" ref-type="bibr">2024</xref>). Each session consisted of a 25.5 min period of either “real” or “sham” exposures, as depicted in Figure <xref rid="bem70056-fig-0001" ref-type="fig">1</xref>. This was followed by a 17‐min “post‐exposure” period. Both periods were preceded by a 17‐min “baseline” recording phase without RF exposure. Within each of these periods, a block of experiment recording called run was repeated twice or three times. At the end of the recording session, a total of 7 runs were obtained. Throughout each run, electrocardiograms (ECGs) were continuously recorded. The protocol was conducted with different eye conditions to explore their effects on certain physiological functions of the ANS along with the effect of the 5 G. Indeed, HRV can vary depending on whether the eyes are open or closed, as shown by some studies (Hori et al. <xref rid="bem70056-bib-0072" ref-type="bibr">2005</xref>; Wallace et al. <xref rid="bem70056-bib-0053" ref-type="bibr">2020</xref>). It is therefore essential to separate these eye conditions in order to minimize potential bias and ensure the validity of our results. Subsequently, two epochs of eyes‐open (EO) followed by eyes‐closed (EC) were conducted, each lasting 180 s, where vocal instructions guided the participants into opening and closing their eyes.</p><fig position="float" fig-type="Figure" id="bem70056-fig-0001" orientation="portrait"><label>Figure 1</label><caption><p>Protocol and methodology. Overview of the study protocol showing the sequence of real and sham exposure sessions, physiological recordings (EDA and ECG), eyes‐open and eyes‐closed periods, and the timing of saliva sample collection (Sal1–Sal4) relative to the exposure sessions.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="BEM-47-0-g003.jpg"><?image-name BEM-47-0-g003.jpg?><?image-size 52125?><?image-md5 5ba387e4813c0fd180ddfa0ba6d964cb?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 565?><?image-original-width 1054?><?image-scaled-height 376?><?image-scaled-width 702?><?image-cloudpmc-urn urn:cdn:blobs/e48c/13238366/5ba387e4813c/BEM-47-0-g003.jpg?><?thumb-name BEM-47-0-g003.gif?><?thumb-size 3652?><?thumb-md5 69ef70cc43c43c77b0996bd28db7fdf4?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 149?><?thumb-cloudpmc-urn urn:cdn:blobs/e48c/13238366/69ef70cc43c4/BEM-47-0-g003.gif?></graphic></fig><p>Additionally, four saliva samples were collected from each participant before and after each period (baseline, exposure and post exposure) to analyze Cortisol, AA, and CgA, indicators of acute stress.</p><p>As for the exposure system, participants received 3.5 GHz RF from a horn antenna positioned 120 cm away, in an electrically shielded room. Exposure was in the far field, that is electromagnetic waves propagate uniformly, behaving like plane waves, with a more predictable and uniform field distribution. The RF were generated (Rohde &amp; Schwarz SMB100A (1406.6000.02), Rohde &amp; Schwarz GmbH &amp; Co KG, Germany) and amplified (SX 40/15, Prâna, France) in a pulse‐modulated manner to produce an electric field intensity of 1 V/m at the trunk level and 2 V/m at the head as confirmed by a field meter (NBM 550, Narda Safety Test Solutions GmbH, Germany). Numerical simulations were performed to assess the specific absorption rate (SAR) at 3.5 GHz using a custom finite‐difference time‐domain (FDTD) code. Head‐ and brain‐averaged SAR values were computed from a high‐resolution (1 mm³) anatomical human head model derived from the Visible Human Project (Ackerman <xref rid="bem70056-bib-0001" ref-type="bibr">1998</xref>). Tissue dielectric properties at 3.5 GHz were assigned according to the IT'IS Foundation database using Gabriel dispersion models (Gabriel et al. <xref rid="bem70056-bib-0013" ref-type="bibr">1996</xref>; Gabriel <xref rid="bem70056-bib-0012" ref-type="bibr">1996</xref>).</p><p>Given the separation between the horn antenna and the head, exposure was approximated by a vertically polarized plane wave with an electric field strength of 2 V/m, corresponding to a mean power density of 11 mW/m². Exposure characterization was based on head‐averaged SAR (HASAR) and brain‐averaged SAR (BASAR), assuming a head mass of 5.5 kg and a brain mass of 1.3 kg. At 3.5 GHz, HASAR and BASAR were estimated at 0.037 ± 0.11 mW/kg and 0.008 ± 0.019 mW/kg, respectively, indicating low‐level exposure (see more details in Jamal et al. <xref rid="bem70056-bib-0028" ref-type="bibr">2023</xref>).</p><p>Moreover, the “real” or “sham” emissions were controlled with a specific dosimeter (MVG/EME Spy Evolution, MVG INDUSTRIES | SATIMO, France), that was installed in the data acquisition room to verify the exposure parameters.</p></sec><sec id="bem70056-sec-0060"><label>2.4</label><title>Heart‐Rate Variables (HRV)</title><p>To acquire ECG data, we used two disposable electrodes (Ambu® Neroline 720, Neurology auto‐adhesive surface electrodes, Ballerup, Denmark). These electrodes were placed on the right clavicle and the left lower hip. The signals were recorded using Brain Vision Recorder software (version 1.23.0003) in a resting sitting position with regular breathing in a dimly lit room. To ensure proper electrical impedance, we employed a conductivity gel (Electro Gel, Electro Cap Center B.V., Nieuwkoop, Netherlands), maintaining the impedance below 30 KΩ. The acquisition settings included a sampling frequency of 1000 Hz and a bandwidth of 0.016‐250 Hz.</p><p>We used a specific algorithm (mne.preprocessing. find_ecg_events) from the MNE‐python software (version 0.19.2) to locate the R wave peaks within the QRS complexes of the ECG signal. The algorithm was configured to detect normal beat‐to‐beat intervals up to 1.2 s for each eye condition in each run. However, out of the 8.5 min of recording, 150 s were allocated to another measurement involving beep sounds and were therefore not analyzed for the ECG. Of the remaining 6 min, 180 s were assigned to the eyes‐open (EO) ECG and another 180 s to the eyes‐closed (EC) ECG. To ensure a smooth transition between measurements, and to prevent interference from voice recordings, the first 10 s were removed. As a result, the epoch of combined EO and EC conditions was reduced to 350 s, excluding the 10‐second transition phase between segments.</p><p>The extracted RR interval data were then input into Kubios HRV software (standard version 3.5.0) (Tarvainen et al. 2014; <xref rid="bem70056-bib-0049" ref-type="bibr">2021</xref>) to automatically correct and compute several time and frequency domain variables following the instructions of the European Society of Cardiology's guidelines on HRV (Heart rate variability: Standards of measurement, physiological interpretation and clinical use <xref rid="bem70056-bib-0019" ref-type="bibr">1996</xref>).</p><p>According to the latest recommendations for short and ultra‐short term ECG recordings (Nunan et al. <xref rid="bem70056-bib-0039" ref-type="bibr">2010</xref>; Shaffer and Ginsberg <xref rid="bem70056-bib-0047" ref-type="bibr">2017</xref>; Catai et al. <xref rid="bem70056-bib-0005" ref-type="bibr">2020</xref>), we selected the mean RR interval, mean HR, Standard deviation of NN intervals (SDNN), Root mean square of successive RR interval difference (RMSSD) and the percentage of successive RR intervals that differ by more than 50 ms (pNN50) as our time‐domain parameters. For frequency‐domain analysis, we computed the low‐frequency (LF) power in the range of 0.04‐0.15 Hz, and the high‐frequency (HF) power in the range of 0.15‐0.4 Hz, in absolute power (ms<sup>2</sup>), log‐transformed (log) and normal unit (n.u.), as well as their ratio (LF/HF). These variables were obtained using Fast‐Fourier transformation (Welch's method) with a 50% overlap.</p><p>Complementary temporal and frequency parameters have been chosen for a more detailed characterization of ANS activity (Nunan et al. <xref rid="bem70056-bib-0039" ref-type="bibr">2010</xref>; Shaffer and Ginsberg <xref rid="bem70056-bib-0047" ref-type="bibr">2017</xref>; Catai et al. <xref rid="bem70056-bib-0005" ref-type="bibr">2020</xref>): HRV parameters are used to analyze the activity of the autonomic nervous system through various measurements. RR intervals characterize sympatho‐vagal balance. SDNN measures total cardiac variability, while RMSSD and pNN50 specifically assess parasympathetic activity. LF parameters reflect a mixture of sympathetic and parasympathetic influences with sympathetic predominance, while HF shows parasympathetic predominance. The use of different units (ms², log, n.u.) enables a more standardized and robust analysis. The LF/HF ratio indicates the relative dominance between the sympathetic and parasympathetic systems.</p></sec><sec id="bem70056-sec-0070"><label>2.5</label><title>Biochemical Analyses of Salivary Stress Biomarkers</title><p>As soon as saliva samples were collected using specific tubes (Salivette®, Ref: 51.1534, Sarstedt AG &amp; Co. KG, Nümbrecht, Germany), the samples were immediately stored at 4°C. The samples were centrifuged at 1000 g for 20 min at 4°C within 48 h of collection. The resulting supernatant was collected and immediately frozen at ‐80°C in separate aliquots without preservatives until analysis. Each volunteer provided four samples per session. Sal1 and Sal2 represented samples obtained before the exposure period, while Sal3 and Sal4 represented post‐exposure samples. We used commercially available Enzyme‐Immunoassay kits designed for human saliva to quantify Cortisol (Cortisol Saliva ELISA, Ref: RE52611, IBL International TECAN, Switzerland), AA (alpha Amylase Saliva Enzymatic Assay, Ref: RE80111, IBL International TECAN, Switzerland) and CgA (Chromogranin A Human ELISA, Ref: YK070, Yanaihara Institute Inc., Shizuoka, Japan). The samples were tested in duplicate for each molecule. The intra‐ and inter‐assay coefficients of variation (CV) for cortisol are 2.22% (SD = 2.18) and 8.58% (SD = 0.73), respectively. For AA, they are 3.63% (SD = 2.70) and 25.32% (SD = 8.98), respectively. For CgA, the intra‐assay CV is 7.67% (SD = 15.59), and the inter‐assay CV is 14.14% (SD = 7.04). The final concentrations were interpolated by GraphPad Prism software (version 8.4.3) using the sigmoidal four parameter‐logistic (4PL) method based on the average of the duplicate's readings. The latter was performed with Tecan machine infinite M200 and its correspondent software Magellan Pro (version 7.3), following the manufacturers' instructions. It is noteworthy to mention that for each biomarker we used, correspondent kits had the same batch numbers to avoid any potential bias. On another note, due to the elevated cost of CgA kits, we have only analyzed the Sal 2 of the baseline samples (Sal 1 and Sal 2) for this molecule since both represent the condition of pre‐exposure to the 5 G radiofrequency.</p></sec><sec id="bem70056-sec-0080"><label>2.6</label><title>Statistical Analysis</title><p>For time‐ and frequency‐domain HRV metrics, baseline correction was performed to reduce inter‐session variability. For each subject and session, baseline runs (Run 1 and Run 2) were averaged, and this mean value was subtracted from subsequent runs (Run 3 to 7).</p><p>Linear mixed‐effects models were fitted separately for each HRV parameter using R (version 4.3.3) with the <italic toggle="yes">nlme</italic> package. Exposure (real vs. sham) and time (Run 3 to 7) were included as fixed effects, and subject was included as a random intercept to account for repeated measures. The exposure × run interaction was included to assess whether exposure effects varied across time. Models were estimated using restricted maximum likelihood (REML). Fixed effects were evaluated using Wald F‐tests, and denominator degrees of freedom were calculated using the between–within (containment) approximation implemented in <italic toggle="yes">nlme</italic> (Pinheiro and Bates <xref rid="bem70056-bib-0042" ref-type="bibr">2000</xref>).</p><p>Post hoc pairwise comparisons were conducted using Tukey's honestly significant difference (HSD) procedure, with adjustment for multiple comparisons across pairwise contrasts. Statistical significance was set at α = 0.05, and adjusted <italic toggle="yes">p</italic>‐values are reported in Supporting Table <xref rid="bem70056-suppl-0001" ref-type="supplementary-material">S2</xref>. Statistical analyses were performed on baseline‐corrected data only, and significant effects are indicated by an asterisk in the corresponding figures.</p><p>Sex and eye condition (EO vs. EC) were initially included in the full model. As neither showed a significant main effect nor interaction with exposure, and their inclusion did not meaningfully alter exposure‐related estimates, they were removed from the final reduced models to improve parsimony and clarity of presentation.</p><p>For stress biomarkers, only 33 subjects (17 males, 16 females) of the total 43 participants were included in the analysis. The 10 excluded subjects' saliva samples were processed using different ELISA plate batches with a several‐month delay, which could introduce inter‐assay variability. To minimize potential bias from inter‐plate differences and prolonged freezing, these samples were excluded.</p><p>Based on the remaining 33 subjects, a mixed‐effects model was fitted using GraphPad Prism (version 8.4.3) to evaluate the effects of time (Sal1, Sal 2, Sal 3 and Sal 4), 5 G exposure, and their interaction. Models were estimated using restricted maximum likelihood (REML), and fixed effects were evaluated using Wald tests. Denominator degrees of freedom were calculated using the residual (error‐based) method implemented in the mixed‐effects procedure in Prism. Tukey's multiple comparison test was applied to assess pairwise group differences. To account for circadian influences on biomarker levels, samples collected during morning sessions (<italic toggle="yes">n</italic> = 25) were analyzed separately from those collected in the afternoon (<italic toggle="yes">n</italic> = 8). Results are demonstrated in Figure <xref rid="bem70056-fig-0003" ref-type="fig">3</xref> and Supporting Table <xref rid="bem70056-suppl-0001" ref-type="supplementary-material">S3</xref>.</p></sec></sec><sec sec-type="results" id="bem70056-sec-0090"><label>3</label><title>Results</title><sec id="bem70056-sec-0100"><label>3.1</label><title>Cardiac Parameters</title><p>We performed a 2‐way mixed effects model (<italic toggle="yes">n</italic> = 43) to evaluate the HRV indices on their baseline‐corrected data. Time (among runs) and exposure to 5 G were considered fixed factors, while subjects were treated as random effects. Figure <xref rid="bem70056-fig-0002" ref-type="fig">2</xref> shows the global HRV parameters (<bold>A</bold>), the main time‐domain indices (<bold>B</bold>) and the main frequency‐domain variables (<bold>C</bold>). The full results of the mixed effects models are reported in supporting materials Table <xref rid="bem70056-suppl-0001" ref-type="supplementary-material">S1</xref>.</p><fig position="float" fig-type="Figure" id="bem70056-fig-0002" orientation="portrait"><label>Figure 2</label><caption><p>(A) Global HRV parameters: (A1) Baseline‐corrected mean heart rate (HR, beats/min) and (A2) mean RR interval (ms), reflecting 350‐second averages of eyes open (EO) and eyes closed (EC) epochs during “real” (RF) and “sham” sessions (n = 43). (B) Time‐domain HRV parameters: (B1) Baseline‐corrected mean SDNN (ms) and (B2) mean RMSSD (ms). (C) Frequency‐domain HRV parameters: (C1) Baseline‐corrected mean LF power (ms²) and (C2) mean HF power (ms²). Error bars indicate the standard error of the mean (SEM). The asterisks (*) indicate significant results (<italic toggle="yes">p</italic>‐value &lt; 0.05) for the 5 G exposure factor, based on post‐hoc Tukey's pairwise comparisons.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="BEM-47-0-g001.jpg"><?image-name BEM-47-0-g001.jpg?><?image-size 86017?><?image-md5 56bb038a7812398834196bddee87c692?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1052?><?image-original-width 1054?><?image-scaled-height 701?><?image-scaled-width 702?><?image-cloudpmc-urn urn:cdn:blobs/e48c/13238366/56bb038a7812/BEM-47-0-g001.jpg?><?thumb-name BEM-47-0-g001.gif?><?thumb-size 3273?><?thumb-md5 3083f43cbdf40616856df6f4cf1ec5ba?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 100?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/e48c/13238366/3083f43cbdf4/BEM-47-0-g001.gif?></graphic></fig><p>The 2‐way mixed effects model revealed significant effects of 5 G exposure at 3.5 GHz for mean of RR interval, mean of heart rate (HR), LF and HF indices (F (1, 384) = 4.291, <italic toggle="yes">p</italic>‐value = 0.0390, ηp² = 0.01; F (1, 384) = 4.696, <italic toggle="yes">p</italic>‐value = 0.0308, ηp² = 0.01; F (1, 384) = 6.556, <italic toggle="yes">p</italic>‐value = 0.0108, ηp² = 0.02; F (1, 384) = 3.975, <italic toggle="yes">p</italic>‐value = 0.0469, ηp² = 0.01, respectively). However, these findings were not validated by the following Tukey's multiple comparison test (adjusted <italic toggle="yes">p</italic>‐values = 0.0770, 0.0598, 0.0505, and 0.1142, respectively).</p><p>As for the time (among runs) factor, a significant effect following the 2‐way mixed effects model was detected in SDNN (F (4, 381) = 2.717, <italic toggle="yes">p</italic>‐value = 0.0296, ηp² = 0.03), RMSSD (F‐value (4, 381) = 2.482, <italic toggle="yes">p</italic>‐value = 0.0435, ηp² = 0.03), LF in log values (F‐value (4, 381) = 5.638, <italic toggle="yes">p</italic>‐value = 0.0002, ηp² = 0.06) and normal units (nu) (F‐value (4, 381) = 3.454, <italic toggle="yes">p</italic>‐value = 0.008, ηp² = 0.04), and HF in normal units (nu) (F‐value (4, 381) = 3.443, <italic toggle="yes">p</italic>‐value = 0.008, ηp² = 0.03). Nonetheless, only SDNN (adjusted <italic toggle="yes">p</italic>‐value = 0.0405), LF (adjusted <italic toggle="yes">p</italic>‐value = 0.0345) and HF (adjusted <italic toggle="yes">p</italic>‐value = 0.0351) in normal values showed significant effects related to the time factor (among runs) between run 3 (the first run of exposure period) and run 5 (the last run of exposure period) following the subsequent statistical correction with Tukey's test.</p><p>Nevertheless, the interaction between the time (among runs) factor and the 5 G exposure factor revealed a significant effect only for the RMSSD parameter (F (4, 376) = 2.973, <italic toggle="yes">p</italic>‐value = 0.0194, ηp² = 0.03). The subsequent Tukey's test showed that this significant outcome is during run 05 (the last exposure period in the protocol) between the “real” and “sham” exposure sessions (adjusted <italic toggle="yes">p</italic>‐value = 0.0404) (see Figure <xref rid="bem70056-fig-0002" ref-type="fig">2</xref>
+<bold>. B2</bold>). However, for simplicity, the figures only display the statistical significance of the 5 G exposure factor when found following the statistical correction by Tukey's test.</p><p>The complete pairwise comparisons from Tukey's post‐hoc test, for all HRV parameters that yielded a significant effect in the mixed effects model, are provided with their adjusted <italic toggle="yes">p</italic>‐values in supporting materials Table <xref rid="bem70056-suppl-0001" ref-type="supplementary-material">S2</xref>.</p></sec><sec id="bem70056-sec-0110"><label>3.2</label><title>Stress Biomarkers</title><p>The detailed results of the mixed effects models are reported in supporting materials Table <xref rid="bem70056-suppl-0001" ref-type="supplementary-material">S3</xref>. No significant effect was detected following the 2‐way mixed effect analysis in cortisol and CgA biomarkers due to 5 G exposure. However, Sal3 samples collected immediately after the exposure period showed a non‐significant increase in cortisol levels during the real 5 G exposure sessions in both morning (F <sub>(1.000, 24.000)</sub> = 2,966, p‐value = 0,0979, ηp² = 0.11) and afternoon (F <sub>(1.000, 7.000)</sub> = 0,9179, p‐value = 0,3699, ηp² = 0.12) groups. Cortisol concentrations returned toward baseline values in Sal4 samples collected 17 min after the end of exposure. However, these differences did not reach statistical significance, either before or after correction for multiple comparisons.</p><p>For AA, the results show a significant difference only in the afternoon samples (F <sub>(1.000, 7.000)</sub> = 8.556; <italic toggle="yes">p</italic>‐value = 0.0222, ηp² = 0.55)). However, after correction with Tukey's multiple comparison tests failed to show significance in all tested combinations.</p><p>In addition, CgA showed a significant difference due to the time of sample collection (F <sub>(1.627, 11.39)</sub> = 6,082; p = 0,0198, ηp² = 0.46). Nevertheless, this difference was not consistent in the subsequent Tukey's correction test. Furthermore, the interaction between the time factor with the 5 G exposure did not reveal any significant differences. Figure <xref rid="bem70056-fig-0003" ref-type="fig">3</xref> illustrates the results of the three analyzed molecules.</p><fig position="float" fig-type="Figure" id="bem70056-fig-0003" orientation="portrait"><label>Figure 3</label><caption><p>Biochemistry results of stress salivary biomarkers: Cortisol (A), alpha‐amylase (B), and Chromogranin‐A (CgA) (C). Saliva samples (Sal) were collected in morning and afternoon experimental sessions (25 and 8 subjects, respectively). Hence, they were separately analyzed. Data (<italic toggle="yes">n</italic> = 33) are shown as means ± SEM. Statistical significance was set at α = 0.05 (2‐way mixed effects model followed by Tukey's multiple comparison test). Sal1 and Sal2 represent samples collected before “real” or “sham” 5 G exposures. Sal3 and Sal4 refer to samples obtained immediately and 17 min after exposure, respectively.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-5" orientation="portrait" xlink:href="BEM-47-0-g002.jpg"><?image-name BEM-47-0-g002.jpg?><?image-size 64923?><?image-md5 f1d03e5854702a7053e151050bf59805?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 1209?><?image-original-width 1000?><?image-scaled-height 805?><?image-scaled-width 666?><?image-cloudpmc-urn urn:cdn:blobs/e48c/13238366/f1d03e585470/BEM-47-0-g002.jpg?><?thumb-name BEM-47-0-g002.gif?><?thumb-size 3353?><?thumb-md5 2754cdcad2b597ba0528744c123336ee?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 121?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/e48c/13238366/2754cdcad2b5/BEM-47-0-g002.gif?></graphic></fig></sec></sec><sec sec-type="discussion" id="bem70056-sec-0120"><label>4</label><title>Discussion</title><p>The present study assessed the effect of 3.5 GHz exposure on the autonomic nervous system (ANS) in healthy young adults. Consequently, non‐invasive methods were chosen for this purpose. Time and frequency domain heart rate variables (HRV) were evaluated from short (150 s) ECG recordings, which consisted of two consecutive eyes‐open (EO) and eyes‐closed (EC) conditions. This parameter was acquired from 43 volunteers (24 males and 19 females), in a resting seated position, which had two sessions of real and sham exposure sessions. Each of these sessions included 3 periods: baseline, exposure, and post‐exposure periods divided into 7 runs.</p><p>For HRV parameters, following correction with baseline and the exclusion of non‐pertinent data according to established guidelines (Coumel et al. <xref rid="bem70056-bib-0006" ref-type="bibr">1994</xref>; Heart rate variability: Standards of measurement, physiological interpretation and clinical use <xref rid="bem70056-bib-0019" ref-type="bibr">1996</xref>; Shaffer and Ginsberg <xref rid="bem70056-bib-0047" ref-type="bibr">2017</xref>; Catai et al. <xref rid="bem70056-bib-0005" ref-type="bibr">2020</xref>), the 2‐way mixed effects model initially revealed significant main effects of 5 G exposure at 3.5 GHz for mean RR interval, mean heart rate, and frequency‐domain parameters (LF and HF indices). However, these effects did not survive Tukey's post‐hoc correction, and effects sizes were small (ηp² = 0.01 ‐ 0.02), indicating minimal contribution (1 ‐ 2%) of exposure to the observed variance. Such small effects, combined with the loss of significance after correction, suggest that these findings are unlikely to reflect robust physiological modulation.</p><p>The interaction between time and exposure was significant only for RMSSD (F <sub>(4,376)</sub> = 2.973, <italic toggle="yes">p</italic> = 0.0194, ηp² = 0.03), with post hoc differences occurring solely during the final exposure run (run 05). This effect was isolated, small in magnitude, and not accompanied by changes in other parasympathetic indices (pNN50, HF power), highlighting its limited physiological relevance.</p><p>Moreover, ANS functioning was also evaluated through saliva samples of 33 volunteers (17 males and 16 females) obtained before and after exposure period of the protocol to analyze Cortisol, alpha‐amylase, and Chromogranin‐A. These biomarkers are known indicators of acute stress (Obayashi <xref rid="bem70056-bib-0040" ref-type="bibr">2013</xref>). As these biomarkers are governed by circadian rhythm, samples acquired in the morning (<italic toggle="yes">n</italic> = 25) and afternoon (<italic toggle="yes">n</italic> = 8) sessions were analyzed separately. No significant main effects or interactions related to exposure were detected for cortisol, alpha‐amylase or chromogranin A after statistical correction. Although cortisol levels measured immediately after exposure (Sal3) showed non‐significant increases in both morning (ηp² = 0.11) and afternoon (ηp² = 0.12) groups, these effects did not reach statistical significance and were derived from relatively small sample sizes, particularly in the afternoon subgroup (<italic toggle="yes">n</italic> = 8). In small samples, partial η² estimates can be unstable and may overestimate the true population effect. Furthermore, cortisol values returned toward baseline within 17 min' post‐exposure. Therefore, these observations do not provide reliable evidence of HPA‐axis activation.</p><p>Taken together, while some moderate‐to‐large effect size (ηp²) values were observed in small subgroups, none of these effects survived correction for multiple comparisons, and several were derived from limited sample sizes. In contrast, the exposure effects in the full HRV sample (<italic toggle="yes">n</italic> = 43) were consistently small (ηp² ≤ 0.03). Therefore, the overall pattern of results does not support a robust or consistent effect of acute 3.5 GHz exposure on autonomic function.</p><p>To our knowledge, this study is the first to investigate HRV parameters during and after 3.5 GHz exposure at environmental levels deployed worldwide (Hinrikus et al. <xref rid="bem70056-bib-0021" ref-type="bibr">2022</xref>; Selmaoui et al. <xref rid="bem70056-bib-0045" ref-type="bibr">2021</xref>) within regulatory limits (ICNIRP <xref rid="bem70056-bib-0025" ref-type="bibr">2020</xref>). However, the SAR values achieved (0.008 mW/kg for the brain) were well below regulatory limits, and exposure duration (25.5 min) represents short‐term exposure. Consequently, comparisons with other studies are limited, and findings may not generalize to higher exposure or longer durations. Nevertheless, our previous research evaluating 2 G (900 MHz) mobile‐phone‐emissions found no significant HRV differences between the “real” and “sham” sessions before or after the exposure (Wallace et al. <xref rid="bem70056-bib-0054" ref-type="bibr">2021</xref>). In contrast to another study, the “real” exposure period exhibited significantly higher values in SDNN, total spectral power, and LF absolute spectral power (Wallace et al. <xref rid="bem70056-bib-0053" ref-type="bibr">2020</xref>). These findings, however, were deemed as random in that research according to the authors, due to the multifactorial and complex mechanisms that regulate the ANS. Furthermore, such results may have been influenced by disparities in data acquisition systems and analytical approaches across studies.</p><p>In addition, other human studies evaluating the influence of previous generations of RF on HRV measurements also demonstrated inconsistent results, with some reporting no impact or inconclusive outcomes (Tahvanainen K et al. <xref rid="bem70056-bib-0073" ref-type="bibr">2004</xref>; Wilén J et al. <xref rid="bem70056-bib-0074" ref-type="bibr">2006</xref>; Tamer et al. <xref rid="bem70056-bib-0075" ref-type="bibr">2009</xref>; Barutcu I et al. <xref rid="bem70056-bib-0076" ref-type="bibr">2011</xref>; Wallace et al. <xref rid="bem70056-bib-0054" ref-type="bibr">2021</xref>), others showed effects within the physiological ranges (Parazzini et al. <xref rid="bem70056-bib-0077" ref-type="bibr">2007</xref>; Andrzejak et al. 2008; Vegad et al. <xref rid="bem70056-bib-0078" ref-type="bibr">2015</xref>; Misek et al. <xref rid="bem70056-bib-0034" ref-type="bibr">2018</xref>; Béres et al. <xref rid="bem70056-bib-0079" ref-type="bibr">2018</xref>; Wallace et al. <xref rid="bem70056-bib-0053" ref-type="bibr">2020</xref>; Alassiri M et al. <xref rid="bem70056-bib-0080" ref-type="bibr">2020</xref>).</p><p>A recent meta‐analysis (Mansourian et al. <xref rid="bem70056-bib-0032" ref-type="bibr">2023</xref>) examining the impact of RF on HRV highlights that methodological heterogeneity, including exposure systems and analysis methods, contributes to variable results. The authors observed modulation of the ANS activity across the evaluated studies with decreased SDNN and pNN50 values of HRV metrics suggesting reduced efficiency of autonomic control while getting exposed to electromagnetic fields, hence an increased vulnerability to stress. In our study, the isolated RMSSD interaction effect suggests a subtle, time‐dependent parasympathetic modulation emerging only after sustained exposure periods. However, no changes were observed in SDNN or pNN50% as highlighted by the meta‐analysis, indicating the lack of robust parasympathetic modulation under short‐term RF exposure. In addition, recent evaluations of stress‐related biomarkers do not provide consistent evidence that RF exposure triggers activation of the hypothalamic‐pituitary‐adrenal (HPA) axis. A comprehensive review by Selmaoui and Touitou (<xref rid="bem70056-bib-0046" ref-type="bibr">2021</xref>) concluded that findings regarding RF exposure and cortisol secretion are inconsistent and often limited by methodological constraints, including small sample sizes, heterogeneous exposure conditions, and inadequate control of circadian influences. More recently, Verrender et al. (<xref rid="bem70056-bib-0051" ref-type="bibr">2025</xref>) investigated whether RF‐EMF exposure modulates salivary cortisol responses and reported no reliable evidence that exposure induces a stress‐related hormonal response. Collectively, these studies suggest that current human evidence does not support the hypothesis that RF exposure consistently activates cortisol‐mediated stress pathways, reinforcing the need for cautious interpretation of isolated or non‐significant findings.</p><p>Comparisons across studies remain challenging due to methodological differences (e.g., frequency, exposure duration, study design) (Michelant and Selmaoui <xref rid="bem70056-bib-0033" ref-type="bibr">2025</xref>). It remains uncertain whether longer or higher‐intensity exposure would amplify, diminish, or maintain observed effects. The limited availability of 5G‐specific research at 3.5 GHz further complicates interpretation. Overall, the results indicate no robust or consistent effects of acute 3.5 GHz exposure on autonomic parameters or stress biomarkers. Observed small changes remained within normal physiological ranges (Normative values for HR and HRV were obtained from Nunan et al. (<xref rid="bem70056-bib-0039" ref-type="bibr">2010</xref>) and Shaffer and Ginsberg (<xref rid="bem70056-bib-0047" ref-type="bibr">2017</xref>), while normative values for cortisol, alpha‐amylase, and chromogranin A were based on IBL International GmbH (2014, <xref rid="bem70056-bib-0024" ref-type="bibr">2024</xref>) and Yanaihara Institute Inc (<xref rid="bem70056-bib-0057" ref-type="bibr">2014</xref>), respectively) are likely of limited clinical relevance. Larger‐scale studies with extended exposure duration, higher SAR levels, and careful attention to multiple comparisons are warranted to clarify potential effects.</p><p>Future work combining HRV, salivary biomarkers, and other physiological measures over longer exposures could provide more comprehensive insights into subtle ANS responses to 5 G RF exposure. These data would inform safety guidelines, exposure limits, and mitigation strategies.</p></sec><sec sec-type="conclusions" id="bem70056-sec-0130"><label>5</label><title>Conclusion</title><p>This study represents a novel exploratory investigation into whether acute 3.5 GHz 5 G exposure influences autonomic nervous system (ANS) function in healthy young adults under controlled laboratory conditions.</p><p>Overall, no robust or consistent effects of exposure were observed on heart rate variability or salivary stress biomarkers after correction for multiple comparisons. The only statistically significant finding was a time‐exposure interaction effect for RMSSD during the final exposure run; however, this effect was small in magnitude, isolated to a single time point, and not supported by complementary parasympathetic indices. Therefore, it should be interpreted cautiously and may reflect normal physiological variability or a statistical artifact.</p><p>Similarly, cortisol, alpha‐amylase, and chromogranin‐A levels showed no consistent exposure‐related modulation. Although small‐to‐moderate effect sizes were observed in some subgroups, these findings were not statistically robust and were derived from limited sample sizes. All observed changes remained within normal physiological ranges, and their clinical significance is unclear.</p><p>These conclusions are restricted to the specific exposure conditions examined, namely short‐term exposure (25.5 min) at low SAR levels (0.008 mW/kg for the brain). The present findings therefore provide preliminary baseline human data at 3.5 GHz rather than confirmatory evidence of biological effects.</p><p>Further research using larger cohorts, longer exposure durations, and carefully controlled statistical approaches will be necessary to determine whether subtle or cumulative autonomic effects of 5G exposure can be reliably detected.</p></sec><sec id="bem70056-sec-0140"><title>Author Contributions</title><p>
+<bold>Jamal Layla:</bold> methodology, investigation, data curation, formal analysis, visualization, writing – original draft. <bold>Michelant Lisa:</bold> investigation, data curation, formal analysis, visualization, software (coding of a script to adapt the data (RR intervals) acquired by MNE‐Python for input in the appropriate format, and assistance with coding statistical and graphical scripts), writing – review and editing. <bold>Delanaud Stéphane:</bold> methodology, resources, validation (ECG data). <bold>Bodin Raphaël:</bold> software (coding a script to adapt the data (RR intervals) acquired by MNE‐python for input into Kubios software). <bold>Hugueville Laurent:</bold> resources, assistance analyses. <bold>Mazet Paul:</bold> resources. <bold>Lévêque Philippe:</bold> qualification of exposure. <bold>Baz Tamara:</bold> software (coding of scripts for statistical data (RR intervals) and creation of graphics). <bold>Stephan‐Blanchard Erwan:</bold> data curation, validation (ECG data), writing – review and editing. <bold>Selmaoui Brahim:</bold> conceptualization, funding acquisition, methodology, project administration, validation, resources, formal analysis, writing – review and editing, supervision. All authors have read and agreed to the final manuscript version.</p></sec><sec sec-type="COI-statement" id="bem70056-sec-0160"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="bem70056-suppl-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>Supporting File 1</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="BEM-47-0-s001.docx" position="float" orientation="portrait"><?suppdata-name BEM-47-0-s001.docx?><?suppdata-size 5537919?><?suppdata-md5 8327a6155447ed2286468de91b488bb1?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:e48c/13238366/8327a6155447/BEM-47-0-s001.docx?></media></supplementary-material></sec></body><back><ack id="bem70056-sec-0150"><title>Acknowledgments</title><p>The authors thank Dr René DE‐SEZE (Department of Experimental Toxicology and Modeling (TEAM), INERIS), Dr Cléo BODIN (TEBBY) (Department of Experimental Toxicology and Modeling (TEAM), INERIS), and Dr Pierre TOURNEUX (Pediatric Intensive Care Unit, Amiens University Medical Center; PériTox Laboratory UMR_I 01, UFR de Médecine, University of Picardie Jules Verne) for the clinical support, as well as Ms Amandine CARRIE for the technical support during data acquisition. This project has received funding from the European Union's Horizon Europe research and innovation program under grant agreement No 101057262. Views and opinions expressed are however those of the authors only and do not necessarily reflect those of the European Union or the European Health and Digital Executive Agency. Neither the European Union nor the granting authority can be held responsible for them. Furthermore, through program 190 of INERIS, the French Ministry for Ecological and Inclusive Transition financially supported the project. Open access publication funding provided by COUPERIN CY26.</p></ack><sec sec-type="data-availability" id="bem70056-sec-0180"><title>Data Availability Statement</title><p>The data that support the findings of this study are available from the corresponding author upon reasonable request. The European consortium for the GOLIAT project will set up a non‐profit repository for access to all raw data: <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://projectgoliat.eu/publications/" ext-link-type="uri" specific-use="software is-supplemented-by">https://projectgoliat.eu/publications/</ext-link>.</p></sec><ref-list content-type="cited-references" id="bem70056-bibl-0001"><title>References</title><ref id="bem70056-bib-0001"><mixed-citation publication-type="journal" id="bem70056-cit-0001">
+<string-name name-style="western">
+<surname>Ackerman</surname>, <given-names>M. J.</given-names>
+</string-name>
+<year>1998</year>. “<article-title>The Visible Human Project</article-title>.” <source>Proceedings of the IEEE</source>
+<volume>86</volume>: <fpage>504</fpage>–<lpage>511</lpage>.</mixed-citation></ref><ref id="bem70056-bib-0080"><mixed-citation publication-type="journal" id="bem70056-cit-0080">
+<string-name name-style="western">
+<surname>Alassiri</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Alanazi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Aldera</surname>
+</string-name>, et al. <year>2020</year>. “<article-title>Exposure to cell phones reduces heart rate variability in both normal‐weight and obese normotensive medical students</article-title>.” <source>Explore</source>
+<volume>16</volume>, no. <issue>4</issue>: <fpage>264</fpage>–<lpage>270</lpage>.<pub-id pub-id-type="pmid">32249199</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1016/j.explore.2020.02.006</pub-id></mixed-citation></ref><ref id="bem70056-bib-0076"><mixed-citation publication-type="journal" id="bem70056-cit-0076">
+<string-name name-style="western">
+<surname>Barutcu</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Esen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Kaya</surname>
+</string-name>, et al. <year>2011</year>. “<article-title>Do Mobile Phones Pose a Potential Risk to Autonomic Modulation of the Heart?</article-title>” <source>Pacing and Clinical Electrophysiology</source>
+<volume>34</volume>, no. <issue>11</issue>: <fpage>1511</fpage>–<lpage>1514</lpage>.<pub-id pub-id-type="pmid">21797894</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1111/j.1540-8159.2011.03162.x</pub-id></mixed-citation></ref><ref id="bem70056-bib-0079"><mixed-citation publication-type="journal" id="bem70056-cit-0079">
+<string-name name-style="western">
+<surname>Béres</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Á.</given-names>
+<surname>Németh</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Ajtay</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Kiss</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Németh</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Hejjel</surname>
+</string-name>. <year>2018</year>. “<article-title>Cellular Phone Irradiation of the Head Affects Heart Rate Variability Depending on Inspiration/Expiration Ratio</article-title>.” <source>In Vivo</source>
+<volume>32</volume>, no. <issue>5</issue>: <fpage>1145</fpage>–<lpage>1153</lpage>.<pub-id pub-id-type="pmid">30150437</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.21873/invivo.11357</pub-id><pub-id pub-id-type="pmcid">PMC6199582</pub-id></mixed-citation></ref><ref id="bem70056-bib-0070"><mixed-citation publication-type="journal" id="bem70056-cit-0070">
+<string-name name-style="western">
+<surname>Braune</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Riedel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Schulte‐Mönting</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Raczek</surname>
+</string-name>. <year>2002</year>. “<article-title>Influence of a Radiofrequency Electromagnetic Field on Cardiovascular and Hormonal Parameters of the Autonomic Nervous System in Healthy Individuals</article-title>.” <source>Radiation Research</source>
+<volume>158</volume>, no. <issue>3</issue>: <fpage>352</fpage>–<lpage>356</lpage>. <pub-id pub-id-type="doi">10.1667/0033-7587(2002)158[0352:ioaref]2.0.co;2</pub-id>.<pub-id pub-id-type="pmid">12175313</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0005"><mixed-citation publication-type="journal" id="bem70056-cit-0005">
+<string-name name-style="western">
+<surname>Catai</surname>, <given-names>A. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C. M.</given-names>
+<surname>Pastre</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. F.</given-names>
+<surname>Godoy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Silva</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A. C. M.</given-names>
+<surname>Takahashi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L. C. M.</given-names>
+<surname>Vanderlei</surname>
+</string-name>. <year>2020</year>. “<article-title>Heart Rate Variability: Are You Using It Properly? Standardisation Checklist of Procedures</article-title>.” <source>Brazilian Journal of Physical Therapy</source>
+<volume>24</volume>, no. <issue>2</issue>: <fpage>91</fpage>–<lpage>102</lpage>. <pub-id pub-id-type="doi">10.1016/j.bjpt.2019.02.006</pub-id>.<pub-id pub-id-type="pmid">30852243</pub-id>
+<pub-id pub-id-type="pmcid">PMC7082649</pub-id></mixed-citation></ref><ref id="bem70056-bib-0006"><mixed-citation publication-type="journal" id="bem70056-cit-0006">
+<string-name name-style="western">
+<surname>Coumel</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Maison‐blanche</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Catuli</surname>
+</string-name>. <year>1994</year>. “<article-title>Heart Rate and Heart Rate Variability in Normal Young Adults</article-title>.” <source>Journal of Cardiovascular Electrophysiology</source>
+<volume>5</volume>, no. <issue>11</issue>: <fpage>899</fpage>–<lpage>911</lpage>. <pub-id pub-id-type="doi">10.1111/j.1540-8167.1994.tb01130.x</pub-id>.<pub-id pub-id-type="pmid">7889230</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0007"><mixed-citation publication-type="book" id="bem70056-cit-0007">
+<string-name name-style="western">
+<surname>Cygankiewicz</surname>, <given-names>I.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Zareba</surname>
+</string-name>. <year>2013</year>. “<part-title>Chapter 31—Heart Rate Variability</part-title>.” In <source>Handbook of Clinical Neurology</source>, edited by <person-group person-group-type="editor">
+<string-name name-style="western">
+<given-names>R. M.</given-names>
+<surname>Buijs</surname>
+</string-name>
+</person-group> and <person-group person-group-type="editor">
+<string-name name-style="western">
+<given-names>D. F.</given-names>
+<surname>Swaab</surname>
+</string-name>
+</person-group>, <volume>117</volume>, <fpage>379</fpage>–<lpage>393</lpage>. <publisher-name>Elsevier</publisher-name>. <pub-id pub-id-type="doi">10.1016/B978-0-444-53491-0.00031-6</pub-id>.<pub-id pub-id-type="pmid">24095141</pub-id></mixed-citation></ref><ref id="bem70056-bib-0008"><mixed-citation publication-type="journal" id="bem70056-cit-0008">
+<string-name name-style="western">
+<surname>D'amico</surname>, <given-names>M. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Ghinassi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Izzicupo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Manzoli</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Di Baldassarre</surname>
+</string-name>. <year>2014</year>. “<article-title>Biological Function and Clinical Relevance of Chromogranin A and Derived Peptides</article-title>.” <source>Endocrine Connections</source>
+<volume>3</volume>, no. <issue>2</issue>: <fpage>R45</fpage>–<lpage>R54</lpage>. <pub-id pub-id-type="doi">10.1530/EC-14-0027</pub-id>.<pub-id pub-id-type="pmid">24671122</pub-id>
+<pub-id pub-id-type="pmcid">PMC5395093</pub-id></mixed-citation></ref><ref id="bem70056-bib-0010"><mixed-citation publication-type="journal" id="bem70056-cit-0010">
+<string-name name-style="western">
+<surname>Esen</surname>, <given-names>F.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Esen</surname>
+</string-name>. <year>2006</year>. “<article-title>Effect of Electromagnetic Fields Emitted by Cellular Phones on the Latency of Evoked Electrodermal Activity</article-title>.” <source>International Journal of Neuroscience</source>
+<volume>116</volume>: <fpage>321</fpage>–<lpage>329</lpage>.<pub-id pub-id-type="pmid">16484058</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1080/00207450500403371</pub-id></mixed-citation></ref><ref id="bem70056-bib-0011"><mixed-citation publication-type="book" id="bem70056-cit-0011">
+<collab collab-type="authors">European Commission</collab>
+. <year>2022</year>. <source>SCHEER – <italic toggle="yes">Public Consultation on the Preliminary Opinion on sCientific Evidence on Radiofrequency</italic>
+</source>. <publisher-name>Directorate‐General for Health and Food Safety</publisher-name>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://health.ec.europa.eu/consultations/scheer-public-consultation-preliminary-opinion-scientific-evidence-radiofrequency_en" ext-link-type="uri">https://health.ec.europa.eu/consultations/scheer-public-consultation-preliminary-opinion-scientific-evidence-radiofrequency_en</ext-link>.</mixed-citation></ref><ref id="bem70056-bib-0012"><mixed-citation publication-type="book" id="bem70056-cit-0012">
+<string-name name-style="western">
+<surname>Gabriel</surname>, <given-names>C.</given-names>
+</string-name>
+<year>1996</year>. <source>Compilation of the Dielectric Properties of Body Tissues at RF and Microwave Frequencies</source>. <publisher-loc>USA</publisher-loc>: <publisher-name>Defense Technical Information Center: Fort Belvoir, VA</publisher-name>.</mixed-citation></ref><ref id="bem70056-bib-0013"><mixed-citation publication-type="journal" id="bem70056-cit-0013">
+<string-name name-style="western">
+<surname>Gabriel</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R. W.</given-names>
+<surname>Lau</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Gabriel</surname>
+</string-name>. <year>1996</year>. “<article-title>The Dielectric Properties of Biological Tissues: Iii. Parametric Models for the Dielectric Spectrum of Tissues</article-title>.” <source>Physics in Medicine and Biology</source>
+<volume>41</volume>: <fpage>2271</fpage>–<lpage>2293</lpage>.<pub-id pub-id-type="pmid">8938026</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1088/0031-9155/41/11/003</pub-id></mixed-citation></ref><ref id="bem70056-bib-0015"><mixed-citation publication-type="book" id="bem70056-cit-0015">
+<string-name name-style="western">
+<surname>Geronikolou</surname>, <given-names>S. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Ӧlle</given-names>
+<surname>Johansson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Chrousos</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Kanaka‐Gantenbein</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Cokkinos</surname>
+</string-name>. <year>2020</year>. “<part-title>Cellular Phone User's Age or the Duration of Calls Moderate Autonomic Nervous System? A Meta‐Analysis</part-title>.” In <source>GeNeDis 2018</source>, edited by <person-group person-group-type="editor">
+<string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Vlamos</surname>
+</string-name>
+</person-group>, <fpage>475</fpage>–<lpage>488</lpage>. <publisher-name>Springer International Publishing</publisher-name>. <pub-id pub-id-type="doi">10.1007/978-3-030-32622-7_46</pub-id>.<pub-id pub-id-type="pmid">32468564</pub-id></mixed-citation></ref><ref id="bem70056-bib-0016"><mixed-citation publication-type="journal" id="bem70056-cit-0016">
+<string-name name-style="western">
+<surname>Ghosn</surname>, <given-names>R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yahia‐Cherif</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Hugueville</surname>
+</string-name>, et al. <year>2015</year> Apr 1. “<article-title>Radiofrequency Signal Affects Alpha Band in Resting Electroencephalogram</article-title>.” <source>Journal of Neurophysiology</source>
+<volume>113</volume>, no. <issue>7</issue>: <fpage>2753</fpage>–<lpage>2759</lpage>. <pub-id pub-id-type="doi">10.1152/jn.00765.2014</pub-id>.<pub-id pub-id-type="pmid">25695646</pub-id>
+<pub-id pub-id-type="pmcid">PMC4416621</pub-id></mixed-citation></ref><ref id="bem70056-bib-0017"><mixed-citation publication-type="journal" id="bem70056-cit-0017">
+<string-name name-style="western">
+<surname>Hardell</surname>, <given-names>L.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Carlberg</surname>
+</string-name>. <year>2020</year>. “<article-title>Comment] Health Risks From Radiofrequency Radiation, Including 5G, Should Be Assessed by Experts With No Conflicts of Interest</article-title>.” <source>Oncology Letters</source>
+<volume>20</volume>, no. <issue>4</issue>: <fpage>15</fpage>. <pub-id pub-id-type="doi">10.3892/ol.2020.11876</pub-id>.<pub-id pub-id-type="pmid">32774488</pub-id>
+<pub-id pub-id-type="pmcid">PMC7405337</pub-id></mixed-citation></ref><ref id="bem70056-bib-0019"><mixed-citation publication-type="journal" id="bem70056-cit-0019">
+<collab collab-type="authors">Heart rate variability: Standards of measurement, physiological interpretation and clinical use</collab>
+. <year>1996</year>. “<article-title>Task Force of the European Society of Cardiology and the North American Society of Pacing and Electrophysiology</article-title>.” <source>Circulation</source>
+<volume>93</volume>, no. <issue>5</issue>: <fpage>1043</fpage>–<lpage>1065</lpage>.<pub-id pub-id-type="pmid">8598068</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0020"><mixed-citation publication-type="journal" id="bem70056-cit-0020">
+<string-name name-style="western">
+<surname>Hellhammer</surname>, <given-names>D. H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Wüst</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B. M.</given-names>
+<surname>Kudielka</surname>
+</string-name>. <year>2009</year>. “<article-title>Salivary Cortisol as a Biomarker in Stress Research</article-title>.” <source>Psychoneuroendocrinology</source>
+<volume>34</volume>, no. <issue>2</issue>: <fpage>163</fpage>–<lpage>171</lpage>. <pub-id pub-id-type="doi">10.1016/j.psyneuen.2008.10.026</pub-id>.<pub-id pub-id-type="pmid">19095358</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0021"><mixed-citation publication-type="journal" id="bem70056-cit-0021">
+<string-name name-style="western">
+<surname>Hinrikus</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Koppel</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Lass</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Roosipuu</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Bachmann</surname>
+</string-name>. <year>2023</year>. “<article-title>Limiting Exposure to Radiofrequency Radiation: The Principles and Possible Criteria for Health Protection</article-title>.” <source>International Journal of Radiation Biology</source>
+<volume>99</volume>, no. <issue>0</issue>: <fpage>1167</fpage>–<lpage>1177</lpage>. <pub-id pub-id-type="doi">10.1080/09553002.2023.2159567</pub-id>.<pub-id pub-id-type="pmid">36525560</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0072"><mixed-citation publication-type="journal" id="bem70056-cit-0072">
+<string-name name-style="western">
+<surname>Hori</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Yamakawa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Tanaka</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Murakami</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kaya</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Hori</surname>
+</string-name>. <year>2005</year>. “<article-title>Influence of Sound and Light on Heart Rate Variability.”</article-title>.” <source>Journal of Human Ergology</source>
+<volume>34</volume>, no. <issue>1‐2</issue>: <fpage>25</fpage>–<lpage>34</lpage>. <pub-id pub-id-type="doi">10.11183/jhe1972.34.25</pub-id>.<pub-id pub-id-type="pmid">17393762</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0024"><mixed-citation publication-type="book" id="bem70056-cit-0024">
+<collab collab-type="authors">IBL International GmbH</collab>
+. <year>2024</year>. <source>
+<italic toggle="yes">Cortisol Saliva ELISA (RE52611) Instructions for Use</italic> (Version 2024‑02) [PDF]</source>. <publisher-name>IBL‑International</publisher-name>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://ibl-international.com/media/mageworx/downloads/attachment/file/r/e/re52611_ifu_eu_en_cortisol_saliva_elisa_2024-02_sym9.pdf" ext-link-type="uri">https://ibl-international.com/media/mageworx/downloads/attachment/file/r/e/re52611_ifu_eu_en_cortisol_saliva_elisa_2024-02_sym9.pdf</ext-link>.</mixed-citation></ref><ref id="bem70056-bib-0025"><mixed-citation publication-type="journal" id="bem70056-cit-0025">
+<collab collab-type="authors">ICNIRP</collab>
+. <year>2020</year>. “<article-title>Guidelines for Limiting Exposure to Electromagnetic Fields (100 Khz to 300 Ghz)</article-title>.” <source>Health Physics</source>
+<volume>118</volume>, no. <issue>5</issue>: <fpage>483</fpage>–<lpage>524</lpage>. <pub-id pub-id-type="doi">10.1097/HP.0000000000001210</pub-id>.<pub-id pub-id-type="pmid">32167495</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0026"><mixed-citation publication-type="book" id="bem70056-cit-0026">
+<collab collab-type="authors">International Telecommunication Union</collab>
+. <year>2023</year>. <source>Statistics</source>. <publisher-name>International Telecommunication Union</publisher-name>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.itu.int:443/en/ITU-D/Statistics/Pages/stat/default.aspx" ext-link-type="uri">https://www.itu.int:443/en/ITU-D/Statistics/Pages/stat/default.aspx</ext-link>.</mixed-citation></ref><ref id="bem70056-bib-0027"><mixed-citation publication-type="journal" id="bem70056-cit-0027">
+<string-name name-style="western">
+<surname>Jamal</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Michelant</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Delanaud</surname>
+</string-name>, et al. <year>2024</year> Dec. “<article-title>Autonomous Nervous System Responses to Environmental‐Level Exposure to 5G's First Deployed Band (3.5 Ghz) in Healthy Human Volunteers</article-title>.” <source>Experimental Physiology</source>
+<volume>109</volume>, no. <issue>12</issue>: <fpage>2122</fpage>–<lpage>2133</lpage>. <pub-id pub-id-type="doi">10.1113/EP092083</pub-id>.<pub-id pub-id-type="pmid">39404491</pub-id>
+<pub-id pub-id-type="pmcid">PMC11607616</pub-id></mixed-citation></ref><ref id="bem70056-bib-0028"><mixed-citation publication-type="journal" id="bem70056-cit-0028">
+<string-name name-style="western">
+<surname>Jamal</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yahia‐Cherif</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Hugueville</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Mazet</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Lévêque</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Selmaoui</surname>
+</string-name>. <year>2023</year>. “<article-title>Assessment of Electrical Brain Activity of Healthy Volunteers Exposed to 3.5 Ghz of 5G Signals Within Environmental Levels: A Controlled–Randomised Study</article-title>.” <source>International Journal of Environmental Research and Public Health</source>
+<volume>20</volume>, no. <issue>18</issue>: <elocation-id>6793</elocation-id>. <pub-id pub-id-type="doi">10.3390/ijerph20186793</pub-id>.<pub-id pub-id-type="pmid">37754652</pub-id>
+<pub-id pub-id-type="pmcid">PMC10530694</pub-id></mixed-citation></ref><ref id="bem70056-bib-0031"><mixed-citation publication-type="journal" id="bem70056-cit-0031">
+<string-name name-style="western">
+<surname>Kim</surname>, <given-names>H.‐G.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.‐J.</given-names>
+<surname>Cheon</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.‐S.</given-names>
+<surname>Bai</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y. H.</given-names>
+<surname>Lee</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.‐H.</given-names>
+<surname>Koo</surname>
+</string-name>. <year>2018</year>. “<article-title>Stress and Heart Rate Variability: A Meta‐Analysis and Review of the Literature</article-title>.” <source>Psychiatry Investigation</source>
+<volume>15</volume>, no. <issue>3</issue>: <fpage>235</fpage>–<lpage>245</lpage>. <pub-id pub-id-type="doi">10.30773/pi.2017.08.17</pub-id>.<pub-id pub-id-type="pmid">29486547</pub-id>
+<pub-id pub-id-type="pmcid">PMC5900369</pub-id></mixed-citation></ref><ref id="bem70056-bib-0032"><mixed-citation publication-type="journal" id="bem70056-cit-0032">
+<string-name name-style="western">
+<surname>Mansourian</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Marateb</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Nouri</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Mansourian</surname>
+</string-name>. <year>2023</year>. “<article-title>Effects of Man‐Made Electromagnetic Fields on Heart Rate Variability Parameters of General Public: A Systematic Review and Meta‐Analysis of Experimental Studies</article-title>.” <source>Reviews on Environmental Health</source>
+<volume>39</volume>: <fpage>603</fpage>–<lpage>616</lpage>. <pub-id pub-id-type="doi">10.1515/reveh-2022-0191</pub-id>.<pub-id pub-id-type="pmid">37195230</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0033"><mixed-citation publication-type="journal" id="bem70056-cit-0033">
+<string-name name-style="western">
+<surname>Michelant</surname>, <given-names>L.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Selmaoui</surname>
+</string-name>. <year>2025</year>. “<article-title>Impact of Radiofrequency Electromagnetic Fields on Cardiac Activity at Rest: A Systematic Review of Healthy Human Studies</article-title>.” <source>Bioelectromagnetics</source>
+<volume>46</volume>, no. <issue>5</issue>: <elocation-id>e70014</elocation-id>. <pub-id pub-id-type="doi">10.1002/bem.70014</pub-id>.<pub-id pub-id-type="pmid">40662412</pub-id>
+<pub-id pub-id-type="pmcid">PMC12261433</pub-id></mixed-citation></ref><ref id="bem70056-bib-0034"><mixed-citation publication-type="journal" id="bem70056-cit-0034">
+<string-name name-style="western">
+<surname>Misek</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Belyaev</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Jakusova</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I.</given-names>
+<surname>Tonhajzerova</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Barabas</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Jakus</surname>
+</string-name>. <year>2018</year>. “<article-title>Heart Rate Variability Affected by Radiofrequency Electromagnetic Field in Adolescent Students</article-title>.” <source>Bioelectromagnetics</source>
+<volume>39</volume>, no. <issue>4</issue>: <fpage>277</fpage>–<lpage>288</lpage>. <pub-id pub-id-type="doi">10.1002/bem.22115</pub-id>.<pub-id pub-id-type="pmid">29469164</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0038"><mixed-citation publication-type="journal" id="bem70056-cit-0038">
+<string-name name-style="western">
+<surname>Nater</surname>, <given-names>U. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Rohleder</surname>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Schlotz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>U.</given-names>
+<surname>Ehlert</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Kirschbaum</surname>
+</string-name>. <year>2007</year>. “<article-title>Determinants of the Diurnal Course of Salivary Alpha‐Amylase</article-title>.” <source>Psychoneuroendocrinology</source>
+<volume>32</volume>, no. <issue>4</issue>: <fpage>392</fpage>–<lpage>401</lpage>. <pub-id pub-id-type="doi">10.1016/j.psyneuen.2007.02.007</pub-id>.<pub-id pub-id-type="pmid">17418498</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0039"><mixed-citation publication-type="journal" id="bem70056-cit-0039">
+<string-name name-style="western">
+<surname>Nunan</surname>, <given-names>D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>G. R. H.</given-names>
+<surname>Sandercock</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. A.</given-names>
+<surname>Brodie</surname>
+</string-name>. <year>2010</year>. “<article-title>A Quantitative Systematic Review of Normal Values for Short‐Term Heart Rate Variability in Healthy Adults</article-title>.” <source>Pacing and Clinical Electrophysiology</source>
+<volume>33</volume>, no. <issue>11</issue>: <fpage>1407</fpage>–<lpage>1417</lpage>. <pub-id pub-id-type="doi">10.1111/j.1540-8159.2010.02841.x</pub-id>.<pub-id pub-id-type="pmid">20663071</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0040"><mixed-citation publication-type="journal" id="bem70056-cit-0040">
+<string-name name-style="western">
+<surname>Obayashi</surname>, <given-names>K.</given-names>
+</string-name>
+<year>2013</year>. “<article-title>Salivary Mental Stress Proteins</article-title>.” <source>Clinica Chimica Acta</source>
+<volume>425</volume>: <fpage>196</fpage>–<lpage>201</lpage>. <pub-id pub-id-type="doi">10.1016/j.cca.2013.07.028</pub-id>.<pub-id pub-id-type="pmid">23939251</pub-id></mixed-citation></ref><ref id="bem70056-bib-0077"><mixed-citation publication-type="journal" id="bem70056-cit-0077">
+<string-name name-style="western">
+<surname>Parazzini</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Ravazzani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Tognola</surname>
+</string-name>, et al. <year>2007</year>. “<article-title>Electromagnetic Fields Produced by GSM Cellular Phones and Heart Rate Variability</article-title>.” <source>Bioelectromagnetics</source>
+<volume>28</volume>, no. <issue>2</issue>: <fpage>122</fpage>–<lpage>129</lpage>.<pub-id pub-id-type="pmid">17004239</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.1002/bem.20275</pub-id></mixed-citation></ref><ref id="bem70056-bib-0041"><mixed-citation publication-type="journal" id="bem70056-cit-0041">
+<string-name name-style="western">
+<surname>Parizek</surname>, <given-names>D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Visnovcova</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Hamza Sladicekova</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Electromagnetic Fields—Do They Pose a Cardiovascular Risk?</article-title>” <source>Physiological Research</source>
+<volume>72</volume>, no. <issue>2</issue>: <fpage>199</fpage>–<lpage>208</lpage>.<pub-id pub-id-type="pmid">37159854</pub-id>
+<pub-id pub-id-type="doi" assigning-authority="pmc">10.33549/physiolres.934938</pub-id><pub-id pub-id-type="pmcid">PMC10226401</pub-id></mixed-citation></ref><ref id="bem70056-bib-0042"><mixed-citation publication-type="book" id="bem70056-cit-0042">
+<string-name name-style="western">
+<surname>Pinheiro</surname>, <given-names>J. C.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>D. M.</given-names>
+<surname>Bates</surname>
+</string-name>. <year>2000</year>. <source>Mixed‐Effects Models in S and S‐PLUS</source>, <edition>1st ed.</edition>
+<publisher-name>Springer</publisher-name>.</mixed-citation></ref><ref id="bem70056-bib-0044"><mixed-citation publication-type="journal" id="bem70056-cit-0044">
+<string-name name-style="western">
+<surname>Russell</surname>, <given-names>C. L.</given-names>
+</string-name>
+<year>2018</year>. “<article-title>5 G Wireless Telecommunications Expansion: Public Health and Environmental Implications</article-title>.” <source>Environmental Research</source>
+<volume>165</volume>: <fpage>484</fpage>–<lpage>495</lpage>. <pub-id pub-id-type="doi">10.1016/j.envres.2018.01.016</pub-id>.<pub-id pub-id-type="pmid">29655646</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0071"><mixed-citation publication-type="journal" id="bem70056-cit-0071">
+<string-name name-style="western">
+<surname>Selmaoui</surname>, <given-names>B.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Andrianome</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Ghosn</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>de Seze</surname>
+</string-name>. <year>2018</year>. “<article-title>Effect of Acute Exposure to Radiofrequency Electromagnetic Fields Emitted by a Mobile Phone (GSM 900 MHz) on Electrodermal Responsiveness in Healthy Human</article-title>.” <source>International Journal of Radiation Biology</source>
+<volume>94</volume>, no. <issue>10</issue>: <fpage>890</fpage>–<lpage>895</lpage>. <pub-id pub-id-type="doi">10.1080/09553002.2018.1503431</pub-id>.<pub-id pub-id-type="pmid">30028653</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0045"><mixed-citation publication-type="journal" id="bem70056-cit-0045">
+<string-name name-style="western">
+<surname>Selmaoui</surname>, <given-names>B.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Mazet</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.‐B.</given-names>
+<surname>Petit</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Kim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Choi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>de Seze</surname>
+</string-name>. <year>2021</year>. “<article-title>Exposure of South Korean Population to 5G Mobile Phone Networks (3.4‐3.8 Ghz)</article-title>.” <source>Bioelectromagnetics</source>
+<volume>42</volume>, no. <issue>5</issue>: <fpage>407</fpage>–<lpage>414</lpage>. <pub-id pub-id-type="doi">10.1002/bem.22345</pub-id>.<pub-id pub-id-type="pmid">33998007</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0046"><mixed-citation publication-type="journal" id="bem70056-cit-0046">
+<string-name name-style="western">
+<surname>Selmaoui</surname>, <given-names>B.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Touitou</surname>
+</string-name>. <year>2021</year>. “<article-title>Association Between Mobile Phone Radiation Exposure and the Secretion of Melatonin and Cortisol, Two Markers of the Circadian System: A Review</article-title>.” <source>Bioelectromagnetics</source>
+<volume>42</volume>, no. <issue>1</issue>: <fpage>5</fpage>–<lpage>17</lpage>. <pub-id pub-id-type="doi">10.1002/bem.22310</pub-id>.<pub-id pub-id-type="pmid">33238059</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0047"><mixed-citation publication-type="journal" id="bem70056-cit-0047">
+<string-name name-style="western">
+<surname>Shaffer</surname>, <given-names>F.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. P.</given-names>
+<surname>Ginsberg</surname>
+</string-name>. <year>2017</year>. “<article-title>An Overview of Heart Rate Variability Metrics and Norms</article-title>.” <source>Frontiers in Public Health</source>
+<volume>5</volume>: <elocation-id>258</elocation-id>. <pub-id pub-id-type="doi">10.3389/fpubh.2017.00258</pub-id>.<pub-id pub-id-type="pmid">29034226</pub-id>
+<pub-id pub-id-type="pmcid">PMC5624990</pub-id></mixed-citation></ref><ref id="bem70056-bib-0073"><mixed-citation publication-type="journal" id="bem70056-cit-0073">
+<string-name name-style="western">
+<surname>Tahvanainen</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Niño</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Halonen</surname>
+</string-name>, et al. <year>2004</year>. “<article-title>Cellular Phone Use Does Not Acutely Affect Blood Pressure or Heart Rate of Humans</article-title>.” <source>Bioelectromagnetics</source>
+<volume>25</volume>: <fpage>73</fpage>–<lpage>83</lpage>. <pub-id pub-id-type="doi">10.1002/bem.10165</pub-id>.<pub-id pub-id-type="pmid">14735556</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0048"><mixed-citation publication-type="journal" id="bem70056-cit-0048">
+<string-name name-style="western">
+<surname>Takai</surname>, <given-names>N.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Yamaguchi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Aragaki</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Eto</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Uchihashi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Nishikawa</surname>
+</string-name>. <year>2004</year>. “<article-title>Effect of Psychological Stress on the Salivary Cortisol and Amylase Levels in Healthy Young Adults</article-title>.” <source>Archives of Oral Biology</source>
+<volume>49</volume>, no. <issue>12</issue>: <fpage>963</fpage>–<lpage>968</lpage>. <pub-id pub-id-type="doi">10.1016/j.archoralbio.2004.06.007</pub-id>.<pub-id pub-id-type="pmid">15485637</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0075"><mixed-citation publication-type="journal" id="bem70056-cit-0075">
+<string-name name-style="western">
+<surname>Tamer</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Gündüz</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Özyıldırım</surname>
+</string-name>. <year>2009</year>. “<article-title>The Cardiac Effects of a Mobile Phone Positioned Closest to the Heart</article-title>.” <source>Anatolian Journal of Cardiology/Anadolu Kardiyoloji Dergisi</source>
+<volume>9</volume>, no. <issue>5</issue>).<pub-id pub-id-type="pmid">19819788</pub-id></mixed-citation></ref><ref id="bem70056-bib-0049"><mixed-citation publication-type="miscellaneous" id="bem70056-cit-0049">
+<string-name name-style="western">
+<surname>Tarvainen</surname>, <given-names>M. P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Lipponen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.‐P.</given-names>
+<surname>Niskanen</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P. O.</given-names>
+<surname>Ranta‐aho</surname>.</string-name>
+<year>2021</year>. <article-title>
+<italic toggle="yes">Kubios_HRV_Users_Guide</italic>.pdf</article-title>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.kubios.com/downloads/Kubios_HRV_Users_Guide.pdf" ext-link-type="uri">https://www.kubios.com/downloads/Kubios_HRV_Users_Guide.pdf</ext-link>.</mixed-citation></ref><ref id="bem70056-bib-0078"><mixed-citation publication-type="journal" id="bem70056-cit-0078">
+<string-name name-style="western">
+<surname>Vegad</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Kacha</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Varu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Mehta</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Shah</surname>
+</string-name>. <year>2015</year>. “<article-title>Effects of Mobile Phone Radiation on Heart Rate Variability of Healthy Young Subjects</article-title>.” <source>International Journal of Clinical and Experimental Physiology</source>
+<volume>2</volume>, no. <issue>1</issue>: <fpage>23</fpage>.</mixed-citation></ref><ref id="bem70056-bib-0051"><mixed-citation publication-type="journal" id="bem70056-cit-0051">
+<string-name name-style="western">
+<surname>Verrender</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Manley</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. K.</given-names>
+<surname>Wallace</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. P.</given-names>
+<surname>Loughran</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>R. J.</given-names>
+<surname>Croft</surname>
+</string-name>. <year>2025</year>. “<article-title>Looking for Biomarkers Which May Explain Idiopathic Environmental Intolerance Attributed to Electromagnetic Fields (Iei‑Emf): Does Rf‑Emf Exposure Influence Salivary Cortisol Response?</article-title>” <source>Bioelectromagnetics</source>
+<volume>46</volume>, no. <issue>6</issue>: <elocation-id>e70021</elocation-id>. <pub-id pub-id-type="doi">10.1002/bem.70021</pub-id>.<pub-id pub-id-type="pmid">40908801</pub-id>
+<pub-id pub-id-type="pmcid">PMC12411804</pub-id></mixed-citation></ref><ref id="bem70056-bib-0052"><mixed-citation publication-type="journal" id="bem70056-cit-0052">
+<string-name name-style="western">
+<surname>Vining</surname>, <given-names>R. F.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R. A.</given-names>
+<surname>McGinley</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. J.</given-names>
+<surname>Maksvytis</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K. Y.</given-names>
+<surname>Ho</surname>
+</string-name>. <year>1983</year>. “<article-title>Salivary Cortisol: A Better Measure of Adrenal Cortical Function Than Serum Cortisol</article-title>.” <source>Annals of Clinical Biochemistry: International Journal of Laboratory Medicine</source>
+<volume>20</volume>: <fpage>329</fpage>–<lpage>335</lpage>. <pub-id pub-id-type="doi">10.1177/000456328302000601</pub-id>.<pub-id pub-id-type="pmid">6316831</pub-id></mixed-citation></ref><ref id="bem70056-bib-0053"><mixed-citation publication-type="journal" id="bem70056-cit-0053">
+<string-name name-style="western">
+<surname>Wallace</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Andrianome</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Ghosn</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. S.</given-names>
+<surname>Blanchard</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Telliez</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Selmaoui</surname>
+</string-name>. <year>2020</year>. “<article-title>Heart Rate Variability in Healthy Young Adults Exposed to Global System for Mobile Communication (Gsm) 900‐MHz Radiofrequency Signal From Mobile Phones</article-title>.” <source>Environmental Research</source>
+<volume>191</volume>: <elocation-id>110097</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.envres.2020.110097</pub-id>.<pub-id pub-id-type="pmid">32846174</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0054"><mixed-citation publication-type="journal" id="bem70056-cit-0054">
+<string-name name-style="western">
+<surname>Wallace</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yahia‐Cherif</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Gitton</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Hugueville</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.‐D.</given-names>
+<surname>Lemaréchal</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Selmaoui</surname>
+</string-name>. <year>2021</year>. “<article-title>Modulation of Magnetoencephalography Alpha Band Activity by Radiofrequency Electromagnetic Field Depicted in Sensor and Source Space</article-title>.” <source>Scientific Reports</source>
+<volume>11</volume>, no. <issue>1</issue>: <elocation-id>23403</elocation-id>. <pub-id pub-id-type="doi">10.1038/s41598-021-02560-0</pub-id>.<pub-id pub-id-type="pmid">34862418</pub-id>
+<pub-id pub-id-type="pmcid">PMC8642443</pub-id></mixed-citation></ref><ref id="bem70056-bib-0055"><mixed-citation publication-type="journal" id="bem70056-cit-0055">
+<string-name name-style="western">
+<surname>Wallace</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yahia‐Cherif</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Gitton</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Hugueville</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.‐D.</given-names>
+<surname>Lemaréchal</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Selmaoui</surname>
+</string-name>. <year>2022</year>. “<article-title>Human Resting‐State Eeg and Radiofrequency Gsm Mobile Phone Exposure: The Impact of the Individual Alpha Frequency</article-title>.” <source>International Journal of Radiation Biology</source>
+<volume>98</volume>, no. <issue>5</issue>: <fpage>986</fpage>–<lpage>995</lpage>. <pub-id pub-id-type="doi">10.1080/09553002.2021.2009146</pub-id>.<pub-id pub-id-type="pmid">34797205</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0056"><mixed-citation publication-type="journal" id="bem70056-cit-0056">
+<string-name name-style="western">
+<surname>Weller</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. E.</given-names>
+<surname>McCredden</surname>
+</string-name>. <year>2024</year>. “<article-title>Understanding the Public Voices and Researchers Speaking into the 5G Narrative</article-title>.” <source>Frontiers in Public Health</source>
+<volume>11</volume>: <elocation-id>1339513</elocation-id>. <pub-id pub-id-type="doi">10.3389/fpubh.2023.1339513</pub-id>.<pub-id pub-id-type="pmid">38283297</pub-id>
+<pub-id pub-id-type="pmcid">PMC10820716</pub-id></mixed-citation></ref><ref id="bem70056-bib-0074"><mixed-citation publication-type="journal" id="bem70056-cit-0074">
+<string-name name-style="western">
+<surname>Wilén</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Johansson</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Kalezic</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Lyskov</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Sandström</surname>
+</string-name>. <year>2006</year>. “<article-title>Psychophysiological Tests and Provocation of Subjects With Mobile Phone Related Symptoms</article-title>.” <source>Bioelectromagnetics</source>
+<volume>27</volume>: <fpage>204</fpage>–<lpage>214</lpage>. <pub-id pub-id-type="doi">10.1002/bem.20195</pub-id>.<pub-id pub-id-type="pmid">16304699</pub-id>
+</mixed-citation></ref><ref id="bem70056-bib-0057"><mixed-citation publication-type="miscellaneous" id="bem70056-cit-0057">
+<collab collab-type="authors">Yanaihara Institute Inc</collab>
+. (<year>2014</year>, September 9). <article-title>YK070 human chromogranin A EIA kit: Instruction manual</article-title>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.yanaihara-inc.com/englishdata/kit_manual_abs/YK070_Human-CgA_eng_080422.pdf" ext-link-type="uri">https://www.yanaihara-inc.com/englishdata/kit_manual_abs/YK070_Human-CgA_eng_080422.pdf</ext-link>.</mixed-citation></ref></ref-list></back></article>

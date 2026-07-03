@@ -1,0 +1,664 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="pmh70084" xml:lang="en" article-type="research-article" dtd-version="1.4"><?da-xref-anchor-style autodetect?><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Personal Ment Health</journal-id><journal-id journal-id-type="iso-abbrev">Personal Ment Health</journal-id><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-id journal-id-type="publisher-id">PMH</journal-id><journal-title-group><journal-title>Personality and Mental Health</journal-title></journal-title-group><issn pub-type="ppub">1932-8621</issn><issn pub-type="epub">1932-863X</issn><custom-meta-group><custom-meta><meta-name>pmc-is-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-collection-title</meta-name><meta-value>Wiley Open Access Collection</meta-value></custom-meta></custom-meta-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13248948</article-id><article-id pub-id-type="pmcid-ver">PMC13248948.1</article-id><article-id pub-id-type="pmcaid">13248948</article-id><article-id pub-id-type="pmcaiid">13248948</article-id><article-id pub-id-type="pmid">42262266</article-id><article-id pub-id-type="doi">10.1002/pmh.70084</article-id><article-id pub-id-type="publisher-id">PMH70084</article-id><article-id pub-id-type="other">6761056</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Research Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Research Article</subject></subj-group></article-categories><title-group><article-title>Mentalizing and Attachment From Infancy to Young Adulthood: Insights From the Metera Adoption Study</article-title></title-group><contrib-group><contrib id="pmh70084-cr-0001" contrib-type="author"><name name-style="western"><surname>Zournatzidis</surname><given-names initials="P">Pavlos</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-4293-2573</contrib-id><xref rid="pmh70084-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="pmh70084-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="pmh70084-cr-0002" contrib-type="author" corresp="yes"><name name-style="western"><surname>Vorria</surname><given-names initials="P">Panayiota</given-names></name><xref rid="pmh70084-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="pmh70084-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref><address><email>vorria@psy.auth.gr</email></address></contrib><contrib id="pmh70084-cr-0003" contrib-type="author"><name name-style="western"><surname>Krana</surname><given-names initials="E">Eirini</given-names></name><xref rid="pmh70084-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="pmh70084-cr-0004" contrib-type="author"><name name-style="western"><surname>Fonagy</surname><given-names initials="P">Peter</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-0229-0091</contrib-id><xref rid="pmh70084-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="pmh70084-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="pmh70084-cr-0005" contrib-type="author"><name name-style="western"><surname>Luyten</surname><given-names initials="P">Patrick</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-1161-2817</contrib-id><xref rid="pmh70084-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><xref rid="pmh70084-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref></contrib></contrib-group><aff id="pmh70084-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Research Department of Clinical, Educational and Health Psychology</named-content>
+<institution>University College London</institution>
+<city>London</city>
+<country country="GB">UK</country>
+</aff><aff content-type="private-address" id="pmh70084-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<institution>Anna Freud</institution>
+<city>London</city>
+<country country="GB">UK</country>
+</aff><aff id="pmh70084-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<named-content content-type="organisation-division">Department of Psychology</named-content>
+<institution>Aristotle University of Thessaloniki</institution>
+<city>Thessaloniki</city>
+<country country="GR">Greece</country>
+</aff><aff content-type="private-address" id="pmh70084-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<institution>Faculty of Psychology and Educational Sciences</institution>
+<city>Leuven</city>
+<country country="BE">Belgium</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold>
+<break/>
+Panayiota Vorria (<email>vorria@psy.auth.gr</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>09</day><month>6</month><year>2026</year></pub-date><pub-date pub-type="ppub"><month>8</month><year>2026</year></pub-date><volume>20</volume><issue seq="60">3</issue><issue-id pub-id-type="pmc-issue-id">515250</issue-id><issue-id pub-id-type="doi">10.1002/pmh.v20.3</issue-id><elocation-id>e70084</elocation-id><history>
+<date date-type="rev-recd"><day>20</day><month>4</month><year>2026</year></date>
+<date date-type="received"><day>27</day><month>12</month><year>2025</year></date>
+<date date-type="accepted"><day>21</day><month>5</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>09</day><month>06</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>10</day><month>06</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-06-10 11:25:17.810"><day>10</day><month>06</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). Personality and Mental Health Published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="PMH-20-0.pdf"><?pdf-name PMH-20-0.pdf?><?pdf-size 811587?><?pdf-md5 8844498f75324d811102217da6eded9e?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:b8df/13248948/8844498f7532/PMH-20-0.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:PMH-20-0.pdf"/><abstract><title>ABSTRACT</title><p>Mentalizing is a socio‐cognitive capacity that develops within early attachment relationships, but institutional care may disrupt this process. Although adoption significantly improves developmental outcomes, it remains unclear whether socio‐cognitive vulnerabilities observed in children persist in adulthood. This preregistered study aimed to explore (a) socio‐cognitive catch‐up in adult adoptees, and (b) predictors of reflective functioning (RF) in adulthood with a particular focus on attachment and interpersonal trust. Sixty‐eight individuals were followed from infancy to adulthood. Adoptees did not differ from nonadoptees in RF in adulthood (Cohen's <italic toggle="yes">d</italic> = 0.07, 95% CI [−0.43, 0.57]), and age at adoption was not associated with RF (<italic toggle="yes">r</italic> = 0.02, <italic toggle="yes">p</italic> = 0.917). Cross‐sectionally, RF was significantly correlated with dismissing (<italic toggle="yes">r</italic> = −0.58, <italic toggle="yes">p</italic> &lt; 0.001) and preoccupied states of mind (<italic toggle="yes">r</italic> = 0.29, <italic toggle="yes">p</italic> = 0.017). Attachment in infancy (strange situation), preschool (attachment story completion task), and adolescence (child attachment interview) did not predict RF in adulthood. Interpersonal trust in adolescent and adult friendships was not associated with RF in adulthood. Overall, the findings suggest recovery in socio‐cognitive development among adoptees with early institutional care and indicate that early attachment may not linearly predict RF. Future research should further explore developmental pathways to better understand the precursors of mentalizing in adulthood.</p></abstract><kwd-group kwd-group-type="author-generated"><kwd id="pmh70084-kwd-0001">adoption</kwd><kwd id="pmh70084-kwd-0002">attachment</kwd><kwd id="pmh70084-kwd-0003">institutional care</kwd><kwd id="pmh70084-kwd-0004">longitudinal</kwd><kwd id="pmh70084-kwd-0005">mentalizing</kwd><kwd id="pmh70084-kwd-0006">reflective functioning</kwd><kwd id="pmh70084-kwd-0007">trust</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>International Psychoanalytical Association</institution><institution-id institution-id-type="doi">10.13039/100010827</institution-id></institution-wrap>
+</funding-source><award-id>RG2326</award-id></award-group></funding-group><counts><fig-count count="2"/><table-count count="2"/><page-count count="9"/><word-count count="6700"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>August 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.8.0 mode:remove_FC converted:09.06.2026</meta-value></custom-meta></custom-meta-group></article-meta><notes><p content-type="self-citation">
+<mixed-citation publication-type="journal" id="pmh70084-cit-1001">
+<string-name name-style="western">
+<surname>Zournatzidis</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Vorria</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Krana</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Fonagy</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>. <year>2026</year>. “<article-title>Mentalizing and Attachment From Infancy to Young Adulthood: Insights From the Metera Adoption Study</article-title>.” <source>Personality and Mental Health</source>
+<volume>20</volume>, no. <issue>3</issue>: <elocation-id>e70084</elocation-id>. <pub-id pub-id-type="doi">10.1002/pmh.70084</pub-id>.<pub-id pub-id-type="pmid">42262266</pub-id>
+<pub-id pub-id-type="pmcid">PMC13248948</pub-id></mixed-citation>
+</p><fn-group id="pmh70084-ntgp-0001"><fn id="pmh70084-note-0001"><p>
+<bold>OSF preregistration</bold>:</p><p>
+<ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://osf.io/fe4un/overview" ext-link-type="uri">https://osf.io/fe4un/overview</ext-link>.</p></fn></fn-group></notes></front><body id="pmh70084-body-0001"><sec id="pmh70084-sec-0001"><label>1</label><title>Introduction</title><p>Mentalizing or reflective functioning (RF) is a socio‐cognitive capacity that pertains to the ability to recognize and interpret one's own and others' behavior in terms of mental states (Fonagy et al. <xref rid="pmh70084-bib-0008" ref-type="bibr">2002</xref>). As a multidimensional construct, mentalizing is closely related to other socio‐cognitive abilities (e.g., theory of mind) (Luyten et al. <xref rid="pmh70084-bib-0021" ref-type="bibr">2020</xref>). From a theoretical perspective, mentalizing is rooted early in life in the context of attachment relationships. In secure and sensitive caregiving, contingent and marked mirroring supports infants in recognizing and organizing their internal experiences, facilitating the development of second‐order representations of mental states (Fonagy et al. <xref rid="pmh70084-bib-0008" ref-type="bibr">2002</xref>; Gergely and Watson <xref rid="pmh70084-bib-0013" ref-type="bibr">1996</xref>).</p><p>While early attachment relationships may provide the foundation for mentalizing, recent theoretical models also emphasize the continued importance of interpersonal experiences and social learning (Fonagy et al. <xref rid="pmh70084-bib-0009" ref-type="bibr">2017</xref>). Central to this expanded framework is epistemic trust: the capacity to perceive information from others as personally relevant, reliable, and generalizable (Campbell et al. <xref rid="pmh70084-bib-0003" ref-type="bibr">2021</xref>; Fonagy and Allison <xref rid="pmh70084-bib-0007" ref-type="bibr">2014</xref>). Epistemic trust is thought to emerge within early attachment relationships and facilitate positive social learning, which in turn may influence the capacity to mentalize (Luyten et al. <xref rid="pmh70084-bib-0021" ref-type="bibr">2020</xref>).</p><p>Institutional rearing, however, is associated with elevated rates of insecure and particularly disorganized attachment (Lionetti et al. <xref rid="pmh70084-bib-0020" ref-type="bibr">2015</xref>) which may hinder the development of RF and negatively influence one's capacity to engage with and learn from interpersonal relationships. Although adoption is widely considered an effective intervention that can promote recovery of early developmental impairments (van IJzendoorn and Juffer <xref rid="pmh70084-bib-0016" ref-type="bibr">2006</xref>), catch‐up appears to be moderated by various factors such as age at adoption (a proxy of early adversity), the quality of the adoptive environment (i.e., parental mentalizing) as well as wider social experiences (Colvert et al. <xref rid="pmh70084-bib-0004" ref-type="bibr">2008</xref>; Fries and Pollak <xref rid="pmh70084-bib-0011" ref-type="bibr">2004</xref>; Hwa‐Froelich et al. <xref rid="pmh70084-bib-0015" ref-type="bibr">2017</xref>; Kreppner et al. <xref rid="pmh70084-bib-0018" ref-type="bibr">1999</xref>; Malcorps et al. <xref rid="pmh70084-bib-0022" ref-type="bibr">2023</xref>; Tarullo et al. <xref rid="pmh70084-bib-0039" ref-type="bibr">2016</xref>; Vorria et al. <xref rid="pmh70084-bib-0043" ref-type="bibr">2006</xref>; Zournatzidis et al. <xref rid="pmh70084-bib-0047" ref-type="bibr">2025</xref>).</p><p>Preliminary evidence shows that some adult adoptees with early institutional deprivation significantly underperform on emotion recognition tasks compared to adoptees with no early deprivation (Golm et al. <xref rid="pmh70084-bib-0014" ref-type="bibr">2021</xref>). Furthermore, adolescents with early institutional care may exhibit heightened mistrust and difficulties discerning the trustworthiness of others, especially when adoption occurs at older ages (Pitula et al. <xref rid="pmh70084-bib-0032" ref-type="bibr">2017</xref>). From a salutogenetic perspective, greater mistrust may have negative implications for mentalizing, as mistrust can limit the individual's capacity to benefit from interpersonal relationships (Luyten et al. <xref rid="pmh70084-bib-0021" ref-type="bibr">2020</xref>). This may be especially relevant during adolescence, a period characterized by increasing reliance on peer relationships as contexts for sharing, reflecting on, and revising one's understanding of mental states.</p><p>Evidence from nonadopted samples supports the importance of early attachment in socio‐cognitive development. Meta‐analytic findings indicate that attachment security in childhood is associated with better emotion understanding, false‐belief understanding, and theory of mind (Szpak and Białecka‐Pikul <xref rid="pmh70084-bib-0037" ref-type="bibr">2020</xref>; Zeegers et al. <xref rid="pmh70084-bib-0046" ref-type="bibr">2019</xref>). However, the extent to which these associations persist across longer developmental periods remains unclear. Long‐term longitudinal studies examining associations between early attachment and later mentalizing are limited, yield mixed findings, and vary in their assessments of attachment (Sirparanta et al. <xref rid="pmh70084-bib-0034" ref-type="bibr">2025</xref>; Steele et al. <xref rid="pmh70084-bib-0035" ref-type="bibr">2016</xref>; Steele and Steele <xref rid="pmh70084-bib-0036" ref-type="bibr">2022</xref>). This highlights the need for more long‐term longitudinal research using standardized measures of attachment and mentalizing, particularly in samples exposed to early adversity.</p><sec id="pmh70084-sec-0002"><label>1.1</label><title>The Present Study</title><p>The Greek Metera Study is a longitudinal investigation that has followed adopted and nonadopted individuals for more than two decades. At baseline, infants aged 11–17 months residing at the Metera Babies Centre were compared to infants reared in their biological families and attending a full‐time day‐care center (T1; Vorria et al. <xref rid="pmh70084-bib-0042" ref-type="bibr">2003</xref>). In the institution, each pavilion was staffed by 12 caregivers for 12 infants. However, the effective infant—caregiver ratio ranged from 4:1 to 6:1 because of the caregivers' 24‐h shifts. Furthermore, the mean overall quality of care at the institution (e.g., personal care, language experiences, creativity, and social experiences) was comparable to the daycare centers attended by the comparison infants. However, in terms of sensitivity, although staff interacted with the infants in care as frequently as the biological mothers in the comparison group, the quality and appropriateness of their interactions were lower in the institution (for a detailed description see Vorria et al. <xref rid="pmh70084-bib-0042" ref-type="bibr">2003</xref>).</p><p>The infants from the institution were adopted and both groups were subsequently followed in preschool (T2; Vorria et al. <xref rid="pmh70084-bib-0043" ref-type="bibr">2006</xref>), and in adolescence (T3; Vorria et al. <xref rid="pmh70084-bib-0041" ref-type="bibr">2015</xref>). The present study is the adulthood follow‐up of the Metera Study (T4). A flowchart detailing participation across all waves is presented in Figure <xref rid="pmh70084-fig-0001" ref-type="fig">1</xref>. Findings from the preschool follow‐up indicated that adopted children underperformed in emotional understanding compared to nonadopted peers (Vorria et al. <xref rid="pmh70084-bib-0043" ref-type="bibr">2006</xref>).</p><fig position="float" fig-type="FIGURE" id="pmh70084-fig-0001" orientation="portrait"><label>FIGURE 1</label><caption><p>Participants flowchart and mean age in the Metera Study.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="PMH-20-0-g001.jpg"><?image-name PMH-20-0-g001.jpg?><?image-size 62536?><?image-md5 220fa4f6542313cc2a4aba94af480677?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 843?><?image-original-width 1064?><?image-scaled-height 562?><?image-scaled-width 709?><?image-cloudpmc-urn urn:cdn:blobs/b8df/13248948/220fa4f65423/PMH-20-0-g001.jpg?><?thumb-name PMH-20-0-g001.gif?><?thumb-size 2255?><?thumb-md5 3e4ab1fcf6c3a28519827d417d371a73?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 79?><?thumb-scaled-width 100?><?thumb-cloudpmc-urn urn:cdn:blobs/b8df/13248948/3e4ab1fcf6c3/PMH-20-0-g001.gif?></graphic></fig><p>Considering the potential role of early sensitive periods in the development of mentalizing, together with the ongoing importance of social learning processes (Luyten et al. <xref rid="pmh70084-bib-0021" ref-type="bibr">2020</xref>), the present study examines whether early institutional care and the quality of attachment across childhood and adolescence are associated with RF in adulthood. In addition, it investigates whether trust in friendships, as a key context for sharing and reflecting on mental states during adolescence, contributes to individual differences in mentalizing in adulthood.</p><sec id="pmh70084-sec-0003"><label>1.1.1</label><title>Hypotheses</title><p>
+<statement content-type="H1a" id="pmh70084-mathstat-0001"><p>
+<italic toggle="yes">Group status will moderate RF in adulthood, with late adoptees showing significantly lower scores on RF than the comparison group.</italic>
+</p></statement>
+<statement content-type="H1b" id="pmh70084-mathstat-0002"><p>
+<italic toggle="yes">Later age at adoption and longer duration of institutional care will be negatively associated with RF in the adoption group.</italic>
+</p></statement>
+<statement content-type="H2a" id="pmh70084-mathstat-0003"><p>
+<italic toggle="yes">Attachment insecurity in adolescence will predict lower RF in adulthood.</italic>
+</p></statement>
+<statement content-type="H2b" id="pmh70084-mathstat-0004"><p>
+<italic toggle="yes">Quality of friendships at age 13 will positively be associated with RF at age 24.</italic>
+</p></statement>
+<statement content-type="H2c" id="pmh70084-mathstat-0005"><p>
+<italic toggle="yes">Higher mistrust in friendships during adolescence will predict lower RF in adulthood.</italic>
+</p></statement>
+<statement content-type="H3a‐H3d" id="pmh70084-mathstat-0006"><p>
+<italic toggle="yes">In separate models, it was expected that mistrust in friendships at age 24, coherence of transcript from the Adult Attachment Interview (AAI), and dismissing and preoccupied states of mind at age 24, would mediate the association between attachment insecurity in adolescence and lower RF in adulthood.</italic>
+</p></statement>
+</p><p>Further exploratory analyses were preregistered to explore (1) sex differences in RF; (2) the association between attachment in infancy and preschool with RF in adulthood.</p></sec></sec></sec><sec sec-type="methods" id="pmh70084-sec-0004"><label>2</label><title>Methods</title><sec id="pmh70084-sec-0005"><label>2.1</label><title>Participants</title><p>Forty‐two adoptees (M<sub>age</sub> = 24.33 years, SD = 0.98, range = 22.75–26.17) participated in the present follow‐up study, including 21 (50%) women and 21 men. The median age of admission to institution was 33 days (range = 4–344). Of the 42 adoptees, 36 (86%) were admitted before 3 months of age. Twenty (47.6%) adoptees were admitted to the institution because their mothers faced serious socioeconomic difficulties. The remaining 22 (52.4%) comprised a heterogeneous group of children with a history of maternal intellectual or physical disability, mental disorder, or drug addiction. Children were adopted at a mean age of 22.01 months (S<italic toggle="yes">D</italic> = 7.92; range = 12–38.80). The comparison group consisted of 26 nonadoptees brought up in their biological families (14 women, 53.8%; 12 men, 46.2%), and at the time of assessment their mean age was 24.22 years (SD = 0.78, range = 22.67–26.25).</p><p>Of the initial cohort of 86 infants in institutional care, 19 (22%) were not adopted and were not followed up. Of the remaining 67 adoptees, 42 (63%) participated in T4. In the comparison group, 26 out of the initial 41 (63%) participated in adulthood. In total, 68 (63%) out of the 108 individuals eligible for the adult phase of the study were successfully followed up. Attrition analyses were conducted as preregistered showing negligible selective attrition (see Supplemental Materials Table <xref rid="pmh70084-supitem-0001" ref-type="supplementary-material">S1</xref>).</p></sec><sec id="pmh70084-sec-0006"><label>2.2</label><title>Measures</title><sec id="pmh70084-sec-0007"><label>2.2.1</label><title>Attachment (Age 1, 4, 13, and 24)</title><p>Attachment in infancy (Vorria et al. <xref rid="pmh70084-bib-0042" ref-type="bibr">2003</xref>) was measured with the strange situation procedure (SSP; Ainsworth et al. <xref rid="pmh70084-bib-0001" ref-type="bibr">1978</xref>), in preschool (Vorria et al. <xref rid="pmh70084-bib-0043" ref-type="bibr">2006</xref>) both with the attachment story completion task (ASCT; Bretherton et al. <xref rid="pmh70084-bib-0002" ref-type="bibr">1990</xref>) and the observer version of AQS (Waters and Deane <xref rid="pmh70084-bib-0045" ref-type="bibr">1985</xref>), and in adolescence (Vorria et al. <xref rid="pmh70084-bib-0041" ref-type="bibr">2015</xref>) with the child attachment interview (CAI; Target et al. <xref rid="pmh70084-bib-0038" ref-type="bibr">2003</xref>). Adult attachment representations were assessed using the adult attachment interview (AAI; George et al. <xref rid="pmh70084-bib-0012" ref-type="bibr">1985/1996</xref>). The AAI was explored as a categorical variable using the 2‐way classification system (secure vs. insecure). The coherence of transcript scale (CoT) as well as dismissing and preoccupied indices were used for dimensional analyses. The dismissing and preoccupied factors were computed in line with prior psychometric studies (Raby et al. <xref rid="pmh70084-bib-0031" ref-type="bibr">2017</xref>; Raby et al. <xref rid="pmh70084-bib-0030" ref-type="bibr">2022</xref>). Specifically, the dismissing factor (Ds) was calculated by averaging the idealization (toward both mother and father) and lack of recall scales. The preoccupied factor (E) was derived from averaging anger (toward both mother and father), passivity of thought, and unresolved scales (for past trauma and loss). All AAIs were rated by the first author. A second certified coder independently rated 25% of transcripts, yielding perfect agreement for secure versus insecure and unresolved classifications, and excellent agreement for insecure subclassifications, κ = 0.90 (see Zournatzidis et al. <xref rid="pmh70084-bib-0048" ref-type="bibr">2026</xref>; for details).</p></sec><sec id="pmh70084-sec-0008"><label>2.2.2</label><title>Reflective Functioning (Age 24)</title><p>The Reflective Functioning Scale (RFS; Fonagy et al. <xref rid="pmh70084-bib-0010" ref-type="bibr">1998</xref>) was applied to the AAI to assess mentalizing. Scores range from −1 to 9, with values &lt; 3 indicating poor mentalizing. Scores between 3 and 5 reflect average mentalizing, and scores &gt; 5 suggest sophisticated RF. Regarding its latent structure, Taubner et al. (<xref rid="pmh70084-bib-0040" ref-type="bibr">2013</xref>) reported that both one‐ and two‐factor solutions fit well (distinguishing RF in past vs. current relationships), although the highly correlated factors favor a more parsimonious one‐factor model. The first author rated all transcripts, and the third author independently rated 37 of the 68 transcripts (54%). Both coders were trained and certified at the Anna Freud Centre. Inter‐rater reliability was acceptable for individual ratings (ICC = 0.78, <italic toggle="yes">p</italic> &lt; 0.001) and very high for mean RF scores (ICC = 0.88, <italic toggle="yes">p</italic> &lt; 0.001).</p></sec><sec id="pmh70084-sec-0009"><label>2.2.3</label><title>Age at Adoption</title><p>As preregistered, two cutoff points were used to distinguish early and late adoptees: Children adopted at or before 18 months (EA18) or 24 months (EA24) were classified as early adoptees, whereas those adopted after 18 or 24 months were classified as late adoptees (LA18 and LA24, respectively).</p></sec><sec id="pmh70084-sec-0010"><label>2.2.4</label><title>Friendships (Age 13 and 24)</title><p>Peer relationships were assessed at age 13 using the Friendship Quality Questionnaire‐Revised (FQQ‐R; Parker and Asher <xref rid="pmh70084-bib-0026" ref-type="bibr">1989</xref>), and at age 24 using the McGill Friendship Questionnaire–Friendship Functions (MFQ‐FF; Mendelson and Aboud <xref rid="pmh70084-bib-0024" ref-type="bibr">1999</xref>). The intimate disclosure scale of the FQQ‐R and the intimacy scale of the MFQ‐FF were used to assess interpersonal trust in adolescence and adulthood respectively reflecting the extent to which individuals experience close friends as trustworthy (e.g., my friend “is someone I can tell private things to”). Both scales had Cronbach's <italic toggle="yes">α</italic> &gt; 0.88 and the MFQ‐FF has shown good internal structure, reliability and validity both in Greek and non‐Greek adults (Mendelson and Aboud <xref rid="pmh70084-bib-0024" ref-type="bibr">1999</xref>; Pezirkianidis et al. <xref rid="pmh70084-bib-0027" ref-type="bibr">2022</xref>; Wagner <xref rid="pmh70084-bib-0044" ref-type="bibr">2019</xref>).</p></sec><sec id="pmh70084-sec-0011"><label>2.2.5</label><title>Emotional Understanding (Age 4)</title><p>Children's emotional understanding was assessed using the Denham Puppet Scenario at age 4 (Denham <xref rid="pmh70084-bib-0005" ref-type="bibr">1986</xref>). This task used human‐like, but race and gender‐neutral puppets with interchangeable facial expressions (happiness, sadness, anger, and fear), and children were asked to choose the expression that matched the emotion in each scenario. Cronbach's <italic toggle="yes">α</italic> was acceptable (<italic toggle="yes">α</italic> = 0.77) (Vorria et al. <xref rid="pmh70084-bib-0043" ref-type="bibr">2006</xref>).</p></sec></sec><sec id="pmh70084-sec-0012"><label>2.3</label><title>Procedure and Masking</title><p>Data were collected in person at participants' homes, with two assessments conducted online due to travel constraints. Participants from the adolescent wave were contacted by the PI, who knew the families from earlier follow‐ups, and appointments were scheduled at participants' convenience. During data collection, the authors who rated the transcripts were blind to participants' group status, unless this was disclosed spontaneously during the interview. To minimize bias when coding the AAI, the PI removed identifying information and assigned new pseudonymized IDs. A blindness score (0 = <italic toggle="yes">completely blind</italic>, 1 = <italic toggle="yes">probably not blind</italic>, 2 = <italic toggle="yes">not blind</italic>) was calculated to reflect the coder's awareness of group status. Blindness level was not significantly associated with AAI classifications. Participation was voluntary, with written informed consent obtained from young adults. Data collection began in 2020 and was extended because of COVID‐19 restrictions in Greece. Ethical approval for the study was granted by the Aristotle University of Thessaloniki.</p></sec><sec id="pmh70084-sec-0013"><label>2.4</label><title>Analysis Plan</title><p>As preregistered, one‐way ANOVAs examined differences between early adoptees, late adoptees, and the comparison group. As no significant group effects emerged, a nonpreregistered <italic toggle="yes">t</italic>‐test compared RF between the combined adopted group and the comparison group. Pearson correlations were used to test hypotheses <xref rid="pmh70084-mathstat-0002" ref-type="statement">[Link]</xref>, <xref rid="pmh70084-mathstat-0005" ref-type="statement">[Link]</xref>. For exploratory analyses of attachment (secure vs. insecure) as a predictor of adult RF, ordinary least squares regression was used. Although regression analyses were preregistered to examine whether friendship variables predicted RF, these analyses were conducted using zero‐order correlations instead, as only one predictor was involved, and the results would be identical to those from regression. To investigate developmental pathways (<xref rid="pmh70084-mathstat-0006" ref-type="statement">H3a–H3d</xref>), mediation analyses with observed variables were performed using SEM with maximum likelihood estimation. Analyses were run on the total sample, followed by multigroup comparisons (adoptees vs. comparison group). Indirect effects were assessed using Sobel's test, supplemented by a nonpreregistered bootstrap procedure (5000 iterations) to estimate standard errors and test robustness of Sobel's result. As models were fully saturated, fit indices were uninformative, and path coefficients were not constrained to be equal across groups.</p><p>Power analyses conducted in our preregistration indicated that the present study was adequately powered to detect medium to large effects. Specifically, the study had sufficient power to detect a medium size for bivariate correlations (<italic toggle="yes">r</italic> = 0.34), a large between‐group difference for unequal group sizes (Cohen's <italic toggle="yes">d</italic> = 0.70), and a medium effect in regression with two predictors (<italic toggle="yes">f</italic>
+<sup>2</sup> = 0.15), with statistical power set at 0.80 and <italic toggle="yes">α</italic> = 0.05.</p></sec><sec id="pmh70084-sec-0014"><label>2.5</label><title>Transparency and Openness</title><p>We deviated from the preregistered plan in the following ways: (1) We explored whether disorganized attachment in infancy predicted RF in adulthood; (2) because RF scores were relatively low, exploratory analyses compared RF between secure and insecure AAI classifications in adulthood; (3) following a reviewer's recommendation, it was explored whether stability profiles of attachment and changes in interpersonal trust from adolescence to adulthood were associated with RF in adulthood.</p></sec></sec><sec sec-type="results" id="pmh70084-sec-0015"><label>3</label><title>Results</title><p>Descriptive statistics of RF at age 24 are presented in Table <xref rid="pmh70084-tbl-0001" ref-type="table">1</xref>. Because RF scores were relatively low, exploratory (not preregistered) analyses compared RF between secure and insecure classifications. Those classified as secure showed substantially higher RF (M = 3.51) than those classified as insecure (M = 2.03), <italic toggle="yes">t</italic>(66) = 4.74, <italic toggle="yes">p</italic> &lt; 0.001, Cohen's <italic toggle="yes">d</italic> = 1.15, 95% CI [0.63–1.67]. Although women tended to have higher mean RF scores (M = 3.11, SD = 1.60) compared to men (M = 2.45, SD = 1.28), this difference did not reach statistical significance <italic toggle="yes">t</italic>(66) = −1.87, <italic toggle="yes">p</italic> = 0.066, Cohen's <italic toggle="yes">d</italic> = 0.45, 95% CI [−0.94, 0.04].</p><table-wrap position="float" id="pmh70084-tbl-0001" content-type="TABLE" orientation="portrait"><label>TABLE 1</label><caption><p>Descriptive statistics of reflective functioning at Age 24.</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1"/><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="no">n</italic>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">M</th><th align="center" valign="bottom" rowspan="1" colspan="1">SD</th><th align="center" valign="bottom" rowspan="1" colspan="1">Min</th><th align="center" valign="bottom" rowspan="1" colspan="1">Max</th></tr></thead><tbody valign="top"><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Total sample</td><td align="center" valign="top" rowspan="1" colspan="1">68</td><td align="center" valign="top" rowspan="1" colspan="1">2.79</td><td align="center" valign="top" rowspan="1" colspan="1">1.48</td><td align="center" valign="top" rowspan="1" colspan="1">0</td><td align="center" valign="top" rowspan="1" colspan="1">7</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Adopted</td><td align="center" valign="top" rowspan="1" colspan="1">42</td><td align="center" valign="top" rowspan="1" colspan="1">2.83</td><td align="center" valign="top" rowspan="1" colspan="1">1.50</td><td align="center" valign="top" rowspan="1" colspan="1">0</td><td align="center" valign="top" rowspan="1" colspan="1">7</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Comparison</td><td align="center" valign="top" rowspan="1" colspan="1">26</td><td align="center" valign="top" rowspan="1" colspan="1">2.73</td><td align="center" valign="top" rowspan="1" colspan="1">1.48</td><td align="center" valign="top" rowspan="1" colspan="1">1</td><td align="center" valign="top" rowspan="1" colspan="1">6</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Early adoptees (adopted ≤ 18 months)</td><td align="center" valign="top" rowspan="1" colspan="1">14</td><td align="center" valign="top" rowspan="1" colspan="1">2.93</td><td align="center" valign="top" rowspan="1" colspan="1">1.38</td><td align="center" valign="top" rowspan="1" colspan="1">1</td><td align="center" valign="top" rowspan="1" colspan="1">5</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Late adoptees (adopted &gt; 18 months)</td><td align="center" valign="top" rowspan="1" colspan="1">28</td><td align="center" valign="top" rowspan="1" colspan="1">2.79</td><td align="center" valign="top" rowspan="1" colspan="1">1.57</td><td align="center" valign="top" rowspan="1" colspan="1">0</td><td align="center" valign="top" rowspan="1" colspan="1">7</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Early adoptees (adopted ≤ 24 months)</td><td align="center" valign="top" rowspan="1" colspan="1">27</td><td align="center" valign="top" rowspan="1" colspan="1">3.00</td><td align="center" valign="top" rowspan="1" colspan="1">1.54</td><td align="center" valign="top" rowspan="1" colspan="1">1</td><td align="center" valign="top" rowspan="1" colspan="1">7</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Late adoptees (adopted &gt; 24 months)</td><td align="center" valign="top" rowspan="1" colspan="1">15</td><td align="center" valign="top" rowspan="1" colspan="1">2.53</td><td align="center" valign="top" rowspan="1" colspan="1">1.41</td><td align="center" valign="top" rowspan="1" colspan="1">0</td><td align="center" valign="top" rowspan="1" colspan="1">5</td></tr></tbody></table></table-wrap><p>Contrary to our expectations, group (comparison, early and late adopted) did not have a significant effect on RF in adulthood, regardless of whether the categorization of late adoptees was based on the 18‐month threshold, <italic toggle="yes">F</italic>(2, 65) = 0.08, <italic toggle="yes">p</italic> = 0.924, <italic toggle="yes">η</italic>
+<sup>2</sup> = 0.00, 95% CI [0.00, 1.00], or the 24‐month threshold, <italic toggle="yes">F</italic>(2, 65) = 0.51, <italic toggle="yes">p</italic> = 0.603, <italic toggle="yes">η</italic>
+<sup>2</sup> = 0.02, 95% CI [0.00, 1.00]. Correlations between age at admission in residential care, age at adoption, and duration in care with adult RF were all very small and nonsignificant (<italic toggle="yes">r</italic> = −0.09 to 0.04, all ns). Following a reviewer's suggestion, it was explored whether age at adoption and duration of institutional care interacted in predicting RF in adulthood. The interaction effect was not significant (<italic toggle="yes">b</italic> = 0.00, <italic toggle="yes">p</italic> = 0.594). Hence, subsequent analyses did not differentiate between early and late adoptees to increase statistical power. This decision was further supported by exploratory sensitivity analyses, which indicated no significant differences between early and late adoptees across key variables.</p><p>Zero‐order correlations between key variables are presented in Table <xref rid="pmh70084-tbl-0002" ref-type="table">2</xref> for the total sample. From a dimensional perspective, neither preschool ASCT coherence nor coherence in the CAI during adolescence significantly correlated with RF in adulthood. A significant negative correlation was found only between preschool attachment, as measured by the AQS, and adult RF (<italic toggle="yes">r</italic> = −0.27, <italic toggle="yes">p</italic> = 0.028). Categorical analyses indicated that attachment classifications assessed at earlier developmental stages did not significantly predict RF in adulthood. In infancy, regression analyses showed no significant association between attachment classification—whether secure versus insecure or organized versus disorganized—and RF (<italic toggle="yes">b</italic> = −0.21, <italic toggle="yes">p</italic> = 0.633; <italic toggle="yes">b</italic> = −0.22, <italic toggle="yes">p</italic> = 0.591, respectively). Similarly, attachment classification in preschool and adolescence did not predict RF in adulthood (<italic toggle="yes">b</italic> = 0.46 and <italic toggle="yes">b</italic> = 0.21 both ns). Contrary to hypotheses, trust in friendships during adolescence or adulthood was not associated with RF (see Table <xref rid="pmh70084-tbl-0002" ref-type="table">2</xref>), and none of the adolescent friendship dimensions correlated with RF in adulthood, with Pearson correlations ranging from −0.06 to 0.08 (see Supplementary Material Table <xref rid="pmh70084-supitem-0001" ref-type="supplementary-material">S2</xref>).</p><table-wrap position="float" id="pmh70084-tbl-0002" content-type="TABLE" orientation="portrait"><label>TABLE 2</label><caption><p>Zero order correlations among key variables in the total sample (years).</p></caption><table frame="hsides" rules="groups"><col align="left" span="1"/><col align="center" span="1"/><thead valign="bottom"><tr style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Variable</th><th align="center" valign="bottom" rowspan="1" colspan="1">RF</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Coherence of transcript AAI (24)</td><td align="center" valign="top" rowspan="1" colspan="1">0.49<xref rid="pmh70084-note-0005" ref-type="table-fn">***</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Dismissing factor AAI (24)</td><td align="center" valign="top" rowspan="1" colspan="1">−0.58<xref rid="pmh70084-note-0005" ref-type="table-fn">***</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Preoccupied factor AAI (24)</td><td align="center" valign="top" rowspan="1" colspan="1">0.29<xref rid="pmh70084-note-0003" ref-type="table-fn">*</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Trust in friends (24)</td><td align="center" valign="top" rowspan="1" colspan="1">0.07</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Trust in friends (13)</td><td align="center" valign="top" rowspan="1" colspan="1">0.05</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Quality of friendships (13)</td><td align="center" valign="top" rowspan="1" colspan="1">0.02</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Coherence CAI (13)</td><td align="center" valign="top" rowspan="1" colspan="1">0.05</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">ASCT coherence (4)</td><td align="center" valign="top" rowspan="1" colspan="1">0.04</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">AQS security (4)</td><td align="center" valign="top" rowspan="1" colspan="1">−0.27<xref rid="pmh70084-note-0003" ref-type="table-fn">*</xref>
+</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Emotion understanding (4)</td><td align="center" valign="top" rowspan="1" colspan="1">0.12</td></tr></tbody></table><table-wrap-foot id="pmh70084-ntgp-0002"><fn id="pmh70084-note-0002"><p>Abbreviations: AAI = adult attachment interview, AQS = Attachment Q‐Sort, ASCT = attachment story completion task, CAI = child attachment interview, RF = reflective functioning.</p></fn><fn id="pmh70084-note-0003"><label>*</label><p>
+<italic toggle="yes">p</italic> &lt; 0.05.</p></fn><fn id="pmh70084-note-0004"><label>**</label><p>
+<italic toggle="yes">p</italic> &lt; 0.01.</p></fn><fn id="pmh70084-note-0005"><label>***</label><p>
+<italic toggle="yes">p</italic> &lt; 0.001.</p></fn></table-wrap-foot></table-wrap><p>In terms of developmental pathways linking attachment insecurity in adolescence to lower RF in adulthood, indirect effects through adult mistrust in friendships or adult attachment dimensional indices (CoT, Ds, and E factors) were nonsignificant and ranged from −0.09 to 0.10. Path coefficients are reported in the Supplementary Material Figures <xref rid="pmh70084-supitem-0001" ref-type="supplementary-material">S1–S8</xref>.</p><p>Following a reviewer's suggestion, exploratory analyses were conducted examining whether developmental trajectories of attachment and interpersonal trust from adolescence to adulthood were associated with adult RF. Attachment stability profiles from adolescence to adulthood (secure → secure; secure → insecure; insecure → secure; insecure → insecure) were examined. Descriptive statistics and pairwise comparisons are reported in the Supplementary Material Tables <xref rid="pmh70084-supitem-0001" ref-type="supplementary-material">S3</xref> and <xref rid="pmh70084-supitem-0001" ref-type="supplementary-material">S4</xref>. The patterns observed suggest that differences were primarily driven by attachment classification in adulthood rather than by stability profiles (see Figure <xref rid="pmh70084-fig-0002" ref-type="fig">2</xref>). Finally, interpersonal trust showed moderate stability from adolescence to adulthood (<italic toggle="yes">r</italic> = 0.32, <italic toggle="yes">p</italic> = 0.007). To examine whether developmental changes in trust were associated with adult RF, both measures were standardized and a change score was computed reflecting the relative change of trust from adolescence to adulthood. Changes in trust were not significantly associated with RF at age 24 (<italic toggle="yes">r</italic> = 0.07, <italic toggle="yes">p</italic> = 0.576), suggesting that increases or decreases in interpersonal trust did not predict RF in adulthood. These analyses should be interpreted cautiously, given the sample size and the limited power to detect trajectory‐based effects.</p><fig position="float" fig-type="FIGURE" id="pmh70084-fig-0002" orientation="portrait"><label>FIGURE 2</label><caption><p>RF scores by attachment stability profiles from adolescence to adulthood. <italic toggle="no">Note:</italic> Bars represent group means of RF, with error bars indicating 95% confidence intervals.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="PMH-20-0-g002.jpg"><?image-name PMH-20-0-g002.jpg?><?image-size 56993?><?image-md5 54b7ea37818d0473042412ea702dcf1c?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 746?><?image-original-width 1004?><?image-scaled-height 497?><?image-scaled-width 669?><?image-cloudpmc-urn urn:cdn:blobs/b8df/13248948/54b7ea37818d/PMH-20-0-g002.jpg?><?thumb-name PMH-20-0-g002.gif?><?thumb-size 8158?><?thumb-md5 0fce4eb0bbad724ff444a7829a2c7bdc?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 107?><?thumb-cloudpmc-urn urn:cdn:blobs/b8df/13248948/0fce4eb0bbad/PMH-20-0-g002.gif?></graphic></fig></sec><sec sec-type="discussion" id="pmh70084-sec-0016"><label>4</label><title>Discussion</title><p>The present study aimed to examine socio‐cognitive catch‐up among adult adoptees who experienced institutional care in infancy and explore predictors of RF in adulthood. Regarding the first aim, it was hypothesized that adoptees would show lower RF than the comparison group in adulthood, and that age at adoption would negatively affect RF. Contrary to expectations, RF at age 24 did not differ between groups, and age at adoption was not correlated with RF. These findings are consistent with the possibility of developmental plasticity in socio‐cognitive functioning. However, it is worth noting that RF was relatively low in the present sample. Community samples assessed with the Reflective Functioning Scale typically average around 3 and above (Fonagy et al. <xref rid="pmh70084-bib-0010" ref-type="bibr">1998</xref>; Jessee et al. <xref rid="pmh70084-bib-0017" ref-type="bibr">2016</xref>; Taubner et al. <xref rid="pmh70084-bib-0040" ref-type="bibr">2013</xref>), while the mean RF score in the present sample was 2.79. This could be attributable to the AAI context in which RF was assessed, while cultural factors may also play a role. Specifically, the majority (82%) of insecure classifications were dismissing, which is characterized by discourse‐limiting strategies and the mean RF score of those classified as secure was comparable to that reported in other nonclinical studies. Moreover, the very good interrater reliability of the RF ratings, together with the significant correlations in expected direction between RF and adult attachment dimensions, support the reliability and validity of the RF measure in this study.</p><p>As expected, the AAI was positively associated with RF cross‐sectionally. Significant overlap has been observed in other studies between adult attachment representations and RF (Fonagy et al. <xref rid="pmh70084-bib-0010" ref-type="bibr">1998</xref>; Taubner et al. <xref rid="pmh70084-bib-0040" ref-type="bibr">2013</xref>). Although this may be partly attributable to shared method variance, psychometric studies indicate that RF is not reducible to AAI classification (Jessee et al. <xref rid="pmh70084-bib-0017" ref-type="bibr">2016</xref>). However, it remains unclear whether RF, as coded from AAI transcripts, reflects representations of attachment experiences, or whether the AAI itself may be tapping into broader mentalizing capacities. Hence, the observed association should be interpreted with caution as it may reflect, at least in part, current attachment‐related processes, narrative coherence, or interview performance rather than a purely cumulative socio‐cognitive capacity. Moreover, AAI‐based RF may be relatively insensitive to early‐emerging mentalizing difficulties that were later compensated for through subsequent relational and developmental experiences, suggesting that the present null findings are theoretically informative and raise important questions about what AAI‐based RF captures developmentally. Finally, it should also be noted that the use of the same raters to score both RF and the AAI may have artificially inflated the observed associations.</p><p>In terms of longitudinal associations between early attachment and adult RF, the present results partly contrast with those of Sirparanta et al. (<xref rid="pmh70084-bib-0034" ref-type="bibr">2025</xref>), who found that a composite attachment measure at age four predicted RF at age 23. As noted by the authors, the composite score should be interpreted with some caution in terms of its psychometric properties as an attachment measure. The present study drew on well‐validated attachment measures across development (i.e., strange situation, attachment story completion task, CAI) and found a consistent pattern of nonsignificant longitudinal associations between early attachment and adult RF. Although AQS at age 4 was correlated with RF in adulthood, the direction of the association was opposite to that reported by Sirparanta et al. (<xref rid="pmh70084-bib-0034" ref-type="bibr">2025</xref>), suggesting that attachment insecurity in preschool, as assessed behaviorally by the AQS, was associated with higher RF in adulthood. This finding was counterintuitive and warrants cautious interpretation, particularly as it runs counter to the pattern observed from all other attachment measures in the present study (SSP, ASCT, and CAI). Given the heterogeneity in measures of early attachment and the mixed findings from previous studies (Sirparanta et al. <xref rid="pmh70084-bib-0034" ref-type="bibr">2025</xref>; Steele et al. <xref rid="pmh70084-bib-0035" ref-type="bibr">2016</xref>; Steele and Steele <xref rid="pmh70084-bib-0036" ref-type="bibr">2022</xref>), further research is still needed in larger studies to replicate and further explore longitudinal association between attachment in childhood and RF in adulthood.</p><p>Although the predictive power of early attachment for socio‐cognitive outcomes may diminish over longer developmental periods, its association with RF in adulthood is likely to be nonlinear. This is consistent with evidence indicating modest stability of attachment from infancy to adulthood (Pinquart et al. <xref rid="pmh70084-bib-0028" ref-type="bibr">2013</xref>), a pattern also observed in the present sample (Zournatzidis et al. <xref rid="pmh70084-bib-0048" ref-type="bibr">2026</xref>). In parallel, RF itself may be sensitive to change, fluctuating over time in response to ongoing contextual influences (Fiore et al. <xref rid="pmh70084-bib-0006" ref-type="bibr">2026</xref>). In exploring potential mediation pathways, the association between attachment insecurity in adolescence and RF in adulthood was not mediated by interpersonal trust or adult attachment representations. These findings may suggest that the pathways linking attachment to adult mentalizing are more complex than initially assumed and may involve additional contextual and relational processes not captured in the present study. Developmental transitions from adolescence to adulthood such as leaving the parental home, entering higher education or employment, and forming romantic relationships may contribute to this reorganization over time.</p><p>Contrary to our hypotheses, mistrust in friendships in both adolescence and adulthood was not associated with RF in adulthood. Most individuals demonstrated high levels of interpersonal trust which may have reduced the variability needed to detect associations with RF. Furthermore, while interpersonal trust reflects a general willingness to rely on others, it does not capture how individuals respond to information shared by others or whether their trust reflects an adaptive epistemic stance. High interpersonal trust may not indicate whether trust is selective and discerning, or whether individuals are vulnerable to credulity—patterns more commonly observed in individuals with mental health difficulties (Li et al. <xref rid="pmh70084-bib-0019" ref-type="bibr">2023</xref>). Future studies are needed to directly assess epistemic trust and examine whether it prospectively predicts RF across development.</p><sec id="pmh70084-sec-0017"><label>4.1</label><title>Strengths and Limitations</title><p>A major strength of this study is its longitudinal design, spanning more than two decades with repeated, well‐validated attachment assessments from infancy to young adulthood. Although attrition rates were modest, 22% of those lost at the preschool wave were excluded because they had not been adopted. Additionally, the sample is relatively homogeneous in terms of early adversity, as early institutional care was not compounded by major preadoption risks (e.g., maltreatment), allowing to explore the effects of institutional care without other significant confounds. Finally, preregistration of hypotheses and analytic plan increased the transparency and methodological rigor of the study.</p><p>Despite its strengths, the study also has limitations. First, although the sample size was reasonable for a long‐term project using labor‐intensive measures (e.g., CAI, AAI, and RFS) and was adequately powered to detect medium to large effects, it remained insufficient to detect small to medium effects. Second, the sample largely comprised low‐risk families, which may limit generalizability to populations experiencing greater socioeconomic or psychosocial adversity. Finally, interpersonal trust within friendships may not fully capture epistemic mistrust or epistemic credulity, which are more directly linked to RF.</p></sec><sec id="pmh70084-sec-0018"><label>4.2</label><title>Future Research</title><p>Future studies should further examine the developmental pathways of RF in adulthood by considering the roles of attachment, epistemic trust, and broader environmental influences. Given the strong association between RF and attachment when both are assessed via the AAI, it will be important to assess RF in contexts beyond attachment‐related interviews, but also using performance‐based or nonverbal assessments of mentalizing. Research should also address the stability of RF and investigate the influence of wider social relationships, including mentors, educators, and romantic partners. Finally, future work should explore the role of parental reflective functioning during the transition from adolescence to adulthood.</p></sec><sec sec-type="conclusions" id="pmh70084-sec-0019"><label>4.3</label><title>Conclusions</title><p>Despite earlier difficulties in emotional understanding at age four, adoptees with early institutional experience did not differ from their nonadopted peers in RF in adulthood, highlighting the potential positive influence of adoptive families on socio‐cognitive recovery. Although RF was strongly associated with adult attachment representations cross‐sectionally, further longitudinal research is needed to better understand the developmental pathways of RF into adulthood, particularly the role of early attachment, epistemic trust, and later social experiences.</p></sec></sec><sec id="pmh70084-sec-0021"><title>Funding</title><p>This work was supported by the International Psychoanalytical Association (RG2326).</p></sec><sec sec-type="COI-statement" id="pmh70084-sec-0020"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="pmh70084-supitem-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>
+<bold>Table S1:</bold> Attrition analyses.</p><p>
+<bold>Table S2:</bold> Correlations between friendship dimensions in adolescence and RF in adulthood in the total sample (years).</p><p>
+<bold>Table S3:</bold> Descriptive statistics for reflective functioning by attachment stability profiles.</p><p>
+<bold>Table S4:</bold> Pairwise comparisons for RF by attachment stability profiles from adolescence to adulthood.</p><p>
+<bold>Figure S1:</bold> Mediation by interpersonal mistrust in adulthood—total sample.</p><p>
+<bold>Figure S2.</bold> Mediation by interpersonal mistrust in adulthood—multigroup comparison. CAI = child attachment interview, RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p><p>
+<bold>Figure S3.</bold> Mediation by attachment in adulthood—total sample. AAI = adult attachment interview, CAI = child attachment interview, CoT = coherence of transcript; RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p><p>
+<bold>Figure S4.</bold> Mediation by attachment in adulthood—multigroup comparison. AAI = adult attachment interview, CAI = child attachment interview; CoT = coherence of transcript; RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p><p>
+<bold>Figure S5.</bold> Mediation by dismissing attachment in adulthood—total sample. AAI = adult attachment interview, CAI = child attachment interview, Ds = dismissing, RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p><p>
+<bold>Figure S6.</bold> Mediation by dismissing attachment in adulthood—multigroup comparison. AAI = adult attachment interview, CAI = child attachment interview, Ds = dismissing, RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p><p>
+<bold>Figure S7.</bold> Mediation by preoccupied attachment in adulthood—total sample<italic toggle="no">.</italic> AAI = adult attachment interview, CAI = child attachment interview, E = preoccupied, RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p><p>
+<bold>Figure S8.</bold> Mediation by preoccupied attachment in adulthood—multigroup comparisons. AAI = adult attachment interview, CAI = child attachment interview, E = preoccupied, RF = reflective functioning. Coefficients are standardized betas. *<italic toggle="no">p</italic> &lt; 0.05, **<italic toggle="no">p</italic> &lt; 0.01, ***<italic toggle="no">p</italic> &lt; 0.001.</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="PMH-20-0-s001.docx" position="float" orientation="portrait"><?suppdata-name PMH-20-0-s001.docx?><?suppdata-size 450328?><?suppdata-md5 d03be56f3dd9b13c3f588522aa073733?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:b8df/13248948/d03be56f3dd9/PMH-20-0-s001.docx?></media></supplementary-material></sec></body><back><sec sec-type="data-availability" id="pmh70084-sec-0023"><title>Data Availability Statement</title><p>The data that support the findings of this study are available on request from the corresponding author. The data are not publicly available due to privacy or ethical restrictions.</p></sec><ref-list content-type="cited-references" id="pmh70084-bibl-0001"><title>References</title><ref id="pmh70084-bib-0001"><mixed-citation publication-type="book" id="pmh70084-cit-0001">
+<string-name name-style="western">
+<surname>Ainsworth</surname>, <given-names>M. D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Blehar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Waters</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Wall</surname>
+</string-name>. <year>1978</year>. <source>Patterns of Attachment: A Psychological Study of the Strange Situation</source>. <publisher-name>Erlbaum</publisher-name>.</mixed-citation></ref><ref id="pmh70084-bib-0002"><mixed-citation publication-type="book" id="pmh70084-cit-0002">
+<string-name name-style="western">
+<surname>Bretherton</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Ridgeway</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Cassidy</surname>
+</string-name>. <year>1990</year>. “<part-title>Assessing Internal Working Models of the Attachment Relationship. An Attachment Story Completion Task for 3‐Year‐Olds</part-title>.” In <source>Attachment in the Preschool Years: Theory, Research and Intervention</source>, edited by <person-group person-group-type="editor">
+<string-name name-style="western">
+<given-names>M. T.</given-names>
+<surname>Greenberg</surname>
+</string-name>
+</person-group>, <person-group person-group-type="editor">
+<string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Ciccetti</surname>
+</string-name>
+</person-group>, and <person-group person-group-type="editor">
+<string-name name-style="western">
+<given-names>E. M.</given-names>
+<surname>Cummings</surname>
+</string-name>
+</person-group>, <fpage>273</fpage>–<lpage>308</lpage>. <publisher-name>University of Chicago Press</publisher-name>.</mixed-citation></ref><ref id="pmh70084-bib-0003"><mixed-citation publication-type="journal" id="pmh70084-cit-0003">
+<string-name name-style="western">
+<surname>Campbell</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Tanzer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Saunders</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Development and Validation of a Self‐Report Measure of Epistemic Trust</article-title>.” <source>PLoS ONE</source>
+<volume>16</volume>, no. <issue>4</issue>: <elocation-id>e0250264</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pone.0250264</pub-id>.<pub-id pub-id-type="pmid">33861805</pub-id>
+<pub-id pub-id-type="pmcid">PMC8051785</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0004"><mixed-citation publication-type="journal" id="pmh70084-cit-0004">
+<string-name name-style="western">
+<surname>Colvert</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Rutter</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Kreppner</surname>
+</string-name>, et al. <year>2008</year>. “<article-title>Do Theory of Mind and Executive Function Deficits Underlie the Adverse Outcomes Associated With Profound Early Deprivation?: Findings From the English and Romanian Adoptees Study</article-title>.” <source>Journal of Abnormal Child Psychology</source>
+<volume>36</volume>, no. <issue>7</issue>: <fpage>1057</fpage>–<lpage>1068</lpage>. <pub-id pub-id-type="doi">10.1007/s10802-008-9232-x</pub-id>.<pub-id pub-id-type="pmid">18427975</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0005"><mixed-citation publication-type="journal" id="pmh70084-cit-0005">
+<string-name name-style="western">
+<surname>Denham</surname>, <given-names>S. A.</given-names>
+</string-name>
+<year>1986</year>. “<article-title>Social Cognition, Prosocial Behavior, and Emotion in Preschoolers: Contextual Validation</article-title>.” <source>Child Development</source>
+<volume>57</volume>, no. <issue>1</issue>: <fpage>194</fpage>. <pub-id pub-id-type="doi">10.2307/1130651</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0006"><mixed-citation publication-type="journal" id="pmh70084-cit-0006">
+<string-name name-style="western">
+<surname>Fiore</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Vliegen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Flamant</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Malcorps</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Soenens</surname>
+</string-name>. <year>2026</year>. “<article-title>Day‐to‐Day Fluctuations in Parental Reflective Functioning: The Role of Parenting Stress and Perceived Adolescent Difficulties</article-title>.” <source>Development and Psychopathology</source>
+<volume>38</volume>, no. <issue>2</issue>: <fpage>912</fpage>–<lpage>924</lpage>. <pub-id pub-id-type="doi">10.1017/S0954579425100849</pub-id>.<pub-id pub-id-type="pmid">41408694</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0007"><mixed-citation publication-type="journal" id="pmh70084-cit-0007">
+<string-name name-style="western">
+<surname>Fonagy</surname>, <given-names>P.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Allison</surname>
+</string-name>. <year>2014</year>. “<article-title>The Role of Mentalizing and Epistemic Trust in the Therapeutic Relationship</article-title>.” <source>Psychotherapy</source>
+<volume>51</volume>, no. <issue>3</issue>: <fpage>372</fpage>–<lpage>380</lpage>. <pub-id pub-id-type="doi">10.1037/a0036505</pub-id>.<pub-id pub-id-type="pmid">24773092</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0008"><mixed-citation publication-type="book" id="pmh70084-cit-0008">
+<string-name name-style="western">
+<surname>Fonagy</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Gergely</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Jurist</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Target</surname>
+</string-name>. <year>2002</year>. <source>Affect Regulation, Mentalization, and the Development of the Self</source>. <publisher-name>Other Press</publisher-name>.</mixed-citation></ref><ref id="pmh70084-bib-0009"><mixed-citation publication-type="journal" id="pmh70084-cit-0009">
+<string-name name-style="western">
+<surname>Fonagy</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Allison</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Campbell</surname>
+</string-name>. <year>2017</year>. “<article-title>What We Have Changed Our Minds About: Part 2. Borderline Personality Disorder, Epistemic Trust and the Developmental Significance of Social Communication</article-title>.” <source>Borderline Personality Disorder and Emotion Dysregulation</source>
+<volume>4</volume>, no. <issue>1</issue>: <fpage>9</fpage>. <pub-id pub-id-type="doi">10.1186/s40479-017-0062-8</pub-id>.<pub-id pub-id-type="pmid">28405338</pub-id>
+<pub-id pub-id-type="pmcid">PMC5387344</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0010"><mixed-citation publication-type="book" id="pmh70084-cit-0010">
+<string-name name-style="western">
+<surname>Fonagy</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Target</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Steele</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Steele</surname>
+</string-name>. <year>1998</year>. <source>Reflective‐Functioning Manual, Version 5.0, for Application to Adult Attachment Interviews</source>. <publisher-name>University College London</publisher-name>.</mixed-citation></ref><ref id="pmh70084-bib-0011"><mixed-citation publication-type="journal" id="pmh70084-cit-0011">
+<string-name name-style="western">
+<surname>Fries</surname>, <given-names>A. B. W.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>S. D.</given-names>
+<surname>Pollak</surname>
+</string-name>. <year>2004</year>. “<article-title>Emotion Understanding in Postinstitutionalized Eastern European Children</article-title>.” <source>Development and Psychopathology</source>
+<volume>16</volume>, no. <issue>2</issue>: <fpage>355</fpage>–<lpage>369</lpage>. <pub-id pub-id-type="doi">10.1017/s0954579404044554</pub-id>.<pub-id pub-id-type="pmid">15487600</pub-id>
+<pub-id pub-id-type="pmcid">PMC1373673</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0012"><mixed-citation publication-type="book" id="pmh70084-cit-0012">
+<string-name name-style="western">
+<surname>George</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Kaplan</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Main</surname>
+</string-name>. <year>1985</year>/1996. <source>Adult Attachment Interview</source> [Unpublished manuscript]. <publisher-name>Department of Psychology, University of California</publisher-name>.</mixed-citation></ref><ref id="pmh70084-bib-0013"><mixed-citation publication-type="journal" id="pmh70084-cit-0013">
+<string-name name-style="western">
+<surname>Gergely</surname>, <given-names>G.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. S.</given-names>
+<surname>Watson</surname>
+</string-name>. <year>1996</year>. “<article-title>The Social Biofeedback Model of Parental Affect‐Mirroring</article-title>.” <source>International Journal of Psychoanalysis</source>
+<volume>77</volume>: <fpage>1181</fpage>–<lpage>1212</lpage>.<pub-id pub-id-type="pmid">9119582</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0014"><mixed-citation publication-type="journal" id="pmh70084-cit-0014">
+<string-name name-style="western">
+<surname>Golm</surname>, <given-names>D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Sarkar</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. K.</given-names>
+<surname>Mackes</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>The Impact of Childhood Deprivation on Adult Neuropsychological Functioning Is Associated With ADHD Symptom Persistence</article-title>.” <source>Psychological Medicine</source>
+<volume>51</volume>, no. <issue>15</issue>: <fpage>2675</fpage>–<lpage>2684</lpage>. <pub-id pub-id-type="doi">10.1017/S0033291720001294</pub-id>.<pub-id pub-id-type="pmid">32419675</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0015"><mixed-citation publication-type="journal" id="pmh70084-cit-0015">
+<string-name name-style="western">
+<surname>Hwa‐Froelich</surname>, <given-names>D. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Matsuo</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Jacobs</surname>
+</string-name>. <year>2017</year>. “<article-title>False Belief Performance of Children Adopted Internationally</article-title>.” <source>American Journal of Speech‐Language Pathology</source>
+<volume>26</volume>, no. <issue>1</issue>: <fpage>29</fpage>–<lpage>43</lpage>. <pub-id pub-id-type="doi">10.1044/2016_AJSLP-15-0152</pub-id>.<pub-id pub-id-type="pmid">27959973</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0017"><mixed-citation publication-type="journal" id="pmh70084-cit-0017">
+<string-name name-style="western">
+<surname>Jessee</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S. C.</given-names>
+<surname>Mangelsdorf</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Wong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. J.</given-names>
+<surname>Schoppe‐Sullivan</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>G. L.</given-names>
+<surname>Brown</surname>
+</string-name>. <year>2016</year>. “<article-title>Structure of Reflective Functioning and Adult Attachment Scales: Overlap and Distinctions</article-title>.” <source>Attachment &amp; Human Development</source>
+<volume>18</volume>, no. <issue>2</issue>: <fpage>176</fpage>–<lpage>187</lpage>. <pub-id pub-id-type="doi">10.1080/14616734.2015.1132240</pub-id>.<pub-id pub-id-type="pmid">26754258</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0018"><mixed-citation publication-type="journal" id="pmh70084-cit-0018">
+<string-name name-style="western">
+<surname>Kreppner</surname>, <given-names>J. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T. G.</given-names>
+<surname>O Connor</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Dunn</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Andersen‐Wood</surname>
+</string-name>. <year>1999</year>. “<article-title>The Pretend and Social Role Play of Children Exposed to Early Severe Deprivation</article-title>.” <source>British Journal of Developmental Psychology</source>
+<volume>17</volume>, no. <issue>3</issue>: <fpage>319</fpage>–<lpage>332</lpage>. <pub-id pub-id-type="doi">10.1348/026151099165302</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0019"><mixed-citation publication-type="journal" id="pmh70084-cit-0019">
+<string-name name-style="western">
+<surname>Li</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Campbell</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Midgley</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>. <year>2023</year>. “<article-title>Epistemic Trust: A Comprehensive Review of Empirical Insights and Implications for Developmental Psychopathology</article-title>.” <source>Research in Psychotherapy: Psychopathology, Process and Outcome</source>
+<volume>26</volume>, no. <issue>3</issue>. <pub-id pub-id-type="doi">10.4081/ripppo.2023.704</pub-id>.<pub-id pub-id-type="pmcid">PMC10772859</pub-id><pub-id pub-id-type="pmid">38156560</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0020"><mixed-citation publication-type="journal" id="pmh70084-cit-0020">
+<string-name name-style="western">
+<surname>Lionetti</surname>, <given-names>F.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Pastore</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Barone</surname>
+</string-name>. <year>2015</year>. “<article-title>Attachment in Institutionalized Children: A Review and Meta‐Analysis</article-title>.” <source>Child Abuse &amp; Neglect</source>
+<volume>42</volume>: <fpage>135</fpage>–<lpage>145</lpage>. <pub-id pub-id-type="doi">10.1016/j.chiabu.2015.02.013</pub-id>.<pub-id pub-id-type="pmid">25747874</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0021"><mixed-citation publication-type="journal" id="pmh70084-cit-0021">
+<string-name name-style="western">
+<surname>Luyten</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Campbell</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Allison</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Fonagy</surname>
+</string-name>. <year>2020</year>. “<article-title>The Mentalizing Approach to Psychopathology: State of the Art and Future Directions</article-title>.” <source>Annual Review of Clinical Psychology</source>
+<volume>16</volume>: <fpage>297</fpage>–<lpage>325</lpage>. <pub-id pub-id-type="doi">10.1146/annurev-clinpsy-071919</pub-id>.<pub-id pub-id-type="pmid">32023093</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0022"><mixed-citation publication-type="journal" id="pmh70084-cit-0022">
+<string-name name-style="western">
+<surname>Malcorps</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Vliegen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Nijssens</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>. <year>2023</year>. “<article-title>The Role of Parental Reflective Functioning for Theory of Mind Development in Internationally Adopted Children</article-title>.” <source>Journal of Child and Family Studies</source>
+<volume>32</volume>, no. <issue>1</issue>: <fpage>272</fpage>–<lpage>287</lpage>. <pub-id pub-id-type="doi">10.1007/s10826-022-02482-z</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0024"><mixed-citation publication-type="journal" id="pmh70084-cit-0024">
+<string-name name-style="western">
+<surname>Mendelson</surname>, <given-names>M. J.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>F. E.</given-names>
+<surname>Aboud</surname>
+</string-name>. <year>1999</year>. “<article-title>Measuring Friendship Quality in Late Adolescents and Young Adults: McGill Friendship Questionnaires</article-title>.” <source>Canadian Journal of Behavioural Science/Revue Canadienne Des Sciences Du Comportement</source>
+<volume>31</volume>, no. <issue>2</issue>: <fpage>130</fpage>–<lpage>132</lpage>. <pub-id pub-id-type="doi">10.1037/h0087080</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0026"><mixed-citation publication-type="book" id="pmh70084-cit-0026">
+<string-name name-style="western">
+<surname>Parker</surname>, <given-names>J. G.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>S. R.</given-names>
+<surname>Asher</surname>
+</string-name>. <year>1989</year>. <source>Friendship Quality Questionnaire – Revised: Instrument and Administration Manual</source>. Unpublished manuscript. <publisher-name>University of Michigan</publisher-name>.</mixed-citation></ref><ref id="pmh70084-bib-0027"><mixed-citation publication-type="journal" id="pmh70084-cit-0027">
+<string-name name-style="western">
+<surname>Pezirkianidis</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Stalikas</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Moraitou</surname>
+</string-name>. <year>2022</year>. “<article-title>Character Strengths as a Predictor of Adult Friendship Quality and Satisfaction: Implications for Psychological Interventions</article-title>.” <source>European Journal of Counselling Psychology</source>
+<fpage>1</fpage>–<lpage>16</lpage>. <pub-id pub-id-type="doi">10.46853/001c.57557</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0028"><mixed-citation publication-type="journal" id="pmh70084-cit-0028">
+<string-name name-style="western">
+<surname>Pinquart</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Feußner</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Ahnert</surname>
+</string-name>. <year>2013</year>. “<article-title>Meta‐Analytic Evidence for Stability in Attachments From Infancy to Early Adulthood</article-title>.” <source>Attachment &amp; Human Development</source>
+<volume>15</volume>, no. <issue>2</issue>: <fpage>189</fpage>–<lpage>218</lpage>. <pub-id pub-id-type="doi">10.1080/14616734.2013.746257</pub-id>.<pub-id pub-id-type="pmid">23210665</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0032"><mixed-citation publication-type="journal" id="pmh70084-cit-0032">
+<string-name name-style="western">
+<surname>Pitula</surname>, <given-names>C. E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Wenner</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. R.</given-names>
+<surname>Gunnar</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>K. M.</given-names>
+<surname>Thomas</surname>
+</string-name>. <year>2017</year>. “<article-title>To Trust or Not to Trust: Social Decision‐Making in Post‐Institutionalized, Internationally Adopted Youth</article-title>.” <source>Developmental Science</source>
+<volume>20</volume>, no. <issue>3</issue>: <fpage>1</fpage>–<lpage>15</lpage>. <pub-id pub-id-type="doi">10.1111/desc.12375</pub-id>.<pub-id pub-id-type="pmcid">PMC5069074</pub-id><pub-id pub-id-type="pmid">27089448</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0030"><mixed-citation publication-type="journal" id="pmh70084-cit-0030">
+<string-name name-style="western">
+<surname>Raby</surname>, <given-names>K. L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. L.</given-names>
+<surname>Verhage</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. M. P.</given-names>
+<surname>Fearon</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>The Latent Structure of the Adult Attachment Interview: Large Sample Evidence From the Collaboration on Attachment Transmission Synthesis</article-title>.” <source>Development and Psychopathology</source>
+<volume>34</volume>, no. <issue>1</issue>: <fpage>307</fpage>–<lpage>319</lpage>. <pub-id pub-id-type="doi">10.1017/S0954579420000978</pub-id>.<pub-id pub-id-type="pmid">33070805</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0031"><mixed-citation publication-type="journal" id="pmh70084-cit-0031">
+<string-name name-style="western">
+<surname>Raby</surname>, <given-names>K. L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H. A.</given-names>
+<surname>Yarger</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Lind</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. C.</given-names>
+<surname>Fraley</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Leerkes</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Dozier</surname>
+</string-name>. <year>2017</year>. “<article-title>Attachment States of Mind Among Internationally Adoptive and Foster Parents</article-title>.” <source>Development and Psychopathology</source>
+<volume>29</volume>, no. <issue>2</issue>: <fpage>365</fpage>–<lpage>378</lpage>. <pub-id pub-id-type="doi">10.1017/S0954579417000049</pub-id>.<pub-id pub-id-type="pmid">28401831</pub-id>
+<pub-id pub-id-type="pmcid">PMC5610913</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0034"><mixed-citation publication-type="journal" id="pmh70084-cit-0034">
+<string-name name-style="western">
+<surname>Sirparanta</surname>, <given-names>A. E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Miljkovitch</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Zdebik</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Pascuzzo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Garon‐Bissonnette</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Moss</surname>
+</string-name>. <year>2025</year>. “<article-title>Links between Early and Concurrent Attachment and Reflective Functioning in Young Adulthood</article-title>.” <source>Developmental Psychology</source>
+<volume>61</volume>, no. 5: <fpage>843</fpage>–<lpage>856</lpage>. <pub-id pub-id-type="doi">10.1037/dev0001790</pub-id>.<pub-id pub-id-type="pmid">39133599</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0035"><mixed-citation publication-type="journal" id="pmh70084-cit-0035">
+<string-name name-style="western">
+<surname>Steele</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Perez</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Segal</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Steele</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Ahnert</surname>
+</string-name>. <year>2016</year>. “<article-title>Maternal Adult Attachment Interview (AAI) Collected During Pregnancy Predicts Reflective Functioning in AAIs from Their First‐Born Children 17 Years Later</article-title>.” <source>International Journal of Developmental Science</source>
+<volume>10</volume>, no. <issue>3–4</issue>: <fpage>117</fpage>–<lpage>124</lpage>. <pub-id pub-id-type="doi">10.3233/DEV-16201</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0036"><mixed-citation publication-type="journal" id="pmh70084-cit-0036">
+<string-name name-style="western">
+<surname>Steele</surname>, <given-names>H.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Steele</surname>
+</string-name>. <year>2022</year>. “<article-title>Five‐Year Old Children's Responses to Story Stem Assessments Predicts Their Reflective Functioning at 16 Years: Re‐Visiting the London Parent‐Child Project</article-title>.” <source>Cognitive Development</source>
+<volume>64</volume>: <elocation-id>101251</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.cogdev.2022.101251</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0037"><mixed-citation publication-type="journal" id="pmh70084-cit-0037">
+<string-name name-style="western">
+<surname>Szpak</surname>, <given-names>M.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Białecka‐Pikul</surname>
+</string-name>. <year>2020</year>. “<article-title>Links Between Attachment and Theory of Mind in Childhood: Meta‐Analytic Review</article-title>.” <source>Social Development</source>
+<volume>29</volume>, no. <issue>3</issue>: <fpage>653</fpage>–<lpage>673</lpage>. <pub-id pub-id-type="doi">10.1111/sode.12432</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0038"><mixed-citation publication-type="journal" id="pmh70084-cit-0038">
+<string-name name-style="western">
+<surname>Target</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Fonagy</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Shmueli‐Goetz</surname>
+</string-name>. <year>2003</year>. “<article-title>Attachment Representations in School‐Age Children: The Development of the Child Attachment Interview (CAI)</article-title>.” <source>Journal of Child Psychotherapy</source>
+<volume>29</volume>, no. <issue>2</issue>: <fpage>171</fpage>–<lpage>186</lpage>. <pub-id pub-id-type="doi">10.1080/0075417031000138433</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0039"><mixed-citation publication-type="journal" id="pmh70084-cit-0039">
+<string-name name-style="western">
+<surname>Tarullo</surname>, <given-names>A. R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Youssef</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. A.</given-names>
+<surname>Frenn</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Wiik</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Garvin</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. R.</given-names>
+<surname>Gunnar</surname>
+</string-name>. <year>2016</year>. “<article-title>Emotion Understanding, Parent Mental State Language, and Behavior Problems in Internationally Adopted Children</article-title>.” <source>Development and Psychopathology</source>
+<volume>28</volume>, no. <issue>2</issue>: <fpage>371</fpage>–<lpage>383</lpage>. <pub-id pub-id-type="doi">10.1017/S095457941500111X</pub-id>.<pub-id pub-id-type="pmid">26612541</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0040"><mixed-citation publication-type="journal" id="pmh70084-cit-0040">
+<string-name name-style="western">
+<surname>Taubner</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Hörz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Fischer‐Kern</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Doering</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Buchheim</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Zimmermann</surname>
+</string-name>. <year>2013</year>. “<article-title>Internal Structure of the Reflective Functioning Scale</article-title>.” <source>Psychological Assessment</source>
+<volume>25</volume>, no. <issue>1</issue>: <fpage>127</fpage>–<lpage>135</lpage>. <pub-id pub-id-type="doi">10.1037/a0029138</pub-id>.<pub-id pub-id-type="pmid">22775410</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0016"><mixed-citation publication-type="journal" id="pmh70084-cit-0016">
+<string-name name-style="western">
+<surname>van IJzendoorn</surname>, <given-names>M. H.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Juffer</surname>
+</string-name>. <year>2006</year>. “<article-title>The Emanuel Miller Memorial Lecture 2006: Adoption as Intervention. Meta‐Analytic Evidence for Massive Catch‐Up and Plasticity in Physical, Socio‐Emotional, and Cognitive Development</article-title>.” <source>Journal of Child Psychology and Psychiatry, and Allied Disciplines</source>
+<volume>47</volume>, no. <issue>12</issue>: <fpage>1228</fpage>–<lpage>1245</lpage>. <pub-id pub-id-type="doi">10.1111/j.1469-7610.2006.01675.x</pub-id>.<pub-id pub-id-type="pmid">17176378</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0041"><mixed-citation publication-type="journal" id="pmh70084-cit-0041">
+<string-name name-style="western">
+<surname>Vorria</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Ntouma</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Vairami</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Rutter</surname>
+</string-name>. <year>2015</year>. “<article-title>Attachment Relationships of Adolescents Who Spent Their Infancy in Residential Group Care: The Greek Metera Study</article-title>.” <source>Attachment &amp; Human Development</source>
+<volume>17</volume>, no. <issue>3</issue>: <fpage>257</fpage>–<lpage>271</lpage>. <pub-id pub-id-type="doi">10.1080/14616734.2015.1028947</pub-id>.<pub-id pub-id-type="pmid">25862310</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0042"><mixed-citation publication-type="journal" id="pmh70084-cit-0042">
+<string-name name-style="western">
+<surname>Vorria</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Papaligoura</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Dunn</surname>
+</string-name>, et al. <year>2003</year>. “<article-title>Early Experiences and Attachment Relationships of Greek Infants Raised in Residential Group Care</article-title>.” <source>Journal of Child Psychology and Psychiatry, and Allied Disciplines</source>
+<volume>44</volume>, no. <issue>8</issue>: <fpage>1208</fpage>–<lpage>1220</lpage>. <pub-id pub-id-type="doi">10.1111/1469-7610.00202</pub-id>.<pub-id pub-id-type="pmid">14626461</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0043"><mixed-citation publication-type="journal" id="pmh70084-cit-0043">
+<string-name name-style="western">
+<surname>Vorria</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Z.</given-names>
+<surname>Papaligoura</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Sarafidou</surname>
+</string-name>, et al. <year>2006</year>. “<article-title>The Development of Adopted Children After Institutional Care: A Follow‐Up Study</article-title>.” <source>Journal of Child Psychology and Psychiatry, and Allied Disciplines</source>
+<volume>47</volume>, no. <issue>12</issue>: <fpage>1246</fpage>–<lpage>1253</lpage>. <pub-id pub-id-type="doi">10.1111/j.1469-7610.2006.01666.x</pub-id>.<pub-id pub-id-type="pmid">17176379</pub-id>
+</mixed-citation></ref><ref id="pmh70084-bib-0044"><mixed-citation publication-type="journal" id="pmh70084-cit-0044">
+<string-name name-style="western">
+<surname>Wagner</surname>, <given-names>L.</given-names>
+</string-name>
+<year>2019</year>. “<article-title>Good Character Is What We Look for in a Friend: Character Strengths Are Positively Related to Peer Acceptance and Friendship Quality in Early Adolescents</article-title>.” <source>Journal of Early Adolescence</source>
+<volume>39</volume>, no. <issue>6</issue>: <fpage>864</fpage>–<lpage>903</lpage>. <pub-id pub-id-type="doi">10.1177/0272431618791286</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0045"><mixed-citation publication-type="journal" id="pmh70084-cit-0045">
+<string-name name-style="western">
+<surname>Waters</surname>, <given-names>E.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>K. E.</given-names>
+<surname>Deane</surname>
+</string-name>. <year>1985</year>. “<article-title>Defining and Assessing Individual Differences in Attachment Relationships: Q‐Methodology and the Organization of Behavior in Infancy and Early Childhood</article-title>.” <source>Monographs of the Society for Research in Child Development</source>
+<volume>50</volume>, no. <issue>1/2</issue>: <fpage>41</fpage>–<lpage>65</lpage>. <pub-id pub-id-type="doi">10.2307/3333826</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0046"><mixed-citation publication-type="journal" id="pmh70084-cit-0046">
+<string-name name-style="western">
+<surname>Zeegers</surname>, <given-names>M. A. J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Meins</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G.‐J. J. M.</given-names>
+<surname>Stams</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. M.</given-names>
+<surname>Bögels</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Colonnesi</surname>
+</string-name>. <year>2019</year>. “<article-title>Does Attachment Security Predict Children's Thinking‐About‐Thinking and Thinking‐About‐Feeling? A Meta‐Analytic Review</article-title>.” <source>Developmental Review</source>
+<volume>54</volume>: <elocation-id>100885</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.dr.2019.100885</pub-id>.</mixed-citation></ref><ref id="pmh70084-bib-0047"><mixed-citation publication-type="journal" id="pmh70084-cit-0047">
+<string-name name-style="western">
+<surname>Zournatzidis</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Kurt</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Fonagy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Vorria</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>. <year>2025</year>. “<article-title>Adoption and Development From Infancy to Adulthood: A Systematic Review of Longitudinal Studies and Future Directions</article-title>.” <source>Development and Psychopathology</source>
+<volume>38</volume>, no. <issue>2</issue>: <fpage>1039</fpage>–<lpage>1055</lpage>. <pub-id pub-id-type="doi">10.1017/s0954579425100977</pub-id>.<pub-id pub-id-type="pmid">41363295</pub-id></mixed-citation></ref><ref id="pmh70084-bib-0048"><mixed-citation publication-type="journal" id="pmh70084-cit-0048">
+<string-name name-style="western">
+<surname>Zournatzidis</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Luyten</surname>
+</string-name>, <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Fonagy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>V.</given-names>
+<surname>Salavou</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Vorria</surname>
+</string-name>. <year>2026</year>. “<article-title>Attachment in Adoptees and Non‐Adoptees from Infancy to Young Adulthood: The Greek Metera Study</article-title>.” <source>Attachment &amp; Human Development</source>
+<fpage>1</fpage>–<lpage>24</lpage>. <pub-id pub-id-type="doi">10.1080/14616734.2026.2632638</pub-id>.<pub-id pub-id-type="pmid">41699952</pub-id></mixed-citation></ref></ref-list></back></article>

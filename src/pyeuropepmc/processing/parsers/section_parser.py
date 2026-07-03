@@ -45,6 +45,21 @@ class SectionParser(BaseParser):
                     if section_data:
                         sections.append(section_data)
 
+                # Handle bare <p> elements directly under <body> (no <sec> wrapper)
+                # Some publishers like PLOS use this structure
+                bare_ps = body_elem.findall("./p")
+                if bare_ps:
+                    para_texts: list[str] = []
+                    for p in bare_ps:
+                        texts = self._extract_flat_texts(
+                            p, ".", filter_empty=True, use_full_text=True
+                        )
+                        if texts:
+                            para_texts.extend(texts)
+                    para_text = "\n\n".join(para_texts)
+                    if para_text:
+                        sections.append({"title": "", "content": para_text})
+
             # Extract additional content structures
             sections.extend(self._extract_additional_content_structures())
 

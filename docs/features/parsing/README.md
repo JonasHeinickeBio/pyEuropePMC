@@ -12,6 +12,7 @@ The **FullTextXMLParser** provides comprehensive capabilities for extracting str
 - **Schema validation** - Analyze XML element recognition
 - **Flexible configuration** - Customize element patterns
 - **Multi-schema support** - Handle JATS, NLM, and custom XML
+- **Parser Extensions** - Content blocks, MathML, peer review, JATS4R validation, and more
 
 ## Quick Start
 
@@ -592,10 +593,115 @@ except Exception as e:
     print(f"Parser error: {e}")
 ```
 
+## Parser Extensions
+
+The parser provides an **extensions package** (`pyeuropepmc.processing.extensions`) with 10 specialized modules for advanced use cases:
+
+| Module | Purpose |
+|--------|---------|
+| **Content Blocks** | Typed content blocks (paragraph, list, figure, formula, etc.) preserving document structure for RAG/LLM pipelines |
+| **lxml Backend** | Optional high-performance lxml parser with secure defaults |
+| **Peer Review** | Extract peer review materials from `<sub-article>` elements |
+| **MathML Conversion** | Convert MathML to LaTeX for formula extraction |
+| **JATS4R Validation** | Compliance checking against NISO JATS4R recommendations |
+| **Batch Processing** | Concurrent XML parsing with rate limiting and progress callbacks |
+| **Image Fetcher** | Extract figure/supplementary/media references and download assets |
+| **Reference Resolver** | Enrich references via Europe PMC API lookup |
+| **Pydantic Helpers** | Convert dataclasses to Pydantic v2 models dynamically |
+| **Local Processing** | Parse XML files, directories, or strings with helper utilities |
+
+See the **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** for detailed usage and API documentation.
+
+### Quick Example
+
+```python
+from pyeuropepmc import FullTextXMLParser
+from pyeuropepmc.processing.extensions import (
+    ContentBlockExtractor,
+    JATS4RValidator,
+    MathMLConverter,
+    PeerReviewExtractor,
+    LocalXMLProcessor,
+    BatchProcessor,
+)
+
+# Parse XML
+parser = FullTextXMLParser(xml_content)
+
+# 1. Structured content blocks (for RAG/LLM pipelines)
+extractor = ContentBlockExtractor(parser.root)
+sections = extractor.extract_sections()
+for section in sections:
+    print(f"Section: {section.title}")
+    for block in section.content:
+        print(f"  [{block.type.value}]: {block.text[:80]}")
+
+# 2. JATS4R compliance validation
+validator = JATS4RValidator(parser.root)
+report = validator.validate()
+print(f"Compliance score: {report.compliance_score:.2f}")
+for finding in report.findings:
+    print(f"  {finding.category}: {finding.message}")
+
+# 3. Peer review extraction
+review_extractor = PeerReviewExtractor(parser.root)
+review_sets = review_extractor.extract_all()
+for review_set in review_sets:
+    print(f"Round {review_set.revision_round}: {len(review_set.reviews)} reviews")
+
+# 4. MathML to LaTeX conversion
+converter = MathMLConverter()
+for formula in parser.root.findall(".//disp-formula"):
+    mathml = formula.find(".//mml:math", converter.namespaces)
+    if mathml is not None:
+        latex = converter.convert(ET.tostring(mathml, encoding="unicode"))
+        print(f"LaTeX: {latex}")
+
+# 5. Local processing convenience
+LocalXMLProcessor.write_markdown(xml_content, "output.md")
+
+# 6. Batch processing
+processor = BatchProcessor(rate_per_second=5)
+results = processor.process_directory("xml_files/")
+```
+
+## Integration with FullTextClient
+
+Use the extensions with the FullTextClient workflow:
+
+```python
+from pyeuropepmc import FullTextClient
+from pyeuropepmc.processing.extensions import (
+    ContentBlockExtractor,
+    JATS4RValidator,
+    BatchProcessor,
+)
+from xml.etree import ElementTree as ET
+
+# Download and process articles
+with FullTextClient() as client:
+    pmcids = ["PMC3258128", "PMC3359999"]
+
+    for pmcid in pmcids:
+        xml_path = client.download_xml_by_pmcid(pmcid)
+        with open(xml_path) as f:
+            xml_content = f.read()
+
+        parser = FullTextXMLParser(xml_content)
+
+        # Content blocks for structured output
+        extractor = ContentBlockExtractor(parser.root)
+        sections = extractor.extract_sections()
+
+        # JATS4R validation
+        report = JATS4RValidator(parser.root).validate()
+        print(f"{pmcid}: compliance = {report.compliance_score:.2f}")
+```
+
 ## See Also
 
 - **[API Reference: FullTextXMLParser](../../api/xml-parser.md)** - Complete API documentation
-- **[API Reference: ElementPatterns](../../api/xml-parser.md#elementpatterns)** - Pattern configuration
+- **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** - All extension modules
+- **[API Reference: XML Parser Extensions](../../api/xml-parser-extensions.md)** - Extension API reference
 - **[Full-Text Retrieval](../fulltext/)** - Download XML files to parse
 - **[Examples](../../examples/)** - Code examples in the repository
-- **[Element Patterns](../../api/xml-parser.md#elementpatterns)** - Pattern configuration API

@@ -12,6 +12,7 @@ from pyeuropepmc.processing.analytics import (
     detect_duplicates,
     disease_comparison_trends,
     funding_source_analysis,
+    geographic_analysis,
     journal_distribution,
     publication_type_distribution,
     publication_year_distribution,
@@ -144,6 +145,40 @@ class TestToDataFrame:
         assert df["citedByCount"].dtype in [int, "int64"]
         assert df["hasAbstract"].dtype == bool
         assert df["hasPDF"].dtype == bool
+
+    def test_to_dataframe_journal_info_dict(self):
+        """Test journal title extraction from journalInfo dict."""
+        paper = {
+            "id": "1",
+            "journalInfo": {"journal": {"title": "Nature"}},
+        }
+        df = to_dataframe([paper])
+        assert df["journalTitle"].iloc[0] == "Nature"
+
+    def test_to_dataframe_mesh_major_topic(self):
+        """Test MeSH terms extraction with major topic marker."""
+        paper = {
+            "id": "1",
+            "meshHeadingList": {
+                "meshHeading": [
+                    {"descriptorName": "Cancer", "majorTopic_YN": "Y"},
+                    {"descriptorName": "Immunology"},
+                ]
+            },
+        }
+        df = to_dataframe([paper])
+        mesh = df["meshTerms"].iloc[0]
+        assert "Cancer*" in mesh
+        assert "Immunology" in mesh
+
+    def test_to_dataframe_grants_non_list(self):
+        """Test grants extraction when grant is not a list."""
+        paper = {
+            "id": "1",
+            "grantsList": {"grant": "single_grant"},
+        }
+        df = to_dataframe([paper])
+        assert df["grants"].iloc[0] == ""
 
 
 class TestPublicationYearDistribution:
@@ -743,3 +778,216 @@ class TestFundingSourceAnalysis:
         df = to_dataframe(extended_papers)
         result = funding_source_analysis(df)
         assert result["total_funded_papers"] == 4
+
+
+class TestFlattenPubTypeEdgeCases:
+    """Tests for _flatten_pub_type edge cases (string pubTypeList, top-level pubType)."""
+
+    def test_pub_type_list_as_string(self):
+        """Test when pubTypeList.pubType is a string, not a list."""
+        paper = {
+            "id": "1",
+            "pubTypeList": {"pubType": "Journal Article"},
+        }
+        df = to_dataframe([paper])
+        assert df["pubType"].iloc[0] == "Journal Article"
+
+    def test_top_level_pub_type_as_string(self):
+        """Test when top-level pubType is a string (no pubTypeList)."""
+        paper = {
+            "id": "1",
+            "pubType": "Review",
+        }
+        df = to_dataframe([paper])
+        assert "Review" in df["pubType"].iloc[0]
+
+    def test_top_level_pub_type_as_list(self):
+        """Test when top-level pubType is a list (no pubTypeList)."""
+        paper = {
+            "id": "1",
+            "pubType": ["Clinical Trial", "Research Article"],
+        }
+        df = to_dataframe([paper])
+        pub_type = df["pubType"].iloc[0]
+        assert "Clinical Trial" in pub_type
+        assert "Research Article" in pub_type
+
+
+class TestGeographicAnalysis:
+    """Tests for geographic_analysis function."""
+
+    def test_basic(self):
+        """Test basic geographic analysis with affiliation data."""
+        papers = [
+            {
+                "id": "1",
+                "title": "Paper 1",
+                "isOpenAccess": "Y",
+                "affiliation": "University of Oxford, Oxford, United Kingdom",
+                "citedByCount": "10",
+            },
+            {
+                "id": "2",
+                "title": "Paper 2",
+                "isOpenAccess": "Y",
+                "affiliation": "Harvard University, Cambridge, United States",
+                "citedByCount": "5",
+            },
+            {
+                "id": "3",
+                "title": "Paper 3",
+                "isOpenAccess": "N",
+                "affiliation": "University of Oxford, Oxford, United Kingdom",
+                "citedByCount": "3",
+            },
+        ]
+        result = geographic_analysis(papers)
+        assert result["total_papers"] == 3
+        assert result["papers_with_affiliation"] == 3
+        assert result["top_countries"]["United Kingdom"] == 2
+        assert result["top_countries"]["United States"] == 1
+        assert "University of Oxford" in result["top_institutions"].index
+        assert result["international_collaboration_rate"] == 0.0  # Single country per paper
+
+    def test_international_collaboration(self):
+        """Test multi-country collaboration detection."""
+        papers = [
+            {
+                "id": "1",
+                "title": "Paper 1",
+                "isOpenAccess": "Y",
+                "affiliation": "University of Oxford, Oxford, United Kingdom; Harvard University, Cambridge, United States",
+                "citedByCount": "10",
+            },
+        ]
+        result = geographic_analysis(papers)
+        assert result["papers_with_affiliation"] == 1
+        assert result["international_collaboration_rate"] == 100.0
+
+    def test_empty(self):
+        """Test with empty papers list."""
+        result = geographic_analysis([])
+        assert result["total_papers"] == 0
+        assert result["papers_with_affiliation"] == 0
+        assert result["top_countries"].empty
+        assert result["international_collaboration_rate"] == 0.0
+
+    def test_empty_affiliations(self):
+        """Test with no meaningful affiliation data (empty strings default)."""
+        papers = [{"id": "1", "title": "Paper", "affiliation": ""}]
+        result = geographic_analysis(papers)
+        assert result["total_papers"] == 1
+        # Empty string is not NaN, so it's counted as having affiliation
+        assert result["papers_with_affiliation"] == 1
+        # But no countries/institutions are extracted from empty strings
+        assert result["top_countries"].empty
+        assert result["top_institutions"].empty
+
+    def test_dataframe_input(self):
+        """Test with DataFrame input."""
+        papers = [
+            {
+                "id": "1",
+                "title": "Paper",
+                "isOpenAccess": "Y",
+                "affiliation": "Stanford University, Stanford, United States",
+                "citedByCount": "0",
+            }
+        ]
+        df = to_dataframe(papers)
+        result = geographic_analysis(df)
+        assert result["total_papers"] == 1
+        assert result["papers_with_affiliation"] == 1
+        assert "United States" in result["top_countries"].index
+
+
+class TestCitationByAccessTypeEffectSize:
+    """Tests for effect size computation in citation_by_access_type."""
+
+    def test_effect_size_computation(self):
+        """Test Cohen's d and Welch's t-test with sufficient samples in both groups."""
+        papers = [
+            {
+                "id": "1", "isOpenAccess": "Y", "citedByCount": "10",
+                "title": "OA 1", "source": "MED",
+            },
+            {
+                "id": "2", "isOpenAccess": "Y", "citedByCount": "12",
+                "title": "OA 2", "source": "MED",
+            },
+            {
+                "id": "3", "isOpenAccess": "Y", "citedByCount": "8",
+                "title": "OA 3", "source": "MED",
+            },
+            {
+                "id": "4", "isOpenAccess": "N", "citedByCount": "3",
+                "title": "Closed 1", "source": "MED",
+            },
+            {
+                "id": "5", "isOpenAccess": "N", "citedByCount": "5",
+                "title": "Closed 2", "source": "MED",
+            },
+            {
+                "id": "6", "isOpenAccess": "N", "citedByCount": "4",
+                "title": "Closed 3", "source": "MED",
+            },
+        ]
+        result = citation_by_access_type(papers)
+        assert result["open_access"]["count"] == 3
+        assert result["closed_access"]["count"] == 3
+        # OA mean=10, Closed mean=4, so effect_size should be > 0
+        assert result["effect_size"] > 0
+        assert isinstance(result["effect_size"], float)
+        assert isinstance(result["is_significant"], bool)
+
+    def test_effect_size_zero_variance(self):
+        """Test effect size when both groups have identical citations (variance=0)."""
+        papers = [
+            {
+                "id": "1", "isOpenAccess": "Y", "citedByCount": "5",
+                "title": "OA 1", "source": "MED",
+            },
+            {
+                "id": "2", "isOpenAccess": "Y", "citedByCount": "5",
+                "title": "OA 2", "source": "MED",
+            },
+            {
+                "id": "3", "isOpenAccess": "N", "citedByCount": "5",
+                "title": "Closed 1", "source": "MED",
+            },
+            {
+                "id": "4", "isOpenAccess": "N", "citedByCount": "5",
+                "title": "Closed 2", "source": "MED",
+            },
+        ]
+        result = citation_by_access_type(papers)
+        # Identical means => effect_size = 0.0 (pooled_std > 0 due to float precision, but mean diff = 0)
+        assert result["effect_size"] == 0.0
+
+
+class TestFulltextAvailabilityListBranch:
+    """Tests for _count_fulltext_availability list branch (hasFullText field)."""
+
+    def test_fulltext_from_list_has_fulltext(self):
+        """Test that hasFullText='Y' on list papers is counted."""
+        papers = [
+            {
+                "id": "1", "source": "MED", "title": "Paper 1",
+                "hasPDF": "N", "inPMC": "N", "inEPMC": "N",
+                "hasFullText": "Y",
+            },
+            {
+                "id": "2", "source": "MED", "title": "Paper 2",
+                "hasPDF": "N", "inPMC": "N", "inEPMC": "N",
+                "hasFullText": "Y",
+            },
+            {
+                "id": "3", "source": "MED", "title": "Paper 3",
+                "hasPDF": "N", "inPMC": "N", "inEPMC": "N",
+                "hasFullText": "N",
+            },
+        ]
+        result = access_distribution(papers)
+        assert result["total_papers"] == 3
+        # hasFullText='Y' should count as fulltext available even without hasPDF/inPMC/inEPMC
+        assert result["has_fulltext_api_count"] == 2

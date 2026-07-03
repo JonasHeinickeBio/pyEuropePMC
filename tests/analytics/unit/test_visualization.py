@@ -248,6 +248,7 @@ class TestCreateSummaryDashboard:
         assert isinstance(fig, plt.Figure)
         plt.close(fig)
 
+    @pytest.mark.slow
     def test_dashboard_save(self, sample_papers):
         """Test saving dashboard to file."""
         with tempfile.TemporaryDirectory() as tmpdir:

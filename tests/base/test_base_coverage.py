@@ -235,3 +235,189 @@ class TestBaseAPIClientCoverage:
             error_str = str(exc_info.value)
             assert "[HTTP403]" in error_str
             assert "forbidden" in error_str.lower() or "403" in error_str
+
+    def test_get_with_http_500_error(self):
+        """Test _get method with 500 status code."""
+        with patch.object(self.client.session, "get") as mock_get:
+            mock_http_error = requests.HTTPError("Server Error")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 500
+            mock_get.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._get("https://example.com/test")
+            assert exc_info.value.error_code == ErrorCodes.HTTP500
+
+    def test_get_with_http_429_error(self):
+        """Test _get method with 429 status code."""
+        with patch.object(self.client.session, "get") as mock_get:
+            mock_http_error = requests.HTTPError("Rate Limited")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 429
+            mock_get.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._get("https://example.com/test")
+            assert exc_info.value.error_code == ErrorCodes.RATE429
+
+    def test_get_with_http_403_error(self):
+        """Test _get method with 403 status code."""
+        with patch.object(self.client.session, "get") as mock_get:
+            mock_http_error = requests.HTTPError("Forbidden")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 403
+            mock_get.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._get("https://example.com/test")
+            assert exc_info.value.error_code == ErrorCodes.HTTP403
+
+    def test_get_with_http_unknown_error(self):
+        """Test _get method with unknown status code."""
+        with patch.object(self.client.session, "get") as mock_get:
+            mock_http_error = requests.HTTPError("Unknown")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 418
+            mock_get.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._get("https://example.com/test")
+            assert exc_info.value.error_code == ErrorCodes.NET001
+
+    def test_get_success_logging(self):
+        """Test _get method logs success on 200 response."""
+        with patch.object(self.client.session, "get") as mock_get:
+            mock_response = Mock()
+            mock_response.status_code = 200
+            mock_response.url = "https://example.com/test"
+            mock_get.return_value = mock_response
+
+            response = self.client._get("https://example.com/test")
+            assert response.status_code == 200
+
+    def test_post_with_http_500_error(self):
+        """Test _post method with 500 status code."""
+        with patch.object(self.client.session, "post") as mock_post:
+            mock_http_error = requests.HTTPError("Server Error")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 500
+            mock_post.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._post("https://example.com/test", data={})
+            assert exc_info.value.error_code == ErrorCodes.HTTP500
+
+    def test_post_with_http_429_error(self):
+        """Test _post method with 429 status code."""
+        with patch.object(self.client.session, "post") as mock_post:
+            mock_http_error = requests.HTTPError("Rate Limited")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 429
+            mock_post.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._post("https://example.com/test", data={})
+            assert exc_info.value.error_code == ErrorCodes.RATE429
+
+    def test_post_with_http_403_error(self):
+        """Test _post method with 403 status code."""
+        with patch.object(self.client.session, "post") as mock_post:
+            mock_http_error = requests.HTTPError("Forbidden")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 403
+            mock_post.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._post("https://example.com/test", data={})
+            assert exc_info.value.error_code == ErrorCodes.HTTP403
+
+    def test_post_with_http_unknown_error(self):
+        """Test _post method with unknown status code."""
+        with patch.object(self.client.session, "post") as mock_post:
+            mock_http_error = requests.HTTPError("Unknown")
+            mock_http_error.response = Mock()
+            mock_http_error.response.status_code = 418
+            mock_post.return_value.raise_for_status.side_effect = mock_http_error
+
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._post("https://example.com/test", data={})
+            assert exc_info.value.error_code == ErrorCodes.NET001
+
+    def test_post_with_network_error(self):
+        """Test _post method with network error."""
+        with patch.object(
+            self.client.session, "post", side_effect=requests.RequestException("Network error")
+        ):
+            with pytest.raises(APIClientError) as exc_info:
+                self.client._post("https://example.com/test", data={})
+            assert exc_info.value.error_code == ErrorCodes.NET001
+
+    def test_post_success_logging(self):
+        """Test _post method logs success on 200 response."""
+        with patch.object(self.client.session, "post") as mock_post:
+            mock_response = Mock()
+            mock_response.status_code = 200
+            mock_response.url = "https://example.com/test"
+            mock_post.return_value = mock_response
+
+            response = self.client._post("https://example.com/test", data={})
+            assert response.status_code == 200
+
+    def test_get_error_context_pdf_render(self):
+        """Test _get_error_context routes to PDF render."""
+        context = self.client._get_error_context("render.cgi?pdf=render", 403)
+        assert "PDF access denied" in context
+
+    def test_get_error_context_pdf_backend(self):
+        """Test _get_error_context routes to PDF backend."""
+        context = self.client._get_error_context("ptpmcrender.fcgi", 404)
+        assert "PDF not available via backend" in context
+
+    def test_xml_error_context_non_numeric_status(self):
+        """Test _get_xml_error_context with non-numeric status code."""
+        from pyeuropepmc.core.exceptions import ValidationError
+
+        with pytest.raises(ValidationError):
+            self.client._get_xml_error_context("fullTextXML", "abc")
+
+    def test_context_manager(self):
+        """Test context manager __enter__ and __exit__."""
+        client = BaseAPIClient()
+        with client as c:
+            assert c is client
+            assert not c.is_closed
+        assert client.is_closed
+
+    def test_close(self):
+        """Test close method."""
+        client = BaseAPIClient()
+        assert not client.is_closed
+        client.close()
+        assert client.is_closed
+        # Closing again should be safe
+        client.close()
+        assert client.is_closed
+
+    def test_repr(self):
+        """Test __repr__."""
+        client = BaseAPIClient()
+        rep = repr(client)
+        assert "BaseAPIClient" in rep
+        assert "active" in rep
+        client.close()
+        rep2 = repr(client)
+        assert "closed" in rep2
+
+    def test_get_with_closed_session(self):
+        """Test _get raises error when session is closed."""
+        self.client.close()
+        with pytest.raises(APIClientError) as exc_info:
+            self.client._get("https://example.com/test")
+        assert exc_info.value.error_code == ErrorCodes.FULL007
+
+    def test_post_with_closed_session(self):
+        """Test _post raises error when session is closed."""
+        self.client.close()
+        with pytest.raises(APIClientError) as exc_info:
+            self.client._post("https://example.com/test", data={})
+        assert exc_info.value.error_code == ErrorCodes.FULL007

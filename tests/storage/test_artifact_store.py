@@ -189,6 +189,57 @@ class TestArtifactStore:
         # After GC, should be below limit (though exact behavior may vary)
         assert usage["used_bytes"] <= temp_store.size_limit_bytes * 1.2  # Allow some tolerance
 
+    def test_delete_nonexistent(self, temp_store):
+        """Test delete returns False for nonexistent artifact (line 364)."""
+        assert not temp_store.delete("test:nonexistent")
+
+    def test_retrieve_missing_artifact_file(self, temp_store):
+        """Test retrieve when index exists but artifact file missing (lines 299-300)."""
+        content = b"Test content"
+        temp_store.store("test:doc:1", content)
+        # Delete the artifact file manually
+        metadata = temp_store._load_index("test:doc:1")
+        assert metadata is not None
+        artifact_path = temp_store._get_artifact_path(metadata.hash_value)
+        artifact_path.unlink()
+        # Now retrieve should return None
+        result = temp_store.retrieve("test:doc:1")
+        assert result is None
+
+    def test_load_index_corrupted(self, temp_store):
+        """Test loading corrupted index returns None (lines 384-386)."""
+        content = b"Test content"
+        temp_store.store("test:doc:1", content)
+        # Corrupt the index file
+        index_path = temp_store._get_index_path("test:doc:1")
+        index_path.write_text("{invalid json}")
+        # Retrieve should return None
+        result = temp_store.retrieve("test:doc:1")
+        assert result is None
+
+    def test_garbage_collection_with_different_content(self, temp_store):
+        """Test GC triggers when disk limit exceeded with unique content (lines 402-408, 425-454)."""
+        # Set very low limit (200 bytes)
+        temp_store.size_limit_bytes = 200
+        # Store items with different content to create separate artifact files
+        temp_store.store("test:a", b"a" * 50)  # 50 bytes
+        temp_store.store("test:b", b"b" * 50)  # 50 bytes -> 100 total
+        # Third store should trigger GC
+        temp_store.store("test:c", b"c" * 200)  # 200 bytes, push over 200 limit
+        # Verify store still works after GC
+        assert temp_store.exists("test:c")
+
+    def test_clean_orphaned_corrupted_index(self, temp_store):
+        """Test _clean_orphaned_artifacts with corrupted index (lines 468-474)."""
+        content = b"Test content"
+        temp_store.store("test:doc:1", content)
+        # Create a corrupted index file
+        corrupted = temp_store.index_dir / "corrupted.json"
+        corrupted.write_text("not json at all")
+        # compact() calls _clean_orphaned_artifacts internally
+        stats = temp_store.compact()
+        assert stats["orphans_removed"] == 0  # our artifact is still referenced
+
     def test_clear(self, temp_store):
         """Test clearing all artifacts."""
         content = b"Test content"

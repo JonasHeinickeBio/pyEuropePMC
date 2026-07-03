@@ -1,0 +1,974 @@
+
+<!DOCTYPE article
+  PUBLIC "-//NLM//DTD JATS (Z39.96) Journal Archiving and Interchange DTD with MathML3 v1.4 20241031//EN" "JATS-archivearticle1-4-mathml3.dtd">
+<article id="mcn70195" xml:lang="en" article-type="research-article" dtd-version="1.4"><processing-meta base-tagset="archiving" mathml-version="3.0" table-model="xhtml" tagset-family="jats"><restricted-by>pmc</restricted-by></processing-meta><front><journal-meta><journal-id journal-id-type="nlm-ta">Matern Child Nutr</journal-id><journal-id journal-id-type="iso-abbrev">Matern Child Nutr</journal-id><journal-id journal-id-type="pmc-domain-id">3755</journal-id><journal-id journal-id-type="pmc-domain">maternalchild</journal-id><journal-id journal-id-type="publisher-id">MCN</journal-id><journal-title-group><journal-title>Maternal &amp; Child Nutrition</journal-title></journal-title-group><issn pub-type="ppub">1740-8695</issn><issn pub-type="epub">1740-8709</issn><publisher><publisher-name>Wiley</publisher-name></publisher></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13176631</article-id><article-id pub-id-type="pmcid-ver">PMC13176631.1</article-id><article-id pub-id-type="pmcaid">13176631</article-id><article-id pub-id-type="pmcaiid">13176631</article-id><article-id pub-id-type="pmid">42136131</article-id><article-id pub-id-type="doi">10.1111/mcn.70195</article-id><article-id pub-id-type="publisher-id">MCN70195</article-id><article-version article-version-type="pmc-version">1</article-version><article-categories><subj-group subj-group-type="overline"><subject>Original Article</subject></subj-group><subj-group subj-group-type="heading"><subject>Original Article</subject></subj-group></article-categories><title-group><article-title>Maternal Health and Sociodemographic Characteristics Influence Infant Growth to 24 Months in the Tunza Mwana Cohort: A Prospective Cohort Study</article-title></title-group><contrib-group><contrib id="mcn70195-cr-0001" contrib-type="author" corresp="yes"><name name-style="western"><surname>Hendrixson</surname><given-names initials="DT">David Taylor</given-names></name><xref rid="mcn70195-aff-0001" ref-type="aff">
+<sup>1</sup>
+</xref><address><email>dhendrix@uw.edu</email></address></contrib><contrib id="mcn70195-cr-0002" contrib-type="author"><name name-style="western"><surname>Tiwari</surname><given-names initials="R">Ruchi</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-5251-7250</contrib-id><xref rid="mcn70195-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib><contrib id="mcn70195-cr-0003" contrib-type="author"><name name-style="western"><surname>James</surname><given-names initials="P">Philip</given-names></name><xref rid="mcn70195-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="mcn70195-cr-0004" contrib-type="author"><name name-style="western"><surname>Bhutta</surname><given-names initials="ZA">Zulfiqar A.</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0003-0637-599X</contrib-id><xref rid="mcn70195-aff-0004" ref-type="aff">
+<sup>4</sup>
+</xref><xref rid="mcn70195-aff-0005" ref-type="aff">
+<sup>5</sup>
+</xref></contrib><contrib id="mcn70195-cr-0005" contrib-type="author"><name name-style="western"><surname>Briend</surname><given-names initials="A">André</given-names></name><xref rid="mcn70195-aff-0006" ref-type="aff">
+<sup>6</sup>
+</xref><xref rid="mcn70195-aff-0007" ref-type="aff">
+<sup>7</sup>
+</xref></contrib><contrib id="mcn70195-cr-0006" contrib-type="author"><name name-style="western"><surname>Isanaka</surname><given-names initials="S">Sheila</given-names></name><xref rid="mcn70195-aff-0008" ref-type="aff">
+<sup>8</sup>
+</xref><xref rid="mcn70195-aff-0009" ref-type="aff">
+<sup>9</sup>
+</xref></contrib><contrib id="mcn70195-cr-0007" contrib-type="author"><name name-style="western"><surname>Khara</surname><given-names initials="T">Tanya</given-names></name><xref rid="mcn70195-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="mcn70195-cr-0008" contrib-type="author"><name name-style="western"><surname>Lelijveld</surname><given-names initials="N">Natasha</given-names></name><xref rid="mcn70195-aff-0003" ref-type="aff">
+<sup>3</sup>
+</xref></contrib><contrib id="mcn70195-cr-0009" contrib-type="author"><name name-style="western"><surname>Manary</surname><given-names initials="MJ">Mark J.</given-names></name><xref rid="mcn70195-aff-0010" ref-type="aff">
+<sup>10</sup>
+</xref></contrib><contrib id="mcn70195-cr-0010" contrib-type="author"><name name-style="western"><surname>Mertens</surname><given-names initials="A">Andrew</given-names></name><contrib-id contrib-id-type="orcid" authenticated="false">https://orcid.org/0000-0002-1050-6721</contrib-id><xref rid="mcn70195-aff-0011" ref-type="aff">
+<sup>11</sup>
+</xref></contrib><contrib id="mcn70195-cr-0011" contrib-type="author"><name name-style="western"><surname>Moore</surname><given-names initials="SE">Sophie E.</given-names></name><xref rid="mcn70195-aff-0012" ref-type="aff">
+<sup>12</sup>
+</xref><xref rid="mcn70195-aff-0013" ref-type="aff">
+<sup>13</sup>
+</xref></contrib><contrib id="mcn70195-cr-0012" contrib-type="author"><name name-style="western"><surname>O'Brien</surname><given-names initials="KS">Kieran S.</given-names></name><xref rid="mcn70195-aff-0014" ref-type="aff">
+<sup>14</sup>
+</xref></contrib><contrib id="mcn70195-cr-0013" contrib-type="author"><name name-style="western"><surname>Wells</surname><given-names initials="J">Jonathan</given-names></name><xref rid="mcn70195-aff-0015" ref-type="aff">
+<sup>15</sup>
+</xref></contrib><contrib id="mcn70195-cr-0014" contrib-type="author"><name name-style="western"><surname>Lihanda</surname><given-names initials="P">Priscah</given-names></name><xref rid="mcn70195-aff-0016" ref-type="aff">
+<sup>16</sup>
+</xref></contrib><contrib id="mcn70195-cr-0015" contrib-type="author"><name name-style="western"><surname>Ochola</surname><given-names initials="E">Eric</given-names></name><xref rid="mcn70195-aff-0016" ref-type="aff">
+<sup>16</sup>
+</xref></contrib><contrib id="mcn70195-cr-0016" contrib-type="author"><name name-style="western"><surname>Aldrovandi</surname><given-names initials="G">Grace</given-names></name><xref rid="mcn70195-aff-0017" ref-type="aff">
+<sup>17</sup>
+</xref></contrib><contrib id="mcn70195-cr-0017" contrib-type="author"><name name-style="western"><surname>Singa</surname><given-names initials="BO">Benson O.</given-names></name><xref rid="mcn70195-aff-0016" ref-type="aff">
+<sup>16</sup>
+</xref></contrib><contrib id="mcn70195-cr-0018" contrib-type="author"><name name-style="western"><surname>McGrath</surname><given-names initials="CJ">Christine J.</given-names></name><xref rid="mcn70195-aff-0002" ref-type="aff">
+<sup>2</sup>
+</xref></contrib></contrib-group><aff id="mcn70195-aff-0001">
+<label>
+<sup>1</sup>
+</label>
+<named-content content-type="organisation-division">Department of Pediatrics</named-content>
+<institution>University of Washington</institution>
+<city>Seattle</city>
+<named-content content-type="country-part">Washington</named-content>
+<country country="US">USA</country>
+</aff><aff id="mcn70195-aff-0002">
+<label>
+<sup>2</sup>
+</label>
+<named-content content-type="organisation-division">Department of Global Health</named-content>
+<institution>University of Washington</institution>
+<city>Seattle</city>
+<named-content content-type="country-part">Washington</named-content>
+<country country="US">USA</country>
+</aff><aff id="mcn70195-aff-0003">
+<label>
+<sup>3</sup>
+</label>
+<institution>Emergency Nutrition Network</institution>
+<city>Oxford</city>
+<country country="GB">UK</country>
+</aff><aff id="mcn70195-aff-0004">
+<label>
+<sup>4</sup>
+</label>
+<named-content content-type="organisation-division">Center for Global Child Health</named-content>
+<institution>Hospital for Sick Children</institution>
+<city>Toronto</city>
+<country country="CA">Canada</country>
+</aff><aff id="mcn70195-aff-0005">
+<label>
+<sup>5</sup>
+</label>
+<named-content content-type="organisation-division">Institute for Global Health &amp; Development</named-content>
+<institution>The Aga Khan University</institution>
+<city>Karachi</city>
+<country country="PK">Pakistan</country>
+</aff><aff id="mcn70195-aff-0006">
+<label>
+<sup>6</sup>
+</label>
+<named-content content-type="organisation-division">Center for Child Health Research</named-content>
+<institution>Tampere University</institution>
+<city>Tampere</city>
+<country country="FI">Finland</country>
+</aff><aff id="mcn70195-aff-0007">
+<label>
+<sup>7</sup>
+</label>
+<named-content content-type="organisation-division">Department of Nutrition, Exercise and Sports</named-content>
+<institution>University of Copenhagen</institution>
+<city>Copenhagen</city>
+<country country="DK">Denmark</country>
+</aff><aff id="mcn70195-aff-0008">
+<label>
+<sup>8</sup>
+</label>
+<institution>Harvard T.H. Chan School of Public Health</institution>
+<city>Boston</city>
+<named-content content-type="country-part">Massachusetts</named-content>
+<country country="US">USA</country>
+</aff><aff id="mcn70195-aff-0009">
+<label>
+<sup>9</sup>
+</label>
+<institution>Epicentre</institution>
+<city>Paris</city>
+<country country="FR">France</country>
+</aff><aff id="mcn70195-aff-0010">
+<label>
+<sup>10</sup>
+</label>
+<named-content content-type="organisation-division">Department of Pediatrics</named-content>
+<institution>Washington University in St. Louis</institution>
+<city>St. Louis</city>
+<named-content content-type="country-part">Missouri</named-content>
+<country country="US">USA</country>
+</aff><aff id="mcn70195-aff-0011">
+<label>
+<sup>11</sup>
+</label>
+<named-content content-type="organisation-division">School of Public Health</named-content>
+<institution>University of California Berkeley</institution>
+<city>Berkeley</city>
+<named-content content-type="country-part">California</named-content>
+<country country="US">USA</country>
+</aff><aff id="mcn70195-aff-0012">
+<label>
+<sup>12</sup>
+</label>
+<institution>Kings College London</institution>
+<city>London</city>
+<country country="GB">UK</country>
+</aff><aff id="mcn70195-aff-0013">
+<label>
+<sup>13</sup>
+</label>
+<institution>Medical Research Unit the Gambia at the London School of Hygiene and Tropical Medicine</institution>
+<city>Fajara</city>
+<country country="GM">The Gambia</country>
+</aff><aff id="mcn70195-aff-0014">
+<label>
+<sup>14</sup>
+</label>
+<named-content content-type="organisation-division">Francis I. Proctor Foundation</named-content>
+<institution>University of California</institution>
+<city>San Francisco</city>
+<named-content content-type="country-part">California</named-content>
+<country country="US">USA</country>
+</aff><aff id="mcn70195-aff-0015">
+<label>
+<sup>15</sup>
+</label>
+<named-content content-type="organisation-division">Great Ormond Street Institute of Child Health (ICH)</named-content>
+<institution>University College London (UCL)</institution>
+<city>London</city>
+<country country="GB">UK</country>
+</aff><aff id="mcn70195-aff-0016">
+<label>
+<sup>16</sup>
+</label>
+<institution>Kenya Medical Research Institute</institution>
+<city>Nairobi</city>
+<country country="KE">Kenya</country>
+</aff><aff id="mcn70195-aff-0017">
+<label>
+<sup>17</sup>
+</label>
+<named-content content-type="organisation-division">Department of Pediatrics</named-content>
+<institution>University of California Los Angeles</institution>
+<city>Los Angeles</city>
+<named-content content-type="country-part">California</named-content>
+<country country="US">USA</country>
+</aff><author-notes><corresp id="correspondenceTo">
+<label>*</label>
+<bold>Correspondence:</bold> David Taylor Hendrixson (<email>dhendrix@uw.edu</email>)<break/>
+</corresp></author-notes><pub-date pub-type="epub"><day>14</day><month>5</month><year>2026</year></pub-date><pub-date pub-type="collection"><month>7</month><year>2026</year></pub-date><volume>22</volume><issue seq="20">3</issue><issue-id pub-id-type="pmc-issue-id">513723</issue-id><issue-id pub-id-type="doi">10.1111/mcn.v22.3</issue-id><elocation-id>e70195</elocation-id><history>
+<date date-type="rev-recd"><day>09</day><month>3</month><year>2026</year></date>
+<date date-type="received"><day>29</day><month>10</month><year>2025</year></date>
+<date date-type="accepted"><day>31</day><month>3</month><year>2026</year></date>
+</history><pub-history><event event-type="pmc-release"><date><day>14</day><month>05</month><year>2026</year></date></event><event event-type="pmc-live"><date><day>16</day><month>05</month><year>2026</year></date></event><event event-type="pmc-last-change"><date iso-8601-date="2026-05-16 17:25:17.650"><day>16</day><month>05</month><year>2026</year></date></event></pub-history><permissions><copyright-statement content-type="article-copyright">© 2026 The Author(s). <italic toggle="yes">Maternal &amp; Child Nutrition</italic> published by John Wiley &amp; Sons Ltd.</copyright-statement><license><ali:license_ref xmlns:ali="http://www.niso.org/schemas/ali/1.0/" specific-use="textmining" content-type="ccbylicense">https://creativecommons.org/licenses/by/4.0/</ali:license_ref><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="uri" xlink:href="https://creativecommons.org/licenses/by/4.0/">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pmc-pdf" xlink:href="MCN-22-e70195.pdf"><?pdf-name MCN-22-e70195.pdf?><?pdf-size 1972591?><?pdf-md5 c63effbc24c0988e0bd19343e35d6120?><?pdf-image-server-status NEVER_LOAD?><?pdf-cloudpmc-urn urn:app:c35a/13176631/c63effbc24c0/MCN-22-e70195.pdf?></self-uri><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" content-type="pdf" xlink:href="file:MCN-22-e70195.pdf"/><abstract><title>ABSTRACT</title><p>Upstream pathways influencing child growth are complex. Weight‐for‐age z‐score (WAZ) reflects both ponderal and linear growth and can identify children at high mortality risk. Using data from a prospective cohort of 326 mother‐child pairs in Kenya, we evaluated whether associations between maternal exposures and child growth outcomes in early and later childhood. Growth trajectories were examined using locally weighted scatterplot smoothing and piecewise linear mixed‐effect models with a knot at age 3 months. Poisson regression models examined associations between maternal characteristics and child underweight (WAZ &lt; −2) and stunting (LAZ &lt; −2) before and after 3 months. Mean WAZ increased to a peak at 3 months before declining steadily through 24 months. Lower maternal education (adjusted β [aβ] −0.18; 95% CI: −0.24, −0.13), household crowding (aβ −0.2; 95% CI: −0.28, −0.11), lower wealth quintile (aβ −0.04; 95% CI: −0.06, −0.02) and multiparity (aβ −0.16; 95% CI: −0.23, −0.1) were associated with lower monthly rate of change in WAZ prior to age 3 months. Younger maternal age was associated with an increased monthly rate of change in WAZ (aβ = 0.13; 95% CI: 0.08, 0.18) before 3 months and decreased monthly WAZ (aβ −0.02; 95% CI: −0.03, −0.01) after 3 months. Preterm birth was associated with increased risk of underweight in both periods (aRR 2.77; 95% CI: 1.39–5.50). Maternal mental health, intimate partner violence and adverse childhood experiences were not significantly associated with child growth. Maternal nutritional, socio‐economic and household‐level factors shape early growth, emphasising the need for cross‐sectoral programs to support growth.</p></abstract><abstract abstract-type="highlights"><title>Summary</title><p>
+<list list-type="bullet"><list-item><p>Upstream factors beyond nutrition that influence child growth are complex and not well understood.</p></list-item><list-item><p>Maternal nutritional status, education and socioeconomic status were associated with child growth outcomes to 24 months.</p></list-item><list-item><p>Factors associated with child growth differed in early infancy (&lt; 3 months) and later infancy (&gt; 3 months), underscoring the importance of timely programs to impact child growth.</p></list-item><list-item><p>These findings highlight the need for cross‐sectoral collaborations to develop innovative programs that address the diverse factors associated with child growth in the first 2 years of life.</p></list-item></list>
+</p></abstract><kwd-group><kwd id="mcn70195-kwd-0001">infant growth</kwd><kwd id="mcn70195-kwd-0002">Kenya</kwd><kwd id="mcn70195-kwd-0003">maternal health</kwd><kwd id="mcn70195-kwd-0004">stunting</kwd><kwd id="mcn70195-kwd-0005">underweight</kwd><kwd id="mcn70195-kwd-0006">wasting</kwd></kwd-group><funding-group><award-group id="funding-0001"><funding-source>
+<institution-wrap><institution>Eunice Kennedy Shriver National Institute of Child Health and Human Development</institution><institution-id institution-id-type="doi">10.13039/100000071</institution-id></institution-wrap>
+</funding-source><award-id>K23HD113374</award-id><award-id>R01HD096999 and F32HD116460</award-id></award-group><award-group id="funding-0002"><funding-source>
+<institution-wrap><institution>Irish Aid</institution><institution-id institution-id-type="doi">10.13039/100009099</institution-id></institution-wrap>
+</funding-source><award-id>HQPCR/2025/ENN</award-id></award-group></funding-group><counts><fig-count count="2"/><table-count count="3"/><page-count count="11"/><word-count count="8591"/></counts><custom-meta-group><custom-meta><meta-name>pmc-status-qastatus</meta-name><meta-value>0</meta-value></custom-meta><custom-meta><meta-name>pmc-status-live</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-status-embargo</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-status-released</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-open-access</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-legally-suppressed</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-has-supplement</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-pdf-only</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-suppress-copyright</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-real-version</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-is-scanned-article</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>pmc-prop-in-epmc</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>pmc-license-ref</meta-name><meta-value>CC BY</meta-value></custom-meta><custom-meta><meta-name>source-schema-version-number</meta-name><meta-value>2.0</meta-value></custom-meta><custom-meta><meta-name>cover-date</meta-name><meta-value>July 2026</meta-value></custom-meta><custom-meta><meta-name>details-of-publishers-convertor</meta-name><meta-value>Converter:WILEY_ML3GV2_TO_JATSPMC version:6.7.7 mode:remove_FC converted:15.05.2026</meta-value></custom-meta></custom-meta-group></article-meta></front><body><def-list list-content="abbreviations"><title>Abbreviations</title><def-item><term>ACE‐Q</term><def><p>adverse childhood experiences questionnaire</p></def></def-item><def-item><term>ART</term><def><p>antiretroviral therapy</p></def></def-item><def-item><term>GAD‐7</term><def><p>generalised anxiety disorder 7‐item</p></def></def-item><def-item><term>MDD‐W</term><def><p>minimum dietary diversity for women</p></def></def-item><def-item><term>MUAC</term><def><p>mid‐upper arm circumference</p></def></def-item><def-item><term>PHQ‐9</term><def><p>patient health questionnaire‐9</p></def></def-item><def-item><term>WLWH</term><def><p>women living with HIV</p></def></def-item></def-list><sec id="mcn70195-sec-0010"><label>1</label><title>Introduction</title><p>Childhood malnutrition remains a significant problem globally (United Nations Children's Fund, World Health Organization, International Bank for Reconstruction and Development/The World Bank <xref rid="mcn70195-bib-0056" ref-type="bibr">2025</xref>). Historically, there has been a focus on wasting (low weight‐for‐length <italic toggle="yes">z</italic>‐score) and stunting (low length‐for‐age <italic toggle="yes">z</italic>‐score); however, emerging evidence suggests that these measures alone may not effectively identify children at the highest risk of death and, when used in isolation, they miss the overlap between wasting and stunting (Myatt et al. <xref rid="mcn70195-bib-0038" ref-type="bibr">2018</xref>). Furthermore, studies have shown that weight‐for‐length can be difficult to measure accurately in resource‐constrained environments (Mwangome and Berkley <xref rid="mcn70195-bib-0037" ref-type="bibr">2014</xref>). Given this, focus has shifted to the weight‐for‐age <italic toggle="yes">z</italic>‐score (WAZ), which reflects both ponderal and linear growth (Sadler et al. <xref rid="mcn70195-bib-0044" ref-type="bibr">2021</xref>). Low WAZ (&lt; −3) identifies children with concurrent wasting and stunting (Myatt et al. <xref rid="mcn70195-bib-0038" ref-type="bibr">2018</xref>) and is strongly associated with elevated mortality risk (Khara et al. <xref rid="mcn70195-bib-0025" ref-type="bibr">2023</xref>).</p><p>The upstream pathways leading to underweight, wasting, stunting and concurrent wasting and stunting are complex and are not clearly understood, yet they represent important areas for nutrition policy and program development (Sadler et al. <xref rid="mcn70195-bib-0043" ref-type="bibr">2022</xref>; Wells et al. <xref rid="mcn70195-bib-0058" ref-type="bibr">2019</xref>). These upstream factors interact to constrain child growth and development. Comprehensive characterisation of maternal risk factors underlying infant and child growth over time may help to identify key risk factors driving these interconnected processes and elucidate conditions amenable to public health and clinical interventions to prevent various forms of undernutrition. Considerable evidence indicates that the risk factors and causes of underweight, wasting and stunting often overlap (Mertens et al. <xref rid="mcn70195-bib-0036" ref-type="bibr">2023</xref>), presenting an opportunity for integrated programming to address these conditions together. By focusing on shared pathways to growth faltering, public health and clinical interventions may be aligned to enhance efficiency and maximise impact across multiple forms of undernutrition.</p><p>Maternal and household characteristics have been associated with childhood growth outcomes in large‐scale studies. A cross‐sectional analysis of data from 35 low‐ and middle‐income countries (LMICs) identified low maternal height, lower maternal body mass index (BMI), low maternal education and low socioeconomic status as significant risk factors for childhood underweight, stunting and wasting (Li et al. <xref rid="mcn70195-bib-0033" ref-type="bibr">2020a</xref>). Similar risk factors have been identified for infant underweight and wasting across survey data from 56 LMICs (Kerac et al. <xref rid="mcn70195-bib-0024" ref-type="bibr">2025</xref>). Additionally, several large‐scale studies have demonstrated an association between concurrent wasting and stunting and factors such as the lowest socioeconomic status, lack of maternal formal education and maternal underweight (Amadu et al. <xref rid="mcn70195-bib-0002" ref-type="bibr">2021</xref>; Chowdhury et al. <xref rid="mcn70195-bib-0009" ref-type="bibr">2022</xref>). While previous studies have examined associations between maternal factors and child growth outcomes, most have focused primarily on maternal anthropometric, health and socioeconomic characteristics (Mertens et al. <xref rid="mcn70195-bib-0036" ref-type="bibr">2023</xref>). These studies have often lacked assessment of other potentially important factors, such as maternal mental health, adverse childhood experiences and exposure to intimate partner violence. Moreover, longitudinal data beginning in pregnancy provides a unique opportunity to identify upstream determinants of child growth trajectories that may be amenable to intervention.</p><p>We aimed to explore maternal factors as key upstream determinants of child growth trajectories from birth to 24 months of age, using data from a prospective longitudinal cohort. Our primary objective was to examine associations between maternal characteristics during late pregnancy and the exclusive breastfeeding period with child WAZ from birth to 24 months and with underweight (WAZ &lt; −2) in the first 24 months, and whether associations between maternal exposures and child growth outcomes remained consistent or varied across different stages of early infancy. Secondary objectives included examining associations between maternal factors and length‐for‐age <italic toggle="yes">z</italic>‐score (LAZ) and weight‐for‐length <italic toggle="yes">z</italic>‐score (WLZ) over the same period, as well as stunting (LAZ &lt; −2), and wasting (WLZ &lt; −2) to 24 months. By identifying maternal factors that are consistently associated with child growth, and those that were specific to particular outcomes or time periods, we sought to inform the development of more targeted and timely prevention programs.</p></sec><sec sec-type="methods" id="mcn70195-sec-0020"><label>2</label><title>Methods</title><sec id="mcn70195-sec-0030"><label>2.1</label><title>Study Setting and Population</title><p>The Tunza Mwana prospective cohort study enrolled pregnant women living with and without HIV at the Migori County Referral Hospital and St. Joseph's Mission Hospital in Migori County, Kenya. Women and their children were followed to 2‐years postpartum. The study was approved by the appropriate institutional review boards. All women provided written informed consent for themselves and their child to participate in the study.</p><p>Women were eligible for enrolment if they were between 28 and 42 weeks' gestation, aged 18–40 years, planning to primarily breastfeed their infant for at least 6 months, willing to utilise HIV services if living with HIV, and willing to provide written informed consent. The date of last menstrual period (LMP) was used to estimate the gestational age of pregnancy.</p></sec><sec id="mcn70195-sec-0040"><label>2.2</label><title>Outcomes</title><p>WAZ and underweight (WAZ &lt; −2) were selected as the primary outcomes. These measures were chosen because they reflect both ponderal and linear growth (Sadler et al. <xref rid="mcn70195-bib-0044" ref-type="bibr">2021</xref>), underweight is strongly associated with mortality risk (Khara et al. <xref rid="mcn70195-bib-0025" ref-type="bibr">2023</xref>) and infant weight is generally measured more accurately than length. Secondary outcomes included LAZ, WLZ, stunting (LAZ &lt; −2) and wasting (WLZ &lt; −2).</p></sec><sec id="mcn70195-sec-0050"><label>2.3</label><title>Exposures</title><p>We examined associations with exposures in late pregnancy and the exclusive breastfeeding period (Supporting Information: Table <xref rid="mcn70195-suppl-0002" ref-type="supplementary-material">S1</xref>). These exposures included maternal socio‐demographic characteristics (education, household wealth, crowding), clinical factors (anthropometry and illness), complicated pregnancy (infection, bleeding, high blood pressure, preeclampsia or COVID during pregnancy or hospitalised during pregnancy), prematurity, parity, dietary indicators (Minimum Dietary Diversity for Women [MDD‐W] (FAO and FHI 360 <xref rid="mcn70195-bib-0015" ref-type="bibr">2016</xref>) and Household Food Insecurity Access Scale [HFIAS] (Jennifer Coates et al. <xref rid="mcn70195-bib-0012" ref-type="bibr">2007</xref>), anaemia in pregnancy, iron‐folic acid supplementation, mental health measures (patient health questionnaire‐9 [PHQ‐9], generalised anxiety disorder 7‐item [GAD‐7]), intimate partner violence (Soeken et al. <xref rid="mcn70195-bib-0048" ref-type="bibr">1998</xref>) and adverse childhood experiences (World Health Organization <xref rid="mcn70195-bib-0059" ref-type="bibr">2018</xref>).</p></sec><sec id="mcn70195-sec-0060"><label>2.4</label><title>Data Collection</title><p>Trained study staff collected data at enrolment and follow‐up visits within 7 days of delivery, at Weeks 3 and 6, and at months 3, 6, 9, 12, 18 and 24 postpartum. Women were interviewed at enrolment to collect sociodemographic and economic information, household food insecurity using the HFIAS, dietary diversity using the MDD‐W, depressive symptoms using the PHQ‐9 (Kroenke et al. <xref rid="mcn70195-bib-0031" ref-type="bibr">2001</xref>), anxiety symptoms using the GAD‐7 (Spitzer et al. <xref rid="mcn70195-bib-0049" ref-type="bibr">2006</xref>), intimate partner violence using the Abuse Assessment Screen (AAS) (Soeken et al. <xref rid="mcn70195-bib-0048" ref-type="bibr">1998</xref>), adverse childhood experiences by the Adverse Childhood Experiences Questionnaire (ACE‐Q) (World Health Organization <xref rid="mcn70195-bib-0059" ref-type="bibr">2018</xref>), current illness, and medical and obstetric history. Among women living with HIV (WLWH), data were collected on antiretroviral therapy (ART) regimen and other HIV‐related characteristics. Maternal height was measured at enrolment, and weight and mid‐upper arm circumference (MUAC) were measured at each visit.</p><p>At each postpartum visit, child data collection included anthropometric measurements (weight, length, head circumference and MUAC) obtained in triplicate using standard protocols, current health, history of recent illness and hospitalisations and medication use including antibiotics. Among children born to WLWH, data were collected on antiretroviral (ARV) prophylaxis from birth and receipt of cotrimoxazole, which begins at age 6 weeks per Kenya guidelines. Staff administered a standardised questionnaire to assess breastfeeding practices and introduction of other infant foods, including frequency of breastfeeding, 24‐h dietary intake in the mother and infant, and minimum dietary diversity (MDD) for children aged 6–23 months (Tufts University <xref rid="mcn70195-bib-0055" ref-type="bibr">2023</xref>). Infants born to WLWH underwent HIV PCR testing at week 6 and months 6 and 12 and HIV antibody testing at month 18, per Kenya guidelines. Mothers without HIV underwent HIV re‐testing at 6, 12 and 24 months postpartum. Any mother or infant newly diagnosed with HIV was referred to the HIV Care Clinic. Women or children who were diagnosed with HIV infection during 2‐year follow‐up continued to participate in the study.</p></sec><sec id="mcn70195-sec-0070"><label>2.5</label><title>Statistical Analysis</title><p>We examined associations between maternal characteristics and child growth outcomes. <italic toggle="yes">Z</italic>‐scores were calculated using the WHO Child Growth Standards Anthro package (version 1.0.0) in R. Length measurements at follow‐up visits that were ≤ 0.5 cm shorter than the previous visit were considered implausible and excluded. Additionally, z‐scores above or below the predefined WHO ‘flags’ (−6 &lt; LAZ &gt; 6, −6 &lt; WAZ &gt; 5, −5 &lt; WLZ &gt; 5) were compared to other values for the same child and excluded if deemed implausible.</p><p>A mixed effects spline model was used to examine trajectories of continuous outcomes (WAZ, LAZ and WLZ) from birth to 2 years in three stages. First, locally weighted scatterplot smoothing (LOESS) curves were fitted to visualise the outcome trajectories over time. Second, guided by the LOESS curves, piecewise linear mixed‐effect models with knots at 3 and 6 months were compared to account for observed nonlinear growth patterns. A fixed knot at Month 3 was selected as the best knot placement for modelling the outcome trajectories based on the Akaike information criterion (AIC) values for primary outcome (WAZ) and its alignment with the LOESS trajectory. Finally, the 3‐month knot was used to fit the final piecewise spline models for each exposure. with interaction terms between time (child age in months), the determinants of interest, and linear splines for time (child age in months) with a knot at month 3. For each determinant, we estimated the difference in monthly WAZ, LAZ and WLZ before and after month 3 and used the <italic toggle="yes">p</italic>‐value of the interaction term(s) to determine the statistical significance of the association between each determinant and the monthly rate of change in WAZ/LAZ/WLZ in early versus later infancy (&lt; 3 vs. &gt; 3 months). The models were adjusted for the following variables selected a priori: maternal age (years), wealth index (a grouped linear variable: 4 = lowest quintile, 3 = second lowest quintile, 2 = third [middle] quintile, 1 = fourth quintile, 0 = fifth [highest] quintile), gestational age (in weeks), infant sex, birth weight (for WAZ and WLZ) and birth length (for LAZ) as these factors have been associated with infant growth in previous studies (Li et al. <xref rid="mcn70195-bib-0033" ref-type="bibr">2020a</xref>; Mertens et al. <xref rid="mcn70195-bib-0036" ref-type="bibr">2023</xref>). Notably, we excluded continuous maternal age from models analysing young maternal age as a determinant and gestational age from models for preterm birth.</p><p>Unadjusted and adjusted Poisson regression models with robust variance estimation (Zou <xref rid="mcn70195-bib-0063" ref-type="bibr">2004</xref>) were used to assess associations between maternal determinants and binary outcomes (underweight, stunting, wasting) before 3 months and after 3 months as this was the time point identified previously. All statistical tests were two‐sided with a significance level of 5%. No adjustments for multiple comparisons were made given the exploratory nature of this study.</p></sec><sec id="mcn70195-sec-0080"><label>2.6</label><title>Ethics Statement</title><p>The study was approved by the Kenya Medical Research Institute Scientific and Ethics Review Unit (0140/3940) and the University of Washington Institutional Review Board (STUDY00007708).</p></sec></sec><sec sec-type="results" id="mcn70195-sec-0090"><label>3</label><title>Results</title><p>The Tunza Mwana cohort study enrolled 350 pregnant women between November 2021 and February 2022, including 175 living without HIV and 175 WLWH. Of these, 326 children attended the 24‐month follow‐up visit and had data available for the primary outcome, WAZ, and were therefore included in the analysis (Tables <xref rid="mcn70195-tbl-0001" ref-type="table">1</xref>, <xref rid="mcn70195-tbl-0002" ref-type="table">2</xref>; Supporting Information: Figure <xref rid="mcn70195-suppl-0001" ref-type="supplementary-material">S1</xref>).</p><table-wrap position="float" id="mcn70195-tbl-0001" content-type="Table" orientation="portrait"><label>Table 1</label><caption><p>Characteristics of pregnant women at enrolment in the Tunza Mwana birth cohort study, Kenya.</p></caption><table frame="hsides" rules="groups"><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="left" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><thead valign="bottom"><tr valign="bottom" style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Maternal household and clinical characteristics<xref rid="mcn70195-tbl1-note-0001" ref-type="table-fn">a</xref>
+</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">N</italic> = 326</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Study site</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Migori county</td><td align="center" valign="top" rowspan="1" colspan="1">183 (56.1%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">St. Joseph Mission Hospital</td><td align="center" valign="top" rowspan="1" colspan="1">143 (43.9%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Age (years)</td><td align="center" valign="top" rowspan="1" colspan="1">26.9 (22.8, 32.6)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Completed primary education or below</td><td align="center" valign="top" rowspan="1" colspan="1">210 (64.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Married</td><td align="center" valign="top" rowspan="1" colspan="1">282 (84.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Food insecurity</td><td align="center" valign="top" rowspan="1" colspan="1">277 (85.0%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Secure</td><td align="center" valign="top" rowspan="1" colspan="1">97 (29.8%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Mild</td><td align="center" valign="top" rowspan="1" colspan="1">37 (11.3%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Moderate</td><td align="center" valign="top" rowspan="1" colspan="1">106 (32.5%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Severe</td><td align="center" valign="top" rowspan="1" colspan="1">83 (25.5%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Minimum dietary diversity score</td><td align="center" valign="top" rowspan="1" colspan="1">4 (4, 5)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Wealth index</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Quintile 1</td><td align="center" valign="top" rowspan="1" colspan="1">68 (20.8%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Quintile 2</td><td align="center" valign="top" rowspan="1" colspan="1">67 (20.6%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Quintile 3</td><td align="center" valign="top" rowspan="1" colspan="1">63 (19.3%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Quintile 4</td><td align="center" valign="top" rowspan="1" colspan="1">66 (20.2%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Quintile 5</td><td align="center" valign="top" rowspan="1" colspan="1">62 (19.1%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Improved household sanitation<xref rid="mcn70195-tbl1-note-0002" ref-type="table-fn">b</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">244 (74.8%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Improved source of household drinking water<xref rid="mcn70195-tbl1-note-0003" ref-type="table-fn">c</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">263 (80.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Household crowding (&gt; 3 people/room)</td><td align="center" valign="top" rowspan="1" colspan="1">35 (10.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Receiving financial support from the child's father</td><td align="center" valign="top" rowspan="1" colspan="1">289 (88.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Depressive symptoms, PHQ‐9 Score &gt; 5</td><td align="center" valign="top" rowspan="1" colspan="1">2 (0, 5)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Intimate partner violence</td><td align="center" valign="top" rowspan="1" colspan="1">50 (15.3%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Adverse childhood experiences score ≥ 2</td><td align="center" valign="top" rowspan="1" colspan="1">91 (27.9%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Mid‐upper arm circumference (MUAC) (cm)</td><td align="center" valign="top" rowspan="1" colspan="1">27.0 (25.3, 29.5)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Height (cm)</td><td align="center" valign="top" rowspan="1" colspan="1">162 (157, 166)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Gestational age at enrolment</td><td align="center" valign="top" rowspan="1" colspan="1">32.5 (31.0, 36.0)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Anaemia in pregnancy (&lt; 11.0 g/dL)</td><td align="center" valign="top" rowspan="1" colspan="1">99 (30.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Multiparous</td><td align="center" valign="top" rowspan="1" colspan="1">259 (79.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Hospitalised during pregnancy</td><td align="center" valign="top" rowspan="1" colspan="1">18 (5.5%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Complicated pregnancy<xref rid="mcn70195-tbl1-note-0004" ref-type="table-fn">d</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">94 (28.8%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Taking iron/folate supplement during pregnancy</td><td align="center" valign="top" rowspan="1" colspan="1">287 (88.0%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Maternal HIV characteristics</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Women living with HIV</td><td align="center" valign="top" rowspan="1" colspan="1">167 (51.2%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">ART initiation before pregnancy</td><td align="center" valign="top" rowspan="1" colspan="1">127 (76.0%)</td></tr></tbody></table><table-wrap-foot><fn id="mcn70195-tbl1-note-0001"><label>
+<sup>a</sup>
+</label><p>Values are <italic toggle="yes">n</italic> (%) or median (IQR).</p></fn><fn id="mcn70195-tbl1-note-0002"><label>
+<sup>b</sup>
+</label><p>Improved sanitation includes flush or pour‐flush to a piped sewer system, septic tank pit latrines, ventilated‐improved pit latrines or pit latrines with slab or composting toilets.</p></fn><fn id="mcn70195-tbl1-note-0003"><label>
+<sup>c</sup>
+</label><p>Improved water sources include household connections, public standpipes, boreholes, protected dug wells, protected springs and rainwater collection.</p></fn><fn id="mcn70195-tbl1-note-0004"><label>
+<sup>d</sup>
+</label><p>Defined as having hypertension, preeclampsia, eclampsia, infection or bleeding during pregnancy.</p></fn></table-wrap-foot><permissions><copyright-holder>John Wiley &amp; Sons, Ltd.</copyright-holder></permissions></table-wrap><table-wrap position="float" id="mcn70195-tbl-0002" content-type="Table" orientation="portrait"><label>Table 2</label><caption><p>Infant birth and nutritional characteristics.</p></caption><table frame="hsides" rules="groups"><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="left" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><thead valign="bottom"><tr valign="bottom" style="border-bottom:solid 1px #000000"><th align="left" valign="bottom" rowspan="1" colspan="1">Birth and infant characteristics</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">N</italic> = 326</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Female</td><td align="center" valign="top" rowspan="1" colspan="1">154 (47.2%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Gestational age (weeks) at birth</td><td align="center" valign="top" rowspan="1" colspan="1">39.0 (38.0, 40.0)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Preterm birth (&lt; 37 weeks)</td><td align="center" valign="top" rowspan="1" colspan="1">31 (9.5%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Weight (kg) within 7 days of birth</td><td align="center" valign="top" rowspan="1" colspan="1">3.2 (2.9, 3.6)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Low birth weight (&lt; 2.5 kg)</td><td align="center" valign="top" rowspan="1" colspan="1">18 (5.5%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Small vulnerable newborn<xref rid="mcn70195-tbl2-note-0002" ref-type="table-fn">a</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">58 (17.8%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Length (cm) within 7 days of birth</td><td align="center" valign="top" rowspan="1" colspan="1">49.6 (48.3, 51.0)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">HIV exposed uninfected</td><td align="center" valign="top" rowspan="1" colspan="1">167 (51.4%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Among HIV exposed, uninfected: ARV prophylaxis from birth</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Nevirapine plus zidovudine</td><td align="center" valign="top" rowspan="1" colspan="1">131 (78.4%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Zidovudine or nevirapine alone</td><td align="center" valign="top" rowspan="1" colspan="1">7 (7.2%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Duration of breastfeeding (months)</td><td align="center" valign="top" rowspan="1" colspan="1">16 (12, 19)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Exclusive breastfeeding for 6 months</td><td align="center" valign="top" rowspan="1" colspan="1">181 (55.5%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Breastfeeding at 12 months</td><td align="center" valign="top" rowspan="1" colspan="1">289 (88.7%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Child hospitalised with diarrhoea or diagnosis of malaria or any respiratory tract infection</td><td align="center" valign="top" rowspan="1" colspan="1">26 (7.9%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Growth characteristics prior to 3 months</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Underweight</td><td align="center" valign="top" rowspan="1" colspan="1">36 (11.0%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Stunted</td><td align="center" valign="top" rowspan="1" colspan="1">52 (16.0%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Wasted</td><td align="center" valign="top" rowspan="1" colspan="1">45 (13.8%)</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Growth characteristics after 3 months</td><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Underweight</td><td align="center" valign="top" rowspan="1" colspan="1">51 (15.6%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Stunted</td><td align="center" valign="top" rowspan="1" colspan="1">130 (39.9%)</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Wasted</td><td align="center" valign="top" rowspan="1" colspan="1">29 (8.9%)</td></tr></tbody></table><table-wrap-foot><fn id="mcn70195-tbl2-note-0001"><p>
+<italic toggle="yes">Note:</italic> Values are <italic toggle="yes">n</italic> (%) or median (IQR).</p></fn><fn id="mcn70195-tbl2-note-0002"><label>
+<sup>a</sup>
+</label><p>Children who were born preterm, small‐for‐gestational age (SGA), or with low birth weight (LBW).</p></fn></table-wrap-foot><permissions><copyright-holder>John Wiley &amp; Sons, Ltd.</copyright-holder></permissions></table-wrap><sec id="mcn70195-sec-0100"><label>3.1</label><title>WAZ, LAZ and WLZ Growth Trajectories</title><p>Figure <xref rid="mcn70195-fig-0001" ref-type="fig">1</xref> shows the LOESS curves of WAZ, LAZ and WLZ from birth to 24 months. Mean WAZ increased to a peak at 3 months before declining steadily through 24 months. LAZ declined consistently over time, while WLZ rose sharply to a peak at 3 months, dropped to a nadir at 12 months, and then began to recover (Figure <xref rid="mcn70195-fig-0001" ref-type="fig">1</xref>). Results of piecewise linear mixed‐effect models with a knot at month 3, identified several maternal demographic characteristics that were associated with infant growth trajectories Younger maternal age was associated with increased monthly rate of change in WAZ before 3 months (0.13; 95% CI: 0.08 to 0.18) but decreased monthly rate of change in WAZ after 3 months (−0.02; 95% CI: −0.03 to −0.01) (Figure <xref rid="mcn70195-fig-0002" ref-type="fig">2</xref>, Supporting Information: Table <xref rid="mcn70195-suppl-0002" ref-type="supplementary-material">S2</xref>). Multiparity was associated with decreased monthly rate of change in WAZ before 3 months (−0.16; 95% CI: −0.23 to −0.1) and increased monthly rate of change in WAZ after 3 months (0.01; 95% CI: 0.00 to 0.02). Household crowding (−0.19; 95% CI: −0.28 to −0.11) and lower wealth quintile (−0.04; 95% CI: −0.06 to −0.02) were associated with decreased monthly rate of change in WAZ before 3 months. After 3 months, moderate/severe food insecurity (−0.01, 95% CI: −0.02 to 0.00) and absence of iron‐folate supplementation (−0.01; 95% CI: −0.02 to −0.001) were associated with decreased monthly rate of change in WAZ.</p><fig position="float" fig-type="Figure" id="mcn70195-fig-0001" orientation="portrait"><label>Figure 1</label><caption><p>Smoothed growth trajectories of children from birth to 24 months. Locally weighted scatterplot smoothing (LOESS) curves were fitted for WAZ, LAZ and WLZ from birth to 24 months to inform piecewise linear mixed‐effect models.</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-1" orientation="portrait" xlink:href="MCN-22-e70195-g001.jpg"><?image-name MCN-22-e70195-g001.jpg?><?image-size 37183?><?image-md5 5e2a906c9269c149ae3c810a35f5dbc6?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 622?><?image-original-width 1000?><?image-scaled-height 414?><?image-scaled-width 666?><?image-cloudpmc-urn urn:cdn:blobs/c35a/13176631/5e2a906c9269/MCN-22-e70195-g001.jpg?><?thumb-name MCN-22-e70195-g001.gif?><?thumb-size 2734?><?thumb-md5 774b262e381ce0c97e2b5a6bb2ae63da?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 128?><?thumb-cloudpmc-urn urn:cdn:blobs/c35a/13176631/774b262e381c/MCN-22-e70195-g001.gif?></graphic></fig><fig position="float" fig-type="Figure" id="mcn70195-fig-0002" orientation="portrait"><label>Figure 2</label><caption><p>Forest plots of risk factors and child growth (WAZ, LAZ, WLZ) before and after 3 months of age. We fitted a piece‐wise linear mixed‐effects regression model with interaction terms between time (child age in months) and the determinants of interest, linear splines for time (child age in months) with a knot at Month 3 and the determinant of interest. For each determinant, we estimated the differences in <italic toggle="yes">z</italic>‐scores per month before Month 3 and after Month 3 and used the <italic toggle="yes">p</italic>‐value of the interaction term(s) to determine the statistical significance of the association between each determinant and the change in monthly WAZ, LAZ, WLZ. Models were adjusted for maternal age, wealth index, gestational age at birth, infant sex, birth weight (WAZ) and birth length (LAZ).</p></caption><graphic xmlns:xlink="http://www.w3.org/1999/xlink" position="anchor" id="jats-graphic-3" orientation="portrait" xlink:href="MCN-22-e70195-g002.jpg"><?image-name MCN-22-e70195-g002.jpg?><?image-size 59586?><?image-md5 13cd616f1808405a07f05ff36028a80a?><?image-image-server-status LOAD_COMPLETED?><?image-original-height 394?><?image-original-width 910?><?image-scaled-height 262?><?image-scaled-width 606?><?image-cloudpmc-urn urn:cdn:blobs/c35a/13176631/13cd616f1808/MCN-22-e70195-g002.jpg?><?thumb-name MCN-22-e70195-g002.gif?><?thumb-size 5499?><?thumb-md5 a281faec4193bcb16677a52c1b75f3f8?><?thumb-image-server-status NEVER_LOAD?><?thumb-scaled-height 80?><?thumb-scaled-width 184?><?thumb-cloudpmc-urn urn:cdn:blobs/c35a/13176631/a281faec4193/MCN-22-e70195-g002.gif?></graphic></fig><p>Household crowding was associated with decreased monthly rate of change in LAZ before 3 months (−0.10; 95% CI: −0.19 to 0.01) (Figure <xref rid="mcn70195-fig-0002" ref-type="fig">2</xref>, Supporting Information: Table <xref rid="mcn70195-suppl-0002" ref-type="supplementary-material">S2</xref>). After 3 months, being unmarried (−0.01; 95% CI: −0.023 to −0.001) and lacking financial support from a partner (−0.02; 95% CI: −0.03 to −0.00) were associated with decreased monthly rate of change in LAZ. In contrast, maternal anaemia in pregnancy was associated with increased monthly rate of change in LAZ before 3 months (0.07; 95% CI: 0.01 to 0.13).</p><p>Younger maternal age was associated with increased monthly rate of change in WLZ before 3 months (0.23; 95% CI: 0.15 to 0.30) but decreased monthly rate of change in WLZ after 3 months (−0.03; 95% CI: −0.04 to −0.01) (Figure <xref rid="mcn70195-fig-0002" ref-type="fig">2</xref>, Supporting Information: Table <xref rid="mcn70195-suppl-0002" ref-type="supplementary-material">S3</xref>). Lower wealth quintile was associated with decreased monthly rate of change in WLZ before 3 months (−0.07; 95% CI: −0.09 to −0.04). After 3 months, being unmarried (−0.01; 95% CI: −0.02 to −0.00) and having no financial support from their partner (−0.01; 95% CI: −0.03 to −0.00) were associated with decreased monthly rate of change in WLZ. Maternal anaemia in pregnancy was associated with increased monthly rate of change in WLZ (0.07; 95% CI: 0.01 to 0.13) before 3 months.</p><p>Among WLWH, ART initiation during pregnancy was associated with increased in WAZ (0.09; 95% CI: 0.003 to 0.18) in early infancy (&lt; 3 months) compared to children whose mothers initiated ART before pregnancy (Figure <xref rid="mcn70195-fig-0002" ref-type="fig">2</xref>).</p></sec><sec id="mcn70195-sec-0110"><label>3.2</label><title>Underweight, Stunting and Wasting</title><p>During the first 3 months of life, 11.0% children were underweight, 16.0% were stunted and 13.8% were wasted. Between 3 and 24 months, 15.6% were underweight, 39.9% were stunted and 8.9% were wasted (Table <xref rid="mcn70195-tbl-0002" ref-type="table">2</xref>).</p><p>Among all the maternal factors investigated, lower gestational age and preterm birth were associated with increased risk of underweight before 3 months in adjusted and unadjusted models and after 3 months in adjusted models (Table <xref rid="mcn70195-tbl-0003" ref-type="table">3</xref>). Lower wealth quintile and lack of financial support from the father were also associated with increased risk of underweight after 3 months in unadjusted models, but this was attenuated in adjusted models (Table <xref rid="mcn70195-tbl-0003" ref-type="table">3</xref>). Increased maternal MUAC was associated with decreased risk of underweight after 3 months only in unadjusted models.</p><table-wrap position="float" id="mcn70195-tbl-0003" content-type="Table" orientation="portrait"><label>Table 3</label><caption><p>Associations of characteristics of mother and children enrolled in the Tunza Mwana study, Kenya, with underweight.</p></caption><table frame="hsides" rules="groups"><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="left" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><col style="border-right:solid 1px #000000; border-bottom:solid 1px #000000" align="center" span="1"/><thead valign="bottom"><tr valign="bottom" style="border-bottom:solid 1px #000000"><th valign="middle" rowspan="2" align="left" colspan="1">Characteristics</th><th colspan="4" align="center" valign="bottom" rowspan="1">Early underweight (≤ 3 months)</th><th align="center" colspan="4" valign="bottom" rowspan="1">Underweight at &gt; 3 months</th></tr><tr valign="bottom" style="border-bottom:solid 1px #000000"><th align="center" valign="bottom" rowspan="1" colspan="1">RR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p‐</italic> value</th><th align="center" valign="bottom" rowspan="1" colspan="1">aRR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p‐</italic> value</th><th align="center" valign="bottom" rowspan="1" colspan="1">RR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p‐</italic> value</th><th align="center" valign="bottom" rowspan="1" colspan="1">aRR (95% CI)</th><th align="center" valign="bottom" rowspan="1" colspan="1">
+<italic toggle="yes">p‐</italic> value</th></tr></thead><tbody valign="top"><tr><td align="left" valign="top" rowspan="1" colspan="1">Sociodemographic information</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Age &lt; 25 years</td><td align="center" valign="top" rowspan="1" colspan="1">0.93 (0.49, 1.77)</td><td align="center" valign="top" rowspan="1" colspan="1">0.832</td><td align="center" valign="top" rowspan="1" colspan="1">0.90 (0.47, 1.74)</td><td align="center" valign="top" rowspan="1" colspan="1">0.761</td><td align="center" valign="top" rowspan="1" colspan="1">0.62 (0.35, 1.11)</td><td align="center" valign="top" rowspan="1" colspan="1">0.107</td><td align="center" valign="top" rowspan="1" colspan="1">0.9 (0.47, 1.74)</td><td align="center" valign="top" rowspan="1" colspan="1">0.761</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Primary education or below</td><td align="center" valign="top" rowspan="1" colspan="1">1.1 (0.57, 2.13)</td><td align="center" valign="top" rowspan="1" colspan="1">0.766</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.48, 2.02)</td><td align="center" valign="top" rowspan="1" colspan="1">0.958</td><td align="center" valign="top" rowspan="1" colspan="1">1.21 (0.70, 2.09)</td><td align="center" valign="top" rowspan="1" colspan="1">0.497</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.48, 2.02)</td><td align="center" valign="top" rowspan="1" colspan="1">0.958</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Unmarried<xref rid="mcn70195-tbl3-note-0003" ref-type="table-fn">a</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.13 (0.5, 2.57)</td><td align="center" valign="top" rowspan="1" colspan="1">0.770</td><td align="center" valign="top" rowspan="1" colspan="1">1.20 (0.52, 2.76)</td><td align="center" valign="top" rowspan="1" colspan="1">0.673</td><td align="center" valign="top" rowspan="1" colspan="1">1.05 (0.53, 2.10)</td><td align="center" valign="top" rowspan="1" colspan="1">0.886</td><td align="center" valign="top" rowspan="1" colspan="1">1.2 (0.52, 2.76)</td><td align="center" valign="top" rowspan="1" colspan="1">0.673</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Maternal anthropometry</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Shorter height<xref rid="mcn70195-tbl3-note-0004" ref-type="table-fn">b</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.51 (0.79, 2.88)</td><td align="center" valign="top" rowspan="1" colspan="1">0.209</td><td align="center" valign="top" rowspan="1" colspan="1">1.89 (0.95, 3.76)</td><td align="center" valign="top" rowspan="1" colspan="1">0.069</td><td align="center" valign="top" rowspan="1" colspan="1">1.26 (0.73, 2.18)</td><td align="center" valign="top" rowspan="1" colspan="1">0.408</td><td align="center" valign="top" rowspan="1" colspan="1">1.89 (0.95, 3.76)</td><td align="center" valign="top" rowspan="1" colspan="1">0.069</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">MUAC, cm</td><td align="center" valign="top" rowspan="1" colspan="1">0.97 (0.88, 1.08)</td><td align="center" valign="top" rowspan="1" colspan="1">0.603</td><td align="center" valign="top" rowspan="1" colspan="1">0.96 (0.86, 1.07)</td><td align="center" valign="top" rowspan="1" colspan="1">0.441</td><td align="center" valign="top" rowspan="1" colspan="1">0.88 (0.80, 0.97)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.008</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.96 (0.86, 1.07)</td><td align="center" valign="top" rowspan="1" colspan="1">0.441</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Household factors</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Lower wealth quintile</td><td align="center" valign="top" rowspan="1" colspan="1">1.02 (0.83, 1.26)</td><td align="center" valign="top" rowspan="1" colspan="1">0.838</td><td align="center" valign="top" rowspan="1" colspan="1">0.97 (0.8, 1.19)</td><td align="center" valign="top" rowspan="1" colspan="1">0.802</td><td align="center" valign="top" rowspan="1" colspan="1">1.22 (1.02, 1.47)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.031</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.97 (0.8, 1.19)</td><td align="center" valign="top" rowspan="1" colspan="1">0.802</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Household crowding<xref rid="mcn70195-tbl3-note-0005" ref-type="table-fn">
+<sup>c</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.34 (0.56, 3.22)</td><td align="center" valign="top" rowspan="1" colspan="1">0.512</td><td align="center" valign="top" rowspan="1" colspan="1">1.24 (0.49, 3.11)</td><td align="center" valign="top" rowspan="1" colspan="1">0.647</td><td align="center" valign="top" rowspan="1" colspan="1">1.55 (0.79, 3.02)</td><td align="center" valign="top" rowspan="1" colspan="1">0.201</td><td align="center" valign="top" rowspan="1" colspan="1">1.24 (0.49, 3.11)</td><td align="center" valign="top" rowspan="1" colspan="1">0.647</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">No financial support the father</td><td align="center" valign="top" rowspan="1" colspan="1">1.26 (0.52, 3.04)</td><td align="center" valign="top" rowspan="1" colspan="1">0.607</td><td align="center" valign="top" rowspan="1" colspan="1">1.23 (0.52, 2.86)</td><td align="center" valign="top" rowspan="1" colspan="1">0.637</td><td align="center" valign="top" rowspan="1" colspan="1">1.91 (1.04, 3.47)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.035</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.23 (0.52, 2.86)</td><td align="center" valign="top" rowspan="1" colspan="1">0.637</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Obstetric history and medical history</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Gestational age (weeks)</td><td align="center" valign="top" rowspan="1" colspan="1">0.84 (0.73, 0.97)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.014</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.85 (0.74, 0.97)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.015</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.99 (0.87, 1.13)</td><td align="center" valign="top" rowspan="1" colspan="1">0.920</td><td align="center" valign="top" rowspan="1" colspan="1">0.85 (0.74, 0.97)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.015</bold>
+</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Preterm birth<xref rid="mcn70195-tbl3-note-0006" ref-type="table-fn">
+<sup>d</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">2.72 (1.36, 5.44)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.005</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">2.77 (1.39, 5.50)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.004</bold>
+</td><td align="center" valign="top" rowspan="1" colspan="1">1.51 (0.75, 3.07)</td><td align="center" valign="top" rowspan="1" colspan="1">0.250</td><td align="center" valign="top" rowspan="1" colspan="1">2.77 (1.39, 5.5)</td><td align="center" valign="top" rowspan="1" colspan="1">
+<bold>0.004</bold>
+</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Multiparous</td><td align="center" valign="top" rowspan="1" colspan="1">0.75 (0.37, 1.52)</td><td align="center" valign="top" rowspan="1" colspan="1">0.429</td><td align="center" valign="top" rowspan="1" colspan="1">0.46 (0.20, 1.08)</td><td align="center" valign="top" rowspan="1" colspan="1">0.076</td><td align="center" valign="top" rowspan="1" colspan="1">0.82 (0.45, 1.47)</td><td align="center" valign="top" rowspan="1" colspan="1">0.496</td><td align="center" valign="top" rowspan="1" colspan="1">0.46 (0.2, 1.08)</td><td align="center" valign="top" rowspan="1" colspan="1">0.076</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Complicated pregnancy<xref rid="mcn70195-tbl3-note-0007" ref-type="table-fn">
+<sup>e</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.73 (0.36, 1.50)</td><td align="center" valign="top" rowspan="1" colspan="1">0.394</td><td align="center" valign="top" rowspan="1" colspan="1">0.74 (0.37, 1.50)</td><td align="center" valign="top" rowspan="1" colspan="1">0.408</td><td align="center" valign="top" rowspan="1" colspan="1">0.68 (0.37, 1.24)</td><td align="center" valign="top" rowspan="1" colspan="1">0.203</td><td align="center" valign="top" rowspan="1" colspan="1">0.74 (0.37, 1.5)</td><td align="center" valign="top" rowspan="1" colspan="1">0.408</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">No iron/folate supplementation</td><td align="center" valign="top" rowspan="1" colspan="1">0.92 (0.34, 2.46)</td><td align="center" valign="top" rowspan="1" colspan="1">0.868</td><td align="center" valign="top" rowspan="1" colspan="1">0.78 (0.3, 2.05)</td><td align="center" valign="top" rowspan="1" colspan="1">0.613</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.45, 2.15)</td><td align="center" valign="top" rowspan="1" colspan="1">0.962</td><td align="center" valign="top" rowspan="1" colspan="1">0.78 (0.3, 2.05)</td><td align="center" valign="top" rowspan="1" colspan="1">0.613</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Breastfeeding</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Exclusive breastfeeding &lt; 6 mo</td><td align="center" valign="top" rowspan="1" colspan="1">1.19 (0.62, 2.27)</td><td align="center" valign="top" rowspan="1" colspan="1">0.608</td><td align="center" valign="top" rowspan="1" colspan="1">1.24 (0.66, 2.32)</td><td align="center" valign="top" rowspan="1" colspan="1">0.505</td><td align="center" valign="top" rowspan="1" colspan="1">1.38 (0.81, 2.35)</td><td align="center" valign="top" rowspan="1" colspan="1">0.231</td><td align="center" valign="top" rowspan="1" colspan="1">1.24 (0.66, 2.32)</td><td align="center" valign="top" rowspan="1" colspan="1">0.505</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Psychosocial factors</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Perinatal depression/anxiety/IPV/ &gt; 2 ACEs<xref rid="mcn70195-tbl3-note-0008" ref-type="table-fn">
+<sup>f</sup>
+</xref>
+</td><td align="center" valign="top" rowspan="1" colspan="1">0.96 (0.52, 1.79)</td><td align="center" valign="top" rowspan="1" colspan="1">0.908</td><td align="center" valign="top" rowspan="1" colspan="1">0.92 (0.51, 1.65)</td><td align="center" valign="top" rowspan="1" colspan="1">0.772</td><td align="center" valign="top" rowspan="1" colspan="1">0.9 (0.54, 1.49)</td><td align="center" valign="top" rowspan="1" colspan="1">0.674</td><td align="center" valign="top" rowspan="1" colspan="1">0.92 (0.51, 1.65)</td><td align="center" valign="top" rowspan="1" colspan="1">0.772</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Maternal nutrition and food insecurity</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Anaemia (&lt; 11 g/dL)</td><td align="center" valign="top" rowspan="1" colspan="1">1.00 (0.51, 1.96)</td><td align="center" valign="top" rowspan="1" colspan="1">0.989</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.5, 1.94)</td><td align="center" valign="top" rowspan="1" colspan="1">0.961</td><td align="center" valign="top" rowspan="1" colspan="1">1.21 (0.71, 2.05)</td><td align="center" valign="top" rowspan="1" colspan="1">0.483</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.5, 1.94)</td><td align="center" valign="top" rowspan="1" colspan="1">0.961</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Moderate/Severe Food Insecurity</td><td align="center" valign="top" rowspan="1" colspan="1">1.13 (0.61, 2.10)</td><td align="center" valign="top" rowspan="1" colspan="1">0.702</td><td align="center" valign="top" rowspan="1" colspan="1">1.15 (0.63, 2.10)</td><td align="center" valign="top" rowspan="1" colspan="1">0.658</td><td align="center" valign="top" rowspan="1" colspan="1">1.47 (0.89, 2.42)</td><td align="center" valign="top" rowspan="1" colspan="1">0.135</td><td align="center" valign="top" rowspan="1" colspan="1">1.15 (0.63, 2.1)</td><td align="center" valign="top" rowspan="1" colspan="1">0.658</td></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">Minimum dietary diversity score</td><td align="center" valign="top" rowspan="1" colspan="1">0.98 (0.78, 1.22)</td><td align="center" valign="top" rowspan="1" colspan="1">0.839</td><td align="center" valign="top" rowspan="1" colspan="1">0.97 (0.78, 1.22)</td><td align="center" valign="top" rowspan="1" colspan="1">0.819</td><td align="center" valign="top" rowspan="1" colspan="1">0.93 (0.79, 1.11)</td><td align="center" valign="top" rowspan="1" colspan="1">0.428</td><td align="center" valign="top" rowspan="1" colspan="1">0.97 (0.78, 1.22)</td><td align="center" valign="top" rowspan="1" colspan="1">0.819</td></tr><tr><td align="left" valign="top" rowspan="1" colspan="1">Maternal HIV characteristics</td><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/><td align="center" valign="top" rowspan="1" colspan="1"/></tr><tr><td style="padding-left:10%" align="left" valign="top" rowspan="1" colspan="1">ART initiation during pregnancy</td><td align="center" valign="top" rowspan="1" colspan="1">0.75 (0.27, 2.09)</td><td align="center" valign="top" rowspan="1" colspan="1">0.579</td><td align="center" valign="top" rowspan="1" colspan="1">0.86 (0.32, 2.30)</td><td align="center" valign="top" rowspan="1" colspan="1">0.759</td><td align="center" valign="top" rowspan="1" colspan="1">0.86 (0.4, 1.82)</td><td align="center" valign="top" rowspan="1" colspan="1">0.684</td><td align="center" valign="top" rowspan="1" colspan="1">0.86 (0.32, 2.3)</td><td align="center" valign="top" rowspan="1" colspan="1">0.759</td></tr></tbody></table><table-wrap-foot><fn id="mcn70195-tbl3-note-0001"><p>
+<italic toggle="yes">Note: Reference categories:</italic> ≥ 25 years (age); some secondary education or higher (education); married (marital status); ≥ 157.3 cm (height); higher wealth quintile; no crowding (≤ 3 persons/room); receiving financial support from father; ≥ 37 weeks' gestation (preterm birth); no prior birth (parity); ≥ 6 months exclusive breastfeeding; food secure/mild food insecurity; ART initiation before conception. RR or adjusted RR were obtained using Poisson regression with robust variance. Adjusted models included a priori covariates: maternal age (years), wealth index (0–4, highest to lowest quintile), gestational age (weeks) and infant sex. Models for age excluded continuous age; models for wealth excluded the wealth index; and models for gestational age and preterm birth excluded continuous gestational age. Bold values indicate statistically significant.</p></fn><fn id="mcn70195-tbl3-note-0002"><p>Abbreviations: ACEs, adverse childhood experience; ART, antiretroviral therapy; GAD‐7, generalised anxiety disorder 7‐item; MUAC, mid‐upper arm circumference; PHQ‐9, patient health questionnaire‐9; RR, relative risk.</p></fn><fn id="mcn70195-tbl3-note-0003"><label>
+<sup>a</sup>
+</label><p>Unmarried includes divorced/separated/living together.</p></fn><fn id="mcn70195-tbl3-note-0004"><label>
+<sup>b</sup>
+</label><p>Shorter height defined as &lt; 1st quartile 157.3 cm.</p></fn><fn id="mcn70195-tbl3-note-0005"><label>
+<sup>c</sup>
+</label><p>Household crowding defined as &gt; 3 people/room in house.</p></fn><fn id="mcn70195-tbl3-note-0006"><label>
+<sup>d</sup>
+</label><p>Preterm birth defined as &lt; 37 weeks of gestation.</p></fn><fn id="mcn70195-tbl3-note-0007"><label>
+<sup>e</sup>
+</label><p>Complicated pregnancy includes infection, bleeding, high blood pressure, preeclampsia or COVID during pregnancy, or hospitalised during pregnancy).</p></fn><fn id="mcn70195-tbl3-note-0008"><label>
+<sup>f</sup>
+</label><p>Perinatal depression defined as PHQ9 score ≥ 5; anxiety GAD7 score ≥ 5.</p></fn></table-wrap-foot><permissions><copyright-holder>John Wiley &amp; Sons, Ltd.</copyright-holder></permissions></table-wrap><p>Maternal height &lt; 157.3 cm was associated with elevated risk of stunting before (aRR 2.33; 95% CI: 1.36 to 1.22) and after 3 months of life (aRR 1.36; 95% CI: 1.04 to 1.79) in unadjusted and adjusted models (Supporting Information: Table <xref rid="mcn70195-suppl-0002" ref-type="supplementary-material">S5</xref>). Furthermore, being in a lower wealth quintile was associated with an increased risk of stunting after 3 months (aRR 1.12; 95% CI: 1.02 to 1.23) in all models. Gestational age (aRR 0.78; 95% CI: 0.72 to 0.86) and preterm birth (aRR 2.54; 95% CI: 1.43 to 4.51) were associated with the risk of early stunting but not stunting after 3 months.</p><p>We identified a few factors significantly associated with wasting in our cohort. Only lower maternal education was associated with a decreased risk of early wasting in unadjusted and adjusted models (aRR 0.5; 95% CI: 0.27 to 0.93) (Supporting Information: Table <xref rid="mcn70195-suppl-0002" ref-type="supplementary-material">S6</xref>). None of the other factors investigated were significantly associated with child wasting.</p></sec></sec><sec sec-type="discussion" id="mcn70195-sec-0120"><label>4</label><title>Discussion</title><p>Several maternal characteristics were associated with child growth in this exploratory analysis of mother‐infant pairs in the Tunza Mwana cohort.</p><p>We identified differences in maternal factors associated with early (&lt; 3 months) and later growth (&gt; 3 months) among children in this cohort. This is not entirely surprising as early growth is influenced by events and exposures that occur in utero (Kitsiou‐Tzeli and Tzetis <xref rid="mcn70195-bib-0026" ref-type="bibr">2017</xref>; Strauss <xref rid="mcn70195-bib-0050" ref-type="bibr">1997</xref>). Young maternal age was associated with improved growth in early infancy (&lt; 3 months) and worse growth in later infancy (&gt; 3 months), which may reflect increased support for adolescent and young mothers in the early postpartum period and waning of this support over time. Catch‐up growth may also contribute to these differences as young maternal age is associated with increased risk of preterm birth (Gebreegziabher et al. <xref rid="mcn70195-bib-0018" ref-type="bibr">2023</xref>; Kozuki et al. <xref rid="mcn70195-bib-0028" ref-type="bibr">2013</xref>) and SGA infants (Kozuki et al. <xref rid="mcn70195-bib-0028" ref-type="bibr">2013</xref>; Suarez‐Idueta et al. <xref rid="mcn70195-bib-0052" ref-type="bibr">2021</xref>), and these infants often experience catch‐up growth patterns (Su et al. <xref rid="mcn70195-bib-0051" ref-type="bibr">2025</xref>). Previous studies have reported that pregnant adolescents and young women are at high risk of undernutrition (Nguyen et al. <xref rid="mcn70195-bib-0041" ref-type="bibr">2017</xref>), have decreased responsiveness to nutritional supplementation, potentially due to nutrient partitioning (Koroma et al. <xref rid="mcn70195-bib-0027" ref-type="bibr">2023</xref>) and have an increased risk of having underweight and smaller infants (Nguyen et al. <xref rid="mcn70195-bib-0041" ref-type="bibr">2017</xref>; Welch et al. <xref rid="mcn70195-bib-0057" ref-type="bibr">2024</xref>). Programs and policies targeting pregnant and lactating adolescents and young women in the first 2 years postpartum could help improve the growth outcomes of their infants. Additional studies focusing on optimal intervention strategies for this high‐risk group are needed.</p><p>Anaemia in pregnancy was associated with increased linear and weight‐for‐length growth in early infancy among children in our cohort. Prior studies have reported conflicting findings, with some observing an association between maternal anaemia and an increased risk of stunting (Nadhiroh et al. <xref rid="mcn70195-bib-0039" ref-type="bibr">2023</xref>), while others found no association (Heesemann et al. <xref rid="mcn70195-bib-0023" ref-type="bibr">2021</xref>). These conflicting findings may be attributable to heterogeneity in study designs, variations in the timing of maternal anaemia assessment, differences in the underlying prevalence of maternal anaemia across study populations, or chance findings. Furthermore, our study performed an assessment of anaemia in the third trimester at the time of enrolment, and we are unable to identify the etiology of anaemia. Anaemia and iron deficiency prevalence increases in the third trimester when most fetal iron accretion occurs, even in settings with routine iron supplementation and adequate diets (McCarthy et al. <xref rid="mcn70195-bib-0035" ref-type="bibr">2024</xref>). Pregnancy anaemia is associated with an increased risk of SGA and preterm infants (Chen et al. <xref rid="mcn70195-bib-0008" ref-type="bibr">2024</xref>; Col Madendag et al. <xref rid="mcn70195-bib-0013" ref-type="bibr">2019</xref>), thus our finding of an association between maternal anaemia and higher LAZ and WLZ gain prior to 3 months of life may reflect catch‐up growth among smaller infants. Iron and other micronutrients are critical for fetal and early infant growth, and a recent meta‐analyses have demonstrated multiple micronutrient supplements to provide good protection from anaemia in pregnancy (Gomes et al. <xref rid="mcn70195-bib-0020" ref-type="bibr">2022</xref>) and improved infant anthropometrics from birth to 6 months compared to iron‐folic acid supplements (Gomes et al. <xref rid="mcn70195-bib-0019" ref-type="bibr">2025</xref>). Bolstering multiple micronutrient supplement interventions among at‐risk populations should continue to be a priority for programming and policy.</p><p>We found significant associations with household assets and early infant growth. The lower wealth index quintile was associated with lower monthly WAZ and WLZ growth in early infancy. Of all the determinants investigated, only household crowding was associated with lower monthly WAZ and LAZ gains and borderline lower WLZ gain (−0.01; 95% CI: −0.01 to 0), and this was only prior to 3 months of age. Household crowding has previously been described as associated with higher total and activity energy expenditure among infants in Brazil, which may result from decreased sleep or increased infections (Haisma et al. <xref rid="mcn70195-bib-0021" ref-type="bibr">2006</xref>). It is important to note that the effect size of these associations was relatively small; however, as this factor was associated with all 3 growth measures, additional studies elucidating mechanisms and effective interventions are warranted. Maternal education was associated with WAZ in our study, even after adjustment for household wealth. This has been previously described in Kenya (Abuya et al. <xref rid="mcn70195-bib-0001" ref-type="bibr">2011</xref>) and other low‐ and middle‐income country settings (Le and Nguyen <xref rid="mcn70195-bib-0032" ref-type="bibr">2020</xref>; Rezaeizadeh et al. <xref rid="mcn70195-bib-0042" ref-type="bibr">2024</xref>). It may be driven by factors such as improved family planning, increased household wealth and resources (though this was adjusted for in our analysis), greater recognition of optimal nutritional practices, early identification of illnesses that could contribute to growth faltering, and increased maternal autonomy (Casale et al. <xref rid="mcn70195-bib-0006" ref-type="bibr">2018</xref>; Frost et al. <xref rid="mcn70195-bib-0016" ref-type="bibr">2005</xref>). Cross‐sectoral interventions aimed at strengthening household resources and promoting maternal education may represent additional pathways to support improvements in child growth.</p><p>We did not identify any significant associations between maternal mental health in pregnancy, assessed by PHQ‐9 and GAD‐7, intimate partner violence or adverse childhood experiences with infant growth outcomes in our cohort. Prior studies had reported associations between maternal mental disorders and early child growth (Bennett et al. <xref rid="mcn70195-bib-0005" ref-type="bibr">2016</xref>), though a meta‐analyses of interventions targeting perinatal maternal mental health have demonstrated very modest effects on child growth (Tol et al. <xref rid="mcn70195-bib-0054" ref-type="bibr">2020</xref>). Our dataset only included PHQ‐9 and GAD‐7 assessment in pregnancy, potentially limiting the identification of associations. Only a few studies have recently investigated associations of maternal adverse childhood experiences with child growth, as they may result in epigenetic changes, but have not found clear associations (Chung et al. <xref rid="mcn70195-bib-0011" ref-type="bibr">2023</xref>). Additionally, we saw a suggestion that perinatal mental health, intimate partner violence and adverse childhood experiences are associated with lower WAZ, LAZ and WLZ change after 3 months though all of these confidence intervals crossed the null. This borderline finding may be the result of insufficient sample size to detect this difference, as a few large analyses have demonstrated associations between intimate partner violence and stunting (Chai et al. <xref rid="mcn70195-bib-0007" ref-type="bibr">2016</xref>; Neamah et al. <xref rid="mcn70195-bib-0040" ref-type="bibr">2018</xref>; Ziaei et al. <xref rid="mcn70195-bib-0062" ref-type="bibr">2014</xref>). As studies examining the influence of maternal mental health, adverse childhood experiences and intimate partner violence on child growth remain limited, there is need for larger‐scale cohort studies or meta‐analyses of longitudinal cohorts that incorporate comprehensive assessments of these maternal factors at multiple time points to more clearly elucidate its impact on child growth outcomes. As expected, lower gestational age at birth and preterm birth were associated with increased risk of early and later underweight and early stunting after adjustment for birth anthropometrics, consistent with prior studies (Christian et al. <xref rid="mcn70195-bib-0010" ref-type="bibr">2013</xref>; Sania et al. <xref rid="mcn70195-bib-0046" ref-type="bibr">2015</xref>; Sartika et al. <xref rid="mcn70195-bib-0047" ref-type="bibr">2021</xref>). Maternal anthropometric characteristics were associated with the risk of stunting and underweight. Larger maternal MUAC in the third trimester was associated with a decreased risk of stunting after 3 months and underweight in unadjusted models after 3 months. Maternal prepregnancy BMI and MUAC has been identified as an important determinant of WAZ, LAZ and WLZ trajectories in similar settings (Bengtson et al. <xref rid="mcn70195-bib-0004" ref-type="bibr">2022</xref>; Deierlein et al. <xref rid="mcn70195-bib-0014" ref-type="bibr">2011</xref>; Haque et al. <xref rid="mcn70195-bib-0022" ref-type="bibr">2021</xref>; Kpewou et al. <xref rid="mcn70195-bib-0029" ref-type="bibr">2020</xref>; Zalbahar et al. <xref rid="mcn70195-bib-0061" ref-type="bibr">2016</xref>). Furthermore, shorter maternal height was associated with increased risk of stunting at both times, which has been well established risk factor in large multi‐country studies (Li et al. <xref rid="mcn70195-bib-0034" ref-type="bibr">2020b</xref>; Wu et al. <xref rid="mcn70195-bib-0060" ref-type="bibr">2021</xref>). Preconception and early pregnancy nutritional supplementation have been shown to improve infant ponderal and linear growth, highlighting the importance of maternal nutrition before and during early gestation and the need for interventions targeting maternal nutrition in fragile contexts (Krebs et al. <xref rid="mcn70195-bib-0030" ref-type="bibr">2021</xref>; Von Salmuth et al. <xref rid="mcn70195-bib-0045" ref-type="bibr">2021</xref>). The pathways resulting in these outcomes may involve direct macro‐ and micronutrient provision, alterations of the maternal and neonatal microbiota (García‐Mantrana et al. <xref rid="mcn70195-bib-0017" ref-type="bibr">2020</xref>), and epigenetic changes (Kitsiou‐Tzeli and Tzetis <xref rid="mcn70195-bib-0026" ref-type="bibr">2017</xref>), all of which can influence infant growth trajectories.</p><p>We identified a few factors associated with wasting. Surprisingly, we found that lower maternal education was associated with a lower risk of wasting before 3 months. This is in contrast to several large multi‐country studies reporting increased maternal education to be associated with a decreased risk of wasting (Asebe et al. <xref rid="mcn70195-bib-0003" ref-type="bibr">2024</xref>; Tamir et al. <xref rid="mcn70195-bib-0053" ref-type="bibr">2025</xref>). Our finding of an association had a wide confidence interval and may be due to residual confounding or a small sample size, especially since no association is seen after 3 months.</p><p>Our study has several strengths. The prospective longitudinal nature of the data allows us to assess temporal relationships between the exposures and growth outcomes. Data was collected using standardised data instruments, and growth monitoring occurred regularly throughout the first 24 months using rigorous protocols and standard measurement tools by trained study staff. We had excellent follow‐up of participants in the cohort with &gt; 90% retention at 24 months. Furthermore, our data set included a comprehensive set of maternal factors including mental health, intimate partner violence and adverse childhood experiences that have not routinely been collected in large cohorts (Mertens et al. <xref rid="mcn70195-bib-0036" ref-type="bibr">2023</xref>). Additionally, we investigated differences in associations in early (&lt; 3 months) and later (&gt; 3 months) childhood instead of a single time point. Nevertheless, there are several limitations to our study. These findings reflect outcomes from a rural population in Western Kenya that accessed antenatal care and consented to participate in a 2‐year cohort study. As such, these results may not be generalisable to populations in other geographic or socio‐cultural contexts. We had a very high rate of exclusive breastfeeding and continued breastfeeding beyond 12 months postpartum, likely influenced by the Tunza Mwana study's focus on human milk composition, which may have contributed to improved child growth outcomes in this population compared to other populations. Additionally, our sample size of 326 mother‐infant pairs and population homogeneity may not provide sufficient power to identify all relevant associations. Gestational age was determined in the cohort using the LMP, not first‐trimester ultrasound, which may have resulted in incorrect estimation of gestational age. We did not correct for multiple comparisons in our analysis given the exploratory nature, so some of the significant findings may have emerged by chance; therefore, our findings must be interpreted with caution and confirmed in larger cohorts. Additionally, it is important to note that the effect size of some of the associations was relatively small and must be considered when contemplating designing new intervention programs for child growth. Finally, we are only able to report associations and cannot directly determine causality.</p><p>In conclusion, child growth trajectories in the first 2 years of life were influenced by a complex set of factors including maternal nutritional, health, demographic and socio‐economic factors, many of which are not routinely addressed in current child growth programs. By identifying maternal factors that were consistently associated with various forms of undernutrition, and those that were specific to particular outcomes or time periods, this may inform the development of more targeted and timely prevention programs. There is need for innovative, comprehensive programs that integrate nutritional, socio‐economic and household‐level strategies to optimise growth outcomes and enable children to reach their full potential. These include routine maternal nutrition screening during pregnancy, targeted support for women with low MUAC, and interventions aimed at reducing household crowding and improving maternal education. Sustained investments in adolescent health and female education also remain essential to reducing intergenerational stunting and underweight.</p></sec><sec id="mcn70195-sec-0130"><title>Author Contributions</title><p>David Taylor Hendrixson, Christine J. McGrath, Philip James and Tanya Khara designed the research. David Taylor Hendrixson, Ruchi Tiwari and Christine J. McGrath conducted the research. David Taylor Hendrixson, Ruchi Tiwari and Christine J. McGrath analysed data or performed statistical analysis. David Taylor Hendrixson, Ruchi Tiwari, Philip James, Zulfiqar A. Bhutta, André Briend, Sheila Isanaka, Tanya Khara, Natasha Lelijveld, Mark J. Manary, Andrew Mertens, Sophie E. Moore, Kieran S. O'Brien, Jonathan Wells, Jonathan Wells, Eric Ochola, Eric Ochola and Christine J. McGrath interpreted the results. David Taylor Hendrixson wrote the first draft of the paper. David Taylor Hendrixson and Christine J. McGrath had primary responsibility for the final content. All authors have read and approved the final manuscript.</p></sec><sec sec-type="COI-statement" id="mcn70195-sec-0150"><title>Conflicts of Interest</title><p>The authors declare no conflicts of interest.</p></sec><sec sec-type="supplementary-material"><title>Supporting information</title><supplementary-material id="mcn70195-suppl-0001" position="float" content-type="local-data" orientation="portrait"><caption><p>Supporting File 1</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="MCN-22-e70195-s002.docx" position="float" orientation="portrait"><?suppdata-name MCN-22-e70195-s002.docx?><?suppdata-size 83353?><?suppdata-md5 e691a08bffc18eaa7cb93003267bd929?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type vnd.openxmlformats-officedocument.wordprocessingml.document?><?suppdata-cloudpmc-urn urn:app:c35a/13176631/e691a08bffc1/MCN-22-e70195-s002.docx?></media></supplementary-material><supplementary-material id="mcn70195-suppl-0002" position="float" content-type="local-data" orientation="portrait"><caption><p>Supporting File 2</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="MCN-22-e70195-s001.pdf" position="float" orientation="portrait"><?suppdata-name MCN-22-e70195-s001.pdf?><?suppdata-size 84998?><?suppdata-md5 de7d847aaabb4ca48f204c2c78984b01?><?suppdata-image-server-status NEVER_LOAD?><?suppdata-mime-type application?><?suppdata-mime-sub-type pdf?><?suppdata-cloudpmc-urn urn:app:c35a/13176631/de7d847aaabb/MCN-22-e70195-s001.pdf?></media></supplementary-material></sec></body><back><ack id="mcn70195-sec-0140"><title>Acknowledgements</title><p>NICHD R01HD096999 to CJM provided funding for the cohort. The Department of Foreign Affairs and Trade, Ireland, provided funding to PJ, TK and RT for the study design and analysis under Irish Aid grant HQPCR/2025/ENN. DTH receives salary support from NICHD K23HD113374. RT receives salary support from NICHD F32HD116460. The funders played no role in study design; collection, analysis and interpretation of data; writing of the report; any restrictions regarding the submission of the report for publication.</p></ack><sec sec-type="data-availability" id="mcn70195-sec-0170"><title>Data Availability Statement</title><p>The data that support the findings of this study are available on request from the corresponding author. The data are not publicly available due to privacy or ethical restrictions.</p></sec><ref-list content-type="cited-references" id="mcn70195-bibl-0001"><title>References</title><ref id="mcn70195-bib-0001"><mixed-citation publication-type="journal" id="mcn70195-cit-0001">
+<string-name name-style="western">
+<surname>Abuya</surname>, <given-names>B. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E. O.</given-names>
+<surname>Onsomu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. K.</given-names>
+<surname>Kimani</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Moore</surname>
+</string-name>. <year>2011</year>. “<article-title>Influence of Maternal Education on Child Immunization and Stunting in Kenya</article-title>.” <source>Maternal and Child Health Journal</source>
+<volume>15</volume>, no. <issue>8</issue>: <fpage>1389</fpage>–<lpage>1399</lpage>. <pub-id pub-id-type="doi">10.1007/s10995-010-0670-z</pub-id>.<pub-id pub-id-type="pmid">20848172</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0002"><mixed-citation publication-type="journal" id="mcn70195-cit-0002">
+<string-name name-style="western">
+<surname>Amadu</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.‐A.</given-names>
+<surname>Seidu</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Duku</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Risk Factors Associated With the Coexistence of Stunting, Underweight, and Wasting in Children Under 5 From 31 Sub‐Saharan African Countries</article-title>.” <source>BMJ Open</source>
+<volume>11</volume>, no. <issue>12</issue>: <elocation-id>e052267</elocation-id>. <pub-id pub-id-type="doi">10.1136/bmjopen-2021-052267</pub-id>.<pub-id pub-id-type="pmcid">PMC8689177</pub-id><pub-id pub-id-type="pmid">34930735</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0003"><mixed-citation publication-type="journal" id="mcn70195-cit-0003">
+<string-name name-style="western">
+<surname>Asebe</surname>, <given-names>H. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>Z. A.</given-names>
+<surname>Asmare</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K. U.</given-names>
+<surname>Mare</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>The Level of Wasting and Associated Factors Among Children Aged 6–59 Months in Sub‐Saharan African Countries: Multilevel Ordinal Logistic Regression Analysis</article-title>.” <source>Frontiers in Nutrition</source>
+<volume>11</volume>: <elocation-id>1336864</elocation-id>. <pub-id pub-id-type="doi">10.3389/fnut.2024.1336864</pub-id>.<pub-id pub-id-type="pmid">38903623</pub-id>
+<pub-id pub-id-type="pmcid">PMC11187342</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0004"><mixed-citation publication-type="journal" id="mcn70195-cit-0004">
+<string-name name-style="western">
+<surname>Bengtson</surname>, <given-names>A. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S. M.</given-names>
+<surname>le Roux</surname>
+</string-name>, <string-name name-style="western">
+<given-names>T. K.</given-names>
+<surname>Phillips</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>Relationship Between Pre‐Pregnancy Maternal Body Mass Index and Infant Weight Trajectories in HIV‐Exposed and HIV‐Unexposed Infants</article-title>.” <source>Paediatric and Perinatal Epidemiology</source>
+<volume>36</volume>, no. <issue>4</issue>: <fpage>536</fpage>–<lpage>547</lpage>. <pub-id pub-id-type="doi">10.1111/ppe.12825</pub-id>.<pub-id pub-id-type="pmid">34859468</pub-id>
+<pub-id pub-id-type="pmcid">PMC9163208</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0005"><mixed-citation publication-type="journal" id="mcn70195-cit-0005">
+<string-name name-style="western">
+<surname>Bennett</surname>, <given-names>I. M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>W.</given-names>
+<surname>Schott</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Krutikova</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. R.</given-names>
+<surname>Behrman</surname>
+</string-name>. <year>2016</year>. “<article-title>Maternal Mental Health, and Child Growth and Development, in Four Low‐Income and Middle‐Income Countries</article-title>.” <source>Journal of Epidemiology and Community Health</source>
+<volume>70</volume>, no. <issue>2</issue>: <fpage>168</fpage>–<lpage>173</lpage>. <pub-id pub-id-type="doi">10.1136/jech-2014-205311</pub-id>.<pub-id pub-id-type="pmid">26359503</pub-id>
+<pub-id pub-id-type="pmcid">PMC5392254</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0006"><mixed-citation publication-type="journal" id="mcn70195-cit-0006">
+<string-name name-style="western">
+<surname>Casale</surname>, <given-names>D.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Espi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S. A.</given-names>
+<surname>Norris</surname>
+</string-name>. <year>2018</year>. “<article-title>Estimating the Pathways Through Which Maternal Education Affects Stunting: Evidence From an Urban Cohort in South Africa</article-title>.” <source>Public Health Nutrition</source>
+<volume>21</volume>, no. <issue>10</issue>: <fpage>1810</fpage>–<lpage>1818</lpage>. <pub-id pub-id-type="doi">10.1017/S1368980018000125</pub-id>.<pub-id pub-id-type="pmid">29455701</pub-id>
+<pub-id pub-id-type="pmcid">PMC10260984</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0007"><mixed-citation publication-type="journal" id="mcn70195-cit-0007">
+<string-name name-style="western">
+<surname>Chai</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>G.</given-names>
+<surname>Fink</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Kaaya</surname>
+</string-name>, et al. <year>2016</year>. “<article-title>Association Between Intimate Partner Violence and Poor Child Growth: Results From 42 Demographic and Health Surveys</article-title>.” <source>Bulletin of the World Health Organization</source>
+<volume>94</volume>, no. <issue>5</issue>: <fpage>331</fpage>–<lpage>339</lpage>. <pub-id pub-id-type="doi">10.2471/BLT.15.152462</pub-id>.<pub-id pub-id-type="pmid">27147763</pub-id>
+<pub-id pub-id-type="pmcid">PMC4850526</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0008"><mixed-citation publication-type="journal" id="mcn70195-cit-0008">
+<string-name name-style="western">
+<surname>Chen</surname>, <given-names>Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Zhong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>X.</given-names>
+<surname>Song</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>Maternal Anaemia During Early Pregnancy and the Risk of Neonatal Outcomes: A Prospective Cohort Study in Central China</article-title>.” <source>BMJ Paediatrics Open</source>
+<volume>8</volume>, no. <issue>1</issue>: <elocation-id>e001931</elocation-id>. <pub-id pub-id-type="doi">10.1136/bmjpo-2023-001931</pub-id>.<pub-id pub-id-type="pmid">38233082</pub-id>
+<pub-id pub-id-type="pmcid">PMC10806529</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0009"><mixed-citation publication-type="journal" id="mcn70195-cit-0009">
+<string-name name-style="western">
+<surname>Chowdhury</surname>, <given-names>M. R. K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. S.</given-names>
+<surname>Rahman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Billah</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Kabir</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N. K. P.</given-names>
+<surname>Perera</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kader</surname>
+</string-name>. <year>2022</year>. “<article-title>The Prevalence and Socio‐Demographic Risk Factors of Coexistence of Stunting, Wasting, and Underweight Among Children Under Five Years in Bangladesh: A Cross‐Sectional Study</article-title>.” <source>BMC Nutrition</source>
+<volume>8</volume>, no. <issue>1</issue>: <fpage>84</fpage>. <pub-id pub-id-type="doi">10.1186/s40795-022-00584-x</pub-id>.<pub-id pub-id-type="pmid">35996184</pub-id>
+<pub-id pub-id-type="pmcid">PMC9394024</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0010"><mixed-citation publication-type="journal" id="mcn70195-cit-0010">
+<string-name name-style="western">
+<surname>Christian</surname>, <given-names>P.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S. E.</given-names>
+<surname>Lee</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Donahue Angel</surname>
+</string-name>, et al. <year>2013</year>. “<article-title>Risk of Childhood Undernutrition Related to Small‐For‐Gestational Age and Preterm Birth in Low‐ and Middle‐Income Countries</article-title>.” <source>International Journal of Epidemiology</source>
+<volume>42</volume>, no. <issue>5</issue>: <fpage>1340</fpage>–<lpage>1355</lpage>. <pub-id pub-id-type="doi">10.1093/ije/dyt109</pub-id>.<pub-id pub-id-type="pmid">23920141</pub-id>
+<pub-id pub-id-type="pmcid">PMC3816349</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0011"><mixed-citation publication-type="journal" id="mcn70195-cit-0011">
+<string-name name-style="western">
+<surname>Chung</surname>, <given-names>E. O.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Scherer</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>LeMasters</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Maternal Adverse Childhood Experiences on Child Growth and Development in Rural Pakistan: An Observational Cohort Study</article-title>.” <source>PLOS Global Public Health</source>
+<volume>3</volume>, no. <issue>10</issue>: <elocation-id>e0001669</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pgph.0001669</pub-id>.<pub-id pub-id-type="pmid">37878564</pub-id>
+<pub-id pub-id-type="pmcid">PMC10599588</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0012"><mixed-citation publication-type="book" id="mcn70195-cit-0012">
+<string-name name-style="western">
+<surname>Coates</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Swindale</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>P.</given-names>
+<surname>Bilinsky</surname>
+</string-name>. <year>2007</year>. <source>Household Food Insecurity Access Scale (HFIAS) for Measurement of Household Food Access: Indicator Guide (v. 3)</source>. <publisher-name>FHI 360/FANTA</publisher-name>.</mixed-citation></ref><ref id="mcn70195-bib-0013"><mixed-citation publication-type="journal" id="mcn70195-cit-0013">
+<string-name name-style="western">
+<surname>Col Madendag</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Eraslan Sahin</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Y.</given-names>
+<surname>Madendag</surname>
+</string-name>, et al. <year>2019</year>. “<article-title>The Effect of Iron Deficiency Anemia Early in the Third Trimester on Small for Gestational Age and Birth Weight: A Retrospective Cohort Study on Iron Deficiency Anemia and Fetal Weight</article-title>.” <source>BioMed Research International</source>
+<volume>2019</volume>: <elocation-id>7613868</elocation-id>. <pub-id pub-id-type="doi">10.1155/2019/7613868</pub-id>.<pub-id pub-id-type="pmid">31886249</pub-id>
+<pub-id pub-id-type="pmcid">PMC6893279</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0014"><mixed-citation publication-type="journal" id="mcn70195-cit-0014">
+<string-name name-style="western">
+<surname>Deierlein</surname>, <given-names>A. L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A. M.</given-names>
+<surname>Siega‐Riz</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. S.</given-names>
+<surname>Adair</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. H.</given-names>
+<surname>Herring</surname>
+</string-name>. <year>2011</year>. “<article-title>Effects of Pre‐Pregnancy Body Mass Index and Gestational Weight Gain on Infant Anthropometric Outcomes</article-title>.” <source>Journal of Pediatrics</source>
+<volume>158</volume>, no. <issue>2</issue>: <fpage>221</fpage>–<lpage>226</lpage>. <pub-id pub-id-type="doi">10.1016/j.jpeds.2010.08.008</pub-id>.<pub-id pub-id-type="pmid">20863516</pub-id>
+<pub-id pub-id-type="pmcid">PMC3017634</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0015"><mixed-citation publication-type="book" id="mcn70195-cit-0015">
+<collab collab-type="authors">FAO &amp; FHI 360</collab>
+. <year>2016</year>. <source>Minimum Dietary Diversity for Women: A Guide for Measurement</source>. <publisher-name>FAO</publisher-name>.</mixed-citation></ref><ref id="mcn70195-bib-0016"><mixed-citation publication-type="journal" id="mcn70195-cit-0016">
+<string-name name-style="western">
+<surname>Frost</surname>, <given-names>M. B.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Forste</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>D. W.</given-names>
+<surname>Haas</surname>
+</string-name>. <year>2005</year>. “<article-title>Maternal Education and Child Nutritional Status in Bolivia: Finding the Links</article-title>.” <source>Social Science &amp; Medicine (1982)</source>
+<volume>60</volume>, no. <issue>2</issue>: <fpage>395</fpage>–<lpage>407</lpage>. <pub-id pub-id-type="doi">10.1016/j.socscimed.2004.05.010</pub-id>.<pub-id pub-id-type="pmid">15522494</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0017"><mixed-citation publication-type="journal" id="mcn70195-cit-0017">
+<string-name name-style="western">
+<surname>García‐Mantrana</surname>, <given-names>I.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Selma‐Royo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>González</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Parra‐Llorca</surname>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Martínez‐Costa</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Collado</surname>
+</string-name>. <year>2020</year>. “<article-title>Distinct Maternal Microbiota Clusters Are Associated With Diet During Pregnancy: Impact on Neonatal Microbiota and Infant Growth During the First 18 Months of Life</article-title>.” <source>Gut Microbes</source>
+<volume>11</volume>, no. <issue>4</issue>: <fpage>962</fpage>–<lpage>978</lpage>. <pub-id pub-id-type="doi">10.1080/19490976.2020.1730294</pub-id>.<pub-id pub-id-type="pmid">32167021</pub-id>
+<pub-id pub-id-type="pmcid">PMC7524361</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0018"><mixed-citation publication-type="journal" id="mcn70195-cit-0018">
+<string-name name-style="western">
+<surname>Gebreegziabher</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Bountogo</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Sié</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Influence of Maternal Age on Birth and Infant Outcomes at 6 Months: A Cohort Study With Quantitative Bias Analysis</article-title>.” <source>International Journal of Epidemiology</source>
+<volume>52</volume>, no. <issue>2</issue>: <fpage>414</fpage>–<lpage>425</lpage>. <pub-id pub-id-type="doi">10.1093/ije/dyac236</pub-id>.<pub-id pub-id-type="pmid">36617176</pub-id>
+<pub-id pub-id-type="pmcid">PMC10114123</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0019"><mixed-citation publication-type="journal" id="mcn70195-cit-0019">
+<string-name name-style="western">
+<surname>Gomes</surname>, <given-names>F.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Adu‐Afarwuah</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Agustina</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Effect of Prenatal Multiple Micronutrient Supplementation Compared With Iron and Folic Acid Supplementation on Size at Birth and Subsequent Growth Through 24 mo of Age: A Systematic Review and Meta‐Analysis</article-title>.” <source>American Journal of Clinical Nutrition</source>
+<volume>122</volume>, no. <issue>1</issue>: <fpage>185</fpage>–<lpage>195</lpage>. <pub-id pub-id-type="doi">10.1016/j.ajcnut.2025.04.022</pub-id>.<pub-id pub-id-type="pmid">40306386</pub-id>
+<pub-id pub-id-type="pmcid">PMC12308086</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0020"><mixed-citation publication-type="journal" id="mcn70195-cit-0020">
+<string-name name-style="western">
+<surname>Gomes</surname>, <given-names>F.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Agustina</surname>
+</string-name>, <string-name name-style="western">
+<given-names>R. E.</given-names>
+<surname>Black</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>Multiple Micronutrient Supplements Versus Iron‐Folic Acid Supplements and Maternal Anemia Outcomes: An Iron Dose Analysis</article-title>.” <source>Annals of the New York Academy of Sciences</source>
+<volume>1512</volume>, no. <issue>1</issue>: <fpage>114</fpage>–<lpage>125</lpage>. <pub-id pub-id-type="doi">10.1111/nyas.14756</pub-id>.<pub-id pub-id-type="pmid">35218047</pub-id>
+<pub-id pub-id-type="pmcid">PMC9306935</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0021"><mixed-citation publication-type="journal" id="mcn70195-cit-0021">
+<string-name name-style="western">
+<surname>Haisma</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>W. A.</given-names>
+<surname>Coward</surname>
+</string-name>, <string-name name-style="western">
+<given-names>G. H.</given-names>
+<surname>Visser</surname>
+</string-name>, et al. <year>2006</year>. “<article-title>Socio‐Economic and Environmental Factors Influence Energy Utilization in Brazilian Breast‐Fed Infants</article-title>.” <source>Journal of Nutrition</source>
+<volume>136</volume>, no. <issue>11</issue>: <fpage>2945</fpage>–<lpage>2951</lpage>. <pub-id pub-id-type="doi">10.1093/jn/136.11.2945</pub-id>.<pub-id pub-id-type="pmid">17056827</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0022"><mixed-citation publication-type="journal" id="mcn70195-cit-0022">
+<string-name name-style="western">
+<surname>Haque</surname>, <given-names>M. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Choudhury</surname>
+</string-name>, <string-name name-style="western">
+<given-names>F. D.</given-names>
+<surname>Farzana</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Determinants of Maternal Low Mid‐Upper Arm Circumference and Its Association With Child Nutritional Status Among Poor and Very Poor Households in Rural Bangladesh</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>17</volume>, no. <issue>4</issue>: <elocation-id>e13217</elocation-id>. <pub-id pub-id-type="doi">10.1111/mcn.13217</pub-id>.<pub-id pub-id-type="pmid">34018337</pub-id>
+<pub-id pub-id-type="pmcid">PMC8476420</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0023"><mixed-citation publication-type="journal" id="mcn70195-cit-0023">
+<string-name name-style="western">
+<surname>Heesemann</surname>, <given-names>E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Mähler</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Subramanyam</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Vollmer</surname>
+</string-name>. <year>2021</year>. “<article-title>Pregnancy Anaemia, Child Health and Development: A Cohort Study in Rural India</article-title>.” <source>BMJ Open</source>
+<volume>11</volume>, no. <issue>11</issue>: <elocation-id>e046802</elocation-id>. <pub-id pub-id-type="doi">10.1136/bmjopen-2020-046802</pub-id>.<pub-id pub-id-type="pmcid">PMC8593731</pub-id><pub-id pub-id-type="pmid">34772744</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0024"><mixed-citation publication-type="journal" id="mcn70195-cit-0024">
+<string-name name-style="western">
+<surname>Kerac</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P. T.</given-names>
+<surname>James</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>McGrath</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Malnutrition in Infants Aged under 6 Months: Prevalence and Anthropometric Assessment – Analysis of 56 Low‐ and Middle‐Income Country DHS Datasets</article-title>.” <source>BMJ Global Health</source>
+<volume>10</volume>, no. <issue>5</issue>: <elocation-id>e016121</elocation-id>. <pub-id pub-id-type="doi">10.1136/bmjgh-2024-016121</pub-id>.<pub-id pub-id-type="pmcid">PMC12142141</pub-id><pub-id pub-id-type="pmid">40441741</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0025"><mixed-citation publication-type="journal" id="mcn70195-cit-0025">
+<string-name name-style="western">
+<surname>Khara</surname>, <given-names>T.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Myatt</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Sadler</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Anthropometric Criteria for Best‐Identifying Children at High Risk of Mortality: A Pooled Analysis of Twelve Cohorts</article-title>.” <source>Public Health Nutrition</source>
+<volume>26</volume>, no. <issue>4</issue>: <fpage>803</fpage>–<lpage>819</lpage>. <pub-id pub-id-type="doi">10.1017/S136898002300023X</pub-id>.<pub-id pub-id-type="pmid">36734049</pub-id>
+<pub-id pub-id-type="pmcid">PMC10131149</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0026"><mixed-citation publication-type="journal" id="mcn70195-cit-0026">
+<string-name name-style="western">
+<surname>Kitsiou‐Tzeli</surname>, <given-names>S.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Tzetis</surname>
+</string-name>. <year>2017</year>. “<article-title>Maternal Epigenetics and Fetal and Neonatal Growth</article-title>.” <source>Current Opinion in Endocrinology, Diabetes &amp; Obesity</source>
+<volume>24</volume>, no. <issue>1</issue>: <fpage>43</fpage>–<lpage>46</lpage>. <pub-id pub-id-type="doi">10.1097/MED.0000000000000305</pub-id>.<pub-id pub-id-type="pmid">27898587</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0027"><mixed-citation publication-type="journal" id="mcn70195-cit-0027">
+<string-name name-style="western">
+<surname>Koroma</surname>, <given-names>A. S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Ellie</surname>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Bangura</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Supplementary Feeding and Infection Control in Pregnant Adolescents‐A Secondary Analysis of a Randomized Trial Among Malnourished Women in Sierra Leone</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>19</volume>, no. <issue>1</issue>: <elocation-id>e13456</elocation-id>. <pub-id pub-id-type="doi">10.1111/mcn.13456</pub-id>.<pub-id pub-id-type="pmid">36349973</pub-id>
+<pub-id pub-id-type="pmcid">PMC9749587</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0028"><mixed-citation publication-type="journal" id="mcn70195-cit-0028">
+<string-name name-style="western">
+<surname>Kozuki</surname>, <given-names>N.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A. C.</given-names>
+<surname>Lee</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. F.</given-names>
+<surname>Silveira</surname>
+</string-name>, et al. <year>2013</year>. “<article-title>The Associations of Parity and Maternal Age With Small‐for‐Gestational‐Age, Preterm, and Neonatal and Infant Mortality: A Meta‐Analysis</article-title>.” <source>BMC Public Health</source>
+<volume>13</volume>, no. <issue>S3</issue>: <elocation-id>S2</elocation-id>. <pub-id pub-id-type="doi">10.1186/1471-2458-13-S3-S2</pub-id>.<pub-id pub-id-type="pmcid">PMC3847520</pub-id><pub-id pub-id-type="pmid">24564800</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0029"><mixed-citation publication-type="journal" id="mcn70195-cit-0029">
+<string-name name-style="western">
+<surname>Kpewou</surname>, <given-names>D. E.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Poirot</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Berger</surname>
+</string-name>, et al. <year>2020</year>. “<article-title>Maternal Mid‐Upper Arm Circumference During Pregnancy and Linear Growth Among Cambodian Infants During the First Months of Life</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>16 Suppl 2</volume>, no. <issue>Suppl 2</issue>: <elocation-id>e12951</elocation-id>. <pub-id pub-id-type="doi">10.1111/mcn.12951</pub-id>.<pub-id pub-id-type="pmid">32835455</pub-id>
+<pub-id pub-id-type="pmcid">PMC7591302</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0030"><mixed-citation publication-type="journal" id="mcn70195-cit-0030">
+<string-name name-style="western">
+<surname>Krebs</surname>, <given-names>N. F.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K. M.</given-names>
+<surname>Hambidge</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. L.</given-names>
+<surname>Westcott</surname>
+</string-name>, et al. <year>2021</year>. “<article-title>Growth From Birth Through Six Months for Infants of Mothers in the ‘Women First’ Preconception Maternal Nutrition Trial</article-title>.” <source>Journal of Pediatrics</source>
+<volume>229</volume>: <fpage>199</fpage>–<lpage>206.e4</lpage>. <pub-id pub-id-type="doi">10.1016/j.jpeds.2020.09.032</pub-id>.<pub-id pub-id-type="pmid">32956698</pub-id>
+<pub-id pub-id-type="pmcid">PMC7855785</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0031"><mixed-citation publication-type="journal" id="mcn70195-cit-0031">
+<string-name name-style="western">
+<surname>Kroenke</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R. L.</given-names>
+<surname>Spitzer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>J. B. W.</given-names>
+<surname>Williams</surname>
+</string-name>. <year>2001</year>. “<article-title>The PHQ‐9: Validity of a Brief Depression Severity Measure</article-title>.” <source>Journal of General Internal Medicine</source>
+<volume>16</volume>, no. <issue>9</issue>: <fpage>606</fpage>–<lpage>613</lpage>. <pub-id pub-id-type="doi">10.1046/j.1525-1497.2001.016009606.x</pub-id>.<pub-id pub-id-type="pmid">11556941</pub-id>
+<pub-id pub-id-type="pmcid">PMC1495268</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0032"><mixed-citation publication-type="journal" id="mcn70195-cit-0032">
+<string-name name-style="western">
+<surname>Le</surname>, <given-names>K.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Nguyen</surname>
+</string-name>. <year>2020</year>. “<article-title>Shedding Light on Maternal Education and Child Health in Developing Countries</article-title>.” <source>World Development</source>
+<volume>133</volume>: <elocation-id>105005</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.worlddev.2020.105005</pub-id>.</mixed-citation></ref><ref id="mcn70195-bib-0033"><mixed-citation publication-type="journal" id="mcn70195-cit-0033">
+<string-name name-style="western">
+<surname>Li</surname>, <given-names>Z.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Kim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Vollmer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S. V.</given-names>
+<surname>Subramanian</surname>
+</string-name>. <year>2020a</year>. “<article-title>Factors Associated With Child Stunting, Wasting, and Underweight in 35 Low‐ and Middle‐Income Countries</article-title>.” <source>JAMA Network Open</source>
+<volume>3</volume>, no. <issue>4</issue>: <elocation-id>e203386</elocation-id>. <pub-id pub-id-type="doi">10.1001/jamanetworkopen.2020.3386</pub-id>.<pub-id pub-id-type="pmid">32320037</pub-id>
+<pub-id pub-id-type="pmcid">PMC7177203</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0034"><mixed-citation publication-type="journal" id="mcn70195-cit-0034">
+<string-name name-style="western">
+<surname>Li</surname>, <given-names>Z.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R.</given-names>
+<surname>Kim</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Vollmer</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S. V.</given-names>
+<surname>Subramanian</surname>
+</string-name>. <year>2020b</year>. “<article-title>Factors Associated With Child Stunting, Wasting, and Underweight in 35 Low‐ and Middle‐Income Countries</article-title>.” <source>JAMA Network Open</source>
+<volume>3</volume>, no. <issue>4</issue>: <elocation-id>e203386</elocation-id>. <pub-id pub-id-type="doi">10.1001/jamanetworkopen.2020.3386</pub-id>.<pub-id pub-id-type="pmid">32320037</pub-id>
+<pub-id pub-id-type="pmcid">PMC7177203</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0035"><mixed-citation publication-type="journal" id="mcn70195-cit-0035">
+<string-name name-style="western">
+<surname>McCarthy</surname>, <given-names>E. K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Schneck</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Basu</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>Longitudinal Evaluation of Iron Status During Pregnancy: A Prospective Cohort Study in a High‐Resource Setting</article-title>.” <source>American Journal of Clinical Nutrition</source>
+<volume>120</volume>, no. <issue>5</issue>: <fpage>1259</fpage>–<lpage>1268</lpage>. <pub-id pub-id-type="doi">10.1016/j.ajcnut.2024.08.010</pub-id>.<pub-id pub-id-type="pmid">39510727</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0036"><mixed-citation publication-type="journal" id="mcn70195-cit-0036">
+<string-name name-style="western">
+<surname>Mertens</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Benjamin‐Chung</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. M.</given-names>
+<surname>Colford</surname>
+</string-name>, et al. <year>2023</year>. “<article-title>Causes and Consequences of Child Growth Faltering in Low‐Resource Settings</article-title>.” <source>Nature</source>
+<volume>621</volume>, no. <issue>7979</issue>: <fpage>568</fpage>–<lpage>576</lpage>. <pub-id pub-id-type="doi">10.1038/s41586-023-06501-x</pub-id>.<pub-id pub-id-type="pmid">37704722</pub-id>
+<pub-id pub-id-type="pmcid">PMC10511328</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0037"><mixed-citation publication-type="journal" id="mcn70195-cit-0037">
+<string-name name-style="western">
+<surname>Mwangome</surname>, <given-names>M. K.</given-names>
+</string-name>, and <string-name name-style="western">
+<given-names>J. A.</given-names>
+<surname>Berkley</surname>
+</string-name>. <year>2014</year>. “<article-title>The Reliability of Weight‐For‐Length/Height <sc>z</sc> Scores in Children</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>10</volume>, no. <issue>4</issue>: <fpage>474</fpage>–<lpage>480</lpage>. <pub-id pub-id-type="doi">10.1111/mcn.12124</pub-id>.<pub-id pub-id-type="pmid">24785183</pub-id>
+<pub-id pub-id-type="pmcid">PMC4282477</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0038"><mixed-citation publication-type="journal" id="mcn70195-cit-0038">
+<string-name name-style="western">
+<surname>Myatt</surname>, <given-names>M.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Khara</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Schoenbuchner</surname>
+</string-name>, et al. <year>2018</year>. “<article-title>Children Who Are Both Wasted and Stunted Are Also Underweight and Have a High Risk of Death: A Descriptive Epidemiology of Multiple Anthropometric Deficits Using Data From 51 Countries</article-title>.” <source>Archives of Public Health</source>
+<volume>76</volume>, no. <issue>1</issue>: <fpage>28</fpage>. <pub-id pub-id-type="doi">10.1186/s13690-018-0277-1</pub-id>.<pub-id pub-id-type="pmid">30026945</pub-id>
+<pub-id pub-id-type="pmcid">PMC6047117</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0039"><mixed-citation publication-type="journal" id="mcn70195-cit-0039">
+<string-name name-style="western">
+<surname>Nadhiroh</surname>, <given-names>S. R.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>F.</given-names>
+<surname>Micheala</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. E. H.</given-names>
+<surname>Tung</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>T. C.</given-names>
+<surname>Kustiawan</surname>
+</string-name>. <year>2023</year>. “<article-title>Association Between Maternal Anemia and Stunting in Infants and Children Aged 0–60 Months: A Systematic Literature Review</article-title>.” <source>Nutrition</source>
+<volume>115</volume>: <elocation-id>112094</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.nut.2023.112094</pub-id>.<pub-id pub-id-type="pmid">37572547</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0040"><mixed-citation publication-type="journal" id="mcn70195-cit-0040">
+<string-name name-style="western">
+<surname>Neamah</surname>, <given-names>H. H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Sudfeld</surname>
+</string-name>, <string-name name-style="western">
+<given-names>D. C.</given-names>
+<surname>McCoy</surname>
+</string-name>, et al. <year>2018</year>. “<article-title>Intimate Partner Violence, Depression, and Child Growth and Development</article-title>.” <source>Pediatrics</source>
+<volume>142</volume>, no. <issue>1</issue>: <elocation-id>e20173457</elocation-id>. <pub-id pub-id-type="doi">10.1542/peds.2017-3457</pub-id>.<pub-id pub-id-type="pmid">29891566</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0041"><mixed-citation publication-type="journal" id="mcn70195-cit-0041">
+<string-name name-style="western">
+<surname>Nguyen</surname>, <given-names>P. H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Sanghvi</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L. M.</given-names>
+<surname>Tran</surname>
+</string-name>, et al. <year>2017</year>. “<article-title>The Nutrition and Health Risks Faced by Pregnant Adolescents: Insights From a Cross‐Sectional Study in Bangladesh</article-title>.” <source>PLoS One</source>
+<volume>12</volume>, no. <issue>6</issue>: <elocation-id>e0178878</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pone.0178878</pub-id>.<pub-id pub-id-type="pmid">28594949</pub-id>
+<pub-id pub-id-type="pmcid">PMC5464569</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0042"><mixed-citation publication-type="journal" id="mcn70195-cit-0042">
+<string-name name-style="western">
+<surname>Rezaeizadeh</surname>, <given-names>G.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. A.</given-names>
+<surname>Mansournia</surname>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Keshtkar</surname>
+</string-name>, et al. <year>2024</year>. “<article-title>Maternal Education and Its Influence on Child Growth and Nutritional Status During the First Two Years of Life: A Systematic Review and Meta‐Analysis</article-title>.” <source>EClinicalMedicine</source>
+<volume>71</volume>: <elocation-id>102574</elocation-id>. <pub-id pub-id-type="doi">10.1016/j.eclinm.2024.102574</pub-id>.<pub-id pub-id-type="pmid">38596614</pub-id>
+<pub-id pub-id-type="pmcid">PMC11001623</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0043"><mixed-citation publication-type="journal" id="mcn70195-cit-0043">
+<string-name name-style="western">
+<surname>Sadler</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>P. T.</given-names>
+<surname>James</surname>
+</string-name>, <string-name name-style="western">
+<given-names>Z. A.</given-names>
+<surname>Bhutta</surname>
+</string-name>, et al. <year>2022</year>. “<article-title>How Can Nutrition Research Better Reflect the Relationship Between Wasting and Stunting in Children? Learnings From the Wasting and Stunting Project</article-title>.” <source>Journal of Nutrition</source>
+<volume>152</volume>, no. <issue>12</issue>: <fpage>2645</fpage>–<lpage>2651</lpage>. <pub-id pub-id-type="doi">10.1093/jn/nxac091</pub-id>.<pub-id pub-id-type="pmcid">PMC9839990</pub-id><pub-id pub-id-type="pmid">35687496</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0044"><mixed-citation publication-type="miscellaneous" id="mcn70195-cit-0044">
+<string-name name-style="western">
+<surname>Sadler</surname>, <given-names>K.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>T.</given-names>
+<surname>Khara</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Sessions</surname>
+</string-name>. <year>2021</year>. <italic toggle="yes">Best Practice in Preventing Child Wasting Within the Wider Context of Undernutrition</italic>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://www.ennonline.net/resource/wast/best-practice-preventing-child-wasting-within-wider-context-undernutrition" ext-link-type="uri">https://www.ennonline.net/resource/wast/best-practice-preventing-child-wasting-within-wider-context-undernutrition</ext-link>.</mixed-citation></ref><ref id="mcn70195-bib-0045"><mixed-citation publication-type="journal" id="mcn70195-cit-0045">
+<string-name name-style="western">
+<surname>Von Salmuth</surname>, <given-names>V.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Brennan</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kerac</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>McGrath</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S.</given-names>
+<surname>Frison</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Lelijveld</surname>
+</string-name>. <year>2021</year>. “<article-title>Maternal‐Focused Interventions to Improve Infant Growth and Nutritional Status in Low‐Middle Income Countries: A Systematic Review of Reviews</article-title>.” <source>PLoS One</source>
+<volume>16</volume>, no. <issue>8</issue>: <elocation-id>e0256188</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pone.0256188</pub-id>.<pub-id pub-id-type="pmid">34407128</pub-id>
+<pub-id pub-id-type="pmcid">PMC8372927</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0046"><mixed-citation publication-type="journal" id="mcn70195-cit-0046">
+<string-name name-style="western">
+<surname>Sania</surname>, <given-names>A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>D.</given-names>
+<surname>Spiegelman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Rich‐Edwards</surname>
+</string-name>, et al. <year>2015</year>. “<article-title>The Contribution of Preterm Birth and Intrauterine Growth Restriction to Childhood Undernutrition in Tanzania</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>11</volume>, no. <issue>4</issue>: <fpage>618</fpage>–<lpage>630</lpage>. <pub-id pub-id-type="doi">10.1111/mcn.12123</pub-id>.<pub-id pub-id-type="pmid">24720471</pub-id>
+<pub-id pub-id-type="pmcid">PMC4300290</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0047"><mixed-citation publication-type="journal" id="mcn70195-cit-0047">
+<string-name name-style="western">
+<surname>Sartika</surname>, <given-names>A. N.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Khoirunnisa</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Meiyetriani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.</given-names>
+<surname>Ermayani</surname>
+</string-name>, <string-name name-style="western">
+<given-names>I. L.</given-names>
+<surname>Pramesthi</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A. J.</given-names>
+<surname>Nur Ananda</surname>
+</string-name>. <year>2021</year>. “<article-title>Prenatal and Postnatal Determinants of Stunting at Age 0–11 Months: A Cross‐Sectional Study in Indonesia</article-title>.” <source>PLoS One</source>
+<volume>16</volume>, no. <issue>7</issue>: <elocation-id>e0254662</elocation-id>. <pub-id pub-id-type="doi">10.1371/journal.pone.0254662</pub-id>.<pub-id pub-id-type="pmid">34260622</pub-id>
+<pub-id pub-id-type="pmcid">PMC8279365</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0048"><mixed-citation publication-type="book" id="mcn70195-cit-0048">
+<string-name name-style="western">
+<surname>Soeken</surname>, <given-names>K. L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>McFarlane</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Parker</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Lominack</surname>
+</string-name>. <year>1998</year>. “<part-title>The Abuse Assessment Screen: A Clinical Instrument to Measure Frequency, Severity, and Perpetrator of Abuse Against Women</part-title>.” In <source>Empowering Survivors of Abuse: Health Care for Battered Women and Their Children</source>, <fpage>195</fpage>–<lpage>203</lpage>. <publisher-name>Sage Publications, Inc</publisher-name>.</mixed-citation></ref><ref id="mcn70195-bib-0049"><mixed-citation publication-type="journal" id="mcn70195-cit-0049">
+<string-name name-style="western">
+<surname>Spitzer</surname>, <given-names>R. L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>K.</given-names>
+<surname>Kroenke</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J. B. W.</given-names>
+<surname>Williams</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Löwe</surname>
+</string-name>. <year>2006</year>. “<article-title>A Brief Measure for Assessing Generalized Anxiety Disorder: The GAD‐7</article-title>.” <source>Archives of Internal Medicine</source>
+<volume>166</volume>, no. <issue>10</issue>: <fpage>1092</fpage>–<lpage>1097</lpage>. <pub-id pub-id-type="doi">10.1001/archinte.166.10.1092</pub-id>.<pub-id pub-id-type="pmid">16717171</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0050"><mixed-citation publication-type="journal" id="mcn70195-cit-0050">
+<string-name name-style="western">
+<surname>Strauss</surname>, <given-names>R. S.</given-names>
+</string-name>
+<year>1997</year>. “<article-title>Effects of the Intrauterine Environment on Childhood Growth</article-title>.” <source>British Medical Bulletin</source>
+<volume>53</volume>, no. <issue>1</issue>: <fpage>81</fpage>–<lpage>95</lpage>. <pub-id pub-id-type="doi">10.1093/oxfordjournals.bmb.a011608</pub-id>.<pub-id pub-id-type="pmid">9158286</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0051"><mixed-citation publication-type="journal" id="mcn70195-cit-0051">
+<string-name name-style="western">
+<surname>Su</surname>, <given-names>Y.‐Y.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.‐J.</given-names>
+<surname>Chen</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.‐H.</given-names>
+<surname>Chen</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Long‐Term Effects on Growth in Preterm and Small for Gestational Age Infants: A National Birth Cohort Study</article-title>.” <source>Pediatrics and Neonatology</source>
+<volume>66</volume>, no. <issue>2</issue>: <fpage>168</fpage>–<lpage>175</lpage>. <pub-id pub-id-type="doi">10.1016/j.pedneo.2024.06.007</pub-id>.<pub-id pub-id-type="pmid">39107217</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0052"><mixed-citation publication-type="journal" id="mcn70195-cit-0052">
+<string-name name-style="western">
+<surname>Suarez‐Idueta</surname>, <given-names>L.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H.</given-names>
+<surname>Bedford</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E.O.</given-names>
+<surname>Ohuma</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Cortina‐Borja</surname>
+</string-name>. <year>2021</year>. “<article-title>Maternal Risk Factors for Small‐For‐Gestational‐Age Newborns in Mexico: Analysis of a Nationwide Representative Cohort</article-title>.” <source>Frontiers in Public Health</source>
+<volume>9</volume>: <elocation-id>707078</elocation-id>. <pub-id pub-id-type="doi">10.3389/fpubh.2021.707078</pub-id>.<pub-id pub-id-type="pmid">35004559</pub-id>
+<pub-id pub-id-type="pmcid">PMC8732993</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0053"><mixed-citation publication-type="journal" id="mcn70195-cit-0053">
+<string-name name-style="western">
+<surname>Tamir</surname>, <given-names>T. T.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A. F.</given-names>
+<surname>Zegeye</surname>
+</string-name>, <string-name name-style="western">
+<given-names>B. S.</given-names>
+<surname>Workneh</surname>
+</string-name>, et al. <year>2025</year>. “<article-title>Childhood Wasting and Associated Factors in Africa: Evidence From Standard Demographic and Health Surveys From 35 Countries</article-title>.” <source>BMC Public Health</source>
+<volume>25</volume>, no. <issue>1</issue>: <fpage>454</fpage>. <pub-id pub-id-type="doi">10.1186/s12889-025-21673-z</pub-id>.<pub-id pub-id-type="pmid">39905368</pub-id>
+<pub-id pub-id-type="pmcid">PMC11796205</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0054"><mixed-citation publication-type="journal" id="mcn70195-cit-0054">
+<string-name name-style="western">
+<surname>Tol</surname>, <given-names>W. A.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>M. C.</given-names>
+<surname>Greene</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M. E.</given-names>
+<surname>Lasater</surname>
+</string-name>, et al. <year>2020</year>. “<article-title>Impact of Maternal Mental Health Interventions on Child‐Related Outcomes in Low‐ and Middle‐Income Countries: A Systematic Review and Meta‐Analysis</article-title>.” <source>Epidemiology and Psychiatric Sciences</source>
+<volume>29</volume>: <elocation-id>e174</elocation-id>. <pub-id pub-id-type="doi">10.1017/S2045796020000864</pub-id>.<pub-id pub-id-type="pmid">33070789</pub-id>
+<pub-id pub-id-type="pmcid">PMC7681164</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0055"><mixed-citation publication-type="miscellaneous" id="mcn70195-cit-0055">
+<collab collab-type="authors">Tufts University</collab>
+. <year>2023</year>. <italic toggle="yes">Data4Diets: Building Blocks for Diet‐Related Food Security Analysis, Version 2.0</italic>. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://inddex.nutrition.tufts.edu/data4diets" ext-link-type="uri">https://inddex.nutrition.tufts.edu/data4diets</ext-link>.</mixed-citation></ref><ref id="mcn70195-bib-0056"><mixed-citation publication-type="book" id="mcn70195-cit-0056">
+<collab collab-type="authors">United Nations Children's Fund, World Health Organization, International Bank for Reconstruction and Development/The World Bank</collab>
+. <year>2025</year>. <source>Levels and Trends in Child Malnutrition: Key Findings of the 2025 Edition of the Joint Child Malnutrition Estimates</source>. <publisher-name>World Health Organization</publisher-name>.</mixed-citation></ref><ref id="mcn70195-bib-0057"><mixed-citation publication-type="journal" id="mcn70195-cit-0057">
+<string-name name-style="western">
+<surname>Welch</surname>, <given-names>C.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C. K.</given-names>
+<surname>Wong</surname>
+</string-name>, <string-name name-style="western">
+<given-names>N.</given-names>
+<surname>Lelijveld</surname>
+</string-name>, <string-name name-style="western">
+<given-names>M.</given-names>
+<surname>Kerac</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>S. V.</given-names>
+<surname>Wrottesley</surname>
+</string-name>. <year>2024</year>. “<article-title>Adolescent Pregnancy Is Associated With Child Undernutrition: Systematic Review and Meta‐Analysis</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>20</volume>, no. <issue>1</issue>: <elocation-id>e13569</elocation-id>. <pub-id pub-id-type="doi">10.1111/mcn.13569</pub-id>.<pub-id pub-id-type="pmid">37781871</pub-id>
+<pub-id pub-id-type="pmcid">PMC10749999</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0058"><mixed-citation publication-type="journal" id="mcn70195-cit-0058">
+<string-name name-style="western">
+<surname>Wells</surname>, <given-names>J.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Briend</surname>
+</string-name>, <string-name name-style="western">
+<given-names>E. M.</given-names>
+<surname>Boyd</surname>
+</string-name>, et al. <year>2019</year>. “<article-title>Beyond Wasted and Stunted‐A Major Shift to Fight Child Undernutrition</article-title>.” <source>Lancet. Child &amp; Adolescent Health</source>
+<volume>3</volume>, no. <issue>11</issue>: <fpage>831</fpage>–<lpage>834</lpage>. <pub-id pub-id-type="doi">10.1016/S2352-4642(19)30244-5</pub-id>.<pub-id pub-id-type="pmid">31521500</pub-id>
+</mixed-citation></ref><ref id="mcn70195-bib-0059"><mixed-citation publication-type="book" id="mcn70195-cit-0059">
+<collab collab-type="authors">World Health Organization</collab>
+. <year>2018</year>. <source>Adverse Childhood Experiences International Questionnaire (ACE‐IQ)</source>. <publisher-name>WHO</publisher-name>.</mixed-citation></ref><ref id="mcn70195-bib-0060"><mixed-citation publication-type="journal" id="mcn70195-cit-0060">
+<string-name name-style="western">
+<surname>Wu</surname>, <given-names>H.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>C.</given-names>
+<surname>Ma</surname>
+</string-name>, <string-name name-style="western">
+<given-names>L.</given-names>
+<surname>Yang</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>B.</given-names>
+<surname>Xi</surname>
+</string-name>. <year>2021</year>. “<article-title>Association of Parental Height With Offspring Stunting in 14 Low‐ and Middle‐Income Countries</article-title>.” <source>Frontiers in Nutrition</source>
+<volume>8</volume>: <elocation-id>650976</elocation-id>. <pub-id pub-id-type="doi">10.3389/fnut.2021.650976</pub-id>.<pub-id pub-id-type="pmid">34458296</pub-id>
+<pub-id pub-id-type="pmcid">PMC8384954</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0061"><mixed-citation publication-type="journal" id="mcn70195-cit-0061">
+<string-name name-style="western">
+<surname>Zalbahar</surname>, <given-names>N.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>H. J.</given-names>
+<surname>Jan Mohamed</surname>
+</string-name>, <string-name name-style="western">
+<given-names>S. L.</given-names>
+<surname>Loy</surname>
+</string-name>, <string-name name-style="western">
+<given-names>J.</given-names>
+<surname>Najman</surname>
+</string-name>, <string-name name-style="western">
+<given-names>H. D.</given-names>
+<surname>McIntyre</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>A.</given-names>
+<surname>Mamun</surname>
+</string-name>. <year>2016</year>. “<article-title>Association of Parental Body Mass Index Before Pregnancy on Infant Growth and Body Composition: Evidence From a Pregnancy Cohort Study in Malaysia</article-title>.” <source>Obesity Research &amp; Clinical Practice</source>
+<volume>10 Suppl 1</volume>: <fpage>35</fpage>. <pub-id pub-id-type="doi">10.1016/j.orcp.2015.08.002</pub-id>.<pub-id pub-id-type="pmid">26321098</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0062"><mixed-citation publication-type="journal" id="mcn70195-cit-0062">
+<string-name name-style="western">
+<surname>Ziaei</surname>, <given-names>S.</given-names>
+</string-name>, <string-name name-style="western">
+<given-names>R. T.</given-names>
+<surname>Naved</surname>
+</string-name>, and <string-name name-style="western">
+<given-names>E. C.</given-names>
+<surname>Ekström</surname>
+</string-name>. <year>2014</year>. “<article-title>Women's Exposure to Intimate Partner Violence and Child Malnutrition: Findings From Demographic and Health Surveys in Bangladesh</article-title>.” <source>Maternal &amp; Child Nutrition</source>
+<volume>10</volume>, no. <issue>3</issue>: <fpage>347</fpage>–<lpage>359</lpage>. <pub-id pub-id-type="doi">10.1111/j.1740-8709.2012.00432.x</pub-id>.<pub-id pub-id-type="pmid">22906219</pub-id>
+<pub-id pub-id-type="pmcid">PMC6860329</pub-id></mixed-citation></ref><ref id="mcn70195-bib-0063"><mixed-citation publication-type="journal" id="mcn70195-cit-0063">
+<string-name name-style="western">
+<surname>Zou</surname>, <given-names>G.</given-names>
+</string-name>
+<year>2004</year>. “<article-title>A Modified Poisson Regression Approach to Prospective Studies With Binary Data</article-title>.” <source>American Journal of Epidemiology</source>
+<volume>159</volume>, no. <issue>7</issue>: <fpage>702</fpage>–<lpage>706</lpage>. <pub-id pub-id-type="doi">10.1093/aje/kwh090</pub-id>.<pub-id pub-id-type="pmid">15033648</pub-id>
+</mixed-citation></ref></ref-list></back></article>

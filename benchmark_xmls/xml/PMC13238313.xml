@@ -1,0 +1,790 @@
+<?xml version="1.0" encoding="UTF-8"?><article xml:lang="en" article-type="research-article"><front><journal-meta><journal-id journal-id-type="pmc-domain-id">379</journal-id><journal-id journal-id-type="pmc-domain">blackwellopen</journal-id><journal-title-group><journal-title>The British Journal of Social Psychology</journal-title><abbrev-journal-title>Br J Soc Psychol</abbrev-journal-title></journal-title-group></journal-meta><article-meta><article-id pub-id-type="pmcid">PMC13238313</article-id><article-id pub-id-type="pmcaid">13238313</article-id><article-id pub-id-type="pmcaiid">13238313</article-id><article-id pub-id-type="pmid">42244058</article-id><article-id pub-id-type="doi">10.1111/bjso.70105</article-id><title-group><article-title>Sharing for the common good: Children's levels of social inclusion within the group and their sharing decisions in a public goods game</article-title></title-group><contrib-group content-type="author"><contrib><name name-style="western"><surname>Malin</surname><given-names initials="Y">Yael</given-names></name><xref ref-type="aff" rid="bjso70105-aff-0001">1</xref><xref ref-type="aff" rid="bjso70105-aff-0002">2</xref><xref ref-type="author-notes" rid="_fncrsp93pmc__">✉</xref></contrib><contrib><name name-style="western"><surname>Sabato</surname><given-names initials="H">Hagit</given-names></name><xref ref-type="aff" rid="bjso70105-aff-0001">1</xref></contrib></contrib-group><aff id="bjso70105-aff-0001"><label>
+<sup>1</sup>
+</label>Seymour Fox School of Education, The Hebrew University of Jerusalem, Jerusalem, Israel</aff><aff id="bjso70105-aff-0002"><label>
+<sup>2</sup>
+</label>Max Planck for Human Development, Berlin, Germany</aff><author-notes><fn id="correspondenceTo"><label>*</label><p>
+
+<bold>Correspondence</bold>
+,
+Yael Malin, Seymour Fox School of Education, The Hebrew University of Jerusalem, Jerusalem, Israel.
+Email: <email>yael.malin@mail.huji.ac.il</email>
+
+</p></fn><fn id="_fncrsp93pmc__"><label>✉</label><p>Corresponding author.</p></fn></author-notes><pub-date><day>4</day><month>6</month><year>2026</year></pub-date><volume>65</volume><issue>3</issue><fpage>e70105</fpage><page-range>e70105</page-range><pub-history><event event-type="pmc-release"><date><day>6</day><month>6</month><year>2026</year></date></event></pub-history><permissions><copyright-statement>© 2026 The Author(s). <italic>British Journal of Social Psychology</italic> published by John Wiley &amp; Sons Ltd on behalf of British Psychological Society.</copyright-statement><license><license-p>This is an open access article under the terms of the <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://creativecommons.org/licenses/by/4.0/" ext-link-type="uri">http://creativecommons.org/licenses/by/4.0/</ext-link> License, which permits use, distribution and reproduction in any medium, provided the original work is properly cited.</license-p></license></permissions><self-uri xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="BJSO-65-0.pdf" content-type="pmc-pdf"><?cloudpmc-path 6aa1/13238313/b6b2c5b77fb6/BJSO-65-0.pdf?><?cloudpmc-bucket app?><?size 461434?></self-uri><abstract id="abstract1"><title>Abstract</title><p>Across two studies, this research explored the relationship between levels of social inclusion within a group and cooperative sharing decisions among children, using the public goods game (PGG). In Study 1 (10–12 years old, <italic>N</italic> = 165), participants' social inclusion was experimentally manipulated using a modified version of the Cyberball paradigm that varied the number of ball tosses, after which they were asked about their willingness to contribute resources to the common pool in the PGG. In Study 2 (10–11 years old, <italic>N</italic> = 249), social inclusion was measured in a naturalistic context by assessing children's interactions with peers in their class and their actual contributions in the PGG at two time points, 1 week apart. In both studies, children who experienced higher levels of social inclusion within the group were more willing to contribute to the group, even at a personal cost, compared with children experiencing lower levels of social inclusion. Together, these findings deepen our understanding of how social inclusion within the group shapes prosocial behaviour during middle childhood—a pivotal period in social development.</p><sec id="kwd-group1" sec-type="kwd-group" disp-level="2"><p><bold>Keywords:</bold> cooperation, group dynamics, prosocial behaviour, public goods, sharing decisions, social inclusion</p></sec></abstract><custom-meta-group><custom-meta><meta-name>status</meta-name><meta-value>released</meta-value></custom-meta><custom-meta><meta-name>display-pdf</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>is-in-collection-domain</meta-name><meta-value>yes</meta-value></custom-meta><custom-meta><meta-name>is-olf</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>is-manuscript</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>is-preprint</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>is-journal-matter</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>is-scanned</meta-name><meta-value>no</meta-value></custom-meta><custom-meta><meta-name>is-retracted</meta-name><meta-value>no</meta-value></custom-meta></custom-meta-group></article-meta><notes notes-type="article-notes"><sec id="historyarticle-meta1" sec-type="history" disp-level="2"><p>Received 2026 Jan 20; Accepted 2026 May 25; Issue date 2026 Jul.</p></sec></notes></front><body><p>The need to belong is a fundamental human motivation, shaping how individuals think, feel and behave in social contexts (Baumeister &amp; Leary, <xref rid="bjso70105-bib-0005" ref-type="bibr">1995</xref>). Empirical research shows that feeling socially connected and supported is positively associated with various prosocial behaviours, such as helping, sharing and cooperating (Angelis &amp; Pensini, <xref rid="bjso70105-bib-0002" ref-type="bibr">2023</xref>; Cowell et al., <xref rid="bjso70105-bib-0016" ref-type="bibr">2018</xref>; Lin et al., <xref rid="bjso70105-bib-0048" ref-type="bibr">2025</xref>; Malin &amp; Sabato, <xref rid="bjso70105-bib-0089" ref-type="bibr">2026</xref>; Pavey et al., <xref rid="bjso70105-bib-0056" ref-type="bibr">2011</xref>; Trombini &amp; Kinias, <xref rid="bjso70105-bib-0071" ref-type="bibr">2022</xref>). Importantly, these links between feeling socially connected and prosocial behaviour may be especially pronounced during middle childhood, a developmental period in which children become increasingly involved in their social environment (Dawes, <xref rid="bjso70105-bib-0018" ref-type="bibr">2017</xref>), and peer relationships become central (Beazidou &amp; Botsoglou, <xref rid="bjso70105-bib-0006" ref-type="bibr">2016</xref>). Understanding these dynamics is important because prosociality plays a key role at both the individual and group levels. Prosocial behaviours are positively associated with children's academic adjustment and psychological well‐being (e.g. Caprara et al., <xref rid="bjso70105-bib-0011" ref-type="bibr">2000</xref>; Eisenberg et al., <xref rid="bjso70105-bib-0020" ref-type="bibr">2013</xref>), and contribute to positive peer relationships and effective group functioning as well (Ma et al., <xref rid="bjso70105-bib-0049" ref-type="bibr">2020</xref>).</p><p>As children grow, peers provide a primary context in which social experiences significantly shape self‐perception and interactions with others (Parker et al., <xref rid="bjso70105-bib-0055" ref-type="bibr">2015</xref>). Developmental research has increasingly examined how children's social experiences within the group shape their prosocial tendencies (Stoltz et al., <xref rid="bjso70105-bib-0069" ref-type="bibr">2016</xref>). In particular, previous studies have found a solid positive association between children's social status within the group and their prosociality—in terms of cooperation, helping and kindness towards others (Angelis &amp; Pensini, <xref rid="bjso70105-bib-0002" ref-type="bibr">2023</xref>; Berger et al., <xref rid="bjso70105-bib-0008" ref-type="bibr">2015</xref>; Lin et al., <xref rid="bjso70105-bib-0048" ref-type="bibr">2025</xref>; Warden &amp; MacKinnon, <xref rid="bjso70105-bib-0080" ref-type="bibr">2003</xref>). For example, van den Berg et al. (<xref rid="bjso70105-bib-0076" ref-type="bibr">2015</xref>) investigated the association between social status and social behaviour among fifth‐ and sixth‐graders, using peer‐ and teacher‐nomination methods (i.e. children's ratings of classmates' popularity likability and social behaviours; teachers' reports on children's peer status and social behaviours). They found a positive link between popularity and prosocial behaviour, as perceived by peers and teachers, and a negative association between popularity and reported aggressive behaviour. Warden and MacKinnon (<xref rid="bjso70105-bib-0080" ref-type="bibr">2003</xref>) examined this link among 9–10‐year‐olds, using children's self‐reports of their social status, and their ratings by their peers. They revealed that the children's social status was positively correlated with self‐reported prosocial behaviours (inclusion, helping, sharing and caring) and empathy towards others (the latter being evident only for girls).</p><p>Consistent with this pattern, research on social rejection or exclusion—typically defined as being actively ignored or disregarded by others (Taket, <xref rid="bjso70105-bib-0070" ref-type="bibr">2009</xref>)—has shown that negative social experiences are associated with reduced prosociality (Gunther Moor et al., <xref rid="bjso70105-bib-0030" ref-type="bibr">2012</xref>; Lin et al., <xref rid="bjso70105-bib-0048" ref-type="bibr">2025</xref>; Pakaslahti et al., <xref rid="bjso70105-bib-0054" ref-type="bibr">2002</xref>; Twenge et al., <xref rid="bjso70105-bib-0073" ref-type="bibr">2007</xref>; Wang &amp; Qi, <xref rid="bjso70105-bib-0079" ref-type="bibr">2023</xref>; Wölfer &amp; Scheithauer, <xref rid="bjso70105-bib-0086" ref-type="bibr">2013</xref>). However, social exclusion does not simply represent the absence of feeling socially supported or included, but rather constitutes a distinct form of social experience involving qualitatively different interactional dynamics, which is not the focus of the present research.</p><p>While existing research literature provides valuable insights into children's social status within their group and prosociality, most of these studies assessed social status based on ratings by teachers or peers (i.e. asking them to rate their classmates' respective perceived popularity or likability; for a detailed discussion on the definition and measurements, see Cillessen et al., <xref rid="bjso70105-bib-0014" ref-type="bibr">2011</xref>). Similarly, prosociality has often been assessed using general or self‐reported tendencies. In a recent study among fourth‐ and sixth‐graders, Sabato and Kogut (<xref rid="bjso70105-bib-0064" ref-type="bibr">2021</xref>) challenged this positive association, by adding specific characteristics of the help recipient to the equation (namely, whether they are an ingroup or out‐group member; identified or unidentified). In that study, social status was gauged by asking children to nominate their actual social interactions with each peer. The children then engaged in an actual sharing task, in which they were asked to decide whether or not to share chocolate coins they had received for taking part in the study with another child from their class (vs. from another class). The findings revealed an intriguing pattern: higher‐status children exhibited a stronger tendency to share—but only when the recipient was an ingroup peer; when the recipient was an out‐group member, there was no difference between lower‐ and higher‐status children in their sharing behaviour. In similar vein, Asscheman et al. (<xref rid="bjso70105-bib-0003" ref-type="bibr">2020</xref>) examined the link between the likability of children aged 8–12 years old and their sharing behaviour in a Dictator Game, as a function of their relationship with the help recipient (an anonymous child, a best friend, or a disliked peer). They found that less‐popular children shared less than others, irrespective of the recipient, while children who were liked by classmates shared more with close others, such as best friends. Together, these findings highlight the central role of social context in shaping children's sharing behaviour, suggesting that the association between social standing and prosociality may depend on whom the behaviour is directed towards.</p><p>In this context, it is important to note that most of this research has focused on prosocial behaviour directed towards a specific individual, often using paradigms such as Dictator or resource‐allocation games. In these settings, sharing decisions are made with respect to a particular recipient and may be shaped by interpersonal considerations such as egalitarian preferences, reciprocity, or the unique characteristics of the recipient (Falk &amp; Fischbacher, <xref rid="bjso70105-bib-0022" ref-type="bibr">2006</xref>; Fehr et al., <xref rid="bjso70105-bib-0024" ref-type="bibr">2008</xref>). Accordingly, less is known about the link between children's social standing within a group and prosocial behaviour directed towards a group as a whole, rather than towards a specific individual.</p><p>Sharing with a group involves contributing resources to a collective pool that benefits multiple members simultaneously, typically examined in public goods paradigms. Decisions in such contexts may therefore rely on partially distinct motivations, including sensitivity to group norms, perceived responsibility towards the collective, and concerns about maintaining cooperation within the group (Keil et al., <xref rid="bjso70105-bib-0039" ref-type="bibr">2019</xref>; Vogelsang et al., <xref rid="bjso70105-bib-0078" ref-type="bibr">2014</xref>).</p><p>This distinction is particularly important in the context of children's peer relationships in school. In classroom settings, social interactions are closely tied to children's sense of belonging within the group. For example, more frequent and positive interactions with classmates strengthen feelings of belonging (Juvonen, <xref rid="bjso70105-bib-0035" ref-type="bibr">2006</xref>), whereas infrequent or negative interactions are associated with a reduced sense of belonging within the peer group (Mouratidis &amp; Sideridis, <xref rid="bjso70105-bib-0052" ref-type="bibr">2009</xref>). Consequently, when examining prosocial behaviour as a function of children's social experiences, it is important to consider not only behaviour directed towards individual peers, but also behaviour directed towards the group as a collective. Building on this distinction, the present research focused on the relation between children's social inclusion within their peer group and their prosocial behaviour in a group‐based context. To that end, we used the <italic>Public Goods Game</italic> (PGG) to measure children's <italic>actual behavioural</italic> inclinations towards their group, rather than their general generosity as reported by significant others (i.e. teachers, parents, peers).</p><p>The Public Goods Game (hereafter PGG)—a widely used and well‐established method—designed to study prosocial behaviour in group settings. Specifically, it focuses on cooperative behaviour, since it presents participants with the social dilemma of choosing between their group's benefit, and their own (Ledyard, <xref rid="bjso70105-bib-0046" ref-type="bibr">1990</xref>). In this game, participants receive resources that they can either keep for themselves or contribute to the common pool. Individual contributions to the common pool are then collected and distributed equally among all group members. Thus, a cooperative strategy in this game is represented in one's decision to donate all of one's resources to the common pool, resulting in the maximum payoff for the group. Conversely, a selfish strategy is to keep one's resources, while benefiting from the contribution of others to the common good.</p><p>Research among adults reveals that approximately 35%–60% of participants opt for the cooperative option and allocate resources to the group (at least in the first round), despite the temptation to free‐ride on others' contribution (e.g. Goeschl et al., <xref rid="bjso70105-bib-0029" ref-type="bibr">2020</xref>). This tendency, however, can change in a non‐cooperative environment (i.e. <italic>conditional cooperation</italic>—Fischbacher et al., <xref rid="bjso70105-bib-0027" ref-type="bibr">2001</xref>). Several studies have used the PGG among children of various demographics, and found that overall, children's contributions in the PGG broadly align with those observed in adults (e.g. Keil et al., <xref rid="bjso70105-bib-0038" ref-type="bibr">2017</xref>, <xref rid="bjso70105-bib-0039" ref-type="bibr">2019</xref>). Children, like adults, are also sensitive to non‐cooperative behaviour of peers, as early as the age of five (Corbit et al., <xref rid="bjso70105-bib-0015" ref-type="bibr">2023</xref>; Keil et al., <xref rid="bjso70105-bib-0038" ref-type="bibr">2017</xref>; Vogelsang et al., <xref rid="bjso70105-bib-0078" ref-type="bibr">2014</xref>). This finding is in line with those on children's sharing in other economic games (such as the <italic>Dictator Game</italic>, or the <italic>Ultimatum</italic> game—Fehr et al., <xref rid="bjso70105-bib-0024" ref-type="bibr">2008</xref>; Kogut, <xref rid="bjso70105-bib-0040" ref-type="bibr">2012</xref>)—indicating children's growing sensitivity to various features of sharing situations as they grow older (such as self‐representation considerations—Heyman et al., <xref rid="bjso70105-bib-0031" ref-type="bibr">2014</xref>; effort and status—Schmidt et al., <xref rid="bjso70105-bib-0065" ref-type="bibr">2016</xref>; or the recipient's neediness—Sabato &amp; Kogut, <xref rid="bjso70105-bib-0062" ref-type="bibr">2019</xref>, <xref rid="bjso70105-bib-0063" ref-type="bibr">2020</xref>). However, as previously noted, the relation between children's sharing for the common good and their social inclusion within the group remains understudied.</p><p>Although our primary focus when addressing this gap was on establishing the behavioural patterns of group‐based sharing, it is essential to consider the theoretical mechanisms that may support these associations. First, experiences of inclusion may enhance a sense of belonging and group identification, which in turn motivate contributions to collective outcomes (Baumeister &amp; Leary, <xref rid="bjso70105-bib-0005" ref-type="bibr">1995</xref>; Williams, <xref rid="bjso70105-bib-0083" ref-type="bibr">2007</xref>). This process is supported by recent work on the role of group membership in children's sharing behaviour. For example, Lenz et al. (<xref rid="bjso70105-bib-0047" ref-type="bibr">2021</xref>) showed that kindergarteners are more willing to share with friends than with non‐friends. Similarly, children aged 5–9 (but not younger) were found to favour in‐group over out‐group members in mini‐Dictator Games (Yu et al., <xref rid="bjso70105-bib-0088" ref-type="bibr">2016</xref>) and in the prisoner dilemma (Prétôt et al., <xref rid="bjso70105-bib-0060" ref-type="bibr">2024</xref>), suggesting that children's prosocial behaviour is shaped not only by their general social standing but also by the boundaries of their social groups. Second, repeated social interactions within the peer group may foster expectations of reciprocity and the internalization of cooperative norms (House et al., <xref rid="bjso70105-bib-0033" ref-type="bibr">2019</xref>). Third, children's level of social inclusion may be associated with a greater sense of responsibility towards the collective. More socially included or centrally positioned children may feel a stronger obligation to contribute to collective outcomes (Willer, <xref rid="bjso70105-bib-0082" ref-type="bibr">2009</xref>). In group contexts such as public goods situations, this heightened sense of responsibility may motivate greater contributions to the collective good. Finally, children's decisions to share may reflect strategic social behaviour aimed at maintaining or improving social inclusion (Chávez et al., <xref rid="bjso70105-bib-0012" ref-type="bibr">2022</xref>; Sabato et al., <xref rid="bjso70105-bib-0061" ref-type="bibr">2021</xref>). These processes may be particularly relevant in childhood, when peer group dynamics are especially salient.</p><p>Building on these underlying processes, the present research aimed to contribute to the literature in several ways. First, children's level of social inclusion within the group was assessed behaviourally, based on their actual interactions with peers, rather than on general ratings of popularity or likability. In Study 1, social inclusion was experimentally manipulated using a modified Cyberball paradigm that varied the degree of inclusion through the number of ball tosses received. In Study 2, social inclusion was assessed in a naturalistic setting based on children's peer interactions within their classroom.</p><p>Second, unlike prior work that has primarily focused on prosocial decisions towards individual recipients, the current studies examined children's willingness to contribute to a collective outcome, as operationalized through the PGG, in which individual contributions benefit the group as a whole. Importantly, this approach captures actual behavioural contributions rather than self‐reported tendencies, while also allowing for the possibility of free riding, whereby individuals may benefit from others' contributions without contributing themselves.</p><p>Finally, whereas research in adult populations has extensively examined the links between social standing, group processes and prosocial behaviour (Kafashan et al., <xref rid="bjso70105-bib-0036" ref-type="bibr">2014</xref>; see Piff &amp; Robinson, <xref rid="bjso70105-bib-0058" ref-type="bibr">2017</xref> for a review), relatively little is known about these dynamics in childhood, particularly using behavioural measures and group‐based paradigms. Examining these processes in children may therefore provide important insights into the developmental origins of cooperation within peer groups. The present research addresses these gaps by examining how social inclusion relates to children's group‐based cooperation.</p><sec id="bjso70105-sec-0002" disp-level="1"><title>THE PRESENT STUDY</title><p>The present study sought to examine how levels of social inclusion within a group relate to children's sharing for the common good across two contexts: situationally induced inclusion in an experimental setting (Study 1) and more stable inclusion within natural peer group—the classroom (Study 2).</p><p>In Study 1, levels of social inclusion within a group were experimentally manipulated using a modified version of the Cyberball paradigm (Williams &amp; Jarvis, <xref rid="bjso70105-bib-0084" ref-type="bibr">2006</xref>)—a virtual ball‐tossing game that allows precise control over the number of throws participants receive. While Cyberball is often used to create a binary experience of inclusion versus exclusion, we employed a five‐level manipulation of social inclusion, by systematically varying the number of ball tosses received. This approach builds on previous studies that have employed Cyberball with multiple conditions (e.g. Kawamoto et al., <xref rid="bjso70105-bib-0037" ref-type="bibr">2012</xref>; Van Bommel et al., <xref rid="bjso70105-bib-0075" ref-type="bibr">2016</xref>). It was designed to capture graded differences in children's experienced level of inclusion, reflecting the reality that children's social experiences in everyday peer interactions are rarely characterized by extreme exclusion or total inclusion, but rather by continuous variation in social engagement. After the game, participants took part in an online PGG, in which they decided how many coins (if any) to contribute to the group with whom they had played Cyberball.</p><p>While in Study 1 levels of social inclusion were experimentally manipulated as graded variations in children's momentary experiences of inclusion by peers in the game, Study 2 aimed to extend this examination by assessing more stable, ongoing social interactions within their natural peer group in the classroom. Importantly, in the Israeli education system, children usually remain with the same children in the same class from first through sixth grade. This provides a central and enduring social context where peer group dynamics are shaped by long‐term, cumulative experiences, making the role of social inclusion within these groups particularly meaningful. Study 2 therefore enhances ecological validity by examining whether the effects observed in a controlled experimental setting generalize to real‐life social interactions within stable peer groups.</p><p>We focused on children aged 10–12 years—a developmental stage characterized by increasingly stable friendships and more firmly established social status within the peer group (Poulin &amp; Chan, <xref rid="bjso70105-bib-0059" ref-type="bibr">2010</xref>). During this period, peer relationships become more influential, and children show greater awareness of their social environment (Jones &amp; Rutland, <xref rid="bjso70105-bib-0034" ref-type="bibr">2020</xref>; Selman, <xref rid="bjso70105-bib-0067" ref-type="bibr">2007</xref>). This age is also marked by heightened sensitivity to social rejection (Pharo et al., <xref rid="bjso70105-bib-0057" ref-type="bibr">2011</xref>; Sebastian et al., <xref rid="bjso70105-bib-0066" ref-type="bibr">2010</xref>; Yan et al., <xref rid="bjso70105-bib-0087" ref-type="bibr">2024</xref>), coupled with a stronger tendency to adhere to social norms, such as sharing (Kogut, <xref rid="bjso70105-bib-0040" ref-type="bibr">2012</xref>).</p><p>Based on prior research linking social inclusion within the group to prosocial behaviour—particularly towards in‐group members (Over, <xref rid="bjso70105-bib-0053" ref-type="bibr">2018</xref>; Sabato &amp; Kogut, <xref rid="bjso70105-bib-0064" ref-type="bibr">2021</xref>)—and evidence that frequent and positive social interactions foster belonging, internalization of prosocial norms and motivation to maintain or enhance peer relationships (Chávez et al., <xref rid="bjso70105-bib-0012" ref-type="bibr">2022</xref>; Gunther Moor et al., <xref rid="bjso70105-bib-0030" ref-type="bibr">2012</xref>; Juvonen, <xref rid="bjso70105-bib-0035" ref-type="bibr">2006</xref>; Wilson et al., <xref rid="bjso70105-bib-0085" ref-type="bibr">2014</xref>; Wölfer &amp; Scheithauer, <xref rid="bjso70105-bib-0086" ref-type="bibr">2013</xref>), we hypothesized that children experiencing higher levels of social inclusion would share more with their group Specifically, levels of social inclusion within the group (manipulated by the number of throws received in the modified Cyberball game in Study 1, and operationalized through children's natural peer interactions in Study 2) would predict greater contributions to the common good in the PGG.</p><p>While the primary scope of this research focuses on the varying levels of social inclusion, we also conducted exploratory analyses of the zero‐throws condition. Given that social exclusion may not necessarily reflect the lower end of the inclusion continuum, we do not advance formal predictions regarding this condition. Instead, we examined whether the zero‐toss condition aligns with the overall linear trend observed across levels of inclusion.</p><p>Both studies obtained ethical clearance from the authors' department Ethics Committees and the Ministry of Education. Preregistration of Study 1 is available at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://aspredicted.org/5hj2p8.pdf" ext-link-type="uri">https://aspredicted.org/5hj2p8.pdf</ext-link>. Data for both studies are available at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://osf.io/ezwjs/?view_only=f7ac50a6febd49b39b8795efc493daeb" ext-link-type="uri">https://osf.io/ezwjs/?view_only=f7ac50a6febd49b39b8795efc493daeb</ext-link>.</p></sec><sec id="bjso70105-sec-0003" disp-level="1"><title>STUDY 1</title><sec id="bjso70105-sec-0004" disp-level="2"><title>Participants</title><p>A total of 165 children, aged 10–12 years old (49% girls; <italic>M</italic>
+<sub>age</sub> = 11.26, <italic>SD</italic> = 0.66) from all areas of Israel were recruited through an online research panel. Participation was limited to Hebrew‐speaking children from non‐orthodox households. Based on parental reports, participants predominantly came from average socioeconomic status (67.9%), with smaller proportions reporting above‐average (21.2%), below‐average (8.5%), and extreme categories (much above‐average: 2.4%; much below‐average: 1.8%). Most parents reported higher education, including 40% with a bachelor's degree, 30% with a master's degree, and 5% with a doctoral degree, while 15% reported post‐secondary vocational training and 10% reported high school education. Overall, the sample represents a WEIRD (Western, Educated, Industrialized, Rich, Democratic) population. Based on the size of the available pool of children within the required age range in the panel, we sought to recruit approximately 150 participants. A sensitivity analysis using G‐Power (Faul et al., <xref rid="bjso70105-bib-0023" ref-type="bibr">2007</xref>) for a regression model with one predictor (group assignment), assuming 80% power and a significance level of <italic>α</italic> = .05, indicated that the study can detect a small effect size of <italic>f</italic>
+<sup>2</sup> = 0.05. This corresponds to the ability to identify effects explaining approximately 5% of the variance in the outcome variable.</p></sec><sec id="bjso70105-sec-0005" disp-level="2"><title>Procedure and materials</title><p>The panel first contacted parents for their informed consent, and asked them to complete a short initial questionnaire, that included demographic information and an assessment of their child's ability to participate independently in the study. Participants then completed the study in a single session, beginning with providing informed consent a declaration that they were able to complete the study independently. The study consisted of two stages: a modified Cyberball game (Williams &amp; Jarvis, <xref rid="bjso70105-bib-0084" ref-type="bibr">2006</xref>) designed to manipulate participants' feelings of social inclusion within the group, followed by a PGG to assess sharing behaviour.</p><sec id="bjso70105-sec-0006" disp-level="3"><title>The modified Cyberball game (Williams &amp; Jarvis, <xref rid="bjso70105-bib-0084" ref-type="bibr">2006</xref>)</title><p>Children's level of social inclusion was experimentally manipulated as a function of the number of tosses received in a modified Cyberball paradigm. To that end, participants were randomly assigned to one of five experimental groups: receiving 0, 2, 4, 6 or 8 tosses out of a total of 30 tosses. Then, as a manipulation check, participants rated (1) how often the ball was thrown to them (on a 5‐point scale ranging from <italic>Not at all</italic> to <italic>Many times</italic>) and (2) the extent to which they felt part of the group (on a 5‐point scale, from <italic>Not at all</italic> to <italic>Very much</italic>). Children were told that the other players were from different schools and were playing on their own computers.</p></sec><sec id="bjso70105-sec-0007" disp-level="3"><title>The PGG (adapted from Marwell &amp; Ames, <xref rid="bjso70105-bib-0051" ref-type="bibr">1980</xref>)</title><p>The PGG consisted of two rounds, in which participants were provided with five coins online and could decide how many to contribute to a group pot—with pooled contributions subsequently distributed equally among all group members. The ‘group’ corresponded to the peers they had played with in the Cyberball game. The PGG consisted of two rounds<xref rid="bjso70105-note-1001" ref-type="fn"><sup>1</sup></xref> to give participants the opportunity to adjust their behaviour based on their experience in the first round, while maintaining comparability across children. Using two rounds also allowed for a slightly more reliable measure of cooperative tendencies without overburdening the participants. In each round, participants first indicated whether they wished to contribute from their prizes (<italic>Yes</italic> or <italic>No</italic>), and if they chose <italic>Yes</italic>, the number of coins they were willing to contribute (1–5). The second round was presented as a new round, with the public pot reset to zero. The game started with the following explanation, which was also illustrated with images (See <xref rid="bjso70105-supitem-0001" ref-type="supplementary-material">Supporting Information</xref>):</p><disp-quote id="bjso70105-blkfxd-0001"><p>‘The next game is one in which you can earn coins, that can be exchanged for prizes at the end of the game. You will play with the same group you played with in the tossing game. In addition to giving coins to each child, we also give coins to the group pot—this is a pot for the whole group. At the end of the game, it will be divided among all the children in the group. Right now, the group pot is empty, so we ask the children in the group if they are willing to contribute some of their own coins to the group pot. You will now participate in two rounds of coin distribution, in which you can choose how many coins to keep for yourself and how many to put in the group pot. In each round, the amount you put in the group pot will be doubled by us!’</p></disp-quote><p>Next, participants took part in another short ball‐toss game, in which they received the maximum number of tosses, to enhance positive feelings and to mitigate any potential negative effects of the previous experimental manipulation. At the end of the experiment, they were debriefed as follows:</p><disp-quote id="bjso70105-blkfxd-0002"><p>‘Thank you for participating in this study! In this research, we examine whether the number of tosses children receive influences the number of coins they subsequently choose to share with the group. The characters you played with were not real children; they were computer‐generated avatars, and the game was entirely virtual. All participating children received a monetary reward instead of the coins. All children received the same amount, regardless of the number of coins they chose to keep in the game. The payment was transferred directly to your parent’.<xref rid="bjso70105-note-1002" ref-type="fn"><sup>2</sup></xref>
+</p></disp-quote><p>This procedure was designed based on ethical considerations, to preserve the privacy of the children's decisions and to minimize any potential discomfort or negative feelings that might arise from perceived unequal outcomes or from the Cyberball paradigm.</p></sec></sec></sec><sec id="bjso70105-sec-0008" disp-level="1"><title>RESULTS</title><sec id="bjso70105-sec-0009" disp-level="2"><title>Manipulation check</title><p>To assess the effectiveness of the Cyberball manipulation, we computed a Pearson correlation between the condition (i.e. number of throws received) and the Manipulation Check Index—i.e. the mean of participants' ratings of perceived ball reception and perceived group inclusion. The correlation was strong and significant: <italic>r</italic> = .77, <italic>p</italic> &lt; .001.</p></sec><sec id="bjso70105-sec-0010" disp-level="2"><title>Social inclusion within the group and sharing behaviour</title><p>Participants' contributions to the common good (averaged across the two rounds) ranged from 0 to 5 coins. In total, 15 participants contributed nothing, while 9 participants contributed the maximum of 5 coins. In the first round, 23 children contributed no coins, and 14 contributed 5 coins; in the second round, 20 contributed none and 16 contributed 5.</p><p>As a preliminary check, we examined whether children's age or gender influenced contributions in the PGG. A linear regression predicting mean contributions from age and gender was not significant, <italic>F</italic> (2, 161) = 0.49, <italic>p</italic> = .614, <italic>R</italic>
+<sup>2</sup> = .01, indicating that neither age (<italic>b</italic> = .14, <italic>p</italic> = .378) nor gender (<italic>b</italic> = .09, <italic>p</italic> = .652) had a detectable effect on children's sharing in the PGG.</p><p>A linear regression model predicting mean‐PGG contributions from the level of social inclusion in the Cyberball game was significant: <italic>F</italic> (1, 163) = 5.30, <italic>p</italic> = .023, <italic>R</italic>
+<sup>2</sup> = .03. As hypothesized, higher levels of social inclusion (i.e. higher number of throws received) significantly predicted greater sharing: <italic>b</italic> = .18, <italic>t</italic> (163) = 2.30, <italic>p</italic> = .023. We then tested this association for each round of the PGG separately. The results were significant for both rounds. In the first round, social inclusion level predicted sharing behaviour: <italic>F</italic> (1, 163) = 4.13, <italic>p</italic> = .044, <italic>R</italic>
+<sup>2</sup> = .02, <italic>b</italic> = .14, <italic>t</italic> (163) = 2.03, <italic>p</italic> = .044. The effect was similar in the second round: <italic>F</italic> (1, 163) = 6.59, <italic>p</italic> = .011, <italic>R</italic>
+<sup>2</sup> = .04, <italic>b</italic> = .20, <italic>t</italic> (163) = 2.56, <italic>p</italic> = .011. In both cases, higher inclusion levels were associated with a greater willingness to share resources for the common good.</p></sec><sec id="bjso70105-sec-0011" disp-level="2"><title>Exploratory analyses: The zero‐toss condition</title><p>As noted above, our primary focus was to examine how increasing levels of inclusion relate to children's sharing behaviour, rather than contrasting social exclusion with inclusion. Thus, the number of ball tosses was treated as a continuous behavioural index of social inclusion. However, the zero‐toss condition may differ in its qualitative features from lower levels of inclusion. Given the unique nature of this condition, we additionally conducted exploratory analyses focusing on whether children's sharing behaviour in the zero‐toss condition followed similar patterns to those observed across levels of inclusion.</p><p>First, a one‐way ANOVA comparing the five experimental conditions revealed no significant overall differences in mean contributions to the public good, <italic>F</italic> (4, 159) = 1.56, <italic>p</italic> = .189, <italic>η</italic>
+<sup>2</sup> = .038. Second, polynomial trend analyses indicated a significant linear trend across conditions, <italic>t</italic> (159) = 2.03, <italic>p</italic> = .023, with higher levels of social inclusion associated with greater contributions to the public good. Higher‐order trends (quadratic, cubic) were not significant.</p><p>Finally, planned contrasts were conducted to further characterize the pattern of results. A contrast comparing the zero‐toss condition to all other conditions was not significant, <italic>t</italic> (159) = −1.04, <italic>p</italic> = .298.</p><p>Overall, these exploratory analyses are consistent with a graded pattern of responding across levels of social inclusion, without clear evidence that the zero‐toss condition departs substantially from this trend. These exploratory comparisons should be interpreted cautiously, as the study was primarily designed to detect linear trends across levels of social inclusion rather than condition‐specific differences.</p><p>While Study 1 manipulated levels of social inclusion in a short‐term experimental setting, Study 2 extended this investigation by examining whether these patterns generalize to real‐world peer contexts, in which social relationships are more stable and embedded in ongoing interactions. Specifically, examining children's social inclusion within their classroom allowed us to test whether the observed effects extend to ecologically valid and meaningful peer environments that characterize children's everyday social experiences.</p></sec></sec><sec id="bjso70105-sec-0012" disp-level="1"><title>STUDY 2</title><sec id="bjso70105-sec-0013" disp-level="2"><title>Method</title><sec id="bjso70105-sec-0014" disp-level="3"><title>Participants</title><p>Participants were all fourth or fifth graders (age range: 10–11; <italic>M</italic>
+<sub>age</sub> = 10.46, <italic>SD</italic> = 0.49) from three secular public elementary schools located in the central region of Israel. The schools served populations of an average socioeconomic status, according to the Ministry of Education ranking of state schools in the country (which are based on the socioeconomic background of the students, the per capita income of their respective families, the school's geographical location and the students' family country of origin). Overall, the sample represents a WEIRD population. All participating children were native Hebrew speakers and completed the questionnaire in that language. The data was gathered as part of a larger project that examined class climate. Only children whose parents had approved their participation took part in the study.</p><p>In line with the sample size targeted in Study 1, we sought to recruit a comparable number of participants for Study 2. Because this study included two measurement time points, we accounted for potential attrition by recruiting a larger initial sample. Accordingly, 299 children participated at Time 1 (51% girls; fourth graders: 165, fifth graders: 134). Of these, 249 children completed the study at both time points and were included in the final analyses (52% girls; fourth graders: 134, fifth graders: 115). Fifty children were unavailable at the second time point, due either to absence that day or participation in other school activities. A sensitivity analysis conducted using G*Power (Faul et al., <xref rid="bjso70105-bib-0023" ref-type="bibr">2007</xref>) indicated that this final sample size provides 80% power to detect a small effect (<italic>f</italic>
+<sup>2</sup> = .03) in a regression model with <italic>α</italic> = .05.</p></sec><sec id="bjso70105-sec-0015" disp-level="3"><title>Procedure and materials</title><p>The study was conducted at two time points in a classroom setting by trained research assistants. At Timepoint 1, children completed the Social Inclusion measure. One week later, at Timepoint 2, they completed additional questionnaires as part of a broader project and participated in an online PGG, which each child played individually on a tablet. Data were collected at two time points to minimize any potential influence of the social inclusion measure on children's sharing behaviour.</p><p>At both time points, research assistants introduced themselves, explained that participation was voluntary, and emphasized that children could choose to opt out at any time (although all chose to participate). They then provided instructions for completing the relevant measures. To enable matching across the two sessions, participants identified themselves using their assigned number from the class list.</p><sec id="bjso70105-sec-0016" disp-level="4"><title>Social inclusion measure (from Sabato et al., <xref rid="bjso70105-bib-0061" ref-type="bibr">2021</xref>; Sabato &amp; Kogut, <xref rid="bjso70105-bib-0064" ref-type="bibr">2021</xref>)</title><p>Levels of social inclusion were assessed using a sociometric measure based on the number of peer social interactions, as reported by children. The research assistant wrote down all the students' names along with their assigned serial numbers on the board, in the line with the class's student list. Each child then received a brief questionnaire, and told to write their assigned number (from the board) at the top of the questionnaire. Then, on a table format with columns labelled <italic>Yes</italic> and <italic>No</italic>, they were asked to indicate, for each classmate, whether they typically (1) engaged in play with that child during school breaks, (2) met them after school and (3) confided in them. Importantly, the research assistant assured the children that their responses would be confidential and anonymous, and that the final lists would not contain any names, and would remain undisclosed within their school community.</p></sec><sec id="bjso70105-sec-0017" disp-level="4"><title>The PGG (adapted from Marwell &amp; Ames, <xref rid="bjso70105-bib-0051" ref-type="bibr">1980</xref>)</title><p>The game followed the same procedure and instructions as in Study 1, but each of the two rounds included different sets of prizes (two types of candy).<xref rid="bjso70105-note-1003" ref-type="fn"><sup>3</sup></xref> The task was conducted in a quiet room at the school, with small groups of children to ensure focus and minimize distractions. First, the research assistant introduced the game to the class, to make sure the children understood the rules (which were also presented in the text presented to them at the start of the task). She explained to the children that they would receive prizes during the game, and asked if they would like to contribute some of their prizes to a collective stock for the entire class. The research assistant emphasized that in accordance with the game's rules, the prizes contributed by each child would be doubled by the research assistants and evenly distributed among all participants at the conclusion of the game. They also stressed that there were no right or wrong decisions, and assured the children that their choices would remain anonymous. The game started with the following explanation, which was also illustrated with images (see <xref rid="bjso70105-supitem-0001" ref-type="supplementary-material">Supporting Information</xref>):</p><disp-quote id="bjso70105-blkfxd-0003"><p>‘All the children participating in our study receive prizes for their participation.</p><p>In addition to giving each child prizes, we also add prizes to the class pot—this is a pot for the entire class, which will be divided among all the children in the class at the end of the day. Right now, the class pot is empty. Therefore, we ask the children in the class if they are willing to contribute some of their own prizes to the class pot.</p><p>You will now take part in several rounds of prize distribution, where you can choose how many prizes to keep for yourself, and how many to put in the class pot. In each round, the amount you put in the class pot will be doubled by us! Please note: after each round, we will check how many prizes were collected in the class pot, and then empty it again for the next round (meaning that in each round, prize collection starts from zero).’</p></disp-quote></sec></sec></sec></sec><sec id="bjso70105-sec-0018" disp-level="1"><title>RESULTS</title><p>Residuals of the Social Inclusion measure and the Sharing measure were checked for normality assumptions by inspecting Q–Q plots, skewness and kurtosis (within the limits of ±1). A Social Inclusion Index for each participant was computed, based on the number of children who had noted that they play with that child during school breaks, meet them after school, and confide in them (the average of the three categories). This measure ranged between 0.67 and 14.33, <italic>M</italic> = 6.69, <italic>SD</italic> = 2.53.</p><p>Participants' contributions to the common good (the average of the two rounds) ranged from 0 to 5—with 39 participants contributing nothing, and 42 who contributed 5 (in the first round: 51 contributed nothing, 50 contributed 5; in the second round: 53 contributed 0, 63 contributed 5). A linear regression was conducted, with social inclusion as the predictor and the mean number of prizes shared across both rounds as the outcome variable. The overall model was significant, <italic>F</italic> (1, 252) = 7.02, <italic>p</italic> = .009, <italic>R</italic>
+<sup>2</sup> = .03. As hypothesized, higher levels of social inclusion significantly predicted greater sharing, <italic>b</italic> = .16, <italic>t</italic> (252) = 2.65, <italic>p</italic> = .009. We then tested this association for each round of the PGG separately. The results were significant for both rounds. In the first round, social inclusion positively predicted sharing behaviour, <italic>F</italic> (1, 251) = 4.73, <italic>p</italic> = .030, <italic>R</italic>
+<sup>2</sup> = .02, <italic>b</italic> = .14, <italic>t</italic> (251) = 2.17, <italic>p</italic> = .030. The effect was similar in the second round, <italic>F</italic> (1, 247) = 7.85, <italic>p</italic> = .005, <italic>R</italic>
+<sup>2</sup> = .03, <italic>b</italic> = .17, <italic>t</italic> (247) = 2.80, <italic>p</italic> = .005. In both cases, higher levels of social inclusion were associated with a greater willingness to share resources for the common good.</p></sec><sec id="bjso70105-sec-0019" disp-level="1"><title>DISCUSSION</title><p>The present study sought to enhance our understanding of the association between levels of social inclusion and prosocial behaviour towards one's group during late childhood. Specifically, we focused on children's actual sharing with their group as a whole through the PGG, as a function of their social inclusion within the group—both within a temporary, experimentally created group of peers (Study 1), and within their natural school classroom groups (Study 2). Our findings indicated that, overall, children who experienced higher levels of inclusion in the modified Cyberball game, and those who experienced higher levels of social inclusion within their class, exhibited a greater inclination to share with their group at their own expense, compared with those of lower levels of social inclusion.</p><p>These findings are consistent with past research that found prosocial behaviour to be associated with individuals' feelings of social connectedness and perceived support (Angelis &amp; Pensini, <xref rid="bjso70105-bib-0002" ref-type="bibr">2023</xref>; Lin et al., <xref rid="bjso70105-bib-0048" ref-type="bibr">2025</xref>; Pavey et al., <xref rid="bjso70105-bib-0056" ref-type="bibr">2011</xref>; Trombini &amp; Kinias, <xref rid="bjso70105-bib-0071" ref-type="bibr">2022</xref>), and with developmental research showing that peer acceptance is linked to higher levels of prosocial tendencies (e.g. Kornbluh &amp; Neal, <xref rid="bjso70105-bib-0041" ref-type="bibr">2016</xref>; LaFontana &amp; Cillessen, <xref rid="bjso70105-bib-0042" ref-type="bibr">2002</xref>; Tur‐Porcar et al., <xref rid="bjso70105-bib-0072" ref-type="bibr">2018</xref>), including within classroom settings (Eggum‐Wilkens et al., <xref rid="bjso70105-bib-0019" ref-type="bibr">2014</xref>). Similar patterns have been observed in experimental studies that examined actual sharing behaviour in the Dictator Game as a function of children's social status in the classroom (Asscheman et al., <xref rid="bjso70105-bib-0003" ref-type="bibr">2020</xref>; Sabato &amp; Kogut, <xref rid="bjso70105-bib-0064" ref-type="bibr">2021</xref>). Our study not only replicates this pattern, but also extends prior research by demonstrating this association and effect in terms of actual sharing for the common good, rather than sharing with a single Other. Specifically, the PGG presented each participant with the social dilemma of deciding between maximizing their respective resources (i.e. sharing nothing with the public pool, yet enjoying others' contributions) and maximizing the group's benefit (i.e. sharing to maximize the public pool, at one's own expense). While sharing with a specific individual is often driven by factors such as empathy, familiarity and expectations of reciprocity (Batson et al., <xref rid="bjso70105-bib-0004" ref-type="bibr">2015</xref>; Berg et al., <xref rid="bjso70105-bib-0007" ref-type="bibr">1995</xref>), sharing with a group involves distinct social‐cognitive processes. First, it highlights one's affiliation with the group and reinforces social identity as an ingroup member (Hogg, <xref rid="bjso70105-bib-0032" ref-type="bibr">2016</xref>). Second, it shifts the focus from responsibility towards a particular individual to a more diffuse sense of obligation towards the collective (Fehr &amp; Gächter, <xref rid="bjso70105-bib-0025" ref-type="bibr">2000</xref>). Finally, because the recipient in group contexts is less clearly defined and more abstract, decisions may rely less on person‐specific information and more on generalized norms and expectations. These features are particularly relevant when considering children's level of inclusion within the group as a predictor of cooperative behaviour. Children with higher levels of social inclusion, who are more strongly identified with the group, are more likely to help ingroup members and to rely on group‐based norms even in the absence of a clearly defined recipient.</p><p>While the present studies demonstrated this behavioural pattern across both experimental and real‐life contexts, we did not directly assess the psychological mechanisms underlying this effect. Based on prior research, several complementary processes may account for these patterns. First, social inclusion may shape children's sense of belonging and group identification. Social experiences of inclusion are associated with more positive affect and a stronger sense of connection to the group (Juvonen, <xref rid="bjso70105-bib-0035" ref-type="bibr">2006</xref>; Lansu et al., <xref rid="bjso70105-bib-0045" ref-type="bibr">2021</xref>), which in turn may promote cooperative behaviour—a mechanism also implicated in classroom dynamics (Lansu, <xref rid="bjso70105-bib-0044" ref-type="bibr">2023</xref>; Wölfer &amp; Scheithauer, <xref rid="bjso70105-bib-0086" ref-type="bibr">2013</xref>). Second, repeated engagement in social interactions within the group may foster the internalization of group norms and expectations of reciprocity within group members (House et al., <xref rid="bjso70105-bib-0033" ref-type="bibr">2019</xref>), leading to increased sharing with the group. In addition, such richer social experiences provide opportunities for social learning, thus leading to greater social emotional skills, and especially to stronger self‐regulation (Wilson et al., <xref rid="bjso70105-bib-0085" ref-type="bibr">2014</xref>). Contributing to the public good requires delaying immediate self‐interest—a process navigated more effectively by children with stronger self‐regulatory abilities (Glenn et al., <xref rid="bjso70105-bib-0028" ref-type="bibr">2021</xref>).</p><p>Third, children who are more socially included and embedded in the peer group may feel a stronger obligation to contribute to shared outcomes, consistent with social responsibility norms and expectations associated with higher‐status roles (Choukas‐Bradley et al., <xref rid="bjso70105-bib-0013" ref-type="bibr">2015</xref>). Moreover, prosocial behaviours may constitute a strategic social behaviour aimed at maintaining or enhancing peer relationships (Chávez et al., <xref rid="bjso70105-bib-0012" ref-type="bibr">2022</xref>; Sabato et al., <xref rid="bjso70105-bib-0061" ref-type="bibr">2021</xref>). In group contexts such as the classroom, where interactions are ongoing and interdependent, this sense of responsibility may motivate greater contributions to the public good.</p><p>Finally, children of higher social inclusion are more sensitive to social contexts (Wentzel et al., <xref rid="bjso70105-bib-0081" ref-type="bibr">2007</xref>). Prior research shows that socially included children are more responsive to cooperative (vs. competitive) situations, across both prosocial (Lansu &amp; Cillessen, <xref rid="bjso70105-bib-0043" ref-type="bibr">2015</xref>) and negative behaviours (Lansu, <xref rid="bjso70105-bib-0044" ref-type="bibr">2023</xref>; Lansu et al., <xref rid="bjso70105-bib-0045" ref-type="bibr">2021</xref>). This suggests that children of higher social inclusion may strategically adjust their behaviour to align with situational expectations—which may account for their greater contribution to the public good in group settings. Future research should directly investigate these mechanisms, using measures such as affective responses, regulatory skills, or perceptions of group norms, to clarify how social experiences translate into cooperative behaviour.</p><p>Although the primary focus of the present research was on graded levels of social inclusion, we additionally examined the zero‐toss condition as an exploratory case of experimentally induced social exclusion. These analyses indicated that in the current paradigm, this condition did not deviate significantly from the overall linear trends observed across levels of inclusion. Prior research has shown that social exclusion can elicit negative affect and reduce prosociality (Gunther Moor et al., <xref rid="bjso70105-bib-0030" ref-type="bibr">2012</xref>; Twenge et al., <xref rid="bjso70105-bib-0073" ref-type="bibr">2007</xref>; Wölfer &amp; Scheithauer, <xref rid="bjso70105-bib-0086" ref-type="bibr">2013</xref>), although some studies suggest more complex, compensatory responses where ostracized or rejected individuals may increase prosocial efforts to regain social standing (e.g. Smart Richman &amp; Leary, <xref rid="bjso70105-bib-0068" ref-type="bibr">2009</xref>; Williams, <xref rid="bjso70105-bib-0083" ref-type="bibr">2007</xref>). It is important to note that the social inclusion measure in Study 2 focused on the frequency of positive social interactions within the group. Within this naturalistic sample, all children were nominated for at least some interactions; thus a zero‐nomination state was not observed in our ecological data. However, this measure was not designed to capture active peer rejection or ostracism (e.g. through negative nominations). Given that social exclusion represents a qualitatively distinct social experience, future research should directly examine experiences of social exclusion and their specific effects on cooperative behaviour.</p><p>Taken together, both studies highlight the central role of social inclusion within the group in shaping children's cooperative decisions. Whether experienced through momentarily inclusion (in the Cyberball paradigm, Study 1), or reflected in real‐life settings (i.e. social inclusion within the classroom, Study 2), children who feel that they are valued members of their group appear more motivated to act in ways that support the collective good.</p><p>The present findings have both theoretical and practical implications. Theoretically, they highlight how children's social experiences shape prosocial behaviour within a group context, showing that contributions to a collective good are influenced by both momentary and enduring peer interactions. This underscores the importance of considering both situational and stable social factors when modelling prosocial behaviour towards the group. Moreover, these findings also speak to the role of prosocial behaviour in shaping a more positive and secure classroom climate, as cooperative and inclusive actions among children may contribute to a greater sense of safety, belonging and mutual support within the peer group. Practically, the results suggest that fostering inclusive peer interactions and enhancing children's sense of belonging within the classroom can promote not only cooperative behaviour but also a more supportive and psychologically safe group environment.</p><p>Future research may further consider potential moderators of these effects, such as children's level of identification with the peer group, the broader classroom social climate, and individual differences in sensitivity to peer context. These moderators may help delineate boundary conditions of the observed effects and clarify for whom and under which conditions social inclusion is most strongly associated with prosocial behaviour towards the group.</p><sec id="bjso70105-sec-0020" disp-level="2"><title>Study limitations</title><p>Although our study provides an initial examination of the role of social inclusion in children's actual sharing for the common good, it is not without limitations. One limitation concerns the design of the PGG across the two rounds. While some studies reveal participants' decision after the first round (Vogelsang et al., <xref rid="bjso70105-bib-0078" ref-type="bibr">2014</xref>), we chose not to provide this information in order to avoid influencing subsequent decisions (e.g. through conditional cooperation—Fischbacher et al., <xref rid="bjso70105-bib-0027" ref-type="bibr">2001</xref>). Although we observed consistent patterns across both rounds and in the average amount shared, future studies might directly examine how revealing peers' choices affects children's contributions, and whether this interacts with social inclusion. Building on previous studies that found greater strategic thinking among accepted children (e.g. in children's motivation to help—Sabato et al., <xref rid="bjso70105-bib-0061" ref-type="bibr">2021</xref>), we might expect such children to better adhere to group norms or the common good when making subsequent decisions.</p><p>We also did not directly measure the underlying mechanisms linking children's social inclusion and their cooperative behaviour. While we proposed several plausible explanations—such as heightened sensitivity to social contexts, stronger fairness considerations, greater self‐regulation and richer internalization of social norms—these remain unexplored in the present study. Future research might incorporate direct measures of these processes—for example, by assessing children's emotional responses, regulatory skills, perception of social norms, or strategic decision‐making in group contexts, to better understand how social inclusion translates into prosocial behaviour.</p><p>Moreover, Study 2 assessed children's social inclusion in a natural classroom setting, offering strong ecological validity. However, because inclusion was observed rather than experimentally manipulated, and cooperative behaviour was measured only 1 week later, causal conclusions about the impact of real‐life social inclusion on prosocial behaviour cannot be drawn. Future research might employ longer‐term longitudinal designs to clarify causal mechanisms and to examine the lasting effects of social inclusion on cooperative behaviour.</p><p>Finally, in both studies the sample represents WEIRD societies (Western, Educated, Industrialized, Rich, Democratic)—which may limit the generalization of the findings. Research on prosociality among children points to sociocultural variation (Blake et al., <xref rid="bjso70105-bib-0009" ref-type="bibr">2015</xref>; Callaghan &amp; Corbit, <xref rid="bjso70105-bib-0010" ref-type="bibr">2018</xref>; Marshall et al., <xref rid="bjso70105-bib-0050" ref-type="bibr">2022</xref>). Future research could examine whether the observed associations between social inclusion and sharing with the group replicate in contexts with differing social norms around cooperation and sharing.</p></sec></sec><sec id="bjso70105-sec-0021" disp-level="1"><title>CONCLUSIONS</title><p>Across two complementary studies, the present findings indicate that children's willingness to contribute to a shared group resource is closely tied to, and affected by, their experience of social inclusion. Whether reflected in stable peer relationships within the classroom or momentarily shaped through experimentally induced inclusion, feeling socially included was associated with greater cooperative sharing. By focusing on actual contributions to a public good, this work extends prior research on social inclusion and prosocial behaviour beyond helping a single recipient to group‐level cooperation. The findings highlight the role of social relationships and perceived standing within the group in shaping children's collective contributions.</p></sec><sec id="bjso70105-sec-0025" disp-level="1"><title>AUTHOR CONTRIBUTIONS</title><p>
+<bold>Hagit Sabato:</bold> Conceptualization; funding acquisition; methodology; writing – review and editing; supervision. <bold>Yael Malin:</bold> Conceptualization; investigation; writing – original draft; methodology; formal analysis; data curation.</p></sec><sec id="bjso70105-sec-0022" disp-level="1"><title>FUNDING INFORMATION</title><p>Israel Science Foundation (ISF) Grant #1830/22, awarded to H. Sabato.</p></sec><sec id="bjso70105-sec-3032" disp-level="1"><title>CONFLICT OF INTEREST STATEMENT</title><p>The authors declare that they have no conflicts of interest.</p></sec><sec id="sec24" disp-level="1"><title>Supporting information</title><supplementary-material id="bjso70105-supitem-0001" position="float"><caption><p>
+Data S1.
+</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="BJSO-65-0-s001.docx" mimetype="application" mime-subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"><?cloudpmc-path 6aa1/13238313/8af971892145/BJSO-65-0-s001.docx?><?cloudpmc-bucket app?><?size 1011947?></media></supplementary-material></sec><sec id="bjso70105-sec-27" sec-type="ack" disp-level="1"><title>ACKNOWLEDGEMENT</title><p>Open Access funding enabled and organized by Projekt DEAL.</p></sec><sec id="fn-group1" sec-type="fn-group" disp-level="1"><title>Footnotes</title><fn-group><fn id="bjso70105-note-1001"><label>
+<sup>1</sup>
+</label><p>Other studies employing the same game varied the number of rounds played—from one to nine rounds (e.g. Keil et al., <xref rid="bjso70105-bib-0039" ref-type="bibr">2019</xref>).</p></fn><fn id="bjso70105-note-1002"><label>
+<sup>2</sup>
+</label><p>At the end of the study, parents were informed that their children had participated in an allocation task and were told they would receive their earnings. Accordingly, an additional monetary bonus (equivalent to the highest possible amount, to prevent disappointment and to preserve the privacy of the decisions) was provided to the parents in addition to the panel‐provided participation payment. Parents were asked to pass on this bonus to their children in the form of a small gift.</p></fn><fn id="bjso70105-note-1003"><label>
+<sup>3</sup>
+</label><p>As is common in PGG studies with children, tokens were replaced with prizes, which—unlike in Study 1—was feasible in this setting (e.g. Keil et al., <xref rid="bjso70105-bib-0038" ref-type="bibr">2017</xref>, <xref rid="bjso70105-bib-0039" ref-type="bibr">2019</xref>; Vogelsang et al., <xref rid="bjso70105-bib-0078" ref-type="bibr">2014</xref>). At the end of the study, all children received an equal number of prizes (equivalent to the highest possible value), regardless of their decisions during the game, to prevent feelings of dissatisfaction and to preserve the privacy of their decisions.</p></fn></fn-group></sec><sec id="bjso70105-sec-0024" disp-level="1"><title>DATA AVAILABILITY STATEMENT</title><p>The data that support the findings of this study are openly available in OSF at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://osf.io/ezwjs/?view_only=f7ac50a6febd49b39b8795efc493daeb" ext-link-type="uri">https://osf.io/ezwjs/?view_only=f7ac50a6febd49b39b8795efc493daeb</ext-link>, reference number Ezwjs.</p></sec><sec id="bjso70105-bibl-0001" sec-type="ref-list" disp-level="1"><title>REFERENCES</title><sec id="bjso70105-bibl-0001_sec2" disp-level="2"><ref-list><ref id="bjso70105-bib-0002"><mixed-citation id="bjso70105-cit-0002"><named-content content-type="citation-string">
+
+Angelis, S.
+, &amp;
+Pensini, P.
+ (2023). Honesty‐humility predicts humanitarian prosocial behavior via social connectedness: A parallel mediation examining connectedness to community, nation, humanity, and nature. Scandinavian Journal of Psychology, 64(6), 810–818.
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/sjop.12932"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="37353985"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Scandinavian Journal of Psychology&amp;title=Honesty‐humility predicts humanitarian prosocial behavior via social connectedness: A parallel mediation examining connectedness to community, nation, humanity, and nature&amp;author=S. Angelis&amp;author=P. Pensini&amp;volume=64&amp;issue=6&amp;publication_year=2023&amp;pages=810-818&amp;pmid=37353985&amp;doi=10.1111/sjop.12932&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0003"><mixed-citation id="bjso70105-cit-0003"><named-content content-type="citation-string">
+
+Asscheman, J. S.
+,
+He, J.
+,
+Koot, S.
+,
+Buil, J. M.
+,
+Krabbendam, L.
+, &amp;
+Van Lier, P. A. C.
+ (2020). Classroom peer preferences and the development of sharing behavior with friends and others. International Journal of Behavioral Development, 44(5), 412–423. 10.1177/0165025420911094
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1177/0165025420911094"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=International Journal of Behavioral Development&amp;title=Classroom peer preferences and the development of sharing behavior with friends and others&amp;author=J. S. Asscheman&amp;author=J. He&amp;author=S. Koot&amp;author=J. M. Buil&amp;author=L. Krabbendam&amp;volume=44&amp;issue=5&amp;publication_year=2020&amp;pages=412-423&amp;doi=10.1177/0165025420911094&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0004"><mixed-citation id="bjso70105-cit-0004"><named-content content-type="citation-string">
+
+Batson, C. D.
+,
+Lishner, D. A.
+, &amp;
+Stocks, E. L.
+ (2015). The empathy—Altruism hypothesis. In The Oxford handbook of prosocial behavior (pp. 259–281). Oxford University Press. 10.1093/oxfordhb/9780195399813.013.023
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1093/oxfordhb/9780195399813.013.023"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=The Oxford handbook of prosocial behavior&amp;author=C. D. Batson&amp;author=D. A. Lishner&amp;author=E. L. Stocks&amp;publication_year=2015&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0005"><mixed-citation id="bjso70105-cit-0005"><named-content content-type="citation-string">
+
+Baumeister, R. F.
+, &amp;
+Leary, M. R.
+ (1995). The need to belong: Desire for interpersonal attachments as a fundamental human motivation. Psychological Bulletin, 117(3), 497–529.
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="7777651"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Psychological Bulletin&amp;title=The need to belong: Desire for interpersonal attachments as a fundamental human motivation&amp;author=R. F. Baumeister&amp;author=M. R. Leary&amp;volume=117&amp;issue=3&amp;publication_year=1995&amp;pages=497-529&amp;pmid=7777651&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0006"><mixed-citation id="bjso70105-cit-0006"><named-content content-type="citation-string">
+
+Beazidou, E.
+, &amp;
+Botsoglou, K.
+ (2016). Peer acceptance and friendship in early childhood: The conceptual distinctions between them. Early Child Development and Care, 186(10), 1615–1631. 10.1080/03004430.2015.1117077
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1080/03004430.2015.1117077"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Early Child Development and Care&amp;title=Peer acceptance and friendship in early childhood: The conceptual distinctions between them&amp;author=E. Beazidou&amp;author=K. Botsoglou&amp;volume=186&amp;issue=10&amp;publication_year=2016&amp;pages=1615-1631&amp;doi=10.1080/03004430.2015.1117077&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0007"><mixed-citation id="bjso70105-cit-0007"><named-content content-type="citation-string">
+
+Berg, J.
+,
+Dickhaut, J.
+, &amp;
+McCabe, K.
+ (1995). Trust, reciprocity, and social history. Games and Economic Behavior, 10(1), 122–142. 10.1006/game.1995.1027
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1006/game.1995.1027"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Games and Economic Behavior&amp;title=Trust, reciprocity, and social history&amp;author=J. Berg&amp;author=J. Dickhaut&amp;author=K. McCabe&amp;volume=10&amp;issue=1&amp;publication_year=1995&amp;pages=122-142&amp;doi=10.1006/game.1995.1027&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0008"><mixed-citation id="bjso70105-cit-0008"><named-content content-type="citation-string">
+
+Berger, C.
+,
+Batanova, M.
+, &amp;
+Cance, J. D.
+ (2015). Aggressive and prosocial? Examining latent profiles of behavior, social status, Machiavellianism, and empathy. Journal of Youth and Adolescence, 44(12), 2230–2244. 10.1007/s10964-015-0298-9
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1007/s10964-015-0298-9"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="25987411"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Youth and Adolescence&amp;title=Aggressive and prosocial? Examining latent profiles of behavior, social status, Machiavellianism, and empathy&amp;author=C. Berger&amp;author=M. Batanova&amp;author=J. D. Cance&amp;volume=44&amp;issue=12&amp;publication_year=2015&amp;pages=2230-2244&amp;pmid=25987411&amp;doi=10.1007/s10964-015-0298-9&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0009"><mixed-citation id="bjso70105-cit-0009"><named-content content-type="citation-string">
+
+Blake, P.
+,
+McAuliffe, K.
+,
+Corbit, J.
+,
+Callaghan, T. C.
+,
+Barry, O.
+,
+Bowie, A.
+,
+Kleutsch, L.
+,
+Kramer, K. L.
+,
+Ross, E.
+,
+Vongsachang, H.
+,
+Wrangham, R.
+, &amp;
+Warneken, F.
+ (2015). The ontogeny of fairness in seven societies. Nature, 528(7581), 258–261. 10.1038/nature15703
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1038/nature15703"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="26580018"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Nature&amp;title=The ontogeny of fairness in seven societies&amp;author=P. Blake&amp;author=K. McAuliffe&amp;author=J. Corbit&amp;author=T. C. Callaghan&amp;author=O. Barry&amp;volume=528&amp;issue=7581&amp;publication_year=2015&amp;pages=258-261&amp;pmid=26580018&amp;doi=10.1038/nature15703&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0010"><mixed-citation id="bjso70105-cit-0010"><named-content content-type="citation-string">
+
+Callaghan, T.
+, &amp;
+Corbit, J.
+ (2018). Early prosocial development across cultures. Current Opinion in Psychology, 20, 102–106. 10.1016/j.copsyc.2017.07.039
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.copsyc.2017.07.039"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="28888184"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Current Opinion in Psychology&amp;title=Early prosocial development across cultures&amp;author=T. Callaghan&amp;author=J. Corbit&amp;volume=20&amp;publication_year=2018&amp;pages=102-106&amp;pmid=28888184&amp;doi=10.1016/j.copsyc.2017.07.039&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0011"><mixed-citation id="bjso70105-cit-0011"><named-content content-type="citation-string">
+
+Caprara, G. V.
+,
+Barbaranelli, C.
+,
+Pastorelli, C.
+,
+Bandura, A.
+, &amp;
+Zimbardo, P. G.
+ (2000). Prosocial foundations of children's academic achievement. Psychological Science, 11(4), 302–306. 10.1111/1467-9280.00260
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/1467-9280.00260"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="11273389"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Psychological Science&amp;title=Prosocial foundations of children's academic achievement&amp;author=G. V. Caprara&amp;author=C. Barbaranelli&amp;author=C. Pastorelli&amp;author=A. Bandura&amp;author=P. G. Zimbardo&amp;volume=11&amp;issue=4&amp;publication_year=2000&amp;pages=302-306&amp;pmid=11273389&amp;doi=10.1111/1467-9280.00260&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0012"><mixed-citation id="bjso70105-cit-0012"><named-content content-type="citation-string">
+
+Chávez, D. V.
+,
+Salmivalli, C.
+,
+Garandeau, C. F.
+,
+Berger, C.
+, &amp;
+Kanacri, B. P. L.
+ (2022). Bidirectional associations of prosocial behavior with peer acceptance and rejection in adolescence. Journal of Youth and Adolescence, 51(12), 2355–2367. 10.1007/s10964-022-01675-5
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1007/s10964-022-01675-5"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC9596566"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="36114945"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Youth and Adolescence&amp;title=Bidirectional associations of prosocial behavior with peer acceptance and rejection in adolescence&amp;author=D. V. Chávez&amp;author=C. Salmivalli&amp;author=C. F. Garandeau&amp;author=C. Berger&amp;author=B. P. L. Kanacri&amp;volume=51&amp;issue=12&amp;publication_year=2022&amp;pages=2355-2367&amp;pmid=36114945&amp;doi=10.1007/s10964-022-01675-5&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0013"><mixed-citation id="bjso70105-cit-0013"><named-content content-type="citation-string">
+
+Choukas‐Bradley, S.
+,
+Giletta, M.
+,
+Cohen, G. L.
+, &amp;
+Prinstein, M. J.
+ (2015). Peer influence, peer status, and prosocial behavior: An experimental investigation of peer socialization of adolescents' intentions to volunteer. Journal of Youth and Adolescence, 44(12), 2197–2210. 10.1007/s10964-015-0373-2
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1007/s10964-015-0373-2"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC5985442"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="26525387"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Youth and Adolescence&amp;title=Peer influence, peer status, and prosocial behavior: An experimental investigation of peer socialization of adolescents' intentions to volunteer&amp;author=S. Choukas‐Bradley&amp;author=M. Giletta&amp;author=G. L. Cohen&amp;author=M. J. Prinstein&amp;volume=44&amp;issue=12&amp;publication_year=2015&amp;pages=2197-2210&amp;pmid=26525387&amp;doi=10.1007/s10964-015-0373-2&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0014"><mixed-citation id="bjso70105-cit-0014"><named-content content-type="citation-string">
+
+Cillessen, A. H. N.
+,
+Schwartz, D.
+, &amp;
+Mayeux, L.
+ (2011). Popularity in the peer system. Guilford Press.</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=Popularity in the peer system&amp;author=A. H. N. Cillessen&amp;author=D. Schwartz&amp;author=L. Mayeux&amp;publication_year=2011&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0015"><mixed-citation id="bjso70105-cit-0015"><named-content content-type="citation-string">
+
+Corbit, J.
+,
+Dockrill, M.
+,
+Hartlin, S.
+, &amp;
+Moore, C.
+ (2023). Intuitive cooperators: Time pressure increases children's cooperative decisions in a modified public goods game. Developmental Science, 26(4), e13344. 10.1111/desc.13344
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/desc.13344"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="36399363"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Developmental Science&amp;title=Intuitive cooperators: Time pressure increases children's cooperative decisions in a modified public goods game&amp;author=J. Corbit&amp;author=M. Dockrill&amp;author=S. Hartlin&amp;author=C. Moore&amp;volume=26&amp;issue=4&amp;publication_year=2023&amp;pages=e13344&amp;pmid=36399363&amp;doi=10.1111/desc.13344&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0016"><mixed-citation id="bjso70105-cit-0016"><named-content content-type="citation-string">
+
+Cowell, J. M.
+,
+Calma‐Birling, D.
+, &amp;
+Decety, J.
+ (2018). Domain‐general neural computations underlying prosociality during infancy and early childhood. Current Opinion in Psychology, 20, 66–71.
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.copsyc.2017.08.016"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="28863354"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Current Opinion in Psychology&amp;title=Domain‐general neural computations underlying prosociality during infancy and early childhood&amp;author=J. M. Cowell&amp;author=D. Calma‐Birling&amp;author=J. Decety&amp;volume=20&amp;publication_year=2018&amp;pages=66-71&amp;pmid=28863354&amp;doi=10.1016/j.copsyc.2017.08.016&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0018"><mixed-citation id="bjso70105-cit-0018"><named-content content-type="citation-string">
+
+Dawes, M.
+ (2017). Early adolescents' social goals and school adjustment. Social Psychology of Education, 20(2), 299–328. 10.1007/s11218-017-9380-3
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1007/s11218-017-9380-3"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Social Psychology of Education&amp;title=Early adolescents' social goals and school adjustment&amp;author=M. Dawes&amp;volume=20&amp;issue=2&amp;publication_year=2017&amp;pages=299-328&amp;doi=10.1007/s11218-017-9380-3&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0019"><mixed-citation id="bjso70105-cit-0019"><named-content content-type="citation-string">
+
+Eggum‐Wilkens, N. D.
+,
+Valiente, C.
+,
+Swanson, J.
+, &amp;
+Lemery‐Chalfant, K.
+ (2014). Children's shyness, popularity, school liking, cooperative participation, and internalizing problems in the early school years. Early Childhood Research Quarterly, 29(1), 85–94. 10.1016/j.ecresq.2013.10.002
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.ecresq.2013.10.002"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Early Childhood Research Quarterly&amp;title=Children's shyness, popularity, school liking, cooperative participation, and internalizing problems in the early school years&amp;author=N. D. Eggum‐Wilkens&amp;author=C. Valiente&amp;author=J. Swanson&amp;author=K. Lemery‐Chalfant&amp;volume=29&amp;issue=1&amp;publication_year=2014&amp;pages=85-94&amp;doi=10.1016/j.ecresq.2013.10.002&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0020"><mixed-citation id="bjso70105-cit-0020"><named-content content-type="citation-string">
+
+Eisenberg, N.
+,
+Spinrad, T. L.
+, &amp;
+Morris, A. S.
+ (2013). Prosocial development. In Zelazo P. D. (Ed.), The Oxford handbook of developmental psychology, Vol. 2: Self and other. Oxford University Press. 10.1093/oxfordhb/9780199958474.013.0013
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1093/oxfordhb/9780199958474.013.0013"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=The Oxford handbook of developmental psychology, Vol. 2: Self and other&amp;author=N. Eisenberg&amp;author=T. L. Spinrad&amp;author=A. S. Morris&amp;publication_year=2013&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0022"><mixed-citation id="bjso70105-cit-0022"><named-content content-type="citation-string">
+
+Falk, A.
+, &amp;
+Fischbacher, U.
+ (2006). A theory of reciprocity. Games and Economic Behavior, 54(2), 293–315. 10.1016/j.geb.2005.03.001
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.geb.2005.03.001"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Games and Economic Behavior&amp;title=A theory of reciprocity&amp;author=A. Falk&amp;author=U. Fischbacher&amp;volume=54&amp;issue=2&amp;publication_year=2006&amp;pages=293-315&amp;doi=10.1016/j.geb.2005.03.001&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0023"><mixed-citation id="bjso70105-cit-0023"><named-content content-type="citation-string">
+
+Faul, F.
+,
+Erdfelder, E.
+,
+Lang, A.‐G.
+, &amp;
+Buchner, A.
+ (2007). G*power 3: A flexible statistical power analysis program for the social, behavioral, and biomedical sciences. Behavior Research Methods, 39(2), 175–191. 10.3758/BF03193146
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.3758/BF03193146"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="17695343"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Behavior Research Methods&amp;title=G*power 3: A flexible statistical power analysis program for the social, behavioral, and biomedical sciences&amp;author=F. Faul&amp;author=E. Erdfelder&amp;author=A.‐G. Lang&amp;author=A. Buchner&amp;volume=39&amp;issue=2&amp;publication_year=2007&amp;pages=175-191&amp;pmid=17695343&amp;doi=10.3758/BF03193146&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0024"><mixed-citation id="bjso70105-cit-0024"><named-content content-type="citation-string">
+
+Fehr, E.
+,
+Bernhard, H.
+, &amp;
+Rockenbach, B.
+ (2008). Egalitarianism in young children. Nature, 454(7208), 1079–1083. 10.1038/nature07155
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1038/nature07155"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="18756249"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Nature&amp;title=Egalitarianism in young children&amp;author=E. Fehr&amp;author=H. Bernhard&amp;author=B. Rockenbach&amp;volume=454&amp;issue=7208&amp;publication_year=2008&amp;pages=1079-1083&amp;pmid=18756249&amp;doi=10.1038/nature07155&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0025"><mixed-citation id="bjso70105-cit-0025"><named-content content-type="citation-string">
+
+Fehr, E.
+, &amp;
+Gächter, S.
+ (2000). Cooperation and punishment in public goods experiments. American Economic Review, 90(4), 980–994. 10.1257/aer.90.4.980
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1257/aer.90.4.980"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=American Economic Review&amp;title=Cooperation and punishment in public goods experiments&amp;author=E. Fehr&amp;author=S. Gächter&amp;volume=90&amp;issue=4&amp;publication_year=2000&amp;pages=980-994&amp;doi=10.1257/aer.90.4.980&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0027"><mixed-citation id="bjso70105-cit-0027"><named-content content-type="citation-string">
+
+Fischbacher, U.
+,
+Gächter, S.
+, &amp;
+Fehr, E.
+ (2001). Are people conditionally cooperative? Evidence from a public goods experiment. Economics Letters, 71(3), 397–404. 10.1016/S0165-1765(01)00394-9
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/S0165-1765(01)00394-9"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Economics Letters&amp;title=Are people conditionally cooperative? Evidence from a public goods experiment&amp;author=U. Fischbacher&amp;author=S. Gächter&amp;author=E. Fehr&amp;volume=71&amp;issue=3&amp;publication_year=2001&amp;pages=397-404&amp;doi=10.1016/S0165-1765(01)00394-9&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0028"><mixed-citation id="bjso70105-cit-0028"><named-content content-type="citation-string">
+
+Glenn, D. E.
+,
+Michalska, K. J.
+, &amp;
+Lee, S. S.
+ (2021). Social skills moderate the time‐varying association between aggression and peer rejection among children with and without ADHD. Aggressive Behavior, 47(6), 659–671. 10.1002/ab.21991
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1002/ab.21991"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC10155268"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="34426990"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Aggressive Behavior&amp;title=Social skills moderate the time‐varying association between aggression and peer rejection among children with and without ADHD&amp;author=D. E. Glenn&amp;author=K. J. Michalska&amp;author=S. S. Lee&amp;volume=47&amp;issue=6&amp;publication_year=2021&amp;pages=659-671&amp;pmid=34426990&amp;doi=10.1002/ab.21991&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0029"><mixed-citation id="bjso70105-cit-0029"><named-content content-type="citation-string">
+
+Goeschl, T.
+,
+Kettner, S. E.
+,
+Lohse, J.
+, &amp;
+Schwieren, C.
+ (2020). How much can we learn about voluntary climate action from behavior in public goods games?
+Ecological Economics, 171, 106591. 10.1016/j.ecolecon.2020.106591
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.ecolecon.2020.106591"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Ecological Economics&amp;title=How much can we learn about voluntary climate action from behavior in public goods games?&amp;author=T. Goeschl&amp;author=S. E. Kettner&amp;author=J. Lohse&amp;author=C. Schwieren&amp;volume=171&amp;publication_year=2020&amp;pages=106591&amp;doi=10.1016/j.ecolecon.2020.106591&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0030"><mixed-citation id="bjso70105-cit-0030"><named-content content-type="citation-string">
+
+Gunther Moor, B.
+,
+Güroğlu, B.
+,
+Op De Macks, Z. A.
+,
+Rombouts, S. A. R. B.
+,
+Van Der Molen, M. W.
+, &amp;
+Crone, E. A.
+ (2012). Social exclusion and punishment of excluders: Neural correlates and developmental trajectories. NeuroImage, 59(1), 708–717. 10.1016/j.neuroimage.2011.07.028
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.neuroimage.2011.07.028"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="21791248"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=NeuroImage&amp;title=Social exclusion and punishment of excluders: Neural correlates and developmental trajectories&amp;author=B. Gunther Moor&amp;author=B. Güroğlu&amp;author=Z. A. Op De Macks&amp;author=S. A. R. B. Rombouts&amp;author=M. W. Van Der Molen&amp;volume=59&amp;issue=1&amp;publication_year=2012&amp;pages=708-717&amp;pmid=21791248&amp;doi=10.1016/j.neuroimage.2011.07.028&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0031"><mixed-citation id="bjso70105-cit-0031"><named-content content-type="citation-string">
+
+Heyman, G.
+,
+Barner, D.
+,
+Heumann, J.
+, &amp;
+Schenck, L.
+ (2014). Children's sensitivity to ulterior motives when evaluating prosocial behavior. Cognitive Science, 38(4), 683–700. 10.1111/cogs.12089
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/cogs.12089"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="24069904"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Cognitive Science&amp;title=Children's sensitivity to ulterior motives when evaluating prosocial behavior&amp;author=G. Heyman&amp;author=D. Barner&amp;author=J. Heumann&amp;author=L. Schenck&amp;volume=38&amp;issue=4&amp;publication_year=2014&amp;pages=683-700&amp;pmid=24069904&amp;doi=10.1111/cogs.12089&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0032"><mixed-citation id="bjso70105-cit-0032"><named-content content-type="citation-string">
+
+Hogg, M. A.
+ (2016). Group members differ in relative prototypicality: Effects on the individual and the group. Behavioral and Brain Sciences, 39, e153. 10.1017/S0140525X15001417
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1017/S0140525X15001417"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="28355792"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Behavioral and Brain Sciences&amp;title=Group members differ in relative prototypicality: Effects on the individual and the group&amp;author=M. A. Hogg&amp;volume=39&amp;publication_year=2016&amp;pages=e153&amp;pmid=28355792&amp;doi=10.1017/S0140525X15001417&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0033"><mixed-citation id="bjso70105-cit-0033"><named-content content-type="citation-string">
+
+House, B. R.
+,
+Kanngiesser, P.
+,
+Barrett, H. C.
+,
+Broesch, T.
+,
+Cebioglu, S.
+,
+Crittenden, A. N.
+,
+Erut, A.
+,
+Lew‐Levy, S.
+,
+Sebastian‐Enesco, C.
+,
+Smith, A. M.
+,
+Yilmaz, S.
+, &amp;
+Silk, J. B.
+ (2019). Universal norm psychology leads to societal diversity in prosocial behaviour and development. Nature Human Behaviour, 4(1), 36–44. 10.1038/s41562-019-0734-z
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1038/s41562-019-0734-z"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="31548679"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Nature Human Behaviour&amp;title=Universal norm psychology leads to societal diversity in prosocial behaviour and development&amp;author=B. R. House&amp;author=P. Kanngiesser&amp;author=H. C. Barrett&amp;author=T. Broesch&amp;author=S. Cebioglu&amp;volume=4&amp;issue=1&amp;publication_year=2019&amp;pages=36-44&amp;pmid=31548679&amp;doi=10.1038/s41562-019-0734-z&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0034"><mixed-citation id="bjso70105-cit-0034"><named-content content-type="citation-string">
+
+Jones, S. E.
+, &amp;
+Rutland, A.
+ (2020). Children's social appraisal of exclusion in friendship groups. International Journal of Bullying Prevention, 2(2), 129–138. 10.1007/s42380-019-00022-w
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1007/s42380-019-00022-w"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=International Journal of Bullying Prevention&amp;title=Children's social appraisal of exclusion in friendship groups&amp;author=S. E. Jones&amp;author=A. Rutland&amp;volume=2&amp;issue=2&amp;publication_year=2020&amp;pages=129-138&amp;doi=10.1007/s42380-019-00022-w&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0035"><mixed-citation id="bjso70105-cit-0035"><named-content content-type="citation-string">
+
+Juvonen, J.
+ (2006). Sense of belonging, social bonds, and school functioning. In Handbook of educational psychology (pp. 655–674). Lawrence Erlbaum Associates Publishers.</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=Handbook of educational psychology&amp;author=J. Juvonen&amp;publication_year=2006&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0036"><mixed-citation id="bjso70105-cit-0036"><named-content content-type="citation-string">
+
+Kafashan, S.
+,
+Sparks, A.
+,
+Griskevicius, V.
+, &amp;
+Barclay, P.
+ (2014). Prosocial behavior and social status. In Cheng J. T., Tracy J. L., &amp; Anderson C. (Eds.), The psychology of social status (pp. 139–158). Springer. 10.1007/978-1-4939-0867-7_7
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1007/978-1-4939-0867-7_7"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=The psychology of social status&amp;author=S. Kafashan&amp;author=A. Sparks&amp;author=V. Griskevicius&amp;author=P. Barclay&amp;publication_year=2014&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0037"><mixed-citation id="bjso70105-cit-0037"><named-content content-type="citation-string">
+
+Kawamoto, T.
+,
+Onoda, K.
+,
+Nakashima, K.
+,
+Nittono, H.
+,
+Yamaguchi, S.
+, &amp;
+Ura, M.
+ (2012). Is dorsal anterior cingulate cortex activation in response to social exclusion due to expectancy violation? An fMRI study. Frontiers in Evolutionary Neuroscience, 4, 29586. 10.3389/fnevo.2012.00011
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.3389/fnevo.2012.00011"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC3406317"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="22866035"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Frontiers in Evolutionary Neuroscience&amp;title=Is dorsal anterior cingulate cortex activation in response to social exclusion due to expectancy violation? An fMRI study&amp;author=T. Kawamoto&amp;author=K. Onoda&amp;author=K. Nakashima&amp;author=H. Nittono&amp;author=S. Yamaguchi&amp;volume=4&amp;publication_year=2012&amp;pages=29586&amp;pmid=22866035&amp;doi=10.3389/fnevo.2012.00011&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0038"><mixed-citation id="bjso70105-cit-0038"><named-content content-type="citation-string">
+
+Keil, J.
+,
+Michel, A.
+,
+Sticca, F.
+,
+Leipold, K.
+,
+Klein, A. M.
+,
+Sierau, S.
+,
+von Klitzing, K.
+, &amp;
+White, L. O.
+ (2017). The Pizzagame: A virtual public goods game to assess cooperative behavior in children and adolescents. Behavior Research Methods, 49(4), 1432–1443. 10.3758/s13428-016-0799-9
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.3758/s13428-016-0799-9"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="27604601"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Behavior Research Methods&amp;title=The Pizzagame: A virtual public goods game to assess cooperative behavior in children and adolescents&amp;author=J. Keil&amp;author=A. Michel&amp;author=F. Sticca&amp;author=K. Leipold&amp;author=A. M. Klein&amp;volume=49&amp;issue=4&amp;publication_year=2017&amp;pages=1432-1443&amp;pmid=27604601&amp;doi=10.3758/s13428-016-0799-9&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0039"><mixed-citation id="bjso70105-cit-0039"><named-content content-type="citation-string">
+
+Keil, J.
+,
+Perren, S.
+,
+Schlesier‐Michel, A.
+,
+Sticca, F.
+,
+Sierau, S.
+,
+Klein, A. M.
+,
+Steinbeis, N.
+,
+von Klitzing, K.
+, &amp;
+White, L. O.
+ (2019). Getting less than their fair share: Maltreated youth are hyper‐cooperative yet vulnerable to exploitation in a public goods game. Developmental Science, 22(3), e12765. 10.1111/desc.12765
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/desc.12765"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="30329197"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Developmental Science&amp;title=Getting less than their fair share: Maltreated youth are hyper‐cooperative yet vulnerable to exploitation in a public goods game&amp;author=J. Keil&amp;author=S. Perren&amp;author=A. Schlesier‐Michel&amp;author=F. Sticca&amp;author=S. Sierau&amp;volume=22&amp;issue=3&amp;publication_year=2019&amp;pages=e12765&amp;pmid=30329197&amp;doi=10.1111/desc.12765&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0040"><mixed-citation id="bjso70105-cit-0040"><named-content content-type="citation-string">
+
+Kogut, T.
+ (2012). Knowing what I should, doing what I want: From selfishness to inequity aversion in young children's sharing behavior. Journal of Economic Psychology, 33(1), 226–236. 10.1016/j.joep.2011.10.003
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.joep.2011.10.003"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Economic Psychology&amp;title=Knowing what I should, doing what I want: From selfishness to inequity aversion in young children's sharing behavior&amp;author=T. Kogut&amp;volume=33&amp;issue=1&amp;publication_year=2012&amp;pages=226-236&amp;doi=10.1016/j.joep.2011.10.003&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0041"><mixed-citation id="bjso70105-cit-0041"><named-content content-type="citation-string">
+
+Kornbluh, M.
+, &amp;
+Neal, J. W.
+ (2016). Examining the many dimensions of children's popularity: Interactions between aggression, prosocial behaviors, and gender. Journal of Social and Personal Relationships, 33(1), 62–80. 10.1177/0265407514562562
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1177/0265407514562562"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Social and Personal Relationships&amp;title=Examining the many dimensions of children's popularity: Interactions between aggression, prosocial behaviors, and gender&amp;author=M. Kornbluh&amp;author=J. W. Neal&amp;volume=33&amp;issue=1&amp;publication_year=2016&amp;pages=62-80&amp;doi=10.1177/0265407514562562&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0042"><mixed-citation id="bjso70105-cit-0042"><named-content content-type="citation-string">
+
+LaFontana, K. M.
+, &amp;
+Cillessen, A. H. N.
+ (2002). Children's perceptions of popular and unpopular peers: A multimethod assessment. Developmental Psychology, 38(5), 635–647. 10.1037/0012-1649.38.5.635
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1037/0012-1649.38.5.635"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="12220043"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Developmental Psychology&amp;title=Children's perceptions of popular and unpopular peers: A multimethod assessment&amp;author=K. M. LaFontana&amp;author=A. H. N. Cillessen&amp;volume=38&amp;issue=5&amp;publication_year=2002&amp;pages=635-647&amp;pmid=12220043&amp;doi=10.1037/0012-1649.38.5.635&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0043"><mixed-citation id="bjso70105-cit-0043"><named-content content-type="citation-string">
+
+Lansu, T. A.
+, &amp;
+Cillessen, A. H.
+ (2015). Associations of group level popularity with observed behavior and influence in a dyadic context. Journal of Experimental Child Psychology, 140, 92–104. 10.1016/j.jecp.2015.06.016
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.jecp.2015.06.016"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="26232593"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Experimental Child Psychology&amp;title=Associations of group level popularity with observed behavior and influence in a dyadic context&amp;author=T. A. Lansu&amp;author=A. H. Cillessen&amp;volume=140&amp;publication_year=2015&amp;pages=92-104&amp;pmid=26232593&amp;doi=10.1016/j.jecp.2015.06.016&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0044"><mixed-citation id="bjso70105-cit-0044"><named-content content-type="citation-string">
+
+Lansu, T. A. M.
+ (2023). How popularity goal and popularity status are related to observed and peer‐nominated aggressive and prosocial behaviors in elementary school students. Journal of Experimental Child Psychology, 227, 105590. 10.1016/j.jecp.2022.105590
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.jecp.2022.105590"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="36446163"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Experimental Child Psychology&amp;title=How popularity goal and popularity status are related to observed and peer‐nominated aggressive and prosocial behaviors in elementary school students&amp;author=T. A. M. Lansu&amp;volume=227&amp;publication_year=2023&amp;pages=105590&amp;pmid=36446163&amp;doi=10.1016/j.jecp.2022.105590&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0045"><mixed-citation id="bjso70105-cit-0045"><named-content content-type="citation-string">
+
+Lansu, T. A. M.
+,
+Rovers, A. C.
+, &amp;
+Te Dorsthorst, A. M.
+ (2021). The (non) gradual association of popularity with peer‐nominated and observed behavior in a cooperative and competitive context. Social Development, 30(1), 149–170. 10.1111/sode.12453
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/sode.12453"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Social Development&amp;title=The (non) gradual association of popularity with peer‐nominated and observed behavior in a cooperative and competitive context&amp;author=T. A. M. Lansu&amp;author=A. C. Rovers&amp;author=A. M. Te Dorsthorst&amp;volume=30&amp;issue=1&amp;publication_year=2021&amp;pages=149-170&amp;doi=10.1111/sode.12453&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0046"><mixed-citation id="bjso70105-cit-0046"><named-content content-type="citation-string">
+
+Ledyard, J. O.
+ (1990).
+Is there a problem with public good provision
+. <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://hdl.handle.net/10535/8179" ext-link-type="uri">https://hdl.handle.net/10535/8179</ext-link>
+</named-content></mixed-citation></ref><ref id="bjso70105-bib-0047"><mixed-citation id="bjso70105-cit-0047"><named-content content-type="citation-string">
+
+Lenz, S.
+,
+Essler, S.
+,
+Wörle, M.
+, &amp;
+Paulus, M.
+ (2021). “Who will share with me?”: Preschoolers rely on their friends more than on their nonfriends to share with them. Journal of Experimental Child Psychology, 203, 105037. 10.1016/j.jecp.2020.105037
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.jecp.2020.105037"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="33291006"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Experimental Child Psychology&amp;title=“Who will share with me?”: Preschoolers rely on their friends more than on their nonfriends to share with them&amp;author=S. Lenz&amp;author=S. Essler&amp;author=M. Wörle&amp;author=M. Paulus&amp;volume=203&amp;publication_year=2021&amp;pages=105037&amp;pmid=33291006&amp;doi=10.1016/j.jecp.2020.105037&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0048"><mixed-citation id="bjso70105-cit-0048"><named-content content-type="citation-string">
+
+Lin, S.
+,
+Su, W.
+,
+Wang, Y.
+, &amp;
+Bai, L.
+ (2025). Can we return good for evil? A meta‐analysis of social exclusion and prosocial behaviour. British Journal of Social Psychology, 64(2), e12879. 10.1111/bjso.12879
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/bjso.12879"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="40116555"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=British Journal of Social Psychology&amp;title=Can we return good for evil? A meta‐analysis of social exclusion and prosocial behaviour&amp;author=S. Lin&amp;author=W. Su&amp;author=Y. Wang&amp;author=L. Bai&amp;volume=64&amp;issue=2&amp;publication_year=2025&amp;pages=e12879&amp;pmid=40116555&amp;doi=10.1111/bjso.12879&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0049"><mixed-citation id="bjso70105-cit-0049"><named-content content-type="citation-string">
+
+Ma, T.
+,
+Zarrett, N.
+,
+Simpkins, S.
+,
+Vandell, D. L.
+, &amp;
+Jiang, S.
+ (2020). Brief report: Patterns of prosocial behaviors in middle childhood predicting peer relations during early adolescence. Journal of Adolescence, 78(1), 1–8. 10.1016/j.adolescence.2019.11.004
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.adolescence.2019.11.004"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="31790833"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Adolescence&amp;title=Brief report: Patterns of prosocial behaviors in middle childhood predicting peer relations during early adolescence&amp;author=T. Ma&amp;author=N. Zarrett&amp;author=S. Simpkins&amp;author=D. L. Vandell&amp;author=S. Jiang&amp;volume=78&amp;issue=1&amp;publication_year=2020&amp;pages=1-8&amp;pmid=31790833&amp;doi=10.1016/j.adolescence.2019.11.004&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0089"><mixed-citation id="bjso70105-cit-0089"><named-content content-type="citation-string">
+
+Malin, Y.
+, &amp;
+Sabato, H.
+ (2026). Social support and prosocial decisions in times of distress: Helping a single recipient versus multiple recipients. Personality and Individual Differences, 256, 113738. 10.1016/j.paid.2026.113738
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.paid.2026.113738"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Personality and Individual Differences&amp;title=Social support and prosocial decisions in times of distress: Helping a single recipient versus multiple recipients&amp;author=Y. Malin&amp;author=H. Sabato&amp;volume=256&amp;publication_year=2026&amp;pages=113738&amp;doi=10.1016/j.paid.2026.113738&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0050"><mixed-citation id="bjso70105-cit-0050"><named-content content-type="citation-string">
+
+Marshall, J.
+,
+Gollwitzer, A.
+,
+Mermin‐Bunnell, K.
+,
+Shinomiya, M.
+,
+Retelsdorf, J.
+, &amp;
+Bloom, P.
+ (2022). How development and culture shape intuitions about prosocial obligations. Journal of Experimental Psychology: General, 151(8), 1866–1882. 10.1037/xge0001136
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1037/xge0001136"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="35130013"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Experimental Psychology: General&amp;title=How development and culture shape intuitions about prosocial obligations&amp;author=J. Marshall&amp;author=A. Gollwitzer&amp;author=K. Mermin‐Bunnell&amp;author=M. Shinomiya&amp;author=J. Retelsdorf&amp;volume=151&amp;issue=8&amp;publication_year=2022&amp;pages=1866-1882&amp;pmid=35130013&amp;doi=10.1037/xge0001136&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0051"><mixed-citation id="bjso70105-cit-0051"><named-content content-type="citation-string">
+
+Marwell, G.
+, &amp;
+Ames, R. E.
+ (1980). Experiments on the provision of public goods. II. Provision points, stakes, experience, and the free‐rider problem. American Journal of Sociology, 85(4), 926–937. 10.1086/227094
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1086/227094"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=American Journal of Sociology&amp;title=Experiments on the provision of public goods. II. Provision points, stakes, experience, and the free‐rider problem&amp;author=G. Marwell&amp;author=R. E. Ames&amp;volume=85&amp;issue=4&amp;publication_year=1980&amp;pages=926-937&amp;doi=10.1086/227094&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0052"><mixed-citation id="bjso70105-cit-0052"><named-content content-type="citation-string">
+
+Mouratidis, A. A.
+, &amp;
+Sideridis, G. D.
+ (2009). On social achievement goals: Their relations with peer acceptance, classroom belongingness, and perceptions of loneliness. The Journal of Experimental Education, 77(3), 285–308. 10.3200/JEXE.77.3.285-308
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.3200/JEXE.77.3.285-308"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=The Journal of Experimental Education&amp;title=On social achievement goals: Their relations with peer acceptance, classroom belongingness, and perceptions of loneliness&amp;author=A. A. Mouratidis&amp;author=G. D. Sideridis&amp;volume=77&amp;issue=3&amp;publication_year=2009&amp;pages=285-308&amp;doi=10.3200/JEXE.77.3.285-308&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0053"><mixed-citation id="bjso70105-cit-0053"><named-content content-type="citation-string">
+
+Over, H.
+ (2018). The influence of group membership on young children's prosocial behaviour. Current Opinion in Psychology, 20, 17–20. 10.1016/j.copsyc.2017.08.005
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.copsyc.2017.08.005"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="28826040"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Current Opinion in Psychology&amp;title=The influence of group membership on young children's prosocial behaviour&amp;author=H. Over&amp;volume=20&amp;publication_year=2018&amp;pages=17-20&amp;pmid=28826040&amp;doi=10.1016/j.copsyc.2017.08.005&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0054"><mixed-citation id="bjso70105-cit-0054"><named-content content-type="citation-string">
+
+Pakaslahti, L.
+,
+Karjalainen, A.
+, &amp;
+Keltikangas‐Järvinen, L.
+ (2002). Relationships between adolescent prosocial problem‐solving strategies, prosocial behaviour, and social acceptance. International Journal of Behavioral Development, 26(2), 137–144. 10.1080/01650250042000681
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1080/01650250042000681"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=International Journal of Behavioral Development&amp;title=Relationships between adolescent prosocial problem‐solving strategies, prosocial behaviour, and social acceptance&amp;author=L. Pakaslahti&amp;author=A. Karjalainen&amp;author=L. Keltikangas‐Järvinen&amp;volume=26&amp;issue=2&amp;publication_year=2002&amp;pages=137-144&amp;doi=10.1080/01650250042000681&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0055"><mixed-citation id="bjso70105-cit-0055"><named-content content-type="citation-string">
+
+Parker, J. G.
+,
+Rubin, K. H.
+,
+Erath, S. A.
+,
+Wojslawowicz, J. C.
+, &amp;
+Buskirk, A. A.
+ (2015). Peer relationships, child development, and adjustment: A developmental psychopathology perspective. In Cicchetti D. &amp; Cohen D. J. (Eds.), Developmental psychopathology (1st ed., pp. 419–493). Wiley. 10.1002/9780470939383.ch12
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1002/9780470939383.ch12"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=Developmental psychopathology&amp;author=J. G. Parker&amp;author=K. H. Rubin&amp;author=S. A. Erath&amp;author=J. C. Wojslawowicz&amp;author=A. A. Buskirk&amp;publication_year=2015&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0056"><mixed-citation id="bjso70105-cit-0056"><named-content content-type="citation-string">
+
+Pavey, L.
+,
+Greitemeyer, T.
+, &amp;
+Sparks, P.
+ (2011). Highlighting relatedness promotes prosocial motives and behavior. Personality and Social Psychology Bulletin, 37(7), 905–917.
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1177/0146167211405994"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="21521720"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Personality and Social Psychology Bulletin&amp;title=Highlighting relatedness promotes prosocial motives and behavior&amp;author=L. Pavey&amp;author=T. Greitemeyer&amp;author=P. Sparks&amp;volume=37&amp;issue=7&amp;publication_year=2011&amp;pages=905-917&amp;pmid=21521720&amp;doi=10.1177/0146167211405994&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0057"><mixed-citation id="bjso70105-cit-0057"><named-content content-type="citation-string">
+
+Pharo, H.
+,
+Gross, J.
+,
+Richardson, R.
+, &amp;
+Hayne, H.
+ (2011). Age‐related changes in the effect of ostracism. Social Influence, 6(1), 22–38. 10.1080/15534510.2010.525852
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1080/15534510.2010.525852"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Social Influence&amp;title=Age‐related changes in the effect of ostracism&amp;author=H. Pharo&amp;author=J. Gross&amp;author=R. Richardson&amp;author=H. Hayne&amp;volume=6&amp;issue=1&amp;publication_year=2011&amp;pages=22-38&amp;doi=10.1080/15534510.2010.525852&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0058"><mixed-citation id="bjso70105-cit-0058"><named-content content-type="citation-string">
+
+Piff, P. K.
+, &amp;
+Robinson, A. R.
+ (2017). Social class and prosocial behavior: Current evidence, caveats, and questions. Current Opinion in Psychology, 18, 6–10. 10.1016/j.copsyc.2017.06.003
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.copsyc.2017.06.003"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="29221512"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Current Opinion in Psychology&amp;title=Social class and prosocial behavior: Current evidence, caveats, and questions&amp;author=P. K. Piff&amp;author=A. R. Robinson&amp;volume=18&amp;publication_year=2017&amp;pages=6-10&amp;pmid=29221512&amp;doi=10.1016/j.copsyc.2017.06.003&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0059"><mixed-citation id="bjso70105-cit-0059"><named-content content-type="citation-string">
+
+Poulin, F.
+, &amp;
+Chan, A.
+ (2010). Friendship stability and change in childhood and adolescence. Developmental Review, 30(3), 257–272. 10.1016/j.dr.2009.01.001
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.dr.2009.01.001"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Developmental Review&amp;title=Friendship stability and change in childhood and adolescence&amp;author=F. Poulin&amp;author=A. Chan&amp;volume=30&amp;issue=3&amp;publication_year=2010&amp;pages=257-272&amp;doi=10.1016/j.dr.2009.01.001&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0060"><mixed-citation id="bjso70105-cit-0060"><named-content content-type="citation-string">
+
+Prétôt, L.
+,
+Taylor, Q.
+, &amp;
+McAuliffe, K.
+ (2024). Children cooperate more with in‐group members than with out‐group members in an iterated face‐to‐face prisoner's dilemma game. Journal of Experimental Child Psychology, 241, 105858. 10.1016/j.jecp.2023.105858
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.jecp.2023.105858"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="38310663"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Experimental Child Psychology&amp;title=Children cooperate more with in‐group members than with out‐group members in an iterated face‐to‐face prisoner's dilemma game&amp;author=L. Prétôt&amp;author=Q. Taylor&amp;author=K. McAuliffe&amp;volume=241&amp;publication_year=2024&amp;pages=105858&amp;pmid=38310663&amp;doi=10.1016/j.jecp.2023.105858&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0061"><mixed-citation id="bjso70105-cit-0061"><named-content content-type="citation-string">
+
+Sabato, H.
+,
+Abraham, Y.
+, &amp;
+Kogut, T.
+ (2021). Too lonely to help: Early adolescents' social connections and willingness to help during COVID‐19 lockdown. Journal of Research on Adolescence, 31(3), 764–779. 10.1111/jora.12655
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/jora.12655"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC8646666"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="34448302"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Research on Adolescence&amp;title=Too lonely to help: Early adolescents' social connections and willingness to help during COVID‐19 lockdown&amp;author=H. Sabato&amp;author=Y. Abraham&amp;author=T. Kogut&amp;volume=31&amp;issue=3&amp;publication_year=2021&amp;pages=764-779&amp;pmid=34448302&amp;doi=10.1111/jora.12655&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0062"><mixed-citation id="bjso70105-cit-0062"><named-content content-type="citation-string">
+
+Sabato, H.
+, &amp;
+Kogut, T.
+ (2019). Feel good, do good? Subjective well‐being and sharing behavior among children. Journal of Experimental Child Psychology, 177, 335–350. 10.1016/j.jecp.2018.08.009
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.jecp.2018.08.009"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="30249367"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Experimental Child Psychology&amp;title=Feel good, do good? Subjective well‐being and sharing behavior among children&amp;author=H. Sabato&amp;author=T. Kogut&amp;volume=177&amp;publication_year=2019&amp;pages=335-350&amp;pmid=30249367&amp;doi=10.1016/j.jecp.2018.08.009&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0063"><mixed-citation id="bjso70105-cit-0063"><named-content content-type="citation-string">
+
+Sabato, H.
+, &amp;
+Kogut, T.
+ (2020). The development of prosociality among Christian Arab children in Israel: The role of children's household religiosity and of the recipient's neediness. Developmental Psychology, 56(8), 1509–1517. 10.1037/dev0000914
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1037/dev0000914"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="32790449"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Developmental Psychology&amp;title=The development of prosociality among Christian Arab children in Israel: The role of children's household religiosity and of the recipient's neediness&amp;author=H. Sabato&amp;author=T. Kogut&amp;volume=56&amp;issue=8&amp;publication_year=2020&amp;pages=1509-1517&amp;pmid=32790449&amp;doi=10.1037/dev0000914&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0064"><mixed-citation id="bjso70105-cit-0064"><named-content content-type="citation-string">
+
+Sabato, H.
+, &amp;
+Kogut, T.
+ (2021). Sharing and belonging: Children's social status and their sharing behavior with in‐group and out‐group members. Developmental Psychology, 57(12), 2082–2092. 10.1037/dev0001260
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1037/dev0001260"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="34928660"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Developmental Psychology&amp;title=Sharing and belonging: Children's social status and their sharing behavior with in‐group and out‐group members&amp;author=H. Sabato&amp;author=T. Kogut&amp;volume=57&amp;issue=12&amp;publication_year=2021&amp;pages=2082-2092&amp;pmid=34928660&amp;doi=10.1037/dev0001260&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0065"><mixed-citation id="bjso70105-cit-0065"><named-content content-type="citation-string">
+
+Schmidt, M. F.
+,
+Svetlova, M.
+,
+Johe, J.
+, &amp;
+Tomasello, M.
+ (2016). Children's developing understanding of legitimate reasons for allocating resources unequally. Cognitive Development, 37, 42–52. 10.1016/j.cogdev.2015.11.001
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.cogdev.2015.11.001"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Cognitive Development&amp;title=Children's developing understanding of legitimate reasons for allocating resources unequally&amp;author=M. F. Schmidt&amp;author=M. Svetlova&amp;author=J. Johe&amp;author=M. Tomasello&amp;volume=37&amp;publication_year=2016&amp;pages=42-52&amp;doi=10.1016/j.cogdev.2015.11.001&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0066"><mixed-citation id="bjso70105-cit-0066"><named-content content-type="citation-string">
+
+Sebastian, C.
+,
+Viding, E.
+,
+Williams, K. D.
+, &amp;
+Blakemore, S.‐J.
+ (2010). Social brain development and the affective consequences of ostracism in adolescence. Brain and Cognition, 72(1), 134–145. 10.1016/j.bandc.2009.06.008
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1016/j.bandc.2009.06.008"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="19628323"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Brain and Cognition&amp;title=Social brain development and the affective consequences of ostracism in adolescence&amp;author=C. Sebastian&amp;author=E. Viding&amp;author=K. D. Williams&amp;author=S.‐J. Blakemore&amp;volume=72&amp;issue=1&amp;publication_year=2010&amp;pages=134-145&amp;pmid=19628323&amp;doi=10.1016/j.bandc.2009.06.008&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0067"><mixed-citation id="bjso70105-cit-0067"><named-content content-type="citation-string">
+
+Selman, R. L.
+ (2007). The promotion of social awareness: Powerful lessons from the partnership of developmental theory and classroom practice. Russell Sage Foundation.</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=The promotion of social awareness: Powerful lessons from the partnership of developmental theory and classroom practice&amp;author=R. L. Selman&amp;publication_year=2007&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0068"><mixed-citation id="bjso70105-cit-0068"><named-content content-type="citation-string">
+
+Smart Richman, L.
+, &amp;
+Leary, M. R.
+ (2009). Reactions to discrimination, stigmatization, ostracism, and other forms of interpersonal rejection: A multimotive model. Psychological Review, 116(2), 365–383. 10.1037/a0015250
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1037/a0015250"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC2763620"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="19348546"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Psychological Review&amp;title=Reactions to discrimination, stigmatization, ostracism, and other forms of interpersonal rejection: A multimotive model&amp;author=L. Smart Richman&amp;author=M. R. Leary&amp;volume=116&amp;issue=2&amp;publication_year=2009&amp;pages=365-383&amp;pmid=19348546&amp;doi=10.1037/a0015250&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0069"><mixed-citation id="bjso70105-cit-0069"><named-content content-type="citation-string">
+
+Stoltz, S.
+,
+Cillessen, A. H. N.
+,
+Van Den Berg, Y. H. M.
+, &amp;
+Gommans, R.
+ (2016). Popularity differentially predicts reactive and proactive aggression in early adolescence. Aggressive Behavior, 42(1), 29–40. 10.1002/ab.21603
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1002/ab.21603"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="26299476"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Aggressive Behavior&amp;title=Popularity differentially predicts reactive and proactive aggression in early adolescence&amp;author=S. Stoltz&amp;author=A. H. N. Cillessen&amp;author=Y. H. M. Van Den Berg&amp;author=R. Gommans&amp;volume=42&amp;issue=1&amp;publication_year=2016&amp;pages=29-40&amp;pmid=26299476&amp;doi=10.1002/ab.21603&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0070"><mixed-citation id="bjso70105-cit-0070"><named-content content-type="citation-string">
+
+Taket, A. R.
+ (Ed.). (2009). Theorising social exclusion. Routledge.</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="title=Theorising social exclusion&amp;publication_year=2009&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0071"><mixed-citation id="bjso70105-cit-0071"><named-content content-type="citation-string">
+
+Trombini, C.
+, &amp;
+Kinias, Z.
+ (2022). Receiving social support motivates prosocial behaviors developing diversity, equity, and inclusion. Academy of Management Proceedings, 2022(1), 11482. 10.5465/AMBPP.2022.11482abstract
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.5465/AMBPP.2022.11482abstract"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Academy of Management Proceedings&amp;title=Receiving social support motivates prosocial behaviors developing diversity, equity, and inclusion&amp;author=C. Trombini&amp;author=Z. Kinias&amp;volume=2022&amp;issue=1&amp;publication_year=2022&amp;pages=11482&amp;doi=10.5465/AMBPP.2022.11482abstract&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0072"><mixed-citation id="bjso70105-cit-0072"><named-content content-type="citation-string">
+
+Tur‐Porcar, A. M.
+,
+Doménech, A.
+, &amp;
+Mestre, V.
+ (2018). Vínculos familiares e inclusión social. Variables predictoras de la conducta prosocial en la infancia. Anales de Psicología, 34(2), 340. 10.6018/analesps.34.2.308151
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.6018/analesps.34.2.308151"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Anales de Psicología&amp;title=Vínculos familiares e inclusión social. Variables predictoras de la conducta prosocial en la infancia&amp;author=A. M. Tur‐Porcar&amp;author=A. Doménech&amp;author=V. Mestre&amp;volume=34&amp;issue=2&amp;publication_year=2018&amp;pages=340&amp;doi=10.6018/analesps.34.2.308151&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0073"><mixed-citation id="bjso70105-cit-0073"><named-content content-type="citation-string">
+
+Twenge, J. M.
+,
+Baumeister, R. F.
+,
+DeWall, C. N.
+,
+Ciarocco, N. J.
+, &amp;
+Bartels, J. M.
+ (2007). Social exclusion decreases prosocial behavior. Journal of Personality and Social Psychology, 92(1), 56–66. 10.1037/0022-3514.92.1.56
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1037/0022-3514.92.1.56"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="17201542"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Personality and Social Psychology&amp;title=Social exclusion decreases prosocial behavior&amp;author=J. M. Twenge&amp;author=R. F. Baumeister&amp;author=C. N. DeWall&amp;author=N. J. Ciarocco&amp;author=J. M. Bartels&amp;volume=92&amp;issue=1&amp;publication_year=2007&amp;pages=56-66&amp;pmid=17201542&amp;doi=10.1037/0022-3514.92.1.56&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0075"><mixed-citation id="bjso70105-cit-0075"><named-content content-type="citation-string">
+
+Van Bommel, M.
+,
+Van Prooijen, J.‐W.
+,
+Elffers, H.
+, &amp;
+Van Lange, P. A. M.
+ (2016). The lonely bystander: Ostracism leads to less helping in virtual bystander situations. Social Influence, 11(3), 141–150. 10.1080/15534510.2016.1171796
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1080/15534510.2016.1171796"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Social Influence&amp;title=The lonely bystander: Ostracism leads to less helping in virtual bystander situations&amp;author=M. Van Bommel&amp;author=J.‐W. Van Prooijen&amp;author=H. Elffers&amp;author=P. A. M. Van Lange&amp;volume=11&amp;issue=3&amp;publication_year=2016&amp;pages=141-150&amp;doi=10.1080/15534510.2016.1171796&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0076"><mixed-citation id="bjso70105-cit-0076"><named-content content-type="citation-string">
+
+van den Berg, Y. H. M.
+,
+Lansu, T. A. M.
+, &amp;
+Cillessen, A. H. N.
+ (2015). Measuring social status and social behavior with peer and teacher nomination methods. Social Development, 24(4), 815–832. 10.1111/sode.12120
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/sode.12120"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Social Development&amp;title=Measuring social status and social behavior with peer and teacher nomination methods&amp;author=Y. H. M. van den Berg&amp;author=T. A. M. Lansu&amp;author=A. H. N. Cillessen&amp;volume=24&amp;issue=4&amp;publication_year=2015&amp;pages=815-832&amp;doi=10.1111/sode.12120&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0078"><mixed-citation id="bjso70105-cit-0078"><named-content content-type="citation-string">
+
+Vogelsang, M.
+,
+Jensen, K.
+,
+Kirschner, S.
+,
+Tennie, C.
+, &amp;
+Tomasello, M.
+ (2014). Preschoolers are sensitive to free riding in a public goods game. Frontiers in Psychology, 5, 729. 10.3389/fpsyg.2014.00729
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.3389/fpsyg.2014.00729"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC4098121"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="25076923"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Frontiers in Psychology&amp;title=Preschoolers are sensitive to free riding in a public goods game&amp;author=M. Vogelsang&amp;author=K. Jensen&amp;author=S. Kirschner&amp;author=C. Tennie&amp;author=M. Tomasello&amp;volume=5&amp;publication_year=2014&amp;pages=729&amp;pmid=25076923&amp;doi=10.3389/fpsyg.2014.00729&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0079"><mixed-citation id="bjso70105-cit-0079"><named-content content-type="citation-string">
+
+Wang, T.
+, &amp;
+Qi, W.
+ (2023). Mindfulness may buffer the longitudinal influence of peer rejection on adolescents' prosocial behavior: A cross‐lagged study. Journal of Social and Personal Relationships, 40(9), 3051–3064. 10.1177/02654075231167550
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1177/02654075231167550"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Journal of Social and Personal Relationships&amp;title=Mindfulness may buffer the longitudinal influence of peer rejection on adolescents' prosocial behavior: A cross‐lagged study&amp;author=T. Wang&amp;author=W. Qi&amp;volume=40&amp;issue=9&amp;publication_year=2023&amp;pages=3051-3064&amp;doi=10.1177/02654075231167550&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0080"><mixed-citation id="bjso70105-cit-0080"><named-content content-type="citation-string">
+
+Warden, D.
+, &amp;
+MacKinnon, S.
+ (2003). Prosocial children, bullies and victims: An investigation of their sociometric status, empathy and social problem‐solving strategies. British Journal of Developmental Psychology, 21(3), 367–385. 10.1348/026151003322277757
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1348/026151003322277757"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=British Journal of Developmental Psychology&amp;title=Prosocial children, bullies and victims: An investigation of their sociometric status, empathy and social problem‐solving strategies&amp;author=D. Warden&amp;author=S. MacKinnon&amp;volume=21&amp;issue=3&amp;publication_year=2003&amp;pages=367-385&amp;doi=10.1348/026151003322277757&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0081"><mixed-citation id="bjso70105-cit-0081"><named-content content-type="citation-string">
+
+Wentzel, K. R.
+,
+Filisetti, L.
+, &amp;
+Looney, L.
+ (2007). Adolescent prosocial behavior: The role of self‐processes and contextual cues. Child Development, 78(3), 895–910. 10.1111/j.1467-8624.2007.01039.x
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/j.1467-8624.2007.01039.x"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="17517011"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Child Development&amp;title=Adolescent prosocial behavior: The role of self‐processes and contextual cues&amp;author=K. R. Wentzel&amp;author=L. Filisetti&amp;author=L. Looney&amp;volume=78&amp;issue=3&amp;publication_year=2007&amp;pages=895-910&amp;pmid=17517011&amp;doi=10.1111/j.1467-8624.2007.01039.x&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0082"><mixed-citation id="bjso70105-cit-0082"><named-content content-type="citation-string">
+
+Willer, R.
+ (2009). Groups reward individual sacrifice: The status solution to the collective action problem. American Sociological Review, 74(1), 23–43. 10.1177/000312240907400102
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1177/000312240907400102"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=American Sociological Review&amp;title=Groups reward individual sacrifice: The status solution to the collective action problem&amp;author=R. Willer&amp;volume=74&amp;issue=1&amp;publication_year=2009&amp;pages=23-43&amp;doi=10.1177/000312240907400102&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0083"><mixed-citation id="bjso70105-cit-0083"><named-content content-type="citation-string">
+
+Williams, K. D.
+ (2007). Ostracism. Annual Review of Psychology, 58(1), 425–452. 10.1146/annurev.psych.58.110405.085641
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1146/annurev.psych.58.110405.085641"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="16968209"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Annual Review of Psychology&amp;title=Ostracism&amp;author=K. D. Williams&amp;volume=58&amp;issue=1&amp;publication_year=2007&amp;pages=425-452&amp;pmid=16968209&amp;doi=10.1146/annurev.psych.58.110405.085641&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0084"><mixed-citation id="bjso70105-cit-0084"><named-content content-type="citation-string">
+
+Williams, K. D.
+, &amp;
+Jarvis, B.
+ (2006). Cyberball: A program for use in research on interpersonal ostracism and acceptance. Behavior Research Methods, 38(1), 174–180. 10.3758/BF03192765
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.3758/BF03192765"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="16817529"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Behavior Research Methods&amp;title=Cyberball: A program for use in research on interpersonal ostracism and acceptance&amp;author=K. D. Williams&amp;author=B. Jarvis&amp;volume=38&amp;issue=1&amp;publication_year=2006&amp;pages=174-180&amp;pmid=16817529&amp;doi=10.3758/BF03192765&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0085"><mixed-citation id="bjso70105-cit-0085"><named-content content-type="citation-string">
+
+Wilson, B. J.
+,
+Petaja, H.
+,
+Yun, J.
+,
+King, K.
+,
+Berg, J.
+,
+Kremmel, L.
+, &amp;
+Cook, D.
+ (2014). Parental emotion coaching: Associations with self‐regulation in aggressive/rejected and low aggressive/popular children. Child &amp; Family Behavior Therapy, 36(2), 81–106. 10.1080/07317107.2014.910731
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1080/07317107.2014.910731"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmcid" xlink:href="PMC4111247"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="25071301"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Child &amp; Family Behavior Therapy&amp;title=Parental emotion coaching: Associations with self‐regulation in aggressive/rejected and low aggressive/popular children&amp;author=B. J. Wilson&amp;author=H. Petaja&amp;author=J. Yun&amp;author=K. King&amp;author=J. Berg&amp;volume=36&amp;issue=2&amp;publication_year=2014&amp;pages=81-106&amp;pmid=25071301&amp;doi=10.1080/07317107.2014.910731&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0086"><mixed-citation id="bjso70105-cit-0086"><named-content content-type="citation-string">
+
+Wölfer, R.
+, &amp;
+Scheithauer, H.
+ (2013). Ostracism in childhood and adolescence: Emotional, cognitive, and behavioral effects of social exclusion. Social Influence, 8(4), 217–236. 10.1080/15534510.2012.706233
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1080/15534510.2012.706233"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Social Influence&amp;title=Ostracism in childhood and adolescence: Emotional, cognitive, and behavioral effects of social exclusion&amp;author=R. Wölfer&amp;author=H. Scheithauer&amp;volume=8&amp;issue=4&amp;publication_year=2013&amp;pages=217-236&amp;doi=10.1080/15534510.2012.706233&amp;"/></mixed-citation></ref><ref id="bjso70105-bib-0087"><mixed-citation id="bjso70105-cit-0087"><named-content content-type="citation-string">
+
+Yan, L.
+,
+Zheng, J.
+,
+Liu, W.
+, &amp;
+Qian, P.
+ (2024).
+<italic>The “scars” left on children by exclusion, but re‐inclusion may “heal up”</italic> [Preprints]. 10.22541/au.170664251.10283934/v1
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.22541/au.170664251.10283934/v1"/></mixed-citation></ref><ref id="bjso70105-bib-0088"><mixed-citation id="bjso70105-cit-0088"><named-content content-type="citation-string">
+
+Yu, J.
+,
+Zhu, L.
+, &amp;
+Leslie, A. M.
+ (2016). Children's sharing behavior in mini‐dictator games: The role of in‐group favoritism and theory of mind. Child Development, 87(6), 1747–1757. 10.1111/cdev.12635
+
+</named-content><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="doi" xlink:href="10.1111/cdev.12635"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="pmid" xlink:href="28262934"/><ext-link xmlns:xlink="http://www.w3.org/1999/xlink" ext-link-type="google-scholar" xlink:href="journal=Child Development&amp;title=Children's sharing behavior in mini‐dictator games: The role of in‐group favoritism and theory of mind&amp;author=J. Yu&amp;author=L. Zhu&amp;author=A. M. Leslie&amp;volume=87&amp;issue=6&amp;publication_year=2016&amp;pages=1747-1757&amp;pmid=28262934&amp;doi=10.1111/cdev.12635&amp;"/></mixed-citation></ref></ref-list></sec></sec><sec id="_ad93_" xml:lang="en" sec-type="associated-data" disp-level="1"><title>Associated Data</title><sec id="_adsm93_" xml:lang="en" sec-type="supplementary-materials" disp-level="2"><title>Supplementary Materials</title><supplementary-material id="db_ds_supplementary-material1_reqid_" position="float"><caption><p>
+Data S1.
+</p></caption><media xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="BJSO-65-0-s001.docx" mimetype="application" mime-subtype="vnd.openxmlformats-officedocument.wordprocessingml.document"><?cloudpmc-path 6aa1/13238313/8af971892145/BJSO-65-0-s001.docx?><?cloudpmc-bucket app?><?size 1011947?></media></supplementary-material></sec><sec id="_adda93_" xml:lang="en" sec-type="data-availability-statement" disp-level="2"><title>Data Availability Statement</title><p>The data that support the findings of this study are openly available in OSF at <ext-link xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="https://osf.io/ezwjs/?view_only=f7ac50a6febd49b39b8795efc493daeb" ext-link-type="uri">https://osf.io/ezwjs/?view_only=f7ac50a6febd49b39b8795efc493daeb</ext-link>, reference number Ezwjs.</p></sec></sec></body></article>

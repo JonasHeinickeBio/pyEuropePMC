@@ -79,7 +79,44 @@ class AffiliationParser(BaseParser):
         else:
             self._parse_mixed_content_affiliation(aff_elem, aff_data)
 
+        # Extract institution-wrap with multiple institutions + IDs
+        institutions_list = self._extract_institution_wrap(aff_elem)
+        if institutions_list:
+            aff_data["institutions"] = institutions_list
+
         return aff_data
+
+    def _extract_institution_wrap(self, aff_elem: ET.Element) -> list[dict[str, str]] | None:
+        """Extract multiple institutions and their IDs from <institution-wrap> elements.
+
+        JATS sometimes wraps institutions with persistent identifiers:
+        ``<institution-wrap><institution-id ...>ROR</institution-id>...
+           <institution>Name</institution></institution-wrap>``
+
+        Returns a list of dicts, each with ``name`` and/or ``id`` keys.
+        """
+        institutions_list: list[dict[str, str]] = []
+
+        for wrap in aff_elem.findall(".//institution-wrap"):
+            # Collect all institution IDs from this wrapper
+            ids: dict[str, str] = {}
+            for inst_id in wrap.findall("institution-id"):
+                id_type = inst_id.get("institution-id-type", "")
+                id_value = inst_id.text
+                if id_type and id_value:
+                    ids[id_type] = id_value.strip()
+
+            # Collect all institution names from this wrapper
+            for inst in wrap.findall("institution"):
+                entry: dict[str, Any] = {}
+                name = "".join(inst.itertext()).strip()
+                if name:
+                    entry["name"] = name
+                if ids:
+                    entry["ids"] = dict(ids)
+                institutions_list.append(entry)
+
+        return institutions_list if institutions_list else None
 
     def _parse_mixed_content_affiliation(
         self, aff_elem: ET.Element, aff_data: dict[str, Any]

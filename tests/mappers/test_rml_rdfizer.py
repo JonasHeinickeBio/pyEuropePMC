@@ -15,6 +15,7 @@ pytestmark = pytest.mark.skipif(
 )
 
 
+@pytest.mark.slow
 class TestRMLRDFizer:
     """Tests for RMLRDFizer."""
 
