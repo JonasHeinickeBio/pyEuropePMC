@@ -10,8 +10,8 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from pyeuropepmc.enrichment.config import EnrichmentConfig
-from pyeuropepmc.enrichment.file_enricher import FileEnricher
+from pyeuropepmc.features.enrich.config import EnrichmentConfig
+from pyeuropepmc.features.enrich.file_enricher import FileEnricher
 
 
 @pytest.fixture
@@ -23,7 +23,7 @@ def config():
 @pytest.fixture
 def file_enricher(config):
     """Fixture for FileEnricher with mocked PaperEnricher."""
-    with patch("pyeuropepmc.enrichment.enricher.PaperEnricher") as MockPaperEnricher:
+    with patch("pyeuropepmc.features.enrich.enricher.PaperEnricher") as MockPaperEnricher:
         mock_instance = MagicMock()
         mock_instance.enrich_paper.return_value = {
             "sources": ["crossref"],
@@ -40,7 +40,7 @@ class TestFileEnricher:
 
     def test_initialization(self, config):
         """Test FileEnricher initialization."""
-        with patch("pyeuropepmc.enrichment.enricher.PaperEnricher"):
+        with patch("pyeuropepmc.features.enrich.enricher.PaperEnricher"):
             enricher = FileEnricher(config)
         assert enricher.config == config
         assert enricher.enricher is not None
@@ -133,7 +133,7 @@ class TestFileEnricher:
 
     def test_enrich_from_files_enricher_error(self, config):
         """Test enriching when enricher raises error."""
-        with patch("pyeuropepmc.enrichment.enricher.PaperEnricher") as MockPaperEnricher:
+        with patch("pyeuropepmc.features.enrich.enricher.PaperEnricher") as MockPaperEnricher:
             mock_instance = MagicMock()
             mock_instance.enrich_paper.side_effect = ValueError("API Error")
             MockPaperEnricher.return_value = mock_instance
@@ -279,7 +279,7 @@ class TestFileEnricher:
 
     def test_context_manager(self, config):
         """Test context manager protocol."""
-        with patch("pyeuropepmc.enrichment.enricher.PaperEnricher") as MockPaperEnricher:
+        with patch("pyeuropepmc.features.enrich.enricher.PaperEnricher") as MockPaperEnricher:
             mock_instance = MagicMock()
             MockPaperEnricher.return_value = mock_instance
 
@@ -290,7 +290,7 @@ class TestFileEnricher:
 
     def test_close(self, config):
         """Test close method."""
-        with patch("pyeuropepmc.enrichment.enricher.PaperEnricher") as MockPaperEnricher:
+        with patch("pyeuropepmc.features.enrich.enricher.PaperEnricher") as MockPaperEnricher:
             mock_instance = MagicMock()
             MockPaperEnricher.return_value = mock_instance
 

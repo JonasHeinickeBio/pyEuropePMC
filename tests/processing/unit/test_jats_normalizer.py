@@ -18,7 +18,7 @@ import pytest
 
 from xml.etree.ElementTree import ParseError
 
-from pyeuropepmc.processing.jats_normalizer import (
+from pyeuropepmc.features.fulltext.jats_normalizer import (
     JATSNormalizer,
     NormalizationConfig,
     classify_section,

@@ -1,6 +1,16 @@
 import pytest
-import pandas as pd
 
+from pyeuropepmc.utils.dependencies import (
+    is_dependency_available,
+    skip_if_dependency_missing,
+)
+
+pytestmark = [
+    pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas"),
+    pytest.mark.skipif(not is_dependency_available("xlsxwriter"), reason="skipped due to missing xlsxwriter"),
+]
+
+import pandas as pd
 from pyeuropepmc.utils import export
 
 SAMPLE_RESULTS = [

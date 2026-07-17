@@ -1,4 +1,4 @@
-"""Tests for pyeuropepmc.processing.extensions.reference_resolver."""
+"""Tests for pyeuropepmc.features.fulltext.extensions.reference_resolver."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from pyeuropepmc.processing.extensions.reference_resolver import (
+from pyeuropepmc.features.fulltext.extensions.reference_resolver import (
     EUROPE_PMC_API,
     ReferenceResolver,
     ResolvedReference,
@@ -529,8 +529,8 @@ class TestParseEntry:
 # ---------------------------------------------------------------------------
 
 class TestThrottle:
-    @patch("pyeuropepmc.processing.extensions.reference_resolver.time.time")
-    @patch("pyeuropepmc.processing.extensions.reference_resolver.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.time")
+    @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.sleep")
     def test_sleep_called_when_too_fast(self, mock_sleep, mock_time):
         mock_time.side_effect = [0.0, 0.0]
         r = ReferenceResolver(rate_limit=3.0)
@@ -543,8 +543,8 @@ class TestThrottle:
         slept = mock_sleep.call_args[0][0]
         assert slept == pytest.approx(min_interval, abs=1e-6)
 
-    @patch("pyeuropepmc.processing.extensions.reference_resolver.time.time")
-    @patch("pyeuropepmc.processing.extensions.reference_resolver.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.time")
+    @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.sleep")
     def test_sleep_not_called_when_enough_time(self, mock_sleep, mock_time):
         mock_time.side_effect = [1.0, 1.0]
         r = ReferenceResolver(rate_limit=3.0)
@@ -554,8 +554,8 @@ class TestThrottle:
 
         mock_sleep.assert_not_called()
 
-    @patch("pyeuropepmc.processing.extensions.reference_resolver.time.time")
-    @patch("pyeuropepmc.processing.extensions.reference_resolver.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.time")
+    @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.sleep")
     def test_throttle_updates_last_request_time(self, mock_sleep, mock_time):
         mock_time.side_effect = [5.0, 5.0]
         r = ReferenceResolver(rate_limit=3.0)

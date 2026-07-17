@@ -3,10 +3,15 @@ Tests for annotations to RDF conversion.
 """
 
 import pytest
+
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib")
+
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDF, RDFS
 
-from pyeuropepmc.processing.annotations_to_rdf import (
+from pyeuropepmc.features.literature.annotations_to_rdf import (
     annotations_to_entities,
     annotations_to_rdf,
     entity_annotation_to_model,
@@ -296,7 +301,7 @@ class TestAnnotationsToEntitiesEdgeCases:
         """Get annotations_to_rdf module via sys.modules (avoids __init__ shadowing)."""
         import sys
 
-        return sys.modules["pyeuropepmc.processing.annotations_to_rdf"]
+        return sys.modules["pyeuropepmc.features.literature.annotations_to_rdf"]
 
     def test_entity_conversion_failure(self, monkeypatch):
         """Test exception handling in entity loop (l.149-153)."""

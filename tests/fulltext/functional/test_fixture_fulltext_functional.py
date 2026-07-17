@@ -2,7 +2,7 @@ import os
 
 import pytest
 
-from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser, ParsingError
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "../../fixtures/fulltext_downloads")
 

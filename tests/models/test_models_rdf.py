@@ -1,6 +1,11 @@
 """Unit tests for data models and RDF serialization."""
 
 import pytest
+
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib")
+
 from rdflib import Graph, Namespace
 
 from pyeuropepmc.mappers import RDFMapper

@@ -10,7 +10,7 @@ import pytest
 
 logger = logging.getLogger("test.filters")
 
-from pyeuropepmc.query.filters import (
+from pyeuropepmc.features.literature.filters import (
 	_extract_authors,
 	_extract_keywords,
 	_extract_mesh_terms,

@@ -3,12 +3,24 @@
 from pathlib import Path
 import tempfile
 
-import matplotlib
-import matplotlib.pyplot as plt
 import pytest
 
-from pyeuropepmc.processing.analytics import to_dataframe
-from pyeuropepmc.processing.visualization import (
+from pyeuropepmc.utils.dependencies import (
+    is_dependency_available,
+    skip_if_dependencies_missing,
+)
+
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("matplotlib"), reason="skipped due to missing matplotlib"
+)
+
+import matplotlib
+import matplotlib.pyplot as plt
+
+matplotlib.use("Agg")
+
+from pyeuropepmc.features.analytics.analytics import to_dataframe
+from pyeuropepmc.features.analytics.visualization import (
     create_summary_dashboard,
     plot_access_distribution,
     plot_author_collaboration_network,
@@ -24,9 +36,6 @@ from pyeuropepmc.processing.visualization import (
     plot_quality_metrics,
     plot_trend_analysis,
 )
-
-# Use non-interactive backend for testing
-matplotlib.use("Agg")
 
 
 @pytest.fixture

@@ -15,7 +15,7 @@ Metrics implemented
 Usage
 -----
 >>> from pyeuropepmc.benchmark.metrics import compute_all_metrics
->>> from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+>>> from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 >>> parser = FullTextXMLParser(xml_string)
 >>> metrics = compute_all_metrics(parser, xml_string)
 >>> metrics["element_coverage"]["score"]
@@ -29,8 +29,8 @@ import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
-from pyeuropepmc.processing.utils.xml_helpers import XMLHelper
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
 logger = logging.getLogger(__name__)
 
@@ -698,7 +698,7 @@ def _get_configured_tags(parser: FullTextXMLParser) -> set[str]:
     #   - Is extracted by reference_parser
     #   - Is detected/classified by content section extraction
     # ====================================================================
-    from pyeuropepmc.processing.extensions.content_blocks import ContentBlockExtractor
+    from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlockExtractor
 
     tags.update(ContentBlockExtractor.JATS_BLOCK_TAGS.keys())
     tags.update(ContentBlockExtractor.INLINE_TAG_MAP.keys())

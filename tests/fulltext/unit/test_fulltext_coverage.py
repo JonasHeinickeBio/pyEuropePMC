@@ -12,7 +12,7 @@ import zipfile
 import pytest
 import requests
 
-from pyeuropepmc.clients.fulltext import FullTextClient
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, FullTextError
 
@@ -871,7 +871,7 @@ class TestFullTextClientCoverage:
         """Test ProgressInfo initialization with all parameters."""
         import time
 
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         start_time = time.time()
         progress = ProgressInfo(
@@ -895,7 +895,7 @@ class TestFullTextClientCoverage:
 
     def test_progress_info_default_initialization(self):
         """Test ProgressInfo initialization with minimal parameters."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(total_items=50)
 
@@ -906,7 +906,7 @@ class TestFullTextClientCoverage:
 
     def test_progress_percent_calculation(self):
         """Test progress percentage calculation."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(total_items=100, current_item=25)
         assert progress.progress_percent == 25.0
@@ -918,7 +918,7 @@ class TestFullTextClientCoverage:
         """Test estimated time calculations."""
         import time
 
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         start_time = time.time() - 10  # 10 seconds ago
         progress = ProgressInfo(total_items=100, current_item=25, start_time=start_time)
@@ -937,7 +937,7 @@ class TestFullTextClientCoverage:
         import time
         from unittest.mock import patch
 
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         # Test with actual elapsed time
         start_time = time.time() - 10  # 10 seconds ago
@@ -957,7 +957,7 @@ class TestFullTextClientCoverage:
 
     def test_progress_to_dict_conversion(self):
         """Test conversion to dictionary."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(
             total_items=100,
@@ -980,7 +980,7 @@ class TestFullTextClientCoverage:
 
     def test_progress_string_representation(self):
         """Test string representation."""
-        from pyeuropepmc.clients.fulltext import ProgressInfo
+        from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(
             total_items=100,

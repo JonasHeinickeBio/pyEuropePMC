@@ -9,7 +9,7 @@ This file contains:
 
 import pytest
 
-from pyeuropepmc.query.filters import filter_pmc_papers
+from pyeuropepmc.features.literature.filters import filter_pmc_papers
 from pyeuropepmc.utils.text_match import as_semantic_model
 
 

@@ -7,7 +7,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.clients.annotations import AnnotationsClient
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.core.exceptions import ValidationError
 
 

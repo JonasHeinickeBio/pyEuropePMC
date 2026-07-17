@@ -13,7 +13,7 @@ import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.search_parser import EuropePMCParser
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser
 
 pytestmark = pytest.mark.unit
 

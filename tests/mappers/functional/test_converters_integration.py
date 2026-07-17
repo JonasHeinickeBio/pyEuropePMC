@@ -5,9 +5,13 @@ import tempfile
 from unittest.mock import Mock
 
 import pytest
-from rdflib import Graph
 
-pytestmark = pytest.mark.functional
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = [
+    pytest.mark.functional,
+    pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"),
+]
 
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.converters import (

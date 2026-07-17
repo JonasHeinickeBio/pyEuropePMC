@@ -31,7 +31,7 @@ from pyeuropepmc.benchmark.metrics import (
 )
 from pyeuropepmc.benchmark.report import BenchmarkReport
 from pyeuropepmc.benchmark.runner import BenchmarkRunner
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 # ============================================================================
 # Test fixtures

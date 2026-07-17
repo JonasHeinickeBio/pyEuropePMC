@@ -6,7 +6,7 @@ from unittest.mock import Mock
 
 import pytest
 
-from pyeuropepmc.query.pagination import (
+from pyeuropepmc.features.literature.pagination import (
     CursorPaginator,
     PaginationCheckpoint,
     PaginationState,

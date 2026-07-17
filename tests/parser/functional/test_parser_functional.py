@@ -5,7 +5,7 @@ import os
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
-from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser, ParsingError
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("parser_functional_test")

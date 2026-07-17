@@ -55,7 +55,7 @@ from pyeuropepmc.models.table import TableEntity
 class TestConvertSearchAuthorToEntity:
     """Tests for _convert_search_author_to_entity."""
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_basic_conversion(self, mock_parser_class):
         """Test basic author dict conversion."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -84,7 +84,7 @@ class TestConvertSearchAuthorToEntity:
         assert len(entity.institutions) == 1
         assert entity.institutions[0].display_name == "University of Testing"
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_with_orcid(self, mock_parser_class):
         """Test with ORCID identifier."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -99,7 +99,7 @@ class TestConvertSearchAuthorToEntity:
         assert entity.full_name == "Jane D"
         assert entity.orcid == "0000-0002-1825-0097"
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_orcid_wrong_type(self, mock_parser_class):
         """Test when authorId has a type other than ORCID."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -113,7 +113,7 @@ class TestConvertSearchAuthorToEntity:
         entity = _convert_search_author_to_entity(author_dict)
         assert entity.orcid is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_orcid_missing_type_key(self, mock_parser_class):
         """Test when authorId dict does not have a 'type' key."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -127,7 +127,7 @@ class TestConvertSearchAuthorToEntity:
         entity = _convert_search_author_to_entity(author_dict)
         assert entity.orcid is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_author_id_is_not_dict(self, mock_parser_class):
         """Test when authorId is a string instead of dict."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -141,7 +141,7 @@ class TestConvertSearchAuthorToEntity:
         entity = _convert_search_author_to_entity(author_dict)
         assert entity.orcid is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_empty_affiliations(self, mock_parser_class):
         """Test with empty affiliations list."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -156,7 +156,7 @@ class TestConvertSearchAuthorToEntity:
         assert entity.affiliation_text is None
         assert entity.institutions is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_affiliation_details_not_dict(self, mock_parser_class):
         """Test when authorAffiliationDetailsList is not a dict."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -170,7 +170,7 @@ class TestConvertSearchAuthorToEntity:
         assert entity.affiliation_text is None
         assert entity.institutions is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_missing_affiliation_details(self, mock_parser_class):
         """Test with missing authorAffiliationDetailsList."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -181,7 +181,7 @@ class TestConvertSearchAuthorToEntity:
         assert entity.affiliation_text is None
         assert entity.institutions is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_affiliation_without_str(self, mock_parser_class):
         """Test affiliation entry with missing 'affiliation' key."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -197,7 +197,7 @@ class TestConvertSearchAuthorToEntity:
         entity = _convert_search_author_to_entity(author_dict)
         assert entity.affiliation_text is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_affiliations_not_list(self, mock_parser_class):
         """Test when authorAffiliation is not a list."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -214,7 +214,7 @@ class TestConvertSearchAuthorToEntity:
         assert entity.institutions is None
         assert entity.affiliation_text is None
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_multiple_affiliations(self, mock_parser_class):
         """Test with multiple affiliations."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -234,7 +234,7 @@ class TestConvertSearchAuthorToEntity:
         assert entity.affiliation_text == "Univ A"
         assert len(entity.institutions) == 2
 
-    @patch("pyeuropepmc.processing.search_parser.EuropePMCParser")
+    @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_parse_returns_empty_display_name(self, mock_parser_class):
         """Test when parse_affiliation_string returns empty display_name."""
         mock_parser = mock_parser_class.parse_affiliation_string
@@ -881,8 +881,8 @@ class TestProcessAnnotationsData:
     def _get_patches(self):
         """Get the real modules for patching (shadowed by __init__.py)."""
         import sys as _sys
-        _ann_mod = _sys.modules["pyeuropepmc.processing.annotations_to_rdf"]
-        _par_mod = _sys.modules["pyeuropepmc.processing.annotation_parser"]
+        _ann_mod = _sys.modules["pyeuropepmc.features.literature.annotations_to_rdf"]
+        _par_mod = _sys.modules["pyeuropepmc.features.fulltext.annotation_parser"]
         return (
             patch.object(_par_mod, "parse_annotations"),
             patch.object(_par_mod, "normalize_annotations_response"),

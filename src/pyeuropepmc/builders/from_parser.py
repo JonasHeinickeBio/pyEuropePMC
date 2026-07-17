@@ -17,7 +17,7 @@ from pyeuropepmc.models import (
 )
 
 if TYPE_CHECKING:
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 __all__ = ["build_paper_entities"]
 
@@ -154,7 +154,7 @@ def build_paper_entities(
 
     Examples
     --------
-    >>> from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    >>> from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
     >>> parser = FullTextXMLParser(xml_content)
     >>> paper, authors, sections, tables, refs = build_paper_entities(parser)
     >>> print(paper.title)

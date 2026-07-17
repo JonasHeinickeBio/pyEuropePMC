@@ -4,7 +4,11 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from pyeuropepmc.enrichment.semantic_scholar import SemanticScholarClient
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar")
+
+from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
 
 
 class TestSemanticScholarRecommendations:

@@ -10,7 +10,7 @@ from unittest.mock import Mock, call, patch
 import pytest
 import requests
 
-from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, ValidationError
 
@@ -88,7 +88,7 @@ class TestArticleClientComprehensive:
         client = ArticleClient()
         assert isinstance(client, ArticleClient)
         assert client.rate_limit_delay == 1.0
-        assert client.logger.name == "pyeuropepmc.clients.article"
+        assert client.logger.name == "pyeuropepmc.features.literature.article"
 
     def test_initialization_custom_delay(self):
         """Test ArticleClient initialization with custom delay."""
@@ -96,7 +96,7 @@ class TestArticleClientComprehensive:
         assert client.rate_limit_delay == 2.5
 
     # Test get_article_details
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_article_details_success(self, mock_get, article_client, mock_json_response, mock_response_obj):
         """Test successful article details retrieval."""
         mock_response = mock_response_obj(mock_json_response)
@@ -110,7 +110,7 @@ class TestArticleClientComprehensive:
             params={"resultType": "core", "format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_article_details_with_params(self, mock_get, article_client, mock_json_response, mock_response_obj):
         """Test article details with additional parameters."""
         mock_response = mock_response_obj(mock_json_response)
@@ -126,7 +126,7 @@ class TestArticleClientComprehensive:
             params={"resultType": "lite", "format": "xml", "custom_param": "value"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_article_details_api_error(self, mock_get, article_client):
         """Test article details API error handling."""
         mock_get.side_effect = requests.RequestException("Network error")
@@ -139,7 +139,7 @@ class TestArticleClientComprehensive:
         assert "article_id" in exc_info.value.context
 
     # Test get_citations
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_citations_success(self, mock_get, article_client, mock_json_response, mock_response_obj):
         """Test successful citations retrieval."""
         mock_response = mock_response_obj(mock_json_response)
@@ -153,7 +153,7 @@ class TestArticleClientComprehensive:
             params={"page": 1, "pageSize": 25, "format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_citations_with_pagination(self, mock_get, article_client, mock_json_response, mock_response_obj):
         """Test citations with pagination parameters."""
         mock_response = mock_response_obj(mock_json_response)
@@ -166,7 +166,7 @@ class TestArticleClientComprehensive:
             params={"page": 2, "pageSize": 50, "format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_citations_with_callback(self, mock_get, article_client, mock_jsonp_response):
         """Test citations with JSONP callback."""
         mock_response = Mock()
@@ -183,7 +183,7 @@ class TestArticleClientComprehensive:
             params={"page": 1, "pageSize": 25, "format": "json", "callback": "processData"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_citations_api_error(self, mock_get, article_client):
         """Test citations API error handling."""
         mock_get.side_effect = Exception("API Error")
@@ -194,7 +194,7 @@ class TestArticleClientComprehensive:
         assert exc_info.value.error_code == ErrorCodes.NET001
 
     # Test get_references
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_references_success(self, mock_get, article_client, mock_json_response):
         """Test successful references retrieval."""
         mock_response = Mock()
@@ -209,7 +209,7 @@ class TestArticleClientComprehensive:
             params={"page": 1, "pageSize": 25, "format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_references_with_callback(self, mock_get, article_client, mock_jsonp_response):
         """Test references with JSONP callback."""
         mock_response = Mock()
@@ -221,7 +221,7 @@ class TestArticleClientComprehensive:
         assert result == {"jsonp_response": mock_jsonp_response}
 
     # Test get_database_links
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_database_links_success(self, mock_get, article_client, mock_json_response):
         """Test successful database links retrieval."""
         mock_response = Mock()
@@ -236,7 +236,7 @@ class TestArticleClientComprehensive:
             params={"page": 1, "pageSize": 25, "format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_database_links_with_callback(self, mock_get, article_client, mock_jsonp_response):
         """Test database links with JSONP callback."""
         mock_response = Mock()
@@ -248,7 +248,7 @@ class TestArticleClientComprehensive:
         assert result == {"jsonp_response": mock_jsonp_response}
 
     # Test get_supplementary_files
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_supplementary_files_success(self, mock_get, article_client, mock_binary_response):
         """Test successful supplementary files retrieval."""
         mock_response = Mock()
@@ -265,7 +265,7 @@ class TestArticleClientComprehensive:
             params={"includeInlineImage": "true"}, stream=True
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_supplementary_files_with_image_control(self, mock_get, article_client, mock_binary_response):
         """Test supplementary files with image inclusion control."""
         mock_response = Mock()
@@ -287,7 +287,7 @@ class TestArticleClientComprehensive:
         )
 
     # Test get_lab_links
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_lab_links_success(self, mock_get, article_client, mock_json_response):
         """Test successful lab links retrieval."""
         mock_response = Mock()
@@ -302,7 +302,7 @@ class TestArticleClientComprehensive:
             params={"format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_lab_links_with_provider(self, mock_get, article_client, mock_json_response):
         """Test lab links with provider ID."""
         mock_response = Mock()
@@ -316,7 +316,7 @@ class TestArticleClientComprehensive:
             params={"format": "json", "providerId": "provider123"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_lab_links_with_callback(self, mock_get, article_client, mock_jsonp_response):
         """Test lab links with JSONP callback."""
         mock_response = Mock()
@@ -328,7 +328,7 @@ class TestArticleClientComprehensive:
         assert result == {"jsonp_response": mock_jsonp_response}
 
     # Test get_data_links
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_data_links_success(self, mock_get, article_client, mock_json_response):
         """Test successful data links retrieval."""
         mock_response = Mock()
@@ -343,7 +343,7 @@ class TestArticleClientComprehensive:
             params={"format": "json"}
         )
 
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_get_data_links_with_callback(self, mock_get, article_client, mock_jsonp_response):
         """Test data links with JSONP callback."""
         mock_response = Mock()
@@ -451,7 +451,7 @@ class TestArticleClientComprehensive:
         assert "must be a string" in exc_info.value.message
 
     # Edge cases and error handling
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_all_methods_error_handling(self, mock_get, article_client):
         """Test error handling across all methods."""
         mock_get.side_effect = Exception("Network error")
@@ -490,7 +490,7 @@ class TestArticleClientComprehensive:
                     article_client._validate_citations_format(format_val)
 
     # Integration-style tests with realistic data
-    @patch('pyeuropepmc.clients.article.ArticleClient._get')
+    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
     def test_realistic_citation_workflow(self, mock_get, article_client):
         """Test a realistic citation retrieval workflow."""
         # Mock multiple pages of citations

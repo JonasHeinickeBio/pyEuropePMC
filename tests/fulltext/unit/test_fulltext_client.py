@@ -8,7 +8,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from pyeuropepmc.clients.fulltext import FullTextClient, FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, FullTextError
 from pyeuropepmc.core.error_codes import ErrorCodes
 
 pytestmark = pytest.mark.unit
@@ -472,7 +472,7 @@ class TestFullTextClient:
         assert self.client._determine_bulk_archive_range(345) == (0, 999)
 
     @pytest.mark.unit
-    @patch("pyeuropepmc.clients.fulltext.FullTextClient._try_bulk_xml_download")
+    @patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._try_bulk_xml_download")
     def test_download_xml_by_pmcid_bulk_success(self, mock_bulk_download):
         """Test dedicated bulk-only XML download method success."""
         mock_bulk_download.return_value = True
@@ -488,7 +488,7 @@ class TestFullTextClient:
             mock_bulk_download.assert_called_once_with("3257301", output_path)
 
     @pytest.mark.unit
-    @patch("pyeuropepmc.clients.fulltext.FullTextClient._try_bulk_xml_download")
+    @patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._try_bulk_xml_download")
     def test_download_xml_by_pmcid_bulk_failure(self, mock_bulk_download):
         """Test dedicated bulk-only XML download method failure."""
         mock_bulk_download.return_value = False
@@ -508,8 +508,8 @@ class TestFullTextClient:
             assert "Content not found" in error_str
 
     @pytest.mark.unit
-    @patch("pyeuropepmc.clients.fulltext.FullTextClient._try_bulk_xml_download")
-    @patch("pyeuropepmc.clients.fulltext.FullTextClient._try_xml_rest_api")
+    @patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._try_bulk_xml_download")
+    @patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._try_xml_rest_api")
     def test_download_xml_by_pmcid_fallback_to_bulk(self, mock_rest_api, mock_bulk_download):
         """Test XML download falls back to bulk when REST API fails."""
 

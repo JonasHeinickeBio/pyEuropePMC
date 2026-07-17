@@ -2,7 +2,7 @@
 Unit tests for EnrichmentReporter.
 """
 
-from pyeuropepmc.enrichment.reporter import EnrichmentReporter
+from pyeuropepmc.features.enrich.reporter import EnrichmentReporter
 
 
 class TestEnrichmentReporter:

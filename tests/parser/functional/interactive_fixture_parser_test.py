@@ -1,6 +1,6 @@
 import os
 
-from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser, ParsingError
 
 
 def list_fixtures(fixture_dir):

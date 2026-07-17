@@ -1,4 +1,4 @@
-"""Unit tests for pyeuropepmc.processing.extensions.local_processing."""
+"""Unit tests for pyeuropepmc.features.fulltext.extensions.local_processing."""
 
 from __future__ import annotations
 
@@ -45,7 +45,7 @@ INVALID_XML = "this is not valid xml at all"
 
 class TestParseXmlFile:
     def test_valid_file_returns_parser(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import parse_xml_file
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_xml_file
 
         xml_file = tmp_path / "article.xml"
         xml_file.write_text(VALID_XML, encoding="utf-8")
@@ -55,7 +55,7 @@ class TestParseXmlFile:
         assert "Test Article" in parser.xml_content
 
     def test_valid_file_with_string_path(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import parse_xml_file
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_xml_file
 
         xml_file = tmp_path / "article.xml"
         xml_file.write_text(VALID_XML, encoding="utf-8")
@@ -64,13 +64,13 @@ class TestParseXmlFile:
         assert parser is not None
 
     def test_nonexistent_file_raises_file_not_found(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import parse_xml_file
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_xml_file
 
         with pytest.raises(FileNotFoundError, match="not found"):
             parse_xml_file(tmp_path / "missing.xml")
 
     def test_directory_path_raises_value_error(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import parse_xml_file
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_xml_file
 
         with pytest.raises(ValueError, match="not a file"):
             parse_xml_file(tmp_path)
@@ -83,7 +83,7 @@ class TestParseXmlFile:
 
 class TestParseXmlDirectory:
     def test_valid_directory_with_xml_files(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -94,7 +94,7 @@ class TestParseXmlDirectory:
         assert len(parsers) == 2
 
     def test_empty_directory(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -102,7 +102,7 @@ class TestParseXmlDirectory:
         assert parsers == {}
 
     def test_nonexistent_directory_raises_file_not_found(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -110,7 +110,7 @@ class TestParseXmlDirectory:
             parse_xml_directory("/nonexistent/path/abc123")
 
     def test_non_directory_path_raises_value_error(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -121,7 +121,7 @@ class TestParseXmlDirectory:
             parse_xml_directory(file)
 
     def test_recursive_false(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -135,7 +135,7 @@ class TestParseXmlDirectory:
         assert "top.xml" in list(parsers.keys())[0]
 
     def test_recursive_true(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -148,7 +148,7 @@ class TestParseXmlDirectory:
         assert len(parsers) == 2
 
     def test_custom_glob_pattern(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -162,7 +162,7 @@ class TestParseXmlDirectory:
         assert len(parsers_json) == 0
 
     def test_partial_failure_one_valid_one_invalid(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             parse_xml_directory,
         )
 
@@ -181,7 +181,7 @@ class TestParseXmlDirectory:
 
 class TestExtractArticleIdFromXml:
     def test_string_input_pmcid_priority(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -189,7 +189,7 @@ class TestExtractArticleIdFromXml:
         assert article_id == "PMC1234567"
 
     def test_string_input_doi_only(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -201,7 +201,7 @@ class TestExtractArticleIdFromXml:
         assert article_id == "10.9999/journal"
 
     def test_string_input_pmid_only(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -215,7 +215,7 @@ class TestExtractArticleIdFromXml:
     def test_element_input(self) -> None:
         from xml.etree import ElementTree as ET
 
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -224,7 +224,7 @@ class TestExtractArticleIdFromXml:
         assert article_id == "PMC1234567"
 
     def test_no_ids_returns_none(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -236,7 +236,7 @@ class TestExtractArticleIdFromXml:
         assert article_id is None
 
     def test_invalid_xml_returns_none(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -244,7 +244,7 @@ class TestExtractArticleIdFromXml:
         assert article_id is None
 
     def test_priority_pmcid_over_doi(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -264,7 +264,7 @@ class TestExtractArticleIdFromXml:
 
 class TestLocalXMLProcessor:
     def test_init_default_config(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -272,8 +272,8 @@ class TestLocalXMLProcessor:
         assert proc.config is None
 
     def test_init_custom_config(self) -> None:
-        from pyeuropepmc.processing.config.element_patterns import ElementPatterns
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -282,7 +282,7 @@ class TestLocalXMLProcessor:
         assert proc.config is cfg
 
     def test_process_single_default_extraction(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -297,7 +297,7 @@ class TestLocalXMLProcessor:
         assert "sections" in result
 
     def test_process_single_custom_extract_fn(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -313,7 +313,7 @@ class TestLocalXMLProcessor:
         assert result == {"custom_key": "custom_value", "title": "extracted"}
 
     def test_process_directory_multiple_files(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -329,7 +329,7 @@ class TestLocalXMLProcessor:
             assert "metadata" in data
 
     def test_process_directory_custom_extract_fn(self, tmp_path: Path) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -347,7 +347,7 @@ class TestLocalXMLProcessor:
 
     def test_process_directory_error_in_one_file(self, tmp_path: Path) -> None:
         """Invalid XML is skipped by parse_xml_directory; only good file is processed."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -364,7 +364,7 @@ class TestLocalXMLProcessor:
 
     def test_process_directory_extract_error_logged(self, tmp_path: Path) -> None:
         """Custom extract_fn that raises is caught and recorded as error."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -390,7 +390,7 @@ class TestLocalXMLProcessor:
 
 class TestExtractAll:
     def test_extract_all_calls_all_methods(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -418,7 +418,7 @@ class TestExtractAll:
         mock_parser.extract_keywords.assert_called_once()
 
     def test_extract_all_handles_metadata_error(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -434,7 +434,7 @@ class TestExtractAll:
         assert "parse fail" in result["metadata"]["error"]
 
     def test_extract_all_short_content(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -457,7 +457,7 @@ class TestProcessSinglePmc:
     @patch("time.sleep")
     @patch("urllib.request.urlopen")
     def test_success(self, mock_urlopen, mock_sleep) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 
@@ -476,7 +476,7 @@ class TestProcessSinglePmc:
     def test_404_raises_connection_error(self, mock_urlopen, mock_sleep) -> None:
         import urllib.error
 
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 
@@ -491,7 +491,7 @@ class TestProcessSinglePmc:
     @patch("time.sleep")
     @patch("urllib.request.urlopen")
     def test_empty_response_raises_value_error(self, mock_urlopen, mock_sleep) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 
@@ -507,7 +507,7 @@ class TestProcessSinglePmc:
     def test_retry_then_success(self, mock_urlopen, mock_sleep) -> None:
         import urllib.error
 
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 
@@ -528,7 +528,7 @@ class TestProcessSinglePmc:
     def test_all_retries_exhausted_raises(self, mock_urlopen, mock_sleep) -> None:
         import urllib.error
 
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 
@@ -544,7 +544,7 @@ class TestProcessSinglePmc:
     @patch("time.sleep")
     @patch("urllib.request.urlopen")
     def test_invalid_pmc_id_prefix_normalization(self, mock_urlopen, mock_sleep) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             PMC_FULLTEXT_BASE,
             process_single_pmc,
         )
@@ -567,14 +567,14 @@ class TestProcessSinglePmc:
 
 class TestSafeParse:
     def test_valid_xml(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import _safe_parse
+        from pyeuropepmc.features.fulltext.extensions.local_processing import _safe_parse
 
         root = _safe_parse(VALID_XML)
         assert root is not None
         assert root.tag == "article"
 
     def test_invalid_xml_returns_none(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import _safe_parse
+        from pyeuropepmc.features.fulltext.extensions.local_processing import _safe_parse
 
         result = _safe_parse(INVALID_XML)
         assert result is None
@@ -587,13 +587,13 @@ class TestSafeParse:
 
 class TestParseBitsBook:
     def test_raw_xml_string(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import parse_bits_book
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
 
         parser = parse_bits_book(VALID_XML)
         assert parser is not None
 
     def test_bits_root_detection(self) -> None:
-        from pyeuropepmc.processing.extensions.local_processing import parse_bits_book
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
 
         bits_xml = '''<?xml version="1.0"?>
         <book xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -609,7 +609,7 @@ class TestParseBitsBook:
         </book>'''
 
         with patch(
-            "pyeuropepmc.processing.extensions.local_processing.FullTextXMLParser"
+            "pyeuropepmc.features.fulltext.extensions.local_processing.FullTextXMLParser"
         ) as MockParser:
             parse_bits_book(bits_xml)
 

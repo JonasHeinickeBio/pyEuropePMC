@@ -1,6 +1,6 @@
 import pytest
 
-from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.features.literature.article import ArticleClient
 
 SAMPLE_RESULTS = [
     {"id": "1", "title": "First Article", "author": "Alice"},

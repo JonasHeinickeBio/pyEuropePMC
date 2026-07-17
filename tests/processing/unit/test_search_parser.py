@@ -22,7 +22,7 @@ from pyeuropepmc.models import (
     PaperEntity,
 )
 from pyeuropepmc.models.mesh import MeSHHeadingEntity
-from pyeuropepmc.processing.search_parser import EuropePMCParser, XML_NAMESPACES
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser, XML_NAMESPACES
 
 pytestmark = pytest.mark.unit
 

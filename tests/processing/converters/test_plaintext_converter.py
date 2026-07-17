@@ -3,7 +3,7 @@ import pytest
 from xml.etree import ElementTree as ET
 
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.converters.plaintext_converter import PlaintextConverter
+from pyeuropepmc.features.fulltext.converters.plaintext_converter import PlaintextConverter
 
 
 class TestPlaintextConverter:

@@ -22,7 +22,7 @@ from pyeuropepmc.models.table import TableEntity
 
 def _convert_search_author_to_entity(author_dict: dict[str, Any]) -> AuthorEntity:
     """Convert a search result author dictionary to an AuthorEntity."""
-    from pyeuropepmc.processing.search_parser import EuropePMCParser
+    from pyeuropepmc.features.literature.search_parser import EuropePMCParser
 
     # Extract affiliation text from the nested structure
     affiliation_text = None
@@ -278,11 +278,11 @@ def process_annotations_data(
     annotations_data: dict[str, Any] | list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
     """Process annotation data into entities_data format."""
-    from pyeuropepmc.processing.annotation_parser import (
+    from pyeuropepmc.features.fulltext.annotation_parser import (
         normalize_annotations_response,
         parse_annotations,
     )
-    from pyeuropepmc.processing.annotations_to_rdf import annotations_to_entities
+    from pyeuropepmc.features.literature.annotations_to_rdf import annotations_to_entities
 
     parsed_annotations: dict[str, Any]
     if not (isinstance(annotations_data, dict) and "entities" in annotations_data):

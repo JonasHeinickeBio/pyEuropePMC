@@ -5,16 +5,18 @@ This module provides functions for adding SHACL validation shapes
 to RDF graphs for data quality assurance.
 """
 
-from typing import Any
+from __future__ import annotations
 
-from rdflib import Literal
-from rdflib.namespace import DCTERMS, RDF, XSD
+from typing import Any
 
 from pyeuropepmc.mappers.config_utils import get_namespace_from_config, load_rdf_config
 
 
 def add_shacl_validation_shapes(dataset: Any, named_graph_uris: dict[str, Any]) -> None:
     """Add SHACL validation shapes for data quality assurance."""
+    from rdflib import Literal
+    from rdflib.namespace import DCTERMS, RDF, XSD
+
     provenance_context = named_graph_uris["provenance"]
 
     # Load config for namespaces

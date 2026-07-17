@@ -19,9 +19,9 @@ import requests
 from pyeuropepmc.cache.cache import CacheConfig
 
 # Import all main client classes here
-from pyeuropepmc.clients.article import ArticleClient
-from pyeuropepmc.clients.fulltext import FullTextClient
-from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.features.literature.article import ArticleClient
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 
 # A tiny no-op benchmark fixture that mimics pytest-benchmark's minimal API

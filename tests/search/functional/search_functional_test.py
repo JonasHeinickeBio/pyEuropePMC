@@ -3,7 +3,7 @@ from typing import Any
 
 import pytest
 
-from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 # Configure logging for debugging
 logging.basicConfig(level=logging.DEBUG)

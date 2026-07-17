@@ -3,7 +3,7 @@ import pytest
 from xml.etree import ElementTree as ET
 
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.parsers.section_parser import SectionParser
+from pyeuropepmc.features.fulltext.parsers.section_parser import SectionParser
 
 SAMPLE_XML = """<?xml version="1.0"?>
 <article>

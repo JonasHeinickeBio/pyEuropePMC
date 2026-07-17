@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Results — pyEuropePMC</title>
+  <style>
+    :root {
+      --bg: #f8f9fa; --card: #ffffff; --text: #212529; --muted: #6c757d;
+      --primary: #0d6efd; --success: #198754; --border: #dee2e6; --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    header {
+      background: var(--primary); color: #fff; padding: 1.5rem 0; margin-bottom: 2rem;
+    }
+    header .container { padding: 0 1rem; }
+    header h1 { font-size: 1.5rem; font-weight: 600; }
+    header p { opacity: 0.9; font-size: 0.9rem; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .card h2 { font-size: 1.2rem; margin-bottom: 1rem; }
+    .btn {
+      display: inline-block; padding: 0.75rem 1.5rem; border: none;
+      border-radius: var(--radius); font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s; text-decoration: none;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .badge {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .badge-success { background: #d1e7dd; color: #0f5132; }
+    .badge-secondary { background: #e2e3e5; color: #41464b; }
+    .progress-bar {
+      height: 8px; background: var(--border); border-radius: 4px;
+      overflow: hidden; margin: 1rem 0;
+    }
+    .progress-fill {
+      height: 100%; background: var(--success); transition: width 0.5s ease;
+      border-radius: 4px; width: 100%;
+    }
+    .improved-text {
+      white-space: pre-wrap;
+      background: var(--bg);
+      padding: 1.25rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      line-height: 1.8;
+      font-size: 0.95rem;
+    }
+    .bib-entry {
+      padding: 0.6rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .bib-entry:last-child { border-bottom: none; }
+    .bib-entry .title { font-weight: 600; }
+    .bib-entry .authors { color: var(--muted); font-size: 0.85rem; }
+    .bib-entry .source { font-style: italic; color: var(--muted); font-size: 0.85rem; }
+    .flex { display: flex; gap: 1rem; align-items: center; }
+    .flex-wrap { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .mt-2 { margin-top: 1rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .text-center { text-align: center; }
+    .comparison {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+    }
+    @media (max-width: 700px) { .comparison { grid-template-columns: 1fr; } }
+    .comparison-box {
+      background: var(--bg); padding: 1rem; border-radius: var(--radius);
+      border: 1px solid var(--border);
+    }
+    .comparison-box h3 { font-size: 0.9rem; margin-bottom: 0.5rem; color: var(--muted); }
+    .comparison-box .text {
+      white-space: pre-wrap; font-size: 0.9rem; line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>✅ Analysis Complete</h1>
+      <p>Your text has been improved with verified claims and citations</p>
+    </div>
+  </header>
+  <main class="container">
+
+    <!-- Progress -->
+    <div class="card">
+      <div class="flex-between">
+        <h2>Workflow Complete</h2>
+        <span style="color: var(--muted); font-size: 0.9rem;">Step 5 of 5</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: 100%;"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="card">
+      <div class="flex-wrap">
+        <a href="/" class="btn btn-outline">← New Analysis</a>
+        <button id="download-bib" class="btn btn-primary">📥 Download Bibliography</button>
+        <button id="download-text" class="btn btn-success">📥 Download Improved Text</button>
+      </div>
+    </div>
+
+    <!-- Before / After comparison -->
+    <div class="card">
+      <h2>Text Comparison</h2>
+      <div class="comparison">
+        <div class="comparison-box">
+          <h3>Original Text</h3>
+          <div class="text">{{ original_text }}</div>
+        </div>
+        <div class="comparison-box">
+          <h3>Improved Text (with citations)</h3>
+          <div class="text">{{ improved_text }}</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bibliography -->
+    <div class="card">
+      <div class="flex-between">
+        <h2>Bibliography ({{ bibliography|length }} entries)</h2>
+      </div>
+      {% if bibliography %}
+      <div id="bibliography">
+        {% for entry in bibliography %}
+        <div class="bib-entry">
+          <div class="title">{{ entry.get("title", "Untitled") }}</div>
+          <div class="authors">{{ entry.get("author", "") }}</div>
+          <div class="source">
+            {{ entry.get("journal", "") }}
+            {% if entry.get("year") %}({{ entry.year }}){% endif %}
+          </div>
+          {% if entry.get("doi") %}
+          <div style="font-size: 0.8rem;">DOI: {{ entry.doi }}</div>
+          {% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p style="color: var(--muted);">No bibliography entries generated.</p>
+      {% endif %}
+    </div>
+
+    <!-- Review notes -->
+    {% if review and review.get("llm_review") %}
+    <div class="card">
+      <h2>Review Notes</h2>
+      <div style="white-space: pre-wrap; font-size: 0.9rem; color: var(--muted);">
+        {{ review.llm_review }}
+      </div>
+    </div>
+    {% endif %}
+  </main>
+
+  <script>
+    const workflowId = "{{ workflow_id }}";
+
+    document.getElementById("download-bib")?.addEventListener("click", async () => {
+      try {
+        const resp = await fetch(`/api/workflow/${workflowId}/bibliography`);
+        const data = await resp.json();
+        const blob = new Blob([data.content], { type: data.mimetype });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = data.filename;
+        a.click();
+        URL.revokeObjectURL(url);
+      } catch (err) {
+        alert("Download error: " + err.message);
+      }
+    });
+
+    document.getElementById("download-text")?.addEventListener("click", () => {
+      const textEl = document.querySelector(".comparison-box:last-child .text");
+      if (textEl) {
+        const blob = new Blob([textEl.textContent], { type: "text/markdown" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `improved_text_${workflowId}.md`;
+        a.click();
+        URL.revokeObjectURL(url);
+      }
+    });
+  </script>
+</body>
+</html>

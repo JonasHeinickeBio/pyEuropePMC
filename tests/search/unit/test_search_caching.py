@@ -13,7 +13,7 @@ from unittest.mock import patch
 import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 
 class TestSearchClientCacheInitialization:

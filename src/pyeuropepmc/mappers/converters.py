@@ -15,12 +15,11 @@ Enhanced features:
 - Data source attribution and provenance tracking
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable
 import logging
 from typing import Any
-
-from rdflib import Dataset, Graph, Namespace, URIRef
-from rdflib.namespace import RDF, RDFS, XSD
 
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.config_utils import (
@@ -495,6 +494,8 @@ def convert_incremental_to_rdf(
     RDFConversionError
         If conversion fails due to invalid input or processing errors
     """
+    from rdflib import Graph, Namespace
+
     try:
         validate_enrichment_data(enrichment_data)
 
@@ -558,6 +559,9 @@ def create_named_graph(name: str, title: str, description: str) -> Graph:
     Graph
         Configured named graph
     """
+    from rdflib import Graph, Namespace
+    from rdflib.namespace import RDF, RDFS, XSD
+
     ng = Graph()
 
     # Load RDF config for ontologies
@@ -638,6 +642,8 @@ def convert_to_rdf(  # noqa: C901
     RDFConversionError
         If conversion fails due to invalid input or processing errors
     """
+    from rdflib import URIRef
+
     try:
         # Load RDF configuration
         rdf_config = load_rdf_config()

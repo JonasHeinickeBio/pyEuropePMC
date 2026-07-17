@@ -3,10 +3,15 @@
 from unittest.mock import Mock, patch
 
 import pytest
+
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar")
+
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.enrichment.base import BaseEnrichmentClient
+from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.core.exceptions import APIClientError
 
 
@@ -364,7 +369,7 @@ class TestBaseEnrichmentClient:
 
         assert mock_get.call_count == 3
 
-    @patch("pyeuropepmc.enrichment.base.CacheBackend")
+    @patch("pyeuropepmc.features.enrich.base.CacheBackend")
     @patch("requests.Session.get")
     def test_make_request_cache_hit(self, mock_get, mock_cache):
         """Test cache hit returns cached value without making request."""
@@ -383,7 +388,7 @@ class TestBaseEnrichmentClient:
         assert result == {"cached": "data"}
         mock_get.assert_not_called()
 
-    @patch("pyeuropepmc.enrichment.base.CacheBackend")
+    @patch("pyeuropepmc.features.enrich.base.CacheBackend")
     @patch("requests.Session.get")
     def test_make_request_cache_set_after_success(self, mock_get, mock_cache):
         """Test successful response is cached."""

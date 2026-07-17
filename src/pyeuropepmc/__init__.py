@@ -13,6 +13,8 @@ Example usage:
 
 import logging
 
+from .agentic.agents import SmartCitationAnalysis
+from .agentic.llm_client import LLMClient, create_llm_client
 from .cache.cache import (
     CacheBackend,
     CacheConfig,
@@ -20,11 +22,11 @@ from .cache.cache import (
     CacheLayer,
     normalize_query_params,
 )
-from .clients.annotations import AnnotationsClient
-from .clients.article import ArticleClient
-from .clients.ftp_downloader import FTPDownloader
-from .clients.fulltext import FullTextClient, ProgressInfo
-from .clients.search import SearchClient
+from .features.literature.annotations import AnnotationsClient
+from .features.literature.article import ArticleClient
+from .features.literature.ftp_downloader import FTPDownloader
+from .features.fulltext.fulltext_client import FullTextClient, ProgressInfo
+from .features.literature.search import SearchClient
 from .core.base import BaseAPIClient
 from .core.exceptions import (
     APIClientError,
@@ -35,11 +37,11 @@ from .core.exceptions import (
     ModelError,
     UnpaywallError,
 )
-from .enrichment import SemanticScholarClient
-from .enrichment.enricher import EnrichmentConfig, PaperEnricher
+from .features.enrich import SemanticScholarClient
+from .features.enrich.enricher import EnrichmentConfig, PaperEnricher
 from .mappers.converters import convert_annotations_to_rdf
 from .pipeline import PaperProcessingPipeline, PipelineConfig
-from .processing.analytics import (
+from .features.analytics.analytics import (
     author_statistics,
     citation_statistics,
     detect_duplicates,
@@ -51,22 +53,22 @@ from .processing.analytics import (
     remove_duplicates,
     to_dataframe,
 )
-from .processing.annotation_parser import (
+from .features.fulltext.annotation_parser import (
     AnnotationParser,
     extract_entities,
     extract_relationships,
     extract_sentences,
     parse_annotations,
 )
-from .processing.annotations_to_rdf import (
+from .features.literature.annotations_to_rdf import (
     annotations_to_entities,
     annotations_to_rdf,
     entity_annotation_to_model,
     relationship_annotation_to_model,
 )
-from .processing.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .processing.search_parser import EuropePMCParser
-from .processing.visualization import (
+from .features.fulltext.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
+from .features.literature.search_parser import EuropePMCParser
+from .features.analytics.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,
     plot_journals,
@@ -75,16 +77,26 @@ from .processing.visualization import (
     plot_quality_metrics,
     plot_trend_analysis,
 )
-from .query.filters import filter_pmc_papers, filter_pmc_papers_or
-from .query.pagination import (
+from .features.literature.filters import filter_pmc_papers, filter_pmc_papers_or
+from .features.literature.pagination import (
     CursorPaginator,
     PaginationCheckpoint,
     PaginationState,
 )
-from .query.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
+from .features.literature.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
 from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
-__version__ = "1.18.0"
+# UI module — guarded import (Flask is optional)
+try:
+    from .ui.app import create_app as _create_app
+
+    create_app = _create_app
+except ImportError:
+    create_app = None  # type: ignore[assignment]
+except Exception:
+    create_app = None  # type: ignore[assignment]
+
+__version__ = "2.0.0"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"
@@ -179,6 +191,10 @@ __all__ = [
     # Pipeline utilities
     "PaperProcessingPipeline",
     "PipelineConfig",
+    # LLM/Agentic utilities
+    "SmartCitationAnalysis",
+    "LLMClient",
+    "create_llm_client",
     # Analytics utilities
     "to_dataframe",
     "publication_year_distribution",
@@ -201,4 +217,6 @@ __all__ = [
     # Aliases
     "Client",
     "Parser",
+    # Web UI
+    "create_app",
 ]

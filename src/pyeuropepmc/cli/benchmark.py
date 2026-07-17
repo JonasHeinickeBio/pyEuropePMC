@@ -19,7 +19,14 @@ import json
 from pathlib import Path
 from typing import Any
 
-import typer
+from pyeuropepmc._optional_imports import OptionalDependencyError
+
+try:
+    import typer
+except ImportError:
+    raise OptionalDependencyError(
+        "typer", "CLI interface", "pip install pyeuropepmc[standard]"
+    ) from None
 
 from pyeuropepmc.benchmark import (
     DATASETS,
@@ -31,7 +38,7 @@ from pyeuropepmc.benchmark import (
     profile_memory,
     profile_text,
 )
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 benchmark_app = typer.Typer(
     name="benchmark",
@@ -502,8 +509,8 @@ def fetch_xmls(
     Searches for articles with full-text XML available, collects PMCIDs,
     and downloads the XML files to a local directory.
     """
-    from pyeuropepmc.clients.fulltext import FullTextClient
-    from pyeuropepmc.clients.search import SearchClient
+    from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+    from pyeuropepmc.features.literature.search import SearchClient
 
     out_path = Path(output_dir)
     out_path.mkdir(parents=True, exist_ok=True)
@@ -556,7 +563,7 @@ def _run_parse_speed_benchmark(
     """Run parse speed benchmark on XML files and return results."""
     import time
 
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     print("=" * 70)
     print("PARSE SPEED BENCHMARK")
@@ -632,7 +639,7 @@ def _run_content_coverage_benchmark(
     xml_files: list[Path],
 ) -> dict[str, Any]:
     """Run content coverage benchmark on XML files and return results."""
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     print("\n" + "=" * 70)
     print("CONTENT COVERAGE BENCHMARK")

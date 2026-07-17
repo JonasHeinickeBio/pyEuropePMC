@@ -3,7 +3,7 @@ from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 logging.basicConfig(level=logging.INFO)
 

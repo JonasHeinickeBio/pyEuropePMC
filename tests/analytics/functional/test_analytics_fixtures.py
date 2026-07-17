@@ -10,7 +10,11 @@ from pathlib import Path
 
 import pytest
 
-from pyeuropepmc.processing.analytics import (
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas")
+
+from pyeuropepmc.features.analytics.analytics import (
     citation_statistics,
     detect_duplicates,
     journal_distribution,

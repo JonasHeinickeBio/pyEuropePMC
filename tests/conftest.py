@@ -2,6 +2,7 @@ import json
 from pathlib import Path
 
 import pytest
+from pyeuropepmc.utils.dependencies import is_dependency_available
 
 # Base directory for fixtures
 FIXTURE_DIR = Path(__file__).parent / "fixtures"
@@ -157,3 +158,60 @@ def search_cancer_sorted_cited_json():
 def fetch_10pages_cancer_json():
     with (FIXTURE_DIR / "fetch_10pages_cancer.json").open() as f:
         return json.load(f)
+
+
+# Dependency utilities for test skipping
+MARKER_TO_PACKAGE = {
+    "visualization": ["matplotlib", "seaborn"],
+    "pandas": ["pandas"],
+    "rdflib": ["rdflib", "rdflib_jsonld"],
+    "rdf": ["rdflib", "rdflib_jsonld"],
+    "agentic": ["langchain", "langchain_openai", "openai"],
+    "llm": ["langchain", "langchain_openai", "openai"],
+    "enrichment": ["semanticscholar", "cryptography", "search_query"],
+    "cli": ["typer", "rich"],
+    "jupyter": ["ipython", "ipykernel"],
+    "analytics": ["pandas"],
+    "export": ["xlsxwriter"],
+}
+
+
+def pytest_runtest_setup(item):
+    """
+    Hook to skip tests based on markers and missing dependencies.
+
+    This function is called before each test to check if it should be skipped
+    due to missing optional dependencies.
+    """
+    # Check test markers for dependency requirements
+    for marker in item.iter_markers():
+        if marker.name in MARKER_TO_PACKAGE:
+            packages = MARKER_TO_PACKAGE[marker.name]
+            missing = [pkg for pkg in packages if not is_dependency_available(pkg)]
+            if missing:
+                pytest.skip(
+                    f"Skipping {item.nodeid}: missing dependencies {missing} "
+                    f"required by '{marker.name}' marker"
+                )
+            break  # Only process first matching marker
+
+
+def pytest_collection_modifyitems(config, items):
+    """
+    Hook to modify collected tests based on available dependencies.
+
+    This can be used to reorder tests or add skips based on overall
+    dependency availability.
+    """
+    # Check if core dependencies are available
+    core_deps = ["requests", "backoff", "defusedxml", "tqdm"]
+    missing_core = [dep for dep in core_deps if not is_dependency_available(dep)]
+
+    if missing_core:
+        # If core dependencies are missing, we can't run most tests
+        # This shouldn't happen in normal usage but is a safety check
+        config.warn(
+            code="MISSING_CORE_DEPS",
+            message=f"Core dependencies missing: {missing_core}. "
+            "Many tests will be skipped.",
+        )

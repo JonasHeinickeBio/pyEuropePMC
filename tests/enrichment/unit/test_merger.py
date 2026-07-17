@@ -1,6 +1,6 @@
 """Unit tests for DataMerger enrichment data merging."""
 
-from pyeuropepmc.enrichment.merger import DataMerger
+from pyeuropepmc.features.enrich.data_merger import DataMerger
 
 
 class TestDataMerger:

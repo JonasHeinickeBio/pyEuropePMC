@@ -3,7 +3,7 @@ import pytest
 from xml.etree import ElementTree as ET
 
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.parsers.affiliation_parser import AffiliationParser
+from pyeuropepmc.features.fulltext.parsers.affiliation_parser import AffiliationParser
 
 
 class TestAffiliationParser:

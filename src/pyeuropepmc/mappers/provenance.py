@@ -5,11 +5,10 @@ This module provides functions for adding provenance information and metadata
 to RDF graphs.
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 from typing import Any
-
-from rdflib import Literal, URIRef
-from rdflib.namespace import DCTERMS, RDF, XSD
 
 from pyeuropepmc.mappers.config_utils import get_namespace_from_config, load_rdf_config
 from pyeuropepmc.mappers.quality_metrics import (
@@ -23,6 +22,9 @@ def add_provenance_and_metadata(
     dataset: Any, named_graph_uris: dict[str, Any], extraction_info: dict[str, Any] | None = None
 ) -> None:
     """Add provenance information and metadata."""
+    from rdflib import Literal, URIRef
+    from rdflib.namespace import DCTERMS, RDF, XSD
+
     provenance_context = named_graph_uris["provenance"]
 
     # Load config for namespaces
@@ -74,6 +76,9 @@ def add_provenance_and_metadata(
 
 def add_paper_metadata(paper_entity: Any, publications_graph: Any, paper_uri: URIRef) -> None:
     """Add paper metadata to paper entities."""
+    from rdflib import Literal, URIRef
+    from rdflib.namespace import XSD
+
     # Load config for namespaces
     config = load_rdf_config()
     EX = get_namespace_from_config(config, "ex")
@@ -109,6 +114,9 @@ def add_paper_metadata(paper_entity: Any, publications_graph: Any, paper_uri: UR
 
 def add_author_metadata(author_entity: Any, authors_graph: Any, author_uri: URIRef) -> None:
     """Add author metadata to author entities."""
+    from rdflib import Literal, URIRef
+    from rdflib.namespace import XSD
+
     # Load config for namespaces
     config = load_rdf_config()
     EX = get_namespace_from_config(config, "ex")
@@ -132,6 +140,9 @@ def add_author_metadata(author_entity: Any, authors_graph: Any, author_uri: URIR
 
 def add_quality_metrics(dataset: Any, named_graph_uris: dict[str, Any]) -> None:
     """Add comprehensive quality metrics to all entities."""
+    from rdflib import Literal, URIRef
+    from rdflib.namespace import DCTERMS, RDF, XSD
+
     provenance_context = named_graph_uris["provenance"]
 
     # Load config for namespaces

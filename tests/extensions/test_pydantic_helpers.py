@@ -1,5 +1,5 @@
 """
-Unit tests for pyeuropepmc.processing.extensions.pydantic_helpers.
+Unit tests for pyeuropepmc.features.fulltext.extensions.pydantic_helpers.
 """
 
 from __future__ import annotations
@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 
 import pytest
 
-from pyeuropepmc.processing.extensions.pydantic_helpers import (
+from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import (
     PydanticModelGenerator,
     dataclass_to_pydantic,
     has_pydantic,

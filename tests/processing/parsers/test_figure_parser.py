@@ -3,7 +3,7 @@ import pytest
 from xml.etree import ElementTree as ET
 
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.parsers.figure_parser import FigureParser
+from pyeuropepmc.features.fulltext.parsers.figure_parser import FigureParser
 
 SAMPLE_XML = """<?xml version="1.0"?>
 <article xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -103,7 +103,7 @@ class TestFigureParser:
 
     def test_with_config(self):
         """Test FigureParser with custom config."""
-        from pyeuropepmc.processing.config.element_patterns import ElementPatterns
+        from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 
         config = ElementPatterns()
         root = ET.fromstring(SAMPLE_XML)

@@ -4,7 +4,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from pyeuropepmc.enrichment.enricher import EnrichmentConfig, PaperEnricher
+from pyeuropepmc.features.enrich.enricher import EnrichmentConfig, PaperEnricher
 
 
 class TestEnrichmentConfig:
@@ -84,9 +84,9 @@ class TestPaperEnricher:
         with pytest.raises(ValueError, match="Identifier \\(DOI or PMCID\\) is required"):
             enricher.enrich_paper()
 
-    @patch("pyeuropepmc.enrichment.crossref.CrossRefClient.enrich")
-    @patch("pyeuropepmc.enrichment.semantic_scholar.SemanticScholarClient.enrich")
-    @patch("pyeuropepmc.enrichment.openalex.OpenAlexClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.crossref.CrossRefClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.openalex.OpenAlexClient.enrich")
     def test_enrich_paper_success(self, mock_openalex, mock_semantic, mock_crossref):
         """Test successful paper enrichment."""
         # Mock responses from each client
@@ -119,7 +119,7 @@ class TestPaperEnricher:
         assert result["crossref"]["title"] == "Test Article"
         assert result["merged"] is not None
 
-    @patch("pyeuropepmc.enrichment.crossref.CrossRefClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.crossref.CrossRefClient.enrich")
     def test_enrich_paper_partial_failure(self, mock_crossref):
         """Test enrichment when some clients fail."""
         # CrossRef succeeds
@@ -155,8 +155,8 @@ class TestPaperEnricher:
         assert len(result["sources"]) == 0
         assert result["merged"] == {}
 
-    @patch("pyeuropepmc.enrichment.crossref.CrossRefClient.enrich")
-    @patch("pyeuropepmc.enrichment.semantic_scholar.SemanticScholarClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.crossref.CrossRefClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient.enrich")
     def test_merge_results_citation_count(self, mock_semantic, mock_crossref):
         """Test merging of citation counts from multiple sources."""
         mock_crossref.return_value = {
@@ -176,8 +176,8 @@ class TestPaperEnricher:
         assert result["merged"]["citation_count"] == 42
         assert len(result["merged"]["citation_counts"]) == 2
 
-    @patch("pyeuropepmc.enrichment.crossref.CrossRefClient.enrich")
-    @patch("pyeuropepmc.enrichment.openalex.OpenAlexClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.crossref.CrossRefClient.enrich")
+    @patch("pyeuropepmc.features.enrich.sources.openalex.OpenAlexClient.enrich")
     def test_merge_results_oa_status(self, mock_openalex, mock_crossref):
         """Test merging of OA status."""
         mock_crossref.return_value = {
@@ -222,7 +222,7 @@ class TestPaperEnricher:
         doi = enricher._resolve_to_doi("10.1234/test")
         assert doi == "10.1234/test"
 
-    @patch("pyeuropepmc.enrichment.enricher.SearchClient")
+    @patch("pyeuropepmc.features.enrich.enricher.SearchClient")
     def test_resolve_to_doi_pmcid(self, mock_search_client):
         """Test PMCID resolution to DOI via SearchClient."""
         mock_instance = mock_search_client.return_value.__enter__.return_value
@@ -242,7 +242,7 @@ class TestPaperEnricher:
         with pytest.raises(ValueError, match="Invalid identifier"):
             enricher._resolve_to_doi("invalid")
 
-    @patch("pyeuropepmc.enrichment.enricher.SearchClient")
+    @patch("pyeuropepmc.features.enrich.enricher.SearchClient")
     def test_resolve_to_doi_pmcid_no_results(self, mock_search_client):
         """Test PMCID with no search results raises ValueError."""
         mock_instance = mock_search_client.return_value.__enter__.return_value
@@ -254,7 +254,7 @@ class TestPaperEnricher:
         with pytest.raises(ValueError, match="Could not resolve PMCID"):
             enricher._resolve_to_doi("PMC999999")
 
-    @patch("pyeuropepmc.enrichment.enricher.SearchClient")
+    @patch("pyeuropepmc.features.enrich.enricher.SearchClient")
     def test_resolve_to_doi_pmcid_no_doi_in_result(self, mock_search_client):
         """Test PMCID result without DOI field raises ValueError."""
         mock_instance = mock_search_client.return_value.__enter__.return_value
@@ -316,7 +316,7 @@ class TestPaperEnricher:
 
     # --- enrich_papers_batch tests ---
 
-    @patch("pyeuropepmc.enrichment.enricher.BatchEnricher")
+    @patch("pyeuropepmc.features.enrich.enricher.BatchEnricher")
     def test_enrich_papers_batch(self, mock_batch_cls):
         """Test batch enrichment delegates to BatchEnricher."""
         mock_instance = mock_batch_cls.return_value
@@ -336,7 +336,7 @@ class TestPaperEnricher:
 
     # --- enrich_from_metadata_files tests ---
 
-    @patch("pyeuropepmc.enrichment.enricher.FileEnricher")
+    @patch("pyeuropepmc.features.enrich.enricher.FileEnricher")
     def test_enrich_from_metadata_files(self, mock_file_cls):
         """Test file-based enrichment delegates to FileEnricher."""
         mock_instance = mock_file_cls.return_value
@@ -358,7 +358,7 @@ class TestPaperEnricher:
         enricher = PaperEnricher(config)
         paths = [Path("file1.json"), Path("file2.json")]
         with patch.object(enricher, "enrich_from_metadata_files", wraps=enricher.enrich_from_metadata_files) as spy:
-            with patch("pyeuropepmc.enrichment.enricher.FileEnricher") as mock_file_cls:
+            with patch("pyeuropepmc.features.enrich.enricher.FileEnricher") as mock_file_cls:
                 mock_instance = mock_file_cls.return_value
                 mock_instance.__enter__.return_value = mock_instance
                 mock_instance.enrich_from_files.return_value = {}

@@ -4,7 +4,11 @@ from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc.enrichment.crossref import CrossRefClient
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("cryptography"), reason="skipped due to missing cryptography (enrichment dependency)")
+
+from pyeuropepmc.features.enrich.sources.crossref import CrossRefClient
 
 
 class TestCrossRefClient:

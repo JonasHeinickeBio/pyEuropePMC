@@ -4,7 +4,7 @@ Unit tests for AnnotationParser.
 
 import pytest
 
-from pyeuropepmc.processing.annotation_parser import (
+from pyeuropepmc.features.fulltext.annotation_parser import (
     AnnotationParser,
     extract_entities,
     extract_relationships,

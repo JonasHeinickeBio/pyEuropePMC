@@ -5,11 +5,12 @@ This module provides functions for loading RDF configuration from YAML files
 and managing namespaces for RDF graphs.
 """
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
 from typing import Any
 
-from rdflib import Dataset, Graph, Namespace
 import yaml
 
 
@@ -139,6 +140,8 @@ def _get_default_rdf_config() -> dict[str, Any]:
 
 def get_namespace_from_config(config: dict[str, Any], prefix: str) -> Namespace:
     """Get namespace object from configuration."""
+    from rdflib import Namespace
+
     # Read from _@prefix section in rdf_map.yml (SOURCE OF TRUTH)
     uri = config.get("_@prefix", {}).get(prefix)
     if uri:
@@ -167,6 +170,8 @@ def rebind_namespaces(g: Graph | Dataset) -> None:
     >>> rebind_namespaces(g)  # Ensure proper prefixes before serializing
     >>> g.serialize("output.ttl", format="turtle")
     """
+    from rdflib import Namespace
+
     try:
         config = load_rdf_config()
         prefix_config = config.get("_@prefix", {})
@@ -206,6 +211,8 @@ def setup_graph(namespaces: dict[str, str] | None = None) -> Graph:
     Graph
         Configured RDF graph
     """
+    from rdflib import Graph, Namespace
+
     g = Graph()
 
     # Load namespaces from RDF mapping configuration
@@ -245,7 +252,7 @@ def setup_dataset(namespaces: dict[str, str] | None = None) -> Dataset:
     Dataset
         Configured RDF dataset
     """
-    from rdflib import Dataset
+    from rdflib import Dataset, Namespace
 
     g = Dataset()
 
@@ -281,6 +288,8 @@ def _bind_fallback_namespaces(g: Graph) -> None:
     g : Graph
         RDF graph to bind namespaces to
     """
+    from rdflib import Namespace
+
     # Fallback namespaces matching rdf_map.yml
     fallback_namespaces = {
         "dcterms": "http://purl.org/dc/terms/",
@@ -328,6 +337,9 @@ def create_named_graph(name: str, title: str, description: str) -> Graph:
     Graph
         Configured named graph
     """
+    from rdflib import Graph, Namespace
+    from rdflib.namespace import RDF, RDFS, XSD
+
     ng = Graph()
 
     # Load RDF config for ontologies
@@ -339,7 +351,6 @@ def create_named_graph(name: str, title: str, description: str) -> Graph:
         ng.bind(prefix, Namespace(uri))
 
     # Bind standard namespaces
-    from rdflib.namespace import RDF, RDFS, XSD
 
     ng.bind("rdf", RDF)
     ng.bind("rdfs", RDFS)

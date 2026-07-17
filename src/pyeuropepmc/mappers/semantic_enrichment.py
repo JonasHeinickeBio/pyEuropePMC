@@ -5,11 +5,11 @@ This module provides functions for building semantic networks such as
 citation networks, collaboration networks, and institutional hierarchies.
 """
 
+from __future__ import annotations
+
 from datetime import datetime
 import logging
 from typing import Any
-
-from rdflib import DCTERMS, RDF, XSD, Literal, URIRef
 
 from pyeuropepmc.mappers.config_utils import get_namespace_from_config, load_rdf_config
 from pyeuropepmc.mappers.processors import (
@@ -152,6 +152,8 @@ def process_enrichment_for_rdf(
 
 def build_citation_networks(dataset: Any, named_graph_uris: dict[str, Any]) -> None:
     """Build citation networks using CiTO ontology."""
+    from rdflib import URIRef
+
     publications_context = named_graph_uris["publications"]
 
     # Load config for namespaces
@@ -177,6 +179,9 @@ def build_citation_networks(dataset: Any, named_graph_uris: dict[str, Any]) -> N
 
 def build_collaboration_networks(dataset: Any, named_graph_uris: dict[str, Any]) -> None:  # noqa: C901
     """Build author collaboration networks using VIVO ontology."""
+    from rdflib import URIRef
+    from rdflib.namespace import DCTERMS
+
     authors_context = named_graph_uris["authors"]
     publications_context = named_graph_uris["publications"]
 
@@ -219,6 +224,8 @@ def build_collaboration_networks(dataset: Any, named_graph_uris: dict[str, Any])
 
 def build_institutional_hierarchies(dataset: Any, named_graph_uris: dict[str, Any]) -> None:
     """Build institutional hierarchies using ORG ontology."""
+    from rdflib import RDF, XSD, Literal, URIRef
+
     institutions_context = named_graph_uris["institutions"]
     authors_context = named_graph_uris["authors"]
 
@@ -263,6 +270,9 @@ def build_institutional_hierarchies(dataset: Any, named_graph_uris: dict[str, An
 
 def add_quality_metrics(dataset: Any, named_graph_uris: dict[str, Any]) -> None:
     """Add comprehensive quality metrics to all entities."""
+    from rdflib import RDF, XSD, Literal, URIRef
+    from rdflib.namespace import DCTERMS
+
     provenance_context = named_graph_uris["provenance"]
 
     # Load config for namespaces
@@ -290,6 +300,9 @@ def add_provenance_and_metadata(
     dataset: Any, named_graph_uris: dict[str, Any], extraction_info: dict[str, Any] | None = None
 ) -> None:
     """Add provenance information and metadata."""
+    from rdflib import RDF, XSD, Literal, URIRef
+    from rdflib.namespace import DCTERMS
+
     provenance_context = named_graph_uris["provenance"]
 
     # Load config for namespaces
@@ -343,6 +356,8 @@ def add_paper_metadata(
     paper_entity: Any, dataset: Any, paper_uri: URIRef, publications_context: Any
 ) -> None:
     """Add paper metadata to paper entities."""
+    from rdflib import XSD, Literal, URIRef
+
     # Load config for namespaces
     config = load_rdf_config()
     EX = get_namespace_from_config(config, "ex")
@@ -380,6 +395,8 @@ def add_author_metadata(
     author_entity: Any, dataset: Any, author_uri: URIRef, authors_context: Any
 ) -> None:
     """Add author metadata to author entities."""
+    from rdflib import XSD, Literal, URIRef
+
     # Load config for namespaces
     config = load_rdf_config()
     EX = get_namespace_from_config(config, "ex")

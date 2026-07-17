@@ -3,6 +3,14 @@ Scholarly work entity base class.
 
 This module provides the ScholarlyWorkEntity base class for entities representing
 scholarly publications, including common fields and normalization logic.
+
+Fields migrated from scholarly_work.linkml.yaml:
+- abstract: Paper abstract
+- citation_count: Number of citations
+- source: Source system identifier (pubmed, semanticscholar, openalex, etc.)
+- source_id: Original source identifier
+
+LinkML schema: https://github.com/JonasHeinickeBio/pyEuropePMC/schemas/linkml/
 """
 
 from dataclasses import dataclass
@@ -46,6 +54,14 @@ class ScholarlyWorkEntity(BaseEntity):
         Semantic Scholar paper ID (xsd:string)
     journal : Optional[str | Any]
         Journal or publication venue name (xsd:string) or JournalEntity
+    abstract : Optional[str]
+        Paper abstract (from linkml schema)
+    citation_count : Optional[int]
+        Number of citations (from linkml schema)
+    source : Optional[str]
+        Source system identifier (from linkml schema)
+    source_id : Optional[str]
+        Original source identifier (from linkml schema)
     """
 
     title: str | None = None
@@ -59,6 +75,11 @@ class ScholarlyWorkEntity(BaseEntity):
     pmid: str | None = None
     semantic_scholar_id: str | None = None
     journal: str | Any | None = None
+    # Fields from linkml schema
+    abstract: str | None = None
+    citation_count: int | None = None
+    source: str | None = None
+    source_id: str | None = None
 
     def normalize(self) -> None:
         """Normalize scholarly work data (DOI lowercase, trim fields)."""
@@ -75,10 +96,13 @@ class ScholarlyWorkEntity(BaseEntity):
         self.title = normalize_string_field(self.title)
         self.volume = validate_and_normalize_volume(self.volume)
         self.pages = normalize_string_field(self.pages)
+        self.abstract = normalize_string_field(self.abstract)
         self.publication_date = validate_and_normalize_date(self.publication_date)
         self.pmcid = validate_and_normalize_pmcid(self.pmcid)
         self.pmid = validate_and_normalize_pmid(self.pmid)
         self.semantic_scholar_id = normalize_string_field(self.semantic_scholar_id)
+        self.source = normalize_string_field(self.source)
+        self.source_id = normalize_string_field(self.source_id)
         # Normalize journal only if it's a string (not JournalEntity)
         if isinstance(self.journal, str):
             self.journal = normalize_string_field(self.journal)
@@ -110,4 +134,66 @@ class ScholarlyWorkEntity(BaseEntity):
         if self.pmid:
             self.pmid = validate_and_normalize_pmid(self.pmid)
 
+        # Validate citation_count if present
+        if self.citation_count is not None and self.citation_count < 0:
+            raise ValueError("citation_count must be non-negative")
+
         super().validate()
+
+    @classmethod
+    def from_linkml(cls, data: dict[str, Any]) -> "ScholarlyWorkEntity":
+        """
+        Create a ScholarlyWorkEntity from linkml-style dictionary data.
+
+        Parameters
+        ----------
+        data : dict[str, Any]
+            Dictionary with linkml-style keys (doi, pmid, pmcid, title, authors,
+            publication_year, journal, abstract, citation_count, source, source_id)
+
+        Returns
+        -------
+        ScholarlyWorkEntity
+            Entity initialized with linkml data
+
+        Examples
+        --------
+        >>> work = ScholarlyWorkEntity.from_linkml({
+        ...     "title": "Test Paper",
+        ...     "doi": "10.1234/test",
+        ...     "source": "pubmed",
+        ...     "source_id": "12345"
+        ... })
+        """
+        authors_data = data.get("authors", [])
+        # Convert author dicts if needed
+        if authors_data:
+            authors = []
+            for author in authors_data:
+                if isinstance(author, dict):
+                    authors.append(
+                        {
+                            "name": author.get("name"),
+                            "orcid": author.get("orcid"),
+                            "affiliation": author.get("affiliation"),
+                            "institution": author.get("institution"),
+                        }
+                    )
+                else:
+                    authors.append(author)
+        else:
+            authors = []
+
+        return cls(
+            doi=data.get("doi"),
+            pmid=data.get("pmid"),
+            pmcid=data.get("pmcid"),
+            title=data.get("title"),
+            authors=authors if authors else None,
+            publication_year=data.get("publication_year"),
+            journal=data.get("journal"),
+            abstract=data.get("abstract"),
+            citation_count=data.get("citation_count"),
+            source=data.get("source"),
+            source_id=data.get("source_id"),
+        )

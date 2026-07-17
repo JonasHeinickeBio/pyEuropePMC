@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Review Claims — pyEuropePMC</title>
+  <style>
+    :root {
+      --bg: #f8f9fa; --card: #ffffff; --text: #212529; --muted: #6c757d;
+      --primary: #0d6efd; --success: #198754; --danger: #dc3545;
+      --warning: #ffc107; --border: #dee2e6; --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg); color: var(--text); line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    header {
+      background: var(--primary); color: #fff; padding: 1.5rem 0; margin-bottom: 2rem;
+    }
+    header .container { padding: 0 1rem; }
+    header h1 { font-size: 1.5rem; font-weight: 600; }
+    header p { opacity: 0.9; font-size: 0.9rem; }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 1.5rem; margin-bottom: 1.5rem;
+    }
+    .card h2 { font-size: 1.2rem; margin-bottom: 1rem; }
+    .btn {
+      display: inline-block; padding: 0.75rem 1.5rem; border: none;
+      border-radius: var(--radius); font-size: 1rem; font-weight: 600;
+      cursor: pointer; transition: opacity 0.2s; text-decoration: none;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .btn-lg { padding: 1rem 2rem; font-size: 1.1rem; }
+    .badge {
+      display: inline-block; padding: 0.2rem 0.6rem; border-radius: 20px;
+      font-size: 0.8rem; font-weight: 600;
+    }
+    .badge-success { background: #d1e7dd; color: #0f5132; }
+    .badge-danger { background: #f8d7da; color: #842029; }
+    .badge-warning { background: #fff3cd; color: #664d03; }
+    .badge-info { background: #cff4fc; color: #055160; }
+    .badge-secondary { background: #e2e3e5; color: #41464b; }
+    .claim-item {
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 1rem; margin-bottom: 1rem;
+      transition: border-color 0.3s, background 0.3s;
+    }
+    .claim-item.accepted { border-left: 4px solid var(--success); }
+    .claim-item.rejected { border-left: 4px solid var(--danger); }
+    .claim-item.pending { border-left: 4px solid var(--warning); }
+    .claim-text { font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .claim-meta { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .claim-meta span { margin-right: 1rem; }
+    .evidence-item {
+      background: var(--bg); border-radius: var(--radius); padding: 0.75rem;
+      margin: 0.5rem 0; font-size: 0.9rem; border-left: 3px solid var(--primary);
+    }
+    .evidence-item .paper { font-weight: 600; }
+    .evidence-item .details { font-size: 0.8rem; color: var(--muted); }
+    .decision-btns { display: flex; gap: 0.75rem; margin-top: 0.75rem; }
+    .decision-btns .btn { min-width: 110px; }
+    .decision-badge {
+      display: inline-block; padding: 0.25rem 0.75rem; border-radius: 20px;
+      font-size: 0.85rem; font-weight: 600;
+    }
+    .progress-bar {
+      height: 8px; background: var(--border); border-radius: 4px;
+      overflow: hidden; margin: 1rem 0;
+    }
+    .progress-fill {
+      height: 100%; background: var(--primary); transition: width 0.5s ease;
+      border-radius: 4px;
+    }
+    .hidden { display: none; }
+    .flex { display: flex; gap: 1rem; align-items: center; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .mt-2 { margin-top: 1rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+    .text-center { text-align: center; }
+    .review-summary { font-size: 0.9rem; }
+    .review-summary dt { font-weight: 600; margin-top: 0.5rem; }
+    .review-summary dd { margin-left: 1rem; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🔍 Review Claims</h1>
+      <p>Review each claim and its evidence, then accept or reject it</p>
+    </div>
+  </header>
+  <main class="container">
+
+    <!-- Progress bar -->
+    <div class="card">
+      <div class="flex-between">
+        <h2>Progress</h2>
+        <span style="color: var(--muted); font-size: 0.9rem;">
+          Step 4 of 5 — Review &amp; Confirm
+        </span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: {{ progress * 100 }}%;"></div>
+      </div>
+    </div>
+
+    <!-- Review summary -->
+    {% if review %}
+    <div class="card">
+      <h2>Review Summary</h2>
+      <div class="review-summary">
+        <dl>
+          {% if review.get("overall_quality") %}
+          <dt>Overall Quality</dt>
+          <dd>
+            <span class="badge
+              {% if review.overall_quality == 'high' %}badge-success
+              {% elif review.overall_quality == 'medium' %}badge-warning
+              {% else %}badge-secondary{% endif %}">
+              {{ review.overall_quality }}
+            </span>
+          </dd>
+          {% endif %}
+          {% if review.get("suggestions") %}
+          <dt>Suggestions</dt>
+          <dd>
+            <ul style="margin: 0.25rem 0 0 1.25rem;">
+              {% for s in review.suggestions %}
+              <li>{{ s }}</li>
+              {% endfor %}
+            </ul>
+          </dd>
+          {% endif %}
+          {% if review.get("gaps") %}
+          <dt>Gaps</dt>
+          <dd>
+            <ul style="margin: 0.25rem 0 0 1.25rem;">
+              {% for g in review.gaps %}
+              <li>{{ g }}</li>
+              {% endfor %}
+            </ul>
+          </dd>
+          {% endif %}
+        </dl>
+      </div>
+    </div>
+    {% endif %}
+
+    <!-- Claims -->
+    <div class="card">
+      <div class="flex-between">
+        <h2>Claims ({{ claims|length }})</h2>
+        <span id="accepted-count" style="color: var(--success); font-weight: 600;">0</span>
+        <span style="color: var(--muted;">/</span>
+        <span id="total-count" style="font-weight: 600;">{{ claims|length }}</span>
+        <span style="color: var(--muted);">accepted</span>
+      </div>
+      <p class="mb-2" style="color: var(--muted); font-size: 0.9rem;">
+        For each claim, review the evidence and decide whether to include it
+        in the final improved text.
+      </p>
+
+      <div id="claims-container">
+        {% for claim in claims %}
+        <div class="claim-item pending" data-claim-id="{{ claim.id }}" id="claim-{{ claim.id }}">
+          <div class="flex-between">
+            <div style="flex: 1;">
+              <div class="claim-text">{{ claim.text }}</div>
+              <div class="claim-meta">
+                <span>Type: <strong>{{ claim.claim_type }}</strong></span>
+                <span>Confidence: <strong>{{ "%.2f"|format(claim.confidence) }}</strong></span>
+                <span>
+                  Verdict:
+                  <span class="badge
+                    {% if claim.verdict == 'supported' %}badge-success
+                    {% elif claim.verdict == 'refuted' %}badge-danger
+                    {% elif claim.verdict == 'partially_supported' %}badge-warning
+                    {% elif claim.verdict == 'insufficient_evidence' %}badge-warning
+                    {% else %}badge-secondary{% endif %}">
+                    {{ claim.verdict.replace('_', ' ') }}
+                  </span>
+                </span>
+              </div>
+            </div>
+            <div class="decision-badge" id="badge-{{ claim.id }}"></div>
+          </div>
+
+          {% if claim.verification_reasoning %}
+          <div style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem; padding: 0.5rem; background: var(--bg); border-radius: var(--radius);">
+            <strong>Reasoning:</strong> {{ claim.verification_reasoning[:300] }}
+          </div>
+          {% endif %}
+
+          {% if claim.evidence %}
+          <div style="margin-bottom: 0.5rem;">
+            <strong style="font-size: 0.9rem;">Evidence ({{ claim.evidence|length }}):</strong>
+            {% for ev in claim.evidence[:3] %}
+            <div class="evidence-item">
+              <div class="paper">{{ ev.paper_title }}</div>
+              <div>{{ ev.text }}</div>
+              <div class="details">
+                {{ ev.authors }} ({{ ev.year }}) · {{ ev.journal }}
+                · Relevance: {{ "%.2f"|format(ev.relevance_score) }}
+                · Quality: <span class="badge
+                  {% if ev.quality == 'high' %}badge-success
+                  {% elif ev.quality == 'medium' %}badge-warning
+                  {% else %}badge-secondary{% endif %}">{{ ev.quality }}</span>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+          {% endif %}
+
+          <div class="decision-btns">
+            <button class="btn btn-success btn-sm accept-btn" data-claim-id="{{ claim.id }}">
+              ✓ Accept
+            </button>
+            <button class="btn btn-danger btn-sm reject-btn" data-claim-id="{{ claim.id }}">
+              ✗ Reject
+            </button>
+          </div>
+        </div>
+        {% else %}
+        <p style="color: var(--muted);">No claims to review.</p>
+        {% endfor %}
+      </div>
+
+      {% if claims %}
+      <div class="text-center mt-2">
+        <button id="submit-decisions" class="btn btn-primary btn-lg">
+          ✓ Confirm Decisions &amp; Generate Report
+        </button>
+      </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <script>
+    const workflowId = "{{ workflow_id }}";
+    const decisions = {};
+    let allDecided = false;
+
+    // Initialize from existing decisions
+    {% for claim in claims %}
+      {% if decisions.get(claim.id) is not none %}
+        decisions["{{ claim.id }}"] = {{ 'true' if decisions.get(claim.id) else 'false' }};
+      {% endif %}
+    {% endfor %}
+
+    function updateClaimUI(claimId, accepted) {
+      const el = document.getElementById("claim-" + claimId);
+      const badge = document.getElementById("badge-" + claimId);
+      el.classList.remove("pending", "accepted", "rejected");
+
+      if (accepted === true) {
+        el.classList.add("accepted");
+        badge.textContent = "✓ Accepted";
+        badge.className = "decision-badge";
+        badge.style.background = "#d1e7dd";
+        badge.style.color = "#0f5132";
+      } else if (accepted === false) {
+        el.classList.add("rejected");
+        badge.textContent = "✗ Rejected";
+        badge.className = "decision-badge";
+        badge.style.background = "#f8d7da";
+        badge.style.color = "#842029";
+      } else {
+        el.classList.add("pending");
+        badge.textContent = "Pending";
+        badge.className = "decision-badge";
+        badge.style.background = "#fff3cd";
+        badge.style.color = "#664d03";
+      }
+
+      // Update count
+      const acceptedCount = Object.values(decisions).filter(v => v === true).length;
+      document.getElementById("accepted-count").textContent = acceptedCount;
+    }
+
+    // Initialize UI
+    Object.entries(decisions).forEach(([id, accepted]) => {
+      updateClaimUI(id, accepted);
+    });
+
+    // Accept buttons
+    document.querySelectorAll(".accept-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const claimId = btn.dataset.claimId;
+        decisions[claimId] = true;
+        updateClaimUI(claimId, true);
+      });
+    });
+
+    // Reject buttons
+    document.querySelectorAll(".reject-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const claimId = btn.dataset.claimId;
+        decisions[claimId] = false;
+        updateClaimUI(claimId, false);
+      });
+    });
+
+    // Submit decisions
+    document.getElementById("submit-decisions")?.addEventListener("click", async () => {
+      const btn = document.getElementById("submit-decisions");
+      btn.disabled = true;
+      btn.textContent = "⏳ Generating Report...";
+
+      try {
+        const resp = await fetch(`/api/workflow/${workflowId}/decisions`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ decisions }),
+        });
+
+        const data = await resp.json();
+
+        if (data.status === "complete") {
+          window.location.href = data.redirect;
+        } else {
+          alert("Error: " + (data.error || "Unknown error"));
+          btn.disabled = false;
+          btn.textContent = "✓ Confirm Decisions & Generate Report";
+        }
+      } catch (err) {
+        alert("Network error: " + err.message);
+        btn.disabled = false;
+        btn.textContent = "✓ Confirm Decisions & Generate Report";
+      }
+    });
+  </script>
+</body>
+</html>

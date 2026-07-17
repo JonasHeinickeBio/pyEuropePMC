@@ -6,7 +6,11 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from pyeuropepmc.enrichment.ror import RorClient
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("cryptography"), reason="skipped due to missing cryptography (enrichment dependency)")
+
+from pyeuropepmc.features.enrich.sources.ror import RorClient
 
 
 class TestRorClient:

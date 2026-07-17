@@ -8,7 +8,7 @@ from unittest.mock import MagicMock, PropertyMock, patch
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.extensions.lxml_backend import (
+from pyeuropepmc.features.fulltext.extensions.lxml_backend import (
     LXMLParser,
     _HAS_LXML,
     is_lxml_available,
@@ -66,7 +66,7 @@ class TestLXMLParserFromString:
         root = LXMLParser.fromstring(xml)
         assert root.tag.endswith("root")
 
-    @patch("pyeuropepmc.processing.extensions.lxml_backend.logger")
+    @patch("pyeuropepmc.features.fulltext.extensions.lxml_backend.logger")
     def test_fromstring_logs_error(self, mock_logger):
         """Test that parsing errors are logged."""
         with pytest.raises(ParsingError):
@@ -89,7 +89,7 @@ class TestLXMLParserFromFile:
         with pytest.raises(ParsingError, match="lxml file parsing failed"):
             LXMLParser.fromfile("/nonexistent/path.xml")
 
-    @patch("pyeuropepmc.processing.extensions.lxml_backend.logger")
+    @patch("pyeuropepmc.features.fulltext.extensions.lxml_backend.logger")
     def test_fromfile_logs_error(self, mock_logger):
         """Test that file errors are logged."""
         with pytest.raises(ParsingError):

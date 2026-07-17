@@ -1,7 +1,7 @@
 """Tests for geographic validation utilities."""
 import pytest
 
-from pyeuropepmc.processing.utils.geo_validators import (
+from pyeuropepmc.features.fulltext.utils.geo_validators import (
     _clean_country_name_simple,
     GeoValidator,
 )

@@ -5,7 +5,7 @@ import pytest
 from pyeuropepmc.builders import build_paper_entities
 from pyeuropepmc.builders.from_parser import _build_author_entity, _create_grant_entities
 from pyeuropepmc.models import AuthorEntity, GrantEntity, JournalEntity
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 # Sample XML for testing
 SAMPLE_XML = """<?xml version="1.0"?>

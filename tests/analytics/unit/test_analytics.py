@@ -1,9 +1,17 @@
 """Tests for analytics module."""
 
-import pandas as pd
 import pytest
 
-from pyeuropepmc.processing.analytics import (
+from pyeuropepmc.utils.dependencies import (
+    is_dependency_available,
+    skip_if_dependency_missing,
+)
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas")
+
+import pandas as pd
+
+from pyeuropepmc.features.analytics.analytics import (
     access_distribution,
     author_collaboration_network,
     author_statistics,

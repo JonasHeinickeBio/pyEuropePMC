@@ -9,7 +9,7 @@ import xml.etree.ElementTree as ET
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
-from pyeuropepmc.processing.fulltext_parser import (
+from pyeuropepmc.features.fulltext.fulltext_parser import (
     DocumentSchema,
     ElementPatterns,
     FullTextXMLParser,
