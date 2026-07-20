@@ -10,18 +10,18 @@ import logging
 from pathlib import Path
 from typing import Any, cast
 
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.features.enrich.batch_enricher import BatchEnricher
 from pyeuropepmc.features.enrich.config import EnrichmentConfig
+from pyeuropepmc.features.enrich.data_merger import DataMerger
+from pyeuropepmc.features.enrich.file_enricher import FileEnricher
+from pyeuropepmc.features.enrich.reporter import EnrichmentReporter
 from pyeuropepmc.features.enrich.sources.crossref import CrossRefClient
 from pyeuropepmc.features.enrich.sources.datacite import DataCiteClient
-from pyeuropepmc.features.enrich.file_enricher import FileEnricher
-from pyeuropepmc.features.enrich.data_merger import DataMerger
 from pyeuropepmc.features.enrich.sources.openalex import OpenAlexClient
-from pyeuropepmc.features.enrich.reporter import EnrichmentReporter
 from pyeuropepmc.features.enrich.sources.ror import RorClient
 from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
 from pyeuropepmc.features.enrich.sources.unpaywall import UnpaywallClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 logger = logging.getLogger(__name__)
 

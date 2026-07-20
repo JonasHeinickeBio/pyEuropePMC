@@ -22,11 +22,6 @@ from .cache.cache import (
     CacheLayer,
     normalize_query_params,
 )
-from .features.literature.annotations import AnnotationsClient
-from .features.literature.article import ArticleClient
-from .features.literature.ftp_downloader import FTPDownloader
-from .features.fulltext.fulltext_client import FullTextClient, ProgressInfo
-from .features.literature.search import SearchClient
 from .core.base import BaseAPIClient
 from .core.exceptions import (
     APIClientError,
@@ -37,10 +32,6 @@ from .core.exceptions import (
     ModelError,
     UnpaywallError,
 )
-from .features.enrich import SemanticScholarClient
-from .features.enrich.enricher import EnrichmentConfig, PaperEnricher
-from .mappers.converters import convert_annotations_to_rdf
-from .pipeline import PaperProcessingPipeline, PipelineConfig
 from .features.analytics.analytics import (
     author_statistics,
     citation_statistics,
@@ -53,21 +44,6 @@ from .features.analytics.analytics import (
     remove_duplicates,
     to_dataframe,
 )
-from .features.fulltext.annotation_parser import (
-    AnnotationParser,
-    extract_entities,
-    extract_relationships,
-    extract_sentences,
-    parse_annotations,
-)
-from .features.literature.annotations_to_rdf import (
-    annotations_to_entities,
-    annotations_to_rdf,
-    entity_annotation_to_model,
-    relationship_annotation_to_model,
-)
-from .features.fulltext.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
-from .features.literature.search_parser import EuropePMCParser
 from .features.analytics.visualization import (
     create_summary_dashboard,
     plot_citation_distribution,
@@ -77,13 +53,41 @@ from .features.analytics.visualization import (
     plot_quality_metrics,
     plot_trend_analysis,
 )
+from .features.enrich import SemanticScholarClient
+from .features.enrich.enricher import EnrichmentConfig, PaperEnricher
+from .features.fulltext.annotation_parser import (
+    AnnotationParser,
+    extract_entities,
+    extract_relationships,
+    extract_sentences,
+    parse_annotations,
+)
+from .features.fulltext.fulltext_client import FullTextClient, ProgressInfo
+from .features.fulltext.fulltext_parser import DocumentSchema, ElementPatterns, FullTextXMLParser
+from .features.literature.annotations import AnnotationsClient
+from .features.literature.annotations_to_rdf import (
+    annotations_to_entities,
+    annotations_to_rdf,
+    entity_annotation_to_model,
+    relationship_annotation_to_model,
+)
+from .features.literature.article import ArticleClient
 from .features.literature.filters import filter_pmc_papers, filter_pmc_papers_or
+from .features.literature.ftp_downloader import FTPDownloader
 from .features.literature.pagination import (
     CursorPaginator,
     PaginationCheckpoint,
     PaginationState,
 )
-from .features.literature.query_builder import QueryBuilder, get_available_fields, validate_field_coverage
+from .features.literature.query_builder import (
+    QueryBuilder,
+    get_available_fields,
+    validate_field_coverage,
+)
+from .features.literature.search import SearchClient
+from .features.literature.search_parser import EuropePMCParser
+from .mappers.converters import convert_annotations_to_rdf
+from .pipeline import PaperProcessingPipeline, PipelineConfig
 from .storage.artifact_store import ArtifactMetadata, ArtifactStore
 
 # UI module — guarded import (Flask is optional)

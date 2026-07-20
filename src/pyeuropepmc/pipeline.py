@@ -11,16 +11,16 @@ from typing import TYPE_CHECKING, Any
 
 from pyeuropepmc.builders.from_parser import build_paper_entities
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.literature.search import SearchClient
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.features.enrich.enricher import EnrichmentConfig, PaperEnricher
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.mappers.converters import convert_annotations_to_rdf
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
 from pyeuropepmc.models import (
     AuthorEntity,
     PaperEntity,
 )
-from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 if TYPE_CHECKING:
     from rdflib import Graph

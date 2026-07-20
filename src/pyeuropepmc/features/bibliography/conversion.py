@@ -13,7 +13,12 @@ import logging
 from typing import Any
 
 from pyeuropepmc.features.bibliography.bibtex import BibtexManager, is_bibtex_content
-from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary, CitationFormat, Reference
+from pyeuropepmc.features.bibliography.models import (
+    BibEntry,
+    BibLibrary,
+    CitationFormat,
+    Reference,
+)
 
 logger = logging.getLogger(__name__)
 

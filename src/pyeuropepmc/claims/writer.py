@@ -15,15 +15,15 @@ import re
 from typing import Any
 
 from pyeuropepmc.agentic.llm_client import LLMClient, create_llm_client
-from pyeuropepmc.features.bibliography.bibtex import BibtexManager
-from pyeuropepmc.features.bibliography.conversion import CitationConverter
-from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary
 from pyeuropepmc.claims.models import (
     Claim,
     ClaimReport,
     ClaimSet,
     Verdict,
 )
+from pyeuropepmc.features.bibliography.bibtex import BibtexManager
+from pyeuropepmc.features.bibliography.conversion import CitationConverter
+from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary
 
 logger = logging.getLogger(__name__)
 

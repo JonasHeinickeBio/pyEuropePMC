@@ -10,12 +10,12 @@ from __future__ import annotations
 
 from typing import Any
 
+from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper
 from pyeuropepmc.models.annotation import (
     EntityAnnotation,
     RelationshipAnnotation,
 )
-from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
 __all__ = [
     "annotations_to_entities",

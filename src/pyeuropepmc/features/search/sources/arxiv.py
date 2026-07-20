@@ -21,13 +21,13 @@ from typing import Any
 from xml.etree import ElementTree
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.search.base import BaseLiteratureClient
 from pyeuropepmc.features.literature.normalization import (
     normalize_author_list,
     normalize_doi,
     normalize_journal_title,
     normalize_paper_title,
 )
+from pyeuropepmc.features.search.base import BaseLiteratureClient
 from pyeuropepmc.models.literature import Author, LiteratureResult
 
 logger = logging.getLogger(__name__)

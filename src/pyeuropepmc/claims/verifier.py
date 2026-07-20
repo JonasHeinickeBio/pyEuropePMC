@@ -18,7 +18,6 @@ import re
 from typing import Any
 
 from pyeuropepmc.agentic.llm_client import LLMClient, create_llm_client
-from pyeuropepmc.features.bibliography.reference import ReferenceResolver
 from pyeuropepmc.claims.models import (
     Claim,
     ClaimEvidence,
@@ -26,6 +25,7 @@ from pyeuropepmc.claims.models import (
     EvidenceQuality,
     Verdict,
 )
+from pyeuropepmc.features.bibliography.reference import ReferenceResolver
 from pyeuropepmc.features.literature.search import SearchClient
 
 logger = logging.getLogger(__name__)

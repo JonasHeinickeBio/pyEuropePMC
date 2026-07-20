@@ -134,8 +134,8 @@ class FigureExtractor:
         timeout: int = 30,
     ) -> None:
         # Lazy imports to avoid circular dependency
-        from pyeuropepmc.features.literature.annotations import AnnotationsClient
         from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+        from pyeuropepmc.features.literature.annotations import AnnotationsClient
 
         self.fulltext_client = FullTextClient(rate_limit_delay=1.0, enable_cache=True)
         self.annotations_client = AnnotationsClient(rate_limit_delay=1.0)

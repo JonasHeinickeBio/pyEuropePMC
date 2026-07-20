@@ -12,7 +12,9 @@ from typing import Any
 
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
-from pyeuropepmc.features.enrich.sources.semanticscholar_pro import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich.sources.semanticscholar_pro import (
+    ProfessionalSemanticScholarClient,
+)
 
 logger = logging.getLogger(__name__)
 

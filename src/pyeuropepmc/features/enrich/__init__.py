@@ -8,9 +8,9 @@ Semantic Scholar, OpenAlex, and ORCID.
 
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.features.enrich.config import EnrichmentConfig
+from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.features.enrich.sources.crossref import CrossRefClient
 from pyeuropepmc.features.enrich.sources.datacite import DataCiteClient
-from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.features.enrich.sources.icite import ICiteClient
 from pyeuropepmc.features.enrich.sources.openalex import OpenAlexClient
 from pyeuropepmc.features.enrich.sources.orcid import OrcidClient

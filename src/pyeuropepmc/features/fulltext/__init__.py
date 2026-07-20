@@ -5,6 +5,21 @@ full-text XML from Europe PMC, including JATS parsing, figure extraction,
 full-text indexing, rhetorical highlighting, and annotation processing.
 """
 
+from pyeuropepmc.features.fulltext.annotation_parser import (
+    AnnotationParser,
+    extract_entities,
+    extract_relationships,
+    extract_sentences,
+    normalize_annotations_response,
+    parse_annotations,
+)
+from pyeuropepmc.features.fulltext.figures import (
+    FigureExtractor,
+    FigureFormat,
+    FigureInfo,
+    extract_figures_from_pmc,
+    extract_tables_from_pmc,
+)
 from pyeuropepmc.features.fulltext.fulltext_client import (
     DownloadReport,
     DownloadStats,
@@ -18,26 +33,19 @@ from pyeuropepmc.features.fulltext.fulltext_parser import (
     ElementPatterns,
     FullTextXMLParser,
 )
-from pyeuropepmc.features.fulltext.jats_normalizer import (
-    JATSNormalizer,
-    NormalizationConfig,
-    classify_section,
-    normalize_jats_text,
-    normalize_jats_xml,
-)
-from pyeuropepmc.features.fulltext.figures import (
-    FigureExtractor,
-    FigureFormat,
-    FigureInfo,
-    extract_figures_from_pmc,
-    extract_tables_from_pmc,
-)
 from pyeuropepmc.features.fulltext.index import (
     FullTextIndex,
     IndexEntry,
     SearchResult,
     create_index,
     open_index,
+)
+from pyeuropepmc.features.fulltext.jats_normalizer import (
+    JATSNormalizer,
+    NormalizationConfig,
+    classify_section,
+    normalize_jats_text,
+    normalize_jats_xml,
 )
 from pyeuropepmc.features.fulltext.rhetorical import (
     HighlightedDocument,
@@ -46,14 +54,6 @@ from pyeuropepmc.features.fulltext.rhetorical import (
     SentenceAnnotation,
     highlight_pdf_text,
     highlight_text,
-)
-from pyeuropepmc.features.fulltext.annotation_parser import (
-    AnnotationParser,
-    extract_entities,
-    extract_relationships,
-    extract_sentences,
-    normalize_annotations_response,
-    parse_annotations,
 )
 
 __all__ = [

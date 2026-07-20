@@ -19,7 +19,12 @@ import logging
 import time
 from typing import Any
 
-from pyeuropepmc.features.enrich.merger import DedupConfig, DedupMode, LiteratureMerger, MergeReport
+from pyeuropepmc.features.enrich.merger import (
+    DedupConfig,
+    DedupMode,
+    LiteratureMerger,
+    MergeReport,
+)
 from pyeuropepmc.models.literature import LiteratureResult
 
 logger = logging.getLogger(__name__)
