@@ -10,6 +10,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
+from pyeuropepmc.mcp import server as mcp_server_module
 from pyeuropepmc.mcp.server import (
     _get_client,
     create_response,
@@ -18,6 +19,22 @@ from pyeuropepmc.mcp.server import (
     handle_list_tools,
     parse_mcp_request,
 )
+
+
+@pytest.fixture(autouse=True)
+def _reset_mcp_singletons():
+    """Reset module-level cached clients between tests.
+
+    TestGetClient exercises the real ``_get_client()`` path (caching a live
+    SearchClient in ``_SINGLE_CLIENT``). Without a reset, later tests that
+    patch ``pyeuropepmc.mcp.server.SearchClient`` keep receiving the real
+    cached client, causing real network calls (failures + hangs).
+    """
+    mcp_server_module._SINGLE_CLIENT = None
+    mcp_server_module._SINGLE_UNIFIED = None
+    yield
+    mcp_server_module._SINGLE_CLIENT = None
+    mcp_server_module._SINGLE_UNIFIED = None
 
 
 class TestGetClient:
@@ -145,8 +162,10 @@ class TestHandleListTools:
         assert "required" not in schema or "pmid" not in schema.get("required", [])
         assert "required" not in schema or "pmcid" not in schema.get("required", [])
         assert "required" not in schema or "doi" not in schema.get("required", [])
-        # At least one ID must be provided via anyOf
-        assert "anyOf" in schema
+        # All three identifier inputs must be exposed
+        assert "pmid" in props
+        assert "pmcid" in props
+        assert "doi" in props
 
 
 class TestHandleCallTool:

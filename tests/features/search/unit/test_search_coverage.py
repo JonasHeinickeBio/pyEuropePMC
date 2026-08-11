@@ -10,9 +10,9 @@ from unittest.mock import Mock, patch
 import pytest
 import requests
 
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, SearchError
+from pyeuropepmc.features.literature.search import SearchClient
 
 pytestmark = pytest.mark.unit
 

@@ -1,8 +1,15 @@
-"""Tests for LangGraph claim workflow integration."""
+"""Tests for LangGraph claim workflow integration.
+
+NOTE: each graph invocation runs the full multi-agent claim pipeline and
+takes ~10-40s, so the whole module is marked ``slow`` (excluded from
+default unit runs via ``-m 'not slow'``).
+"""
 
 import time
 
 import pytest
+
+pytestmark = pytest.mark.slow
 
 from pyeuropepmc.agentic.langgraph import (
     LANGGRAPH_AVAILABLE,

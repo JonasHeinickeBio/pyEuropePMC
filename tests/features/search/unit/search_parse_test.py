@@ -3,9 +3,9 @@ from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError, SearchError
+from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.features.literature.search_parser import EuropePMCParser
 
 logging.basicConfig(level=logging.INFO)

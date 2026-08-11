@@ -3,8 +3,8 @@ from unittest.mock import patch
 
 import pytest
 
-from pyeuropepmc.features.literature.search import EuropePMCError, SearchClient
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.features.literature.search import EuropePMCError, SearchClient
 
 logging.basicConfig(level=logging.INFO)
 

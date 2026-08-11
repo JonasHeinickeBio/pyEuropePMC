@@ -32,11 +32,11 @@ from typing import Any
 import pytest
 from rdflib import Namespace
 
-from pyeuropepmc.features.literature.annotations import AnnotationsClient
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.annotations_to_rdf import annotations_to_rdf
+from pyeuropepmc.features.literature.search import SearchClient
 
 pytestmark = [pytest.mark.slow, pytest.mark.integration, pytest.mark.network]
 

@@ -197,23 +197,22 @@ def skip_if_dependencies_missing(
     return decorator
 
 
-# Predefined dependency groups for easy reference
+# Common dependency groupings for easy reference
 DEPENDENCY_GROUPS = {
     "standard": [
-        "pandas",
         "matplotlib",
         "seaborn",
         "xlsxwriter",
-        "typer",
+        "requests_cache",  # requests-cache imports as requests_cache
+        "tabulate",
         "rich",
-        "requests_cache",
         "ipython",
         "ipykernel",
+        "ipywidgets",
         "jupyterlab",
         "notebook",
     ],
     "rdf": [
-        "rdflib",
         "rdflib_jsonld",  # rdflib-jsonld imports as rdflib_jsonld
         "rdfizer",
     ],
@@ -221,18 +220,30 @@ DEPENDENCY_GROUPS = {
         "langchain",
         "langchain_openai",  # langchain-openai imports as langchain_openai
         "openai",
-        "rapidfuzz",
+        "langgraph",
     ],
     "enrichment": [
         "semanticscholar",
         "cryptography",
-        "search_query",  # search-query imports as search_query
         "tornado",
         "flask",
     ],
-    "visualization": ["matplotlib", "seaborn"],
-    "analytics": ["pandas"],
-    "export": ["xlsxwriter"],
+    "bibliography": [
+        "bibtexparser",
+    ],
+    "zotero": [
+        "pyzotero",
+    ],
+    "visualization": [
+        "matplotlib",
+        "seaborn",
+    ],
+    "analytics": [
+        "pandas",
+    ],
+    "export": [
+        "xlsxwriter",
+    ],
 }
 
 # Feature to group mapping
@@ -247,6 +258,10 @@ FEATURE_TO_GROUP = {
     "ai": "agentic",
     "citation_analysis": "agentic",
     "enrichment": "enrichment",
+    "bibliography": "bibliography",
+    "bibtex": "bibliography",
+    "citation_management": "bibliography",
+    "zotero": "zotero",
     "cli": "standard",
     "jupyter": "standard",
 }
