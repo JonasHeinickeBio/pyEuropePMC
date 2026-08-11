@@ -4,7 +4,7 @@ import pytest
 
 from pyeuropepmc.features.literature.search_parser import EuropePMCParser, ParsingError
 
-FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "../../fixtures/fulltext_downloads")
+FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "../../../fixtures/fulltext_downloads")
 
 # Dynamically list all PMCIDs with both XML and PDF in the fixture folder
 def get_pmcids():
