@@ -1,11 +1,11 @@
 """Unit tests for CORD-19-inspired deduplication features.
 
 Covers:
-- Multi-identifier clustering (union-find over doi/pmid/pmcid/arxiv/mag/who)
-- Strict conflict detection (shared id + conflicting id -> separate clusters)
+- Multi-identifier deduplication (union-find over doi/pmid/pmcid/arxiv/mag/who)
+- Strict conflict detection (shared id + conflicting id -> separate groups)
 - Canonical metadata selection (license permissiveness + document availability)
 - Non-paper entry filtering (TOC/index/front-matter)
-- Deterministic cluster IDs (CORD UID analog)
+- Deterministic group IDs (CORD UID analog)
 - MergeReport.metadata field
 """
 
@@ -16,7 +16,7 @@ from pyeuropepmc.features.enrich.merger import (
     LiteratureMerger,
     MatchLevel,
     MergeReport,
-    cluster_papers_by_identifier,
+    deduplicate_by_identifier,
 )
 
 
@@ -49,7 +49,7 @@ class TestMergeReportMetadata:
         assert report.metadata["source_times"] == {"pubmed": 0.1}
 
     def test_merge_results_populates_metadata(self):
-        """merge_results should record identifier cluster stats in metadata."""
+        """merge_results should record identifier group stats in metadata."""
         papers = [
             make_paper(pmid="1", doi="10.1234/abc"),
             make_paper(pmid="1", doi="10.1234/abc"),
@@ -57,34 +57,34 @@ class TestMergeReportMetadata:
         merger = LiteratureMerger()
         _, report = merger.merge_results([papers])
         assert isinstance(report.metadata, dict)
-        assert "identifier_clusters" in report.metadata
+        assert "identifier_groups" in report.metadata
 
 
 # ===========================================================================
-# Identifier clustering (CORD-19 multi-identifier overlap)
+# Identifier deduplication (CORD-19 multi-identifier overlap)
 # ===========================================================================
 
-class TestIdentifierClustering:
+class TestIdentifierDedup:
     def test_shared_doi(self):
         papers = [
             make_paper(pmid="1", doi="10.1000/xyz"),
             make_paper(pmid="2", doi="10.1000/xyz"),
         ]
-        assert cluster_papers_by_identifier(papers) == [[0, 1]]
+        assert deduplicate_by_identifier(papers) == [[0, 1]]
 
     def test_shared_pmcid(self):
         papers = [
             make_paper(pmid="1", pmcid="PMC100"),
             make_paper(pmid="2", pmcid="PMC100"),
         ]
-        assert cluster_papers_by_identifier(papers) == [[0, 1]]
+        assert deduplicate_by_identifier(papers) == [[0, 1]]
 
     def test_shared_arxiv(self):
         papers = [
             make_paper(pmid="1", arxiv_id="arXiv:2101.00001"),
             make_paper(pmid="2", arxiv_id="2101.00001"),
         ]
-        assert cluster_papers_by_identifier(papers) == [[0, 1]]
+        assert deduplicate_by_identifier(papers) == [[0, 1]]
 
     def test_shared_mag_and_who(self):
         papers = [
@@ -93,40 +93,40 @@ class TestIdentifierClustering:
             make_paper(pmid="3", who_covidence_id="WHOCVD-9"),
             make_paper(pmid="4", covidence_id="WHOCVD-9"),
         ]
-        clusters = cluster_papers_by_identifier(papers)
-        assert [0, 1] in clusters
-        assert [2, 3] in clusters
+        groups = deduplicate_by_identifier(papers)
+        assert [0, 1] in groups
+        assert [2, 3] in groups
 
     def test_no_shared_identifiers(self):
         papers = [
             make_paper(pmid="1", doi="10.1000/one"),
             make_paper(pmid="2", doi="10.1000/two"),
         ]
-        assert cluster_papers_by_identifier(papers) == [[0], [1]]
+        assert deduplicate_by_identifier(papers) == [[0], [1]]
 
     def test_external_ids_subdict(self):
         papers = [
             {"pmid": "1", "external_ids": {"DOI": "10.1000/ext"}},
             {"pmid": "2", "external_ids": {"doi": "10.1000/ext"}},
         ]
-        assert cluster_papers_by_identifier(papers) == [[0, 1]]
+        assert deduplicate_by_identifier(papers) == [[0, 1]]
 
-    def test_transitive_clustering(self):
+    def test_transitive_grouping(self):
         """A--B via pmid, B--C via doi should connect A--C (union-find)."""
         papers = [
             make_paper(pmid="1", doi="10.1000/a"),
             make_paper(pmid="1", doi="10.1000/b"),  # shares pmid with A
             make_paper(pmid="2", doi="10.1000/b"),  # shares doi with B
         ]
-        assert cluster_papers_by_identifier(papers) == [[0, 1, 2]]
+        assert deduplicate_by_identifier(papers) == [[0, 1, 2]]
 
     def test_invalid_doi_ignored(self):
-        """An unresolvable DOI should not be used as a clustering key."""
+        """An unresolvable DOI should not be used as a grouping key."""
         papers = [
             make_paper(pmid="1", doi="10.1/a"),
             make_paper(pmid="2", doi="10.1/a"),
         ]
-        assert cluster_papers_by_identifier(papers) == [[0], [1]]
+        assert deduplicate_by_identifier(papers) == [[0], [1]]
 
 
 # ===========================================================================
@@ -134,16 +134,16 @@ class TestIdentifierClustering:
 # ===========================================================================
 
 class TestStrictConflicts:
-    def test_conflicting_secondary_id_splits_cluster(self):
-        """Same DOI but different PMCID -> separate clusters under strict mode."""
+    def test_conflicting_secondary_id_splits_group(self):
+        """Same DOI but different PMCID -> separate groups under strict mode."""
         papers = [
             make_paper(pmid="1", doi="10.1000/xyz", pmcid="PMC100"),
             make_paper(pmid="2", doi="10.1000/xyz", pmcid="PMC200"),
         ]
         # Non-strict: merges on shared DOI
-        assert cluster_papers_by_identifier(papers) == [[0, 1]]
+        assert deduplicate_by_identifier(papers) == [[0, 1]]
         # Strict: DOI shared but PMCID conflicts -> keep separate
-        assert cluster_papers_by_identifier(papers, strict_conflicts=True) == [[0], [1]]
+        assert deduplicate_by_identifier(papers, strict_conflicts=True) == [[0], [1]]
 
     def test_identical_identifiers_merge_strict(self):
         """Papers with fully identical identifiers still merge in strict mode."""
@@ -151,14 +151,14 @@ class TestStrictConflicts:
             make_paper(pmid="1", doi="10.1000/xyz", pmcid="PMC100"),
             make_paper(pmid="1", doi="10.1000/xyz", pmcid="PMC100"),
         ]
-        assert cluster_papers_by_identifier(papers, strict_conflicts=True) == [[0, 1]]
+        assert deduplicate_by_identifier(papers, strict_conflicts=True) == [[0, 1]]
 
 
 # ===========================================================================
-# Identifier clustering pass in merge pipeline
+# Identifier deduplication pass in merge pipeline
 # ===========================================================================
 
-class TestIdentifierClusterPass:
+class TestIdentifierDedupPass:
     def test_pmcid_duplicate_merged(self):
         papers = [
             make_paper(pmid="1", title="Alpha paper", pmcid="PMC100"),
@@ -180,7 +180,7 @@ class TestIdentifierClusterPass:
         assert len(results) == 1
         assert report.records[0].match_level == MatchLevel.ARXIV_EXACT
 
-    def test_cluster_id_assigned(self):
+    def test_dedup_id_assigned(self):
         papers = [
             make_paper(pmid="1", doi="10.1000/cid", title="Same paper"),
             make_paper(pmid="2", doi="10.1000/cid", title="Same paper"),
@@ -188,35 +188,35 @@ class TestIdentifierClusterPass:
         merger = LiteratureMerger()
         results, _ = merger.merge_results([papers])
         assert len(results) == 1
-        assert results[0]["cluster_id"].startswith("CORD-")
-        assert len(results[0]["cluster_id"]) == 21  # CORD- + 16 hex
+        assert results[0]["dedup_id"].startswith("CORD-")
+        assert len(results[0]["dedup_id"]) == 21  # CORD- + 16 hex
 
-    def test_cluster_id_deterministic(self):
+    def test_dedup_id_deterministic(self):
         p1 = make_paper(pmid="1", doi="10.1000/det", title="Same paper")
         p2 = make_paper(pmid="2", doi="10.1000/det", title="Same paper")
         merger = LiteratureMerger()
         r1, _ = merger.merge_results([[p1, p2]])
         r2, _ = merger.merge_results([[p1, p2]])
-        assert r1[0]["cluster_id"] == r2[0]["cluster_id"]
+        assert r1[0]["dedup_id"] == r2[0]["dedup_id"]
 
-    def test_cluster_id_disabled(self):
+    def test_dedup_id_disabled(self):
         papers = [
             make_paper(pmid="1", doi="10.1000/nocid", title="Same paper"),
             make_paper(pmid="2", doi="10.1000/nocid", title="Same paper"),
         ]
-        merger = LiteratureMerger(config=DedupConfig(persist_cluster_ids=False))
+        merger = LiteratureMerger(config=DedupConfig(persist_dedup_ids=False))
         results, _ = merger.merge_results([papers])
-        assert "cluster_id" not in results[0]
+        assert "dedup_id" not in results[0]
 
-    def test_clustering_disabled(self):
-        """Without clustering, PMCID-only dups (distinct titles) are not caught."""
+    def test_grouping_disabled(self):
+        """Without grouping, PMCID-only dups (distinct titles) are not caught."""
         papers = [
             make_paper(pmid="1", title="Gamma paper one", pmcid="PMC100"),
             make_paper(pmid="2", title="Gamma paper two", pmcid="PMC100"),
         ]
-        merger = LiteratureMerger(config=DedupConfig(use_identifier_clustering=False))
+        merger = LiteratureMerger(config=DedupConfig(use_identifier_dedup=False))
         results, report = merger.merge_results([papers])
-        # Without clustering, PMCID-only duplicates are not caught (no pmid/doi/title overlap)
+        # Without grouping, PMCID-only duplicates are not caught (no pmid/doi/title overlap)
         assert len(results) == 2
         assert report.duplicates_removed == 0
 
@@ -283,7 +283,7 @@ class TestCanonicalSelection:
 
 
 # ===========================================================================
-# Non-paper entry filtering (CORD-19 cluster filtering)
+# Non-paper entry filtering (CORD-19 group filtering)
 # ===========================================================================
 
 class TestNonPaperFiltering:
@@ -340,8 +340,8 @@ class TestNonPaperFiltering:
 class TestConfigDefaults:
     def test_new_fields_default_on(self):
         cfg = DedupConfig()
-        assert cfg.use_identifier_clustering is True
+        assert cfg.use_identifier_dedup is True
         assert cfg.strict_identifier_conflicts is False
         assert cfg.prefer_open_access is True
         assert cfg.filter_non_papers is True
-        assert cfg.persist_cluster_ids is True
+        assert cfg.persist_dedup_ids is True

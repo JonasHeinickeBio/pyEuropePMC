@@ -281,7 +281,8 @@ class PaperEnricher:
         """
         if save_dir is None:
             # Default to the enrichment_responses directory relative to project root
-            project_root = Path(__file__).parent.parent.parent.parent
+            # (enricher.py sits at src/pyeuropepmc/features/enrich/, so 5 parents = repo root)
+            project_root = Path(__file__).parent.parent.parent.parent.parent
             save_dir = project_root / "examples" / "enrichment_responses"
         else:
             save_dir = Path(save_dir)

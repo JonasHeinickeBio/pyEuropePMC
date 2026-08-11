@@ -1,6 +1,6 @@
 # Intelligent Deduplication
 
-PyEuropePMC's `LiteratureMerger` provides multi-layer deduplication with configurable precision/recall tradeoffs. The strategy is inspired by the **CORD-19 dataset pipeline**: cluster papers by shared identifiers, select a canonical metadata entry per cluster, and filter non-paper entries.
+PyEuropePMC's `LiteratureMerger` provides multi-layer deduplication with configurable precision/recall tradeoffs. The strategy is inspired by the **CORD-19 dataset pipeline**: group papers by shared identifiers, select a canonical metadata entry per group, and filter non-paper entries.
 
 ## Quick Start
 
@@ -21,12 +21,12 @@ print(f"{report.total_input} → {report.total_output} ({report.duplicates_remov
 
 Merging happens in sequential layers:
 
-1. **Identifier clustering (CORD-19 style)** — Union-find clustering over any shared identifier: `doi`, `pmid`, `pmcid`, `arxiv`, `mag`, `who` (Covidence ID). Papers that share *any* identifier land in the same cluster; a canonical member is chosen by (license permissiveness → document availability → source reliability) and the remaining members are merged into it. Each cluster gets a deterministic `cluster_id` (e.g. `CORD-65483F50015734B6`).
+1. **Identifier deduplication (CORD-19 style)** — Union-find grouping over any shared identifier: `doi`, `pmid`, `pmcid`, `arxiv`, `mag`, `who` (Covidence ID). Papers that share *any* identifier land in the same group; a canonical member is chosen by (license permissiveness → document availability → source reliability) and the remaining members are merged into it. Each group gets a deterministic `dedup_id` (e.g. `CORD-65483F50015734B6`).
 2. **PMID match** — Exact PubMed ID match (highest confidence)
 3. **DOI match** — Normalized DOI comparison (high confidence)
 4. **Fuzzy title match** — SequenceMatcher similarity with gates (medium confidence)
 5. **Retracted removal** — Remove retracted papers (safety layer)
-6. **Non-paper filtering** — Remove front-matter entries (tables of contents, subject indices, editorial boards, instructions for authors, cover pages) — mirrors CORD-19 "cluster filtering"
+6. **Non-paper filtering** — Remove front-matter entries (tables of contents, subject indices, editorial boards, instructions for authors, cover pages) — mirrors CORD-19 "group filtering"
 
 ## DedupModes
 
@@ -76,36 +76,36 @@ config = DedupConfig(
     require_author_overlap=True,     # Require shared authors
     require_journal_overlap=False,   # Don't require journal match
     keep_provenance=True,            # Track field-level sources
-    # CORD-19 clustering options (defaults shown):
-    use_identifier_clustering=True,  # Cluster by any shared identifier
+    # CORD-19 grouping options (defaults shown):
+    use_identifier_dedup=True,  # Deduplicate on any shared identifier
     strict_identifier_conflicts=False,  # Reject shared id if another id conflicts
     prefer_open_access=True,         # Canonical prefers permissive license + full text
     filter_non_papers=True,          # Remove TOC/index/front-matter entries
-    persist_cluster_ids=True,        # Attach deterministic cluster_id to merged papers
+    persist_dedup_ids=True,        # Attach deterministic dedup_id to merged papers
 )
 merger = LiteratureMerger(config=config)
 ```
 
-### Identifier Clustering
+### Identifier Deduplication
 
-Two papers join the same cluster when they share **any** identifier: DOI, PMID, PMCID, arXiv, MAG, or WHO/Covidence ID. With `strict_identifier_conflicts=True`, a shared identifier is *ignored* when the papers also carry a conflicting value for another identifier type (e.g. same DOI but different PMID → separate clusters), mirroring CORD-19.
+Two papers join the same group when they share **any** identifier: DOI, PMID, PMCID, arXiv, MAG, or WHO/Covidence ID. With `strict_identifier_conflicts=True`, a shared identifier is *ignored* when the papers also carry a conflicting value for another identifier type (e.g. same DOI but different PMID → separate groups), mirroring CORD-19.
 
 ```python
-from pyeuropepmc.features.enrich.merger import cluster_papers_by_identifier
+from pyeuropepmc.features.enrich.merger import deduplicate_by_identifier
 
-clusters = cluster_papers_by_identifier(papers, strict_conflicts=True)
-# e.g. [[0, 3, 7], [1], [2, 5]]  — indices grouped into clusters
+groups = deduplicate_by_identifier(papers, strict_conflicts=True)
+# e.g. [[0, 3, 7], [1], [2, 5]]  — indices grouped into groups
 ```
 
 ### Canonical Metadata Selection
 
-Within each cluster the canonical entry is chosen by, in order:
+Within each group the canonical entry is chosen by, in order:
 
 1. **License permissiveness** — CC0 > CC-BY > CC-BY-SA > CC-BY-NC* > CC-BY-ND > open-access > unknown
 2. **Document availability** — PMCID / full-text URL / PDF / OA status / abstract
 3. **Source reliability** — pubmed > crossref > openalex > semanticscholar > unpaywall > arxiv
 
-Missing fields in the canonical entry are promoted from other cluster members (as in CORD-19), with provenance tracked when `keep_provenance=True`.
+Missing fields in the canonical entry are promoted from other group members (as in CORD-19), with provenance tracked when `keep_provenance=True`.
 
 ## MergeReport
 
@@ -134,11 +134,11 @@ print(summary)
 for record in report.records:
     print(f"{record.match_level}: {record.kept_id} ← {record.removed_id}")
 
-# CORD-19 clustering stats
+# CORD-19 grouping stats
 print(report.metadata)
 # {
-#     "identifier_clusters": 12,
-#     "clustered_papers": 18,
+#     "identifier_groups": 12,
+#     "deduped_papers": 18,
 # }
 ```
 
