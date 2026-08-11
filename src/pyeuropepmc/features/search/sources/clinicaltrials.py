@@ -19,6 +19,7 @@ import logging
 from typing import Any
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.features.literature.normalization import normalize_doi, normalize_paper_title
 from pyeuropepmc.features.search.base import BaseLiteratureClient
 from pyeuropepmc.models.literature import Author, LiteratureResult
@@ -105,7 +106,6 @@ class ClinicalTrialsClient(BaseLiteratureClient):
             ``"first_post"``, ``"enrollment"``.
         **kwargs
             Additional parameters. Accepted:
-            - ``fields`` (list[str]): Additional fields to include
             - ``status`` (str): Recruitment status filter
             - ``phase`` (str): Study phase filter
 
@@ -123,34 +123,11 @@ class ClinicalTrialsClient(BaseLiteratureClient):
         }
         sort_param = sort_map.get(sort, "@relevance") if sort else "@relevance"
 
-        # Default fields
-        default_fields = [
-            "NCTId",
-            "briefTitle",
-            "officialTitle",
-            "overallStatus",
-            "phase",
-            "studyType",
-            "condition",
-            "interventionType",
-            "leadSponsorName",
-            "overallContactName",
-            "overallContactEmail",
-            "startDate",
-            "completionDate",
-            "enrollmentCount",
-            "referenceArticleDOI",
-            "referenceArticlePMID",
-            "referenceArticleCitation",
-        ]
-        fields = kwargs.get("fields", default_fields)
-
         params: dict[str, Any] = {
             "query.term": query,
             "pageSize": min(limit, _MAX_PAGE_SIZE),
             "sort": sort_param,
             "format": "json",
-            "fields": ",".join(fields) if isinstance(fields, list) else fields,
         }
 
         # Optional filters
@@ -193,7 +170,14 @@ class ClinicalTrialsClient(BaseLiteratureClient):
         if not nct_id.startswith("NCT"):
             nct_id = f"NCT{nct_id}"
 
-        raw = self._make_request(f"studies/{nct_id}", use_cache=True)
+        try:
+            raw = self._make_request(f"studies/{nct_id}", use_cache=True)
+        except APIClientError as e:
+            # ClinicalTrials.gov returns 400 for non-existent / invalid NCT IDs
+            if e.status_code in (400, 404):
+                logger.info("Study %s not found (HTTP %s)", nct_id, e.status_code)
+                return None
+            raise
         if raw is None:
             return None
 

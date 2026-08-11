@@ -66,6 +66,10 @@ class HALClient(BaseLiteratureClient):
             "rows": min(limit, 100),
             "start": 0,
             "wt": "json",
+            # Request the full document schema. Without ``fl=*`` HAL's Solr
+            # endpoint only returns ``docid``/``label_s``/``uri_s``, leaving
+            # every normalized field empty.
+            "fl": "*",
         }
         if sort:
             sort_map = {"relevance": "score desc", "date": "submittedDate_tdate desc"}
@@ -100,7 +104,12 @@ class HALClient(BaseLiteratureClient):
         identifier: str,
         **kwargs: Any,
     ) -> LiteratureResult | None:
-        params: dict[str, Any] = {"q": f"halId_s:{identifier}", "wt": "json", "rows": 1}
+        params: dict[str, Any] = {
+            "q": f"halId_s:{identifier}",
+            "wt": "json",
+            "rows": 1,
+            "fl": "*",
+        }
         data = self._make_request(endpoint="", params=params)
         if not data:
             return None

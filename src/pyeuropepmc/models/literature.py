@@ -51,6 +51,9 @@ class Author(BaseModel):
         """Validate ORCID format."""
         if v is None:
             return None
+        # Accept both bare IDs and full URLs (e.g. https://orcid.org/0000-...)
+        if v.startswith(("http://", "https://")):
+            v = v.rstrip("/").rsplit("/", 1)[-1]
         # Basic ORCID format check
         if not v.replace("-", "").replace(" ", "").isalnum():
             raise ValueError(f"Invalid ORCID format: {v}")

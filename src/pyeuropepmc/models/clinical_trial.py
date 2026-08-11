@@ -121,6 +121,22 @@ class ClinicalTrial(BaseModel):
         default_factory=list, description="MeSH terms for interventions"
     )
 
+    @classmethod
+    def from_literature_result(cls, result: "LiteratureResult") -> "ClinicalTrial":
+        """Construct a ClinicalTrial from a LiteratureResult (round-trip)."""
+        meta = result.extra_metadata or {}
+        nct_id = meta.get("nct_id") or (
+            result.source_id if result.source == "clinicaltrials" else ""
+        )
+        title = result.title or meta.get("official_title") or meta.get("brief_title") or ""
+        return cls(
+            nct_id=nct_id,
+            title=title,
+            status=meta.get("status", TrialStatus.UNKNOWN),
+            phase=meta.get("phase", TrialPhase.NA),
+            conditions=meta.get("conditions", []) if meta else [],
+        )
+
     def to_literature_result(self) -> LiteratureResult:
         """Convert to LiteratureResult for dedup pipeline."""
         authors = None

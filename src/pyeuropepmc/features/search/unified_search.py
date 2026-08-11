@@ -105,6 +105,7 @@ class UnifiedSearch:
         query: str,
         limit: int = 25,
         sort: str | None = None,
+        sources: list[str] | None = None,
         **kwargs: Any,
     ) -> tuple[list[LiteratureResult], MergeReport]:
         """
@@ -120,6 +121,9 @@ class UnifiedSearch:
             after dedup.
         sort : str, optional
             Sort order (passed to each source).
+        sources : list[str], optional
+            Override the source set for this search only. If ``None``,
+            uses the sources configured on the instance.
         **kwargs
             Additional parameters passed to each source's ``search()``.
 
@@ -129,12 +133,13 @@ class UnifiedSearch:
             Merged, deduplicated results and a dedup report.
         """
         clients = self._get_or_init_clients()
+        sources = sources or self.sources
 
         # Search all sources
-        all_results: list[list[LiteratureResult | dict[str, Any]]] = []
+        all_results: list[list[dict[str, Any]]] = []
         source_times: dict[str, float] = {}
 
-        for source_name in self.sources:
+        for source_name in sources:
             client = clients.get(source_name)
             if client is None:
                 logger.warning("Source '%s' not initialized, skipping", source_name)
@@ -151,7 +156,9 @@ class UnifiedSearch:
                     len(results),
                     elapsed,
                 )
-                all_results.append(list(results))
+                # The merger operates on plain dicts; convert LiteratureResult
+                # objects (with nested pydantic models) to dictionaries.
+                all_results.append([r.model_dump() for r in results])
             except Exception as e:
                 logger.error("Source '%s' failed: %s", source_name, e)
                 source_times[source_name] = -1.0
@@ -162,13 +169,21 @@ class UnifiedSearch:
 
         # Merge and deduplicate
         merger = LiteratureMerger(config=DedupConfig(mode=self.dedup_mode))
-        merged, report = merger.merge_results(all_results)
+        merged_dicts, report = merger.merge_results(all_results)
         report.metadata["source_times"] = source_times
-        report.metadata["sources_used"] = self.sources
+        report.metadata["sources_used"] = sources
+
+        # Restore the public result type (extra fields pass through due to
+        # ``extra="allow"`` on LiteratureResult).
+        merged = [
+            LiteratureResult.model_validate(d)
+            for d in merged_dicts
+            if d is not None
+        ]
 
         logger.info(
             "UnifiedSearch: %d sources → %d results → %d after dedup (%.1f%% reduction)",
-            len(self.sources),
+            len(sources),
             sum(len(r) for r in all_results),
             len(merged),
             (1 - len(merged) / max(sum(len(r) for r in all_results), 1)) * 100,

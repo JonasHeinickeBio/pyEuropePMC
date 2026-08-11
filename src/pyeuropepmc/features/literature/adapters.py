@@ -55,6 +55,7 @@ class SemanticScholarLiteratureAdapter:
     def __init__(
         self,
         enrichment_client: SemanticScholarClient | None = None,
+        **kwargs: Any,
     ) -> None:
         """
         Initialize the adapter.
@@ -63,6 +64,10 @@ class SemanticScholarLiteratureAdapter:
         ----------
         enrichment_client : SemanticScholarClient, optional
             Existing enrichment client to wrap.  If ``None``, creates a new one.
+        **kwargs
+            Ignored; accepted for interface compatibility with
+            :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`
+            (e.g. ``rate_limit_delay``/``timeout`` passed by ``UnifiedSearch``).
         """
         self.enrichment_client = enrichment_client or SemanticScholarClient()
 
@@ -271,6 +276,7 @@ class OpenAlexLiteratureAdapter:
     def __init__(
         self,
         enrichment_client: OpenAlexClient | None = None,
+        **kwargs: Any,
     ) -> None:
         """
         Initialize the adapter.
@@ -279,6 +285,10 @@ class OpenAlexLiteratureAdapter:
         ----------
         enrichment_client : OpenAlexClient, optional
             Existing enrichment client to wrap.  If ``None``, creates a new one.
+        **kwargs
+            Ignored; accepted for interface compatibility with
+            :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`
+            (e.g. ``rate_limit_delay``/``timeout`` passed by ``UnifiedSearch``).
         """
         self.enrichment_client = enrichment_client or OpenAlexClient()
 

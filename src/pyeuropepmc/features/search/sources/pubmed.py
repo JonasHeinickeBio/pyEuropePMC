@@ -523,7 +523,7 @@ class PubMedClient(BaseLiteratureClient):
             abstract=abstract_text.strip() if abstract_text else None,
             citation_count=None,  # EFetch doesn't return citation counts
             source="pubmed",
-            source_id=pmid,
+            source_id=str(pmid) if pmid else (doi or ""),
             pubmed_data={
                 "efetch_xml": True,
                 "mesh_terms": mesh_terms,
@@ -551,8 +551,15 @@ class PubMedClient(BaseLiteratureClient):
         LiteratureResult
             Normalized result as a Pydantic model.
         """
-        pmid = raw_result.get("pmid")
+        # ESummary returns the PMID under "uid" and identifiers under
+        # "articleids" (e.g. [{'idtype': 'doi', 'value': '10.xxx/yyy'}]).
+        pmid = raw_result.get("pmid") or raw_result.get("uid")
         doi = raw_result.get("doi")
+        if not doi:
+            for item in raw_result.get("articleids") or []:
+                if isinstance(item, dict) and item.get("idtype") == "doi":
+                    doi = item.get("value")
+                    break
         title = raw_result.get("title")
         raw_authors = raw_result.get("authors", [])
         publication_year = raw_result.get("pubdate", "")
@@ -593,6 +600,6 @@ class PubMedClient(BaseLiteratureClient):
             abstract=abstract.strip() if isinstance(abstract, str) else abstract,
             citation_count=int(citation_count) if citation_count else None,
             source="pubmed",
-            source_id=str(pmid) if pmid else None,
+            source_id=str(pmid) if pmid else (doi or ""),
             pubmed_data=raw_result,
         )

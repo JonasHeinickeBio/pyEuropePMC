@@ -84,7 +84,7 @@ class COREClient(BaseLiteratureClient):
         if kwargs.get("fulltext_only", False):
             params["fullText"] = "true"
 
-        data = self._make_request(endpoint="search", params=params)
+        data = self._make_request(endpoint="search/outputs", params=params)
         if not data:
             return []
 

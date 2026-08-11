@@ -63,7 +63,6 @@ class DOAJClient(BaseLiteratureClient):
         **kwargs: Any,
     ) -> list[LiteratureResult]:
         params: dict[str, Any] = {
-            "query": query,
             "page": 1,
             "pageSize": min(limit, 100),
         }
@@ -77,7 +76,7 @@ class DOAJClient(BaseLiteratureClient):
             if s:
                 params["sort"] = s
 
-        data = self._make_request(endpoint="search/articles", params=params)
+        data = self._make_request(endpoint=f"search/articles/{query}", params=params)
         if not data:
             return []
 

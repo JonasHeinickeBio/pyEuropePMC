@@ -28,7 +28,7 @@ from pyeuropepmc.features.literature.normalization import (
     normalize_paper_title,
 )
 from pyeuropepmc.features.search.base import BaseLiteratureClient
-from pyeuropepmc.models.literature import Author, LiteratureResult
+from pyeuropepmc.models.literature import LiteratureResult
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +67,7 @@ class ArxivClient(BaseLiteratureClient):
     ...     print(f"{paper.title} ({paper.source_id})")
     """
 
-    BASE_URL = "http://export.arxiv.org/api/query"
+    BASE_URL = "http://export.arxiv.org/api"
 
     def __init__(
         self,
@@ -139,7 +139,7 @@ class ArxivClient(BaseLiteratureClient):
             params["id_list"] = id_list
 
         # arXiv API returns XML — we pass custom headers for XML parsing
-        raw = self._make_request("", params=params, use_cache=True)
+        raw = self._make_request("query", params=params, use_cache=True)
         if raw is None:
             return []
 
@@ -165,14 +165,36 @@ class ArxivClient(BaseLiteratureClient):
         LiteratureResult or None
             Paper details as Pydantic model, or None if not found.
         """
-        # Normalize arXiv ID
+        # Normalize arXiv ID. Handle both standard forms
+        # (arxiv:1706.03762, https://arxiv.org/abs/1706.03762) and
+        # DOI-embedded forms (10.48550/arXiv.1706.03762).
         match = _ARXIV_ID_PATTERN.search(identifier)
-        arxiv_id = match.group(1) if match else identifier
+        if match:
+            arxiv_id = match.group(1)
+        else:
+            doi_match = re.search(
+                r"arXiv\.(\d+\.\d+|\w+/\d+)", identifier, re.IGNORECASE
+            )
+            arxiv_id = doi_match.group(1) if doi_match else identifier
 
         # arXiv single paper lookup via id_list parameter
         raw = self._make_request(
-            "", params={"id_list": arxiv_id, "max_results": 1}, use_cache=True
+            "query", params={"id_list": arxiv_id, "max_results": 1}, use_cache=True
         )
+
+        # Fallback: if the identifier looks like a DOI, arXiv does not index
+        # by id_list, so search for it instead.
+        if raw is None and (
+            identifier.lower().startswith("10.") or "/" in identifier
+        ):
+            raw = self._make_request(
+                "query",
+                params={
+                    "search_query": f'all:"{identifier}"',
+                    "max_results": 1,
+                },
+                use_cache=True,
+            )
         if raw is None:
             return None
 
@@ -204,10 +226,10 @@ class ArxivClient(BaseLiteratureClient):
         authors_raw = raw_result.get("authors", [])
         authors = None
         if authors_raw:
-            author_list = []
-            for a in authors_raw:
-                if isinstance(a, dict) and a.get("name"):
-                    author_list.append(Author(name=a["name"]))
+            # normalize_author_list expects plain dicts, not Author objects
+            author_list = [
+                a for a in authors_raw if isinstance(a, dict) and a.get("name")
+            ]
             if author_list:
                 authors = normalize_author_list(author_list)
 
