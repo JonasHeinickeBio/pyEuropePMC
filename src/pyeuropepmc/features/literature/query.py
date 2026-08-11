@@ -7,8 +7,19 @@ handling pagination of results, filtering search results, MeSH query expansion,
 and PICO framework decomposition for clinical questions.
 """
 
-from .filters import filter_pmc_papers, filter_pmc_papers_or
-from .mesh import (
+from pyeuropepmc.features.literature.filters import filter_pmc_papers, filter_pmc_papers_or
+from pyeuropepmc.features.literature.pagination import (
+    CursorPaginator,
+    PaginationCheckpoint,
+    PaginationState,
+)
+from pyeuropepmc.features.literature.query_builder import (
+    QueryBuilder,
+    get_available_fields,
+    get_field_info,
+    validate_field_coverage,
+)
+from pyeuropepmc.features.review.mesh import (
     MeSHExpander,
     MeSHExpansionResult,
     expand_with_mesh,
@@ -16,8 +27,7 @@ from .mesh import (
     suggest_mesh_terms,
     translate_to_mesh,
 )
-from .pagination import CursorPaginator, PaginationCheckpoint, PaginationState
-from .pico import (
+from pyeuropepmc.features.review.pico import (
     PICOElements,
     PICOParser,
     PICOSDecomposer,
@@ -26,12 +36,6 @@ from .pico import (
     pico_decompose,
     pico_to_pubmed_query,
     pico_to_query,
-)
-from .query_builder import (
-    QueryBuilder,
-    get_available_fields,
-    get_field_info,
-    validate_field_coverage,
 )
 
 __all__ = [

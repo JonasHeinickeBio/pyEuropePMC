@@ -34,7 +34,7 @@ Key tips:
 ## Extension Modules (10 modules)
 
 ```python
-from pyeuropepmc.processing.extensions import (
+from pyeuropepmc.features.fulltext.extensions import (
     ContentBlockExtractor,     # Typed content blocks for RAG/LLM
     JATS4RValidator,           # JATS4R compliance validation
     MathMLConverter,           # MathML → LaTeX conversion
@@ -67,5 +67,5 @@ parser = LocalXMLProcessor.parse_file("article.xml")
 ```
 
 Key tips:
-- All extensions are importable from `pyeuropepmc.processing.extensions`
+- All extensions are importable from `pyeuropepmc.features.fulltext.extensions`
 - See **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** for full docs

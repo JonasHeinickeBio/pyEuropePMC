@@ -7,7 +7,7 @@ PyEuropePMC provides a unified interface for searching across **15+ external lit
 The `UnifiedSearch` orchestrator lets you query multiple sources with a single call:
 
 ```python
-from pyeuropepmc.literature import UnifiedSearch
+from pyeuropepmc.features.search import UnifiedSearch
 
 searcher = UnifiedSearch()
 
@@ -60,7 +60,7 @@ Each source can also be used independently:
 ### PubMed
 
 ```python
-from pyeuropepmc.literature import PubMedClient
+from pyeuropepmc.features.search import PubMedClient
 
 with PubMedClient(api_key="your_key") as client:
     papers = client.search("ME/CFS", limit=10)
@@ -70,7 +70,7 @@ with PubMedClient(api_key="your_key") as client:
 ### arXiv
 
 ```python
-from pyeuropepmc.literature import ArxivClient
+from pyeuropepmc.features.search import ArxivClient
 
 with ArxivClient() as client:
     papers = client.search("chronic fatigue", limit=10, sort="relevance")
@@ -80,7 +80,7 @@ with ArxivClient() as client:
 ### Semantic Scholar
 
 ```python
-from pyeuropepmc.literature import SemanticScholarLiteratureAdapter
+from pyeuropepmc.features.literature.adapters import SemanticScholarLiteratureAdapter
 
 with SemanticScholarLiteratureAdapter() as client:
     papers = client.search("machine learning", limit=10)
@@ -89,7 +89,7 @@ with SemanticScholarLiteratureAdapter() as client:
 ### OpenAlex
 
 ```python
-from pyeuropepmc.literature import OpenAlexLiteratureAdapter
+from pyeuropepmc.features.literature.adapters import OpenAlexLiteratureAdapter
 
 with OpenAlexLiteratureAdapter() as client:
     papers = client.search("CRISPR", limit=10)
@@ -98,7 +98,7 @@ with OpenAlexLiteratureAdapter() as client:
 ### Zenodo
 
 ```python
-from pyeuropepmc.literature import ZenodoClient
+from pyeuropepmc.features.search import ZenodoClient
 
 with ZenodoClient() as client:
     papers = client.search("metabolomics", limit=10)
@@ -107,7 +107,7 @@ with ZenodoClient() as client:
 ### DOAJ
 
 ```python
-from pyeuropepmc.literature import DOAJClient
+from pyeuropepmc.features.search import DOAJClient
 
 with DOAJClient() as client:
     papers = client.search("open access journals", limit=10)
@@ -116,7 +116,7 @@ with DOAJClient() as client:
 ### DBLP
 
 ```python
-from pyeuropepmc.literature import DBLPClient
+from pyeuropepmc.features.search import DBLPClient
 
 with DBLPClient() as client:
     papers = client.search("knowledge graph", limit=10)
@@ -125,7 +125,7 @@ with DBLPClient() as client:
 ### HAL
 
 ```python
-from pyeuropepmc.literature import HALClient
+from pyeuropepmc.features.search import HALClient
 
 with HALClient() as client:
     papers = client.search("neuroscience", limit=10)
@@ -166,7 +166,7 @@ Each source has polite default rate limits:
 The package includes normalization utilities for consistent data cleaning:
 
 ```python
-from pyeuropepmc.literature import (
+from pyeuropepmc.features.search import (
     normalize_doi,           # DOI validation + URL stripping
     normalize_author_name,   # "SMITH, John" → "Smith, John"
     normalize_paper_title,   # Lowercase + unicode NFKC

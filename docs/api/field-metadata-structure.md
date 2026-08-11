@@ -53,7 +53,7 @@ Most API fields are uppercase (`TITLE`, `ABSTRACT`, `AUTH`), but three internal 
 Get API field name and description for a given field.
 
 ```python
-from pyeuropepmc.query_builder import get_field_info
+from pyeuropepmc.features.literature.query_builder import get_field_info
 
 # Get info for a field
 api_name, description = get_field_info("author")
@@ -66,7 +66,7 @@ print(f"{api_name}: {description}")
 Fetch the current list of searchable fields from the Europe PMC API.
 
 ```python
-from pyeuropepmc.query_builder import get_available_fields
+from pyeuropepmc.features.literature.query_builder import get_available_fields
 
 fields = get_available_fields()
 print(f"Available fields: {len(fields)}")
@@ -78,7 +78,7 @@ print(f"Available fields: {len(fields)}")
 Check if local field definitions cover all fields from the API.
 
 ```python
-from pyeuropepmc.query_builder import validate_field_coverage
+from pyeuropepmc.features.literature.query_builder import validate_field_coverage
 
 result = validate_field_coverage(verbose=True)
 if result['up_to_date']:

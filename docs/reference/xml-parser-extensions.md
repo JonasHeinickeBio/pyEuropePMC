@@ -1,6 +1,6 @@
 # XML Parser Extensions Reference
 
-The `pyeuropepmc.processing.extensions` package provides 10 extension modules that extend the `FullTextXMLParser` with advanced capabilities. All modules are designed to be modular, DRY, reusable, and backward compatible with the existing parser infrastructure.
+The `pyeuropepmc.features.fulltext.extensions` package provides 10 extension modules that extend the `FullTextXMLParser` with advanced capabilities. All modules are designed to be modular, DRY, reusable, and backward compatible with the existing parser infrastructure.
 
 ## Installation
 
@@ -80,7 +80,7 @@ High-performance XML parser backend using `lxml.etree` with secure configuration
 **Key Class:** `LXMLParser`
 
 ```python
-from pyeuropepmc.processing.extensions import LXMLParser, is_lxml_available
+from pyeuropepmc.features.fulltext.extensions import LXMLParser, is_lxml_available
 
 if is_lxml_available():
     parser = LXMLParser()
@@ -111,7 +111,7 @@ Extract peer review materials from `<sub-article>` elements organized by revisio
 | `PeerReviewType` | Enum: DECISION_LETTER, REFEREE_REPORT, EDITOR_REPORT, REVIEWER_REPORT, REBUTTAL, AUTHOR_RESPONSE, APPROVAL, OTHER |
 
 ```python
-from pyeuropepmc.processing.extensions import PeerReviewExtractor
+from pyeuropepmc.features.fulltext.extensions import PeerReviewExtractor
 
 extractor = PeerReviewExtractor(parser.root)
 review_sets = extractor.extract_all()
@@ -136,7 +136,7 @@ Convert MathML to LaTeX string representation.
 **Key Class:** `MathMLConverter`
 
 ```python
-from pyeuropepmc.processing.extensions import MathMLConverter
+from pyeuropepmc.features.fulltext.extensions import MathMLConverter
 
 converter = MathMLConverter()
 latex = converter.convert(mathml_string)
@@ -178,7 +178,7 @@ Compliance checking against NISO JATS4R (Journal Article Tag Suite for Reproduci
 | `ValidationFinding` | Individual finding with severity, category, message, element |
 
 ```python
-from pyeuropepmc.processing.extensions import JATS4RValidator
+from pyeuropepmc.features.fulltext.extensions import JATS4RValidator
 
 validator = JATS4RValidator(parser.root)
 report = validator.validate()
@@ -218,7 +218,7 @@ Concurrent XML parsing with rate limiting, progress callbacks, and error handlin
 | `ProcessingResult` | Result for a single XML document |
 
 ```python
-from pyeuropepmc.processing.extensions import BatchProcessor
+from pyeuropepmc.features.fulltext.extensions import BatchProcessor
 
 # Process a list of XML strings
 processor = BatchProcessor(
@@ -255,7 +255,7 @@ Extract asset references (figures, supplementary files, media) from XML and opti
 | `AssetFetchPolicy` | Download policy configuration |
 
 ```python
-from pyeuropepmc.processing.extensions import ImageFetcher, AssetFetchPolicy
+from pyeuropepmc.features.fulltext.extensions import ImageFetcher, AssetFetchPolicy
 
 fetcher = ImageFetcher(parser.root)
 
@@ -283,7 +283,7 @@ Enrich references via the Europe PMC API with caching and rate limiting.
 | `ResolvedReference` | Resolved reference with enriched metadata |
 
 ```python
-from pyeuropepmc.processing.extensions import ReferenceResolver
+from pyeuropepmc.features.fulltext.extensions import ReferenceResolver
 
 resolver = ReferenceResolver()
 results = resolver.resolve_references(parser)
@@ -311,11 +311,11 @@ Convert dataclasses to Pydantic v2 models and dynamically generate models from s
 | `dataclass_to_pydantic()` | Convert a dataclass to a Pydantic v2 model |
 
 ```python
-from pyeuropepmc.processing.extensions import (
+from pyeuropepmc.features.fulltext.extensions import (
     dataclass_to_pydantic,
     PydanticModelGenerator,
 )
-from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
 # Convert existing dataclass to Pydantic model
 PydanticContentBlock = dataclass_to_pydantic(ContentBlock)
@@ -344,7 +344,7 @@ Convenience utilities for parsing XML files and directories without managing `Fu
 | `LocalXMLProcessor` | Class wrapping all local processing methods |
 
 ```python
-from pyeuropepmc.processing.extensions import (
+from pyeuropepmc.features.fulltext.extensions import (
     LocalXMLProcessor,
     parse_xml_file,
     parse_xml_directory,
@@ -388,7 +388,7 @@ The extensions are linked to a LinkML schema at `schemas/linkml/article_content_
 Generated Python models are available at `src/pyeuropepmc/processing/extensions/linkml_models.py`. The schema connects to the `biomedical-knowledge-lookup` ontology where `EUROPEPMC` is defined as a `KnowledgeSource`.
 
 ```python
-from pyeuropepmc.processing.extensions.linkml_models import (
+from pyeuropepmc.features.fulltext.extensions.linkml_models import (
     ArticleContent,
     StructuredSection as LinkMLSection,
     ContentBlock as LinkMLBlock,

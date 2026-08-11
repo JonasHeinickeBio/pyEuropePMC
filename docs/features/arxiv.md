@@ -5,7 +5,7 @@ Search and retrieve preprints from arXiv.org across all subject areas.
 ## Basic Usage
 
 ```python
-from pyeuropepmc.literature import ArxivClient
+from pyeuropepmc.features.search import ArxivClient
 
 with ArxivClient() as client:
     papers = client.search("machine learning", limit=10)
@@ -28,7 +28,7 @@ papers = client.search(
 ## Sorting
 
 ```python
-from pyeuropepmc.literature import ArxivClient
+from pyeuropepmc.features.search import ArxivClient
 
 with ArxivClient() as client:
     # By relevance (default)

@@ -7,7 +7,7 @@ PyEuropePMC integrates with several additional free literature sources beyond th
 Open access aggregator with 200M+ papers (requires free API key):
 
 ```python
-from pyeuropepmc.literature import COREClient
+from pyeuropepmc.features.search import COREClient
 
 with COREClient(api_key="your_key") as client:
     papers = client.search("machine learning", limit=10)
@@ -18,7 +18,7 @@ with COREClient(api_key="your_key") as client:
 NIH Office of Portfolio Analysis citation metrics, including the Relative Citation Ratio (RCR):
 
 ```python
-from pyeuropepmc.enrichment import ICiteClient
+from pyeuropepmc.features.enrich import ICiteClient
 
 client = ICiteClient()
 

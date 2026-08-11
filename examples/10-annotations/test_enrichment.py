@@ -10,8 +10,8 @@ This test:
 """
 
 import json
-from pyeuropepmc.processing.annotation_parser import parse_annotations
-from pyeuropepmc.processing.annotations_to_rdf import annotations_to_rdf
+from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
+from pyeuropepmc.features.literature.annotations_to_rdf import annotations_to_rdf
 from rdflib import Namespace
 
 # Real response from Europe PMC API (subset)

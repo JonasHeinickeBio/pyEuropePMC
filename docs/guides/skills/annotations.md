@@ -4,7 +4,7 @@ Retrieve and parse text-mining annotations (entities, relationships, sentences) 
 
 ```python
 from pyeuropepmc import AnnotationsClient
-from pyeuropepmc.processing.annotation_parser import parse_annotations
+from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
 client = AnnotationsClient()
 

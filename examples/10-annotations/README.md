@@ -84,7 +84,7 @@ annotations = client.get_annotations_by_article_ids(
 )
 
 # Parse the annotations
-from pyeuropepmc.processing.annotation_parser import parse_annotations
+from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 parsed = parse_annotations(annotations)
 
 print(f"Found {len(parsed['entities'])} entities")
@@ -149,7 +149,7 @@ rdf_graph.serialize(destination="annotations.rdf", format="xml")
 ### 2. Powerful Parsing
 The `AnnotationParser` extracts structured data from JSON-LD:
 ```python
-from pyeuropepmc.processing.annotation_parser import (
+from pyeuropepmc.features.fulltext.annotation_parser import (
     parse_annotations,
     extract_entities,
     extract_sentences,

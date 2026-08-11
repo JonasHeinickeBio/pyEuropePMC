@@ -42,7 +42,7 @@ class SemanticScholarLiteratureAdapter:
 
     Wraps the enrichment client's ``enrich()`` method to provide ``search()``
     and ``get_paper()`` methods compatible with
-    :class:`~pyeuropepmc.literature.base.BaseLiteratureClient`.
+    :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`.
 
     Notes
     -----
@@ -265,7 +265,7 @@ class OpenAlexLiteratureAdapter:
 
     Wraps the enrichment client's ``enrich()`` method to provide ``search()``
     and ``get_paper()`` methods compatible with
-    :class:`~pyeuropepmc.literature.base.BaseLiteratureClient`.
+    :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`.
     """
 
     def __init__(

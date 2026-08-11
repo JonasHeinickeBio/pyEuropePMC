@@ -5,7 +5,7 @@ Look up researcher profiles and publications from the ORCID public registry.
 ## Basic Usage
 
 ```python
-from pyeuropepmc.enrichment import OrcidClient
+from pyeuropepmc.features.enrich import OrcidClient
 
 client = OrcidClient()
 

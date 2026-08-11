@@ -5,7 +5,7 @@ Local full-text search of paper collections using SQLite FTS5.
 ## Basic Usage
 
 ```python
-from pyeuropepmc.processing import FullTextIndex, IndexEntry
+from pyeuropepmc.features.fulltext import FullTextIndex, IndexEntry
 
 # Create an in-memory index
 index = FullTextIndex(":memory:")

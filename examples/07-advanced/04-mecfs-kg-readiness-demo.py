@@ -69,11 +69,11 @@ from typing import Any
 
 from rdflib import Namespace
 
-from pyeuropepmc.clients.annotations import AnnotationsClient
-from pyeuropepmc.clients.fulltext import FullTextClient
-from pyeuropepmc.clients.search import SearchClient
-from pyeuropepmc.processing.annotation_parser import parse_annotations
-from pyeuropepmc.processing.annotations_to_rdf import annotations_to_rdf
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.search import SearchClient
+from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
+from pyeuropepmc.features.literature.annotations_to_rdf import annotations_to_rdf
 
 MECFS_QUERY = (
     '("myalgic encephalomyelitis" OR "chronic fatigue syndrome" OR "ME/CFS") '
@@ -848,7 +848,7 @@ def main() -> int:
 
     logging.getLogger("pyeuropepmc").setLevel(logging.CRITICAL)
     logging.getLogger("pyeuropepmc.core.base").setLevel(logging.CRITICAL)
-    logging.getLogger("pyeuropepmc.clients.annotations").setLevel(logging.CRITICAL)
+    logging.getLogger("pyeuropepmc.features.literature.annotations").setLevel(logging.CRITICAL)
 
     target_papers = max(args.target_papers, TARGET_PAPERS_DEFAULT)
     if target_papers != args.target_papers:

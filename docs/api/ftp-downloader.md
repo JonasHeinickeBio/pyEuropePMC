@@ -5,7 +5,7 @@ The `FTPDownloader` enables bulk downloading of full-text articles from Europe P
 ## Class Overview
 
 ```python
-from pyeuropepmc.clients.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 
 class FTPDownloader:
     """Client for bulk downloading via FTP."""
@@ -38,7 +38,7 @@ Download and extract multiple PMC articles.
 
 **Example:**
 ```python
-from pyeuropepmc.clients.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 
 downloader = FTPDownloader()
 results = downloader.bulk_download_and_extract(
@@ -86,7 +86,7 @@ with FTPDownloader() as downloader:
 Raises `FTPDownloadError` for download-related issues:
 
 ```python
-from pyeuropepmc.clients.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 from pyeuropepmc.core.exceptions import FTPDownloadError
 
 try:
@@ -104,7 +104,7 @@ except FTPDownloadError as e:
 ### Basic Bulk Download
 
 ```python
-from pyeuropepmc.clients.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 
 # Download multiple articles
 downloader = FTPDownloader()

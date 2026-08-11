@@ -160,7 +160,7 @@ with PaperEnricher(config) as enricher:
 ### Using Individual Clients
 
 ```python
-from pyeuropepmc.enrichment import CrossRefClient, OpenAlexClient
+from pyeuropepmc.features.enrich import CrossRefClient, OpenAlexClient
 
 # Use CrossRef directly
 with CrossRefClient(email="your@email.com") as client:
@@ -178,7 +178,7 @@ with OpenAlexClient(email="your@email.com") as client:
 `SemanticScholarClient` also supports Semantic Scholar Recommendations API v1:
 
 ```python
-from pyeuropepmc.enrichment import SemanticScholarClient
+from pyeuropepmc.features.enrich import SemanticScholarClient
 
 with SemanticScholarClient(api_key="your-api-key") as client:
     # GET /recommendations/v1/papers/forpaper/{paper_id}
@@ -200,7 +200,7 @@ with SemanticScholarClient(api_key="your-api-key") as client:
 For advanced use cases, you can use `ProfessionalSemanticScholarClient` directly:
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 # Configure with API key (optional but recommended for higher rate limits)
 client = ProfessionalSemanticScholarClient(
@@ -235,7 +235,7 @@ print(f"Paper count: {venue.paper_count}")
 
 **Old Code:**
 ```python
-from pyeuropepmc.enrichment import SemanticScholarClient
+from pyeuropepmc.features.enrich import SemanticScholarClient
 
 client = SemanticScholarClient()
 results = client.search_paper("cancer")
@@ -243,7 +243,7 @@ results = client.search_paper("cancer")
 
 **New Code:**
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 results = client.search_paper("cancer", bulk=False)  # explicit
@@ -344,7 +344,7 @@ $env:UNPAYWALL_EMAIL="your@email.com"
 ### Programmatic Configuration
 
 ```python
-from pyeuropepmc.enrichment import EnrichmentConfig, ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import EnrichmentConfig, ProfessionalSemanticScholarClient
 
 # Configure with all options
 config = EnrichmentConfig(

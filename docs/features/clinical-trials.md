@@ -5,7 +5,7 @@ Search and retrieve clinical trial protocols from ClinicalTrials.gov.
 ## Basic Search
 
 ```python
-from pyeuropepmc.literature import ClinicalTrialsClient
+from pyeuropepmc.features.search import ClinicalTrialsClient
 
 with ClinicalTrialsClient() as client:
     # Search by keyword

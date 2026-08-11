@@ -17,7 +17,7 @@ The `RhetoricalHighlighter` analyzes scientific text and labels sentences accord
 ## Basic Usage
 
 ```python
-from pyeuropepmc.processing import RhetoricalHighlighter
+from pyeuropepmc.features.fulltext import RhetoricalHighlighter
 
 highlighter = RhetoricalHighlighter()
 
@@ -35,7 +35,7 @@ result = highlighter.highlight(text)
 ## Annotated Document
 
 ```python
-from pyeuropepmc.processing import RhetoricalHighlighter
+from pyeuropepmc.features.fulltext import RhetoricalHighlighter
 
 highlighter = RhetoricalHighlighter()
 doc = highlighter.highlight(text)
@@ -83,7 +83,7 @@ print(summary)
 ## PDF Text Input
 
 ```python
-from pyeuropepmc.processing import highlight_text, highlight_pdf_text
+from pyeuropepmc.features.fulltext import highlight_text, highlight_pdf_text
 
 # Annotate any text
 result = highlight_text(text)

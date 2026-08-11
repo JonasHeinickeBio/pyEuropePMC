@@ -104,7 +104,7 @@ config = EnrichmentConfig(
 You can also use individual API clients directly:
 
 ```python
-from pyeuropepmc.enrichment import CrossRefClient, OpenAlexClient
+from pyeuropepmc.features.enrich import CrossRefClient, OpenAlexClient
 
 # CrossRef client
 with CrossRefClient(email="your@email.com") as client:

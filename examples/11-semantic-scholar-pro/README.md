@@ -5,7 +5,7 @@ This directory contains examples for using the professional `danielnsilva/semant
 ## Quick Start
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 # Configure with API key (optional but recommended)
 client = ProfessionalSemanticScholarClient(
@@ -32,7 +32,7 @@ results = client.search_paper("machine learning", bulk=False, limit=100)
 Get a paper with full typed response objects:
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 
@@ -55,7 +55,7 @@ for author in paper.authors:
 Search large result sets efficiently:
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 
@@ -78,7 +78,7 @@ for i, paper in enumerate(papers[:10]):
 Get detailed author and venue data:
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 
@@ -99,7 +99,7 @@ print(f"Paper count: {venue.paper_count}")
 Combine multiple filters for precise results:
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 
@@ -148,7 +148,7 @@ with PaperEnricher(config) as enricher:
 
 **Old code:**
 ```python
-from pyeuropepmc.enrichment import SemanticScholarClient
+from pyeuropepmc.features.enrich import SemanticScholarClient
 
 client = SemanticScholarClient()
 results = client.search_paper("cancer")
@@ -156,7 +156,7 @@ results = client.search_paper("cancer")
 
 **New code:**
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 results = client.search_paper("cancer", bulk=False)  # explicit

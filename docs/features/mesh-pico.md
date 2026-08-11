@@ -64,7 +64,7 @@ Decompose clinical research questions into PICO (Population, Intervention, Compa
 ### Basic Parsing
 
 ```python
-from pyeuropepmc.query import pico_decompose, PICOElements
+from pyeuropepmc.features.literature import pico_decompose, PICOElements
 
 pico = pico_decompose(
     "In patients with diabetes, does metformin reduce cardiovascular risk compared to placebo?"
@@ -79,7 +79,7 @@ print(f"Outcome:      {pico.outcome}")       # "reduce cardiovascular risk"
 ### Converting to Search Queries
 
 ```python
-from pyeuropepmc.query import pico_to_query, pico_to_pubmed_query
+from pyeuropepmc.features.literature import pico_to_query, pico_to_pubmed_query
 
 # Generic boolean query
 query = pico_to_query(pico)
@@ -95,7 +95,7 @@ print(pubmed_query)
 ### Parser Variants
 
 ```python
-from pyeuropepmc.query import PICOParser, PICOSDecomposer, PICOTDecomposer
+from pyeuropepmc.features.literature import PICOParser, PICOSDecomposer, PICOTDecomposer
 
 # Standard PICO
 parser = PICOParser()
@@ -121,7 +121,7 @@ print(f"Confidence: {pico.confidence:.2f}")
 ### Command-Line PICO
 
 ```bash
-python -m pyeuropepmc.query.pico "In patients with diabetes, does metformin reduce cardiovascular risk?"
+python -m pyeuropepmc.features.review.pico "In patients with diabetes, does metformin reduce cardiovascular risk?"
 ```
 
 ## Use Cases

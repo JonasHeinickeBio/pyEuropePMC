@@ -2,13 +2,25 @@
 Deduplication engine for literature data.
 
 Provides functions and classes for identifying and merging duplicate papers
-from multiple sources using a **4-layer** matching strategy:
+from multiple sources using a **CORD-19-inspired multi-layer** strategy:
 
-1. **PMID**  — exact match on PubMed ID
-2. **DOI**   — exact match on Digital Object Identifier (after normalisation)
-3. **Fuzzy title** — year-grouped + author-blocked ``SequenceMatcher``-based
+1. **Identifier clustering** — union-find clustering over any shared
+   identifier (DOI, PMID, PMCID, arXiv ID, MAG ID, WHO/Covidence ID),
+   mirroring the CORD-19 dataset pipeline.  Optional strict conflict
+   detection keeps papers separate when they share one identifier but
+   conflict on another.
+2. **PMID**  — exact match on PubMed ID
+3. **DOI**   — exact match on Digital Object Identifier (after normalisation)
+4. **Fuzzy title** — year-grouped + author-blocked ``SequenceMatcher``-based
    title similarity with part-marker sensitivity
-4. **Retracted-paper removal** — optional filtering
+5. **Retracted-paper removal** — optional filtering
+6. **Non-paper filtering** — removes TOC/index/informational entries
+   (CORD-19 "cluster filtering")
+
+Canonical metadata selection follows CORD-19: among each cluster the
+canonical entry is chosen by *document availability* and *license
+permissiveness* (tie-broken by source reliability), and missing fields are
+promoted from other cluster members.
 
 Also includes a configurable merge strategy with field-level quality
 heuristics, a full audit trail, and multiple algorithm modes:
@@ -17,8 +29,11 @@ heuristics, a full audit trail, and multiple algorithm modes:
 - **FOCUSED** (high recall) — 0.80 threshold, catches more duplicates
 - **RELAXED** (high precision) — 0.95 threshold + stricter gates
 
-Improvements over v1 (informed by BibDedupe, Deduplicator, Deduklick, ASySD):
+Improvements over v1 (informed by CORD-19, BibDedupe, Deduplicator,
+Deduklick, ASySD):
 - Multi-algorithm modes (BALANCED / FOCUSED / RELAXED)
+- Identifier clustering with conflict detection (CORD-19 approach)
+- License- and availability-aware canonical selection (CORD-19 approach)
 - Author last-name set comparison in fuzzy pass (reduces false positives)
 - Part-marker detection in titles ("Part I" / "Part II" → not duplicates)
 - Provenance tracking at field level
@@ -54,6 +69,7 @@ __all__ = [
     "deduplicate_by_doi",
     "deduplicate_by_title",
     "deduplicate_by_hash",
+    "cluster_papers_by_identifier",
     "PaperMatcher",
     "LiteratureMerger",
     "DedupConfig",
@@ -141,8 +157,12 @@ class MatchLevel(Enum):
 
     PMID_EXACT = auto()
     DOI_EXACT = auto()
+    PMCID_EXACT = auto()
+    ARXIV_EXACT = auto()
+    IDENTIFIER_CLUSTER = auto()  # CORD-19: shared non-DOI/PMID identifier
     TITLE_HASH = auto()
     FUZZY_TITLE = auto()
+    NON_PAPER = auto()  # filtered as a non-paper entry (TOC, index, etc.)
     NO_MATCH = auto()
 
 
@@ -205,6 +225,7 @@ class MergeReport:
     total_input: int = 0
     total_output: int = 0
     records: list[MergeRecord] = field(default_factory=list)
+    metadata: dict[str, Any] = field(default_factory=dict)
 
     @property
     def duplicates_removed(self) -> int:
@@ -265,6 +286,28 @@ class DedupConfig:
     keep_provenance : bool
         Whether to track per-field provenance in the merged output
         (default ``True``).
+    use_identifier_clustering : bool
+        Whether to cluster papers by shared identifiers (DOI, PMID, PMCID,
+        arXiv, MAG, WHO/Covidence) before the exact passes, mirroring the
+        CORD-19 pipeline (default ``True``).
+    strict_identifier_conflicts : bool
+        In identifier clustering, treat a conflict on one identifier
+        (e.g. same DOI but different PMID) as a reason to keep papers in
+        separate clusters, per CORD-19 (default ``False`` — merges on any
+        shared identifier and only rejects when multiple identifiers
+        contradict, i.e. two papers sharing DOI *and* PMID values must agree
+        on both).
+    prefer_open_access : bool
+        When selecting the canonical member of an identifier cluster,
+        prefer entries with a permissive license and available full text
+        (CORD-19 canonical selection; default ``True``).
+    filter_non_papers : bool
+        Remove non-paper entries (tables of contents, indices, journal
+        front-matter, informational documents) before dedup, mirroring
+        CORD-19 cluster filtering (default ``True``).
+    persist_cluster_ids : bool
+        Attach a deterministic ``cluster_id`` to merged papers so clusters
+        are stable across runs (CORD UID analog; default ``True``).
     """
 
     mode: DedupMode = DedupMode.BALANCED
@@ -276,6 +319,11 @@ class DedupConfig:
     require_author_overlap: bool | None = None
     require_journal_overlap: bool | None = None
     keep_provenance: bool = True
+    use_identifier_clustering: bool = True
+    strict_identifier_conflicts: bool = False
+    prefer_open_access: bool = True
+    filter_non_papers: bool = True
+    persist_cluster_ids: bool = True
 
     def __post_init__(self) -> None:
         # Resolve threshold
@@ -504,8 +552,299 @@ def _is_retracted(paper: dict[str, Any]) -> bool:
 
 
 # ===========================================================================
+# Identifier extraction & CORD-19-style clustering
+# ===========================================================================
+
+
+def _extract_identifiers(paper: dict[str, Any]) -> dict[str, str]:
+    """Extract normalized external identifiers from a paper dict.
+
+    Returns a dict mapping identifier type -> normalized value for any of
+    ``doi``, ``pmid``, ``pmcid``, ``arxiv``, ``mag``, ``who`` (Covidence ID).
+
+    This mirrors the CORD-19 identifier set
+    ``{doi, pmc id, pubmed id, arxiv id, who covidence id, mag id}``.
+    """
+    ids: dict[str, str] = {}
+
+    doi = paper.get("doi")
+    if doi:
+        normalized = normalize_doi(doi)
+        if normalized:
+            ids["doi"] = normalized
+
+    pmid = paper.get("pmid")
+    if pmid:
+        s = str(pmid).strip()
+        if s and s.lower() not in ("none", "null", "nan"):
+            ids["pmid"] = s
+
+    pmcid = paper.get("pmcid")
+    if pmcid:
+        s = str(pmcid).strip().upper()
+        if s and s.lower() not in ("none", "null", "nan"):
+            if not s.startswith("PMC"):
+                s = f"PMC{s}"
+            ids["pmcid"] = s
+
+    arxiv = paper.get("arxiv_id") or paper.get("arxiv")
+    if arxiv:
+        s = str(arxiv).strip()
+        if s and s.lower() not in ("none", "null", "nan"):
+            s = s.replace("arXiv:", "").replace("arxiv:", "")
+            ids["arxiv"] = s
+
+    mag = paper.get("mag_id")
+    if mag:
+        s = str(mag).strip()
+        if s and s.lower() not in ("none", "null", "nan"):
+            ids["mag"] = s
+
+    who = paper.get("who_covidence_id") or paper.get("covidence_id")
+    if who:
+        s = str(who).strip()
+        if s and s.lower() not in ("none", "null", "nan"):
+            ids["who"] = s
+
+    # Check external_ids sub-dict if present (e.g. from OpenAlex/Crossref)
+    ext = paper.get("external_ids")
+    if isinstance(ext, dict):
+        for k, v in ext.items():
+            if not v:
+                continue
+            kl = str(k).lower().replace("_", "")
+            key = None
+            if kl in ("doi", "pmid", "pmcid", "arxiv", "mag", "who", "covidenceid"):
+                key = kl if kl != "covidenceid" else "who"
+            if key and key not in ids:
+                s = str(v).strip()
+                if key == "pmcid" and s and not s.upper().startswith("PMC"):
+                    s = f"PMC{s}"
+                ids[key] = s
+
+    return ids
+
+
+def _identifiers_conflict(
+    ids_a: dict[str, str],
+    ids_b: dict[str, str],
+) -> bool:
+    """Return True when two papers have contradictory identifier values.
+
+    A conflict exists when both papers carry the *same identifier type*
+    with *different* values (e.g. same DOI but different PMID, or same
+    PMID but different PMCID).  CORD-19 uses this to keep papers in
+    separate clusters despite a shared identifier.
+    """
+    for idtype in set(ids_a) & set(ids_b):
+        if ids_a[idtype] != ids_b[idtype]:
+            return True
+    return False
+
+
+# Ordered license tiers from most permissive to least.  The CORD-19
+# canonical selection prefers the most permissive license available.
+_LICENSE_TIERS: list[tuple[tuple[str, ...], int]] = [
+    (("cc0", "public domain"), 100),
+    (("cc-by", "creative commons attribution"), 90),
+    (("cc-by-sa",), 80),
+    (("cc-by-nc", "cc-by-nc-sa", "cc-by-nc-nd"), 70),
+    (("cc-by-nd",), 60),
+    (("open access", "oa"), 50),
+    (("license", "licence"), 10),
+]
+
+
+def _license_score(paper: dict[str, Any]) -> int:
+    """Score the license permissiveness of a paper (0 = unknown/closed)."""
+    text = ""
+    license_field = paper.get("license")
+    if isinstance(license_field, str):
+        text += " " + license_field
+    elif isinstance(license_field, dict):
+        for v in license_field.values():
+            if isinstance(v, str):
+                text += " " + v
+    elif isinstance(license_field, list):
+        for item in license_field:
+            if isinstance(item, str):
+                text += " " + item
+            elif isinstance(item, dict):
+                for v in item.values():
+                    if isinstance(v, str):
+                        text += " " + v
+
+    # Check raw source payloads for license / OA info
+    for raw_key in ("openalex_data", "unpaywall_data", "crossref_data"):
+        raw = paper.get(raw_key)
+        if isinstance(raw, dict):
+            for field in ("license", "license_url", "oa_status", "is_oa"):
+                v = raw.get(field)
+                if isinstance(v, str):
+                    text += " " + v
+                elif isinstance(v, bool) and v:
+                    text += " open access"
+
+    if paper.get("is_oa"):
+        text += " open access"
+    oa_status = paper.get("oa_status")
+    if isinstance(oa_status, str):
+        text += " " + oa_status
+
+    t = text.lower()
+    for keywords, score in _LICENSE_TIERS:
+        if any(kw in t for kw in keywords):
+            return score
+    return 0
+
+
+def _document_availability_score(paper: dict[str, Any]) -> int:
+    """Score how much full-text/document material is available.
+
+    CORD-19 prioritises the entry with the most document files.
+    """
+    score = 0
+    if paper.get("pmcid") or paper.get("pmc_id"):
+        score += 30  # full text in PMC
+    if paper.get("fulltext_url") or paper.get("pdf_url") or paper.get("oa_url"):
+        score += 25
+    if paper.get("has_fulltext") or paper.get("is_oa"):
+        score += 20
+    if paper.get("abstract"):
+        score += 10
+    return score
+
+
+def _canonical_score(
+    paper: dict[str, Any],
+    preferences: dict[str, Any],
+    prefer_open_access: bool,
+) -> tuple[int, int, int]:
+    """Rank a paper for canonical selection inside a cluster.
+
+    Returns ``(license_score, document_score, source_score)`` so that the
+    most permissive license, then most available document, then most trusted
+    source wins — mirroring CORD-19 canonical metadata selection.
+    """
+    if prefer_open_access:
+        lic = _license_score(paper)
+        doc = _document_availability_score(paper)
+    else:
+        lic = 0
+        doc = 0
+    src = _source_score(paper.get("source"), preferences)
+    return (lic, doc, src)
+
+
+_NON_PAPER_PATTERNS = re.compile(
+    r"""
+    \b(table\s+of\s+contents|toc)\b |
+    \b(subject\s+)?index\b |
+    ^contents\b |
+    \beditorial\s+board\b |
+    \b(instructions|information)\s+for\s+authors\b |
+    \bcover\s+(page|image)\b |
+    \bjournal\s+(information|info|announcement)\b |
+    \bcontents\s+list\b |
+    \bin\s+memoriam\b |
+    \bobituary\b |
+    \bcorrection\s+to\b
+    """,
+    re.IGNORECASE | re.VERBOSE,
+)
+
+
+def _is_non_paper_entry(paper: dict[str, Any]) -> bool:
+    """Detect non-paper entries (TOC, indices, journal front-matter).
+
+    Mirrors CORD-19 "cluster filtering" which removes materials such as
+    tables of contents, indices, or informational documents.
+    """
+    title = paper.get("title")
+    if not title or not isinstance(title, str):
+        return False
+    return bool(_NON_PAPER_PATTERNS.search(title))
+
+
+def _compute_cluster_id(ids: list[dict[str, str]]) -> str:
+    """Deterministic cluster id (CORD UID analog) from member identifiers."""
+    all_values = sorted({v for idmap in ids for v in idmap.values()})
+    if not all_values:
+        return ""
+    digest = hashlib.sha256("|".join(all_values).encode("utf-8")).hexdigest()[:16]
+    return f"CORD-{digest.upper()}"
+
+
+# ===========================================================================
 # 4-layer deduplication functions
 # ===========================================================================
+
+
+def cluster_papers_by_identifier(
+    papers: list[dict[str, Any]],
+    strict_conflicts: bool = False,
+) -> list[list[int]]:
+    """Cluster paper indices by shared identifiers using union-find.
+
+    Two papers join the same cluster when they share **any** identifier
+    (DOI, PMID, PMCID, arXiv, MAG, WHO/Covidence), mirroring CORD-19.
+    When ``strict_conflicts`` is True, a shared identifier is ignored if
+    the two papers also carry a *conflicting* value for another identifier
+    type (e.g. same DOI but different PMID → separate clusters).
+
+    Parameters
+    ----------
+    papers : list[dict]
+        List of paper dictionaries.
+    strict_conflicts : bool
+        Enable CORD-19-style conflict rejection (default False).
+
+    Returns
+    -------
+    list[list[int]]
+        A list of clusters, each a list of indices into *papers*.
+    """
+    n = len(papers)
+    parent = list(range(n))
+    rank = [0] * n
+
+    def find(x: int) -> int:
+        while parent[x] != x:
+            parent[x] = parent[parent[x]]
+            x = parent[x]
+        return x
+
+    def union(a: int, b: int) -> None:
+        ra, rb = find(a), find(b)
+        if ra == rb:
+            return
+        if rank[ra] < rank[rb]:
+            ra, rb = rb, ra
+        parent[rb] = ra
+        if rank[ra] == rank[rb]:
+            rank[ra] += 1
+
+    # Map identifier -> index of first paper carrying it
+    id_to_index: dict[tuple[str, str], int] = {}
+    id_sets: list[dict[str, str]] = [_extract_identifiers(p) for p in papers]
+
+    for i, ids in enumerate(id_sets):
+        for idtype, value in ids.items():
+            key = (idtype, value)
+            if key in id_to_index:
+                j = id_to_index[key]
+                if strict_conflicts and _identifiers_conflict(ids, id_sets[j]):
+                    # Shared identifier but conflicting other id → separate
+                    continue
+                union(i, j)
+            else:
+                id_to_index[key] = i
+
+    clusters: dict[int, list[int]] = {}
+    for i in range(n):
+        root = find(i)
+        clusters.setdefault(root, []).append(i)
+    return list(clusters.values())
 
 
 def deduplicate_by_pmid(papers: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -880,15 +1219,18 @@ class LiteratureMerger:
     ) -> tuple[list[dict[str, Any]], MergeReport]:
         """Merge and deduplicate results from multiple sources.
 
-        The pipeline:
+        The pipeline (CORD-19-inspired):
 
         1. Flatten all sources
         2. (Optional) Remove retracted papers
-        3. PMID exact dedup
-        4. DOI exact dedup
-        5. Fuzzy title dedup with year-grouped blocking & author/journal gates
-        6. Merge field values using quality heuristics
-        7. Audit trail
+        3. (Optional) Filter non-paper entries (TOC, indices, front-matter)
+        4. (Optional) Identifier clustering over shared DOI/PMID/PMCID/
+           arXiv/MAG/WHO ids with canonical selection
+        5. PMID exact dedup
+        6. DOI exact dedup
+        7. Fuzzy title dedup with year-grouped blocking & author/journal gates
+        8. Merge field values using quality heuristics
+        9. Audit trail
 
         Parameters
         ----------
@@ -931,13 +1273,36 @@ class LiteratureMerger:
                     cleaned.append(paper)
             all_papers = cleaned
 
-        # ---- 3. PMID dedup ----
+        # ---- 3. Filter non-papers (CORD-19 cluster filtering) ----
+        if cfg.filter_non_papers:
+            filtered: list[dict[str, Any]] = []
+            for paper in all_papers:
+                if _is_non_paper_entry(paper):
+                    report.records.append(
+                        MergeRecord(
+                            kept_index=None,
+                            removed_index=len(report.records),
+                            match_level=MatchLevel.NON_PAPER,
+                            reason="Non-paper entry (TOC/index/front-matter)",
+                            kept_title=paper.get("title"),
+                            removed_title=paper.get("title"),
+                        )
+                    )
+                else:
+                    filtered.append(paper)
+            all_papers = filtered
+
+        # ---- 4. Identifier clustering (CORD-19) ----
+        if cfg.use_identifier_clustering and all_papers:
+            all_papers, report = self._identifier_cluster_pass(all_papers, report)
+
+        # ---- 5. PMID dedup ----
         pmid_unique, report = self._dedup_pass(all_papers, report, MatchLevel.PMID_EXACT, "PMID")
 
-        # ---- 4. DOI dedup ----
+        # ---- 6. DOI dedup ----
         doi_unique, report = self._dedup_pass(pmid_unique, report, MatchLevel.DOI_EXACT, "DOI")
 
-        # ---- 5. Fuzzy title dedup ----
+        # ---- 7. Fuzzy title dedup ----
         title_unique, report = self._fuzzy_dedup_pass(
             doi_unique,
             report,
@@ -959,6 +1324,114 @@ class LiteratureMerger:
     # ------------------------------------------------------------------
     # Internal helpers
     # ------------------------------------------------------------------
+
+    def _identifier_cluster_pass(
+        self,
+        papers: list[dict[str, Any]],
+        report: MergeReport,
+    ) -> tuple[list[dict[str, Any]], MergeReport]:
+        """Cluster papers by shared identifiers and select a canonical member.
+
+        For each cluster of size > 1 the canonical member is chosen by
+        (license permissiveness, document availability, source reliability)
+        and the remaining members are merged into it — mirroring the
+        CORD-19 canonical metadata selection.
+        """
+        cfg = self.config
+        clusters = cluster_papers_by_identifier(
+            papers,
+            strict_conflicts=cfg.strict_identifier_conflicts,
+        )
+
+        if len(clusters) == len(papers):
+            # No identifier overlaps at all — nothing to do
+            return papers, report
+
+        kept: list[dict[str, Any]] = []
+        for cluster in clusters:
+            if len(cluster) == 1:
+                kept.append(papers[cluster[0]])
+                continue
+
+            # ---- Canonical selection (CORD-19) ----
+            canonical_idx = max(
+                cluster,
+                key=lambda i: _canonical_score(
+                    papers[i],
+                    {"_source_priority": cfg._source_priority},
+                    cfg.prefer_open_access,
+                ),
+            )
+            canonical = dict(papers[canonical_idx])
+            canonical_ids = _extract_identifiers(canonical)
+
+            # Deterministic cluster id (CORD UID analog)
+            member_ids = [_extract_identifiers(papers[i]) for i in cluster]
+            cluster_id = _compute_cluster_id(member_ids)
+            if cfg.persist_cluster_ids and cluster_id:
+                canonical["cluster_id"] = cluster_id
+
+            for idx in cluster:
+                if idx == canonical_idx:
+                    continue
+                member = papers[idx]
+                member_ids_map = _extract_identifiers(member)
+
+                # Determine the match level from which identifiers matched
+                match_level = self._cluster_match_level(canonical_ids, member_ids_map)
+
+                report.records.append(
+                    MergeRecord(
+                        kept_index=canonical_idx,
+                        removed_index=idx,
+                        match_level=match_level,
+                        reason=(
+                            f"Identifier cluster ({len(cluster)} members): "
+                            f"{sorted(set(canonical_ids) & set(member_ids_map)) or 'shared id'}"
+                        ),
+                        kept_source=canonical.get("source"),
+                        removed_source=member.get("source"),
+                        kept_title=canonical.get("title"),
+                        removed_title=member.get("title"),
+                    )
+                )
+                canonical = _merge_two_papers(
+                    canonical,
+                    member,
+                    preferences=cfg._field_preferences,
+                    keep_provenance=cfg.keep_provenance,
+                )
+            kept.append(canonical)
+
+        report.metadata["identifier_clusters"] = len(clusters)
+        report.metadata["clustered_papers"] = len(papers) - len(kept)
+        return kept, report
+
+    @staticmethod
+    def _cluster_match_level(
+        canonical_ids: dict[str, str],
+        member_ids: dict[str, str],
+    ) -> MatchLevel:
+        """Map the identifier overlap between two cluster members to a level.
+
+        Only identifier types whose **values are identical** on both members
+        count as a match (e.g. two papers sharing PMCID but with different
+        PMIDs should be reported as ``PMCID_EXACT``, not ``PMID_EXACT``).
+        """
+        matched = {
+            t for t in canonical_ids if member_ids.get(t) == canonical_ids[t]
+        }
+        if not matched:
+            return MatchLevel.IDENTIFIER_CLUSTER
+        if "doi" in matched:
+            return MatchLevel.DOI_EXACT
+        if "pmid" in matched:
+            return MatchLevel.PMID_EXACT
+        if "pmcid" in matched:
+            return MatchLevel.PMCID_EXACT
+        if "arxiv" in matched:
+            return MatchLevel.ARXIV_EXACT
+        return MatchLevel.IDENTIFIER_CLUSTER
 
     def _dedup_pass(
         self,

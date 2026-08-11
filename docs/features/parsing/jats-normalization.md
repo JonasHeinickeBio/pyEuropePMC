@@ -5,7 +5,7 @@ The `JATSNormalizer` applies a configurable pipeline of normalization layers to 
 ## Quick Start
 
 ```python
-from pyeuropepmc.processing.jats_normalizer import JATSNormalizer
+from pyeuropepmc.features.fulltext.jats_normalizer import JATSNormalizer
 
 normalizer = JATSNormalizer()
 result = normalizer.normalize_xml(xml_content)
@@ -72,7 +72,7 @@ The normalizer canonicalizes ~30 heading patterns to standard types:
 | `references` | References, Bibliography, Literature Cited |
 
 ```python
-from pyeuropepmc.processing.jats_normalizer import classify_section
+from pyeuropepmc.features.fulltext.jats_normalizer import classify_section
 
 print(classify_section("Materials and Methods"))  # "methods"
 print(classify_section("Conclusions"))             # "conclusion"
@@ -82,7 +82,7 @@ print(classify_section("Data Availability"))        # "other"
 ## Module-Level Convenience Functions
 
 ```python
-from pyeuropepmc.processing.jats_normalizer import (
+from pyeuropepmc.features.fulltext.jats_normalizer import (
     normalize_jats_xml,   # Full normalization
     normalize_jats_text,  # Plain text only
     classify_section,     # Heading classification

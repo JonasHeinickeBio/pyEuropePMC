@@ -245,7 +245,7 @@ class FullTextXMLParser:
             if not _ensure_extensions():
                 raise ImportError(
                     "ContentBlockExtractor not available. "
-                    "Ensure pyeuropepmc.processing.extensions is installed."
+                    "Ensure pyeuropepmc.features.fulltext.extensions is installed."
                 )
             self._content_block_extractor = _ContentBlockExtractor(self.root, self.config)
         return self._content_block_extractor

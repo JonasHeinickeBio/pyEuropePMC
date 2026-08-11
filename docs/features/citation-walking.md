@@ -7,7 +7,7 @@ PyEuropePMC provides citation graph traversal for systematic reviews and literat
 Citation snowballing is the process of following citation chains forward (papers that cite a given paper) and backward (references cited by a paper).
 
 ```python
-from pyeuropepmc.literature import CitationWalker, SnowballingStrategy
+from pyeuropepmc.features.citations.walker import CitationWalker, SnowballingStrategy
 
 walker = CitationWalker()
 ```

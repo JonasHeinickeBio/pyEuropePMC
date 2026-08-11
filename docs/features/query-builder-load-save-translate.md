@@ -240,7 +240,7 @@ Total: 27 passing tests, 3 skipped
 pytest tests/query_builder/unit/test_query_load_save_translate.py -v
 
 # Run with coverage
-pytest tests/query_builder/unit/test_query_load_save_translate.py --cov=pyeuropepmc.query_builder
+pytest tests/query_builder/unit/test_query_load_save_translate.py --cov=pyeuropepmc.features.literature.query_builder
 
 # Run only specific test class
 pytest tests/query_builder/unit/test_query_load_save_translate.py::TestQueryBuilderFromString -v

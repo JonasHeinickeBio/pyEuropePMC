@@ -316,7 +316,7 @@ For processing thousands of papers, use these strategies:
 When using the Semantic Scholar enrichment client, use `bulk=True` for faster search:
 
 ```python
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 client = ProfessionalSemanticScholarClient()
 

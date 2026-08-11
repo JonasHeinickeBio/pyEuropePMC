@@ -16,7 +16,7 @@ from rdflib import Graph
 
 from pyeuropepmc.builders import build_paper_entities
 from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 
 def parse_args() -> argparse.Namespace:

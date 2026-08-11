@@ -1,9 +1,9 @@
 # XML Parser Extensions API Reference
 
-## Module: `pyeuropepmc.processing.extensions`
+## Module: `pyeuropepmc.features.fulltext.extensions`
 
 ```python
-from pyeuropepmc.processing.extensions import *
+from pyeuropepmc.features.fulltext.extensions import *
 ```
 
 ### Conditional Imports
@@ -12,7 +12,7 @@ Pydantic helpers are available only when `pydantic` is installed:
 
 ```python
 try:
-    from pyeuropepmc.processing.extensions import (
+    from pyeuropepmc.features.fulltext.extensions import (
         PydanticModelGenerator,
         dataclass_to_pydantic,
     )

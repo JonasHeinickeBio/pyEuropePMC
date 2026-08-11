@@ -5,7 +5,7 @@ Extract figures, images, and tables from PubMed Central Open Access articles.
 ## Basic Usage
 
 ```python
-from pyeuropepmc.processing import FigureExtractor
+from pyeuropepmc.features.fulltext import FigureExtractor
 
 extractor = FigureExtractor()
 
@@ -22,7 +22,7 @@ for fig in figures:
 Each extracted figure returns a `FigureInfo` object:
 
 ```python
-from pyeuropepmc.processing import FigureFormat
+from pyeuropepmc.features.fulltext import FigureFormat
 
 for fig in figures:
     print(f"Label: {fig.label}")       # "Figure 1", "Table 2"

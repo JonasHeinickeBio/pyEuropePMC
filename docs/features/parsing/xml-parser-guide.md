@@ -303,12 +303,12 @@ for source, count in source_counts.most_common(5):
 
 ## Extension Modules
 
-The parser includes 10 extension modules for advanced XML processing. Each module is importable from `pyeuropepmc.processing.extensions`.
+The parser includes 10 extension modules for advanced XML processing. Each module is importable from `pyeuropepmc.features.fulltext.extensions`.
 
 ### Structured Content Blocks (for RAG/LLM)
 
 ```python
-from pyeuropepmc.processing.extensions import ContentBlockExtractor
+from pyeuropepmc.features.fulltext.extensions import ContentBlockExtractor
 
 extractor = ContentBlockExtractor(parser.root)
 sections = extractor.extract_sections()
@@ -330,7 +330,7 @@ for section in structured:
 ### JATS4R Compliance Validation
 
 ```python
-from pyeuropepmc.processing.extensions import JATS4RValidator
+from pyeuropepmc.features.fulltext.extensions import JATS4RValidator
 
 report = JATS4RValidator(parser.root).validate()
 print(f"Compliance: {report.compliance_score:.0%}")
@@ -341,7 +341,7 @@ for finding in report.findings:
 ### Peer Review Extraction
 
 ```python
-from pyeuropepmc.processing.extensions import PeerReviewExtractor
+from pyeuropepmc.features.fulltext.extensions import PeerReviewExtractor
 
 review_sets = PeerReviewExtractor(parser.root).extract_all()
 for round_set in review_sets:
@@ -353,7 +353,7 @@ for round_set in review_sets:
 ### MathML → LaTeX Conversion
 
 ```python
-from pyeuropepmc.processing.extensions import MathMLConverter
+from pyeuropepmc.features.fulltext.extensions import MathMLConverter
 
 converter = MathMLConverter()
 for formula_elem in parser.root.findall(".//disp-formula"):
@@ -366,7 +366,7 @@ for formula_elem in parser.root.findall(".//disp-formula"):
 ### Batch Processing Multiple Files
 
 ```python
-from pyeuropepmc.processing.extensions import BatchProcessor
+from pyeuropepmc.features.fulltext.extensions import BatchProcessor
 
 processor = BatchProcessor(rate_per_second=5, on_progress=lambda i,t: print(f"{i}/{t}"))
 results = processor.process_files(["doc1.xml", "doc2.xml", "doc3.xml"])
@@ -376,7 +376,7 @@ print(f"Processed: {results.total_count} files in {results.total_time:.2f}s")
 ### Local Processing Convenience
 
 ```python
-from pyeuropepmc.processing.extensions import LocalXMLProcessor
+from pyeuropepmc.features.fulltext.extensions import LocalXMLProcessor
 
 # Parse a file directly
 parser = LocalXMLProcessor.parse_file("article.xml")
@@ -391,7 +391,7 @@ results = LocalXMLProcessor.batch_process_files(["file1.xml", "file2.xml"])
 ### Reference Resolution via API
 
 ```python
-from pyeuropepmc.processing.extensions import ReferenceResolver
+from pyeuropepmc.features.fulltext.extensions import ReferenceResolver
 
 resolver = ReferenceResolver()
 refs = resolver.resolve_references(parser)
@@ -403,7 +403,7 @@ for ref in refs:
 ### Asset Extraction
 
 ```python
-from pyeuropepmc.processing.extensions import ImageFetcher
+from pyeuropepmc.features.fulltext.extensions import ImageFetcher
 
 assets = ImageFetcher(parser.root).extract_assets()
 for asset in assets:
@@ -413,7 +413,7 @@ for asset in assets:
 ### lxml Backend (Optional)
 
 ```python
-from pyeuropepmc.processing.extensions import LXMLParser, is_lxml_available
+from pyeuropepmc.features.fulltext.extensions import LXMLParser, is_lxml_available
 
 if is_lxml_available():
     lxml_root = LXMLParser().parse(xml_content)

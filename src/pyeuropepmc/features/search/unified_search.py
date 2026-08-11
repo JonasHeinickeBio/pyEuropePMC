@@ -33,16 +33,16 @@ __all__ = ["UnifiedSearch"]
 
 # Map of source names to (module_path, class_name)
 _SOURCE_REGISTRY: dict[str, tuple[str, str]] = {
-    "pubmed": ("pyeuropepmc.literature.pubmed", "PubMedClient"),
-    "arxiv": ("pyeuropepmc.literature.arxiv", "ArxivClient"),
-    "clinicaltrials": ("pyeuropepmc.literature.clinicaltrials", "ClinicalTrialsClient"),
-    "semantic_scholar": ("pyeuropepmc.literature.adapters", "SemanticScholarLiteratureAdapter"),
-    "openalex": ("pyeuropepmc.literature.adapters", "OpenAlexLiteratureAdapter"),
-    "zenodo": ("pyeuropepmc.literature.zenodo", "ZenodoClient"),
-    "doaj": ("pyeuropepmc.literature.doaj", "DOAJClient"),
-    "dblp": ("pyeuropepmc.literature.dblp", "DBLPClient"),
-    "hal": ("pyeuropepmc.literature.hal", "HALClient"),
-    "core": ("pyeuropepmc.literature.core", "COREClient"),
+    "pubmed": ("pyeuropepmc.features.search.sources.pubmed", "PubMedClient"),
+    "arxiv": ("pyeuropepmc.features.search.sources.arxiv", "ArxivClient"),
+    "clinicaltrials": ("pyeuropepmc.features.search.sources.clinicaltrials", "ClinicalTrialsClient"),
+    "semantic_scholar": ("pyeuropepmc.features.literature.adapters", "SemanticScholarLiteratureAdapter"),
+    "openalex": ("pyeuropepmc.features.literature.adapters", "OpenAlexLiteratureAdapter"),
+    "zenodo": ("pyeuropepmc.features.search.sources.zenodo", "ZenodoClient"),
+    "doaj": ("pyeuropepmc.features.search.sources.doaj", "DOAJClient"),
+    "dblp": ("pyeuropepmc.features.search.sources.dblp", "DBLPClient"),
+    "hal": ("pyeuropepmc.features.search.sources.hal", "HALClient"),
+    "core": ("pyeuropepmc.features.search.sources.core", "COREClient"),
 }
 
 

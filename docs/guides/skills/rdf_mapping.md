@@ -3,7 +3,7 @@
 Generate Knowledge Graphs in RDF/Turtle format using `RDFMapper` and `PaperProcessingPipeline`.
 
 ```python
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.mappers import RDFMapper
 
 # Parse XML and build entities

@@ -595,7 +595,7 @@ except Exception as e:
 
 ## Parser Extensions
 
-The parser provides an **extensions package** (`pyeuropepmc.processing.extensions`) with 10 specialized modules for advanced use cases:
+The parser provides an **extensions package** (`pyeuropepmc.features.fulltext.extensions`) with 10 specialized modules for advanced use cases:
 
 | Module | Purpose |
 |--------|---------|
@@ -616,7 +616,7 @@ See the **[XML Parser Extensions Reference](../../reference/xml-parser-extension
 
 ```python
 from pyeuropepmc import FullTextXMLParser
-from pyeuropepmc.processing.extensions import (
+from pyeuropepmc.features.fulltext.extensions import (
     ContentBlockExtractor,
     JATS4RValidator,
     MathMLConverter,
@@ -671,7 +671,7 @@ Use the extensions with the FullTextClient workflow:
 
 ```python
 from pyeuropepmc import FullTextClient
-from pyeuropepmc.processing.extensions import (
+from pyeuropepmc.features.fulltext.extensions import (
     ContentBlockExtractor,
     JATS4RValidator,
     BatchProcessor,

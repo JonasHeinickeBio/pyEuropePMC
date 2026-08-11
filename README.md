@@ -272,7 +272,7 @@ PyEuropePMC now uses the `danielnsilva/semanticscholar` professional library for
 **Usage with API Key:**
 
 ```python
-from pyeuropepmc.enrichment.semantic_scholar import SemanticScholarClient
+from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
 
 # With API key (recommended for higher rate limits)
 client = SemanticScholarClient(api_key="your_api_key_here")
