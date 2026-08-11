@@ -10,6 +10,7 @@ API docs: https://developers.zenodo.org/
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -145,10 +146,8 @@ class ZenodoClient(BaseLiteratureClient):
         pub_date = metadata.get("publication_date", "")
         year: int | None = None
         if pub_date:
-            try:
+            with contextlib.suppress(ValueError, IndexError):
                 year = int(pub_date[:4])
-            except (ValueError, IndexError):
-                pass
 
         # Journal / type
         journal_raw = metadata.get("journal_title") or metadata.get("journal", "")
@@ -168,10 +167,7 @@ class ZenodoClient(BaseLiteratureClient):
         # Source and source ID
         source = "zenodo"
         rec_id = str(raw.get("id", ""))
-        if doi:
-            source_id = doi
-        else:
-            source_id = rec_id
+        source_id = doi if doi else rec_id
 
         # Extra metadata
         extra = {

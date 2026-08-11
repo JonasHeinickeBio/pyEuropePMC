@@ -15,6 +15,7 @@ Examples
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import time
 from typing import Any
@@ -35,8 +36,14 @@ __all__ = ["UnifiedSearch"]
 _SOURCE_REGISTRY: dict[str, tuple[str, str]] = {
     "pubmed": ("pyeuropepmc.features.search.sources.pubmed", "PubMedClient"),
     "arxiv": ("pyeuropepmc.features.search.sources.arxiv", "ArxivClient"),
-    "clinicaltrials": ("pyeuropepmc.features.search.sources.clinicaltrials", "ClinicalTrialsClient"),
-    "semantic_scholar": ("pyeuropepmc.features.literature.adapters", "SemanticScholarLiteratureAdapter"),
+    "clinicaltrials": (
+        "pyeuropepmc.features.search.sources.clinicaltrials",
+        "ClinicalTrialsClient",
+    ),
+    "semantic_scholar": (
+        "pyeuropepmc.features.literature.adapters",
+        "SemanticScholarLiteratureAdapter",
+    ),
     "openalex": ("pyeuropepmc.features.literature.adapters", "OpenAlexLiteratureAdapter"),
     "zenodo": ("pyeuropepmc.features.search.sources.zenodo", "ZenodoClient"),
     "doaj": ("pyeuropepmc.features.search.sources.doaj", "DOAJClient"),
@@ -175,11 +182,7 @@ class UnifiedSearch:
 
         # Restore the public result type (extra fields pass through due to
         # ``extra="allow"`` on LiteratureResult).
-        merged = [
-            LiteratureResult.model_validate(d)
-            for d in merged_dicts
-            if d is not None
-        ]
+        merged = [LiteratureResult.model_validate(d) for d in merged_dicts if d is not None]
 
         logger.info(
             "UnifiedSearch: %d sources → %d results → %d after dedup (%.1f%% reduction)",
@@ -260,10 +263,8 @@ class UnifiedSearch:
         if self._clients:
             for client in self._clients.values():
                 if client and hasattr(client, "close"):
-                    try:
+                    with contextlib.suppress(Exception):
                         client.close()
-                    except Exception:
-                        pass
             self._clients = None
 
     @property

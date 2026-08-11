@@ -172,9 +172,7 @@ class ArxivClient(BaseLiteratureClient):
         if match:
             arxiv_id = match.group(1)
         else:
-            doi_match = re.search(
-                r"arXiv\.(\d+\.\d+|\w+/\d+)", identifier, re.IGNORECASE
-            )
+            doi_match = re.search(r"arXiv\.(\d+\.\d+|\w+/\d+)", identifier, re.IGNORECASE)
             arxiv_id = doi_match.group(1) if doi_match else identifier
 
         # arXiv single paper lookup via id_list parameter
@@ -184,9 +182,7 @@ class ArxivClient(BaseLiteratureClient):
 
         # Fallback: if the identifier looks like a DOI, arXiv does not index
         # by id_list, so search for it instead.
-        if raw is None and (
-            identifier.lower().startswith("10.") or "/" in identifier
-        ):
+        if raw is None and (identifier.lower().startswith("10.") or "/" in identifier):
             raw = self._make_request(
                 "query",
                 params={
@@ -227,9 +223,7 @@ class ArxivClient(BaseLiteratureClient):
         authors = None
         if authors_raw:
             # normalize_author_list expects plain dicts, not Author objects
-            author_list = [
-                a for a in authors_raw if isinstance(a, dict) and a.get("name")
-            ]
+            author_list = [a for a in authors_raw if isinstance(a, dict) and a.get("name")]
             if author_list:
                 authors = normalize_author_list(author_list)
 

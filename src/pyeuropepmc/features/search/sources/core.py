@@ -10,6 +10,7 @@ API docs: https://api.core.ac.uk/docs/v3
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -131,10 +132,8 @@ class COREClient(BaseLiteratureClient):
         year_raw = raw.get("yearPublished", "") or raw.get("publicationYear", "")
         year: int | None = None
         if year_raw:
-            try:
+            with contextlib.suppress(ValueError, IndexError):
                 year = int(str(year_raw)[:4])
-            except (ValueError, IndexError):
-                pass
 
         # Authors
         authors_raw = raw.get("authors", [])

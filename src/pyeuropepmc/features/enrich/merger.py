@@ -50,7 +50,7 @@ from enum import Enum, auto
 import hashlib
 import logging
 import re
-from typing import Any
+from typing import Any, cast
 
 from pyeuropepmc.features.literature.normalization import (
     normalize_doi,
@@ -94,7 +94,7 @@ SOURCE_PRIORITY: dict[str, int] = {
 # Field-level merge heuristics (tie-breakers when sources disagree).
 # Each entry is a dict of field -> preferred property.
 # ---------------------------------------------------------------------------
-FIELD_PREFERENCES: dict[str, dict[str, str]] = {
+FIELD_PREFERENCES: dict[str, dict[str, Any]] = {
     # Prefer longer titles (fewer truncations)
     "title": {"prefer": "longer"},
     # Prefer longer abstract (more complete)
@@ -537,8 +537,8 @@ def _is_retracted(paper: dict[str, Any]) -> bool:
 
     Examines the title, journal, and any ``status`` or ``retraction`` fields.
     """
-    for field in ("title", "journal", "status", "retraction"):
-        val = paper.get(field)
+    for fname in ("title", "journal", "status", "retraction"):
+        val = paper.get(fname)
         if val and isinstance(val, str) and _RETRACTED_PATTERNS.search(val):
             return True
     # Check raw source data
@@ -556,7 +556,7 @@ def _is_retracted(paper: dict[str, Any]) -> bool:
 # ===========================================================================
 
 
-def _extract_identifiers(paper: dict[str, Any]) -> dict[str, str]:
+def _extract_identifiers(paper: dict[str, Any]) -> dict[str, str]:  # noqa: C901
     """Extract normalized external identifiers from a paper dict.
 
     Returns a dict mapping identifier type -> normalized value for any of
@@ -636,10 +636,7 @@ def _identifiers_conflict(
     PMID but different PMCID).  CORD-19 uses this to keep papers in
     separate groups despite a shared identifier.
     """
-    for idtype in set(ids_a) & set(ids_b):
-        if ids_a[idtype] != ids_b[idtype]:
-            return True
-    return False
+    return any(ids_a[idtype] != ids_b[idtype] for idtype in set(ids_a) & set(ids_b))
 
 
 # Ordered license tiers from most permissive to least.  The CORD-19
@@ -655,7 +652,7 @@ _LICENSE_TIERS: list[tuple[tuple[str, ...], int]] = [
 ]
 
 
-def _license_score(paper: dict[str, Any]) -> int:
+def _license_score(paper: dict[str, Any]) -> int:  # noqa: C901
     """Score the license permissiveness of a paper (0 = unknown/closed)."""
     text = ""
     license_field = paper.get("license")
@@ -953,9 +950,8 @@ def deduplicate_by_title(
 
         is_duplicate = False
         for seen_title, seen_year, seen_paper in seen_entries:
-            if py is not None and seen_year is not None:
-                if abs(py - seen_year) > year_window:
-                    continue
+            if py is not None and seen_year is not None and abs(py - seen_year) > year_window:
+                continue
 
             sim = _title_similarity(title, seen_title)
             if sim < similarity_threshold:
@@ -1059,9 +1055,12 @@ class PaperMatcher:
             py = int(paper_year) if paper_year else None
 
             for seen_title, seen_year, seen_paper in self._titles:
-                if py is not None and seen_year is not None:
-                    if abs(py - seen_year) > self.year_window:
-                        continue
+                if (
+                    py is not None
+                    and seen_year is not None
+                    and abs(py - seen_year) > self.year_window
+                ):
+                    continue
 
                 sim = _title_similarity(title, seen_title)
                 if sim < self.fuzzy_threshold:
@@ -1110,7 +1109,10 @@ def _source_score(source: str | None, preferences: dict[str, Any]) -> int:
     if not source:
         return 0
     source_priority = preferences.get("_source_priority", {})
-    return source_priority.get(source.lower(), source_priority.get("unknown", 10))
+    if not isinstance(source_priority, dict):
+        return 0
+    sp = cast(dict[str, int], source_priority)
+    return sp.get(source.lower(), sp.get("unknown", 10))
 
 
 def _pick_best_value(
@@ -1143,7 +1145,7 @@ def _pick_best_value(
         except (TypeError, ValueError):
             return a
     if rule == "source_preference":
-        preferred = prefs.get(field, {}).get("preferred_sources", [])
+        preferred: list[str] = prefs.get(field, {}).get("preferred_sources", [])
         if source_a and source_b:
             if source_a.lower() in preferred and source_b.lower() not in preferred:
                 return a
@@ -1306,7 +1308,7 @@ class LiteratureMerger:
         title_unique, report = self._fuzzy_dedup_pass(
             doi_unique,
             report,
-            similarity_threshold=cfg.fuzzy_threshold,
+            similarity_threshold=cast(float, cfg.fuzzy_threshold),
             year_window=cfg.year_window,
         )
         report.total_output = len(title_unique)
@@ -1418,9 +1420,7 @@ class LiteratureMerger:
         count as a match (e.g. two papers sharing PMCID but with different
         PMIDs should be reported as ``PMCID_EXACT``, not ``PMID_EXACT``).
         """
-        matched = {
-            t for t in canonical_ids if member_ids.get(t) == canonical_ids[t]
-        }
+        matched = {t for t in canonical_ids if member_ids.get(t) == canonical_ids[t]}
         if not matched:
             return MatchLevel.IDENTIFIER_MATCH
         if "doi" in matched:
@@ -1484,7 +1484,7 @@ class LiteratureMerger:
             return normalize_doi(doi) if doi else None
         return None
 
-    def _fuzzy_dedup_pass(
+    def _fuzzy_dedup_pass(  # noqa: C901
         self,
         papers: list[dict[str, Any]],
         report: MergeReport,
@@ -1524,15 +1524,14 @@ class LiteratureMerger:
         removed_map: dict[int, int] = {}  # removed_idx -> kept_idx
         removed_scores: dict[int, float] = {}  # removed_idx -> similarity
 
-        for idx, title, yr, paper, a_set, j_norm in titles_with_idx:
+        for idx, title, yr, _, a_set, j_norm in titles_with_idx:
             is_dup = False
             best_sim = 0.0
             for kept_idx, (kept_title, kept_yr, kept_a_set, kept_j_norm) in zip(
                 kept_indices, kept_entries, strict=False
             ):
-                if yr is not None and kept_yr is not None:
-                    if abs(yr - kept_yr) > year_window:
-                        continue
+                if yr is not None and kept_yr is not None and abs(yr - kept_yr) > year_window:
+                    continue
 
                 sim = _title_similarity(title, kept_title)
                 if sim >= best_sim:
@@ -1550,9 +1549,13 @@ class LiteratureMerger:
                             continue
 
                 # Journal overlap gate (pre-computed)
-                if cfg.require_journal_overlap and j_norm is not None and kept_j_norm is not None:
-                    if j_norm != kept_j_norm:
-                        continue
+                if (
+                    cfg.require_journal_overlap
+                    and j_norm is not None
+                    and kept_j_norm is not None
+                    and j_norm != kept_j_norm
+                ):
+                    continue
 
                 removed_map[idx] = kept_idx
                 removed_scores[idx] = sim
@@ -1570,7 +1573,10 @@ class LiteratureMerger:
                     kept_index=kept_idx,
                     removed_index=removed_idx,
                     match_level=MatchLevel.FUZZY_TITLE,
-                    reason=f"Duplicate by fuzzy title (±{year_window}yr, sim={removed_scores.get(removed_idx, 0.0):.3f})",
+                    reason=(
+                        f"Duplicate by fuzzy title (±{year_window}yr, "
+                        f"sim={removed_scores.get(removed_idx, 0.0):.3f})"
+                    ),
                     kept_source=papers[kept_idx].get("source"),
                     removed_source=papers[removed_idx].get("source"),
                     kept_title=papers[kept_idx].get("title"),

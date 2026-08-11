@@ -10,6 +10,7 @@ API docs: https://api.archives-ouvertes.fr/docs/
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -153,10 +154,8 @@ class HALClient(BaseLiteratureClient):
         year: int | None = None
         y = raw.get("producedDateY_i", "") or raw.get("year", "")
         if y:
-            try:
+            with contextlib.suppress(ValueError, TypeError):
                 year = int(y)
-            except (ValueError, TypeError):
-                pass
 
         # Journal
         journal: str | None = raw.get("journalTitle_s", "") or raw.get("journal_s", "")

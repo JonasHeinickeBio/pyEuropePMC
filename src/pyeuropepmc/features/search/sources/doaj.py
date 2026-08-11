@@ -10,6 +10,7 @@ API docs: https://doaj.org/api/v3/docs/
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -149,10 +150,8 @@ class DOAJClient(BaseLiteratureClient):
         year: int | None = None
         year_str = bibjson.get("year", "")
         if year_str:
-            try:
+            with contextlib.suppress(ValueError, IndexError):
                 year = int(str(year_str)[:4])
-            except (ValueError, IndexError):
-                pass
 
         # Journal
         journal: str | None = (

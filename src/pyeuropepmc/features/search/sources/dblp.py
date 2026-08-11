@@ -10,6 +10,7 @@ API docs: https://dblp.org/faq/How+to+use+the+dblp+search+API.html
 
 from __future__ import annotations
 
+import contextlib
 import logging
 import re
 from typing import Any
@@ -171,10 +172,8 @@ class DBLPClient(BaseLiteratureClient):
         year: int | None = None
         y = raw.get("year", "") or raw.get("year", "")
         if y:
-            try:
+            with contextlib.suppress(ValueError, IndexError):
                 year = int(str(y)[:4])
-            except (ValueError, IndexError):
-                pass
 
         # Venue (journal or proceedings)
         venue: str | None = (

@@ -15,6 +15,7 @@ References
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -349,10 +350,8 @@ class ClinicalTrialsClient(BaseLiteratureClient):
             # Extract year from various date formats
             start_str = str(start_date)
             if len(start_str) >= 4:
-                try:
+                with contextlib.suppress(ValueError):
                     year = int(start_str[:4])
-                except ValueError:
-                    pass
 
         # Description (abstract)
         brief_summary = description_module.get("briefSummary", "")

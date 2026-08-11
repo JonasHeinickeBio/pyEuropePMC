@@ -9,6 +9,7 @@ lookup via NCBI's E-utilities API.
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -383,7 +384,7 @@ class PubMedClient(BaseLiteratureClient):
 
         return self._parse_efetch_xml(xml_text, identifier)
 
-    def _parse_efetch_xml(
+    def _parse_efetch_xml(  # noqa: C901
         self,
         xml_text: str,
         pmid: str,
@@ -444,10 +445,8 @@ class PubMedClient(BaseLiteratureClient):
             or medline.find(".//DateCreated/Year")
         )
         if pub_date is not None and pub_date.text:
-            try:
+            with contextlib.suppress(ValueError):
                 year = int(pub_date.text)
-            except ValueError:
-                pass
 
         # --- Abstract ---
         abstract_text = None

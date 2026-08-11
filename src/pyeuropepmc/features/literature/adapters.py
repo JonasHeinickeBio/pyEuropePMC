@@ -14,6 +14,7 @@ Adapters convert:
 
 from __future__ import annotations
 
+import contextlib
 import logging
 from typing import Any
 
@@ -169,7 +170,8 @@ class SemanticScholarLiteratureAdapter:
         data: dict[str, Any],
     ) -> LiteratureResult | None:
         """
-        Normalize Semantic Scholar data to :class:`~pyeuropepmc.models.literature.LiteratureResult`.
+        Normalize Semantic Scholar data to
+        :class:`~pyeuropepmc.models.literature.LiteratureResult`.
 
         Parameters
         ----------
@@ -214,10 +216,8 @@ class SemanticScholarLiteratureAdapter:
         if data.get("year"):
             year = int(data["year"])
         elif data.get("publicationDate"):
-            try:
+            with contextlib.suppress(TypeError, ValueError):
                 year = int(data["publicationDate"][:4])
-            except (TypeError, ValueError):
-                pass
 
         # --- Journal ---
         journal = normalize_journal_title(data.get("venue"))
@@ -387,7 +387,7 @@ class OpenAlexLiteratureAdapter:
     # Normalisation
     # ------------------------------------------------------------------
 
-    def _normalize_to_literature_format(
+    def _normalize_to_literature_format(  # noqa: C901
         self,
         data: dict[str, Any],
     ) -> LiteratureResult | None:
@@ -442,10 +442,8 @@ class OpenAlexLiteratureAdapter:
         # --- Year ---
         year = None
         if data.get("publication_year"):
-            try:
+            with contextlib.suppress(TypeError, ValueError):
                 year = int(data["publication_year"])
-            except (TypeError, ValueError):
-                pass
 
         # --- Journal ---
         journal = None
@@ -467,7 +465,7 @@ class OpenAlexLiteratureAdapter:
         inverted = data.get("abstract_inverted_index")
         if inverted and isinstance(inverted, dict):
             words = []
-            for word, positions in sorted(inverted.items(), key=lambda x: x[1][0] if x[1] else 0):
+            for word, _ in sorted(inverted.items(), key=lambda x: x[1][0] if x[1] else 0):
                 if word:
                     words.append(word)
             if words:
