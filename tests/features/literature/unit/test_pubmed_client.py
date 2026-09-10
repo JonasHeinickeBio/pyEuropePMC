@@ -320,14 +320,16 @@ class TestPubMedClient:
             result = client.get_paper("12345678", use_efetch=True)
             assert result is None
 
-    @pytest.mark.network  # calls NCBI ECitMatch for real
     def test_pmid_for_citation_missing_params(self):
-        """Test pmid_for_citation with no parameters returns None."""
+        """pmid_for_citation with no fields -> ECitMatch returns nothing -> None."""
         client = PubMedClient()
-        result = client.pmid_for_citation()
-        # The method should try to make a request with empty fields
-        # and probably get nothing back, returning None
+        mock_response = MagicMock()
+        mock_response.raise_for_status.return_value = None
+        mock_response.text = "NOT_FOUND"
+        with patch.object(client.session, "post", return_value=mock_response) as mock_post:
+            result = client.pmid_for_citation()
         assert result is None
+        mock_post.assert_called_once()
 
     @patch.object(PubMedClient, "_make_request")
     def test_search_empty_idlist(self, mock_make_request):

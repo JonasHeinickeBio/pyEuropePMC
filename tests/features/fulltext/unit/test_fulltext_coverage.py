@@ -625,16 +625,25 @@ class TestFullTextClientCoverage:
         expected = "https://europepmc.org/article/PMC/123456#free-full-text"
         assert url == expected
 
-    @pytest.mark.network  # mock target is stale; real fix tracked separately
     def test_download_xml_io_error(self):
-        """Test XML download with IO error during file write."""
+        """A filesystem error while writing the XML surfaces as FULL009."""
+        self.client.enable_cache = False
         mock_response = Mock()
         mock_response.text = "<xml>content</xml>"
+        mock_response.headers = {}
 
-        # Test that the method returns the path when download succeeds
-        result = self.client.download_xml_by_pmcid("3258128")
-        assert isinstance(result, Path)
-        assert result.name == "PMC3258128.xml"
+        with tempfile.TemporaryDirectory() as temp_dir:
+            output_path = Path(temp_dir) / "out.xml"
+            with (
+                patch.object(self.client, "_get", return_value=mock_response),
+                patch(
+                    "pyeuropepmc.features.fulltext.fulltext_client.atomic_write",
+                    side_effect=OSError("disk full"),
+                ),
+                pytest.raises(FullTextError) as exc_info,
+            ):
+                self.client.download_xml_by_pmcid("123456", output_path)
+        assert exc_info.value.error_code == ErrorCodes.FULL009
 
     def test_download_xml_api_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after API failure."""
@@ -686,13 +695,18 @@ class TestFullTextClientCoverage:
                 result = self.client.download_xml_by_pmcid("123456", output_path)
                 assert result == output_path
 
-    @pytest.mark.network  # mock target is stale; real fix tracked separately
     def test_check_availability_request_exceptions(self):
         """Test availability check with RequestException for each format type."""
-        # Test XML request exception
-        with patch.object(
-            self.client.session, "head", side_effect=requests.RequestException("XML error")
+        self.client.enable_cache = False
+        # Test XML request exception (head fails for XML; get is stubbed so the
+        # HTML probe doesn't hit the network).
+        with (
+            patch.object(
+                self.client.session, "head", side_effect=requests.RequestException("XML error")
+            ),
+            patch.object(self.client.session, "get") as mock_get_xml,
         ):
+            mock_get_xml.return_value.status_code = 200
             availability = self.client.check_fulltext_availability("123456")
             assert availability["xml"] is False
 
@@ -766,53 +780,48 @@ class TestFullTextClientCoverage:
             finally:
                 os.chdir(original_cwd)
 
-    @pytest.mark.network  # mock target is stale; real fix tracked separately
     def test_download_xml_bulk_download_fallback_failure(self):
-        """Test XML download API failure followed by bulk download failure."""
-        # Test that the method returns the path when download succeeds
-        result = self.client.download_xml_by_pmcid("3258128")
-        assert isinstance(result, Path)
-        assert result.name == "PMC3258128.xml"
+        """Every XML source failing raises FULL003."""
+        self.client.enable_cache = False
+        with (
+            patch.object(self.client, "_try_xml_rest_api", return_value=False),
+            patch.object(self.client, "_try_bulk_xml_download", return_value=False),
+            patch.object(self.client, "_try_fulltext_repo", return_value=False),
+            patch.object(self.client, "_try_unpaywall_xml", return_value=False),
+            pytest.raises(FullTextError) as exc_info,
+        ):
+            self.client.download_xml_by_pmcid("123456")
+        assert exc_info.value.error_code == ErrorCodes.FULL003
 
-    @pytest.mark.network  # mock target is stale; real fix tracked separately
     def test_download_xml_other_api_error_bulk_failure(self):
-        """Test XML download with other API error and bulk download failure."""
-        # Disable caching to ensure we don't get a cached result
+        """REST 500 + all other sources failing -> FULL003."""
         self.client.enable_cache = False
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP500)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=False),
+            patch.object(self.client, "_try_fulltext_repo", return_value=False),
+            patch.object(self.client, "_try_unpaywall_xml", return_value=False),
+            pytest.raises(FullTextError) as exc_info,
         ):
-            with pytest.raises(FullTextError) as exc_info:
-                self.client.download_xml_by_pmcid("123456")
+            self.client.download_xml_by_pmcid("123456")
+        assert exc_info.value.error_code == ErrorCodes.FULL003
+        assert "[FULL003]" in str(exc_info.value)
 
-            # Check that the exception has the correct error code
-            assert exc_info.value.error_code == ErrorCodes.FULL003
-
-            # Check that the error message contains the expected content
-            error_str = str(exc_info.value)
-            assert "[FULL003]" in error_str
-
-    @pytest.mark.network  # mock target is stale; real fix tracked separately
     def test_download_xml_network_error_bulk_failure(self):
-        """Test XML download with network error and bulk download failure."""
-        # Disable caching to ensure we don't get a cached result
+        """REST network error + all other sources failing -> FULL003."""
         self.client.enable_cache = False
         with (
             patch.object(
                 self.client, "_get", side_effect=requests.RequestException("Network error")
             ),
             patch.object(self.client, "_try_bulk_xml_download", return_value=False),
+            patch.object(self.client, "_try_fulltext_repo", return_value=False),
+            patch.object(self.client, "_try_unpaywall_xml", return_value=False),
+            pytest.raises(FullTextError) as exc_info,
         ):
-            with pytest.raises(FullTextError) as exc_info:
-                self.client.download_xml_by_pmcid("123456")
-
-            # Check that the exception has the correct error code
-            assert exc_info.value.error_code == ErrorCodes.FULL003
-
-            # Check that the error message contains the expected content
-            error_str = str(exc_info.value)
-            assert "[FULL003]" in error_str
+            self.client.download_xml_by_pmcid("123456")
+        assert exc_info.value.error_code == ErrorCodes.FULL003
+        assert "[FULL003]" in str(exc_info.value)
 
     def test_validate_pdf_content_small_file_under_1kb(self):
         """Test PDF validation with file under 1KB."""

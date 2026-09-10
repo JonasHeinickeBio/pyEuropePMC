@@ -47,15 +47,18 @@ class TestReferenceResolver:
         assert result.title == "PM Paper"
         assert result.source == "europe_pmc"
 
+    @patch("pyeuropepmc.features.bibliography.reference.ReferenceResolver._resolve_via_pmc")
     @patch("pyeuropepmc.features.bibliography.reference.ReferenceResolver._resolve_via_crossref")
-    @pytest.mark.network  # resolve_arxiv falls through to a live lookup
-    def test_resolve_arxiv(self, mock_crossref):
+    def test_resolve_arxiv(self, mock_crossref, mock_pmc):
+        # Europe PMC has nothing -> falls back to the CrossRef arXiv DOI.
+        mock_pmc.return_value = None
         mock_ref = Reference(title="ArXiv Paper", doi="10.48550/arXiv.2301.12345", source="crossref")
         mock_crossref.return_value = mock_ref
         resolver = ReferenceResolver()
         result = resolver.resolve_arxiv("2301.12345")
         assert result is not None
         assert result.title == "ArXiv Paper"
+        mock_crossref.assert_called_once_with("10.48550/arxiv.2301.12345")
 
     def test_resolve_many(self):
         resolver = ReferenceResolver()

@@ -304,7 +304,8 @@ def pytest_collection_modifyitems(config, items):
             stacklevel=1,
         )
 
-    socket_plugin = config.pluginmanager.hasplugin("pytest_socket")
+    # pytest-socket registers itself under the short name "socket".
+    socket_plugin = config.pluginmanager.hasplugin("socket")
 
     for item in items:
         categories = {m.name for m in item.iter_markers()}

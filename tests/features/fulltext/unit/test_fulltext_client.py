@@ -320,19 +320,18 @@ class TestFullTextClient:
                 assert f.read() == pdf_bytes
             client.close()
 
-    @pytest.mark.network  # patches requests.get but the client uses session.get (stale mock)
-    @patch("requests.get")
-    def test_download_pdf_by_pmcid_all_fail(self, mock_get):
-        """Test PDF download returns None if all endpoints fail."""
-        # All endpoints return 404
-        mock_response_fail = Mock()
-        mock_response_fail.status_code = 404
-        mock_get.return_value = mock_response_fail
-
+    def test_download_pdf_by_pmcid_all_fail(self):
+        """Test PDF download returns None when every fallback fails."""
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = Path(temp_dir) / "PMC99999999.pdf"
             client = FullTextClient()
-            result = client.download_pdf_by_pmcid("99999999", output_path)
+            with (
+                patch.object(client, "_check_cache_for_file", return_value=None),
+                patch.object(client, "_try_pdf_endpoint", return_value=False),
+                patch.object(client, "_try_pdf_from_zip", return_value=False),
+                patch.object(client, "_try_unpaywall_pdf", return_value=False),
+            ):
+                result = client.download_pdf_by_pmcid("99999999", output_path)
             assert result is None
             assert not output_path.exists()
             client.close()
