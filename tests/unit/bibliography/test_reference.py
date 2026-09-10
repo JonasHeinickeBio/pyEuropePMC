@@ -48,6 +48,7 @@ class TestReferenceResolver:
         assert result.source == "europe_pmc"
 
     @patch("pyeuropepmc.features.bibliography.reference.ReferenceResolver._resolve_via_crossref")
+    @pytest.mark.network  # resolve_arxiv falls through to a live lookup
     def test_resolve_arxiv(self, mock_crossref):
         mock_ref = Reference(title="ArXiv Paper", doi="10.48550/arXiv.2301.12345", source="crossref")
         mock_crossref.return_value = mock_ref

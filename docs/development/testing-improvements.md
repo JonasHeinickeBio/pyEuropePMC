@@ -224,3 +224,53 @@ This enhanced testing infrastructure provides you with the flexibility to:
 - Validate changes with confidence
 
 The dry-run capabilities let you see exactly what would execute, helping you avoid wasting CI/CD minutes on unnecessary test runs.
+
+---
+
+## Hermetic default test run (network guard + timeouts)
+
+The default `pytest` invocation is **fast and offline**:
+
+```
+addopts = -ra -q --strict-markers --disable-socket --allow-unix-socket
+          -m 'not slow and not functional and not network and not benchmark and not e2e'
+timeout = 120           # pytest-timeout, thread method
+```
+
+* **`--disable-socket`** (pytest-socket) — any test that opens a real network
+  connection fails immediately with `SocketBlockedError` instead of hanging.
+  This previously let whole `functional/` directories quietly call live APIs
+  during the "unit" run, which made it hang and grow to many GB of RAM
+  (accumulated HTTP responses + a multi-GB Hugging Face dataset download).
+* **`timeout = 120`** — a stuck test is killed after two minutes instead of
+  blocking the whole run.
+* **Category inference** (`tests/conftest.py::pytest_collection_modifyitems`) —
+  markers are derived from a test's location so unmarked files still get
+  excluded:
+  | Location / trait                     | Marker(s) added        |
+  |--------------------------------------|------------------------|
+  | any path containing `/functional/`   | `functional`           |
+  | any path containing `/integration/`  | `integration`          |
+  | filename `interactive_*`             | `functional`           |
+  | requests the `benchmark` fixture     | `benchmark`, `slow`    |
+  | filename `benchmark_*`               | `benchmark`, `slow`    |
+  | any path containing `/gui/`          | `gui`                  |
+  Tests in the network-capable categories also get `enable_socket`, so they
+  work when you run them on purpose.
+
+### Running the excluded lanes
+
+```bash
+pytest -m functional          # real-service / pipeline tests   (== pytest --run-real)
+pytest -m network             # tests that need outbound HTTP
+pytest -m slow                # long-running tests
+pytest -m benchmark --benchmark-only
+pytest tests/integration --run-integration
+pytest --run-real             # exactly the functional/network/e2e tests, sockets enabled
+```
+
+### Writing a test that needs the network
+
+Mark it (`@pytest.mark.network`, or put it under a `functional/` dir) — the
+guard then lets it through when selected and keeps it out of the default run.
+Prefer mocking `requests`/`self.session` so it can stay a real unit test.

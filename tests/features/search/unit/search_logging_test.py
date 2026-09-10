@@ -37,13 +37,17 @@ def test_search_post_logs_request_and_response(caplog) -> None:
     """Test that search POST logs request and response information."""
     client = SearchClient()
 
-    with patch.object(client, "_post") as mock_post:
-        mock_response = MagicMock(spec=requests.Response)
-        mock_response.json.return_value = {"test": "data"}
-        mock_response.text = json.dumps({"test": "data"})
-        mock_response.status_code = 200
-        mock_post.return_value = mock_response
+    mock_response = MagicMock(spec=requests.Response)
+    mock_response.json.return_value = {"test": "data"}
+    mock_response.text = json.dumps({"test": "data"})
+    mock_response.status_code = 200
 
+    # ``synonym=True`` performs an extra request for query expansion, so both
+    # transports must be stubbed for this to stay a unit test.
+    with (
+        patch.object(client, "_post", return_value=mock_response),
+        patch.object(client, "_get", return_value=mock_response),
+    ):
         with caplog.at_level(logging.INFO):
             client.search("test query", synonym=True)
 

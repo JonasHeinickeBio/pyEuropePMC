@@ -123,6 +123,8 @@ from = "src"
 pytest = "^8.4.1"
 pytest-cov = "^6.0.0"
 pytest-xdist = "^3.7.0"
+pytest-socket = ">=0.7,<1.0"       # hermetic default run: block real sockets
+pytest-timeout = ">=2.3,<3.0"      # per-test wall-clock cap
 pre-commit = "^4.2.0"
 black = "^25.1.0"
 mypy = "^1.16.1"
@@ -147,14 +149,28 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.pytest.ini_options]
-addopts = "-ra -q -m 'not slow and not functional and not network'"
+# The default run is fast and hermetic: every slow / network / benchmark / e2e
+# category is excluded, plus (when pytest-socket / pytest-timeout are installed,
+# see tests/conftest.py::pytest_configure) real sockets are blocked and each
+# test gets a 120s wall-clock cap. Categories are inferred from a test's path in
+# tests/conftest.py, so whole `functional/` and `integration/` directories are
+# excluded even when individual files carry no marker.
+#   Run the excluded lanes explicitly:
+#     pytest -m functional            # or: pytest --run-real
+#     pytest -m benchmark --benchmark-only
+#     pytest tests/integration --run-integration
+#     pytest -m slow
+addopts = "-ra -q --strict-markers --disable-socket --allow-unix-socket --timeout=120 -m 'not slow and not functional and not network and not benchmark and not e2e'"
 testpaths = ["tests"]
 markers = [
   "slow: mark test as slow (use '-m \"not slow\"' to skip)",
-  "integration: mark test as integration (use '-m \"not integration\"' to skip)",
+  "integration: mark test as integration (requires --run-integration)",
   "unit: mark test as unit (use '-m \"not unit\"' to skip)",
-  "network: mark test that requires network access (use '-m \"not network\"' to skip)",
-  "functional: mark test as functional (use '-m \"not functional\"' to skip)",
+  "network: needs outbound network access; excluded by default",
+  "functional: exercises real services / full pipelines; excluded by default",
+  "benchmark: pytest-benchmark performance test; excluded by default",
+  "e2e: end-to-end scenario; excluded by default",
+  "gui: exercises the Flask web UI",
   "model: mark tests that require ML model dependencies (sentence-transformers, rapidfuzz, etc.)",
 ]
 [tool.ruff]

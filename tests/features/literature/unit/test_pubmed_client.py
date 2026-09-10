@@ -320,6 +320,7 @@ class TestPubMedClient:
             result = client.get_paper("12345678", use_efetch=True)
             assert result is None
 
+    @pytest.mark.network  # calls NCBI ECitMatch for real
     def test_pmid_for_citation_missing_params(self):
         """Test pmid_for_citation with no parameters returns None."""
         client = PubMedClient()

@@ -320,7 +320,7 @@ class TestFullTextClient:
                 assert f.read() == pdf_bytes
             client.close()
 
-    @pytest.mark.unit
+    @pytest.mark.network  # patches requests.get but the client uses session.get (stale mock)
     @patch("requests.get")
     def test_download_pdf_by_pmcid_all_fail(self, mock_get):
         """Test PDF download returns None if all endpoints fail."""

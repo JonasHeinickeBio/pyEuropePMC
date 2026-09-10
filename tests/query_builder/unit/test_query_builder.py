@@ -674,6 +674,7 @@ class TestValidation:
 
 
 # Field validation tests
+@pytest.mark.network  # these call the live Europe PMC field-metadata API
 class TestFieldValidation:
     """Test field validation helper functions."""
 
