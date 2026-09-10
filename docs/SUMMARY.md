@@ -94,6 +94,7 @@
 * [Development Guide](development/README.md)
 * [Python Version Strategy](development/python-version-strategy.md)
 * [Testing & CI/CD](development/testing-improvements.md)
+* [v2.0.0 Release Checklist](development/v2-release-checklist.md)
 * [QueryBuilder Refactoring](development/query-builder-refactoring.md)
 * [CodeScene Setup](development/codescene-setup.md)
 
