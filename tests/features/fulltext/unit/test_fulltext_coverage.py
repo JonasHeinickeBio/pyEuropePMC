@@ -25,9 +25,17 @@ class TestFullTextClientCoverage:
     def setup_method(self):
         """Set up test fixtures before each test method."""
         self.client = FullTextClient()
+        # The XML download chain now includes non-Europe-PMC strategies that
+        # would hit the network; neutralise them for these hermetic unit tests.
+        self._extra_patch = patch.object(
+            self.client, "_try_extra_xml_strategies", return_value=False
+        )
+        self._extra_patch.start()
 
     def teardown_method(self):
         """Clean up after each test method."""
+        if hasattr(self, "_extra_patch"):
+            self._extra_patch.stop()
         if hasattr(self, "client") and self.client:
             self.client.close()
 

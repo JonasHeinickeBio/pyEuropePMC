@@ -39,6 +39,24 @@ logger = logging.getLogger(__name__)
 StrategyFunc = Callable[[], Path | None | bool | str | dict[str, Any]]
 
 
+def looks_like_jats_xml(text: str) -> bool:
+    """Heuristic: does *text* look like a JATS / PMC full-text XML document?
+
+    Guards the download chain against caching HTML error pages or JSON error
+    bodies that came back with a 200 status.
+    """
+    if not text:
+        return False
+    head = text.lstrip()[:2000].lower()
+    if head.startswith(("{", "[", "<!doctype html", "<html")):
+        return False
+    if "<html" in head or "<body onload" in head:
+        return False
+    # Any XML-ish document that isn't an HTML page: an XML declaration, a JATS
+    # <article>/<pmc-articleset>, a BioC <collection>, or just an opening tag.
+    return head.startswith("<")
+
+
 class WorkerStat(TypedDict):
     """TypedDict for worker statistics."""
 
@@ -389,6 +407,7 @@ class FullTextClient(BaseAPIClient):
         cache_max_age_days: int = 30,
         verify_cached_files: bool = True,
         cache_config: CacheConfig | None = None,
+        email: str | None = None,
     ) -> None:
         """
         Initialize the FullTextClient.
@@ -412,6 +431,11 @@ class FullTextClient(BaseAPIClient):
             This is separate from file caching which is controlled by enable_cache.
         """
         super().__init__(rate_limit_delay=rate_limit_delay)
+
+        # Contact e-mail for the Unpaywall "polite pool" (falls back to the
+        # UNPAYWALL_EMAIL / CROSSREF_EMAIL env var). Unpaywall requires a real
+        # address; without one the Unpaywall fallbacks are skipped.
+        self.email = email or os.environ.get("UNPAYWALL_EMAIL") or os.environ.get("CROSSREF_EMAIL")
 
         # File cache configuration (for downloaded PDF/XML files)
         self.enable_cache = enable_cache
@@ -1148,90 +1172,136 @@ class FullTextClient(BaseAPIClient):
         pmcid: str,
         output_path: str | Path | None = None,
         rate_limiter: RateLimiter | None = None,
+        doi: str | None = None,
+        extra_strategies: bool = True,
     ) -> Path | None:
         """
-        Download XML full text of a paper from Europe PMC using its PMC ID.
+        Download full-text XML for a paper, Europe PMC first.
 
-        Uses layered fallback strategy with caching to maximize success:
-        1. Check cache for existing valid file
-        2. Europe PMC REST API (XML endpoint)
-        3. FTP bulk XML archives
-        4. Europe PMC fulltextRepo endpoint
-        5. Unpaywall API via DOI lookup (final fallback)
+        Chain (each step cached on success):
+
+        1. local file cache
+        2. Europe PMC REST API (``fullTextXML``)
+        3. Europe PMC FTP OA bulk archives
+        4. Europe PMC ``fulltextRepo`` endpoint
+        5. *extra* open sources (``extra_strategies=True``): NCBI PMC OA
+           service, NCBI efetch, BioC-PMC, DOI content negotiation, bioRxiv
+           — see :mod:`pyeuropepmc.features.fulltext.xml_strategies`
+        6. Unpaywall via DOI (only with a contact ``email``)
+
+        The name of the step that produced the file is recorded on
+        ``self.last_xml_source``.
 
         Parameters
         ----------
         pmcid : str
-            PMC ID of the paper (with or without 'PMC' prefix)
+            PMC ID (with or without the ``PMC`` prefix).
         output_path : str or Path, optional
-            Path where to save the XML file. If None, saves to current directory
-            with filename 'PMC{pmcid}.xml'
+            Where to save the XML (default: ``PMC{pmcid}.xml`` in the cwd).
         rate_limiter : RateLimiter, optional
-            Rate limiter to use for network requests
-
-        Returns
-        -------
-        Path or None
-            Path to downloaded XML file if successful, None if failed
+            Rate limiter applied before the network steps.
+        doi : str, optional
+            DOI for the DOI-keyed steps (negotiation / bioRxiv / Unpaywall).
+            Looked up from Europe PMC when omitted and those steps are reached.
+        extra_strategies : bool, optional
+            Run the non-Europe-PMC strategies before the Unpaywall fallback
+            (default: ``True``).
 
         Raises
         ------
         FullTextError
-            If PMC ID is invalid, XML not available via any method,
-            or download fails
+            If the PMC ID is invalid or no source yields XML.
         """
         self.logger.info(f"Starting XML download for PMC ID: {pmcid}")
         normalized_pmcid = self._validate_pmcid(pmcid)
+        self.last_xml_source: str | None = None
 
-        # Determine output path
-        if output_path is None:
-            output_path = Path(f"PMC{normalized_pmcid}.xml")
-        else:
-            output_path = Path(output_path)
-
-        # Ensure output directory exists
+        output_path = (
+            Path(f"PMC{normalized_pmcid}.xml") if output_path is None else Path(output_path)
+        )
         output_path.parent.mkdir(parents=True, exist_ok=True)
 
-        # Check cache first
         cached_file = self._check_cache_for_file(normalized_pmcid, "xml", output_path)
         if cached_file:
             self.logger.info(f"Using cached XML for PMC{normalized_pmcid}")
+            self.last_xml_source = "cache"
             return cached_file
 
-        # Rate limit before network requests
         if rate_limiter is not None:
             rate_limiter.wait_if_needed()
 
-        # Try REST API first
-        rest_result = self._try_xml_rest_api(normalized_pmcid, output_path)
-        if rest_result:
+        # --- Europe PMC first ------------------------------------------------
+        epmc_steps = (
+            ("europepmc_rest", self._try_xml_rest_api),
+            ("europepmc_ftp_bulk", self._try_bulk_xml_download),
+            ("europepmc_fulltext_repo", self._try_fulltext_repo),
+        )
+        for name, step in epmc_steps:
+            if step(normalized_pmcid, output_path):
+                self._save_to_cache(output_path, normalized_pmcid, "xml")
+                self.last_xml_source = name
+                return output_path
+
+        # --- extra open sources -------------------------------------------
+        if extra_strategies and self._try_extra_xml_strategies(normalized_pmcid, doi, output_path):
             self._save_to_cache(output_path, normalized_pmcid, "xml")
             return output_path
 
-        # Fall back to bulk download
-        bulk_result = self._try_bulk_xml_download(normalized_pmcid, output_path)
-        if bulk_result:
+        # --- Unpaywall last ----------------------------------------------
+        if self._try_unpaywall_xml(normalized_pmcid, output_path):
             self._save_to_cache(output_path, normalized_pmcid, "xml")
+            self.last_xml_source = "unpaywall"
             return output_path
 
-        # Try fulltextRepo endpoint
-        repo_result = self._try_fulltext_repo(normalized_pmcid, output_path)
-        if repo_result:
-            self._save_to_cache(output_path, normalized_pmcid, "xml")
-            return output_path
-
-        # Final fallback: Unpaywall via DOI lookup
-        unpaywall_result = self._try_unpaywall_xml(normalized_pmcid, output_path)
-        if unpaywall_result:
-            self._save_to_cache(output_path, normalized_pmcid, "xml")
-            return output_path
-
-        # All methods failed
         raise FullTextError(
             ErrorCodes.FULL003,
             context={"all_methods_failed": True},
             pmcid=normalized_pmcid,
         )
+
+    def _lookup_doi_for_pmcid(self, normalized_pmcid: str) -> str | None:
+        """Best-effort PMCID -> DOI via Europe PMC (used by the DOI-keyed steps)."""
+        try:
+            from pyeuropepmc.features.literature.article import ArticleClient
+
+            ac = ArticleClient(rate_limit_delay=self.rate_limit_delay)
+            try:
+                details = ac.get_article_details("PMC", normalized_pmcid, result_type="lite")
+            finally:
+                ac.close()
+            doi = (details.get("result") or {}).get("doi") if isinstance(details, dict) else None
+            return str(doi) if doi else None
+        except Exception as exc:  # noqa: BLE001
+            self.logger.debug("DOI lookup failed for PMC%s: %s", normalized_pmcid, exc)
+            return None
+
+    def _try_extra_xml_strategies(
+        self, normalized_pmcid: str, doi: str | None, output_path: Path
+    ) -> bool:
+        """Run the pluggable non-Europe-PMC XML strategies."""
+        from pyeuropepmc.features.fulltext.xml_strategies import FetchContext, run_strategies
+
+        ctx = FetchContext(
+            pmcid=normalized_pmcid,
+            doi=doi or self._lookup_doi_for_pmcid(normalized_pmcid),
+            session=self.session,
+            timeout=self.DEFAULT_TIMEOUT,
+            email=self.email,
+        )
+        text, winner = run_strategies(ctx)
+        if not text:
+            return False
+        try:
+            with atomic_write(output_path, "w", encoding="utf-8") as f:
+                f.write(text)
+        except OSError as e:
+            self.logger.error(
+                "Failed to save XML from %s for PMC%s: %s", winner, normalized_pmcid, e
+            )
+            return False
+        self.last_xml_source = winner
+        self.logger.info("Downloaded XML via '%s' strategy for PMC%s", winner, normalized_pmcid)
+        return True
 
     def _try_xml_rest_api(self, normalized_pmcid: str, output_path: Path) -> bool:
         """
@@ -1256,6 +1326,14 @@ class FullTextClient(BaseAPIClient):
             endpoint = f"PMC{normalized_pmcid}/fullTextXML"
             response = self._get(endpoint)
             self.logger.debug(f"XML download response headers: {response.headers}")
+
+            if not looks_like_jats_xml(response.text):
+                self.logger.warning(
+                    "REST API for PMC%s returned a non-XML body (%s); not caching",
+                    normalized_pmcid,
+                    response.headers.get("content-type", "?"),
+                )
+                return False
 
             # Write XML content to file using atomic write
             with atomic_write(output_path, "w", encoding="utf-8") as f:
@@ -2098,6 +2176,12 @@ class FullTextClient(BaseAPIClient):
                 self.logger.debug(f"fulltextRepo returned status {response.status_code}")
                 return False
 
+            if not looks_like_jats_xml(response.text):
+                self.logger.debug(
+                    "fulltextRepo for PMC%s returned a non-XML body", normalized_pmcid
+                )
+                return False
+
             with atomic_write(output_path, "w", encoding="utf-8") as f:
                 f.write(response.text)
 
@@ -2151,56 +2235,52 @@ class FullTextClient(BaseAPIClient):
             finally:
                 article_client.close()
 
+            if not self.email:
+                self.logger.debug(
+                    "Skipping Unpaywall XML fallback for PMC%s — no contact email "
+                    "(pass email= or set UNPAYWALL_EMAIL)",
+                    normalized_pmcid,
+                )
+                return False
+
             self.logger.info(f"Looking up DOI in Unpaywall: {doi}")
 
-            # Create Unpaywall client (email required for rate limiting)
             from pyeuropepmc.features.enrich.sources.unpaywall_client import UnpaywallClient
 
-            unpaywall = UnpaywallClient(email="user@example.com", rate_limit_delay=0.6)
+            unpaywall = UnpaywallClient(email=self.email, rate_limit_delay=0.6)
 
-            # Try to get OA location with PDF
             best_location = unpaywall.get_best_oa_location(doi)
-
             if best_location is None:
                 self.logger.debug(f"No OA location found via Unpaywall for DOI {doi}")
                 return False
 
-            url_for_pdf = best_location.get("url_for_pdf")
-            url = best_location.get("url")
-
-            download_url = url_for_pdf or url
-
+            # This is the *XML* fallback — only follow a link that yields XML.
+            download_url = best_location.get("url_for_pdf") or best_location.get("url")
             if not download_url:
-                self.logger.debug(f"No PDF URL found in Unpaywall location for DOI {doi}")
+                self.logger.debug(f"No usable URL in Unpaywall location for DOI {doi}")
                 return False
 
             self.logger.info(f"Downloading from Unpaywall: {download_url}")
-
-            # Download the PDF/XML from Unpaywall
-            response = requests.get(download_url, timeout=30, stream=True)
+            response = requests.get(download_url, timeout=30)
             response.raise_for_status()
 
-            # Check content type
             content_type = response.headers.get("content-type", "").lower()
-            if "xml" not in content_type and "pdf" not in content_type:
-                self.logger.warning(f"Unexpected content type from Unpaywall: {content_type}")
-                return False
-
-            # Save using atomic write
-            with atomic_write(output_path, "wb") as f:
-                for chunk in response.iter_content(chunk_size=8192):
-                    if chunk:
-                        f.write(chunk)
-
-            # Verify file was downloaded
-            if output_path.exists() and output_path.stat().st_size > 0:
-                self.logger.info(f"Successfully downloaded from Unpaywall: {output_path}")
-                return True
-            else:
-                self.logger.warning(
-                    f"Download from Unpaywall resulted in empty file: {output_path}"
+            if "xml" not in content_type or not looks_like_jats_xml(response.text):
+                self.logger.debug(
+                    "Unpaywall link for DOI %s is not XML (%s) — leaving it for the PDF chain",
+                    doi,
+                    content_type or "?",
                 )
                 return False
+
+            with atomic_write(output_path, "w", encoding="utf-8") as f:
+                f.write(response.text)
+
+            if output_path.exists() and output_path.stat().st_size > 0:
+                self.logger.info(f"Successfully downloaded XML from Unpaywall: {output_path}")
+                return True
+            self.logger.warning(f"Unpaywall XML download produced an empty file: {output_path}")
+            return False
 
         except UnpaywallError as e:
             self.logger.warning(f"Unpaywall API error for PMC{normalized_pmcid}: {e}")
@@ -2251,12 +2331,18 @@ class FullTextClient(BaseAPIClient):
             finally:
                 article_client.close()
 
+            if not self.email:
+                self.logger.debug(
+                    "Skipping Unpaywall PDF fallback for PMC%s — no contact email",
+                    normalized_pmcid,
+                )
+                return False
+
             self.logger.info(f"Looking up DOI in Unpaywall for PDF: {doi}")
 
-            # Create Unpaywall client (email required for rate limiting)
             from pyeuropepmc.features.enrich.sources.unpaywall_client import UnpaywallClient
 
-            unpaywall = UnpaywallClient(email="user@example.com", rate_limit_delay=0.6)
+            unpaywall = UnpaywallClient(email=self.email, rate_limit_delay=0.6)
 
             # Try to get OA location with PDF
             best_location = unpaywall.get_best_oa_location(doi)
