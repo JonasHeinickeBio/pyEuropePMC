@@ -309,7 +309,7 @@ class SupervisorClaimWorkflow:
             config=config or {"configurable": {"thread_id": initial_state["workflow_id"]}},
         ):
             yield step
-            for node_name, update in step.items():
+            for _node_name, update in step.items():
                 if isinstance(update, dict):
                     final_state.update(update)
 

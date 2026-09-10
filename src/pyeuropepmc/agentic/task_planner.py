@@ -446,7 +446,7 @@ class TaskPlanner:
         """
         ready = []
 
-        for task_id, task in self._tasks.items():
+        for _task_id, task in self._tasks.items():
             if task.status != TaskStatus.PENDING:
                 continue
 

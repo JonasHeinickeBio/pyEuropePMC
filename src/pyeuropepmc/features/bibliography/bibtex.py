@@ -329,7 +329,8 @@ class BibtexManager:
             d["ID"] = entry.citation_key
             d["ENTRYTYPE"] = entry.entry_type
             db.entries.append(d)
-        return self._bpt.dumps(db)
+        out: str = self._bpt.dumps(db)
+        return out
 
     def _write_v2(self, library: BibLibrary, **kwargs: Any) -> str:
         """Write using bibtexparser v2."""
@@ -341,7 +342,8 @@ class BibtexManager:
             entries.append(Entry(entry.entry_type, entry.citation_key, fields))
 
         lib = self._bpt.Library(entries)
-        return self._bpt.write_string(lib)
+        out: str = self._bpt.write_string(lib)
+        return out
 
 
 # ------------------------------------------------------------------

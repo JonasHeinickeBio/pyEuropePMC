@@ -135,10 +135,10 @@ class FigureExtractor:
     ) -> None:
         # Lazy imports to avoid circular dependency
         from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
-        from pyeuropepmc.features.literature.annotations import AnnotationsClient
+        from pyeuropepmc.features.literature.search import SearchClient
 
         self.fulltext_client = FullTextClient(rate_limit_delay=1.0, enable_cache=True)
-        self.annotations_client = AnnotationsClient(rate_limit_delay=1.0)
+        self.search_client = SearchClient(rate_limit_delay=1.0)
 
     # ------------------------------------------------------------------
     # Main extraction
@@ -183,7 +183,11 @@ class FigureExtractor:
             return []
 
         # Fetch the full-text XML
-        xml_str = self.fulltext_client.get_fulltext_xml(pmcid=resolved_pmcid)
+        try:
+            xml_str = self.fulltext_client.get_fulltext_content(resolved_pmcid, format_type="xml")
+        except Exception as exc:  # noqa: BLE001 - any retrieval failure -> no figures
+            logger.warning("No full-text XML available for %s: %s", resolved_pmcid, exc)
+            return []
         if not xml_str:
             logger.warning("No full-text XML available for %s", resolved_pmcid)
             return []
@@ -237,21 +241,22 @@ class FigureExtractor:
         pmid: str | None = None,
         doi: str | None = None,
     ) -> str | None:
-        """Resolve PMID or DOI to PMCID."""
+        """Resolve a PMID or DOI to a PMCID via a Europe PMC lookup."""
         if pmid:
-            try:
-                resp = self.fulltext_client.get_article(pmid=pmid)
-                if resp and "pmcid" in resp:
-                    return resp["pmcid"]
-            except Exception:
-                pass
-        if doi:
-            try:
-                resp = self.fulltext_client.get_article(doi=doi)
-                if resp and "pmcid" in resp:
-                    return resp["pmcid"]
-            except Exception:
-                pass
+            query = f"EXT_ID:{pmid} AND SRC:MED"
+        elif doi:
+            query = f'DOI:"{doi}"'
+        else:
+            return None
+        try:
+            records = self.search_client.search_and_parse(query, format="json", pageSize=1)
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("PMCID lookup failed for pmid=%s doi=%s: %s", pmid, doi, exc)
+            return None
+        if records:
+            pmcid = records[0].get("pmcid")
+            if pmcid:
+                return str(pmcid)
         return None
 
     def _extract_from_xml(
@@ -277,7 +282,7 @@ class FigureExtractor:
         # Extract figures (<fig> elements)
         for fig_elem in root.iter("{http://www.ncbi.nlm.nih.gov/JATS1}fig"):
             figure = self._parse_figure_element(fig_elem, pmcid, ns)
-            if figure:
+            if figure:  # noqa: SIM102
                 if (
                     format == FigureFormat.ALL
                     or figure.image_url is None

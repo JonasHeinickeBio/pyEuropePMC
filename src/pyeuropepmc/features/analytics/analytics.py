@@ -13,7 +13,10 @@ from collections import Counter
 from itertools import combinations
 import logging
 import re
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
+
+if TYPE_CHECKING:
+    import pandas as pd
 
 logger = logging.getLogger("pyeuropepmc.analytics")
 logger.addHandler(logging.NullHandler())

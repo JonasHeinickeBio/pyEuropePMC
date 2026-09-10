@@ -98,7 +98,7 @@ except ImportError:
 # Optional: bibliography tools
 try:
     from pyeuropepmc.features.bibliography import (
-        BIBTEXPARSER_AVAILABLE,
+        BIBTEXPARSER_AVAILABLE,  # noqa: F401  (availability flag)
         BibtexManager,
         CitationConverter,
         ReferenceResolver,
@@ -146,7 +146,7 @@ def _to_serializable(obj: Any) -> Any:
         return {k: _to_serializable(v) for k, v in vars(obj).items()}
     if isinstance(obj, dict):
         return {k: _to_serializable(v) for k, v in obj.items()}
-    if isinstance(obj, (list, tuple)):
+    if isinstance(obj, list | tuple):
         return [_to_serializable(i) for i in obj]
     return obj
 
@@ -169,7 +169,8 @@ def _ok(data: Any) -> dict[str, Any]:
 
 
 def parse_mcp_request(line: str) -> dict[str, Any]:
-    return json.loads(line.strip())
+    parsed: dict[str, Any] = json.loads(line.strip())
+    return parsed
 
 
 def create_response(
@@ -802,7 +803,8 @@ def _handle_clinical_trial_search(args: dict[str, Any]) -> dict[str, Any]:
             results = [
                 r
                 for r in results
-                if intervention_lower in (r.extra_metadata.get("interventions") or "").lower()
+                if intervention_lower
+                in ((r.extra_metadata or {}).get("interventions") or "").lower()
             ][:limit]
         elif condition:
             results = client_.search_by_condition(condition, limit=limit)
@@ -813,7 +815,9 @@ def _handle_clinical_trial_search(args: dict[str, Any]) -> dict[str, Any]:
 
         if status:
             results = [
-                r for r in results if r.extra_metadata.get("status", "").upper() == status.upper()
+                r
+                for r in results
+                if (r.extra_metadata or {}).get("status", "").upper() == status.upper()
             ]
 
         return _ok(
@@ -835,7 +839,7 @@ def _handle_fulltext_index_query(args: dict[str, Any]) -> dict[str, Any]:
     index_path = args.get("index_path")
 
     try:
-        idx = FullTextIndex(path=index_path) if index_path else FullTextIndex()
+        idx = FullTextIndex(db_path=index_path) if index_path else FullTextIndex()
         # Use search method — returns list of dicts with snippet
         results = idx.search(query, limit=limit)
         stats = idx.stats() if hasattr(idx, "stats") else {}
@@ -913,7 +917,10 @@ def _handle_llm_tool(tool_name: str, args: dict[str, Any], client: SearchClient)
 
     try:
         llm_client = create_llm_client()
-        agent = SmartCitationAnalysis(llm_client=llm_client, literature_client=client)
+        agent = SmartCitationAnalysis(
+            llm_client=llm_client,
+            literature_client=client,  # type: ignore[arg-type]
+        )
     except Exception as e:
         return _err(f"Failed to initialise LLM: {e}")
 
@@ -1043,11 +1050,12 @@ def _handle_bibliography_tool(tool_name: str, args: dict[str, Any]) -> dict[str,
 
         if tool_name == "bib_to_ris":
             lib = mgr.parse_string(args.get("content", ""))
-            return {"content": [{"type": "text", "text": converter.to_ris(lib)}]}
+            ris = "\n\n".join(converter.to_ris(e) for e in lib.entries)
+            return {"content": [{"type": "text", "text": ris}]}
 
         if tool_name == "bib_to_csl":
             lib = mgr.parse_string(args.get("content", ""))
-            return _ok(converter.to_csl_json(lib))
+            return _ok([converter.to_csl_json(e) for e in lib.entries])
 
         if tool_name == "ref_resolve_doi":
             ref = resolver.resolve_doi(args.get("doi", ""))
@@ -1067,9 +1075,9 @@ def _handle_bibliography_tool(tool_name: str, args: dict[str, Any]) -> dict[str,
             return _ok(
                 {
                     "input_libraries": len(libs),
-                    "total_entries_before": sum(len(l) for l in libs),
+                    "total_entries_before": sum(len(lib) for lib in libs),
                     "merged_entries": len(merged),
-                    "deduplicated": sum(len(l) for l in libs) - len(merged),
+                    "deduplicated": sum(len(lib) for lib in libs) - len(merged),
                     "keys": [e.citation_key for e in merged.entries],
                 }
             )

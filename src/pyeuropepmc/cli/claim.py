@@ -85,7 +85,7 @@ def _require_langgraph() -> None:
             "Install with: pip install pyeuropepmc[agentic]"
         )
         typer.echo(msg, err=True)
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None
 
 
 def _read_text(text_arg: str | None, file_arg: Path | None) -> str:
@@ -99,10 +99,10 @@ def _read_text(text_arg: str | None, file_arg: Path | None) -> str:
             return file_arg.read_text(encoding="utf-8")
         except FileNotFoundError:
             typer.echo(f"Error: file not found: {file_arg}", err=True)
-            raise typer.Exit(code=1)
+            raise typer.Exit(code=1) from None
         except Exception as e:
             typer.echo(f"Error reading file: {e}", err=True)
-            raise typer.Exit(code=1)
+            raise typer.Exit(code=1) from None
 
     if text_arg is not None and text_arg.strip():
         return text_arg
@@ -117,7 +117,7 @@ def _read_text(text_arg: str | None, file_arg: Path | None) -> str:
         "Error: provide text as an argument, use ``--file``, or pipe input via stdin.",
         err=True,
     )
-    raise typer.Exit(code=1)
+    raise typer.Exit(code=1) from None
 
 
 def _show_header(text: str, title: str = "Claim Workflow") -> None:
@@ -209,7 +209,7 @@ def verify(
     resolved = _read_text(text, file)
     if not resolved.strip():
         typer.echo("Error: text cannot be empty", err=True)
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None
 
     if output != "quiet":
         _show_header(resolved)
@@ -259,7 +259,7 @@ def verify(
             )
     except Exception as e:
         typer.echo(f"Error: {e}", err=True)
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None
 
     # --- Output ---
     if output == "json":
@@ -436,7 +436,7 @@ def stream(
     resolved = _read_text(text, file)
     if not resolved.strip():
         typer.echo("Error: text cannot be empty", err=True)
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None
 
     if console:
         _show_header(resolved)
@@ -460,7 +460,7 @@ def stream(
                     _print_stream_step(node_name, update)
     except Exception as e:
         typer.echo(f"Error: {e}", err=True)
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None
 
 
 def _print_stream_step(node_name: str, update: dict) -> None:
@@ -479,7 +479,6 @@ def _print_stream_step(node_name: str, update: dict) -> None:
             err_str = f": {'; '.join(errors)}" if errors else ""
             console.print(f"\n[red]✗ Pipeline failed{err_str}[/]")
         else:
-            spinner = "━━━" if progress_val > 0 else "───"
             console.print(
                 f"[cyan]►[/] Supervisor routing to [bold]{phase}[/] ({progress_val:.0%})"
             )
@@ -543,10 +542,10 @@ def serve(
         from pyeuropepmc.ui import create_app
     except ImportError:
         typer.echo(
-            "Flask is required for the web UI.\nInstall with: pip install pyeuropepmc[enrichment]",
+            "Flask is required for the web UI.\nInstall with: pip install pyeuropepmc[ui]",
             err=True,
         )
-        raise typer.Exit(code=1)
+        raise typer.Exit(code=1) from None
 
     app = create_app()
     url = f"http://{host}:{port}"

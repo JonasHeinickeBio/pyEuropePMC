@@ -23,7 +23,10 @@ import json
 import os
 from pathlib import Path
 import tempfile
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from rdflib import Graph
 
 try:
     from rdfizer import semantify
@@ -408,7 +411,7 @@ class RMLRDFizer:
         if output_files:
             return output_files[0]
 
-        # Return empty path if no output
+        # No output produced
         return ""
 
     def convert_json_to_rdf(
@@ -480,10 +483,10 @@ class RMLRDFizer:
 
         # Load output
         g = Graph()
-        if os.path.exists(output_file):
+        if output_file and os.path.exists(output_file):
             g.parse(output_file, format="nt")
 
-            # Bind namespaces to ensure proper prefixes in serialization
-            self._bind_namespaces(g)
+        # Bind namespaces to ensure proper prefixes in serialization
+        self._bind_namespaces(g)
 
-            return g
+        return g

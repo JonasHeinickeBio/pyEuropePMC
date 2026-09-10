@@ -9,7 +9,10 @@ from __future__ import annotations
 
 from datetime import datetime
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from rdflib import URIRef
 
 from pyeuropepmc.mappers.config_utils import get_namespace_from_config, load_rdf_config
 from pyeuropepmc.mappers.processors import (

@@ -23,9 +23,13 @@ from collections.abc import Callable
 import logging
 import threading
 import time
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from pyeuropepmc.core.exceptions import APIClientError
+
+if TYPE_CHECKING:
+    from semanticscholar.Author import Author as S2Author
+    from semanticscholar.PublicationVenue import PublicationVenue as S2Venue
 
 logger = logging.getLogger(__name__)
 
@@ -198,7 +202,7 @@ class ProfessionalSemanticScholarClient:
 
                 if isinstance(
                     e,
-                    (InternalServerErrorException, GatewayTimeoutException, ServerErrorException),
+                    InternalServerErrorException | GatewayTimeoutException | ServerErrorException,
                 ):
                     last_error = e
                     if attempt < max_retries:
@@ -280,7 +284,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_paper_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.get_paper(paper_id=paper_id, fields=fields)
 
         paper = self._execute_with_retry(operation, f"get_paper({paper_id})", max_retries)
@@ -328,7 +332,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_paper_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.get_papers(
                 paper_ids=paper_ids, fields=fields, return_not_found=return_not_found
             )
@@ -421,7 +425,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_paper_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.search_paper(
                 query=query,
                 year=year,
@@ -484,7 +488,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_author_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.get_paper_authors(paper_id=paper_id, fields=fields, limit=limit)
 
         results = self._execute_with_retry(
@@ -523,7 +527,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_author_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.get_author(author_id=author_id, fields=fields)
 
         try:
@@ -581,7 +585,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_paper_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.get_recommended_papers(
                 paper_id=paper_id,
                 fields=fields,
@@ -634,7 +638,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_paper_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.get_recommended_papers_from_lists(
                 positive_paper_ids=positive_paper_ids,
                 negative_paper_ids=negative_paper_ids,
@@ -686,7 +690,7 @@ class ProfessionalSemanticScholarClient:
         if fields is None:
             fields = self._default_author_fields()
 
-        def operation():
+        def operation() -> Any:
             return self._client.search_author(query=query, fields=fields, limit=limit)
 
         results = self._execute_with_retry(operation, f"search_author('{query}')", max_retries)
@@ -726,12 +730,8 @@ class ProfessionalSemanticScholarClient:
                     if i >= limit:
                         break
                     paper_list.append(p)
-            else:
-                if results:
-                    if isinstance(results, list):
-                        paper_list = results[:limit]
-                    else:
-                        paper_list = [results]
+            elif results:
+                paper_list = results[:limit] if isinstance(results, list) else [results]
         except Exception as exc:
             logger.debug("Failed to iterate results: %s", exc)
 

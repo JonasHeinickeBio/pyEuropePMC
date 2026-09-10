@@ -29,7 +29,7 @@ try:
     from cachetools import TTLCache
 
     CACHETOOLS_AVAILABLE = True
-    TTLCacheType = TTLCache
+    TTLCacheType: type | None = TTLCache
 except ImportError:
     CACHETOOLS_AVAILABLE = False
     TTLCacheType = None

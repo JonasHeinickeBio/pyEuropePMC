@@ -245,7 +245,7 @@ class HighlightedDocument:
 # Heuristic classifier (no LLM required)
 # ------------------------------------------------------------------
 
-_RULE_PATTERNS: list[tuple[re.Pattern, RhetoricalRole, float]] = [
+_RULE_PATTERNS: list[tuple[re.Pattern[str], RhetoricalRole, float]] = [
     # Claims (words suggesting a strong statement)
     (
         re.compile(
@@ -445,10 +445,9 @@ class RhetoricalHighlighter:
 
         # Rule-based matching
         for pattern, role, conf in _RULE_PATTERNS:
-            if pattern.search(sentence):
-                if conf > best_confidence:
-                    best_role = role
-                    best_confidence = conf
+            if pattern.search(sentence) and conf > best_confidence:
+                best_role = role
+                best_confidence = conf
 
         # LLM refinement for uncertain sentences
         if self.use_llm and self.llm_client and best_confidence < 0.4:
@@ -522,13 +521,14 @@ def extract_text_from_pdf(pdf_path: str) -> str | None:
     str or None
         Extracted text, or None if no backend is available.
     """
-    for lib_name, module_path, extract_fn in [
+    for lib_name, _module_path, extract_fn in [
         ("fitz", "fitz", "_extract_pymupdf"),
         ("pdfplumber", "pdfplumber", "_extract_pdfplumber"),
         ("pdfminer", "pdfminer.high_level", "_extract_pdfminer"),
     ]:
         try:
-            return globals()[extract_fn](pdf_path)
+            text: str = globals()[extract_fn](pdf_path)
+            return text
         except ImportError:
             continue
         except Exception as e:
@@ -562,7 +562,8 @@ def _extract_pdfminer(pdf_path: str) -> str:
     """Extract text using pdfminer.six."""
     from pdfminer.high_level import extract_text as pm_extract
 
-    return pm_extract(pdf_path)
+    text: str = pm_extract(pdf_path)
+    return text
 
 
 # ------------------------------------------------------------------

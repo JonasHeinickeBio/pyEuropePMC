@@ -85,7 +85,8 @@ class OrcidClient(BaseEnrichmentClient):
 
     def enrich(
         self,
-        identifier: str,
+        identifier: str | None = None,
+        use_cache: bool = True,
         **kwargs: Any,
     ) -> dict[str, Any] | None:
         """
@@ -104,6 +105,9 @@ class OrcidClient(BaseEnrichmentClient):
         dict or None
             Profile data with keys: name, works, affiliations, etc.
         """
+        if identifier is None:
+            logger.warning("ORCID enrichment requires an identifier")
+            return None
         orcid = self._normalize_orcid(identifier)
         if not orcid:
             logger.warning("Invalid ORCID identifier: %s", identifier)

@@ -184,7 +184,7 @@ def run_supervisor_graph(
         )
         final_state: dict[str, Any] = {}
         for step in gen:
-            for node_name, update in step.items():
+            for _node_name, update in step.items():
                 if isinstance(update, dict):
                     final_state.update(update)
                     pct = update.get("workflow_progress")

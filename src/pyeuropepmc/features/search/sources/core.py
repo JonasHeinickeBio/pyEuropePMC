@@ -145,8 +145,6 @@ class COREClient(BaseLiteratureClient):
                     authors.append({"name": name})
             elif isinstance(a, str):
                 authors.append({"name": a})
-        if not authors:
-            authors = None
 
         # Journal
         journal: str | None = raw.get("journalName", "") or raw.get("publisher", "")
@@ -185,7 +183,7 @@ class COREClient(BaseLiteratureClient):
         return LiteratureResult(
             doi=doi,
             title=title,
-            authors=authors,
+            authors=authors or None,
             publication_year=year,
             journal=journal,
             abstract=abstract,

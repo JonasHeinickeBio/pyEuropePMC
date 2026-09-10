@@ -18,8 +18,9 @@ class TestEnrichmentConfig:
         assert config.enable_semantic_scholar is True
         assert config.enable_openalex is True
 
-    def test_unpaywall_requires_email(self):
+    def test_unpaywall_requires_email(self, monkeypatch):
         """Test that enabling Unpaywall without email raises ValueError."""
+        monkeypatch.delenv("UNPAYWALL_EMAIL", raising=False)
         with pytest.raises(ValueError, match="unpaywall_email is required"):
             EnrichmentConfig(enable_unpaywall=True)
 

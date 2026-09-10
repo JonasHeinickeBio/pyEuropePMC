@@ -257,7 +257,7 @@ class ArxivClient(BaseLiteratureClient):
     # XML parsing
     # ------------------------------------------------------------------
 
-    def _parse_feed(self, xml_data: str | dict) -> list[LiteratureResult]:
+    def _parse_feed(self, xml_data: str | dict[str, Any]) -> list[LiteratureResult]:
         """
         Parse arXiv Atom XML feed into LiteratureResult list.
 

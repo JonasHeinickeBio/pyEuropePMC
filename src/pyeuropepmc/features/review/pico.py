@@ -164,14 +164,16 @@ class PICOParser:
     Examples
     --------
     >>> parser = PICOParser()
-    >>> pico = parser.parse("In patients with diabetes, does metformin reduce cardiovascular risk compared to placebo?")
+    >>> pico = parser.parse(
+    ...     "In patients with diabetes, does metformin reduce cardiovascular risk vs placebo?"
+    ... )
     >>> print(pico.population)
     >>> print(pico.intervention)
     """
 
     def __init__(
         self,
-        patterns: dict[str, re.Pattern] | None = None,
+        patterns: dict[str, re.Pattern[str]] | None = None,
     ) -> None:
         """
         Parameters

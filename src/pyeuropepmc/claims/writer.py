@@ -193,7 +193,7 @@ class ClaimWriter:
         claims_text = []
         for i, claim in enumerate(claims):
             evidence_refs = []
-            for j, ev in enumerate(claim.evidence[:2]):
+            for _j, ev in enumerate(claim.evidence[:2]):
                 bib_idx = next(
                     (
                         k

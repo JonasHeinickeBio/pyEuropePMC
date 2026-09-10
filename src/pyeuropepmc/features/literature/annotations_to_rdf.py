@@ -8,7 +8,10 @@ Data Model.
 
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from rdflib import Graph
 
 from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 from pyeuropepmc.mappers.rdf_mapper import RDFMapper

@@ -7,6 +7,7 @@ trial registries into a consistent format for downstream analysis.
 
 from __future__ import annotations
 
+import contextlib
 from typing import Any
 
 from pydantic import BaseModel, ConfigDict, Field
@@ -144,10 +145,8 @@ class ClinicalTrial(BaseModel):
             authors = [Author(name=s.get("name", "")) for s in self.sponsors if s.get("name")]
         year = None
         if self.start_date:
-            try:
+            with contextlib.suppress(ValueError, IndexError):
                 year = int(self.start_date[:4])
-            except (ValueError, IndexError):
-                pass
 
         return LiteratureResult(
             doi=None,

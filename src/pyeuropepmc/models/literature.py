@@ -6,9 +6,12 @@ data from multiple sources (PubMed, Semantic Scholar, OpenAlex, etc.) into
 a consistent format for downstream processing.
 """
 
-from typing import Annotated, Any
+from typing import TYPE_CHECKING, Annotated, Any
 
 from pydantic import BaseModel, ConfigDict, Field, field_serializer, field_validator
+
+if TYPE_CHECKING:
+    from pyeuropepmc.models.paper import PaperEntity
 
 
 class Author(BaseModel):
@@ -192,6 +195,7 @@ class LiteratureResult(BaseModel):
         PaperEntity
             PaperEntity with data from this result
         """
+        from pyeuropepmc.models.journal import JournalEntity
         from pyeuropepmc.models.paper import PaperEntity
 
         # Build authors list
@@ -214,7 +218,7 @@ class LiteratureResult(BaseModel):
             title=self.title,
             authors=authors_list if authors_list else None,
             publication_year=self.publication_year,
-            journal=self.journal,
+            journal=JournalEntity(title=self.journal) if self.journal else None,
             abstract=self.abstract,
             citation_count=self.citation_count,
             openalex_id=self.source_id if self.source == "openalex" else None,
@@ -272,7 +276,7 @@ class LiteratureSearchResponse(BaseModel):
     page_size: int | None = Field(None, description="Number of results per page")
     query: str | None = Field(None, description="Original search query")
 
-    def __iter__(self):
+    def __iter__(self) -> Any:
         """Iterate over results."""
         return iter(self.results)
 

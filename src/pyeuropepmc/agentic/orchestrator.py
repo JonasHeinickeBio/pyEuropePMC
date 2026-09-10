@@ -277,7 +277,6 @@ class AgentOrchestrator:
             return None
 
         agent = self.agents[agent_name]
-        agent_config = self.agent_configs[agent_name]
 
         logger.info(f"Executing task '{task_id}' with agent '{agent_name}'")
 

@@ -276,8 +276,9 @@ class ZoteroClient:
                     list(items_created.values())[0] if isinstance(items_created, dict) else None
                 )
                 if first_key:
-                    self._client.add_to_collection(collection_key, first_key)  # type: ignore[arg-type]
-            return response  # type: ignore[no-any-return]
+                    self._client.addto_collection(collection_key, first_key)  # type: ignore[arg-type]
+            result: dict[str, Any] | None = response if isinstance(response, dict) else None
+            return result
         except Exception as exc:
             logger.error("Failed to add paper to Zotero: %s", exc)
             return None
@@ -319,7 +320,7 @@ class ZoteroClient:
     @staticmethod
     def _extract_pmid(data: dict[str, Any]) -> str | None:
         """Extract PMID from Zotero item's extra field or URL."""
-        extra = data.get("extra", "")
+        extra = str(data.get("extra", ""))
         if "PMID:" in extra:
             for line in extra.split("\n"):
                 if line.startswith("PMID:"):

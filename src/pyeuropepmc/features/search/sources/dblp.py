@@ -164,9 +164,9 @@ class DBLPClient(BaseLiteratureClient):
             if isinstance(a, str):
                 authors.append({"name": a})
             elif isinstance(a, dict):
-                authors.append({"name": a.get("text", a.get("@text", a.get("__text", "")))})
-        if not authors:
-            authors = None
+                authors.append(
+                    {"name": str(a.get("text") or a.get("@text") or a.get("__text") or "")}
+                )
 
         # Year
         year: int | None = None
@@ -205,7 +205,7 @@ class DBLPClient(BaseLiteratureClient):
         return LiteratureResult(
             doi=doi,
             title=title,
-            authors=authors,
+            authors=authors or None,
             publication_year=year,
             journal=venue,
             abstract=abstract,

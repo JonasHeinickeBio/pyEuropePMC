@@ -24,8 +24,10 @@ Usage:
         # test code here
 """
 
+from collections.abc import Callable
 from functools import wraps
 import importlib
+from typing import Any
 
 
 def is_dependency_available(package: str) -> bool:
@@ -100,7 +102,7 @@ def skip_if_dependency_missing(
     package: str,
     feature: str,
     install_group: str | None = None,
-):
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """
     Decorator to skip a test function if a dependency is missing.
 
@@ -126,9 +128,9 @@ def skip_if_dependency_missing(
     """
     import pytest
 
-    def decorator(func):
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             if not is_dependency_available(package):
                 install_cmd = (
                     f"pip install pyeuropepmc[{install_group}]"
@@ -150,7 +152,7 @@ def skip_if_dependencies_missing(
     packages: list[str],
     feature: str,
     install_group: str | None = None,
-):
+) -> Callable[[Callable[..., Any]], Callable[..., Any]]:
     """
     Decorator to skip a test function if any of the dependencies are missing.
 
@@ -176,9 +178,9 @@ def skip_if_dependencies_missing(
     """
     import pytest
 
-    def decorator(func):
+    def decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         @wraps(func)
-        def wrapper(*args, **kwargs):
+        def wrapper(*args: Any, **kwargs: Any) -> Any:
             missing = [pkg for pkg in packages if not is_dependency_available(pkg)]
             if missing:
                 install_cmd = (

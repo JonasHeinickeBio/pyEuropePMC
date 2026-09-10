@@ -139,8 +139,6 @@ class ZenodoClient(BaseLiteratureClient):
             if not name:
                 name = f"{c.get('family', '')}, {c.get('given', '')}".strip(", ")
             authors.append({"name": name})
-        if not authors:
-            authors = None
 
         # Publication year
         pub_date = metadata.get("publication_date", "")
@@ -184,7 +182,7 @@ class ZenodoClient(BaseLiteratureClient):
         return LiteratureResult(
             doi=doi,
             title=title,
-            authors=authors,
+            authors=authors or None,
             publication_year=year,
             journal=journal,
             abstract=abstract,

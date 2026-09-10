@@ -34,9 +34,9 @@ try:
 
     _HAS_PYDANTIC = True
 except ImportError:  # pragma: no cover
-    BaseModel = None
-    Field = None
-    create_model = None
+    BaseModel = None  # type: ignore[assignment]
+    Field = None  # type: ignore[assignment]
+    create_model = None  # type: ignore[assignment]
     _HAS_PYDANTIC = False
 
 

@@ -193,14 +193,11 @@ class CitationWalker:
         # Deduplicate
         if not self.skip_dedup and len(results) > 1:
             merger = LiteratureMerger(config=DedupConfig(mode=self.dedup_mode))
-            merged, report = merger.merge_results([results])
+            merged_dicts, report = merger.merge_results([[r.model_dump() for r in results]])
+            merged = [LiteratureResult.model_validate(d) for d in merged_dicts if d is not None]
             return merged, report
 
-        return results, MergeReport(
-            total_input=len(results),
-            total_output=len(results),
-            duplicates_removed=0,
-        )
+        return results, MergeReport(total_input=len(results), total_output=len(results))
 
     def get_citations(
         self,
@@ -341,7 +338,8 @@ class CitationWalker:
             resp.raise_for_status()
             data = resp.json()
             time.sleep(self.rate_limit_delay)
-            return data.get(direction, [])
+            result = data.get(direction, [])
+            return list(result) if isinstance(result, list) else []
         except Exception as e:
             logger.warning("Failed to fetch %s for %s: %s", direction, s2_id, e)
             return []
@@ -362,7 +360,11 @@ class CitationWalker:
 
         # Fallback: query S2 API directly
         url = f"{_S2_BASE}/paper/search"
-        params = {"query": identifier, "limit": 1, "fields": _S2_PAPER_FIELDS}
+        params: dict[str, str | int] = {
+            "query": identifier,
+            "limit": 1,
+            "fields": _S2_PAPER_FIELDS,
+        }
 
         import requests as _requests
 
@@ -372,7 +374,7 @@ class CitationWalker:
             data = resp.json()
             matches = data.get("data", [])
             if matches:
-                return matches[0]
+                return dict(matches[0])
         except Exception:
             pass
 

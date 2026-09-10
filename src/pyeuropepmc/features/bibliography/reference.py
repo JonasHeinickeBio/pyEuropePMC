@@ -222,7 +222,7 @@ class ReferenceResolver:
     # Internal — CrossRef
     # ------------------------------------------------------------------
 
-    def _get_crossref_client(self):
+    def _get_crossref_client(self) -> Any:
         """Lazy-init the CrossRef enrichment client."""
         if self._crossref_client is None:
             from pyeuropepmc.features.enrich.sources.crossref import CrossRefClient
@@ -291,7 +291,7 @@ class ReferenceResolver:
     # Internal — Europe PMC
     # ------------------------------------------------------------------
 
-    def _get_search_client(self):
+    def _get_search_client(self) -> Any:
         """Lazy-init the Europe PMC search client."""
         if self._search_client is None:
             from pyeuropepmc import SearchClient

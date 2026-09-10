@@ -18,6 +18,7 @@ Usage:
 """
 
 import importlib
+from typing import Any
 
 
 class OptionalDependencyError(ImportError):
@@ -109,7 +110,7 @@ def is_package_available(package: str) -> bool:
         return False
 
 
-def import_optional(package: str, feature: str, install_group: str | None = None):
+def import_optional(package: str, feature: str, install_group: str | None = None) -> Any:
     """
     Import a package with graceful error handling for missing dependencies.
 
@@ -140,7 +141,7 @@ def import_optional(package: str, feature: str, install_group: str | None = None
             if install_group
             else f"pip install {package}"
         )
-        raise OptionalDependencyError(package, feature, install_cmd)
+        raise OptionalDependencyError(package, feature, install_cmd) from None
 
 
 # Common dependency groupings for easy reference

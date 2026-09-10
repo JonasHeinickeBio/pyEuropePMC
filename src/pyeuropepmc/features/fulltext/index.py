@@ -293,10 +293,13 @@ class FullTextIndex:
             ),
         )
         rowid = cursor.lastrowid
+        if rowid is None:
+            raise RuntimeError("Failed to insert document into index (no rowid)")
 
         # Update FTS index
         self.conn.execute(
-            """INSERT INTO papers_fts (rowid, title, abstract, full_text, authors, journal, doi, pmid, pmcid, source)
+            """INSERT INTO papers_fts
+               (rowid, title, abstract, full_text, authors, journal, doi, pmid, pmcid, source)
                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""",
             (
                 rowid,
@@ -396,8 +399,12 @@ class FullTextIndex:
             True if document was deleted.
         """
         self.conn.execute("DELETE FROM papers_meta WHERE id = ?", (rowid,))
+        _empty = ["''"] * 9
         self.conn.execute(
-            "INSERT INTO papers_fts (papers_fts, rowid, title, abstract, full_text, authors, journal, doi, pmid, pmcid, source) VALUES ('delete', ?, '', '', '', '', '', '', '', '', '')",
+            "INSERT INTO papers_fts"
+            " (papers_fts, rowid, title, abstract, full_text, authors,"
+            " journal, doi, pmid, pmcid, source)"
+            f" VALUES ('delete', ?, {', '.join(_empty)})",
             (rowid,),
         )
         self.conn.commit()
@@ -522,7 +529,8 @@ class FullTextIndex:
             )
         else:
             cursor = self.conn.execute("SELECT COUNT(*) FROM papers_meta")
-        return cursor.fetchone()[0]
+        count: int = cursor.fetchone()[0]
+        return count
 
     def get(self, rowid: int) -> dict[str, Any] | None:
         """Get a document by row ID."""

@@ -9,7 +9,10 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import re
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from rdflib import Graph, Literal, URIRef
 import uuid
 
 from .config_utils import load_rdf_config

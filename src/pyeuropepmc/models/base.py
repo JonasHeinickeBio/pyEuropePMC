@@ -8,36 +8,39 @@ with support for RDF serialization, validation, and normalization.
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 import uuid
+
+if TYPE_CHECKING:
+    from rdflib import Namespace, URIRef
 
 
 class _LazyNamespace:
-    def __init__(self, uri: str):
+    def __init__(self, uri: str) -> None:
         self._uri = uri
-        self._ns = None
+        self._ns: Namespace | None = None
 
-    def _get_ns(self):
+    def _get_ns(self) -> Namespace:
         if self._ns is None:
             from rdflib import Namespace
 
             self._ns = Namespace(self._uri)
         return self._ns
 
-    def __getattr__(self, name):
+    def __getattr__(self, name: str) -> Any:
         return getattr(self._get_ns(), name)
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: str) -> Any:
         return self._get_ns()[key]
 
-    def __str__(self):
+    def __str__(self) -> str:
         return str(self._get_ns())
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return repr(self._get_ns())
 
-    def __fspath__(self):
-        return self._get_ns().__fspath__()
+    def __fspath__(self) -> str:
+        return str(self._get_ns())
 
 
 # RDF namespaces for ontology alignment (lazy-loaded)

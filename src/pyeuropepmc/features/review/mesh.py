@@ -147,9 +147,10 @@ class MeSHExpander:
 
         # Live API lookup (uses NCBI MeSH API)
         try:
+            params: dict[str, str | int] = {"q": term, "limit": self.max_suggestions}
             resp = requests.get(
                 f"{MESH_BASE_URL}/suggest",
-                params={"q": term, "limit": self.max_suggestions},
+                params=params,
                 timeout=5,
             )
             if resp.status_code == 200:
@@ -256,8 +257,11 @@ def lookup_mesh_descriptor(mesh_heading: str) -> dict[str, Any] | None:
         if resp.status_code == 200:
             data = resp.json()
             if isinstance(data, list) and data:
-                return data[0]
-            return data
+                first: dict[str, Any] = data[0]
+                return first
+            if isinstance(data, dict):
+                return data
+            return None
     except Exception:
         logger.warning("MeSH descriptor lookup failed for: %s", mesh_heading, exc_info=True)
     return None

@@ -10,6 +10,7 @@ This module provides:
 
 from abc import ABC, abstractmethod
 from collections.abc import Callable
+import contextlib
 from dataclasses import dataclass
 from enum import Enum
 import functools
@@ -171,11 +172,9 @@ class ToolRegistry:
 
             # Invoke callbacks after tool is registered
             for callback in self._callbacks:
-                try:
+                # Don't fail if a callback errors
+                with contextlib.suppress(Exception):
                     callback(name, tool_info)
-                except Exception:
-                    # Don't fail if callback errors
-                    pass
 
             logger.info(f"Registered tool '{name}' (type: {tool_type.value})")
 

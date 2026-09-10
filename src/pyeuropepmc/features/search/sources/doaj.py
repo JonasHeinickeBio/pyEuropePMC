@@ -143,8 +143,6 @@ class DOAJClient(BaseLiteratureClient):
             if not name:
                 name = f"{a.get('family', '')}, {a.get('given', '')}".strip(", ")
             authors.append({"name": name})
-        if not authors:
-            authors = None
 
         # Publication year
         year: int | None = None
@@ -187,7 +185,7 @@ class DOAJClient(BaseLiteratureClient):
         return LiteratureResult(
             doi=doi,
             title=title,
-            authors=authors,
+            authors=authors or None,
             publication_year=year,
             journal=journal,
             abstract=abstract,

@@ -27,7 +27,7 @@ from pyeuropepmc.claims.writer import ClaimWriter
 try:
     from rich.console import Console
     from rich.panel import Panel
-    from rich.prompt import Confirm, Prompt
+    from rich.prompt import Confirm, Prompt  # noqa: F401  (re-exported for availability)
     from rich.table import Table
     from rich.text import Text
 

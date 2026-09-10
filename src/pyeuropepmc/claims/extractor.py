@@ -174,7 +174,6 @@ Text to analyze:
         # (handles cases where LLM adds commentary around the JSON)
         obj_match = re.search(r'\{\s*"[^"]+"\s*:', raw, re.DOTALL)
         if obj_match:
-            json_candidate = obj_match.group(0)
             # Try to find the full object by brace matching
             depth = 0
             full_obj = ""
@@ -300,7 +299,7 @@ Text to analyze:
                 lines.append(cleaned)
 
         if lines:
-            return [{"text": l, "claim_type": "other", "confidence": 0.3} for l in lines[:10]]
+            return [{"text": ln, "claim_type": "other", "confidence": 0.3} for ln in lines[:10]]
         return None
 
     def _find_original_span(self, text: str, claim_text: str) -> str:

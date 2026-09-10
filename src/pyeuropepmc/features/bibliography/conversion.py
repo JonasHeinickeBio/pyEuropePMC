@@ -80,8 +80,6 @@ class CitationConverter:
         str
             RIS-formatted string.
         """
-        lines: list[str] = ["TY  - JOUR"]
-
         if isinstance(source, BibEntry):
             return self._bibentry_to_ris(source)
         if isinstance(source, Reference):
@@ -360,6 +358,7 @@ class CitationConverter:
         fmt = input_format or self.detect_format(source_text)
 
         # Parse to intermediate representation
+        entry: Reference | BibEntry
         if fmt == CitationFormat.BIBTEX:
             lib = self.from_bibtex(source_text)
             if not lib.entries:

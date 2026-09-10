@@ -498,7 +498,7 @@ class SmartCitationAnalysis(BaseAgent):
             lines = result.split("\n")
             current_screening = None
 
-            for i, line in enumerate(lines):
+            for _i, line in enumerate(lines):
                 if line.strip().startswith("### Paper"):
                     if current_screening:
                         screenings.append(current_screening)

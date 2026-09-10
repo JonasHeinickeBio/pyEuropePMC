@@ -35,7 +35,9 @@ class TestCLIApp:
     def test_app_no_args_shows_help(self) -> None:
         """No args triggers help (no_args_is_help=True)."""
         result = self.runner.invoke(app, [])
-        assert result.exit_code == 0
+        # Typer/Click >= 0.12 exits 2 when no_args_is_help shows usage for a
+        # command group invoked without a subcommand.
+        assert result.exit_code == 2
         assert "benchmark" in result.output
         assert "normalize" in result.output
 

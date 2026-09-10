@@ -19,7 +19,10 @@ from __future__ import annotations
 
 from collections.abc import Callable
 import logging
-from typing import Any
+from typing import TYPE_CHECKING, Any
+
+if TYPE_CHECKING:
+    from rdflib import Dataset, Graph, URIRef
 
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.config_utils import (

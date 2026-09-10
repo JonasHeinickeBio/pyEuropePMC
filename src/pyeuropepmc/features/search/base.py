@@ -295,7 +295,7 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
         else:
             wait = (2**attempt) * max(1.0, self.rate_limit_delay)
             logger.warning("Rate limited (429) at %s. Backoff: waiting %.1fs", url, wait)
-        return wait
+        return float(wait)
 
     @staticmethod
     def _map_status_to_error_code(status_code: int) -> ErrorCodes:
