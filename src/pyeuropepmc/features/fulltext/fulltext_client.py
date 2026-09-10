@@ -26,6 +26,7 @@ import requests
 from requests import Session
 from tqdm import tqdm
 
+from pyeuropepmc._useragent import get_user_agent
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import APIClientError, BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
@@ -3023,11 +3024,7 @@ class FullTextClient(BaseAPIClient):
             thread_key = get_thread_key()
             if not hasattr(thread_local, "session") or thread_local.session is None:
                 new_session = Session()
-                new_session.headers.update(
-                    {
-                        "User-Agent": "pyeuropepmc/1.0.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)"
-                    }
-                )
+                new_session.headers.update({"User-Agent": get_user_agent()})
                 thread_local.session = new_session
                 with session_registry_lock:
                     session_registry[thread_key] = new_session

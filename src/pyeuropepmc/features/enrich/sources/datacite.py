@@ -9,6 +9,7 @@ import logging
 from typing import Any, cast
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.features.common.base import get_user_agent
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 
 logger = logging.getLogger(__name__)
@@ -76,12 +77,7 @@ class DataCiteClient(BaseEnrichmentClient):
 
         # Add email to user agent if provided
         if email:
-            user_agent = (
-                f"pyeuropepmc/1.12.0 "
-                f"(https://github.com/JonasHeinickeBio/pyEuropePMC; "
-                f"mailto:{email})"
-            )
-            self.session.headers.update({"User-Agent": user_agent})
+            self.session.headers.update({"User-Agent": get_user_agent(email)})
             logger.info(f"DataCite client initialized with email: {email}")
 
     def enrich(

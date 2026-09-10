@@ -29,6 +29,13 @@ from functools import wraps
 import importlib
 from typing import Any
 
+# Optional-dependency maps live in one place and are re-exported here for
+# backwards compatibility.
+from pyeuropepmc._optional_imports import (
+    DEPENDENCY_GROUPS as DEPENDENCY_GROUPS,
+    FEATURE_TO_GROUP as FEATURE_TO_GROUP,
+)
+
 
 def is_dependency_available(package: str) -> bool:
     """
@@ -197,73 +204,3 @@ def skip_if_dependencies_missing(
         return wrapper
 
     return decorator
-
-
-# Common dependency groupings for easy reference
-DEPENDENCY_GROUPS = {
-    "standard": [
-        "matplotlib",
-        "seaborn",
-        "xlsxwriter",
-        "requests_cache",  # requests-cache imports as requests_cache
-        "tabulate",
-        "rich",
-        "ipython",
-        "ipykernel",
-        "ipywidgets",
-        "jupyterlab",
-        "notebook",
-    ],
-    "rdf": [
-        "rdflib_jsonld",  # rdflib-jsonld imports as rdflib_jsonld
-        "rdfizer",
-    ],
-    "agentic": [
-        "langchain",
-        "langchain_openai",  # langchain-openai imports as langchain_openai
-        "openai",
-        "langgraph",
-    ],
-    "enrichment": [
-        "semanticscholar",
-        "cryptography",
-        "tornado",
-        "flask",
-    ],
-    "bibliography": [
-        "bibtexparser",
-    ],
-    "zotero": [
-        "pyzotero",
-    ],
-    "visualization": [
-        "matplotlib",
-        "seaborn",
-    ],
-    "analytics": [
-        "pandas",
-    ],
-    "export": [
-        "xlsxwriter",
-    ],
-}
-
-# Feature to group mapping
-FEATURE_TO_GROUP = {
-    "visualization": "visualization",
-    "plotting": "visualization",
-    "analytics": "analytics",
-    "data_export": "export",
-    "rdf": "rdf",
-    "semantic_web": "rdf",
-    "llm": "agentic",
-    "ai": "agentic",
-    "citation_analysis": "agentic",
-    "enrichment": "enrichment",
-    "bibliography": "bibliography",
-    "bibtex": "bibliography",
-    "citation_management": "bibliography",
-    "zotero": "zotero",
-    "cli": "standard",
-    "jupyter": "standard",
-}

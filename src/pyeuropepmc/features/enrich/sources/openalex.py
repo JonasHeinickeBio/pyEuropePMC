@@ -9,6 +9,7 @@ import logging
 from typing import Any
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.features.common.base import get_user_agent
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.features.enrich.sources.ror import RorClient
 
@@ -89,12 +90,7 @@ class OpenAlexClient(BaseEnrichmentClient):
 
         # Add email to user agent for polite pool if provided
         if email:
-            user_agent = (
-                f"pyeuropepmc/1.12.0 "
-                f"(https://github.com/JonasHeinickeBio/pyEuropePMC; "
-                f"mailto:{email})"
-            )
-            self.session.headers.update({"User-Agent": user_agent})
+            self.session.headers.update({"User-Agent": get_user_agent(email)})
             logger.info(f"OpenAlex polite pool enabled with email: {email}")
 
         if enable_ror_enrichment:

@@ -144,56 +144,52 @@ def import_optional(package: str, feature: str, install_group: str | None = None
         raise OptionalDependencyError(package, feature, install_cmd) from None
 
 
-# Common dependency groupings for easy reference
+# Optional-dependency groups. Keys mirror ``[project.optional-dependencies]``
+# in pyproject.toml; values are *import* names (not distribution names) so they
+# can be fed straight to ``importlib.import_module`` / ``is_package_available``.
+#
+# Single source of truth: ``pyeuropepmc.utils.dependencies`` re-exports these.
 DEPENDENCY_GROUPS = {
-    "standard": [
-        "matplotlib",
-        "seaborn",
-        "xlsxwriter",
-        "requests_cache",  # requests-cache imports as requests_cache
-        "tabulate",
-        "rich",
-        "ipython",
-        "ipykernel",
-        "ipywidgets",
-        "jupyterlab",
-        "notebook",
-    ],
+    "analytics": ["pandas", "numpy"],
+    "visualization": ["matplotlib", "seaborn", "pandas", "numpy"],
+    "export": ["xlsxwriter", "tabulate", "pandas"],
     "rdf": [
         "rdflib_jsonld",  # rdflib-jsonld imports as rdflib_jsonld
         "rdfizer",
     ],
+    "ui": ["flask", "tornado"],
+    "signing": ["cryptography"],
+    "bibliography": ["bibtexparser"],
+    "zotero": ["pyzotero"],
     "agentic": [
         "langchain",
         "langchain_openai",  # langchain-openai imports as langchain_openai
         "openai",
         "langgraph",
     ],
-    "enrichment": [
-        "semanticscholar",
-        "cryptography",
-        "tornado",
-        "flask",
-    ],
-    "bibliography": [
-        "bibtexparser",
-    ],
-    "zotero": [
-        "pyzotero",
-    ],
-    "visualization": [
+    "semanticscholar": ["semanticscholar"],
+    # Enrichment bundle: what the enrichment clients can optionally use.
+    "enrichment": ["semanticscholar", "cryptography"],
+    "ml": ["sentence_transformers"],  # sentence-transformers imports as sentence_transformers
+    "standard": [
+        "pandas",
+        "numpy",
         "matplotlib",
         "seaborn",
-    ],
-    "analytics": [
-        "pandas",
-    ],
-    "export": [
         "xlsxwriter",
+        "tabulate",
+        "requests_cache",  # requests-cache imports as requests_cache
+        "rich",
+        "IPython",  # ipython imports as IPython
+        "ipykernel",
+        "ipywidgets",
+        "jupyterlab",
+        "notebook",
     ],
 }
 
-# Feature to group mapping
+# Feature name -> extra. ``import_optional(pkg, feature)`` uses this to turn a
+# human feature label into the right ``pip install pyeuropepmc[<extra>]`` hint.
 FEATURE_TO_GROUP = {
     "visualization": "visualization",
     "plotting": "visualization",
@@ -205,10 +201,16 @@ FEATURE_TO_GROUP = {
     "ai": "agentic",
     "citation_analysis": "agentic",
     "enrichment": "enrichment",
+    "semantic_scholar": "semanticscholar",
     "bibliography": "bibliography",
     "bibtex": "bibliography",
     "citation_management": "bibliography",
     "zotero": "zotero",
+    "ui": "ui",
+    "web_ui": "ui",
+    "signing": "signing",
+    "semantic_matching": "ml",
+    "embeddings": "ml",
     "cli": "standard",
     "jupyter": "standard",
 }

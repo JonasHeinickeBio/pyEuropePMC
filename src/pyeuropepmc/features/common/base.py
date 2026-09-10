@@ -16,11 +16,12 @@ import requests
 from requests.adapters import HTTPAdapter
 from urllib3.util import Retry
 
+from pyeuropepmc._useragent import get_user_agent
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 
 logger = logging.getLogger(__name__)
 
-__all__ = ["BaseHTTPClient", "BaseAPIClient"]
+__all__ = ["BaseHTTPClient", "BaseAPIClient", "get_user_agent"]
 
 
 class BaseHTTPClient:
@@ -83,7 +84,7 @@ class BaseHTTPClient:
 
         # Set default user agent
         if user_agent is None:
-            user_agent = "pyeuropepmc/1.12.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)"
+            user_agent = get_user_agent()
         self.session.headers.update({"User-Agent": user_agent})
 
         # Configure retries for common transient errors

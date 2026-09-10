@@ -8,6 +8,7 @@ from the Research Organization Registry API.
 import logging
 from typing import Any
 
+from pyeuropepmc.features.common.base import get_user_agent
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 
 logger = logging.getLogger(__name__)
@@ -45,13 +46,7 @@ class RorClient(BaseEnrichmentClient):
             Delay between requests in seconds (default: 1.0)
         """
         # Set up user agent with email if provided
-        user_agent = None
-        if email:
-            user_agent = (
-                f"pyeuropepmc/1.12.0 "
-                f"(https://github.com/JonasHeinickeBio/pyEuropePMC; "
-                f"mailto:{email})"
-            )
+        user_agent = get_user_agent(email) if email else None
 
         super().__init__(
             base_url="https://api.ror.org/v2",
