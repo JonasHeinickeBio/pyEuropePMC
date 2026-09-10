@@ -5,6 +5,7 @@ This module provides a high-level interface for enriching paper metadata
 using multiple external APIs (CrossRef, Unpaywall, Semantic Scholar, OpenAlex).
 """
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import json
 import logging
 from pathlib import Path
@@ -17,6 +18,8 @@ from pyeuropepmc.features.enrich.file_enricher import FileEnricher
 from pyeuropepmc.features.enrich.reporter import EnrichmentReporter
 from pyeuropepmc.features.enrich.sources.crossref import CrossRefClient
 from pyeuropepmc.features.enrich.sources.datacite import DataCiteClient
+from pyeuropepmc.features.enrich.sources.europepmc import EuropePMCEnrichmentClient
+from pyeuropepmc.features.enrich.sources.icite import ICiteClient
 from pyeuropepmc.features.enrich.sources.openalex import OpenAlexClient
 from pyeuropepmc.features.enrich.sources.ror import RorClient
 from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
@@ -24,6 +27,9 @@ from pyeuropepmc.features.enrich.sources.unpaywall import UnpaywallClient
 from pyeuropepmc.features.literature.search import SearchClient
 
 logger = logging.getLogger(__name__)
+
+# Sources keyed by PMID rather than DOI.
+_PMID_KEYED = {"icite"}
 
 __all__ = ["PaperEnricher", "EnrichmentConfig"]
 
@@ -64,82 +70,93 @@ class PaperEnricher:
         self.merger = DataMerger()
         self.reporter = EnrichmentReporter()
 
-        # Initialize enabled clients
-        if config.enable_crossref:
-            try:
-                self.clients["crossref"] = CrossRefClient(
+        # Each entry: (enabled, factory). A client that fails to construct is
+        # logged and skipped — one broken source must not sink the enricher.
+        _factories: list[tuple[bool, str, Any]] = [
+            (
+                config.enable_europepmc,
+                "europepmc",
+                lambda: EuropePMCEnrichmentClient(
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                ),
+            ),
+            (
+                config.enable_crossref,
+                "crossref",
+                lambda: CrossRefClient(
                     rate_limit_delay=config.rate_limit_delay,
                     cache_config=config.cache_config,
                     email=config.crossref_email,
-                )
-                logger.info("CrossRef client initialized")
-            except Exception as e:
-                logger.error(f"Failed to initialize CrossRef client: {e}")
-                raise
-
-        if config.enable_datacite:
-            try:
-                self.clients["datacite"] = DataCiteClient(
+                ),
+            ),
+            (
+                config.enable_datacite,
+                "datacite",
+                lambda: DataCiteClient(
                     rate_limit_delay=config.rate_limit_delay,
                     cache_config=config.cache_config,
                     email=config.datacite_email,
-                )
-                logger.info("DataCite client initialized")
-            except Exception as e:
-                logger.error(f"Failed to initialize DataCite client: {e}")
-                raise
-
-        if config.enable_unpaywall:
-            if config.unpaywall_email:  # Type guard
-                try:
-                    self.clients["unpaywall"] = UnpaywallClient(
-                        email=config.unpaywall_email,
-                        rate_limit_delay=config.rate_limit_delay,
-                        cache_config=config.cache_config,
-                    )
-                    logger.info("Unpaywall client initialized")
-                except Exception as e:
-                    logger.error(f"Failed to initialize Unpaywall client: {e}")
-                    raise
-            else:
-                logger.warning("Unpaywall enabled but email not provided, skipping initialization")
-
-        if config.enable_semantic_scholar:
-            try:
-                self.clients["semantic_scholar"] = SemanticScholarClient(
+                ),
+            ),
+            (
+                config.enable_unpaywall and bool(config.unpaywall_email),
+                "unpaywall",
+                lambda: UnpaywallClient(
+                    email=cast(str, config.unpaywall_email),
+                    rate_limit_delay=config.rate_limit_delay,
+                    cache_config=config.cache_config,
+                ),
+            ),
+            (
+                config.enable_semantic_scholar,
+                "semantic_scholar",
+                lambda: SemanticScholarClient(
                     rate_limit_delay=config.rate_limit_delay,
                     cache_config=config.cache_config,
                     api_key=config.semantic_scholar_api_key,
-                )
-                logger.info("Semantic Scholar client initialized")
-            except Exception as e:
-                logger.error(f"Failed to initialize Semantic Scholar client: {e}")
-                raise
-
-        if config.enable_openalex:
-            try:
-                self.clients["openalex"] = OpenAlexClient(
+                ),
+            ),
+            (
+                config.enable_openalex,
+                "openalex",
+                lambda: OpenAlexClient(
                     rate_limit_delay=config.rate_limit_delay,
                     cache_config=config.cache_config,
                     email=config.openalex_email,
-                )
-                logger.info("OpenAlex client initialized")
-            except Exception as e:
-                logger.error(f"Failed to initialize OpenAlex client: {e}")
-                raise
-
-        if config.enable_ror:
-            try:
-                self.clients["ror"] = RorClient(
+                ),
+            ),
+            (
+                config.enable_icite,
+                "icite",
+                lambda: ICiteClient(
+                    rate_limit_delay=min(config.rate_limit_delay, 0.5),
+                    cache_config=config.cache_config,
+                ),
+            ),
+            (
+                config.enable_ror,
+                "ror",
+                lambda: RorClient(
                     rate_limit_delay=config.rate_limit_delay,
                     cache_config=config.cache_config,
                     email=config.ror_email,
                     client_id=config.ror_client_id,
-                )
-                logger.info("ROR client initialized")
-            except Exception as e:
-                logger.error(f"Failed to initialize ROR client: {e}")
-                raise
+                ),
+            ),
+        ]
+
+        if config.enable_unpaywall and not config.unpaywall_email:
+            logger.warning("Unpaywall enabled but no email provided — skipping that source")
+
+        for enabled, name, factory in _factories:
+            if not enabled:
+                continue
+            try:
+                self.clients[name] = factory()
+                logger.info("%s enrichment client initialized", name)
+            except Exception as e:  # noqa: BLE001 - degrade, don't abort
+                logger.error("Failed to initialize %s client, skipping: %s", name, e)
 
         logger.info(f"PaperEnricher initialized with {len(self.clients)} clients")
 
@@ -163,76 +180,83 @@ class PaperEnricher:
     def enrich_paper(
         self,
         identifier: str | None = None,
-        save_responses: bool = True,
+        save_responses: bool = False,
         save_dir: str | Path | None = None,
         **kwargs: Any,
     ) -> dict[str, Any]:
         """
-        Enrich paper metadata using all configured APIs.
+        Enrich paper metadata using all configured APIs, in parallel.
+
+        Europe PMC supplies the base record; CrossRef / OpenAlex / Semantic
+        Scholar / iCite / Unpaywall top it up. Sources are queried concurrently.
 
         Parameters
         ----------
         identifier : str, optional
-            Paper identifier (DOI or PMCID)
+            Paper identifier — DOI, DOI URL, PMID or PMCID.
         save_responses : bool, optional
-            Whether to save raw API responses and merged result to files (default: True)
+            Write raw + merged JSON to ``save_dir`` (default: ``False``).
         save_dir : str or Path, optional
-            Directory to save response files (default: examples/enrichment_responses)
+            Directory for response files (default: the current working dir).
         **kwargs
-            Additional parameters for specific APIs
+            Additional parameters passed through to each source's ``enrich()``.
 
         Returns
         -------
         dict
-            Merged enriched metadata from all sources with keys:
-            - sources: List of sources that provided data
-            - crossref: CrossRef metadata (if available)
-            - datacite: DataCite metadata (if available)
-            - unpaywall: Unpaywall OA info (if available)
-            - semantic_scholar: Semantic Scholar metrics (if available)
-            - openalex: OpenAlex metadata (if available)
-            - merged: Merged/aggregated metadata from all sources
+            ``{identifier, doi, pmid, sources: [...], <source>: <data>, merged: {...}}``.
 
         Raises
         ------
         ValueError
-            If identifier is not provided and required by enabled clients
+            If no identifier is provided.
         """
         if not identifier:
-            raise ValueError("Identifier (DOI or PMCID) is required for enrichment")
+            raise ValueError("An identifier (DOI, DOI URL, PMID or PMCID) is required")
 
-        # Resolve identifier to DOI if it's a PMCID
-        doi = self._resolve_to_doi(identifier)
+        ids = self._resolve_ids(identifier)
+        doi = ids.get("doi")
+        pmid = ids.get("pmid")
 
         results: dict[str, Any] = {
             "identifier": identifier,
             "doi": doi,
+            "pmid": pmid,
             "sources": [],
-            "crossref": None,
-            "datacite": None,
-            "unpaywall": None,
-            "semantic_scholar": None,
-            "openalex": None,
-            "ror": None,
         }
+        for name in self.clients:
+            results.setdefault(name, None)
+        results.setdefault("ror", None)
 
-        # Enrich from each source (excluding ROR which is handled separately)
-        for source_name, client in self.clients.items():
-            if source_name == "ror":
-                continue  # ROR is handled separately for institutions
+        # Fan out over every non-ROR source concurrently. Each client is
+        # independent and only does read requests, so this is safe.
+        targets = {
+            name: (pmid if name in _PMID_KEYED else (doi or pmid or identifier))
+            for name, client in self.clients.items()
+            if name != "ror"
+        }
+        runnable = {n: t for n, t in targets.items() if t}
 
-            try:
-                logger.debug(f"Enriching from {source_name}")
-                data = client.enrich(identifier=doi, **kwargs)
-                if data:
-                    results[source_name] = data
-                    results["sources"].append(source_name)
-                    logger.info(f"Successfully enriched from {source_name}")
-                else:
-                    logger.warning(f"No data from {source_name}")
-            except Exception as e:
-                logger.error(f"Error enriching from {source_name}: {e}", exc_info=True)
-                # Continue with other sources
+        def _one(name: str) -> tuple[str, Any]:
+            client = self.clients[name]
+            return name, client.enrich(identifier=runnable[name], **kwargs)
+
+        if runnable:
+            with ThreadPoolExecutor(max_workers=len(runnable)) as pool:
+                futures = {pool.submit(_one, n): n for n in runnable}
+                for fut in as_completed(futures):
+                    name = futures[fut]
+                    try:
+                        _, data = fut.result()
+                    except Exception as e:  # noqa: BLE001 - per-source, keep going
+                        logger.error("Error enriching from %s: %s", name, e, exc_info=True)
+                        continue
+                    if data:
+                        results[name] = data
+                        results["sources"].append(name)
+                        logger.info("Enriched from %s", name)
+                    else:
+                        logger.debug("No data from %s", name)
 
         # Merge results
         if results["sources"]:
@@ -259,11 +283,11 @@ class PaperEnricher:
             except Exception as e:
                 logger.error(f"Error enriching institutions with ROR: {e}")
 
-        # Always save responses to the default directory
-        try:
-            self._save_responses(results, save_dir)
-        except Exception as e:
-            logger.error(f"Failed to save responses: {e}")
+        if save_responses:
+            try:
+                self._save_responses(results, save_dir)
+            except Exception as e:
+                logger.error(f"Failed to save responses: {e}")
 
         return results
 
@@ -279,13 +303,7 @@ class PaperEnricher:
             Directory to save files
             (default: examples/enrichment_responses relative to project root)
         """
-        if save_dir is None:
-            # Default to the enrichment_responses directory relative to project root
-            # (enricher.py sits at src/pyeuropepmc/features/enrich/, so 5 parents = repo root)
-            project_root = Path(__file__).parent.parent.parent.parent.parent
-            save_dir = project_root / "examples" / "enrichment_responses"
-        else:
-            save_dir = Path(save_dir)
+        save_dir = Path.cwd() / "enrichment_responses" if save_dir is None else Path(save_dir)
 
         save_dir.mkdir(parents=True, exist_ok=True)
 
@@ -317,6 +335,50 @@ class PaperEnricher:
             logger.info(f"Saved merged result to {merged_filename}")
         except Exception as e:
             logger.error(f"Failed to save merged result: {e}")
+
+    def _resolve_ids(self, identifier: str) -> dict[str, str | None]:
+        """
+        Resolve any identifier (DOI / DOI URL / PMID / PMCID / free text) to a
+        ``{doi, pmid, pmcid}`` bundle via a single Europe PMC lookup.
+
+        Never raises — missing pieces come back as ``None`` and the enricher
+        falls back to the raw identifier for DOI-keyed sources.
+        """
+        ident = identifier.strip()
+        low = ident.lower()
+        out: dict[str, str | None] = {"doi": None, "pmid": None, "pmcid": None}
+
+        if "doi.org/" in low:
+            out["doi"] = ident.rsplit("/", 1)[-1]
+        elif low.startswith("10."):
+            out["doi"] = ident
+        elif ident.upper().startswith("PMC"):
+            out["pmcid"] = ident.upper()
+        elif ident.isdigit():
+            out["pmid"] = ident
+
+        # One Europe PMC query fills in whatever is still missing.
+        if out["doi"]:
+            query = f'DOI:"{out["doi"]}"'
+        elif out["pmcid"]:
+            query = f"PMCID:{out['pmcid']}"
+        elif out["pmid"]:
+            query = f"EXT_ID:{out['pmid']} AND SRC:MED"
+        else:
+            query = ident
+
+        try:
+            with SearchClient() as sc:
+                records = sc.search_and_parse(query, format="json", pageSize=1)
+            if records:
+                rec = records[0]
+                out["doi"] = out["doi"] or (rec.get("doi") or None)
+                out["pmid"] = out["pmid"] or (rec.get("pmid") or None)
+                out["pmcid"] = out["pmcid"] or (rec.get("pmcid") or None)
+        except Exception as e:  # noqa: BLE001 - best effort
+            logger.warning("Europe PMC id resolution failed for %r: %s", identifier, e)
+
+        return out
 
     def _resolve_to_doi(self, identifier: str) -> str:
         """

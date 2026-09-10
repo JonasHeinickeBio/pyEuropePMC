@@ -47,10 +47,12 @@ class TestPaperEnricher:
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
 
-        # Should have CrossRef, Semantic Scholar, and OpenAlex
+        # Europe PMC is the base; CrossRef / S2 / OpenAlex / iCite top it up
+        assert "europepmc" in enricher.clients
         assert "crossref" in enricher.clients
         assert "semantic_scholar" in enricher.clients
         assert "openalex" in enricher.clients
+        assert "icite" in enricher.clients
         assert "unpaywall" not in enricher.clients
 
     def test_initialization_all_clients(self):
@@ -64,11 +66,14 @@ class TestPaperEnricher:
         )
         enricher = PaperEnricher(config)
 
-        assert len(enricher.clients) == 5  # crossref, unpaywall, semantic_scholar, openalex, ror
+        # europepmc, crossref, unpaywall, semantic_scholar, openalex, icite, ror
+        assert len(enricher.clients) == 7
+        assert "europepmc" in enricher.clients
         assert "crossref" in enricher.clients
         assert "unpaywall" in enricher.clients
         assert "semantic_scholar" in enricher.clients
         assert "openalex" in enricher.clients
+        assert "icite" in enricher.clients
         assert "ror" in enricher.clients  # ROR is enabled by default
 
     def test_context_manager(self):
@@ -82,7 +87,7 @@ class TestPaperEnricher:
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
 
-        with pytest.raises(ValueError, match="Identifier \\(DOI or PMCID\\) is required"):
+        with pytest.raises(ValueError, match="identifier .* is required"):
             enricher.enrich_paper()
 
     @patch("pyeuropepmc.features.enrich.sources.crossref.CrossRefClient.enrich")

@@ -50,15 +50,22 @@ class DataMerger:
         merged.update(self._merge_external_ids(results))
         merged.update(self._merge_bibliographic_info(results))
         merged.update(self._merge_references(results))
+        merged.update(self._merge_epmc_fields(results))
 
         # Apply ROR enrichment to institutions in authors
         self._apply_ror_enrichment_to_authors(merged, results)
 
         return merged
 
+    # Europe PMC is the base record; other sources are consulted only to fill
+    # gaps, so it leads every field-preference list.
+    _TITLE_SOURCES = ["europepmc", "crossref", "openalex", "semantic_scholar"]
+    _ABSTRACT_SOURCES = ["europepmc", "crossref", "semantic_scholar"]
+    _JOURNAL_SOURCES = ["europepmc", "crossref", "openalex"]
+
     def _merge_title(self, results: dict[str, Any]) -> dict[str, Any]:
         """Merge title from multiple sources."""
-        for source in ["crossref", "openalex", "semantic_scholar"]:
+        for source in self._TITLE_SOURCES:
             source_data = results.get(source)
             if source_data and isinstance(source_data, dict) and source_data.get("title"):
                 return {"title": source_data["title"]}
@@ -71,7 +78,7 @@ class DataMerger:
 
     def _merge_abstract(self, results: dict[str, Any]) -> dict[str, Any]:
         """Merge abstract from multiple sources."""
-        for source in ["crossref", "semantic_scholar"]:
+        for source in self._ABSTRACT_SOURCES:
             source_data = results.get(source)
             if source_data and isinstance(source_data, dict) and source_data.get("abstract"):
                 return {"abstract": source_data["abstract"]}
@@ -79,7 +86,7 @@ class DataMerger:
 
     def _merge_journal(self, results: dict[str, Any]) -> dict[str, Any]:
         """Merge journal/venue information."""
-        for source in ["crossref", "openalex"]:
+        for source in self._JOURNAL_SOURCES:
             source_data = results.get(source)
             if source_data and isinstance(source_data, dict):
                 journal = source_data.get("journal") or source_data.get("venue", {})
@@ -89,8 +96,11 @@ class DataMerger:
 
     def _merge_publication_date(self, results: dict[str, Any]) -> dict[str, Any]:
         """Merge publication date/year."""
+        epmc = results.get("europepmc")
         crossref_data = results.get("crossref")
         openalex_data = results.get("openalex")
+        if epmc and isinstance(epmc, dict) and epmc.get("publication_year"):
+            return {"publication_year": epmc["publication_year"]}
         if (
             crossref_data
             and isinstance(crossref_data, dict)
@@ -105,26 +115,32 @@ class DataMerger:
         return {}
 
     def _merge_citations(self, results: dict[str, Any]) -> dict[str, Any]:
-        """Merge citation counts from multiple sources."""
+        """Merge citation counts from multiple sources (Europe PMC + iCite first)."""
         citation_counts = []
-        for source in ["crossref", "semantic_scholar", "openalex"]:
+        for source in ["europepmc", "icite", "crossref", "semantic_scholar", "openalex"]:
             source_data = results.get(source)
             if source_data and isinstance(source_data, dict):
                 count = source_data.get("citation_count")
                 if count is not None:
                     citation_counts.append({"source": source, "count": count})
 
+        out: dict[str, Any] = {}
         if citation_counts:
-            return {
-                "citation_counts": citation_counts,
-                "citation_count": max(c["count"] for c in citation_counts),
-            }
-        return {}
+            out["citation_counts"] = citation_counts
+            out["citation_count"] = max(c["count"] for c in citation_counts)
+
+        icite = results.get("icite")
+        if icite and isinstance(icite, dict):
+            for key in ("rcr", "percentile", "nih_percentile", "field_citation_ratio"):
+                if icite.get(key) is not None:
+                    out.setdefault("icite", {})[key] = icite[key]
+        return out
 
     def _merge_oa_info(self, results: dict[str, Any]) -> dict[str, Any]:
         """Merge open access information."""
         unpaywall_data = results.get("unpaywall")
         openalex_data = results.get("openalex")
+        epmc = results.get("europepmc")
         if unpaywall_data and isinstance(unpaywall_data, dict):
             result = {
                 "is_oa": unpaywall_data.get("is_oa", False),
@@ -140,7 +156,29 @@ class DataMerger:
                 "oa_status": openalex_data.get("oa_status"),
                 "oa_url": openalex_data.get("oa_url"),
             }
+        elif epmc and isinstance(epmc, dict) and epmc.get("is_open_access") is not None:
+            out: dict[str, Any] = {"is_oa": bool(epmc["is_open_access"])}
+            urls = epmc.get("full_text_urls")
+            if urls:
+                out["oa_url"] = urls[0]
+            return out
         return {}
+
+    def _merge_epmc_fields(self, results: dict[str, Any]) -> dict[str, Any]:
+        """Carry through Europe PMC-only signal: MeSH terms, grants, full-text links."""
+        epmc = results.get("europepmc")
+        if not epmc or not isinstance(epmc, dict):
+            return {}
+        out: dict[str, Any] = {}
+        for src_key, dst_key in (
+            ("mesh_terms", "mesh_terms"),
+            ("grants", "grants"),
+            ("full_text_urls", "full_text_urls"),
+            ("publication_type", "publication_type"),
+        ):
+            if epmc.get(src_key):
+                out[dst_key] = epmc[src_key]
+        return out
 
     def _merge_additional_metrics(self, results: dict[str, Any]) -> dict[str, Any]:
         """Merge additional metrics from Semantic Scholar."""

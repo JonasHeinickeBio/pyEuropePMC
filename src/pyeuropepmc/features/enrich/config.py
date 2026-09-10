@@ -49,11 +49,13 @@ class EnrichmentConfig:
 
     def __init__(
         self,
+        enable_europepmc: bool = True,
         enable_crossref: bool = True,
         enable_datacite: bool = False,
         enable_unpaywall: bool = False,
         enable_semantic_scholar: bool = True,
         enable_openalex: bool = True,
+        enable_icite: bool = True,
         enable_ror: bool = True,  # Enable ROR by default for institution enrichment
         unpaywall_email: str | None = None,
         crossref_email: str | None = None,
@@ -70,6 +72,10 @@ class EnrichmentConfig:
 
         Parameters
         ----------
+        enable_europepmc : bool, optional
+            Enable Europe PMC as the base enrichment source (default: True).
+            Supplies the core record (abstract, MeSH, grants, full-text links,
+            citedByCount, OA status) that the other APIs top up.
         enable_crossref : bool, optional
             Enable CrossRef enrichment (default: True)
         enable_datacite : bool, optional
@@ -80,6 +86,9 @@ class EnrichmentConfig:
             Enable Semantic Scholar enrichment (default: True)
         enable_openalex : bool, optional
             Enable OpenAlex enrichment (default: True)
+        enable_icite : bool, optional
+            Enable NIH iCite enrichment — RCR + citation percentile, PMID-keyed,
+            free, no key (default: True)
         enable_ror : bool, optional
             Enable ROR institutional enrichment (default: True)
         unpaywall_email : str, optional
@@ -117,11 +126,13 @@ class EnrichmentConfig:
         self.ror_email = ror_email or os.environ.get("ROR_EMAIL")
         self.ror_client_id = ror_client_id or os.environ.get("ROR_CLIENT_ID")
 
+        self.enable_europepmc = enable_europepmc
         self.enable_crossref = enable_crossref
         self.enable_datacite = enable_datacite
         self.enable_unpaywall = enable_unpaywall
         self.enable_semantic_scholar = enable_semantic_scholar
         self.enable_openalex = enable_openalex
+        self.enable_icite = enable_icite
         self.enable_ror = enable_ror
         self.cache_config = cache_config
         self.rate_limit_delay = rate_limit_delay
