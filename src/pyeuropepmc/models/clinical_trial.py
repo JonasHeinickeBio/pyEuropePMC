@@ -122,7 +122,7 @@ class ClinicalTrial(BaseModel):
     )
 
     @classmethod
-    def from_literature_result(cls, result: "LiteratureResult") -> "ClinicalTrial":
+    def from_literature_result(cls, result: LiteratureResult) -> ClinicalTrial:
         """Construct a ClinicalTrial from a LiteratureResult (round-trip)."""
         meta = result.extra_metadata or {}
         nct_id = meta.get("nct_id") or (

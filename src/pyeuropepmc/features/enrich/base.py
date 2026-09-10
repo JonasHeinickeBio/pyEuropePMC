@@ -3,25 +3,39 @@ Base class for external API enrichment clients.
 
 Provides common functionality for all enrichment clients including
 rate limiting, error handling, caching, and request management.
+
+Common Patterns Abstracted:
+- Email header for polite pool (CrossRef, DataCite, OpenAlex)
+- User-Agent with email
+- Accept: application/json header
+- Identifier validation (DOI, PMID, ORCID patterns)
+- Response parsing with safe error handling
 """
 
+from collections.abc import Callable
 import logging
 import time
 from typing import Any
 
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util import Retry
 
-from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
+from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.core.exceptions import APIClientError
+from pyeuropepmc.features.common.base import BaseHTTPClient
+from pyeuropepmc.features.literature.normalization import (
+    _normalize_orcid as _normalize_orcid_impl,
+    is_valid_doi,
+    is_valid_pmid,
+    normalize_doi,
+    normalize_pmid,
+)
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["BaseEnrichmentClient"]
 
 
-class BaseEnrichmentClient:
+class BaseEnrichmentClient(BaseHTTPClient):
     """
     Base class for external API enrichment clients.
 
@@ -69,39 +83,13 @@ class BaseEnrichmentClient:
             Whether API key is missing (affects rate limiting behavior).
             If True, uses 3x more conservative rate limiting.
         """
-        self.base_url = base_url.rstrip("/")
-        self.rate_limit_delay = rate_limit_delay
-        self.timeout = timeout
-        self.api_key_missing = api_key_missing
-        self.session = requests.Session()
-
-        # Set default user agent
-        if user_agent is None:
-            user_agent = "pyeuropepmc/1.12.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)"
-        self.session.headers.update({"User-Agent": user_agent})
-
-        # Configure retries for common transient errors (excluding 429 which we handle explicitly)
-        # 429 (rate limiting) is handled explicitly in the request methods to provide better
-        # error messages and use the Retry-After header properly
-        retry_strategy = Retry(
-            total=3,
-            status_forcelist=[500, 502, 503, 504],  # Transient server errors only
-            allowed_methods=["HEAD", "GET", "OPTIONS", "POST"],
-            backoff_factor=1,
-            raise_on_status=False,  # Don't raise on status codes, let us handle them
-        )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
-        self.session.mount("https://", adapter)
-        self.session.mount("http://", adapter)
-
-        # Initialize cache
-        if cache_config is None:
-            cache_config = CacheConfig(enabled=False)
-        self._cache = CacheBackend(cache_config)
-
-        logger.info(
-            f"{self.__class__.__name__} initialized with cache "
-            f"{'enabled' if cache_config.enabled else 'disabled'}"
+        super().__init__(
+            base_url=base_url,
+            rate_limit_delay=rate_limit_delay,
+            timeout=timeout,
+            cache_config=cache_config,
+            user_agent=user_agent,
+            api_key_missing=api_key_missing,
         )
 
     def __enter__(self) -> "BaseEnrichmentClient":
@@ -351,6 +339,252 @@ class BaseEnrichmentClient:
                 f"Please wait before retrying."
             )
         )
+
+    # ------------------------------------------------------------------
+    # Identifier Validation Helpers
+    #
+    # These are thin wrappers that delegate to
+    # ``pyeuropepmc.features.literature.normalization`` so the regex logic
+    # lives in exactly one place.  The method names/signatures are kept for
+    # backward compatibility (``crossref.py`` / ``orcid.py`` call them via
+    # ``self._normalize_doi(...)`` / ``self._normalize_orcid(...)``).
+    # ------------------------------------------------------------------
+
+    @staticmethod
+    def _normalize_doi(doi: str) -> str | None:
+        """
+        Normalize a DOI identifier.
+
+        Delegates to
+        :func:`pyeuropepmc.features.literature.normalization.normalize_doi`.
+
+        Parameters
+        ----------
+        doi : str
+            DOI string to normalize.
+
+        Returns
+        -------
+        str or None
+            Normalized DOI (lowercase, URL prefixes stripped), or None if
+            the value is empty or not a syntactically valid DOI.
+        """
+        return normalize_doi(doi)
+
+    @staticmethod
+    def _is_valid_doi(doi: str) -> bool:
+        """
+        Check if a string is a syntactically valid DOI.
+
+        Delegates to
+        :func:`pyeuropepmc.features.literature.normalization.is_valid_doi`.
+
+        Parameters
+        ----------
+        doi : str
+            DOI string to validate.
+
+        Returns
+        -------
+        bool
+            True if valid DOI format.
+        """
+        return is_valid_doi(doi)
+
+    @staticmethod
+    def _normalize_orcid(orcid: str) -> str | None:
+        """
+        Normalize an ORCID iD.
+
+        Delegates to
+        :func:`pyeuropepmc.features.literature.normalization._normalize_orcid`
+        (strips everything but digits and the trailing ``X``).
+
+        Parameters
+        ----------
+        orcid : str
+            ORCID identifier.
+
+        Returns
+        -------
+        str or None
+            Normalized ORCID, or None if empty/invalid.
+        """
+        return _normalize_orcid_impl(orcid)
+
+    @staticmethod
+    def _is_valid_orcid(orcid: str) -> bool:
+        """
+        Check if a string is a valid ORCID identifier.
+
+        Parameters
+        ----------
+        orcid : str
+            ORCID string to validate.
+
+        Returns
+        -------
+        bool
+            True if valid ORCID format.
+        """
+        return _normalize_orcid_impl(orcid) is not None
+
+    @staticmethod
+    def _normalize_pmid(pmid: str) -> str | None:
+        """
+        Normalize a PubMed ID.
+
+        Delegates to
+        :func:`pyeuropepmc.features.literature.normalization.normalize_pmid`.
+
+        Parameters
+        ----------
+        pmid : str
+            PubMed ID string.
+
+        Returns
+        -------
+        str or None
+            Normalized PMID (1-8 digit string), or None if invalid.
+        """
+        return normalize_pmid(pmid)
+
+    @staticmethod
+    def _is_valid_pmid(pmid: str) -> bool:
+        """
+        Check if a string is a valid PubMed ID.
+
+        Delegates to
+        :func:`pyeuropepmc.features.literature.normalization.is_valid_pmid`.
+
+        Parameters
+        ----------
+        pmid : str
+            PubMed ID string to validate.
+
+        Returns
+        -------
+        bool
+            True if valid PMID format.
+        """
+        return is_valid_pmid(pmid)
+
+    # ------------------------------------------------------------------
+    # Response Parsing Helpers
+    # ------------------------------------------------------------------
+
+    def _parse_response_safe(
+        self,
+        response: dict[str, Any] | None,
+        parse_func: Callable[[dict[str, Any]], dict[str, Any] | None],
+        entity_type: str = "resource",
+        identifier: str | None = None,
+    ) -> dict[str, Any] | None:
+        """
+        Safely parse API response with consistent error handling.
+
+        This wrapper provides:
+        - Empty response detection
+        - Exception handling for parsing errors
+        - Consistent logging
+        - Graceful degradation
+
+        Parameters
+        ----------
+        response : dict or None
+            Raw API response
+        parse_func : callable
+            Function to parse the response data
+        entity_type : str, optional
+            Type of entity being parsed (e.g., 'paper', 'author', 'resource')
+        identifier : str, optional
+            Identifier of the entity being parsed
+
+        Returns
+        -------
+        dict or None
+            Parsed metadata, or None if parsing fails
+        """
+        if response is None:
+            if identifier:
+                logger.warning(f"No {entity_type} data found for: {identifier}")
+            else:
+                logger.warning(f"No {entity_type} data returned")
+            return None
+
+        try:
+            result: dict[str, Any] | None = parse_func(response)
+            if identifier:
+                logger.info(f"Successfully parsed {entity_type} for: {identifier}")
+            else:
+                logger.info(f"Successfully parsed {entity_type} response")
+            return result
+        except Exception as e:
+            if identifier:
+                logger.error(f"Error parsing {entity_type} response for {identifier}: {e}")
+            else:
+                logger.error(f"Error parsing {entity_type} response: {e}")
+            return None
+
+    def _enrich_batch_safe(
+        self,
+        identifiers: list[str],
+        enrich_func: Callable[[str], dict[str, Any] | None],
+        batch_size: int | None = None,
+        max_workers: int = 1,
+    ) -> dict[str, dict[str, Any]]:
+        """
+        Safely enrich multiple identifiers with batch handling.
+
+        This wrapper provides:
+        - Automatic batching for large lists
+        - Error handling per-item
+        - Result aggregation
+        - Progress tracking
+
+        Parameters
+        ----------
+        identifiers : list[str]
+            List of identifiers to enrich
+        enrich_func : callable
+            Function to enrich a single identifier
+        batch_size : int, optional
+            Size of batches to process (default: process all at once)
+        max_workers : int, optional
+            Maximum workers for parallel processing (default: 1 for sequential)
+
+        Returns
+        -------
+        dict[str, dict]
+            Dictionary mapping identifiers to enrichment results
+        """
+        if not identifiers:
+            return {}
+
+        results: dict[str, dict[str, Any]] = {}
+
+        # Process in batches if specified
+        if batch_size and batch_size > 0:
+            for i in range(0, len(identifiers), batch_size):
+                batch = identifiers[i : i + batch_size]
+                for identifier in batch:
+                    try:
+                        result = enrich_func(identifier)
+                        if result:
+                            results[identifier] = result
+                    except Exception as e:
+                        logger.warning(f"Failed to enrich {identifier}: {e}")
+        else:
+            # Process all at once (sequential)
+            for identifier in identifiers:
+                try:
+                    result = enrich_func(identifier)
+                    if result:
+                        results[identifier] = result
+                except Exception as e:
+                    logger.warning(f"Failed to enrich {identifier}: {e}")
+
+        return results
 
     def enrich(
         self, identifier: str | None = None, use_cache: bool = True, **kwargs: Any

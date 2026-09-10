@@ -38,6 +38,7 @@ except ImportError:
 from pyeuropepmc.cli.benchmark import benchmark_app
 from pyeuropepmc.cli.claim import claim_app
 from pyeuropepmc.cli.normalize import normalize_app
+from pyeuropepmc.cli.unified_search import app as unified_search_app
 
 app = typer.Typer(
     name="pyeuropepmc",
@@ -48,6 +49,11 @@ app = typer.Typer(
 app.add_typer(benchmark_app, name="benchmark", help="Benchmark XML parser quality and performance")
 app.add_typer(claim_app, name="claim", help="Multi-agent claim verification with LangGraph")
 app.add_typer(normalize_app, name="normalize", help="Normalize JATS XML for text mining pipelines")
+app.add_typer(
+    unified_search_app,
+    name="unified_search",
+    help="Unified multi-source search with deduplication",
+)
 
 
 if __name__ == "__main__":

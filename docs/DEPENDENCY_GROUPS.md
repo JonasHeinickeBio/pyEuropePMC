@@ -1,8 +1,35 @@
 # PyEuropePMC Dependency Groups
 
-This document proposes a reorganization of dependencies into optional groups to reduce the overhead for users who only need basic functionality.
+> **Status — implemented.** `pyproject.toml` is the source of truth. The core
+> install is HTTP + cache + query building + JATS parsing + CLI only; everything
+> heavier is an extra and is imported lazily (PEP 562, see
+> `src/pyeuropepmc/_lazy.py`), so `import pyeuropepmc` never requires an extra.
+>
+> | Extra | Pulls in | Enables |
+> |-------|----------|---------|
+> | *(core)* | requests, diskcache, cachetools, backoff, tenacity, defusedxml, beautifulsoup4, rapidfuzz, rdflib, search-query, tqdm, typer, python-dotenv | Europe PMC search/fetch/parse, query builder, dedup, CLI |
+> | `analytics` | pandas, numpy | `features.analytics.analytics`, `utils.export` DataFrame/CSV/Excel |
+> | `visualization` | matplotlib, seaborn (+pandas, numpy) | `features.analytics.visualization` plots |
+> | `export` | xlsxwriter, tabulate (+pandas) | Excel / Markdown-table export |
+> | `rdf` | rdflib-jsonld, rdfizer | RML-based RDF mapping (`mappers`) |
+> | `agentic` | langchain, langchain-openai, openai, langgraph | `agentic` LLM agents, claim verification |
+> | `ui` | flask, tornado | `pyeuropepmc.ui` web app |
+> | `signing` | cryptography | signed / zipped search-log bundles |
+> | `semanticscholar` | semanticscholar | library-backed Semantic Scholar client |
+> | `enrichment` | semanticscholar, cryptography | enrichment client bundle |
+> | `bibliography` / `zotero` | bibtexparser / pyzotero | citation export |
+> | `ml` | sentence-transformers | semantic text matching (not in `all` — pulls torch) |
+> | `standard` | analytics + visualization + export + notebook/REPL tooling | everyday research use |
+> | `all` | everything except `ml` | |
+>
+> Install examples: `pip install pyeuropepmc`, `pip install pyeuropepmc[analytics,agentic]`,
+> `pip install pyeuropepmc[all]`.
+>
+> The proposal notes below are retained for historical context.
 
-## Current Problem
+---
+
+## Original problem
 
 The current `pyproject.toml` lists many dependencies as required, making installation heavy (~20+ packages). Users who only want basic search functionality shouldn't need to install visualization, RDF, LLM, and enrichment libraries.
 

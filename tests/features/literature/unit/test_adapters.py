@@ -2,14 +2,11 @@
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from pyeuropepmc.features.literature.adapters import (
     OpenAlexLiteratureAdapter,
     SemanticScholarLiteratureAdapter,
 )
 from pyeuropepmc.models.literature import LiteratureResult
-
 
 # ===========================================================================
 # SemanticScholarLiteratureAdapter
@@ -59,7 +56,7 @@ class TestSemanticScholarAdapter:
         result = adapter.get_paper("nonexistent")
         assert result is None
 
-    @patch("requests.get")
+    @patch("requests.Session.get")
     @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
     def test_search_returns_models(self, mock_client_cls, mock_get):
         """search should return list of LiteratureResult, not dicts."""
@@ -90,7 +87,7 @@ class TestSemanticScholarAdapter:
         assert results[0].title == "Paper One"
         assert results[1].title == "Paper Two"
 
-    @patch("requests.get")
+    @patch("requests.Session.get")
     @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
     def test_search_empty(self, mock_client_cls, mock_get):
         mock_get.return_value.json.return_value = {"data": []}
@@ -100,7 +97,7 @@ class TestSemanticScholarAdapter:
         results = adapter.search("nonexistent")
         assert results == []
 
-    @patch("requests.get")
+    @patch("requests.Session.get")
     @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
     def test_search_http_error(self, mock_client_cls, mock_get):
         from requests.exceptions import HTTPError
@@ -168,7 +165,7 @@ class TestOpenAlexAdapter:
         result = adapter.get_paper("nonexistent")
         assert result is None
 
-    @patch("requests.get")
+    @patch("requests.Session.get")
     @patch("pyeuropepmc.features.enrich.sources.openalex.OpenAlexClient")
     def test_search_returns_models(self, mock_client_cls, mock_get):
         mock_get.return_value.json.return_value = {
@@ -198,7 +195,7 @@ class TestOpenAlexAdapter:
         assert results[0].title == "Paper One"
         assert results[1].title == "Paper Two"
 
-    @patch("requests.get")
+    @patch("requests.Session.get")
     @patch("pyeuropepmc.features.enrich.sources.openalex.OpenAlexClient")
     def test_search_empty(self, mock_client_cls, mock_get):
         mock_get.return_value.json.return_value = {"results": []}
@@ -208,7 +205,7 @@ class TestOpenAlexAdapter:
         results = adapter.search("nonexistent")
         assert results == []
 
-    @patch("requests.get")
+    @patch("requests.Session.get")
     @patch("pyeuropepmc.features.enrich.sources.openalex.OpenAlexClient")
     def test_search_http_error(self, mock_client_cls, mock_get):
         from requests.exceptions import HTTPError

@@ -11,28 +11,80 @@ from pyeuropepmc.features.search import UnifiedSearch
 
 searcher = UnifiedSearch()
 
-# Search default sources (PubMed, arXiv, Semantic Scholar)
+# Search default sources (Europe PMC, PubMed, arXiv), in parallel
 results, report = searcher.search("chronic fatigue syndrome", limit=25)
 
 print(f"Found {len(results)} unique papers ({report.duplicates_removed} removed)")
+print(report.metadata["source_times"])    # per-source wall time
+print(report.metadata["source_errors"])   # {source: "<error>"} for any that failed
 ```
+
+Sources run **concurrently** on a thread pool (`max_workers`, default one per
+source), and the single query string is **translated into each source's
+dialect** before dispatch (`translate=False` to disable) — e.g. arXiv gets
+`all:"..."`, OpenAlex/Semantic Scholar get a plain free-text string, PubMed and
+Europe PMC keep their field syntax.
 
 ### Available Sources
 
-| Source key | Class | Type | Free? |
-|---|---|---|---|
-| `pubmed` | `PubMedClient` | Biomedical literature | Yes |
-| `arxiv` | `ArxivClient` | Preprints | Yes |
-| `semantic_scholar` | `SemanticScholarLiteratureAdapter` | AI-powered citations | Yes* |
-| `openalex` | `OpenAlexLiteratureAdapter` | Open scholarly catalog | Yes |
-| `clinicaltrials` | `ClinicalTrialsClient` | Clinical trial protocols | Yes |
-| `zenodo` | `ZenodoClient` | Datasets & software | Yes |
-| `doaj` | `DOAJClient` | Open access journals | Yes |
-| `dblp` | `DBLPClient` | Computer science | Yes |
-| `hal` | `HALClient` | French open archive | Yes |
-| `core` | `COREClient` | Open access aggregator | Yes* |
+Sources come from a pluggable registry
+(`pyeuropepmc.features.search.registry`).  List them, with the ones whose
+optional dependency is actually installed:
 
-*\* Optional API key recommended for higher rate limits*
+```python
+from pyeuropepmc.features.search import registry
+
+registry.available_sources()                     # every registered source
+registry.available_sources(installed_only=True)  # only what you can use now
+registry.source_capabilities("europepmc")        # {'search', 'get_paper', 'fulltext', 'date_filter'}
+```
+
+| Source key | Class | Type | Extra needed |
+|---|---|---|---|
+| `europepmc` | `EuropePMCLiteratureAdapter` | Europe PMC (home API) | — |
+| `pubmed` | `PubMedClient` | Biomedical literature | — |
+| `arxiv` | `ArxivClient` | Preprints | — |
+| `semantic_scholar` | `SemanticScholarLiteratureAdapter` | AI-powered citations | `pyeuropepmc[semanticscholar]` |
+| `openalex` | `OpenAlexLiteratureAdapter` | Open scholarly catalog | — |
+| `clinicaltrials` | `ClinicalTrialsClient` | Clinical trial protocols | — |
+| `zenodo` | `ZenodoClient` | Datasets & software | — |
+| `doaj` | `DOAJClient` | Open access journals | — |
+| `dblp` | `DBLPClient` | Computer science | — |
+| `hal` | `HALClient` | French open archive | — |
+| `core` | `COREClient` | Open access aggregator | — |
+
+Selecting a source whose extra is missing raises `OptionalDependencyError` with
+the exact `pip install` command.
+
+### Credentials
+
+```python
+searcher = UnifiedSearch(
+    sources=["europepmc", "pubmed", "semantic_scholar", "openalex"],
+    credentials={"api_key": "S2_KEY", "email": "you@example.org"},
+)
+```
+
+Each source declares which credentials it accepts (`SourceSpec.credential_kwargs`):
+`api_key` → Semantic Scholar / CORE; `email` → PubMed & OpenAlex polite pools.
+`UnifiedSearch(api_key=...)` still works as a shortcut.
+
+### Registering your own source
+
+```python
+from pyeuropepmc.features.search import registry
+
+registry.register_source(registry.SourceSpec(
+    name="my_repo",
+    target="my_package.clients:MyRepoClient",   # resolved lazily
+    extras=("my_sdk",),
+    capabilities=frozenset({"search", "get_paper"}),
+))
+```
+
+Packages can also register automatically via a `pyeuropepmc.sources` entry point
+(a zero-arg callable that performs the `register_source` calls);
+`registry.load_entry_point_sources()` loads them.
 
 ### Custom Source Selection
 

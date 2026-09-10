@@ -1,20 +1,25 @@
 """
 Unified multi-source literature search orchestrator.
 
-Federates a single query across multiple literature sources, normalizes
-and deduplicates results, and returns a single merged list. Supports
-all registered literature clients and adapters.
+Federates a single query across multiple literature sources, translates the
+query into each source's dialect, runs the sources in parallel, then normalizes
+and deduplicates the combined results into one merged list.
+
+Sources come from :mod:`pyeuropepmc.features.search.registry`, so the set is
+pluggable (third parties can ``register_source``) and dependency-aware
+(selecting a source whose optional package is missing raises a helpful error).
 
 Examples
-    --------
-    >>> from pyeuropepmc.features.search import UnifiedSearch
-    >>> searcher = UnifiedSearch(sources=["pubmed", "arxiv", "semantic_scholar", "zenodo"])
-    >>> results, report = searcher.search("CRISPR cancer therapy", limit=10)
-    >>> print(f"Found {len(results)} papers (removed {report.duplicates_removed} dupes)")
+--------
+>>> from pyeuropepmc.features.search import UnifiedSearch
+>>> searcher = UnifiedSearch(sources=["europepmc", "pubmed", "arxiv"])
+>>> results, report = searcher.search("CRISPR cancer therapy", limit=10)
+>>> print(f"{len(results)} papers, {report.duplicates_removed} dupes removed")
 """
 
 from __future__ import annotations
 
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import contextlib
 import logging
 import time
@@ -26,62 +31,43 @@ from pyeuropepmc.features.enrich.merger import (
     LiteratureMerger,
     MergeReport,
 )
+from pyeuropepmc.features.search.query_translation import translate_query
+import pyeuropepmc.features.search.registry as registry
 from pyeuropepmc.models.literature import LiteratureResult
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["UnifiedSearch"]
 
-# Map of source names to (module_path, class_name)
-_SOURCE_REGISTRY: dict[str, tuple[str, str]] = {
-    "pubmed": ("pyeuropepmc.features.search.sources.pubmed", "PubMedClient"),
-    "arxiv": ("pyeuropepmc.features.search.sources.arxiv", "ArxivClient"),
-    "clinicaltrials": (
-        "pyeuropepmc.features.search.sources.clinicaltrials",
-        "ClinicalTrialsClient",
-    ),
-    "semantic_scholar": (
-        "pyeuropepmc.features.literature.adapters",
-        "SemanticScholarLiteratureAdapter",
-    ),
-    "openalex": ("pyeuropepmc.features.literature.adapters", "OpenAlexLiteratureAdapter"),
-    "zenodo": ("pyeuropepmc.features.search.sources.zenodo", "ZenodoClient"),
-    "doaj": ("pyeuropepmc.features.search.sources.doaj", "DOAJClient"),
-    "dblp": ("pyeuropepmc.features.search.sources.dblp", "DBLPClient"),
-    "hal": ("pyeuropepmc.features.search.sources.hal", "HALClient"),
-    "core": ("pyeuropepmc.features.search.sources.core", "COREClient"),
-}
-
-
-def _import_client(source: str) -> Any:
-    """Lazy-import a client class by source name."""
-    module_path, class_name = _SOURCE_REGISTRY[source]
-    import importlib
-
-    mod = importlib.import_module(module_path)
-    return getattr(mod, class_name)
+_DEFAULT_SOURCES = ["europepmc", "pubmed", "arxiv"]
 
 
 class UnifiedSearch:
     """
     Orchestrator for multi-source literature search.
 
-    Searches across multiple configured sources, normalizes results,
-    and deduplicates them using the LiteratureMerger.
-
     Parameters
     ----------
     sources : list[str] | None
-        Source names to search. Default: ``["pubmed", "arxiv", "semantic_scholar"]``.
-        Available: ``"pubmed"``, ``"arxiv"``, ``"clinicaltrials"``,
-        ``"semantic_scholar"``, ``"openalex"``, ``"zenodo"``, ``"doaj"``,
-        ``"dblp"``, ``"hal"``, ``"core"``.
+        Source names to search (see
+        :func:`pyeuropepmc.features.search.registry.available_sources`).
+        Default: ``["europepmc", "pubmed", "arxiv"]``.
     dedup_mode : DedupMode, optional
         Deduplication mode (default: ``DedupMode.BALANCED``).
     timeout : int, optional
-        Per-source timeout in seconds (default: 30).
-    max_workers : int, optional
-        Maximum parallel workers (default: None = all sources).
+        Per-source request timeout in seconds (default: 30).
+    rate_limit_delay : float, optional
+        Delay between requests for each source client (default: 1.2 s, chosen
+        for Semantic Scholar's 1 req/s unauthenticated limit).
+    max_workers : int | None, optional
+        Thread-pool size for the parallel fan-out (default: one per source).
+    translate : bool, optional
+        Translate the query into each source's dialect (default: ``True``).
+    credentials : dict[str, Any] | None, optional
+        Per-credential values forwarded to whichever sources accept them, e.g.
+        ``{"api_key": "...", "email": "you@example.org"}``.
+    api_key : str | None, optional
+        Backwards-compatible shortcut for ``credentials={"api_key": ...}``.
     """
 
     def __init__(
@@ -89,23 +75,33 @@ class UnifiedSearch:
         sources: list[str] | None = None,
         dedup_mode: DedupMode = DedupMode.BALANCED,
         timeout: int = 30,
-        rate_limit_delay: float = 0.5,
+        rate_limit_delay: float = 1.2,
+        api_key: str | None = None,
+        max_workers: int | None = None,
+        translate: bool = True,
+        credentials: dict[str, Any] | None = None,
     ) -> None:
-        if sources is None:
-            sources = ["pubmed", "arxiv", "semantic_scholar"]
+        sources = sources or list(_DEFAULT_SOURCES)
 
-        # Validate sources
-        for s in sources:
-            if s not in _SOURCE_REGISTRY:
-                raise ValueError(
-                    f"Unknown source '{s}'. Available: {list(_SOURCE_REGISTRY.keys())}"
-                )
+        known = set(registry.available_sources())
+        unknown = [s for s in sources if s not in known]
+        if unknown:
+            raise ValueError(f"Unknown source(s) {unknown}. Available: {sorted(known)}")
 
         self.sources = sources
         self.dedup_mode = dedup_mode
         self.timeout = timeout
         self.rate_limit_delay = rate_limit_delay
+        self.max_workers = max_workers
+        self.translate = translate
+        self.credentials: dict[str, Any] = dict(credentials or {})
+        if api_key and "api_key" not in self.credentials:
+            self.credentials["api_key"] = api_key
         self._clients: dict[str, Any] | None = None
+
+    # ------------------------------------------------------------------
+    # Search
+    # ------------------------------------------------------------------
 
     def search(
         self,
@@ -116,82 +112,50 @@ class UnifiedSearch:
         **kwargs: Any,
     ) -> tuple[list[LiteratureResult], MergeReport]:
         """
-        Search across all configured sources.
-
-        Parameters
-        ----------
-        query : str
-            Search query string.
-        limit : int, optional
-            Maximum results **per source** (default: 25).
-            The merged total will be less than ``limit * len(sources)``
-            after dedup.
-        sort : str, optional
-            Sort order (passed to each source).
-        sources : list[str], optional
-            Override the source set for this search only. If ``None``,
-            uses the sources configured on the instance.
-        **kwargs
-            Additional parameters passed to each source's ``search()``.
+        Search across all configured sources in parallel and deduplicate.
 
         Returns
         -------
         tuple[list[LiteratureResult], MergeReport]
-            Merged, deduplicated results and a dedup report.
+            Merged, deduplicated results plus a report.  Per-source timings are
+            in ``report.metadata["source_times"]`` and per-source failures in
+            ``report.metadata["source_errors"]``.
         """
         clients = self._get_or_init_clients()
         sources = sources or self.sources
 
-        # Search all sources
-        all_results: list[list[dict[str, Any]]] = []
-        source_times: dict[str, float] = {}
+        per_source, source_times, source_errors = self._run_sources(
+            clients, sources, query, limit, sort, translate=self.translate, **kwargs
+        )
 
-        for source_name in sources:
-            client = clients.get(source_name)
-            if client is None:
-                logger.warning("Source '%s' not initialized, skipping", source_name)
-                continue
-
-            try:
-                start = time.monotonic()
-                results = client.search(query=query, limit=limit, sort=sort, **kwargs)
-                elapsed = time.monotonic() - start
-                source_times[source_name] = elapsed
-                logger.info(
-                    "Source '%s' returned %d results in %.2fs",
-                    source_name,
-                    len(results),
-                    elapsed,
-                )
-                # The merger operates on plain dicts; convert LiteratureResult
-                # objects (with nested pydantic models) to dictionaries.
-                all_results.append([r.model_dump() for r in results])
-            except Exception as e:
-                logger.error("Source '%s' failed: %s", source_name, e)
-                source_times[source_name] = -1.0
-
+        all_results = [
+            [r.model_dump() for r in results] for results in per_source.values() if results
+        ]
         if not all_results:
-            logger.warning("No results from any source")
-            return [], MergeReport()
+            logger.warning("No results from any source (errors: %s)", source_errors)
+            report = MergeReport()
+            report.metadata["source_times"] = source_times
+            report.metadata["source_errors"] = source_errors
+            report.metadata["sources_used"] = sources
+            return [], report
 
-        # Merge and deduplicate
         merger = LiteratureMerger(config=DedupConfig(mode=self.dedup_mode))
         merged_dicts, report = merger.merge_results(all_results)
         report.metadata["source_times"] = source_times
+        report.metadata["source_errors"] = source_errors
         report.metadata["sources_used"] = sources
 
-        # Restore the public result type (extra fields pass through due to
-        # ``extra="allow"`` on LiteratureResult).
         merged = [LiteratureResult.model_validate(d) for d in merged_dicts if d is not None]
 
+        total_in = sum(len(r) for r in all_results)
         logger.info(
-            "UnifiedSearch: %d sources → %d results → %d after dedup (%.1f%% reduction)",
+            "UnifiedSearch: %d/%d sources ok → %d results → %d after dedup (%.1f%% reduction)",
+            len(all_results),
             len(sources),
-            sum(len(r) for r in all_results),
+            total_in,
             len(merged),
-            (1 - len(merged) / max(sum(len(r) for r in all_results), 1)) * 100,
+            (1 - len(merged) / max(total_in, 1)) * 100,
         )
-
         return merged, report
 
     def search_all(
@@ -200,66 +164,97 @@ class UnifiedSearch:
         limit: int = 25,
         **kwargs: Any,
     ) -> dict[str, list[LiteratureResult]]:
-        """
-        Search all sources **without** deduplication, returning per-source results.
-
-        Useful for comparing source coverage or for custom merging.
-
-        Parameters
-        ----------
-        query : str
-            Search query string.
-        limit : int, optional
-            Maximum results per source (default: 25).
-        **kwargs
-            Additional search parameters.
-
-        Returns
-        -------
-        dict[str, list[LiteratureResult]]
-            Mapping of source name to its raw results.
-        """
+        """Search every source in parallel **without** dedup; return per-source lists."""
         clients = self._get_or_init_clients()
-        per_source: dict[str, list[LiteratureResult]] = {}
-
-        for source_name in self.sources:
-            client = clients.get(source_name)
-            if client is None:
-                continue
-            try:
-                results = client.search(query=query, limit=limit, **kwargs)
-                per_source[source_name] = list(results)
-            except Exception as e:
-                logger.error("Source '%s' failed: %s", source_name, e)
-                per_source[source_name] = []
-
+        per_source, _, _ = self._run_sources(
+            clients, self.sources, query, limit, None, translate=self.translate, **kwargs
+        )
         return per_source
+
+    # ------------------------------------------------------------------
+    # Parallel fan-out
+    # ------------------------------------------------------------------
+
+    def _run_sources(
+        self,
+        clients: dict[str, Any],
+        sources: list[str],
+        query: str,
+        limit: int,
+        sort: str | None,
+        *,
+        translate: bool,
+        **kwargs: Any,
+    ) -> tuple[dict[str, list[LiteratureResult]], dict[str, float], dict[str, str]]:
+        active = [(s, clients.get(s)) for s in sources]
+        runnable = [(s, c) for s, c in active if c is not None]
+
+        per_source: dict[str, list[LiteratureResult]] = {}
+        source_times: dict[str, float] = {}
+        source_errors: dict[str, str] = {
+            s: "client not initialised" for s, c in active if c is None
+        }
+
+        def _one(source_name: str, client: Any) -> list[LiteratureResult]:
+            q = translate_query(query, source_name) if translate else query
+            if q != query:
+                logger.debug("query for %s: %r -> %r", source_name, query, q)
+            return list(client.search(query=q, limit=limit, sort=sort, **kwargs))
+
+        if not runnable:
+            return per_source, source_times, source_errors
+
+        workers = self.max_workers or len(runnable)
+        started = time.monotonic()
+        with ThreadPoolExecutor(max_workers=max(1, workers)) as pool:
+            futures = {pool.submit(_one, s, c): s for s, c in runnable}
+            for fut in as_completed(futures):
+                source_name = futures[fut]
+                elapsed = time.monotonic() - started
+                source_times[source_name] = elapsed
+                try:
+                    results = fut.result()
+                    per_source[source_name] = results
+                    logger.info(
+                        "Source '%s' returned %d results in %.2fs",
+                        source_name,
+                        len(results),
+                        elapsed,
+                    )
+                except Exception as exc:  # noqa: BLE001 - report, don't abort the batch
+                    source_errors[source_name] = f"{type(exc).__name__}: {exc}"
+                    logger.error("Source '%s' failed: %s", source_name, exc)
+
+        return per_source, source_times, source_errors
 
     # ------------------------------------------------------------------
     # Client lifecycle
     # ------------------------------------------------------------------
 
     def _get_or_init_clients(self) -> dict[str, Any]:
-        """Lazy-initialize all source clients."""
         if self._clients is not None:
             return self._clients
 
         self._clients = {}
         for source_name in self.sources:
+            spec = registry.get_source_spec(source_name)
+            kwargs: dict[str, Any] = {
+                "rate_limit_delay": self.rate_limit_delay,
+                "timeout": self.timeout,
+            }
+            for cred in spec.credential_kwargs:
+                if self.credentials.get(cred) is not None:
+                    kwargs[cred] = self.credentials[cred]
             try:
-                client_class = _import_client(source_name)
-                self._clients[source_name] = client_class(
-                    rate_limit_delay=self.rate_limit_delay,
-                    timeout=self.timeout,
-                )
-            except Exception as e:
-                logger.warning("Failed to init client '%s': %s", source_name, e)
+                self._clients[source_name] = registry.load_source(source_name, **kwargs)
+            except Exception as exc:  # noqa: BLE001 - missing dep / init failure
+                logger.warning("Failed to init source '%s': %s", source_name, exc)
                 self._clients[source_name] = None
 
         return self._clients
 
     def close(self) -> None:
-        """Close all initialized clients."""
+        """Close all initialised clients."""
         if self._clients:
             for client in self._clients.values():
                 if client and hasattr(client, "close"):
@@ -267,7 +262,13 @@ class UnifiedSearch:
                         client.close()
             self._clients = None
 
+    def __enter__(self) -> UnifiedSearch:
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        self.close()
+
     @property
     def available_sources(self) -> list[str]:
-        """Return list of all registered source names."""
-        return list(_SOURCE_REGISTRY.keys())
+        """All registered source names (see the registry for capability info)."""
+        return registry.available_sources()

@@ -69,10 +69,9 @@ class CrossRefClient(BaseEnrichmentClient):
         )
         self.email = email
 
-        # Add email to headers for polite pool if provided
+        # Use base class helper for email header (CrossRef uses 'mailto')
         if email:
-            self.session.headers.update({"mailto": email})
-            logger.info(f"CrossRef polite pool enabled with email: {email}")
+            self._set_email_header(email, header="mailto")
 
     def enrich(
         self, identifier: str | None = None, use_cache: bool = True, **kwargs: Any
@@ -112,29 +111,27 @@ class CrossRefClient(BaseEnrichmentClient):
 
         logger.debug(f"Enriching metadata for identifier: {identifier}")
 
+        # Validate and normalize DOI
+        normalized_doi = self._normalize_doi(identifier)
+        if not normalized_doi:
+            logger.warning(f"Invalid DOI format: {identifier}")
+            return None
+
         # Make request to CrossRef API
-        response = self._make_request(endpoint=identifier, use_cache=use_cache)
+        response = self._make_request(endpoint=normalized_doi, use_cache=use_cache)
         if response is None:
-            logger.warning(f"No data found for identifier: {identifier}")
+            logger.warning(f"No data found for identifier: {normalized_doi}")
             return None
 
-        # Extract metadata from response
-        try:
-            message = response.get("message", {})
-            if not message:
-                logger.warning(f"Empty response from CrossRef for identifier: {identifier}")
-                return None
+        # Parse response using base class helper
+        return self._parse_response_safe(
+            response,
+            lambda r: self._parse_crossref_response(r.get("message", {})),
+            entity_type="paper",
+            identifier=normalized_doi,
+        )
 
-            # Parse and normalize metadata
-            enriched = self._parse_crossref_response(message)
-            logger.info(f"Successfully enriched metadata for identifier: {identifier}")
-            return enriched
-
-        except Exception as e:
-            logger.error(f"Error parsing CrossRef response for {identifier}: {e}")
-            return None
-
-    def _parse_crossref_response(self, message: dict[str, Any]) -> dict[str, Any]:
+    def _parse_crossref_response(self, message: dict[str, Any]) -> dict[str, Any] | None:
         """
         Parse CrossRef API response into normalized metadata.
 
@@ -145,11 +142,19 @@ class CrossRefClient(BaseEnrichmentClient):
 
         Returns
         -------
-        dict
-            Normalized metadata
+        dict or None
+            Normalized metadata, or None if message is empty/invalid
         """
+        # Check if message is empty (key indicator of no data)
+        if not message:
+            return None
+
         # Extract basic metadata
         title = self._extract_title(message)
+        # If no title, it's not valid data
+        if not title:
+            return None
+
         authors = self._extract_authors(message)
         abstract = message.get("abstract")
         journal = self._extract_journal(message)

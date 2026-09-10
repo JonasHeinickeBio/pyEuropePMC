@@ -10,26 +10,22 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 import logging
 import time
-from typing import Any
+from typing import Any, Literal, overload
 
 import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util import Retry
 
-from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
+from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.core.error_codes import ErrorCodes, format_error_message
 from pyeuropepmc.core.exceptions import APIClientError
+from pyeuropepmc.features.common.base import BaseHTTPClient
 from pyeuropepmc.models.literature import LiteratureResult
 
 logger = logging.getLogger(__name__)
 
 __all__ = ["BaseLiteratureClient"]
 
-# User agent version — kept aligned with core/base.py
-_USER_AGENT = "pyeuropepmc/1.0.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)"
 
-
-class BaseLiteratureClient(ABC):
+class BaseLiteratureClient(BaseHTTPClient, ABC):
     """
     Abstract base class for external API literature search clients.
 
@@ -83,60 +79,39 @@ class BaseLiteratureClient(ABC):
             Whether API key is missing (affects rate limiting behavior).
             If True, uses 3x more conservative rate limiting.
         """
-        self.base_url = base_url.rstrip("/")
-        self.rate_limit_delay = rate_limit_delay
-        self.timeout = timeout
-        self.api_key_missing = api_key_missing
-        self.session = requests.Session()
-
-        # Set default user agent (aligned with core/base.py)
-        self.session.headers.update({"User-Agent": user_agent or _USER_AGENT})
-
-        # Configure retries for common transient errors
-        retry_strategy = Retry(
-            total=3,
-            status_forcelist=[500, 502, 503, 504],
-            allowed_methods=["HEAD", "GET", "OPTIONS", "POST"],
-            backoff_factor=1,
-            raise_on_status=False,
+        super().__init__(
+            base_url=base_url,
+            rate_limit_delay=rate_limit_delay,
+            timeout=timeout,
+            cache_config=cache_config,
+            user_agent=user_agent,
+            api_key_missing=api_key_missing,
         )
-        adapter = HTTPAdapter(max_retries=retry_strategy)
-        self.session.mount("https://", adapter)
-        self.session.mount("http://", adapter)
-
-        # Initialize cache
-        if cache_config is None:
-            cache_config = CacheConfig(enabled=False)
-        self._cache = CacheBackend(cache_config)
-
-        logger.info(
-            "%s initialized with cache %s",
-            self.__class__.__name__,
-            "enabled" if cache_config.enabled else "disabled",
-        )
-
-    # ------------------------------------------------------------------
-    # Context manager
-    # ------------------------------------------------------------------
-
-    def __enter__(self) -> BaseLiteratureClient:
-        """Enter context manager."""
-        return self
-
-    def __exit__(self, exc_type: Any, exc_val: Any, exc_tb: Any) -> None:
-        """Exit context manager and clean up resources."""
-        self.close()
-
-    def close(self) -> None:
-        """Close the client and release resources."""
-        if self.session:
-            self.session.close()
-        if self._cache:
-            self._cache.close()
 
     # ------------------------------------------------------------------
     # HTTP request
     # ------------------------------------------------------------------
+
+    @overload
+    def _make_request(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = ...,
+        headers: dict[str, str] | None = ...,
+        use_cache: bool = ...,
+        response_format: Literal["json"] = ...,
+    ) -> dict[str, Any] | None: ...
+
+    @overload
+    def _make_request(
+        self,
+        endpoint: str,
+        params: dict[str, Any] | None = ...,
+        headers: dict[str, str] | None = ...,
+        use_cache: bool = ...,
+        *,
+        response_format: Literal["xml", "text"],
+    ) -> str | None: ...
 
     def _make_request(
         self,
@@ -144,7 +119,8 @@ class BaseLiteratureClient(ABC):
         params: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
         use_cache: bool = True,
-    ) -> dict[str, Any] | None:
+        response_format: str = "json",
+    ) -> dict[str, Any] | str | None:
         """
         Make HTTP request with retries and caching.
 
@@ -158,11 +134,19 @@ class BaseLiteratureClient(ABC):
             Additional headers.
         use_cache : bool, optional
             Whether to use caching for this request (default: True).
+        response_format : str, optional
+            How to decode the response body (default: ``"json"``):
+
+            - ``"json"`` — parse the body and return a ``dict``.
+            - ``"xml"`` / ``"text"`` — return ``response.text`` verbatim as a
+              ``str`` (no JSON parsing).  Used by sources whose APIs return
+              XML/Atom feeds (arXiv, PubMed EFetch).
 
         Returns
         -------
-        dict or None
-            Response data as dictionary, or None if request fails
+        dict, str or None
+            Parsed response (``dict`` for ``"json"``, ``str`` for
+            ``"xml"``/``"text"``), or None if the request fails
             (e.g. 404 — resource not found is handled gracefully).
 
         Raises
@@ -171,12 +155,13 @@ class BaseLiteratureClient(ABC):
             If request fails after all retries (network,
             server error, etc.).
         """
+        raw_text = response_format in ("xml", "text")
         url = f"{self.base_url}/{endpoint.lstrip('/')}"
 
         # ---- Check cache first ----
         cache_key = ""
         if use_cache and self._cache.config.enabled:
-            cache_key = f"{url}:{str(params)}"
+            cache_key = f"{url}:{str(params)}:{response_format}"
             cached = self._cache.get(cache_key)
             if cached is not None:
                 logger.debug("Cache hit for %s", url)
@@ -211,8 +196,8 @@ class BaseLiteratureClient(ABC):
 
                 response.raise_for_status()
 
-                # Parse JSON
-                data: dict[str, Any] = response.json()
+                # Decode body according to the requested format
+                data: dict[str, Any] | str = response.text if raw_text else response.json()
 
                 # Cache successful response
                 if use_cache and self._cache.config.enabled:

@@ -57,8 +57,6 @@ def _ensure_extensions() -> bool:
     try:
         from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlockExtractor as _CBE,
-        )
-        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             StructuredSection as _SS,
         )
 

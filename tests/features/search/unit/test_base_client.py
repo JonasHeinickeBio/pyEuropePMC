@@ -139,8 +139,8 @@ class TestCache:
             ).CacheConfig(enabled=True, ttl=300),
         )
         # Pre-populate the cache backend with the exact key format used by
-        # ``_make_request``: f"{url}:{str(params)}"
-        cache_key = "https://x/endpoint:{'a': 1}"
+        # ``_make_request``: f"{url}:{str(params)}:{response_format}"
+        cache_key = "https://x/endpoint:{'a': 1}:json"
         client._cache.set(cache_key, {"cached": True})
         client.session.get = MagicMock(return_value=_response(200, {"fresh": True}))
         assert client._make_request("endpoint", {"a": 1}) == {"cached": True}

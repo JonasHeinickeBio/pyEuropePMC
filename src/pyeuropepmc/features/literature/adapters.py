@@ -18,6 +18,10 @@ import contextlib
 import logging
 from typing import Any
 
+import requests
+
+from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.features.common.base import BaseHTTPClient
 from pyeuropepmc.features.enrich.sources.openalex import OpenAlexClient
 from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
 from pyeuropepmc.features.literature.normalization import (
@@ -32,6 +36,7 @@ from pyeuropepmc.models.literature import Author, LiteratureResult
 logger = logging.getLogger(__name__)
 
 __all__ = [
+    "EuropePMCLiteratureAdapter",
     "SemanticScholarLiteratureAdapter",
     "OpenAlexLiteratureAdapter",
 ]
@@ -53,10 +58,15 @@ class SemanticScholarLiteratureAdapter:
     Scholar API directly.
     """
 
+    #: Semantic Scholar paper-search endpoint (Graph API).
+    SEARCH_URL = "https://api.semanticscholar.org/graph/v1/paper/search"
+
     def __init__(
         self,
         enrichment_client: SemanticScholarClient | None = None,
-        **kwargs: Any,
+        api_key: str | None = None,
+        rate_limit_delay: float = 1.2,
+        timeout: int = 15,
     ) -> None:
         """
         Initialize the adapter.
@@ -65,12 +75,60 @@ class SemanticScholarLiteratureAdapter:
         ----------
         enrichment_client : SemanticScholarClient, optional
             Existing enrichment client to wrap.  If ``None``, creates a new one.
-        **kwargs
-            Ignored; accepted for interface compatibility with
-            :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`
-            (e.g. ``rate_limit_delay``/``timeout`` passed by ``UnifiedSearch``).
+        api_key : str, optional
+            API key for higher rate limits. If not provided, uses environment variable.
+        rate_limit_delay : float, optional
+            Delay between requests in seconds (default: 1.2)
+        timeout : int, optional
+            Request timeout in seconds (default: 15)
         """
-        self.enrichment_client = enrichment_client or SemanticScholarClient()
+        if enrichment_client is not None:
+            self.enrichment_client = enrichment_client
+        else:
+            # Create a new SemanticScholarClient with the provided API key
+            self.enrichment_client = SemanticScholarClient(
+                api_key=api_key,
+                rate_limit_delay=rate_limit_delay,
+                timeout=timeout,
+            )
+
+        # Dedicated HTTP client for the *search* endpoint so the call goes
+        # through a configured session (timeout, retries, rate-limit delay,
+        # ``x-api-key`` header) instead of a bare ``requests.get``.
+        self._http = BaseHTTPClient(
+            base_url="https://api.semanticscholar.org/graph/v1",
+            rate_limit_delay=self.enrichment_client.rate_limit_delay,
+            timeout=self.enrichment_client.timeout,
+        )
+        if self.enrichment_client.api_key:
+            self._http.session.headers.update({"x-api-key": self.enrichment_client.api_key})
+
+    def _search_http(self, params: dict[str, Any]) -> dict[str, Any]:
+        """
+        Run a search request through the configured HTTP session.
+
+        Parameters
+        ----------
+        params : dict
+            Query-string parameters for the Semantic Scholar search endpoint.
+
+        Returns
+        -------
+        dict
+            Parsed JSON response.
+
+        Raises
+        ------
+        requests.HTTPError
+            If the API returns a non-2xx status.
+        """
+        response = self._http.session.get(
+            self.SEARCH_URL,
+            params=params,
+            timeout=self._http.timeout,
+        )
+        response.raise_for_status()
+        return response.json()  # type: ignore[no-any-return]
 
     # ------------------------------------------------------------------
     # Public interface
@@ -127,9 +185,6 @@ class SemanticScholarLiteratureAdapter:
         list[LiteratureResult]
             List of search results as Pydantic models.
         """
-        import requests
-
-        search_url = "https://api.semanticscholar.org/graph/v1/paper/search"
         params: dict[str, Any] = {
             "query": query,
             "limit": limit,
@@ -138,19 +193,12 @@ class SemanticScholarLiteratureAdapter:
         if sort:
             params["sort"] = sort
 
-        headers = {"Accept": "application/json"}
-        if self.enrichment_client.api_key:
-            headers["x-api-key"] = self.enrichment_client.api_key
-
-        response = requests.get(search_url, params=params, headers=headers)
-
         try:
-            response.raise_for_status()
-        except requests.HTTPError:
+            data = self._search_http(params)
+        except requests.RequestException:
             logger.exception("Semantic Scholar search failed for query=%r", query)
             return []
 
-        data = response.json()
         papers = data.get("data", [])
 
         results: list[LiteratureResult] = []
@@ -273,10 +321,15 @@ class OpenAlexLiteratureAdapter:
     :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`.
     """
 
+    #: OpenAlex works-search endpoint.
+    SEARCH_URL = "https://api.openalex.org/works"
+
     def __init__(
         self,
         enrichment_client: OpenAlexClient | None = None,
-        **kwargs: Any,
+        rate_limit_delay: float = 1.0,
+        timeout: int = 15,
+        cache_config: CacheConfig | None = None,
     ) -> None:
         """
         Initialize the adapter.
@@ -285,12 +338,66 @@ class OpenAlexLiteratureAdapter:
         ----------
         enrichment_client : OpenAlexClient, optional
             Existing enrichment client to wrap.  If ``None``, creates a new one.
-        **kwargs
-            Ignored; accepted for interface compatibility with
-            :class:`~pyeuropepmc.features.search.base.BaseLiteratureClient`
-            (e.g. ``rate_limit_delay``/``timeout`` passed by ``UnifiedSearch``).
+        rate_limit_delay : float, optional
+            Delay between requests in seconds (default: 1.0)
+        timeout : int, optional
+            Request timeout in seconds (default: 15)
+        cache_config : CacheConfig, optional
+            Cache configuration
         """
-        self.enrichment_client = enrichment_client or OpenAlexClient()
+        if enrichment_client is not None:
+            self.enrichment_client = enrichment_client
+        else:
+            # Create a new OpenAlexClient with the provided parameters
+            self.enrichment_client = OpenAlexClient(
+                rate_limit_delay=rate_limit_delay,
+                timeout=timeout,
+                cache_config=cache_config,
+            )
+
+        # Dedicated HTTP client for the *search* endpoint so the call goes
+        # through a configured session (timeout, retries, rate-limit delay,
+        # polite-pool ``mailto``) instead of a bare ``requests.get``.
+        self._http = BaseHTTPClient(
+            base_url="https://api.openalex.org",
+            rate_limit_delay=self.enrichment_client.rate_limit_delay,
+            timeout=self.enrichment_client.timeout,
+        )
+        # Carry over the polite-pool User-Agent configured on the enrichment
+        # client (it embeds ``mailto:`` when an email was supplied).
+        ua = self.enrichment_client.session.headers.get("User-Agent")
+        if ua:
+            self._http.session.headers.update({"User-Agent": ua})
+        self._mailto = getattr(self.enrichment_client, "email", None)
+
+    def _search_http(self, params: dict[str, Any]) -> dict[str, Any]:
+        """
+        Run a search request through the configured HTTP session.
+
+        Parameters
+        ----------
+        params : dict
+            Query-string parameters for the OpenAlex works endpoint.
+
+        Returns
+        -------
+        dict
+            Parsed JSON response.
+
+        Raises
+        ------
+        requests.HTTPError
+            If the API returns a non-2xx status.
+        """
+        if self._mailto:
+            params = {**params, "mailto": self._mailto}
+        response = self._http.session.get(
+            self.SEARCH_URL,
+            params=params,
+            timeout=self._http.timeout,
+        )
+        response.raise_for_status()
+        return response.json()  # type: ignore[no-any-return]
 
     # ------------------------------------------------------------------
     # Public interface
@@ -347,9 +454,6 @@ class OpenAlexLiteratureAdapter:
         list[LiteratureResult]
             List of search results as Pydantic models.
         """
-        import requests
-
-        search_url = "https://api.openalex.org/works"
         params: dict[str, Any] = {
             "search": query,
             "per-page": limit,
@@ -366,13 +470,11 @@ class OpenAlexLiteratureAdapter:
                 params["sort"] = mapped
 
         try:
-            response = requests.get(search_url, params=params)
-            response.raise_for_status()
-        except requests.HTTPError:
+            data = self._search_http(params)
+        except requests.RequestException:
             logger.exception("OpenAlex search failed for query=%r", query)
             return []
 
-        data = response.json()
         papers = data.get("results", [])
 
         results: list[LiteratureResult] = []
@@ -508,4 +610,129 @@ class OpenAlexLiteratureAdapter:
             is_oa=data.get("open_access", {}).get("is_oa"),
             oa_status=data.get("open_access", {}).get("oa_status"),
             topics=topics,
+        )
+
+
+class EuropePMCLiteratureAdapter:
+    """
+    Adapter exposing the native Europe PMC :class:`SearchClient` through the
+    literature-search interface used by
+    :class:`~pyeuropepmc.features.search.unified_search.UnifiedSearch`.
+
+    Europe PMC is the project's home API, so it belongs in the federated search
+    alongside PubMed, arXiv, OpenAlex, etc.
+    """
+
+    def __init__(
+        self,
+        search_client: Any | None = None,
+        rate_limit_delay: float = 1.0,
+        timeout: int = 15,
+        **_ignored: Any,
+    ) -> None:
+        self.timeout = timeout
+        if search_client is not None:
+            self.search_client = search_client
+        else:
+            from pyeuropepmc.features.literature.search import SearchClient
+
+            # SearchClient manages its own request timeout internally.
+            self.search_client = SearchClient(rate_limit_delay=rate_limit_delay)
+
+    def search(
+        self,
+        query: str,
+        limit: int = 25,
+        sort: str | None = None,
+        **kwargs: Any,
+    ) -> list[LiteratureResult]:
+        """Search Europe PMC and normalize hits to :class:`LiteratureResult`."""
+        params: dict[str, Any] = {"pageSize": min(limit, 1000)}
+        if sort:
+            params["sort"] = sort
+        params.update(kwargs)
+
+        try:
+            records = self.search_client.search_and_parse(query, format="json", **params)
+        except Exception:
+            logger.exception("Europe PMC search failed for query=%r", query)
+            return []
+
+        results: list[LiteratureResult] = []
+        for rec in records[:limit]:
+            normalized = self._normalize_to_literature_format(rec)
+            if normalized:
+                results.append(normalized)
+        return results
+
+    def get_paper(self, identifier: str, **kwargs: Any) -> LiteratureResult | None:
+        """Look up a single record by DOI / PMID / PMCID via a targeted query."""
+        ident = identifier.strip()
+        if ident.lower().startswith("10."):
+            query = f'DOI:"{ident}"'
+        elif ident.upper().startswith("PMC"):
+            query = f"PMCID:{ident}"
+        elif ident.isdigit():
+            query = f"EXT_ID:{ident} AND SRC:MED"
+        else:
+            query = ident
+        hits = self.search(query, limit=1)
+        return hits[0] if hits else None
+
+    def close(self) -> None:
+        with contextlib.suppress(Exception):
+            self.search_client.close()
+
+    def _normalize_to_literature_format(self, data: dict[str, Any]) -> LiteratureResult | None:
+        title = normalize_paper_title(data.get("title"))
+        doi = normalize_doi(data.get("doi"))
+        pmid = data.get("pmid") or (data.get("id") if data.get("source") == "MED" else None)
+        pmcid = data.get("pmcid")
+
+        authors_list: list[Author] = []
+        author_string = data.get("authorString") or ""
+        if author_string:
+            for raw_name in author_string.split(","):
+                name = normalize_author_name(raw_name.strip().rstrip("."))
+                if name:
+                    authors_list.append(Author(name=name))
+
+        year = None
+        if data.get("pubYear"):
+            with contextlib.suppress(TypeError, ValueError):
+                year = int(str(data["pubYear"])[:4])
+
+        journal = data.get("journalTitle")
+        if not journal:
+            journal = (data.get("journalInfo", {}) or {}).get("journal", {}).get("title")
+        journal = normalize_journal_title(journal)
+
+        citation_count = data.get("citedByCount")
+        if citation_count is not None:
+            try:
+                citation_count = int(citation_count)
+            except (TypeError, ValueError):
+                citation_count = None
+
+        abstract = data.get("abstractText")
+        if isinstance(abstract, str):
+            abstract = abstract.strip()
+
+        source_id = str(data.get("id") or pmid or doi or "")
+        return LiteratureResult(
+            doi=doi,
+            pmid=str(pmid) if pmid else None,
+            pmcid=str(pmcid) if pmcid else None,
+            title=title,
+            authors=authors_list or None,
+            publication_year=year,
+            journal=journal,
+            abstract=abstract,
+            citation_count=citation_count,
+            source="europepmc",
+            source_id=source_id,
+            extra_metadata={
+                "europepmc_source": data.get("source"),
+                "is_open_access": data.get("isOpenAccess"),
+            },
         )

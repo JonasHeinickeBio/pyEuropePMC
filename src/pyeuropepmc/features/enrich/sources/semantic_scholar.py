@@ -59,7 +59,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
 
     def __init__(
         self,
-        rate_limit_delay: float = 1.0,
+        rate_limit_delay: float = 1.2,  # Slightly > 1.0 to stay under the 1 req/s limit
         timeout: int = 15,
         cache_config: CacheConfig | None = None,
         api_key: str | None = None,
@@ -70,7 +70,8 @@ class SemanticScholarClient(BaseEnrichmentClient):
         Parameters
         ----------
         rate_limit_delay : float, optional
-            Delay between requests in seconds (default: 1.0)
+            Delay between requests in seconds (default: 1.2)
+            Slightly above 1.0 to ensure we stay under the 1 req/s limit.
         timeout : int, optional
             Request timeout in seconds (default: 15)
         cache_config : CacheConfig, optional
@@ -108,6 +109,11 @@ class SemanticScholarClient(BaseEnrichmentClient):
                 "No Semantic Scholar API key configured. Rate limits are lower (25k/month). "
                 "Consider adding SEMANTIC_SCHOLAR_API_KEY to environment for higher limits (100k/month)."
             )
+
+        logger.info(
+            "SemanticScholarClient initialized with rate_limit_delay=%.2fs (max 1 req/s)",
+            self.rate_limit_delay,
+        )
 
     def _normalize_recommendation_limit(self, limit: int | None) -> int:
         """Validate and normalize recommendation limit to API boundaries."""

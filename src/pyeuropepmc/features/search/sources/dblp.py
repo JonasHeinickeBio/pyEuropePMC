@@ -58,20 +58,20 @@ class DBLPClient(BaseLiteratureClient):
             **kwargs,
         )
 
-    # Override _make_request since DBLP returns XML
-    def _make_request(
+    # DBLP is always queried as JSON via the base URL directly, so this narrows
+    # the parent's signature on purpose (no ``endpoint`` / ``response_format``).
+    def _make_request(  # type: ignore[override]
         self,
         endpoint: str = "",
         params: dict[str, Any] | None = None,
         headers: dict[str, str] | None = None,
         use_cache: bool = True,
     ) -> dict[str, Any] | None:
-        if params is None:
-            params = {}
-        params.setdefault("format", "json")
-        params.setdefault("h", 100)
-        # Delegate to parent but DBLP uses the base URL directly as the endpoint
-        return super()._make_request("", params=params, headers=headers, use_cache=use_cache)
+        merged = {**(params or {})}
+        merged.setdefault("format", "json")
+        merged.setdefault("h", 100)
+        result = super()._make_request("", params=merged, headers=headers, use_cache=use_cache)
+        return result if isinstance(result, dict) else None
 
     # ------------------------------------------------------------------
     # Search

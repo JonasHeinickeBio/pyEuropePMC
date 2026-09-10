@@ -14,6 +14,8 @@ from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.core.exceptions import APIClientError
 
+# Mock CacheBackend at the correct import path (common base module, not enrich base)
+
 
 class TestBaseEnrichmentClient:
     """Tests for BaseEnrichmentClient."""
@@ -369,7 +371,7 @@ class TestBaseEnrichmentClient:
 
         assert mock_get.call_count == 3
 
-    @patch("pyeuropepmc.features.enrich.base.CacheBackend")
+    @patch("pyeuropepmc.features.common.base.CacheBackend")
     @patch("requests.Session.get")
     def test_make_request_cache_hit(self, mock_get, mock_cache):
         """Test cache hit returns cached value without making request."""
@@ -388,7 +390,7 @@ class TestBaseEnrichmentClient:
         assert result == {"cached": "data"}
         mock_get.assert_not_called()
 
-    @patch("pyeuropepmc.features.enrich.base.CacheBackend")
+    @patch("pyeuropepmc.features.common.base.CacheBackend")
     @patch("requests.Session.get")
     def test_make_request_cache_set_after_success(self, mock_get, mock_cache):
         """Test successful response is cached."""

@@ -1,0 +1,87 @@
+"""Unit tests for the pluggable literature-source registry."""
+
+from __future__ import annotations
+
+import pytest
+
+from pyeuropepmc._optional_imports import OptionalDependencyError
+from pyeuropepmc.features.search import registry
+
+
+def test_builtin_sources_registered():
+    names = set(registry.available_sources())
+    assert {"europepmc", "pubmed", "arxiv", "semantic_scholar", "openalex"} <= names
+
+
+def test_get_source_spec_unknown_raises():
+    with pytest.raises(KeyError, match="Unknown source"):
+        registry.get_source_spec("does-not-exist")
+
+
+def test_capabilities_lookup():
+    caps = registry.source_capabilities("europepmc")
+    assert "search" in caps and "fulltext" in caps
+
+
+def test_resolve_returns_class_without_instantiating():
+    cls = registry.get_source_spec("pubmed").resolve()
+    assert cls.__name__ == "PubMedClient"
+
+
+def test_available_sources_installed_only_filters_missing_extra(monkeypatch):
+    spec = registry.get_source_spec("semantic_scholar")
+    assert spec.extras == ("semanticscholar",)
+
+    monkeypatch.setattr(
+        registry, "is_package_available", lambda mod: mod != "semanticscholar"
+    )
+    installed = registry.available_sources(installed_only=True)
+    assert "semantic_scholar" not in installed
+    assert "pubmed" in installed
+
+
+def test_load_source_missing_extra_raises_helpful_error(monkeypatch):
+    monkeypatch.setattr(
+        registry, "is_package_available", lambda mod: mod != "semanticscholar"
+    )
+    with pytest.raises(OptionalDependencyError) as exc:
+        registry.load_source("semantic_scholar")
+    assert "pip install pyeuropepmc[semanticscholar]" in str(exc.value)
+
+
+def test_acceptable_kwargs_filters_to_signature():
+    class _C:
+        def __init__(self, rate_limit_delay: float = 1.0, timeout: int = 15) -> None:
+            pass
+
+    assert registry._acceptable_kwargs(_C) == {"rate_limit_delay", "timeout"}
+
+    class _Var:
+        def __init__(self, **kwargs: object) -> None:
+            pass
+
+    assert registry._acceptable_kwargs(_Var) is None
+
+
+def test_load_source_tolerates_extra_kwargs():
+    # ArxivClient.__init__ has no api_key / email params; load_source must drop them.
+    client = registry.load_source(
+        "arxiv", rate_limit_delay=2.0, timeout=9, api_key="unused", email="x@y.z"
+    )
+    assert client.rate_limit_delay == 2.0
+    assert client.timeout == 9
+
+
+def test_register_and_override(monkeypatch):
+    spec = registry.SourceSpec("unit-test-src", "pkg.mod:Cls")
+    registry.register_source(spec)
+    try:
+        assert "unit-test-src" in registry.available_sources()
+        with pytest.raises(ValueError, match="already registered"):
+            registry.register_source(spec)
+        registry.register_source(
+            registry.SourceSpec("unit-test-src", "pkg.other:Cls2"), replace=True
+        )
+        assert registry.get_source_spec("unit-test-src").target == "pkg.other:Cls2"
+    finally:
+        registry._REGISTRY.pop("unit-test-src", None)

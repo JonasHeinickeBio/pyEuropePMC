@@ -13,6 +13,8 @@ import contextlib
 import logging
 from typing import Any
 
+import requests
+
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.features.literature.normalization import (
     normalize_author_list,
@@ -329,14 +331,11 @@ class PubMedClient(BaseLiteratureClient):
         cit_string = "|".join(parts)
         data = {"cit": cit_string}
 
-        import requests
-
         try:
-            response = requests.post(
+            response = self.session.post(
                 f"{self.BASE_URL}/ecitmatch.cgi",
                 params=params,
                 data=data,
-                headers={"User-Agent": self.session.headers.get("User-Agent", "")},
                 timeout=self.timeout,
             )
             response.raise_for_status()
@@ -371,18 +370,12 @@ class PubMedClient(BaseLiteratureClient):
             "rettype": "full",
         }
 
-        response = self._make_request("efetch.fcgi", params=params)
-        if response is None:
+        # EFetch returns XML, not JSON — ask the base client for the raw text.
+        response = self._make_request("efetch.fcgi", params=params, response_format="xml")
+        if not response:
             return None
 
-        # EFetch returns XML wrapped in JSON as a string in the "xml" key
-        xml_text = None
-        if isinstance(response, dict):
-            xml_text = response.get("xml")
-        if not xml_text:
-            return None
-
-        return self._parse_efetch_xml(xml_text, identifier)
+        return self._parse_efetch_xml(response, identifier)
 
     def _parse_efetch_xml(  # noqa: C901
         self,

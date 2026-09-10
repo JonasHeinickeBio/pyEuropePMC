@@ -138,8 +138,9 @@ class ArxivClient(BaseLiteratureClient):
         if id_list:
             params["id_list"] = id_list
 
-        # arXiv API returns XML — we pass custom headers for XML parsing
-        raw = self._make_request("query", params=params, use_cache=True)
+        # arXiv API returns Atom XML (not JSON) — ask the base client for the
+        # raw response text.
+        raw = self._make_request("query", params=params, use_cache=True, response_format="xml")
         if raw is None:
             return []
 
@@ -177,7 +178,10 @@ class ArxivClient(BaseLiteratureClient):
 
         # arXiv single paper lookup via id_list parameter
         raw = self._make_request(
-            "query", params={"id_list": arxiv_id, "max_results": 1}, use_cache=True
+            "query",
+            params={"id_list": arxiv_id, "max_results": 1},
+            use_cache=True,
+            response_format="xml",
         )
 
         # Fallback: if the identifier looks like a DOI, arXiv does not index
@@ -190,6 +194,7 @@ class ArxivClient(BaseLiteratureClient):
                     "max_results": 1,
                 },
                 use_cache=True,
+                response_format="xml",
             )
         if raw is None:
             return None
@@ -266,8 +271,8 @@ class ArxivClient(BaseLiteratureClient):
         list[LiteratureResult]
             Parsed results.
         """
-        # _make_request returns dict from JSON parsing — arXiv returns XML,
-        # so it's either an XML string or None/empty dict from error paths.
+        # With ``response_format="xml"`` the base client returns the raw XML
+        # string; a dict can still turn up from a cache/error path.
         if isinstance(xml_data, dict):
             logger.warning("arXiv API returned JSON/empty dict instead of XML — no results")
             return []
@@ -358,75 +363,3 @@ class ArxivClient(BaseLiteratureClient):
             return None
 
         return self._normalize_result(raw)
-
-    # ------------------------------------------------------------------
-    # Override _make_request for XML handling
-    # ------------------------------------------------------------------
-
-    def _make_request(
-        self,
-        endpoint: str,
-        params: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
-        use_cache: bool = True,
-    ) -> str | None:
-        """
-        Override to handle arXiv's XML responses.
-
-        arXiv returns Atom XML (not JSON), so we bypass JSON parsing
-        and return the raw XML string instead.
-        """
-        url = f"{self.base_url}/{endpoint.lstrip('/')}"
-
-        cache_key = ""
-        if use_cache and self._cache.config.enabled:
-            cache_key = f"{url}:{str(params)}"
-            cached = self._cache.get(cache_key)
-            if cached is not None:
-                logger.debug("Cache hit for %s", url)
-                return str(cached)
-
-        request_headers = dict(self.session.headers)
-        if headers:
-            request_headers.update(headers)
-
-        import time as _time
-
-        max_retries = 3
-        for attempt in range(max_retries):
-            try:
-                logger.debug(
-                    "GET %s params=%s attempt=%d/%d", url, params, attempt + 1, max_retries
-                )
-                response = self.session.get(
-                    url, params=params, headers=request_headers, timeout=self.timeout
-                )
-
-                if response.status_code == 404:
-                    return None
-                if response.status_code == 429:
-                    retry_after = response.headers.get("Retry-After")
-                    wait = (
-                        float(retry_after)
-                        if retry_after
-                        else (2**attempt) * max(1.0, self.rate_limit_delay)
-                    )
-                    logger.warning("Rate limited — waiting %.1fs", wait)
-                    _time.sleep(min(wait, 60))
-                    continue
-
-                response.raise_for_status()
-
-                # Return raw text (XML)
-                data = response.text
-
-                if use_cache and self._cache.config.enabled:
-                    self._cache.set(cache_key, data)
-                return data
-
-            except Exception as e:
-                logger.error("Request failed: %s", e)
-                _time.sleep(self.rate_limit_delay)
-
-        logger.error("Request failed after %d retries to %s", max_retries, url)
-        return None

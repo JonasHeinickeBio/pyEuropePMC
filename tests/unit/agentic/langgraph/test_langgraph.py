@@ -3,13 +3,38 @@
 NOTE: each graph invocation runs the full multi-agent claim pipeline and
 takes ~10-40s, so the whole module is marked ``slow`` (excluded from
 default unit runs via ``-m 'not slow'``).
+
+This module mocks the verifier's evidence search to avoid real Europe PMC
+API calls (which are slow and flaky in tests). The actual verifier logic
+is tested in separate unit tests.
 """
 
 import time
+from unittest.mock import patch
 
 import pytest
 
 pytestmark = pytest.mark.slow
+
+
+@pytest.fixture(autouse=True)
+def mock_verifier_network_calls():
+    """Patch verifier network calls to avoid real Europe PMC API requests."""
+    # Patch both _search_evidence (SearchClient) and _enrich_papers (_get_article_details)
+    with patch("pyeuropepmc.claims.verifier.ClaimVerifier._search_evidence") as mock_search, \
+         patch("pyeuropepmc.claims.verifier.ClaimVerifier._enrich_papers") as mock_enrich, \
+         patch("pyeuropepmc.claims.verifier.ClaimVerifier._get_article_details") as mock_details:
+
+        # Return empty evidence list - tests only care about graph state flow
+        mock_search.return_value = []
+
+        # _enrich_papers receives empty list from _search_evidence, but return empty too for safety
+        mock_enrich.return_value = []
+
+        # _get_article_details never called since no papers, but set default
+        mock_details.return_value = None
+
+        yield
 
 from pyeuropepmc.agentic.langgraph import (
     LANGGRAPH_AVAILABLE,

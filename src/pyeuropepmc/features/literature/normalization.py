@@ -56,6 +56,11 @@ _SURNAME_PREFIXES: set[str] = {
 _DOI_PATTERN = re.compile(r"^10\.\d{4,9}/[-._;()/:A-Z0-9]+$", re.IGNORECASE)
 
 # ---------------------------------------------------------------------------
+# PMID pattern for validation  (PubMed IDs are 1-8 digit integers)
+# ---------------------------------------------------------------------------
+_PMID_PATTERN = re.compile(r"^\d{1,8}$")
+
+# ---------------------------------------------------------------------------
 # Abstract section header patterns (common in structured abstracts)
 # ---------------------------------------------------------------------------
 _ABSTRACT_HEADER_PATTERN = re.compile(
@@ -78,6 +83,7 @@ _FUNDING_PATTERN = re.compile(
 
 __all__ = [
     "normalize_doi",
+    "normalize_pmid",
     "normalize_author_name",
     "normalize_journal_title",
     "normalize_paper_title",
@@ -86,6 +92,7 @@ __all__ = [
     "normalize_mesh_terms",
     "normalize_affiliation",
     "is_valid_doi",
+    "is_valid_pmid",
     "normalize_to_nfkc",
 ]
 
@@ -190,6 +197,74 @@ def normalize_doi(doi: str | None) -> str | None:
         return None
 
     return doi
+
+
+# ===========================================================================
+# PMID helpers
+# ===========================================================================
+
+
+def is_valid_pmid(pmid: str | None) -> bool:
+    """Check whether a string is a syntactically valid PubMed ID.
+
+    A PMID is a 1-8 digit integer.
+
+    Parameters
+    ----------
+    pmid : str or None
+        Candidate PMID.
+
+    Returns
+    -------
+    bool
+        ``True`` if the PMID is valid.
+    """
+    if not pmid:
+        return False
+    return bool(_PMID_PATTERN.match(str(pmid).strip()))
+
+
+def normalize_pmid(pmid: str | int | None) -> str | None:
+    """Normalize a PubMed ID to a bare numeric string.
+
+    Strips common prefixes / URLs (``PMID:``, ``pmid:``,
+    ``https://pubmed.ncbi.nlm.nih.gov/``) and validates that the result is a
+    1-8 digit integer.
+
+    Parameters
+    ----------
+    pmid : str, int or None
+        The PMID to normalize.
+
+    Returns
+    -------
+    str or None
+        Normalized PMID, or None if input was None/empty or invalid.
+
+    Examples
+    --------
+    >>> normalize_pmid("PMID: 12345678")
+    '12345678'
+    >>> normalize_pmid("https://pubmed.ncbi.nlm.nih.gov/12345678/")
+    '12345678'
+    >>> normalize_pmid(None)
+
+    >>> normalize_pmid("not-a-pmid")
+    """
+    if pmid is None:
+        return None
+
+    text = str(pmid).strip()
+
+    # Remove common prefixes / URL wrappers  (case-insensitive)
+    text = re.sub(r"^pmid\s*:?\s*", "", text, flags=re.IGNORECASE)
+    text = re.sub(r"^https?://pubmed\.ncbi\.nlm\.nih\.gov/", "", text, flags=re.IGNORECASE)
+    text = text.strip("/").strip()
+
+    if not is_valid_pmid(text):
+        return None
+
+    return text
 
 
 # ===========================================================================
