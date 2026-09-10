@@ -110,7 +110,7 @@ class LiteratureResult(BaseModel):
     source: Annotated[
         str,
         Field(
-            pattern="^(pubmed|semanticscholar|openalex|crossref|unpaywall|arxiv|clinicaltrials|zenodo|doaj|dblp|hal|core)$"
+            pattern="^(europepmc|pubmed|semanticscholar|openalex|crossref|unpaywall|arxiv|clinicaltrials|zenodo|doaj|dblp|hal|core|icite)$"
         ),
     ] = Field(..., description="Source system identifier")
     source_id: str = Field(..., description="Original source identifier")
@@ -164,6 +164,7 @@ class LiteratureResult(BaseModel):
     def validate_source(cls, v: str) -> str:
         """Validate source is from allowed list."""
         valid_sources = {
+            "europepmc",
             "pubmed",
             "semanticscholar",
             "openalex",
@@ -176,6 +177,7 @@ class LiteratureResult(BaseModel):
             "dblp",
             "hal",
             "core",
+            "icite",
         }
         if v not in valid_sources:
             raise ValueError(f"Invalid source: {v}. Must be one of: {valid_sources}")

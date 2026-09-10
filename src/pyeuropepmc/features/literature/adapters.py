@@ -660,7 +660,11 @@ class EuropePMCLiteratureAdapter:
 
         results: list[LiteratureResult] = []
         for rec in records[:limit]:
-            normalized = self._normalize_to_literature_format(rec)
+            try:
+                normalized = self._normalize_to_literature_format(rec)
+            except Exception:
+                logger.debug("Skipping unparseable Europe PMC record: %r", rec, exc_info=True)
+                continue
             if normalized:
                 results.append(normalized)
         return results
