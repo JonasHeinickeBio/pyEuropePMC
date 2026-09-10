@@ -53,7 +53,7 @@ description = "Disable App Nap on macOS >= 10.9"
 optional = true
 python-versions = ">=3.6"
 groups = ["main"]
-markers = "platform_system == \"Darwin\" and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and platform_system == \"Darwin\""
 files = [
     {file = "appnope-0.1.4-py2.py3-none-any.whl", hash = "sha256:502575ee11cd7a28c0205f379b525beefebab9d161b7c964670864014ed7213c"},
     {file = "appnope-0.1.4.tar.gz", hash = "sha256:1de3860566df9caf38f01f86f65e0e13e379af54f9e4bee1e66b48f2efffd1ee"},
@@ -683,7 +683,7 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
-markers = {main = "platform_system == \"Windows\" or sys_platform == \"win32\" and (extra == \"standard\" or extra == \"all\")", dev = "platform_system == \"Windows\" or sys_platform == \"win32\""}
+markers = {main = "(extra == \"standard\" or extra == \"all\") and sys_platform == \"win32\" or platform_system == \"Windows\"", dev = "platform_system == \"Windows\" or sys_platform == \"win32\""}
 
 [[package]]
 name = "comm"
@@ -786,7 +786,7 @@ description = "Python library for calculating contours of 2D quadrilateral grids
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"visualization\" or extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"visualization\" or extra == \"standard\" or extra == \"all\") and python_version >= \"3.11\""
 files = [
     {file = "contourpy-1.3.3-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:709a48ef9a690e1343202916450bc48b9e51c049b089c7f79a267b46cffcdaa1"},
     {file = "contourpy-1.3.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:23416f38bfd74d5d28ab8429cc4d63fa67d5068bd711a85edb1c3fb0c3e2f381"},
@@ -1702,7 +1702,7 @@ description = "IPython: Productive Interactive Computing"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and python_version >= \"3.11\""
 files = [
     {file = "ipython-9.16.1-py3-none-any.whl", hash = "sha256:4acae635506f6d352d94c4899a19d5f85f8bc4d230932342dca556fdab1c69b4"},
     {file = "ipython-9.16.1.tar.gz", hash = "sha256:5a3d1f9a47ff216d6cf9cf863124f6a2c1a198d1354c546a4d24a370a283b64c"},
@@ -1736,7 +1736,7 @@ description = "Defines a variety of Pygments lexers for highlighting IPython cod
 optional = true
 python-versions = ">=3.8"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and python_version >= \"3.11\""
 files = [
     {file = "ipython_pygments_lexers-1.1.1-py3-none-any.whl", hash = "sha256:a9462224a505ade19a605f71f8fa63c2048833ce50abc86768a0d81d876dc81c"},
     {file = "ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81"},
@@ -3050,7 +3050,7 @@ description = "Python plotting package"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"visualization\" or extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"visualization\" or extra == \"standard\" or extra == \"all\") and python_version >= \"3.11\""
 files = [
     {file = "matplotlib-3.11.1-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:b7cf158e7add54a8d51ac9b5a84abd6d4e13ed4951b4f25f1c5139f41c2addb2"},
     {file = "matplotlib-3.11.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:d2ace7273b9a5061a3b420918a16fae1f2dc5dfee1abcc13aba71b5d94b1820c"},
@@ -3611,7 +3611,7 @@ description = "Fundamental package for array computing in Python"
 optional = true
 python-versions = ">=3.12"
 groups = ["main"]
-markers = "python_version >= \"3.12\" and (extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\")"
+markers = "(extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\") and python_version >= \"3.12\""
 files = [
     {file = "numpy-2.5.2-cp312-cp312-macosx_10_13_x86_64.whl", hash = "sha256:14e373cfc6387177e8409dac3c7159be8eb05cd77096cd7c950268b86f62831c"},
     {file = "numpy-2.5.2-cp312-cp312-macosx_11_0_arm64.whl", hash = "sha256:4bbd96c833ecc8cc069ce518078fc8c60cb9cbfb0fea5b7a803ad65035596d03"},
@@ -3683,32 +3683,30 @@ files = [
 
 [[package]]
 name = "openai"
-version = "2.54.0"
+version = "1.109.1"
 description = "The official Python library for the openai API"
 optional = true
-python-versions = ">=3.10"
+python-versions = ">=3.8"
 groups = ["main"]
 markers = "extra == \"agentic\" or extra == \"all\""
 files = [
-    {file = "openai-2.54.0-py3-none-any.whl", hash = "sha256:89089789197ccdb87f173a03145ed1598d00795220c93e96cf712b1cbf5e5f2b"},
-    {file = "openai-2.54.0.tar.gz", hash = "sha256:e3e6f8bc1ba30ddf381ace1a14340eed381cb984a1a59bd0f34b5be3b5d49cfa"},
+    {file = "openai-1.109.1-py3-none-any.whl", hash = "sha256:6bcaf57086cf59159b8e27447e4e7dd019db5d29a438072fbd49c290c7e65315"},
+    {file = "openai-1.109.1.tar.gz", hash = "sha256:d173ed8dbca665892a6db099b4a2dfac624f94d20a93f46eb0b56aae940ed869"},
 ]
 
 [package.dependencies]
 anyio = ">=3.5.0,<5"
 distro = ">=1.7.0,<2"
 httpx = ">=0.23.0,<1"
-jiter = ">=0.10.0,<1"
+jiter = ">=0.4.0,<1"
 pydantic = ">=1.9.0,<3"
 sniffio = "*"
 tqdm = ">4"
-typing-extensions = ">=4.14,<5"
+typing-extensions = ">=4.11,<5"
 
 [package.extras]
-aiohttp = ["aiohttp (>=3.14.1)", "httpx-aiohttp (>=0.1.9)"]
-bedrock = ["botocore (>=1.40.0,<2)"]
+aiohttp = ["aiohttp", "httpx-aiohttp (>=0.1.8)"]
 datalib = ["numpy (>=1)", "pandas (>=1.2.3)", "pandas-stubs (>=1.1.0.11)"]
-httpx2 = ["anyio (>=4.10.0,<5)", "httpx (>=0.25.1,<1)", "httpx2 (>=2.7.0,<3)"]
 realtime = ["websockets (>=13,<16)"]
 voice-helpers = ["numpy (>=2.0.2)", "sounddevice (>=0.5.1)"]
 
@@ -3903,7 +3901,7 @@ description = "Powerful data structures for data analysis, time series, and stat
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "python_version == \"3.10\" and (extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\")"
+markers = "extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\""
 files = [
     {file = "pandas-2.3.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:376c6446ae31770764215a6c937f72d917f214b43560603cd60da6408f183b6c"},
     {file = "pandas-2.3.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:e19d192383eab2f4ceb30b412b22ea30690c9e618f78870357ae1d682912015a"},
@@ -3963,7 +3961,11 @@ files = [
 ]
 
 [package.dependencies]
-numpy = {version = ">=1.22.4", markers = "python_version < \"3.11\""}
+numpy = [
+    {version = ">=1.22.4", markers = "python_version < \"3.11\""},
+    {version = ">=1.23.2", markers = "python_version == \"3.11\""},
+    {version = ">=1.26.0", markers = "python_version >= \"3.12\""},
+]
 python-dateutil = ">=2.8.2"
 pytz = ">=2020.1"
 tzdata = ">=2022.7"
@@ -4000,7 +4002,7 @@ description = "Powerful data structures for data analysis, time series, and stat
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\")"
+markers = "python_version >= \"3.11\" and (extra == \"rdf\" or extra == \"all\")"
 files = [
     {file = "pandas-3.0.5-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:2946e77e4a53cd248cbde631a12f0e51c8324ce354c3eba4d20147c1ad6f4282"},
     {file = "pandas-3.0.5-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:71ecc8fb7ed1a7aa4392316b5309a6347e8e7f832f38fd897846b3a1457a9298"},
@@ -4134,7 +4136,7 @@ description = "Pexpect allows easy control of interactive console applications."
 optional = true
 python-versions = "*"
 groups = ["main"]
-markers = "sys_platform != \"win32\" and sys_platform != \"emscripten\" and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and sys_platform != \"win32\" and sys_platform != \"emscripten\""
 files = [
     {file = "pexpect-4.9.0-py2.py3-none-any.whl", hash = "sha256:7236d1e080e4936be2dc3e326cec0af72acf9212a7e1d060210e70a47e253523"},
     {file = "pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f"},
@@ -4452,7 +4454,7 @@ description = "Run a subprocess in a pseudo terminal"
 optional = true
 python-versions = "*"
 groups = ["main"]
-markers = "(os_name != \"nt\" or sys_platform != \"win32\" and sys_platform != \"emscripten\") and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and (sys_platform != \"win32\" and sys_platform != \"emscripten\" or os_name != \"nt\")"
 files = [
     {file = "ptyprocess-0.7.0-py2.py3-none-any.whl", hash = "sha256:4b41f3967fce3af57cc7e94b888626c18bf37a083e3651ca8feeb66d492fef35"},
     {file = "ptyprocess-0.7.0.tar.gz", hash = "sha256:5c5d0a3b48ceee0b48485e0c26037c0acd7d29765ca3fbb5cb3831d347423220"},
@@ -4827,6 +4829,36 @@ pytest = ">=6.2.5"
 testing = ["fields", "hunter", "process-tests", "pytest-xdist", "virtualenv"]
 
 [[package]]
+name = "pytest-socket"
+version = "0.8.1"
+description = "Pytest Plugin to disable socket calls during tests"
+optional = false
+python-versions = ">=3.10"
+groups = ["dev"]
+files = [
+    {file = "pytest_socket-0.8.1-py3-none-any.whl", hash = "sha256:f9846bed1dcd96eed459e5e14795bbaf96715cf4e827891fe70773817ecb8ed4"},
+    {file = "pytest_socket-0.8.1.tar.gz", hash = "sha256:2f57787914ad2e1308d09ce141b95c3e55741fbb4fb7b7556593a6b063e0c9c7"},
+]
+
+[package.dependencies]
+pytest = ">=7.0.0"
+
+[[package]]
+name = "pytest-timeout"
+version = "2.4.0"
+description = "pytest plugin to abort hanging tests"
+optional = false
+python-versions = ">=3.7"
+groups = ["dev"]
+files = [
+    {file = "pytest_timeout-2.4.0-py3-none-any.whl", hash = "sha256:c42667e5cdadb151aeb5b26d114aff6bdf5a907f176a007a30b940d3d865b5c2"},
+    {file = "pytest_timeout-2.4.0.tar.gz", hash = "sha256:7e68e90b01f9eff71332b25001f85c75495fc4e3a836701876183c4bcfd0540a"},
+]
+
+[package.dependencies]
+pytest = ">=7.0.0"
+
+[[package]]
 name = "pytest-xdist"
 version = "3.8.0"
 description = "pytest xdist plugin for distributed testing, most importantly across multiple CPUs"
@@ -4971,7 +5003,7 @@ description = "World timezone definitions, modern and historical"
 optional = true
 python-versions = "*"
 groups = ["main"]
-markers = "python_version == \"3.10\" and (extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\")"
+markers = "extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\""
 files = [
     {file = "pytz-2026.3.post1-py2.py3-none-any.whl", hash = "sha256:dd95840dd199baea12d9cc096a1d452caa6596a1c1e4b5f3dbd1541855d5e815"},
     {file = "pytz-2026.3.post1.tar.gz", hash = "sha256:2211d3fcf9a797d3405cac96ac7f61d80e6a644f72a3309607282fe8a2010c5d"},
@@ -4984,7 +5016,7 @@ description = "Pseudo terminal support for Windows from Python."
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "os_name == \"nt\" and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and os_name == \"nt\""
 files = [
     {file = "pywinpty-3.0.5-cp310-cp310-win_amd64.whl", hash = "sha256:b467dcad72365bc2205ed8b6e694e817d71de269d46e56cfe267dfa9d3d30e1b"},
     {file = "pywinpty-3.0.5-cp310-cp310-win_arm64.whl", hash = "sha256:7dc4046ea8e4d7f0a16dae8dfcaeeda6df7ca3a9330444d2ba5bb96138fe0a91"},
@@ -5815,7 +5847,7 @@ description = "Python bindings to Rust's persistent data structures (rpds)"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"standard\" or extra == \"all\")"
+markers = "(extra == \"standard\" or extra == \"all\") and python_version >= \"3.11\""
 files = [
     {file = "rpds_py-2026.6.3-cp311-cp311-macosx_10_12_x86_64.whl", hash = "sha256:7b689145a1485c335569bd056464f3243a29af7ed3871c7be31ad624ba239bc7"},
     {file = "rpds_py-2026.6.3-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:db08f45aecde626498fb3df07bcf6d2ec040af42e859a4f5040d79c200342911"},
@@ -6454,7 +6486,7 @@ files = [
     {file = "tomli-2.4.1-py3-none-any.whl", hash = "sha256:0d85819802132122da43cb86656f8d1f8c6587d54ae7dcaf30e90533028b49fe"},
     {file = "tomli-2.4.1.tar.gz", hash = "sha256:7c7e1a961a0b2f2472c1ac5b69affa0ae1132c39adcb67aba98568702b9cc23f"},
 ]
-markers = {main = "python_version == \"3.10\" and (extra == \"standard\" or extra == \"all\")", dev = "python_full_version <= \"3.11.0a6\""}
+markers = {main = "(extra == \"standard\" or extra == \"all\") and python_version == \"3.10\"", dev = "python_full_version <= \"3.11.0a6\""}
 
 [[package]]
 name = "tornado"
@@ -6595,7 +6627,7 @@ description = "Provider of IANA time zone data"
 optional = true
 python-versions = ">=2"
 groups = ["main"]
-markers = "(platform_system == \"Windows\" or sys_platform == \"win32\" or sys_platform == \"emscripten\" or python_version == \"3.10\" or extra == \"standard\" or extra == \"all\") and (python_version == \"3.10\" or sys_platform == \"win32\" or sys_platform == \"emscripten\" or sys_platform != \"darwin\" and sys_platform != \"linux\" or extra == \"standard\" or extra == \"all\") and (platform_system == \"Windows\" or sys_platform == \"win32\" or sys_platform == \"emscripten\" or extra == \"standard\" or extra == \"all\" or extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"rdf\") and (sys_platform == \"win32\" or sys_platform == \"emscripten\" or python_version == \"3.10\" or extra == \"standard\" or extra == \"all\" or extra == \"zotero\") and (platform_system == \"Windows\" or sys_platform == \"win32\" or extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\") and (extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\" or extra == \"zotero\") and (sys_platform == \"win32\" or sys_platform == \"emscripten\" or extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\" or sys_platform != \"darwin\" and sys_platform != \"linux\")"
+markers = "(extra == \"zotero\" or extra == \"all\" or extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"rdf\") and (sys_platform != \"darwin\" and sys_platform != \"linux\" or sys_platform == \"win32\" or sys_platform == \"emscripten\" or extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\") and (sys_platform != \"darwin\" and sys_platform != \"linux\" or extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\" or extra == \"zotero\") and (extra == \"analytics\" or extra == \"visualization\" or extra == \"export\" or extra == \"standard\" or extra == \"all\" or extra == \"rdf\" or platform_system == \"Windows\" or sys_platform == \"win32\")"
 files = [
     {file = "tzdata-2026.3-py2.py3-none-any.whl", hash = "sha256:dc096730c87af6cab1b171c9d532be840741ff5d459015e7f6947bd7d7e54931"},
     {file = "tzdata-2026.3.tar.gz", hash = "sha256:4a1518b8993086a7982523e071643f3c0e5f213e75b21318e78bcabfff9d1415"},
@@ -6608,7 +6640,7 @@ description = "tzinfo object for the local timezone"
 optional = true
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "(extra == \"zotero\" or extra == \"all\") and (sys_platform == \"win32\" or sys_platform == \"emscripten\" or sys_platform != \"darwin\" and sys_platform != \"linux\")"
+markers = "(extra == \"zotero\" or extra == \"all\") and (sys_platform != \"darwin\" and sys_platform != \"linux\" or sys_platform == \"win32\" or sys_platform == \"emscripten\")"
 files = [
     {file = "tzlocal-5.4.4-py3-none-any.whl", hash = "sha256:aae09f0126a8a86fa736be266eb4a471380d26a0de3bc14844e7821fee3e2a15"},
     {file = "tzlocal-5.4.4.tar.gz", hash = "sha256:8dbb8660838688a7b6ba4fed31d18dedf842afb4d47ca050d6d891c2c15f3be4"},
@@ -6982,7 +7014,7 @@ description = "An implementation of the WebSocket Protocol (RFC 6455 & 7692)"
 optional = true
 python-versions = ">=3.11"
 groups = ["main"]
-markers = "python_version >= \"3.11\" and (extra == \"agentic\" or extra == \"all\")"
+markers = "(extra == \"agentic\" or extra == \"all\") and python_version >= \"3.11\""
 files = [
     {file = "websockets-17.0.1-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:c38515cb54902f7e97d0239e81ef46c4444f9475f4807fb9bbdb789b4089abcf"},
     {file = "websockets-17.0.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:70d438268e49f1a4bd096b6b6f7010f3ab48b5db2574dbf7d8c864c46ce7a06a"},
@@ -7597,4 +7629,4 @@ zotero = ["pyzotero"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "ef157ada0e1c350694e8125cb6e5ba4a160c902a229ec7a131e4a88a97fa77c2"
+content-hash = "69988132024b0b0acd5312576ab4f95f3b8f3ff87f41afc4038cddfec274fb0e"
