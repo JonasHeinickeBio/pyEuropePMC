@@ -57,13 +57,17 @@ The repository is organized as follows:
 ### Installation
 
 ```bash
-pip install pyeuropepmc
+pip install pyeuropepmc                 # light core
+pip install "pyeuropepmc[all]"          # everything (1.x-equivalent)
+pip install "pyeuropepmc[analytics,agentic]"   # pick what you need
 ```
+
+> **Upgrading from 1.x?** See [docs/migration/v1-to-v2.md](docs/migration/v1-to-v2.md).
 
 ### Basic Usage
 
 ```python
-from pyeuropepmc.search import SearchClient
+from pyeuropepmc import SearchClient
 
 # Search for papers
 with SearchClient() as client:
@@ -116,7 +120,7 @@ for paper in papers:
 ### Full-Text Content Retrieval
 
 ```python
-from pyeuropepmc.fulltext import FullTextClient
+from pyeuropepmc import FullTextClient
 
 # Initialize full-text client
 fulltext_client = FullTextClient()
@@ -128,7 +132,7 @@ pdf_path = fulltext_client.download_pdf_by_pmcid("PMC1234567", output_dir="./dow
 xml_content = fulltext_client.download_xml_by_pmcid("PMC1234567")
 
 # Bulk FTP downloads
-from pyeuropepmc.ftp_downloader import FTPDownloader
+from pyeuropepmc import FTPDownloader
 
 ftp_downloader = FTPDownloader()
 results = ftp_downloader.bulk_download_and_extract(

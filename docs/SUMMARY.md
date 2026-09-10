@@ -9,6 +9,7 @@
 * [Installation](getting-started/installation.md)
 * [Quick Start](getting-started/quickstart.md)
 * [FAQ](getting-started/faq.md)
+* [Migrating 1.x → 2.0](migration/v1-to-v2.md)
 
 ## Features
 
