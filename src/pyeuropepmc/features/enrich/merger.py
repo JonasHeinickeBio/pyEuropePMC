@@ -80,13 +80,24 @@ __all__ = [
 # ---------------------------------------------------------------------------
 # Source reliability ranking (higher = more trusted)
 # ---------------------------------------------------------------------------
+# Europe PMC is the project's home aggregator (MED + PMC + preprints + agricola
+# + patents) and carries the richest metadata and full-text links, so it is the
+# canonical spine: other sources contribute fields it is missing.
 SOURCE_PRIORITY: dict[str, int] = {
+    "europepmc": 110,
     "pubmed": 100,
     "crossref": 90,
     "openalex": 80,
     "semanticscholar": 70,
+    "icite": 65,
     "unpaywall": 60,
     "arxiv": 50,
+    "core": 45,
+    "doaj": 40,
+    "hal": 40,
+    "zenodo": 35,
+    "dblp": 30,
+    "clinicaltrials": 30,
     "unknown": 10,
 }
 
@@ -110,7 +121,10 @@ FIELD_PREFERENCES: dict[str, dict[str, Any]] = {
     "pmid": {"prefer": "non-null"},
     "pmcid": {"prefer": "non-null"},
     # Prefer publication year from PubMed (more reliable)
-    "publication_year": {"prefer": "source_preference", "preferred_sources": ["pubmed"]},
+    "publication_year": {
+        "prefer": "source_preference",
+        "preferred_sources": ["europepmc", "pubmed"],
+    },
 }
 
 _YEAR_WINDOW = 2  # ± years for fuzzy title blocking
