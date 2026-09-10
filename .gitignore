@@ -199,3 +199,6 @@ PMC123.html
 
 # uv (Poetry is the supported workflow)
 uv.lock
+
+# showcase test reports
+tests/integration/showcase_reports/
