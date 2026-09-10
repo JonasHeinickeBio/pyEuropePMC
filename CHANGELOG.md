@@ -97,15 +97,15 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🔧 Maintenance
 
-- Ruff/mypy cleanup across the search and enrichment modules.
+- `ruff check src/` and `mypy src/` (strict) are clean; `pytest` green
+  (3602 passed). The `release.yml` / `cdci.yml` gates pass locally.
 - `pyproject.toml` moved to static PEP 621 metadata; `requirements.txt` /
   `poetry.lock` regenerated from it.
-
-### ⚠️ Known issues
-
-- `poetry.lock` does not yet pin `pytest-socket` / `pytest-timeout` (the two
-  test-guard dev deps) — run `poetry lock`. Missing them only disables the
-  test guard rails; the suite still runs, and CI installs them explicitly.
+- Optional-dependency group maps consolidated into a single source of truth;
+  `User-Agent` now reports the real package version; `py.typed` shipped.
+- `sentence-transformers` is intentionally **not** an extra — it pulls in
+  `torch` + the `nvidia-cuda-*` wheels, which made `poetry lock` effectively
+  non-terminating. Semantic text matching asks you to install it directly.
 
 ## [1.18.0] - 2026-07-03
 
