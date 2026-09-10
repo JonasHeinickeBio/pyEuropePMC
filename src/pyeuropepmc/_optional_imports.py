@@ -170,7 +170,6 @@ DEPENDENCY_GROUPS = {
     "semanticscholar": ["semanticscholar"],
     # Enrichment bundle: what the enrichment clients can optionally use.
     "enrichment": ["semanticscholar", "cryptography"],
-    "ml": ["sentence_transformers"],  # sentence-transformers imports as sentence_transformers
     "standard": [
         "pandas",
         "numpy",
@@ -209,8 +208,6 @@ FEATURE_TO_GROUP = {
     "ui": "ui",
     "web_ui": "ui",
     "signing": "signing",
-    "semantic_matching": "ml",
-    "embeddings": "ml",
     "cli": "standard",
     "jupyter": "standard",
 }

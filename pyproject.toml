@@ -45,9 +45,9 @@ dependencies = [
 # --- Feature groups -------------------------------------------------------
 # NOTE: keep the meta bundles (`standard`, `all`) in sync when editing these.
 # Poetry does not support self-referential extras, so they are expanded by hand.
-analytics = ["pandas>=1.4", "numpy>=1.21"]
-visualization = ["matplotlib>=3.7.0,<4.0", "seaborn>=0.12.0,<1.0", "pandas>=1.4", "numpy>=1.21"]
-export = ["xlsxwriter>=3.2.9,<4.0", "tabulate>=0.9.0,<1.0", "pandas>=1.4"]
+analytics = ["pandas>=1.4,<3", "numpy>=1.21,<3"]
+visualization = ["matplotlib>=3.7.0,<4.0", "seaborn>=0.12.0,<1.0", "pandas>=1.4,<3", "numpy>=1.21,<3"]
+export = ["xlsxwriter>=3.2.9,<4.0", "tabulate>=0.9.0,<1.0", "pandas>=1.4,<3"]
 rdf = ["rdflib-jsonld>=0.5", "rdfizer>=4.7.5,<5"]
 ui = ["flask>=3.1.1,<4.0", "tornado>=6.5.1,<7.0"]
 signing = ["cryptography>=46.0.3,<47.0"]
@@ -56,21 +56,22 @@ zotero = ["pyzotero>=1.5.0"]
 agentic = [
   "langchain>=0.3.0,<1.0",
   "langchain-openai>=0.2.0,<1.0",
-  "openai>=1.40.0",
+  "openai>=1.40,<2",
   "langgraph>=0.2.0,<1.0",
 ]
 # --- External literature sources (one extra per library-backed source) ----
 semanticscholar = ["semanticscholar>=0.12.0,<1.0"]
-# Semantic text matching (utils.text_match). Kept out of `all` because it
-# pulls in torch; install explicitly or bring your own embedding backend.
-ml = ["sentence-transformers>=2.2,<4"]
+# NOTE: semantic text matching (utils.text_match) needs `sentence-transformers`,
+# which is deliberately NOT an extra here — it drags in torch + the nvidia-cuda-*
+# wheels, which make `poetry lock` effectively non-terminating. Install it
+# directly (`pip install "sentence-transformers"`) or pass your own backend.
 # Enrichment bundle: everything the enrichment clients can optionally use.
 enrichment = ["semanticscholar>=0.12.0,<1.0", "cryptography>=46.0.3,<47.0"]
 # --- Meta bundles (expanded manually; mirror the groups above) ------------
 standard = [
   # analytics + visualization + export
-  "pandas>=1.4",
-  "numpy>=1.21",
+  "pandas>=1.4,<3",
+  "numpy>=1.21,<3",
   "matplotlib>=3.7.0,<4.0",
   "seaborn>=0.12.0,<1.0",
   "xlsxwriter>=3.2.9,<4.0",
@@ -86,8 +87,8 @@ standard = [
 ]
 all = [
   # standard
-  "pandas>=1.4",
-  "numpy>=1.21",
+  "pandas>=1.4,<3",
+  "numpy>=1.21,<3",
   "matplotlib>=3.7.0,<4.0",
   "seaborn>=0.12.0,<1.0",
   "xlsxwriter>=3.2.9,<4.0",
@@ -113,7 +114,7 @@ all = [
   # agentic
   "langchain>=0.3.0,<1.0",
   "langchain-openai>=0.2.0,<1.0",
-  "openai>=1.40.0",
+  "openai>=1.40,<2",
   "langgraph>=0.2.0,<1.0",
   # external sources
   "semanticscholar>=0.12.0,<1.0",

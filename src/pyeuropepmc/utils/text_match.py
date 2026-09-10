@@ -131,7 +131,20 @@ class SemanticModel:
         backend = self._backend
         if backend is None:
             # Import here to avoid requiring sentence-transformers at module import time.
-            from sentence_transformers import SentenceTransformer
+            # It is deliberately NOT a pyeuropepmc extra: it pulls in torch/CUDA,
+            # which makes dependency resolution intractable. Bring your own:
+            #   pip install "sentence-transformers"
+            # or pass a compatible ``backend=`` implementing the EmbeddingModel
+            # protocol.
+            try:
+                from sentence_transformers import SentenceTransformer
+            except ImportError as exc:  # pragma: no cover - trivial guard
+                raise ImportError(
+                    "Semantic text matching needs sentence-transformers, which is not "
+                    "a pyeuropepmc extra (it pulls in torch/CUDA). Install it directly "
+                    'with `pip install "sentence-transformers"`, or pass a `backend=` '
+                    "that implements the EmbeddingModel protocol."
+                ) from exc
 
             backend = SentenceTransformer
 
