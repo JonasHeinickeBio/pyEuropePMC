@@ -179,7 +179,7 @@ def compare_sources(
     print("=" * 70)
 
     searcher = UnifiedSearch(sources=sources)
-    per_source = searcher.search_all(query, limit=limit)
+    per_source, errors = searcher.search_all(query, limit=limit)
 
     total = 0
     for source, results in per_source.items():
@@ -190,6 +190,9 @@ def compare_sources(
             print(f"  {i}. {(result.title or '')[:60]}...")
             if result.doi:
                 print(f"     DOI: {result.doi}")
+
+    for source, err in errors.items():
+        print(f"\n{source.upper()}: FAILED — {err}")
 
     print(f"\nTotal across all sources: {total}")
     print("=" * 70)

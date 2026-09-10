@@ -615,9 +615,10 @@ class TestUnifiedSearch:
         mock_get_clients.return_value = {"pubmed": pubmed, "arxiv": arxiv}
 
         us = UnifiedSearch(sources=["pubmed", "arxiv"])
-        per_source = us.search_all("test")
+        per_source, errors = us.search_all("test")
         assert set(per_source.keys()) == {"pubmed", "arxiv"}
         assert len(per_source["pubmed"]) == 1
+        assert errors == {}
 
     def test_close_closes_clients(self):
         client = MagicMock()
@@ -794,7 +795,7 @@ class TestUnifiedSearch:
         mock_get_clients.return_value = {"pubmed": mock_client}
 
         us = UnifiedSearch()
-        per_source = us.search_all("test")
+        per_source, _errors = us.search_all("test")
 
         assert per_source["pubmed"] == []
 

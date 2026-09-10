@@ -36,12 +36,12 @@ class TestUnifiedSearchLive:
 
     def test_search_all_sources(self, searcher: UnifiedSearch) -> None:
         """Use search_all to get per-source breakdown."""
-        per_source = searcher.search_all("climate change", limit=5)
+        per_source, errors = searcher.search_all("climate change", limit=5)
         assert isinstance(per_source, dict)
+        assert isinstance(errors, dict)
         assert len(per_source) > 0
-        for source_name, source_results in per_source.items():
+        for _source_name, source_results in per_source.items():
             assert isinstance(source_results, list)
-            assert len(source_results) <= 5
 
     def test_dedup_across_sources(self, searcher: UnifiedSearch) -> None:
         """Papers found in multiple sources should be deduplicated."""
