@@ -2,6 +2,8 @@
 
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from pyeuropepmc.features.literature.adapters import (
     OpenAlexLiteratureAdapter,
     SemanticScholarLiteratureAdapter,
@@ -15,10 +17,11 @@ from pyeuropepmc.models.literature import LiteratureResult
 class TestSemanticScholarAdapter:
     def test_init_default(self):
         """Should create enrichment client by default."""
+        pytest.importorskip("semanticscholar")
         adapter = SemanticScholarLiteratureAdapter()
         assert adapter.enrichment_client is not None
 
-    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
+    @patch("pyeuropepmc.features.literature.adapters.SemanticScholarClient")
     def test_get_paper_returns_model(self, mock_client_cls):
         """get_paper should return a LiteratureResult, not a dict."""
         mock_client = MagicMock()
@@ -46,7 +49,7 @@ class TestSemanticScholarAdapter:
         assert result.source == "semanticscholar"
         assert result.publication_year == 2023
 
-    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
+    @patch("pyeuropepmc.features.literature.adapters.SemanticScholarClient")
     def test_get_paper_not_found(self, mock_client_cls):
         mock_client = MagicMock()
         mock_client.enrich.return_value = None
@@ -57,7 +60,7 @@ class TestSemanticScholarAdapter:
         assert result is None
 
     @patch("requests.Session.get")
-    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
+    @patch("pyeuropepmc.features.literature.adapters.SemanticScholarClient")
     def test_search_returns_models(self, mock_client_cls, mock_get):
         """search should return list of LiteratureResult, not dicts."""
         mock_get.return_value.json.return_value = {
@@ -88,7 +91,7 @@ class TestSemanticScholarAdapter:
         assert results[1].title == "Paper Two"
 
     @patch("requests.Session.get")
-    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
+    @patch("pyeuropepmc.features.literature.adapters.SemanticScholarClient")
     def test_search_empty(self, mock_client_cls, mock_get):
         mock_get.return_value.json.return_value = {"data": []}
         mock_get.return_value.raise_for_status.return_value = None
@@ -98,7 +101,7 @@ class TestSemanticScholarAdapter:
         assert results == []
 
     @patch("requests.Session.get")
-    @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient")
+    @patch("pyeuropepmc.features.literature.adapters.SemanticScholarClient")
     def test_search_http_error(self, mock_client_cls, mock_get):
         from requests.exceptions import HTTPError
 

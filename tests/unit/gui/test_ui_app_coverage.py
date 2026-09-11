@@ -13,6 +13,18 @@ from pyeuropepmc.ui.app import _bib_to_ris, _workflows, _workflows_lock, create_
 pytestmark = pytest.mark.gui
 
 
+def _check_flask() -> bool:
+    try:
+        import flask  # noqa: F401
+
+        return True
+    except ImportError:
+        return False
+
+
+FLASK_AVAILABLE = _check_flask()
+
+
 class TestBibToRis:
     def test_full_entry(self):
         bib = [
@@ -45,6 +57,7 @@ class TestBibToRis:
         assert _bib_to_ris([]) == "TY  - JOUR"
 
 
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask not installed")
 class TestBibliographyDownloadFormats:
     def _seed_workflow(self, wf_id: str, bib_format: str) -> None:
         with _workflows_lock:
@@ -88,6 +101,7 @@ class TestBibliographyDownloadFormats:
         assert resp.get_json()["filename"].endswith(".bib")
 
 
+@pytest.mark.skipif(not FLASK_AVAILABLE, reason="Flask not installed")
 class TestReviewPageErrorStatus:
     def test_review_page_returns_500_when_workflow_errored(self):
         app = create_app(testing=True)

@@ -47,6 +47,10 @@ try:
     RsaModule = rsa
 except ImportError:
     CRYPTOGRAPHY_AVAILABLE = False
+    serialization = None  # type: ignore[assignment]
+    rsa = None  # type: ignore[assignment]
+    SerializationModule = None  # type: ignore[assignment]
+    RsaModule = None  # type: ignore[assignment]
 
 logger = logging.getLogger(__name__)
 

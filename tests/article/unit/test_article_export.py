@@ -1,5 +1,7 @@
 import pytest
 
+pd = pytest.importorskip("pandas")
+
 from pyeuropepmc.features.literature.article import ArticleClient
 
 SAMPLE_RESULTS = [
@@ -24,6 +26,7 @@ def test_export_csv(client, tmp_path):
     assert file_path.read_text().startswith("id,title,author")
 
 def test_export_excel(client, tmp_path):
+    pytest.importorskip("xlsxwriter")
     excel_bytes = client.export_results(SAMPLE_RESULTS, format="excel")
     assert isinstance(excel_bytes, bytes)
     file_path = tmp_path / "results.xlsx"
@@ -39,6 +42,7 @@ def test_export_json(client, tmp_path):
     assert file_path.read_text().startswith("[")
 
 def test_export_markdown(client):
+    pytest.importorskip("tabulate")
     md = client.export_results(SAMPLE_RESULTS, format="markdown")
     assert "|   id " in md
     assert "First Article" in md

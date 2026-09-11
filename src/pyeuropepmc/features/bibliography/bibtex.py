@@ -80,6 +80,15 @@ class BibtexManager:
             self._write = self._write_v1
         else:
             logger.warning("bibtexparser not installed — BibTeX operations unavailable")
+            self._parse = self._raise_not_installed
+            self._write = self._raise_not_installed
+
+    @staticmethod
+    def _raise_not_installed(*_args: Any, **_kwargs: Any) -> Any:
+        raise ImportError(
+            "bibtexparser is required for BibTeX operations. "
+            "Install it with: pip install pyeuropepmc[bibliography]"
+        )
 
     # ------------------------------------------------------------------
     # Public API

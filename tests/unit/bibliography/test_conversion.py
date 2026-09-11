@@ -97,14 +97,17 @@ class TestCitationConverterDetectFormat:
 
 class TestCitationConverterConvert:
     def test_bibtex_to_ris(self, converter):
+        pytest.importorskip("bibtexparser")
         result = converter.convert("@article{k, title = {Hello}}", target_format="ris")
         assert "TI  - Hello" in result
 
     def test_bibtex_to_csl(self, converter):
+        pytest.importorskip("bibtexparser")
         result = converter.convert("@article{k, title = {Hello}}", target_format="csl-json")
         assert '"Hello"' in result or "Hello" in result
 
     def test_convert_empty_bibtex(self, converter):
+        pytest.importorskip("bibtexparser")
         result = converter.convert("@misc{empty,}", target_format="ris")
         assert result == ""
 

@@ -10,6 +10,7 @@ from unittest.mock import Mock, patch
 import pytest
 
 from pyeuropepmc.utils.search_logging import (
+    CRYPTOGRAPHY_AVAILABLE,
     SearchLog,
     SearchLogEntry,
     generate_private_key,
@@ -369,6 +370,7 @@ class TestSearchLoggingFunctions:
                 assert "file1.txt" in zf.namelist()
                 assert "file2.txt" in zf.namelist()
 
+    @pytest.mark.skipif(not CRYPTOGRAPHY_AVAILABLE, reason="cryptography not installed")
     @patch("cryptography.hazmat.primitives.asymmetric.rsa")
     @patch("cryptography.hazmat.primitives.serialization.load_pem_private_key")
     def test_sign_file(self, mock_load_pem, mock_rsa):

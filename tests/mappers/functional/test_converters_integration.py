@@ -6,6 +6,7 @@ from unittest.mock import Mock
 from urllib.parse import urlparse
 
 import pytest
+from rdflib import Graph
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 

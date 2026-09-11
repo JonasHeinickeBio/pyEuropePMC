@@ -44,6 +44,7 @@ class TestPaperEnricher:
 
     def test_initialization_default_config(self):
         """Test initialization with default configuration."""
+        pytest.importorskip("semanticscholar")
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
 
@@ -57,6 +58,7 @@ class TestPaperEnricher:
 
     def test_initialization_all_clients(self):
         """Test initialization with all clients enabled."""
+        pytest.importorskip("semanticscholar")
         config = EnrichmentConfig(
             enable_crossref=True,
             enable_unpaywall=True,
@@ -95,6 +97,7 @@ class TestPaperEnricher:
     @patch("pyeuropepmc.features.enrich.sources.openalex.OpenAlexClient.enrich")
     def test_enrich_paper_success(self, mock_openalex, mock_semantic, mock_crossref):
         """Test successful paper enrichment."""
+        pytest.importorskip("semanticscholar")
         # Mock responses from each client
         mock_crossref.return_value = {
             "source": "crossref",
@@ -128,6 +131,7 @@ class TestPaperEnricher:
     @patch("pyeuropepmc.features.enrich.sources.crossref.CrossRefClient.enrich")
     def test_enrich_paper_partial_failure(self, mock_crossref):
         """Test enrichment when some clients fail."""
+        pytest.importorskip("semanticscholar")
         # CrossRef succeeds
         mock_crossref.return_value = {
             "source": "crossref",
@@ -165,6 +169,7 @@ class TestPaperEnricher:
     @patch("pyeuropepmc.features.enrich.sources.semantic_scholar.SemanticScholarClient.enrich")
     def test_merge_results_citation_count(self, mock_semantic, mock_crossref):
         """Test merging of citation counts from multiple sources."""
+        pytest.importorskip("semanticscholar")
         mock_crossref.return_value = {
             "source": "crossref",
             "citation_count": 42,

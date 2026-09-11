@@ -31,6 +31,7 @@ class TestBibliographyRegistry:
         assert names.issuperset(expected)
 
     def test_bib_parse_string_tool(self):
+        pytest.importorskip("bibtexparser")
         result = bib_parse_string(SAMPLE_BIBTEX)
         assert result["entries_count"] == 1
         assert "key2024" in result["keys"]
