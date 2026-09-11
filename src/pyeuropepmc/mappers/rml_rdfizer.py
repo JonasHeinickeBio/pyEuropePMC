@@ -479,12 +479,14 @@ class RMLRDFizer:
             # Run RDFizer
             output_file = self._run_rdfizer(temp_config, temp_dir)
 
-        from rdflib import Graph
+            # Load output into RDF graph *before* the temporary directory
+            # (and the output file inside it) is removed on exiting this
+            # `with` block.
+            from rdflib import Graph
 
-        # Load output
-        g = Graph()
-        if output_file and os.path.exists(output_file):
-            g.parse(output_file, format="nt")
+            g = Graph()
+            if output_file and os.path.exists(output_file):
+                g.parse(output_file, format="nt")
 
         # Bind namespaces to ensure proper prefixes in serialization
         self._bind_namespaces(g)
