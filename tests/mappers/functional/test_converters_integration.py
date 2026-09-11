@@ -3,6 +3,7 @@
 from pathlib import Path
 import tempfile
 from unittest.mock import Mock
+from urllib.parse import urlparse
 
 import pytest
 
@@ -480,7 +481,16 @@ class TestConvertersSerialization:
 
         # Should contain content from both sources
         assert "Computational Analysis" in turtle1
-        assert "doi.org" in turtle1
+
+        def _is_doi_org(term: object) -> bool:
+            if not hasattr(term, "toPython"):
+                return False
+            host = urlparse(str(term)).netloc.lower()
+            return host == "doi.org" or host.endswith(".doi.org")
+
+        assert any(
+            _is_doi_org(s) or _is_doi_org(p) or _is_doi_org(o) for s, p, o, *_ in graph
+        ), "Expected a doi.org URI somewhere in the graph"
 
 
 @pytest.mark.slow
