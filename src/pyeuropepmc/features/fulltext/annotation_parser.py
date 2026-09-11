@@ -8,6 +8,7 @@ sentence annotations, and relationship annotations.
 
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
 __all__ = [
     "AnnotationParser",
@@ -23,6 +24,17 @@ logger = logging.getLogger(__name__)
 # Constants
 UNKNOWN_PROVIDER = "Unknown"
 UNKNOWN_ENTITY_TYPE = "Unknown"
+
+
+def _uri_host_is(uri: str, domain: str) -> bool:
+    """True if `uri`'s host is exactly `domain` or a subdomain of it.
+
+    Used instead of a raw substring search (e.g. `"identifiers.org" in uri`),
+    which would also match the domain appearing at an arbitrary position in
+    an unrelated/spoofed URI.
+    """
+    host = urlparse(uri).netloc.lower()
+    return host == domain or host.endswith(f".{domain}")
 
 
 class AnnotationParser:
@@ -361,7 +373,7 @@ class AnnotationParser:
             uri = tag.get("uri") or tag.get("@id", "")
             if uri and ":" in uri:
                 # Check for identifiers.org format first
-                if "identifiers.org" in uri:
+                if _uri_host_is(uri, "identifiers.org"):
                     # Extract the resource name from identifiers.org URIs
                     # Format: http://identifiers.org/resource/identifier or http://identifiers.org/resource:identifier
                     parts = uri.split("/")
@@ -438,9 +450,9 @@ class AnnotationParser:
             return UNKNOWN_ENTITY_TYPE
 
         # Check for known IRI patterns
-        if "browser.ihtsdotools.org" in body:
+        if _uri_host_is(body, "browser.ihtsdotools.org"):
             return "SNOMED_CT"
-        elif "identifiers.org" in body:
+        elif _uri_host_is(body, "identifiers.org"):
             # Extract type from identifiers.org IRI
             # e.g., http://identifiers.org/taxonomy/9606 -> Taxonomy
             parts = body.split("/")

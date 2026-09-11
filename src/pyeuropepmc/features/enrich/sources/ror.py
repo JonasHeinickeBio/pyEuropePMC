@@ -7,6 +7,7 @@ from the Research Organization Registry API.
 
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
 from pyeuropepmc.features.common.base import get_user_agent
 from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
@@ -125,9 +126,16 @@ class RorClient(BaseEnrichmentClient):
         if not ror_id:
             return None
 
-        # Remove any URL prefix (handle multiple prefixes)
-        while "ror.org/" in ror_id:
-            ror_id = ror_id.split("ror.org/", 1)[1]
+        # Remove any URL prefix (handle multiple prefixes). Uses an actual
+        # host check via urlparse rather than a raw substring search, which
+        # could match "ror.org/" at an arbitrary position in a spoofed value.
+        for _ in range(5):  # bound iterations against malformed/adversarial input
+            candidate = ror_id if "://" in ror_id else f"https://{ror_id}"
+            host = urlparse(candidate).netloc.lower()
+            if host == "ror.org" or host.endswith(".ror.org"):
+                ror_id = urlparse(candidate).path.lstrip("/")
+            else:
+                break
 
         # Remove any leading/trailing slashes
         ror_id = ror_id.strip("/")

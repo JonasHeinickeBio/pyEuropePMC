@@ -38,6 +38,15 @@ import logging
 from pathlib import Path
 from typing import Any
 
+# Declared `Any` up front (rather than relying on the except branch to set
+# them) so mypy's view of these names doesn't depend on whether cryptography
+# is actually installed in the environment running the type check.
+serialization: Any = None
+rsa: Any = None
+SerializationModule: Any = None
+RsaModule: Any = None
+CRYPTOGRAPHY_AVAILABLE = False
+
 try:
     from cryptography.hazmat.primitives import serialization
     from cryptography.hazmat.primitives.asymmetric import rsa
@@ -46,11 +55,7 @@ try:
     SerializationModule = serialization
     RsaModule = rsa
 except ImportError:
-    CRYPTOGRAPHY_AVAILABLE = False
-    serialization = None  # type: ignore[assignment]
-    rsa = None  # type: ignore[assignment]
-    SerializationModule = None  # type: ignore[assignment]
-    RsaModule = None  # type: ignore[assignment]
+    pass
 
 logger = logging.getLogger(__name__)
 
