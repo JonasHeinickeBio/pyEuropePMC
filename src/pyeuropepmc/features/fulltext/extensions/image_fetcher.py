@@ -260,7 +260,10 @@ class ImageFetcher(BaseParser):
 
         # Caption / description
         caption = ""
-        caption_elem = supp_elem.find("caption") or supp_elem.find("p")
+        # `or`-chaining Element.find() is unsafe: a childless <caption>text</caption>
+        # is falsy, so `or` would skip a real match and fall through to <p>.
+        found_caption = supp_elem.find("caption")
+        caption_elem = found_caption if found_caption is not None else supp_elem.find("p")
         if caption_elem is not None:
             caption = self._get_text_content(caption_elem)
 

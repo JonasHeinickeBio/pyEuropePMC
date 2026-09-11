@@ -442,10 +442,19 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
 
     # bioRxiv manifest typically uses <article> or <record> elements with DOIs
     for article_elem in root.findall(".//article") or root.findall(".//record"):
-        doi_elem = (
-            article_elem.find("doi")
-            or article_elem.find("DOI")
-            or article_elem.find(".//article-id[@pub-id-type='doi']")
+        # `or`-chaining Element.find() is unsafe: a childless element (e.g. a
+        # leaf <doi>10.x/y</doi>) is falsy, so `or` would skip a real match.
+        doi_elem = next(
+            (
+                el
+                for el in (
+                    article_elem.find("doi"),
+                    article_elem.find("DOI"),
+                    article_elem.find(".//article-id[@pub-id-type='doi']"),
+                )
+                if el is not None
+            ),
+            None,
         )
         if doi_elem is not None and doi_elem.text:
             doi = doi_elem.text.strip()

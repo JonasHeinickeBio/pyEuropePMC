@@ -432,10 +432,21 @@ class PubMedClient(BaseLiteratureClient):
 
         # --- Year ---
         year = None
-        pub_date = (
-            medline.find(".//Journal/JournalIssue/PubDate/Year")
-            or medline.find(".//Article/ArticleDate/Year")
-            or medline.find(".//DateCreated/Year")
+        # NB: ``or``-chaining Element.find() results is unsafe — an Element
+        # with no children (e.g. a leaf <Year>2022</Year>) is falsy, so `or`
+        # would skip straight past a real match to the next candidate. Pick
+        # the first *found* (non-None) element explicitly instead.
+        pub_date = next(
+            (
+                el
+                for el in (
+                    medline.find(".//Journal/JournalIssue/PubDate/Year"),
+                    medline.find(".//Article/ArticleDate/Year"),
+                    medline.find(".//DateCreated/Year"),
+                )
+                if el is not None
+            ),
+            None,
         )
         if pub_date is not None and pub_date.text:
             with contextlib.suppress(ValueError):
