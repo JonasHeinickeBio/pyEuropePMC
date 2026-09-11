@@ -396,17 +396,29 @@ class FullTextIndex:
         Returns
         -------
         bool
-            True if document was deleted.
+            True if a document with this row ID existed and was deleted.
         """
-        self.conn.execute("DELETE FROM papers_meta WHERE id = ?", (rowid,))
-        _empty = ["''"] * 9
+        row = self.conn.execute(
+            "SELECT title, abstract, full_text, authors, journal, doi, pmid, pmcid, source"
+            " FROM papers_meta WHERE id = ?",
+            (rowid,),
+        ).fetchone()
+        if row is None:
+            return False
+
+        # FTS5's external-content "special delete" command must be given the
+        # exact old column values (they identify what to remove from the FTS
+        # shadow tables) — passing empty placeholders instead of the real
+        # content corrupts the index (subsequent searches raise
+        # "database disk image is malformed").
         self.conn.execute(
             "INSERT INTO papers_fts"
             " (papers_fts, rowid, title, abstract, full_text, authors,"
             " journal, doi, pmid, pmcid, source)"
-            f" VALUES ('delete', ?, {', '.join(_empty)})",
-            (rowid,),
+            " VALUES ('delete', ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
+            (rowid, *row),
         )
+        self.conn.execute("DELETE FROM papers_meta WHERE id = ?", (rowid,))
         self.conn.commit()
         return True
 
