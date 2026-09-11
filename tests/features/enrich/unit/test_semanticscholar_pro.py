@@ -12,6 +12,9 @@ from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
 import pytest
+
+pytest.importorskip("semanticscholar")
+
 from semanticscholar.Journal import Journal
 from semanticscholar.SemanticScholarException import (
     GatewayTimeoutException,

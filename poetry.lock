@@ -16,10 +16,9 @@ files = [
 name = "annotated-types"
 version = "0.8.0"
 description = "Reusable constraint types to use with typing.Annotated"
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"agentic\" or extra == \"all\""
 files = [
     {file = "annotated_types-0.8.0-py3-none-any.whl", hash = "sha256:f072f4d804ea359e4eaf198b1af7a8b0943881a87f31bb764f8bf219bb9419e0"},
     {file = "annotated_types-0.8.0.tar.gz", hash = "sha256:13b2beaad985e05e2d6407ee4c4f35590b11f8d693a258a561055cac8f64cab7"},
@@ -1827,7 +1826,7 @@ description = "A very fast and expressive template engine."
 optional = true
 python-versions = ">=3.7"
 groups = ["main"]
-markers = "extra == \"rdf\" or extra == \"all\" or extra == \"ui\" or extra == \"standard\""
+markers = "extra == \"rdf\" or extra == \"all\" or extra == \"ui\" or extra == \"agentic\" or extra == \"standard\""
 files = [
     {file = "jinja2-3.1.6-py3-none-any.whl", hash = "sha256:85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"},
     {file = "jinja2-3.1.6.tar.gz", hash = "sha256:0137fb05990d35f1275a587e9aee6d56da821fc83491a0fb838183be43f66d6d"},
@@ -2860,7 +2859,7 @@ description = "Safely add untrusted strings to HTML/XML markup."
 optional = true
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"rdf\" or extra == \"all\" or extra == \"ui\" or extra == \"standard\""
+markers = "extra == \"rdf\" or extra == \"all\" or extra == \"ui\" or extra == \"agentic\" or extra == \"standard\""
 files = [
     {file = "markupsafe-3.0.3-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:2f981d352f04553a7171b8e44369f2af4055f888dfb147d55e42d29e29e74559"},
     {file = "markupsafe-3.0.3-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:e1c1493fb6e50ab01d20a22826e57520f1284df32f2d8601fdd90b6304601419"},
@@ -4495,10 +4494,9 @@ files = [
 name = "pydantic"
 version = "2.13.4"
 description = "Data validation using Python type hints"
-optional = true
+optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"agentic\" or extra == \"all\""
 files = [
     {file = "pydantic-2.13.4-py3-none-any.whl", hash = "sha256:45a282cde31d808236fd7ea9d919b128653c8b38b393d1c4ab335c62924d9aba"},
     {file = "pydantic-2.13.4.tar.gz", hash = "sha256:c40756b57adaa8b1efeeced5c196f3f3b7c435f90e84ea7f443901bec8099ef6"},
@@ -4518,10 +4516,9 @@ timezone = ["tzdata ; python_version >= \"3.9\" and platform_system == \"Windows
 name = "pydantic-core"
 version = "2.46.4"
 description = "Core functionality for Pydantic validation and serialization"
-optional = true
+optional = false
 python-versions = ">=3.9"
 groups = ["main"]
-markers = "extra == \"agentic\" or extra == \"all\""
 files = [
     {file = "pydantic_core-2.46.4-cp310-cp310-macosx_10_12_x86_64.whl", hash = "sha256:a396dcc17e5a0b164dbe026896245a4fa9ff402edca1dff0be3d53a517f74de4"},
     {file = "pydantic_core-2.46.4-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:da4b951fe36dc7c3a1ccb4e3cd1747c3542b8c9ceede8fc86cae054e764485f5"},
@@ -6598,10 +6595,9 @@ files = [
 name = "typing-inspection"
 version = "0.4.3"
 description = "Runtime typing introspection tools"
-optional = true
+optional = false
 python-versions = ">=3.10"
 groups = ["main"]
-markers = "extra == \"agentic\" or extra == \"all\""
 files = [
     {file = "typing_inspection-0.4.3-py3-none-any.whl", hash = "sha256:5f42b23858a91e0b4ef521f5418f03a0da3c9216fd2995ef5e73463100e676cd"},
     {file = "typing_inspection-0.4.3.tar.gz", hash = "sha256:c5f9ec1530b5c1e2c9bc34a84d9a3466ed1b2f3f2fa9f901368d9c5596210e4d"},
@@ -7602,8 +7598,8 @@ files = [
 cffi = ["cffi (>=1.17,<2.0) ; platform_python_implementation != \"PyPy\" and python_version < \"3.14\"", "cffi (>=2.0.0b0) ; platform_python_implementation != \"PyPy\" and python_version >= \"3.14\""]
 
 [extras]
-agentic = ["langchain", "langchain-openai", "langgraph", "openai"]
-all = ["bibtexparser", "cryptography", "flask", "ipykernel", "ipython", "ipywidgets", "jupyterlab", "langchain", "langchain-openai", "langgraph", "matplotlib", "notebook", "numpy", "openai", "pandas", "pyzotero", "rdfizer", "rdflib-jsonld", "requests-cache", "rich", "seaborn", "semanticscholar", "tabulate", "tornado", "xlsxwriter"]
+agentic = ["jinja2", "langchain", "langchain-openai", "langgraph", "openai"]
+all = ["bibtexparser", "cryptography", "flask", "ipykernel", "ipython", "ipywidgets", "jinja2", "jupyterlab", "langchain", "langchain-openai", "langgraph", "matplotlib", "notebook", "numpy", "openai", "pandas", "pyzotero", "rdfizer", "rdflib-jsonld", "requests-cache", "rich", "seaborn", "semanticscholar", "tabulate", "tornado", "xlsxwriter"]
 analytics = ["numpy", "pandas"]
 bibliography = ["bibtexparser"]
 enrichment = ["cryptography", "semanticscholar"]
@@ -7619,4 +7615,4 @@ zotero = ["pyzotero"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "fda1b1a53d9a00c0c8d3eab73dd29f2907db453603c9e4c74b4efcd9d404f2a3"
+content-hash = "af858ab5a5460b6fa8e67f44c42f34ddf029d3c1bf40f622022b647cebc6200a"

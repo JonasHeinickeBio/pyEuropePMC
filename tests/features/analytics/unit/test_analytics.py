@@ -9,7 +9,10 @@ from pyeuropepmc.utils.dependencies import (
 
 pytestmark = pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas")
 
-import pandas as pd
+# `pytestmark` only skips test *functions* once the module has already
+# imported successfully — it does not stop `import pandas` below from
+# raising ModuleNotFoundError at collection time when pandas is absent.
+pd = pytest.importorskip("pandas")
 
 from pyeuropepmc.features.analytics.analytics import (
     access_distribution,

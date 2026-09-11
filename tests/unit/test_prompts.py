@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+import pytest
+
+pytest.importorskip("jinja2")
+
 from pyeuropepmc.prompts import (
     DEFAULT_TEMPLATES,
     PromptTemplates,

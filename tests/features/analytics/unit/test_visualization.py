@@ -14,6 +14,11 @@ pytestmark = pytest.mark.skipif(
     not is_dependency_available("matplotlib"), reason="skipped due to missing matplotlib"
 )
 
+# `pytestmark` only skips test *functions* once the module has already
+# imported successfully — it does not stop `import matplotlib` below from
+# raising ModuleNotFoundError at collection time when matplotlib is absent.
+pytest.importorskip("matplotlib")
+
 import matplotlib
 import matplotlib.pyplot as plt
 

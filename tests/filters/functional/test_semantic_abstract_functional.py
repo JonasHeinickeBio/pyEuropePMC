@@ -40,6 +40,7 @@ def make_sample_papers():
 from collections.abc import Sequence
 from typing import Any
 
+pytest.importorskip("numpy")
 import numpy as np
 
 

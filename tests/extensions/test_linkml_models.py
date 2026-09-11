@@ -8,6 +8,9 @@ this is generated code, but the generated ``__post_init__`` bodies are not.
 from __future__ import annotations
 
 import pytest
+
+pytest.importorskip("linkml_runtime")
+
 from linkml_runtime.utils.yamlutils import YAMLRoot
 
 from pyeuropepmc.features.fulltext.extensions.linkml_models import (
