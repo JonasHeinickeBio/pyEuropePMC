@@ -220,7 +220,7 @@ class CacheConfig:
         """
         self.enabled = enabled and CACHETOOLS_AVAILABLE
 
-        if self.enabled and not CACHETOOLS_AVAILABLE:
+        if enabled and not CACHETOOLS_AVAILABLE:
             logger.warning(
                 "Cache requested but cachetools not available. "
                 "Install with: pip install cachetools"
@@ -244,7 +244,7 @@ class CacheConfig:
         if ttl_by_type:
             self.ttl_by_type.update(ttl_by_type)
 
-        if self.enable_l2 and not DISKCACHE_AVAILABLE:
+        if enable_l2 and not DISKCACHE_AVAILABLE:
             logger.warning(
                 "L2 cache requested but diskcache not available. "
                 "Install with: pip install diskcache. L2 cache disabled."
