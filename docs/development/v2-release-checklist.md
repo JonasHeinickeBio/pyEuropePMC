@@ -39,8 +39,9 @@ Local status now:
 - ✅ **`sentence-transformers`** documented as bring-your-own — deliberately *not*
   an extra (`95417e0`); it was what made `poetry lock` non-terminating.
 - ✅ **CHANGELOG "Known issues"** poetry.lock note resolved.
-- ⬜ **Open the PR to `main`** so `cdci.yml` (bandit + ≥75 % coverage) and
-  `unit-tests.yml` run against the branch for the first time.
+- ✅ **Open the PR to `main`** — [#162](https://github.com/JonasHeinickeBio/pyEuropePMC/pull/162),
+  so `cdci.yml` (bandit + ≥75 % coverage) and `unit-tests.yml` run against the
+  branch for the first time.
 
 ## 🟢 Nice to have — done
 
