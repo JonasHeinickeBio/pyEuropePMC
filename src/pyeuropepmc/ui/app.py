@@ -16,7 +16,9 @@ from __future__ import annotations
 
 import json
 import logging
+import os
 from pathlib import Path
+import secrets
 from threading import Lock
 from typing import Any
 import uuid
@@ -89,7 +91,9 @@ def create_app(testing: bool = False) -> Flask:
         template_folder=_get_template_folder(),
         static_folder=_get_static_folder(),
     )
-    app.config["SECRET_KEY"] = "pyeuropepmc-ui-dev-key"
+    # Random per-process key: this UI keeps all state in memory and has no
+    # persistent sessions across restarts, so a stable key isn't needed.
+    app.config["SECRET_KEY"] = os.environ.get("PYEUROPEPMC_UI_SECRET_KEY") or secrets.token_hex(32)
     app.config["TESTING"] = testing
 
     # ------------------------------------------------------------------ #
@@ -459,8 +463,9 @@ def _bib_to_ris(bibliography: list[dict[str, Any]]) -> str:
 
 if __name__ == "__main__":
     app = create_app()
+    debug = os.environ.get("PYEUROPEPMC_UI_DEBUG") == "1"
     logger.info("Starting pyEuropePMC UI on http://127.0.0.1:5000")
-    app.run(debug=True, host="127.0.0.1", port=5000)
+    app.run(debug=debug, host="127.0.0.1", port=5000)  # nosec B201 - localhost dev server
 
 
 __all__ = ["create_app"]

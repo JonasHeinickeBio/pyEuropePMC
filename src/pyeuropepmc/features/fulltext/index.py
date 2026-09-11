@@ -369,8 +369,10 @@ class FullTextIndex:
             where_value = entry.source_id
 
         if where_clause and where_value:
+            # where_clause is one of the fixed literals set above, never
+            # user input; the actual value is bound via the ? placeholder.
             cursor = self.conn.execute(
-                f"SELECT id FROM papers_meta WHERE {where_clause} LIMIT 1",
+                f"SELECT id FROM papers_meta WHERE {where_clause} LIMIT 1",  # nosec B608
                 (where_value,),
             )
             row = cursor.fetchone()

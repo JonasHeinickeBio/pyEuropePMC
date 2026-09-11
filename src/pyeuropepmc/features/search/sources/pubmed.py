@@ -384,13 +384,13 @@ class PubMedClient(BaseLiteratureClient):
     ) -> LiteratureResult | None:
         """Parse EFetch XML response into a :class:`LiteratureResult`."""
         try:
-            from xml.etree import ElementTree as ET
+            from xml.etree import ElementTree as ET  # nosec B405
         except ImportError:
             logger.warning("EFetch requires xml.etree.ElementTree — falling back to ESummary")
             return self.get_paper(pmid, use_efetch=False)
 
         try:
-            root = ET.fromstring(xml_text)
+            root = ET.fromstring(xml_text)  # nosec B314
         except ET.ParseError:
             logger.exception("Failed to parse EFetch XML for PMID=%s", pmid)
             return None

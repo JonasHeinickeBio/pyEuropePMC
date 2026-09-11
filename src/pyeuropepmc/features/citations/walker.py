@@ -355,7 +355,7 @@ class CitationWalker:
             data = self._s2_client.enrich(identifier)
             if data:
                 return data
-        except Exception:
+        except Exception:  # nosec B110 - fall through to direct API query below
             pass
 
         # Fallback: query S2 API directly
@@ -375,7 +375,7 @@ class CitationWalker:
             matches = data.get("data", [])
             if matches:
                 return dict(matches[0])
-        except Exception:
+        except Exception:  # nosec B110 - seed resolution is best-effort
             pass
 
         return None

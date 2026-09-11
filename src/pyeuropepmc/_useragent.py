@@ -17,7 +17,7 @@ def package_version() -> str:
         from pyeuropepmc import __version__
 
         return str(__version__)
-    except Exception:  # pragma: no cover - defensive against build-time cycles
+    except Exception:  # nosec B110 - pragma: no cover - defensive against build-time cycles
         pass
     try:
         from importlib.metadata import PackageNotFoundError, version

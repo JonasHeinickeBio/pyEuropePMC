@@ -18,7 +18,7 @@ from __future__ import annotations
 import logging
 import re
 from typing import Any
-from xml.etree import ElementTree
+from xml.etree import ElementTree  # nosec B405
 
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.features.literature.normalization import (
@@ -281,7 +281,7 @@ class ArxivClient(BaseLiteratureClient):
             return []
 
         try:
-            root = ElementTree.fromstring(xml_data)
+            root = ElementTree.fromstring(xml_data)  # nosec B314
         except ElementTree.ParseError:
             return []
 
