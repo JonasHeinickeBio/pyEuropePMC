@@ -40,7 +40,13 @@ from typing import Any
 
 # Declared `Any` up front (rather than relying on the except branch to set
 # them) so mypy's view of these names doesn't depend on whether cryptography
-# is actually installed in the environment running the type check.
+# is actually installed in the environment running the type check. The
+# imports below bind to temporary names and get assigned into these instead
+# of importing directly into `serialization`/`rsa` - mypy treats a direct
+# `from x import y` as a fresh declaration of `y`, which conflicts with the
+# `Any` annotation only when it can't resolve the import (e.g. cryptography
+# not installed), while working fine when it can - an environment-dependent
+# inconsistency this side-steps entirely.
 serialization: Any = None
 rsa: Any = None
 SerializationModule: Any = None
@@ -48,9 +54,11 @@ RsaModule: Any = None
 CRYPTOGRAPHY_AVAILABLE = False
 
 try:
-    from cryptography.hazmat.primitives import serialization
-    from cryptography.hazmat.primitives.asymmetric import rsa
+    from cryptography.hazmat.primitives import serialization as _serialization
+    from cryptography.hazmat.primitives.asymmetric import rsa as _rsa
 
+    serialization = _serialization
+    rsa = _rsa
     CRYPTOGRAPHY_AVAILABLE = True
     SerializationModule = serialization
     RsaModule = rsa
