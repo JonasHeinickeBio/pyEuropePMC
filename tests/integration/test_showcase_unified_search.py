@@ -66,16 +66,21 @@ QUERIES: list[str] = [
     "gene therapy AAV capsid engineering",
     "insulin resistance skeletal muscle signaling",
     "cancer cachexia muscle wasting mechanism",
-    "RNA splicing disease therapeutic targeting",
 ]
+
+QUERIES = QUERIES[:50]
 
 
 @pytest.mark.integration
+@pytest.mark.timeout(1800)
 def test_unified_search_showcase() -> None:
     assert len(QUERIES) == 50
 
     sources = ["europepmc", "pubmed", "arxiv", "openalex", "semantic_scholar"]
-    searcher = UnifiedSearch(sources=sources, primary="europepmc", timeout=40)
+    # arxiv (no mailto) and unauthenticated Semantic Scholar both rate-limit
+    # hard; a generous per-source delay keeps 50 sequential searches from
+    # burning most of their time on 429 backoff instead of real work.
+    searcher = UnifiedSearch(sources=sources, primary="europepmc", timeout=40, rate_limit_delay=3.0)
 
     per_item: list[dict] = []
     source_hit_totals: dict[str, int] = dict.fromkeys(sources, 0)

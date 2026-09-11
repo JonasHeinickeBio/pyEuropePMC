@@ -58,6 +58,7 @@ def _seed_pmcids(n: int = 50) -> list[dict]:
 
 
 @pytest.mark.integration
+@pytest.mark.timeout(1800)
 def test_fulltext_xml_showcase(tmp_path) -> None:
     papers = _seed_pmcids(50)
     assert len(papers) >= 45, f"could only seed {len(papers)} PMCIDs"

@@ -67,6 +67,7 @@ def _seed_papers(n: int = 50) -> list[dict]:
 
 
 @pytest.mark.integration
+@pytest.mark.timeout(1800)
 def test_enrichment_showcase() -> None:
     papers = _seed_papers(50)
     assert len(papers) >= 45, f"could only seed {len(papers)} papers"
@@ -79,6 +80,7 @@ def test_enrichment_showcase() -> None:
         enable_icite=True,
         enable_unpaywall=False,
         enable_ror=False,
+        rate_limit_delay=1.5,
     )
 
     per_item: list[dict] = []
@@ -128,18 +130,18 @@ def test_enrichment_showcase() -> None:
     assert len(ok) >= 40, f"too many enrichment failures: {len(papers) - len(ok)}"
 
     n = len(ok)
-    est_serial = sum(latencies) * (max(source_counts) if source_counts else 1) / max(
-        sum(source_counts) / max(len(source_counts), 1), 1
-    )
+    avg_sources = sum(source_counts) / max(n, 1)
     headline = {
         "papers": len(papers),
         "papers enriched ok": n,
-        "avg sources / paper": round(sum(source_counts) / max(n, 1), 2),
+        "avg sources / paper": round(avg_sources, 2),
         "Europe PMC base present": f"{epmc_base_ok} ({pct(epmc_base_ok, n):.0f}%)",
         "iCite RCR present": f"{icite_rcr_ok} ({pct(icite_rcr_ok, n):.0f}%)",
-        "latency / paper (s)": summary_stats(latencies),
-        "parallel wall time (s)": round(sum(latencies), 1),
-        "≈ serial wall time (s)": round(est_serial, 1),
+        "latency / paper, parallel (s)": summary_stats(latencies),
+        "parallel wall time, 50 papers (s)": round(sum(latencies), 1),
+        "≈ serial wall time (parallel × avg sources) (s)": round(
+            sum(latencies) * avg_sources, 1
+        ),
     }
     sections = {
         "Source contribution (of %d papers)" % n: _fmt_hist(source_hits, n),

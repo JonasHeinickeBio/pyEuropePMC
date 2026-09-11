@@ -72,7 +72,11 @@ class EuropePMCEnrichmentClient:
 
         query = self._build_query(identifier.strip())
         try:
-            records = self._client.search_and_parse(query, format="json", pageSize=1)
+            # resultType="core" is required to get MeSH headings, grants and
+            # full-text URLs — the default "lite" omits them entirely.
+            records = self._client.search_and_parse(
+                query, format="json", pageSize=1, resultType="core"
+            )
         except Exception:
             logger.warning("Europe PMC enrichment lookup failed for %r", identifier, exc_info=True)
             return None
