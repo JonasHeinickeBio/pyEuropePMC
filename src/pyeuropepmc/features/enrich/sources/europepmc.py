@@ -16,6 +16,7 @@ from __future__ import annotations
 import contextlib
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
 
@@ -98,8 +99,13 @@ class EuropePMCEnrichmentClient:
     @staticmethod
     def _build_query(ident: str) -> str:
         low = ident.lower()
-        if low.startswith("10.") or "doi.org/" in low:
-            doi = ident.rsplit("/", 1)[-1] if "doi.org/" in low else ident
+        parsed = urlparse(ident)
+        host = parsed.netloc.lower()
+        is_doi_url = host == "doi.org" or host.endswith(".doi.org")
+        if low.startswith("10.") or is_doi_url:
+            # The DOI is the URL path, not just the last "/"-segment - a DOI
+            # itself contains a "/" between its prefix and suffix.
+            doi = parsed.path.lstrip("/") if is_doi_url else ident
             return f'DOI:"{doi}"'
         if low.startswith("pmc"):
             return f"PMCID:{ident.upper()}"

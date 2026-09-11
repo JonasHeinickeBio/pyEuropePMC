@@ -232,7 +232,16 @@ def create_app(testing: bool = False) -> Flask:
                     "error": str(e),
                     "source_text": text,
                 }
-            return jsonify({"workflow_id": workflow_id, "status": "error", "error": str(e)}), 500
+            # Log the real exception server-side only; the client gets a
+            # generic message so internal details (paths, internals) never
+            # leak through the API response.
+            return jsonify(
+                {
+                    "workflow_id": workflow_id,
+                    "status": "error",
+                    "error": "An internal error occurred while running the workflow.",
+                }
+            ), 500
 
     @app.route("/api/workflow/<workflow_id>/status", methods=["GET"])
     def api_workflow_status(workflow_id: str):
@@ -314,7 +323,9 @@ def create_app(testing: bool = False) -> Flask:
             logger.error("Write phase error: %s", e)
             wf["status"] = "error"
             wf["error"] = str(e)
-            return jsonify({"error": str(e)}), 500
+            # Log the real exception server-side only; the client gets a
+            # generic message so internal details never leak through the API.
+            return jsonify({"error": "An internal error occurred while writing the report."}), 500
 
         return jsonify(
             {

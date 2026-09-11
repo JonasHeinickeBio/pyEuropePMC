@@ -10,6 +10,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Any, cast
+from urllib.parse import urlparse
 
 from pyeuropepmc.features.enrich.batch_enricher import BatchEnricher
 from pyeuropepmc.features.enrich.config import EnrichmentConfig
@@ -348,8 +349,12 @@ class PaperEnricher:
         low = ident.lower()
         out: dict[str, str | None] = {"doi": None, "pmid": None, "pmcid": None}
 
-        if "doi.org/" in low:
-            out["doi"] = ident.rsplit("/", 1)[-1]
+        parsed = urlparse(ident)
+        host = parsed.netloc.lower()
+        if host == "doi.org" or host.endswith(".doi.org"):
+            # The DOI is the URL path, not just the last "/"-segment - a DOI
+            # itself contains a "/" between its prefix and suffix.
+            out["doi"] = parsed.path.lstrip("/")
         elif low.startswith("10."):
             out["doi"] = ident
         elif ident.upper().startswith("PMC"):

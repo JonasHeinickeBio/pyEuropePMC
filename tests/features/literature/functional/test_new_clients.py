@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import logging
 from typing import Any
+from urllib.parse import urlparse
 
 import pytest
 
@@ -34,6 +35,13 @@ from pyeuropepmc.features.fulltext import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+def _url_host(url: str) -> str:
+    """Return the lowercased host of `url`, for precise domain assertions
+    (checking a raw substring anywhere in a URL is spoofable)."""
+    return urlparse(url).netloc.lower()
+
 
 # ---------------------------------------------------------------------------
 # Fixtures
@@ -141,7 +149,7 @@ class TestDOAJClient:
 
     def test_instantiation(self):
         client = DOAJClient()
-        assert "doaj.org" in client.base_url
+        assert _url_host(client.base_url).endswith("doaj.org")
 
     def test_search_empty(self):
         client = DOAJClient(rate_limit_delay=0.1, timeout=5)
@@ -159,7 +167,7 @@ class TestDBLPClient:
 
     def test_instantiation(self):
         client = DBLPClient()
-        assert "dblp.org" in client.base_url
+        assert _url_host(client.base_url).endswith("dblp.org")
 
     def test_search_empty(self):
         """Empty query returns empty list (may raise if API unreachable)."""
@@ -190,7 +198,7 @@ class TestCOREClient:
 
     def test_instantiation(self):
         client = COREClient()
-        assert "core.ac.uk" in client.base_url
+        assert _url_host(client.base_url).endswith("core.ac.uk")
 
     def test_search_no_key(self):
         """Without API key, search should fail gracefully."""
@@ -204,7 +212,7 @@ class TestICiteClient:
 
     def test_instantiation(self):
         client = ICiteClient()
-        assert "icite.od.nih.gov" in client.base_url
+        assert _url_host(client.base_url).endswith("icite.od.nih.gov")
 
     def test_enrich_invalid(self):
         client = ICiteClient(rate_limit_delay=0.1, timeout=5)

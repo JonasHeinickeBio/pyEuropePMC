@@ -205,6 +205,67 @@ class TestPaperEnricher:
         assert result["merged"]["oa_status"] == "gold"
         assert result["merged"]["oa_url"] == "https://example.com/paper.pdf"
 
+    # --- _resolve_ids tests ---
+
+    def test_resolve_ids_doi_url(self):
+        """A doi.org URL is recognized and the DOI is extracted."""
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("https://doi.org/10.1234/test")
+        assert out["doi"] == "10.1234/test"
+
+    def test_resolve_ids_dx_doi_url(self):
+        """The dx.doi.org subdomain is also recognized."""
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("http://dx.doi.org/10.1234/test")
+        assert out["doi"] == "10.1234/test"
+
+    def test_resolve_ids_spoofed_host_not_treated_as_doi_url(self):
+        """A URL that merely contains the substring 'doi.org/' in its path
+        (e.g. hosted on an unrelated domain) must not be mistaken for a real
+        doi.org URL - only the actual host is authoritative."""
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("https://evil.example/doi.org/10.1234/fake")
+        assert out["doi"] is None
+
+    def test_resolve_ids_lookalike_host_not_treated_as_doi_url(self):
+        """A host like doi.org.evil.example must not match doi.org."""
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("https://doi.org.evil.example/10.1234/fake")
+        assert out["doi"] is None
+
+    def test_resolve_ids_bare_doi(self):
+        """A bare DOI (10.xxxx/...) is recognized directly."""
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("10.1234/test")
+        assert out["doi"] == "10.1234/test"
+
+    def test_resolve_ids_pmcid(self):
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("PMC123456")
+        assert out["pmcid"] == "PMC123456"
+
+    def test_resolve_ids_pmid(self):
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        out = enricher._resolve_ids("123456")
+        assert out["pmid"] == "123456"
+
+    def test_resolve_ids_search_exception_is_swallowed(self):
+        config = EnrichmentConfig()
+        enricher = PaperEnricher(config)
+        with patch(
+            "pyeuropepmc.features.enrich.enricher.SearchClient",
+            side_effect=RuntimeError("boom"),
+        ):
+            out = enricher._resolve_ids("10.1234/test")
+        assert out["doi"] == "10.1234/test"
+
     def test_close(self):
         """Test close method."""
         config = EnrichmentConfig()

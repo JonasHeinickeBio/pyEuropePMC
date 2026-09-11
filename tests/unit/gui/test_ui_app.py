@@ -842,4 +842,7 @@ class TestApiFullWorkflow:
             data = resp.get_json()
             assert data is not None
             assert "error" in data
-            assert "Simulated workflow failure" in data["error"]
+            # The API response carries a generic message (the real exception
+            # is logged server-side only, never exposed to the client).
+            assert "Simulated workflow failure" not in data["error"]
+            assert data["error"]
