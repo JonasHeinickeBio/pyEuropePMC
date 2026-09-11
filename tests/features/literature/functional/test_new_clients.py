@@ -43,6 +43,17 @@ def _url_host(url: str) -> str:
     return urlparse(url).netloc.lower()
 
 
+def _host_is(url: str, domain: str) -> bool:
+    """True if `url`'s host is exactly `domain` or a subdomain of it.
+
+    A plain `endswith(domain)` is itself spoofable (e.g. "evil-doaj.org"
+    ends with "doaj.org"); this requires an exact match or a "."-delimited
+    subdomain boundary.
+    """
+    host = _url_host(url)
+    return host == domain or host.endswith(f".{domain}")
+
+
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
@@ -149,7 +160,7 @@ class TestDOAJClient:
 
     def test_instantiation(self):
         client = DOAJClient()
-        assert _url_host(client.base_url).endswith("doaj.org")
+        assert _host_is(client.base_url, "doaj.org")
 
     def test_search_empty(self):
         client = DOAJClient(rate_limit_delay=0.1, timeout=5)
@@ -167,7 +178,7 @@ class TestDBLPClient:
 
     def test_instantiation(self):
         client = DBLPClient()
-        assert _url_host(client.base_url).endswith("dblp.org")
+        assert _host_is(client.base_url, "dblp.org")
 
     def test_search_empty(self):
         """Empty query returns empty list (may raise if API unreachable)."""
@@ -198,7 +209,7 @@ class TestCOREClient:
 
     def test_instantiation(self):
         client = COREClient()
-        assert _url_host(client.base_url).endswith("core.ac.uk")
+        assert _host_is(client.base_url, "core.ac.uk")
 
     def test_search_no_key(self):
         """Without API key, search should fail gracefully."""
@@ -212,7 +223,7 @@ class TestICiteClient:
 
     def test_instantiation(self):
         client = ICiteClient()
-        assert _url_host(client.base_url).endswith("icite.od.nih.gov")
+        assert _host_is(client.base_url, "icite.od.nih.gov")
 
     def test_enrich_invalid(self):
         client = ICiteClient(rate_limit_delay=0.1, timeout=5)
