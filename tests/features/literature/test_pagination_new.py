@@ -105,6 +105,11 @@ class TestPaginationState:
 
         state = PaginationState(query="test query")
         time.sleep(0.01)  # Small delay
+        # elapsed_time() is last_updated - started_at; both are set to
+        # time.time() independently in __post_init__, so merely sleeping
+        # doesn't move last_updated - call update() (as real pagination
+        # progress would) to advance it past started_at.
+        state.update(fetched_count=1)
 
         elapsed = state.elapsed_time()
         assert elapsed > 0
