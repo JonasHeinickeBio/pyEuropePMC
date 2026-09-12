@@ -236,7 +236,7 @@ entity_annotations = client.get_annotations_by_entity(
 
 ### Parsing Annotations
 ```python
-from pyeuropepmc.processing.annotation_parser import parse_annotations
+from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
 parsed = parse_annotations(annotations)
 print(f"Entities: {len(parsed['entities'])}")

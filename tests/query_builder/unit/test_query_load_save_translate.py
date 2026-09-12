@@ -15,8 +15,12 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(not is_dependency_available("search_query"), reason="skipped due to missing search_query")
+
 from pyeuropepmc.core.exceptions import QueryBuilderError
-from pyeuropepmc.query.query_builder import QueryBuilder
+from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
 
 class TestQueryBuilderFromString:
@@ -464,21 +468,25 @@ class TestIntegrationLoadSaveTranslate:
 
 
 class TestSearchQueryNotAvailable:
-    """Test behavior when search-query package is not available."""
+    """Test behavior when search-query package is not available.
 
-    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    With lazy imports inside method bodies, we mock at the actual import
+    target (search_query.*) rather than the module-level attribute.
+    """
+
+    @patch("search_query.parser.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_from_string_raises_import_error(self, mock_parse) -> None:
         """Test that from_string raises ImportError when package not available."""
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_string("cancer", platform="pubmed")
 
-    @patch("pyeuropepmc.query.query_builder.load_search_file", side_effect=ImportError("No module named 'search_query'"))
+    @patch("search_query.search_file.load_search_file", side_effect=ImportError("No module named 'search_query'"))
     def test_from_file_raises_import_error(self, mock_load) -> None:
         """Test that from_file raises ImportError when package not available."""
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_file("test.json")
 
-    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("search_query.parser.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_save_raises_import_error(self, mock_parse) -> None:
         """Test that save raises ImportError when package not available."""
         qb = QueryBuilder()
@@ -487,7 +495,7 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.save("test.json")
 
-    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("search_query.parser.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_translate_raises_import_error(self, mock_parse) -> None:
         """Test that translate raises ImportError when package not available."""
         qb = QueryBuilder()
@@ -496,7 +504,7 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.translate("wos")
 
-    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("search_query.parser.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_to_query_object_raises_import_error(self, mock_parse) -> None:
         """Test that to_query_object raises ImportError when package not available."""
         qb = QueryBuilder()
@@ -505,7 +513,7 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             qb.to_query_object()
 
-    @patch("pyeuropepmc.query.query_builder.parse", side_effect=ImportError("No module named 'search_query'"))
+    @patch("search_query.parser.parse", side_effect=ImportError("No module named 'search_query'"))
     def test_evaluate_raises_import_error(self, mock_parse) -> None:
         """Test that evaluate raises ImportError when package not available."""
         qb = QueryBuilder()

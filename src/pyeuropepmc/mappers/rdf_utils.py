@@ -5,13 +5,15 @@ This module contains reusable helper functions for RDF mapping operations,
 extracted from the RDFMapper class to improve maintainability and modularity.
 """
 
+from __future__ import annotations
+
 from collections.abc import Callable
 import re
-from typing import Any
-import uuid
+from typing import TYPE_CHECKING, Any
 
-from rdflib import Graph, Literal, URIRef
-from rdflib.namespace import XSD
+if TYPE_CHECKING:
+    from rdflib import Graph, Literal, URIRef
+import uuid
 
 from .config_utils import load_rdf_config
 
@@ -79,12 +81,15 @@ class URIFactory:
         URIRef
             Generated URI for the entity
         """
+
         entity_class = entity.__class__.__name__
         generator = self.generators.get(entity_class, self._generate_fallback_uri)
         return generator(entity, parent_uri)
 
     def _generate_paper_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for paper entity."""
+        from rdflib import URIRef
+
         # Prioritize PMID for PubMed resolvable URIs
         if getattr(entity, "pmid", None):
             return URIRef(f"https://pubmed.ncbi.nlm.nih.gov/{entity.pmid}/")
@@ -97,6 +102,8 @@ class URIFactory:
 
     def _generate_author_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for author entity."""
+        from rdflib import URIRef
+
         # Prioritize normalized name for consistent URIs
         normalized_name = self._normalize_name(
             getattr(entity, "full_name", "") or getattr(entity, "name", "")
@@ -115,6 +122,8 @@ class URIFactory:
         self, entity: Any, parent_uri: URIRef | str | None = None
     ) -> URIRef:
         """Generate URI for institution entity."""
+        from rdflib import URIRef
+
         if getattr(entity, "ror_id", None):
             return URIRef(entity.ror_id)
         if getattr(entity, "openalex_id", None):
@@ -128,6 +137,8 @@ class URIFactory:
         self, entity: Any, parent_uri: URIRef | str | None = None
     ) -> URIRef:
         """Generate URI for reference entity using resolvable identifiers."""
+        from rdflib import URIRef
+
         # Prioritize PMID for PubMed resolvable URIs (most specific for biomedical literature)
         if getattr(entity, "pmid", None):
             return URIRef(f"https://pubmed.ncbi.nlm.nih.gov/{entity.pmid}/")
@@ -146,6 +157,8 @@ class URIFactory:
 
     def _generate_reference_fallback_uri(self, entity: Any) -> URIRef:
         """Generate fallback URI for reference using first author + year + hash."""
+        from rdflib import URIRef
+
         first_author_last_name = self._extract_reference_first_author(entity)
         year = getattr(entity, "year", None) or getattr(entity, "publication_year", None)
 
@@ -201,6 +214,8 @@ class URIFactory:
 
     def _generate_journal_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for journal entity using abbreviation."""
+        from rdflib import URIRef
+
         # Prioritize medline abbreviation, then ISO abbreviation
         abbreviation = getattr(entity, "medline_abbreviation", None) or getattr(
             entity, "iso_abbreviation", None
@@ -248,6 +263,8 @@ class URIFactory:
 
     def _generate_section_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for section entity using title-based identifier."""
+        from rdflib import URIRef
+
         paper_id = self._extract_paper_identifier(parent_uri)
 
         title = getattr(entity, "title", None)
@@ -272,6 +289,8 @@ class URIFactory:
 
     def _generate_table_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for table entity using label-based identifier."""
+        from rdflib import URIRef
+
         paper_id = self._extract_paper_identifier(parent_uri)
 
         # First try table_label (e.g., "Table 1")
@@ -307,6 +326,8 @@ class URIFactory:
 
     def _generate_figure_uri(self, entity: Any, parent_uri: URIRef | str | None = None) -> URIRef:
         """Generate URI for figure entity using label-based identifier."""
+        from rdflib import URIRef
+
         paper_id = self._extract_paper_identifier(parent_uri)
 
         # First try figure_label (e.g., "Figure 1")
@@ -357,6 +378,8 @@ class URIFactory:
         URIRef
             Generated URI for the grant
         """
+        from rdflib import URIRef
+
         award_id = funder_dict.get("award_id")
         fundref_doi = funder_dict.get("fundref_doi")
         source = funder_dict.get("source")
@@ -391,6 +414,8 @@ class URIFactory:
         self, entity: Any, parent_uri: URIRef | str | None = None
     ) -> URIRef:
         """Generate a stable URI for annotation entities."""
+        from rdflib import URIRef
+
         annotation_id = getattr(entity, "id", None)
         if annotation_id:
             annotation_id_str = str(annotation_id)
@@ -456,6 +481,8 @@ class URIFactory:
         self, entity: Any, parent_uri: URIRef | str | None = None
     ) -> URIRef:
         """Generate fallback URI for paper using first author + year + short journal."""
+        from rdflib import URIRef
+
         first_author_last_name = self._extract_first_author_last_name(entity)
         year = getattr(entity, "publication_year", None)
         short_journal = self._extract_short_journal_name(entity)
@@ -522,6 +549,8 @@ class URIFactory:
     ) -> URIRef:
         """Generate fallback URI using UUID for any entity type."""
         import uuid
+
+        from rdflib import URIRef
 
         # Handle dict objects that shouldn't be here
         if isinstance(entity, dict):
@@ -639,26 +668,31 @@ def generate_compact_institution_id(display_name: str) -> str:
 
 def generate_paper_uri(entity: Any) -> URIRef:
     """Generate URI for paper entity."""
+
     return uri_factory._generate_paper_uri(entity)
 
 
 def generate_author_uri(entity: Any) -> URIRef:
     """Generate URI for author entity."""
+
     return uri_factory._generate_author_uri(entity)
 
 
 def generate_institution_uri(entity: Any) -> URIRef:
     """Generate URI for institution entity."""
+
     return uri_factory._generate_institution_uri(entity)
 
 
 def generate_reference_uri(entity: Any) -> URIRef:
     """Generate URI for reference entity."""
+
     return uri_factory._generate_reference_uri(entity)
 
 
 def generate_fallback_uri(entity: Any) -> URIRef:
     """Generate fallback URI for entity."""
+
     return uri_factory._generate_fallback_uri(entity)
 
 
@@ -676,6 +710,7 @@ def generate_entity_uri(entity: Any) -> URIRef:
     URIRef
         Generated URI for the entity
     """
+
     return uri_factory.generate_uri(entity)
 
 
@@ -706,6 +741,8 @@ def _handle_entity_annotation_special_cases(
     context: URIRef | None,
     hasbody_added: bool,
 ) -> bool:
+    from rdflib import Literal
+
     """
     Handle special cases for EntityAnnotation oa:hasBody field.
 
@@ -770,6 +807,8 @@ def map_single_value_fields(
         resolve_predicate: Function to resolve predicate strings to URIRefs
         context: Optional named graph context
     """
+    from rdflib import Literal
+
     # Check if this is an EntityAnnotation to handle oa:hasBody specially
     from pyeuropepmc.models.annotation import EntityAnnotation
 
@@ -837,6 +876,8 @@ def _try_database_format(entity_id: str) -> URIRef | None:
     Returns:
         URIRef if parsing succeeded, None otherwise
     """
+    from rdflib import URIRef
+
     parts = entity_id.split(":", 1)
     if len(parts) != 2:
         return None
@@ -905,6 +946,8 @@ def _construct_entity_uri(entity_id: str) -> URIRef | None:
         >>> _construct_entity_uri("metabolic failure") is None
         True
     """
+    from rdflib import URIRef
+
     if not entity_id or not isinstance(entity_id, str):
         return None
 
@@ -925,6 +968,8 @@ def _construct_entity_uri(entity_id: str) -> URIRef | None:
 
 
 def _parse_datatype(datatype_str: str) -> URIRef | None:
+    from rdflib.namespace import XSD
+
     """
     Parse a datatype string (e.g., 'xsd:string') into an RDF datatype URIRef.
 
@@ -962,6 +1007,8 @@ def _parse_datatype(datatype_str: str) -> URIRef | None:
 
 
 def _infer_datatype(field_name: str, value: Any) -> URIRef | None:
+    from rdflib.namespace import XSD
+
     """
     Infer XSD datatype based on field name and value (legacy fallback).
 
@@ -1018,6 +1065,8 @@ def map_multi_value_fields(
     context: URIRef | None = None,
 ) -> None:
     """Map multi-value fields to RDF triples."""
+    from rdflib import Literal
+
     for field_name, predicate_str in multi_value_mapping.items():
         values = getattr(entity, field_name, None)
         if values is not None and isinstance(values, list):
@@ -1072,6 +1121,8 @@ def _add_structured_mesh_term(
     context: URIRef | None,
 ) -> None:
     """Add structured MeSH heading with qualifiers to RDF graph."""
+    from rdflib import Literal, URIRef
+
     # Create MeSH descriptor URI (normalized)
     descriptor_normalized = mesh_term.descriptor_name.replace(" ", "_")
     mesh_uri = URIRef(f"http://id.nlm.nih.gov/mesh/{descriptor_normalized}")
@@ -1131,6 +1182,8 @@ def _add_mesh_qualifier(
     context: URIRef | None,
 ) -> None:
     """Add MeSH qualifier and DescriptorQualifierPair to RDF graph."""
+    from rdflib import Literal, URIRef
+
     qualifier_normalized = qualifier.qualifier_name.replace(" ", "_")
     qualifier_uri = URIRef(f"http://id.nlm.nih.gov/mesh/{qualifier_normalized}")
 
@@ -1192,6 +1245,8 @@ def _add_simple_mesh_term(
     context: URIRef | None,
 ) -> None:
     """Add simple string MeSH term to RDF graph (backward compatibility)."""
+    from rdflib import Literal
+
     _add_triple(
         g,
         subject,
@@ -1232,6 +1287,8 @@ def _finalize_ontology_alignments(
     context: URIRef | None = None,
 ) -> None:
     """Finalize ontology alignments with keywords mapping."""
+    from rdflib import Literal
+
     # Also map keywords as MeSH terms for backward compatibility
     if hasattr(entity, "keywords") and entity.keywords:
         for keyword in entity.keywords:
@@ -1281,6 +1338,8 @@ def map_institution_ontology_alignments(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
     """Map ontology alignments for institution entities."""
+    from rdflib import URIRef
+
     # Add geographic coordinates if available
     if (
         hasattr(entity, "latitude")
@@ -1310,6 +1369,8 @@ def add_paper_identifiers(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
     """Add external identifiers for paper."""
+    from rdflib import URIRef
+
     if entity.doi:
         g.add(
             (
@@ -1359,6 +1420,8 @@ def add_author_identifiers(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
     """Add external identifiers for author."""
+    from rdflib import URIRef
+
     if hasattr(entity, "orcid") and entity.orcid:
         g.add(
             (
@@ -1381,6 +1444,8 @@ def add_institution_identifiers(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
     """Add external identifiers for institution."""
+    from rdflib import URIRef
+
     if hasattr(entity, "ror_id") and entity.ror_id:
         g.add(
             (
@@ -1411,6 +1476,8 @@ def add_reference_identifiers(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
     """Add external identifiers for reference."""
+    from rdflib import URIRef
+
     if hasattr(entity, "doi") and entity.doi:
         g.add(
             (
@@ -1433,6 +1500,8 @@ def add_entity_annotation_identifiers(
     g: Graph, subject: URIRef, entity: Any, resolve_predicate: Callable[[str], URIRef]
 ) -> None:
     """Add owl:sameAs links to external concept IRIs for entity annotations."""
+    from rdflib import URIRef
+
     if hasattr(entity, "entity_id") and entity.entity_id:
         # entity_id contains the concept IRI (e.g., http://linkedlifedata.com/resource/umls-concept/C0015674)
         # Link to it using owl:sameAs to enable semantic integration

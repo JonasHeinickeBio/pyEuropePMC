@@ -4,9 +4,9 @@ Quick test to verify caching is integrated in all clients.
 import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.clients.article import ArticleClient
-from pyeuropepmc.clients.fulltext import FullTextClient
-from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.features.literature.article import ArticleClient
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 
 class TestSearchClientCaching:

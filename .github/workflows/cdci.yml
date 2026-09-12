@@ -33,7 +33,11 @@ jobs:
           virtualenvs-in-project: true
 
       - name: Install dependencies
-        run: poetry install --with dev --no-interaction --no-ansi
+        # `--all-extras`: this job's purpose is coverage/quality gating
+        # (Enforce coverage threshold below assumes the full feature surface
+        # is exercised) - the light-core-only install experience is what
+        # unit-tests.yml validates separately.
+        run: poetry install --with dev --all-extras --no-interaction --no-ansi
 
       - name: Run Ruff (linting and formatting check)
         run: |

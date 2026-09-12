@@ -17,7 +17,7 @@ import sys
 # Add src to path
 sys.path.insert(0, str(Path(__file__).parent.parent / "src"))
 
-from pyeuropepmc.query_builder import validate_field_coverage
+from pyeuropepmc.features.literature.query_builder import validate_field_coverage
 
 
 def main() -> int:

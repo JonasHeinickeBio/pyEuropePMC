@@ -9,16 +9,28 @@
 * [Installation](getting-started/installation.md)
 * [Quick Start](getting-started/quickstart.md)
 * [FAQ](getting-started/faq.md)
+* [Migrating 1.x → 2.0](migration/v1-to-v2.md)
 
 ## Features
 
 * [Features Overview](features/README.md)
 * [Search](features/search/README.md)
+* [Multi-Source Search](features/multi-source-search.md)
+* [Citation Graph Walking](features/citation-walking.md)
 * [Full-Text Retrieval](features/fulltext/README.md)
 * [XML Parsing](features/parsing/README.md)
 * [XML Parser Guide](features/parsing/xml-parser-guide.md)
 * [JATS Normalization](features/parsing/jats-normalization.md)
 * [Query Builder](features/query-builder-load-save-translate.md)
+* [Intelligent Deduplication](features/dedup.md)
+* [ClinicalTrials.gov Integration](features/clinical-trials.md)
+* [arXiv Integration](features/arxiv.md)
+* [ORCID Integration](features/orcid.md)
+* [Full-Text Indexing (FTS5)](features/fulltext-index.md)
+* [Figure Extraction](features/figure-extraction.md)
+* [Rhetorical Highlighting](features/rhetorical-highlighting.md)
+* [MeSH Models & PICO](features/mesh-pico.md)
+* [Additional Source Clients](features/small-source-clients.md)
 * [Systematic Review Tracking](features/systematic-review-tracking.md)
 * [Caching](features/caching/README.md)
 
@@ -82,6 +94,7 @@
 * [Development Guide](development/README.md)
 * [Python Version Strategy](development/python-version-strategy.md)
 * [Testing & CI/CD](development/testing-improvements.md)
+* [v2.0.0 Release Checklist](development/v2-release-checklist.md)
 * [QueryBuilder Refactoring](development/query-builder-refactoring.md)
 * [CodeScene Setup](development/codescene-setup.md)
 

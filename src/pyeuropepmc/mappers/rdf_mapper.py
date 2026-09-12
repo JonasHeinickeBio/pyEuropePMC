@@ -2,12 +2,15 @@
 RDF Mapper for converting entities to RDF triples based on YAML configuration.
 """
 
+from __future__ import annotations
+
 import os
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from rdflib import BNode, Dataset, Graph, Literal, Namespace, URIRef
-from rdflib.namespace import DCTERMS, RDF
+if TYPE_CHECKING:
+    from rdflib import Graph, Namespace, URIRef
+
 import yaml
 
 from pyeuropepmc.mappers.rdf_utils import (
@@ -109,6 +112,8 @@ class RDFMapper:
         dict
             Dictionary mapping prefix to Namespace object
         """
+        from rdflib import Namespace
+
         prefix_config = self.config.get("_@prefix", {})
         namespaces = {}
 
@@ -131,6 +136,8 @@ class RDFMapper:
         URIRef or None
             The named graph URI if configured and enabled, None otherwise
         """
+        from rdflib import URIRef
+
         if not self.enable_named_graphs:
             return None
 
@@ -194,6 +201,8 @@ class RDFMapper:
         >>> print(uri)
         http://purl.org/dc/terms/title
         """
+        from rdflib import URIRef
+
         if ":" in predicate_str:
             prefix, local = predicate_str.split(":", 1)
             if prefix in self.namespaces:
@@ -227,6 +236,8 @@ class RDFMapper:
         >>> subject = URIRef("http://example.org/paper1")
         >>> mapper.add_types(g, subject, ["bibo:AcademicArticle"])
         """
+        from rdflib.namespace import RDF
+
         for type_str in types:
             type_uri = self._resolve_predicate(type_str)
             if context:
@@ -259,6 +270,7 @@ class RDFMapper:
         >>> subject = URIRef("http://example.org/paper1")
         >>> mapper.map_fields(g, subject, paper)
         """
+
         # Get mappings for this class and all parent classes
         all_mappings = self._get_entity_mappings(entity)
 
@@ -281,6 +293,7 @@ class RDFMapper:
         context: URIRef | None = None,
     ) -> None:
         """Map entity relationships to RDF triples."""
+
         relationships_mapping = mapping.get("relationships", {})
 
         for rel_name, rel_config in relationships_mapping.items():
@@ -424,7 +437,8 @@ class RDFMapper:
         context: URIRef | None = None,
     ) -> None:
         """Map complex fields (dicts, nested structures) to RDF triples."""
-        from rdflib import XSD
+        from rdflib import XSD, BNode, Literal, URIRef
+        from rdflib.namespace import DCTERMS, RDF
 
         complex_mapping = mapping.get("complex_fields", {})
 
@@ -629,6 +643,7 @@ class RDFMapper:
         >>> related = {"authors": authors}
         >>> mapper.map_relationships(g, subject, paper, related)
         """
+
         entity_class_name = entity.__class__.__name__
         mapping = self.config.get(entity_class_name, {})
         related_entities = related_entities or {}
@@ -760,6 +775,7 @@ class RDFMapper:
         >>> print(uri)
         https://doi.org/10.1234/test.2021.001
         """
+
         return self._generate_entity_uri(entity)
 
     def add_provenance(
@@ -799,6 +815,7 @@ class RDFMapper:
         """
         from datetime import datetime
 
+        from rdflib import Literal, URIRef
         from rdflib.namespace import XSD
 
         extraction_info = extraction_info or {}
@@ -1006,6 +1023,8 @@ class RDFMapper:
             Dictionary mapping identifier to RDF Graph objects
         """
         from datetime import datetime
+
+        from rdflib import Dataset
 
         # Ensure output directory exists
         os.makedirs(output_dir, exist_ok=True)

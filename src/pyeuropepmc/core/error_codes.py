@@ -1378,7 +1378,7 @@ def get_error_code_prefix(error_code: ErrorCodes | str) -> str:
         'HTTP'
     """
     code_str = error_code.value if isinstance(error_code, ErrorCodes) else error_code
-    return code_str[:3] if code_str.startswith("HTTP") else code_str[:2]
+    return code_str.rstrip("0123456789")
 
 
 def get_error_severity(error_code: ErrorCodes | str) -> str:

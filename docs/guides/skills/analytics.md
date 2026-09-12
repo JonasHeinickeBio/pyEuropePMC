@@ -4,7 +4,7 @@ Generate statistics and visualizations from search results.
 
 ```python
 from pyeuropepmc import SearchClient, to_dataframe
-from pyeuropepmc.processing.analytics import (
+from pyeuropepmc.features.analytics.analytics import (
     citation_statistics,
     publication_year_distribution,
     plot_citation_distribution,

@@ -17,13 +17,16 @@ Usage:
 
 """
 
+from __future__ import annotations
+
 import json
 import os
 from pathlib import Path
 import tempfile
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-from rdflib import Graph
+if TYPE_CHECKING:
+    from rdflib import Graph
 
 try:
     from rdfizer import semantify
@@ -133,6 +136,8 @@ class RMLRDFizer:
         >>> papers = [PaperEntity(pmcid="PMC123", title="Test")]
         >>> g = rdfizer.entities_to_rdf(papers, entity_type="paper")
         """
+        from rdflib import Graph
+
         # Create temporary directory for JSON data
         with tempfile.TemporaryDirectory() as temp_dir:
             # Convert entities to JSON
@@ -406,7 +411,7 @@ class RMLRDFizer:
         if output_files:
             return output_files[0]
 
-        # Return empty path if no output
+        # No output produced
         return ""
 
     def convert_json_to_rdf(
@@ -474,12 +479,16 @@ class RMLRDFizer:
             # Run RDFizer
             output_file = self._run_rdfizer(temp_config, temp_dir)
 
-            # Load output
+            # Load output into RDF graph *before* the temporary directory
+            # (and the output file inside it) is removed on exiting this
+            # `with` block.
+            from rdflib import Graph
+
             g = Graph()
-            if os.path.exists(output_file):
+            if output_file and os.path.exists(output_file):
                 g.parse(output_file, format="nt")
 
-            # Bind namespaces to ensure proper prefixes in serialization
-            self._bind_namespaces(g)
+        # Bind namespaces to ensure proper prefixes in serialization
+        self._bind_namespaces(g)
 
-            return g
+        return g

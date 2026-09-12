@@ -5,7 +5,7 @@ This example demonstrates how to use the professional library's bulk search
 feature for efficient large-scale literature mining.
 """
 
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 
 def main():

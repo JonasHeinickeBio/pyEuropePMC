@@ -5,21 +5,53 @@ This module provides the foundational BaseEntity class that all other entities i
 with support for RDF serialization, validation, and normalization.
 """
 
+from __future__ import annotations
+
 from dataclasses import asdict, dataclass, field
-from typing import Any
+from typing import TYPE_CHECKING, Any
 import uuid
 
-from rdflib import Namespace, URIRef
+if TYPE_CHECKING:
+    from rdflib import Namespace, URIRef
 
-# RDF namespaces for ontology alignment
-EX = Namespace("http://example.org/")
-DATA = Namespace("http://example.org/data/")
-DCT = Namespace("http://purl.org/dc/terms/")
-RDFS = Namespace("http://www.w3.org/2000/01/rdf-schema#")
-PROV = Namespace("http://www.w3.org/ns/prov#")
-BIBO = Namespace("http://purl.org/ontology/bibo/")
-FOAF = Namespace("http://xmlns.com/foaf/0.1/")
-NIF = Namespace("http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#")
+
+class _LazyNamespace:
+    def __init__(self, uri: str) -> None:
+        self._uri = uri
+        self._ns: Namespace | None = None
+
+    def _get_ns(self) -> Namespace:
+        if self._ns is None:
+            from rdflib import Namespace
+
+            self._ns = Namespace(self._uri)
+        return self._ns
+
+    def __getattr__(self, name: str) -> Any:
+        return getattr(self._get_ns(), name)
+
+    def __getitem__(self, key: str) -> Any:
+        return self._get_ns()[key]
+
+    def __str__(self) -> str:
+        return str(self._get_ns())
+
+    def __repr__(self) -> str:
+        return repr(self._get_ns())
+
+    def __fspath__(self) -> str:
+        return str(self._get_ns())
+
+
+# RDF namespaces for ontology alignment (lazy-loaded)
+EX = _LazyNamespace("http://example.org/")
+DATA = _LazyNamespace("http://example.org/data/")
+DCT = _LazyNamespace("http://purl.org/dc/terms/")
+RDFS = _LazyNamespace("http://www.w3.org/2000/01/rdf-schema#")
+PROV = _LazyNamespace("http://www.w3.org/ns/prov#")
+BIBO = _LazyNamespace("http://purl.org/ontology/bibo/")
+FOAF = _LazyNamespace("http://xmlns.com/foaf/0.1/")
+NIF = _LazyNamespace("http://persistence.uni-leipzig.org/nlp2rdf/ontologies/nif-core#")
 
 __all__ = [
     "BaseEntity",
@@ -93,6 +125,8 @@ class BaseEntity:
         >>> print(uri)
         http://example.org/data/paper/12345
         """
+        from rdflib import URIRef
+
         if self.id is None:
             self.id = str(uuid.uuid4())
         return URIRef(f"{DATA}{path}/{self.id}")
@@ -250,6 +284,7 @@ class BaseEntity:
         >>> mapper = RDFMapper()
         >>> uri = entity.to_rdf(g, mapper=mapper)
         """
+
         if mapper is None:
             raise ValueError("RDF mapper required")
 

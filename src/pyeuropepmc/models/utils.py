@@ -521,14 +521,16 @@ def validate_and_normalize_date(date_input: str | date | None) -> date | str | N
         if date_str is None:
             return None
 
-        # Try to parse common date formats
-        from dateutil import parser
-
+        # Try to parse common date formats. python-dateutil is not a core
+        # dependency (only used for this fuzzy-parsing convenience), so fall
+        # back to the cleaned string when it isn't installed - same as an
+        # unparseable date.
         try:
+            from dateutil import parser
+
             parsed_date = parser.parse(date_str, fuzzy=True)
             return date.fromisoformat(parsed_date.date().isoformat())  # Ensure proper date type
-        except (ValueError, TypeError):
-            # If parsing fails, return the cleaned string
+        except (ValueError, TypeError, ImportError):
             return date_str
 
     raise ValueError(f"Invalid date format: {date_input}")

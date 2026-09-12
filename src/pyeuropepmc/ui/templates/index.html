@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>pyEuropePMC — Claim Verification</title>
+  <style>
+    :root {
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #212529;
+      --muted: #6c757d;
+      --primary: #0d6efd;
+      --success: #198754;
+      --danger: #dc3545;
+      --warning: #ffc107;
+      --border: #dee2e6;
+      --radius: 8px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    .container { max-width: 900px; margin: 0 auto; padding: 2rem 1rem; }
+    header {
+      background: var(--primary);
+      color: #fff;
+      padding: 1.5rem 0;
+      margin-bottom: 2rem;
+    }
+    header .container { padding: 0 1rem; }
+    header h1 { font-size: 1.5rem; font-weight: 600; }
+    header p { opacity: 0.9; font-size: 0.9rem; margin-top: 0.25rem; }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .card h2 { font-size: 1.2rem; margin-bottom: 1rem; }
+    textarea, input[type="text"], select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-family: inherit;
+      margin-bottom: 1rem;
+    }
+    textarea { min-height: 150px; resize: vertical; }
+    label { font-weight: 600; display: block; margin-bottom: 0.5rem; }
+    .checkbox-label { display: flex; align-items: center; gap: 0.5rem; font-weight: normal; cursor: pointer; }
+    .checkbox-label input { width: auto; margin: 0; }
+    .btn {
+      display: inline-block;
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--radius);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      text-decoration: none;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-success { background: var(--success); color: #fff; }
+    .btn-danger { background: var(--danger); color: #fff; }
+    .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
+    .btn-sm { padding: 0.4rem 0.8rem; font-size: 0.85rem; }
+    .badge {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .badge-success { background: #d1e7dd; color: #0f5132; }
+    .badge-danger { background: #f8d7da; color: #842029; }
+    .badge-warning { background: #fff3cd; color: #664d03; }
+    .badge-info { background: #cff4fc; color: #055160; }
+    .badge-secondary { background: #e2e3e5; color: #41464b; }
+    .claim-item {
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+    }
+    .claim-header { display: flex; justify-content: space-between; align-items: start; margin-bottom: 0.5rem; }
+    .claim-text { font-size: 1.05rem; margin-bottom: 0.5rem; }
+    .claim-meta { font-size: 0.85rem; color: var(--muted); margin-bottom: 0.75rem; }
+    .claim-meta span { margin-right: 1rem; }
+    .evidence-item {
+      background: var(--bg);
+      border-radius: var(--radius);
+      padding: 0.75rem;
+      margin: 0.5rem 0;
+      font-size: 0.9rem;
+      border-left: 3px solid var(--primary);
+    }
+    .evidence-item .paper { font-weight: 600; }
+    .evidence-item .details { font-size: 0.8rem; color: var(--muted); }
+    .decision-btns { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
+    .decision-btns .btn { min-width: 100px; }
+    .btn-accepted { background: var(--success); color: #fff; opacity: 0.7; }
+    .btn-rejected { background: var(--danger); color: #fff; opacity: 0.7; }
+    .progress-bar {
+      height: 8px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-fill {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.5s ease;
+      border-radius: 4px;
+    }
+    .bib-entry {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.9rem;
+    }
+    .bib-entry:last-child { border-bottom: none; }
+    .improved-text {
+      white-space: pre-wrap;
+      background: var(--bg);
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      line-height: 1.8;
+    }
+    .alert {
+      padding: 1rem;
+      border-radius: var(--radius);
+      margin-bottom: 1rem;
+    }
+    .alert-error { background: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+    .alert-info { background: #cff4fc; color: #055160; border: 1px solid #b6effb; }
+    .spinner {
+      display: inline-block;
+      width: 1.5rem;
+      height: 1.5rem;
+      border: 3px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .hidden { display: none; }
+    .flex { display: flex; gap: 1rem; align-items: center; }
+    .flex-between { display: flex; justify-content: space-between; align-items: center; }
+    .mt-1 { margin-top: 0.5rem; }
+    .mt-2 { margin-top: 1rem; }
+    .mb-1 { margin-bottom: 0.5rem; }
+    .mb-2 { margin-bottom: 1rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <h1>🔬 Claim Verification Workflow</h1>
+      <p>Multi-agent analysis powered by pyEuropePMC + LangGraph</p>
+    </div>
+  </header>
+  <main class="container">
+    <div class="card">
+      <h2>Enter Text for Analysis</h2>
+      <p class="mb-2" style="color: var(--muted);">
+        Paste a sentence or paragraph from a scientific text. The system will
+        extract claims, verify them against Europe PMC literature, and help
+        you produce an improved version with citations.
+      </p>
+      <form id="workflow-form">
+        <label for="text">Source text</label>
+        <textarea id="text" name="text" placeholder="e.g., CRISPR-Cas9 is a gene editing tool that corrects 75% of genetic mutations in vitro. It was first discovered in bacteria in 1987." required></textarea>
+
+        <div class="flex mb-2">
+          <div style="flex: 1;">
+            <label for="bib_format">Bibliography format</label>
+            <select id="bib_format" name="bib_format">
+              <option value="bibtex">BibTeX</option>
+              <option value="ris">RIS</option>
+              <option value="csl">CSL-JSON</option>
+            </select>
+          </div>
+          <div style="flex: 1;">
+            <label class="checkbox-label">
+              <input type="checkbox" id="auto_accept" name="auto_accept">
+              Auto-accept all claims
+            </label>
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="submit-btn">
+          Start Analysis
+        </button>
+      </form>
+      <div id="loading" class="hidden" style="text-align: center; padding: 2rem;">
+        <div class="spinner"></div>
+        <p class="mt-1" style="color: var(--muted);">Running multi-agent analysis...</p>
+      </div>
+    </div>
+
+    <div class="card" id="status-card" style="display: none;">
+      <h2>Status</h2>
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 0%;"></div>
+      </div>
+      <p id="status-text" style="color: var(--muted);">Starting...</p>
+    </div>
+  </main>
+
+  <script>
+    document.getElementById("workflow-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const form = e.target;
+      const submitBtn = document.getElementById("submit-btn");
+      const loading = document.getElementById("loading");
+      const statusCard = document.getElementById("status-card");
+
+      submitBtn.disabled = true;
+      loading.classList.remove("hidden");
+      statusCard.style.display = "block";
+
+      try {
+        const resp = await fetch("/api/workflow/start", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            text: document.getElementById("text").value,
+            auto_accept: document.getElementById("auto_accept").checked,
+            bib_format: document.getElementById("bib_format").value,
+          }),
+        });
+
+        const data = await resp.json();
+
+        if (data.status === "complete") {
+          window.location.href = data.redirect;
+        } else if (data.status === "needs_review") {
+          window.location.href = data.redirect;
+        } else if (data.status === "error") {
+          alert("Error: " + (data.error || "Unknown error"));
+          submitBtn.disabled = false;
+          loading.classList.add("hidden");
+          statusCard.style.display = "none";
+        }
+      } catch (err) {
+        alert("Network error: " + err.message);
+        submitBtn.disabled = false;
+        loading.classList.add("hidden");
+        statusCard.style.display = "none";
+      }
+    });
+  </script>
+</body>
+</html>

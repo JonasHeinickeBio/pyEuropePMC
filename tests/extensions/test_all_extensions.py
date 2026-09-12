@@ -10,7 +10,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 import pytest
 
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 # Apply module-level markers
 pytestmark = pytest.mark.unit
@@ -204,7 +204,7 @@ class TestContentBlocks:
 
     def test_content_block_types(self):
         """Verify ContentBlock factory methods produce correct types."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
         )
@@ -261,7 +261,7 @@ class TestContentBlocks:
 
     def test_content_block_to_dict(self):
         """Verify to_dict omits empty fields."""
-        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         p = ContentBlock.paragraph("Hello")
         d = p.to_dict()
@@ -288,7 +288,7 @@ class TestContentBlocks:
 
     def test_content_block_unknown_preservation(self):
         """Verify unknown JATS blocks are preserved as unknown_block."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
         )
@@ -300,7 +300,7 @@ class TestContentBlocks:
 
     def test_content_block_to_dict_fields(self):
         """Verify to_dict includes non-empty optional fields."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
         )
@@ -330,7 +330,7 @@ class TestContentBlocks:
 
     def test_structured_section_to_dict(self):
         """Verify StructuredSection.to_dict works with section_path and content."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             StructuredSection,
         )
@@ -409,7 +409,7 @@ class TestContentBlocks:
 
     def test_extract_structured_via_import(self):
         """Test direct usage of ContentBlockExtractor."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlockExtractor,
         )
 
@@ -449,7 +449,7 @@ class TestMathMLConverter:
 
     def test_convert_simple_inline(self):
         """Test converting a simple inline math expression."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         mathml = ET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="inline">'
@@ -465,7 +465,7 @@ class TestMathMLConverter:
 
     def test_convert_display_math(self):
         """Test converting display math (block)."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         mathml = ET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="block">'
@@ -479,7 +479,7 @@ class TestMathMLConverter:
 
     def test_convert_fraction(self):
         """Test fraction conversion."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         mathml = ET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML">'
@@ -492,7 +492,7 @@ class TestMathMLConverter:
 
     def test_convert_subscript_superscript(self):
         """Test subscript and superscript conversion."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         # Subscript: x_1
         mathml_sub = ET.fromstring(
@@ -516,7 +516,7 @@ class TestMathMLConverter:
 
     def test_entity_resolution(self):
         """Test that Greek letter entities are resolved."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         converter = MathMLConverter()
         resolved = converter._resolve_entities("&alpha; &beta; &gamma;")
@@ -550,7 +550,7 @@ class TestPeerReview:
 
     def test_extract_peer_reviews(self):
         """Test basic peer review extraction."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
             PeerReviewType,
         )
@@ -572,7 +572,7 @@ class TestPeerReview:
 
     def test_peer_review_contributors(self):
         """Test contributor extraction from reviews."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -587,7 +587,7 @@ class TestPeerReview:
 
     def test_peer_review_content(self):
         """Test that review body content is extracted."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -609,7 +609,7 @@ class TestPeerReview:
 
     def test_to_dict_methods(self):
         """Test to_dict on PeerReviewMaterial and PeerReviewSet."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewMaterial,
             PeerReviewSet,
             PeerReviewType,
@@ -640,7 +640,7 @@ class TestPeerReview:
 
     def test_block_extractor_lazy(self):
         """Test that block_extractor is lazily initialized."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -655,7 +655,7 @@ class TestPeerReview:
 
     def test_root_is_none(self):
         """Test _extract_article_id with no root (line 210)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -665,7 +665,7 @@ class TestPeerReview:
 
     def test_unknown_article_type(self):
         """Test sub-article with unmapped article-type is skipped."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -693,7 +693,7 @@ class TestPeerReview:
 
     def test_doi_article_id(self):
         """Test extraction when article has DOI (no PMID)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -720,7 +720,7 @@ class TestPeerReview:
 
     def test_no_article_id(self):
         """Test extraction when article has no article-id elements."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -741,7 +741,7 @@ class TestPeerReview:
 
     def test_no_title_group(self):
         """Test sub-article without title-group."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -774,7 +774,7 @@ class TestPeerReview:
 
     def test_version_parse_error(self):
         """Test sub-article with non-numeric version falls through."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -804,7 +804,7 @@ class TestPeerReview:
 
     def test_rev_received_fn(self):
         """Test revision round detection from rev-received fn with R label."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -833,7 +833,7 @@ class TestPeerReview:
 
     def test_contrib_without_name(self):
         """Test sub-article with contrib but no name element."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -864,7 +864,7 @@ class TestPeerReview:
 
     def test_contrib_with_empty_name(self):
         """Test contrib with name but empty surname and given-names."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -897,7 +897,7 @@ class TestPeerReview:
 
     def test_no_body(self):
         """Test sub-article without body element."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -924,7 +924,7 @@ class TestPeerReview:
 
     def test_sec_without_content(self):
         """Test sub-article with sec element that has no content blocks."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -955,7 +955,7 @@ class TestPeerReview:
 
     def test_object_id_metadata(self):
         """Test extraction of object-id metadata."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -984,7 +984,7 @@ class TestPeerReview:
 
     def test_get_local_tag_with_namespace(self):
         """Test _get_local_tag strips namespace prefix."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -998,7 +998,7 @@ class TestPeerReview:
     def test_block_extractor_cached(self):
         """Test that block_extractor property returns cached instance on
         subsequent access (branch 156->159)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1011,7 +1011,7 @@ class TestPeerReview:
 
     def test_article_id_empty_text(self):
         """Test extraction when article-id has empty text (branch 215->213)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1039,7 +1039,7 @@ class TestPeerReview:
 
     def test_title_with_article_meta(self):
         """Test title extraction when sub-article uses article-meta (line 228)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1067,7 +1067,7 @@ class TestPeerReview:
 
     def test_rev_received_label_no_number(self):
         """Test rev-received fn with R label but no number (266->273, 270->273)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1097,7 +1097,7 @@ class TestPeerReview:
 
     def test_rev_received_label_without_r(self):
         """Test rev-received fn without 'R' in label (branch 266->273)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1127,7 +1127,7 @@ class TestPeerReview:
 
     def test_bare_p_whitespace_only(self):
         """Test bare p with whitespace-only text (branch 316->312)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1158,7 +1158,7 @@ class TestPeerReview:
 
     def test_object_id_empty_text(self):
         """Test object-id with empty text (branch 349->347)."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
         )
 
@@ -1197,7 +1197,7 @@ class TestJATS4RValidator:
 
     def test_validator_runs(self):
         """Test that validator runs and produces a report."""
-        from pyeuropepmc.processing.extensions.jats4r import JATS4RValidator
+        from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
         root = ET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
@@ -1209,7 +1209,7 @@ class TestJATS4RValidator:
 
     def test_authors_validated(self):
         """Test author validation rules."""
-        from pyeuropepmc.processing.extensions.jats4r import JATS4RValidator
+        from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
         root = ET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
@@ -1221,7 +1221,7 @@ class TestJATS4RValidator:
 
     def test_funding_detected(self):
         """Test funding information detection."""
-        from pyeuropepmc.processing.extensions.jats4r import JATS4RValidator
+        from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
         root = ET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
@@ -1234,7 +1234,7 @@ class TestJATS4RValidator:
 
     def test_abstract_validated(self):
         """Test abstract validation."""
-        from pyeuropepmc.processing.extensions.jats4r import JATS4RValidator
+        from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
         root = ET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
@@ -1247,7 +1247,7 @@ class TestJATS4RValidator:
 
     def test_report_serialization(self):
         """Test ValidationReport serialization."""
-        from pyeuropepmc.processing.extensions.jats4r import (
+        from pyeuropepmc.features.fulltext.extensions.jats4r import (
             JATS4RValidator,
             ValidationFinding,
             ValidationReport,
@@ -1284,7 +1284,7 @@ class TestBatchProcessor:
 
     def test_process_xml_strings(self):
         """Test processing multiple XML strings."""
-        from pyeuropepmc.processing.extensions.batch_processor import (
+        from pyeuropepmc.features.fulltext.extensions.batch_processor import (
             BatchProcessor,
         )
 
@@ -1303,7 +1303,7 @@ class TestBatchProcessor:
 
     def test_batch_result_to_dict(self):
         """Test BatchResult serialization."""
-        from pyeuropepmc.processing.extensions.batch_processor import (
+        from pyeuropepmc.features.fulltext.extensions.batch_processor import (
             BatchProcessor,
         )
 
@@ -1318,7 +1318,7 @@ class TestBatchProcessor:
 
     def test_process_with_extraction_fn(self):
         """Test batch processing with a custom extraction function."""
-        from pyeuropepmc.processing.extensions.batch_processor import (
+        from pyeuropepmc.features.fulltext.extensions.batch_processor import (
             BatchProcessor,
         )
 
@@ -1333,7 +1333,7 @@ class TestBatchProcessor:
 
     def test_empty_input(self):
         """Test processing empty input."""
-        from pyeuropepmc.processing.extensions.batch_processor import (
+        from pyeuropepmc.features.fulltext.extensions.batch_processor import (
             BatchProcessor,
         )
 
@@ -1344,7 +1344,7 @@ class TestBatchProcessor:
 
     def test_progress_callback(self):
         """Test progress callback during batch processing."""
-        from pyeuropepmc.processing.extensions.batch_processor import (
+        from pyeuropepmc.features.fulltext.extensions.batch_processor import (
             BatchProcessor,
         )
 
@@ -1372,7 +1372,7 @@ class TestImageFetcher:
 
     def test_extract_asset_refs(self):
         """Test extracting asset references from XML."""
-        from pyeuropepmc.processing.extensions.image_fetcher import (
+        from pyeuropepmc.features.fulltext.extensions.image_fetcher import (
             AssetType,
             ImageFetcher,
         )
@@ -1395,7 +1395,7 @@ class TestImageFetcher:
 
     def test_asset_ref_to_dict(self):
         """Test AssetRef serialization."""
-        from pyeuropepmc.processing.extensions.image_fetcher import (
+        from pyeuropepmc.features.fulltext.extensions.image_fetcher import (
             AssetRef,
             AssetType,
         )
@@ -1414,7 +1414,7 @@ class TestImageFetcher:
 
     def test_resolve_figure_uris(self):
         """Test URI resolution with article ID."""
-        from pyeuropepmc.processing.extensions.image_fetcher import ImageFetcher
+        from pyeuropepmc.features.fulltext.extensions.image_fetcher import ImageFetcher
 
         figures = [{"graphic_uri": "f1.jpg", "label": "Fig. 1"}]
         resolved = ImageFetcher.resolve_figure_uris(figures, article_id="PMC1234567")
@@ -1424,7 +1424,7 @@ class TestImageFetcher:
 
     def test_already_absolute_uri(self):
         """Test that absolute URIs are not modified."""
-        from pyeuropepmc.processing.extensions.image_fetcher import ImageFetcher
+        from pyeuropepmc.features.fulltext.extensions.image_fetcher import ImageFetcher
 
         figures = [{"graphic_uri": "https://example.com/image.jpg"}]
         resolved = ImageFetcher.resolve_figure_uris(figures, article_id="PMC1234567")
@@ -1441,7 +1441,7 @@ class TestReferenceResolver:
 
     def test_initialization(self):
         """Test that resolver initializes with default rate limit."""
-        from pyeuropepmc.processing.extensions.reference_resolver import (
+        from pyeuropepmc.features.fulltext.extensions.reference_resolver import (
             ReferenceResolver,
         )
 
@@ -1452,7 +1452,7 @@ class TestReferenceResolver:
 
     def test_cache_key_deduplication(self):
         """Test that cache prevents duplicate lookups."""
-        from pyeuropepmc.processing.extensions.reference_resolver import (
+        from pyeuropepmc.features.fulltext.extensions.reference_resolver import (
             ReferenceResolver,
             ResolvedReference,
         )
@@ -1471,7 +1471,7 @@ class TestReferenceResolver:
 
     def test_resolved_reference_to_dict(self):
         """Test ResolvedReference serialization."""
-        from pyeuropepmc.processing.extensions.reference_resolver import (
+        from pyeuropepmc.features.fulltext.extensions.reference_resolver import (
             ResolvedReference,
         )
 
@@ -1502,23 +1502,23 @@ class TestLXMLBackend:
 
     def test_availability_check(self):
         """Test is_lxml_available()."""
-        from pyeuropepmc.processing.extensions.lxml_backend import is_lxml_available
+        from pyeuropepmc.features.fulltext.extensions.lxml_backend import is_lxml_available
 
         # Should return bool (True if lxml installed, False otherwise)
         assert isinstance(is_lxml_available(), bool)
 
     def test_fromstring_when_lxml_not_available(self):
         """Test that appropriate ImportError is raised when lxml isn't available."""
-        from pyeuropepmc.processing.extensions.lxml_backend import is_lxml_available
+        from pyeuropepmc.features.fulltext.extensions.lxml_backend import is_lxml_available
 
         if not is_lxml_available():
             with pytest.raises(ImportError):
-                from pyeuropepmc.processing.extensions.lxml_backend import LXMLParser
+                from pyeuropepmc.features.fulltext.extensions.lxml_backend import LXMLParser
 
                 LXMLParser()
         else:
             # If lxml is available, test actually works
-            from pyeuropepmc.processing.extensions.lxml_backend import LXMLParser
+            from pyeuropepmc.features.fulltext.extensions.lxml_backend import LXMLParser
 
             root = LXMLParser.fromstring(SIMPLE_ARTICLE_XML)
             assert root is not None
@@ -1537,7 +1537,7 @@ class TestLocalProcessing:
 
     def test_extract_article_id_from_xml(self):
         """Test extracting article ID from XML string."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -1552,7 +1552,7 @@ class TestLocalProcessing:
 
     def test_extract_article_id_invalid_xml(self):
         """Test that invalid XML returns None."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
@@ -1561,7 +1561,7 @@ class TestLocalProcessing:
 
     def test_local_xml_processor_init(self):
         """Test LocalXMLProcessor initialization."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             LocalXMLProcessor,
         )
 
@@ -1569,7 +1569,7 @@ class TestLocalProcessing:
         processor = LocalXMLProcessor()
         assert processor.config is None
         # With explicit config
-        from pyeuropepmc.processing.config.element_patterns import ElementPatterns
+        from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 
         processor2 = LocalXMLProcessor(config=ElementPatterns())
         assert processor2.config is not None
@@ -1585,7 +1585,7 @@ class TestPydanticHelpers:
 
     def test_has_pydantic(self):
         """Test the has_pydantic check function."""
-        from pyeuropepmc.processing.extensions.pydantic_helpers import has_pydantic
+        from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import has_pydantic
 
         assert isinstance(has_pydantic(), bool)
 
@@ -1593,12 +1593,12 @@ class TestPydanticHelpers:
         """Test conversion of a dataclass to Pydantic model."""
         from dataclasses import dataclass
 
-        from pyeuropepmc.processing.extensions.pydantic_helpers import has_pydantic
+        from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import has_pydantic
 
         if not has_pydantic():
             pytest.skip("pydantic not installed")
 
-        from pyeuropepmc.processing.extensions.pydantic_helpers import (
+        from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import (
             dataclass_to_pydantic,
         )
 
@@ -1614,7 +1614,7 @@ class TestPydanticHelpers:
 
     def test_model_generator_from_data(self):
         """Test PydanticModelGenerator with sample data."""
-        from pyeuropepmc.processing.extensions.pydantic_helpers import (
+        from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import (
             PydanticModelGenerator,
             has_pydantic,
         )
@@ -1631,12 +1631,12 @@ class TestPydanticHelpers:
 
     def test_model_generator_raises_without_pydantic(self):
         """Test that ImportError is raised if pydantic is missing."""
-        from pyeuropepmc.processing.extensions.pydantic_helpers import has_pydantic
+        from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import has_pydantic
 
         if has_pydantic():
             pytest.skip("pydantic is installed, cannot test missing case")
 
-        from pyeuropepmc.processing.extensions.pydantic_helpers import (
+        from pyeuropepmc.features.fulltext.extensions.pydantic_helpers import (
             PydanticModelGenerator,
         )
 
@@ -1745,7 +1745,7 @@ class TestRagChunking:
 
     def test_to_chunks_basic(self):
         """Verify basic chunking produces chunks."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
             StructuredSection,
@@ -1780,7 +1780,7 @@ class TestRagChunking:
 
     def test_to_chunks_section_path(self):
         """Verify section_path tracks provenance."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
             StructuredSection,
@@ -1814,7 +1814,7 @@ class TestRagChunking:
 
     def test_to_langchain_documents(self):
         """Verify LangChain-compatible output."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
             StructuredSection,
@@ -1848,7 +1848,7 @@ class TestParseDiagnostics:
 
     def test_parse_status_default(self):
         """Verify default parse status is 'success'."""
-        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         p = ContentBlock.paragraph("test")
         assert p.parse_status == "success"
@@ -1856,7 +1856,7 @@ class TestParseDiagnostics:
 
     def test_parse_status_in_dict(self):
         """Verify non-default parse_status appears in dict."""
-        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         p = ContentBlock.paragraph("test")
         d = p.to_dict()
@@ -1874,7 +1874,7 @@ class TestSchemaVersion:
 
     def test_schema_version_present(self):
         """Verify schema_version is included in dict output."""
-        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         p = ContentBlock.paragraph("test")
         d = p.to_dict()
@@ -1898,7 +1898,7 @@ class TestMathMLRendering:
 
     def test_to_html(self):
         """Verify to_html produces proper HTML."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         mathml = ET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="inline">'
@@ -1932,7 +1932,7 @@ class TestBITSBook:
 
     def test_bits_parsing(self):
         """Verify BITS book articles can be parsed."""
-        from pyeuropepmc.processing.extensions.local_processing import parse_bits_book
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
 
         parser = parse_bits_book(self.BITS_XML)
         assert parser.root is not None
@@ -1945,7 +1945,7 @@ class TestBITSBook:
 
     def test_bits_structured_sections(self):
         """Verify content block extraction works on BITS articles."""
-        from pyeuropepmc.processing.extensions.local_processing import parse_bits_book
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
 
         parser = parse_bits_book(self.BITS_XML)
         sections = parser.get_full_text_sections_structured()
@@ -1958,7 +1958,7 @@ class TestPmcDownload:
 
     def test_process_single_pmc_raises_on_empty(self):
         """Verify process_single_pmc raises on empty PMC ID."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 
@@ -1967,7 +1967,7 @@ class TestPmcDownload:
 
     def test_pmcid_prefix_normalization(self):
         """Verify PMC prefix normalization."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             process_single_pmc,
         )
 

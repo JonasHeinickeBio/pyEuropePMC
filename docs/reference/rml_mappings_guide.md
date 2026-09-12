@@ -142,7 +142,7 @@ enrichment: yes
 ## Complete Example
 
 ```python
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.builders import build_paper_entities
 from pyeuropepmc.mappers import RMLRDFizer
 

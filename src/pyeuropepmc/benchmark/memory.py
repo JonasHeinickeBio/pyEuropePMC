@@ -54,7 +54,7 @@ class MemoryTracker:
     Examples
     --------
     >>> from pyeuropepmc.benchmark.memory import MemoryTracker
-    >>> from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    >>> from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     >>> tracker = MemoryTracker()
     >>> tracker.start()
@@ -225,7 +225,7 @@ def profile_memory(xml_content: str) -> dict[str, Any]:
     >>> print(f"Peak memory: {mem['peak_mib']:.2f} MiB")
     >>> print(f"Top modules: {list(mem['by_module'].keys())[:5]}")
     """
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     tracker = MemoryTracker()
     tracker.start()
@@ -254,7 +254,7 @@ def profile_memory_blocks(xml_content: str) -> dict[str, Any]:
     -------
     dict with memory snapshot after block extraction.
     """
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     parser = FullTextXMLParser(xml_content)
 
@@ -280,7 +280,7 @@ def profile_memory_fulltext(xml_content: str) -> dict[str, float]:
     -------
     dict with ``peak_mib``, ``current_mib``.
     """
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     parser = FullTextXMLParser(xml_content)
 

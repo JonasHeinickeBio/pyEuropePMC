@@ -3,11 +3,17 @@
 from pathlib import Path
 import tempfile
 from unittest.mock import Mock
+from urllib.parse import urlparse
 
 import pytest
 from rdflib import Graph
 
-pytestmark = pytest.mark.functional
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = [
+    pytest.mark.functional,
+    pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"),
+]
 
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.converters import (
@@ -476,7 +482,16 @@ class TestConvertersSerialization:
 
         # Should contain content from both sources
         assert "Computational Analysis" in turtle1
-        assert "doi.org" in turtle1
+
+        def _is_doi_org(term: object) -> bool:
+            if not hasattr(term, "toPython"):
+                return False
+            host = urlparse(str(term)).netloc.lower()
+            return host == "doi.org" or host.endswith(".doi.org")
+
+        assert any(
+            _is_doi_org(s) or _is_doi_org(p) or _is_doi_org(o) for s, p, o, *_ in graph
+        ), "Expected a doi.org URI somewhere in the graph"
 
 
 @pytest.mark.slow

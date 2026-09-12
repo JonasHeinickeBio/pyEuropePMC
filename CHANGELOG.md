@@ -2,6 +2,111 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [2.0.0] - 2026-09-10
+
+> **Major release.** Package internals were reorganised into a vertical-slice
+> layout and most runtime dependencies became optional. The public
+> `pyeuropepmc.<Name>` API (e.g. `pyeuropepmc.SearchClient`) is unchanged, but
+> deep imports and a bare `pip install` behave differently — see
+> [`docs/migration/v1-to-v2.md`](docs/migration/v1-to-v2.md).
+
+### 💥 Breaking changes
+
+- **Vertical-slice package layout.** `src/pyeuropepmc/` is now organised by
+  feature. Deep import paths changed:
+  | 1.x | 2.0 |
+  |-----|-----|
+  | `pyeuropepmc.clients.search` | `pyeuropepmc.features.literature.search` |
+  | `pyeuropepmc.clients.article` / `annotations` / `ftp_downloader` | `pyeuropepmc.features.literature.*` |
+  | `pyeuropepmc.clients.fulltext` | `pyeuropepmc.features.fulltext.fulltext_client` |
+  | `pyeuropepmc.enrichment.*` | `pyeuropepmc.features.enrich.*` (external APIs under `features.enrich.sources.*`) |
+  | `pyeuropepmc.query.*` (`query_builder`, `filters`, `pagination`) | `pyeuropepmc.features.literature.*` |
+  | `pyeuropepmc.processing.fulltext_parser` / `parsers` / `converters` / `extensions` | `pyeuropepmc.features.fulltext.*` |
+  | `pyeuropepmc.processing.analytics` / `visualization` | `pyeuropepmc.features.analytics.*` |
+  | `pyeuropepmc.processing.annotation_parser` / `annotations_to_rdf` | `pyeuropepmc.features.literature.*` / `features.fulltext.*` |
+
+  Top-level re-exports (`pyeuropepmc.SearchClient`, `pyeuropepmc.QueryBuilder`,
+  `pyeuropepmc.PaperEnricher`, …) still work.
+- **Dependencies split into optional extras.** A bare `pip install pyeuropepmc`
+  now installs a light core only (~14 packages: `requests`, caching, query
+  building, JATS parsing, CLI). pandas, numpy, matplotlib, seaborn, rdflib,
+  flask, langchain/openai, semanticscholar, Jupyter, etc. are **no longer
+  installed by default**. Use extras:
+  `analytics`, `visualization`, `export`, `rdf`, `agentic`, `ui`, `signing`,
+  `enrichment`, `semanticscholar`, `bibliography`, `zotero`, `standard`, `all`.
+  For the previous behaviour: `pip install "pyeuropepmc[all]"`.
+- **`import pyeuropepmc` is now lazy (PEP 562).** Submodules and their heavy
+  dependencies load on first attribute access. Accessing a feature whose extra
+  is missing raises `OptionalDependencyError` with the exact `pip install`
+  command. Import time dropped from ~2.6 s to ~0.15 s.
+- `uv.lock` removed — Poetry is the single supported install workflow.
+- Version bumped `1.18.0 → 2.0.0`; SPDX `MIT` license expression.
+
+### ✨ Features
+
+- **Multi-source literature search** (`pyeuropepmc.features.search`):
+  - `UnifiedSearch` federates a single query across many sources in parallel
+    (`ThreadPoolExecutor`), normalises and deduplicates the combined results,
+    and reports per-source timings and errors.
+  - Pluggable **source registry** (`features.search.registry`): `SourceSpec`,
+    `register_source()`, `available_sources(installed_only=…)`,
+    `source_capabilities()`, `load_source()`, plus a `pyeuropepmc.sources`
+    entry-point hook for third-party sources.
+  - New source clients: PubMed (E-utilities), arXiv, ClinicalTrials.gov v2,
+    DOAJ, DBLP, HAL, CORE, Zenodo — and adapters for Europe PMC, OpenAlex and
+    Semantic Scholar.
+  - **Query translation** (`features.search.query_translation`): rewrites one
+    query into each backend's dialect (arXiv `all:"…"`, free-text for
+    OpenAlex/S2, field syntax kept for Europe PMC/PubMed; uses the optional
+    `search-query` parser when available).
+- **Identifier-cluster deduplication** — new `LiteratureMerger` in
+  `features.enrich.merger`: CORD-19-style DOI/PMID/PMCID/title-hash grouping
+  with `BALANCED` / `FOCUSED` / `RELAXED` modes, author- and journal-overlap
+  gates, retraction and salami-slice awareness, and a structured `MergeReport`.
+  (The 1.x `DataMerger` field-level metadata merge is unchanged.)
+- **Metadata enrichment sources** consolidated under
+  `features.enrich.sources`: CrossRef, OpenAlex, Semantic Scholar (+ pro
+  wrapper), ORCID, Unpaywall, DataCite, ROR, and **iCite** (NIH citation
+  metrics — new).
+- **Agentic workflows** (`pyeuropepmc.agentic`, extra `agentic`): LangChain/
+  LangGraph LLM client, `SmartCitationAnalysis`, a tool registry, and a
+  multi-agent claim-verification pipeline (`pyeuropepmc.claims`) with an
+  optional Flask review UI (`pyeuropepmc.ui`, extra `ui`).
+- **JATS normalisation** for text-mining pipelines (`JATSNormalizer`) and a
+  `pyeuropepmc normalize` CLI subcommand.
+- **XML parser extensions**: content blocks, MathML, peer-review, JATS4R,
+  batch processing, LinkML schema, reference resolver, lxml backend.
+- `EuropePMCLiteratureAdapter` makes the native Europe PMC `SearchClient` a
+  first-class `UnifiedSearch` source.
+- `utils/env_loader.py` for `.env` handling; `_optional_imports.py` /
+  `utils/dependencies.py` for graceful optional-dependency errors.
+
+### 🧪 Testing
+
+- **Hermetic default test run.** `pytest-socket` blocks real network in the
+  default suite (a mis-mocked test fails fast with `SocketBlockedError` instead
+  of hanging), `pytest-timeout` caps each test at 120 s, and markers are
+  inferred from a test's path (`functional/`, `integration/`, `benchmark`,
+  `gui`) so whole directories are excluded without per-file annotation. This
+  fixed the full suite hanging and being OOM-killed. Run the excluded lanes
+  with `pytest -m functional` / `--run-real` / `-m benchmark` /
+  `--run-integration`.
+- Tests reorganised to mirror `src/` (`tests/features/…`).
+- Recorded fixtures replace several live-API "unit" tests; ~3,640 tests,
+  ~50 s, ~410 MB peak.
+
+### 🔧 Maintenance
+
+- `ruff check src/` and `mypy src/` (strict) are clean; `pytest` green
+  (3602 passed). The `release.yml` / `cdci.yml` gates pass locally.
+- `pyproject.toml` moved to static PEP 621 metadata; `requirements.txt` /
+  `poetry.lock` regenerated from it.
+- Optional-dependency group maps consolidated into a single source of truth;
+  `User-Agent` now reports the real package version; `py.typed` shipped.
+- `sentence-transformers` is intentionally **not** an extra — it pulls in
+  `torch` + the `nvidia-cuda-*` wheels, which made `poetry lock` effectively
+  non-terminating. Semantic text matching asks you to install it directly.
+
 ## [1.18.0] - 2026-07-03
 
 ### ✨ Features

@@ -1,13 +1,29 @@
 import json
 import logging
 import tempfile
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-import pandas as pd
+if TYPE_CHECKING:
+    import pandas as pd
+
+_MISSING_PANDAS = (
+    "The 'pandas' package is required for DataFrame / CSV / Excel / Markdown export. "
+    "Install it with: pip install pyeuropepmc[analytics]"
+)
 
 
-def to_dataframe(results: list[dict[str, Any]]) -> pd.DataFrame:
+def _pandas() -> "Any":
+    """Import pandas on demand so it stays an optional dependency."""
+    try:
+        import pandas as pd
+    except ImportError as exc:  # pragma: no cover - exercised only without pandas
+        raise ImportError(_MISSING_PANDAS) from exc
+    return pd
+
+
+def to_dataframe(results: list[dict[str, Any]]) -> "pd.DataFrame":
     """Convert parsed results to a pandas DataFrame."""
+    pd = _pandas()
     try:
         df = pd.DataFrame(results)
         return df
@@ -33,6 +49,7 @@ def to_csv(results: list[dict[str, Any]], path: str | None = None) -> str:
 def to_excel(results: list[dict[str, Any]], path: str | None = None) -> bytes:
     """Export results to Excel. If path is given, write to file, else return bytes."""
     try:
+        pd = _pandas()
         df = to_dataframe(results)
         if path is not None:
             with pd.ExcelWriter(path, engine="xlsxwriter") as writer:

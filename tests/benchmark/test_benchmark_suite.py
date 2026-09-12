@@ -31,7 +31,7 @@ from pyeuropepmc.benchmark.metrics import (
 )
 from pyeuropepmc.benchmark.report import BenchmarkReport
 from pyeuropepmc.benchmark.runner import BenchmarkRunner
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 # ============================================================================
 # Test fixtures
@@ -248,19 +248,27 @@ class TestLocalDataset:
 class TestDatasetDownloadBackends:
     """Test download backends."""
 
-    def test_try_huggingface_load_dataset_fallback(self, tmp_dir):
-        """Test huggingface load_dataset fallback path."""
-        # This tests the fallback when huggingface_hub is not available
+    def test_try_huggingface_load_dataset_unavailable(self, tmp_dir, monkeypatch):
+        """When the ``datasets`` library is missing the fallback returns False.
+
+        (Previously this test called the real ``datasets.load_dataset`` and
+        downloaded the multi-GB ``sciencialab/grobid-evaluation`` dataset, which
+        made the default test run hang and blow up memory.)
+        """
+        import sys
+
         from pyeuropepmc.benchmark.dataset import _try_huggingface_load_dataset
 
-        # Use 'default' config since sciencialab/grobid-evaluation only has 'default'
-        result = _try_huggingface_load_dataset(
-            "default",
-            tmp_dir / "hf_test",
-            force=False,
-        )
-        # May fail if network unavailable, that's expected
-        # Just check it doesn't crash with wrong arguments
+        monkeypatch.setitem(sys.modules, "datasets", None)
+        result = _try_huggingface_load_dataset("default", tmp_dir / "hf_test", force=False)
+        assert result is False
+
+    @pytest.mark.network
+    def test_try_huggingface_load_dataset_real(self, tmp_dir):
+        """Opt-in: exercise the real ``datasets`` download path."""
+        from pyeuropepmc.benchmark.dataset import _try_huggingface_load_dataset
+
+        result = _try_huggingface_load_dataset("default", tmp_dir / "hf_test", force=False)
         assert isinstance(result, bool)
 
     def test_http_download_requests_not_available(self, tmp_dir, monkeypatch):

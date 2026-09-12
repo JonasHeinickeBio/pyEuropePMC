@@ -5,7 +5,7 @@ This example demonstrates how to use the professional library's typed response
 objects for type-safe development with IDE autocomplete.
 """
 
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 
 def main():

@@ -5,7 +5,7 @@ The `ArticleClient` provides article-specific operations and metadata retrieval 
 ## Class Overview
 
 ```python
-from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.features.literature.article import ArticleClient
 
 class ArticleClient:
     """Client for article-specific operations."""
@@ -37,7 +37,7 @@ Get detailed metadata for a specific article by PMC ID.
 
 **Example:**
 ```python
-from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.features.literature.article import ArticleClient
 
 with ArticleClient() as client:
     metadata = client.get_article_metadata("PMC1234567")
@@ -82,7 +82,7 @@ with ArticleClient() as client:
 Raises `EuropePMCError` for API-related issues:
 
 ```python
-from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.core.exceptions import EuropePMCError
 
 try:
@@ -97,7 +97,7 @@ except EuropePMCError as e:
 ### Get Article Details
 
 ```python
-from pyeuropepmc.clients.article import ArticleClient
+from pyeuropepmc.features.literature.article import ArticleClient
 
 with ArticleClient() as client:
     # Get basic metadata

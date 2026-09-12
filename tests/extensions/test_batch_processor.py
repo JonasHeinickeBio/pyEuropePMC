@@ -1,4 +1,4 @@
-"""Tests for pyeuropepmc.processing.extensions.batch_processor."""
+"""Tests for pyeuropepmc.features.fulltext.extensions.batch_processor."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from pyeuropepmc.processing.extensions.batch_processor import (
+from pyeuropepmc.features.fulltext.extensions.batch_processor import (
     BatchProcessor,
     BatchResult,
     ProcessingResult,
@@ -130,8 +130,8 @@ class TestBatchProcessorInit:
 # 4. process_xml_strings – happy path, custom extraction, empty
 # ---------------------------------------------------------------------------
 class TestProcessXmlStringsHappy:
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.FullTextXMLParser")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.FullTextXMLParser")
     def test_two_valid_xml(self, mock_parser_cls, _sleep):
         mock_instance = MagicMock()
         mock_instance.extract_metadata.return_value = {"title": "T"}
@@ -145,8 +145,8 @@ class TestProcessXmlStringsHappy:
         assert len(result.results) == 2
         assert all(r.success for r in result.results)
 
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.FullTextXMLParser")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.FullTextXMLParser")
     def test_custom_extraction_fn(self, mock_parser_cls, _sleep):
         custom_fn = MagicMock(return_value={"custom_key": "val"})
         mock_parser_cls.return_value = MagicMock()
@@ -157,7 +157,7 @@ class TestProcessXmlStringsHappy:
         assert result.results[0].data == {"custom_key": "val"}
         custom_fn.assert_called_once()
 
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
     def test_empty_input(self, _sleep):
         bp = BatchProcessor()
         result = bp.process_xml_strings([])
@@ -169,8 +169,8 @@ class TestProcessXmlStringsHappy:
 # 5. process_xml_strings – error & progress callbacks
 # ---------------------------------------------------------------------------
 class TestProcessXmlStringsCallbacks:
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.FullTextXMLParser")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.FullTextXMLParser")
     def test_error_callback_on_parse_failure(self, mock_parser_cls, _sleep):
         mock_parser_cls.side_effect = ValueError("bad xml")
 
@@ -185,8 +185,8 @@ class TestProcessXmlStringsCallbacks:
         assert args[0] == "bad"
         assert isinstance(args[1], ValueError)
 
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.FullTextXMLParser")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.FullTextXMLParser")
     def test_progress_callback_invoked(self, mock_parser_cls, _sleep):
         mock_parser_cls.return_value = MagicMock()
 
@@ -201,8 +201,8 @@ class TestProcessXmlStringsCallbacks:
 # 6. process_files – tmp_path, mock time.sleep
 # ---------------------------------------------------------------------------
 class TestProcessFiles:
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.FullTextXMLParser")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.FullTextXMLParser")
     def test_process_xml_files(self, mock_parser_cls, _sleep, tmp_path):
         mock_instance = MagicMock()
         mock_instance.extract_metadata.return_value = {"title": "F"}
@@ -225,8 +225,8 @@ class TestProcessFiles:
 # 7. process_directories – subdirectory with XML files
 # ---------------------------------------------------------------------------
 class TestProcessDirectories:
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.FullTextXMLParser")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.FullTextXMLParser")
     def test_discovers_xml_in_subdirectory(self, mock_parser_cls, _sleep, tmp_path):
         mock_parser_cls.return_value = MagicMock()
 
@@ -246,8 +246,8 @@ class TestProcessDirectories:
 # 8. process_directories – empty directory, warning logged
 # ---------------------------------------------------------------------------
 class TestProcessDirectoriesEmpty:
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
-    @patch("pyeuropepmc.processing.extensions.batch_processor.logger")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.logger")
     def test_empty_directory_logs_warning(self, mock_logger, _sleep, tmp_path):
         empty = tmp_path / "empty"
         empty.mkdir()
@@ -304,7 +304,7 @@ class TestExtractData:
 # 10. _rate_sleep
 # ---------------------------------------------------------------------------
 class TestRateSleep:
-    @patch("pyeuropepmc.processing.extensions.batch_processor.time.sleep")
+    @patch("pyeuropepmc.features.fulltext.extensions.batch_processor.time.sleep")
     def test_calls_sleep(self, mock_sleep):
         bp = BatchProcessor(rate_limit=5.0)
         bp._rate_sleep()

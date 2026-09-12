@@ -1,7 +1,15 @@
 """Tests for the AuthorEntity model."""
+from urllib.parse import urlparse
+
 import pytest
 
 from pyeuropepmc.models.author import AuthorEntity
+
+
+def _host_is(url: str, domain: str) -> bool:
+    """True if `url`'s host is exactly `domain` or a subdomain of it."""
+    host = urlparse(url).netloc.lower()
+    return host == domain or host.endswith(f".{domain}")
 
 
 class TestAuthorEntity:
@@ -156,7 +164,7 @@ class TestAuthorEntity:
             openalex_id="https://openalex.org/A123456789",
         )
         author.validate()
-        assert "openalex.org" in author.openalex_id
+        assert _host_is(author.openalex_id, "openalex.org")
 
     def test_validate_with_semantic_scholar_id(self):
         """Test validate normalizes Semantic Scholar URI."""
@@ -165,7 +173,7 @@ class TestAuthorEntity:
             semantic_scholar_id="https://www.semanticscholar.org/author/12345",
         )
         author.validate()
-        assert "semanticscholar.org" in author.semantic_scholar_id
+        assert _host_is(author.semantic_scholar_id, "semanticscholar.org")
 
     def test_normalize_with_email(self):
         """Test normalize handles email field."""

@@ -27,7 +27,7 @@ from pyeuropepmc.mappers import rebind_namespaces
 from pyeuropepmc.mappers.converters import (
     convert_to_rdf,
 )
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 
 @dataclass
@@ -324,7 +324,7 @@ class ComprehensiveXMLParser:
         self.metrics = BenchmarkMetrics()
 
         # Initialize parser
-        from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+        from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
         self.parser = FullTextXMLParser()
 

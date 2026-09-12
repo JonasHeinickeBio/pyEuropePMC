@@ -6,7 +6,7 @@ use cases and how to handle rate limit errors gracefully.
 """
 
 import time
-from pyeuropepmc.enrichment import ProfessionalSemanticScholarClient
+from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
 
 
 def main():

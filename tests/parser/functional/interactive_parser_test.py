@@ -1,6 +1,6 @@
 import sys
 
-from pyeuropepmc.processing.search_parser import EuropePMCParser, ParsingError
+from pyeuropepmc.features.literature.search_parser import EuropePMCParser, ParsingError
 
 
 def interactive_parser_test():

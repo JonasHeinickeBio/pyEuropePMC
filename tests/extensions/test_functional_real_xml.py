@@ -18,7 +18,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 import pytest
 
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 FIXTURE_DIR = Path(__file__).parent.parent / "fixtures" / "fulltext_downloads"
 
@@ -195,7 +195,7 @@ class TestFunctionalRealXML:
 
     def test_content_block_roundtrip(self, article_data):
         """Verify structured content can be serialized and deserialized."""
-        from pyeuropepmc.processing.extensions.content_blocks import ContentBlock
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         label, xml_content, article_id = article_data
         parser = FullTextXMLParser(xml_content)
@@ -209,7 +209,7 @@ class TestFunctionalRealXML:
 
     def test_mathml_conversion(self, article_data):
         """Verify MathML conversion works on all articles."""
-        from pyeuropepmc.processing.extensions.mathml import MathMLConverter
+        from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         label, xml_content, article_id = article_data
         root = ET.fromstring(xml_content)
@@ -235,7 +235,7 @@ class TestFunctionalRealXML:
 
     def test_jats4r_validation(self, article_data):
         """Verify JATS4R validation runs on all articles."""
-        from pyeuropepmc.processing.extensions.jats4r import JATS4RValidator
+        from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
         label, xml_content, article_id = article_data
         root = ET.fromstring(xml_content)
@@ -255,7 +255,7 @@ class TestFunctionalRealXML:
 
     def test_peer_review(self, article_data):
         """Verify peer review extraction handles all articles gracefully."""
-        from pyeuropepmc.processing.extensions.peer_review import (
+        from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
             PeerReviewType,
         )
@@ -272,7 +272,7 @@ class TestFunctionalRealXML:
 
     def test_image_fetcher(self, article_data):
         """Verify image/asset reference extraction."""
-        from pyeuropepmc.processing.extensions.image_fetcher import (
+        from pyeuropepmc.features.fulltext.extensions.image_fetcher import (
             AssetType,
             ImageFetcher,
         )
@@ -291,7 +291,7 @@ class TestFunctionalRealXML:
 
     def test_batch_processor(self, article_data):
         """Verify batch processing works with individual articles."""
-        from pyeuropepmc.processing.extensions.batch_processor import (
+        from pyeuropepmc.features.fulltext.extensions.batch_processor import (
             BatchProcessor,
         )
 
@@ -310,7 +310,7 @@ class TestFunctionalRealXML:
 
     def test_local_processing_helpers(self, article_data, tmp_path):
         """Verify local processing helpers work with real XML."""
-        from pyeuropepmc.processing.extensions.local_processing import (
+        from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
             parse_xml_file,
             LocalXMLProcessor,
@@ -339,7 +339,7 @@ class TestFunctionalRealXML:
         """Verify LinkML models can be instantiated from parsed content."""
         pytest.importorskip("jsonasobj2")
         pytest.importorskip("linkml_runtime")
-        from pyeuropepmc.processing.extensions.linkml_models import (
+        from pyeuropepmc.features.fulltext.extensions.linkml_models import (
             ArticleContent,
             ContentBlock,
             ContentBlockType,

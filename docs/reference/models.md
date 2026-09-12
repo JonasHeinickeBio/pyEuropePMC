@@ -234,7 +234,7 @@ ref = ReferenceEntity(
 The builder layer converts `FullTextXMLParser` outputs to entities:
 
 ```python
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.builders import build_paper_entities
 
 # Parse XML
@@ -478,7 +478,7 @@ if not conforms:
 ## Example: Complete Pipeline
 
 ```python
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.builders import build_paper_entities
 from pyeuropepmc.mappers import RDFMapper
 from rdflib import Graph

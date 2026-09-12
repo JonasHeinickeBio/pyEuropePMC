@@ -482,7 +482,7 @@ def test_user_agent_header_set():
     user_agent = client.session.headers.get("User-Agent")
     assert user_agent is not None
     assert isinstance(user_agent, str)
-    assert "pyeuropepmc/1.0.0" in user_agent
+    assert user_agent.startswith("pyeuropepmc/")
     assert "https://github.com/JonasHeinickeBio/pyEuropePMC" in user_agent
     client.close()
 

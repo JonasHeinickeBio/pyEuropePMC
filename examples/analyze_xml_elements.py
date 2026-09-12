@@ -20,7 +20,7 @@ import sys
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).parent / "src"))
 
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 
 def collect_element_examples(root) -> dict[str, list[str]]:

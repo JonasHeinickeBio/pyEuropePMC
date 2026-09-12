@@ -50,7 +50,7 @@ print("Example 2: Parse annotations to extract entities")
 print("-" * 70)
 
 try:
-    from pyeuropepmc.processing.annotation_parser import parse_annotations
+    from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
     parsed = parse_annotations(annotations)
 
@@ -118,7 +118,7 @@ print("Example 5: Extract entities, sentences, and relationships")
 print("-" * 70)
 
 try:
-    from pyeuropepmc.processing.annotation_parser import (
+    from pyeuropepmc.features.fulltext.annotation_parser import (
         extract_entities,
         extract_sentences,
         extract_relationships,

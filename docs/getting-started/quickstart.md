@@ -28,7 +28,7 @@ with SearchClient() as client:
 ### Advanced Search with QueryBuilder
 
 ```python
-from pyeuropepmc.query.query_builder import QueryBuilder
+from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
 # Build complex queries with type safety
 qb = QueryBuilder()

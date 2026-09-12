@@ -27,7 +27,7 @@ pip install pyeuropepmc
 ### Basic Usage
 
 ```python
-from pyeuropepmc.clients.search import SearchClient
+from pyeuropepmc.features.literature.search import SearchClient
 
 with SearchClient() as client:
     results = client.search("CRISPR gene editing", limit=10)
@@ -38,7 +38,7 @@ with SearchClient() as client:
 ### Query Builder
 
 ```python
-from pyeuropepmc.query import QueryBuilder
+from pyeuropepmc.features.literature import QueryBuilder
 
 query = (
     QueryBuilder()
@@ -58,7 +58,7 @@ with SearchClient() as client:
 ### Full-Text Download
 
 ```python
-from pyeuropepmc.clients.fulltext import FullTextClient
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 
 with FullTextClient() as client:
     content = client.get_fulltext("PMC7512345")

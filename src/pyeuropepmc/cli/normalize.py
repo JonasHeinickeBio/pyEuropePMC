@@ -4,11 +4,24 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from rich.console import Console
-from rich.table import Table
-import typer
+from pyeuropepmc._optional_imports import OptionalDependencyError
 
-from pyeuropepmc.processing.jats_normalizer import JATSNormalizer
+try:
+    import typer
+except ImportError:
+    raise OptionalDependencyError(
+        "typer", "CLI interface", "pip install pyeuropepmc[standard]"
+    ) from None
+
+try:
+    from rich.console import Console
+    from rich.table import Table
+except ImportError:
+    raise OptionalDependencyError(
+        "rich", "CLI interface (table display)", "pip install pyeuropepmc[standard]"
+    ) from None
+
+from pyeuropepmc.features.fulltext.jats_normalizer import JATSNormalizer
 
 normalize_app = typer.Typer(
     help="Normalize JATS XML for text mining pipelines",
@@ -132,7 +145,7 @@ def classify_heading(
     heading: str = typer.Argument(..., help="Section heading to classify"),
 ) -> None:
     """Classify a section heading into a canonical type."""
-    from pyeuropepmc.processing.jats_normalizer import classify_section
+    from pyeuropepmc.features.fulltext.jats_normalizer import classify_section
 
     section_type = classify_section(heading)
     console.print(f"[cyan]{heading}[/cyan] -> [green]{section_type}[/green]")

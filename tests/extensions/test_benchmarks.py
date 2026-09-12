@@ -21,11 +21,11 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 import pytest
 
-from pyeuropepmc.processing.extensions.content_blocks import (
+from pyeuropepmc.features.fulltext.extensions.content_blocks import (
     ContentBlockType,
     ContentBlockExtractor,
 )
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 FIXTURE_DIR = Path(__file__).parent.parent / "fixtures" / "fulltext_downloads"
 
@@ -371,7 +371,7 @@ class TestRagChunkBenchmarks:
 
     def test_chunk_count_and_size(self, benchmark_articles: dict[str, str]):
         """Verify chunks are correctly sized and bounded."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
             StructuredSection,
@@ -405,7 +405,7 @@ class TestRagChunkBenchmarks:
 
     def test_chunk_overlap(self, benchmark_articles: dict[str, str]):
         """Verify overlapping chunks contain shared text."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
             StructuredSection,
@@ -448,7 +448,7 @@ class TestSerializationRoundtrip:
 
     def test_dict_roundtrip(self, benchmark_articles: dict[str, str]):
         """Verify ContentBlocks survive to_dict -> dict -> ContentBlock roundtrip."""
-        from pyeuropepmc.processing.extensions.content_blocks import (
+        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
             ContentBlockType,
         )

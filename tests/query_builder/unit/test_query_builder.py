@@ -14,7 +14,7 @@ from datetime import datetime
 import pytest
 
 from pyeuropepmc.core.exceptions import QueryBuilderError
-from pyeuropepmc.query.query_builder import QueryBuilder
+from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
 
 class TestQueryBuilderBasics:
@@ -675,12 +675,37 @@ class TestValidation:
 
 # Field validation tests
 class TestFieldValidation:
-    """Test field validation helper functions."""
+    """Test field validation helper functions (offline, against a recorded
+    ``tests/fixtures/europepmc_fields.json`` snapshot of the Europe PMC fields
+    API — refresh it with ``pytest -m network`` if the API changes)."""
+
+    @pytest.fixture(autouse=True)
+    def _stub_fields_api(self, request):
+        if request.node.get_closest_marker("network"):
+            yield  # let the drift check hit the real API
+            return
+
+        import json
+        from pathlib import Path
+        from unittest.mock import MagicMock, patch
+
+        fixture = Path(__file__).parents[2] / "fixtures" / "europepmc_fields.json"
+        payload = json.loads(fixture.read_text())
+
+        response = MagicMock()
+        response.status_code = 200
+        response.json.return_value = payload
+        response.headers = {"content-type": "application/json"}
+
+        with patch(
+            "pyeuropepmc.core.base.BaseAPIClient._get", return_value=response
+        ):
+            yield
 
     def test_get_available_fields(self) -> None:
         """Test fetching available fields from API."""
         pytest.importorskip("requests")
-        from pyeuropepmc.query.query_builder import get_available_fields
+        from pyeuropepmc.features.literature.query_builder import get_available_fields
 
         fields = get_available_fields()
         assert isinstance(fields, list)
@@ -699,14 +724,14 @@ class TestFieldValidation:
         # This test checks if ImportError is raised when requests is not available
         # We can't easily test this without uninstalling requests,
         # so we just verify the function exists
-        from pyeuropepmc.query.query_builder import get_available_fields
+        from pyeuropepmc.features.literature.query_builder import get_available_fields
 
         assert callable(get_available_fields)
 
     def test_validate_field_coverage(self) -> None:
         """Test field coverage validation."""
         pytest.importorskip("requests")
-        from pyeuropepmc.query.query_builder import validate_field_coverage
+        from pyeuropepmc.features.literature.query_builder import validate_field_coverage
 
         result = validate_field_coverage(verbose=False)
 
@@ -742,17 +767,37 @@ class TestFieldValidation:
     def test_validate_field_coverage_verbose(self) -> None:
         """Test field coverage validation with verbose output."""
         pytest.importorskip("requests")
-        from pyeuropepmc.query.query_builder import validate_field_coverage
+        from pyeuropepmc.features.literature.query_builder import validate_field_coverage
 
         # Should not raise and should print output
         result = validate_field_coverage(verbose=True)
         assert result["up_to_date"] is True
 
+    @pytest.mark.network
+    def test_recorded_fields_fixture_matches_live_api(self) -> None:
+        """Drift check: the recorded fixture still matches the live API.
+
+        If this fails, refresh ``tests/fixtures/europepmc_fields.json``.
+        """
+        import json
+        from pathlib import Path
+
+        import requests
+
+        from pyeuropepmc.features.literature.query_builder import _extract_field_names
+
+        url = "https://www.ebi.ac.uk/europepmc/webservices/rest/fields?format=json"
+        live = _extract_field_names(requests.get(url, timeout=30).json())
+        fixture = json.loads(
+            (Path(__file__).parents[2] / "fixtures" / "europepmc_fields.json").read_text()
+        )
+        assert _extract_field_names(fixture) == live
+
     def test_field_type_includes_common_fields(self) -> None:
         """Test that FieldType includes commonly used fields."""
         import typing
 
-        from pyeuropepmc.query.query_builder import FieldType
+        from pyeuropepmc.features.literature.query_builder import FieldType
 
         field_type_args = typing.get_args(FieldType)
         fields = set(field_type_args)
@@ -779,7 +824,7 @@ class TestFieldValidation:
         """Test that FieldType includes both full and abbreviated field names."""
         import typing
 
-        from pyeuropepmc.query.query_builder import FieldType
+        from pyeuropepmc.features.literature.query_builder import FieldType
 
         field_type_args = typing.get_args(FieldType)
         fields = set(field_type_args)

@@ -7,7 +7,7 @@ from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-from pyeuropepmc.clients.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError
 
@@ -25,7 +25,7 @@ class TestFTPDownloader:
         assert downloader.rate_limit_delay == 2.0
         assert downloader.BASE_FTP_URL == "https://europepmc.org/ftp/pdf/"
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_get_available_directories_success(self, mock_get_ftp_url):
         """Test successful retrieval of available directories."""
         # Mock HTML response
@@ -48,7 +48,7 @@ class TestFTPDownloader:
         assert directories == ['PMCxxxx1200', 'PMCxxxx1201', 'PMCxxxx1202']
         mock_get_ftp_url.assert_called_once_with(self.downloader.BASE_FTP_URL)
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_get_available_directories_http_error(self, mock_get_ftp_url):
         """Test directory retrieval with HTTP error."""
         mock_response = Mock()
@@ -61,7 +61,7 @@ class TestFTPDownloader:
         assert exc_info.value.error_code == ErrorCodes.FULL005
         assert "url" in exc_info.value.context
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_get_available_directories_no_response(self, mock_get_ftp_url):
         """Test directory retrieval with no response."""
         mock_get_ftp_url.return_value = None
@@ -71,7 +71,7 @@ class TestFTPDownloader:
 
         assert exc_info.value.error_code == ErrorCodes.FULL005
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_get_zip_files_in_directory_success(self, mock_get_ftp_url):
         """Test successful retrieval of ZIP files in directory."""
         mock_response = Mock()
@@ -120,7 +120,7 @@ class TestFTPDownloader:
 
         assert zip_files == expected
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_get_zip_files_in_directory_http_error(self, mock_get_ftp_url):
         """Test ZIP file retrieval with HTTP error."""
         mock_response = Mock()
@@ -142,8 +142,8 @@ class TestFTPDownloader:
         assert self.downloader._parse_file_size('-') == 0
         assert self.downloader._parse_file_size('invalid') == 0
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.get_zip_files_in_directory')
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_relevant_directories')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.get_zip_files_in_directory')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_relevant_directories')
     def test_query_pmcids_in_ftp_success(self, mock_get_dirs, mock_get_zips):
         """Test successful querying of PMC IDs in FTP."""
         mock_get_dirs.return_value = {'PMCxxxx1200', 'PMCxxxx1201'}
@@ -188,7 +188,7 @@ class TestFTPDownloader:
 
         assert result == expected
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     @patch('builtins.open', new_callable=mock_open)
     @patch('pathlib.Path.mkdir')
     def test_download_pdf_zip_success(self, mock_mkdir, mock_file_open, mock_get_ftp_url):
@@ -213,7 +213,7 @@ class TestFTPDownloader:
         mock_mkdir.assert_called_once()
         mock_file_open.assert_called_once()
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_download_pdf_zip_http_error(self, mock_get_ftp_url):
         """Test PDF ZIP download with HTTP error."""
         mock_response = Mock()
@@ -278,9 +278,9 @@ class TestFTPDownloader:
         assert extracted_files == []
         mock_unlink.assert_called_once()
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.query_pmcids_in_ftp')
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.download_pdf_zip')
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.extract_pdf_from_zip')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.query_pmcids_in_ftp')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.download_pdf_zip')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.extract_pdf_from_zip')
     def test_bulk_download_and_extract_success(self, mock_extract, mock_download, mock_query):
         """Test successful bulk download and extraction."""
         # Mock query results
@@ -318,8 +318,8 @@ class TestFTPDownloader:
 
         assert results == expected
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.query_pmcids_in_ftp')
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.download_pdf_zip')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.query_pmcids_in_ftp')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.download_pdf_zip')
     def test_bulk_download_and_extract_download_error(self, mock_download, mock_query):
         """Test bulk download with download error."""
         # Mock query results
@@ -340,7 +340,7 @@ class TestFTPDownloader:
         assert results['11691200']['status'] == 'error'
         assert 'error' in results['11691200']
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.get_available_directories')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.get_available_directories')
     def test_get_relevant_directories_success(self, mock_get_dirs):
         """Test getting relevant directories."""
         # The method should return specific directories based on PMC IDs, not all available
@@ -366,7 +366,7 @@ class TestFTPDownloader:
         # Should not call get_available_directories since we found specific directories
         mock_get_dirs.assert_not_called()
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader.get_available_directories')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.get_available_directories')
     def test_get_relevant_directories_fallback(self, mock_get_dirs):
         """Test getting relevant directories with fallback."""
         mock_get_dirs.side_effect = FullTextError(ErrorCodes.FULL005, {})
@@ -403,7 +403,7 @@ class TestFTPDownloaderIntegration:
         """Set up test fixtures."""
         self.downloader = FTPDownloader()
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_realistic_directory_listing(self, mock_get):
         """Test with realistic directory listing HTML."""
         mock_response = Mock()
@@ -431,7 +431,7 @@ class TestFTPDownloaderIntegration:
 
         assert directories == ['PMCxxxx1200', 'PMCxxxx1201']
 
-    @patch('pyeuropepmc.clients.ftp_downloader.FTPDownloader._get_ftp_url')
+    @patch('pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_ftp_url')
     def test_realistic_zip_file_listing(self, mock_get):
         """Test with realistic ZIP file listing HTML."""
         mock_response = Mock()

@@ -18,7 +18,7 @@ The `FieldType` literal now includes **all 142 fields** from the Europe PMC API 
 ### 2. API Field Fetching
 
 ```python
-from pyeuropepmc.query_builder import get_available_fields
+from pyeuropepmc.features.literature.query_builder import get_available_fields
 
 # Fetch current fields from Europe PMC API
 fields = get_available_fields()
@@ -28,7 +28,7 @@ print(f"Available fields: {len(fields)}")
 ### 3. Automatic Validation
 
 ```python
-from pyeuropepmc.query_builder import validate_field_coverage
+from pyeuropepmc.features.literature.query_builder import validate_field_coverage
 
 # Check if all API fields are covered
 result = validate_field_coverage(verbose=True)
@@ -132,7 +132,7 @@ python scripts/check_fields.py || exit 1
 ### Checking for Updates
 
 ```python
-from pyeuropepmc.query_builder import validate_field_coverage
+from pyeuropepmc.features.literature.query_builder import validate_field_coverage
 
 result = validate_field_coverage(verbose=False)
 

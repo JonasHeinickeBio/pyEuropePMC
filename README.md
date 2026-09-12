@@ -57,13 +57,17 @@ The repository is organized as follows:
 ### Installation
 
 ```bash
-pip install pyeuropepmc
+pip install pyeuropepmc                 # light core
+pip install "pyeuropepmc[all]"          # everything (1.x-equivalent)
+pip install "pyeuropepmc[analytics,agentic]"   # pick what you need
 ```
+
+> **Upgrading from 1.x?** See [docs/migration/v1-to-v2.md](docs/migration/v1-to-v2.md).
 
 ### Basic Usage
 
 ```python
-from pyeuropepmc.search import SearchClient
+from pyeuropepmc import SearchClient
 
 # Search for papers
 with SearchClient() as client:
@@ -116,7 +120,7 @@ for paper in papers:
 ### Full-Text Content Retrieval
 
 ```python
-from pyeuropepmc.fulltext import FullTextClient
+from pyeuropepmc import FullTextClient
 
 # Initialize full-text client
 fulltext_client = FullTextClient()
@@ -128,7 +132,7 @@ pdf_path = fulltext_client.download_pdf_by_pmcid("PMC1234567", output_dir="./dow
 xml_content = fulltext_client.download_xml_by_pmcid("PMC1234567")
 
 # Bulk FTP downloads
-from pyeuropepmc.ftp_downloader import FTPDownloader
+from pyeuropepmc import FTPDownloader
 
 ftp_downloader = FTPDownloader()
 results = ftp_downloader.bulk_download_and_extract(
@@ -272,7 +276,7 @@ PyEuropePMC now uses the `danielnsilva/semanticscholar` professional library for
 **Usage with API Key:**
 
 ```python
-from pyeuropepmc.enrichment.semantic_scholar import SemanticScholarClient
+from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
 
 # With API key (recommended for higher rate limits)
 client = SemanticScholarClient(api_key="your_api_key_here")
@@ -308,7 +312,7 @@ results = client.search_papers(query="machine learning cancer", bulk=False)
 - ✅ Built-in pagination handling
 - ✅ Production-ready (461 stars on GitHub)
 
-**Usage:** [examples/09-enrichment/semantic_scholar_demo.py](examples/09-enrichment/semantic_scholar_demo.py)
+**Usage:** [examples/09-enrichment/](examples/09-enrichment/) (`basic_enrichment.py`, `advanced_enrichment.py`)
 
 ```python
 from pyeuropepmc import PaperEnricher, EnrichmentConfig
@@ -519,7 +523,8 @@ See the [Benchmarking Guide](docs/guides/benchmarking.md) for full methodology a
 
 ## 🤝 Contributing
 
-We welcome contributions! See our [Contributing Guide](docs/development/contributing.md) for details.
+We welcome contributions! See the [development docs](docs/development/README.md) and
+[open an issue or PR](https://github.com/JonasHeinickeBio/pyEuropePMC/issues) to get started.
 
 ## 📄 License
 
@@ -576,24 +581,24 @@ The server implements the MCP protocol and can be configured in your LLM applica
 }
 ```
 
-### Example API Calls
+The server exposes these tools over the MCP protocol (JSON-RPC on stdio):
+`unified_search`, `get_paper_details`, `search_authors`, `get_paper_citations`,
+`citation_snowball`, `clinical_trial_search`, `fulltext_index_query`,
+`paper_figures`, plus optional LLM and bibliography tools. See
+[`src/pyeuropepmc/mcp/server.py`](src/pyeuropepmc/mcp/server.py) for the full
+registry and input schemas.
+
+For direct Python use (no MCP client), call the same underlying APIs:
 
 ```python
-from pyeuropepmc.mcp.server import EuropePMCClient
+from pyeuropepmc import SearchClient
+from pyeuropepmc.features.search import UnifiedSearch
 
-client = EuropePMCClient()
+# Europe PMC only
+papers = SearchClient().search_and_parse("CRISPR gene editing", pageSize=10)
 
-# Search for papers
-results = client.search_papers("CRISPR gene editing", limit=10)
-
-# Get paper details by PMID
-paper = client.get_paper_details(pmid="35658636")
-
-# Search for authors
-authors = client.search_authors("Smith")
-
-# Get citations for a paper
-citations = client.get_paper_citations(pmid="35658636", source="MED")
+# Europe PMC + other sources, deduplicated
+merged, report = UnifiedSearch(sources=["europepmc", "pubmed", "arxiv"]).search(
+    "CRISPR gene editing", limit=10
+)
 ```
-
-See the [MCP Server Documentation](docs/guides/mcp-server.md) for more details.

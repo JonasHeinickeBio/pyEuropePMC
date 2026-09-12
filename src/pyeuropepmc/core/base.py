@@ -5,6 +5,8 @@ from typing import Any
 import backoff
 import requests
 
+from pyeuropepmc._useragent import get_user_agent
+
 from .error_codes import ErrorCodes
 from .exceptions import APIClientError, ValidationError
 
@@ -31,9 +33,7 @@ class BaseAPIClient:
         self.rate_limit_delay: float = rate_limit_delay
         self.session: requests.Session | None = requests.Session()
 
-        self.session.headers.update(
-            {"User-Agent": ("pyeuropepmc/1.0.0 (https://github.com/JonasHeinickeBio/pyEuropePMC)")}
-        )
+        self.session.headers.update({"User-Agent": get_user_agent()})
 
         if not BaseAPIClient._logger_configured:
             _configure_base_logger()

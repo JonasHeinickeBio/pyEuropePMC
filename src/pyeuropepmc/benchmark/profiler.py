@@ -55,7 +55,7 @@ class ProfilerContext:
     Examples
     --------
     >>> from pyeuropepmc.benchmark.profiler import ProfilerContext
-    >>> from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    >>> from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     >>> with ProfilerContext() as prof:
     ...     parser = FullTextXMLParser(xml_content)
@@ -259,7 +259,7 @@ def profile_text(xml_content: str) -> dict[str, Any]:
     >>> result["parser_breakdown_s"]
     {'FullTextXMLParser.__init__': 0.042, 'extract_metadata': 0.015, ...}
     """
-    from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+    from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
     with ProfilerContext() as prof:
         parser = FullTextXMLParser(xml_content)

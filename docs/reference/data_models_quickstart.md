@@ -19,7 +19,7 @@ pip install -e .[dev]
 ### Step 1: Parse XML and Build Entities
 
 ```python
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.builders import build_paper_entities
 
 # Load your PMC XML file
@@ -323,7 +323,7 @@ class ExtendedPaperEntity(PaperEntity):
 
 ```python
 # Parse
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.builders import build_paper_entities
 parser = FullTextXMLParser(xml_content)
 paper, authors, sections, tables, refs = build_paper_entities(parser)

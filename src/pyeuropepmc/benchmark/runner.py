@@ -18,7 +18,7 @@ from pyeuropepmc.benchmark.memory import MemoryTracker
 from pyeuropepmc.benchmark.metrics import compute_all_metrics
 from pyeuropepmc.benchmark.profiler import ProfilerContext
 from pyeuropepmc.benchmark.report import BenchmarkReport
-from pyeuropepmc.processing.fulltext_parser import FullTextXMLParser
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 logger = logging.getLogger(__name__)
 

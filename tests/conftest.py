@@ -1,7 +1,10 @@
+import contextlib
 import json
 from pathlib import Path
 
 import pytest
+
+from pyeuropepmc.utils.dependencies import is_dependency_available
 
 # Base directory for fixtures
 FIXTURE_DIR = Path(__file__).parent / "fixtures"
@@ -157,3 +160,161 @@ def search_cancer_sorted_cited_json():
 def fetch_10pages_cancer_json():
     with (FIXTURE_DIR / "fetch_10pages_cancer.json").open() as f:
         return json.load(f)
+
+
+# Dependency utilities for test skipping
+MARKER_TO_PACKAGE = {
+    "visualization": ["matplotlib", "seaborn"],
+    "pandas": ["pandas"],
+    "rdflib": ["rdflib", "rdflib_jsonld"],
+    "rdf": ["rdflib", "rdflib_jsonld"],
+    "agentic": ["langchain", "langchain_openai", "openai"],
+    "llm": ["langchain", "langchain_openai", "openai"],
+    "enrichment": ["semanticscholar", "cryptography", "search_query"],
+    "cli": ["typer", "rich"],
+    "jupyter": ["ipython", "ipykernel"],
+    "analytics": ["pandas"],
+    "export": ["xlsxwriter"],
+}
+
+
+def pytest_runtest_setup(item):
+    """
+    Hook to skip tests based on markers and missing dependencies.
+
+    This function is called before each test to check if it should be skipped
+    due to missing optional dependencies.
+    """
+    # Check test markers for dependency requirements
+    for marker in item.iter_markers():
+        if marker.name in MARKER_TO_PACKAGE:
+            packages = MARKER_TO_PACKAGE[marker.name]
+            missing = [pkg for pkg in packages if not is_dependency_available(pkg)]
+            if missing:
+                pytest.skip(
+                    f"Skipping {item.nodeid}: missing dependencies {missing} "
+                    f"required by '{marker.name}' marker"
+                )
+            break  # Only process first matching marker
+
+
+# ---------------------------------------------------------------------------
+# Test taxonomy: path-based auto-marking + network guard
+#
+# The default test run (see ``addopts`` in pyproject.toml) is
+# ``-m 'not slow and not functional and not network and not benchmark and not e2e'``
+# and ``--disable-socket`` (via pytest-socket).  That only works if slow /
+# network-dependent tests are actually *marked*.  Historically many were not
+# (whole ``functional/`` directories carried no marker), so the "unit" run
+# would hang on real API calls and grow unbounded in memory while accumulating
+# HTTP responses and Hugging Face dataset downloads.
+#
+# Rather than annotate hundreds of files, we infer the markers from the test's
+# location here, and re-enable the socket for the categories that legitimately
+# need the network so they still work when selected explicitly
+# (``-m functional``, ``--run-real``, ``--run-integration``).
+# ---------------------------------------------------------------------------
+
+# Marker -> one-line description (registered so ``--strict-markers`` is happy).
+_EXTRA_MARKERS = {
+    "functional": "exercises real services / full pipelines; excluded by default",
+    "network": "needs outbound network access; excluded by default",
+    "benchmark": "pytest-benchmark performance test; excluded by default",
+    "gui": "exercises the Flask web UI",
+    "e2e": "end-to-end scenario; excluded by default",
+    "model": "needs ML model dependencies (sentence-transformers, torch, ...)",
+}
+
+# Categories whose tests may talk to the network when run on purpose.
+_NETWORK_CATEGORIES = {"functional", "integration", "network", "e2e"}
+
+
+def pytest_addoption(parser):
+    import importlib.util
+
+    group = parser.getgroup("pyeuropepmc")
+    with contextlib.suppress(ValueError):
+        group.addoption(
+            "--run-real",
+            action="store_true",
+            default=False,
+            help="Run functional/network tests that call real external APIs.",
+        )
+
+    # ``addopts`` (pyproject.toml) passes --disable-socket / --timeout for the
+    # hermetic default run. If pytest-socket / pytest-timeout aren't installed,
+    # register inert placeholders so those flags don't crash pytest (the suite
+    # then just runs without the guard rails).
+    if importlib.util.find_spec("pytest_socket") is None:
+        with contextlib.suppress(ValueError):
+            group.addoption("--disable-socket", action="store_true", help="(no-op)")
+            group.addoption("--allow-unix-socket", action="store_true", help="(no-op)")
+            group.addoption("--force-enable-socket", action="store_true", help="(no-op)")
+    if importlib.util.find_spec("pytest_timeout") is None:
+        with contextlib.suppress(ValueError):
+            group.addoption("--timeout", default=None, help="(no-op)")
+
+
+def pytest_configure(config):
+    for name, desc in _EXTRA_MARKERS.items():
+        config.addinivalue_line("markers", f"{name}: {desc}")
+
+    if config.getoption("--run-real", default=False):
+        # ``--run-real`` == "only the tests that hit real services": select them
+        # and undo the default ``--disable-socket`` (set in addopts) so they can
+        # actually reach the network.
+        config.option.markexpr = "functional or network or e2e"
+        with contextlib.suppress(Exception):
+            config.option.disable_socket = False
+            from pytest_socket import enable_socket
+
+            enable_socket()
+
+
+def _infer_markers(item) -> set[str]:
+    """Markers implied by a test's file path / name / fixtures."""
+    path = str(item.fspath).replace("\\", "/")
+    name = item.fspath.basename
+    inferred: set[str] = set()
+    if "/functional/" in path:
+        inferred.add("functional")
+    if "/integration/" in path:
+        inferred.add("integration")
+    if name.startswith("interactive_") or name.endswith("_interactive_test.py"):
+        inferred.add("functional")
+    if "/gui/" in path:
+        inferred.add("gui")
+    # Actual pytest-benchmark tests (they request the ``benchmark`` fixture) or
+    # the dedicated top-level benchmark scripts.
+    if "benchmark" in getattr(item, "fixturenames", ()) or name.startswith("benchmark_"):
+        inferred |= {"benchmark", "slow"}
+    return inferred
+
+
+def pytest_collection_modifyitems(config, items):
+    """Auto-mark tests by location and wire up the network guard."""
+    # Safety check: core deps present?
+    core_deps = ["requests", "backoff", "defusedxml", "tqdm"]
+    missing_core = [d for d in core_deps if not is_dependency_available(d)]
+    if missing_core:
+        import warnings
+
+        warnings.warn(
+            f"Core dependencies missing: {missing_core}. Many tests will be skipped.",
+            stacklevel=1,
+        )
+
+    # pytest-socket registers itself under the short name "socket".
+    socket_plugin = config.pluginmanager.hasplugin("socket")
+
+    for item in items:
+        categories = {m.name for m in item.iter_markers()}
+        for mark_name in _infer_markers(item):
+            if mark_name not in categories:
+                item.add_marker(getattr(pytest.mark, mark_name))
+                categories.add(mark_name)
+
+        # Tests that may use the network: let the socket through so they work
+        # when the user asks for them explicitly.
+        if socket_plugin and categories & _NETWORK_CATEGORIES:
+            item.add_marker(pytest.mark.enable_socket)

@@ -2,6 +2,8 @@
 Copied unit tests for text matching into tests/filters/unit
 """
 
+import pytest
+
 from pyeuropepmc.utils import text_match as tm
 
 
@@ -48,6 +50,8 @@ def test_any_match_semantic_skip_if_missing():
 
 
 def test_any_match_semantic_with_injected_model_positive():
+    pytest.importorskip("numpy")
+
     # Fake model where encode returns identical normalized vectors -> cosine similarity 1.0
     class FakeModelPos:
         def encode(
@@ -194,6 +198,7 @@ def test_semantic_chunk_match_no_model():
 
 def test_semantic_chunk_match_positive():
     """semantic_chunk_match with injected model returning high similarity."""
+    pytest.importorskip("numpy")
 
     class FakeModelPos:
         def encode(self, sentences, **kwargs):

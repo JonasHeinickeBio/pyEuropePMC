@@ -13,10 +13,17 @@ from pyeuropepmc.models.annotation import (
 )
 from pyeuropepmc.models.author import AuthorEntity
 from pyeuropepmc.models.base import BaseEntity
+from pyeuropepmc.models.clinical_trial import ClinicalTrial, ICiteMetrics
 from pyeuropepmc.models.figure import FigureEntity
 from pyeuropepmc.models.grant import GrantEntity
 from pyeuropepmc.models.institution import InstitutionEntity
 from pyeuropepmc.models.journal import JournalEntity
+from pyeuropepmc.models.literature import (
+    Author,
+    LiteratureResult,
+    LiteratureSearchResponse,
+    NormalizedWork,
+)
 from pyeuropepmc.models.mesh import MeSHHeadingEntity, MeSHQualifierEntity
 from pyeuropepmc.models.paper import PaperEntity
 from pyeuropepmc.models.reference import ReferenceEntity
@@ -26,8 +33,10 @@ from pyeuropepmc.models.table import TableEntity, TableRowEntity
 
 __all__ = [
     "BaseEntity",
+    "ClinicalTrial",
     "ScholarlyWorkEntity",
     "AuthorEntity",
+    "ICiteMetrics",
     "InstitutionEntity",
     "JournalEntity",
     "MeSHHeadingEntity",
@@ -42,4 +51,9 @@ __all__ = [
     "EntityAnnotation",
     "RelationshipAnnotation",
     "GrantEntity",
+    # Literature search models
+    "Author",
+    "LiteratureResult",
+    "LiteratureSearchResponse",
+    "NormalizedWork",
 ]

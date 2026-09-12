@@ -3,10 +3,10 @@
 import pytest
 from rdflib import Graph
 
-from pyeuropepmc.clients.annotations import AnnotationsClient
-from pyeuropepmc.clients.article import ArticleClient
-from pyeuropepmc.clients.search import SearchClient
-from pyeuropepmc.enrichment.enricher import PaperEnricher
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
+from pyeuropepmc.features.literature.article import ArticleClient
+from pyeuropepmc.features.literature.search import SearchClient
+from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
     convert_annotations_to_rdf,
@@ -40,7 +40,7 @@ class TestConvertersWithRealAPI:
     @pytest.fixture
     def enricher(self):
         """Create enrichment client with caching disabled for testing."""
-        from pyeuropepmc.enrichment.config import EnrichmentConfig
+        from pyeuropepmc.features.enrich.config import EnrichmentConfig
         config = EnrichmentConfig(
             enable_crossref=False,
             enable_semantic_scholar=False,
@@ -803,7 +803,7 @@ class TestEnhancedRDFOutput:
 
     def test_parse_annotations_deduplication(self):
         """Test that parse_annotations deduplicates identical mentions."""
-        from pyeuropepmc.processing.annotation_parser import parse_annotations
+        from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
         # Create duplicate annotations (same entity, text, position)
         annotations = [
@@ -834,7 +834,7 @@ class TestEnhancedRDFOutput:
 
     def test_parse_annotations_fills_name(self):
         """Test that parse_annotations fills missing name from exact or URI."""
-        from pyeuropepmc.processing.annotation_parser import parse_annotations
+        from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
         annotations = [
             {
@@ -858,7 +858,7 @@ class TestEnhancedRDFOutput:
 
     def test_parse_annotations_has_annotation_id(self):
         """Test that parse_annotations ensures each entity has annotation_id."""
-        from pyeuropepmc.processing.annotation_parser import parse_annotations
+        from pyeuropepmc.features.fulltext.annotation_parser import parse_annotations
 
         annotations = [
             {
