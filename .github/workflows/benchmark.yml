@@ -2,13 +2,26 @@ name: Weekly Benchmarks
 
 on:
   schedule:
-    # Runs weekly on Monday at 02:00 UTC
+    # Weekly on Monday at 02:00 UTC
     - cron: '0 2 * * 1'
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      update_readme:
+        description: 'Commit the refreshed performance section to README.md'
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
 
 concurrency:
   group: weekly-benchmarks
-  cancel-in-progress: true
+  cancel-in-progress: false
+
+env:
+  PYTHONUNBUFFERED: '1'
+  CI: 'true'
 
 jobs:
   run-benchmarks:
@@ -18,172 +31,64 @@ jobs:
     permissions:
       contents: write
 
-    env:
-      CI: 'true'
-
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          lfs: true
 
-      - name: Pull Git LFS files
-        run: git lfs pull || true
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python + Poetry
+        uses: $/.github/actions/setup-python-env
         with:
           python-version: '3.10'
+          extras: none
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
-        run: poetry install --with dev --no-interaction --no-ansi
-
+      # `-m benchmark` and `--force-enable-socket` are both required. The
+      # default addopts in pyproject.toml are
+      # `-m 'not slow and not ... and not benchmark ...' --disable-socket`, and
+      # conftest.py auto-marks anything requesting the `benchmark` fixture as
+      # `benchmark`+`slow`. Naming the test by node id is NOT enough - marker
+      # filtering happens after collection, so the previous invocation
+      # deselected the only test it asked for and exited 0 having measured
+      # nothing at all.
       - name: Run modular benchmark test
         run: |
-          poetry run pytest tests/benchmark_article_client.py::test_modular_benchmark_system -v
+          poetry run pytest \
+            tests/benchmark_article_client.py::test_modular_benchmark_system \
+            -m benchmark \
+            --force-enable-socket \
+            -v
 
-      - name: Check for performance regression
+      - name: Summarise results, track history and refresh README
         run: |
-          python << 'EOF'
-          import json
-          from pathlib import Path
-          from datetime import datetime
+          python3 .github/scripts/benchmark_report.py \
+            ${{ (github.event_name == 'workflow_dispatch' && !inputs.update_readme) && '--skip-readme' || '' }}
 
-          # Load current results
-          if not Path('MODULAR_BENCHMARK_RESULTS.json').exists():
-              print("⚠️ No benchmark results found")
-              exit(0)
+      - name: Upload benchmark artifacts
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: benchmark-results
+          path: |
+            MODULAR_BENCHMARK_RESULTS.json
+            MODULAR_PERFORMANCE_REPORT.md
+          if-no-files-found: warn
+          retention-days: 90
 
-          with open('MODULAR_BENCHMARK_RESULTS.json') as f:
-              current = json.load(f)
-
-          # Check if historical results exist
-          history_file = Path('.github/benchmark-history.json')
-          history = []
-
-          if history_file.exists():
-              with open(history_file) as f:
-                  history = json.load(f)
-
-          # Get current metrics
-          current_avg = current.get('summary', {}).get('average_time', 0)
-          current_success = current.get('summary', {}).get('success_rate', 0)
-
-          print(f"📊 Current Benchmark Results:")
-          print(f"  Average Time: {current_avg:.2f}s")
-          print(f"  Success Rate: {current_success:.1f}%")
-
-          # Check for regression if we have history
-          if history:
-              last = history[-1]
-              last_avg = last.get('summary', {}).get('average_time', 0)
-              last_success = last.get('summary', {}).get('success_rate', 0)
-
-              print(f"\n📈 Comparison with Previous Run:")
-              print(f"  Previous Avg Time: {last_avg:.2f}s")
-              print(f"  Previous Success Rate: {last_success:.1f}%")
-
-              # Check for >20% performance regression
-              if current_avg > last_avg * 1.2:
-                  regression_pct = ((current_avg/last_avg - 1) * 100)
-                  print(f"\n⚠️ WARNING: Performance regression detected!")
-                  print(f"  Regression: {regression_pct:.1f}%")
-              elif current_avg < last_avg * 0.9:
-                  improvement_pct = ((1 - current_avg/last_avg) * 100)
-                  print(f"\n✨ Performance improvement: {improvement_pct:.1f}%")
-              else:
-                  print(f"\n✅ Performance stable")
-
-          # Add current result to history
-          current['timestamp'] = datetime.now().isoformat()
-          history.append(current)
-
-          # Keep only last 10 runs
-          history = history[-10:]
-
-          # Save updated history
-          history_file.parent.mkdir(parents=True, exist_ok=True)
-          with open(history_file, 'w') as f:
-              json.dump(history, f, indent=2)
-
-          print(f"\n💾 Benchmark history updated ({len(history)} runs stored)")
-          EOF
-
-      - name: Update README with benchmark results
+      - name: Commit updated benchmark data
         run: |
-          # Check if performance report was generated
-          if [ -f "MODULAR_PERFORMANCE_REPORT.md" ]; then
-            # Extract key metrics from the report
-            python << 'EOF'
-          import re
-          import json
-          from datetime import datetime
-
-          # Read the performance report
-          with open('MODULAR_PERFORMANCE_REPORT.md', 'r') as f:
-              report = f.read()
-
-          # Read benchmark results JSON
-          with open('MODULAR_BENCHMARK_RESULTS.json', 'r') as f:
-              results = json.load(f)
-
-          # Extract key metrics
-          total_requests = results.get('summary', {}).get('total_requests', 0)
-          avg_time = results.get('summary', {}).get('average_time', 0)
-          success_rate = results.get('summary', {}).get('success_rate', 0)
-
-          # Read current README
-          with open('README.md', 'r') as f:
-              readme = f.read()
-
-          # Create performance badge section
-          perf_section = f"""
-          ## 📊 Performance
-
-          > Last updated: {datetime.now().strftime('%Y-%m-%d')}
-
-          | Metric | Value |
-          |--------|-------|
-          | **Total Requests** | {total_requests:,} |
-          | **Average Response Time** | {avg_time:.2f}s |
-          | **Success Rate** | {success_rate:.1f}% |
-
-          <details>
-          <summary>📈 View Full Benchmark Report</summary>
-
-          {report}
-
-          </details>
-          """
-
-          # Find or replace performance section
-          perf_pattern = r'## 📊 Performance.*?(?=##|\Z)'
-          if re.search(perf_pattern, readme, re.DOTALL):
-              readme = re.sub(perf_pattern, perf_section.strip() + '\n\n', readme, flags=re.DOTALL)
-          else:
-              # Insert before Contributing section or at the end
-              contrib_pattern = r'(## 🤝 Contributing)'
-              if re.search(contrib_pattern, readme):
-                  readme = re.sub(contrib_pattern, perf_section.strip() + '\n\n\\1', readme)
-              else:
-                  readme += '\n\n' + perf_section.strip()
-
-          # Write updated README
-          with open('README.md', 'w') as f:
-              f.write(readme)
-
-          print("✅ README updated with benchmark results")
-          EOF
-          fi
-
-      - name: Commit and push if changed
-        run: |
+          set -euo pipefail
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add README.md .github/benchmark-history.json
-          git diff --quiet && git diff --staged --quiet || (git commit -m "chore: update benchmark results [skip ci]" && git push)
+          if git diff --staged --quiet; then
+            echo "No benchmark changes to commit."
+            exit 0
+          fi
+
+          git commit -m "chore: update benchmark results [skip ci]"
+          # Push at the branch explicitly rather than relying on HEAD being
+          # attached (see the same fix in changelog.yml).
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:refs/heads/main

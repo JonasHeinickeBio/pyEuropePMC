@@ -403,33 +403,88 @@ snyk test --all-projects
 ```
 
 ### Static Application Security Testing (SAST)
+
+This repository already runs three complementary scanners. Extend them rather
+than proposing a parallel stack:
+
+| Scanner | Scope | Where |
+|---|---|---|
+| **Bandit** | Python source (`src/`) | `cdci.yml` → `quality` job |
+| **CodeQL** | Python *and* the workflow files themselves | `codeql.yml` |
+| **zizmor** | GitHub Actions security (template injection, credential persistence, unpinned actions) | `zizmor.yml` + a pre-commit hook |
+
+Bandit's configuration lives in `[tool.bandit]` in `pyproject.toml`. Note that
+`cdci.yml` passes `--skip "B101,B303"` on the command line instead of
+`-c pyproject.toml`, because reading TOML config needs the `bandit[toml]` extra,
+which is not a declared dev dependency. Keep the two lists in sync by hand, or
+add the extra and switch to the config file.
+
+Any workflow you add must follow the conventions in `devops-agent.agent.md`:
+actions pinned to full commit SHAs, explicit least-privilege `permissions:`,
+`timeout-minutes`, a `concurrency` group, `persist-credentials: false` on
+checkouts that do not push, and **no `${{ }}` interpolation inside `run:`**.
+
 ```yaml
-# GitHub Actions SAST workflow
+# Adding a scanner that reports into GitHub code scanning.
 name: Security Scan
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: '0 4 * * 2'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   sast:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+      security-events: write   # required to upload SARIF
+      actions: read
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
 
-    - name: Run Bandit (Python)
-      run: |
-        pip install bandit
-        bandit -r . -f json -o bandit-report.json
+      - uses: $/.github/actions/setup-python-env
+        with:
+          python-version: '3.12'
+          extras: none
 
-    - name: Run Semgrep
-      uses: returntocorp/semgrep-action@v1
-      with:
-        config: p/security-audit
+      - name: Run Bandit
+        # SARIF, not JSON: upload-sarif rejects Bandit's native JSON format.
+        run: |
+          poetry run pip install --quiet bandit-sarif-formatter
+          poetry run bandit -r ./src -f sarif -o bandit.sarif \
+            --skip "B101,B303" || true
 
-    - name: Upload SARIF reports
-      uses: github/codeql-action/upload-sarif@v2
-      with:
-        sarif_file: bandit-report.json
+      - uses: github/codeql-action/upload-sarif@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
+        if: ${{ !cancelled() }}
+        with:
+          sarif_file: bandit.sarif
+          category: bandit
 ```
+
+**Avoid in generated workflows:**
+
+- `securecodewarrior/github-actions-gosec` — gosec scans **Go**; this is a pure
+  Python project. It was also referenced at `@master`, a mutable branch ref.
+- `returntocorp/semgrep-action` — deprecated; the maintained action is published
+  under the `semgrep` org. Only add it if Bandit and CodeQL leave a real gap.
+- `dependency-check/Dependency-Check_Action@main` — another mutable ref. For
+  Python dependency advisories, `pip-audit` against the Poetry-exported
+  `requirements.txt` is lighter and already matches the toolchain.
+- Passing Bandit's JSON output to `upload-sarif`. The formats are unrelated and
+  the upload fails.
 
 ### Dynamic Application Security Testing (DAST)
 ```bash

@@ -1,0 +1,28 @@
+# zizmor (https://zizmor.sh) — static analysis for GitHub Actions.
+#
+# Everything here is a DELIBERATE exception with a stated reason. Findings
+# should be fixed rather than added to this file; if you do add one, say why.
+rules:
+  artipacked:
+    ignore:
+      # Both of these jobs commit and push to main, so the checkout token has to
+      # stay in .git/config. Neither uploads the workspace as an artifact, which
+      # is the leak path this audit is about.
+      - changelog.yml
+      - benchmark.yml
+
+  dangerous-triggers:
+    ignore:
+      # `actions/first-interaction` needs write access on PRs from forks, which
+      # only `pull_request_target` provides. The usual danger with that trigger
+      # is checking out and executing untrusted PR code with a privileged token
+      # — this workflow has no checkout and no `run:` step at all, so there is
+      # nothing for a fork to influence.
+      - greetings.yml
+
+  superfluous-actions:
+    ignore:
+      # `gh release create` could replace this, but softprops/action-gh-release
+      # handles the dist/* upload set, the release-notes body file and
+      # `make_latest` in one declarative step.
+      - release.yml

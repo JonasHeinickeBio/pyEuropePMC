@@ -7,35 +7,48 @@ on:
 
 permissions:
   contents: read
-  issues: write
+
+concurrency:
+  group: feature-suggester
+  cancel-in-progress: false
 
 jobs:
   analyze-and-suggest:
     runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      issues: write
+      # Required by actions/ai-inference@v2, which calls GitHub Models.
+      models: read
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           fetch-depth: 0  # Get full history for better analysis
+          # This job only reads the repo; it never pushes. Leaving the token in
+          # .git/config would let any later step (or uploaded artifact) carry it.
+          persist-credentials: false
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python + Poetry
+        uses: $/.github/actions/setup-python-env
         with:
           python-version: '3.10'
-
-      - name: Install Poetry and dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install poetry
-          poetry install --no-interaction --no-ansi
+          # The analysis runs ruff/mypy/bandit/pytest, so it needs the same
+          # surface the coverage gate uses.
+          extras: all
 
       - name: Install additional analysis tools
         run: |
-          # Install scc for code counting
-          curl -L https://github.com/boyter/scc/releases/download/v3.1.0/scc_3.1.0_Linux_x86_64.tar.gz | tar xz
-          chmod +x scc
-          sudo mv scc /usr/local/bin/
+          # Install scc for code counting (best effort - the analysis degrades
+          # gracefully without it rather than failing the whole run).
+          if curl -fsSL https://github.com/boyter/scc/releases/download/v3.1.0/scc_3.1.0_Linux_x86_64.tar.gz | tar xz scc; then
+            chmod +x scc
+            sudo mv scc /usr/local/bin/
+          else
+            echo "::warning::scc download failed; code-structure metrics will be missing."
+          fi
 
           # Install CodeScene CLI
           curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y
@@ -45,15 +58,6 @@ jobs:
         env:
           CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
         run: |
-          # Load environment variables from .env file if it exists
-          if [ -f ".env" ]; then
-            echo "🔧 Loading environment variables from .env file..."
-            set -a
-            source .env
-            set +a
-            echo "✅ Environment variables loaded"
-          fi
-
           echo "=== Running Repository Analysis ===" | tee analysis.log
 
           # Create output directory
@@ -317,7 +321,7 @@ jobs:
 
       - name: Run AI inference for suggestions
         id: inference
-        uses: actions/ai-inference@v2
+        uses: actions/ai-inference@a7805884c80886efc241e94a5351df715968a0ad # v2.1.1
         with:
           prompt-file: llm_prompt.txt
           max-tokens: 4000
@@ -383,27 +387,26 @@ jobs:
 
       - name: Upload analysis artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
           name: feature-suggester-analysis-${{ github.run_id }}
           path: |
             analysis_summary.json
             suggestion_output.json
-            action.log
+            analysis.log
             analysis_output/
             llm_prompt.txt
-            codescene_reviews/
           retention-days: 30
 
       - name: Comment on workflow run
         if: always()
         run: |
-          if [ -f action.log ]; then
+          if [ -f analysis.log ]; then
             echo "## Feature Suggester Run Summary" >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "### Results" >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
-            tail -20 action.log >> $GITHUB_STEP_SUMMARY
+            tail -20 analysis.log >> $GITHUB_STEP_SUMMARY
             echo '```' >> $GITHUB_STEP_SUMMARY
             echo "" >> $GITHUB_STEP_SUMMARY
             echo "Full logs available in artifacts." >> $GITHUB_STEP_SUMMARY
