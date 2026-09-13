@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-09-13T21:00:27.369771+00:00",
+    "suite_name": "pyEuropePMC Benchmark Suite",
+    "mean_time": 0.7112072887700001,
+    "p95_time": 1.760337892233334,
+    "total_requests": 224,
+    "success_rate": 100.0,
+    "measured_methods": 10,
+    "failed_methods": 0
+  }
+]
