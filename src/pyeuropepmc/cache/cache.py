@@ -129,6 +129,12 @@ def _check_and_migrate_schema(db_path: Path) -> bool:
         logger.warning(
             f"Failed to migrate diskcache schema: {e}. Removing cache.db for fresh start."
         )
+        # Close the connection BEFORE unlinking. POSIX happily unlinks a file
+        # that still has an open handle, but Windows raises
+        # PermissionError [WinError 32], so the removal failed there and the
+        # caller got PermissionError instead of ConfigurationError.
+        # `close()` is idempotent, so the `finally` below stays correct.
+        conn.close()
         # If migration fails, remove the cache.db file to force recreation
         if os.path.exists(str(db_path)):
             os.remove(str(db_path))
