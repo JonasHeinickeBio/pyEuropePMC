@@ -88,7 +88,10 @@ class TestPaginationState:
         assert state.cursor == "new_cursor"
         assert state.page == 2
         assert state.fetched_count == 25
-        assert state.last_updated > state.started_at
+        # `>=`, not `>`: started_at and last_updated both come from
+        # time.time(), whose granularity is ~15ms on Windows, so an
+        # update in the same tick legitimately leaves them equal.
+        assert state.last_updated >= state.started_at
 
     def test_progress_percent(self):
         """Test progress percentage calculation."""

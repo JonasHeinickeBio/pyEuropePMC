@@ -15,7 +15,6 @@ Features:
 
 import hashlib
 import logging
-import os
 from pathlib import Path
 import shutil
 import time
@@ -509,10 +508,11 @@ class ArtifactStore:
         # Count index entries
         index_count = len(list(self.index_dir.glob("*.json")))
 
-        # Get filesystem stats
-        stat = os.statvfs(self.base_dir)
-        fs_available = stat.f_bavail * stat.f_frsize
-        fs_total = stat.f_blocks * stat.f_frsize
+        # Filesystem stats. `shutil.disk_usage` is cross-platform; `os.statvfs`
+        # does not exist on Windows at all, so this raised AttributeError there.
+        usage = shutil.disk_usage(self.base_dir)
+        fs_available = usage.free
+        fs_total = usage.total
 
         return {
             "used_bytes": total_size,

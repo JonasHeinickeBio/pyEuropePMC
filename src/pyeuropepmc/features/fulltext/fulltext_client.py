@@ -14,6 +14,7 @@ import json
 import logging
 import os
 from pathlib import Path
+import shutil
 import tempfile
 import threading
 from threading import Lock, local
@@ -833,13 +834,15 @@ class FullTextClient(BaseAPIClient):
             return
 
         try:
-            stat = os.statvfs(self.cache_dir)
-            free_space_mb = (stat.f_bavail * stat.f_frsize) / (1024 * 1024)
+            # `shutil.disk_usage` works on every platform; the previous
+            # `os.statvfs` call does not exist on Windows, so this check was
+            # silently skipped there rather than performed.
+            free_space_mb = shutil.disk_usage(self.cache_dir).free / (1024 * 1024)
             if free_space_mb < 100:
                 health["disk_space_available"] = False
                 health["warnings"].append(f"Low disk space: {free_space_mb:.1f}MB available")
-        except (OSError, AttributeError):
-            # os.statvfs not available on Windows, skip this check
+        except OSError:
+            # Unreadable path - nothing useful to report.
             pass
 
     def _check_file_ages(self, health: dict[str, Any]) -> None:

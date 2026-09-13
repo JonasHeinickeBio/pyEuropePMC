@@ -173,9 +173,13 @@ class BenchmarkDataset:
         if name.lower() == "local":
             if local_path is None:
                 raise ValueError("local_path is required for 'local' datasets")
-            self._local_dir = Path(local_path)
+            # Resolved so the stored path is canonical on every platform.
+            # Unresolved, macOS returns /var/... where the real path is
+            # /private/var/..., and Windows can return an 8.3 short path, so
+            # any comparison against a caller's resolved path fails.
+            self._local_dir = Path(local_path).resolve()
         else:
-            self._local_dir = self.data_dir / name
+            self._local_dir = (self.data_dir / name).resolve()
 
         self._source = source or (self._info.source if self._info else "")
         self._article_cache: list[Path] | None = None
