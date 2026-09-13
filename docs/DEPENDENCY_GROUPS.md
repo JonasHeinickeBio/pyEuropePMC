@@ -231,7 +231,6 @@ dev = [
     "pytest-cov>=6.0",
     "pytest-xdist>=3.7",
     "pre-commit>=4.2",
-    "black>=25.1",
     "mypy>=1.16",
     "types-PyYAML>=6.0",
     "types-requests>=2.31",
