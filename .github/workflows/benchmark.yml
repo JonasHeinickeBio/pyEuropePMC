@@ -6,8 +6,10 @@ on:
     - cron: '0 2 * * 1'
   workflow_dispatch:
     inputs:
-      update_readme:
-        description: 'Commit the refreshed performance section to README.md'
+      commit_results:
+        description: >-
+          Commit the refreshed README section AND the benchmark history back to
+          main. Set false for a verification run that must not touch the branch.
         required: false
         default: true
         type: boolean
@@ -70,7 +72,7 @@ jobs:
       - name: Summarise results, track history and refresh README
         run: |
           python3 .github/scripts/benchmark_report.py \
-            ${{ (github.event_name == 'workflow_dispatch' && !inputs.update_readme) && '--skip-readme' || '' }}
+            ${{ (github.event_name == 'workflow_dispatch' && !inputs.commit_results) && '--skip-readme' || '' }}
 
       - name: Upload benchmark artifacts
         if: ${{ !cancelled() }}
@@ -84,6 +86,11 @@ jobs:
           retention-days: 90
 
       - name: Commit updated benchmark data
+        # A dispatch with commit_results=false is a verification run: it must
+        # leave main untouched. The previous input only governed the README, so
+        # `update_readme=false` still committed .github/benchmark-history.json
+        # - surprising for anyone using it to test the workflow safely.
+        if: ${{ github.event_name != 'workflow_dispatch' || inputs.commit_results }}
         run: |
           set -euo pipefail
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
