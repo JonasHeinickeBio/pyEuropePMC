@@ -67,28 +67,24 @@ repos:
       # what CI runs) reported none. Same tool, same versions, same result.
       - id: mypy
         name: mypy (project environment)
-        entry: uv run --frozen mypy src/
-        language: python
-        additional_dependencies: ["uv==0.7.13"]
+        entry: poetry run mypy src/
+        language: system
         pass_filenames: false
         files: ^src/.*\.py$
 
-      - id: uv-lock-check
-        name: Check uv.lock matches pyproject.toml
-        # Validates the lock without re-resolving. The hook this replaced ran
-        # `poetry lock`, which never finished on this dependency graph (601
-        # resolution restarts observed before timeout), so every commit either
-        # hung or had to be bypassed with SKIP.
-        entry: uv lock --check
-        language: python
-        additional_dependencies: ["uv==0.7.13"]
+      - id: poetry-lock-check
+        name: Check poetry.lock matches pyproject.toml
+        # `poetry check --lock` validates against pyproject WITHOUT re-resolving
+        # (~1.5s). Never run `poetry lock` from a hook: see the note in
+        # pyproject.toml about why duplicate declarations made it non-terminating.
+        entry: poetry check --lock
+        language: system
         pass_filenames: false
-        files: ^(pyproject\.toml|uv\.lock)$
+        files: ^(pyproject\.toml|poetry\.lock)$
 
-      - id: uv-export-requirements
-        name: Regenerate requirements.txt from uv.lock
-        entry: uv export --no-hashes --no-dev --no-emit-project --format requirements-txt -o requirements.txt --quiet
-        language: python
-        additional_dependencies: ["uv==0.7.13"]
+      - id: poetry-export-requirements
+        name: Regenerate requirements.txt from poetry.lock
+        entry: poetry export --without-hashes -f requirements.txt -o requirements.txt
+        language: system
         pass_filenames: false
-        files: ^(pyproject\.toml|uv\.lock|requirements\.txt)$
+        files: ^(pyproject\.toml|poetry\.lock|requirements\.txt)$

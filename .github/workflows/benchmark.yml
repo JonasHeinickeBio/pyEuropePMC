@@ -53,7 +53,7 @@ jobs:
       # nothing at all.
       - name: Run modular benchmark test
         run: |
-          uv run pytest \
+          poetry run pytest \
             tests/benchmark_article_client.py::test_modular_benchmark_system \
             -m benchmark \
             --force-enable-socket \

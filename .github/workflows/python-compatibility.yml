@@ -11,7 +11,7 @@ on:
       - 'src/**'
       - 'tests/**'
       - 'pyproject.toml'
-      - 'uv.lock'
+      - 'poetry.lock'
       - '.github/workflows/python-compatibility.yml'
       - '.github/actions/setup-python-env/action.yml'
   schedule:
@@ -135,12 +135,12 @@ jobs:
 
       - name: Compile every module
         run: |
-          uv run python -m compileall -q src/pyeuropepmc
+          python -m compileall -q src/pyeuropepmc
           echo "All Python files compiled under ${{ matrix.python-version }}"
 
       - name: Import and instantiate the public API
         run: |
-          uv run python - <<'PY'
+          poetry run python - <<'PY'
           import pyeuropepmc
           from pyeuropepmc import (
               BaseAPIClient,
@@ -180,7 +180,7 @@ jobs:
           PY
 
       - name: Smoke-test the CLI
-        run: uv run pyeuropepmc --help
+        run: poetry run pyeuropepmc --help
 
   # ---------------------------------------------------------------------------
   # Level 2: the full default test suite on the primary interpreters, across
@@ -229,16 +229,16 @@ jobs:
           # under test does not claim to support. Tracked separately; deselect
           # them here rather than failing the whole platform.
           if [ "$RUNNER_OS" = "Windows" ]; then
-            uv run pytest -q --tb=short \
+            poetry run pytest -q --tb=short \
               -k "not (test_download_pdf_by_pmcid_all_fail or test_try_bulk_xml_download_success)"
           else
-            uv run pytest -q --tb=short
+            poetry run pytest -q --tb=short
           fi
 
       - name: Verify cross-platform path and file handling
         shell: bash
         run: |
-          uv run python - <<'PY'
+          poetry run python - <<'PY'
           import pathlib
           import sys
           import tempfile

@@ -59,7 +59,7 @@ jobs:
           extras: all
 
       - name: Check Poetry configuration
-        run: uv lock --check
+        run: poetry check --lock
 
       - name: Validate version against tag
         if: github.ref_type == 'tag'
@@ -88,12 +88,12 @@ jobs:
 
       - name: Lint and type-check
         run: |
-          uv run ruff check src/ --output-format=github
-          uv run ruff format --check src/
-          uv run mypy src/
+          poetry run ruff check src/ --output-format=github
+          poetry run ruff format --check src/
+          poetry run mypy src/
 
       - name: Run tests
-        run: uv run pytest -q
+        run: poetry run pytest -q
 
   # ---------------------------------------------------------------------------
   # Build: create and smoke-test the distribution packages.
@@ -118,7 +118,7 @@ jobs:
           extras: none
 
       - name: Build distribution
-        run: uv build
+        run: poetry build --no-interaction
 
       - name: Verify wheel and sdist install cleanly
         run: |

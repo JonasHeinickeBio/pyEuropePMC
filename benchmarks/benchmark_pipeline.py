@@ -23,11 +23,11 @@ import time
 from typing import Any
 
 from pyeuropepmc import FullTextClient, SearchClient
+from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.mappers import rebind_namespaces
 from pyeuropepmc.mappers.converters import (
     convert_to_rdf,
 )
-from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 
 @dataclass

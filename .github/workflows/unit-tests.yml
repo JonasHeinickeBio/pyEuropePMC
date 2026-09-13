@@ -43,7 +43,7 @@ jobs:
 
       - name: Assert no optional dependency leaked into the core import
         run: |
-          uv run python - <<'PY'
+          poetry run python - <<'PY'
           import importlib.util
           import sys
 
@@ -59,9 +59,9 @@ jobs:
           PY
 
       - name: Smoke-test the CLI
-        run: uv run pyeuropepmc --help
+        run: poetry run pyeuropepmc --help
 
       - name: Run unit tests
         # Default addopts (pyproject.toml) already exclude slow/functional/
         # network/benchmark/e2e and disable sockets; keep it simple here.
-        run: uv run pytest -q
+        run: poetry run pytest -q

@@ -65,22 +65,22 @@ jobs:
 
           # 1. Run linters and save results
           echo "Running Ruff linter..." | tee -a analysis.log
-          uv run ruff check src/ --output-format json > analysis_output/ruff_results.json 2>&1 || true
-          uv run ruff check src/ > analysis_output/ruff_results.txt 2>&1 || true
+          poetry run ruff check src/ --output-format json > analysis_output/ruff_results.json 2>&1 || true
+          poetry run ruff check src/ > analysis_output/ruff_results.txt 2>&1 || true
 
           # 2. Run Bandit security checks
           echo "Running Bandit security checks..." | tee -a analysis.log
-          uv run bandit -r ./src -f json -o analysis_output/bandit_results.json 2>&1 || true
-          uv run bandit -r ./src > analysis_output/bandit_results.txt 2>&1 || true
+          poetry run bandit -r ./src -f json -o analysis_output/bandit_results.json 2>&1 || true
+          poetry run bandit -r ./src > analysis_output/bandit_results.txt 2>&1 || true
 
           # 3. Run mypy type checking
           echo "Running mypy type checking..." | tee -a analysis.log
-          uv run mypy src/ --json-report analysis_output/mypy_report 2>&1 || true
-          uv run mypy src/ > analysis_output/mypy_results.txt 2>&1 || true
+          poetry run mypy src/ --json-report analysis_output/mypy_report 2>&1 || true
+          poetry run mypy src/ > analysis_output/mypy_results.txt 2>&1 || true
 
           # 4. Generate test coverage report
           echo "Generating test coverage..." | tee -a analysis.log
-          uv run pytest --cov=src/pyeuropepmc --cov-report=json:analysis_output/coverage.json --cov-report=term > analysis_output/test_results.txt 2>&1 || true
+          poetry run pytest --cov=src/pyeuropepmc --cov-report=json:analysis_output/coverage.json --cov-report=term > analysis_output/test_results.txt 2>&1 || true
 
           # 5. Code structure analysis
           echo "Analyzing code structure..." | tee -a analysis.log

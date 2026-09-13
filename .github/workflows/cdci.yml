@@ -45,34 +45,34 @@ jobs:
           extras: all
 
       - name: Ruff (lint)
-        run: uv run ruff check src/ --output-format=github
+        run: poetry run ruff check src/ --output-format=github
 
       - name: Ruff (format check)
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: uv run ruff format --check src/
+        run: poetry run ruff format --check src/
 
       - name: mypy (type checking)
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: uv run mypy src/
+        run: poetry run mypy src/
 
       # requirements.txt is derived from uv.lock, so it cannot drift from the
       # lock by construction. The pre-commit hook keeps it current locally, but
       # hooks can be skipped, so CI is the backstop.
-      - name: Check requirements.txt is in sync with uv.lock
+      - name: Check requirements.txt is in sync with poetry.lock
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
-          uv export --no-hashes --no-dev --no-emit-project \
-            --format requirements-txt -o requirements.txt --quiet
+          poetry export --without-hashes -f requirements.txt -o requirements.txt
           if ! git diff --exit-code --stat requirements.txt; then
             echo "::error::requirements.txt is stale. Regenerate it with:" \
-              "uv export --no-hashes --no-dev --no-emit-project --format requirements-txt -o requirements.txt"
+              "poetry export --without-hashes -f requirements.txt -o requirements.txt"
             exit 1
           fi
 
-      - name: Check uv.lock matches pyproject.toml
+      - name: Check poetry.lock matches pyproject.toml
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        # Validates the lock without re-resolving.
-        run: uv lock --check
+        # Validates the lock without re-resolving. Never call `poetry lock` in
+        # CI - see the note in pyproject.toml about duplicate declarations.
+        run: poetry check --lock
 
       - name: Bandit (security)
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
@@ -80,7 +80,7 @@ jobs:
         # [tool.bandit] because `-c pyproject.toml` needs `bandit[toml]`, which
         # is not a declared dev dependency. Keep the two in sync by hand.
         run: |
-          uv run bandit -r ./src \
+          poetry run bandit -r ./src \
             --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" \
             --skip "B101,B303"
 
@@ -111,7 +111,7 @@ jobs:
       - name: Run tests with coverage
         run: |
           mkdir -p coverage/reports
-          uv run pytest \
+          poetry run pytest \
             --cov \
             --cov-report=xml:coverage/reports/coverage.xml \
             --cov-report=term \
@@ -120,7 +120,7 @@ jobs:
       - name: Enforce coverage threshold
         # `fail_under = 75` lives in pyproject.toml [tool.coverage.report] and is
         # the single source of truth - do not repeat the number here.
-        run: uv run coverage report
+        run: poetry run coverage report
 
       - name: Upload coverage reports
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
