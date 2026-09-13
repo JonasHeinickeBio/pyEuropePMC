@@ -173,7 +173,14 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
             request_headers.update(headers)
 
         # ---- Retry loop ----
+        # `self.timeout` bounds each individual request, not the call as a
+        # whole. With three attempts and up to 60s of rate-limit backoff per
+        # attempt, a caller asking for timeout=5 could still block for ~195s -
+        # observed in CI as the DOAJ functional tests being killed by
+        # pytest-timeout at 120s despite passing timeout=5. Give the whole
+        # operation a deadline so the caller's timeout means something.
         max_retries = 3
+        deadline = time.monotonic() + max(self.timeout * 4, 30)
         for attempt in range(max_retries):
             try:
                 logger.debug(
@@ -191,7 +198,13 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
                 # 429 → rate limited, retry with backoff
                 if response.status_code == 429:
                     wait = self._handle_rate_limit(response, attempt, url)
-                    time.sleep(min(wait, 60))
+                    remaining = deadline - time.monotonic()
+                    if remaining <= 0:
+                        logger.warning(
+                            "Rate limited by %s and the retry budget is spent; giving up", url
+                        )
+                        break
+                    time.sleep(min(wait, 60, remaining))
                     continue
 
                 response.raise_for_status()
@@ -213,8 +226,15 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
                     if retry_after:
                         try:
                             wait = int(retry_after)
+                            remaining = deadline - time.monotonic()
+                            if remaining <= 0:
+                                logger.warning(
+                                    "Rate limited by %s and the retry budget is spent; giving up",
+                                    url,
+                                )
+                                break
                             logger.warning("Rate limited — waiting %ds", wait)
-                            time.sleep(min(wait, 60))
+                            time.sleep(min(wait, 60, remaining))
                             continue
                         except ValueError:
                             pass
