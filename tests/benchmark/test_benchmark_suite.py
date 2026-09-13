@@ -833,10 +833,17 @@ class TestProfilerContext:
 
         from pyeuropepmc.benchmark.profiler import ProfilerContext
 
+        # `time.sleep` can return EARLY on Windows: the default system timer
+        # granularity is ~15.6ms, so a 10ms sleep was measured at 8.75ms and
+        # `>= 0.01` failed intermittently on the windows-latest matrix leg.
+        # Sleep well past the granularity and assert a tolerant lower bound -
+        # enough to prove `elapsed` measures the sleep rather than returning 0,
+        # without asserting a precision the platform clock cannot deliver.
+        nap = 0.05
         with ProfilerContext() as prof:
-            time.sleep(0.01)
+            time.sleep(nap)
 
-        assert prof.elapsed >= 0.01
+        assert prof.elapsed >= nap / 2
 
     def test_stats_property(self):
         """stats property should return pstats.Stats object."""
