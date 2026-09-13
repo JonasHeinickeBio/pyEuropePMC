@@ -26,3 +26,13 @@ rules:
       # handles the dist/* upload set, the release-notes body file and
       # `make_latest` in one declarative step.
       - release.yml
+
+  adhoc-packages:
+    ignore:
+      # `npm install -g @github/copilot@<pinned>` is how GitHub documents
+      # installing the Copilot CLI, which actions/ai-inference@v3 shells out to.
+      # The version is pinned; zizmor flags any global install outside a
+      # lockfile regardless, and there is no lockfile-based alternative.
+      - summary.yml
+      - enhanceIssue.yml
+      - analyze_repo.yml
