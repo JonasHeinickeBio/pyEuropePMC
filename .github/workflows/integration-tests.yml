@@ -135,15 +135,36 @@ jobs:
           set -euo pipefail
           DATE=$(date +'%Y-%m-%d')
 
-          EXISTING=$(gh issue list \
-            --label "functional-test-failure" --state open \
-            --json number,title \
-            --jq "[.[] | select(.title | contains(\"$FINGERPRINT\")) | .number] | first // empty")
+          # At most ONE open functional-failure issue at a time. The fingerprint
+          # is the sorted set of failing test IDs, so a single flaky live-API
+          # test joining or leaving the set changes it - and keying only on an
+          # exact match filed three issues in two hours (#174, #177, #178) for
+          # the same two persistent failures plus flaky Zenodo/CORE tests.
+          OPEN_JSON=$(gh issue list \
+            --label "functional-test-failure" --state open --json number,title)
+          EXACT=$(echo "$OPEN_JSON" \
+            | jq -r "[.[] | select(.title | contains(\"$FINGERPRINT\")) | .number] | first // empty")
+          ANY=$(echo "$OPEN_JSON" | jq -r '[.[].number] | first // empty')
 
-          if [ -n "$EXISTING" ]; then
-            echo "Issue #$EXISTING already tracks this failure signature; adding a run link."
-            gh issue comment "$EXISTING" \
+          if [ -n "$EXACT" ]; then
+            echo "Issue #$EXACT already tracks this exact signature; adding a run link."
+            gh issue comment "$EXACT" \
               --body "Still failing as of $DATE on \`$BRANCH\` (\`$COMMIT\`) — [run]($RUN_URL)."
+            exit 0
+          fi
+
+          if [ -n "$ANY" ]; then
+            echo "Issue #$ANY is already open for functional failures; updating it instead."
+            gh issue comment "$ANY" --body "$(cat <<UPDATE
+          Still failing as of $DATE on \`$BRANCH\` (\`$COMMIT\`) — [run]($RUN_URL).
+
+          The set of failing tests changed since this issue was filed (now \`$FINGERPRINT\`, $FAILED_COUNT failing):
+
+          $FAILED_LIST
+
+          $FAILED_DETAILS
+          UPDATE
+          )"
             exit 0
           fi
 
