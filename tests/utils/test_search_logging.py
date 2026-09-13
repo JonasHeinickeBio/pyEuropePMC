@@ -5,6 +5,7 @@ Unit tests for search logging functionality.
 import json
 from pathlib import Path
 import tempfile
+import time
 from unittest.mock import Mock, patch
 
 import pytest
@@ -119,7 +120,12 @@ class TestSearchLog:
         assert len(log.entries) == 2
         assert log.entries[1] == entry2
 
-        # Should update last_updated
+        # Should update last_updated. `created_at` and `last_updated` are two
+        # independent `datetime.now()` calls, which can tie on clocks with
+        # coarser resolution (observed on Windows CI) - sleep to guarantee
+        # the second call lands on a later tick.
+        time.sleep(0.01)
+        log.add_entry(SearchLogEntry(database="DB3", query="query3", filters={}))
         assert log.last_updated > log.created_at
 
     def test_to_dict(self):
@@ -263,18 +269,25 @@ class TestSearchLoggingFunctions:
                 saved_data = json.load(f)
                 assert saved_data == raw_results
 
-    def test_record_query_raw_results_error(self):
+    def test_record_query_raw_results_error(self, tmp_path):
         """Test recording query when raw results save fails."""
         log = SearchLog(title="Test")
 
-        # Use invalid directory to trigger error
+        # A POSIX-style absolute path like "/invalid/..." isn't reliably
+        # invalid - on Windows it resolves under the current drive root,
+        # which CI runners can happily create. Use a regular file as the
+        # parent "directory" instead: `mkdir(parents=True)` fails on every
+        # platform since a file already occupies that path component.
+        blocking_file = tmp_path / "not_a_directory"
+        blocking_file.write_text("x")
+
         record_query(
             log=log,
             database="EuropePMC",
             query="test",
             filters={},
             raw_results={"test": "data"},
-            raw_results_dir="/invalid/path/that/does/not/exist",
+            raw_results_dir=blocking_file / "subdir",
         )
 
         # Entry should still be created, but without raw_results_path
