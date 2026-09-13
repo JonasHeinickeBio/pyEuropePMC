@@ -94,6 +94,16 @@ class BaseHTTPClient:
             allowed_methods=["HEAD", "GET", "OPTIONS", "POST"],
             backoff_factor=1,
             raise_on_status=False,
+            # urllib3 honours a server-supplied `Retry-After` by sleeping
+            # INSIDE session.get(), where the caller's `timeout` cannot reach
+            # it. A service answering 429 with `Retry-After: 60` therefore cost
+            # 3 x 60s per request regardless of timeout - measured at 180s for
+            # a client constructed with timeout=5, which is what killed the
+            # DOAJ functional tests at pytest's 120s cap.
+            # 429 is handled by the retry loop in features/search/base.py,
+            # which applies the same backoff against an overall deadline, so
+            # this only removes a duplicate and unbounded wait.
+            respect_retry_after_header=False,
         )
         adapter = HTTPAdapter(max_retries=retry_strategy)
         self.session.mount("https://", adapter)
