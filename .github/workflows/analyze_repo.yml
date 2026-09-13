@@ -19,8 +19,6 @@ jobs:
     permissions:
       contents: read
       issues: write
-      # Required by actions/ai-inference@v2, which calls GitHub Models.
-      models: read
 
     steps:
       - name: Checkout repository
@@ -319,14 +317,52 @@ jobs:
 
           echo "$ANALYSIS_CONTENT" >> llm_prompt.txt
 
+      - name: Check for a Copilot CLI token
+        id: ai
+        env:
+          COPILOT_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+        run: |
+          if [ -n "$COPILOT_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            {
+              echo "### AI step skipped"
+              echo
+              echo "\`COPILOT_CLI_TOKEN\` is not configured, so the Copilot CLI"
+              echo "cannot authenticate and the AI step was skipped."
+              echo
+              echo "GitHub Models (the previous backend) was retired on"
+              echo "2026-07-30 and now answers every request with HTTP 410, so"
+              echo "there is no fallback to fall back to. Add a token with"
+              echo "Copilot access as \`COPILOT_CLI_TOKEN\` to re-enable this."
+            } >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Set up Node
+        if: steps.ai.outputs.available == 'true'
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: '24'
+
+      - name: Install Copilot CLI
+        if: steps.ai.outputs.available == 'true'
+        # Pinned, like every action SHA in this repo: an unpinned global
+        # npm install is an unaudited dependency fetched at run time.
+        run: npm install -g @github/copilot@1.0.83
+
       - name: Run AI inference for suggestions
         id: inference
-        uses: actions/ai-inference@a7805884c80886efc241e94a5351df715968a0ad # v2.1.1
+        if: steps.ai.outputs.available == 'true'
+        env:
+          COPILOT_GITHUB_TOKEN: ${{ secrets.COPILOT_CLI_TOKEN }}
+        uses: actions/ai-inference@2c43c91ae16266ca159d311430343c67a5ffa222 # v3
         with:
           prompt-file: llm_prompt.txt
           max-tokens: 4000
 
       - name: Save LLM response
+        if: steps.ai.outputs.available == 'true'
         env:
           AI_RESPONSE: ${{ steps.inference.outputs.response }}
         run: |
@@ -337,6 +373,7 @@ jobs:
           cat suggestion_output.json
 
       - name: Validate and create issues
+        if: steps.ai.outputs.available == 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
