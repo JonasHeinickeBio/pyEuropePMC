@@ -74,10 +74,16 @@ jobs:
 
           report = pathlib.Path("reports/functional-junit.xml")
           failed = []
+          detail = {}
           if report.exists():
               for case in ET.parse(report).getroot().iter("testcase"):
-                  if case.find("failure") is not None or case.find("error") is not None:
-                      failed.append(f"{case.get('classname', '')}::{case.get('name', '')}")
+                  node = case.find("failure")
+                  if node is None:
+                      node = case.find("error")
+                  if node is not None:
+                      name = f"{case.get('classname', '')}::{case.get('name', '')}"
+                      failed.append(name)
+                      detail[name] = node
 
           failed.sort()
           fingerprint = hashlib.sha256("\n".join(failed).encode()).hexdigest()[:16]
@@ -86,6 +92,30 @@ jobs:
           print("failed<<EOF_FAILED")
           print("\n".join(f"- `{name}`" for name in failed[:40]) or "- (no test IDs in JUnit report)")
           print("EOF_FAILED")
+
+          # The reason each test failed, taken from the JUnit report. Tailing
+          # the pytest log instead put ~60 lines of third-party deprecation
+          # warnings in the issue and none of the actual failures.
+          print("details<<EOF_DETAILS")
+          shown = 0
+          for name, node in sorted(detail.items()):
+              if shown >= 10:
+                  print(f"\n_... and {len(detail) - shown} more; see the artifact._")
+                  break
+              msg = (node.get("message") or "").strip()
+              body = (node.text or "").strip().splitlines()
+              tail = "\n".join(body[-12:])
+              print("<details>")
+              print(f"<summary><code>{name}</code></summary>\n")
+              print("```")
+              if msg:
+                  print(msg[:400])
+              if tail:
+                  print(tail[:1200])
+              print("```\n")
+              print("</details>\n")
+              shown += 1
+          print("EOF_DETAILS")
           PY
 
       - name: Create issue on test failure
@@ -95,6 +125,7 @@ jobs:
           FINGERPRINT: ${{ steps.summary.outputs.fingerprint }}
           FAILED_COUNT: ${{ steps.summary.outputs.count }}
           FAILED_LIST: ${{ steps.summary.outputs.failed }}
+          FAILED_DETAILS: ${{ steps.summary.outputs.details }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           BRANCH: ${{ github.ref_name }}
           COMMIT: ${{ github.sha }}
@@ -116,9 +147,6 @@ jobs:
             exit 0
           fi
 
-          # Last 60 lines of the captured log, fenced for readability.
-          TAIL=$(tail -60 reports/functional.log)
-
           gh issue create \
             --title "Functional test failure — $DATE ($FINGERPRINT)" \
             --label "functional-test-failure,bug,ci-failure" \
@@ -136,11 +164,9 @@ jobs:
 
           $FAILED_LIST
 
-          ### Tail of the run
+          ### Why they failed
 
-          \`\`\`
-          $TAIL
-          \`\`\`
+          $FAILED_DETAILS
 
           Full output is attached to the workflow run as the \`functional-test-output\` artifact.
 
