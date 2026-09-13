@@ -43,20 +43,28 @@ jobs:
           python-version: '3.10'
           extras: none
 
-      # `-m benchmark` and `--force-enable-socket` are both required. The
-      # default addopts in pyproject.toml are
-      # `-m 'not slow and not ... and not benchmark ...' --disable-socket`, and
-      # conftest.py auto-marks anything requesting the `benchmark` fixture as
-      # `benchmark`+`slow`. Naming the test by node id is NOT enough - marker
-      # filtering happens after collection, so the previous invocation
-      # deselected the only test it asked for and exited 0 having measured
-      # nothing at all.
+      # Three of the default addopts in pyproject.toml have to be overridden
+      # here, because they exist to make the *unit* run hermetic and fast:
+      #
+      #   -m 'not ... benchmark ...'  deselects this very test. Naming it by
+      #       node id is not enough - marker filtering happens after
+      #       collection, so the original invocation reported
+      #       "1 deselected / 0 selected" and exited 0 having measured nothing.
+      #   --disable-socket            blocks the real API calls the benchmark
+      #       exists to measure; conftest.py only re-enables sockets for the
+      #       functional/network/e2e categories, not for benchmark.
+      #   --timeout=120               kills the run mid-flight. Observed:
+      #       "Failed: Timeout (>120.0s) from pytest-timeout" after 122s. A
+      #       benchmark making hundreds of live requests legitimately needs
+      #       longer, so the per-test cap is raised to an hour; the job's own
+      #       timeout-minutes: 120 remains the real backstop.
       - name: Run modular benchmark test
         run: |
           poetry run pytest \
             tests/benchmark_article_client.py::test_modular_benchmark_system \
             -m benchmark \
             --force-enable-socket \
+            --timeout=3600 \
             -v
 
       - name: Summarise results, track history and refresh README
