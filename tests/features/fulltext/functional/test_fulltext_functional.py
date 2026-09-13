@@ -5,6 +5,7 @@ These tests require network access and interact with the real Europe PMC API.
 
 from pathlib import Path
 import tempfile
+from xml.etree import ElementTree
 from unittest.mock import Mock, mock_open, patch
 
 import pytest
@@ -314,11 +315,14 @@ class TestFullTextClientFunctional:
             try:
                 xml_content = client.get_fulltext_content(pmcid, format_type="xml")
                 logger.info(f"First 200 chars of XML: {xml_content[:200]}")
-                assert xml_content.strip().startswith(
-                    "<!DOCTYPE article"
-                ) or xml_content.strip().startswith("<article"), (
-                    "XML content should start with article tag or DOCTYPE."
-                )
+                # Europe PMC returns the XML declaration first, so the payload
+                # begins `<?xml version="1.0" ...?><article ...`. Asserting the
+                # string *starts with* the article tag therefore failed on
+                # perfectly good content. Parse it instead and check the root
+                # element, which is what the assertion was really about.
+                root = ElementTree.fromstring(xml_content)
+                tag = root.tag.rsplit("}", 1)[-1]
+                assert tag == "article", f"XML root should be <article>, got <{tag}>"
                 assert "open_access" in xml_content or "article-type" in xml_content, (
                     "Should contain expected XML properties."
                 )
@@ -345,12 +349,31 @@ class TestFullTextClientFunctional:
                 assert content.strip().startswith("<"), "Downloaded file should be XML"
 
     @pytest.mark.functional
-    def test_download_xml_known_unavailable(self):
-        """Test XML download for a known unavailable PMC ID (PMC3312970)."""
+    def test_download_xml_falls_back_to_non_europepmc_source(self):
+        """PMC3312970 is absent from Europe PMC but reachable via the fallback chain.
+
+        This used to assert that the download *raised*, which was true when
+        `download_xml_by_pmcid` only queried Europe PMC. v2.0.0 added the
+        multi-source chain (NCBI efetch, BioC-PMC, DOI negotiation, bioRxiv,
+        Unpaywall), so the article is now retrieved successfully and no
+        exception is raised. Verified directly against the services:
+        Europe PMC returns 404 for PMC3312970 while NCBI efetch returns 200
+        with ~129 KB of XML.
+
+        The "unavailable raises FullTextError" path is covered by the unit
+        tests, which can force every source to fail; a live fixture that is
+        absent from all six sources would be inherently fragile.
+        """
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = Path(temp_dir) / "PMC3312970.xml"
-            with pytest.raises((FullTextError, Exception)):
-                self.client.download_xml_by_pmcid("3312970", output_path)
+            result = self.client.download_xml_by_pmcid("3312970", output_path)
+
+            assert result == output_path
+            assert output_path.exists()
+            source = getattr(self.client, "last_xml_source", None)
+            assert source not in (None, "", "europepmc_rest"), (
+                f"expected a non-Europe-PMC fallback source, got {source!r}"
+            )
 
     @pytest.mark.functional
     def test_e2e_search_and_download_10_xml(self):  # noqa: C901
