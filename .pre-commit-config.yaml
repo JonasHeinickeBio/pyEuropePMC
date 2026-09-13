@@ -65,29 +65,24 @@ repos:
         files: ^\.github/(workflows/.*\.ya?ml|actions/.*/action\.ya?ml|zizmor\.ya?ml)$
         args: [".github/workflows/", ".github/actions/"]
 
-      # Both dependency hooks below are scoped with `files:`. The versions they
-      # replaced had no filter, so they ran on *every* commit - including
-      # docs-only ones - and `poetry lock` re-resolves from scratch each time.
-      - id: poetry-lock-check
-        name: Check poetry.lock matches pyproject.toml
-        # `poetry check --lock` validates the lock against pyproject without
-        # re-resolving (~1.5s). The previous hook ran `poetry lock` itself,
-        # which on this dependency graph does not finish in any reasonable
-        # time - it was observed at 98% CPU for 7+ minutes with no result, so
-        # every commit either hung or had to be bypassed.
-        entry: poetry check --lock
-        language: system
-        pass_filenames: false
-        files: ^(pyproject\.toml|poetry\.lock)$
-
-      - id: uv-compile-requirements
-        name: Regenerate requirements.txt (uv)
-        # uv resolves the same 33-package universal set that `poetry export`
-        # produced, with the same environment markers, in ~1.3s. `--universal`
-        # is required: without it uv resolves for the current platform only and
-        # silently drops win32/py<3.11 conditional deps (colorama, isodate).
-        entry: uv pip compile pyproject.toml --universal --python-version 3.10 -o requirements.txt --quiet
+      # Both dependency hooks are scoped with `files:` so a commit that touches
+      # neither pyproject.toml nor a generated file pays for neither check.
+      - id: uv-lock-check
+        name: Check uv.lock matches pyproject.toml
+        # Validates the lock without re-resolving. The hook this replaced ran
+        # `poetry lock`, which never finished on this dependency graph (601
+        # resolution restarts observed before timeout), so every commit either
+        # hung or had to be bypassed with SKIP.
+        entry: uv lock --check
         language: python
         additional_dependencies: ["uv==0.7.13"]
         pass_filenames: false
-        files: ^(pyproject\.toml|requirements\.txt)$
+        files: ^(pyproject\.toml|uv\.lock)$
+
+      - id: uv-export-requirements
+        name: Regenerate requirements.txt from uv.lock
+        entry: uv export --no-hashes --no-dev --no-emit-project --format requirements-txt -o requirements.txt --quiet
+        language: python
+        additional_dependencies: ["uv==0.7.13"]
+        pass_filenames: false
+        files: ^(pyproject\.toml|uv\.lock|requirements\.txt)$

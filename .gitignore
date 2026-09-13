@@ -197,8 +197,11 @@ PMC3258128.xml
 .continue/agents/new-config.yaml
 PMC123.html
 
-# uv (Poetry is the supported workflow)
-uv.lock
+# uv
+# uv.lock is intentionally COMMITTED: it is the project's lockfile and
+# `uv sync --frozen` in CI needs it. It was previously ignored here, which
+# is how the repository ended up with Dependabot alerts against a uv.lock
+# that no longer existed in the tree.
 
 # showcase test reports
 tests/integration/showcase_reports/

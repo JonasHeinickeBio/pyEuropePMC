@@ -48,7 +48,7 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p reports
-          poetry run pytest -v -m functional --tb=short \
+          uv run pytest -v -m functional --tb=short \
             --junitxml=reports/functional-junit.xml \
             2>&1 | tee reports/functional.log
 

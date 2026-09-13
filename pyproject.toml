@@ -44,8 +44,8 @@ dependencies = [
 
 [project.optional-dependencies]
 # --- Feature groups -------------------------------------------------------
-# NOTE: keep the meta bundles (`standard`, `all`) in sync when editing these.
-# Poetry does not support self-referential extras, so they are expanded by hand.
+# The meta bundles `standard` and `all` reference these groups directly, so
+# editing a group here automatically flows through to them.
 analytics = ["pandas>=1.4,<3", "numpy>=1.21,<3"]
 visualization = ["matplotlib>=3.7.0,<4.0", "seaborn>=0.12.0,<1.0", "pandas>=1.4,<3", "numpy>=1.21,<3"]
 export = ["xlsxwriter>=3.2.9,<4.0", "tabulate>=0.9.0,<1.0", "pandas>=1.4,<3"]
@@ -69,15 +69,15 @@ semanticscholar = ["semanticscholar>=0.12.0,<1.0"]
 # directly (`pip install "sentence-transformers"`) or pass your own backend.
 # Enrichment bundle: everything the enrichment clients can optionally use.
 enrichment = ["semanticscholar>=0.12.0,<1.0", "cryptography>=48.0.1,<51.0"]
-# --- Meta bundles (expanded manually; mirror the groups above) ------------
+# --- Meta bundles (self-referential extras, PEP 621) ------------------------
+# These used to be expanded by hand with the note "Poetry does not support
+# self-referential extras". That duplication was the direct cause of
+# `poetry lock` never finishing: pandas was declared in 5 extras, numpy in 4,
+# and Poetry restarts version solving once per duplicate-dependency override
+# (601 restarts observed before timeout). Self-references resolve to the exact
+# same 219-package set, verified lock-to-lock.
 standard = [
-  # analytics + visualization + export
-  "pandas>=1.4,<3",
-  "numpy>=1.21,<3",
-  "matplotlib>=3.7.0,<4.0",
-  "seaborn>=0.12.0,<1.0",
-  "xlsxwriter>=3.2.9,<4.0",
-  "tabulate>=0.9.0,<1.0",
+  "pyeuropepmc[analytics,visualization,export]",
   # notebook / REPL niceties
   "requests-cache>=1.2.1,<2.0",
   "rich>=13.7.0",
@@ -88,62 +88,35 @@ standard = [
   "notebook>=6.4",
 ]
 all = [
-  # standard
-  "pandas>=1.4,<3",
-  "numpy>=1.21,<3",
-  "matplotlib>=3.7.0,<4.0",
-  "seaborn>=0.12.0,<1.0",
-  "xlsxwriter>=3.2.9,<4.0",
-  "tabulate>=0.9.0,<1.0",
-  "requests-cache>=1.2.1,<2.0",
-  "rich>=13.7.0",
-  "ipython>=7.30",
-  "ipykernel>=6.7",
-  "ipywidgets>=7.6",
-  "jupyterlab>=3.2",
-  "notebook>=6.4",
-  # rdf
-  "rdflib-jsonld>=0.5",
-  "rdfizer>=4.7.5,<5",
-  # ui
-  "flask>=3.1.1,<4.0",
-  "tornado>=6.5.1,<7.0",
-  # signing
-  "cryptography>=48.0.1,<51.0",
-  # bibliography + zotero
-  "bibtexparser>=1.4.0",
-  "pyzotero>=1.5.0",
-  # agentic
-  "langchain>=0.3.0,<1.0",
-  "langchain-openai>=0.2.0,<1.0",
-  "openai>=1.40,<2",
-  "langgraph>=0.2.0,<1.0",
-  "jinja2>=3.1.2,<4.0",
-  # external sources
-  "semanticscholar>=0.12.0,<1.0",
+  "pyeuropepmc[standard,rdf,ui,signing,bibliography,zotero,agentic,semanticscholar]",
 ]
 
 [tool.poetry]
 packages = [{ include = "pyeuropepmc", from = "src" }]
 include = [{ path = "src/pyeuropepmc/py.typed", format = ["sdist", "wheel"] }]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^8.4.1"
-pytest-cov = "^6.0.0"
-pytest-xdist = "^3.7.0"
-pytest-socket = ">=0.7,<1.0"       # hermetic default run: block real sockets
-pytest-timeout = ">=2.3,<3.0"      # per-test wall-clock cap
-pre-commit = "^4.2.0"
-black = "^25.1.0"
-mypy = "^1.16.1"
-types-PyYAML = "6.0.12.20240311"
-types-requests = "^2.31.0"
-pytest-benchmark = "^5.2.3"
-coverage = "^7.11.3"
-bandit = "^1.8.5"
-ruff = "^0.14.4"
-typing-extensions = "^4.14.0"
-memory-profiler = "^0.61.0"
+# PEP 735 dependency group. Both uv and Poetry 2.x read this; the previous
+# [tool.poetry.group.dev.dependencies] form was Poetry-only, so uv could not
+# see the dev toolchain at all and locked an incomplete graph.
+[dependency-groups]
+dev = [
+  "pytest>=8.4.1,<9.0.0",
+  "pytest-cov>=6.0.0,<7.0.0",
+  "pytest-xdist>=3.7.0,<4.0.0",
+  "pytest-socket>=0.7,<1.0",
+  "pytest-timeout>=2.3,<3.0",
+  "pre-commit>=4.2.0,<5.0.0",
+  "black>=25.1.0,<26.0.0",
+  "mypy>=1.16.1,<2.0.0",
+  "types-PyYAML==6.0.12.20240311",
+  "types-requests>=2.31.0,<3.0.0",
+  "pytest-benchmark>=5.2.3,<6.0.0",
+  "coverage>=7.11.3,<8.0.0",
+  "bandit>=1.8.5,<2.0.0",
+  "ruff>=0.14.4,<0.15.0",
+  "typing-extensions>=4.14.0,<5.0.0",
+  "memory-profiler>=0.61.0,<0.62.0",
+]
 
 [tool.poetry.requires-plugins]
 poetry-plugin-export = ">=1.8"

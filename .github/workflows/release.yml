@@ -59,7 +59,7 @@ jobs:
           extras: all
 
       - name: Check Poetry configuration
-        run: poetry check --no-interaction
+        run: uv lock --check
 
       - name: Validate version against tag
         if: github.ref_type == 'tag'
@@ -67,7 +67,7 @@ jobs:
           TAG_NAME: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          VERSION=$(poetry version --short)
+          VERSION=$(python3 -c "import tomllib,pathlib;print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])")
           TAG_VERSION="${TAG_NAME#v}"
           echo "Package version: $VERSION"
           echo "Tag version:     $TAG_VERSION"
@@ -88,12 +88,12 @@ jobs:
 
       - name: Lint and type-check
         run: |
-          poetry run ruff check src/ --output-format=github
-          poetry run ruff format --check src/
-          poetry run mypy src/
+          uv run ruff check src/ --output-format=github
+          uv run ruff format --check src/
+          uv run mypy src/
 
       - name: Run tests
-        run: poetry run pytest -q
+        run: uv run pytest -q
 
   # ---------------------------------------------------------------------------
   # Build: create and smoke-test the distribution packages.
@@ -118,13 +118,13 @@ jobs:
           extras: none
 
       - name: Build distribution
-        run: poetry build --no-interaction
+        run: uv build
 
       - name: Verify wheel and sdist install cleanly
         run: |
           set -euo pipefail
           ls -la dist/
-          EXPECTED=$(poetry version --short)
+          EXPECTED=$(python3 -c "import tomllib,pathlib;print(tomllib.loads(pathlib.Path('pyproject.toml').read_text())['project']['version'])")
 
           # Both artifacts are published, so both are smoke-tested - each in its
           # own throwaway venv so neither can mask a packaging bug in the other.
