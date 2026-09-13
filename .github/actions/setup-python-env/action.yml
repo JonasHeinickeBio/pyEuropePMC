@@ -48,10 +48,21 @@ runs:
         allow-prereleases: true
 
     - name: Install Poetry
-      uses: snok/install-poetry@a783c322200f0519c7926aa6faa857c4e23e9263 # v1.4.2
-      with:
-        version: ${{ inputs.poetry-version }}
-        virtualenvs-create: false
+      shell: bash
+      env:
+        POETRY_VERSION: ${{ inputs.poetry-version }}
+      # Installed with pip rather than the curl installer action, for three
+      # reasons: `poetry-plugin-export` must be present (the plugin is NOT
+      # auto-installed for a bare `poetry export`, which fails with "The
+      # requested command export does not exist"); pip retries transient
+      # network errors, which the curl installer does not (a
+      # ConnectionResetError took CI down once already); and it drops a
+      # third-party action from the supply chain.
+      run: |
+        set -euo pipefail
+        python -m pip install --quiet --disable-pip-version-check \
+          "poetry==${POETRY_VERSION}" "poetry-plugin-export>=1.8"
+        poetry --version
 
     - name: Install uv
       uses: astral-sh/setup-uv@bec219d24cd3e171d82865faccec33120bb574f4 # v10.1.0
