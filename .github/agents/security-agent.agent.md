@@ -410,8 +410,14 @@ than proposing a parallel stack:
 | Scanner | Scope | Where |
 |---|---|---|
 | **Bandit** | Python source (`src/`) | `cdci.yml` → `quality` job |
-| **CodeQL** | Python *and* the workflow files themselves | `codeql.yml` |
+| **CodeQL** | Python *and* the workflow files themselves | GitHub **default setup** (repo Settings → Code security) |
 | **zizmor** | GitHub Actions security (template injection, credential persistence, unpinned actions) | `zizmor.yml` + a pre-commit hook |
+
+CodeQL runs via GitHub's *default setup*, not a workflow in this repo. Do not
+add a `codeql.yml`: when default setup is enabled GitHub neutralises any
+advanced CodeQL workflow, leaving a permanently-NEUTRAL check on every PR. To
+broaden coverage, switch the default setup's query suite to `extended` in the
+repository settings instead.
 
 Bandit's configuration lives in `[tool.bandit]` in `pyproject.toml`. Note that
 `cdci.yml` passes `--skip "B101,B303"` on the command line instead of
