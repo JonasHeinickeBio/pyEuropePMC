@@ -49,7 +49,14 @@ dependencies = [
 analytics = ["pandas>=1.4,<3", "numpy>=1.21,<3"]
 visualization = ["matplotlib>=3.7.0,<4.0", "seaborn>=0.12.0,<1.0", "pandas>=1.4,<3", "numpy>=1.21,<3"]
 export = ["xlsxwriter>=3.2.9,<4.0", "tabulate>=0.9.0,<1.0", "pandas>=1.4,<3"]
-rdf = ["rdflib-jsonld>=0.5", "rdfizer>=4.7.5,<5"]
+# NOTE: `rdfizer` (SDM-RDFizer) is deliberately NOT an extra. It resolves to 27
+# extra packages - Flask/Werkzeug/Jinja2 plus the MySQL, Postgres and ODBC
+# drivers - taking this extra from 4 packages to 31, and it declares pandas,
+# Flask, rdflib and requests with no version bounds at all.
+# `mappers/rml_rdfizer.py` already guards it (RDFIZER_AVAILABLE) and tells you
+# to `pip install rdfizer` directly, which is what docs/DEPENDENCY_GROUPS.md
+# has always recommended ("heavy and rarely used").
+rdf = ["rdflib-jsonld>=0.5"]
 ui = ["flask>=3.1.1,<4.0", "tornado>=6.5.1,<7.0"]
 signing = ["cryptography>=48.0.1,<51.0"]
 bibliography = ["bibtexparser>=1.4.0"]

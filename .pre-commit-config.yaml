@@ -8,14 +8,6 @@ repos:
       - id: ruff-format
         args: [src/]  # only format src/
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.16.0
-    hooks:
-      - id: mypy
-        language_version: python3.12
-        exclude: ^(tests/|examples/)
-        additional_dependencies: ["pydantic>=2"]
-
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3
     hooks:
@@ -67,6 +59,20 @@ repos:
 
       # Both dependency hooks are scoped with `files:` so a commit that touches
       # neither pyproject.toml nor a generated file pays for neither check.
+      # mypy must run in the project environment, not an isolated one. The
+      # mirrors-mypy hook this replaced pinned mypy 1.16.0 with only pydantic
+      # installed, so it could not see the real dependency types: ElementTree
+      # calls resolved to Any and it reported no-any-return errors in files the
+      # commit had not touched, while `uv run mypy src/` (1.20.2, full deps -
+      # what CI runs) reported none. Same tool, same versions, same result.
+      - id: mypy
+        name: mypy (project environment)
+        entry: uv run --frozen mypy src/
+        language: python
+        additional_dependencies: ["uv==0.7.13"]
+        pass_filenames: false
+        files: ^src/.*\.py$
+
       - id: uv-lock-check
         name: Check uv.lock matches pyproject.toml
         # Validates the lock without re-resolving. The hook this replaced ran
