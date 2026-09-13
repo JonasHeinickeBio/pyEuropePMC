@@ -197,7 +197,10 @@ PMC3258128.xml
 .continue/agents/new-config.yaml
 PMC123.html
 
-# uv (Poetry is the supported workflow)
+# uv is used as a fast installer only - Poetry owns resolution and poetry.lock
+# is the committed lockfile. A uv.lock here would be a second source of truth
+# that can silently drift, and an uncommitted one is what left this repo with
+# Dependabot alerts against a uv.lock that was not in the tree.
 uv.lock
 
 # showcase test reports

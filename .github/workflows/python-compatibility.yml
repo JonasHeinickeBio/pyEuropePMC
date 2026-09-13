@@ -135,7 +135,7 @@ jobs:
 
       - name: Compile every module
         run: |
-          poetry run python -m compileall -q src/pyeuropepmc
+          python -m compileall -q src/pyeuropepmc
           echo "All Python files compiled under ${{ matrix.python-version }}"
 
       - name: Import and instantiate the public API

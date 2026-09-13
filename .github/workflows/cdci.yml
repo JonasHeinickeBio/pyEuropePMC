@@ -55,24 +55,23 @@ jobs:
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: poetry run mypy src/
 
-      # requirements.txt is a generated artifact. The pre-commit hook keeps it
-      # current locally, but hooks can be skipped, so CI is the backstop.
-      - name: Check requirements.txt is in sync with pyproject.toml
+      # requirements.txt is derived from uv.lock, so it cannot drift from the
+      # lock by construction. The pre-commit hook keeps it current locally, but
+      # hooks can be skipped, so CI is the backstop.
+      - name: Check requirements.txt is in sync with poetry.lock
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
-          python -m pip install --quiet --disable-pip-version-check uv==0.7.13
-          uv pip compile pyproject.toml --universal --python-version 3.10 \
-            -o requirements.txt --quiet
+          poetry export --without-hashes -f requirements.txt -o requirements.txt
           if ! git diff --exit-code --stat requirements.txt; then
             echo "::error::requirements.txt is stale. Regenerate it with:" \
-              "uv pip compile pyproject.toml --universal --python-version 3.10 -o requirements.txt"
+              "poetry export --without-hashes -f requirements.txt -o requirements.txt"
             exit 1
           fi
 
       - name: Check poetry.lock matches pyproject.toml
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        # `poetry check --lock` validates without re-resolving. Do not call
-        # `poetry lock` here: on this dependency graph it does not terminate.
+        # Validates the lock without re-resolving. Never call `poetry lock` in
+        # CI - see the note in pyproject.toml about duplicate declarations.
         run: poetry check --lock
 
       - name: Bandit (security)

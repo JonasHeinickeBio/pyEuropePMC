@@ -155,7 +155,10 @@ DEPENDENCY_GROUPS = {
     "export": ["xlsxwriter", "tabulate", "pandas"],
     "rdf": [
         "rdflib_jsonld",  # rdflib-jsonld imports as rdflib_jsonld
-        "rdfizer",
+        # `rdfizer` is intentionally absent: it is not part of the `rdf` extra,
+        # so claiming it here would tell users to run `pip install
+        # pyeuropepmc[rdf]` for a package that install does not provide.
+        # RMLRDFizer raises its own ImportError pointing at `pip install rdfizer`.
     ],
     "ui": ["flask", "tornado"],
     "signing": ["cryptography"],

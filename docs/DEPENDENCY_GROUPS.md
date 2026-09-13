@@ -11,7 +11,7 @@
 > | `analytics` | pandas, numpy | `features.analytics.analytics`, `utils.export` DataFrame/CSV/Excel |
 > | `visualization` | matplotlib, seaborn (+pandas, numpy) | `features.analytics.visualization` plots |
 > | `export` | xlsxwriter, tabulate (+pandas) | Excel / Markdown-table export |
-> | `rdf` | rdflib-jsonld, rdfizer | RML-based RDF mapping (`mappers`) |
+> | `rdf` | rdflib-jsonld | RDF mapping (`mappers`) |
 > | `agentic` | langchain, langchain-openai, openai, langgraph | `agentic` LLM agents, claim verification |
 > | `ui` | flask, tornado | `pyeuropepmc.ui` web app |
 > | `signing` | cryptography | signed / zipped search-log bundles |
@@ -97,12 +97,20 @@ Semantic web and RDF conversion features.
 |------------|---------|---------|
 | `rdflib` | RDF graph manipulation | RDF mappers |
 | `rdflib-jsonld` | JSON-LD serialization | RDF mappers |
-| `rdfizer` | RML-based mapping | Advanced RDF conversion |
 
 **Rationale:**
 - Niche feature - only users doing semantic web work
-- `rdfizer` is heavy and rarely used
-- Can be installed separately if needed
+
+**`rdfizer` is deliberately not part of this extra.** SDM-RDFizer declares
+`pandas`, `Flask`, `rdflib` and `requests` with no version bounds, and pulls in
+Flask/Werkzeug/Jinja2 plus the MySQL, Postgres and ODBC drivers - it took the
+`rdf` extra from 4 packages to 31 on its own. `RMLRDFizer` degrades gracefully
+without it (`RDFIZER_AVAILABLE`) and the RML tests skip. Install it directly if
+you need RML-based mapping:
+
+```bash
+pip install rdfizer
+```
 
 ### 4. Agentic (Optional) - ~4 dependencies
 
@@ -174,7 +182,6 @@ standard = [
 rdf = [
     "rdflib>=6.0",
     "rdflib-jsonld>=0.5",
-    "rdfizer>=4.7.5,<5",
 ]
 
 agentic = [
@@ -208,7 +215,6 @@ all = [
     "notebook>=6.4",
     "rdflib>=6.0",
     "rdflib-jsonld>=0.5",
-    "rdfizer>=4.7.5,<5",
     "langchain>=0.3",
     "langchain-openai>=0.2",
     "openai>=1.50",

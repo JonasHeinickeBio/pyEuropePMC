@@ -8,14 +8,6 @@ repos:
       - id: ruff-format
         args: [src/]  # only format src/
 
-  - repo: https://github.com/pre-commit/mirrors-mypy
-    rev: v1.16.0
-    hooks:
-      - id: mypy
-        language_version: python3.12
-        exclude: ^(tests/|examples/)
-        additional_dependencies: ["pydantic>=2"]
-
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3
     hooks:
@@ -65,29 +57,43 @@ repos:
         files: ^\.github/(workflows/.*\.ya?ml|actions/.*/action\.ya?ml|zizmor\.ya?ml)$
         args: [".github/workflows/", ".github/actions/"]
 
-      # Both dependency hooks below are scoped with `files:`. The versions they
-      # replaced had no filter, so they ran on *every* commit - including
-      # docs-only ones - and `poetry lock` re-resolves from scratch each time.
+      # Both dependency hooks are scoped with `files:` so a commit that touches
+      # neither pyproject.toml nor a generated file pays for neither check.
+      # mypy must run in the project environment, not an isolated one. The
+      # mirrors-mypy hook this replaced pinned mypy 1.16.0 with only pydantic
+      # installed, so it could not see the real dependency types: ElementTree
+      # calls resolved to Any and it reported no-any-return errors in files the
+      # commit had not touched, while `uv run mypy src/` (1.20.2, full deps -
+      # what CI runs) reported none. Same tool, same versions, same result.
+      - id: mypy
+        name: mypy (project environment)
+        entry: poetry run mypy src/
+        language: system
+        pass_filenames: false
+        files: ^src/.*\.py$
+
+      # Both Poetry hooks pin their own Poetry and export-plugin rather than
+      # using whatever is on the developer's PATH. The generated
+      # requirements.txt depends on the plugin version - 1.10.0 emits
+      # `(sys_platform == "win32" or platform_system == "Windows")` for colorama
+      # where 1.8.0 emitted only the latter - so a developer on a different
+      # plugin version would rewrite the file on every commit and CI would then
+      # reject it as stale. Keep these versions equal to the composite action's.
       - id: poetry-lock-check
         name: Check poetry.lock matches pyproject.toml
-        # `poetry check --lock` validates the lock against pyproject without
-        # re-resolving (~1.5s). The previous hook ran `poetry lock` itself,
-        # which on this dependency graph does not finish in any reasonable
-        # time - it was observed at 98% CPU for 7+ minutes with no result, so
-        # every commit either hung or had to be bypassed.
+        # `poetry check --lock` validates against pyproject WITHOUT re-resolving.
+        # Never run `poetry lock` from a hook: see the note in pyproject.toml
+        # about why duplicate declarations made it non-terminating.
         entry: poetry check --lock
-        language: system
+        language: python
+        additional_dependencies: ["poetry==2.3.2", "poetry-plugin-export==1.10.0"]
         pass_filenames: false
         files: ^(pyproject\.toml|poetry\.lock)$
 
-      - id: uv-compile-requirements
-        name: Regenerate requirements.txt (uv)
-        # uv resolves the same 33-package universal set that `poetry export`
-        # produced, with the same environment markers, in ~1.3s. `--universal`
-        # is required: without it uv resolves for the current platform only and
-        # silently drops win32/py<3.11 conditional deps (colorama, isodate).
-        entry: uv pip compile pyproject.toml --universal --python-version 3.10 -o requirements.txt --quiet
+      - id: poetry-export-requirements
+        name: Regenerate requirements.txt from poetry.lock
+        entry: poetry export --without-hashes -f requirements.txt -o requirements.txt
         language: python
-        additional_dependencies: ["uv==0.7.13"]
+        additional_dependencies: ["poetry==2.3.2", "poetry-plugin-export==1.10.0"]
         pass_filenames: false
-        files: ^(pyproject\.toml|requirements\.txt)$
+        files: ^(pyproject\.toml|poetry\.lock|requirements\.txt)$
