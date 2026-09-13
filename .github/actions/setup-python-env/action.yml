@@ -33,9 +33,6 @@ outputs:
   python-version:
     description: The exact Python version that was set up (including patch level).
     value: ${{ steps.setup-python.outputs.python-version }}
-  cache-hit:
-    description: Whether the virtualenv was restored from cache.
-    value: ${{ steps.venv-cache.outputs.cache-hit }}
 
 runs:
   using: composite
@@ -54,14 +51,18 @@ runs:
       # Installed with pip rather than the curl installer action, for three
       # reasons: `poetry-plugin-export` must be present (the plugin is NOT
       # auto-installed for a bare `poetry export`, which fails with "The
-      # requested command export does not exist"); pip retries transient
+      # requested command export does not exist") and must be pinned, because
+      # its marker output changes between versions - 1.10.0 emits
+      # `(sys_platform == "win32" or platform_system == "Windows")` for colorama
+      # where 1.8.0 emitted only the latter, which is enough to make the
+      # requirements.txt sync check fail; pip retries transient
       # network errors, which the curl installer does not (a
       # ConnectionResetError took CI down once already); and it drops a
       # third-party action from the supply chain.
       run: |
         set -euo pipefail
         python -m pip install --quiet --disable-pip-version-check \
-          "poetry==${POETRY_VERSION}" "poetry-plugin-export>=1.8"
+          "poetry==${POETRY_VERSION}" "poetry-plugin-export==1.10.0"
         poetry --version
 
     - name: Install uv
@@ -69,16 +70,6 @@ runs:
       with:
         enable-cache: true
         cache-dependency-glob: 'poetry.lock'
-
-    - name: Restore virtualenv
-      id: venv-cache
-      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
-      with:
-        path: .venv
-        # The exact patch version matters: a .venv built against 3.12.6 is not
-        # usable by 3.12.7, so key on what setup-python actually resolved.
-        key: >-
-          venv-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ inputs.groups }}-${{ inputs.extras }}-${{ hashFiles('poetry.lock') }}
 
     - name: Install dependencies
       shell: bash
@@ -106,6 +97,8 @@ runs:
         echo "resolved $(grep -c '==' /tmp/ci-requirements.txt || echo 0) pinned requirements"
 
         # uv does the installing.
-        uv venv .venv --python "$PY_VERSION"
+        # Always a fresh .venv; uv's own cache (see setup-uv above) makes this
+        # cheap, and it avoids the stale-environment class of bug entirely.
+        uv venv .venv --python "$PY_VERSION" --clear
         VIRTUAL_ENV="$PWD/.venv" uv pip install --quiet -r /tmp/ci-requirements.txt
         VIRTUAL_ENV="$PWD/.venv" uv pip install --quiet -e . --no-deps

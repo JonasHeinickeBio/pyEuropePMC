@@ -72,19 +72,28 @@ repos:
         pass_filenames: false
         files: ^src/.*\.py$
 
+      # Both Poetry hooks pin their own Poetry and export-plugin rather than
+      # using whatever is on the developer's PATH. The generated
+      # requirements.txt depends on the plugin version - 1.10.0 emits
+      # `(sys_platform == "win32" or platform_system == "Windows")` for colorama
+      # where 1.8.0 emitted only the latter - so a developer on a different
+      # plugin version would rewrite the file on every commit and CI would then
+      # reject it as stale. Keep these versions equal to the composite action's.
       - id: poetry-lock-check
         name: Check poetry.lock matches pyproject.toml
-        # `poetry check --lock` validates against pyproject WITHOUT re-resolving
-        # (~1.5s). Never run `poetry lock` from a hook: see the note in
-        # pyproject.toml about why duplicate declarations made it non-terminating.
+        # `poetry check --lock` validates against pyproject WITHOUT re-resolving.
+        # Never run `poetry lock` from a hook: see the note in pyproject.toml
+        # about why duplicate declarations made it non-terminating.
         entry: poetry check --lock
-        language: system
+        language: python
+        additional_dependencies: ["poetry==2.3.2", "poetry-plugin-export==1.10.0"]
         pass_filenames: false
         files: ^(pyproject\.toml|poetry\.lock)$
 
       - id: poetry-export-requirements
         name: Regenerate requirements.txt from poetry.lock
         entry: poetry export --without-hashes -f requirements.txt -o requirements.txt
-        language: system
+        language: python
+        additional_dependencies: ["poetry==2.3.2", "poetry-plugin-export==1.10.0"]
         pass_filenames: false
         files: ^(pyproject\.toml|poetry\.lock|requirements\.txt)$
