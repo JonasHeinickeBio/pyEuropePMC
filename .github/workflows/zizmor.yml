@@ -1,0 +1,80 @@
+name: Workflow security audit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+      - '.github/zizmor.yml'
+  pull_request:
+    paths:
+      - '.github/workflows/**'
+      - '.github/actions/**'
+      - '.github/zizmor.yml'
+  schedule:
+    # Weekly. zizmor itself is version-pinned below for reproducibility, but its
+    # online audits (stale/unpinned action refs) depend on upstream state that
+    # changes without any commit here — so a scheduled run still earns its keep.
+    - cron: '0 5 * * 3'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: zizmor-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+jobs:
+  zizmor:
+    name: zizmor
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      # Lets the SARIF land in the repository's Code scanning tab.
+      security-events: write
+      actions: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+
+      - name: Set up Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+        with:
+          python-version: '3.12'
+
+      - name: Install zizmor
+        run: pip install --disable-pip-version-check zizmor==1.30.1
+
+      - name: Run zizmor
+        env:
+          # Online mode resolves action refs so the unpinned-action and
+          # stale-pin audits can run; the default token is enough.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          zizmor --no-progress --format=sarif \
+            .github/workflows/ .github/actions/ > zizmor.sarif || true
+          # Human-readable copy in the job log / summary.
+          zizmor --no-progress --format=plain \
+            .github/workflows/ .github/actions/ | tee zizmor.txt || true
+
+      - name: Upload SARIF to code scanning
+        if: ${{ !cancelled() }}
+        uses: github/codeql-action/upload-sarif@faaca9a8f6edddba5725ffe5adefdab6669a2eca # v3.38.0
+        with:
+          sarif_file: zizmor.sarif
+          category: zizmor
+
+      # Gate on real problems only. Low/informational findings show up in code
+      # scanning without blocking the PR.
+      - name: Fail on medium+ findings
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          zizmor --no-progress --format=plain --min-severity=medium \
+            .github/workflows/ .github/actions/

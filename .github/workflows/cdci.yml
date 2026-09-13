@@ -1,103 +1,211 @@
-name: CDCI Pipeline
+name: CI
 
 on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 permissions:
   contents: read
 
+# One in-flight run per branch/PR. Superseded PR runs are cancelled; pushes to
+# main are never cancelled so every commit on main keeps a real CI verdict.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  PYTHONUNBUFFERED: '1'
+  # Poetry/pip are noisy and slow on a CI TTY-less terminal.
+  PIP_DISABLE_PIP_VERSION_CHECK: '1'
+
 jobs:
-  quality-and-test:
+  # ---------------------------------------------------------------------------
+  # Static analysis. Split out from the test job so a lint failure and a test
+  # failure are reported independently (and in parallel) instead of the lint
+  # failure masking the test result.
+  # ---------------------------------------------------------------------------
+  quality:
+    name: Lint, types & security
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+
     steps:
       - name: Checkout code
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
 
-      - name: Ensure Git LFS objects are present
-        run: |
-          git lfs install --local || true
-          git lfs pull || true
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python + Poetry
+        id: setup
+        uses: $/.github/actions/setup-python-env
         with:
           python-version: '3.10'
+          extras: all
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+      - name: Ruff (lint)
+        run: poetry run ruff check src/ --output-format=github
 
-      - name: Install dependencies
-        # `--all-extras`: this job's purpose is coverage/quality gating
-        # (Enforce coverage threshold below assumes the full feature surface
-        # is exercised) - the light-core-only install experience is what
-        # unit-tests.yml validates separately.
-        run: poetry install --with dev --all-extras --no-interaction --no-ansi
+      - name: Ruff (format check)
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: poetry run ruff format --check src/
 
-      - name: Run Ruff (linting and formatting check)
+      - name: mypy (type checking)
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        run: poetry run mypy src/
+
+      # requirements.txt is a generated artifact. The pre-commit hook keeps it
+      # current locally, but hooks can be skipped, so CI is the backstop.
+      - name: Check requirements.txt is in sync with pyproject.toml
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         run: |
-          poetry run ruff check src/
-          poetry run ruff format --check src/
-
-      - name: Run Bandit (security checks)
-        run: |
-          poetry run bandit -r ./src --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" --skip "B101,B303"
-
-      - name: Run mypy (type checking)
-        run: |
-          poetry run mypy src/
-
-      - name: Install CodeScene CLI
-        run: |
-          echo "Installing CodeScene CLI..."
-          curl -s https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y
-
-      - name: Run CodeScene Code Health Analysis
-        continue-on-error: true
-        env:
-          CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
-        run: |
-          mkdir -p analysis_output
-          if command -v cs &> /dev/null; then
-            echo "Running CodeScene delta analysis..."
-            cs delta --output-format json > analysis_output/codescene_delta.json 2>&1 || echo '{"error": "CodeScene delta analysis failed"}' > analysis_output/codescene_delta.json
-            cs delta > analysis_output/codescene_delta.txt 2>&1 || echo "CodeScene delta analysis failed" > analysis_output/codescene_delta.txt
-          else
-            echo "CodeScene CLI not available, skipping delta analysis"
-            echo '{"error": "CodeScene CLI not available"}' > analysis_output/codescene_delta.json
-            echo "CodeScene CLI not available" > analysis_output/codescene_delta.txt
+          python -m pip install --quiet --disable-pip-version-check uv==0.7.13
+          uv pip compile pyproject.toml --universal --python-version 3.10 \
+            -o requirements.txt --quiet
+          if ! git diff --exit-code --stat requirements.txt; then
+            echo "::error::requirements.txt is stale. Regenerate it with:" \
+              "uv pip compile pyproject.toml --universal --python-version 3.10 -o requirements.txt"
+            exit 1
           fi
+
+      - name: Check poetry.lock matches pyproject.toml
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        # `poetry check --lock` validates without re-resolving. Do not call
+        # `poetry lock` here: on this dependency graph it does not terminate.
+        run: poetry check --lock
+
+      - name: Bandit (security)
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        # NOTE: the skip list is repeated here rather than read from
+        # [tool.bandit] because `-c pyproject.toml` needs `bandit[toml]`, which
+        # is not a declared dev dependency. Keep the two in sync by hand.
+        run: |
+          poetry run bandit -r ./src \
+            --exclude "tests,.venv,.git,.mypy_cache,.pytest_cache" \
+            --skip "B101,B303"
+
+  # ---------------------------------------------------------------------------
+  # Test + coverage gate. Installs the full feature surface on purpose: the
+  # coverage threshold below assumes every extra-backed code path is importable.
+  # The light-core-only install is validated separately by unit-tests.yml.
+  # ---------------------------------------------------------------------------
+  test:
+    name: Tests & coverage
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Set up Python + Poetry
+        id: setup
+        uses: $/.github/actions/setup-python-env
+        with:
+          python-version: '3.10'
+          extras: all
 
       - name: Run tests with coverage
         run: |
           mkdir -p coverage/reports
-          poetry run pytest --cov --cov-report=xml:coverage/reports/coverage.xml --cov-report=term --cov-report=html --junitxml=coverage/reports/junit.xml
+          poetry run pytest \
+            --cov \
+            --cov-report=xml:coverage/reports/coverage.xml \
+            --cov-report=term \
+            --junitxml=coverage/reports/junit.xml
 
       - name: Enforce coverage threshold
-        run: |
-          poetry run coverage report --fail-under=75
-          echo "✅ Coverage threshold met (75%+)"
+        # `fail_under = 75` lives in pyproject.toml [tool.coverage.report] and is
+        # the single source of truth - do not repeat the number here.
+        run: poetry run coverage report
+
+      - name: Upload coverage reports
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: coverage-reports
+          path: coverage/reports/
+          retention-days: 14
 
       - name: Upload coverage to Coveralls
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         continue-on-error: true
-        if: always()
-        uses: coverallsapp/github-action@v2
+        uses: coverallsapp/github-action@8d6379e14d29928660c4ba802d8e85393440b329 # v2.3.8
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           file: coverage/reports/coverage.xml
           format: cobertura
 
-      - name: Upload coverage reports to Codecov
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
         continue-on-error: true
-        if: always()
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5.5.5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           directory: ./coverage/reports/
           env_vars: OS,PYTHON
           fail_ci_if_error: false
+
+  # ---------------------------------------------------------------------------
+  # CodeScene code-health delta. Advisory only, and skipped entirely when the
+  # token is not available (forks, Dependabot) instead of burning two minutes to
+  # write an error file nobody reads.
+  # ---------------------------------------------------------------------------
+  code-health:
+    name: CodeScene delta (advisory)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    if: github.event.pull_request.head.repo.full_name == github.repository || github.event_name != 'pull_request'
+    continue-on-error: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          # `cs delta` compares against the merge base, so it needs history.
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Check for CodeScene token
+        id: token
+        env:
+          CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
+        run: |
+          if [ -n "$CS_ACCESS_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "CS_ACCESS_TOKEN not set - skipping CodeScene analysis." >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Install CodeScene CLI
+        if: steps.token.outputs.available == 'true'
+        run: curl -sSf https://downloads.codescene.io/enterprise/cli/install-cs-tool.sh | bash -s -- -y
+
+      - name: Run CodeScene delta analysis
+        if: steps.token.outputs.available == 'true'
+        env:
+          CS_ACCESS_TOKEN: ${{ secrets.CS_ACCESS_TOKEN }}
+        run: |
+          mkdir -p analysis_output
+          cs delta > analysis_output/codescene_delta.txt 2>&1 || true
+          cs delta --output-format json > analysis_output/codescene_delta.json 2>&1 || true
+          {
+            echo "## CodeScene code-health delta"
+            echo
+            echo '```'
+            cat analysis_output/codescene_delta.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Upload CodeScene report
+        if: steps.token.outputs.available == 'true'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: codescene-delta
+          path: analysis_output/
+          retention-days: 14

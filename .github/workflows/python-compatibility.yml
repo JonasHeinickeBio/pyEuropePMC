@@ -3,742 +3,297 @@ name: Python Version Compatibility Matrix
 on:
   push:
     branches: [main]
+  # Cross-version breakage used to be discoverable only after it had already
+  # landed on main. PRs that touch the package or its dependencies now get a
+  # reduced matrix (see the `config` job) so it is caught in review instead.
+  pull_request:
+    paths:
+      - 'src/**'
+      - 'tests/**'
+      - 'pyproject.toml'
+      - 'poetry.lock'
+      - '.github/workflows/python-compatibility.yml'
+      - '.github/actions/setup-python-env/action.yml'
   schedule:
-    # Run weekly on Sundays at 06:00 UTC
+    # Weekly on Sundays at 06:00 UTC
     - cron: '0 6 * * 0'
   workflow_dispatch:
     inputs:
       test_level:
-        description: 'Test level to run'
+        description: 'How much of the matrix to run'
         required: false
         default: 'all'
         type: choice
         options:
-          - 'all'
-          - 'syntax-only'
-          - 'core-only'
-          - 'full-only'
-          - 'integration-only'
-          - 'dry-run'
+          - 'all'          # syntax check + core tests
+          - 'syntax-only'  # syntax/import/instantiation checks only
       skip_platforms:
         description: 'Platforms to skip (comma-separated: windows,macos,ubuntu)'
         required: false
         default: ''
         type: string
-      test_modules:
-        description: 'Specific modules to test (comma-separated: utils,base,search,fulltext,parser,ftp)'
-        required: false
-        default: 'all'
-        type: string
-      run_performance_tests:
-        description: 'Run performance tests'
-        required: false
-        default: false
-        type: boolean
-      debug_mode:
-        description: 'Enable debug output and detailed logging'
-        required: false
-        default: false
-        type: boolean
 
 permissions:
   contents: read
 
+concurrency:
+  group: py-compat-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
+
+env:
+  PYTHONUNBUFFERED: '1'
+
 jobs:
-  # Dry Run: Validate workflow configuration and show what would run
-  dry-run:
-    name: Workflow Dry Run
+  # ---------------------------------------------------------------------------
+  # Build the OS matrix once, up front. Doing it here rather than with per-step
+  # `if:` guards inside the test job means a skipped platform produces no job at
+  # all - the previous approach left some steps unguarded, so they ran against a
+  # working directory where checkout had been skipped and always failed.
+  # ---------------------------------------------------------------------------
+  config:
+    name: Resolve matrix
     runs-on: ubuntu-latest
-    if: github.event_name == 'workflow_dispatch' && inputs.test_level == 'dry-run'
+    timeout-minutes: 5
+    outputs:
+      os-matrix: ${{ steps.matrix.outputs.os-matrix }}
+      os-list: ${{ steps.matrix.outputs.os-list }}
 
     steps:
-
-
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Pull Git LFS files
-        run: git lfs pull || true
-
-      - name: Analyze workflow configuration
-        run: |
-          echo "## Workflow Dry Run Analysis" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Configuration Summary:" >> $GITHUB_STEP_SUMMARY
-          echo "- **Test Level**: ${{ inputs.test_level }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Skip Platforms**: ${{ inputs.skip_platforms || 'none' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Test Modules**: ${{ inputs.test_modules || 'all' }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Performance Tests**: ${{ inputs.run_performance_tests }}" >> $GITHUB_STEP_SUMMARY
-          echo "- **Debug Mode**: ${{ inputs.debug_mode }}" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Jobs That Would Run:" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          # Simulate job conditions
-          TEST_LEVEL="${{ inputs.test_level }}"
-          SKIP_PLATFORMS="${{ inputs.skip_platforms || '' }}"
-
-          # Syntax check
-          echo "✅ **syntax-check**: Always runs (Python 3.10, 3.11, 3.12, 3.13 on Ubuntu)" >> $GITHUB_STEP_SUMMARY
-
-          # Core tests
-          if [[ "$TEST_LEVEL" == "all" || "$TEST_LEVEL" == "core-only" ]]; then
-            echo "✅ **core-tests**: Would run on:" >> $GITHUB_STEP_SUMMARY
-            for os in ubuntu windows macos; do
-              if [[ "$SKIP_PLATFORMS" != *"$os"* ]]; then
-                echo "   - $os-latest (Python 3.10, 3.12)" >> $GITHUB_STEP_SUMMARY
-              else
-                echo "   - ❌ $os-latest (skipped by input)" >> $GITHUB_STEP_SUMMARY
-              fi
-            done
-          else
-            echo "❌ **core-tests**: Skipped (test_level: $TEST_LEVEL)" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          # Full tests
-          if [[ "$TEST_LEVEL" == "all" || "$TEST_LEVEL" == "full-only" ]]; then
-            echo "✅ **full-tests**: Would run (Python 3.10, 3.12 on Ubuntu)" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ **full-tests**: Skipped (test_level: $TEST_LEVEL)" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          # Integration tests
-          if [[ "$TEST_LEVEL" == "all" || "$TEST_LEVEL" == "integration-only" ]]; then
-            echo "✅ **integration-tests**: Would run (Python 3.12 on Ubuntu)" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ **integration-tests**: Skipped (test_level: $TEST_LEVEL)" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          # Performance tests
-          if [[ "${{ inputs.run_performance_tests }}" == "true" ]]; then
-            echo "✅ **performance-tests**: Would run (Python 3.12 on Ubuntu)" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "❌ **performance-tests**: Skipped (input disabled)" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Module Testing Configuration:" >> $GITHUB_STEP_SUMMARY
-          TEST_MODULES="${{ inputs.test_modules || 'all' }}"
-          if [[ "$TEST_MODULES" == "all" ]]; then
-            echo "- All modules would be tested: utils, base, exceptions, parser, search, fulltext, ftp" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "- Selected modules: $TEST_MODULES" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Windows-Specific Handling:" >> $GITHUB_STEP_SUMMARY
-          if [[ "$SKIP_PLATFORMS" == *"windows"* ]]; then
-            echo "- Windows tests: **SKIPPED** (by input)" >> $GITHUB_STEP_SUMMARY
-          else
-            echo "- Windows tests: **ENABLED** with compatibility mode" >> $GITHUB_STEP_SUMMARY
-            echo "  - Skips problematic fulltext tests: test_download_pdf_by_pmcid_all_fail, test_try_bulk_xml_download_success" >> $GITHUB_STEP_SUMMARY
-            echo "  - Uses pytest marker: -m 'not windows_skip'" >> $GITHUB_STEP_SUMMARY
-          fi
-
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Estimated Runtime:" >> $GITHUB_STEP_SUMMARY
-
-          # Calculate rough estimates
-          ESTIMATED_MINUTES=0
-
-          # Syntax check: ~5 minutes
-          ESTIMATED_MINUTES=$((ESTIMATED_MINUTES + 5))
-
-          if [[ "$TEST_LEVEL" == "all" || "$TEST_LEVEL" == "core-only" ]]; then
-            # Core tests: ~15 minutes per platform/version combo
-            PLATFORMS=0
-            for os in ubuntu windows macos; do
-              if [[ "$SKIP_PLATFORMS" != *"$os"* ]]; then
-                PLATFORMS=$((PLATFORMS + 1))
-              fi
-            done
-            ESTIMATED_MINUTES=$((ESTIMATED_MINUTES + PLATFORMS * 15))
-          fi
-
-          if [[ "$TEST_LEVEL" == "all" || "$TEST_LEVEL" == "full-only" ]]; then
-            ESTIMATED_MINUTES=$((ESTIMATED_MINUTES + 20))
-          fi
-
-          if [[ "$TEST_LEVEL" == "all" || "$TEST_LEVEL" == "integration-only" ]]; then
-            ESTIMATED_MINUTES=$((ESTIMATED_MINUTES + 10))
-          fi
-
-          if [[ "${{ inputs.run_performance_tests }}" == "true" ]]; then
-            ESTIMATED_MINUTES=$((ESTIMATED_MINUTES + 15))
-          fi
-
-          echo "- **Estimated Total Runtime**: ~$ESTIMATED_MINUTES minutes" >> $GITHUB_STEP_SUMMARY
-          echo "- **Parallel Execution**: Core tests run in parallel across platforms" >> $GITHUB_STEP_SUMMARY
-
-          echo ""
-          echo "Dry run complete! Check the summary above for what would execute."
-
-  # Level 1: Syntax and Import Testing (All Versions)
-  syntax-check:
-    name: Syntax Check (Python ${{ matrix.python-version }})
-    runs-on: ubuntu-latest
-    if: |
-      github.event_name != 'workflow_dispatch' ||
-      inputs.test_level == 'all' ||
-      inputs.test_level == 'syntax-only' ||
-      inputs.test_level == 'core-only' ||
-      inputs.test_level == 'full-only' ||
-      inputs.test_level == 'integration-only'
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10", "3.11", "3.12", "3.13"]
-
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Pull Git LFS files
-        run: git lfs pull
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-          allow-prereleases: true
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
-        shell: bash
-        run: poetry install --with dev --no-interaction --no-ansi
-
-      - name: Test syntax and imports for all modules
-        run: |
-          # Test syntax by compiling all Python files
-          echo "Testing syntax for all Python modules..."
-          FAILED=0
-          for f in $(find src/pyeuropepmc -name "*.py" -type f); do
-            if ! poetry run python -m py_compile "$f"; then
-              echo "FAILED: $f"
-              FAILED=1
-            fi
-          done
-          if [ "$FAILED" -eq 1 ]; then
-            echo "Syntax check failed for one or more files"
-            exit 1
-          fi
-          echo "All Python files compiled successfully"
-
-          echo "Testing imports for all modules..."
-          # Test core imports
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); import pyeuropepmc; print('SUCCESS: pyeuropepmc imported successfully')"
-
-          # Test individual module imports
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import SearchClient; print('SUCCESS: SearchClient imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import EuropePMCParser; print('SUCCESS: EuropePMCParser imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import FullTextClient; print('SUCCESS: FullTextClient imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import FTPDownloader; print('SUCCESS: FTPDownloader imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import BaseAPIClient; print('SUCCESS: BaseAPIClient imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.core.error_codes import ErrorCodes; print('SUCCESS: ErrorCodes imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc import FullTextError; print('SUCCESS: Exceptions imported')"
-          poetry run python -c "import sys; sys.path.insert(0, 'src'); from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts, save_to_json, load_json; print('SUCCESS: Helper functions imported')"
-
-          echo "All syntax and import tests passed for Python ${{ matrix.python-version }}"
-
-      - name: Test module instantiation
-        run: |
-          echo "Testing module instantiation..."
-          poetry run python -c "
-          import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc import SearchClient
-          from pyeuropepmc import FullTextClient
-          from pyeuropepmc import FTPDownloader
-          from pyeuropepmc import EuropePMCParser
-
-          # Test instantiation
-          search_client = SearchClient()
-          fulltext_client = FullTextClient()
-          ftp_downloader = FTPDownloader()
-          parser = EuropePMCParser()
-
-          print('SUCCESS: All modules instantiated successfully')
-          print(f'SearchClient: {type(search_client)}')
-          print(f'FullTextClient: {type(fulltext_client)}')
-          print(f'FTPDownloader: {type(ftp_downloader)}')
-          print(f'EuropePMCParser: {type(parser)}')
-
-          # Cleanup
-          search_client.close()
-          fulltext_client.close()
-          "
-
-  # Level 2: Core Testing (Primary Versions)
-  core-tests:
-    name: Core Tests (Python ${{ matrix.python-version }} on ${{ matrix.os }})
-    runs-on: ${{ matrix.os }}
-    needs: syntax-check
-    if: |
-      always() &&
-      (needs.syntax-check.result == 'success' || needs.syntax-check.result == 'skipped') &&
-      (github.event_name != 'workflow_dispatch' ||
-       inputs.test_level == 'all' ||
-       inputs.test_level == 'core-only') &&
-      (github.event_name != 'workflow_dispatch' ||
-       inputs.test_level != 'dry-run')
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10", "3.12"]
-        os: [ubuntu-latest, windows-latest, macos-latest]
-        exclude:
-          # Exclude macOS Python 3.10 to reduce CI load
-          - os: macos-latest
-            python-version: "3.10"
-
-    steps:
-      - name: Check platform skip condition
-        id: platform-check
-        run: |
-          SKIP_PLATFORMS="${{ inputs.skip_platforms || '' }}"
-          CURRENT_OS="${{ matrix.os }}"
-
-          # Convert matrix.os to simple platform name
-          case "$CURRENT_OS" in
-            "windows-latest") PLATFORM="windows" ;;
-            "macos-latest") PLATFORM="macos" ;;
-            "ubuntu-latest") PLATFORM="ubuntu" ;;
-            *) PLATFORM="unknown" ;;
-          esac
-
-          if [[ "$SKIP_PLATFORMS" == *"$PLATFORM"* ]]; then
-            echo "skip=true" >> $GITHUB_OUTPUT
-            echo "Skipping tests on $PLATFORM due to input configuration"
-          else
-            echo "skip=false" >> $GITHUB_OUTPUT
-            echo "Running tests on $PLATFORM"
-          fi
-        shell: bash
-
-      - name: Checkout code
-        if: steps.platform-check.outputs.skip != 'true'
-        uses: actions/checkout@v6
-
-      - name: Set up Python ${{ matrix.python-version }}
-        if: steps.platform-check.outputs.skip != 'true'
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Poetry
-        if: steps.platform-check.outputs.skip != 'true'
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
-        if: steps.platform-check.outputs.skip != 'true'
-        shell: bash
-        run: poetry install --with dev --no-interaction --no-ansi
-
-      - name: Run unit tests by module
-        if: steps.platform-check.outputs.skip != 'true'
-        shell: bash
-        run: |
-          echo "Running modular unit tests..."
-
-          # Set test modules based on input (if specified)
-          TEST_MODULES="${{ inputs.test_modules || 'all' }}"
-          DEBUG_MODE="${{ inputs.debug_mode || 'false' }}"
-
-          # Configure pytest options
-          PYTEST_OPTS="-v --tb=short --maxfail=5"
-          if [ "$DEBUG_MODE" = "true" ]; then
-            PYTEST_OPTS="$PYTEST_OPTS -s --capture=no"
-          fi
-
-          # Test utilities first (foundational)
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"utils"* ]]; then
-            echo "Testing utilities module..."
-            poetry run pytest tests/utils/ $PYTEST_OPTS
-          fi
-
-          # Test base functionality
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"base"* ]]; then
-            echo "Testing base module..."
-            poetry run pytest tests/base/ $PYTEST_OPTS
-          fi
-
-          # Test exceptions handling
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"exceptions"* ]]; then
-            echo "Testing exceptions module..."
-            poetry run pytest tests/exceptions/ $PYTEST_OPTS
-          fi
-
-          # Test parser functionality
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"parser"* ]]; then
-            echo "Testing parser module..."
-            poetry run pytest tests/parser/unit/ $PYTEST_OPTS
-          fi
-
-          # Test search functionality
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"search"* ]]; then
-            echo "Testing search module..."
-            poetry run pytest tests/features/search/unit/ $PYTEST_OPTS
-          fi
-
-          # Test fulltext functionality (with Windows-specific handling)
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"fulltext"* ]]; then
-            echo "Testing fulltext module..."
-            if [ "$RUNNER_OS" = "Windows" ]; then
-              echo "Running fulltext tests with Windows compatibility mode..."
-              # Skip specific tests that have Windows file locking issues
-              poetry run pytest tests/features/fulltext/unit/ $PYTEST_OPTS -k "not (test_download_pdf_by_pmcid_all_fail or test_try_bulk_xml_download_success)"
-            else
-              poetry run pytest tests/features/fulltext/unit/ $PYTEST_OPTS
-            fi
-          fi
-
-          # Test FTP downloader functionality
-          if [[ "$TEST_MODULES" == "all" || "$TEST_MODULES" == *"ftp"* ]]; then
-            echo "Testing FTP downloader module..."
-            poetry run pytest tests/ftp_downloader/ $PYTEST_OPTS
-          fi
-
-      - name: Test cross-platform compatibility
-        shell: bash
-        run: |
-          echo "Testing cross-platform features..."
-          poetry run python -c "
-          import sys, os, tempfile, pathlib
-          sys.path.insert(0, 'src')
-          from pyeuropepmc.utils.helpers import save_to_json, load_json
-
-          # Test path handling across platforms
-          with tempfile.TemporaryDirectory() as tmpdir:
-              test_file = pathlib.Path(tmpdir) / 'test_cross_platform.json'
-              test_data = {'platform': sys.platform, 'python_version': sys.version}
-              save_to_json(test_data, test_file)
-              loaded_data = load_json(test_file)
-              assert loaded_data == test_data
-              print(f'SUCCESS: Cross-platform file operations work on {sys.platform}')
-          "
-
-      - name: Test client context managers
-        shell: bash
-        run: |
-          echo "Testing context manager functionality..."
-          poetry run python -c "
-          import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc import SearchClient
-          from pyeuropepmc import FullTextClient
-
-          # Test context managers
-          with SearchClient() as search_client:
-              assert not search_client.is_closed
-              print('SUCCESS: SearchClient context manager works')
-
-          with FullTextClient() as fulltext_client:
-              assert not fulltext_client.is_closed
-              print('SUCCESS: FullTextClient context manager works')
-
-          print('SUCCESS: All context managers working correctly')
-          "
-  # Level 3: Full Testing (Primary Version Only)
-  full-tests:
-    name: Full Test Suite (Python ${{ matrix.python-version }})
-    runs-on: ubuntu-latest
-    needs: core-tests
-    strategy:
-      fail-fast: false
-      matrix:
-        python-version: ["3.10", "3.12"]
-
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-      - name: Pull Git LFS files
-        run: git lfs pull
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v6
-        with:
-          python-version: ${{ matrix.python-version }}
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
-        shell: bash
-        run: poetry install --with dev --no-interaction --no-ansi
-
-      - name: Run linting with detailed output
-        run: |
-          echo "Running comprehensive linting..."
-          poetry run ruff check . --output-format=github --statistics
-          echo "Ruff linting passed"
-
-      - name: Run type checking
-        run: |
-          echo "Running type checking..."
-          poetry run mypy src/ --show-error-codes --show-error-context
-          echo "MyPy type checking passed"
-
-      - name: Run security checks
-        run: |
-          echo "Running security analysis..."
-          poetry run bandit -r src/ -f json || poetry run bandit -r src/
-          echo "Security checks passed"
-
-      - name: Run full test suite with coverage
-        run: |
-          echo "Running full test suite with coverage analysis..."
-          poetry run coverage run --source=src -m pytest --tb=short -v
-          poetry run coverage report --show-missing --fail-under=80
-          poetry run coverage xml
-
-      - name: Generate coverage badge data
-        if: matrix.python-version == '3.12'
-        run: |
-          echo "Generating coverage metrics..."
-          COVERAGE=$(poetry run coverage report --format=total)
-          echo "COVERAGE_PERCENTAGE=${COVERAGE}" >> $GITHUB_ENV
-          echo "Coverage: ${COVERAGE}%"
-
-      - name: Upload coverage to Codecov
-        if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v5
-        with:
-          files: ./coverage.xml
-          flags: unittests
-          name: codecov-umbrella
-          fail_ci_if_error: false
-
-  # Level 4: Integration Testing (Latest Version)
-  integration-tests:
-    name: Integration Tests (Python 3.12)
-    runs-on: ubuntu-latest
-    needs: full-tests
-    if: github.event_name == 'push' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-
-    steps:
-
-      - name: Checkout code
-        uses: actions/checkout@v6
-
-
-      - name: Pull Git LFS files
-        run: git lfs pull || true
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-
-
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
-        shell: bash
-        run: poetry install --with dev --no-interaction --no-ansi
-
-      - name: Run integration tests
-        timeout-minutes: 15
-        run: |
-          echo "Running integration tests..."
-          poetry run pytest tests/features/search/functional/ tests/features/fulltext/functional/ -v --tb=short -m "not slow"
+      - name: Compute OS matrix
+        id: matrix
         env:
-          PYTEST_TIMEOUT: 30
-
-      - name: Test module integration
+          SKIP_PLATFORMS: ${{ inputs.skip_platforms || '' }}
+          EVENT_NAME: ${{ github.event_name }}
         run: |
-          echo "Testing module integration..."
-          poetry run python -c "
-          import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc import SearchClient, FullTextClient, FTPDownloader
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import json
+          import os
 
-          # Test integrated workflow (without actual API calls)
-          with SearchClient() as search_client:
-              print('SUCCESS: SearchClient integration ready')
+          skip = {
+              part.strip().lower()
+              for part in os.environ.get("SKIP_PLATFORMS", "").split(",")
+              if part.strip()
+          }
+          runners = {"ubuntu": "ubuntu-latest", "windows": "windows-latest", "macos": "macos-latest"}
 
-          with FullTextClient() as fulltext_client:
-              print('SUCCESS: FullTextClient integration ready')
+          # On a pull request, Linux only. The Windows and macOS legs are the
+          # expensive ones (macOS especially) and a PR-time signal on Linux
+          # catches almost everything; the full matrix still runs on every push
+          # to main and weekly.
+          if os.environ.get("EVENT_NAME") == "pull_request":
+              runners = {"ubuntu": runners["ubuntu"]}
 
-          ftp_downloader = FTPDownloader()
-          print('SUCCESS: FTPDownloader integration ready')
+          selected = [runner for name, runner in runners.items() if name not in skip]
+          print(f"os-matrix={json.dumps(selected)}")
+          print(f"os-list={', '.join(selected) or 'none'}")
+          PY
 
-          print('SUCCESS: All module integrations successful')
-          "
-
-      - name: Run smoke tests for critical paths
+      - name: Report configuration
+        env:
+          # Never interpolate `inputs.*` straight into a shell command: a
+          # workflow_dispatch input is attacker-controllable text and `${{ }}`
+          # substitution happens before the shell ever sees it, so the value
+          # would be executed as code. Pass it as an environment variable.
+          TEST_LEVEL: ${{ inputs.test_level || 'all' }}
+          PLATFORMS: ${{ steps.matrix.outputs.os-list }}
+          SKIPPED: ${{ inputs.skip_platforms || 'none' }}
         run: |
-          echo "Running smoke tests..."
-          poetry run python -c "
-          import sys; sys.path.insert(0, 'src')
-          from pyeuropepmc import SearchClient, FullTextClient, FTPDownloader
-          from pyeuropepmc.core.error_codes import ErrorCodes
-          from pyeuropepmc.core.exceptions import ValidationError
+          {
+            echo "### Compatibility matrix configuration"
+            echo
+            echo "- **Test level**: ${TEST_LEVEL}"
+            echo "- **Platforms**: ${PLATFORMS}"
+            echo "- **Skipped**: ${SKIPPED}"
+          } >> "$GITHUB_STEP_SUMMARY"
 
-          # Test error handling
-          try:
-              raise ValidationError(ErrorCodes.VALID001, 'test error')
-          except ValidationError as e:
-              assert e.error_code == ErrorCodes.VALID001
-              print('SUCCESS: Error handling smoke test passed')
-
-          # Test client initialization
-          search_client = SearchClient(rate_limit_delay=0.1)
-          fulltext_client = FullTextClient(rate_limit_delay=0.1)
-
-          search_client.close()
-          fulltext_client.close()
-          print('SUCCESS: Client initialization smoke test passed')
-          "
-
-  # Performance Testing (Optional)
-  performance-tests:
-    name: Performance Tests (Python 3.12)
+  # ---------------------------------------------------------------------------
+  # Level 1: every supported interpreter must be able to compile the package,
+  # import the public surface and construct the clients. Runs on the light core
+  # install - a compatibility break should surface as an import error, not be
+  # masked by an optional dependency that happens to vendor a backport.
+  # ---------------------------------------------------------------------------
+  syntax-check:
+    name: Syntax & imports (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
-    needs: full-tests
-    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_performance_tests)
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.11', '3.12', '3.13']
 
     steps:
-
       - name: Checkout code
-        uses: actions/checkout@v6
-
-
-      - name: Pull Git LFS files
-        run: git lfs pull || true
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          python-version: "3.12"
+          persist-credentials: false
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
+      - name: Set up Python + Poetry
+        uses: $/.github/actions/setup-python-env
         with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
+          python-version: ${{ matrix.python-version }}
+          extras: none
 
-      - name: Install dependencies with benchmarking tools
+      - name: Compile every module
+        run: |
+          poetry run python -m compileall -q src/pyeuropepmc
+          echo "All Python files compiled under ${{ matrix.python-version }}"
+
+      - name: Import and instantiate the public API
+        run: |
+          poetry run python - <<'PY'
+          import pyeuropepmc
+          from pyeuropepmc import (
+              BaseAPIClient,
+              EuropePMCParser,
+              FTPDownloader,
+              FullTextClient,
+              FullTextError,
+              SearchClient,
+          )
+          from pyeuropepmc.core.error_codes import ErrorCodes
+          from pyeuropepmc.utils.helpers import (
+              deep_merge_dicts,
+              load_json,
+              safe_int,
+              save_to_json,
+          )
+
+          print(f"imported pyeuropepmc {pyeuropepmc.__version__}")
+
+          # Constructing the clients exercises the module-level wiring that a
+          # plain import does not.
+          parser = EuropePMCParser()
+          ftp = FTPDownloader()
+          with SearchClient() as search, FullTextClient() as fulltext:
+              assert not search.is_closed
+              assert not fulltext.is_closed
+
+          assert ErrorCodes.VALID001
+          assert issubclass(FullTextError, Exception)
+          assert isinstance(parser, EuropePMCParser)
+          assert isinstance(ftp, FTPDownloader)
+          assert issubclass(SearchClient, BaseAPIClient)
+          assert safe_int("123", default=0) == 123
+          assert deep_merge_dicts({"a": 1}, {"b": 2}) == {"a": 1, "b": 2}
+          assert callable(load_json) and callable(save_to_json)
+          print("public API constructs and closes cleanly")
+          PY
+
+      - name: Smoke-test the CLI
+        run: poetry run pyeuropepmc --help
+
+  # ---------------------------------------------------------------------------
+  # Level 2: the full default test suite on the primary interpreters, across
+  # every platform. This runs plain `pytest`, not a hand-maintained list of test
+  # directories - the previous per-module loop silently skipped whole packages
+  # (cli, core, models, cache, mcp, claims, ...) that had been added since.
+  # ---------------------------------------------------------------------------
+  core-tests:
+    name: Tests (Python ${{ matrix.python-version }} on ${{ matrix.os }})
+    needs: [config, syntax-check]
+    if: >-
+      github.event_name != 'workflow_dispatch' || inputs.test_level == 'all'
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.10', '3.12']
+        os: ${{ fromJSON(needs.config.outputs.os-matrix) }}
+        exclude:
+          # macOS runners are the most expensive; 3.12 there is representative.
+          - os: macos-latest
+            python-version: '3.10'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Set up Python + Poetry
+        uses: $/.github/actions/setup-python-env
+        with:
+          python-version: ${{ matrix.python-version }}
+          # Core deps only: this matrix answers "does the package work on this
+          # OS/interpreter?". The optional-dependency surface is covered by
+          # cdci.yml on Linux, and installing it on the Windows/macOS runners
+          # triples the matrix cost for little extra signal.
+          extras: none
+
+      - name: Run test suite
         shell: bash
         run: |
-          poetry install --with dev --no-interaction --no-ansi
-          poetry add pytest-benchmark --group dev
-
-      - name: Run performance benchmarks
-        run: |
-          echo "Running performance benchmarks..."
-          poetry run pytest tests/ -k "benchmark" --benchmark-only --benchmark-json=benchmark.json --benchmark-warmup=on || echo "No benchmark tests found"
-
-      - name: Performance regression test
-        run: |
-          echo "Testing performance baselines..."
-          poetry run python -c "
-          import time, sys
-          sys.path.insert(0, 'src')
-          from pyeuropepmc import SearchClient
-          from pyeuropepmc.utils.helpers import safe_int, deep_merge_dicts
-
-          # Basic performance tests
-          start = time.time()
-          for _ in range(1000):
-              safe_int('123')
-          safe_int_time = time.time() - start
-
-          start = time.time()
-          for _ in range(100):
-              deep_merge_dicts({'a': 1}, {'b': 2})
-          merge_time = time.time() - start
-
-          print(f'safe_int (1000 calls): {safe_int_time:.4f}s')
-          print(f'deep_merge_dicts (100 calls): {merge_time:.4f}s')
-
-          # Basic thresholds
-          assert safe_int_time < 0.1, f'safe_int too slow: {safe_int_time}s'
-          assert merge_time < 0.1, f'deep_merge_dicts too slow: {merge_time}s'
-          print('SUCCESS: Performance regression tests passed')
-          "
-
-      - name: Store benchmark results
-        if: github.ref == 'refs/heads/main'
-        run: |
-          echo "Storing benchmark results..."
-          if [ -f benchmark.json ]; then
-            echo "Benchmark results available for trend analysis"
-            # Could upload to external service or artifact storage
+          # Two fulltext tests hit Windows file-locking behaviour that the code
+          # under test does not claim to support. Tracked separately; deselect
+          # them here rather than failing the whole platform.
+          if [ "$RUNNER_OS" = "Windows" ]; then
+            poetry run pytest -q --tb=short \
+              -k "not (test_download_pdf_by_pmcid_all_fail or test_try_bulk_xml_download_success)"
+          else
+            poetry run pytest -q --tb=short
           fi
 
-  # Compatibility Summary
+      - name: Verify cross-platform path and file handling
+        shell: bash
+        run: |
+          poetry run python - <<'PY'
+          import pathlib
+          import sys
+          import tempfile
+
+          from pyeuropepmc.utils.helpers import load_json, save_to_json
+
+          with tempfile.TemporaryDirectory() as tmpdir:
+              target = pathlib.Path(tmpdir) / "cross_platform.json"
+              payload = {"platform": sys.platform, "python_version": sys.version}
+              save_to_json(payload, target)
+              assert load_json(target) == payload
+
+          print(f"cross-platform file operations OK on {sys.platform}")
+          PY
+
+  # ---------------------------------------------------------------------------
+  # Summary. Reports the aggregate result of each job as GitHub actually
+  # computed it - the previous version derived four separate "per Python
+  # version" cells from a single matrix-wide result, so the table could claim a
+  # version passed when its own matrix leg had failed.
+  # ---------------------------------------------------------------------------
   compatibility-summary:
     name: Compatibility Summary
-    runs-on: ubuntu-latest
-    needs: [syntax-check, core-tests, full-tests]
+    needs: [config, syntax-check, core-tests]
     if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
 
     steps:
       - name: Generate compatibility report
+        env:
+          SYNTAX_RESULT: ${{ needs.syntax-check.result }}
+          CORE_RESULT: ${{ needs.core-tests.result }}
+          PLATFORMS: ${{ needs.config.outputs.os-list }}
         run: |
-          echo "## Python Version Compatibility Report" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "### Test Results by Python Version:" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-          echo "| Python Version | Syntax Check | Core Tests | Full Tests | Status | Recommendation |" >> $GITHUB_STEP_SUMMARY
-          echo "|----------------|--------------|------------|------------|--------|----------------|" >> $GITHUB_STEP_SUMMARY
+          {
+            echo "## Python compatibility report"
+            echo
+            echo "| Stage | Coverage | Result |"
+            echo "|-------|----------|--------|"
+            echo "| Syntax, imports & CLI | Python 3.10, 3.11, 3.12, 3.13 (ubuntu) | \`${SYNTAX_RESULT}\` |"
+            echo "| Full test suite | Python 3.10, 3.12 on ${PLATFORMS} | \`${CORE_RESULT}\` |"
+            echo
+            echo "Results are per stage. \`failure\` means at least one matrix leg"
+            echo "failed - open the job list above to see which."
+            echo
+            echo "### Support policy"
+            echo
+            echo "- **Minimum supported**: Python 3.10 (\`requires-python = \">=3.10,<4.0\"\`)"
+            echo "- **Fully tested**: Python 3.10 and 3.12, on Linux, Windows and macOS"
+            echo "- **Verified importable**: Python 3.11 and 3.13"
+          } >> "$GITHUB_STEP_SUMMARY"
 
-          # Determine status icons
-          syntax_3_10="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
-          syntax_3_11="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
-          syntax_3_12="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
-          syntax_3_13="${{ needs.syntax-check.result == 'success' && 'PASS' || 'FAIL' }}"
-
-          core_status="${{ needs.core-tests.result == 'success' && 'PASS' || 'FAIL' }}"
-          full_status="${{ needs.full-tests.result == 'success' && 'PASS' || 'FAIL' }}"
-
-          echo "| 3.10 | $syntax_3_10 | $core_status | $full_status | Primary Support | Production Ready |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3.11 | $syntax_3_11 | SKIP | SKIP | Compatibility | Limited Testing |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3.12 | $syntax_3_12 | $core_status | $full_status | **Recommended** | **Best Performance** |" >> $GITHUB_STEP_SUMMARY
-          echo "| 3.13 | $syntax_3_13 | SKIP | SKIP | Future Support | Early Adoption |" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Support Policy:" >> $GITHUB_STEP_SUMMARY
-          echo "- **Recommended**: Python 3.12 (best performance, full testing)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Full Support**: Python 3.10, 3.12 (complete test coverage)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Compatibility**: Python 3.11, 3.13 (syntax verification only)" >> $GITHUB_STEP_SUMMARY
-          echo "- **Minimum Required**: Python 3.10+" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
-
-          echo "### Module Coverage:" >> $GITHUB_STEP_SUMMARY
-          echo "- SearchClient - Core search functionality" >> $GITHUB_STEP_SUMMARY
-          echo "- FullTextClient - PDF/XML/HTML retrieval" >> $GITHUB_STEP_SUMMARY
-          echo "- FTPDownloader - Bulk content downloads" >> $GITHUB_STEP_SUMMARY
-          echo "- EuropePMCParser - Response parsing" >> $GITHUB_STEP_SUMMARY
-          echo "- BaseAPIClient - Foundation classes" >> $GITHUB_STEP_SUMMARY
-          echo "- ErrorCodes & Exceptions - Error handling" >> $GITHUB_STEP_SUMMARY
-          echo "- Utils.Helpers - Utility functions" >> $GITHUB_STEP_SUMMARY
-
-      - name: Set job outputs
-        id: summary
+      - name: Fail if any stage failed
+        if: needs.syntax-check.result == 'failure' || needs.core-tests.result == 'failure'
         run: |
-          echo "python_support=3.10,3.11,3.12,3.13" >> $GITHUB_OUTPUT
-          echo "recommended_version=3.12" >> $GITHUB_OUTPUT
-          echo "minimum_version=3.10" >> $GITHUB_OUTPUT
+          echo "One or more compatibility stages failed." >&2
+          exit 1

@@ -31,9 +31,39 @@ updates:
           - "minor"
           - "patch"
 
-  # GitHub Actions
+  # GitHub Actions used by the workflows in .github/workflows/.
+  # Every action is pinned to a full commit SHA with a `# vX.Y.Z` comment;
+  # Dependabot bumps both the SHA and the comment together, so pinning costs
+  # nothing in maintenance while removing the "mutable tag" supply-chain risk.
   - package-ecosystem: "github-actions"
     directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "03:00"
+    labels:
+      - "dependencies"
+      - "github-actions"
+      - "ci"
+    reviewers:
+      - "JonasHeinickeBio"
+    commit-message:
+      prefix: "ci"
+      include: "scope"
+    groups:
+      # One PR a week for routine action bumps instead of a dozen.
+      actions-minor-patch:
+        patterns:
+          - "*"
+        update-types:
+          - "minor"
+          - "patch"
+
+  # `directory: "/"` only covers .github/workflows/. A composite action has to
+  # be listed by the directory that holds its action.yml, or its own pinned
+  # `uses:` refs never get updated.
+  - package-ecosystem: "github-actions"
+    directory: "/.github/actions/setup-python-env"
     schedule:
       interval: "weekly"
       day: "monday"

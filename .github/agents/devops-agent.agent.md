@@ -77,115 +77,137 @@ Agent:
 ## CI/CD Pipeline Design
 
 ### GitHub Actions Workflow
+
+Workflows in this repository follow a fixed set of conventions. Reproduce them
+in anything you generate — CI that ignores them will fail review:
+
+1. **Pin every action to a full commit SHA**, with the version as a trailing
+   comment (`uses: actions/checkout@d23441a… # v6.1.0`). A tag is mutable and
+   can be repointed at malicious code; Dependabot bumps the SHA and the comment
+   together. Resolve the SHA from the action's canonical repository, never a fork.
+2. **Declare `permissions:` explicitly** — read-only at the workflow level, then
+   widen on the one job that needs more.
+3. **Set `timeout-minutes` on every job.** The default is six hours.
+4. **Set a `concurrency` group.** Cancel superseded PR runs; never cancel `main`,
+   a release, or anything mid-publish.
+5. **`persist-credentials: false` on checkout** unless the job pushes.
+6. **Never interpolate `${{ }}` into a `run:` block.** Pass values through `env:`
+   — `${{ }}` substitution happens before the shell sees the text, so anything
+   attacker-controllable (issue titles, branch names, `workflow_dispatch` inputs)
+   becomes executable code.
+7. **Use `$/…` for in-repo actions**, not `./…`. It resolves at the running
+   commit and is not affected by the workspace state.
+8. **Reuse `$/.github/actions/setup-python-env`** rather than re-deriving the
+   Python/Poetry/cache setup. It pins Poetry and caches the virtualenv.
+
+Run `zizmor .github/workflows/` before proposing a workflow change; the repo
+gates on medium-and-above findings.
+
+Scope note: pyEuropePMC is a **Python library published to PyPI**. It currently
+has no container image, no database and no deployment environments, so CI should
+not grow jobs for them unless that changes. The container, Kubernetes and
+Terraform sections below are general reference for when such infrastructure is
+actually introduced — not a description of this repository today.
+
 ```yaml
-name: CI/CD Pipeline
+name: CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
 
-env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  quality:
+    name: Lint, types & security
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+
+      - uses: $/.github/actions/setup-python-env
+        with:
+          python-version: '3.10'
+          extras: all
+
+      - run: poetry run ruff check src/ --output-format=github
+      - run: poetry run ruff format --check src/
+      - run: poetry run mypy src/
+      - run: poetry run bandit -r ./src --skip "B101,B303"
+
   test:
+    name: Tests & coverage
     runs-on: ubuntu-latest
-    services:
-      postgres:
-        image: postgres:15
-        env:
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
+    timeout-minutes: 30
     steps:
-    - uses: actions/checkout@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          lfs: true
+          persist-credentials: false
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+      - uses: $/.github/actions/setup-python-env
+        with:
+          python-version: '3.10'
+          extras: all
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install -r requirements.txt
-        pip install -r requirements-dev.txt
+      - name: Run tests with coverage
+        run: poetry run pytest --cov --cov-report=xml:coverage.xml
 
-    - name: Run linting
-      run: |
-        ruff check .
-        ruff format --check .
+      - name: Enforce coverage threshold
+        # The number lives in pyproject.toml [tool.coverage.report]; do not
+        # duplicate it in the workflow.
+        run: poetry run coverage report
 
-    - name: Run tests
-      run: |
-        pytest --cov=src --cov-report=xml --cov-report=term-missing
-      env:
-        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test
-
-    - name: Upload coverage
-      uses: codecov/codecov-action@v3
-      with:
-        file: ./coverage.xml
-
-  security:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-
-    - name: Run security scan
-      uses: securecodewarrior/github-actions-gosec@master
-      with:
-        args: './...'
-
-    - name: Dependency check
-      uses: dependency-check/Dependency-Check_Action@main
-      with:
-        project: 'MyProject'
-        path: '.'
-        format: 'ALL'
-
-  build:
-    needs: [test, security]
-    runs-on: ubuntu-latest
-    steps:
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v4
-      with:
-        context: .
-        push: true
-        tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-        cache-from: type=gha
-        cache-to: type=gha,mode=max
-
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: staging
-    if: github.ref == 'refs/heads/develop'
-    steps:
-    - name: Deploy to staging
-      run: |
-        echo "Deploying to staging environment"
-        # Add deployment commands here
-
-  deploy-production:
-    needs: build
-    runs-on: ubuntu-latest
-    environment: production
-    if: github.ref == 'refs/heads/main'
-    steps:
-    - name: Deploy to production
-      run: |
-        echo "Deploying to production environment"
-        # Add deployment commands here
+      - uses: codecov/codecov-action@0fb7174895f61a3b6b78fc075e0cd60383518dac # v5.5.5
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: ./coverage.xml
+          fail_ci_if_error: false
 ```
+
+### Publishing
+
+Releases use **PyPI Trusted Publishing (OIDC)** — there is no API token to
+manage. The publishing job needs `id-token: write` and must not be cancellable
+mid-upload:
+
+```yaml
+  publish:
+    runs-on: ubuntu-latest
+    needs: [build, attest]
+    timeout-minutes: 20
+    permissions:
+      id-token: write
+      contents: read
+    environment:
+      name: pypi
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4.3.0
+        with:
+          name: dist-packages
+
+      - uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
+        with:
+          packages-dir: dist/
+          attestations: true
+          verify-metadata: true
+          skip-existing: true
+```
+
+Pair it with `actions/attest-build-provenance` so the artifacts carry Sigstore
+provenance, and validate the tag against `poetry version --short` before
+building.
 
 ### Docker Configuration
 ```dockerfile

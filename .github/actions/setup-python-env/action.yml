@@ -1,0 +1,86 @@
+name: Set up Python + Poetry
+description: >-
+  Installs a pinned Poetry, restores the project virtualenv from cache and runs
+  `poetry install`. Every workflow goes through this so the toolchain, the cache
+  strategy and the dependency surface stay in one place.
+
+inputs:
+  python-version:
+    description: Python version to set up.
+    required: false
+    default: '3.10'
+  poetry-version:
+    description: >-
+      Poetry version to install. Pinned on purpose - `latest` means an upstream
+      Poetry release can break CI on a commit that changed nothing.
+    required: false
+    default: '2.3.2'
+  extras:
+    description: >-
+      Which optional-dependency surface to install: `none` (light core only, the
+      `import pyeuropepmc` experience), `all` (every extra), or a space-separated
+      list of extra names.
+    required: false
+    default: 'none'
+  groups:
+    description: Space-separated Poetry dependency groups to include.
+    required: false
+    default: 'dev'
+  cache-suffix:
+    description: Extra discriminator for the virtualenv cache key.
+    required: false
+    default: ''
+
+outputs:
+  python-version:
+    description: The exact Python version that was set up (including patch level).
+    value: ${{ steps.setup-python.outputs.python-version }}
+  cache-hit:
+    description: Whether the virtualenv was restored from cache.
+    value: ${{ steps.venv-cache.outputs.cache-hit }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python ${{ inputs.python-version }}
+      id: setup-python
+      uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6.3.0
+      with:
+        python-version: ${{ inputs.python-version }}
+        allow-prereleases: true
+
+    - name: Install Poetry
+      uses: snok/install-poetry@a783c322200f0519c7926aa6faa857c4e23e9263 # v1.4.2
+      with:
+        version: ${{ inputs.poetry-version }}
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Restore virtualenv
+      id: venv-cache
+      uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830 # v4.3.0
+      with:
+        path: .venv
+        # The exact patch version matters: a cached .venv built against 3.12.6
+        # is not usable by 3.12.7, so key on what setup-python actually resolved.
+        key: >-
+          venv-${{ runner.os }}-${{ runner.arch }}-py${{ steps.setup-python.outputs.python-version }}-${{ inputs.groups }}-${{ inputs.extras }}${{ inputs.cache-suffix }}-${{ hashFiles('poetry.lock') }}
+
+    - name: Install dependencies
+      shell: bash
+      env:
+        POETRY_GROUPS: ${{ inputs.groups }}
+        POETRY_EXTRAS: ${{ inputs.extras }}
+      run: |
+        set -euo pipefail
+        args=(install --no-interaction --no-ansi)
+        for group in $POETRY_GROUPS; do
+          args+=(--with "$group")
+        done
+        case "$POETRY_EXTRAS" in
+          none|'') ;;
+          all)     args+=(--all-extras) ;;
+          *)       args+=(--extras "$POETRY_EXTRAS") ;;
+        esac
+        echo "poetry ${args[*]}"
+        poetry "${args[@]}"

@@ -2,7 +2,7 @@ name: CI — Functional Tests
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch: {}
   schedule:
     # Nightly at 03:00 UTC
@@ -12,85 +12,146 @@ permissions:
   contents: read
   issues: write
 
+concurrency:
+  group: functional-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  PYTHONUNBUFFERED: '1'
+
 jobs:
   functional:
     name: Functional Tests
     runs-on: ubuntu-latest
+    timeout-minutes: 45
+
     steps:
-      - name: Checkout (fetch LFS objects)
-        uses: actions/checkout@v6
+      - name: Checkout
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
-          fetch-depth: 0
+          lfs: true
+          persist-credentials: false
 
-      - name: Ensure Git LFS objects are present
-        run: |
-          git lfs install --local || true
-          git lfs pull || true
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Set up Python + Poetry
+        uses: $/.github/actions/setup-python-env
         with:
           python-version: '3.10'
+          extras: none
 
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-        with:
-          version: latest
-          virtualenvs-create: true
-          virtualenvs-in-project: true
-
-      - name: Install dependencies
-        run: poetry install --with dev --no-interaction --no-ansi
-
+      # These tests hit the real Europe PMC service, so the run is expensive and
+      # occasionally flaky. It happens exactly ONCE: the output is captured here
+      # and reused by the issue-filing step below, which previously re-ran the
+      # entire suite just to quote it (and could quote a different result).
       - name: Run functional tests
         id: tests
-        run: poetry run pytest -v -m "functional"
         continue-on-error: true
+        run: |
+          set -o pipefail
+          mkdir -p reports
+          poetry run pytest -v -m functional --tb=short \
+            --junitxml=reports/functional-junit.xml \
+            2>&1 | tee reports/functional.log
+
+      - name: Upload test output
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: functional-test-output
+          path: reports/
+          retention-days: 30
+
+      - name: Summarise failures
+        id: summary
+        if: steps.tests.outcome == 'failure'
+        run: |
+          # Derive the fingerprint from the set of failing test IDs rather than
+          # from raw log text, which carries timings and temp paths and would
+          # hash differently on every run - defeating the duplicate check.
+          python3 - <<'PY' >> "$GITHUB_OUTPUT"
+          import hashlib
+          import pathlib
+          import xml.etree.ElementTree as ET
+
+          report = pathlib.Path("reports/functional-junit.xml")
+          failed = []
+          if report.exists():
+              for case in ET.parse(report).getroot().iter("testcase"):
+                  if case.find("failure") is not None or case.find("error") is not None:
+                      failed.append(f"{case.get('classname', '')}::{case.get('name', '')}")
+
+          failed.sort()
+          fingerprint = hashlib.sha256("\n".join(failed).encode()).hexdigest()[:16]
+          print(f"fingerprint={fingerprint}")
+          print(f"count={len(failed)}")
+          print("failed<<EOF_FAILED")
+          print("\n".join(f"- `{name}`" for name in failed[:40]) or "- (no test IDs in JUnit report)")
+          print("EOF_FAILED")
+          PY
 
       - name: Create issue on test failure
         if: steps.tests.outcome == 'failure'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          FINGERPRINT: ${{ steps.summary.outputs.fingerprint }}
+          FAILED_COUNT: ${{ steps.summary.outputs.count }}
+          FAILED_LIST: ${{ steps.summary.outputs.failed }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          BRANCH: ${{ github.ref_name }}
+          COMMIT: ${{ github.sha }}
+          TRIGGER: ${{ github.event_name }}
+          WORKFLOW: ${{ github.workflow }}
         run: |
-          # Get the current date for issue title
+          set -euo pipefail
           DATE=$(date +'%Y-%m-%d')
 
-          # Extract test failure summary from pytest output
-          FAILURE_SUMMARY=$(poetry run pytest -v -m "functional" --tb=short 2>&1 | tail -20)
+          EXISTING=$(gh issue list \
+            --label "functional-test-failure" --state open \
+            --json number,title \
+            --jq "[.[] | select(.title | contains(\"$FINGERPRINT\")) | .number] | first // empty")
 
-          # Create a unique identifier for this failure type
-          FAILURE_HASH=$(echo "$FAILURE_SUMMARY" | sha256sum | cut -d' ' -f1 | head -c 16)
+          if [ -n "$EXISTING" ]; then
+            echo "Issue #$EXISTING already tracks this failure signature; adding a run link."
+            gh issue comment "$EXISTING" \
+              --body "Still failing as of $DATE on \`$BRANCH\` (\`$COMMIT\`) — [run]($RUN_URL)."
+            exit 0
+          fi
 
-          # Check if an issue already exists for this failure
-          EXISTING_ISSUE=$(gh issue list --label "functional-test-failure" --state open --json number,title --jq ".[] | select(.title | contains(\"$FAILURE_HASH\")) | .number" | head -1)
+          # Last 60 lines of the captured log, fenced for readability.
+          TAIL=$(tail -60 reports/functional.log)
 
-          if [ -z "$EXISTING_ISSUE" ]; then
-            echo "Creating new issue for functional test failure..."
-
-            # Create the issue body
-            ISSUE_BODY="## Functional Test Failure
+          gh issue create \
+            --title "Functional test failure — $DATE ($FINGERPRINT)" \
+            --label "functional-test-failure,bug,ci-failure" \
+            --body "$(cat <<BODY
+          ## Functional test failure
 
           **Date:** $DATE
-          **Workflow:** ${{ github.workflow }}
-          **Run:** ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          **Workflow:** $WORKFLOW
+          **Run:** $RUN_URL
+          **Branch:** \`$BRANCH\`
+          **Commit:** \`$COMMIT\`
+          **Trigger:** \`$TRIGGER\`
 
-          ### Test Output
+          ### Failing tests ($FAILED_COUNT)
+
+          $FAILED_LIST
+
+          ### Tail of the run
+
           \`\`\`
-          $FAILURE_SUMMARY
+          $TAIL
           \`\`\`
 
-          ### Details
-          - Branch: \`${{ github.ref_name }}\`
-          - Commit: \`${{ github.sha }}\`
-          - Trigger: \`${{ github.event_name }}\`
+          Full output is attached to the workflow run as the \`functional-test-output\` artifact.
 
-          This issue was automatically created when functional tests failed in CI."
+          _Filed automatically by \`.github/workflows/integration-tests.yml\`._
+          BODY
+          )"
 
-            # Create the issue
-            gh issue create \
-              --title "Functional Test Failure - $DATE ($FAILURE_HASH)" \
-              --body "$ISSUE_BODY" \
-              --label "functional-test-failure,bug,ci-failure"
-          else
-            echo "Issue already exists for this failure type: #$EXISTING_ISSUE"
-          fi
+      # The issue above is a notification, not a pass. Without this the job
+      # reported success on every nightly failure and the badge stayed green.
+      - name: Fail the job if tests failed
+        if: steps.tests.outcome == 'failure'
+        run: |
+          echo "Functional tests failed — see the artifact and the filed issue." >&2
+          exit 1

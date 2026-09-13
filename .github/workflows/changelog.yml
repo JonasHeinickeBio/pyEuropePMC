@@ -1,123 +1,167 @@
 name: Update Changelog
 
 on:
-  release:
-    types: [published]
   push:
     tags:
       - 'v*.*.*'
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to generate changelog for'
-        required: false
+        description: 'Version to generate a changelog entry for (e.g. v2.1.0)'
+        required: true
         type: string
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: changelog-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   changelog:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
+          # The entry is committed to main, not to the tag.
           ref: main
           fetch-depth: 0
 
-      - name: Generate Changelog
+      - name: Generate changelog entry
         id: changelog
+        env:
+          # Everything the script reads comes in as an environment variable.
+          # Interpolating `${{ github.event.* }}` straight into the shell would
+          # let a crafted tag or release name run commands in the job.
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+          REF_NAME: ${{ github.ref_name }}
         run: |
-          # Create changelog header if file doesn't exist
+          set -euo pipefail
+
+          if [ "$EVENT_NAME" = "workflow_dispatch" ]; then
+            TAG="$INPUT_VERSION"
+          else
+            TAG="$REF_NAME"
+          fi
+          VERSION="${TAG#v}"
+          echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
+
           if [ ! -f CHANGELOG.md ]; then
-            cat > CHANGELOG.md << 'EOF'
+            cat > CHANGELOG.md <<'HEADER'
           # Changelog
 
-          All notable changes to PyEuropePMC will be documented in this file.
+          All notable changes to PyEuropePMC are documented here.
 
-          The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-          and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-
-          EOF
+          HEADER
           fi
 
-          # Get the release tag. `github.event.release.tag_name` is only
-          # populated for `release` events - a plain tag push (our v*.*.*
-          # trigger) has no `release` context, so fall back to the ref name.
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            TAG="${{ inputs.version }}"
-          elif [ "${{ github.event_name }}" == "release" ]; then
-            TAG="${{ github.event.release.tag_name }}"
-          else
-            TAG="${{ github.ref_name }}"
-          fi
-          echo "TAG=${TAG}" >> "$GITHUB_ENV"
-
-          # Releases on this project are usually hand-documented in CHANGELOG.md
-          # before tagging, so skip generation if an entry already exists -
-          # otherwise every re-run would prepend a redundant, auto-generated
-          # duplicate above the curated one.
-          if grep -qF "## [${TAG#v}]" CHANGELOG.md; then
-            echo "Changelog already has an entry for ${TAG}; skipping generation."
+          # Releases here are hand-documented in CHANGELOG.md before tagging.
+          # If the curated entry is already present, do nothing - otherwise every
+          # re-run prepends a redundant generated duplicate above it.
+          if grep -qF "## [${VERSION}]" CHANGELOG.md; then
+            echo "CHANGELOG.md already documents ${VERSION}; nothing to do."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
-          # Get release date
-          RELEASE_DATE=$(date +%Y-%m-%d)
+          TAG="$TAG" VERSION="$VERSION" python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+          import subprocess
+          from datetime import date
 
-          # Get commits since last tag
-          PREVIOUS_TAG=$(git describe --abbrev=0 --tags ${TAG}^ 2>/dev/null || echo "")
+          tag = os.environ["TAG"]
+          version = os.environ["VERSION"]
 
-          if [ -z "$PREVIOUS_TAG" ]; then
-            COMMITS=$(git log --pretty=format:"- %s (%h)" ${TAG})
-          else
-            COMMITS=$(git log --pretty=format:"- %s (%h)" ${PREVIOUS_TAG}..${TAG})
-          fi
+          def git(*args: str) -> str:
+              return subprocess.run(
+                  ["git", *args], capture_output=True, text=True, check=False
+              ).stdout.strip()
 
-          # Categorize commits (support both conventional and non-conventional formats)
-          FEATURES=$(echo "$COMMITS" | grep -i "^- feat\|^feat:" || echo "$COMMITS" | grep -i "add\|implement\|new\|feature" | head -10 || true)
-          FIXES=$(echo "$COMMITS" | grep -i "^- fix\|^fix:" || echo "$COMMITS" | grep -i "fix\|bug\|error\|issue" | head -5 || true)
-          DOCS=$(echo "$COMMITS" | grep -i "^- docs\|^docs:" || echo "$COMMITS" | grep -i "doc\|readme\|changelog\|documentation" | head -5 || true)
-          CHORES=$(echo "$COMMITS" | grep -i "^- chore\|^chore:\|^- ci\|^ci:" || echo "$COMMITS" | grep -i "refactor\|lint\|test\|ci\|build\|deps" | head -10 || true)
-          BREAKING=$(echo "$COMMITS" | grep -i "BREAKING CHANGE\|breaking" || true)
+          previous = git("describe", "--abbrev=0", "--tags", f"{tag}^")
+          rev_range = f"{previous}..{tag}" if previous else tag
+          commits = [
+              line
+              for line in git("log", "--pretty=format:%s (%h)", rev_range).splitlines()
+              if line.strip()
+          ]
 
-          # Create new entry
-          NEW_ENTRY="## [${TAG}] - ${RELEASE_DATE}\n\n"
+          # Conventional-commit prefixes first; anything else lands in "Other".
+          sections: dict[str, list[str]] = {
+              "### 💥 Breaking changes": [],
+              "### ✨ Features": [],
+              "### 🐛 Bug fixes": [],
+              "### 📚 Documentation": [],
+              "### 🔧 Maintenance": [],
+              "### Other": [],
+          }
+          rules = [
+              (re.compile(r"^\w+(\([^)]*\))?!:|BREAKING[ -]CHANGE", re.I), "### 💥 Breaking changes"),
+              (re.compile(r"^feat(\([^)]*\))?:", re.I), "### ✨ Features"),
+              (re.compile(r"^fix(\([^)]*\))?:", re.I), "### 🐛 Bug fixes"),
+              (re.compile(r"^docs(\([^)]*\))?:", re.I), "### 📚 Documentation"),
+              (re.compile(r"^(chore|ci|build|refactor|test|perf|style|deps)(\([^)]*\))?:", re.I), "### 🔧 Maintenance"),
+          ]
+          for subject in commits:
+              for pattern, heading in rules:
+                  if pattern.search(subject):
+                      sections[heading].append(f"- {subject}")
+                      break
+              else:
+                  sections["### Other"].append(f"- {subject}")
 
-          if [ -n "$BREAKING" ]; then
-            NEW_ENTRY="${NEW_ENTRY}### ⚠️ Breaking Changes\n\n${BREAKING}\n\n"
-          fi
+          body = [f"## [{version}] - {date.today().isoformat()}", ""]
+          for heading, entries in sections.items():
+              if entries:
+                  body += [heading, "", *entries, ""]
+          if len(body) == 2:
+              body += ["_No commits found for this range._", ""]
+          entry = "\n".join(body)
 
-          if [ -n "$FEATURES" ]; then
-            NEW_ENTRY="${NEW_ENTRY}### ✨ Features\n\n${FEATURES}\n\n"
-          fi
+          changelog = pathlib.Path("CHANGELOG.md")
+          text = changelog.read_text(encoding="utf-8")
 
-          if [ -n "$FIXES" ]; then
-            NEW_ENTRY="${NEW_ENTRY}### 🐛 Bug Fixes\n\n${FIXES}\n\n"
-          fi
+          # Insert above the first existing version heading, or append.
+          match = re.search(r"^## \[", text, re.MULTILINE)
+          if match:
+              text = text[: match.start()] + entry + "\n" + text[match.start():]
+          else:
+              text = text.rstrip() + "\n\n" + entry
+          changelog.write_text(text, encoding="utf-8")
+          print(f"Added a generated changelog entry for {version} ({len(commits)} commits).")
+          PY
 
-          if [ -n "$DOCS" ]; then
-            NEW_ENTRY="${NEW_ENTRY}### 📚 Documentation\n\n${DOCS}\n\n"
-          fi
+          echo "changed=true" >> "$GITHUB_OUTPUT"
 
-          if [ -n "$CHORES" ]; then
-            NEW_ENTRY="${NEW_ENTRY}### 🔧 Maintenance\n\n${CHORES}\n\n"
-          fi
-
-          # Insert new entry after header
-          awk -v new_entry="$NEW_ENTRY" '
-            /^All notable changes to PyEuropePMC/ { print; print ""; print new_entry; next }
-            { print }
-          ' CHANGELOG.md > CHANGELOG.tmp
-
-          mv CHANGELOG.tmp CHANGELOG.md
-
-          echo "Changelog updated for ${TAG}"
-
-      - name: Commit Changelog
+      - name: Commit changelog
+        if: steps.changelog.outputs.changed == 'true'
+        env:
+          TAG: ${{ steps.changelog.outputs.tag }}
         run: |
-          git config user.name github-actions[bot]
-          git config user.email github-actions[bot]@users.noreply.github.com
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email 'github-actions[bot]@users.noreply.github.com'
           git add CHANGELOG.md
-          git diff --quiet && git diff --staged --quiet || (git commit -m "docs: update changelog for ${TAG} [skip ci]" && git push)
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+
+          git commit -m "docs: update changelog for ${TAG} [skip ci]"
+
+          # `actions/checkout` leaves HEAD detached here, so a bare `git push`
+          # fails with "You are not currently on a branch" (exit 128) - which is
+          # exactly how this step failed on the v2.0.0 tag. Rebase onto the
+          # latest main (it may have moved while the release ran) and push the
+          # detached HEAD at the branch explicitly.
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:refs/heads/main
