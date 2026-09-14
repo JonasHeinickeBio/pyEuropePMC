@@ -86,6 +86,22 @@ class MarkdownConverter(BaseParser):
                 # <sec> as well, and _process_section_markdown already renders
                 # subsections beneath their parent - so each one was emitted
                 # twice, at two different heading levels (#209).
+                # Bare <p> directly under <body>, before any <sec>. Markdown
+                # never rendered these at all - it only ever walked sections -
+                # so an article whose opening paragraphs sit outside a section
+                # lost them entirely (four in PMC12018715, three in
+                # PMC12126031). They are in no section, so nothing else emits
+                # them.
+                bare_texts = [
+                    text
+                    for para in body_elem.findall("./p")
+                    for text in self._extract_flat_texts(
+                        para, ".", filter_empty=True, use_full_text=True
+                    )
+                ]
+                for text in bare_texts:
+                    md_parts.append(f"{text}\n\n")
+
                 for sec in self._child_sections(body_elem):
                     section_md = self._process_section_markdown(sec, level=2)
                     if section_md:
@@ -118,6 +134,9 @@ class MarkdownConverter(BaseParser):
             md_parts.append(f"{'#' * level} {titles[0]}\n\n")
 
         # Extract paragraphs - this section's own, not its subsections' (#209)
+        # No stop_at=("list",) here, unlike the plaintext converter: markdown
+        # has no separate list rendering, so a <p> inside a <list-item> reaches
+        # the output only through this walk. Excluding it would lose the text.
         for para in self._section_own_elements(section, "p"):
             for para_text in self._extract_flat_texts(
                 para, ".", filter_empty=True, use_full_text=True

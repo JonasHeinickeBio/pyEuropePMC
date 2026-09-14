@@ -111,3 +111,66 @@ class TestFlatSectionsWithoutNesting:
             ("Introduction", "Intro text."),
             ("Methods", "Methods text."),
         ]
+
+
+BARE_AND_LIST_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<article><front><article-meta><title-group><article-title>T</article-title>
+</title-group></article-meta></front><body>
+<p>OPENING paragraph that sits outside any section.</p>
+<sec><title>Methods</title><p>EPSILON.</p>
+  <list list-type="bullet"><list-item><p>ZETA item text.</p></list-item></list>
+</sec>
+</body></article>"""
+
+
+class TestBareBodyParagraphs:
+    """<p> directly under <body>, in a document that also has sections."""
+
+    @pytest.fixture
+    def parser(self):
+        return FullTextXMLParser(BARE_AND_LIST_XML)
+
+    def test_plaintext_keeps_bare_paragraph(self, parser):
+        """to_plaintext() ran this branch only when the document had no <sec>.
+
+        That guard dodged the duplication fixed in #209, but it silently
+        dropped the opening paragraphs of any article that had both - four in
+        PMC12018715, three in PMC12126031, found by validating against real
+        Europe PMC documents.
+        """
+        assert parser.to_plaintext().count("OPENING") == 1
+
+    def test_markdown_keeps_bare_paragraph(self, parser):
+        """to_markdown() only ever walked sections, so it never emitted these."""
+        assert parser.to_markdown().count("OPENING") == 1
+
+    def test_sections_keep_bare_paragraph(self, parser):
+        """get_full_text_sections() already handled this; it still does."""
+        joined = "\n".join(s["content"] for s in parser.get_full_text_sections())
+        assert joined.count("OPENING") == 1
+
+
+class TestListParagraphsEmittedOnce:
+    """A <p> inside a <list-item> must not be emitted as a paragraph too."""
+
+    @pytest.fixture
+    def parser(self):
+        return FullTextXMLParser(BARE_AND_LIST_XML)
+
+    def test_plaintext_does_not_double_emit_list_text(self, parser):
+        """Plaintext renders lists separately, so paragraphs stop at <list>.
+
+        Eight paragraphs in PMC11699693 were emitted twice this way.
+        """
+        assert parser.to_plaintext().count("ZETA item text.") == 1
+
+    def test_plaintext_still_emits_ordinary_paragraphs(self, parser):
+        assert parser.to_plaintext().count("EPSILON.") == 1
+
+    def test_markdown_keeps_list_text(self, parser):
+        """Markdown has no list rendering, so it must NOT stop at <list>.
+
+        Excluding list paragraphs there would drop the text entirely - the
+        opposite bug, which this guards against.
+        """
+        assert parser.to_markdown().count("ZETA item text.") == 1

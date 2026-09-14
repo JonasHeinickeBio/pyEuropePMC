@@ -86,29 +86,31 @@ class PlaintextConverter(BaseParser):
         )
         if body_results["body"]:
             body_elem = body_results["body"][0]
-            has_sec = False
             for sec in body_elem.iter():
                 if sec.tag == "sec":
-                    has_sec = True
                     section_text = self._process_section_plaintext(sec)
                     if section_text:
                         text_parts.append(f"{section_text}\n\n")
 
-            # Handle bare <p> elements directly under <body> (no <sec> wrapper)
-            # Some publishers like PLOS use this structure.
-            # Only process if no <sec> elements were found to avoid duplication.
-            if not has_sec:
-                bare_ps = body_elem.findall("./p")
-                if bare_ps:
-                    para_texts: list[str] = []
-                    for p in bare_ps:
-                        texts = self._extract_flat_texts(
-                            p, ".", filter_empty=True, use_full_text=True
-                        )
-                        if texts:
-                            para_texts.extend(texts)
-                    if para_texts:
-                        text_parts.append("\n".join(para_texts) + "\n\n")
+            # Bare <p> directly under <body>, with no <sec> wrapper - the
+            # opening paragraphs of many articles, and the whole body for
+            # publishers like PLOS.
+            #
+            # This used to run only when the document had no <sec> at all, to
+            # dodge the duplication that has since been fixed (#209). The guard
+            # silently dropped those paragraphs from every article that had
+            # both: four in PMC12018715, three in PMC12126031. A bare <p> is in
+            # no section, so no section can emit it - there is nothing left to
+            # duplicate against.
+            bare_ps = body_elem.findall("./p")
+            if bare_ps:
+                para_texts: list[str] = []
+                for p in bare_ps:
+                    texts = self._extract_flat_texts(p, ".", filter_empty=True, use_full_text=True)
+                    if texts:
+                        para_texts.extend(texts)
+                if para_texts:
+                    text_parts.append("\n".join(para_texts) + "\n\n")
 
     def _add_acknowledgments_to_text(self, text_parts: list[str]) -> None:
         """Add acknowledgments to text parts."""
@@ -147,7 +149,9 @@ class PlaintextConverter(BaseParser):
         # duplicated every subsection's text into its parent as well (#209).
         paragraphs = [
             text
-            for para in self._section_own_elements(section, "p")
+            # stop_at=("list",): list items are rendered below, and a <p>
+            # inside a <list-item> would otherwise be emitted twice.
+            for para in self._section_own_elements(section, "p", stop_at=("list",))
             for text in self._extract_flat_texts(para, ".", filter_empty=True, use_full_text=True)
         ]
         for para_text in paragraphs:
