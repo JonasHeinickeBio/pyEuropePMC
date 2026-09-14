@@ -53,7 +53,10 @@ jobs:
         run: |
           set -o pipefail
           mkdir -p reports
-          poetry run pytest -v -m functional --tb=short \
+          # --run-integration lifts the gate in tests/integration/conftest.py.
+          # Without it the 13 live-API analytics tests skip even with pandas
+          # installed, which is what `extras: all` alone left behind.
+          poetry run pytest -v -m functional --run-integration --tb=short \
             --junitxml=reports/functional-junit.xml \
             2>&1 | tee reports/functional.log
 

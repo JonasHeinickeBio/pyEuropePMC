@@ -241,6 +241,21 @@ def pytest_addoption(parser):
             help="Run functional/network tests that call real external APIs.",
         )
 
+    # Registered HERE, not in tests/integration/conftest.py, because pytest only
+    # takes pytest_addoption from *initial* conftests - those on the invocation
+    # path. That conftest's skip hook runs tree-wide regardless, so defining the
+    # option there made the gate applicable but not liftable: any run that did
+    # not start inside tests/integration/ skipped every `integration` test and
+    # died with "unrecognized arguments: --run-integration" if asked to include
+    # them. That hid 13 live-API analytics tests from CI entirely.
+    with contextlib.suppress(ValueError):
+        group.addoption(
+            "--run-integration",
+            action="store_true",
+            default=False,
+            help="Run tests that hit live external APIs.",
+        )
+
     # ``addopts`` (pyproject.toml) passes --disable-socket / --timeout for the
     # hermetic default run. If pytest-socket / pytest-timeout aren't installed,
     # register inert placeholders so those flags don't crash pytest (the suite
