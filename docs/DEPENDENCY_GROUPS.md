@@ -181,6 +181,31 @@ git commit -am "build: regenerate requirements.txt for <dep> <version>"
 git push origin fix/<dep>:dependabot/pip/<dep>-<version>
 ```
 
+### The committed lock is not reproducible
+
+Running `poetry lock` with no dependency change at all currently rewrites
+about 226 lines. Every one of them is a marker written the other way round:
+
+```
+- markers = "extra == \"all\" or extra == \"standard\""
++ markers = "extra == \"standard\" or extra == \"all\""
+```
+
+The same boolean, the other clause first. This is **not** run-to-run
+randomness — three consecutive `poetry lock` runs produce byte-identical
+output. The committed `poetry.lock` was written by a toolchain that orders
+these clauses differently from Poetry 2.4.1, which is the version the file's
+own header names.
+
+The practical effect is that any change touching the lock arrives with ~226
+lines of noise around it, and a reviewer has to check which lines are real.
+`git diff poetry.lock | grep '^[-+]version'` answers that in one command.
+
+Fixing it means regenerating the lock once on `main` so the committed
+ordering matches what the pinned toolchain produces. That is a deliberate
+change of its own — it rewrites the file wholesale — and should not ride
+along with a dependency bump.
+
 ### Use the pinned exporter, not whatever is installed
 
 The export format depends on the plugin version. 1.8.0 and 1.10.0 disagree
