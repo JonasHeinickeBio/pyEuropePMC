@@ -167,6 +167,50 @@ jobs:
           }
 
           # Load JSON results
+          # Text files below are capped at 5000 chars, but the JSON payloads were
+          # embedded whole. coverage.json alone was 2.5 MB, and the prompt built
+          # from this file reached 7.1 MB - roughly 1.8 million tokens, far past
+          # any model's context window, so the request could never succeed
+          # regardless of plan or credits. Keep the signal, drop the bulk.
+          JSON_BUDGET = 20000
+
+          def _condense(key, data):
+              """Reduce a raw tool payload to what is useful in a prompt."""
+              if key == "coverage":
+                  files = (data.get("files") or {}) if isinstance(data, dict) else {}
+                  worst = sorted(
+                      (
+                          (f.get("summary", {}).get("percent_covered", 100.0), name)
+                          for name, f in files.items()
+                      )
+                  )[:25]
+                  return {
+                      "totals": data.get("totals") if isinstance(data, dict) else None,
+                      "lowest_covered_files": [
+                          {"file": n, "percent_covered": round(p, 1)} for p, n in worst
+                      ],
+                      "note": f"{len(files)} files measured; only the 25 lowest are listed.",
+                  }
+              if key == "bandit":
+                  results = (data.get("results") or []) if isinstance(data, dict) else []
+                  return {
+                      "metrics_totals": (data.get("metrics") or {}).get("_totals")
+                      if isinstance(data, dict)
+                      else None,
+                      "issues": results[:25],
+                      "note": f"{len(results)} issues found; first 25 listed.",
+                  }
+              if key == "existing_issues" and isinstance(data, list):
+                  return [
+                      {"number": i.get("number"), "title": i.get("title")}
+                      for i in data
+                  ]
+              # Everything else: keep it, but never unbounded.
+              blob = json.dumps(data)
+              if len(blob) <= JSON_BUDGET:
+                  return data
+              return {"truncated": True, "preview": blob[:JSON_BUDGET]}
+
           json_files = [
               "ruff_results.json",
               "bandit_results.json",
@@ -184,7 +228,7 @@ jobs:
                       with open(file_path) as f:
                           data = json.load(f)
                       key = json_file.replace("_results.json", "").replace(".json", "")
-                      summary["analysis"][key] = data
+                      summary["analysis"][key] = _condense(key, data)
                   except json.JSONDecodeError:
                       print(f"Warning: Could not parse {json_file}")
 
@@ -244,7 +288,9 @@ jobs:
 
           # Fetch existing open issues
           echo "Fetching existing GitHub issues..." | tee -a analysis.log
-          gh issue list --state open --limit 100 --json number,title,body,labels,createdAt,updatedAt > analysis_output/existing_issues.json || echo '{"error": "Could not fetch issues"}' > analysis_output/existing_issues.json
+          # Number, title and labels are enough to avoid duplicate suggestions.
+          # Including full bodies added ~39 KB (~10k tokens) to the prompt.
+          gh issue list --state open --limit 100 --json number,title,labels > analysis_output/existing_issues.json || echo '{"error": "Could not fetch issues"}' > analysis_output/existing_issues.json
 
           # Create human-readable version of issues
           gh issue list --state open --limit 100 > analysis_output/existing_issues.txt || echo "Could not fetch issues" > analysis_output/existing_issues.txt
