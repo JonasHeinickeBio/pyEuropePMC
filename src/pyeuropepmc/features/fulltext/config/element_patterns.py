@@ -41,6 +41,17 @@ class ElementPatterns:
             "patterns": [
                 ".//contrib[@contrib-type='author']",  # Full contrib element
                 ".//contrib[@contrib-type='author']/name",  # Name element (fallback)
+                # Group-level authorship: the contributions carry no
+                # contrib-type of their own, the group declares it. Europe PMC
+                # emits both dialects, and in a 1,000-file sample this was the
+                # commoner of the two (see AUTH-01, #203).
+                #
+                # It has to precede the generic fallbacks below. Without it, a
+                # document using this dialect fell through to `.//name`, which
+                # matches every name in the front matter - including the
+                # editors in a <contrib-group content-type="editor">. That put
+                # one extra "author" on 13 of 124 corpus documents.
+                ".//contrib-group[@content-type='author']/contrib",
                 ".//author-group/author",
                 ".//author",
                 ".//name",
