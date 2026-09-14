@@ -153,14 +153,26 @@ class PlaintextConverter(BaseParser):
         # `stop_at` keeps a list's own <p> out of this list, and
         # `_text_excluding` drops the list's text from a <p> that wraps one.
         #
-        # `table-wrap` is deliberately NOT excluded. _process_table_plaintext
-        # renders only the <table> rows - it does not render <caption> or
-        # <table-wrap-foot> - so dropping the whole subtree here loses that
-        # text outright. Measured on the corpus, doing so traded 10 duplicate
-        # paragraphs for 163 missing ones.
+        # `table-wrap` is deliberately NOT excluded, even though the renderer
+        # below now covers caption, cells and footer. Measured over 19,964
+        # body sentences, excluding it saved 35 duplicates and cost 106
+        # sentences outright - a table subtree carries more than those three
+        # parts. Leaving a table's text in its wrapping paragraph duplicates
+        # it; removing it loses it, and duplication is the safer failure.
+        # Two different mechanisms, and they are not interchangeable:
+        #
+        # `stop_at` decides which <p> count as this section's own. A <p> inside
+        # a <list-item>, a table cell or a table <caption> is rendered by the
+        # list/table renderers below, so it must not be collected here too.
+        #
+        # `_text_excluding` decides what a collected <p> contributes. It is
+        # applied to <list> only. Dropping a <table-wrap> subtree from a <p>
+        # that wraps one cost 106 sentences outright over the corpus: a table
+        # subtree carries more than the caption, cells and footer the renderer
+        # covers, and the rest has nowhere else to go.
         paragraphs = [
             text
-            for para in self._section_own_elements(section, "p", stop_at=("list",))
+            for para in self._section_own_elements(section, "p", stop_at=("list", "table-wrap"))
             if (text := self._text_excluding(para, "list"))
         ]
         for para_text in paragraphs:
@@ -174,8 +186,16 @@ class PlaintextConverter(BaseParser):
             if list_text:
                 text_parts.append(f"{list_text}\n")
 
-        # Extract tables
-        tables = self._section_own_elements(section, "table")
+        # Prefer <table-wrap> over the bare <table> it contains: the caption
+        # and <table-wrap-foot> are siblings of <table>, so selecting the inner
+        # element put them out of reach. The walk stops at whichever it matches
+        # first, so a wrapper is never returned alongside its own table, and a
+        # <table> with no wrapper is still found.
+        # `stop_at=("p",)`: a table nested inside a paragraph is already
+        # carried by that paragraph's own text, so rendering it here as well
+        # would emit it twice. Only tables that are siblings of the section's
+        # paragraphs need rendering.
+        tables = self._section_own_elements(section, "table-wrap", "table", stop_at=("p",))
         for table_elem in tables:
             table_text = self._process_table_plaintext(table_elem)
             if table_text:
@@ -214,29 +234,33 @@ class PlaintextConverter(BaseParser):
         return "\n".join(text_parts)
 
     def _process_table_plaintext(self, table_elem: ET.Element) -> str:
-        """Process a table element to plain text."""
+        """Render a <table-wrap> (or a bare <table>) to plain text.
+
+        Caption, rows and footer. The footer carries the table's notes and
+        abbreviation keys; neither it nor the caption was rendered before,
+        because this was only ever handed the inner <table>.
+        """
         text_parts = []
 
-        # Extract table caption
         captions = self._extract_flat_texts(
             table_elem, ".//caption", filter_empty=True, use_full_text=True
         )
         if captions:
             text_parts.append(f"Table: {captions[0]}\n")
 
-        # Extract table rows
-        rows = table_elem.findall(".//tr")
-        if rows:
-            # Simple table representation
-            for row in rows:
-                cells = []
-                for cell in row.findall(".//td") + row.findall(".//th"):
-                    cell_text = self._extract_flat_texts(
-                        cell, ".", filter_empty=True, use_full_text=True
-                    )
-                    cells.append(cell_text[0] if cell_text else "")
-                if cells:
-                    text_parts.append(" | ".join(cells))
+        for row in table_elem.findall(".//tr"):
+            cells = []
+            for cell in row.findall(".//td") + row.findall(".//th"):
+                # The whole cell: taking only the first extracted string lost
+                # the rest of a cell holding several <p>.
+                cells.append(" ".join("".join(cell.itertext()).split()))
+            if cells:
+                text_parts.append(" | ".join(cells))
+
+        for foot in table_elem.findall(".//table-wrap-foot"):
+            foot_text = " ".join("".join(foot.itertext()).split())
+            if foot_text:
+                text_parts.append(foot_text)
 
         return "\n".join(text_parts)
 

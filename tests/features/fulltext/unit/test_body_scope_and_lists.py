@@ -89,3 +89,52 @@ class TestListRendering:
 
     def test_wrapping_paragraph_keeps_its_own_text(self, plain):
         assert plain.count("Intro sentence.") == 1
+
+
+TABLE_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<article><front><article-meta><title-group><article-title>T</article-title>
+</title-group></article-meta></front><body>
+<sec><title>Results</title>
+  <p>Ordinary paragraph.</p>
+  <table-wrap id="t1">
+    <caption><p>CAPTION of the table.</p></caption>
+    <table><tbody>
+      <tr><td><p>CELL first paragraph.</p><p>CELL second paragraph.</p></td></tr>
+    </tbody></table>
+    <table-wrap-foot><fn><p>FOOTNOTE explaining the abbreviations.</p></fn></table-wrap-foot>
+  </table-wrap>
+</sec>
+</body></article>"""
+
+
+class TestTableRendering:
+    """<caption> and <table-wrap-foot> are siblings of <table>, not children."""
+
+    @pytest.fixture
+    def plain(self):
+        return FullTextXMLParser(TABLE_XML).to_plaintext()
+
+    def test_caption_is_rendered(self, plain):
+        """Selecting the inner <table> put the caption out of reach."""
+        assert "CAPTION of the table." in plain
+
+    def test_footer_is_rendered(self, plain):
+        """The footer carries the table's notes and abbreviation keys."""
+        assert "FOOTNOTE explaining the abbreviations." in plain
+
+    def test_whole_cell_is_rendered(self, plain):
+        """Only the first extracted string per cell was kept."""
+        assert "CELL second paragraph." in plain
+
+    def test_table_content_is_not_also_emitted_as_paragraphs(self, plain):
+        """The paragraph walk descends into <table-wrap> unless stopped.
+
+        Cells and captions would otherwise be collected as section paragraphs
+        as well as rendered by the table renderer.
+        """
+        for text in ("CAPTION of the table.", "CELL first paragraph.",
+                     "FOOTNOTE explaining the abbreviations."):
+            assert plain.count(text) == 1, f"{text!r} appears {plain.count(text)}x"
+
+    def test_ordinary_paragraph_unaffected(self, plain):
+        assert plain.count("Ordinary paragraph.") == 1
