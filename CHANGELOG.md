@@ -168,6 +168,16 @@ None of these raised an exception. They returned plausible, wrong answers.
   defect was found — the parser is exact on all 25 records in all three
   formats — but nothing was holding that.
 
+- **`tests/mappers/real_data/`** parses a real article, maps it to RDF, and
+  asserts the article's own title, DOI and every author name appear in the
+  triples. `process_xml_for_rdf` wraps each entity in
+  `except Exception: logger.warning(...); continue`, so an entity that fails
+  to map is skipped and the graph simply comes back shorter — a caller gets a
+  `Dataset` either way, and only a log line distinguishes a complete graph
+  from one missing half its authors. Twenty-one test modules under
+  `tests/mappers` read no real document before this. No defect was found; a
+  simulated dropped author is detected.
+
 - **`test_degenerate_input.py`** covers input the parser meets in the wild but
   nobody writes on purpose: malformed and truncated XML, a billion-laughs
   bomb, an external-entity reference, a document with no `<body>`, control
