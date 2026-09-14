@@ -14,6 +14,16 @@ from pyeuropepmc.features.fulltext.parsers.author_parser import AuthorParser
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
+# <pub-date> selection order. JATS 1.0 spells the attribute `pub-type`; JATS
+# 1.1 uses `date-type`. Anything not listed here still qualifies if it carries
+# a <year> - see MetadataParser._pub_date_rank.
+# NISO Access and Licence Indicators; JATS carries the machine-readable
+# licence URL as <ali:license_ref>.
+_ALI_NS = "http://www.niso.org/schemas/ali/1.0/"
+
+_PREFERRED_PUB_TYPES = ("ppub", "epub", "collection")
+_PREFERRED_DATE_TYPES = ("pub", "collection")
+
 logger = logging.getLogger(__name__)
 
 
@@ -460,33 +470,64 @@ class MetadataParser(BaseParser):
 
         return counts if counts else None
 
+    @staticmethod
+    def _pub_date_rank(pub_date: ET.Element) -> int:
+        """Order a <pub-date> by how authoritative its type is.
+
+        Lower sorts first. The three ``pub-type`` values keep the precedence
+        the previous implementation had; JATS 1.1 ``date-type`` spellings come
+        next; anything else - including the untyped form, which was the single
+        most common in the sampled corpus - comes last but is still usable.
+        """
+        pub_type = pub_date.get("pub-type")
+        if pub_type in _PREFERRED_PUB_TYPES:
+            return _PREFERRED_PUB_TYPES.index(pub_type)
+
+        date_type = pub_date.get("date-type")
+        if date_type in _PREFERRED_DATE_TYPES:
+            return len(_PREFERRED_PUB_TYPES) + _PREFERRED_DATE_TYPES.index(date_type)
+
+        return len(_PREFERRED_PUB_TYPES) + len(_PREFERRED_DATE_TYPES)
+
+    @staticmethod
+    def _format_pub_date(pub_date: ET.Element) -> str | None:
+        """Render one <pub-date> as YYYY, YYYY-MM or YYYY-MM-DD.
+
+        A day is only emitted when a month is present: the previous code
+        appended each component independently, so a <pub-date> carrying a year
+        and a day but no month produced the malformed "2022-14".
+        """
+        year = (getattr(pub_date.find("year"), "text", None) or "").strip()
+        if not year:
+            return None
+
+        parts = [year]
+        month = (getattr(pub_date.find("month"), "text", None) or "").strip()
+        if month:
+            parts.append(month.zfill(2))
+            day = (getattr(pub_date.find("day"), "text", None) or "").strip()
+            if day:
+                parts.append(day.zfill(2))
+        return "-".join(parts)
+
     def extract_pub_date(self) -> str | None:
         """Extract publication date from XML."""
         self._require_root()
+        root = self.root if self.root is not None else ET.Element("empty")
 
-        for pub_type in ["ppub", "epub", "collection"]:
-            patterns = {
-                "year": f".//pub-date[@pub-type='{pub_type}']/year",
-                "month": f".//pub-date[@pub-type='{pub_type}']/month",
-                "day": f".//pub-date[@pub-type='{pub_type}']/day",
-            }
-            parts = self.extract_elements_by_patterns(patterns, first_only=True)
-            date_parts = []
-            if parts["year"] and parts["year"][0]:
-                date_parts.append(parts["year"][0])
-            if parts["month"] and parts["month"][0]:
-                date_parts.append(parts["month"][0].zfill(2))
-            if parts["day"] and parts["day"][0]:
-                date_parts.append(parts["day"][0].zfill(2))
-
-            # Return date if we have at least year
-            if date_parts:
-                date_str = "-".join(date_parts)
+        # Matching only pub-type ppub/epub/collection missed 566 of 997 papers
+        # that had a <pub-date> with a usable <year> (#210). The untyped form
+        # alone accounted for 576 elements in the sample, more than any typed
+        # one, and JATS 1.1 spells the attribute `date-type`. Rank every
+        # candidate instead, and take the best that actually carries a year.
+        # `sorted` is stable, so same-rank elements keep document order.
+        for pub_date in sorted(root.findall(".//pub-date"), key=self._pub_date_rank):
+            date_str = self._format_pub_date(pub_date)
+            if date_str:
                 logger.debug(f"Extracted pub_date: {date_str}")
                 return date_str
 
         logger.debug("No publication date found.")
-        return None
         return None
 
     def extract_keywords(self) -> list[str]:
@@ -555,6 +596,18 @@ class MetadataParser(BaseParser):
         source_texts = self._extract_flat_texts(
             award_group, ".//funding-source//institution", filter_empty=True
         )
+        if not source_texts:
+            # Plenty of award-groups name the funder as direct text rather than
+            # wrapping it in <institution>. Looking only for the nested form
+            # left those groups with no source at all; where the group also had
+            # no award-id and no recipient the dictionary came out empty and the
+            # group was dropped entirely (#210). itertext() also picks up
+            # <named-content content-type="funder-name"> and similar wrappers.
+            source_texts = [
+                text
+                for source in award_group.findall(".//funding-source")
+                if (text := " ".join("".join(source.itertext()).split()))
+            ]
         if source_texts:
             funding_data["source"] = " ".join(source_texts)
 
@@ -673,13 +726,29 @@ class MetadataParser(BaseParser):
             if license_type:
                 license_info["type"] = license_type
 
-            for ext_link in license_elem.findall(".//ext-link"):
-                url = ext_link.get("{http://www.w3.org/1999/xlink}href")
+            # The canonical machine-readable URL is <ali:license_ref>, which
+            # JATS carries alongside the human-readable <license-p>. Only
+            # <ext-link> was consulted, so a licence whose URL lives solely in
+            # license_ref came back without one.
+            for ref in license_elem.findall(f".//{{{_ALI_NS}}}license_ref"):
+                url = (ref.text or "").strip()
                 if url:
                     license_info["url"] = url
-                break
+                    break
 
-            text = self._extract_with_fallbacks(license_elem, [".//license-p"])
+            if "url" not in license_info:
+                for ext_link in license_elem.findall(".//ext-link"):
+                    url = ext_link.get("{http://www.w3.org/1999/xlink}href")
+                    if url:
+                        license_info["url"] = url
+                        break
+
+            # use_full_text=True: <license-p> routinely opens with an inline
+            # element - "<bold>Open Access</bold>This article is..." - and the
+            # default reads only the element's own leading text, which in that
+            # case is whitespace and is filtered out as empty. PMC4569634
+            # returned {} for a licence that is plainly there.
+            text = self._extract_with_fallbacks(license_elem, [".//license-p"], use_full_text=True)
             if text:
                 license_info["text"] = text
             break

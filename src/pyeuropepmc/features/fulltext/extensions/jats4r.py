@@ -192,12 +192,44 @@ class JATS4RValidator(BaseParser):
     # Author validation (JATS4R Authors v2.0)
     # ------------------------------------------------------------------
 
+    def _author_contributions(self) -> list[Any]:
+        """Author contributions, in either of the two JATS dialects.
+
+        Europe PMC emits both, and in a 1,000-file sample the group-level form
+        was the more common of the two (550 documents against 447)::
+
+            <contrib-group>                        <contrib-group content-type="author">
+              <contrib contrib-type="author">        <contrib>
+                ...                                    ...
+
+        Searching only for ``contrib-type='author'`` therefore reported "no
+        authors" for the majority dialect - 550 false positives out of 553
+        AUTH-01 fires (#203).
+
+        A contribution inside a ``content-type="author"`` group is only counted
+        when it carries no ``contrib-type`` of its own. That keeps the two
+        lists disjoint without comparing element identity (lxml can hand back
+        distinct proxy objects for one node), and it stops an explicitly
+        tagged editor inside an author group being counted as an author.
+        """
+        if self.root is None:
+            return []
+
+        typed = self.root.findall(".//contrib[@contrib-type='author']")
+        grouped = [
+            contrib
+            for group in self.root.findall(".//contrib-group[@content-type='author']")
+            for contrib in group.findall("contrib")
+            if contrib.get("contrib-type") is None
+        ]
+        return [*typed, *grouped]
+
     def _validate_authors(self, report: ValidationReport) -> None:
         """Validate author tagging against JATS4R recommendations."""
         if self.root is None:
             return
 
-        contrib_elements = self.root.findall(".//contrib[@contrib-type='author']")
+        contrib_elements = self._author_contributions()
 
         if not contrib_elements:
             report.add_finding(
@@ -206,7 +238,10 @@ class JATS4RValidator(BaseParser):
                     severity="error",
                     message="No author contributions found",
                     category="authors",
-                    suggestion="Add <contrib contrib-type='author'> elements",
+                    suggestion=(
+                        "Add <contrib contrib-type='author'> elements, or a"
+                        " <contrib-group content-type='author'> containing them"
+                    ),
                 )
             )
             return

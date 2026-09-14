@@ -1,21 +1,27 @@
 # PyEuropePMC
 
-[![PyPI version](https://img.shields.io/pypi/v/pyeuropepmc.svg)](https://pypi.org/project/pyeuropepmc/)
-[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyeuropepmc)](https://pypi.org/project/pyeuropepmc/)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![PyPI version](https://img.shields.io/pypi/v/pyeuropepmc.svg?logo=pypi&logoColor=white)](https://pypi.org/project/pyeuropepmc/)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyeuropepmc?logo=pypi&logoColor=white)](https://pypi.org/project/pyeuropepmc/)
+[![Python versions](https://img.shields.io/pypi/pyversions/pyeuropepmc.svg?logo=python&logoColor=white)](https://pypi.org/project/pyeuropepmc/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Tests](https://img.shields.io/badge/tests-200%2B%20passed-green.svg)](tests/)
-[![Coverage](https://img.shields.io/badge/coverage-90%2B%25-brightgreen.svg)](htmlcov/)
-[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue)](https://jonasheinickebio.github.io/pyEuropePMC/)
-[![MCP Server](https://img.shields.io/badge/MCP_Server-available-brightgreen.svg)](https://modelcontextprotocol.io/)
+[![Documentation](https://img.shields.io/badge/docs-GitHub%20Pages-blue?logo=githubpages&logoColor=white)](https://jonasheinickebio.github.io/pyEuropePMC/)
+[![MCP Server](https://img.shields.io/badge/MCP-server-30A46C?logo=modelcontextprotocol&logoColor=white)](src/pyeuropepmc/mcp/README.md)
 
 ## 🔄 Build Status
 
-[![CI/CD Pipeline](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/cdci.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/cdci.yml)
-[![Python Compatibility](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/python-compatibility.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/python-compatibility.yml)
-[![Documentation](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/deploy-docs.yml)
-[![CodeQL](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/codeql.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/codeql.yml)
+[![CI](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/cdci.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/cdci.yml)
+[![CI — Light core install](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/unit-tests.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/unit-tests.yml)
+[![Python Version Compatibility Matrix](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/python-compatibility.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/python-compatibility.yml)
+[![Deploy Documentation to GitHub Pages](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/deploy-docs.yml/badge.svg)](https://github.com/JonasHeinickeBio/pyEuropePMC/actions/workflows/deploy-docs.yml)
+[![CodeQL](https://img.shields.io/badge/CodeQL-enabled-2b7489?logo=github)](https://github.com/JonasHeinickeBio/pyEuropePMC/security/code-scanning)
 [![codecov](https://codecov.io/gh/JonasHeinickeBio/pyEuropePMC/branch/main/graph/badge.svg)](https://codecov.io/gh/JonasHeinickeBio/pyEuropePMC)
+
+> Badges above are live — each links to its own workflow run or dashboard, so
+> this section can never drift out of sync with reality the way a hand-typed
+> "200+ tests passed" badge would. `CodeQL` is GitHub's default-setup code
+> scanning (not a workflow file in this repo), so it links to the
+> [alerts page](https://github.com/JonasHeinickeBio/pyEuropePMC/security/code-scanning)
+> rather than a per-commit pass/fail badge.
 
 
 **PyEuropePMC** is a robust Python toolkit for automated search, extraction, and analysis of scientific literature from [Europe PMC](https://europepmc.org/).
@@ -24,8 +30,8 @@
 
 
 - 🔍 **Comprehensive Search API** - Query Europe PMC with advanced search options
-- � **Advanced Query Builder** - Fluent API for building complex search queries with type safety
-- �📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
+- 🎯 **Advanced Query Builder** - Fluent API for building complex search queries with type safety
+- 📄 **Full-Text Retrieval** - Download PDFs, XML, and HTML content from open access articles
 - 🔬 **XML Parsing & Conversion** - Parse full text XML and convert to plaintext, markdown, extract tables and metadata
 - 🏷️ **Text-Mining Annotations** - Retrieve and parse entity annotations, sentences, and relationships (genes, diseases, chemicals)
 - 📊 **Multiple Output Formats** - JSON, XML, Dublin Core (DC)
@@ -34,12 +40,12 @@
 - 🛡️ **Robust Error Handling** - Built-in retry logic and connection management
 - 🧑‍💻 **Type Safety** - Extensive use of type annotations and validation
 - ⚡ **Rate Limiting** - Respectful API usage with configurable delays
-- 🧪 **Extensively Tested** - 200+ tests with 90%+ code coverage
+- 🧪 **Extensively Tested** - 5,000+ tests; live coverage in the [codecov badge](https://codecov.io/gh/JonasHeinickeBio/pyEuropePMC) above
 - 📋 **Systematic Review Tracking** - PRISMA-compliant search logging and audit trails
 - 📈 **Advanced Analytics** - Publication trends, citation analysis, quality metrics, and duplicate detection
 - 📉 **Rich Visualizations** - Interactive plots and dashboards using matplotlib and seaborn
 - 🔗 **External API Enrichment** - Enhance metadata with CrossRef, Unpaywall, Semantic Scholar, and OpenAlex
-- 🤖 **MCP Server Support** - Model Context Protocol integration for LLM tool usage
+- 🤖 **MCP Server** - 24 tools over the official [Model Context Protocol SDK](https://github.com/modelcontextprotocol/python-sdk) (stdio, streamable-http, and sse transports) for LLMs and AI agents
 
 ## 📁 Project Structure
 
@@ -469,8 +475,8 @@ See [examples/pipeline_demo.py](examples/pipeline_demo.py) for a complete workin
 
 Quick Links:
 - 🚀 [Quick Start Guide](https://jonasheinickebio.github.io/pyEuropePMC/getting-started/quickstart.html) - Get started in 5 minutes
-- � [Query Builder](https://jonasheinickebio.github.io/pyEuropePMC/features/query-builder-load-save-translate.html) - Advanced query building
-- �📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
+- 🎯 [Query Builder](https://jonasheinickebio.github.io/pyEuropePMC/features/query-builder-load-save-translate.html) - Advanced query building
+- 📚 [API Reference](https://jonasheinickebio.github.io/pyEuropePMC/api/) - Complete API documentation
 - 💡 [Examples](https://jonasheinickebio.github.io/pyEuropePMC/examples/) - Code examples and use cases
 - ✨ [Features](https://jonasheinickebio.github.io/pyEuropePMC/features/) - Explore all features
 - 📊 [XML Coverage Analysis](docs/xml_element_coverage_analysis.md) - Parser coverage and benchmark results
@@ -667,6 +673,14 @@ Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/p
 (`FastMCP`) — spec-compliant error handling, concurrent async tool execution,
 and a choice of transports, so the same server works for Claude Desktop over
 stdio *and* for remote/non-Claude agents over HTTP.
+
+Every tagged release publishes this server to the
+[official MCP Registry](https://registry.modelcontextprotocol.io/) as
+`io.github.JonasHeinickeBio/pyeuropepmc` ([`server.json`](server.json)),
+automatically and without a stored secret (GitHub OIDC — see the
+`publish-mcp-registry` job in `.github/workflows/release.yml`), so any
+MCP-aware agent can discover this server without already knowing this
+repository exists.
 
 ### Usage
 

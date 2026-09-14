@@ -590,6 +590,13 @@ class StructuredSection:
         return docs
 
 
+# Parts of a <fig> that the figure block itself already represents. Anything
+# else beneath a <fig> is content in its own right and is dispatched.
+_FIGURE_OWN_PARTS = frozenset(
+    {"label", "caption", "graphic", "alt-text", "object-id", "permissions"}
+)
+
+
 class ContentBlockExtractor(BaseParser):
     """
     Extracts structured content blocks from JATS XML sections.
@@ -860,9 +867,13 @@ class ContentBlockExtractor(BaseParser):
     def _handle_special_section_child(self, child: ET.Element, tag: str) -> list[ContentBlock]:
         """Handle section children that are not standard JATS block tags."""
         if tag == "supplementary-material":
-            # Traverse into supplementary-material → caption → p and title
+            # Traverse into supplementary-material → caption → p and title.
+            #
+            # `findall("caption")` takes direct children only, and the caption
+            # is often a child of a nested <media> instead - which dropped the
+            # description of every such item. `.//caption` reaches both.
             blocks: list[ContentBlock] = []
-            for caption in child.findall("caption"):
+            for caption in child.findall(".//caption"):
                 # Extract <title> children with inline formatting
                 for title_elem in caption.findall("title"):
                     title_parts, title_ils, _ = self._extract_inlines_recursive(title_elem, 0)
@@ -874,7 +885,24 @@ class ContentBlockExtractor(BaseParser):
                 # Process <p> elements within caption (existing behavior)
                 for p_elem in caption.findall(".//p"):
                     blocks.extend(self._handle_paragraph(p_elem))
-            return blocks
+
+            # Paragraphs that sit outside the caption. The fallback below only
+            # fires when the element yields nothing at all, so an item with a
+            # caption *and* a stray <p> - PMC12301511 - kept the caption and
+            # dropped the paragraph.
+            for p_elem in child.findall("p"):
+                blocks.extend(self._handle_paragraph(p_elem))
+
+            if blocks:
+                return blocks
+            # No caption anywhere: keep whatever text the element carries
+            # rather than returning nothing at all.
+            text = XMLHelper.get_text_content(child)
+            return (
+                [ContentBlock.unknown_block(jats_tag=tag, text=text.strip())]
+                if text.strip()
+                else []
+            )
         if tag == "fn-group":
             return self._extract_fn_group_blocks(child)
         # Preserve unknown blocks as fallback
@@ -1450,7 +1478,27 @@ class ContentBlockExtractor(BaseParser):
         )
         if caption_inlines:
             block.inlines = caption_inlines
-        return [block]
+
+        # A <fig> can carry more than its label, caption and graphic: a
+        # <disp-quote> describing the figure, a stray <p>, an <attrib>. Those
+        # were dropped outright - present in get_full_text_sections() and
+        # to_plaintext(), absent from the structured output, 38 sentences
+        # across the corpus. Dispatch them exactly as a block-level child of a
+        # section would be, so a <disp-quote> becomes a quote block rather
+        # than vanishing.
+        blocks = [block]
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            if tag in _FIGURE_OWN_PARTS:
+                continue
+            handler_name = self.JATS_BLOCK_TAGS.get(tag)
+            if handler_name and handler_name in self._handler_map:
+                blocks.extend(self._handler_map[handler_name](child))
+            else:
+                text = XMLHelper.get_text_content(child)
+                if text.strip():
+                    blocks.append(ContentBlock.unknown_block(jats_tag=tag, text=text.strip()))
+        return blocks
 
     def _extract_table_rows(
         self, elem: ET.Element

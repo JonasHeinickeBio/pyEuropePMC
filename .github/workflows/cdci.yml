@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   pull_request:
+  # Re-validates each PR against the batch's would-be post-merge state right
+  # before the merge queue actually merges it - the required-status-check
+  # names below must match a job that fires on this event, or a queued PR
+  # would just wait forever for a check that never runs.
+  merge_group:
   workflow_dispatch:
 
 permissions:

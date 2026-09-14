@@ -9,6 +9,14 @@ on:
   push:
     tags:
       - 'v*'
+  # Manual dry run - use this before tagging a real release whenever this
+  # file, server.json, or anything else in the release path changed, rather
+  # than finding out only after a real tag is live (server.json's namespace
+  # casing bug and the mypy python_version regression were both the kind of
+  # thing this would have caught for free). Dispatch against a branch, not a
+  # tag: `github.ref_type` is then "branch", so `github-release` and
+  # `publish-mcp-registry` below (both gated on `ref_type == 'tag'`) don't
+  # fire - only `verify` → `build` → `attest` → `publish` (to testpypi) run.
   workflow_dispatch:
     inputs:
       environment:
@@ -269,3 +277,54 @@ jobs:
           # Fills in from the commit log when the CHANGELOG section is empty.
           generate_release_notes: true
           make_latest: true
+
+  # ---------------------------------------------------------------------------
+  # MCP Registry: publish server.json so pyeuropepmc-mcp is discoverable at
+  # https://registry.modelcontextprotocol.io by any MCP-aware agent, not just
+  # people who already know this repository exists. Uses OIDC (no secret): the
+  # registry trusts that this workflow can only run from JonasHeinickeBio's
+  # own repo to prove ownership of the io.github.jonasheinickebio/* namespace.
+  # Never fails the release itself if the registry has a bad day.
+  # ---------------------------------------------------------------------------
+  publish-mcp-registry:
+    name: Publish to MCP Registry
+    runs-on: ubuntu-latest
+    needs: [publish]
+    timeout-minutes: 10
+    if: github.ref_type == 'tag'
+    continue-on-error: true
+
+    permissions:
+      id-token: write # OIDC auth for io.github.jonasheinickebio/* - no secret needed
+      contents: read
+
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+
+      - name: Install mcp-publisher
+        env:
+          MCP_PUBLISHER_VERSION: "1.8.1"
+          MCP_PUBLISHER_SHA256: "a06c9096dcb9727c13555b6be26c7effa707b01f06a4c561ba7a3635443cf2cc"
+        run: |
+          set -euo pipefail
+          curl -sSL -o mcp-publisher.tar.gz \
+            "https://github.com/modelcontextprotocol/registry/releases/download/v${MCP_PUBLISHER_VERSION}/mcp-publisher_linux_amd64.tar.gz"
+          echo "${MCP_PUBLISHER_SHA256}  mcp-publisher.tar.gz" | sha256sum -c -
+          tar xzf mcp-publisher.tar.gz mcp-publisher
+
+      - name: Sync server.json version with the release tag
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          VERSION="${TAG_NAME#v}"
+          jq --arg v "$VERSION" '.version = $v | .packages[0].version = $v' server.json > server.json.tmp
+          mv server.json.tmp server.json
+
+      - name: Authenticate to the MCP Registry
+        run: ./mcp-publisher login github-oidc
+
+      - name: Publish server.json to the MCP Registry
+        run: ./mcp-publisher publish

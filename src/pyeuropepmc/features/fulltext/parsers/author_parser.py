@@ -48,9 +48,22 @@ class AuthorParser(BaseParser):
         """
         self._require_root()
 
-        # Try each author element pattern in config
+        # Search the article's own front matter, not the whole document.
+        #
+        # A peer-reviewed article carries each reviewer report as a
+        # <sub-article> with its own <front> and its own <contrib>. An
+        # unscoped `.//contrib[@contrib-type='author']` therefore returns the
+        # reviewers as article authors: PMC13567752 has 9 and came back with
+        # 14, the reviewer repeated once per report.
+        #
+        # Falling back to the root keeps documents that carry contributors
+        # outside a <front> working, including bare fragments.
+        scope = self.root.find("./front") if self.root is not None else None
+        if scope is None:
+            scope = self.root
+
         for author_pattern in self.config.author_element_patterns["patterns"]:
-            author_elems = self.root.findall(author_pattern) if self.root is not None else []
+            author_elems = scope.findall(author_pattern) if scope is not None else []
             if author_elems:
                 logger.debug(f"Found {len(author_elems)} authors using pattern: {author_pattern}")
                 authors = []
