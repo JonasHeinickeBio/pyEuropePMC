@@ -2,6 +2,38 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [2.1.1] - 2026-09-14
+
+Docs and CI only — no changes to the installed package's runtime behavior.
+
+### ✨ Features
+
+- **`pyeuropepmc-mcp` is now published to the official
+  [MCP Registry](https://registry.modelcontextprotocol.io/)** as
+  `io.github.jonasheinickebio/pyeuropepmc`
+  ([`server.json`](server.json)). Every tagged release republishes it
+  automatically via GitHub OIDC (`publish-mcp-registry` job in
+  `release.yml`) — no stored secret, the workflow's own repo identity
+  proves namespace ownership.
+
+### 🐛 Bug Fixes
+
+- **Fixed the "Python Version Compatibility Matrix" Windows jobs**, broken
+  since 2.1.0: every MCP test driving async code via `asyncio.run()`
+  failed on Windows with `pytest_socket.SocketBlockedError`, because
+  constructing a new event loop there needs a real (loopback-only) socket
+  for its internal self-pipe, which `--disable-socket` blocked outright.
+  `tests/mcp/conftest.py` now scopes `pytest.mark.allow_hosts(["127.0.0.1",
+  "::1"])` to just the MCP test suite.
+
+### 🔧 Maintenance
+
+- Refreshed the README's badges: dynamic Python-version/PyPI badges instead
+  of hand-typed ones that had drifted (actual test count is 5,000+, not
+  the old "200+"), and a working CodeQL badge (the old one linked to a
+  workflow file that doesn't exist, since CodeQL runs via GitHub's
+  default-setup code scanning here, not a committed workflow).
+
 ## [2.1.0] - 2026-09-13
 
 > **MCP server rewrite.** `pyeuropepmc-mcp` now runs on the official
