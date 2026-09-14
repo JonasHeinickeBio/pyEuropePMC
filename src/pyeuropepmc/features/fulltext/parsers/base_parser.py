@@ -68,7 +68,9 @@ class BaseParser:
         return found
 
     @staticmethod
-    def _section_own_elements(section: ET.Element, *tags: str) -> list[ET.Element]:
+    def _section_own_elements(
+        section: ET.Element, *tags: str, stop_at: tuple[str, ...] = ()
+    ) -> list[ET.Element]:
         """Descendants of ``section`` with these tags that no nested <sec> owns.
 
         JATS sections nest, and the flat extractors selected descendant content
@@ -79,14 +81,21 @@ class BaseParser:
         Content inside a nested <sec> belongs to that subsection. Everything
         else belongs here, including content wrapped in <boxed-text> and
         similar, which a direct-children-only rule would have lost.
+
+        ``stop_at`` names further containers to treat as barriers. A caller
+        that renders <list> itself must pass ``stop_at=("list",)`` when asking
+        for paragraphs, or a <p> inside a <list-item> is emitted twice - once
+        as a paragraph and again as a list item.
         """
         wanted = set(tags)
+        barriers = {"sec", *stop_at}
         found: list[ET.Element] = []
 
         def walk(parent: ET.Element) -> None:
             for child in parent:
-                if child.tag == "sec":
-                    continue  # that subsection's content, not ours
+                if child.tag in barriers:
+                    continue  # a subsection's content, or a container rendered
+                    # separately by the caller - not this section's own
                 if child.tag in wanted:
                     found.append(child)
                 else:
