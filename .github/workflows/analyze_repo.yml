@@ -3,7 +3,12 @@ name: Feature Suggester
 on:
   schedule:
     - cron: "0 3 * * 1"  # Every Monday at 3 AM UTC
-  workflow_dispatch:      # Manual trigger option
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Analyse and print the suggestions without creating issues"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -452,6 +457,10 @@ jobs:
       - name: Validate and create issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Dispatching with dry_run exercises the whole pipeline - analysis,
+          # prompt, inference, JSON parsing, label filtering - and prints what
+          # would be filed, without putting anything in the issue tracker.
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
         run: |
           # Validate JSON first
           if ! jq empty suggestion_output.json 2>/dev/null; then
@@ -464,9 +473,14 @@ jobs:
           # Create issues from suggestions
           python3 << 'CREATE_ISSUES'
           import json
+          import os
           import pathlib
           import subprocess
           import sys
+
+          dry_run = os.environ.get("DRY_RUN", "false").lower() == "true"
+          if dry_run:
+              print("DRY RUN - no issues will be created.\n")
 
           with open("suggestion_output.json") as f:
               data = json.load(f)
@@ -506,6 +520,13 @@ jobs:
               for label in keep:
                   label_args.extend(["--label", label])
 
+              if dry_run:
+                  created += 1
+                  print(f"Would create: {title}")
+                  print(f"  labels: {keep or '(none)'}")
+                  print(f"  body   : {len(body)} chars, first line: {body.splitlines()[0][:100]}")
+                  continue
+
               cmd = ["gh", "issue", "create", "--title", title, "--body", body] + label_args
               print(f"Creating issue: {title}")
               result = subprocess.run(cmd, capture_output=True, text=True)
@@ -524,7 +545,8 @@ jobs:
                   failed += 1
                   print(f"  Failed: {result.stderr.strip()}")
 
-          print(f"\nCreated {created} issue(s), {failed} failed.")
+          verb = "Would create" if dry_run else "Created"
+          print(f"\n{verb} {created} issue(s), {failed} failed.")
           if created == 0 and failed > 0:
               sys.exit(1)
           CREATE_ISSUES
