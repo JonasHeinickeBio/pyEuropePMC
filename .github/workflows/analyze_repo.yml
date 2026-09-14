@@ -299,6 +299,14 @@ jobs:
           # Create human-readable version of issues
           gh issue list --state open --limit 100 > analysis_output/existing_issues.txt || echo "Could not fetch issues" > analysis_output/existing_issues.txt
 
+          # The model can only apply labels that exist: `gh issue create` fails
+          # outright on an unknown one. Fetch the real set rather than hardcoding
+          # a list in the prompt, which had drifted - it named security, testing
+          # and performance, none of which exist in this repo (it has `tests`).
+          echo "Fetching repository labels..." | tee -a analysis.log
+          gh label list --limit 100 --json name --jq '[.[].name] | join(", ")' \
+            > analysis_output/labels.txt 2>/dev/null || echo "" > analysis_output/labels.txt
+
           echo "Project context fetched successfully!" | tee -a analysis.log
 
       - name: Prepare LLM prompt
@@ -344,9 +352,16 @@ jobs:
           - Be specific: mention file names, functions, or modules
           - Prioritize actionable items over general advice
           - Each suggestion should be a separate, independent issue
-          - Use appropriate labels: enhancement, bug, security, documentation, testing, refactoring, performance
+          - Use ONLY labels from the list below; any other label makes issue creation fail
           - DO NOT duplicate existing issues - check the existing issues list below first
           - Align suggestions with the project goals described in the README
+
+          ===== AVAILABLE LABELS (use only these) =====
+          PROMPT_EOF
+
+          cat analysis_output/labels.txt >> llm_prompt.txt
+
+          cat >> llm_prompt.txt << 'PROMPT_EOF'
 
           ===== PROJECT README =====
           PROMPT_EOF
@@ -417,6 +432,7 @@ jobs:
           # Create issues from suggestions
           python3 << 'CREATE_ISSUES'
           import json
+          import pathlib
           import subprocess
           import sys
 
@@ -428,6 +444,15 @@ jobs:
               print("No suggestions found in LLM response")
               sys.exit(0)
 
+          labels_file = pathlib.Path("analysis_output/labels.txt")
+          valid_labels = {
+              name.strip()
+              for name in (labels_file.read_text() if labels_file.exists() else "").split(",")
+              if name.strip()
+          }
+          print(f"{len(valid_labels)} labels available in this repository")
+          created = failed = 0
+
           for suggestion in suggestions:
               title = suggestion.get("title", "").strip()
               body = suggestion.get("body", "").strip()
@@ -437,18 +462,39 @@ jobs:
                   print(f"Skipping suggestion with empty title or body: {title}")
                   continue
 
+              # Drop labels the repo does not have. `gh issue create` rejects the
+              # whole call on an unknown label - a single hallucinated one used to
+              # abort the run and discard every remaining suggestion.
+              keep = [l for l in labels if l in valid_labels]
+              dropped = [l for l in labels if l not in valid_labels]
+              if dropped:
+                  print(f"  Dropping labels not in this repo: {dropped}")
+
               label_args = []
-              for label in labels:
+              for label in keep:
                   label_args.extend(["--label", label])
 
               cmd = ["gh", "issue", "create", "--title", title, "--body", body] + label_args
               print(f"Creating issue: {title}")
               result = subprocess.run(cmd, capture_output=True, text=True)
+              if result.returncode != 0 and label_args:
+                  # Retry unlabelled rather than lose the suggestion.
+                  print(f"  Retrying without labels after: {result.stderr.strip()}")
+                  result = subprocess.run(
+                      ["gh", "issue", "create", "--title", title, "--body", body],
+                      capture_output=True,
+                      text=True,
+                  )
               if result.returncode == 0:
+                  created += 1
                   print(f"  Created: {result.stdout.strip()}")
               else:
+                  failed += 1
                   print(f"  Failed: {result.stderr.strip()}")
-                  sys.exit(1)
+
+          print(f"\nCreated {created} issue(s), {failed} failed.")
+          if created == 0 and failed > 0:
+              sys.exit(1)
           CREATE_ISSUES
 
       - name: Upload analysis artifacts
