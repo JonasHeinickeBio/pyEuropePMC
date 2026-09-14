@@ -184,6 +184,31 @@ The 43 remaining duplicates are short boilerplate that documents genuinely
 repeat — ethics statements, "Not applicable." — in table footnotes and figure
 captions.
 
+### 🔁 Confirmed on documents never used while fixing
+
+Every fix above was developed against the same 124-document corpus, so the
+numbers in that table are the ones a change was tuned to produce. A further
+**50 documents were fetched afterwards** — different journals, different
+years, none of them seen while any fix was written — and measured with the
+same checks:
+
+| Check | Held-out result |
+| --- | ---: |
+| Article title matches `<article-title>` | 50/50 |
+| Author surnames match front matter, in order | 50/50 |
+| ORCID well-formed | 17/17 |
+| Affiliation count | 50/50 |
+| Figure count | 48/48 |
+| Body sentences genuinely lost (of 10,723) | 0 |
+| Body sentences lost from structured blocks | 0 |
+| Public API sweep (50 × 20 methods) | 1,000 calls, 0 exceptions |
+
+One sentence appears absent from `to_plaintext()` and is not: the measurement
+splits sentences on punctuation, and a paragraph reading `"…summarized as
+following:"` followed by a `<list>` produces a "sentence" spanning both, which
+cannot appear contiguously once the list is rendered separately. Its
+introduction and all five list items are present.
+
 ## [2.1.2] - 2026-09-14
 
 ### 🐛 Bug Fixes
