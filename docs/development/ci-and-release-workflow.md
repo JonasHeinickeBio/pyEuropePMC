@@ -60,7 +60,7 @@ workflows are already wired for it (next section).
 |---|---|---|---|
 | CI | `cdci.yml` | push to `main`, PR, merge queue, manual | Lint (`ruff`), type-check (`mypy`), bandit, full test suite with `--all-extras`, coverage ≥75% |
 | CI — Light core install | `unit-tests.yml` | push to `main`, PR, merge queue, manual | Tests against a bare `pip install pyeuropepmc` (no extras) — proves the optional-dependency split actually works |
-| Python Version Compatibility Matrix | `python-compatibility.yml` | push to `main`, PR (paths-filtered), merge queue, weekly, manual | Syntax/import checks on 3.10–3.13; full test suite on a matrix of Python version × OS |
+| Python Version Compatibility Matrix | `python-compatibility.yml` | push to `main`, every PR, merge queue, weekly, manual | Syntax/import checks on 3.10–3.13; full test suite on a matrix of Python version × OS |
 
 ### The OS matrix is intentionally reduced on a PR, full everywhere else
 
@@ -81,6 +81,30 @@ requiring a follow-up fix (#202). `merge_group` was added specifically to
 close this — see next section — but until/unless this repo can actually use
 a merge queue, that trigger is currently **dead code**: it's wired up and
 will work the moment a queue exists, but nothing fires it today.
+
+### A required check must run on *every* PR, not just relevant ones
+
+`python-compatibility.yml`'s `pull_request` trigger used to be filtered to
+`src/**`, `tests/**`, `pyproject.toml`, `poetry.lock`, and the workflow
+files themselves — the rationale in the OS-matrix section above still holds
+(catch cross-version breakage in review), but the filter interacted badly
+with making `Compatibility Summary` a **required** status check: when a
+PR's diff doesn't match any of those paths (a docs-only PR, for instance —
+this is exactly how it was found, on the PR that added this very document),
+the workflow never runs *at all*, the required check never reports
+anything, and GitHub blocks that PR from merging indefinitely, waiting on a
+check that will never arrive. There's no "not applicable, treat as passed"
+concept for a required check that simply never ran.
+
+The filter is gone; `pull_request` now behaves like `merge_group` (below)
+and fires on every PR unconditionally. The reduced Ubuntu-only PR-time
+matrix keeps the added cost small — the expensive Windows/macOS legs are
+still push/`merge_group`-only.
+
+**The general rule, going forward:** before adding any job as a required
+status check, confirm its workflow triggers unconditionally on
+`pull_request` (and `merge_group`, if this repo ever gets a merge queue) —
+a `paths:` filter and "required check" don't mix.
 
 ### `merge_group` triggers
 

@@ -3,23 +3,20 @@ name: Python Version Compatibility Matrix
 on:
   push:
     branches: [main]
-  # Cross-version breakage used to be discoverable only after it had already
-  # landed on main. PRs that touch the package or its dependencies now get a
-  # reduced matrix (see the `config` job) so it is caught in review instead.
+  # No path filter on pull_request (this used to be filtered to
+  # src/**, tests/**, pyproject.toml, poetry.lock, and this file - removed
+  # in the same change that added branch protection requiring
+  # "Compatibility Summary" below to pass before merge. A required status
+  # check whose workflow never runs for a given PR - e.g. a docs-only PR,
+  # which matched none of the old filters - never reports at all, and
+  # GitHub then blocks that PR from merging forever, waiting on a check
+  # that will never arrive. Same reasoning as the merge_group trigger below.
   pull_request:
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'pyproject.toml'
-      - 'poetry.lock'
-      - '.github/workflows/python-compatibility.yml'
-      - '.github/actions/setup-python-env/action.yml'
-  # No path filter here (unlike pull_request above): the merge queue needs
-  # this job to fire on every entry or a queued PR would wait forever for a
-  # check that never runs. This is also where the reduced PR-time matrix
-  # (Linux-only, see the `config` job below) stops applying - `merge_group`
-  # falls through to the full OS matrix, so Windows/macOS breakage is caught
-  # right before merge instead of only after, on a push to main.
+  # The merge queue needs this job to fire on every entry too, for the same
+  # reason. This is also where the reduced PR-time matrix (Linux-only, see
+  # the `config` job below) stops applying - `merge_group` falls through to
+  # the full OS matrix, so Windows/macOS breakage is caught right before
+  # merge instead of only after, on a push to main.
   merge_group:
   schedule:
     # Weekly on Sundays at 06:00 UTC
