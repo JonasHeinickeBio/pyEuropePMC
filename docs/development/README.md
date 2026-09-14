@@ -6,6 +6,7 @@ This guide covers development practices, contributing guidelines, and project se
 
 - [Development Setup](#development-setup)
 - [Python Version Compatibility](python-version-strategy.md)
+- [CI, Branch Protection & Release Workflow](ci-and-release-workflow.md)
 - [Project Structure](#project-structure)
 - [Contributing Guidelines](#contributing-guidelines)
 - [Testing](#testing)
