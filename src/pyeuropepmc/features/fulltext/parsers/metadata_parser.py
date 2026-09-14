@@ -17,6 +17,10 @@ from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 # <pub-date> selection order. JATS 1.0 spells the attribute `pub-type`; JATS
 # 1.1 uses `date-type`. Anything not listed here still qualifies if it carries
 # a <year> - see MetadataParser._pub_date_rank.
+# NISO Access and Licence Indicators; JATS carries the machine-readable
+# licence URL as <ali:license_ref>.
+_ALI_NS = "http://www.niso.org/schemas/ali/1.0/"
+
 _PREFERRED_PUB_TYPES = ("ppub", "epub", "collection")
 _PREFERRED_DATE_TYPES = ("pub", "collection")
 
@@ -722,13 +726,29 @@ class MetadataParser(BaseParser):
             if license_type:
                 license_info["type"] = license_type
 
-            for ext_link in license_elem.findall(".//ext-link"):
-                url = ext_link.get("{http://www.w3.org/1999/xlink}href")
+            # The canonical machine-readable URL is <ali:license_ref>, which
+            # JATS carries alongside the human-readable <license-p>. Only
+            # <ext-link> was consulted, so a licence whose URL lives solely in
+            # license_ref came back without one.
+            for ref in license_elem.findall(f".//{{{_ALI_NS}}}license_ref"):
+                url = (ref.text or "").strip()
                 if url:
                     license_info["url"] = url
-                break
+                    break
 
-            text = self._extract_with_fallbacks(license_elem, [".//license-p"])
+            if "url" not in license_info:
+                for ext_link in license_elem.findall(".//ext-link"):
+                    url = ext_link.get("{http://www.w3.org/1999/xlink}href")
+                    if url:
+                        license_info["url"] = url
+                        break
+
+            # use_full_text=True: <license-p> routinely opens with an inline
+            # element - "<bold>Open Access</bold>This article is..." - and the
+            # default reads only the element's own leading text, which in that
+            # case is whitespace and is filtered out as empty. PMC4569634
+            # returned {} for a licence that is plainly there.
+            text = self._extract_with_fallbacks(license_elem, [".//license-p"], use_full_text=True)
             if text:
                 license_info["text"] = text
             break
