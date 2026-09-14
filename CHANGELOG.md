@@ -139,6 +139,18 @@ None of these raised an exception. They returned plausible, wrong answers.
   spacing; block-level children are still separated. Exact article titles:
   122 → 124 of 124. (#228)
 
+### 🐛 Bug Fixes — query builder
+
+- **`QueryBuilder(validate=True)` always warned that search-query was
+  missing.** The refactor that removed the module-level
+  `SEARCH_QUERY_AVAILABLE` flag left the warning body in place but dropped
+  both halves of the logic around it: the guard that made it conditional, and
+  the assignment that disabled validation. So the warning fired on every
+  `validate=True` construction, telling users to `pip install search-query` —
+  a declared runtime dependency they already had — while a genuinely absent
+  package was not handled at all, leaving `_validate` true so `build()` raised
+  instead of degrading as the docstring promises. Both halves restored.
+
 ### ✅ Tests
 
 - **`tests/features/fulltext/real_data/`** asserts parser invariants against

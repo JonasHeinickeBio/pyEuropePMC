@@ -121,6 +121,7 @@ from typing import Any, Literal
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, QueryBuilderError
+from pyeuropepmc.utils.dependencies import is_dependency_available
 
 # Initialize logger
 logger = logging.getLogger(__name__)
@@ -386,9 +387,10 @@ class QueryBuilder:
         self._search_file: Any = None  # Metadata from loaded file
         self._platform: str = "pubmed"  # Default platform
 
-        if validate:
+        if validate and not is_dependency_available("search-query"):
             import warnings
 
+            self._validate = False
             warnings.warn(
                 "search-query package not available. Query validation is disabled. "
                 "Install it with: pip install search-query",
