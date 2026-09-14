@@ -554,6 +554,132 @@ class TestFullTextXMLParserPubDate:
         pub_date = parser.extract_pub_date()
         assert pub_date is None
 
+    @staticmethod
+    def _article(fragment):
+        return "<article><front><article-meta>" + fragment + "</article-meta></front></article>"
+
+    @pytest.mark.parametrize(
+        ("fragment", "expected"),
+        [
+            pytest.param(
+                "<pub-date><year>2022</year><month>3</month><day>14</day></pub-date>",
+                "2022-03-14",
+                id="untyped",
+            ),
+            pytest.param(
+                '<pub-date date-type="pub"><year>2021</year><month>7</month></pub-date>',
+                "2021-07",
+                id="jats11-date-type-pub",
+            ),
+            pytest.param(
+                '<pub-date date-type="collection"><year>2020</year></pub-date>',
+                "2020",
+                id="jats11-date-type-collection",
+            ),
+            pytest.param(
+                '<pub-date pub-type="epub-ppub"><year>2019</year></pub-date>',
+                "2019",
+                id="unlisted-pub-type",
+            ),
+        ],
+    )
+    def test_extract_pub_date_accepts_untyped_and_jats11(self, fragment, expected):
+        """Untyped and JATS 1.1 <pub-date> forms are usable.
+
+        Matching only pub-type ppub/epub/collection missed 566 of 997 sampled
+        papers that had a <pub-date> carrying a <year> (#210); the untyped
+        form alone was the most common single spelling.
+        """
+        assert FullTextXMLParser(self._article(fragment)).extract_pub_date() == expected
+
+    def test_extract_pub_date_prefers_typed_over_untyped(self):
+        """Existing precedence survives: a ppub date still beats an untyped one."""
+        fragment = (
+            "<pub-date><year>1999</year></pub-date>"
+            '<pub-date pub-type="ppub"><year>2020</year></pub-date>'
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_pub_date() == "2020"
+
+    def test_extract_pub_date_keeps_epub_before_collection(self):
+        """ppub, then epub, then collection - the original ordering."""
+        fragment = (
+            '<pub-date pub-type="collection"><year>2018</year></pub-date>'
+            '<pub-date pub-type="epub"><year>2019</year></pub-date>'
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_pub_date() == "2019"
+
+    def test_extract_pub_date_skips_candidate_without_year(self):
+        """A <pub-date> with no usable year is passed over, not returned empty."""
+        fragment = (
+            "<pub-date><year></year><month>4</month></pub-date>"
+            "<pub-date><year>2017</year></pub-date>"
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_pub_date() == "2017"
+
+    def test_extract_pub_date_omits_day_without_month(self):
+        """Components were appended independently, so this produced '2022-14'."""
+        fragment = "<pub-date><year>2022</year><day>14</day></pub-date>"
+        assert FullTextXMLParser(self._article(fragment)).extract_pub_date() == "2022"
+
+
+class TestFullTextXMLParserFundingSources:
+    """Funding sources that name the funder as direct text."""
+
+    @staticmethod
+    def _article(fragment):
+        return (
+            "<article><front><article-meta><funding-group>"
+            + fragment
+            + "</funding-group></article-meta></front></article>"
+        )
+
+    def test_direct_text_funding_source(self):
+        """<funding-source> text with no nested <institution> was dropped.
+
+        With no award-id and no recipient either, the group's dictionary came
+        out empty and the whole group disappeared (#210).
+        """
+        fragment = (
+            "<award-group><funding-source>"
+            "US Centers for Disease Control and Prevention"
+            "</funding-source></award-group>"
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_funding() == [
+            {"source": "US Centers for Disease Control and Prevention"}
+        ]
+
+    def test_nested_institution_still_preferred(self):
+        """The existing nested form is unchanged."""
+        fragment = (
+            "<award-group><funding-source>"
+            "<institution>NIH</institution>"
+            "</funding-source></award-group>"
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_funding() == [{"source": "NIH"}]
+
+    def test_named_content_funder_name_included(self):
+        """itertext() reaches wrappers like <named-content>, whitespace normalised."""
+        fragment = (
+            "<award-group><funding-source>"
+            '<named-content content-type="funder-name">Wellcome  Trust</named-content>'
+            "</funding-source></award-group>"
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_funding() == [
+            {"source": "Wellcome Trust"}
+        ]
+
+    def test_mixed_groups_all_survive(self):
+        """A parseable group no longer masks a previously dropped one."""
+        fragment = (
+            "<award-group><funding-source><institution>NIH</institution></funding-source>"
+            "<award-id>R01</award-id></award-group>"
+            "<award-group><funding-source>US CDC</funding-source></award-group>"
+        )
+        assert FullTextXMLParser(self._article(fragment)).extract_funding() == [
+            {"source": "NIH", "award_id": "R01"},
+            {"source": "US CDC"},
+        ]
+
 
 class TestFullTextXMLParserEdgeCases:
     """Test edge cases and error handling."""
