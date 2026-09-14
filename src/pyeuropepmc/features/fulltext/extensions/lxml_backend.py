@@ -31,10 +31,18 @@ References
 from __future__ import annotations
 
 import logging
+import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.core.exceptions import ParsingError
+
+# The `encoding="..."` of a leading XML declaration. Anchored at the start
+# (after an optional UTF-8 BOM) so only a real declaration matches.
+_DECLARED_ENCODING = re.compile(
+    rb"\A((?:\xef\xbb\xbf)?<\?xml\b[^>]*?encoding\s*=\s*)([\"'])[^\"']*\2",
+    re.IGNORECASE,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -112,15 +120,42 @@ class LXMLParser:
         """The underlying lxml parser instance."""
         return self._parser
 
+    @staticmethod
+    def _as_parsable_bytes(xml_content: str | bytes) -> bytes:
+        """
+        Turn parser input into bytes lxml will accept and decode correctly.
+
+        ``bytes`` is returned untouched - it still means what its declaration
+        says. A ``str`` is encoded to UTF-8, because lxml refuses text carrying
+        an encoding declaration: the declaration describes the original byte
+        encoding, which no longer applies once the text has been decoded.
+
+        Encoding alone is not enough. lxml honours the declaration over the
+        bytes it is handed, so a string declaring ISO-8859-1 encoded to UTF-8
+        is decoded back as ISO-8859-1 and ``café`` becomes ``cafÃ©``. The
+        declaration is therefore rewritten to match what is actually passed.
+        Only a declaration at the very start of the document is touched, so
+        the word ``encoding=`` occurring in body text is left alone.
+        """
+        if isinstance(xml_content, bytes):
+            return xml_content
+        return _DECLARED_ENCODING.sub(
+            rb"\g<1>\g<2>UTF-8\g<2>", xml_content.encode("utf-8"), count=1
+        )
+
     @classmethod
-    def fromstring(cls, xml_content: str, **kwargs: Any) -> ET.Element:
+    def fromstring(cls, xml_content: str | bytes, **kwargs: Any) -> ET.Element:
         """
         Parse XML string using the secure lxml backend.
 
         Parameters
         ----------
-        xml_content : str
-            XML content to parse.
+        xml_content : str or bytes
+            XML content to parse. ``str`` input is encoded to UTF-8 first, so
+            text carrying an XML declaration - which is how Europe PMC ships
+            full text - parses rather than raising. ``bytes`` is passed
+            through, letting callers hand over ``path.read_bytes()`` without a
+            decode/encode round trip.
         **kwargs
             Additional keyword arguments forwarded to ``LXMLParser.__init__``.
 
@@ -137,8 +172,9 @@ class LXMLParser:
             If the XML is malformed.
         """
         parser = cls(**kwargs)
+        payload = cls._as_parsable_bytes(xml_content)
         try:
-            return lxml_etree.fromstring(xml_content, parser=parser._parser)  # type: ignore[no-any-return]
+            return lxml_etree.fromstring(payload, parser=parser._parser)  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"lxml parsing error: {e}")
             raise ParsingError(
