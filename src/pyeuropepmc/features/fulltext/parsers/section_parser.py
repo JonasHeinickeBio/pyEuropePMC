@@ -34,9 +34,10 @@ class SectionParser(BaseParser):
         try:
             sections = []
 
-            # Extract main body sections
-            patterns = {"body": ".//body"}
-            bodies = self.extract_elements_by_patterns(patterns, return_type="element")["body"]
+            # This article's own <body> only. `.//body` also returns the body
+            # of every <sub-article>, so peer-review reports were returned as
+            # article sections (#see _own_bodies).
+            bodies = self._own_bodies(self.root) if self.root is not None else []
             for body_elem in bodies:
                 # Find sections within this specific body element
                 secs = body_elem.findall(".//sec")
@@ -45,9 +46,15 @@ class SectionParser(BaseParser):
                     if section_data:
                         sections.append(section_data)
 
-                # Handle bare <p> elements directly under <body> (no <sec> wrapper)
-                # Some publishers like PLOS use this structure
-                bare_ps = body_elem.findall("./p")
+                # Body-level content that sits outside any <sec> - the whole
+                # body for publishers like PLOS, and the opening paragraphs
+                # elsewhere.
+                #
+                # `_section_own_elements` rather than `./p`: it stops at <sec>
+                # but descends through wrappers, so a <p> inside a <boxed-text>
+                # placed directly under <body> is found too. PMC6453151 lost
+                # one that way.
+                bare_ps = self._section_own_elements(body_elem, "p")
                 if bare_ps:
                     para_texts: list[str] = []
                     for p in bare_ps:

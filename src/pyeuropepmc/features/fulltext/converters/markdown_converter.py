@@ -77,11 +77,11 @@ class MarkdownConverter(BaseParser):
                 md_parts.append(f"## Abstract\n\n{abstract_results['abstract'][0]}\n\n")
 
             # Extract body sections
-            body_results = self.extract_elements_by_patterns(
-                {"body": ".//body"}, return_type="element", first_only=True
-            )
-            if body_results["body"]:
-                body_elem = body_results["body"][0]
+            # The article's own body, never a <sub-article>'s. See the same
+            # note in plaintext_converter.
+            own = self._own_bodies(self.root) if self.root is not None else []
+            if own:
+                body_elem = own[0]
                 # Top-level sections only. `iter()` yielded every descendant
                 # <sec> as well, and _process_section_markdown already renders
                 # subsections beneath their parent - so each one was emitted
