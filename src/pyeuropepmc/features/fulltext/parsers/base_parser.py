@@ -85,6 +85,12 @@ class BaseParser:
             if elem.text:
                 parts.append(elem.text)
             for child in elem:
+                # Comments and processing instructions - lxml keeps them as
+                # children with a non-string tag. See XMLHelper.get_text_content.
+                if not isinstance(child.tag, str):
+                    if child.tail:
+                        parts.append(child.tail)
+                    continue
                 if child.tag not in skip:
                     walk(child)
                 if child.tail:
