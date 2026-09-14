@@ -4,7 +4,7 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
-Full-text parsing correctness. Fourteen defects, every one found by measuring
+Full-text parsing correctness. Fifteen defects, every one found by measuring
 the parser's output against 124 real Europe PMC documents rather than by
 reading code — several were invisible to hand-written fixtures because they
 only occur in markup nobody writes by hand.
@@ -102,6 +102,17 @@ None of these raised an exception. They returned plausible, wrong answers.
 
 ### 🐛 Bug Fixes — input handling
 
+- **XML comments leaked into extracted text on the lxml backend.** lxml keeps
+  comments in the tree as children whose tag is a callable rather than a
+  string; the text walkers descended into them and appended their content.
+  stdlib ElementTree discards comments at parse time, so the two backends
+  disagreed about the same document: `PMC3258128` opens its `<license-p>` with
+  `<!--CREATIVE COMMONS-->`, and only the lxml backend returned that as part of
+  the licence text. Comments and processing instructions are now skipped while
+  their tails — which are real content — are kept. The two backends now agree
+  on metadata, references, authors and section titles exactly, and on rendered
+  text once whitespace is collapsed.
+
 - **XML text carrying an encoding declaration could not be parsed.**
   `LXMLParser.fromstring()` is documented to take XML text, but lxml rejects a
   `str` with an encoding declaration — which is how Europe PMC ships full
@@ -137,6 +148,20 @@ None of these raised an exception. They returned plausible, wrong answers.
 - Two fixtures were added to cover shapes the existing four do not:
   `PMC13567752.xml` (nine peer-review `<sub-article>` elements) and
   `PMC12018715.xml` (23 structured `<mixed-citation>` references).
+
+- **`test_backend_parity.py`** holds the optional lxml backend to the same
+  results as the default one. Nothing checked that before, which is how the
+  comment leak above went unnoticed: structured values must match exactly,
+  rendered text once whitespace is collapsed.
+
+- **`test_degenerate_input.py`** covers input the parser meets in the wild but
+  nobody writes on purpose: malformed and truncated XML, a billion-laughs
+  bomb, an external-entity reference, a document with no `<body>`, control
+  characters, 500 sibling sections, 40 levels of nesting. Unparseable input
+  must raise `ParsingError` rather than an arbitrary exception; parseable
+  input must return from all twenty public methods without raising; entity
+  attacks must be refused rather than expanded — a plain parser in place of
+  `defusedxml` would silently reintroduce both.
 
 ### 📊 Verified across 124 real Europe PMC documents
 
