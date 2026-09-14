@@ -2,6 +2,19 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [2.1.2] - 2026-09-14
+
+### 🐛 Bug Fixes
+
+- **Fixed the MCP Registry publish job** (added in 2.1.1): `server.json`
+  named the server `io.github.jonasheinickebio/pyeuropepmc`, but the
+  registry's GitHub OIDC verification is case-sensitive and only grants
+  permission for the exact-case GitHub login `JonasHeinickeBio` — so the
+  2.1.1 release's `publish-mcp-registry` job failed with a 403
+  ("You have permission to publish: `io.github.JonasHeinickeBio/*`.
+  Attempting to publish: `io.github.jonasheinickebio/pyeuropepmc`").
+  Corrected the casing in `server.json` and its documentation references.
+
 ## [2.1.1] - 2026-09-14
 
 Docs and CI only — no changes to the installed package's runtime behavior.
@@ -10,7 +23,7 @@ Docs and CI only — no changes to the installed package's runtime behavior.
 
 - **`pyeuropepmc-mcp` is now published to the official
   [MCP Registry](https://registry.modelcontextprotocol.io/)** as
-  `io.github.jonasheinickebio/pyeuropepmc`
+  `io.github.JonasHeinickeBio/pyeuropepmc`
   ([`server.json`](server.json)). Every tagged release republishes it
   automatically via GitHub OIDC (`publish-mcp-registry` job in
   `release.yml`) — no stored secret, the workflow's own repo identity
