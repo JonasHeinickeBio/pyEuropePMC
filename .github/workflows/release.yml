@@ -9,6 +9,14 @@ on:
   push:
     tags:
       - 'v*'
+  # Manual dry run - use this before tagging a real release whenever this
+  # file, server.json, or anything else in the release path changed, rather
+  # than finding out only after a real tag is live (server.json's namespace
+  # casing bug and the mypy python_version regression were both the kind of
+  # thing this would have caught for free). Dispatch against a branch, not a
+  # tag: `github.ref_type` is then "branch", so `github-release` and
+  # `publish-mcp-registry` below (both gated on `ref_type == 'tag'`) don't
+  # fire - only `verify` → `build` → `attest` → `publish` (to testpypi) run.
   workflow_dispatch:
     inputs:
       environment:
