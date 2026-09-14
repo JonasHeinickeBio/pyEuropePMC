@@ -151,6 +151,7 @@ SDK's concern, not something to hand-roll in a test.
 
 - [MCP specification](https://modelcontextprotocol.io/specification)
 - [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+- [MCP Registry](https://registry.modelcontextprotocol.io/) — published as `io.github.jonasheinickebio/pyeuropepmc` on every tagged release, see [`server.json`](../../../server.json)
 - [pyeuropepmc documentation](https://jonasheinickebio.github.io/pyEuropePMC/)
 - [Europe PMC REST API](https://europepmc.org/docs/REST_API)
 

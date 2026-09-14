@@ -1,0 +1,25 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.jonasheinickebio/pyeuropepmc",
+  "title": "PyEuropePMC",
+  "description": "Search and analyse scientific literature across Europe PMC, PubMed, arXiv, and ClinicalTrials.gov",
+  "repository": {
+    "url": "https://github.com/JonasHeinickeBio/pyEuropePMC",
+    "source": "github",
+    "id": "999512652"
+  },
+  "version": "2.1.0",
+  "websiteUrl": "https://jonasheinickebio.github.io/pyEuropePMC/",
+  "packages": [
+    {
+      "registryType": "pypi",
+      "registryBaseUrl": "https://pypi.org",
+      "identifier": "pyeuropepmc",
+      "version": "2.1.0",
+      "runtimeHint": "uvx",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}
