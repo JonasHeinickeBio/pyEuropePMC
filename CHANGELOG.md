@@ -157,6 +157,17 @@ None of these raised an exception. They returned plausible, wrong answers.
   comment leak above went unnoticed: structured values must match exactly,
   rendered text once whitespace is collapsed.
 
+- **`tests/features/search/real_data/`** compares parsed search results against
+  the captured Europe PMC responses in `tests/fixtures`. The existing tests for
+  `EuropePMCParser` are mock-based — they assert the right parse function was
+  called and that a list came back, which checks the wiring rather than the
+  values. That is the same gap that let `extract_references()` mis-assign
+  citation fields for as long as it did, on a code path whose coverage tests
+  all passed. Every field of every record is now compared, order included, and
+  the JSON and XML renderings of one search must name the same articles. No
+  defect was found — the parser is exact on all 25 records in all three
+  formats — but nothing was holding that.
+
 - **`test_degenerate_input.py`** covers input the parser meets in the wild but
   nobody writes on purpose: malformed and truncated XML, a billion-laughs
   bomb, an external-entity reference, a document with no `<body>`, control
