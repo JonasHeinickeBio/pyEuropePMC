@@ -12,6 +12,41 @@ from xml.etree import ElementTree as ET  # nosec B405
 logger = logging.getLogger(__name__)
 
 
+# Elements that carry their own block of text. Concatenating two of these
+# without a gap runs the last word of one into the first of the next, and the
+# markup is not obliged to supply whitespace between them. Everything absent
+# from this set - <sub>, <sup>, <italic>, <bold>, <xref>, <ext-link> and the
+# rest - is inline, and its spacing is taken from the document as written.
+BLOCK_LEVEL_TAGS = frozenset(
+    {
+        "abstract",
+        "ack",
+        "app",
+        "boxed-text",
+        "caption",
+        "def",
+        "def-item",
+        "disp-formula",
+        "disp-quote",
+        "fig",
+        "fn",
+        "glossary",
+        "label",
+        "list",
+        "list-item",
+        "p",
+        "sec",
+        "table",
+        "table-wrap",
+        "td",
+        "term",
+        "th",
+        "title",
+        "tr",
+    }
+)
+
+
 class XMLHelper:
     """Helper class for generic XML extraction operations."""
 
@@ -33,19 +68,38 @@ class XMLHelper:
         if element is None:
             return ""
 
-        # Get text from element and all sub-elements
-        text_parts = []
-        if element.text:
-            text_parts.append(element.text.strip())
+        # Keep the document's own spacing for inline elements, and guarantee a
+        # separator around block-level ones.
+        #
+        # This used to strip every text fragment and join the results with a
+        # space, which inserts separation the source does not have wherever an
+        # inline element sits mid-word or against punctuation:
+        #
+        #   PM<sub>2.5</sub>                ->  "PM 2.5"
+        #   (<xref>Kumar, 2021</xref>; ...) ->  "( Kumar, 2021 ; ...)"
+        #
+        # Both are wrong for a reader and for anything tokenising the text
+        # downstream. Taking the fragments bare fixes those, but goes too far
+        # the other way: "<title>G</title>text" is two blocks that genuinely
+        # need a gap, and the markup need not supply one. So inline runs keep
+        # the source's spacing exactly, and a block-level child is padded.
+        parts: list[str] = []
 
-        for child in element:
-            child_text = XMLHelper.get_text_content(child)
-            if child_text:
-                text_parts.append(child_text)
-            if child.tail:
-                text_parts.append(child.tail.strip())
+        def walk(node: ET.Element) -> None:
+            if node.text:
+                parts.append(node.text)
+            for child in node:
+                block = child.tag in BLOCK_LEVEL_TAGS
+                if block:
+                    parts.append(" ")
+                walk(child)
+                if block:
+                    parts.append(" ")
+                if child.tail:
+                    parts.append(child.tail)
 
-        return " ".join(text_parts).strip()
+        walk(element)
+        return " ".join("".join(parts).split())
 
     @staticmethod
     def extract_flat_texts(
