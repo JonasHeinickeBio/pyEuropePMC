@@ -34,9 +34,10 @@ class SectionParser(BaseParser):
         try:
             sections = []
 
-            # Extract main body sections
-            patterns = {"body": ".//body"}
-            bodies = self.extract_elements_by_patterns(patterns, return_type="element")["body"]
+            # This article's own <body> only. `.//body` also returns the body
+            # of every <sub-article>, so peer-review reports were returned as
+            # article sections (#see _own_bodies).
+            bodies = self._own_bodies(self.root) if self.root is not None else []
             for body_elem in bodies:
                 # Find sections within this specific body element
                 secs = body_elem.findall(".//sec")
@@ -45,9 +46,15 @@ class SectionParser(BaseParser):
                     if section_data:
                         sections.append(section_data)
 
-                # Handle bare <p> elements directly under <body> (no <sec> wrapper)
-                # Some publishers like PLOS use this structure
-                bare_ps = body_elem.findall("./p")
+                # Body-level content that sits outside any <sec> - the whole
+                # body for publishers like PLOS, and the opening paragraphs
+                # elsewhere.
+                #
+                # `_section_own_elements` rather than `./p`: it stops at <sec>
+                # but descends through wrappers, so a <p> inside a <boxed-text>
+                # placed directly under <body> is found too. PMC6453151 lost
+                # one that way.
+                bare_ps = self._section_own_elements(body_elem, "p")
                 if bare_ps:
                     para_texts: list[str] = []
                     for p in bare_ps:
@@ -84,6 +91,16 @@ class SectionParser(BaseParser):
                         {"title": "Author Notes", "content": content, "type": "author_notes"}
                     )
 
+        # Acknowledgments. get_full_text_sections() returned <author-notes>
+        # but not <ack>, while to_plaintext() did the reverse - each rendering
+        # lost different back matter, and to_markdown() lost all of it.
+        for elem in self.root.findall(".//ack") if self.root is not None else []:
+            content = self._get_text_content(elem)
+            if content:
+                structures.append(
+                    {"title": "Acknowledgments", "content": content, "type": "acknowledgments"}
+                )
+
         # Appendices
         app_patterns = self.config.appendix_patterns.get("app", [])
         for pattern in app_patterns:
@@ -116,9 +133,13 @@ class SectionParser(BaseParser):
     def _extract_section_structure(self, section: ET.Element) -> dict[str, str]:
         """Extract section title and content."""
         title = self._extract_flat_texts(section, "title", filter_empty=False, use_full_text=True)
-        paragraphs = self._extract_flat_texts(
-            section, ".//p", filter_empty=True, use_full_text=True
-        )
+        # Own paragraphs only: `.//p` also swept up every subsection's text,
+        # which was then returned again under the subsection itself (#209).
+        paragraphs: list[str] = []
+        for para in self._section_own_elements(section, "p"):
+            paragraphs.extend(
+                self._extract_flat_texts(para, ".", filter_empty=True, use_full_text=True)
+            )
         return {
             "title": title[0] if title else "",
             "content": "\n\n".join(paragraphs) if paragraphs else "",

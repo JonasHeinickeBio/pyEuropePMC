@@ -5,7 +5,7 @@ This module provides conversion of parsed XML to markdown format.
 """
 
 import logging
-from typing import Any
+from typing import Any, ClassVar
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
@@ -77,22 +77,64 @@ class MarkdownConverter(BaseParser):
                 md_parts.append(f"## Abstract\n\n{abstract_results['abstract'][0]}\n\n")
 
             # Extract body sections
-            body_results = self.extract_elements_by_patterns(
-                {"body": ".//body"}, return_type="element", first_only=True
-            )
-            if body_results["body"]:
-                body_elem = body_results["body"][0]
-                for sec in body_elem.iter():
-                    if sec.tag == "sec":
-                        section_md = self._process_section_markdown(sec, level=2)
-                        if section_md:
-                            md_parts.append(f"{section_md}\n\n")
+            # The article's own body, never a <sub-article>'s. See the same
+            # note in plaintext_converter.
+            own = self._own_bodies(self.root) if self.root is not None else []
+            if own:
+                body_elem = own[0]
+                # Top-level sections only. `iter()` yielded every descendant
+                # <sec> as well, and _process_section_markdown already renders
+                # subsections beneath their parent - so each one was emitted
+                # twice, at two different heading levels (#209).
+                # Bare <p> directly under <body>, before any <sec>. Markdown
+                # never rendered these at all - it only ever walked sections -
+                # so an article whose opening paragraphs sit outside a section
+                # lost them entirely (four in PMC12018715, three in
+                # PMC12126031). They are in no section, so nothing else emits
+                # them.
+                bare_texts = [
+                    text
+                    for para in body_elem.findall("./p")
+                    for text in self._extract_flat_texts(
+                        para, ".", filter_empty=True, use_full_text=True
+                    )
+                ]
+                for text in bare_texts:
+                    md_parts.append(f"{text}\n\n")
+
+                for sec in self._child_sections(body_elem):
+                    section_md = self._process_section_markdown(sec, level=2)
+                    if section_md:
+                        md_parts.append(f"{section_md}\n\n")
+
+            self._add_back_matter_to_markdown(md_parts)
 
             return "".join(md_parts).strip()
 
         except Exception as e:
             logger.error(f"Error converting to markdown: {e}")
             raise
+
+    #: Back matter, in the order it is rendered. to_markdown() emitted none of
+    #: it: acknowledgments, author notes, appendices and the glossary were all
+    #: dropped, though to_plaintext() and get_full_text_sections() each carried
+    #: some. The three renderings of one document disagreed about its content.
+    BACK_MATTER: ClassVar[tuple[tuple[str, str], ...]] = (
+        ("Acknowledgments", ".//ack"),
+        ("Author Notes", ".//author-notes"),
+        ("Appendix", ".//app"),
+        ("Glossary", ".//glossary"),
+    )
+
+    def _add_back_matter_to_markdown(self, md_parts: list[str]) -> None:
+        """Render acknowledgments, author notes, appendices and glossary."""
+        if self.root is None:
+            return
+        for heading, pattern in self.BACK_MATTER:
+            for elem in self.root.findall(pattern):
+                text = self._get_text_content(elem)
+                if text.strip():
+                    md_parts.append(f"## {heading}\n\n{text.strip()}\n\n")
 
     def _add_metadata_to_markdown(self, metadata: dict[str, Any], md_parts: list[str]) -> None:
         """Add metadata fields to markdown parts."""
@@ -114,18 +156,22 @@ class MarkdownConverter(BaseParser):
         if titles:
             md_parts.append(f"{'#' * level} {titles[0]}\n\n")
 
-        # Extract paragraphs
-        paragraphs = self._extract_flat_texts(
-            section, ".//p", filter_empty=True, use_full_text=True
-        )
-        for para_text in paragraphs:
-            md_parts.append(f"{para_text}\n\n")
+        # Extract paragraphs - this section's own, not its subsections' (#209)
+        # No stop_at=("list",) here, unlike the plaintext converter: markdown
+        # has no separate list rendering, so a <p> inside a <list-item> reaches
+        # the output only through this walk. Excluding it would lose the text.
+        for para in self._section_own_elements(section, "p"):
+            for para_text in self._extract_flat_texts(
+                para, ".", filter_empty=True, use_full_text=True
+            ):
+                md_parts.append(f"{para_text}\n\n")
 
-        # Process subsections
-        for subsec in section.iter():
-            if subsec.tag == "sec" and subsec != section:
-                subsec_md = self._process_section_markdown(subsec, level=level + 1)
-                if subsec_md:
-                    md_parts.append(subsec_md)
+        # Process subsections. Direct children only: `iter()` reached every
+        # descendant, so a grandchild was rendered once at level+1 under its
+        # grandparent and again at level+2 under its own parent.
+        for subsec in self._child_sections(section):
+            subsec_md = self._process_section_markdown(subsec, level=level + 1)
+            if subsec_md:
+                md_parts.append(subsec_md)
 
         return "".join(md_parts)

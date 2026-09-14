@@ -6,14 +6,19 @@ on:
   # Cross-version breakage used to be discoverable only after it had already
   # landed on main. PRs that touch the package or its dependencies now get a
   # reduced matrix (see the `config` job) so it is caught in review instead.
+  # Deliberately NOT path-filtered. A workflow skipped by a `paths:` filter
+  # never reports its checks, and a required check that never reports leaves
+  # the pull request stuck on "Expected - waiting for status to be reported".
+  # A job skipped by an `if:` reports success instead, so the same saving is
+  # taken in the `config` job below, where it is safe.
   pull_request:
-    paths:
-      - 'src/**'
-      - 'tests/**'
-      - 'pyproject.toml'
-      - 'poetry.lock'
-      - '.github/workflows/python-compatibility.yml'
-      - '.github/actions/setup-python-env/action.yml'
+  # No path filter here (unlike pull_request above): the merge queue needs
+  # this job to fire on every entry or a queued PR would wait forever for a
+  # check that never runs. This is also where the reduced PR-time matrix
+  # (Linux-only, see the `config` job below) stops applying - `merge_group`
+  # falls through to the full OS matrix, so Windows/macOS breakage is caught
+  # right before merge instead of only after, on a push to main.
+  merge_group:
   schedule:
     # Weekly on Sundays at 06:00 UTC
     - cron: '0 6 * * 0'
@@ -35,6 +40,8 @@ on:
 
 permissions:
   contents: read
+  # `config` asks the API which files a pull request touches.
+  pull-requests: read
 
 concurrency:
   group: py-compat-${{ github.workflow }}-${{ github.ref }}
@@ -57,8 +64,39 @@ jobs:
     outputs:
       os-matrix: ${{ steps.matrix.outputs.os-matrix }}
       os-list: ${{ steps.matrix.outputs.os-list }}
+      relevant: ${{ steps.relevance.outputs.relevant }}
 
     steps:
+      # Replaces the `paths:` filter that used to sit on the pull_request
+      # trigger. Same set of paths, same saving - but expressed where a "no"
+      # answer skips the jobs and still reports them, instead of suppressing
+      # the whole workflow and hanging anything that requires its checks.
+      - name: Decide whether this event needs the matrix
+        id: relevance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # Only a pull request can be irrelevant. push, merge_group, schedule
+          # and workflow_dispatch always run the matrix.
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+            echo "Event $EVENT_NAME always runs the matrix."
+            exit 0
+          fi
+          files=$(gh api "repos/$REPO/pulls/$PR_NUMBER/files" \
+            --paginate --jq '.[].filename')
+          if printf '%s\n' "$files" | grep -qE '^(src/|tests/|pyproject\.toml$|poetry\.lock$|\.github/workflows/python-compatibility\.yml$|\.github/actions/setup-python-env/action\.yml$)'; then
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+            echo "Matrix-relevant files changed."
+          else
+            echo "relevant=false" >> "$GITHUB_OUTPUT"
+            echo "No matrix-relevant files changed; the test jobs will skip."
+          fi
+
       - name: Compute OS matrix
         id: matrix
         env:
@@ -78,8 +116,10 @@ jobs:
 
           # On a pull request, Linux only. The Windows and macOS legs are the
           # expensive ones (macOS especially) and a PR-time signal on Linux
-          # catches almost everything; the full matrix still runs on every push
-          # to main and weekly.
+          # catches almost everything; the full matrix runs on every push to
+          # main, weekly, and - deliberately NOT reduced here - every merge
+          # queue entry (event "merge_group"), so a Windows/macOS-only
+          # regression is still caught before it merges, not just after.
           if os.environ.get("EVENT_NAME") == "pull_request":
               runners = {"ubuntu": runners["ubuntu"]}
 
@@ -114,6 +154,8 @@ jobs:
   # ---------------------------------------------------------------------------
   syntax-check:
     name: Syntax & imports (Python ${{ matrix.python-version }})
+    needs: config
+    if: needs.config.outputs.relevant == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 20
     strategy:
@@ -192,7 +234,8 @@ jobs:
     name: Tests (Python ${{ matrix.python-version }} on ${{ matrix.os }})
     needs: [config, syntax-check]
     if: >-
-      github.event_name != 'workflow_dispatch' || inputs.test_level == 'all'
+      needs.config.outputs.relevant == 'true'
+      && (github.event_name != 'workflow_dispatch' || inputs.test_level == 'all')
     runs-on: ${{ matrix.os }}
     timeout-minutes: 40
     strategy:

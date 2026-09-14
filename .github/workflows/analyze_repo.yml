@@ -3,7 +3,12 @@ name: Feature Suggester
 on:
   schedule:
     - cron: "0 3 * * 1"  # Every Monday at 3 AM UTC
-  workflow_dispatch:      # Manual trigger option
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Analyse and print the suggestions without creating issues"
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -299,6 +304,34 @@ jobs:
           # Create human-readable version of issues
           gh issue list --state open --limit 100 > analysis_output/existing_issues.txt || echo "Could not fetch issues" > analysis_output/existing_issues.txt
 
+          # The model can only apply labels that exist: `gh issue create` fails
+          # outright on an unknown one. Fetch the real set rather than hardcoding
+          # a list in the prompt, which had drifted - it named security, testing
+          # and performance, none of which exist in this repo (it has `tests`).
+          # Product context. Without it the model only sees coverage and linter
+          # output, so every suggestion comes back as test debt - which is what
+          # the first successful run produced (4 of 4 were tests/refactoring),
+          # despite this workflow being called Feature Suggester.
+          echo "Capturing public API surface and docs map..." | tee -a analysis.log
+          poetry run python - > analysis_output/product_context.txt <<'PRODUCT_EOF'
+          import pathlib
+
+          import pyeuropepmc
+
+          names = sorted(n for n in getattr(pyeuropepmc, "__all__", []) if not n.startswith("_"))
+          print("Public API (pyeuropepmc.__all__):")
+          print(", ".join(names) or "(none)")
+          print()
+
+          docs = sorted(p.relative_to("docs").as_posix() for p in pathlib.Path("docs").rglob("*.md"))
+          print(f"Documentation pages ({len(docs)}):")
+          print("\n".join(docs))
+          PRODUCT_EOF
+
+          echo "Fetching repository labels..." | tee -a analysis.log
+          gh label list --limit 100 --json name --jq '[.[].name] | join(", ")' \
+            > analysis_output/labels.txt 2>/dev/null || echo "" > analysis_output/labels.txt
+
           echo "Project context fetched successfully!" | tee -a analysis.log
 
       - name: Prepare LLM prompt
@@ -315,15 +348,20 @@ jobs:
 
           # Create a structured prompt file
           cat > llm_prompt.txt << 'PROMPT_EOF'
-          You are an expert code quality analyst for a Python bioinformatics project called pyEuropePMC.
+          You are a maintainer of pyEuropePMC, a Python library for searching and
+          retrieving biomedical literature from Europe PMC and related sources.
 
-          Analyze the following repository analysis data and suggest concrete, actionable improvements.
-          Focus on:
-          1. Missing test coverage for important modules
-          2. Security vulnerabilities or issues found by linters
-          3. Code quality improvements (complexity, type safety, documentation)
-          4. Missing features that would benefit users
-          5. Technical debt or refactoring opportunities
+          Propose concrete, actionable improvements. Cover BOTH of these, and do not
+          return only one kind:
+
+          A. Capability gaps a user of this library would notice - missing endpoints,
+             formats, sources, ergonomics, or documentation. Reason from the public
+             API surface, the docs map and the README below, not from the linter output.
+          B. Code health - test coverage, security findings, complexity, technical debt.
+
+          Aim for a mix. The analysis data below is heavily weighted towards (B)
+          because that is what static tools produce; do not let that decide the balance
+          of your suggestions.
 
           IMPORTANT: Review the existing GitHub issues below to AVOID creating duplicate suggestions.
           Only suggest new issues that are NOT already covered by existing issues.
@@ -344,9 +382,23 @@ jobs:
           - Be specific: mention file names, functions, or modules
           - Prioritize actionable items over general advice
           - Each suggestion should be a separate, independent issue
-          - Use appropriate labels: enhancement, bug, security, documentation, testing, refactoring, performance
+          - Use ONLY labels from the list below; any other label makes issue creation fail
           - DO NOT duplicate existing issues - check the existing issues list below first
           - Align suggestions with the project goals described in the README
+
+          ===== PUBLIC API SURFACE AND DOCUMENTATION MAP =====
+          PROMPT_EOF
+
+          cat analysis_output/product_context.txt >> llm_prompt.txt
+
+          cat >> llm_prompt.txt << 'PROMPT_EOF'
+
+          ===== AVAILABLE LABELS (use only these) =====
+          PROMPT_EOF
+
+          cat analysis_output/labels.txt >> llm_prompt.txt
+
+          cat >> llm_prompt.txt << 'PROMPT_EOF'
 
           ===== PROJECT README =====
           PROMPT_EOF
@@ -383,8 +435,14 @@ jobs:
           COPILOT_GITHUB_TOKEN: ${{ github.token }}
         uses: actions/ai-inference@2c43c91ae16266ca159d311430343c67a5ffa222 # v3
         with:
+          # Empty string = let the Copilot CLI choose a model it can
+          # actually reach. The action defaults to gpt-4.1, which this
+          # account cannot use:
+          #   Error: Model "gpt-4.1" from --model flag is not available.
+          # Pinning any specific name re-creates that coupling between the
+          # workflow and whichever models the plan happens to include.
+          model: ''
           prompt-file: llm_prompt.txt
-          max-tokens: 4000
 
       - name: Save LLM response
         env:
@@ -399,6 +457,10 @@ jobs:
       - name: Validate and create issues
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Dispatching with dry_run exercises the whole pipeline - analysis,
+          # prompt, inference, JSON parsing, label filtering - and prints what
+          # would be filed, without putting anything in the issue tracker.
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
         run: |
           # Validate JSON first
           if ! jq empty suggestion_output.json 2>/dev/null; then
@@ -411,8 +473,14 @@ jobs:
           # Create issues from suggestions
           python3 << 'CREATE_ISSUES'
           import json
+          import os
+          import pathlib
           import subprocess
           import sys
+
+          dry_run = os.environ.get("DRY_RUN", "false").lower() == "true"
+          if dry_run:
+              print("DRY RUN - no issues will be created.\n")
 
           with open("suggestion_output.json") as f:
               data = json.load(f)
@@ -421,6 +489,15 @@ jobs:
           if not suggestions:
               print("No suggestions found in LLM response")
               sys.exit(0)
+
+          labels_file = pathlib.Path("analysis_output/labels.txt")
+          valid_labels = {
+              name.strip()
+              for name in (labels_file.read_text() if labels_file.exists() else "").split(",")
+              if name.strip()
+          }
+          print(f"{len(valid_labels)} labels available in this repository")
+          created = failed = 0
 
           for suggestion in suggestions:
               title = suggestion.get("title", "").strip()
@@ -431,18 +508,47 @@ jobs:
                   print(f"Skipping suggestion with empty title or body: {title}")
                   continue
 
+              # Drop labels the repo does not have. `gh issue create` rejects the
+              # whole call on an unknown label - a single hallucinated one used to
+              # abort the run and discard every remaining suggestion.
+              keep = [l for l in labels if l in valid_labels]
+              dropped = [l for l in labels if l not in valid_labels]
+              if dropped:
+                  print(f"  Dropping labels not in this repo: {dropped}")
+
               label_args = []
-              for label in labels:
+              for label in keep:
                   label_args.extend(["--label", label])
+
+              if dry_run:
+                  created += 1
+                  print(f"Would create: {title}")
+                  print(f"  labels: {keep or '(none)'}")
+                  print(f"  body   : {len(body)} chars, first line: {body.splitlines()[0][:100]}")
+                  continue
 
               cmd = ["gh", "issue", "create", "--title", title, "--body", body] + label_args
               print(f"Creating issue: {title}")
               result = subprocess.run(cmd, capture_output=True, text=True)
+              if result.returncode != 0 and label_args:
+                  # Retry unlabelled rather than lose the suggestion.
+                  print(f"  Retrying without labels after: {result.stderr.strip()}")
+                  result = subprocess.run(
+                      ["gh", "issue", "create", "--title", title, "--body", body],
+                      capture_output=True,
+                      text=True,
+                  )
               if result.returncode == 0:
+                  created += 1
                   print(f"  Created: {result.stdout.strip()}")
               else:
+                  failed += 1
                   print(f"  Failed: {result.stderr.strip()}")
-                  sys.exit(1)
+
+          verb = "Would create" if dry_run else "Created"
+          print(f"\n{verb} {created} issue(s), {failed} failed.")
+          if created == 0 and failed > 0:
+              sys.exit(1)
           CREATE_ISSUES
 
       - name: Upload analysis artifacts

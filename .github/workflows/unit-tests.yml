@@ -5,6 +5,9 @@ on:
     branches: [main]
   pull_request:
     types: [opened, synchronize, reopened]
+  # See cdci.yml: required by the merge queue, which needs this job to fire
+  # on this event or a queued PR would wait forever for it.
+  merge_group:
   workflow_dispatch:
 
 permissions:

@@ -46,6 +46,127 @@ class BaseParser:
         """Get all text content from an element and its descendants."""
         return self._helper.get_text_content(element)
 
+    @staticmethod
+    def _child_sections(parent: ET.Element) -> list[ET.Element]:
+        """The outermost <sec> elements beneath ``parent``.
+
+        Descends through non-section wrappers but stops at each <sec>, so a
+        subsection is never returned alongside its own parent. Identity is
+        never compared - lxml can hand back distinct proxy objects for one
+        node, which makes an ``id()``-keyed exclusion set unreliable.
+        """
+        found: list[ET.Element] = []
+
+        def walk(elem: ET.Element) -> None:
+            for child in elem:
+                if child.tag == "sec":
+                    found.append(child)
+                else:
+                    walk(child)
+
+        walk(parent)
+        return found
+
+    @staticmethod
+    def _text_excluding(element: ET.Element, *skip_tags: str) -> str:
+        """Full text of ``element`` with the named subtrees left out.
+
+        ``_section_own_elements(..., stop_at=...)`` keeps a container's own
+        <p> out of a section's paragraph list, but a <p> that *wraps* a <list>
+        or <table-wrap> still carries that content in its own text. A caller
+        that renders those containers separately would emit the text twice -
+        seven paragraphs in PMC4355508, and three times over in PMC12126031,
+        where a table sits inside a paragraph with lists in its cells.
+        """
+        skip = set(skip_tags)
+        parts: list[str] = []
+
+        def walk(elem: ET.Element) -> None:
+            if elem.text:
+                parts.append(elem.text)
+            for child in elem:
+                # Comments and processing instructions - lxml keeps them as
+                # children with a non-string tag. See XMLHelper.get_text_content.
+                if not isinstance(child.tag, str):
+                    if child.tail:
+                        parts.append(child.tail)
+                    continue
+                if child.tag not in skip:
+                    walk(child)
+                if child.tail:
+                    parts.append(child.tail)
+
+        walk(element)
+        return " ".join("".join(parts).split())
+
+    @staticmethod
+    def _own_bodies(root: ET.Element) -> list[ET.Element]:
+        """The <body> elements belonging to this article, not to a sub-article.
+
+        Peer-reviewed articles ship the reports as <sub-article>, each with its
+        own <body>. A `.//body` search returns all of them, so iterating the
+        result mixed reviewer text into the article's own sections: in
+        PMC13567752 that turned a 39,374-character body into 94,895 characters
+        of "sections", and duplicated the data-availability statement in
+        PMC13567818.
+
+        Descends through wrappers but stops at <sub-article> and <response>,
+        without comparing element identity - lxml can hand back distinct proxy
+        objects for one node.
+        """
+        found: list[ET.Element] = []
+
+        def walk(elem: ET.Element) -> None:
+            for child in elem:
+                if child.tag in ("sub-article", "response"):
+                    continue
+                if child.tag == "body":
+                    found.append(child)
+                else:
+                    walk(child)
+
+        if root.tag == "body":
+            return [root]
+        walk(root)
+        return found
+
+    @staticmethod
+    def _section_own_elements(
+        section: ET.Element, *tags: str, stop_at: tuple[str, ...] = ()
+    ) -> list[ET.Element]:
+        """Descendants of ``section`` with these tags that no nested <sec> owns.
+
+        JATS sections nest, and the flat extractors selected descendant content
+        with ``.//``: a parent emitted its subsections' paragraphs as well as
+        its own, and each subsection then emitted them again - duplicating
+        40-60% of the output (#209).
+
+        Content inside a nested <sec> belongs to that subsection. Everything
+        else belongs here, including content wrapped in <boxed-text> and
+        similar, which a direct-children-only rule would have lost.
+
+        ``stop_at`` names further containers to treat as barriers. A caller
+        that renders <list> itself must pass ``stop_at=("list",)`` when asking
+        for paragraphs, or a <p> inside a <list-item> is emitted twice - once
+        as a paragraph and again as a list item.
+        """
+        wanted = set(tags)
+        barriers = {"sec", *stop_at}
+        found: list[ET.Element] = []
+
+        def walk(parent: ET.Element) -> None:
+            for child in parent:
+                if child.tag in barriers:
+                    continue  # a subsection's content, or a container rendered
+                    # separately by the caller - not this section's own
+                if child.tag in wanted:
+                    found.append(child)
+                else:
+                    walk(child)
+
+        walk(section)
+        return found
+
     def _extract_flat_texts(
         self,
         parent: ET.Element,

@@ -1,19 +1,14 @@
 """Integration test configuration.
 
 Integration tests hit live APIs and are skipped by default.
-Run with: pytest tests/integration/ --run-integration
+Run with: pytest --run-integration
+
+The ``--run-integration`` option itself is registered in tests/conftest.py:
+pytest only honours ``pytest_addoption`` from initial conftests, so defining it
+here made it unreachable from any run not started inside this directory.
 """
 
 import pytest
-
-
-def pytest_addoption(parser: pytest.Parser) -> None:
-    parser.addoption(
-        "--run-integration",
-        action="store_true",
-        default=False,
-        help="Run tests that hit live external APIs",
-    )
 
 
 def pytest_configure(config: pytest.Config) -> None:
