@@ -46,7 +46,7 @@ from pyeuropepmc.core.exceptions import (
     UnpaywallError,
 )
 
-__version__ = "2.1.1"
+__version__ = "2.1.2"
 __author__ = "Jonas Heinicke"
 __email__ = "jonas.heinicke@helmholtz-hzi.de"
 __url__ = "https://github.com/JonasHeinickeBio/pyEuropePMC"

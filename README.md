@@ -676,7 +676,7 @@ stdio *and* for remote/non-Claude agents over HTTP.
 
 Every tagged release publishes this server to the
 [official MCP Registry](https://registry.modelcontextprotocol.io/) as
-`io.github.jonasheinickebio/pyeuropepmc` ([`server.json`](server.json)),
+`io.github.JonasHeinickeBio/pyeuropepmc` ([`server.json`](server.json)),
 automatically and without a stored secret (GitHub OIDC — see the
 `publish-mcp-registry` job in `.github/workflows/release.yml`), so any
 MCP-aware agent can discover this server without already knowing this
