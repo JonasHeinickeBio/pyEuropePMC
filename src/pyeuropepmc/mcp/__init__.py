@@ -1,14 +1,14 @@
 """
-MCP Server for pyeuropepmc
-Provides Model Context Protocol access to Europe PMC API
+MCP server for pyeuropepmc.
 
-This module provides MCP tools for searching and retrieving scientific literature
-from Europe PMC as part of the pyeuropepmc package.
+Exposes Europe PMC (and related literature-search) functionality as tools over
+the Model Context Protocol, built on the official MCP Python SDK. See
+:mod:`pyeuropepmc.mcp.server` for the ``FastMCP`` app, tool implementations,
+and the ``pyeuropepmc-mcp`` CLI entry point.
 
-The MCP server uses pyeuropepmc.SearchClient directly, avoiding code duplication
-and leveraging all existing features including caching, rate limiting, and pagination.
+Deliberately empty of imports: ``pyeuropepmc.mcp.server`` pulls in the
+``mcp`` SDK plus every optional feature module it can find, so importing it
+eagerly here would run that cost (and, when the server is launched via
+``python -m pyeuropepmc.mcp.server``, trip Python's "module already imported"
+warning) just for importing this lightweight package.
 """
-
-from .server import _get_client
-
-__all__ = ["_get_client"]

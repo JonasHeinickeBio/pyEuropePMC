@@ -1,290 +1,347 @@
+"""Unit tests for pyeuropepmc.mcp.server infrastructure (hermetic).
+
+These cover the FastMCP app wiring, the lazy-singleton cache, and the small
+pure helpers — everything that isn't a specific tool's business logic (see
+test_mcp_handlers.py for that).
 """
-Unit tests for MCP server.
 
-These tests verify the MCP server functionality without requiring
-an actual MCP client connection.
-"""
+from __future__ import annotations
 
-import json
-from unittest.mock import Mock, patch
+import asyncio
+from dataclasses import dataclass
+from importlib.metadata import PackageNotFoundError
+import logging
+from unittest.mock import MagicMock
 
+from mcp.server.fastmcp.exceptions import ToolError
 import pytest
 
-from pyeuropepmc.mcp import server as mcp_server_module
-from pyeuropepmc.mcp.server import (
-    _get_client,
-    create_response,
-    handle_call_tool,
-    handle_initialize,
-    handle_list_tools,
-    parse_mcp_request,
-)
+from pyeuropepmc.mcp import server as srv
+
+ALL_CACHES = [
+    srv._client_cache,
+    srv._unified_cache,
+    srv._citation_walker_cache,
+    srv._clinical_trials_cache,
+    srv._figure_extractor_cache,
+    srv._llm_agent_cache,
+    srv._bib_manager_cache,
+    srv._bib_converter_cache,
+    srv._bib_resolver_cache,
+]
 
 
 @pytest.fixture(autouse=True)
-def _reset_mcp_singletons():
-    """Reset module-level cached clients between tests.
-
-    TestGetClient exercises the real ``_get_client()`` path (caching a live
-    SearchClient in ``_SINGLE_CLIENT``). Without a reset, later tests that
-    patch ``pyeuropepmc.mcp.server.SearchClient`` keep receiving the real
-    cached client, causing real network calls (failures + hangs).
-    """
-    mcp_server_module._SINGLE_CLIENT = None
-    mcp_server_module._SINGLE_UNIFIED = None
+def _reset_singletons():
+    for cache in ALL_CACHES:
+        cache.reset()
     yield
-    mcp_server_module._SINGLE_CLIENT = None
-    mcp_server_module._SINGLE_UNIFIED = None
+    for cache in ALL_CACHES:
+        cache.reset()
+
+
+class TestLazy:
+    """The generic thread-safe lazy singleton used for every cached client."""
+
+    def test_get_calls_factory_once(self):
+        factory = MagicMock(side_effect=lambda: object())
+        lazy = srv._Lazy(factory)
+        first = lazy.get()
+        second = lazy.get()
+        assert first is second
+        factory.assert_called_once()
+
+    def test_reset_forces_rebuild(self):
+        factory = MagicMock(side_effect=lambda: object())
+        lazy = srv._Lazy(factory)
+        first = lazy.get()
+        lazy.reset()
+        second = lazy.get()
+        assert first is not second
+        assert factory.call_count == 2
+
+    def test_set_bypasses_factory(self):
+        factory = MagicMock(side_effect=AssertionError("factory should not run"))
+        lazy = srv._Lazy(factory)
+        sentinel = object()
+        lazy.set(sentinel)
+        assert lazy.get() is sentinel
+        factory.assert_not_called()
+
+    def test_failed_construction_is_retried(self):
+        calls = {"n": 0}
+
+        def factory():
+            calls["n"] += 1
+            if calls["n"] == 1:
+                raise RuntimeError("boom")
+            return "ok"
+
+        lazy = srv._Lazy(factory)
+        with pytest.raises(RuntimeError):
+            lazy.get()
+        assert lazy.get() == "ok"
+        assert calls["n"] == 2
 
 
 class TestGetClient:
-    """Test _get_client function."""
-
-    def test_get_client_returns_search_client(self):
-        """Test that _get_client returns a SearchClient instance."""
-        client = _get_client()
-        assert client is not None
-        # Check that it's a SearchClient by verifying it has the expected method
+    def test_returns_search_client(self):
+        client = srv._get_client()
         assert hasattr(client, "search_all")
 
-    def test_get_client_has_caching_enabled(self):
-        """Test that the client has caching enabled."""
-        client = _get_client()
-        # The client should be initialized with caching
+    def test_has_caching_enabled(self):
+        client = srv._get_client()
         assert client._cache is not None
 
-
-class TestParseMCPRequest:
-    """Test parse_mcp_request function."""
-
-    def test_parse_valid_json(self):
-        """Test parsing a valid JSON request."""
-        line = json.dumps({"id": 1, "method": "initialize", "params": {}})
-        request = parse_mcp_request(line)
-        assert request["id"] == 1
-        assert request["method"] == "initialize"
-
-    def test_parse_json_with_whitespace(self):
-        """Test parsing JSON with leading/trailing whitespace."""
-        line = "  " + json.dumps({"id": 1}) + "  "
-        request = parse_mcp_request(line)
-        assert request["id"] == 1
-
-    def test_parse_invalid_json_raises_error(self):
-        """Test that invalid JSON raises an error."""
-        with pytest.raises(json.JSONDecodeError):
-            parse_mcp_request("not valid json")
+    def test_cached_across_calls(self):
+        assert srv._get_client() is srv._get_client()
 
 
-class TestCreateResponse:
-    """Test create_response function."""
+class TestGetUnified:
+    def test_unavailable_returns_none(self, monkeypatch):
+        monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", False)
+        assert srv._get_unified() is None
 
-    def test_create_success_response(self):
-        """Test creating a success response."""
-        response = create_response(request_id=1, result={"data": "test"})
-        assert response["jsonrpc"] == "2.0"
-        assert response["id"] == 1
-        assert response["result"] == {"data": "test"}
-        assert "error" not in response
-
-    def test_create_error_response(self):
-        """Test creating an error response."""
-        response = create_response(request_id=1, error="Test error")
-        assert response["jsonrpc"] == "2.0"
-        assert response["id"] == 1
-        assert response["error"] is not None
-        assert "code" in response["error"]
-        assert "message" in response["error"]
+    def test_available_returns_cached_instance(self, monkeypatch):
+        monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
+        sentinel = MagicMock()
+        srv._unified_cache.set(sentinel)
+        assert srv._get_unified() is sentinel
 
 
-class TestHandleInitialize:
-    """Test handle_initialize function."""
+class TestRequireAvailable:
+    def test_noop_when_available(self):
+        srv._require_available(True, "Thing", "extra")  # must not raise
 
-    def test_initialize_returns_correct_protocol(self):
-        """Test that initialize returns the correct protocol version."""
-        result = handle_initialize({})
-        assert result["protocolVersion"] == "2024-11-05"
-
-    def test_initialize_returns_server_info(self):
-        """Test that initialize returns server info."""
-        result = handle_initialize({})
-        assert "serverInfo" in result
-        assert "name" in result["serverInfo"]
-        assert "version" in result["serverInfo"]
-        assert result["serverInfo"]["name"] == "pyeuropepmc-mcp"
-
-    def test_initialize_returns_capabilities(self):
-        """Test that initialize returns capabilities."""
-        result = handle_initialize({})
-        assert "capabilities" in result
-        assert "tools" in result["capabilities"]
+    def test_raises_with_install_hint(self):
+        pattern = r"Thing not available.*pip install pyeuropepmc\[extra\]"
+        with pytest.raises(ToolError, match=pattern):
+            srv._require_available(False, "Thing", "extra")
 
 
-class TestHandleListTools:
-    """Test handle_list_tools function."""
-
-    def test_list_tools_returns_all_tools(self):
-        """Test that all expected tools are listed."""
-        result = handle_list_tools({})
-        tools = result["tools"]
-
-        tool_names = [t["name"] for t in tools]
-        assert "search_papers" in tool_names
-        assert "get_paper_details" in tool_names
-        assert "search_authors" in tool_names
-        assert "get_paper_citations" in tool_names
-
-    def test_search_papers_tool_schema(self):
-        """Test search_papers tool input schema."""
-        result = handle_list_tools({})
-        tools = result["tools"]
-        search_papers = next(t for t in tools if t["name"] == "search_papers")
-
-        assert "inputSchema" in search_papers
-        schema = search_papers["inputSchema"]
-
-        assert schema["type"] == "object"
-        assert "properties" in schema
-        assert "required" in schema
-        assert "query" in schema["properties"]
-        assert "query" in schema["required"]
-
-    def test_get_paper_details_tool_schema(self):
-        """Test get_paper_details tool input schema."""
-        result = handle_list_tools({})
-        tools = result["tools"]
-        get_paper_details = next(t for t in tools if t["name"] == "get_paper_details")
-
-        schema = get_paper_details["inputSchema"]
-        assert "properties" in schema
-        props = schema["properties"]
-        # In JSON Schema, optional means not in "required"
-        assert "required" not in schema or "pmid" not in schema.get("required", [])
-        assert "required" not in schema or "pmcid" not in schema.get("required", [])
-        assert "required" not in schema or "doi" not in schema.get("required", [])
-        # All three identifier inputs must be exposed
-        assert "pmid" in props
-        assert "pmcid" in props
-        assert "doi" in props
+class TestDedupReport:
+    def test_extracts_expected_fields(self):
+        report = MagicMock(total_input=10, total_output=6, duplicates_removed=4)
+        assert srv._dedup_report(report) == {
+            "total_input": 10,
+            "total_output": 6,
+            "duplicates_removed": 4,
+        }
 
 
-class TestHandleCallTool:
-    """Test handle_call_tool function."""
+class TestToSerializable:
+    def test_passthrough_scalar(self):
+        assert srv._to_serializable(5) == 5
+        assert srv._to_serializable("x") == "x"
 
-    @patch("pyeuropepmc.mcp.server.SearchClient")
-    def test_search_papers_success(self, mock_search_client_class):
-        """Test successful search_papers tool call."""
-        # Setup mock
-        mock_client = Mock()
-        mock_search_client_class.return_value = mock_client
-        mock_client.search_all.return_value = [
-            {"id": "PMC123", "title": "Test Paper"}
-        ]
+    def test_dict_recurses(self):
+        assert srv._to_serializable({"a": {"b": 1}}) == {"a": {"b": 1}}
 
-        # Call tool
-        result = handle_call_tool({
-            "name": "search_papers",
-            "arguments": {
-                "query": "malaria",
-                "limit": 10,
-            }
-        })
+    def test_list_and_tuple_recurse(self):
+        assert srv._to_serializable([1, (2, 3)]) == [1, [2, 3]]
 
-        # Verify
-        assert "content" in result
-        mock_client.search_all.assert_called_once()
-        call_args = mock_client.search_all.call_args
-        assert call_args[0][0] == "malaria"
+    def test_model_dump(self):
+        obj = MagicMock()
+        obj.model_dump.return_value = {"k": "v"}
+        assert srv._to_serializable(obj) == {"k": "v"}
 
-    @patch("pyeuropepmc.mcp.server.SearchClient")
-    def test_get_paper_details_by_pmid(self, mock_search_client_class):
-        """Test get_paper_details with PMID."""
-        mock_client = Mock()
-        mock_search_client_class.return_value = mock_client
-        mock_client.search_all.return_value = [{"id": "PMC123", "pmid": "12345"}]
+    def test_dict_method(self):
+        class Legacy:
+            def dict(self):
+                return {"k": "v"}
 
-        result = handle_call_tool({
-            "name": "get_paper_details",
-            "arguments": {"pmid": "12345"}
-        })
+        assert srv._to_serializable(Legacy()) == {"k": "v"}
 
-        assert "content" in result
-        call_args = mock_client.search_all.call_args
-        assert call_args[0][0] == "ext_id:12345"
+    def test_to_dict_method(self):
+        class Custom:
+            def to_dict(self):
+                return {"k": "v"}
 
-    @patch("pyeuropepmc.mcp.server.SearchClient")
-    def test_search_authors_success(self, mock_search_client_class):
-        """Test successful search_authors tool call."""
-        mock_client = Mock()
-        mock_search_client_class.return_value = mock_client
-        mock_client.search_all.return_value = [
-            {"id": "AUTH1", "authorName": "John Doe"}
-        ]
+        assert srv._to_serializable(Custom()) == {"k": "v"}
 
-        result = handle_call_tool({
-            "name": "search_authors",
-            "arguments": {"query": "John Doe"}
-        })
+    def test_dataclass(self):
+        @dataclass
+        class Point:
+            x: int
+            y: int
 
-        assert "content" in result
-        call_args = mock_client.search_all.call_args
-        query = call_args[0][0]
-        assert 'AUTH:"John Doe"' in query
+        assert srv._to_serializable(Point(1, 2)) == {"x": 1, "y": 2}
 
-    @patch("pyeuropepmc.mcp.server.SearchClient")
-    def test_get_paper_citations_success(self, mock_search_client_class):
-        """Test successful get_paper_citations tool call."""
-        mock_client = Mock()
-        mock_search_client_class.return_value = mock_client
-        mock_client.search_all.return_value = [
-            {"id": "PMC123", "title": "Citing Paper"}
-        ]
 
-        result = handle_call_tool({
-            "name": "get_paper_citations",
-            "arguments": {"pmid": "12345"}
-        })
+class TestPaperSummaryFromRaw:
+    def test_full_record(self):
+        raw = {
+            "pmid": "1",
+            "pmcid": "PMC1",
+            "doi": "10.1/x",
+            "title": "T",
+            "authorInfo": [{"author": "Smith J"}],
+            "firstPublicationYear": "2020",
+            "journalTitle": "J",
+            "abstract": "A",
+        }
+        summary = srv._paper_summary_from_raw(raw)
+        assert summary == {
+            "pmid": "1",
+            "pmcid": "PMC1",
+            "doi": "10.1/x",
+            "title": "T",
+            "authors": [{"name": "Smith J"}],
+            "publication_year": "2020",
+            "journal": "J",
+            "abstract": "A",
+        }
 
-        assert "content" in result
-        call_args = mock_client.search_all.call_args
-        query = call_args[0][0]
-        assert "CITED:12345" in query
+    def test_missing_fields_default_empty(self):
+        summary = srv._paper_summary_from_raw({"pmid": "1"})
+        assert summary["pmid"] == "1"
+        assert summary["authors"] == []
+        assert summary["journal"] == ""
 
-    def test_get_paper_details_missing_id(self):
-        """Test get_paper_details without any ID."""
-        result = handle_call_tool({
-            "name": "get_paper_details",
-            "arguments": {}
-        })
 
-        assert "content" in result
-        text_content = result["content"][0]["text"]
-        assert "Error" in text_content
+class TestFetchPaperSummary:
+    def test_found(self):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        summary = asyncio.run(srv._fetch_paper_summary("1", client))
+        assert summary["pmid"] == "1"
+        assert summary["title"] == "T"
+        client.search_all.assert_called_once_with("ext_id:1", pageSize=1)
 
-    @patch("pyeuropepmc.mcp.server.SearchClient")
-    def test_unknown_tool(self, mock_search_client_class):
-        """Test calling an unknown tool."""
-        result = handle_call_tool({
-            "name": "unknown_tool",
-            "arguments": {}
-        })
+    def test_not_found(self):
+        client = MagicMock()
+        client.search_all.return_value = []
+        assert asyncio.run(srv._fetch_paper_summary("1", client)) is None
 
-        assert "content" in result
-        text_content = result["content"][0]["text"]
-        assert "Unknown tool" in text_content
 
-    @patch("pyeuropepmc.mcp.server.SearchClient")
-    def test_tool_exception_handling(self, mock_search_client_class):
-        """Test that tool exceptions are handled gracefully."""
-        mock_client = Mock()
-        mock_search_client_class.return_value = mock_client
-        mock_client.search_all.side_effect = Exception("API Error")
+class TestServerVersion:
+    def test_returns_installed_version(self):
+        assert srv._server_version() != ""
 
-        result = handle_call_tool({
-            "name": "search_papers",
-            "arguments": {"query": "test"}
-        })
+    def test_falls_back_when_package_missing(self, monkeypatch):
+        def _raise(_name):
+            raise PackageNotFoundError
 
-        assert "content" in result
-        text_content = result["content"][0]["text"]
-        assert "Error" in text_content
+        monkeypatch.setattr(srv, "_pkg_version", _raise)
+        assert srv._server_version() == "0.0.0+unknown"
+
+
+class TestConfigureLogging:
+    def test_sets_stderr_handler_and_level(self):
+        root = logging.getLogger()
+        previous_handlers = list(root.handlers)
+        previous_level = root.level
+        try:
+            for h in previous_handlers:
+                root.removeHandler(h)
+            srv._configure_logging("DEBUG")
+            assert root.level == logging.DEBUG
+        finally:
+            for h in list(root.handlers):
+                root.removeHandler(h)
+            for h in previous_handlers:
+                root.addHandler(h)
+            root.setLevel(previous_level)
+
+
+class TestArgParser:
+    def test_defaults_to_stdio(self, monkeypatch):
+        monkeypatch.delenv("PYEUROPEPMC_MCP_TRANSPORT", raising=False)
+        args = srv._build_arg_parser().parse_args([])
+        assert args.transport == "stdio"
+        assert args.host == "127.0.0.1"
+        assert args.port == 8000
+        assert args.log_level == "INFO"
+
+    def test_env_vars_set_defaults(self, monkeypatch):
+        monkeypatch.setenv("PYEUROPEPMC_MCP_TRANSPORT", "streamable-http")
+        monkeypatch.setenv("PYEUROPEPMC_MCP_HOST", "0.0.0.0")
+        monkeypatch.setenv("PYEUROPEPMC_MCP_PORT", "9000")
+        monkeypatch.setenv("PYEUROPEPMC_MCP_LOG_LEVEL", "WARNING")
+        args = srv._build_arg_parser().parse_args([])
+        assert args.transport == "streamable-http"
+        assert args.host == "0.0.0.0"
+        assert args.port == 9000
+        assert args.log_level == "WARNING"
+
+    def test_cli_flags_override_env(self, monkeypatch):
+        monkeypatch.setenv("PYEUROPEPMC_MCP_TRANSPORT", "sse")
+        args = srv._build_arg_parser().parse_args(["--transport", "stdio"])
+        assert args.transport == "stdio"
+
+    def test_rejects_unknown_transport(self):
+        with pytest.raises(SystemExit):
+            srv._build_arg_parser().parse_args(["--transport", "bogus"])
+
+
+class TestToolAnnotationsHelper:
+    def test_read_only_open_world_by_default(self):
+        ann = srv._ro("Title")
+        assert ann.title == "Title"
+        assert ann.readOnlyHint is True
+        assert ann.openWorldHint is True
+        assert ann.idempotentHint is True
+
+    def test_local_flag_flips_open_world(self):
+        ann = srv._ro("Title", local=True)
+        assert ann.openWorldHint is False
+
+    def test_idempotent_override(self):
+        ann = srv._ro("Title", idempotent=False)
+        assert ann.idempotentHint is False
+
+
+class TestToolRegistry:
+    """FastMCP-level checks: every tool is discoverable with a valid schema."""
+
+    EXPECTED_TOOLS = {
+        "unified_search",
+        "search_papers",
+        "get_paper_details",
+        "search_authors",
+        "get_paper_citations",
+        "citation_snowball",
+        "clinical_trial_search",
+        "fulltext_index_query",
+        "paper_figures",
+        "analyze_citations",
+        "compare_citations",
+        "summarize_citations",
+        "paper_screening",
+        "research_question_analysis",
+        "preprint_analysis",
+        "literature_review",
+        "knowledge_graph",
+        "bib_parse_string",
+        "bib_validate",
+        "bib_to_ris",
+        "bib_to_csl",
+        "ref_resolve_doi",
+        "ref_resolve_pmid",
+        "bib_merge",
+    }
+
+    def test_all_expected_tools_registered(self):
+        tools = asyncio.run(srv.mcp.list_tools())
+        names = {t.name for t in tools}
+        assert names == self.EXPECTED_TOOLS
+
+    def test_every_tool_has_description_and_schema(self):
+        tools = asyncio.run(srv.mcp.list_tools())
+        for tool in tools:
+            assert tool.description
+            assert tool.inputSchema["type"] == "object"
+
+    def test_context_parameter_is_hidden_from_schema(self):
+        tools = {t.name: t for t in asyncio.run(srv.mcp.list_tools())}
+        assert "ctx" not in tools["unified_search"].inputSchema.get("properties", {})
+
+    def test_unknown_tool_raises(self):
+        with pytest.raises(ToolError, match="Unknown tool"):
+            asyncio.run(srv.mcp.call_tool("totally_unknown", {}))
+
+    def test_calling_tool_validates_input_types(self, monkeypatch):
+        monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
+        args = {"identifier": "PMID:1", "strategy": "not-a-real-strategy"}
+        with pytest.raises(Exception, match="strategy"):
+            asyncio.run(srv.mcp.call_tool("citation_snowball", args))

@@ -547,23 +547,34 @@ PyEuropePMC includes a Model Context Protocol (MCP) server for use with LLMs and
 pip install pyeuropepmc
 ```
 
+Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+(`FastMCP`) — spec-compliant error handling, concurrent async tool execution,
+and a choice of transports, so the same server works for Claude Desktop over
+stdio *and* for remote/non-Claude agents over HTTP.
+
 ### Usage
 
-The MCP server provides four tools:
-
-- **`search_papers`** - Search for papers in Europe PMC
-- **`get_paper_details`** - Get detailed information about a paper (by PMID, PMCID, or DOI)
-- **`search_authors`** - Search for authors in Europe PMC
-- **`get_paper_citations`** - Get citations for a paper
+24 tools covering multi-source search, citation-graph walking, clinical
+trials, full-text indexing, figure extraction, bibliography conversion, and
+(with an LLM provider configured) LLM-powered analysis — including
+`unified_search`, `get_paper_details`, `search_authors`, `get_paper_citations`,
+`citation_snowball`, `clinical_trial_search`, `fulltext_index_query`,
+`paper_figures`, and the bibliography/LLM families. See
+[`src/pyeuropepmc/mcp/README.md`](src/pyeuropepmc/mcp/README.md) for the full
+tool table, and [`src/pyeuropepmc/mcp/server.py`](src/pyeuropepmc/mcp/server.py)
+for the tool implementations and input schemas.
 
 #### Running the MCP Server
 
 ```bash
-# As a standalone server
+# stdio transport (default) — Claude Desktop and similar process-managed clients
 pyeuropepmc-mcp
 
+# streamable-http transport — for remote / non-Claude-Desktop agents
+pyeuropepmc-mcp --transport streamable-http --host 0.0.0.0 --port 8000
+
 # Or using Python directly
-python -m pyeuropepmc.mcp.server
+python -m pyeuropepmc.mcp.server --help
 ```
 
 #### Using with LLMs
@@ -574,19 +585,14 @@ The server implements the MCP protocol and can be configured in your LLM applica
 {
   "mcpServers": {
     "pyeuropepmc": {
-      "command": "python",
-      "args": ["/path/to/pyeuropepmc-mcp"]
+      "command": "pyeuropepmc-mcp"
     }
   }
 }
 ```
 
-The server exposes these tools over the MCP protocol (JSON-RPC on stdio):
-`unified_search`, `get_paper_details`, `search_authors`, `get_paper_citations`,
-`citation_snowball`, `clinical_trial_search`, `fulltext_index_query`,
-`paper_figures`, plus optional LLM and bibliography tools. See
-[`src/pyeuropepmc/mcp/server.py`](src/pyeuropepmc/mcp/server.py) for the full
-registry and input schemas.
+Point any MCP-capable agent that speaks HTTP at `http://<host>:<port>/mcp` when
+running with `--transport streamable-http` instead.
 
 For direct Python use (no MCP client), call the same underlying APIs:
 
