@@ -81,11 +81,12 @@ class PlaintextConverter(BaseParser):
 
     def _add_body_sections_to_text(self, text_parts: list[str]) -> None:
         """Add body sections to text parts."""
-        body_results = self.extract_elements_by_patterns(
-            {"body": ".//body"}, return_type="element", first_only=True
-        )
-        if body_results["body"]:
-            body_elem = body_results["body"][0]
+        # `first_only=True` over `.//body` happened to pick the article's own
+        # body because it comes first in document order. Say so explicitly:
+        # a <sub-article> body must never be rendered as the article's text.
+        own = self._own_bodies(self.root) if self.root is not None else []
+        if own:
+            body_elem = own[0]
             for sec in body_elem.iter():
                 if sec.tag == "sec":
                     section_text = self._process_section_plaintext(sec)
@@ -102,15 +103,16 @@ class PlaintextConverter(BaseParser):
             # both: four in PMC12018715, three in PMC12126031. A bare <p> is in
             # no section, so no section can emit it - there is nothing left to
             # duplicate against.
-            bare_ps = body_elem.findall("./p")
-            if bare_ps:
-                para_texts: list[str] = []
-                for p in bare_ps:
-                    texts = self._extract_flat_texts(p, ".", filter_empty=True, use_full_text=True)
-                    if texts:
-                        para_texts.extend(texts)
-                if para_texts:
-                    text_parts.append("\n".join(para_texts) + "\n\n")
+            # `_section_own_elements` rather than `./p`: it stops at <sec> but
+            # descends through wrappers, so a <p> inside a <boxed-text> sitting
+            # directly under <body> is found too. PMC6453151 lost one that way.
+            bare_texts = [
+                text
+                for para in self._section_own_elements(body_elem, "p")
+                if (text := self._text_excluding(para, "list"))
+            ]
+            if bare_texts:
+                text_parts.append("\n".join(bare_texts) + "\n\n")
 
     def _add_acknowledgments_to_text(self, text_parts: list[str]) -> None:
         """Add acknowledgments to text parts."""
@@ -147,12 +149,19 @@ class PlaintextConverter(BaseParser):
 
         # Extract paragraphs with formatting. Own paragraphs only - `.//p` here
         # duplicated every subsection's text into its parent as well (#209).
+        # <list> is rendered separately below, so it is excluded twice over:
+        # `stop_at` keeps a list's own <p> out of this list, and
+        # `_text_excluding` drops the list's text from a <p> that wraps one.
+        #
+        # `table-wrap` is deliberately NOT excluded. _process_table_plaintext
+        # renders only the <table> rows - it does not render <caption> or
+        # <table-wrap-foot> - so dropping the whole subtree here loses that
+        # text outright. Measured on the corpus, doing so traded 10 duplicate
+        # paragraphs for 163 missing ones.
         paragraphs = [
             text
-            # stop_at=("list",): list items are rendered below, and a <p>
-            # inside a <list-item> would otherwise be emitted twice.
             for para in self._section_own_elements(section, "p", stop_at=("list",))
-            for text in self._extract_flat_texts(para, ".", filter_empty=True, use_full_text=True)
+            if (text := self._text_excluding(para, "list"))
         ]
         for para_text in paragraphs:
             formatted_text = self._process_formatting_in_text(para_text)
@@ -186,15 +195,21 @@ class PlaintextConverter(BaseParser):
         text_parts = []
         list_type = list_elem.get("list-type", "bullet")
 
-        for i, item in enumerate(list_elem.findall(".//list-item"), 1):
-            item_text = self._extract_flat_texts(
-                item, ".//p", filter_empty=True, use_full_text=True
-            )
+        # Direct children only, and the whole of each item.
+        #
+        # This took `.//list-item`, which also matched the items of nested
+        # lists, and then rendered only `item_text[0]` - the first <p> of each.
+        # An item with two paragraphs lost the second; an item holding text
+        # directly, with no <p> at all, produced nothing. That loss used to be
+        # hidden because the enclosing <p> emitted the list's text as part of
+        # its own; now that it no longer does, this has to be complete.
+        # `itertext()` already carries any nested list, which is why the search
+        # is `./list-item` and not `.//list-item`.
+        for i, item in enumerate(list_elem.findall("./list-item"), 1):
+            item_text = " ".join("".join(item.itertext()).split())
             if item_text:
-                if list_type == "ordered":
-                    text_parts.append(f"{i}. {item_text[0]}")
-                else:
-                    text_parts.append(f"• {item_text[0]}")
+                marker = f"{i}. " if list_type == "ordered" else "• "
+                text_parts.append(f"{marker}{item_text}")
 
         return "\n".join(text_parts)
 

@@ -68,6 +68,63 @@ class BaseParser:
         return found
 
     @staticmethod
+    def _text_excluding(element: ET.Element, *skip_tags: str) -> str:
+        """Full text of ``element`` with the named subtrees left out.
+
+        ``_section_own_elements(..., stop_at=...)`` keeps a container's own
+        <p> out of a section's paragraph list, but a <p> that *wraps* a <list>
+        or <table-wrap> still carries that content in its own text. A caller
+        that renders those containers separately would emit the text twice -
+        seven paragraphs in PMC4355508, and three times over in PMC12126031,
+        where a table sits inside a paragraph with lists in its cells.
+        """
+        skip = set(skip_tags)
+        parts: list[str] = []
+
+        def walk(elem: ET.Element) -> None:
+            if elem.text:
+                parts.append(elem.text)
+            for child in elem:
+                if child.tag not in skip:
+                    walk(child)
+                if child.tail:
+                    parts.append(child.tail)
+
+        walk(element)
+        return " ".join("".join(parts).split())
+
+    @staticmethod
+    def _own_bodies(root: ET.Element) -> list[ET.Element]:
+        """The <body> elements belonging to this article, not to a sub-article.
+
+        Peer-reviewed articles ship the reports as <sub-article>, each with its
+        own <body>. A `.//body` search returns all of them, so iterating the
+        result mixed reviewer text into the article's own sections: in
+        PMC13567752 that turned a 39,374-character body into 94,895 characters
+        of "sections", and duplicated the data-availability statement in
+        PMC13567818.
+
+        Descends through wrappers but stops at <sub-article> and <response>,
+        without comparing element identity - lxml can hand back distinct proxy
+        objects for one node.
+        """
+        found: list[ET.Element] = []
+
+        def walk(elem: ET.Element) -> None:
+            for child in elem:
+                if child.tag in ("sub-article", "response"):
+                    continue
+                if child.tag == "body":
+                    found.append(child)
+                else:
+                    walk(child)
+
+        if root.tag == "body":
+            return [root]
+        walk(root)
+        return found
+
+    @staticmethod
     def _section_own_elements(
         section: ET.Element, *tags: str, stop_at: tuple[str, ...] = ()
     ) -> list[ET.Element]:
