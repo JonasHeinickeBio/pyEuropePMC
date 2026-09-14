@@ -303,6 +303,26 @@ jobs:
           # outright on an unknown one. Fetch the real set rather than hardcoding
           # a list in the prompt, which had drifted - it named security, testing
           # and performance, none of which exist in this repo (it has `tests`).
+          # Product context. Without it the model only sees coverage and linter
+          # output, so every suggestion comes back as test debt - which is what
+          # the first successful run produced (4 of 4 were tests/refactoring),
+          # despite this workflow being called Feature Suggester.
+          echo "Capturing public API surface and docs map..." | tee -a analysis.log
+          poetry run python - > analysis_output/product_context.txt <<'PRODUCT_EOF'
+          import pathlib
+
+          import pyeuropepmc
+
+          names = sorted(n for n in getattr(pyeuropepmc, "__all__", []) if not n.startswith("_"))
+          print("Public API (pyeuropepmc.__all__):")
+          print(", ".join(names) or "(none)")
+          print()
+
+          docs = sorted(p.relative_to("docs").as_posix() for p in pathlib.Path("docs").rglob("*.md"))
+          print(f"Documentation pages ({len(docs)}):")
+          print("\n".join(docs))
+          PRODUCT_EOF
+
           echo "Fetching repository labels..." | tee -a analysis.log
           gh label list --limit 100 --json name --jq '[.[].name] | join(", ")' \
             > analysis_output/labels.txt 2>/dev/null || echo "" > analysis_output/labels.txt
@@ -323,15 +343,20 @@ jobs:
 
           # Create a structured prompt file
           cat > llm_prompt.txt << 'PROMPT_EOF'
-          You are an expert code quality analyst for a Python bioinformatics project called pyEuropePMC.
+          You are a maintainer of pyEuropePMC, a Python library for searching and
+          retrieving biomedical literature from Europe PMC and related sources.
 
-          Analyze the following repository analysis data and suggest concrete, actionable improvements.
-          Focus on:
-          1. Missing test coverage for important modules
-          2. Security vulnerabilities or issues found by linters
-          3. Code quality improvements (complexity, type safety, documentation)
-          4. Missing features that would benefit users
-          5. Technical debt or refactoring opportunities
+          Propose concrete, actionable improvements. Cover BOTH of these, and do not
+          return only one kind:
+
+          A. Capability gaps a user of this library would notice - missing endpoints,
+             formats, sources, ergonomics, or documentation. Reason from the public
+             API surface, the docs map and the README below, not from the linter output.
+          B. Code health - test coverage, security findings, complexity, technical debt.
+
+          Aim for a mix. The analysis data below is heavily weighted towards (B)
+          because that is what static tools produce; do not let that decide the balance
+          of your suggestions.
 
           IMPORTANT: Review the existing GitHub issues below to AVOID creating duplicate suggestions.
           Only suggest new issues that are NOT already covered by existing issues.
@@ -355,6 +380,13 @@ jobs:
           - Use ONLY labels from the list below; any other label makes issue creation fail
           - DO NOT duplicate existing issues - check the existing issues list below first
           - Align suggestions with the project goals described in the README
+
+          ===== PUBLIC API SURFACE AND DOCUMENTATION MAP =====
+          PROMPT_EOF
+
+          cat analysis_output/product_context.txt >> llm_prompt.txt
+
+          cat >> llm_prompt.txt << 'PROMPT_EOF'
 
           ===== AVAILABLE LABELS (use only these) =====
           PROMPT_EOF
