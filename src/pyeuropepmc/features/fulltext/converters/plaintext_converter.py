@@ -48,6 +48,7 @@ class PlaintextConverter(BaseParser):
             self._add_abstract_to_text(text_parts)
             self._add_body_sections_to_text(text_parts)
             self._add_acknowledgments_to_text(text_parts)
+            self._add_author_notes_to_text(text_parts)
             self._add_appendices_to_text(text_parts)
             self._add_glossary_to_text(text_parts)
 
@@ -121,6 +122,19 @@ class PlaintextConverter(BaseParser):
         )
         if ack_results["ack"]:
             text_parts.append(f"Acknowledgments\n{ack_results['ack'][0]}\n\n")
+
+    def _add_author_notes_to_text(self, text_parts: list[str]) -> None:
+        """Add author notes - correspondence, contributions, competing interests.
+
+        get_full_text_sections() has always returned these; to_plaintext() did
+        not, so the two renderings of the same document disagreed about what
+        the back matter contained.
+        """
+        notes = self.extract_elements_by_patterns(
+            {"notes": ".//author-notes"}, return_type="text", first_only=True
+        )
+        if notes["notes"]:
+            text_parts.append(f"Author Notes\n{notes['notes'][0]}\n\n")
 
     def _add_appendices_to_text(self, text_parts: list[str]) -> None:
         """Add appendices to text parts."""

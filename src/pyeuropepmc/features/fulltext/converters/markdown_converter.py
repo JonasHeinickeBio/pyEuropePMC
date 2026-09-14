@@ -5,7 +5,7 @@ This module provides conversion of parsed XML to markdown format.
 """
 
 import logging
-from typing import Any
+from typing import Any, ClassVar
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
@@ -107,11 +107,34 @@ class MarkdownConverter(BaseParser):
                     if section_md:
                         md_parts.append(f"{section_md}\n\n")
 
+            self._add_back_matter_to_markdown(md_parts)
+
             return "".join(md_parts).strip()
 
         except Exception as e:
             logger.error(f"Error converting to markdown: {e}")
             raise
+
+    #: Back matter, in the order it is rendered. to_markdown() emitted none of
+    #: it: acknowledgments, author notes, appendices and the glossary were all
+    #: dropped, though to_plaintext() and get_full_text_sections() each carried
+    #: some. The three renderings of one document disagreed about its content.
+    BACK_MATTER: ClassVar[tuple[tuple[str, str], ...]] = (
+        ("Acknowledgments", ".//ack"),
+        ("Author Notes", ".//author-notes"),
+        ("Appendix", ".//app"),
+        ("Glossary", ".//glossary"),
+    )
+
+    def _add_back_matter_to_markdown(self, md_parts: list[str]) -> None:
+        """Render acknowledgments, author notes, appendices and glossary."""
+        if self.root is None:
+            return
+        for heading, pattern in self.BACK_MATTER:
+            for elem in self.root.findall(pattern):
+                text = self._get_text_content(elem)
+                if text.strip():
+                    md_parts.append(f"## {heading}\n\n{text.strip()}\n\n")
 
     def _add_metadata_to_markdown(self, metadata: dict[str, Any], md_parts: list[str]) -> None:
         """Add metadata fields to markdown parts."""

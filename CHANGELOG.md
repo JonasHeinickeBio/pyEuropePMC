@@ -2,6 +2,159 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [Unreleased]
+
+Full-text parsing correctness. Fourteen defects, every one found by measuring
+the parser's output against 124 real Europe PMC documents rather than by
+reading code — several were invisible to hand-written fixtures because they
+only occur in markup nobody writes by hand.
+
+None of these raised an exception. They returned plausible, wrong answers.
+
+### 🐛 Bug Fixes — wrong data returned
+
+- **References attributed the wrong text to title and journal.** A
+  `<mixed-citation>` may carry the same structured children as an
+  `<element-citation>`, or be a run of plain text. The parser ran a regex
+  over the flattened text *first* and consulted the structure afterwards
+  "for any missing fields" — but the regex fills `title` and `source` on
+  almost any input, so the correct values were computed and discarded. One
+  reference came back as `authors="Albritton E"`, `title="Hernández-Cancio S"`,
+  `source="Lutz W"` — the second and third authors, in the title and journal
+  fields. Complete author lists went from **11% to 100%** (16 → 149 of 149);
+  exact titles from 80% to 98% (535 → 653 of 665). Anything building citation
+  graphs on `extract_references()` was silently corrupt. (#226)
+
+- **Peer reviewers and editors were returned as article authors.** The search
+  covered the whole document, so the `<contrib>` inside every peer-review
+  `<sub-article>` came back as an author — PMC13567752 has nine and returned
+  fourteen, the reviewer once per report. Separately, with no
+  `contrib-type="author"` anywhere the patterns fell through to a bare
+  `.//name`, which also matches a `<contrib-group content-type="editor">`;
+  that added a spurious author to 13 of 124 documents. Author surnames
+  matching the article's own front matter: **82.3% → 100%**. (#227)
+
+- **Peer-review bodies were returned as article sections.** `.//body` also
+  matches the `<body>` of every `<sub-article>`, and every match was
+  iterated: PMC13567752 has a 39,374-character body and returned 94,895
+  characters of "sections". 9 of 124 documents were affected, 377,847
+  characters of reviewer text between them. (#222)
+
+- **`AUTH-01` reported missing authors for the majority JATS dialect.**
+  Only `<contrib contrib-type="author">` was recognised, not
+  `<contrib-group content-type="author">` — which was the commoner of the two
+  in a 1,000-file sample. 550 of the rule's 553 fires were false, and those
+  documents never reached `AUTH-02` either. (#218, issue #203)
+
+- **Publication dates were missed for 57% of documents.** Only
+  `pub-type` `ppub`/`epub`/`collection` were matched. The untyped
+  `<pub-date>` was the single most common spelling, and JATS 1.1 uses
+  `date-type`; 566 of 997 papers carrying a usable `<year>` returned `None`.
+  Candidates are now ranked rather than filtered. A day is also only emitted
+  with a month — previously a year-and-day date produced the malformed
+  `"2022-14"`. (#219, issue #210)
+
+- **Funding sources were dropped when the funder was direct text.** Only
+  `<funding-source>//institution` was read, so a group naming its funder
+  directly — and having no award ID or recipient — produced an empty
+  dictionary and disappeared entirely. (#219, issue #210)
+
+- **Licence URLs and text were missed.** The URL was taken only from
+  `<ext-link>`, never from `<ali:license_ref>`, which is the canonical
+  machine-readable form and often the only one present. `<license-p>` was
+  read without full-text extraction, so a paragraph opening with an inline
+  element (`<bold>Open Access</bold>This article…`) yielded only the
+  whitespace before it. Licence URLs 83 → 100 of 124; licence text 96 → 124.
+  (#224)
+
+### 🐛 Bug Fixes — text lost or duplicated
+
+- **Nested section text was emitted twice.** JATS sections nest, and the flat
+  extractors selected descendant content with `.//`: a parent carried its
+  subsections' paragraphs and each subsection emitted them again. Measured on
+  Europe PMC samples this repeated 43% of `get_full_text_sections()`, 40% of
+  `to_plaintext()` and 60% of `to_markdown()`. (#220, issue #209)
+
+- **Paragraphs outside a `<sec>` were discarded.** `to_plaintext()` handled
+  bare `<p>` under `<body>` only when the document had *no* `<sec>` at all, so
+  articles with opening paragraphs *and* sections lost them; `to_markdown()`
+  never handled them. A `<p>` inside a `<boxed-text>` under `<body>` was
+  missed by both. (#221, #222)
+
+- **List and table content was both lost and duplicated.**
+  `_process_list_plaintext` rendered only the first `<p>` of each item and
+  matched nested items twice. Table `<caption>` and `<table-wrap-foot>` — the
+  abbreviation keys — were never rendered as table content, because the
+  renderer was handed the inner `<table>` rather than its wrapper. (#222,
+  #223)
+
+- **The structured blocks API dropped figure and supplement text.** A `<fig>`
+  was rendered from label, caption and graphic alone, discarding a
+  `<disp-quote>` describing it; `<supplementary-material>` was traversed with
+  `findall("caption")`, direct children only, while the caption usually sits
+  under a nested `<media>`. Body sentences absent from
+  `get_full_text_sections_structured()`: **48 → 1**. (#229)
+
+- **The three renderings disagreed about back matter.**
+  `get_full_text_sections()` returned `<author-notes>` but not `<ack>`;
+  `to_plaintext()` did the reverse; `to_markdown()` returned neither, nor
+  appendices, nor the glossary. All three now cover the same set.
+
+### 🐛 Bug Fixes — input handling
+
+- **XML text carrying an encoding declaration could not be parsed.**
+  `LXMLParser.fromstring()` is documented to take XML text, but lxml rejects a
+  `str` with an encoding declaration — which is how Europe PMC ships full
+  text, so 57 of 100 real files failed. Encoding to UTF-8 alone is not enough:
+  lxml honours the declaration over the bytes it is given, so a latin-1
+  declaration silently produced `cafÃ©`. The declaration is rewritten to name
+  the encoding actually passed, and `bytes` input is accepted unchanged. (#217,
+  issue #204)
+
+- **JATS in a default XML namespace extracted nothing at all.** Every search
+  in the package is unprefixed, which matches the DTD-based JATS Europe PMC
+  serves; a schema-based document puts the same elements in a namespace, so
+  every search returned nothing — no title, no sections, empty plain text, and
+  no error raised. `parse()` now strips the root's own namespace while leaving
+  prefixed vocabularies (`ali:`, `xlink:`) intact. (#225)
+
+- **Spaces were invented around inline elements.** Text extraction stripped
+  every fragment and joined with a space, so `PM<sub>2.5</sub>` read as
+  `PM 2.5` and a citation parenthesis as `( Kumar, 2021 ; …)` — wrong for a
+  reader, and worse for tokenisation. Inline runs now keep the document's own
+  spacing; block-level children are still separated. Exact article titles:
+  122 → 124 of 124. (#228)
+
+### ✅ Tests
+
+- **`tests/features/fulltext/real_data/`** asserts parser invariants against
+  the real Europe PMC documents in `tests/fixtures/fulltext_downloads/`: every
+  body sentence appears in each rendering at least once and no more often than
+  the source has it, and extracted values match what the XML says. Run against
+  the code as it stood before this work, the suite fails 26 times; against the
+  current code, not at all.
+
+- Two fixtures were added to cover shapes the existing four do not:
+  `PMC13567752.xml` (nine peer-review `<sub-article>` elements) and
+  `PMC12018715.xml` (23 structured `<mixed-citation>` references).
+
+### 📊 Verified across 124 real Europe PMC documents
+
+| Check | Before | After |
+| --- | ---: | ---: |
+| Article title matches `<article-title>` | 122/124 | 124/124 |
+| Author surnames match front matter, in order | 102/124 | 124/124 |
+| Metadata field coverage (10 fields) | `pub_date` 43% | 100% |
+| Complete author list on structured citations | 16/149 | 149/149 |
+| Licence URL present | 83/124 | 100/124 |
+| Body sentences lost (of 19,964) | 10 | 0 |
+| Body sentences duplicated | 154 | 43 |
+| Public API sweep (124 × 20 methods) | — | 2,480 calls, 0 exceptions |
+
+The 43 remaining duplicates are short boilerplate that documents genuinely
+repeat — ethics statements, "Not applicable." — in table footnotes and figure
+captions.
+
 ## [2.1.2] - 2026-09-14
 
 ### 🐛 Bug Fixes
