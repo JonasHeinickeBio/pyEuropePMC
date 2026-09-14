@@ -61,6 +61,7 @@ workflows are already wired for it (next section).
 | CI | `cdci.yml` | push to `main`, PR, merge queue, manual | Lint (`ruff`), type-check (`mypy`), bandit, full test suite with `--all-extras`, coverage ≥75% |
 | CI — Light core install | `unit-tests.yml` | push to `main`, PR, merge queue, manual | Tests against a bare `pip install pyeuropepmc` (no extras) — proves the optional-dependency split actually works |
 | Python Version Compatibility Matrix | `python-compatibility.yml` | push to `main`, every PR, merge queue, weekly, manual | Syntax/import checks on 3.10–3.13; full test suite on a matrix of Python version × OS |
+| Workflow security audit | `zizmor.yml` | push to `.github/**`, every PR, merge queue, weekly, manual | Audits every workflow/action file with [zizmor](https://docs.zizmor.sh/) (pinned version, for reproducibility) |
 
 ### The OS matrix is intentionally reduced on a PR, full everywhere else
 
@@ -78,43 +79,72 @@ This is a real, previously-demonstrated gap: the Windows-only
 `asyncio`/`pytest-socket` regression from the MCP server rewrite (#190)
 passed PR CI clean and only broke on the post-merge push-to-`main` run,
 requiring a follow-up fix (#202). `merge_group` was added specifically to
-close this — see next section — but until/unless this repo can actually use
-a merge queue, that trigger is currently **dead code**: it's wired up and
+close this — see below — but until/unless this repo can actually use a
+merge queue, that trigger is currently **dead code**: it's wired up and
 will work the moment a queue exists, but nothing fires it today.
 
-### A required check must run on *every* PR, not just relevant ones
+### A required check must run — and report — on *every* PR
 
-`python-compatibility.yml`'s `pull_request` trigger used to be filtered to
-`src/**`, `tests/**`, `pyproject.toml`, `poetry.lock`, and the workflow
-files themselves — the rationale in the OS-matrix section above still holds
-(catch cross-version breakage in review), but the filter interacted badly
-with making `Compatibility Summary` a **required** status check: when a
-PR's diff doesn't match any of those paths (a docs-only PR, for instance —
-this is exactly how it was found, on the PR that added this very document),
-the workflow never runs *at all*, the required check never reports
-anything, and GitHub blocks that PR from merging indefinitely, waiting on a
-check that will never arrive. There's no "not applicable, treat as passed"
-concept for a required check that simply never ran.
+`python-compatibility.yml` and `zizmor.yml` both used to filter their
+`pull_request` trigger with a `paths:` list (source/test files for the
+former, `.github/**` for the latter). That interacts badly with making
+either workflow's summary job a **required** status check: a workflow
+suppressed by a `paths:` filter never runs *at all*, so it never reports
+anything, and a required check that never reports leaves the PR stuck
+forever on "Expected — waiting for status to be reported." There's no
+"not applicable, treat as passed" concept for a check that never ran. This
+is exactly how it was found — on the PR that added this document, which
+touched neither workflow's original path list.
 
-The filter is gone; `pull_request` now behaves like `merge_group` (below)
-and fires on every PR unconditionally. The reduced Ubuntu-only PR-time
-matrix keeps the added cost small — the expensive Windows/macOS legs are
-still push/`merge_group`-only.
+**The fix moves the filtering from the trigger into a job condition**,
+[per GitHub's own troubleshooting
+guidance](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks):
+a workflow *suppressed by `paths:`* never reports, but a *job skipped by
+an `if:`* reports success. Concretely, in `python-compatibility.yml`:
 
-**The general rule, going forward:** before adding any job as a required
-status check, confirm its workflow triggers unconditionally on
-`pull_request` (and `merge_group`, if this repo ever gets a merge queue) —
-a `paths:` filter and "required check" don't mix.
+- The `config` job's "Decide whether this event needs the matrix" step
+  resolves an actual `relevant` output: `push`/`merge_group`/`schedule`/
+  `workflow_dispatch` are always relevant; for a `pull_request`, it fetches
+  the PR's changed files (`gh api repos/{repo}/pulls/{n}/files`) and checks
+  them against the same path patterns the old filter used.
+- `syntax-check` and `core-tests` are gated with
+  `if: needs.config.outputs.relevant == 'true'` — they simply don't run
+  for an irrelevant PR.
+- **`compatibility-summary`** (the `Compatibility Summary` check) runs
+  `if: always()` regardless, and only fails the job on an explicit
+  `failure` from its dependencies — so a skip still produces a *passing*
+  `Compatibility Summary`. **That's the job to name as the required check**,
+  never `syntax-check` or `core-tests` directly (those genuinely don't run
+  for an irrelevant PR, so requiring them would reintroduce the exact same
+  bug).
+
+`zizmor.yml` got the identical treatment: a `changes` job resolves
+relevance from the PR's file list, and the actual audit job is gated on it.
+
+**The general rule, going forward:** before naming any job as a required
+status check, confirm two things — its workflow triggers unconditionally
+on `pull_request` (no `paths:` filter on the trigger itself), and the named
+job specifically still runs and reports even when its upstream work was
+skipped. A `paths:` filter on the *trigger* and "required check" don't mix;
+a `paths:`-equivalent condition on the *job*, feeding into an
+`if: always()` summary job, is the pattern that works.
 
 ### `merge_group` triggers
 
-`cdci.yml`, `unit-tests.yml`, and `python-compatibility.yml` all listen for
-the `merge_group` event. This exists so that **if** this repo moves to an
-org and gets a merge queue, the required checks are already capable of
-firing against a queued PR — a merge queue's required checks must run on
-`merge_group`, or a queued entry just waits forever for a check that never
-executes. Until then, these triggers never activate (no merge queue → no
-`merge_group` events).
+`cdci.yml`, `unit-tests.yml`, `python-compatibility.yml`, and `zizmor.yml`
+all listen for the `merge_group` event. This exists so that **if** this
+repo moves to an org and gets a merge queue, the required checks are
+already capable of firing against a queued PR — a merge queue's required
+checks must run on `merge_group`, or a queued entry just waits forever for
+a check that never executes. Until then, these triggers never activate (no
+merge queue → no `merge_group` events).
+
+### `zizmor` is not (yet) a required check
+
+`zizmor.yml`'s audit job is now safe to require (same relevance-gating
+pattern as above), but it hasn't been added to the ruleset's
+`required_status_checks` — that's a deliberate choice left open rather than
+made unilaterally alongside the other changes in this document.
 
 ## Release process
 
