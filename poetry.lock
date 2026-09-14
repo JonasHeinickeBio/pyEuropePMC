@@ -5652,14 +5652,14 @@ stats = ["scipy (>=1.7)", "statsmodels (>=0.12)"]
 
 [[package]]
 name = "search-query"
-version = "0.13.0"
+version = "0.15.0"
 description = "Package for managing literature search queries."
 optional = false
 python-versions = ">=3.8"
 groups = ["main"]
 files = [
-    {file = "search_query-0.13.0-py3-none-any.whl", hash = "sha256:052f312e9eeb16408f000a201c70946aa407352255d456977a7ce654a8e4cb2f"},
-    {file = "search_query-0.13.0.tar.gz", hash = "sha256:9c3ea66132fa66ab2e8cf861a54053ab0250b34080d3045a4c2855d2da047bbb"},
+    {file = "search_query-0.15.0-py3-none-any.whl", hash = "sha256:c73af1eb06a26b3863c38151c2dfecf3a1945f8df6a9608aec0b7970ee1ac638"},
+    {file = "search_query-0.15.0.tar.gz", hash = "sha256:831be4111fd9823bc1665666ec41d27d40af8aadc90a0e869997ca8b4eedc58e"},
 ]
 
 [package.extras]
@@ -7140,4 +7140,4 @@ zotero = ["pyzotero"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.10,<4.0"
-content-hash = "f5eafdbd36b4bd49f0058b6366d436dbb45d447781758152421d02ef5c9d71f6"
+content-hash = "8be8088cae180568f3860cbfc10f603f45cb2b38aff0724449d14b8351b8f8a0"
