@@ -82,11 +82,14 @@ class MarkdownConverter(BaseParser):
             )
             if body_results["body"]:
                 body_elem = body_results["body"][0]
-                for sec in body_elem.iter():
-                    if sec.tag == "sec":
-                        section_md = self._process_section_markdown(sec, level=2)
-                        if section_md:
-                            md_parts.append(f"{section_md}\n\n")
+                # Top-level sections only. `iter()` yielded every descendant
+                # <sec> as well, and _process_section_markdown already renders
+                # subsections beneath their parent - so each one was emitted
+                # twice, at two different heading levels (#209).
+                for sec in self._child_sections(body_elem):
+                    section_md = self._process_section_markdown(sec, level=2)
+                    if section_md:
+                        md_parts.append(f"{section_md}\n\n")
 
             return "".join(md_parts).strip()
 
@@ -114,18 +117,19 @@ class MarkdownConverter(BaseParser):
         if titles:
             md_parts.append(f"{'#' * level} {titles[0]}\n\n")
 
-        # Extract paragraphs
-        paragraphs = self._extract_flat_texts(
-            section, ".//p", filter_empty=True, use_full_text=True
-        )
-        for para_text in paragraphs:
-            md_parts.append(f"{para_text}\n\n")
+        # Extract paragraphs - this section's own, not its subsections' (#209)
+        for para in self._section_own_elements(section, "p"):
+            for para_text in self._extract_flat_texts(
+                para, ".", filter_empty=True, use_full_text=True
+            ):
+                md_parts.append(f"{para_text}\n\n")
 
-        # Process subsections
-        for subsec in section.iter():
-            if subsec.tag == "sec" and subsec != section:
-                subsec_md = self._process_section_markdown(subsec, level=level + 1)
-                if subsec_md:
-                    md_parts.append(subsec_md)
+        # Process subsections. Direct children only: `iter()` reached every
+        # descendant, so a grandchild was rendered once at level+1 under its
+        # grandparent and again at level+2 under its own parent.
+        for subsec in self._child_sections(section):
+            subsec_md = self._process_section_markdown(subsec, level=level + 1)
+            if subsec_md:
+                md_parts.append(subsec_md)
 
         return "".join(md_parts)
