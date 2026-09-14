@@ -36,7 +36,12 @@ jobs:
         uses: $/.github/actions/setup-python-env
         with:
           python-version: '3.10'
-          extras: none
+          # This is the only job that selects `-m functional`; every other run
+          # deselects it via addopts. With `extras: none` the analytics
+          # functional tests skipped on missing pandas here and were deselected
+          # everywhere else, so they executed nowhere. `all` is what makes them
+          # reachable - the lean-install guarantee is unit-tests.yml's job.
+          extras: all
 
       # These tests hit the real Europe PMC service, so the run is expensive and
       # occasionally flaky. It happens exactly ONCE: the output is captured here
