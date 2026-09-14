@@ -145,6 +145,54 @@ External API enrichment (Semantic Scholar, Crossref, etc.).
 - MCP server only needed for API integration
 - `cryptography` and `search-query` are small but not always needed
 
+## Updating a dependency
+
+`pyproject.toml` and `poetry.lock` are the source of truth. `requirements.txt`
+is **generated** from the lock and committed for convenience — the agent docs
+show it used in a `Dockerfile`, and CI installs from an export of it.
+
+Two places regenerate it, and both pin the exporter:
+
+| Where | Pin |
+| --- | --- |
+| `.pre-commit-config.yaml` | `poetry==2.3.2`, `poetry-plugin-export==1.10.0` |
+| `.github/actions/setup-python-env/action.yml` | the same |
+
+`cdci.yml` then re-exports and fails the build if the committed file differs:
+
+```
+##[error]requirements.txt is stale. Regenerate it with:
+poetry export --without-hashes -f requirements.txt -o requirements.txt
+```
+
+### Dependabot pull requests need one extra step
+
+Dependabot updates `pyproject.toml` and `poetry.lock`. It does not know about
+the generated file, and it does not run pre-commit — so **every** Dependabot
+PR arrives failing the staleness check, whatever the dependency. Regenerate
+and push to the same branch:
+
+```bash
+git checkout -B fix/<dep> origin/dependabot/pip/<dep>-<version>
+git merge origin/main --no-edit
+uvx --from poetry==2.3.2 --with poetry-plugin-export==1.10.0 \
+  poetry export --without-hashes -f requirements.txt -o requirements.txt
+git commit -am "build: regenerate requirements.txt for <dep> <version>"
+git push origin fix/<dep>:dependabot/pip/<dep>-<version>
+```
+
+### Use the pinned exporter, not whatever is installed
+
+The export format depends on the plugin version. 1.8.0 and 1.10.0 disagree
+about environment markers for the same lock — clause ordering on `pycparser`
+and `pywin32`, a simplified `colorama` marker, whether `pyjwt` carries its
+`[crypto]` extra. Exporting with the wrong one rewrites five unrelated lines
+and fails the same check from the other direction.
+
+The `uvx` invocation above pins both, so it matches CI regardless of what the
+local Poetry has installed. `poetry self show plugins` reports the local
+version if you want to check.
+
 ## Migration Plan
 
 ### Step 1: Update pyproject.toml
