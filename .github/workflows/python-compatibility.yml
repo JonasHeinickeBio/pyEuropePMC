@@ -14,6 +14,13 @@ on:
       - 'poetry.lock'
       - '.github/workflows/python-compatibility.yml'
       - '.github/actions/setup-python-env/action.yml'
+  # No path filter here (unlike pull_request above): the merge queue needs
+  # this job to fire on every entry or a queued PR would wait forever for a
+  # check that never runs. This is also where the reduced PR-time matrix
+  # (Linux-only, see the `config` job below) stops applying - `merge_group`
+  # falls through to the full OS matrix, so Windows/macOS breakage is caught
+  # right before merge instead of only after, on a push to main.
+  merge_group:
   schedule:
     # Weekly on Sundays at 06:00 UTC
     - cron: '0 6 * * 0'
@@ -78,8 +85,10 @@ jobs:
 
           # On a pull request, Linux only. The Windows and macOS legs are the
           # expensive ones (macOS especially) and a PR-time signal on Linux
-          # catches almost everything; the full matrix still runs on every push
-          # to main and weekly.
+          # catches almost everything; the full matrix runs on every push to
+          # main, weekly, and - deliberately NOT reduced here - every merge
+          # queue entry (event "merge_group"), so a Windows/macOS-only
+          # regression is still caught before it merges, not just after.
           if os.environ.get("EVENT_NAME") == "pull_request":
               runners = {"ubuntu": runners["ubuntu"]}
 
