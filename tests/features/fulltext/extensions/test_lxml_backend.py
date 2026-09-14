@@ -1,19 +1,17 @@
 """Tests for the optional lxml parser backend."""
 
-import logging
-import xml.etree.ElementTree as ET
 from pathlib import Path
-from unittest.mock import MagicMock, PropertyMock, patch
+from unittest.mock import MagicMock, patch
+import xml.etree.ElementTree as ET
 
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.extensions.lxml_backend import (
-    LXMLParser,
     _HAS_LXML,
+    LXMLParser,
     is_lxml_available,
 )
-
 
 pytestmark = pytest.mark.unit
 
@@ -65,6 +63,55 @@ class TestLXMLParserFromString:
         xml = '<?xml version="1.0"?><ns:root xmlns:ns="http://example.com"><ns:item>text</ns:item></ns:root>'
         root = LXMLParser.fromstring(xml)
         assert root.tag.endswith("root")
+
+    @pytest.mark.parametrize(
+        ("xml", "expected"),
+        [
+            pytest.param(
+                '<?xml version="1.0" encoding="UTF-8"?><a>caf\u00e9</a>',
+                "caf\u00e9",
+                id="utf8-declared",
+            ),
+            pytest.param(
+                '<?xml version="1.0" encoding="ISO-8859-1"?><a>caf\u00e9</a>',
+                "caf\u00e9",
+                id="latin1-declared",
+            ),
+            pytest.param(
+                "<?xml version='1.0' encoding='latin-1'?><a>caf\u00e9</a>",
+                "caf\u00e9",
+                id="single-quoted-declaration",
+            ),
+            pytest.param(
+                '<?xml version="1.0"?><a>caf\u00e9</a>', "caf\u00e9", id="no-encoding-attr"
+            ),
+            pytest.param("<a>caf\u00e9</a>", "caf\u00e9", id="no-declaration"),
+            pytest.param(
+                '\ufeff<?xml version="1.0" encoding="ISO-8859-1"?><a>caf\u00e9</a>',
+                "caf\u00e9",
+                id="bom-then-declaration",
+            ),
+        ],
+    )
+    def test_fromstring_accepts_declared_encodings(self, xml, expected):
+        """A str with an encoding declaration parses, and text survives intact.
+
+        lxml rejects a str carrying a declaration outright, and honours the
+        declaration over supplied bytes - so a latin-1 declaration encoded to
+        UTF-8 would silently yield 'caf\u00c3\u00a9'. Both are regressions worth
+        holding: Europe PMC full text ships with these declarations.
+        """
+        assert LXMLParser.fromstring(xml).text == expected
+
+    def test_fromstring_leaves_bytes_untouched(self):
+        """bytes still mean what their declaration says; nothing is rewritten."""
+        raw = '<?xml version="1.0" encoding="ISO-8859-1"?><a>caf\u00e9</a>'.encode("iso-8859-1")
+        assert LXMLParser.fromstring(raw).text == "caf\u00e9"
+
+    def test_fromstring_ignores_encoding_in_body_text(self):
+        """Only a leading declaration is rewritten, never body content."""
+        body = 'set encoding="ISO-8859-1" here'
+        assert LXMLParser.fromstring(f"<a>{body}</a>").text == body
 
     @patch("pyeuropepmc.features.fulltext.extensions.lxml_backend.logger")
     def test_fromstring_logs_error(self, mock_logger):
