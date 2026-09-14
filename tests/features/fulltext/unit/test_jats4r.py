@@ -149,6 +149,47 @@ class TestValidateAuthors:
         _validator(xml)._validate_authors(report)
         assert "AUTH-02" not in _rule_ids(report)
 
+    def test_group_level_author_type_not_flagged(self):
+        """<contrib-group content-type="author"> is a valid authorship form.
+
+        It was the majority dialect in the sampled Europe PMC corpus (550 of
+        1,000 files) and produced 550 of AUTH-01's 553 fires (#203).
+        """
+        xml = """<article><contrib-group content-type="author">
+            <contrib><name><surname>Doe</surname><given-names>J</given-names></name></contrib>
+        </contrib-group></article>"""
+        report = ValidationReport()
+        _validator(xml)._validate_authors(report)
+        assert "AUTH-01" not in _rule_ids(report)
+
+    def test_group_level_authors_reach_auth02(self):
+        """AUTH-01 returned early, so the majority dialect never saw AUTH-02."""
+        xml = """<article><contrib-group content-type="author">
+            <contrib id="a1"><name><surname>Doe</surname></name></contrib>
+        </contrib-group></article>"""
+        report = ValidationReport()
+        _validator(xml)._validate_authors(report)
+        assert "AUTH-02" in _rule_ids(report)
+
+    def test_mixed_dialects_counted_once_each(self):
+        """Both forms in one document: two authors, not three and not one."""
+        xml = """<article>
+            <contrib-group><contrib contrib-type="author" id="a1"/></contrib-group>
+            <contrib-group content-type="author"><contrib id="a2"/></contrib-group>
+        </article>"""
+        report = ValidationReport()
+        _validator(xml)._validate_authors(report)
+        assert [f.rule_id for f in report.findings].count("AUTH-02") == 2
+
+    def test_explicit_editor_in_author_group_is_not_an_author(self):
+        """A contrib carrying its own contrib-type keeps it, group regardless."""
+        xml = """<article><contrib-group content-type="author">
+            <contrib contrib-type="editor"><name><surname>E</surname></name></contrib>
+        </contrib-group></article>"""
+        report = ValidationReport()
+        _validator(xml)._validate_authors(report)
+        assert "AUTH-01" in _rule_ids(report)
+
     def test_orcid_via_ext_link_not_flagged(self):
         xml = """<article><contrib contrib-type="author" id="a1">
             <ext-link ext-link-type="orcid">0000-0002-1825-0097</ext-link>
