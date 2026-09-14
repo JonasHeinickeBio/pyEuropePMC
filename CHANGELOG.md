@@ -92,8 +92,11 @@ None of these raised an exception. They returned plausible, wrong answers.
   was rendered from label, caption and graphic alone, discarding a
   `<disp-quote>` describing it; `<supplementary-material>` was traversed with
   `findall("caption")`, direct children only, while the caption usually sits
-  under a nested `<media>`. Body sentences absent from
-  `get_full_text_sections_structured()`: **48 → 1**. (#229)
+  under a nested `<media>`. A `<p>` sitting outside the caption was dropped
+  too, because the no-caption fallback only fires when the element yields
+  nothing at all — an item carrying both kept the caption and lost the
+  paragraph. Body sentences absent from
+  `get_full_text_sections_structured()`: **48 → 0**. (#229, #232)
 
 - **The three renderings disagreed about back matter.**
   `get_full_text_sections()` returned `<author-notes>` but not `<ack>`;
@@ -147,7 +150,8 @@ None of these raised an exception. They returned plausible, wrong answers.
 | Metadata field coverage (10 fields) | `pub_date` 43% | 100% |
 | Complete author list on structured citations | 16/149 | 149/149 |
 | Licence URL present | 83/124 | 100/124 |
-| Body sentences lost (of 19,964) | 10 | 0 |
+| Body sentences lost from flat renderings (of 19,964) | 10 | 0 |
+| Body sentences lost from structured blocks | 48 | 0 |
 | Body sentences duplicated | 154 | 43 |
 | Public API sweep (124 × 20 methods) | — | 2,480 calls, 0 exceptions |
 
