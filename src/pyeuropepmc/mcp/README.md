@@ -1,308 +1,159 @@
-# pyeuropepmc MCP Module
+# pyeuropepmc MCP Server
 
-This module provides Model Context Protocol (MCP) integration for the pyeuropepmc package, allowing you to use Europe PMC API tools in MCP-compatible clients.
+A [Model Context Protocol](https://modelcontextprotocol.io/) server that exposes
+Europe PMC (and related literature-search) functionality — search, citation graph
+traversal, clinical trials, full-text indexing, figure extraction, bibliography
+tooling, and optional LLM-powered analysis — as tools for AI agents.
 
-## Overview
-
-The Model Context Protocol (MCP) enables AI applications to discover and use tools, resources, and prompts from external services. This MCP server exposes Europe PMC API functionality as tools that can be invoked by LLMs and AI assistants.
-
-### Architecture
-
-```
-┌─────────────────┐     MCP Protocol      ┌──────────────────┐
-│   AI Host       │◄─── JSON-RPC 2.0 ────►│  pyeuropepmc MCP │
-│ (Claude, etc.)  │    STDIO Transport    │     Server       │
-└─────────────────┘                        └──────────────────┘
-                                                      │
-                                                      ▼
-                                              ┌──────────────┐
-                                              │ Europe PMC API │
-                                              └──────────────┘
-```
+Built on the official [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+(`FastMCP`), not a hand-rolled JSON-RPC loop, so it gets spec-compliant error
+semantics, concurrent async tool execution (blocking network/disk calls are
+offloaded to a thread pool, so one slow request never stalls the others), and a
+choice of transports out of the box.
 
 ## Installation
 
-The MCP server is included as part of the pyeuropepmc package:
+The MCP server ships as part of the core package — `mcp` is a required (not
+optional) dependency, since the `pyeuropepmc-mcp` console script is always
+installed:
 
 ```bash
 pip install pyeuropepmc
 ```
 
-## Usage
+Individual tools depend on the package's optional feature extras (see
+"Tool availability" below) — install `pyeuropepmc[all]` to unlock every tool.
 
-### As an MCP Server
-
-Run the MCP server:
-
-```bash
-pyeuropepmc-mcp
-```
-
-Or using Python directly:
+## Running the server
 
 ```bash
-python -m pyeuropepmc.mcp.server
+pyeuropepmc-mcp                              # stdio transport (default) — Claude Desktop and similar
+pyeuropepmc-mcp --transport streamable-http  # HTTP transport — remote / non-desktop agents
+pyeuropepmc-mcp --transport sse              # SSE transport
+python -m pyeuropepmc.mcp.server --help      # full CLI reference
 ```
 
-### Available Tools
+| Flag | Env var | Default | Notes |
+|---|---|---|---|
+| `--transport` | `PYEUROPEPMC_MCP_TRANSPORT` | `stdio` | `stdio`, `sse`, or `streamable-http` |
+| `--host` | `PYEUROPEPMC_MCP_HOST` | `127.0.0.1` | bind host for `sse`/`streamable-http` |
+| `--port` | `PYEUROPEPMC_MCP_PORT` | `8000` | bind port for `sse`/`streamable-http` |
+| `--log-level` | `PYEUROPEPMC_MCP_LOG_LEVEL` | `INFO` | written to stderr, never stdout |
 
-The server exposes the following tools:
+`stdio` is what process-managed clients like Claude Desktop expect. Use
+`streamable-http` (or `sse`) to run the server as a standalone network service
+that any MCP-capable agent — not just Claude — can connect to over HTTP.
 
-| Tool Name | Description | Input Parameters |
-|-----------|-------------|------------------|
-| `search_papers` | Search for papers in Europe PMC | `query` (string, required), `limit` (integer, optional, default: 25), `sort` (string, optional), `result_type` (string, optional) |
-| `get_paper_details` | Get detailed information about a paper by PMID, PMCID, or DOI | `pmid` (string, optional), `pmcid` (string, optional), `doi` (string, optional) |
-| `search_authors` | Search for authors in Europe PMC | `query` (string, required) |
-| `get_paper_citations` | Get citations for a paper | `pmid` (string, required), `limit` (integer, optional, default: 100) |
-
-## Configuration
-
-### Claude Desktop / MCP Client Configuration
-
-Configure in your MCP client configuration file:
+### Claude Desktop configuration
 
 ```json
 {
   "mcpServers": {
     "pyeuropepmc": {
-      "command": "pyeuropepmc-mcp",
-      "enabled": true
+      "command": "pyeuropepmc-mcp"
     }
   }
 }
 ```
 
-### Programmatic Usage
+### Remote / HTTP agents
 
-```python
-from pyeuropepmc.mcp.server import EuropePMCMCPServer
+Start the server with `--transport streamable-http --host 0.0.0.0 --port 8000`
+(behind whatever auth/TLS termination your deployment requires — the server
+itself does not implement auth) and point any MCP HTTP client at
+`http://<host>:<port>/mcp`.
 
-server = EuropePMCMCPServer()
-# Run the server with your MCP client
-```
+## Tools
 
-## MCP Best Practices Implemented
+| Tool | Description | Needs |
+|---|---|---|
+| `unified_search` | Multi-source search (PubMed, arXiv, Semantic Scholar, OpenAlex, ClinicalTrials.gov) with cross-source dedup | `all` |
+| `search_papers` | \[Legacy\] single-source Europe PMC search | — |
+| `get_paper_details` | Resolve a paper by PMID / PMCID / DOI | — |
+| `search_authors` | Author search | — |
+| `get_paper_citations` | Papers citing a given paper | — |
+| `citation_snowball` | Forward/backward/both citation-graph walk | `all` |
+| `clinical_trial_search` | ClinicalTrials.gov search by condition/intervention/keyword | `all` |
+| `fulltext_index_query` | Search a local SQLite FTS5 full-text index | `all` |
+| `paper_figures` | Extract figures from PMC Open Access articles | `all` |
+| `analyze_citations`, `compare_citations`, `summarize_citations` | LLM-powered citation analysis | `agentic` + an LLM provider |
+| `paper_screening` | PRISMA-style automated screening | `agentic` + an LLM provider |
+| `research_question_analysis`, `preprint_analysis`, `literature_review`, `knowledge_graph` | LLM-powered research tooling | `agentic` + an LLM provider |
+| `bib_parse_string`, `bib_validate`, `bib_to_ris`, `bib_to_csl`, `bib_merge` | BibTeX parsing/validation/conversion/merging | `bibliography` |
+| `ref_resolve_doi`, `ref_resolve_pmid` | Resolve a DOI/PMID to bibliographic metadata | `bibliography` |
 
-### 1. Protocol Compliance
+Run `pyeuropepmc-mcp` and call `tools/list` (or open it in any MCP client) for
+the full, current input schema of each tool — schemas are generated directly
+from the tool functions' type hints, so this table and the server can never
+drift apart.
 
-- **JSON-RPC 2.0**: Uses standard JSON-RPC 2.0 message format
-- **Protocol Version**: Implements `2024-11-05` protocol version
-- **Capability Negotiation**: Properly negotiates capabilities during initialization
+### Tool availability
 
-### 2. Security Considerations
+A tool whose feature module isn't importable, or whose optional runtime
+dependency (e.g. `bibtexparser` for the bibliography tools, an LLM provider
+for the LLM tools) isn't configured, doesn't disappear from `tools/list` — it
+still advertises its schema, but calling it returns a clear
+`pip install pyeuropepmc[<extra>]` (or provider-configuration) error instead
+of a stack trace.
 
-The server implements MCP security best practices:
+### LLM-powered tools
 
-- **Input Validation**: All tool inputs are validated before processing
-- **Error Handling**: Proper error responses for both protocol and execution errors
-- **Resource Protection**: Europe PMC API calls respect rate limits
+The `analyze_citations` / `paper_screening` / `literature_review` / … family
+needs an LLM provider configured in the server's environment — see
+[`pyeuropepmc.agentic.llm_client.create_llm_client`](../agentic/llm_client.py)
+for supported providers and the relevant environment variables. Without one
+configured, these tools report the missing configuration rather than failing
+silently.
 
-### 3. Tool Design
+## Design notes
 
-- **Descriptive Names**: Tool names follow naming conventions (alphanumeric, underscore, hyphen, dot)
-- **Clear Documentation**: Each tool includes detailed descriptions
-- **JSON Schema**: Input schemas follow JSON Schema 2020-12 specification
+- **Concurrency.** Every underlying client (`SearchClient`, `CitationWalker`, …)
+  does synchronous I/O. Each tool call offloads that work to a worker thread
+  (`anyio.to_thread.run_sync`) instead of blocking the event loop, so the
+  server can serve multiple agents / concurrent tool calls without one slow
+  Europe PMC request head-of-line-blocking everything else.
+- **Cached clients.** Underlying clients (`SearchClient`, `CitationWalker`,
+  the LLM agent, …) are constructed once per process and reused — not just
+  for speed, but for correctness: a fresh `CitationWalker` per call would
+  reset its own internal rate limiter, and a fresh LLM agent per call would
+  never hit its own analysis cache.
+- **Errors.** A tool signals failure by raising (typically
+  `mcp.server.fastmcp.exceptions.ToolError` for an expected/user-facing
+  condition, e.g. a missing identifier). The SDK turns that into a spec-
+  compliant `CallToolResult` with `isError: true` — callers can reliably tell
+  success from failure without string-sniffing the response text.
+- **Structured content.** Tools return typed Python values (`dict`, `list`,
+  `str`, …), not pre-serialized JSON strings — the SDK derives an output
+  schema and returns both `structuredContent` (for programmatic consumption)
+  and a human-readable text rendering.
+- **Progress/logging.** A few longer-running tools (`unified_search`,
+  `citation_snowball`, `paper_screening`, `literature_review`) accept an
+  injected `Context` and emit `ctx.info(...)` notifications mid-call, so a
+  client that surfaces MCP logging notifications can show progress instead of
+  going silent for the duration of a multi-source search.
 
-### 4. Error Handling
-
-The server distinguishes between:
-
-- **Protocol Errors**: Issues with the request structure (e.g., unknown tool)
-- **Tool Execution Errors**: Issues during tool execution (e.g., API failures)
-
-### 5. Logging
-
-For STDIO-based MCP servers, logging must not write to stdout (corrupts JSON-RPC messages). This server uses:
-
-```python
-# Correct pattern for STDIO servers
-print("Message", file=sys.stderr)
-```
-
-## pyeuropepmc Integration
-
-The MCP server uses the existing `pyeuropepmc.SearchClient` class, which provides:
-
-- **Caching**: Built-in response caching to reduce API calls and improve performance
-- **Rate limiting**: Automatic delay between requests to avoid hitting API limits
-- **Pagination**: Proper cursor-based pagination for large result sets
-- **Error handling**: Comprehensive error handling and validation
-- **Robustness**: Battle-tested production code with extensive testing
-
-### Tool Implementation Details
-
-The MCP tools map to SearchClient methods as follows:
-
-- **search_papers**: Uses `client.search_all()` with configurable page size
-- **get_paper_details**: Uses `client.search_all()` with `ext_id:{id}` query
-- **search_authors**: Uses `client.search_all()` with `AUTH:"query"` field search
-- **get_paper_citations**: Uses `client.search_all()` with `CITED:{pmid}` query
-
-This ensures the MCP server leverages all the production-ready features of pyeuropepmc.
-
-## Response Format
-
-All tool responses follow the MCP specification:
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": <request_id>,
-  "result": {
-    "content": [
-      {
-        "type": "text",
-        "text": "<json-encoded-result>"
-      }
-    ]
-  }
-}
-```
-
-## Error Responses
-
-### Protocol Error (Unknown Tool)
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 3,
-  "error": {
-    "code": -32602,
-    "message": "Unknown tool: invalid_tool_name"
-  }
-}
-```
-
-### Tool Execution Error
-
-```json
-{
-  "jsonrpc": "2.0",
-  "id": 4,
-  "result": {
-    "content": [
-      {
-        "type": "text",
-        "text": "Invalid PMID format"
-      }
-    ],
-    "isError": true
-  }
-}
-```
-
-## Development
-
-### Running the Server
+## Testing
 
 ```bash
-# Start the MCP server
-python -m pyeuropepmc.mcp.server
-
-# Or use the CLI
-pyeuropepmc-mcp
+pytest tests/mcp/unit                              # hermetic, no network
+pytest tests/mcp/e2e -m "e2e and not network"       # real subprocess + real MCP client, mocked I/O boundary
+pytest tests/mcp/e2e -m e2e --run-real              # + real Europe PMC calls
 ```
 
-### Testing
+Unit tests call the tool functions directly (the `@mcp.tool()` decorator
+returns the original callable unchanged) with the underlying clients mocked
+via the module's lazy-singleton caches. The e2e tests spawn the real
+`pyeuropepmc.mcp.server` module as a subprocess and drive it with the official
+MCP client (`mcp.client.stdio` + `ClientSession`) — protocol framing is the
+SDK's concern, not something to hand-roll in a test.
 
-```bash
-# Test the server with sample requests
-python -c "
-import asyncio
-from pyeuropepmc.mcp.server import main
-asyncio.run(main())
-"
-```
+## See also
 
-## Integration Examples
-
-### With Claude Desktop
-
-1. Locate your Claude Desktop config file:
-   - macOS: `~/Library/Application Support/Claude/claude_desktop_config.json`
-   - Windows: `%APPDATA%\Claude\claude_desktop_config.json`
-
-2. Add the pyeuropepmc server configuration:
-
-```json
-{
-  "mcpServers": {
-    "pyeuropepmc": {
-      "command": "pyeuropepmc-mcp",
-      "enabled": true
-    }
-  }
-}
-```
-
-3. Restart Claude Desktop
-
-### With Other MCP Clients
-
-The server can be configured in any MCP-compatible client following the same pattern:
-
-```json
-{
-  "mcp": {
-    "pyeuropepmc": {
-      "type": "local",
-      "command": ["pyeuropepmc-mcp"],
-      "enabled": true
-    }
-  }
-}
-```
-
-## Best Practices for MCP Server Development
-
-Based on MCP specification and implementation experience:
-
-### 1. STDIO Transport
-
-- **Never write to stdout** except for JSON-RPC messages
-- Use `print(..., file=sys.stderr)` for logging
-- Use logging libraries configured to write to stderr or files
-
-### 2. Tool Naming
-
-- Use snake_case or camelCase (consistent within project)
-- Keep names between 1-128 characters
-- Use only alphanumeric, underscore, hyphen, and dot characters
-- Be specific and descriptive
-
-### 3. Input Schemas
-
-- Always use JSON Schema 2020-12 (or specify alternative dialect)
-- Define required and optional parameters clearly
-- Include descriptions for all properties
-- Use appropriate types (string, integer, number, boolean, array, object)
-
-### 4. Error Handling
-
-- Distinguish between protocol errors and execution errors
-- Provide actionable error messages for self-correction
-- Validate inputs before processing
-
-### 5. Capabilities
-
-- Declare all supported capabilities during initialization
-- Implement `listChanged` capability for dynamic tools
-- Handle capability negotiation properly
-
-### 6. Performance
-
-- Implement timeouts for external API calls
-- Handle rate limiting gracefully
-- Consider pagination for large result sets
-
-## See Also
-
-- [MCP Specification](https://modelcontextprotocol.io/specification)
-- [MCP Documentation](https://modelcontextprotocol.io/)
-- [pyeuropepmc Main Documentation](https://jonasheinickebio.github.io/pyEuropePMC/)
-- [Europe PMC API Documentation](https://europepmc.org/docs/REST_API)
+- [MCP specification](https://modelcontextprotocol.io/specification)
+- [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+- [pyeuropepmc documentation](https://jonasheinickebio.github.io/pyEuropePMC/)
+- [Europe PMC REST API](https://europepmc.org/docs/REST_API)
 
 ## License
 
-Distributed under the MIT License. See [LICENSE](../../LICENSE) for more information.
+Distributed under the MIT License. See [LICENSE](../../../LICENSE) for details.

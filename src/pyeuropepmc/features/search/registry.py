@@ -171,15 +171,9 @@ def load_entry_point_sources(group: str = "pyeuropepmc.sources") -> None:
     Each entry point is expected to be a zero-argument callable that performs
     its own :func:`register_source` call(s).  Failures are logged, not raised.
     """
-    try:
-        from importlib.metadata import entry_points
-    except ImportError:  # pragma: no cover - Python < 3.8
-        return
+    from importlib.metadata import entry_points
 
-    try:
-        eps: Iterable[Any] = entry_points(group=group)
-    except TypeError:  # pragma: no cover - older importlib.metadata
-        eps = entry_points().get(group, [])
+    eps: Iterable[Any] = entry_points(group=group)
 
     for ep in eps:
         try:

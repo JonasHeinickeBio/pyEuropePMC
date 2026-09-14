@@ -2,6 +2,93 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [2.1.0] - 2026-09-13
+
+> **MCP server rewrite.** `pyeuropepmc-mcp` now runs on the official
+> [MCP Python SDK](https://github.com/modelcontextprotocol/python-sdk)
+> (`FastMCP`) instead of a hand-rolled JSON-RPC/stdio loop. The Python
+> library API (`pyeuropepmc.SearchClient`, etc.) is unchanged — this affects
+> only the MCP server and its 24 tools.
+
+### ✨ Features
+
+- **Spec-compliant, concurrent MCP server.** Rebuilt on `FastMCP`: tool
+  errors are reported via the standard `isError: true` `CallToolResult`
+  instead of ad hoc text, every tool call offloads its blocking
+  network/disk work to a thread pool (`anyio.to_thread.run_sync`) so one
+  slow request no longer stalls every other in-flight call, and input is
+  validated against each tool's schema before the tool body ever runs.
+- **More transports, more agents.** `pyeuropepmc-mcp --transport
+  streamable-http` (or `sse`) runs the server as a standalone network
+  service that any MCP-capable agent can reach over HTTP — not just
+  stdio-based clients like Claude Desktop. New `--host`, `--port`, and
+  `--log-level` flags (also settable via `PYEUROPEPMC_MCP_*` env vars).
+- **Cached, reusable clients.** `SearchClient`, `CitationWalker`,
+  `ClinicalTrialsClient`, `FigureExtractor`, and the LLM analysis agent are
+  now constructed once per process and reused, instead of being rebuilt on
+  every call — faster, and it fixes two latent bugs where a fresh
+  `CitationWalker` per call reset its own rate limiter and a fresh LLM
+  agent per call never hit its own analysis cache.
+- **Structured tool output.** Tools return typed Python values instead of
+  pre-serialized JSON strings; the SDK derives an output schema and returns
+  both `structuredContent` and a human-readable text rendering.
+- **Progress notifications.** `unified_search`, `citation_snowball`,
+  `paper_screening`, and `literature_review` emit `ctx.info(...)` MCP
+  logging notifications mid-call, so a client that surfaces them can show
+  progress during a multi-source search instead of going silent.
+- **Tool annotations.** Every tool advertises `readOnlyHint`/`openWorldHint`/
+  `idempotentHint` metadata so a calling agent can reason about a tool
+  without executing it first.
+
+### 💥 Breaking changes (MCP tool interface only)
+
+- **`mcp` is now a required core dependency** (previously the server had no
+  real MCP SDK dependency at all). A bare `pip install pyeuropepmc` pulls it
+  in automatically.
+- **`citation_snowball`'s `strategy` argument is now validated.** An invalid
+  value is rejected with a schema-validation error instead of silently
+  falling back to `"forward"`.
+- **`get_paper_citations` gained a `limit` parameter** (default 100) and
+  dropped the `source` parameter, which the previous implementation accepted
+  but never used.
+- **`literature_review` gained an explicit `excluded_topics` parameter**
+  that the previous implementation read from `arguments` without declaring
+  in its schema.
+
+### 🧪 Testing
+
+- Rewrote the MCP test suite: 94 hermetic unit tests exercise each tool
+  function directly (mocked clients via the module's lazy-singleton caches)
+  plus FastMCP-level schema/registry checks, and 4 new e2e tests drive the
+  real server subprocess over stdio with the official MCP client instead of
+  hand-rolled JSON-RPC framing.
+
+### 📚 Documentation
+
+- Rewrote [`src/pyeuropepmc/mcp/README.md`](src/pyeuropepmc/mcp/README.md)
+  and the top-level MCP section of the README for the new transports, tool
+  registry, and design notes.
+
+### 🔧 Maintenance
+
+- **Fixed `mypy` aborting entirely on Python 3.12+.** numpy 2.5.x (the
+  version `poetry.lock` resolves for Python ≥3.12) ships stubs that use PEP
+  695 syntax (`type X = ...`, `class Foo[T]`) throughout — reachable
+  transitively via `rapidfuzz` (a core dependency) and `matplotlib`/`pandas`
+  (extras), not just via this package's own numpy usage. Under the
+  project's `python_version = "3.10"` mypy target this crashed the *entire*
+  run ("errors prevented further checking"), so `poetry run mypy src/`
+  silently checked nothing on a Python 3.12 host — including the
+  `release.yml` `verify` job, which pins Python 3.12. `[tool.mypy]` now
+  targets `python_version = "3.12"`; this doesn't loosen protection against
+  3.10-incompatible syntax landing in `src/`, since
+  `python-compatibility.yml` separately compiles every file under real
+  3.10–3.13 interpreters. Bumping the target surfaced one real, previously
+  hidden issue: `load_entry_point_sources()`'s pre-3.10 `importlib.metadata`
+  fallback (`entry_points().get(...)`) doesn't type-check against a modern
+  `EntryPoints`, and was dead code anyway given `requires-python = ">=3.10"`
+  — removed.
+
 ## [2.0.0] - 2026-09-10
 
 > **Major release.** Package internals were reorganised into a vertical-slice

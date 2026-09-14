@@ -1,126 +1,239 @@
-"""Unit tests for the pyeuropepmc.mcp.server tool handlers (hermetic)."""
+"""Unit tests for the pyeuropepmc.mcp.server tool implementations (hermetic).
+
+Each tool is a plain async function (the ``@mcp.tool()`` decorator returns the
+original callable unchanged), so these tests call them directly — awaited via
+``asyncio.run`` — with the underlying pyeuropepmc clients mocked out through
+the module's lazy-singleton caches. Protocol-level concerns (schema
+validation, ``isError`` wrapping, tool discovery) live in test_mcp_server.py.
+"""
 
 from __future__ import annotations
 
-from unittest.mock import MagicMock, patch
+import asyncio
+from unittest.mock import AsyncMock, MagicMock
 
+from mcp.server.fastmcp.exceptions import ToolError
 import pytest
 
 from pyeuropepmc.mcp import server as srv
 
+ALL_CACHES = [
+    srv._client_cache,
+    srv._unified_cache,
+    srv._citation_walker_cache,
+    srv._clinical_trials_cache,
+    srv._figure_extractor_cache,
+    srv._llm_agent_cache,
+    srv._bib_manager_cache,
+    srv._bib_converter_cache,
+    srv._bib_resolver_cache,
+]
+
 
 @pytest.fixture(autouse=True)
-def _reset_mcp_singletons():
-    srv._SINGLE_CLIENT = None
-    srv._SINGLE_UNIFIED = None
+def _reset_singletons():
+    for cache in ALL_CACHES:
+        cache.reset()
     yield
-    srv._SINGLE_CLIENT = None
-    srv._SINGLE_UNIFIED = None
+    for cache in ALL_CACHES:
+        cache.reset()
 
 
-def _text(response: dict) -> str:
-    return response["content"][0]["text"]
+def _run(coro):
+    return asyncio.run(coro)
 
 
-class TestUnifiedSearchHandler:
+def _fake_ctx() -> MagicMock:
+    """A truthy stand-in for mcp.server.fastmcp.Context with an awaitable .info()."""
+    ctx = MagicMock()
+    ctx.info = AsyncMock()
+    return ctx
+
+
+class TestUnifiedSearch:
     def test_unavailable(self, monkeypatch):
         monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", False)
-        result = srv._handle_unified_search({"query": "x"})
-        assert "Error" in _text(result)
-
-    def test_get_unified_none(self, monkeypatch):
-        monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
-        monkeypatch.setattr(srv, "_get_unified", lambda: None)
-        result = srv._handle_unified_search({"query": "x"})
-        assert "Failed to initialise" in _text(result)
-
-    def test_missing_query(self, monkeypatch):
-        monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
-        monkeypatch.setattr(srv, "_get_unified", lambda: MagicMock())
-        result = srv._handle_unified_search({})
-        assert "query is required" in _text(result)
+        with pytest.raises(ToolError, match="UnifiedSearch not available"):
+            _run(srv.unified_search(query="x"))
 
     def test_success_with_sources(self, monkeypatch):
         unified = MagicMock()
         report = MagicMock(total_input=10, total_output=5, duplicates_removed=5)
         unified.search.return_value = ([{"title": "a"}], report)
         monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
-        monkeypatch.setattr(srv, "_get_unified", lambda: unified)
-        result = srv._handle_unified_search(
-            {"query": "cancer", "sources": ["europepmc"], "limit": 5}
-        )
+        srv._unified_cache.set(unified)
+
+        result = _run(srv.unified_search(query="cancer", sources=["europepmc"], limit=5))
+
         unified.search.assert_called_once_with("cancer", sources=["europepmc"], limit=5)
-        assert "duplicates_removed" in _text(result)
+        assert result["dedup"] == {
+            "total_input": 10,
+            "total_output": 5,
+            "duplicates_removed": 5,
+        }
+        assert result["results"] == [{"title": "a"}]
 
     def test_success_without_sources(self, monkeypatch):
         unified = MagicMock()
         report = MagicMock(total_input=1, total_output=1, duplicates_removed=0)
         unified.search.return_value = ([], report)
         monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
-        monkeypatch.setattr(srv, "_get_unified", lambda: unified)
-        srv._handle_unified_search({"query": "cancer"})
-        unified.search.assert_called_once_with("cancer", limit=25)
+        srv._unified_cache.set(unified)
 
-    def test_search_exception(self, monkeypatch):
+        _run(srv.unified_search(query="cancer"))
+
+        unified.search.assert_called_once_with("cancer", sources=None, limit=25)
+
+    def test_search_exception_propagates(self, monkeypatch):
         unified = MagicMock()
         unified.search.side_effect = RuntimeError("boom")
         monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
-        monkeypatch.setattr(srv, "_get_unified", lambda: unified)
-        result = srv._handle_unified_search({"query": "x"})
-        assert "Unified search failed" in _text(result)
+        srv._unified_cache.set(unified)
+        with pytest.raises(RuntimeError, match="boom"):
+            _run(srv.unified_search(query="x"))
+
+    def test_reports_progress_via_context(self, monkeypatch):
+        unified = MagicMock()
+        report = MagicMock(total_input=1, total_output=1, duplicates_removed=0)
+        unified.search.return_value = ([], report)
+        monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
+        srv._unified_cache.set(unified)
+        ctx = _fake_ctx()
+
+        _run(srv.unified_search(query="cancer", ctx=ctx))
+
+        assert ctx.info.await_count == 2
 
 
-class TestCitationSnowballHandler:
+class TestSearchPapers:
+    def test_success(self):
+        client = MagicMock()
+        client.search_all.return_value = [{"title": "a"}]
+        srv._client_cache.set(client)
+
+        result = _run(srv.search_papers(query="x", limit=10, sort="cited", result_type="lite"))
+
+        client.search_all.assert_called_once_with(
+            "x", pageSize=10, resultType="lite", sort="cited"
+        )
+        assert result == [{"title": "a"}]
+
+    def test_no_sort_omits_kwarg(self):
+        client = MagicMock()
+        client.search_all.return_value = []
+        srv._client_cache.set(client)
+
+        _run(srv.search_papers(query="x"))
+
+        client.search_all.assert_called_once_with("x", pageSize=25, resultType="core")
+
+
+class TestGetPaperDetails:
+    def test_by_pmid(self):
+        client = MagicMock()
+        client.search_all.return_value = [{"title": "a"}]
+        srv._client_cache.set(client)
+
+        result = _run(srv.get_paper_details(pmid="123"))
+
+        client.search_all.assert_called_once_with("ext_id:123", pageSize=1)
+        assert result == {"title": "a"}
+
+    def test_by_pmcid(self):
+        client = MagicMock()
+        client.search_all.return_value = [{"title": "a"}]
+        srv._client_cache.set(client)
+        _run(srv.get_paper_details(pmcid="PMC1"))
+        client.search_all.assert_called_once_with("ext_id:PMC1", pageSize=1)
+
+    def test_by_doi(self):
+        client = MagicMock()
+        client.search_all.return_value = [{"title": "a"}]
+        srv._client_cache.set(client)
+        _run(srv.get_paper_details(doi="10.1/x"))
+        client.search_all.assert_called_once_with("doi:10.1/x", pageSize=1)
+
+    def test_no_identifier_raises(self):
+        with pytest.raises(ToolError, match="At least one ID"):
+            _run(srv.get_paper_details())
+
+    def test_no_results_raises(self):
+        client = MagicMock()
+        client.search_all.return_value = []
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError, match="No results found"):
+            _run(srv.get_paper_details(pmid="1"))
+
+
+class TestSearchAuthors:
+    def test_builds_auth_query(self):
+        client = MagicMock()
+        client.search_all.return_value = []
+        srv._client_cache.set(client)
+        _run(srv.search_authors(query="Smith"))
+        args, kwargs = client.search_all.call_args
+        assert args[0] == 'AUTH:"Smith"'
+        assert kwargs == {"pageSize": 25}
+
+
+class TestGetPaperCitations:
+    def test_builds_cited_query(self):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "2"}]
+        srv._client_cache.set(client)
+        result = _run(srv.get_paper_citations(pmid="1", limit=50))
+        client.search_all.assert_called_once_with("CITED:1", pageSize=50)
+        assert result == [{"pmid": "2"}]
+
+
+class TestCitationSnowball:
     def test_unavailable(self, monkeypatch):
         monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", False)
-        result = srv._handle_citation_snowball({"identifier": "PMID:1"})
-        assert "not available" in _text(result)
-
-    def test_missing_identifier(self, monkeypatch):
-        monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
-        result = srv._handle_citation_snowball({})
-        assert "identifier is required" in _text(result)
+        with pytest.raises(ToolError, match="not available"):
+            _run(srv.citation_snowball(identifier="PMID:1"))
 
     def test_success(self, monkeypatch):
         walker = MagicMock()
         report = MagicMock(total_input=3, total_output=2, duplicates_removed=1)
         walker.snowball.return_value = ([{"title": "a"}, {"title": "b"}], report)
         monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
-        monkeypatch.setattr(srv, "CitationWalker", lambda: walker)
-        monkeypatch.setattr(
-            srv,
-            "SnowballingStrategy",
-            MagicMock(FORWARD="forward", BACKWARD="backward", BOTH="both"),
-        )
-        result = srv._handle_citation_snowball(
-            {"identifier": "PMID:1", "strategy": "both", "max_papers": 10}
-        )
-        assert '"paper_count": 2' in _text(result)
+        srv._citation_walker_cache.set(walker)
 
-    def test_unknown_strategy_defaults_to_forward(self, monkeypatch):
+        result = _run(srv.citation_snowball(identifier="PMID:1", strategy="both", max_papers=10))
+
+        assert result["paper_count"] == 2
+        _, kwargs = walker.snowball.call_args
+        assert kwargs["strategy"] == srv.SnowballingStrategy.BOTH
+        assert kwargs["max_papers"] == 10
+
+    def test_invalid_strategy_rejected_by_schema(self, monkeypatch):
+        """Unlike the old handler (which silently fell back to 'forward'), an
+        invalid literal is now a validation error raised before the tool body
+        runs at all — see TestToolRegistry.test_calling_tool_validates_input_types
+        for the protocol-level version of this."""
+        monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
+        srv._citation_walker_cache.set(MagicMock())
+        with pytest.raises(KeyError):
+            _run(srv.citation_snowball(identifier="PMID:1", strategy="bogus"))  # type: ignore[arg-type]
+
+    def test_reports_progress_via_context(self, monkeypatch):
         walker = MagicMock()
         report = MagicMock(total_input=0, total_output=0, duplicates_removed=0)
         walker.snowball.return_value = ([], report)
         monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
-        monkeypatch.setattr(srv, "CitationWalker", lambda: walker)
-        srv._handle_citation_snowball({"identifier": "PMID:1", "strategy": "bogus"})
-        _, kwargs = walker.snowball.call_args
-        assert kwargs["strategy"] == srv.SnowballingStrategy.FORWARD
+        srv._citation_walker_cache.set(walker)
+        ctx = _fake_ctx()
 
-    def test_snowball_exception(self, monkeypatch):
-        walker = MagicMock()
-        walker.snowball.side_effect = RuntimeError("boom")
-        monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
-        monkeypatch.setattr(srv, "CitationWalker", lambda: walker)
-        result = srv._handle_citation_snowball({"identifier": "PMID:1"})
-        assert "Snowball failed" in _text(result)
+        _run(srv.citation_snowball(identifier="PMID:1", ctx=ctx))
+
+        ctx.info.assert_awaited_once()
 
 
-class TestClinicalTrialSearchHandler:
+class TestClinicalTrialSearch:
     def test_unavailable(self, monkeypatch):
         monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", False)
-        result = srv._handle_clinical_trial_search({})
-        assert "not available" in _text(result)
+        with pytest.raises(ToolError, match="not available"):
+            _run(srv.clinical_trial_search())
 
     def _trial(self, status="RECRUITING", interventions="drug X"):
         t = MagicMock()
@@ -131,25 +244,27 @@ class TestClinicalTrialSearchHandler:
         client = MagicMock()
         client.search.return_value = [self._trial()]
         monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", True)
-        monkeypatch.setattr(srv, "ClinicalTrialsClient", lambda: client)
-        result = srv._handle_clinical_trial_search({"query": "cancer"})
-        client.search.assert_called_once()
-        assert '"trial_count": 1' in _text(result)
+        srv._clinical_trials_cache.set(client)
+
+        result = _run(srv.clinical_trial_search(query="cancer"))
+
+        client.search.assert_called_once_with("cancer", limit=25)
+        assert result["trial_count"] == 1
 
     def test_search_by_condition_only(self, monkeypatch):
         client = MagicMock()
         client.search_by_condition.return_value = [self._trial()]
         monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", True)
-        monkeypatch.setattr(srv, "ClinicalTrialsClient", lambda: client)
-        srv._handle_clinical_trial_search({"condition": "diabetes"})
+        srv._clinical_trials_cache.set(client)
+        _run(srv.clinical_trial_search(condition="diabetes"))
         client.search_by_condition.assert_called_once_with("diabetes", limit=25)
 
     def test_search_by_intervention_only(self, monkeypatch):
         client = MagicMock()
         client.search_by_intervention.return_value = [self._trial()]
         monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", True)
-        monkeypatch.setattr(srv, "ClinicalTrialsClient", lambda: client)
-        srv._handle_clinical_trial_search({"intervention": "metformin"})
+        srv._clinical_trials_cache.set(client)
+        _run(srv.clinical_trial_search(intervention="metformin"))
         client.search_by_intervention.assert_called_once_with("metformin", limit=25)
 
     def test_condition_and_intervention_filters(self, monkeypatch):
@@ -159,11 +274,11 @@ class TestClinicalTrialSearchHandler:
             self._trial(interventions="placebo"),
         ]
         monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", True)
-        monkeypatch.setattr(srv, "ClinicalTrialsClient", lambda: client)
-        result = srv._handle_clinical_trial_search(
-            {"condition": "diabetes", "intervention": "metformin"}
-        )
-        assert '"trial_count": 1' in _text(result)
+        srv._clinical_trials_cache.set(client)
+
+        result = _run(srv.clinical_trial_search(condition="diabetes", intervention="metformin"))
+
+        assert result["trial_count"] == 1
 
     def test_status_filter(self, monkeypatch):
         client = MagicMock()
@@ -172,24 +287,18 @@ class TestClinicalTrialSearchHandler:
             self._trial(status="COMPLETED"),
         ]
         monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", True)
-        monkeypatch.setattr(srv, "ClinicalTrialsClient", lambda: client)
-        result = srv._handle_clinical_trial_search({"query": "x", "status": "completed"})
-        assert '"trial_count": 1' in _text(result)
+        srv._clinical_trials_cache.set(client)
 
-    def test_exception(self, monkeypatch):
-        client = MagicMock()
-        client.search.side_effect = RuntimeError("boom")
-        monkeypatch.setattr(srv, "CLINICAL_TRIALS_AVAILABLE", True)
-        monkeypatch.setattr(srv, "ClinicalTrialsClient", lambda: client)
-        result = srv._handle_clinical_trial_search({"query": "x"})
-        assert "Clinical trial search failed" in _text(result)
+        result = _run(srv.clinical_trial_search(query="x", status="completed"))
+
+        assert result["trial_count"] == 1
 
 
-class TestFulltextIndexQueryHandler:
+class TestFulltextIndexQuery:
     def test_unavailable(self, monkeypatch):
         monkeypatch.setattr(srv, "FTS_AVAILABLE", False)
-        result = srv._handle_fulltext_index_query({})
-        assert "not available" in _text(result)
+        with pytest.raises(ToolError, match="not available"):
+            _run(srv.fulltext_index_query(query="x"))
 
     def test_success_default_index(self, monkeypatch):
         idx = MagicMock()
@@ -197,8 +306,11 @@ class TestFulltextIndexQueryHandler:
         idx.stats.return_value = {"total_documents": 1}
         monkeypatch.setattr(srv, "FTS_AVAILABLE", True)
         monkeypatch.setattr(srv, "FullTextIndex", MagicMock(return_value=idx))
-        result = srv._handle_fulltext_index_query({"query": "cancer"})
-        assert "total_documents" in _text(result)
+
+        result = _run(srv.fulltext_index_query(query="cancer"))
+
+        assert result["stats"] == {"total_documents": 1}
+        assert result["results"] == [{"title": "a"}]
 
     def test_success_custom_index_path(self, monkeypatch):
         idx = MagicMock()
@@ -207,132 +319,267 @@ class TestFulltextIndexQueryHandler:
         mock_cls = MagicMock(return_value=idx)
         monkeypatch.setattr(srv, "FTS_AVAILABLE", True)
         monkeypatch.setattr(srv, "FullTextIndex", mock_cls)
-        srv._handle_fulltext_index_query({"query": "x", "index_path": "/tmp/my.db"})
+
+        _run(srv.fulltext_index_query(query="x", index_path="/tmp/my.db"))
+
         mock_cls.assert_called_once_with(db_path="/tmp/my.db")
 
-    def test_exception(self, monkeypatch):
+    def test_exception_propagates(self, monkeypatch):
         monkeypatch.setattr(srv, "FTS_AVAILABLE", True)
         monkeypatch.setattr(srv, "FullTextIndex", MagicMock(side_effect=RuntimeError("boom")))
-        result = srv._handle_fulltext_index_query({"query": "x"})
-        assert "Full-text index query failed" in _text(result)
+        with pytest.raises(RuntimeError, match="boom"):
+            _run(srv.fulltext_index_query(query="x"))
 
 
-class TestPaperFiguresHandler:
+class TestPaperFigures:
     def test_unavailable(self, monkeypatch):
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", False)
-        result = srv._handle_paper_figures({})
-        assert "not available" in _text(result)
+        with pytest.raises(ToolError, match="not available"):
+            _run(srv.paper_figures())
 
     def test_missing_identifier(self, monkeypatch):
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
-        result = srv._handle_paper_figures({})
-        assert "One of pmcid, pmid, or doi is required" in _text(result)
+        with pytest.raises(ToolError, match="One of pmcid, pmid, or doi is required"):
+            _run(srv.paper_figures())
 
     def test_by_pmcid(self, monkeypatch):
         extractor = MagicMock()
         extractor.extract.return_value = [{"label": "Fig 1"}]
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
-        monkeypatch.setattr(srv, "FigureExtractor", lambda: extractor)
-        result = srv._handle_paper_figures({"pmcid": "PMC1"})
+        srv._figure_extractor_cache.set(extractor)
+
+        result = _run(srv.paper_figures(pmcid="PMC1"))
+
         extractor.extract.assert_called_once_with(pmcid="PMC1")
-        assert '"figure_count": 1' in _text(result)
+        assert result["figure_count"] == 1
 
     def test_by_pmid(self, monkeypatch):
         extractor = MagicMock()
         extractor.extract.return_value = []
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
-        monkeypatch.setattr(srv, "FigureExtractor", lambda: extractor)
-        srv._handle_paper_figures({"pmid": "123"})
+        srv._figure_extractor_cache.set(extractor)
+        _run(srv.paper_figures(pmid="123"))
         extractor.extract.assert_called_once_with(pmid="123")
 
     def test_by_doi(self, monkeypatch):
         extractor = MagicMock()
         extractor.extract.return_value = []
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
-        monkeypatch.setattr(srv, "FigureExtractor", lambda: extractor)
-        srv._handle_paper_figures({"doi": "10.1/x"})
+        srv._figure_extractor_cache.set(extractor)
+        _run(srv.paper_figures(doi="10.1/x"))
         extractor.extract.assert_called_once_with(doi="10.1/x")
 
-    def test_exception(self, monkeypatch):
-        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
-        monkeypatch.setattr(srv, "FigureExtractor", MagicMock(side_effect=RuntimeError("boom")))
-        result = srv._handle_paper_figures({"pmcid": "PMC1"})
-        assert "Figure extraction failed" in _text(result)
 
+class TestLlmTools:
+    @pytest.fixture
+    def agent(self, monkeypatch):
+        mock_agent = MagicMock()
+        monkeypatch.setattr(srv, "LLM_AVAILABLE", True)
+        srv._llm_agent_cache.set(mock_agent)
+        return mock_agent
 
-class TestGetPaperDetailsHandler:
-    def test_by_pmid(self):
-        client = MagicMock()
-        client.search_all.return_value = [{"title": "a"}]
-        result = srv._handle_get_paper_details({"pmid": "123"}, client)
-        client.search_all.assert_called_once_with("ext_id:123", pageSize=1)
-        assert '"title": "a"' in _text(result)
+    def test_unavailable(self, monkeypatch):
+        monkeypatch.setattr(srv, "LLM_AVAILABLE", False)
+        with pytest.raises(ToolError, match="LLM tools not available"):
+            _run(srv.analyze_citations(pmid="1"))
 
-    def test_by_pmcid(self):
-        client = MagicMock()
-        client.search_all.return_value = [{"title": "a"}]
-        srv._handle_get_paper_details({"pmcid": "PMC1"}, client)
-        client.search_all.assert_called_once_with("ext_id:PMC1", pageSize=1)
+    def test_init_failure_wrapped(self, monkeypatch):
+        monkeypatch.setattr(srv, "LLM_AVAILABLE", True)
+        monkeypatch.setattr(
+            srv._llm_agent_cache, "_factory", MagicMock(side_effect=RuntimeError("no key"))
+        )
+        with pytest.raises(ToolError, match="Failed to initialise LLM client"):
+            _run(srv.analyze_citations(pmid="1"))
 
-    def test_by_doi(self):
-        client = MagicMock()
-        client.search_all.return_value = [{"title": "a"}]
-        srv._handle_get_paper_details({"doi": "10.1/x"}, client)
-        client.search_all.assert_called_once_with("doi:10.1/x", pageSize=1)
-
-    def test_no_identifier(self):
-        client = MagicMock()
-        result = srv._handle_get_paper_details({}, client)
-        assert "At least one ID" in _text(result)
-
-    def test_no_results(self):
+    def test_analyze_citations_paper_not_found(self, agent):
         client = MagicMock()
         client.search_all.return_value = []
-        result = srv._handle_get_paper_details({"pmid": "1"}, client)
-        assert "No results found" in _text(result)
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError, match="not found"):
+            _run(srv.analyze_citations(pmid="1"))
 
-
-class TestFetchPaperSummaryAndBuildPaperDict:
-    def test_fetch_paper_summary_found(self):
+    def test_analyze_citations_success(self, agent):
         client = MagicMock()
-        client.search_all.return_value = [
-            {
-                "pmid": "1",
-                "pmcid": "PMC1",
-                "doi": "10.1/x",
-                "title": "T",
-                "authorInfo": [{"author": "Smith J"}],
-                "firstPublicationYear": "2020",
-                "journalTitle": "J",
-                "abstract": "A",
-            }
-        ]
-        summary = srv._fetch_paper_summary("1", client)
-        assert summary["title"] == "T"
-        assert summary["authors"] == [{"name": "Smith J"}]
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.analyze_citation_context.return_value = {"summary": "ok"}
 
-    def test_fetch_paper_summary_not_found(self):
+        result = _run(srv.analyze_citations(pmid="1"))
+
+        assert result == {"summary": "ok"}
+
+    def test_analyze_citations_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.analyze_citation_context.return_value = None
+        with pytest.raises(ToolError, match="Failed to analyze citations"):
+            _run(srv.analyze_citations(pmid="1"))
+
+    def test_compare_citations_missing_paper(self, agent):
+        client = MagicMock()
+        client.search_all.side_effect = [[{"pmid": "1"}], []]
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError, match="One or both papers not found"):
+            _run(srv.compare_citations(pmid1="1", pmid2="2"))
+
+    def test_compare_citations_success(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1"}]
+        srv._client_cache.set(client)
+        agent.compare_citations.return_value = {"result": "ok"}
+        result = _run(srv.compare_citations(pmid1="1", pmid2="2"))
+        assert result == {"result": "ok"}
+
+    def test_compare_citations_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1"}]
+        srv._client_cache.set(client)
+        agent.compare_citations.return_value = None
+        with pytest.raises(ToolError, match="Failed to compare citations"):
+            _run(srv.compare_citations(pmid1="1", pmid2="2"))
+
+    def test_summarize_citations_success(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1"}]
+        srv._client_cache.set(client)
+        agent.summarize_citations.return_value = {"summary": "ok"}
+        result = _run(srv.summarize_citations(pmid="1"))
+        assert result == {"summary": "ok"}
+
+    def test_summarize_citations_not_found(self, agent):
         client = MagicMock()
         client.search_all.return_value = []
-        assert srv._fetch_paper_summary("1", client) is None
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError, match="not found"):
+            _run(srv.summarize_citations(pmid="1"))
 
-    def test_build_paper_dict(self):
-        raw = {
-            "pmid": "1",
-            "title": "T",
-            "authorInfo": [{"author": "Doe A"}],
-        }
-        d = srv._build_paper_dict(raw)
-        assert d["pmid"] == "1"
-        assert d["authors"] == [{"name": "Doe A"}]
-        assert d["journal"] == ""
+    def test_summarize_citations_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1"}]
+        srv._client_cache.set(client)
+        agent.summarize_citations.return_value = None
+        with pytest.raises(ToolError, match="Failed to summarize citations"):
+            _run(srv.summarize_citations(pmid="1"))
+
+    def test_paper_screening(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.screen_papers.return_value = {"included": []}
+
+        result = _run(
+            srv.paper_screening(query="x", inclusion_criteria=["a"], exclusion_criteria=["b"])
+        )
+
+        assert result == {"included": []}
+        agent.screen_papers.assert_called_once()
+
+    def test_paper_screening_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.screen_papers.return_value = None
+        with pytest.raises(ToolError, match="Failed to screen papers"):
+            _run(
+                srv.paper_screening(query="x", inclusion_criteria=["a"], exclusion_criteria=["b"])
+            )
+
+    def test_paper_screening_reports_progress_via_context(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.screen_papers.return_value = {"included": []}
+        ctx = _fake_ctx()
+
+        _run(
+            srv.paper_screening(
+                query="x", inclusion_criteria=["a"], exclusion_criteria=["b"], ctx=ctx
+            )
+        )
+
+        assert ctx.info.await_count == 2
+
+    def test_research_question_analysis(self, agent):
+        agent.analyze_research_question.return_value = {"ok": True}
+        result = _run(srv.research_question_analysis(research_question="q"))
+        assert result == {"ok": True}
+
+    def test_research_question_analysis_agent_returns_falsy(self, agent):
+        agent.analyze_research_question.return_value = None
+        with pytest.raises(ToolError, match="Failed to analyze research question"):
+            _run(srv.research_question_analysis(research_question="q"))
+
+    def test_preprint_analysis(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.analyze_preprint.return_value = {"ok": True}
+        result = _run(srv.preprint_analysis(pmid="1"))
+        assert result == {"ok": True}
+
+    def test_preprint_analysis_not_found(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = []
+        srv._client_cache.set(client)
+        with pytest.raises(ToolError, match="not found"):
+            _run(srv.preprint_analysis(pmid="1"))
+
+    def test_preprint_analysis_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.analyze_preprint.return_value = None
+        with pytest.raises(ToolError, match="Failed to analyze preprint"):
+            _run(srv.preprint_analysis(pmid="1"))
+
+    def test_literature_review(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.generate_literature_review.return_value = {"ok": True}
+
+        result = _run(srv.literature_review(research_topic="x", key_concepts=["a"]))
+
+        assert result == {"ok": True}
+        _, kwargs = agent.generate_literature_review.call_args
+        assert kwargs["excluded_topics"] == []
+
+    def test_literature_review_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.generate_literature_review.return_value = None
+        with pytest.raises(ToolError, match="Failed to generate literature review"):
+            _run(srv.literature_review(research_topic="x", key_concepts=["a"]))
+
+    def test_literature_review_reports_progress_via_context(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.generate_literature_review.return_value = {"ok": True}
+        ctx = _fake_ctx()
+
+        _run(srv.literature_review(research_topic="x", key_concepts=["a"], ctx=ctx))
+
+        ctx.info.assert_awaited_once()
+
+    def test_knowledge_graph(self, agent):
+        agent.build_knowledge_graph.return_value = {"ok": True}
+        result = _run(srv.knowledge_graph(research_domain="x"))
+        assert result == {"ok": True}
+
+    def test_knowledge_graph_agent_returns_falsy(self, agent):
+        agent.build_knowledge_graph.return_value = None
+        with pytest.raises(ToolError, match="Failed to build knowledge graph"):
+            _run(srv.knowledge_graph(research_domain="x"))
 
 
-class TestBibliographyHandler:
+class TestBibliographyTools:
     def test_unavailable(self, monkeypatch):
         monkeypatch.setattr(srv, "BIBLIOGRAPHY_AVAILABLE", False)
-        result = srv._handle_bibliography_tool("bib_parse_string", {})
-        assert "not available" in _text(result)
+        with pytest.raises(ToolError, match="not available"):
+            _run(srv.bib_parse_string(content=""))
 
     @pytest.fixture
     def bib_mocks(self, monkeypatch):
@@ -340,9 +587,9 @@ class TestBibliographyHandler:
         converter = MagicMock()
         resolver = MagicMock()
         monkeypatch.setattr(srv, "BIBLIOGRAPHY_AVAILABLE", True)
-        monkeypatch.setattr(srv, "BibtexManager", lambda: mgr)
-        monkeypatch.setattr(srv, "CitationConverter", lambda: converter)
-        monkeypatch.setattr(srv, "ReferenceResolver", lambda: resolver)
+        srv._bib_manager_cache.set(mgr)
+        srv._bib_converter_cache.set(converter)
+        srv._bib_resolver_cache.set(resolver)
         return mgr, converter, resolver
 
     def test_bib_parse_string(self, bib_mocks):
@@ -351,8 +598,11 @@ class TestBibliographyHandler:
         lib = MagicMock(entries=[entry])
         lib.__len__.return_value = 1
         mgr.parse_string.return_value = lib
-        result = srv._handle_bibliography_tool("bib_parse_string", {"content": "@article{...}"})
-        assert '"entries_count": 1' in _text(result)
+
+        result = _run(srv.bib_parse_string(content="@article{...}"))
+
+        assert result["entries_count"] == 1
+        assert result["keys"] == ["k1"]
 
     def test_bib_validate(self, bib_mocks):
         mgr, _, _ = bib_mocks
@@ -360,8 +610,10 @@ class TestBibliographyHandler:
         lib.__len__.return_value = 2
         mgr.parse_string.return_value = lib
         mgr.validate.return_value = ["issue1"]
-        result = srv._handle_bibliography_tool("bib_validate", {"content": "x"})
-        assert '"issues_count": 1' in _text(result)
+
+        result = _run(srv.bib_validate(content="x"))
+
+        assert result["issues_count"] == 1
 
     def test_bib_to_ris(self, bib_mocks):
         mgr, converter, _ = bib_mocks
@@ -369,8 +621,10 @@ class TestBibliographyHandler:
         lib = MagicMock(entries=[entry])
         mgr.parse_string.return_value = lib
         converter.to_ris.return_value = "RIS-TEXT"
-        result = srv._handle_bibliography_tool("bib_to_ris", {"content": "x"})
-        assert _text(result) == "RIS-TEXT"
+
+        result = _run(srv.bib_to_ris(content="x"))
+
+        assert result == "RIS-TEXT"
 
     def test_bib_to_csl(self, bib_mocks):
         mgr, converter, _ = bib_mocks
@@ -378,36 +632,42 @@ class TestBibliographyHandler:
         lib = MagicMock(entries=[entry])
         mgr.parse_string.return_value = lib
         converter.to_csl_json.return_value = {"type": "article"}
-        result = srv._handle_bibliography_tool("bib_to_csl", {"content": "x"})
-        assert "article" in _text(result)
+
+        result = _run(srv.bib_to_csl(content="x"))
+
+        assert result == [{"type": "article"}]
 
     def test_ref_resolve_doi_found(self, bib_mocks):
         _, _, resolver = bib_mocks
         ref = MagicMock()
         ref.to_dict.return_value = {"doi": "10.1/x"}
         resolver.resolve_doi.return_value = ref
-        result = srv._handle_bibliography_tool("ref_resolve_doi", {"doi": "10.1/x"})
-        assert "10.1/x" in _text(result)
+
+        result = _run(srv.ref_resolve_doi(doi="10.1/x"))
+
+        assert result == {"doi": "10.1/x"}
 
     def test_ref_resolve_doi_not_found(self, bib_mocks):
         _, _, resolver = bib_mocks
         resolver.resolve_doi.return_value = None
-        result = srv._handle_bibliography_tool("ref_resolve_doi", {"doi": "10.1/x"})
-        assert "No metadata found" in _text(result)
+        with pytest.raises(ToolError, match="No metadata found"):
+            _run(srv.ref_resolve_doi(doi="10.1/x"))
 
     def test_ref_resolve_pmid_found(self, bib_mocks):
         _, _, resolver = bib_mocks
         ref = MagicMock()
         ref.to_dict.return_value = {"pmid": "1"}
         resolver.resolve_pmid.return_value = ref
-        result = srv._handle_bibliography_tool("ref_resolve_pmid", {"pmid": "1"})
-        assert '"pmid": "1"' in _text(result)
+
+        result = _run(srv.ref_resolve_pmid(pmid="1"))
+
+        assert result == {"pmid": "1"}
 
     def test_ref_resolve_pmid_not_found(self, bib_mocks):
         _, _, resolver = bib_mocks
         resolver.resolve_pmid.return_value = None
-        result = srv._handle_bibliography_tool("ref_resolve_pmid", {"pmid": "1"})
-        assert "No metadata found" in _text(result)
+        with pytest.raises(ToolError, match="No metadata found"):
+            _run(srv.ref_resolve_pmid(pmid="1"))
 
     def test_bib_merge(self, bib_mocks):
         mgr, _, _ = bib_mocks
@@ -419,205 +679,9 @@ class TestBibliographyHandler:
         merged = MagicMock(entries=[MagicMock(citation_key="k1")])
         merged.__len__.return_value = 1
         mgr.merge.return_value = merged
-        result = srv._handle_bibliography_tool("bib_merge", {"libraries": ["a", "b"]})
-        assert '"input_libraries": 2' in _text(result)
-        assert '"merged_entries": 1' in _text(result)
 
-    def test_unknown_tool(self, bib_mocks):
-        result = srv._handle_bibliography_tool("bib_unknown", {})
-        assert "Unknown bibliography tool" in _text(result)
+        result = _run(srv.bib_merge(libraries=["a", "b"]))
 
-    def test_exception(self, monkeypatch):
-        monkeypatch.setattr(srv, "BIBLIOGRAPHY_AVAILABLE", True)
-        monkeypatch.setattr(srv, "BibtexManager", MagicMock(side_effect=RuntimeError("boom")))
-        result = srv._handle_bibliography_tool("bib_parse_string", {})
-        assert "Bibliography error" in _text(result)
-
-
-class TestLlmToolHandler:
-    def test_unavailable(self, monkeypatch):
-        monkeypatch.setattr(srv, "LLM_AVAILABLE", False)
-        result = srv._handle_llm_tool("analyze_citations", {}, MagicMock())
-        assert "not available" in _text(result)
-
-    def test_init_failure(self, monkeypatch):
-        monkeypatch.setattr(srv, "LLM_AVAILABLE", True)
-        monkeypatch.setattr(srv, "create_llm_client", MagicMock(side_effect=RuntimeError("no key")))
-        result = srv._handle_llm_tool("analyze_citations", {}, MagicMock())
-        assert "Failed to initialise LLM" in _text(result)
-
-    @pytest.fixture
-    def llm_mocks(self, monkeypatch):
-        agent = MagicMock()
-        monkeypatch.setattr(srv, "LLM_AVAILABLE", True)
-        monkeypatch.setattr(srv, "create_llm_client", lambda: MagicMock())
-        monkeypatch.setattr(srv, "SmartCitationAnalysis", lambda **kw: agent)
-        return agent
-
-    def test_analyze_citations_paper_not_found(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = []
-        result = srv._handle_llm_tool("analyze_citations", {"pmid": "1"}, client)
-        assert "not found" in _text(result)
-
-    def test_analyze_citations_success(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
-        llm_mocks.analyze_citation_context.return_value = {"summary": "ok"}
-        result = srv._handle_llm_tool("analyze_citations", {"pmid": "1"}, client)
-        assert "ok" in _text(result)
-
-    def test_analyze_citations_agent_returns_falsy(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
-        llm_mocks.analyze_citation_context.return_value = None
-        result = srv._handle_llm_tool("analyze_citations", {"pmid": "1"}, client)
-        assert "Failed to analyze citations" in _text(result)
-
-    def test_compare_citations_missing_paper(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.side_effect = [[{"pmid": "1"}], []]
-        result = srv._handle_llm_tool(
-            "compare_citations", {"pmid1": "1", "pmid2": "2"}, client
-        )
-        assert "One or both papers not found" in _text(result)
-
-    def test_compare_citations_success(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1"}]
-        llm_mocks.compare_citations.return_value = {"result": "ok"}
-        result = srv._handle_llm_tool(
-            "compare_citations", {"pmid1": "1", "pmid2": "2"}, client
-        )
-        assert "ok" in _text(result)
-
-    def test_summarize_citations_success(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1"}]
-        llm_mocks.summarize_citations.return_value = {"summary": "ok"}
-        result = srv._handle_llm_tool("summarize_citations", {"pmid": "1"}, client)
-        assert "ok" in _text(result)
-
-    def test_summarize_citations_not_found(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = []
-        result = srv._handle_llm_tool("summarize_citations", {"pmid": "1"}, client)
-        assert "not found" in _text(result)
-
-    def test_paper_screening(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
-        llm_mocks.screen_papers.return_value = {"included": []}
-        result = srv._handle_llm_tool("paper_screening", {"query": "x"}, client)
-        assert "included" in _text(result)
-
-    def test_research_question_analysis(self, llm_mocks):
-        llm_mocks.analyze_research_question.return_value = {"ok": True}
-        result = srv._handle_llm_tool(
-            "research_question_analysis", {"research_question": "q"}, MagicMock()
-        )
-        assert "ok" in _text(result)
-
-    def test_preprint_analysis(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
-        llm_mocks.analyze_preprint.return_value = {"ok": True}
-        result = srv._handle_llm_tool("preprint_analysis", {"pmid": "1"}, client)
-        assert "ok" in _text(result)
-
-    def test_preprint_analysis_not_found(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = []
-        result = srv._handle_llm_tool("preprint_analysis", {"pmid": "1"}, client)
-        assert "not found" in _text(result)
-
-    def test_literature_review(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
-        llm_mocks.generate_literature_review.return_value = {"ok": True}
-        result = srv._handle_llm_tool(
-            "literature_review", {"research_topic": "x"}, client
-        )
-        assert "ok" in _text(result)
-
-    def test_knowledge_graph(self, llm_mocks):
-        llm_mocks.build_knowledge_graph.return_value = {"ok": True}
-        result = srv._handle_llm_tool(
-            "knowledge_graph", {"research_domain": "x"}, MagicMock()
-        )
-        assert "ok" in _text(result)
-
-    def test_unknown_tool(self, llm_mocks):
-        result = srv._handle_llm_tool("bogus_tool", {}, MagicMock())
-        assert "Unknown LLM tool" in _text(result)
-
-    def test_generic_exception(self, llm_mocks):
-        client = MagicMock()
-        client.search_all.side_effect = RuntimeError("boom")
-        result = srv._handle_llm_tool("analyze_citations", {"pmid": "1"}, client)
-        assert "LLM tool error" in _text(result)
-
-
-class TestHandleListTools:
-    def test_returns_full_tool_registry(self):
-        result = srv.handle_list_tools({})
-        assert "tools" in result
-        names = {t["name"] for t in result["tools"]}
-        assert "unified_search" in names
-        assert "bib_merge" in names
-        for tool in result["tools"]:
-            assert "description" in tool
-            assert "inputSchema" in tool
-
-
-class TestHandleCallToolDispatch:
-    def test_dispatch_search_papers(self, monkeypatch):
-        client = MagicMock()
-        client.search_all.return_value = []
-        monkeypatch.setattr(srv, "_get_client", lambda: client)
-        result = srv.handle_call_tool({"name": "search_papers", "arguments": {"query": "x"}})
-        assert result["content"]
-
-    def test_dispatch_search_authors(self, monkeypatch):
-        client = MagicMock()
-        client.search_all.return_value = []
-        monkeypatch.setattr(srv, "_get_client", lambda: client)
-        srv.handle_call_tool({"name": "search_authors", "arguments": {"query": "Smith"}})
-        args, kwargs = client.search_all.call_args
-        assert 'AUTH:"Smith"' in args[0]
-
-    def test_dispatch_get_paper_citations(self, monkeypatch):
-        client = MagicMock()
-        client.search_all.return_value = []
-        monkeypatch.setattr(srv, "_get_client", lambda: client)
-        srv.handle_call_tool({"name": "get_paper_citations", "arguments": {"pmid": "1"}})
-        args, kwargs = client.search_all.call_args
-        assert args[0] == "CITED:1"
-
-    def test_dispatch_unknown_tool(self, monkeypatch):
-        monkeypatch.setattr(srv, "_get_client", lambda: MagicMock())
-        result = srv.handle_call_tool({"name": "totally_unknown"})
-        assert "Unknown tool" in _text(result)
-
-    def test_dispatch_swallows_exception(self, monkeypatch):
-        monkeypatch.setattr(
-            srv, "_get_client", MagicMock(side_effect=RuntimeError("client init failed"))
-        )
-        result = srv.handle_call_tool({"name": "search_papers", "arguments": {}})
-        assert "client init failed" in _text(result)
-
-    def test_dispatch_llm_tool_routes_correctly(self, monkeypatch):
-        monkeypatch.setattr(srv, "_get_client", lambda: MagicMock())
-        monkeypatch.setattr(
-            srv, "_handle_llm_tool", lambda name, args, client: srv._ok({"routed": name})
-        )
-        result = srv.handle_call_tool({"name": "compare_citations", "arguments": {}})
-        assert "compare_citations" in _text(result)
-
-    def test_dispatch_bibliography_tool_routes_correctly(self, monkeypatch):
-        monkeypatch.setattr(srv, "_get_client", lambda: MagicMock())
-        monkeypatch.setattr(
-            srv, "_handle_bibliography_tool", lambda name, args: srv._ok({"routed": name})
-        )
-        result = srv.handle_call_tool({"name": "bib_validate", "arguments": {}})
-        assert "bib_validate" in _text(result)
+        assert result["input_libraries"] == 2
+        assert result["merged_entries"] == 1
+        assert result["deduplicated"] == 4

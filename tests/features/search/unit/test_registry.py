@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import MagicMock
+
 import pytest
 
 from pyeuropepmc._optional_imports import OptionalDependencyError
@@ -32,18 +34,14 @@ def test_available_sources_installed_only_filters_missing_extra(monkeypatch):
     spec = registry.get_source_spec("semantic_scholar")
     assert spec.extras == ("semanticscholar",)
 
-    monkeypatch.setattr(
-        registry, "is_package_available", lambda mod: mod != "semanticscholar"
-    )
+    monkeypatch.setattr(registry, "is_package_available", lambda mod: mod != "semanticscholar")
     installed = registry.available_sources(installed_only=True)
     assert "semantic_scholar" not in installed
     assert "pubmed" in installed
 
 
 def test_load_source_missing_extra_raises_helpful_error(monkeypatch):
-    monkeypatch.setattr(
-        registry, "is_package_available", lambda mod: mod != "semanticscholar"
-    )
+    monkeypatch.setattr(registry, "is_package_available", lambda mod: mod != "semanticscholar")
     with pytest.raises(OptionalDependencyError) as exc:
         registry.load_source("semantic_scholar")
     assert "pip install pyeuropepmc[semanticscholar]" in str(exc.value)
@@ -70,6 +68,42 @@ def test_load_source_tolerates_extra_kwargs():
     )
     assert client.rate_limit_delay == 2.0
     assert client.timeout == 9
+
+
+class TestLoadEntryPointSources:
+    """`load_entry_point_sources` is used by third-party plugins, not by this
+    package itself, so nothing else in the suite exercises it."""
+
+    def test_no_entry_points_is_a_noop(self, monkeypatch):
+        monkeypatch.setattr("importlib.metadata.entry_points", lambda group: [])
+        registry.load_entry_point_sources()  # must not raise
+
+    def test_successful_entry_point_is_invoked(self, monkeypatch):
+        callback = MagicMock()
+        ep = MagicMock()
+        ep.name = "fake-source"
+        ep.load.return_value = callback
+        monkeypatch.setattr("importlib.metadata.entry_points", lambda group: [ep])
+
+        registry.load_entry_point_sources()
+
+        callback.assert_called_once_with()
+
+    def test_failing_entry_point_is_logged_not_raised(self, monkeypatch):
+        ep = MagicMock()
+        ep.name = "broken-source"
+        ep.load.side_effect = RuntimeError("boom")
+        monkeypatch.setattr("importlib.metadata.entry_points", lambda group: [ep])
+
+        registry.load_entry_point_sources()  # must not raise
+
+    def test_uses_the_requested_group(self, monkeypatch):
+        entry_points = MagicMock(return_value=[])
+        monkeypatch.setattr("importlib.metadata.entry_points", entry_points)
+
+        registry.load_entry_point_sources(group="custom.group")
+
+        entry_points.assert_called_once_with(group="custom.group")
 
 
 def test_register_and_override(monkeypatch):
