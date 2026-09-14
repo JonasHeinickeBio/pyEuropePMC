@@ -291,6 +291,48 @@ def _infer_markers(item) -> set[str]:
     return inferred
 
 
+@pytest.hookimpl(hookwrapper=True, tryfirst=True)
+def pytest_runtest_makereport(item, call):
+    """Report a third-party outage as a skip, not a failure.
+
+    The functional suite calls live services (Europe PMC, Zenodo, DOAJ, DBLP,
+    HAL, CORE, iCite). When one of them is slow or down, the client correctly
+    raises NET001/NET002 - that is the client behaving as designed, and says
+    nothing about whether the code under test is correct. Failing the build for
+    it turns someone else's uptime into our red CI: `zenodo.org ... Read timed
+    out. (read timeout=3)` did exactly that.
+
+    Only ``functional`` tests are affected, and only network error codes - an
+    assertion failure or any other exception still fails normally.
+    """
+    outcome = yield
+    report = outcome.get_result()
+
+    if report.when != "call" or not report.failed:
+        return
+    if "functional" not in {m.name for m in item.iter_markers()}:
+        return
+
+    exc = getattr(call, "excinfo", None)
+    if exc is None:
+        return
+
+    text = str(exc.value)
+    network = (
+        "NET001" in text
+        or "NET002" in text
+        or "Read timed out" in text
+        or "Max retries exceeded" in text
+        or "Connection refused" in text
+        or "Temporary failure in name resolution" in text
+    )
+    if not network:
+        return
+
+    report.outcome = "skipped"
+    report.longrepr = (__file__, 0, f"third-party service unreachable: {text.splitlines()[0][:160]}")
+
+
 def pytest_collection_modifyitems(config, items):
     """Auto-mark tests by location and wire up the network guard."""
     # Safety check: core deps present?
