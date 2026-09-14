@@ -10,7 +10,7 @@ validation, ``isError`` wrapping, tool discovery) live in test_mcp_server.py.
 from __future__ import annotations
 
 import asyncio
-from unittest.mock import MagicMock
+from unittest.mock import AsyncMock, MagicMock
 
 from mcp.server.fastmcp.exceptions import ToolError
 import pytest
@@ -41,6 +41,13 @@ def _reset_singletons():
 
 def _run(coro):
     return asyncio.run(coro)
+
+
+def _fake_ctx() -> MagicMock:
+    """A truthy stand-in for mcp.server.fastmcp.Context with an awaitable .info()."""
+    ctx = MagicMock()
+    ctx.info = AsyncMock()
+    return ctx
 
 
 class TestUnifiedSearch:
@@ -84,6 +91,18 @@ class TestUnifiedSearch:
         srv._unified_cache.set(unified)
         with pytest.raises(RuntimeError, match="boom"):
             _run(srv.unified_search(query="x"))
+
+    def test_reports_progress_via_context(self, monkeypatch):
+        unified = MagicMock()
+        report = MagicMock(total_input=1, total_output=1, duplicates_removed=0)
+        unified.search.return_value = ([], report)
+        monkeypatch.setattr(srv, "UNIFIED_AVAILABLE", True)
+        srv._unified_cache.set(unified)
+        ctx = _fake_ctx()
+
+        _run(srv.unified_search(query="cancer", ctx=ctx))
+
+        assert ctx.info.await_count == 2
 
 
 class TestSearchPapers:
@@ -196,6 +215,18 @@ class TestCitationSnowball:
         srv._citation_walker_cache.set(MagicMock())
         with pytest.raises(KeyError):
             _run(srv.citation_snowball(identifier="PMID:1", strategy="bogus"))  # type: ignore[arg-type]
+
+    def test_reports_progress_via_context(self, monkeypatch):
+        walker = MagicMock()
+        report = MagicMock(total_input=0, total_output=0, duplicates_removed=0)
+        walker.snowball.return_value = ([], report)
+        monkeypatch.setattr(srv, "CITATION_WALKER_AVAILABLE", True)
+        srv._citation_walker_cache.set(walker)
+        ctx = _fake_ctx()
+
+        _run(srv.citation_snowball(identifier="PMID:1", ctx=ctx))
+
+        ctx.info.assert_awaited_once()
 
 
 class TestClinicalTrialSearch:
@@ -400,6 +431,14 @@ class TestLlmTools:
         result = _run(srv.compare_citations(pmid1="1", pmid2="2"))
         assert result == {"result": "ok"}
 
+    def test_compare_citations_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1"}]
+        srv._client_cache.set(client)
+        agent.compare_citations.return_value = None
+        with pytest.raises(ToolError, match="Failed to compare citations"):
+            _run(srv.compare_citations(pmid1="1", pmid2="2"))
+
     def test_summarize_citations_success(self, agent):
         client = MagicMock()
         client.search_all.return_value = [{"pmid": "1"}]
@@ -415,6 +454,14 @@ class TestLlmTools:
         with pytest.raises(ToolError, match="not found"):
             _run(srv.summarize_citations(pmid="1"))
 
+    def test_summarize_citations_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1"}]
+        srv._client_cache.set(client)
+        agent.summarize_citations.return_value = None
+        with pytest.raises(ToolError, match="Failed to summarize citations"):
+            _run(srv.summarize_citations(pmid="1"))
+
     def test_paper_screening(self, agent):
         client = MagicMock()
         client.search_all.return_value = [{"pmid": "1", "title": "T"}]
@@ -428,10 +475,40 @@ class TestLlmTools:
         assert result == {"included": []}
         agent.screen_papers.assert_called_once()
 
+    def test_paper_screening_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.screen_papers.return_value = None
+        with pytest.raises(ToolError, match="Failed to screen papers"):
+            _run(
+                srv.paper_screening(query="x", inclusion_criteria=["a"], exclusion_criteria=["b"])
+            )
+
+    def test_paper_screening_reports_progress_via_context(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.screen_papers.return_value = {"included": []}
+        ctx = _fake_ctx()
+
+        _run(
+            srv.paper_screening(
+                query="x", inclusion_criteria=["a"], exclusion_criteria=["b"], ctx=ctx
+            )
+        )
+
+        assert ctx.info.await_count == 2
+
     def test_research_question_analysis(self, agent):
         agent.analyze_research_question.return_value = {"ok": True}
         result = _run(srv.research_question_analysis(research_question="q"))
         assert result == {"ok": True}
+
+    def test_research_question_analysis_agent_returns_falsy(self, agent):
+        agent.analyze_research_question.return_value = None
+        with pytest.raises(ToolError, match="Failed to analyze research question"):
+            _run(srv.research_question_analysis(research_question="q"))
 
     def test_preprint_analysis(self, agent):
         client = MagicMock()
@@ -448,6 +525,14 @@ class TestLlmTools:
         with pytest.raises(ToolError, match="not found"):
             _run(srv.preprint_analysis(pmid="1"))
 
+    def test_preprint_analysis_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.analyze_preprint.return_value = None
+        with pytest.raises(ToolError, match="Failed to analyze preprint"):
+            _run(srv.preprint_analysis(pmid="1"))
+
     def test_literature_review(self, agent):
         client = MagicMock()
         client.search_all.return_value = [{"pmid": "1", "title": "T"}]
@@ -460,10 +545,34 @@ class TestLlmTools:
         _, kwargs = agent.generate_literature_review.call_args
         assert kwargs["excluded_topics"] == []
 
+    def test_literature_review_agent_returns_falsy(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.generate_literature_review.return_value = None
+        with pytest.raises(ToolError, match="Failed to generate literature review"):
+            _run(srv.literature_review(research_topic="x", key_concepts=["a"]))
+
+    def test_literature_review_reports_progress_via_context(self, agent):
+        client = MagicMock()
+        client.search_all.return_value = [{"pmid": "1", "title": "T"}]
+        srv._client_cache.set(client)
+        agent.generate_literature_review.return_value = {"ok": True}
+        ctx = _fake_ctx()
+
+        _run(srv.literature_review(research_topic="x", key_concepts=["a"], ctx=ctx))
+
+        ctx.info.assert_awaited_once()
+
     def test_knowledge_graph(self, agent):
         agent.build_knowledge_graph.return_value = {"ok": True}
         result = _run(srv.knowledge_graph(research_domain="x"))
         assert result == {"ok": True}
+
+    def test_knowledge_graph_agent_returns_falsy(self, agent):
+        agent.build_knowledge_graph.return_value = None
+        with pytest.raises(ToolError, match="Failed to build knowledge graph"):
+            _run(srv.knowledge_graph(research_domain="x"))
 
 
 class TestBibliographyTools:

@@ -345,3 +345,36 @@ class TestToolRegistry:
         args = {"identifier": "PMID:1", "strategy": "not-a-real-strategy"}
         with pytest.raises(Exception, match="strategy"):
             asyncio.run(srv.mcp.call_tool("citation_snowball", args))
+
+
+class TestMainEntry:
+    @pytest.fixture(autouse=True)
+    def _no_real_logging_setup(self, monkeypatch):
+        # _configure_logging mutates the root logger (see TestConfigureLogging,
+        # which is careful to save/restore it); these tests are only about
+        # argument-parsing/flag-plumbing to mcp.run, so skip that side effect.
+        monkeypatch.setattr(srv, "_configure_logging", MagicMock())
+        # srv.mcp is a module-level singleton reused for the whole test
+        # session; restore its mutable settings so these tests don't leak
+        # into whatever runs after them.
+        previous_host, previous_port = srv.mcp.settings.host, srv.mcp.settings.port
+        yield
+        srv.mcp.settings.host, srv.mcp.settings.port = previous_host, previous_port
+
+    def test_applies_flags_and_runs_requested_transport(self, monkeypatch):
+        run = MagicMock()
+        monkeypatch.setattr(srv.mcp, "run", run)
+
+        srv._main_entry(["--transport", "streamable-http", "--host", "0.0.0.0", "--port", "9000"])
+
+        assert srv.mcp.settings.host == "0.0.0.0"
+        assert srv.mcp.settings.port == 9000
+        run.assert_called_once_with(transport="streamable-http")
+
+    def test_defaults_to_stdio(self, monkeypatch):
+        run = MagicMock()
+        monkeypatch.setattr(srv.mcp, "run", run)
+
+        srv._main_entry([])
+
+        run.assert_called_once_with(transport="stdio")
