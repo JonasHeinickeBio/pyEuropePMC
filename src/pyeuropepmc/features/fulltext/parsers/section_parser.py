@@ -116,9 +116,13 @@ class SectionParser(BaseParser):
     def _extract_section_structure(self, section: ET.Element) -> dict[str, str]:
         """Extract section title and content."""
         title = self._extract_flat_texts(section, "title", filter_empty=False, use_full_text=True)
-        paragraphs = self._extract_flat_texts(
-            section, ".//p", filter_empty=True, use_full_text=True
-        )
+        # Own paragraphs only: `.//p` also swept up every subsection's text,
+        # which was then returned again under the subsection itself (#209).
+        paragraphs: list[str] = []
+        for para in self._section_own_elements(section, "p"):
+            paragraphs.extend(
+                self._extract_flat_texts(para, ".", filter_empty=True, use_full_text=True)
+            )
         return {
             "title": title[0] if title else "",
             "content": "\n\n".join(paragraphs) if paragraphs else "",

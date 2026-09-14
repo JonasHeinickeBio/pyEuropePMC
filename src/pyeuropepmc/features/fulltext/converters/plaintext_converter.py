@@ -143,23 +143,26 @@ class PlaintextConverter(BaseParser):
         if titles:
             text_parts.append(f"{titles[0]}\n")
 
-        # Extract paragraphs with formatting
-        paragraphs = self._extract_flat_texts(
-            section, ".//p", filter_empty=True, use_full_text=True
-        )
+        # Extract paragraphs with formatting. Own paragraphs only - `.//p` here
+        # duplicated every subsection's text into its parent as well (#209).
+        paragraphs = [
+            text
+            for para in self._section_own_elements(section, "p")
+            for text in self._extract_flat_texts(para, ".", filter_empty=True, use_full_text=True)
+        ]
         for para_text in paragraphs:
             formatted_text = self._process_formatting_in_text(para_text)
             text_parts.append(f"{formatted_text}\n")
 
         # Extract lists
-        lists = section.findall(".//list")
+        lists = self._section_own_elements(section, "list")
         for list_elem in lists:
             list_text = self._process_list_plaintext(list_elem)
             if list_text:
                 text_parts.append(f"{list_text}\n")
 
         # Extract tables
-        tables = section.findall(".//table")
+        tables = self._section_own_elements(section, "table")
         for table_elem in tables:
             table_text = self._process_table_plaintext(table_elem)
             if table_text:

@@ -46,6 +46,55 @@ class BaseParser:
         """Get all text content from an element and its descendants."""
         return self._helper.get_text_content(element)
 
+    @staticmethod
+    def _child_sections(parent: ET.Element) -> list[ET.Element]:
+        """The outermost <sec> elements beneath ``parent``.
+
+        Descends through non-section wrappers but stops at each <sec>, so a
+        subsection is never returned alongside its own parent. Identity is
+        never compared - lxml can hand back distinct proxy objects for one
+        node, which makes an ``id()``-keyed exclusion set unreliable.
+        """
+        found: list[ET.Element] = []
+
+        def walk(elem: ET.Element) -> None:
+            for child in elem:
+                if child.tag == "sec":
+                    found.append(child)
+                else:
+                    walk(child)
+
+        walk(parent)
+        return found
+
+    @staticmethod
+    def _section_own_elements(section: ET.Element, *tags: str) -> list[ET.Element]:
+        """Descendants of ``section`` with these tags that no nested <sec> owns.
+
+        JATS sections nest, and the flat extractors selected descendant content
+        with ``.//``: a parent emitted its subsections' paragraphs as well as
+        its own, and each subsection then emitted them again - duplicating
+        40-60% of the output (#209).
+
+        Content inside a nested <sec> belongs to that subsection. Everything
+        else belongs here, including content wrapped in <boxed-text> and
+        similar, which a direct-children-only rule would have lost.
+        """
+        wanted = set(tags)
+        found: list[ET.Element] = []
+
+        def walk(parent: ET.Element) -> None:
+            for child in parent:
+                if child.tag == "sec":
+                    continue  # that subsection's content, not ours
+                if child.tag in wanted:
+                    found.append(child)
+                else:
+                    walk(child)
+
+        walk(section)
+        return found
+
     def _extract_flat_texts(
         self,
         parent: ET.Element,
