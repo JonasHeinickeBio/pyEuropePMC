@@ -14,8 +14,22 @@ jobs:
   greeting:
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    # The action decides "is this a first contribution?" by paging through every
+    # issue and PR the author has ever opened here. For the repository owner
+    # that is now several hundred records, and it is answered before it starts.
+    # Bots are excluded for the same reason - Dependabot does not need greeting.
+    if: >-
+      github.actor != github.repository_owner
+      && github.event.issue.user.type != 'Bot'
+      && github.event.pull_request.user.type != 'Bot'
     steps:
     - uses: actions/first-interaction@1c4688942c71f71d4f5502a26ea67c331730fa4d # v3.1.0
+      # A greeting is cosmetic; it must never turn a pull request's checks red.
+      # It already has: a transient 500 on page 3 of that pagination failed the
+      # check on #211 with "other side closed", in a run that went on to print
+      # "Skipping...Not First Contribution" - the correct answer, reported as a
+      # failure.
+      continue-on-error: true
       with:
         repo_token: ${{ secrets.GITHUB_TOKEN }}
 
