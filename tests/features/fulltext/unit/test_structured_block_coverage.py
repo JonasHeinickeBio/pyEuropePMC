@@ -92,3 +92,41 @@ class TestSupplementaryMaterial:
             "<p>BARE supplementary text with no caption element.</p>",
         )
         assert "BARE supplementary text" in _all_text(FullTextXMLParser(xml))
+
+
+SUPP_CAPTION_AND_STRAY_P = """<?xml version="1.0" encoding="UTF-8"?>
+<article><front><article-meta><title-group><article-title>T</article-title>
+</title-group></article-meta></front><body>
+<sec><title>Data</title>
+  <supplementary-material id="s1" content-type="local-data">
+    <caption><title>CAPTION TITLE of the supplement.</title></caption>
+    <media xlink:href="s1.docx" xmlns:xlink="http://www.w3.org/1999/xlink"/>
+    <p>STRAY paragraph describing the supplement, outside the caption.</p>
+  </supplementary-material>
+</sec>
+</body></article>"""
+
+
+class TestSupplementaryStrayParagraphs:
+    """A <p> outside the <caption> was dropped when a caption was present.
+
+    The no-caption fallback only fires when the element yields nothing at all,
+    so an item carrying both kept the caption and lost the paragraph. Found on
+    PMC12301511; it was the last body sentence missing from the structured
+    output across a 124-document corpus.
+    """
+
+    @pytest.fixture
+    def parser(self):
+        return FullTextXMLParser(SUPP_CAPTION_AND_STRAY_P)
+
+    def test_caption_title_is_kept(self, parser):
+        assert "CAPTION TITLE of the supplement." in _all_text(parser)
+
+    def test_stray_paragraph_is_kept(self, parser):
+        assert "STRAY paragraph describing the supplement" in _all_text(parser)
+
+    def test_each_appears_once(self, parser):
+        text = _all_text(parser)
+        assert text.count("CAPTION TITLE of the supplement.") == 1
+        assert text.count("STRAY paragraph describing the supplement") == 1

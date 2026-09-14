@@ -885,6 +885,14 @@ class ContentBlockExtractor(BaseParser):
                 # Process <p> elements within caption (existing behavior)
                 for p_elem in caption.findall(".//p"):
                     blocks.extend(self._handle_paragraph(p_elem))
+
+            # Paragraphs that sit outside the caption. The fallback below only
+            # fires when the element yields nothing at all, so an item with a
+            # caption *and* a stray <p> - PMC12301511 - kept the caption and
+            # dropped the paragraph.
+            for p_elem in child.findall("p"):
+                blocks.extend(self._handle_paragraph(p_elem))
+
             if blocks:
                 return blocks
             # No caption anywhere: keep whatever text the element carries
