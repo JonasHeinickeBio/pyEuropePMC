@@ -91,6 +91,16 @@ class SectionParser(BaseParser):
                         {"title": "Author Notes", "content": content, "type": "author_notes"}
                     )
 
+        # Acknowledgments. get_full_text_sections() returned <author-notes>
+        # but not <ack>, while to_plaintext() did the reverse - each rendering
+        # lost different back matter, and to_markdown() lost all of it.
+        for elem in self.root.findall(".//ack") if self.root is not None else []:
+            content = self._get_text_content(elem)
+            if content:
+                structures.append(
+                    {"title": "Acknowledgments", "content": content, "type": "acknowledgments"}
+                )
+
         # Appendices
         app_patterns = self.config.appendix_patterns.get("app", [])
         for pattern in app_patterns:
