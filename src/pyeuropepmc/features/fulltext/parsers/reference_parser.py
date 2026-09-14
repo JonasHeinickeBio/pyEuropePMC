@@ -122,11 +122,22 @@ class ReferenceParser(BaseParser):
         """Extract fields from a citation element."""
         citation_type = ref_data.get("citation_type")
 
-        # For mixed-citation elements, try text parsing first
+        # A <mixed-citation> may carry the same structured children as an
+        # <element-citation> - <person-group>, <article-title>, <source>,
+        # <year> - or it may be a run of plain text. Take the structure when it
+        # is there, and only guess from the flattened string for whatever is
+        # left.
+        #
+        # This ran the other way round, and the regex path fills title and
+        # source on almost any input. `_extract_structured_citation_fields`
+        # only sets fields that are still missing, so the correct values were
+        # computed and then discarded. A five-author <person-group> came back
+        # as authors="Albritton E", title="Hernandez-Cancio S",
+        # source="Lutz W" - the second and third authors, in the title and
+        # journal fields.
         if citation_type == "mixed-citation":
-            self._parse_mixed_citation_text(citation, ref_data)
-            # Still try structured extraction as fallback for any missing fields
             self._extract_structured_citation_fields(citation, ref_data, supplied_pmid)
+            self._parse_mixed_citation_text(citation, ref_data)
         else:
             # For structured citations (element-citation, etc.), use XPath extraction
             self._extract_structured_citation_fields(citation, ref_data, supplied_pmid)
@@ -195,16 +206,16 @@ class ReferenceParser(BaseParser):
         # Clean up the text (remove extra whitespace, normalize)
         text = _RE_WHITESPACE.sub(" ", text.strip())
 
-        # Extract authors
+        # Nothing here overwrites a value the structured pass already found:
+        # a guess from flattened text is always the weaker source.
         authors, text = self._extract_authors_from_text(text)
-        if authors:
+        if authors and not ref_data.get("authors"):
             ref_data["authors"] = authors
 
-        # Extract title and source
         title, source, year, text = self._extract_title_and_source_from_text(text)
-        if title:
+        if title and not ref_data.get("title"):
             ref_data["title"] = title
-        if source:
+        if source and not ref_data.get("source"):
             ref_data["source"] = source
         if year and not ref_data.get("year"):
             ref_data["year"] = year
