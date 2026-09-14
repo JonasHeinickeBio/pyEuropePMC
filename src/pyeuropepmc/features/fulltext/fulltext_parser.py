@@ -298,7 +298,7 @@ class FullTextXMLParser:
                 )
             try:
                 self.xml_content = xml_content
-                self.root = DefusedET.fromstring(xml_content)
+                self.root = self._strip_default_namespace(DefusedET.fromstring(xml_content))
                 self._reset_parsers()
                 return self.root
             except ET.ParseError as e:
@@ -317,6 +317,32 @@ class FullTextXMLParser:
             raise ParsingError(
                 ErrorCodes.PARSE003, {"message": "xml_content must be a string or Element."}
             )
+
+    @staticmethod
+    def _strip_default_namespace(root: ET.Element) -> ET.Element:
+        """Remove the document's own default namespace from element tags.
+
+        Every search in this package is written unprefixed - ``.//article-meta``,
+        ``.//sec`` - which matches a DTD-based JATS document, the form Europe
+        PMC serves. A schema-based JATS document places the same elements in a
+        default namespace, so their tags read ``{ns}article-meta`` and every one
+        of those searches silently returns nothing: no title, no publication
+        date, no sections, empty plain text, and no error raised.
+
+        Only the root's own namespace is removed. Prefixed vocabularies are
+        left intact - ``<ali:license_ref>`` carries the licence URL and
+        ``xlink:href`` the link targets, and both are looked up by their full
+        namespaced names.
+        """
+        if not isinstance(root.tag, str) or not root.tag.startswith("{"):
+            return root
+
+        prefix = root.tag[: root.tag.index("}") + 1]
+        width = len(prefix)
+        for element in root.iter():
+            if isinstance(element.tag, str) and element.tag.startswith(prefix):
+                element.tag = element.tag[width:]
+        return root
 
     def _require_root(self) -> None:
         """Raise an error if no root element is available."""
