@@ -7,11 +7,15 @@ on:
       - '.github/workflows/**'
       - '.github/actions/**'
       - '.github/zizmor.yml'
+  # Deliberately NOT path-filtered, unlike the push trigger above. A workflow
+  # suppressed by `paths:` never reports its checks, so requiring this one
+  # would leave every pull request that does not touch .github/ stuck on
+  # "Expected - waiting for status to be reported". The same saving is taken
+  # in the `changes` job below, where a skip still reports.
   pull_request:
-    paths:
-      - '.github/workflows/**'
-      - '.github/actions/**'
-      - '.github/zizmor.yml'
+  # The merge queue needs this to fire on every entry, or a queued pull
+  # request waits forever for a check that never runs.
+  merge_group:
   schedule:
     # Weekly. zizmor itself is version-pinned below for reproducibility, but its
     # online audits (stale/unpinned action refs) depend on upstream state that
@@ -27,8 +31,46 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
+  changes:
+    name: Detect workflow changes
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      relevant: ${{ steps.relevance.outputs.relevant }}
+    steps:
+      - name: Decide whether the audit needs to run
+        id: relevance
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          PR_NUMBER: ${{ github.event.pull_request.number || '' }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          # Only a pull request can be irrelevant. push, merge_group, schedule
+          # and workflow_dispatch always audit.
+          if [ "$EVENT_NAME" != "pull_request" ]; then
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+            echo "Event $EVENT_NAME always runs the audit."
+            exit 0
+          fi
+          files=$(gh api "repos/$REPO/pulls/$PR_NUMBER/files" \
+            --paginate --jq '.[].filename')
+          if printf '%s\n' "$files" | grep -qE '^\.github/(workflows/|actions/|zizmor\.ya?ml$)'; then
+            echo "relevant=true" >> "$GITHUB_OUTPUT"
+            echo "Workflow or action files changed; auditing."
+          else
+            echo "relevant=false" >> "$GITHUB_OUTPUT"
+            echo "No workflow or action files changed; the audit will skip."
+          fi
+
   zizmor:
     name: zizmor
+    needs: changes
+    if: needs.changes.outputs.relevant == 'true'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
