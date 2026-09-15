@@ -1,25 +1,32 @@
-# FTP Downloader Skill
+# FTP downloader skill
 
-Bulk download XML/PDF files from Europe PMC FTP servers.
+Download open-access PDF bundles for many articles from the Europe PMC FTP site.
 
 ```python
 from pyeuropepmc import FTPDownloader
 
-downloader = FTPDownloader()
+with FTPDownloader() as downloader:
+    results = downloader.bulk_download_and_extract(
+        pmcids=["11691200", "11861200"],  # digits, without the "PMC" prefix
+        output_dir="./downloads",
+    )
 
-# Download multiple papers
-results = downloader.bulk_download_and_extract(
-    pmcids=["1234567", "2345678", "3456789"],
-    output_dir="./downloads",
-    file_type="xml"  # or "pdf"
-)
+succeeded = [pmcid for pmcid, result in results.items() if result["status"] == "success"]
+print(succeeded)
+```
 
-# Download by DOI
-downloader.download_by_doi("10.1038/nature11476", output_dir="./downloads")
+Output:
+
+```text
+['11691200', '11861200']
 ```
 
 Key tips:
-- Use `file_type="xml"` for full-text, `"pdf"` for publisher PDFs
-- Progress callback via `progress_callback` parameter
-- Rate limiting built-in; respects FTP server limits
-- Returns dict with success/failure counts
+
+- It downloads PDFs only, as ZIP files from `https://europepmc.org/ftp/pdf/`. The PDFs are extracted to `output_dir/extracted/`, and the ZIP files are deleted unless you pass `keep_zips=True`.
+- Each result has a `status` of `"success"`, `"not_found"` or `"error"`, plus `zip_path` and `pdf_paths`, or `error`.
+- A PMC ID with the `PMC` prefix, or one whose directory listing could not be read, comes back as `"not_found"`.
+- There is no progress callback. For XML, or for progress reporting, use `FullTextClient.download_fulltext_batch()` or `download_fulltext_batch_parallel()`.
+- To download by DOI, look up the PMC ID first with `SearchClient`.
+
+See the [FTPDownloader reference](../../api/ftp-downloader.md) and [Full-text retrieval](../../features/fulltext/README.md).

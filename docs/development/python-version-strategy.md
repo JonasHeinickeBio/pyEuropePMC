@@ -1,163 +1,99 @@
-# Python Version Compatibility Strategy
+# Python version support
 
-## Current Status Analysis
+This page records which Python versions pyEuropePMC supports and how CI tests each of them. It also sets out the plan for Python 3.10 reaching end of life in October 2026 and for adding Python 3.14 and 3.15.
 
-### Supported Python Ecosystem (June 2025)
+## Current support
 
-- **Python 3.10**: Released Oct 2021, **Active support until Oct 2026**
-- **Python 3.11**: Released Oct 2022, Active support until Oct 2027
-- **Python 3.12**: Released Oct 2023, Active support until Oct 2028
-- **Python 3.13**: Released Oct 2024, Active support until Oct 2029
+`pyproject.toml` declares `requires-python = ">=3.10,<4.0"` and classifiers for Python 3.10, 3.11, 3.12 and 3.13.
 
-### Recommended Strategy: **3.10+ with Strategic Testing**
+| Python | Upstream status in September 2026 | End of life | Tested in CI |
+|---|---|---|---|
+| 3.10 | security fixes only | October 2026 | the full test suite on Linux and Windows, and every other Linux job |
+| 3.11 | security fixes only | October 2027 | compilation, imports and the CLI |
+| 3.12 | security fixes only | October 2028 | the full test suite on Linux, Windows and macOS, and release verification |
+| 3.13 | bug fixes | October 2029 | compilation, imports and the CLI |
+| 3.14 | bug fixes; released 7 October 2025 | October 2030 | not tested or declared |
+| 3.15 | pre-release; release planned for 1 October 2026 | October 2031 | not tested |
 
-## 1. Version Support Policy
+The upstream dates come from the [Python Developer's Guide](https://devguide.python.org/versions/).
 
-### Primary Support (Full Testing)
+### What runs on which version
 
-- **Python 3.10** - Minimum version, guaranteed compatibility
-- **Python 3.12** - Recommended version for performance
+- `python-compatibility.yml` compiles the package, imports and constructs the public clients, and runs `pyeuropepmc --help` on Python 3.10, 3.11, 3.12 and 3.13, on Ubuntu with core dependencies only.
+- The same workflow runs the default test suite on Python 3.10 and 3.12 on Ubuntu and Windows, and on 3.12 on macOS. Pull requests run the Ubuntu legs only.
+- `cdci.yml`, `unit-tests.yml`, `integration-tests.yml`, `benchmark.yml` and `analyze_repo.yml` run on Python 3.10, which is also the default of the `setup-python-env` composite action.
+- `release.yml` verifies and builds on Python 3.12.
+- ruff targets Python 3.10 (`target-version = "py310"`), so its pyupgrade fixes never introduce syntax the minimum version lacks.
+- mypy parses code as Python 3.12 (`python_version = "3.12"`) regardless of the minimum version. Compiling on each interpreter is what catches syntax a version does not support.
 
-### Secondary Support (Compatibility Testing)
+## Proposed policy
 
-- **Python 3.11** - Should work but not primary focus
-- **Python 3.13** - Future-proofing, test when stable
+- Support every CPython version that has not reached end of life.
+- Drop a version in the first release after its end of life, and announce the drop in the changelog of the release before.
+- Run the full test suite on all three operating systems for the oldest supported version and one newer version, and check compilation and imports on every other supported version.
+- Declare a new version in the classifiers once the default test suite passes on it.
 
-### Rationale
+`requires-python` is part of the package metadata, so pip and uv on a Python version that is no longer supported keep installing the last release that supports it.
 
-- **3.10+** covers 95%+ of active Python installations in scientific computing
-- **Skip 3.9** - End of life Oct 2025, security updates only
-- **Focus resources** on versions that matter most to users
+## Plan: dropping Python 3.10
 
-## 2. Multi-Version CI/CD Strategy
+Python 3.10 reaches end of life in October 2026.
 
-### GitHub Actions Matrix Testing
+### Before the end of October 2026
 
-```yaml
-strategy:
-  matrix:
-    python-version: ["3.10", "3.12"]
-    os: [ubuntu-latest, windows-latest, macos-latest]
-  fail-fast: false
-```
+- Add a note under `## [Unreleased]` in `CHANGELOG.md` that the first release after October 2026 requires Python 3.11 or later.
+- Keep Python 3.10 in every job until the drop, so the last release that supports it is fully tested.
 
-### Testing Tiers
+### The pull request that drops Python 3.10
 
-1. **Core Tests** (All versions): Import, basic functionality
-2. **Integration Tests** (Primary versions): Full API testing
-3. **Performance Tests** (Latest version): Benchmarking
+1. In `pyproject.toml`:
+   - set `requires-python = ">=3.11,<4.0"`, and `python = ">=3.11,<4.0"` in `[tool.poetry.dependencies]`;
+   - remove the `Programming Language :: Python :: 3.10` classifier;
+   - set `target-version = "py311"` in `[tool.ruff]`;
+   - update the `[tool.mypy]` comment that refers to Python 3.10.
+2. Re-lock. `poetry check --lock` fails as soon as the Python constraint changes:
 
-## 3. Dependency Compatibility Matrix
+   ```bash
+   poetry lock
+   ```
 
-### Critical Dependencies
+   Then regenerate `requirements.txt` with the pinned exporter:
 
-- `requests`: Supports 3.7+ (✅ Compatible)
-- `backoff`: Supports 3.6+ (✅ Compatible)
-- `defusedxml`: Supports 3.6+ (✅ Compatible)
-- `typing-extensions`: Supports 3.7+ (✅ Compatible)
+   ```bash
+   uvx --from poetry==2.3.2 --with poetry-plugin-export==1.10.0 poetry export --without-hashes -f requirements.txt -o requirements.txt
+   ```
 
-### Development Dependencies
+3. Apply the pyupgrade fixes the new target enables. With `py311`, ruff reports eight `UP017` findings, where `datetime.timezone.utc` becomes `datetime.UTC`:
 
-- `pytest`: Supports 3.8+ (✅ Compatible)
-- `mypy`: Supports 3.8+ (✅ Compatible)
-- `ruff`: Supports 3.7+ (✅ Compatible)
+   ```bash
+   poetry run ruff check --fix src/ tests/
+   ```
 
-## 4. Testing Strategy
+4. Move the Python 3.10 jobs to 3.11:
+   - `python-version: '3.10'` in `cdci.yml` (both jobs), `unit-tests.yml`, `integration-tests.yml`, `benchmark.yml` and `analyze_repo.yml`;
+   - the `python-version` default in `.github/actions/setup-python-env/action.yml`;
+   - in `python-compatibility.yml`, the `syntax-check` matrix, the `core-tests` matrix and its macOS exclusion, and the support text in the `compatibility-summary` job.
+5. Update `PYTHON_VERSION` in the `Makefile`, and update or delete `tox.ini`, which still lists `py310`.
+6. Update the pages that name Python 3.10 as the minimum, including `README.md`, `docs/README.md`, the pages in `docs/getting-started/` and this page.
+7. Record the change under breaking changes in `CHANGELOG.md`.
 
-### Automated Testing Levels
+No required status check has a Python version in its name, so the branch ruleset does not change.
 
-#### Level 1: Syntax & Import Testing
+## Plan: Python 3.14 and 3.15
 
-- Verify code parses on all supported versions
-- Test all imports succeed
-- Check basic instantiation
+Python 3.14 is neither declared nor tested. Two locked dependencies publish no Python 3.14 wheels, so installing on 3.14 builds them from source:
 
-#### Level 2: Unit Testing
+- `rapidfuzz`, a core dependency, is constrained to `>=2.15.0,<3.0`. The locked 2.15.2 has CPython wheels up to 3.12 only, so installs on 3.13 already build it from source. Current rapidfuzz releases have 3.14 wheels and require Python 3.11 or later.
+- `numpy`, used by the `analytics`, `visualization`, `export`, `standard` and `all` extras, is locked at 2.2.6, which has wheels up to 3.13. numpy releases from 2.3 on require Python 3.11 or later, and 2.5 requires 3.12.
 
-- Run full test suite on primary versions (3.10, 3.12)
-- Focus on core functionality
-- Test edge cases and error handling
+Both fit naturally after the 3.10 drop:
 
-#### Level 3: Integration Testing
+1. Widen the `rapidfuzz` upper bound. `poetry lock` keeps the versions already locked where they still fit, so move both packages explicitly:
 
-- Test against real Europe PMC API
-- Verify network operations
-- Test large data handling
+   ```bash
+   poetry update rapidfuzz numpy
+   ```
 
-#### Level 4: Performance Testing
-
-- Benchmark on latest Python version
-- Memory usage analysis
-- Regression testing
-
-## 5. Version-Specific Considerations
-
-### Python 3.10 (Minimum)
-
-- **Benefits**: Stable, widely adopted, pattern matching
-- **Focus**: Ensure all features work reliably
-- **Testing**: Full test suite, all features
-
-### Python 3.12 (Recommended)
-
-- **Benefits**: 15% performance improvement, better error messages
-- **Focus**: Performance validation, future features
-- **Testing**: Full suite + performance benchmarks
-
-### Python 3.13+ (Future)
-
-- **Benefits**: Free-threaded Python (experimental), improved REPL
-- **Focus**: Compatibility testing, no feature development yet
-- **Testing**: Basic compatibility only
-
-## 6. Implementation Roadmap
-
-### Phase 1: Foundation (Current)
-
-- [x] Update pyproject.toml to support 3.10+
-- [ ] Create comprehensive CI/CD matrix
-- [ ] Add version-specific testing
-
-### Phase 2: Professional Testing
-
-- [ ] Implement multi-version GitHub Actions
-- [ ] Add compatibility testing framework
-- [ ] Create version support documentation
-
-### Phase 3: Advanced Features
-
-- [ ] Performance benchmarking across versions
-- [ ] Automated compatibility reporting
-- [ ] Version-specific optimizations
-
-## 7. Quality Gates
-
-### Required for Release
-
-- ✅ All tests pass on Python 3.10
-- ✅ All tests pass on Python 3.12
-- ✅ Import tests pass on all supported versions
-- ✅ No deprecation warnings on any version
-
-### Recommended for Release
-
-- ✅ Performance benchmarks within 5% on 3.12 vs 3.10
-- ✅ Memory usage stable across versions
-- ✅ Full integration tests pass
-
-## 8. User Communication
-
-### Documentation Strategy
-
-- Clearly state minimum version (3.10+)
-- Recommend Python 3.12 for best performance
-- Provide migration guide for users on older versions
-- Document version-specific benefits
-
-### Support Policy
-
-- **Full Support**: Python 3.10
-- **Best Effort**: Python 3.11, 3.12, 3.13
-- **No Support**: Python 3.9 and below
-
-This strategy balances thorough testing with practical resource allocation.
+2. Add `'3.14'` to the `syntax-check` matrix in `python-compatibility.yml`. The composite action sets `allow-prereleases: true`, so 3.15 release candidates can be added the same way.
+3. When the default test suite passes on 3.14, add the classifier and consider moving the second fully tested version from 3.12 to a newer one.
+4. Add Python 3.15 to the `syntax-check` matrix once it is released.

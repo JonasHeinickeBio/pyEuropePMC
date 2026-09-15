@@ -1,542 +1,260 @@
-# Full-Text Retrieval
+# Full-text retrieval
 
-The **FullTextClient** and **FTPDownloader** provide comprehensive capabilities for downloading complete article content from Europe PMC.
+`FullTextClient` downloads the full text of Europe PMC articles by PMC ID, as XML, PDF or HTML, one at a time or in batches, and keeps a cache of downloaded files. `FTPDownloader` fetches PDF bundles from the Europe PMC FTP site. The reference pages list every parameter: [FullTextClient](../../api/fulltext-client.md) and [FTPDownloader](../../api/ftp-downloader.md).
 
-## Overview
-
-- **PDF downloads** from open access articles
-- **XML full-text** in JATS/NLM format
-- **HTML content** retrieval
-- **Bulk FTP downloads** for large datasets
-- **Progress tracking** with callbacks
-- **Automatic retry** and error handling
-- **Smart caching** for repeated requests
-- **Parallel batch downloads** with rate limiting and statistics
-- **Efficient cache usage** - rate limiter only invoked for network requests, not cached hits
-
-## Quick Start
-
-### FullTextClient (Individual Downloads)
-
-```python
-from pyeuropepmc import FullTextClient
-
-with FullTextClient() as client:
-    # Download PDF
-    pdf_path = client.download_pdf_by_pmcid("PMC3258128")
-
-    # Download XML
-    xml_path = client.download_xml_by_pmcid("PMC3258128")
-
-    # Get XML content directly
-    xml_content = client.get_fulltext_xml("PMC3258128")
-```
-
-### FTPDownloader (Bulk Downloads)
-
-```python
-from pyeuropepmc import FTPDownloader
-
-downloader = FTPDownloader()
-
-# Bulk download with progress tracking
-results = downloader.bulk_download_and_extract(
-    pmcids=["1234567", "2345678", "3456789"],
-    output_dir="./papers",
-    file_format="pdf"
-)
-
-print(f"Downloaded: {len(results['pdf_files'])} PDFs")
-print(f"Failed: {len(results['failed'])} items")
-```
-
-## FullTextClient Features
-
-### PDF Downloads
-
-Download PDFs from open access articles:
-
-```python
-with FullTextClient() as client:
-    # Download single PDF
-    pdf_path = client.download_pdf_by_pmcid(
-        pmcid="PMC3258128",
-        output_dir="./downloads"
-    )
-    print(f"PDF saved to: {pdf_path}")
-
-    # Check if PDF is available before downloading
-    metadata = client.get_metadata("PMC3258128")
-    if metadata.get('isOpenAccess'):
-        pdf_path = client.download_pdf_by_pmcid("PMC3258128")
-```
-
-**Note:** Only open access articles have PDFs available. Check `isOpenAccess` flag first.
-
-### XML Downloads
-
-Download full-text XML in JATS/NLM format:
-
-```python
-with FullTextClient() as client:
-    # Download XML to file
-    xml_path = client.download_xml_by_pmcid(
-        pmcid="PMC3258128",
-        output_dir="./xml_files"
-    )
-
-    # Get XML content as string
-    xml_content = client.get_fulltext_xml("PMC3258128")
-
-    # Parse immediately
-    from pyeuropepmc import FullTextXMLParser
-    parser = FullTextXMLParser(xml_content)
-    metadata = parser.extract_metadata()
-```
-
-### HTML Content
-
-Retrieve HTML representation:
-
-```python
-with FullTextClient() as client:
-    html_content = client.get_fulltext_html("PMC3258128")
-
-    # Save to file
-    with open("article.html", "w", encoding="utf-8") as f:
-        f.write(html_content)
-```
-
-### Progress Tracking
-
-Monitor download progress with callbacks:
-
-```python
-def progress_callback(current, total, message):
-    percentage = (current / total) * 100
-    print(f"Progress: {percentage:.1f}% - {message}")
-
-with FullTextClient() as client:
-    pdf_path = client.download_pdf_by_pmcid(
-        pmcid="PMC3258128",
-        progress_callback=progress_callback
-    )
-```
-
-## FTPDownloader Features
-
-The **FTPDownloader** is optimized for bulk operations and large-scale downloads.
-
-### Bulk PDF Downloads
-
-Download multiple PDFs efficiently:
-
-```python
-from pyeuropepmc import FTPDownloader
-
-downloader = FTPDownloader()
-
-# List of PMC IDs
-pmcids = ["1234567", "2345678", "3456789", "4567890"]
-
-# Bulk download
-results = downloader.bulk_download_and_extract(
-    pmcids=pmcids,
-    output_dir="./papers",
-    file_format="pdf"
-)
-
-# Process results
-print(f"Successful: {len(results['pdf_files'])}")
-print(f"Failed: {len(results['failed'])}")
-
-for pdf_file in results['pdf_files']:
-    print(f"Downloaded: {pdf_file}")
-
-for failed_pmcid in results['failed']:
-    print(f"Failed: PMC{failed_pmcid}")
-```
-
-### Bulk XML Downloads
-
-Download XML files in bulk:
-
-```python
-results = downloader.bulk_download_and_extract(
-    pmcids=["1234567", "2345678"],
-    output_dir="./xml_collection",
-    file_format="xml"
-)
-
-# Access downloaded XML files
-for xml_file in results['xml_files']:
-    with open(xml_file) as f:
-        xml_content = f.read()
-        # Process XML...
-```
-
-### Mixed Format Downloads
-
-Download both PDFs and XML files:
-
-```python
-results = downloader.bulk_download_and_extract(
-    pmcids=["1234567", "2345678"],
-    output_dir="./papers",
-    file_format="both"  # Download both PDF and XML
-)
-
-print(f"PDFs: {len(results['pdf_files'])}")
-print(f"XMLs: {len(results['xml_files'])}")
-```
-
-### Progress Tracking for Bulk Downloads
-
-```python
-def bulk_progress(current, total, message):
-    print(f"[{current}/{total}] {message}")
-
-results = downloader.bulk_download_and_extract(
-    pmcids=pmcids,
-    output_dir="./papers",
-    file_format="pdf",
-    progress_callback=bulk_progress
-)
-```
-
-## Advanced Examples
-
-### Example 1: Search + Download Pipeline
-
-Combine search with full-text downloads:
-
-```python
-from pyeuropepmc import SearchClient, FullTextClient
-
-# Step 1: Search for papers
-with SearchClient() as search_client:
-    results = search_client.search(
-        query="machine learning AND biology",
-        pageSize=20
-    )
-
-    # Extract PMC IDs from open access papers
-    pmcids = [
-        paper['pmcid'].replace('PMC', '')
-        for paper in results['resultList']['result']
-        if paper.get('pmcid') and paper.get('isOpenAccess') == 'Y'
-    ]
-
-# Step 2: Download full-text PDFs
-with FullTextClient() as fulltext_client:
-    for pmcid in pmcids:
-        try:
-            pdf_path = fulltext_client.download_pdf_by_pmcid(f"PMC{pmcid}")
-            print(f"Downloaded: {pdf_path}")
-        except Exception as e:
-            print(f"Failed PMC{pmcid}: {e}")
-```
-
-### Example 2: Bulk Download with Error Recovery
-
-```python
-from pyeuropepmc import FTPDownloader
-
-downloader = FTPDownloader()
-
-# First attempt
-results = downloader.bulk_download_and_extract(
-    pmcids=large_pmcid_list,
-    output_dir="./papers",
-    file_format="pdf"
-)
-
-# Retry failed downloads
-if results['failed']:
-    print(f"Retrying {len(results['failed'])} failed downloads...")
-    retry_results = downloader.bulk_download_and_extract(
-        pmcids=results['failed'],
-        output_dir="./papers",
-        file_format="pdf"
-    )
-
-    # Combine results
-    all_successful = results['pdf_files'] + retry_results['pdf_files']
-    still_failed = retry_results['failed']
-
-    print(f"Total successful: {len(all_successful)}")
-    print(f"Still failed: {len(still_failed)}")
-```
-
-### Example 3: Parallel Batch Download with Rate Limiting
-
-Download multiple files in parallel with automatic rate limiting and progress tracking:
-
-```python
-from pyeuropepmc import FullTextClient
-
-client = FullTextClient()
-
-# Parallel batch download with 4 workers
-pmcids = ["PMC1234567", "PMC2345678", "PMC3456789", "PMC4567890"]
-
-results = client.download_fulltext_batch_parallel(
-    pmcids=pmcids,
-    format_type="pdf",
-    output_dir="./downloads",
-    max_workers=4,
-    show_progress=True
-)
-
-# Check results
-for pmcid, path in results.items():
-    if path:
-        print(f"OK {pmcid}: {path}")
-    else:
-        print(f"FAIL {pmcid}: Failed")
-
-# View download statistics
-print(f"Total requests: {client.download_stats['global_stats']['total_requests']}")
-print(f"Success rate: {client.download_stats['success_rate']:.1%}")
-```
-
-**Note:** The rate limiter is only invoked for network requests, not for cached files, making parallel downloads more efficient.
-
-### Example 4: Download + Parse Workflow
+## Get the XML of an article
 
 ```python
 from pyeuropepmc import FullTextClient, FullTextXMLParser
 
 with FullTextClient() as client:
-    pmcids = ["PMC3258128", "PMC4567890"]
+    xml_content = client.get_fulltext_content("PMC3258128")
 
-    for pmcid in pmcids:
-        # Download XML
-        xml_content = client.get_fulltext_xml(pmcid)
-
-        # Parse immediately
-        parser = FullTextXMLParser(xml_content)
-
-        # Extract data
-        metadata = parser.extract_metadata()
-        tables = parser.extract_tables()
-        references = parser.extract_references()
-
-        print(f"\n{metadata['title']}")
-        print(f"Tables: {len(tables)}")
-        print(f"References: {len(references)}")
+parser = FullTextXMLParser(xml_content)
+print(parser.extract_metadata()["title"])
 ```
 
-### Example 5: Batch Processing with Progress
+Output:
 
-```python
-from pyeuropepmc import FTPDownloader, FullTextXMLParser
-import os
-
-# Download bulk XML files
-downloader = FTPDownloader()
-results = downloader.bulk_download_and_extract(
-    pmcids=["1234567", "2345678", "3456789"],
-    output_dir="./xml_files",
-    file_format="xml"
-)
-
-# Process each downloaded XML
-all_metadata = []
-for xml_file in results['xml_files']:
-    with open(xml_file) as f:
-        parser = FullTextXMLParser(f.read())
-        metadata = parser.extract_metadata()
-        all_metadata.append(metadata)
-        print(f"Processed: {metadata['title']}")
-
-# Save summary
-import json
-with open("metadata_summary.json", "w") as f:
-    json.dump(all_metadata, f, indent=2)
+```text
+Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA
 ```
 
-### Example 6: Selective Download by File Size
+`get_fulltext_content(pmcid, format_type="xml")` sends one request to the Europe PMC REST API (`PMC{id}/fullTextXML`) and returns the response body as a string; `format_type="html"` requests `PMC{id}/fullTextHTML`. It neither reads nor fills the file cache, and it tries no other source. [XML parsing](../parsing/README.md) describes what to do with the XML.
 
-```python
-from pyeuropepmc import FullTextClient
-import os
+Every method accepts a PMC ID with or without the `PMC` prefix, in any letter case: `"PMC3258128"`, `"pmc3258128"` and `"3258128"` are the same article.
 
-with FullTextClient() as client:
-    pmcids = ["PMC3258128", "PMC4567890", "PMC5678901"]
-
-    for pmcid in pmcids:
-        # Download to temporary location first
-        pdf_path = client.download_pdf_by_pmcid(pmcid, output_dir="./temp")
-
-        # Check file size
-        file_size_mb = os.path.getsize(pdf_path) / (1024 * 1024)
-
-        if file_size_mb > 10:
-            print(f"{pmcid}: Too large ({file_size_mb:.1f} MB), skipping")
-            os.remove(pdf_path)
-        else:
-            # Move to final location
-            final_path = f"./papers/{pmcid}.pdf"
-            os.rename(pdf_path, final_path)
-            print(f"{pmcid}: Downloaded ({file_size_mb:.1f} MB)")
-```
-
-## Performance Optimization
-
-### 1. Parallel Batch Downloads with Rate Limiting
-
-Use parallel downloads for multiple files with automatic rate limiting:
+## Download files
 
 ```python
 from pyeuropepmc import FullTextClient
 
-client = FullTextClient()
+with FullTextClient() as client:
+    xml_path = client.download_xml_by_pmcid("PMC3258128", output_path="downloads/PMC3258128.xml")
+    print(xml_path, client.last_xml_source)
 
-# Download 10 files in parallel with 4 workers
-pmcids = [f"PMC{1234560+i}" for i in range(10)]
+    pdf_path = client.download_pdf_by_pmcid("PMC3258128", output_path="downloads/PMC3258128.pdf")
+    print(pdf_path)
 
-results = client.download_fulltext_batch_parallel(
-    pmcids=pmcids,
-    format_type="pdf",
-    max_workers=4,
-    show_progress=True
-)
-
-print(f"Downloaded: {sum(1 for p in results.values() if p)} files")
+    html_path = client.download_html_by_pmcid("PMC3258128", output_path="downloads/PMC3258128.html")
+    print(html_path)
 ```
 
-**Key features:**
-- Automatic rate limiting per worker (1 request/second)
-- Cache-aware: rate limiter only invoked for network requests
-- Progress tracking with detailed worker statistics
-- Automatic error handling and retry logic
+Output:
 
-### 2. Use FTP for Bulk Downloads
+```text
+downloads/PMC3258128.xml europepmc_rest
+downloads/PMC3258128.pdf
+downloads/PMC3258128.html
+```
 
-For downloading many articles, FTP is much faster:
+Each method returns the `Path` of the saved file. `output_path` is a file path; parent directories are created. Without it, the file is saved in the current directory as `PMC{id}.xml`, `PMC{id}.pdf` or `PMC{id}.html`.
+
+The methods try several sources in turn:
+
+| Method | Sources, in order | If no source succeeds |
+|---|---|---|
+| `download_xml_by_pmcid()` | The file cache; the Europe PMC REST API; the Europe PMC FTP open-access archives; the Europe PMC `fulltextRepo` endpoint; with `extra_strategies=True` (the default), the NCBI PMC OA web service, NCBI E-utilities efetch, BioC-PMC, DOI content negotiation and the bioRxiv/medRxiv API; Unpaywall | Raises `FullTextError` (`FULL003`) |
+| `download_pdf_by_pmcid()` | The file cache; `https://europepmc.org/articles/PMC{id}?pdf=render`; the Europe PMC render service `ptpmcrender.fcgi`; a ZIP file from the open-access PDF collection; Unpaywall | Returns `None` |
+| `download_html_by_pmcid()` | The file cache; the article's web page `https://europepmc.org/article/PMC/{id}` | Returns `None` |
+
+- `client.last_xml_source` names the source of the last XML file: `cache`, `europepmc_rest`, `europepmc_ftp_bulk`, `europepmc_fulltext_repo`, `pmc_oa_service`, `ncbi_efetch`, `bioc_pmc`, `doi_negotiation`, `biorxiv` or `unpaywall`.
+- The DOI-based sources need the article's DOI. Pass `doi=` to `download_xml_by_pmcid()`, or the client looks it up in Europe PMC.
+- The Unpaywall steps run only with a contact e-mail address: `FullTextClient(email="you@example.org")`, or the `UNPAYWALL_EMAIL` or `CROSSREF_EMAIL` environment variable.
+- A PDF counts as downloaded only if the file starts with `%PDF`.
+
+## Check what is available
 
 ```python
-# Slow: Individual downloads
-with FullTextClient() as client:
-    for pmcid in many_pmcids:
-        client.download_pdf_by_pmcid(pmcid)
+from pyeuropepmc import FullTextClient
 
-# Fast: Bulk FTP download
-downloader = FTPDownloader()
-results = downloader.bulk_download_and_extract(
-    pmcids=many_pmcids,
-    output_dir="./papers"
-)
+with FullTextClient() as client:
+    print(client.check_fulltext_availability("PMC3258128"))
 ```
 
-### 3. Enable Caching
+Output:
 
-Caching is enabled by default for FullTextClient:
+```text
+{'pdf': True, 'xml': True, 'html': True}
+```
+
+The check sends a HEAD request to the XML endpoint (`xml` is `True` for HTTP 200), a HEAD request to the PDF render URL (`pdf` is `True` for HTTP 200 with a PDF content type), and a GET request to the article's web page (`html` is `True` for HTTP 200). A request that fails counts as `False`. It says nothing about the other XML and PDF sources.
+
+## Download many articles
+
+`download_fulltext_batch()` downloads one article after another and can report progress:
 
 ```python
-with FullTextClient() as client:
-    # First call - downloads from API
-    xml1 = client.get_fulltext_xml("PMC3258128")
+from pyeuropepmc import FullTextClient
 
-    # Second call - retrieved from cache (instant)
-    xml2 = client.get_fulltext_xml("PMC3258128")
+
+def report(progress):
+    print(f"{progress.current_item}/{progress.total_items} {progress.status.split()[0]}")
+
+
+with FullTextClient() as client:
+    results = client.download_fulltext_batch(
+        ["PMC3258128", "PMC3359999"],
+        format_type="xml",
+        output_dir="xml_files",
+        progress_callback=report,
+        progress_update_interval=0,
+    )
+
+for pmcid, path in results.items():
+    print(pmcid, path)
 ```
 
-### 4. Batch Processing
+Output:
 
-Process files in batches to manage memory:
+```text
+0/2 initialized
+1/2 downloading
+2/2 downloading
+2/2 completed
+PMC3258128 xml_files/PMC3258128.xml
+PMC3359999 xml_files/PMC3359999.xml
+```
+
+- Files are saved as `output_dir/PMC{id}.{format}`; `output_dir` defaults to the current directory. The result maps each PMC ID, as you passed it, to a `Path` or to `None`.
+- With `skip_errors=True` (the default), a `FullTextError` for one article is logged and that article maps to `None`; with `False` the error is raised. Other exceptions stop the batch either way.
+- The callback receives a `ProgressInfo` object: once with status `initialized`, before a download when at least `progress_update_interval` seconds (default 1.0) have passed since the last call, and once with status `completed`. See [ProgressInfo](../../api/fulltext-client.md#progressinfo).
+
+`download_fulltext_batch_parallel()` runs the downloads in a thread pool:
+
+```python
+from pyeuropepmc import FullTextClient
+
+with FullTextClient() as client:
+    results = client.download_fulltext_batch_parallel(
+        ["PMC3258128", "PMC3359999"],
+        format_type="xml",
+        output_dir="parallel",
+        max_workers=2,
+        show_progress=False,
+    )
+    print({pmcid: str(path) for pmcid, path in sorted(results.items())})
+    print(client.download_stats["success_rate"], client.download_stats["global_stats"])
+```
+
+Output:
+
+```text
+{'PMC3258128': 'parallel/PMC3258128.xml', 'PMC3359999': 'parallel/PMC3359999.xml'}
+1.0 {'total_requests': 2, 'total_failures': 0, 'total_successes': 2}
+```
+
+- `max_workers` defaults to the number of CPUs, at most 8; larger values are reduced to 8.
+- Each worker thread has its own HTTP session and a rate limiter of one request per second. The rate limiter is applied only after the cache lookup, so files served from the cache do not wait.
+- `show_progress=True` (the default) shows a tqdm progress bar.
+- After the call, `client.download_stats` holds counts, timings and per-worker statistics.
+- Failed downloads are not retried, and the result lists the articles in the order their downloads finished.
+
+## Search and download
+
+```python
+from pyeuropepmc import FullTextClient
+
+with FullTextClient() as client:
+    results = client.search_and_download_fulltext(
+        "microRNA AND OPEN_ACCESS:y",
+        format_type="xml",
+        max_results=5,
+        output_dir="search_downloads",
+    )
+print(sorted(results))
+```
+
+Output:
+
+```text
+['3258128', '3359999']
+```
+
+The method searches Europe PMC with `SearchClient` (one page of `max_results` results) and keeps the results that have a PMCID. With `only_available=True` (the default) it then calls `check_fulltext_availability()` for each and keeps those where the requested format is available. It downloads them with `download_fulltext_batch()` for PDF and XML, or `download_html_by_pmcid()` for HTML. The keys of the result are PMC IDs without the `PMC` prefix.
+
+## Caching
+
+`FullTextClient` has two separate caches.
+
+- **File cache for downloads**, specific to `FullTextClient` and on by default. Every downloaded file is copied to `cache_dir/pdf`, `cache_dir/xml` or `cache_dir/html` as `PMC{id}.{format}`. The `download_*_by_pmcid` methods, and the batch methods that use them, look there before sending a request and copy a cached file to `output_path`. The default `cache_dir` is `pyeuropepmc_cache` in the system temporary directory (`tempfile.gettempdir()`). A cached file is used if it is not empty, is younger than `cache_max_age_days` (default 30) and, with `verify_cached_files=True` (the default), starts like a PDF, XML or HTML file. `FullTextClient(enable_cache=False)` turns it off. `get_fulltext_content()` never uses it.
+- **API response cache**, opt-in as for the other clients. Pass `cache_config=CacheConfig(enabled=True)` to cache the results of `check_fulltext_availability()`. It is held in memory unless the `CacheConfig` sets `enable_l2=True`, which adds a disk layer; a disk cache is currently wiped when another cache opens the same directory. See the [caching guide](../caching/README.md) and the [caching reference](../../advanced/caching.md).
+
+```python
+from pyeuropepmc import FullTextClient
+
+with FullTextClient(cache_dir="fulltext_cache") as client:
+    client.download_xml_by_pmcid("PMC3258128", output_path="first/PMC3258128.xml")
+    client.download_xml_by_pmcid("PMC3258128", output_path="second/PMC3258128.xml")
+    print(client.last_xml_source)
+
+    stats = client.get_cache_stats()
+    print(stats["total_files"], stats["formats"]["xml"])
+    print(client.clear_cache(format_type="xml", max_age_days=0))
+```
+
+Output:
+
+```text
+cache
+1 {'count': 1, 'size_bytes': 82474}
+1
+```
+
+`clear_cache(format_type=None, max_age_days=None)` deletes cached files older than `max_age_days` (default: `cache_max_age_days`) and returns how many it deleted; `max_age_days=0` deletes all of them.
+
+## Bulk PDF downloads over FTP
+
+`FTPDownloader` downloads the per-article ZIP files that Europe PMC publishes at `https://europepmc.org/ftp/pdf/` and extracts the PDFs from them. It handles PDFs only; to download XML for many articles, use `download_fulltext_batch_parallel(..., format_type="xml")`.
 
 ```python
 from pyeuropepmc import FTPDownloader
 
-downloader = FTPDownloader()
+with FTPDownloader() as downloader:
+    results = downloader.bulk_download_and_extract(["11691200", "99999999"], output_dir="ftp_pdfs")
 
-# Split into batches
-batch_size = 100
-for i in range(0, len(all_pmcids), batch_size):
-    batch = all_pmcids[i:i+batch_size]
-
-    results = downloader.bulk_download_and_extract(
-        pmcids=batch,
-        output_dir=f"./batch_{i//batch_size}",
-        file_format="xml"
-    )
-
-    # Process batch
-    # Clean up if needed
+for pmcid, result in results.items():
+    print(pmcid, result["status"], result.get("pdf_paths", result.get("error")))
 ```
 
-## Error Handling
+Output:
+
+```text
+11691200 success [PosixPath('ftp_pdfs/extracted/PMC11691200.pdf')]
+99999999 not_found PMC ID not found in FTP
+```
+
+Pass PMC IDs as digits without the `PMC` prefix; IDs with the prefix are reported as `not_found`. The [FTPDownloader reference](../../api/ftp-downloader.md) explains the result format and how the downloader finds the files.
+
+## Handle errors
 
 ```python
 from pyeuropepmc import FullTextClient
-from pyeuropepmc.exceptions import EuropePMCException
+from pyeuropepmc.core.exceptions import PyEuropePMCError
 
 with FullTextClient() as client:
     try:
-        # Try to download PDF
-        pdf_path = client.download_pdf_by_pmcid("PMC1234567")
-
-    except EuropePMCException as e:
-        if "not found" in str(e).lower():
-            print("Article not available")
-        elif "not open access" in str(e).lower():
-            print("Article is not open access")
-        else:
-            print(f"API error: {e}")
-
-    except IOError as e:
-        print(f"File system error: {e}")
-
-    except Exception as e:
-        print(f"Unexpected error: {e}")
+        pdf_path = client.download_pdf_by_pmcid("PMC3258128", output_path="downloads/PMC3258128.pdf")
+        print(pdf_path if pdf_path is not None else "No PDF available")
+    except PyEuropePMCError as error:
+        print(type(error).__name__, error.error_code)
 ```
 
-## File Organization
+| Situation | Result |
+|---|---|
+| The PMC ID is empty, or is not digits after an optional `PMC` prefix | `FullTextError` (`FULL001` or `FULL002`), from every method |
+| `get_fulltext_content()` gets an HTTP error such as 404, or the request fails | `APIClientError` (for example `HTTP404` or `NET001`) |
+| `get_fulltext_content()` with a `format_type` other than `"xml"` or `"html"` | `FullTextError` (`FULL004`) |
+| `download_xml_by_pmcid()` finds no XML | `FullTextError` (`FULL003`) |
+| `download_pdf_by_pmcid()` finds no PDF | `None` |
+| `download_html_by_pmcid()` gets an HTTP or network error | `None` |
+| Saving an XML or HTML file fails | `FullTextError` (`FULL009`) |
 
-### Recommended Directory Structure
+`FullTextError`, `APIClientError` and `ParsingError` derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions`. `FullTextError` and `APIClientError` can also be imported from `pyeuropepmc`. `pyeuropepmc.EuropePMCError` is an alias of `SearchError`, not the common base class.
 
-```
-project/
-├── downloads/
-│   ├── pdfs/
-│   │   ├── PMC1234567.pdf
-│   │   ├── PMC2345678.pdf
-│   │   └── PMC3456789.pdf
-│   ├── xml/
-│   │   ├── PMC1234567.xml
-│   │   ├── PMC2345678.xml
-│   │   └── PMC3456789.xml
-│   └── html/
-│       └── ...
-└── processed/
-    └── metadata.json
-```
+## Known limitations
 
-### Organizing Downloads
-
-```python
-import os
-from pyeuropepmc import FullTextClient
-
-# Create organized structure
-base_dir = "./downloads"
-os.makedirs(f"{base_dir}/pdfs", exist_ok=True)
-os.makedirs(f"{base_dir}/xml", exist_ok=True)
-
-with FullTextClient() as client:
-    pmcid = "PMC3258128"
-
-    # Download to organized locations
-    pdf = client.download_pdf_by_pmcid(pmcid, output_dir=f"{base_dir}/pdfs")
-    xml = client.download_xml_by_pmcid(pmcid, output_dir=f"{base_dir}/xml")
-```
-
-## See Also
-
-- **[API Reference: FullTextClient](../../api/fulltext-client.md)** - Complete API documentation
-- **[API Reference: FTPDownloader](../../api/ftp-downloader.md)** - FTP downloader API
-- **[XML Parsing](../parsing/)** - Parse downloaded XML files
-- **[Examples](../../examples/)** - Code examples in the repository
-- **[Progress Callbacks](../../advanced/progress-callbacks.md)** - Custom progress tracking
+- When no Europe PMC source has the file and the request that looks up the article's DOI fails, `download_xml_by_pmcid()` and `download_pdf_by_pmcid()` raise `APIClientError` instead of raising `FullTextError` or returning `None`. The lookup is made even when no e-mail address is set, in which case Unpaywall is then skipped.
+- The `fulltextRepo` step requests a malformed URL (the API base URL appears twice), so it never succeeds.
+- The FTP archive step guesses the archive name from the PMC ID. When the archive contains the article, the whole decompressed archive is saved, including any other articles in it.
+- `download_html_by_pmcid()` saves the article's Europe PMC web page as served, not a rendering of the article alone.

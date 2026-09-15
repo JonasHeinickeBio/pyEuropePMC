@@ -54,12 +54,16 @@ pip install "pyeuropepmc[standard]"         # analytics + visualization + export
 pip install "pyeuropepmc[all]"              # everything — reproduces 1.x behaviour exactly
 ```
 
+Since 2.1.0 the `rdf` extra installs only rdflib-jsonld, and `[all]` no longer
+includes rdfizer. RML mapping needs it installed separately:
+`pip install rdfizer`.
+
 If you use a feature whose extra isn't installed, you get a clear error
 naming the fix instead of an `ImportError` deep in a traceback:
 
 ```
-OptionalDependencyError: literature source 'semantic_scholar' needs the
-'semanticscholar' package. Install it with: pip install pyeuropepmc[semanticscholar]
+OptionalDependencyError: The '<package>' package is required for <feature>.
+Install it with: <install command>
 ```
 
 `import pyeuropepmc` itself is now **lazy** (PEP 562): submodules and their
@@ -134,8 +138,12 @@ different sources*:
 ```python
 from pyeuropepmc.features.enrich.merger import LiteratureMerger, DedupConfig, DedupMode
 
+# One list of result dicts per source
+europepmc_results = [{"title": "CRISPR screens in cancer", "doi": "10.1000/example.1", "source": "europepmc"}]
+pubmed_results = [{"title": "CRISPR screens in cancer", "doi": "10.1000/example.1", "source": "pubmed"}]
+
 merger = LiteratureMerger(config=DedupConfig(mode=DedupMode.BALANCED))
-merged, report = merger.merge_results(list_of_result_lists)
+merged, report = merger.merge_results([europepmc_results, pubmed_results])
 ```
 
 CORD-19-style DOI/PMID/PMCID/title-hash grouping, with `BALANCED` /
@@ -189,7 +197,8 @@ just new capabilities available once you opt in:
 - **XML parser extensions** (`pyeuropepmc.features.fulltext.extensions`):
   typed content blocks, MathML-to-LaTeX conversion, peer-review parsing,
   JATS4R compliance validation, a LinkML schema, a reference resolver, and an
-  optional lxml backend.
+  optional lxml backend. The lxml backend has since been removed: all XML is
+  now parsed with defusedxml.
 - **A CLI**, installed as the `pyeuropepmc` command:
   ```bash
   pyeuropepmc normalize text path/to/article.xml         # JATS -> clean plain text
@@ -198,8 +207,9 @@ just new capabilities available once you opt in:
   pyeuropepmc benchmark run                              # XML parser quality/perf benchmarks
   ```
   Run `pyeuropepmc --help`, or `<subcommand> --help`, for the full command
-  tree (`normalize` also has `sections`/`bioc`; `claim` also has
-  `stream`/`serve`; `benchmark` has a dozen dataset/profiling commands).
+  tree (`normalize` also has `sections`, `bioc`, `classify` and `batch`;
+  `unified_search` also has `compare-sources`; `claim` also has `stream` and
+  `serve`; `benchmark` has commands for datasets, runs, profiling and reports).
 - `pyeuropepmc-mcp`: an [MCP](https://modelcontextprotocol.io/) server
   exposing search/fulltext/enrichment tools to MCP-compatible clients
   (Claude Desktop, etc.).

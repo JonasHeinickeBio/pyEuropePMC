@@ -1,96 +1,94 @@
-# PyEuropePMC
+# pyEuropePMC
 
-A comprehensive Python toolkit for searching, retrieving, and analyzing biomedical literature from Europe PMC.
+pyEuropePMC is a Python library for searching Europe PMC, downloading full-text articles and turning their JATS XML into structured data. This page shows the first three things most people do with it and where to read next.
 
-## Overview
+## What it does
 
-PyEuropePMC provides a powerful, type-safe interface to the Europe PMC database, offering advanced search capabilities, full-text content retrieval, XML parsing, and analytics tools for biomedical research.
+- **Search:** query Europe PMC with its search syntax or with `QueryBuilder`, and page through large result sets.
+- **Full text:** download XML, PDF and HTML for open-access articles, one at a time or in batches, and bulk PDF packages from the Europe PMC FTP site.
+- **Parsing:** extract metadata, sections, tables, figures and references from JATS XML with `FullTextXMLParser`.
+- **Multi-source search:** search Europe PMC together with PubMed, arXiv, OpenAlex, Semantic Scholar and other services through `UnifiedSearch`, with duplicates merged.
+- **Enrichment:** add metadata from CrossRef, OpenAlex, Semantic Scholar, Unpaywall and other services.
+- **Analysis:** publication statistics and plots (with the `analytics` and `visualization` extras) and RDF export for knowledge graphs.
+- **Systematic reviews:** search logs that record each query, its filters and its result count.
+- **Command line and MCP:** the `pyeuropepmc` command and the `pyeuropepmc-mcp` server for MCP clients.
 
-### Key Capabilities
-
-- **Search & Query** -- Advanced search with boolean operators, field-specific queries, and a fluent Query Builder API supporting 150+ searchable fields
-- **Full-Text Retrieval** -- Download PDFs, XML, and HTML content from open-access articles with automatic endpoint fallback
-- **XML Parsing** -- Extract structured data from JATS XML articles including metadata, sections, tables, figures, and references
-- **Analytics & Visualization** -- Citation analysis, publication trends, quality metrics, and interactive dashboards
-- **Systematic Reviews** -- PRISMA-compliant search logging, deduplication, and audit trails
-- **Caching** -- Multi-layer caching with memory, disk, and HTTP backends for optimal performance
-- **Knowledge Graph** -- RDF/Turtle export with RML mapping support for knowledge graph construction
-
-## Quick Start
-
-### Installation
+## Install
 
 ```bash
 pip install pyeuropepmc
 ```
 
-### Basic Usage
+pyEuropePMC supports Python 3.10–3.13. The base install covers search, full text, parsing, the command line and the MCP server. Analytics, plots, Excel export, JSON-LD, LLM agents and some enrichment clients need extras, for example `pip install "pyeuropepmc[analytics]"`. See [Installation](getting-started/installation.md) for the full list.
+
+## Search
 
 ```python
-from pyeuropepmc.features.literature.search import SearchClient
+from pyeuropepmc import SearchClient
 
 with SearchClient() as client:
-    results = client.search("CRISPR gene editing", limit=10)
-    for paper in results:
-        print(f"{paper['title']} ({paper['pubYear']})")
+    results = client.search("CRISPR gene editing", pageSize=10)
+
+print(results["hitCount"])
+for paper in results["resultList"]["result"]:
+    print(paper["title"], paper.get("pubYear"))
 ```
 
-### Query Builder
+`search()` returns the Europe PMC response as a dictionary; the records are in `results["resultList"]["result"]`.
+
+## Build a query
 
 ```python
-from pyeuropepmc.features.literature import QueryBuilder
+from pyeuropepmc import QueryBuilder, SearchClient
 
 query = (
     QueryBuilder()
     .keyword("CRISPR")
     .and_()
-    .date_range("2020-01-01", "2024-12-31")
+    .date_range(start_year=2020, end_year=2024)
     .and_()
-    .has_full_text()
-    .and_()
-    .open_access()
+    .field("open_access", True)
+    .build()
 )
+print(query)  # CRISPR AND (PUB_YEAR:[2020 TO 2024]) AND OPEN_ACCESS:y
 
 with SearchClient() as client:
-    results = client.search(str(query), limit=50)
+    results = client.search(query, pageSize=50)
 ```
 
-### Full-Text Download
+## Download and parse full text
 
 ```python
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc import FullTextClient, FullTextXMLParser
 
 with FullTextClient() as client:
-    content = client.get_fulltext("PMC7512345")
-    if content.xml:
-        print(content.xml[:500])
+    xml = client.get_fulltext_content("PMC3258128")  # JATS XML as a string
+
+parser = FullTextXMLParser(xml)
+print(parser.extract_metadata()["title"])
+for section in parser.get_full_text_sections_structured()[:3]:
+    print(section["section_type"], section["title"])
 ```
 
-## Documentation Structure
+## Where to go next
 
-| Section | Description |
-|---------|-------------|
-| [Getting Started](getting-started/README.md) | Installation, quick start, and FAQ |
-| [Features](features/README.md) | Search, full-text, parsing, and caching |
-| [API Reference](api/README.md) | Complete method documentation |
-| [Guides](guides/enrichment.md) | Enrichment and integration guides |
-| [Advanced](advanced/README.md) | Caching, performance, and power features |
-| [Reference](reference/models.md) | Data models and RDF mapping |
-| [Development](development/README.md) | Contributing and development setup |
-| [Examples](examples/README.md) | Working code samples |
+| Section | What it covers |
+|---|---|
+| [Getting started](getting-started/README.md) | Installation, a quick start and the FAQ |
+| [Examples](examples/README.md) | Short recipes and the example scripts in the repository |
+| [Features](features/README.md) | Search, full text, parsing, caching and the other features |
+| [API reference](api/README.md) | Classes, methods, exceptions and configuration |
+| [Error codes](reference/error-codes.md) | What each error code means and how to fix it |
+| [Advanced](advanced/README.md) | Caching internals, search logging and progress callbacks |
+| [Development](development/README.md) | Contributing, tests, CI and releases |
 
-## Requirements
-
-- Python 3.10+
-- Dependencies include `requests`, `defusedxml` and `tqdm`; `pandas` comes with the `analytics` extra
-
-## License
-
-MIT License
+If you are upgrading from 1.x, read [Migrating from 1.x to 2.0](migration/v1-to-v2.md) first.
 
 ## Links
 
-- [Europe PMC](https://europepmc.org/) -- The underlying database
-- [Europe PMC REST API](https://europepmc.org/RestfulWebService) -- Official API documentation
-- [GitHub](https://github.com/JonasHeinickeBio/pyEuropePMC) -- Source code
-- [PyPI](https://pypi.org/project/pyeuropepmc/) -- Package distribution
+- [Europe PMC](https://europepmc.org/)
+- [Europe PMC REST API](https://europepmc.org/RestfulWebService)
+- [Source code on GitHub](https://github.com/JonasHeinickeBio/pyEuropePMC)
+- [Package on PyPI](https://pypi.org/project/pyeuropepmc/)
+
+pyEuropePMC is released under the MIT License.

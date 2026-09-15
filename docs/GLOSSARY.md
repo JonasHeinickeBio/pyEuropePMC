@@ -1,114 +1,161 @@
 # Glossary
 
-## Core Concepts
+This page defines the terms used across the pyEuropePMC documentation: Europe PMC concepts, pyEuropePMC's classes, and the formats and values they work with.
+
+## Europe PMC
 
 **Europe PMC**
-A free life sciences literature database providing access to over 40 million articles, including full-text XML and open-access PDFs.
-
-**Full-Text XML**
-Structured XML representations of articles in JATS (Journal Article Tag Suite) format, available for a large subset of Europe PMC content.
+A free database of life-science literature. It holds abstracts from PubMed and other sources, and the full text of a subset of articles, including the open-access articles in PubMed Central.
 
 **PMID**
-PubMed Identifier. A unique numerical identifier assigned to each article in PubMed/PMC databases.
+PubMed identifier: the number PubMed assigns to a record.
 
 **PMCID**
-PubMed Central Identifier. An identifier for articles deposited in the PubMed Central full-text archive.
+PubMed Central identifier, such as `PMC3258128`. Only articles in PubMed Central have one, and only they can have full text in Europe PMC.
 
 **DOI**
-Digital Object Identifier. A persistent identifier used to uniquely identify academic publications.
+Digital Object Identifier: a persistent identifier for a publication.
 
-**Open Access (OA)**
-Articles that are freely available to read and download without subscription barriers. Europe PMC supports several open-access licenses.
+**Source**
+The collection a Europe PMC record comes from: `MED` (PubMed/MEDLINE), `PMC`, `PPR` (preprints), `AGR`, `CBA`, `CTX`, `ETH`, `HIR` or `PAT`. Filter by it inside a query, as in `SRC:MED`. `ArticleClient` methods take a source and an ID, as in `get_citations("MED", "8521067")`.
+
+**Open access (OA)**
+Free to read and reuse under an open licence. Search results mark such records with `isOpenAccess: "Y"`.
 
 **JATS**
-Journal Article Tag Suite. An XML format for representing scholarly article content, used by Europe PMC for full-text articles.
+Journal Article Tag Suite: the XML format of Europe PMC's full-text articles.
 
-## PyEuropePMC Components
+**cursorMark**
+The position marker Europe PMC uses for paging. Pass `"*"` for the first page and the response's `nextCursorMark` for each following page. `SearchClient.search_all()` does this for you.
+
+**resultType**
+How much of each record a search returns: `idlist` (identifiers only), `lite` (the default: key metadata) or `core` (adds the abstract, MeSH terms and full-text links).
+
+**hitCount**
+The total number of records that match a query, returned with every search response.
+
+## pyEuropePMC classes
 
 **SearchClient**
-The primary client for querying Europe PMC's search API, supporting keyword searches, field-specific queries, and systematic review filters.
-
-**FullTextClient**
-A client for retrieving full-text content (XML, PDF, HTML) from Europe PMC, with automatic fallback between download endpoints.
+Searches Europe PMC and pages through results. See [SearchClient](api/search-client.md).
 
 **ArticleClient**
-A client for retrieving detailed article metadata, citations, and references by PMC ID.
+Gets the details, citations, references and links of one article, identified by source and ID.
 
-**QueryBuilder**
-A fluent, type-safe API for constructing complex Europe PMC search queries with logical operators, field validation, and cross-platform translation.
-
-**FullTextXMLParser**
-A parser for extracting structured data from JATS XML articles, including metadata, sections, tables, figures, and references.
-
-**EuropePMCParser**
-A parser for normalizing and processing raw API response data from Europe PMC search results.
+**FullTextClient**
+Downloads full-text XML, PDF and HTML by PMCID, with fallbacks between download routes.
 
 **FTPDownloader**
-A client for bulk-downloading full-text articles from Europe PMC's FTP archive, with concurrent download support and progress tracking.
+Downloads open-access PDF packages in bulk from the Europe PMC FTP site; `bulk_download_and_extract()` runs several downloads at once.
 
-## Processing & Analytics
+**QueryBuilder**
+Builds Europe PMC query strings from named fields, checks where operators are placed, and saves, loads and translates queries.
+
+**FullTextXMLParser**
+Extracts metadata, sections, tables, figures and references from JATS XML, and converts articles to plain text or Markdown.
+
+**EuropePMCParser**
+Turns search responses in JSON, XML or Dublin Core into lists of record dicts.
+
+**JATSNormalizer**
+Prepares JATS XML for text mining (`normalize_xml()`, `normalize_text()`, `normalize_sections()`) and labels sections with canonical types such as `intro`, `methods`, `results` and `discussion`. Known limitation: it raises a parse error on documents that contain numeric character references such as `&#x0003c;`.
+
+**UnifiedSearch**
+Searches several services at once, translating the query for each, and merges duplicate records. See [Multi-source search](features/multi-source-search.md).
+
+**Source registry**
+`pyeuropepmc.features.search.registry`, which lists the sources `UnifiedSearch` can use (`available_sources()`). Other packages can add sources through the `pyeuropepmc.sources` entry-point group.
+
+**LiteratureMerger**
+Deduplicates lists of records from several sources and returns the merged records with a `MergeReport`. Its `DedupMode` values are `BALANCED`, `FOCUSED` and `RELAXED`. See [Deduplication](features/dedup.md).
+
+**PaperEnricher**
+Adds metadata to a paper from external services: CrossRef, OpenAlex, Semantic Scholar, Unpaywall, iCite, ORCID, DataCite and ROR. See [Enrichment](guides/enrichment.md).
+
+**ArtifactStore**
+Content-addressed storage for downloaded files: each file is stored under a hash of its content, so identical files are kept once.
+
+## Full text and parsing
+
+**Full-text XML**
+The JATS XML of an article, available for a subset of Europe PMC records.
+
+**defusedxml**
+The library pyEuropePMC uses to parse all XML. It accepts a normal `DOCTYPE` but rejects documents that declare entities, which blocks entity-expansion attacks; `FullTextXMLParser` raises `ParsingError` for such documents.
+
+**Structured section**
+A section returned by `FullTextXMLParser.get_full_text_sections_structured()`: a dict with `title`, `section_type`, `section_path`, `schema_version` and `content`, where `content` is a list of content blocks.
+
+**section_type**
+The part of the article a structured section belongs to: `front` (the article title and abstract), `body` (the main text), `back` (back matter) or `appendix`.
+
+**Content block**
+One item in a structured section's `content`: a dict whose `type` is `paragraph`, `heading`, `list`, `table`, `figure`, `formula`, `table_ref`, `figure_ref`, `code`, `boxed_text`, `quote`, `mathml`, `definition_list`, `peer_review` or `unknown_block`. When a paragraph contains a table or a figure, the paragraph is split so that the table or figure becomes a block of its own.
+
+**BioC**
+A format for text-mining corpora. `pyeuropepmc normalize bioc` converts a JATS XML file to BioC JSON.
+
+## Analysis and knowledge graphs
 
 **Analytics**
-A module providing statistical analysis functions for publication data, including citation statistics, year distributions, journal rankings, and quality metrics.
+Functions for publication statistics, such as `publication_year_distribution()`, `citation_statistics()` and `quality_metrics()`; they need the `analytics` extra.
 
 **Visualization**
-A module providing plotting functions for analytics results, including publication trends, citation distributions, and dashboard generation.
+Plotting functions for those statistics, such as `plot_publication_years()` and `create_summary_dashboard()`; they need the `visualization` extra.
 
-**DataFrame Conversion**
-The process of converting raw API response data into pandas DataFrames for efficient analysis and manipulation.
+**DataFrame conversion**
+Turning search results into a pandas DataFrame, with `to_dataframe()` or `SearchClient.export_results(results, format="dataframe")`.
 
-**Citation Statistics**
-Metrics derived from article citation counts, including mean, median, percentiles, and impact scores.
+**MeSH**
+Medical Subject Headings, the controlled vocabulary used to index PubMed. `pyeuropepmc.features.review` has helpers to suggest and expand MeSH terms. See [MeSH and PICO](features/mesh-pico.md).
 
-**Quality Metrics**
-Measures of data completeness and reliability, such as DOI coverage, abstract availability, and full-text access rates.
+**PICO**
+Population, Intervention, Comparison, Outcome: a way to structure a clinical question. `pyeuropepmc.features.review` parses PICO elements and turns them into queries.
 
-## Enrichment
+**RDF**
+Resource Description Framework: data as subject–predicate–object triples, the basis of knowledge graphs. rdflib is part of the base install; JSON-LD output needs the `rdf` extra. See [Data models and RDF mapping](reference/models.md).
 
-**Paper Enrichment**
-The process of augmenting basic article metadata with additional information from external sources like CrossRef, Semantic Scholar, and OpenAlex.
+**RML**
+RDF Mapping Language: declarative rules that generate RDF from structured data. RML mapping needs the separate `rdfizer` package.
 
-**Unpaywall**
-A service that discovers open-access versions of articles, providing license and URL information for legal free access.
+**SHACL**
+Shapes Constraint Language: rules for validating RDF, used by the validation code in `pyeuropepmc.mappers`.
 
-**Semantic Scholar**
-An AI-powered research tool providing citation contexts, influence metrics, and semantic search capabilities.
-
-## Knowledge Graph
-
-**RDF (Resource Description Framework)**
-A standard for representing information as triples (subject-predicate-object), used for building knowledge graphs.
-
-**RML (RDF Mapping Language)**
-A declarative mapping language for generating RDF from structured data sources.
-
-**SHACL (Shapes Constraint Language)**
-A validation language for checking RDF data against defined shapes and constraints.
-
-**Knowledge Graph**
-A structured representation of information using entities and relationships, enabling semantic queries and inference.
+**Knowledge graph**
+Entities and the relationships between them, represented as RDF so they can be queried together.
 
 ## Caching
 
 **Cache**
-A storage layer that stores frequently accessed data to improve performance and reduce redundant API calls.
+Stored responses or files that let pyEuropePMC skip repeated requests. `SearchClient` caches responses only when given a `CacheConfig`, in memory by default; `FullTextClient` keeps a file cache of downloads by default. See [Caching](features/caching/README.md) and [Caching internals](advanced/caching.md).
 
-**TTL (Time-to-Live)**
-The duration for which cached data remains valid before being refreshed.
+**TTL (time to live)**
+How long a cached entry stays valid. `CacheConfig(ttl=...)` takes seconds; the default is one day.
 
-**Namespace**
-A cache partitioning mechanism that isolates cached data by client, collection, or other logical groupings.
-
-**Content-Addressed Storage**
-A storage approach where data is addressed by its content hash, enabling deduplication and integrity verification.
-
-## Systematic Review
+## Systematic reviews
 
 **PRISMA**
-Preferred Reporting Items for Systematic Reviews and Meta-Analyses. A set of guidelines for reporting systematic reviews.
+Preferred Reporting Items for Systematic Reviews and Meta-Analyses: guidelines for reporting systematic reviews.
 
-**Search Log**
-A record of all search operations performed during a systematic review, including queries, timestamps, and result counts.
+**Search log**
+A record of the searches in a review, with each query, its filters, the date and the number of results. Start one with `start_search()` from `pyeuropepmc.utils.search_logging`.
 
 **Deduplication**
-The process of identifying and removing duplicate articles from search results across multiple databases.
+Finding and merging records of the same article, especially across databases. See **LiteratureMerger**.
+
+## Installation, tools and errors
+
+**Extra**
+An optional group of dependencies installed with the package, as in `pip install "pyeuropepmc[analytics]"`. See [Installation](getting-started/installation.md#extras).
+
+**OptionalDependencyError**
+The error raised when a feature needs a package that is not installed. Its message names the package and the install command.
+
+**Error code**
+The code, such as `NET001`, that every pyEuropePMC exception carries. See [Error codes](reference/error-codes.md).
+
+**pyeuropepmc (command)**
+The command-line tool installed with the package, with the `normalize`, `unified_search`, `claim` and `benchmark` command groups.
+
+**pyeuropepmc-mcp**
+A Model Context Protocol (MCP) server that exposes pyEuropePMC's search, full-text and enrichment tools to MCP clients.

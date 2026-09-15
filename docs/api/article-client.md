@@ -1,133 +1,175 @@
-# ArticleClient API Reference
+# ArticleClient API reference
 
-The `ArticleClient` provides article-specific operations and metadata retrieval from Europe PMC.
-
-## Class Overview
+`ArticleClient` reads the resources Europe PMC keeps for a single article: its metadata, the records that cite it, its reference list, database cross-references, lab and data links, and supplementary files.
 
 ```python
-from pyeuropepmc.features.literature.article import ArticleClient
-
-class ArticleClient:
-    """Client for article-specific operations."""
+from pyeuropepmc import ArticleClient
 ```
+
+The class is defined in `pyeuropepmc.features.literature.article`.
+
+## Identifying an article
+
+Every method except `get_supplementary_files()` takes a `source` and an `article_id`, the `source` and `id` values of a search result:
+
+| `source` | Records | Example `article_id` |
+|---|---|---|
+| `MED` | PubMed/MEDLINE | `"39709209"` |
+| `PMC` | PubMed Central | `"PMC3258128"` |
+| `PPR` | Preprints | `"PPR123456"` |
+| `AGR`, `CBA`, `CTX`, `ETH`, `HIR`, `NBK`, `PAT` | Agricola, Chinese Biological Abstracts, CiteXplore, EThOS theses, NHS Evidence, Europe PMC Bookshelf, biological patents | |
+
+The client only checks that `source` is a three-letter string and that `article_id` is a non-empty string.
 
 ## Constructor
 
-### `ArticleClient(rate_limit_delay=1.0, timeout=30, max_retries=3)`
+`ArticleClient(rate_limit_delay=1.0, cache_config=None)`
 
-Create a new ArticleClient instance.
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `rate_limit_delay` | `float` | `1.0` | Seconds to wait after each request |
+| `cache_config` | `CacheConfig` or `None` | `None` | Response cache settings; `None` disables caching |
 
-**Parameters:**
-- `rate_limit_delay` (float): Delay between requests in seconds (default: 1.0)
-- `timeout` (int): Request timeout in seconds (default: 30)
-- `max_retries` (int): Maximum number of retry attempts (default: 3)
+The client can be used as a context manager; otherwise call `close()`.
 
 ## Methods
 
-### `get_article_metadata(pmcid, **kwargs)`
+| Method | Endpoint | Returns |
+|---|---|---|
+| `get_article_details(source, article_id, result_type="core", format="json", **kwargs)` | `article/{source}/{id}` | `dict` |
+| `get_citations(source, article_id, page=1, page_size=25, format="json", callback=None, **kwargs)` | `{source}/{id}/citations` | `dict` |
+| `get_references(source, article_id, page=1, page_size=25, format="json", callback=None, **kwargs)` | `{source}/{id}/references` | `dict` |
+| `get_citation_count(source, article_id, **kwargs)` | `{source}/{id}/citations` | `int` |
+| `get_reference_count(source, article_id, **kwargs)` | `{source}/{id}/references` | `int` |
+| `get_database_links(source, article_id, page=1, page_size=25, format="json", callback=None, **kwargs)` | `{source}/{id}/databaseLinks` | `dict` |
+| `get_lab_links(source, article_id, provider_id=None, format="json", callback=None, **kwargs)` | `{source}/{id}/labsLinks` | `dict` |
+| `get_data_links(source, article_id, format="json", callback=None, **kwargs)` | `{source}/{id}/datalinks` | `dict` |
+| `get_supplementary_files(article_id, include_inline_image=True, **kwargs)` | `{id}/supplementaryFiles` | `bytes` |
+| `export_results(results, format="dataframe", path=None, **kwargs)` | | Same as [`SearchClient.export_results()`](search-client.md#export_results) |
+| `get_cache_stats()`, `get_cache_health()`, `clear_cache()`, `invalidate_article_cache(source=None, article_id=None)` | | Cache management |
+| `close()` | | Release the HTTP session and the cache |
 
-Get detailed metadata for a specific article by PMC ID.
+Extra keyword arguments are added to the request as query-string parameters.
 
-**Parameters:**
-- `pmcid` (str): PMC ID (e.g., "PMC1234567")
-- `format` (str): Output format - "json" or "xml" (default: "json")
+### Common parameters
 
-**Returns:**
-- Dict containing article metadata
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `page` | `int` | `1` | Page number, starting at 1 |
+| `page_size` | `int` | `25` | Records per page, 1 to 1000 |
+| `format` | `str` | `"json"` | Use `"json"`. The response body is always parsed as JSON, so another format makes the request fail with `APIClientError` |
+| `callback` | `str` or `None` | `None` | JSONP function name; the method then returns `{"jsonp_response": <text>}` and skips the cache. Requires `format="json"` |
 
-**Example:**
-```python
-from pyeuropepmc.features.literature.article import ArticleClient
+### get_article_details
 
-with ArticleClient() as client:
-    metadata = client.get_article_metadata("PMC1234567")
-    print(f"Title: {metadata.get('title')}")
-    print(f"Journal: {metadata.get('journalTitle')}")
-```
+Returns `{"version", "hitCount", "request", "result"}`, where `result` is the article record. `result_type` is `"idlist"`, `"lite"` or `"core"` (default); `core` records carry the abstract, author list, MeSH headings and grants, as described under [Result types](../features/search/README.md#result-types).
 
-### `get_article_citations(pmcid, **kwargs)`
+### get_citations and get_references
 
-Get citation information for an article.
+`get_citations()` returns `{"version", "hitCount", "request", "citationList": {"citation": [...]}}`. `get_references()` returns the same outer keys with `"referenceList": {"reference": [...]}`. `hitCount` is the total across all pages. Each item describes one publication, with keys such as `id`, `source`, `citationType`, `title`, `authorString`, `journalAbbreviation`, `pubYear`, `volume`, `issue` and `pageInfo`; citation items also carry `citedByCount`, and reference items `citedOrder` and `match`.
 
-**Parameters:**
-- `pmcid` (str): PMC ID
-- `pageSize` (int): Number of citations per page (default: 100)
-- `offset` (int): Starting offset (default: 0)
+`get_citation_count()` and `get_reference_count()` request one record and return `hitCount` as an `int` (0 if it cannot be read).
 
-**Returns:**
-- Dict containing citation data
+When a response has `hitCount` 0, the client emits a `UserWarning`.
 
-### `get_article_references(pmcid, **kwargs)`
+### get_database_links, get_lab_links and get_data_links
 
-Get references cited by an article.
+`get_database_links()` returns the biological database records that cite the article under `dbCrossReferenceList`. `get_lab_links()` returns external links added by third-party providers; pass `provider_id` to restrict it to one provider. `get_data_links()` returns the article's data-literature links in Scholix format.
 
-**Parameters:**
-- `pmcid` (str): PMC ID
-- `pageSize` (int): Number of references per page (default: 100)
-- `offset` (int): Starting offset (default: 0)
+### get_supplementary_files
 
-**Returns:**
-- Dict containing reference data
-
-## Context Manager Usage
-
-```python
-with ArticleClient() as client:
-    metadata = client.get_article_metadata("PMC1234567")
-    citations = client.get_article_citations("PMC1234567")
-```
-
-## Error Handling
-
-Raises `EuropePMCError` for API-related issues:
-
-```python
-from pyeuropepmc.features.literature.article import ArticleClient
-from pyeuropepmc.core.exceptions import EuropePMCError
-
-try:
-    with ArticleClient() as client:
-        metadata = client.get_article_metadata("PMC1234567")
-except EuropePMCError as e:
-    print(f"Failed to get article metadata: {e}")
-```
+Downloads the supplementary material of an open-access article as a ZIP archive and returns its bytes. `article_id` is the PMC ID, for example `"PMC3258128"`. `include_inline_image=False` leaves inline images out of the archive. A missing archive raises `APIClientError`.
 
 ## Examples
 
-### Get Article Details
+### Details, citations and references
 
 ```python
-from pyeuropepmc.features.literature.article import ArticleClient
+from pyeuropepmc import ArticleClient
 
 with ArticleClient() as client:
-    # Get basic metadata
-    metadata = client.get_article_metadata("PMC3258128")
+    details = client.get_article_details("MED", "39709209")
+    print(details["result"]["title"])
 
-    print(f"Title: {metadata.get('title')}")
-    print(f"Authors: {metadata.get('authorString')}")
-    print(f"Abstract: {metadata.get('abstractText', 'No abstract')[:200]}...")
+    citations = client.get_citations("MED", "39709209", page_size=100)
+    print(f"Cited by {citations['hitCount']} records")
+    for item in citations.get("citationList", {}).get("citation", []):
+        print(f"  {item['source']}:{item['id']} {item.get('title')}")
 
-    # Get citation count
-    citations = client.get_article_citations("PMC3258128")
-    print(f"Citation count: {citations.get('hitCount', 0)}")
+    references = client.get_references("MED", "39709209")
+    for item in references.get("referenceList", {}).get("reference", []):
+        print(f"  {item.get('title')}")
 ```
 
-### Batch Article Processing
+### Collect every citing record
 
 ```python
-pmcids = ["PMC1234567", "PMC2345678", "PMC3456789"]
+from pyeuropepmc import ArticleClient
 
+citing = []
 with ArticleClient() as client:
-    for pmcid in pmcids:
-        try:
-            metadata = client.get_article_metadata(pmcid)
-            print(f"Processed {pmcid}: {metadata.get('title', 'No title')[:50]}...")
-        except EuropePMCError as e:
-            print(f"Failed to process {pmcid}: {e}")
+    total = client.get_citation_count("MED", "39709209")
+    page = 1
+    while len(citing) < total:
+        response = client.get_citations("MED", "39709209", page=page, page_size=1000)
+        batch = response.get("citationList", {}).get("citation", [])
+        if not batch:
+            break
+        citing.extend(batch)
+        page += 1
+
+print(f"{len(citing)} of {total} citing records")
 ```
 
-## Related Classes
+### Save supplementary files
 
-- [`SearchClient`](./search-client.md) - For searching articles
-- [`FullTextClient`](./fulltext-client.md) - For downloading full text
-- [`EuropePMCParser`](./parser.md) - For parsing responses
+```python
+from pathlib import Path
+
+from pyeuropepmc import ArticleClient
+
+with ArticleClient() as client:
+    archive = client.get_supplementary_files("PMC3258128")
+
+Path("PMC3258128_supplementary.zip").write_bytes(archive)
+```
+
+## Caching
+
+With `cache_config=CacheConfig(enabled=True)`, the responses of `get_article_details()`, `get_citations()` and `get_references()` are cached. Database, lab and data links and supplementary files are always fetched. `invalidate_article_cache(source=None, article_id=None)` removes cached entries for one article, for one source, or all entries when called without arguments, and returns the number removed. See [Caching](../features/caching/README.md).
+
+```python
+from pyeuropepmc import ArticleClient, CacheConfig
+
+with ArticleClient(cache_config=CacheConfig(enabled=True)) as client:
+    client.get_citations("MED", "39709209")
+    client.get_citations("MED", "39709209")  # served from the cache
+    removed = client.invalidate_article_cache(source="MED", article_id="39709209")
+```
+
+## Errors
+
+| Exception | Raised when |
+|---|---|
+| `ValidationError` | An argument is invalid: `source` not three letters, empty `article_id`, `page` below 1, `page_size` outside 1 to 1000, an unknown `result_type` or `format`, or `callback` with a non-JSON format |
+| `APIClientError` | The request fails or the response is not JSON |
+
+`APIClientError` is exported by `pyeuropepmc`; `ValidationError` is imported from `pyeuropepmc.core.exceptions`. Both derive from `PyEuropePMCError`.
+
+```python
+from pyeuropepmc import APIClientError, ArticleClient
+from pyeuropepmc.core.exceptions import ValidationError
+
+with ArticleClient() as client:
+    try:
+        client.get_citations("MEDLINE", "39709209")
+    except ValidationError as error:
+        print(f"Invalid argument: {error}")
+    except APIClientError as error:
+        print(f"Request failed: {error}")
+```
+
+## Related pages
+
+- [SearchClient](search-client.md) finds articles and their `source` and `id`
+- [FullTextClient](fulltext-client.md) downloads full-text XML and PDF

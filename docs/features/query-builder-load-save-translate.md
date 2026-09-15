@@ -1,60 +1,113 @@
-# QueryBuilder Load/Save/Translate Feature
+# Query builder
 
-## Overview
+This page shows how to build Europe PMC queries with `QueryBuilder` and how to save, load, translate and evaluate search strings through its `search-query` integration. The [QueryBuilder API reference](../api/query-builder.md) lists every method, error code and field name.
 
-The QueryBuilder now supports loading, saving, and translating queries using the `search-query` package integration. This enables:
+## Build a query
 
-- **Import/Export**: Save and load queries in standardized JSON format
-- **Platform Translation**: Convert queries between PubMed, Web of Science, EBSCO, etc.
-- **Query Objects**: Access to underlying search-query Query objects for advanced manipulation
-- **Search Evaluation**: Assess search effectiveness with recall/precision metrics
+```python
+from pyeuropepmc import QueryBuilder, SearchClient
 
-## Installation
+query = (
+    QueryBuilder()
+    .keyword("CRISPR", field="title")
+    .and_()
+    .field("open_access", True)
+    .and_()
+    .date_range(start_year=2020, end_year=2024)
+    .build()
+)
+print(query)  # TITLE:CRISPR AND OPEN_ACCESS:y AND (PUB_YEAR:[2020 TO 2024])
 
-To use these features, install the optional `search-query` package:
+with SearchClient() as client:
+    results = client.search(query, pageSize=25)
 
-```bash
-pip install search-query
+print(results["hitCount"])
 ```
 
-Or install pyEuropePMC with the optional dependency:
+Put an operator between every two terms: the builder joins parts with spaces and does not insert `AND` itself. Use a new `QueryBuilder()` for each query, because a builder keeps its parts after `build()`.
 
-```bash
-pip install pyeuropepmc[search-query]
-```
+| Call | Adds |
+|---|---|
+| `keyword("cancer")` | `cancer` |
+| `keyword("gene editing", field="abstract")` | `ABSTRACT:"gene editing"` |
+| `field("author", "Smith J")` | `AUTH:"Smith J"` |
+| `field("mesh", "Neoplasms")` | `MESH:Neoplasms` |
+| `date_range(start_year=2020)` | `(PUB_YEAR:[2020 TO <current year>])` |
+| `citation_count(min_count=50)` | `(CITED:[50 TO *])` |
+| `cites("8521067")` | `CITES:8521067_med` |
+| `and_()`, `or_()`, `not_()` | `AND`, `OR`, `NOT` |
+| `group(other_builder)` | `(<other query>)` |
+| `raw("(cancer OR tumour)")` | the string unchanged |
 
-## New Methods
+Unknown field names raise `ValueError`. Field names are listed under [Field names](../api/query-builder.md#field-names).
 
-### Loading Queries
+## Save, load and translate search strings
 
-#### `QueryBuilder.from_string(query_string, platform="pubmed", validate=False)`
+`from_string()`, `from_file()`, `save()`, `translate()`, `to_query_object()` and `evaluate()` use the `search-query` package, which is installed with pyeuropepmc; no extra is needed.
 
-Load a query from a string by parsing it.
+`search-query` reads queries in the syntax of a specific platform, such as PubMed (`pubmed`), Web of Science (`wos`) or EBSCOhost (`ebscohost`). It has no Europe PMC syntax, so these methods are for search strings written for those platforms. A query built with `QueryBuilder` is parsed as PubMed syntax: simple strings such as `cancer AND treatment` work, a Europe PMC field prefix such as `TITLE:` is not recognised as a field, and a Europe PMC range such as `(PUB_YEAR:[2020 TO 2024])` makes the methods raise `QueryBuilderError` with code `QUERY004`.
+
+`search-query` prints its parser messages, for example `Warning: field-implicit (FIELD_0004)`, to standard output.
+
+### Load a query from a string
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-# Load PubMed query
-qb = QueryBuilder.from_string("cancer AND treatment", platform="pubmed")
-print(qb.build())  # cancer AND treatment
+pubmed = QueryBuilder.from_string("cancer AND treatment", platform="pubmed")
+print(pubmed.build())  # cancer AND treatment
 
-# Load Web of Science query
-qb = QueryBuilder.from_string("TI=cancer", platform="wos")
+wos = QueryBuilder.from_string("TI=cancer", platform="wos")
+print(wos.build())  # TI=cancer
 ```
 
-#### `QueryBuilder.from_file(file_path, validate=False)`
+`build()` returns the original string; the parsed form is kept for `translate()`, `save()` and `to_query_object()`.
 
-Load a query from a JSON file in standard format (Haddaway et al. 2022).
+### Save a query to a file
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-# Load from file
+qb = QueryBuilder().keyword("cancer").and_().keyword("treatment")
+qb.save(
+    "my-search.json",
+    platform="pubmed",
+    authors=[{"name": "Jane Smith", "ORCID": "0000-0000-0000-0002"}],
+    date_info={"search_conducted": "2025-11-06"},
+    database=["PubMed", "PMC"],
+    record_info={"project": "Cancer research review"},
+)
+```
+
+`save()` writes this JSON:
+
+```json
+{
+    "search_string": "cancer AND treatment",
+    "platform": "pubmed",
+    "authors": [{"name": "Jane Smith", "ORCID": "0000-0000-0000-0002"}],
+    "record_info": {"project": "Cancer research review"},
+    "date": {"search_conducted": "2025-11-06"},
+    "field": "",
+    "version": {"version": "1"},
+    "database": {"databases": ["PubMed", "PMC"]},
+    "generic_query": {}
+}
+```
+
+With `include_generic=True`, `generic_query` holds the platform-independent form, for example `{"generic_query": "AND[cancer[all-fields], treatment[all-fields]]"}`. The file layout follows the search-reporting data structure proposed by Haddaway et al. (2022).
+
+### Load a query from a file
+
+```python
+from pyeuropepmc import QueryBuilder
+
 qb = QueryBuilder.from_file("my-search.json")
-query = qb.build()
+print(qb.build())  # cancer AND treatment
 ```
 
-JSON file format:
+`from_file()` also reads files in which `version` is a string and `database` a list, for example:
+
 ```json
 {
     "search_string": "cancer AND treatment",
@@ -67,79 +120,35 @@ JSON file format:
 }
 ```
 
-### Saving Queries
+A missing file raises `FileNotFoundError`.
 
-#### `save(file_path, platform="pubmed", authors=None, record_info=None, date_info=None, database=None, include_generic=False)`
-
-Save the query to a JSON file with metadata.
+### Translate to another platform
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-qb = QueryBuilder()
-query = qb.keyword("cancer").and_().keyword("treatment")
-
-qb.save(
-    "my-search.json",
-    platform="pubmed",
-    authors=[{"name": "Jane Smith", "ORCID": "0000-0000-0000-0002"}],
-    date_info={"search_conducted": "2025-11-06"},
-    database=["PubMed", "PMC"],
-    record_info={"project": "Cancer Research Review"}
-)
-```
-
-### Translating Queries
-
-#### `translate(target_platform)`
-
-Translate the query to another platform's syntax.
-
-```python
-from pyeuropepmc import QueryBuilder
-
-# Start with PubMed query
 qb = QueryBuilder.from_string("cancer AND treatment", platform="pubmed")
+print(qb.translate("wos"))        # ALL=(cancer AND treatment)
+print(qb.translate("ebscohost"))  # TX (cancer AND treatment)
+print(qb.translate("generic"))    # AND[cancer[all-fields], treatment[all-fields]]
 
-# Translate to Web of Science
-wos_query = qb.translate("wos")
-print(wos_query)  # ALL=(cancer AND treatment)
-
-# Translate to generic format
-generic_query = qb.translate("generic")
+fielded = QueryBuilder.from_string("cancer[tiab] AND therapy[tiab]", platform="pubmed")
+print(fielded.translate("wos"))   # (AB=cancer OR TI=cancer) AND (AB=therapy OR TI=therapy)
 ```
 
-Supported platforms:
-- `pubmed` - PubMed/MEDLINE
-- `wos` - Web of Science
-- `ebsco` - EBSCO (partial support)
-- `generic` - Platform-independent format
+Supported targets are `pubmed`, `wos`, `ebscohost` and `generic`. Any other value, and any field the target platform does not support, raises `QueryBuilderError` (`QUERY004`).
 
-### Query Objects
-
-#### `to_query_object(platform="pubmed")`
-
-Convert to a search-query Query object for advanced manipulation.
+### Work with the parsed query
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-qb = QueryBuilder()
-query = qb.keyword("cancer").and_().keyword("treatment")
-
-# Get Query object
-query_obj = qb.to_query_object()
-print(type(query_obj))  # <class 'search_query.query_and.AndQuery'>
-
-# Access search-query methods
-query_str = query_obj.to_string()
+query_object = QueryBuilder().keyword("cancer").and_().keyword("treatment").to_query_object()
+print(type(query_object).__name__)  # AndQuery
+print(query_object.to_string())     # cancer[all] AND treatment[all]
 ```
 
-### Search Evaluation
-
-#### `evaluate(records, platform="pubmed")`
-
-Evaluate search effectiveness against a set of records.
+### Evaluate a query against screened records
 
 ```python
 from pyeuropepmc import QueryBuilder
@@ -147,139 +156,44 @@ from pyeuropepmc import QueryBuilder
 records = {
     "r1": {"title": "Cancer treatment research", "colrev_status": "rev_included"},
     "r2": {"title": "Cancer diagnosis methods", "colrev_status": "rev_included"},
-    "r3": {"title": "Unrelated topic", "colrev_status": "rev_excluded"}
+    "r3": {"title": "Unrelated topic", "colrev_status": "rev_excluded"},
 }
 
-qb = QueryBuilder.from_string("cancer[title]", platform="pubmed")
-results = qb.evaluate(records)
-
-print(f"Recall: {results['recall']:.2f}")
-print(f"Precision: {results['precision']:.2f}")
-print(f"F1 Score: {results['f1_score']:.2f}")
+results = QueryBuilder().keyword("cancer").evaluate(records)
+print(f"Recall: {results['recall']:.2f}")        # Recall: 1.00
+print(f"Precision: {results['precision']:.2f}")  # Precision: 1.00
+print(f"F1: {results['f1_score']:.2f}")          # F1: 1.00
 ```
 
-## Workflow Examples
+`evaluate()` returns `total_evaluated`, `selected`, `true_positives`, `false_positives`, `false_negatives`, `precision`, `recall` and `f1_score`. It matches terms against record titles and supports unfielded terms only: a query with a PubMed field tag such as `cancer[title]` raises `ValueError`, and a Europe PMC field such as `TITLE:cancer` selects no records.
 
-### Round-Trip: Load -> Translate -> Save
+## Round trip: load, translate, save
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-# 1. Load PubMed query
-qb_pubmed = QueryBuilder.from_file("pubmed-search.json")
+pubmed = QueryBuilder.from_string("cancer[tiab] AND immunotherapy[tiab]", platform="pubmed")
+pubmed.save("pubmed-search.json", platform="pubmed")
 
-# 2. Translate to Web of Science
-wos_query = qb_pubmed.translate("wos")
-
-# 3. Create new QueryBuilder with translated query
-qb_wos = QueryBuilder.from_string(wos_query, platform="wos")
-
-# 4. Save WoS version
-qb_wos.save("wos-search.json", platform="wos")
+wos_string = QueryBuilder.from_file("pubmed-search.json").translate("wos")
+wos = QueryBuilder.from_string(wos_string, platform="wos")
+wos.save("wos-search.json", platform="wos")
+print(wos.build())
 ```
-
-### Build -> Save -> Load
-
-```python
-from pyeuropepmc import QueryBuilder
-
-# Build query
-qb1 = QueryBuilder()
-query = qb1.keyword("CRISPR", field="title").and_().keyword("gene editing")
-
-# Save
-qb1.save("crispr-search.json", platform="pubmed")
-
-# Load later
-qb2 = QueryBuilder.from_file("crispr-search.json")
-results = client.search(qb2.build())
-```
-
-## Implementation Details
-
-### Architecture
-
-- **Integration Point**: Uses `search-query` package for parsing, validation, and translation
-- **Caching**: Parsed Query objects are cached in `_parsed_query` attribute
-- **Platform Support**: Works with Europe PMC syntax internally, translates for other platforms
-- **Optional Dependency**: All features gracefully fail with ImportError if search-query not installed
-
-### Type Safety
-
-- All methods have full type annotations
-- Return types are properly typed (str, dict, Query objects)
-- Mypy strict mode compatible
-
-### Error Handling
-
-- Invalid queries raise `QueryBuilderError` with context
-- File not found raises standard `FileNotFoundError`
-- Platform translation errors include helpful messages
-
-## Tests
-
-### Unit Tests
-
-Located in `tests/features/literature/unit/test_query_load_save_translate.py`:
-
-- **From String**: 7 tests covering various parsing scenarios
-- **From File**: 3 tests for JSON file loading
-- **Save**: 3 tests for saving with metadata
-- **Translate**: 4 tests for platform translation
-- **To Query Object**: 3 tests for Query object conversion
-- **Evaluate**: 3 tests (currently skipped pending field mapping fixes)
-- **Integration**: 2 tests for round-trip workflows
-- **Error Handling**: 7 tests for missing package scenarios
-
-Total: 27 passing tests, 3 skipped
-
-### Running Tests
-
-```bash
-# Run all load/save/translate tests
-pytest tests/features/literature/unit/test_query_load_save_translate.py -v
-
-# Run with coverage
-pytest tests/features/literature/unit/test_query_load_save_translate.py --cov=pyeuropepmc.features.literature.query_builder
-
-# Run only specific test class
-pytest tests/features/literature/unit/test_query_load_save_translate.py::TestQueryBuilderFromString -v
-```
-
-## Demo Script
-
-A comprehensive demo is available at `examples/08-query-builder/load_save_translate_demo.py`:
-
-```bash
-python examples/08-query-builder/load_save_translate_demo.py
-```
-
-Demonstrates:
-1. Building and saving queries
-2. Loading queries from files
-3. Loading queries from strings
-4. Translating between platforms
-5. Round-trip workflows
-6. Converting to Query objects
 
 ## Limitations
 
-1. **Evaluate Method**: Currently limited due to field mapping differences between Europe PMC and search-query. Tests are skipped pending investigation.
-
-2. **Platform Syntax**: Europe PMC uses its own field syntax (e.g., `TITLE:`, `OPEN_ACCESS:`) which may differ from PubMed standard fields. Translation handles common cases but may encounter issues with Europe PMC-specific fields.
-
-3. **Generic Query**: The `include_generic=True` option in `save()` may fail for Europe PMC-specific syntax that search-query doesn't recognize.
+- Europe PMC query syntax is not a `search-query` platform. Ranges and Europe PMC field prefixes built with `QueryBuilder` cannot be saved, translated or evaluated; save or translate the platform-specific strings you run elsewhere.
+- `evaluate()` works on titles and unfielded terms only.
+- `QueryBuilder(validate=True)` rewrites queries in PubMed syntax and rejects ranges; leave it off for Europe PMC queries.
 
 ## References
 
-- Haddaway, N. R., Grainger, M. J., & Gray, C. T. (2022). citationchaser: A tool for transparent and efficient forward and backward citation chasing in systematic searching. *Research Synthesis Methods*, 13(4), 533-545. DOI: 10.1002/jrsm.1563
+- Haddaway, N. R., Rethlefsen, M. L., Davies, M., Glanville, J., McGowan, B., Nyhan, K., & Young, S. (2022). A suggested data structure for transparent and repeatable reporting of bibliographic searching. *Campbell Systematic Reviews*, 18(4), e1288. https://doi.org/10.1002/cl2.1288
+- search-query: https://github.com/CoLRev-Environment/search-query
 
-- search-query documentation: https://github.com/CoLRev-Environment/search-query
+## See also
 
-## Future Enhancements
-
-1. **Evaluate Method**: Implement proper field mapping for evaluation
-2. **More Platforms**: Add support for additional database platforms
-3. **Query Optimization**: Integrate search-query's query improvement features
-4. **Batch Operations**: Support for loading/saving multiple queries at once
-5. **Validation Presets**: Pre-configured validation rules for different use cases
+- [QueryBuilder API reference](../api/query-builder.md)
+- [Systematic review search logging](systematic-review-tracking.md)
+- [Searching Europe PMC](search/README.md)
