@@ -12,7 +12,10 @@ from __future__ import annotations
 import contextlib
 import logging
 from typing import Any
+from xml.etree import ElementTree as ET  # nosec B405
 
+from defusedxml import DefusedXmlException
+import defusedxml.ElementTree as DefusedET
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
@@ -384,14 +387,8 @@ class PubMedClient(BaseLiteratureClient):
     ) -> LiteratureResult | None:
         """Parse EFetch XML response into a :class:`LiteratureResult`."""
         try:
-            from xml.etree import ElementTree as ET  # nosec B405
-        except ImportError:
-            logger.warning("EFetch requires xml.etree.ElementTree — falling back to ESummary")
-            return self.get_paper(pmid, use_efetch=False)
-
-        try:
-            root = ET.fromstring(xml_text)  # nosec B314
-        except ET.ParseError:
+            root: ET.Element = DefusedET.fromstring(xml_text)
+        except (DefusedET.ParseError, DefusedXmlException):
             logger.exception("Failed to parse EFetch XML for PMID=%s", pmid)
             return None
 

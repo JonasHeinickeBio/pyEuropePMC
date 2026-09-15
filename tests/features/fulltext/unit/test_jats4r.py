@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from xml.etree import ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.jats4r import (
@@ -14,7 +13,7 @@ from pyeuropepmc.features.fulltext.extensions.jats4r import (
 
 
 def _validator(xml: str) -> JATS4RValidator:
-    return JATS4RValidator(root=ET.fromstring(xml))
+    return JATS4RValidator(root=DefusedET.fromstring(xml))
 
 
 def _rule_ids(report: ValidationReport) -> set[str]:
@@ -399,6 +398,6 @@ class TestGetElemText:
         assert JATS4RValidator._get_elem_text(None) == ""
 
     def test_extracts_nested_text(self):
-        elem = ET.fromstring("<p>Hello <b>world</b>!</p>")
+        elem = DefusedET.fromstring("<p>Hello <b>world</b>!</p>")
         text = JATS4RValidator._get_elem_text(elem)
         assert "Hello" in text and "world" in text and "!" in text

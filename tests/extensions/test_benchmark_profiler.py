@@ -4,7 +4,7 @@ Tests for the benchmark profiler and memory modules.
 
 from __future__ import annotations
 
-from xml.etree import ElementTree as ET  # nosec B405
+import defusedxml.ElementTree as DefusedET
 
 from pyeuropepmc.benchmark.memory import MemoryTracker, profile_memory, profile_memory_blocks
 from pyeuropepmc.benchmark.profiler import (
@@ -82,7 +82,7 @@ class TestProfilerContext:
         """Verify module filtering."""
 
         def bar():
-            _ = ET.fromstring("<a><b/></a>")
+            _ = DefusedET.fromstring("<a><b/></a>")
 
         with ProfilerContext() as prof:
             bar()
@@ -93,7 +93,7 @@ class TestProfilerContext:
     def test_total_time_by_module(self):
         """Verify module time accumulation."""
         with ProfilerContext() as prof:
-            _ = ET.fromstring(SIMPLE_XML)
+            _ = DefusedET.fromstring(SIMPLE_XML)
 
         total = prof.total_time_by_module("xml")
         assert total >= 0

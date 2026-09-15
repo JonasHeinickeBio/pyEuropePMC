@@ -595,12 +595,11 @@ except Exception as e:
 
 ## Parser Extensions
 
-The parser provides an **extensions package** (`pyeuropepmc.features.fulltext.extensions`) with 10 specialized modules for advanced use cases:
+The parser provides an **extensions package** (`pyeuropepmc.features.fulltext.extensions`) with 9 specialized modules for advanced use cases:
 
 | Module | Purpose |
 |--------|---------|
 | **Content Blocks** | Typed content blocks (paragraph, list, figure, formula, etc.) preserving document structure for RAG/LLM pipelines |
-| **lxml Backend** | Optional high-performance lxml parser with secure defaults |
 | **Peer Review** | Extract peer review materials from `<sub-article>` elements |
 | **MathML Conversion** | Convert MathML to LaTeX for formula extraction |
 | **JATS4R Validation** | Compliance checking against NISO JATS4R recommendations |

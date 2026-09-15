@@ -6,8 +6,8 @@ These tests require network access and interact with the real Europe PMC API.
 from pathlib import Path
 import tempfile
 from unittest.mock import Mock, mock_open, patch
-from xml.etree import ElementTree
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
@@ -325,7 +325,7 @@ class TestFullTextClientFunctional:
                 # string *starts with* the article tag therefore failed on
                 # perfectly good content. Parse it instead and check the root
                 # element, which is what the assertion was really about.
-                root = ElementTree.fromstring(xml_content)
+                root = DefusedET.fromstring(xml_content)
                 tag = root.tag.rsplit("}", 1)[-1]
                 assert tag == "article", f"XML root should be <article>, got <{tag}>"
                 assert "open_access" in xml_content or "article-type" in xml_content, (

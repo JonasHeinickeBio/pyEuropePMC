@@ -7,9 +7,6 @@ The `pyeuropepmc.features.fulltext.extensions` package provides 10 extension mod
 All extension modules are included with `pyeuropepmc`. Optional dependencies:
 
 ```bash
-# For lxml backend support
-pip install lxml
-
 # For Pydantic model generation
 pip install pydantic
 ```
@@ -73,31 +70,7 @@ The original `get_full_text_sections()` method is unchanged. The new `get_full_t
 
 ---
 
-### 2. lxml Backend (`lxml_backend`)
-
-High-performance XML parser backend using `lxml.etree` with secure configuration.
-
-**Key Class:** `LXMLParser`
-
-```python
-from pyeuropepmc.features.fulltext.extensions import LXMLParser, is_lxml_available
-
-if is_lxml_available():
-    parser = LXMLParser()
-    root = parser.parse(xml_content)
-
-    # Swap FullTextXMLParser's backend to lxml
-    ft_parser = FullTextXMLParser(xml_content)
-    LXMLParser.enable_for(ft_parser)  # Replaces ft_parser.root with lxml-parsed tree
-```
-
-**Security:** Disables entity resolution (`resolve_entities=False`), enforces no-network access (`no_network=True`), and removes `DOCTYPE` with `remove_blank_text=True`.
-
-**Graceful Degradation:** `is_lxml_available()` returns `False` if lxml is not installed; `LXMLParser` raises `ImportError` with a clear message.
-
----
-
-### 3. Peer Review Extraction (`peer_review`)
+### 2. Peer Review Extraction (`peer_review`)
 
 Extract peer review materials from `<sub-article>` elements organized by revision round.
 
@@ -129,7 +102,7 @@ for review_set in review_sets:
 
 ---
 
-### 4. MathML Conversion (`mathml`)
+### 3. MathML Conversion (`mathml`)
 
 Convert MathML to LaTeX string representation.
 
@@ -165,7 +138,7 @@ latex = converter.convert(mathml_string)
 
 ---
 
-### 5. JATS4R Validation (`jats4r`)
+### 4. JATS4R Validation (`jats4r`)
 
 Compliance checking against NISO JATS4R (Journal Article Tag Suite for Reproducibility) recommendations.
 
@@ -205,7 +178,7 @@ for finding in report.findings:
 
 ---
 
-### 6. Batch Processing (`batch_processor`)
+### 5. Batch Processing (`batch_processor`)
 
 Concurrent XML parsing with rate limiting, progress callbacks, and error handling.
 
@@ -241,7 +214,7 @@ print(f"Total time: {results.total_time:.2f}s")
 
 ---
 
-### 7. Image Fetcher (`image_fetcher`)
+### 6. Image Fetcher (`image_fetcher`)
 
 Extract asset references (figures, supplementary files, media) from XML and optionally download them.
 
@@ -271,7 +244,7 @@ fetcher.download_assets(assets, policy)
 
 ---
 
-### 8. Reference Resolver (`reference_resolver`)
+### 7. Reference Resolver (`reference_resolver`)
 
 Enrich references via the Europe PMC API with caching and rate limiting.
 
@@ -299,7 +272,7 @@ for ref in results:
 
 ---
 
-### 9. Pydantic Helpers (`pydantic_helpers`)
+### 8. Pydantic Helpers (`pydantic_helpers`)
 
 Convert dataclasses to Pydantic v2 models and dynamically generate models from sample data.
 
@@ -330,7 +303,7 @@ DynamicModel = generator.generate_model("Article", sample_data)
 
 ---
 
-### 10. Local Processing (`local_processing`)
+### 9. Local Processing (`local_processing`)
 
 Convenience utilities for parsing XML files and directories without managing `FullTextXMLParser` instances directly.
 

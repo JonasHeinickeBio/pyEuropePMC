@@ -6,13 +6,14 @@ import subprocess
 from unittest.mock import MagicMock, patch
 from xml.etree import ElementTree as ET
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
 
 def _mml(xml: str) -> ET.Element:
-    return ET.fromstring(xml)
+    return DefusedET.fromstring(xml)
 
 
 @pytest.fixture

@@ -15,8 +15,7 @@ Across 124 real documents this took exact article titles from 122 to 124;
 `PM2.5` had been coming back as `PM 2.5`.
 """
 
-from xml.etree import ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
@@ -25,7 +24,7 @@ pytestmark = pytest.mark.unit
 
 
 def text_of(xml: str) -> str:
-    return XMLHelper.get_text_content(ET.fromstring(xml))
+    return XMLHelper.get_text_content(DefusedET.fromstring(xml))
 
 
 class TestInlineElementsKeepSourceSpacing:

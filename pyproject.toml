@@ -189,6 +189,16 @@ select = [
   "UP",  # pyupgrade
   "B",   # flake8-bugbear
   "SIM", # flake8-simplify
+  # XML is parsed with defusedxml only: report the standard-library parsers
+  # (S313-S319) and any lxml import (TID251, banned below).
+  "S313",
+  "S314",
+  "S315",
+  "S316",
+  "S317",
+  "S318",
+  "S319",
+  "TID251",
 ]
 ignore = ["E203", "E266", "E731"]
 
@@ -232,6 +242,9 @@ ignore = ["E203", "E266", "E731"]
   "B008", # Typer uses function calls in argument defaults
   "E501", # long help strings
 ]
+
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
+"lxml".msg = "Parse XML with defusedxml, the only XML parser pyeuropepmc uses."
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15

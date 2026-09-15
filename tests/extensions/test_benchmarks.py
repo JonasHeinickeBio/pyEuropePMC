@@ -16,8 +16,8 @@ from __future__ import annotations
 import json
 from pathlib import Path
 import time
-from xml.etree import ElementTree as ET  # nosec B405
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
@@ -252,7 +252,7 @@ class TestContentCoverage:
         """Check if definition lists are detected in any article."""
         found = False
         for _label, xml in benchmark_articles.items():
-            root = ET.fromstring(xml)
+            root = DefusedET.fromstring(xml)
             if root.find(".//def-list") is not None:
                 found = True
                 break

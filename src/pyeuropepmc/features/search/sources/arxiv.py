@@ -20,6 +20,9 @@ import re
 from typing import Any
 from xml.etree import ElementTree  # nosec B405
 
+from defusedxml import DefusedXmlException
+import defusedxml.ElementTree as DefusedET
+
 from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.features.literature.normalization import (
     normalize_author_list,
@@ -281,8 +284,8 @@ class ArxivClient(BaseLiteratureClient):
             return []
 
         try:
-            root = ElementTree.fromstring(xml_data)  # nosec B314
-        except ElementTree.ParseError:
+            root: ElementTree.Element = DefusedET.fromstring(xml_data)
+        except (DefusedET.ParseError, DefusedXmlException):
             return []
 
         # Check for total results > 0

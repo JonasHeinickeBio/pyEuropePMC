@@ -1,7 +1,6 @@
 """Tests for the AffiliationParser."""
 
-from xml.etree import ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
@@ -29,7 +28,7 @@ class TestAffiliationParser:
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -46,7 +45,7 @@ class TestAffiliationParser:
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert affiliations == []
@@ -77,7 +76,7 @@ class TestAffiliationParser:
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -107,7 +106,7 @@ class TestAffiliationParser:
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -135,7 +134,7 @@ class TestAffiliationParser:
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -160,7 +159,7 @@ class TestAffiliationParser:
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -183,7 +182,7 @@ Department of Biology, University of Test, Boston, USA
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -207,7 +206,7 @@ Department of Biology, University of Test, Boston, USA
 </article-meta>
 </front>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         affiliations = parser.extract_affiliations()
         assert len(affiliations) == 1
@@ -226,7 +225,7 @@ Department of Biology, University of Test, Boston, USA
     def test_extract_institution_ids_empty(self):
         """Test _extract_institution_ids with no IDs in element."""
         xml = "<aff><institution>No IDs</institution></aff>"
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         parser = AffiliationParser(root)
         ids = parser._extract_institution_ids(root)
         assert ids == {}

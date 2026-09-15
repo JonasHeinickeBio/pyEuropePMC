@@ -6,6 +6,7 @@ import pathlib
 import re
 from xml.etree import ElementTree as ET
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 FIXTURE_DIR = pathlib.Path(__file__).resolve().parents[3] / "fixtures" / "fulltext_downloads"
@@ -87,7 +88,7 @@ def document(request: pytest.FixtureRequest):
 
     path = request.param
     text = path.read_text(encoding="utf-8", errors="replace")
-    root = ET.fromstring(text.encode("utf-8"))
+    root = DefusedET.fromstring(text.encode("utf-8"))
     parser = FullTextXMLParser(text)
 
     class Document:

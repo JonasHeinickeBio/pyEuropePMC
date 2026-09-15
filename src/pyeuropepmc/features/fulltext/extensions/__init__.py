@@ -5,15 +5,14 @@ This package provides extended functionality for the fulltext XML parser:
 
 1. **Content Blocks** - Typed content blocks preserving document structure
    for RAG/LLM pipelines (based on pmcgrab approach).
-2. **lxml Backend** - Optional high-performance lxml parser backend.
-3. **Peer Review** - Extraction of peer review materials from sub-articles.
-4. **MathML Conversion** - MathML to LaTeX conversion.
-5. **JATS4R Validation** - Compliance checking against NISO recommendations.
-6. **Batch Processing** - Concurrent processing with rate limiting.
-7. **Image Fetcher** - Asset reference extraction and downloading.
-8. **Reference Resolver** - API-based reference enrichment.
-9. **Pydantic Helpers** - Pydantic v2 model generation from dataclasses.
-10. **Local Processing** - File/directory convenience methods.
+2. **Peer Review** - Extraction of peer review materials from sub-articles.
+3. **MathML Conversion** - MathML to LaTeX conversion.
+4. **JATS4R Validation** - Compliance checking against NISO recommendations.
+5. **Batch Processing** - Concurrent processing with rate limiting.
+6. **Image Fetcher** - Asset reference extraction and downloading.
+7. **Reference Resolver** - API-based reference enrichment.
+8. **Pydantic Helpers** - Pydantic v2 model generation from dataclasses.
+9. **Local Processing** - File/directory convenience methods.
 
 All modules are designed to be modular, DRY, and reusable, leveraging the
 existing ``BaseParser`` infrastructure and ``XMLHelper`` utilities.
@@ -50,10 +49,6 @@ from pyeuropepmc.features.fulltext.extensions.local_processing import (
     process_biorxiv_manifest,
     process_single_pmc,
 )
-from pyeuropepmc.features.fulltext.extensions.lxml_backend import (
-    LXMLParser,
-    is_lxml_available,
-)
 from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 from pyeuropepmc.features.fulltext.extensions.peer_review import (
     PeerReviewExtractor,
@@ -84,9 +79,6 @@ __all__ = [
     "ContentBlockType",
     "ContentBlockExtractor",
     "StructuredSection",
-    # lxml Backend
-    "LXMLParser",
-    "is_lxml_available",
     # Peer Review
     "PeerReviewExtractor",
     "PeerReviewMaterial",

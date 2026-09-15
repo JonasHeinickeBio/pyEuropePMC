@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from xml.etree import ElementTree as ET
 
+import defusedxml.ElementTree as DefusedET
+
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
     ContentBlock,
     ContentBlockExtractor,
@@ -21,11 +23,11 @@ from pyeuropepmc.features.fulltext.extensions.content_blocks import (
 
 
 def _extractor(xml: str) -> ContentBlockExtractor:
-    return ContentBlockExtractor(root=ET.fromstring(xml))
+    return ContentBlockExtractor(root=DefusedET.fromstring(xml))
 
 
 def _elem(xml: str) -> ET.Element:
-    return ET.fromstring(xml)
+    return DefusedET.fromstring(xml)
 
 
 class TestInlineElement:

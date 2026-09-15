@@ -115,26 +115,6 @@ class ContentBlockExtractor(BaseParser):
 
 ---
 
-## lxml Backend
-
-### `LXMLParser`
-
-```python
-class LXMLParser:
-    def __init__(self, **kwargs)
-    def parse(xml_content: str) -> ET.Element
-    @staticmethod
-    def enable_for(parser: FullTextXMLParser) -> None
-```
-
-### `is_lxml_available`
-
-```python
-def is_lxml_available() -> bool
-```
-
----
-
 ## Peer Review
 
 ### `PeerReviewType`

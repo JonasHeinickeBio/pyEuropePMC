@@ -1,7 +1,6 @@
 """Tests for figure parser."""
 
-from xml.etree import ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
@@ -56,7 +55,7 @@ class TestFigureParser:
 
     def test_extract_figures_basic(self):
         """Test extracting figures from XML."""
-        root = ET.fromstring(SAMPLE_XML)
+        root = DefusedET.fromstring(SAMPLE_XML)
         parser = FigureParser(root)
         figures = parser.extract_figures()
 
@@ -72,14 +71,14 @@ class TestFigureParser:
 
     def test_extract_figures_no_figures(self):
         """Test extracting figures when no figures exist."""
-        root = ET.fromstring(SAMPLE_XML_NO_FIGS)
+        root = DefusedET.fromstring(SAMPLE_XML_NO_FIGS)
         parser = FigureParser(root)
         figures = parser.extract_figures()
         assert figures == []
 
     def test_extract_figures_no_graphic(self):
         """Test extracting a figure without a graphic element."""
-        root = ET.fromstring(SAMPLE_XML_NO_GRAPHIC)
+        root = DefusedET.fromstring(SAMPLE_XML_NO_GRAPHIC)
         parser = FigureParser(root)
         figures = parser.extract_figures()
 
@@ -96,7 +95,7 @@ class TestFigureParser:
 
     def test_extract_first_text_from_element_no_match(self):
         """Test _extract_first_text_from_element returns None when no match."""
-        root = ET.fromstring(SAMPLE_XML)
+        root = DefusedET.fromstring(SAMPLE_XML)
         parser = FigureParser(root)
         # Call with no matching element
         elem = root.find(".//fig")
@@ -108,7 +107,7 @@ class TestFigureParser:
         from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 
         config = ElementPatterns()
-        root = ET.fromstring(SAMPLE_XML)
+        root = DefusedET.fromstring(SAMPLE_XML)
         parser = FigureParser(root, config)
         figures = parser.extract_figures()
         assert len(figures) == 2

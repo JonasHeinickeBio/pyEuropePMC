@@ -82,7 +82,7 @@ with FullTextClient() as client:
 ## Requirements
 
 - Python 3.10+
-- Dependencies: `requests`, `pandas`, `lxml`, `tqdm`
+- Dependencies include `requests`, `defusedxml` and `tqdm`; `pandas` comes with the `analytics` extra
 
 ## License
 

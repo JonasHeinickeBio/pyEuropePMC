@@ -15,6 +15,7 @@ import os
 from pathlib import Path
 from xml.etree import ElementTree as ET  # nosec B405
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
@@ -122,7 +123,7 @@ def get_article_id_from_file(filepath: Path) -> str:
     """Extract the article ID from a real XML file."""
     content = load_real_xml(filepath)
     try:
-        root = ET.fromstring(content)
+        root = DefusedET.fromstring(content)
     except ET.ParseError:
         return filepath.stem
     for elem in root.findall(".//article-id[@pub-id-type='pmcid']"):
@@ -215,7 +216,7 @@ class TestFunctionalRealXML:
         from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         label, xml_content, article_id = article_data
-        root = ET.fromstring(xml_content)
+        root = DefusedET.fromstring(xml_content)
 
         # Find all math elements
         math_elements = root.findall(".//{http://www.w3.org/1998/Math/MathML}math")
@@ -239,7 +240,7 @@ class TestFunctionalRealXML:
         from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
         label, xml_content, article_id = article_data
-        root = ET.fromstring(xml_content)
+        root = DefusedET.fromstring(xml_content)
 
         validator = JATS4RValidator(root)
         report = validator.validate()
@@ -261,7 +262,7 @@ class TestFunctionalRealXML:
         )
 
         label, xml_content, article_id = article_data
-        root = ET.fromstring(xml_content)
+        root = DefusedET.fromstring(xml_content)
 
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
@@ -278,7 +279,7 @@ class TestFunctionalRealXML:
         )
 
         label, xml_content, article_id = article_data
-        root = ET.fromstring(xml_content)
+        root = DefusedET.fromstring(xml_content)
 
         fetcher = ImageFetcher(root, article_id=article_id)
         assets = fetcher.extract_asset_refs()

@@ -6,8 +6,7 @@ Tests are organized by module with shared XML fixtures.
 
 from __future__ import annotations
 
-from xml.etree import ElementTree as ET  # nosec B405
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
@@ -412,7 +411,7 @@ class TestContentBlocks:
             ContentBlockExtractor,
         )
 
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         extractor = ContentBlockExtractor(root)
         sections = extractor.extract_sections()
 
@@ -450,7 +449,7 @@ class TestMathMLConverter:
         """Test converting a simple inline math expression."""
         from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
-        mathml = ET.fromstring(
+        mathml = DefusedET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="inline">'
             "<mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:mi>m</mml:mi>"
             "<mml:msup><mml:mi>c</mml:mi><mml:mn>2</mml:mn></mml:msup>"
@@ -466,7 +465,7 @@ class TestMathMLConverter:
         """Test converting display math (block)."""
         from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
-        mathml = ET.fromstring(
+        mathml = DefusedET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="block">'
             "<mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:mi>m</mml:mi>"
             "<mml:msup><mml:mi>c</mml:mi><mml:mn>2</mml:mn></mml:msup>"
@@ -480,7 +479,7 @@ class TestMathMLConverter:
         """Test fraction conversion."""
         from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
-        mathml = ET.fromstring(
+        mathml = DefusedET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML">'
             "<mml:mfrac><mml:mn>1</mml:mn><mml:mn>2</mml:mn></mml:mfrac>"
             "</mml:math>"
@@ -494,7 +493,7 @@ class TestMathMLConverter:
         from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
         # Subscript: x_1
-        mathml_sub = ET.fromstring(
+        mathml_sub = DefusedET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML">'
             "<mml:msub><mml:mi>x</mml:mi><mml:mn>1</mml:mn></mml:msub>"
             "</mml:math>"
@@ -504,7 +503,7 @@ class TestMathMLConverter:
         assert "1" in result
 
         # Superscript: x^2
-        mathml_sup = ET.fromstring(
+        mathml_sup = DefusedET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML">'
             "<mml:msup><mml:mi>x</mml:mi><mml:mn>2</mml:mn></mml:msup>"
             "</mml:math>"
@@ -554,7 +553,7 @@ class TestPeerReview:
             PeerReviewType,
         )
 
-        root = ET.fromstring(ARTICLE_WITH_PEER_REVIEW)
+        root = DefusedET.fromstring(ARTICLE_WITH_PEER_REVIEW)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
 
@@ -575,7 +574,7 @@ class TestPeerReview:
             PeerReviewExtractor,
         )
 
-        root = ET.fromstring(ARTICLE_WITH_PEER_REVIEW)
+        root = DefusedET.fromstring(ARTICLE_WITH_PEER_REVIEW)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
 
@@ -590,7 +589,7 @@ class TestPeerReview:
             PeerReviewExtractor,
         )
 
-        root = ET.fromstring(ARTICLE_WITH_PEER_REVIEW)
+        root = DefusedET.fromstring(ARTICLE_WITH_PEER_REVIEW)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
 
@@ -683,7 +682,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert len(result.reviews) == 0
@@ -709,7 +708,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert result.article_id == "10.1234/test.2024.001"
@@ -731,7 +730,7 @@ class TestPeerReview:
         <body><sec><title>Main</title><p>Body.</p></sec></body>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert result.article_id == ""
@@ -763,7 +762,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert len(result.reviews) == 1
@@ -793,7 +792,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         # Should default to round 1 (no rev-received fn)
@@ -823,7 +822,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert result.reviews[0].revision_round == 2
@@ -854,7 +853,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert len(result.reviews[0].contributors) == 0
@@ -887,7 +886,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert len(result.reviews[0].contributors) == 0
@@ -914,7 +913,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert len(result.reviews[0].sections) == 0
@@ -944,7 +943,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         # The empty sec won't make the cut (no content), and no bare p after it
@@ -974,7 +973,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert result.reviews[0].metadata.get("object_id_doi") == "10.1234/review.001"
@@ -1028,7 +1027,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         # pmid has whitespace-only text — should skip to DOI
@@ -1057,7 +1056,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert result.reviews[0].title == "Decision Letter Title"
@@ -1087,7 +1086,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert result.reviews[0].revision_round == 1
@@ -1116,7 +1115,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         # Label doesn't contain "R" — falls through to default round 1
@@ -1148,7 +1147,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         assert len(result.reviews[0].sections) == 0
@@ -1177,7 +1176,7 @@ class TestPeerReview:
         </sub-article>
         </article>
         """
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         extractor = PeerReviewExtractor(root)
         result = extractor.extract_peer_reviews()
         # Empty object-id text -> shouldn't appear in metadata
@@ -1196,7 +1195,7 @@ class TestJATS4RValidator:
         """Test that validator runs and produces a report."""
         from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
         report = validator.validate()
 
@@ -1208,7 +1207,7 @@ class TestJATS4RValidator:
         """Test author validation rules."""
         from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
         report = validator.validate()
 
@@ -1220,7 +1219,7 @@ class TestJATS4RValidator:
         """Test funding information detection."""
         from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
         report = validator.validate()
 
@@ -1233,7 +1232,7 @@ class TestJATS4RValidator:
         """Test abstract validation."""
         from pyeuropepmc.features.fulltext.extensions.jats4r import JATS4RValidator
 
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
         report = validator.validate()
 
@@ -1249,7 +1248,7 @@ class TestJATS4RValidator:
             ValidationFinding,
         )
 
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         validator = JATS4RValidator(root)
         report = validator.validate()
 
@@ -1373,7 +1372,7 @@ class TestImageFetcher:
             ImageFetcher,
         )
 
-        root = ET.fromstring(ARTICLE_WITH_FIGURES)
+        root = DefusedET.fromstring(ARTICLE_WITH_FIGURES)
         fetcher = ImageFetcher(root, article_id="PMC1234567")
         assets = fetcher.extract_asset_refs()
 
@@ -1489,41 +1488,6 @@ class TestReferenceResolver:
 
 
 # ============================================================================
-# Tests: lxml Backend
-# ============================================================================
-
-
-class TestLXMLBackend:
-    """Tests for the lxml parser backend."""
-
-    def test_availability_check(self):
-        """Test is_lxml_available()."""
-        from pyeuropepmc.features.fulltext.extensions.lxml_backend import is_lxml_available
-
-        # Should return bool (True if lxml installed, False otherwise)
-        assert isinstance(is_lxml_available(), bool)
-
-    def test_fromstring_when_lxml_not_available(self):
-        """Test that appropriate ImportError is raised when lxml isn't available."""
-        from pyeuropepmc.features.fulltext.extensions.lxml_backend import is_lxml_available
-
-        if not is_lxml_available():
-            with pytest.raises(ImportError):
-                from pyeuropepmc.features.fulltext.extensions.lxml_backend import LXMLParser
-
-                LXMLParser()
-        else:
-            # If lxml is available, test actually works
-            from pyeuropepmc.features.fulltext.extensions.lxml_backend import LXMLParser
-
-            root = LXMLParser.fromstring(SIMPLE_ARTICLE_XML)
-            assert root is not None
-            title = root.find(".//article-title")
-            assert title is not None
-            assert title.text == "Test Article for Extensions"
-
-
-# ============================================================================
 # Tests: Local Processing
 # ============================================================================
 
@@ -1542,7 +1506,7 @@ class TestLocalProcessing:
         assert article_id == "PMC1234567"
 
         # Test with Element
-        root = ET.fromstring(SIMPLE_ARTICLE_XML)
+        root = DefusedET.fromstring(SIMPLE_ARTICLE_XML)
         article_id = extract_article_id_from_xml(root)
         assert article_id == "PMC1234567"
 
@@ -1889,7 +1853,7 @@ class TestMathMLRendering:
         """Verify to_html produces proper HTML."""
         from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
 
-        mathml = ET.fromstring(
+        mathml = DefusedET.fromstring(
             '<mml:math xmlns:mml="http://www.w3.org/1998/Math/MathML" display="inline">'
             "<mml:mi>E</mml:mi><mml:mo>=</mml:mo><mml:mi>m</mml:mi>"
             "<mml:msup><mml:mi>c</mml:mi><mml:mn>2</mml:mn></mml:msup></mml:math>"
