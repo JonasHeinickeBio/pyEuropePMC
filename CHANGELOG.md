@@ -2,6 +2,23 @@
 
 All notable changes to PyEuropePMC are documented here.
 
+## [2.2.1] - 2026-09-15
+
+Packaging metadata only; no change to the installed package's runtime
+behaviour.
+
+### 🐛 Bug Fixes
+
+- **The MCP Registry listing now publishes.** 2.2.0's
+  `publish-mcp-registry` job got past login, so 2.1.2's namespace-casing
+  fix held, but the registry rejected the publish with a 400. It confirms
+  that a PyPI package belongs to a server by finding
+  `mcp-name: io.github.JonasHeinickeBio/pyeuropepmc` in the package README,
+  and `README.md` named the server only in prose. The README now carries
+  that line as an HTML comment, invisible on GitHub and PyPI. PyPI does not
+  allow a released version's README to change, so this needs a new version
+  rather than a re-run of 2.2.0's job.
+
 ## [2.2.0] - 2026-09-15
 
 Full-text parsing correctness. Fifteen defects, every one found by measuring
