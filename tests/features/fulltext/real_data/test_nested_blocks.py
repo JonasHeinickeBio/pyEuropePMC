@@ -5,9 +5,6 @@ tables and nine figures that way, PMC3258128 five figures. In 2.2.1 the
 structured blocks folded each one into its paragraph - no table or figure
 block, and the cells run together - and to_plaintext() ran the cells together
 as well. The article title and abstract came back labelled as body sections.
-
-The fixtures are parsed with the standard library, as in conftest.py: lxml is
-an optional backend and CI does not install it.
 """
 
 from __future__ import annotations
@@ -15,6 +12,7 @@ from __future__ import annotations
 import pathlib
 from xml.etree import ElementTree as ET
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
@@ -76,7 +74,7 @@ class _Parsed:
     def __init__(self, path: pathlib.Path) -> None:
         raw = path.read_text(encoding="utf-8")
         self.pmcid = path.stem
-        self.root = ET.fromstring(raw.encode("utf-8"))
+        self.root = DefusedET.fromstring(raw.encode("utf-8"))
         parser = FullTextXMLParser(raw)
         self.plaintext = _squash(parser.to_plaintext())
         self.sections = parser.get_full_text_sections_structured()
@@ -92,7 +90,7 @@ def test_the_fixtures_nest_tables_and_figures_in_paragraphs() -> None:
     """Without such documents every check below would pass vacuously."""
     tables = figures = 0
     for path in DOCUMENTS:
-        root = ET.fromstring(path.read_bytes())
+        root = DefusedET.fromstring(path.read_bytes())
         tables += len(_nested(root, "table-wrap"))
         figures += len(_nested(root, "fig"))
     assert tables >= 7, tables

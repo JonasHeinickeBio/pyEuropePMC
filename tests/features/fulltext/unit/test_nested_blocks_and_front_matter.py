@@ -10,7 +10,7 @@ Reported against 2.2.1:
 - to_plaintext() ran the cells of such a table together; 2.0.0 kept them apart.
 """
 
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as DefusedET
 
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
     ContentBlock,
@@ -50,11 +50,11 @@ def _article(section_body: str) -> str:
 
 
 def _extractor() -> ContentBlockExtractor:
-    return ContentBlockExtractor(ET.fromstring("<article/>"))
+    return ContentBlockExtractor(DefusedET.fromstring("<article/>"))
 
 
 def _paragraph_blocks(xml: str) -> list[ContentBlock]:
-    return _extractor()._handle_paragraph(ET.fromstring(xml))
+    return _extractor()._handle_paragraph(DefusedET.fromstring(xml))
 
 
 def _squash(text: str) -> str:
@@ -125,7 +125,7 @@ class TestCaptionParts:
 
     def test_a_caption_title_is_not_run_into_its_paragraph(self) -> None:
         """Was "MechanismBinding in vitro." for every figure, nested or not."""
-        figure = _extractor()._handle_figure(ET.fromstring(FIGURE))[0]
+        figure = _extractor()._handle_figure(DefusedET.fromstring(FIGURE))[0]
         assert figure.caption == "Mechanism Binding in vitro."
 
 
