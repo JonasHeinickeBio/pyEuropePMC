@@ -2,7 +2,7 @@
 
 All notable changes to PyEuropePMC are documented here.
 
-## [Unreleased]
+## [2.2.0] - 2026-09-15
 
 Full-text parsing correctness. Fifteen defects, every one found by measuring
 the parser's output against 124 real Europe PMC documents rather than by
@@ -10,6 +10,11 @@ reading code — several were invisible to hand-written fixtures because they
 only occur in markup nobody writes by hand.
 
 None of these raised an exception. They returned plausible, wrong answers.
+
+This is a minor release rather than a patch: those fixes change what
+several extraction methods return, and the minimum versions of three runtime
+dependencies move (see Dependencies below). 2.1.2 was prepared but never
+published, so its release-pipeline fix ships here too.
 
 ### 🐛 Bug Fixes — wrong data returned
 
@@ -151,6 +156,28 @@ None of these raised an exception. They returned plausible, wrong answers.
   package was not handled at all, leaving `_validate` true so `build()` raised
   instead of degrading as the docstring promises. Both halves restored.
 
+### 🐛 Bug Fixes — release pipeline
+
+- **Fixed the MCP Registry publish job** (added in 2.1.1): `server.json`
+  named the server `io.github.jonasheinickebio/pyeuropepmc`, but the
+  registry's GitHub OIDC verification is case-sensitive and only grants
+  permission for the exact-case GitHub login `JonasHeinickeBio` — so the
+  2.1.1 release's `publish-mcp-registry` job failed with a 403
+  ("You have permission to publish: `io.github.JonasHeinickeBio/*`.
+  Attempting to publish: `io.github.jonasheinickebio/pyeuropepmc`").
+  Corrected the casing in `server.json` and its documentation references.
+
+### ⬆️ Dependencies
+
+The minimum supported versions move, so an environment pinned below them
+needs to upgrade these along with pyEuropePMC.
+
+- `cachetools` `>=7.1.8,<8.0`, was `>=6.2.1,<7.0` (#186)
+- `tenacity` `>=9.1.4,<10.0`, was `>=8.2.0,<9.0` (#187)
+- `search-query` `>=0.15.0,<0.16`, was `>=0.13.0,<0.14` (#151). The query
+  builder's calls into it (`parse(..., platform=...)`, `load_search_file`,
+  `SearchFile`) work unchanged on 0.15.
+
 ### ✅ Tests
 
 - **`tests/features/fulltext/real_data/`** asserts parser invariants against
@@ -199,6 +226,23 @@ None of these raised an exception. They returned plausible, wrong answers.
   attacks must be refused rather than expanded — a plain parser in place of
   `defusedxml` would silently reintroduce both.
 
+- **`pytest -m unit` now selects every unit test.** `tests/conftest.py`
+  already inferred `functional` and `integration` from a test's path; it now
+  marks any test in no other category `unit`, so the lane grew from 1,738 to
+  5,492 tests without per-module markers. Seven mocked tests had never run
+  in CI, because a filename rule classed `search_interactive_test.py` as
+  functional; renamed `test_interactive_search.py`, they now run with the
+  rest. (#240, #241)
+
+- **The query builder's tests moved to `tests/features/literature/`**, the
+  directory that mirrors its source, from a top-level `tests/query_builder/`.
+  (#239)
+
+- **`tests/` is linted and formatted with ruff** in CI and pre-commit. It had
+  been excluded; bringing it in fixed 1,203 findings and reformatted 145
+  files, with every collected test and its markers unchanged. Pre-commit's
+  ruff is now pinned to 0.14.14, the version CI runs. (#242)
+
 ### 📊 Verified across 124 real Europe PMC documents
 
 | Check | Before | After |
@@ -242,18 +286,11 @@ following:"` followed by a `<list>` produces a "sentence" spanning both, which
 cannot appear contiguously once the list is rendered separately. Its
 introduction and all five list items are present.
 
-## [2.1.2] - 2026-09-14
+### 📚 Documentation
 
-### 🐛 Bug Fixes
-
-- **Fixed the MCP Registry publish job** (added in 2.1.1): `server.json`
-  named the server `io.github.jonasheinickebio/pyeuropepmc`, but the
-  registry's GitHub OIDC verification is case-sensitive and only grants
-  permission for the exact-case GitHub login `JonasHeinickeBio` — so the
-  2.1.1 release's `publish-mcp-registry` job failed with a 403
-  ("You have permission to publish: `io.github.JonasHeinickeBio/*`.
-  Attempting to publish: `io.github.jonasheinickebio/pyeuropepmc`").
-  Corrected the casing in `server.json` and its documentation references.
+- `docs/DEPENDENCY_GROUPS.md` explains how to update a dependency without
+  failing CI (#236), and why the committed `poetry.lock` is not reproducible
+  byte for byte (#237).
 
 ## [2.1.1] - 2026-09-14
 
