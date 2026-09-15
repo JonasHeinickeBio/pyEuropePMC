@@ -8,6 +8,8 @@ import pytest
 
 from pyeuropepmc.features.literature.adapters import EuropePMCLiteratureAdapter
 
+pytestmark = pytest.mark.unit
+
 
 @pytest.fixture
 def adapter():

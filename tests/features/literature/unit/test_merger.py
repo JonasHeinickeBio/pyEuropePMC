@@ -16,6 +16,8 @@ from pyeuropepmc.features.enrich.merger import (
     compute_paper_hash,
 )
 
+pytestmark = pytest.mark.unit
+
 
 # ===========================================================================
 # Helpers

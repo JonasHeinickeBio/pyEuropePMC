@@ -6,7 +6,11 @@ from __future__ import annotations
 
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from pyeuropepmc.features.search.sources.pubmed import PubMedClient
+
+pytestmark = pytest.mark.unit
 
 FULL_EFETCH_XML = """<?xml version="1.0"?>
 <PubmedArticleSet>

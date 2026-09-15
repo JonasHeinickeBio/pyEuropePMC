@@ -10,6 +10,8 @@ from pyeuropepmc.features.literature.adapters import (
 )
 from pyeuropepmc.models.literature import LiteratureResult
 
+pytestmark = pytest.mark.unit
+
 # ===========================================================================
 # SemanticScholarLiteratureAdapter
 # ===========================================================================

@@ -6,6 +6,8 @@ import pytest
 
 from pyeuropepmc.features.search.sources.pubmed import PubMedClient
 
+pytestmark = pytest.mark.unit
+
 
 class TestPubMedClient:
     """Tests for PubMedClient."""

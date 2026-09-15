@@ -19,6 +19,8 @@ from pyeuropepmc.features.enrich.merger import (
     deduplicate_by_identifier,
 )
 
+pytestmark = pytest.mark.unit
+
 
 # ===========================================================================
 # Helpers

@@ -12,6 +12,8 @@ from pyeuropepmc.features.literature.pagination import (
     PaginationState,
 )
 
+pytestmark = pytest.mark.unit
+
 
 class TestPaginationState:
     """Test PaginationState class."""
