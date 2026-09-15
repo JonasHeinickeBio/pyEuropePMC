@@ -215,6 +215,7 @@ class TestEnums:
         assert ContentBlockType.unknown_block.text == "unknown_block"
 
     def test_section_type_permissible_values(self):
+        assert SectionType.front.text == "front"
         assert SectionType.body.text == "body"
         assert SectionType.peer_review.text == "peer_review"
 

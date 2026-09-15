@@ -401,10 +401,17 @@ class TestHandleParagraph:
 
     def test_unknown_child_recurses(self):
         extractor = _extractor("<root/>")
-        elem = _elem("<p>Before <fig><label>Fig. 1</label></fig> after.</p>")
+        elem = _elem("<p>Before <foo><bold>inside</bold></foo> after.</p>")
         blocks = extractor._handle_paragraph(elem)
         assert len(blocks) == 1
-        assert "Before" in blocks[0].text
+        assert blocks[0].text == "Before inside after."
+
+    def test_figure_child_splits_the_paragraph(self):
+        extractor = _extractor("<root/>")
+        elem = _elem("<p>Before <fig><label>Fig. 1</label></fig> after.</p>")
+        blocks = extractor._handle_paragraph(elem)
+        assert [b.type.value for b in blocks] == ["paragraph", "figure", "paragraph"]
+        assert (blocks[0].text, blocks[2].text) == ("Before", "after.")
 
     def test_tail_text_after_child(self):
         extractor = _extractor("<root/>")

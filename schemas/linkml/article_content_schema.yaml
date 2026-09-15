@@ -86,6 +86,8 @@ enums:
   SectionType:
     description: Structural type of a document section.
     permissible_values:
+      front:
+        description: Front matter (article title, abstract)
       body:
         description: Main article body section
       back:

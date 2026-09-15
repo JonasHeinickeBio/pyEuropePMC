@@ -535,7 +535,8 @@ class FullTextXMLParser:
             List of section dicts, each containing:
             - ``title``: Section title (str)
             - ``content``: List of typed content blocks (dicts)
-            - ``section_type``: Type hint (``"body"``, ``"back"``, ``"appendix"``)
+            - ``section_type``: ``"front"`` for the article title and abstract, then
+              ``"body"``, ``"back"`` or ``"appendix"``
 
         Examples
         --------
