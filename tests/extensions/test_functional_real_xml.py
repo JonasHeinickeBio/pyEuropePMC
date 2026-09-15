@@ -440,7 +440,7 @@ class TestArticleReport:
     def test_report_articles(self):
         """Print information about what articles were tested."""
         print(f"\nTesting with {len(REAL_XML_FILES)} real XML files:")
-        for i, (fpath, pmcid) in enumerate(zip(REAL_XML_FILES, PMC_IDS)):
+        for i, (fpath, pmcid) in enumerate(zip(REAL_XML_FILES, PMC_IDS, strict=False)):
             size_kb = fpath.stat().st_size / 1024
             print(f"  {i + 1}. {pmcid}: {fpath.name} ({size_kb:.0f} KB)")
         print(f"  {len(REAL_XML_FILES) + 1}. synthetic: PMC9999999 (test fixture)")

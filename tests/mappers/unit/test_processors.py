@@ -152,7 +152,6 @@ class TestConvertSearchAuthorToEntity:
     @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_affiliation_details_not_dict(self, mock_parser_class):
         """Test when authorAffiliationDetailsList is not a dict."""
-        mock_parser = mock_parser_class.parse_affiliation_string
 
         author_dict = {
             "fullName": "Test",
@@ -166,7 +165,6 @@ class TestConvertSearchAuthorToEntity:
     @patch("pyeuropepmc.features.literature.search_parser.EuropePMCParser")
     def test_missing_affiliation_details(self, mock_parser_class):
         """Test with missing authorAffiliationDetailsList."""
-        mock_parser = mock_parser_class.parse_affiliation_string
 
         author_dict = {"fullName": "Test"}
 

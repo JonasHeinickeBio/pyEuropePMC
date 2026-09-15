@@ -5,7 +5,7 @@ from pyeuropepmc.features.literature.search_parser import EuropePMCParser, Parsi
 
 def list_fixtures(fixture_dir):
     files = []
-    for root, dirs, filenames in os.walk(fixture_dir):
+    for root, _dirs, filenames in os.walk(fixture_dir):
         for fname in filenames:
             if fname.endswith((".json", ".xml", ".dc.xml", ".ris", ".bib", ".csv")):
                 files.append(os.path.join(root, fname))

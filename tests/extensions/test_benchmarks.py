@@ -210,7 +210,7 @@ class TestContentCoverage:
         """Count distinct block types found across all articles."""
         all_types: set[str] = set()
         type_counts: dict[str, int] = {}
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
             for sec in sections:
@@ -236,7 +236,7 @@ class TestContentCoverage:
     def test_inline_element_coverage(self, benchmark_articles: dict[str, str]):
         """Measure detection of inline elements (xref, bold, italic, etc.)."""
         all_inline_types: set[str] = set()
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
             for sec in sections:
@@ -251,7 +251,7 @@ class TestContentCoverage:
     def test_definition_list_detection(self, benchmark_articles: dict[str, str]):
         """Check if definition lists are detected in any article."""
         found = False
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             root = ET.fromstring(xml)
             if root.find(".//def-list") is not None:
                 found = True
@@ -376,7 +376,7 @@ class TestRagChunkBenchmarks:
             StructuredSection,
         )
 
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
 
@@ -410,7 +410,7 @@ class TestRagChunkBenchmarks:
             StructuredSection,
         )
 
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
 
@@ -446,7 +446,7 @@ class TestSerializationRoundtrip:
     def test_dict_roundtrip(self, benchmark_articles: dict[str, str]):
         """Verify ContentBlocks survive to_dict -> dict -> ContentBlock roundtrip."""
 
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
 

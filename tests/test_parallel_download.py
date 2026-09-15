@@ -82,7 +82,7 @@ def test_parallel_method_basic():
     with (
         patch(
             "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
-        ) as mock_download,
+        ),
         patch(
             "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
             return_value=True,
@@ -410,7 +410,7 @@ def test_parallel_method_empty_pmcids_with_stats():
     with (
         patch(
             "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
-        ) as mock_download,
+        ),
         patch(
             "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
             return_value=True,

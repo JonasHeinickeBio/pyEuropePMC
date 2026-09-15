@@ -164,7 +164,7 @@ class TestRDFPerformanceAndScalability:
 
         # Verify relationship integrity
         relationship_count = 0
-        for s, p, o in g:
+        for _s, p, _o in g:
             if str(p) in ["http://purl.org/dc/terms/creator", "http://www.w3.org/ns/org#memberOf"]:
                 relationship_count += 1
 

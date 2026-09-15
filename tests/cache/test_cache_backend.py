@@ -32,7 +32,7 @@ class TestCacheConfig:
     def test_cache_config_defaults(self):
         """Test CacheConfig with default values."""
         config = CacheConfig()
-        assert config.enabled is (True if CACHETOOLS_AVAILABLE else False)
+        assert config.enabled is (bool(CACHETOOLS_AVAILABLE))
         assert config.ttl == 86400
         assert config.size_limit_mb == 500
         assert config.cache_dir is not None

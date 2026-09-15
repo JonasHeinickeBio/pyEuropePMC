@@ -6,6 +6,7 @@ src/pyeuropepmc/utils/helpers.py, covering normal operation, edge cases,
 and error conditions.
 """
 
+import contextlib
 import json
 from pathlib import Path
 import platform
@@ -77,10 +78,8 @@ def restore_permissions(path):
                 pass
     else:
         # Unix-like systems
-        try:
+        with contextlib.suppress(Exception):
             path.chmod(0o755)
-        except Exception:
-            pass
 
 
 class TestDeepMergeDicts:

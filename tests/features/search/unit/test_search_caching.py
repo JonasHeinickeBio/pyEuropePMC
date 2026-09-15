@@ -136,8 +136,8 @@ class TestSearchClientCacheBehavior:
         with patch.object(
             client_with_cache, "_make_request", side_effect=[mock_response1, mock_response2]
         ) as mock_req:
-            result1 = client_with_cache.search("cancer", pageSize=25)
-            result2 = client_with_cache.search("cancer", pageSize=100)
+            client_with_cache.search("cancer", pageSize=25)
+            client_with_cache.search("cancer", pageSize=100)
 
             assert mock_req.call_count == 2  # Different parameters
 
@@ -148,8 +148,8 @@ class TestSearchClientCacheBehavior:
         with patch.object(
             client_no_cache, "_make_request", return_value=mock_response
         ) as mock_req:
-            result1 = client_no_cache.search("cancer")
-            result2 = client_no_cache.search("cancer")
+            client_no_cache.search("cancer")
+            client_no_cache.search("cancer")
 
             # Should make two requests (no caching)
             assert mock_req.call_count == 2
@@ -176,7 +176,7 @@ class TestSearchPostCaching:
             client_with_cache, "_make_request", return_value=mock_response
         ) as mock_req:
             # First call
-            result1 = client_with_cache.search_post("cancer")
+            client_with_cache.search_post("cancer")
             assert mock_req.call_count == 1
 
             # Second call - should use cache
@@ -357,11 +357,13 @@ class TestCacheErrorHandling:
         mock_response = {"hitCount": 1}
 
         # Simulate cache error
-        with patch.object(client_with_cache._cache, "get", side_effect=Exception("Cache error")):
-            with patch.object(client_with_cache, "_make_request", return_value=mock_response):
-                # Search should still work despite cache error
-                result = client_with_cache.search("cancer")
-                assert result == mock_response
+        with (
+            patch.object(client_with_cache._cache, "get", side_effect=Exception("Cache error")),
+            patch.object(client_with_cache, "_make_request", return_value=mock_response),
+        ):
+            # Search should still work despite cache error
+            result = client_with_cache.search("cancer")
+            assert result == mock_response
 
     def test_search_error_not_cached(self, client_with_cache):
         """Test that search errors are not cached."""
@@ -409,9 +411,7 @@ class TestCacheKeyNormalization:
         """Test that whitespace in queries is normalized."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(
-            client_with_cache, "_make_request", return_value=mock_response
-        ) as mock_req:
+        with patch.object(client_with_cache, "_make_request", return_value=mock_response):
             # Queries with different whitespace
             result1 = client_with_cache.search("cancer  treatment")
             result2 = client_with_cache.search("cancer treatment")

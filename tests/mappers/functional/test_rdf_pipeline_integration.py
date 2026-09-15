@@ -143,15 +143,15 @@ class TestRDFPipelineIntegration:
         mapper.map_relationships(g, paper_uri, paper, related_entities)
 
         # Add author-paper relationships (inverse)
-        for author, author_uri in zip(authors, author_uris):
+        for author, author_uri in zip(authors, author_uris, strict=False):
             mapper.map_relationships(g, author_uri, author, {"papers": [paper]})
 
         # Add section-paper relationships (inverse)
-        for section, section_uri in zip(sections, section_uris):
+        for section, section_uri in zip(sections, section_uris, strict=False):
             mapper.map_relationships(g, section_uri, section, {"paper": [paper]})
 
         # Add reference-paper relationships (inverse)
-        for ref, ref_uri in zip(references, reference_uris):
+        for ref, ref_uri in zip(references, reference_uris, strict=False):
             mapper.map_relationships(g, ref_uri, ref, {"citing_paper": [paper]})
 
         # Verify comprehensive graph structure
@@ -252,7 +252,7 @@ class TestRDFPipelineIntegration:
         # Validate graph structure
         # 1. All subjects should have rdf:type
         subjects_with_types = set()
-        for s, p, o in g.triples((None, mapper._resolve_predicate("rdf:type"), None)):
+        for s, _p, _o in g.triples((None, mapper._resolve_predicate("rdf:type"), None)):
             subjects_with_types.add(s)
 
         # All our entities should have types
@@ -262,7 +262,7 @@ class TestRDFPipelineIntegration:
 
         # 2. Check for orphaned triples (subjects without types)
         all_subjects = set()
-        for s, p, o in g:
+        for s, _p, _o in g:
             all_subjects.add(s)
 
         # Most subjects should have types (allowing for some blank nodes)
@@ -376,7 +376,7 @@ class TestRDFPipelineIntegration:
         assert after_relationship > after_author1
 
         # Add section
-        section_uri = sections[0].to_rdf(g, mapper=mapper)
+        sections[0].to_rdf(g, mapper=mapper)
         after_section = len(g)
         assert after_section > after_relationship
 

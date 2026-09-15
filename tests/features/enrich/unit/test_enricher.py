@@ -142,13 +142,15 @@ class TestPaperEnricher:
         enricher = PaperEnricher(config)
 
         # Mock other clients to return None
-        with patch.object(enricher.clients["semantic_scholar"], "enrich", return_value=None):
-            with patch.object(enricher.clients["openalex"], "enrich", return_value=None):
-                result = enricher.enrich_paper(identifier="10.1234/test")
+        with (
+            patch.object(enricher.clients["semantic_scholar"], "enrich", return_value=None),
+            patch.object(enricher.clients["openalex"], "enrich", return_value=None),
+        ):
+            result = enricher.enrich_paper(identifier="10.1234/test")
 
-                assert result is not None
-                assert len(result["sources"]) == 1
-                assert "crossref" in result["sources"]
+            assert result is not None
+            assert len(result["sources"]) == 1
+            assert "crossref" in result["sources"]
 
     def test_enrich_paper_all_failures(self):
         """Test enrichment when all clients fail."""
@@ -354,7 +356,7 @@ class TestPaperEnricher:
         with patch.object(
             enricher, "enrich_paper", return_value={"doi": "10.1234/test"}
         ) as mock_enrich:
-            result = enricher.enrich(papers=papers)
+            enricher.enrich(papers=papers)
             mock_enrich.assert_called_once_with(identifier="PMC123456")
 
     def test_enrich_with_multiple_papers(self):
@@ -433,7 +435,7 @@ class TestPaperEnricher:
         with (
             patch.object(
                 enricher, "enrich_from_metadata_files", wraps=enricher.enrich_from_metadata_files
-            ) as spy,
+            ),
             patch("pyeuropepmc.features.enrich.enricher.FileEnricher") as mock_file_cls,
         ):
             mock_instance = mock_file_cls.return_value

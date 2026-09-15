@@ -601,11 +601,13 @@ class TestFullTextClientCoverage:
 
     def test_download_xml_by_pmcid_bulk_success(self):
         """Test successful bulk XML download via dedicated method."""
-        with patch.object(self.client, "_try_bulk_xml_download", return_value=True):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid_bulk("123456", output_path)
-                assert result == output_path
+        with (
+            patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
+        ):
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid_bulk("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_by_pmcid_bulk_failure(self):
         """Test bulk XML download failure via dedicated method."""
@@ -659,11 +661,11 @@ class TestFullTextClientCoverage:
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP404)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_api_403_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after 403 error."""
@@ -671,11 +673,11 @@ class TestFullTextClientCoverage:
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP403)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_api_other_error_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after other API error."""
@@ -683,11 +685,11 @@ class TestFullTextClientCoverage:
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP500)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_network_error_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after network error."""
@@ -697,11 +699,11 @@ class TestFullTextClientCoverage:
                 self.client, "_get", side_effect=requests.RequestException("Network error")
             ),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_check_availability_request_exceptions(self):
         """Test availability check with RequestException for each format type."""
@@ -873,21 +875,23 @@ class TestFullTextClientCoverage:
     def test_try_bulk_xml_download_final_return_false(self):
         """Test bulk XML download reaching final return False."""
         # This tests the final return False line that's not covered
-        with patch.object(self.client, "_determine_bulk_archive_range", return_value=(0, 999)):
-            with patch("requests.get") as mock_get:
-                mock_response = Mock()
-                mock_response.status_code = 200
-                mock_response.iter_content.return_value = [b"valid content"]
-                mock_get.return_value = mock_response
+        with (
+            patch.object(self.client, "_determine_bulk_archive_range", return_value=(0, 999)),
+            patch("requests.get") as mock_get,
+        ):
+            mock_response = Mock()
+            mock_response.status_code = 200
+            mock_response.iter_content.return_value = [b"valid content"]
+            mock_get.return_value = mock_response
 
-                # Mock gzip.open to not find the PMC ID
-                xml_content = "<article><article-meta>PMC999999</article-meta></article>"
+            # Mock gzip.open to not find the PMC ID
+            xml_content = "<article><article-meta>PMC999999</article-meta></article>"
 
-                with patch("gzip.open") as mock_gzip:
-                    mock_gzip.return_value.__enter__.return_value.read.return_value = xml_content
+            with patch("gzip.open") as mock_gzip:
+                mock_gzip.return_value.__enter__.return_value.read.return_value = xml_content
 
-                    result = self.client._try_bulk_xml_download("123456", Path("/tmp/test.xml"))
-                    assert result is False
+                result = self.client._try_bulk_xml_download("123456", Path("/tmp/test.xml"))
+                assert result is False
 
     def test_progress_info_initialization(self):
         """Test ProgressInfo initialization with all parameters."""

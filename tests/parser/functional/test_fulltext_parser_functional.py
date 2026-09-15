@@ -135,9 +135,12 @@ class TestFullTextXMLParserFunctional:
 
             # Log reference information
             logger.info(f"  First reference fields: {list(first_ref.keys())}")
-            if "authors" in first_ref and first_ref["authors"]:
-                if isinstance(first_ref["authors"], list):
-                    logger.info(f"    Authors: {len(first_ref['authors'])} authors")
+            if (
+                "authors" in first_ref
+                and first_ref["authors"]
+                and isinstance(first_ref["authors"], list)
+            ):
+                logger.info(f"    Authors: {len(first_ref['authors'])} authors")
             if "title" in first_ref and first_ref["title"]:
                 title_preview = str(first_ref["title"])[:50]
                 logger.info(f"    Title: {title_preview}...")

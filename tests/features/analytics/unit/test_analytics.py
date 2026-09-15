@@ -745,7 +745,7 @@ class TestAuthorCollaborationNetwork:
         """Test centrality metrics."""
         result = author_collaboration_network(extended_papers)
         assert isinstance(result["centrality_metrics"], dict)
-        for author, score in result["centrality_metrics"].items():
+        for _author, score in result["centrality_metrics"].items():
             assert 0.0 <= score <= 1.0
 
     def test_research_groups(self, extended_papers):

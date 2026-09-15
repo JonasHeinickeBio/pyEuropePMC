@@ -70,7 +70,7 @@ def test_fulltext_xml_showcase(tmp_path) -> None:
     latencies: list[float] = []
     epmc_only_ok = extra_rescued = total_ok = 0
 
-    for i, p in enumerate(papers):
+    for _i, p in enumerate(papers):
         pmcid, doi = p["pmcid"], p["doi"]
         out = tmp_path / f"{pmcid}.xml"
         row: dict = {"pmcid": pmcid}

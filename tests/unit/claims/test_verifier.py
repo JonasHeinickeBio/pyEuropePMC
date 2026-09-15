@@ -68,13 +68,15 @@ class TestClaimVerifier:
             }
         ]
 
-        with patch.object(verifier, "_search_evidence", return_value=mock_papers):
-            with patch.object(
+        with (
+            patch.object(verifier, "_search_evidence", return_value=mock_papers),
+            patch.object(
                 verifier, "_llm_verify", return_value=(Verdict.SUPPORTED, "Evidence supports.")
-            ):
-                verifier.llm_client = MagicMock()
-                verifier.llm_client.enabled = True
-                result = verifier.verify_claim(claim)
+            ),
+        ):
+            verifier.llm_client = MagicMock()
+            verifier.llm_client.enabled = True
+            result = verifier.verify_claim(claim)
 
         assert result.verdict == Verdict.SUPPORTED
 

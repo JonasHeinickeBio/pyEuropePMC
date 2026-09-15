@@ -60,7 +60,7 @@ def pytest_sessionstart(session):
     import subprocess
 
     try:
-        proc = subprocess.run(["git", "lfs", "pull"], capture_output=True, text=True)
+        subprocess.run(["git", "lfs", "pull"], capture_output=True, text=True)
     except FileNotFoundError:
         pytest.exit(
             "\nDetected Git LFS pointer files in tests/fixtures/fulltext_downloads/ but `git` or `git-lfs` is not available in PATH.\n"

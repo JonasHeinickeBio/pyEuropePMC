@@ -36,9 +36,7 @@ def mock_record():
 @pytest.fixture
 def client():
     """Fixture for UnpaywallClient with mocked super().__init__."""
-    with patch(
-        "pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"
-    ) as mock_super_init:
+    with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"):
         client = UnpaywallClient(email="test@example.com")
         yield client
 
@@ -54,15 +52,19 @@ class TestUnpaywallClient:
 
     def test_init_empty_email(self):
         """Test initialization with empty email."""
-        with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"):
-            with pytest.raises(Exception):
-                UnpaywallClient(email="")
+        with (
+            patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"),
+            pytest.raises(Exception),
+        ):
+            UnpaywallClient(email="")
 
     def test_init_invalid_email_no_at(self):
         """Test initialization with email missing @."""
-        with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"):
-            with pytest.raises(Exception):
-                UnpaywallClient(email="notanemail")
+        with (
+            patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"),
+            pytest.raises(Exception),
+        ):
+            UnpaywallClient(email="notanemail")
 
     def test_lookup_by_doi_empty(self, client):
         """Test lookup with empty DOI."""

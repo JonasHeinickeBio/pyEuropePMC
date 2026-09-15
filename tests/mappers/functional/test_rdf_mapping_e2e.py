@@ -103,13 +103,13 @@ class TestRDFMappingEndToEnd:
 
         # Verify keywords (multi-value field)
         keyword_count = 0
-        for triple in g.triples((uri, mapper._resolve_predicate("dcterms:subject"), None)):
+        for _triple in g.triples((uri, mapper._resolve_predicate("dcterms:subject"), None)):
             keyword_count += 1
         assert keyword_count == 3  # 3 keywords
 
         # Verify external identifiers (owl:sameAs)
         sameas_count = 0
-        for triple in g.triples((uri, mapper._resolve_predicate("owl:sameAs"), None)):
+        for _triple in g.triples((uri, mapper._resolve_predicate("owl:sameAs"), None)):
             sameas_count += 1
         assert sameas_count >= 2  # DOI and PMCID at minimum
 
@@ -281,7 +281,7 @@ class TestRDFMappingEndToEnd:
 
         # Verify all papers are represented
         paper_uris = set()
-        for s, p, o in g.triples((None, mapper._resolve_predicate("dcterms:title"), None)):
+        for s, _p, o in g.triples((None, mapper._resolve_predicate("dcterms:title"), None)):
             if "Test Paper" in str(o):
                 paper_uris.add(s)
         assert len(paper_uris) == 10

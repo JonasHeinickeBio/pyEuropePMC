@@ -167,7 +167,7 @@ class TestArticleClientComprehensive:
         mock_response = mock_response_obj(mock_json_response)
         mock_get.return_value = mock_response
 
-        result = article_client.get_citations("MED", "12345", page=2, page_size=50)
+        article_client.get_citations("MED", "12345", page=2, page_size=50)
 
         mock_get.assert_called_once_with(
             "MED/12345/citations", params={"page": 2, "pageSize": 50, "format": "json"}
@@ -309,7 +309,7 @@ class TestArticleClientComprehensive:
         mock_response.json.return_value = mock_json_response
         mock_get.return_value = mock_response
 
-        result = article_client.get_lab_links("MED", "12345", provider_id="provider123")
+        article_client.get_lab_links("MED", "12345", provider_id="provider123")
 
         mock_get.assert_called_once_with(
             "MED/12345/labsLinks", params={"format": "json", "providerId": "provider123"}
@@ -472,7 +472,7 @@ class TestArticleClientComprehensive:
             ("TOOLONG", "12345", -1, 2000, "badformat", None),  # Multiple issues
         ]
 
-        for source, article_id, page, page_size, format_val, callback in invalid_combinations:
+        for source, article_id, page, page_size, format_val, _callback in invalid_combinations:
             if source and len(source) != 3:
                 with pytest.raises(ValidationError):
                     article_client._validate_source_and_id(source, article_id)

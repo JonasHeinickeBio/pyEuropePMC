@@ -47,7 +47,7 @@ class TestSystematicReviewTracking:
         log = start_search("Test Review")
 
         qb = QueryBuilder()
-        query = (
+        (
             qb.keyword("CRISPR", field="title")
             .and_()
             .date_range(start_year=2020, end_year=2023)
@@ -224,7 +224,7 @@ class TestSystematicReviewTracking:
         log = start_search("Complex Query Test")
 
         qb = QueryBuilder()
-        query = (
+        (
             qb.keyword("cancer", field="title")
             .or_()
             .keyword("tumor", field="title")

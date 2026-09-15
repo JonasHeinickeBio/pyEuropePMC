@@ -483,6 +483,8 @@ class TestSearchLoggingFunctions:
 
     def test_generate_private_key_no_crypto(self):
         """Test key generation when cryptography is not available."""
-        with patch("pyeuropepmc.utils.search_logging.serialization", None):
-            with pytest.raises(ImportError):
-                generate_private_key("/tmp/key.pem")
+        with (
+            patch("pyeuropepmc.utils.search_logging.serialization", None),
+            pytest.raises(ImportError),
+        ):
+            generate_private_key("/tmp/key.pem")

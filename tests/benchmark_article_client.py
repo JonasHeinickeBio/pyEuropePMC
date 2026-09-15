@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import contextlib
 from dataclasses import dataclass, field
 import json
 import os
@@ -140,11 +141,14 @@ class BenchmarkRunner:
             self._cleanup_client()
 
         # Create isolated cache directory if needed
-        if self.config.cache_config and self.config.cache_config.enabled:
-            if self.config.cache_dir is None:
-                temp_dir = Path(tempfile.mkdtemp(prefix=f"{self.config.name}_cache_"))
-                self.temp_dirs.append(temp_dir)
-                self.config.cache_dir = temp_dir
+        if (
+            self.config.cache_config
+            and self.config.cache_config.enabled
+            and self.config.cache_dir is None
+        ):
+            temp_dir = Path(tempfile.mkdtemp(prefix=f"{self.config.name}_cache_"))
+            self.temp_dirs.append(temp_dir)
+            self.config.cache_dir = temp_dir
 
         # Instantiate client based on type
         if self.config.client_class == ArticleClient or self.config.client_class == SearchClient:
@@ -193,25 +197,19 @@ class BenchmarkRunner:
     def _stop_request_instrumentation(self):
         """Restore original requests.Session.request."""
         if self._original_request is not None:
-            try:
+            with contextlib.suppress(Exception):
                 requests.Session.request = self._original_request
-            except Exception:
-                pass
             self._original_request = None
 
     def _cleanup_client(self):
         """Clean up client and temporary directories."""
         if self.client and hasattr(self.client, "_cache"):
-            try:
+            with contextlib.suppress(BaseException):
                 self.client._cache.clear_cache()
-            except:
-                pass
 
         for temp_dir in self.temp_dirs:
-            try:
+            with contextlib.suppress(BaseException):
                 shutil.rmtree(temp_dir, ignore_errors=True)
-            except:
-                pass
         self.temp_dirs.clear()
 
     def get_memory_usage(self) -> float:
@@ -276,10 +274,8 @@ class BenchmarkRunner:
             start_rss = 0
 
         # Start tracemalloc (best-effort) to capture Python allocation peaks
-        try:
+        with contextlib.suppress(Exception):
             tracemalloc.start()
-        except Exception:
-            pass
 
         start_time = time.perf_counter()
         try:
@@ -291,10 +287,8 @@ class BenchmarkRunner:
                 tracemalloc_peak = peak_tr
             except Exception:
                 tracemalloc_peak = 0
-            try:
+            with contextlib.suppress(Exception):
                 tracemalloc.stop()
-            except Exception:
-                pass
             raise e
 
         end_time = time.perf_counter()
@@ -314,10 +308,8 @@ class BenchmarkRunner:
             tracemalloc_peak = peak_tr
         except Exception:
             tracemalloc_peak = 0
-        try:
+        with contextlib.suppress(Exception):
             tracemalloc.stop()
-        except Exception:
-            pass
 
         execution_time = end_time - start_time
 
@@ -389,15 +381,12 @@ class BenchmarkRunner:
             finally:
                 if not reuse_client_for_measured:
                     # clean up transient client used for this warmup
-                    try:
+                    with contextlib.suppress(Exception):
                         self._cleanup_client()
-                    except Exception:
-                        pass
 
         # Measured runs
         if getattr(self, "benchmark_fixture", None) is not None:
             # Use pytest-benchmark if provided for robust timing statistics.
-            per_run_cache_stats: list[dict[str, Any]] = []
 
             def _bench_wrapper():
                 # Each invocation corresponds to one measured run
@@ -443,10 +432,8 @@ class BenchmarkRunner:
                 cache_stats_per_run.append(run_cache_stats)
 
                 if not reuse_client_for_measured:
-                    try:
+                    with contextlib.suppress(Exception):
                         self._cleanup_client()
-                    except Exception:
-                        pass
 
                 return result
 
@@ -516,18 +503,14 @@ class BenchmarkRunner:
                 except Exception as e:
                     errors.append(f"Run {run + 1}: {str(e)}")
                     # ensure instrumentation restored if exception happened
-                    try:
+                    with contextlib.suppress(Exception):
                         self._stop_request_instrumentation()
-                    except Exception:
-                        pass
                     continue
                 finally:
                     if not reuse_client_for_measured:
                         # cleanup per-run transient client
-                        try:
+                        with contextlib.suppress(Exception):
                             self._cleanup_client()
-                        except Exception:
-                            pass
 
         # Aggregate final cache stats (best-effort)
         cache_stats = {}
@@ -793,7 +776,7 @@ class BenchmarkManager:
 
         speedups = []
 
-        for benchmark_name, method_results in results.items():
+        for _benchmark_name, method_results in results.items():
             for result in method_results:
                 if result.errors:
                     summary["failed_runs"] += 1
@@ -877,7 +860,6 @@ class BenchmarkManager:
                     # simple percentile: pick nearest value
                     p95 = times[min(cnt - 1, int(0.95 * cnt))]
                     mean = result.mean_time
-                    stddev = result.std_dev_time
                     ops = (1.0 / mean) if mean and mean > 0 else None
 
                     def fmt_stat(val: float | None) -> str:
@@ -902,7 +884,7 @@ class BenchmarkManager:
         }
 
         bases = set()
-        for name in suite_result.results.keys():
+        for name in suite_result.results:
             if name.endswith("_Cached") or name.endswith("_NoCache"):
                 bases.add(name.rsplit("_", 1)[0])
 
@@ -1101,10 +1083,8 @@ def test_modular_benchmark_system(benchmark):
             continue
 
         # attach pytest-benchmark fixture to runner so measured runs can use it
-        try:
+        with contextlib.suppress(Exception):
             bench_inst.runner.benchmark_fixture = benchmark
-        except Exception:
-            pass
 
         manager.add_benchmark(bench_inst)
 
@@ -1200,10 +1180,8 @@ def test_article_client_benchmark(benchmark):
     # attach pytest-benchmark fixture to the runner so measured runs inside
     # the benchmark harness will use the real pytest fixture instead of the
     # dummy fallback.
-    try:
+    with contextlib.suppress(Exception):
         benchmark_instance.runner.benchmark_fixture = benchmark
-    except Exception:
-        pass
 
     def run_benchmark():
         results = benchmark_instance.run_benchmark()
@@ -1227,10 +1205,8 @@ def test_search_client_benchmark(benchmark):
     # attach pytest-benchmark fixture to the runner so measured runs inside
     # the benchmark harness will use the real pytest fixture instead of the
     # dummy fallback.
-    try:
+    with contextlib.suppress(Exception):
         benchmark_instance.runner.benchmark_fixture = benchmark
-    except Exception:
-        pass
 
     def run_benchmark():
         results = benchmark_instance.run_benchmark()
@@ -1254,10 +1230,8 @@ def test_fulltext_client_benchmark(benchmark):
     # attach pytest-benchmark fixture to the runner so measured runs inside
     # the benchmark harness will use the real pytest fixture instead of the
     # dummy fallback.
-    try:
+    with contextlib.suppress(Exception):
         benchmark_instance.runner.benchmark_fixture = benchmark
-    except Exception:
-        pass
 
     def run_benchmark():
         results = benchmark_instance.run_benchmark()

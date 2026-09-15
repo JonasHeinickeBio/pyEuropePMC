@@ -96,10 +96,12 @@ class TestReferenceResolver:
 
     def test_resolve_invalid_doi_returns_none(self):
         resolver = ReferenceResolver()
-        with patch.object(resolver, "_resolve_via_crossref", return_value=None):
-            with patch.object(resolver, "_resolve_via_pmc", return_value=None):
-                result = resolver.resolve_doi("10.0000/invalid")
-                assert result is None
+        with (
+            patch.object(resolver, "_resolve_via_crossref", return_value=None),
+            patch.object(resolver, "_resolve_via_pmc", return_value=None),
+        ):
+            result = resolver.resolve_doi("10.0000/invalid")
+            assert result is None
 
     def test_resolve_invalid_pmid_returns_none(self):
         resolver = ReferenceResolver()

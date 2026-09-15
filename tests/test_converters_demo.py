@@ -500,13 +500,6 @@ class TestConvertersWithMockedData:
         base_graph = BaseGraph()
         base_graph.bind("ex", "http://example.org/")
 
-        enrichment_data = {
-            "paper": {
-                "doi": "10.1234/test",
-                "title": "Test Paper",
-            }
-        }
-
         result_graph = convert_pipeline_to_rdf(
             search_results=[
                 {
@@ -765,7 +758,7 @@ class TestEnhancedRDFOutput:
         VOCAB = Namespace("https://w3id.org/pyeuropepmc/vocab#")
 
         # Query for confidence triples
-        confidence_triples = list(graph.triples((None, VOCAB.confidence, None)))
+        list(graph.triples((None, VOCAB.confidence, None)))
 
         # Even if confidence is not in input, the enhanced parser might generate it
         # So this test just checks the namespace binding is present

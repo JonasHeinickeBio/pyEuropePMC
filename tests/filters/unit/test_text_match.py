@@ -2,6 +2,8 @@
 Copied unit tests for text matching into tests/filters/unit
 """
 
+import contextlib
+
 import pytest
 
 from pyeuropepmc.utils import text_match as tm
@@ -38,10 +40,8 @@ def test_all_and_any_needles_match():
 
 def test_any_match_semantic_skip_if_missing():
     # If sentence-transformers is installed the call should not raise; otherwise it's gracefully handled
-    try:
-        has_st = True
-    except Exception:
-        has_st = False
+    with contextlib.suppress(Exception):
+        pass
 
     # Run with use_semantic=True but keep test robust when model not present
     res = tm.any_match("cancer therapy", ["oncology treatment"], use_semantic=True)

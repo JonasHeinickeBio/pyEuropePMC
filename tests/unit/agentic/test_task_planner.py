@@ -235,7 +235,7 @@ class TestTaskPlanner:
         """Test resetting the planner."""
         planner = TaskPlanner()
 
-        task = planner.create_task("Test task")
+        planner.create_task("Test task")
         assert planner.task_count == 1
 
         planner.reset()

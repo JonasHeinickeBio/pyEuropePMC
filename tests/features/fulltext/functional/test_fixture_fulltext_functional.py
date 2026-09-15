@@ -38,7 +38,7 @@ def test_parse_xml_fulltext(pmcid):
         assert True  # Error handling is tested
     except Exception as e:
         print(f"Unexpected error for {pmcid}.xml: {e}")
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}")
 
 
 @pytest.mark.parametrize("pmcid", PMCIDS)
@@ -70,4 +70,4 @@ def test_parse_xml_error_handling(bad_xml):
     except ParsingError:
         assert True  # Expected error
     except Exception as e:
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}")

@@ -45,9 +45,11 @@ class TestInit:
         assert os.path.exists(rdfizer.mapping_path)
 
     def test_not_available_raises(self):
-        with patch("pyeuropepmc.mappers.rml_rdfizer.RDFIZER_AVAILABLE", False):
-            with pytest.raises(ImportError, match="rdfizer package not found"):
-                RMLRDFizer()
+        with (
+            patch("pyeuropepmc.mappers.rml_rdfizer.RDFIZER_AVAILABLE", False),
+            pytest.raises(ImportError, match="rdfizer package not found"),
+        ):
+            RMLRDFizer()
 
     def test_missing_config_raises(self, tmp_path):
         mapping = tmp_path / "map.ttl"

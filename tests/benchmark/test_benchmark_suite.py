@@ -749,7 +749,7 @@ class TestBenchmarkRunner:
         )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=True)
-        report = runner.run_all()
+        runner.run_all()
 
         assert runner.stats["successful"] >= 1
         assert runner.stats["failed"] >= 1  # bad file
@@ -807,7 +807,7 @@ class TestBenchmarkRunner:
         ds1 = BenchmarkDataset("local", local_path=xml_dir1)
         ds2 = BenchmarkDataset("local", local_path=xml_dir2)
         runner = BenchmarkRunner([ds1, ds2])
-        report = runner.run_all()
+        runner.run_all()
         assert runner.stats["successful"] == 2
         assert runner.stats["total_articles"] == 2
 
@@ -818,7 +818,7 @@ class TestBenchmarkRunner:
         (xml_dir / "bad.xml").write_bytes(b"\xff\xfe\x00\x01")
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=True)
-        report = runner.run_all()
+        runner.run_all()
         assert runner.stats["failed"] >= 1
         assert "bad.xml" in str(runner.stats["parse_errors"])
 
@@ -877,7 +877,7 @@ class TestWithFixtures:
 
     def test_element_coverage_pattern(self, fixture_xmls):
         """Element coverage should discover many element types in real XML."""
-        for fname, xml in fixture_xmls.items():
+        for _fname, xml in fixture_xmls.items():
             try:
                 parser = FullTextXMLParser(xml)
                 result = compute_element_coverage(parser, xml)
@@ -950,7 +950,7 @@ class TestProfilerContext:
         from pyeuropepmc.benchmark.profiler import ProfilerContext
 
         with ProfilerContext() as prof:
-            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+            FullTextXMLParser(SIMPLE_ARTICLE)
 
         assert prof.stats is not None
         assert hasattr(prof.stats, "sort_stats")
@@ -960,7 +960,7 @@ class TestProfilerContext:
         from pyeuropepmc.benchmark.profiler import ProfilerContext
 
         with ProfilerContext() as prof:
-            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+            FullTextXMLParser(SIMPLE_ARTICLE)
 
         filtered = prof.filter_by_module("pyeuropepmc")
         assert "by_function" in filtered
@@ -972,7 +972,7 @@ class TestProfilerContext:
         from pyeuropepmc.benchmark.profiler import ProfilerContext
 
         with ProfilerContext() as prof:
-            parser = FullTextXMLParser(SIMPLE_ARTICLE)
+            FullTextXMLParser(SIMPLE_ARTICLE)
 
         total = prof.total_time_by_module("pyeuropepmc")
         assert isinstance(total, float)
@@ -1071,7 +1071,7 @@ class TestMemoryTracker:
 
         tracker = MemoryTracker(nframe=1)
         tracker.start()
-        parser = FullTextXMLParser(SIMPLE_ARTICLE)
+        FullTextXMLParser(SIMPLE_ARTICLE)
         snap = tracker.stop()
 
         assert "top_allocations" in snap
@@ -1344,7 +1344,7 @@ class TestBenchmarkRunnerWithoutProfiling:
 
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=True)
-        report = runner.run_all()
+        runner.run_all()
 
         # Should process 2 articles, 1 successful, 1 failed
         assert runner.stats["successful"] == 1
@@ -1358,7 +1358,7 @@ class TestBenchmarkRunnerWithoutProfiling:
 
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=False)
-        report = runner.run_all()
+        runner.run_all()
 
         # Should still complete but with failed count
         # The runner handles parse errors internally

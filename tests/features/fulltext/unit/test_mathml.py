@@ -222,31 +222,39 @@ class TestToHtml:
 class TestToSvg:
     def test_latex_not_found_raises(self, conv):
         elem = _mml("<math><mi>x</mi></math>")
-        with patch("subprocess.run", side_effect=FileNotFoundError()):
-            with pytest.raises(RuntimeError, match="System LaTeX"):
-                conv.to_svg(elem)
+        with (
+            patch("subprocess.run", side_effect=FileNotFoundError()),
+            pytest.raises(RuntimeError, match="System LaTeX"),
+        ):
+            conv.to_svg(elem)
 
     def test_latex_compilation_failure_raises(self, conv):
         elem = _mml("<math><mi>x</mi></math>")
         err = subprocess.CalledProcessError(1, "latex", stderr=b"bad tex")
-        with patch("subprocess.run", side_effect=err):
-            with pytest.raises(RuntimeError, match="LaTeX compilation failed"):
-                conv.to_svg(elem)
+        with (
+            patch("subprocess.run", side_effect=err),
+            pytest.raises(RuntimeError, match="LaTeX compilation failed"),
+        ):
+            conv.to_svg(elem)
 
     def test_dvisvgm_not_found_raises(self, conv):
         elem = _mml("<math><mi>x</mi></math>")
         latex_ok = MagicMock()
-        with patch("subprocess.run", side_effect=[latex_ok, FileNotFoundError()]):
-            with pytest.raises(RuntimeError, match="dvisvgm not found"):
-                conv.to_svg(elem)
+        with (
+            patch("subprocess.run", side_effect=[latex_ok, FileNotFoundError()]),
+            pytest.raises(RuntimeError, match="dvisvgm not found"),
+        ):
+            conv.to_svg(elem)
 
     def test_dvisvgm_failure_raises(self, conv):
         elem = _mml("<math><mi>x</mi></math>")
         latex_ok = MagicMock()
         dvisvgm_err = subprocess.CalledProcessError(1, "dvisvgm", stderr=b"svg fail")
-        with patch("subprocess.run", side_effect=[latex_ok, dvisvgm_err]):
-            with pytest.raises(RuntimeError, match="SVG conversion failed"):
-                conv.to_svg(elem)
+        with (
+            patch("subprocess.run", side_effect=[latex_ok, dvisvgm_err]),
+            pytest.raises(RuntimeError, match="SVG conversion failed"),
+        ):
+            conv.to_svg(elem)
 
     def test_success_returns_svg(self, conv):
         elem = _mml("<math><mi>x</mi></math>")

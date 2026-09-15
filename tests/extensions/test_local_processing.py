@@ -324,7 +324,7 @@ class TestLocalXMLProcessor:
         results = proc.process_directory(tmp_path)
 
         assert len(results) == 2
-        for path, data in results.items():
+        for _path, data in results.items():
             assert isinstance(data, dict)
             assert "metadata" in data
 

@@ -169,9 +169,11 @@ class TestFullTextClient:
                 mock_response.headers = {}
             return mock_response
 
-        with patch.object(self.client.session, "head", side_effect=mock_request):
-            with patch.object(self.client.session, "get", side_effect=mock_request):
-                availability = self.client.check_fulltext_availability("123456")
+        with (
+            patch.object(self.client.session, "head", side_effect=mock_request),
+            patch.object(self.client.session, "get", side_effect=mock_request),
+        ):
+            availability = self.client.check_fulltext_availability("123456")
 
         # XML, PDF, and HTML should all be available with mocked 200 responses
         expected = {"pdf": True, "xml": True, "html": True}
@@ -199,9 +201,11 @@ class TestFullTextClient:
             mock_response.status_code = 404  # HTML not available
             return mock_response
 
-        with patch.object(self.client.session, "head", side_effect=mock_head):
-            with patch.object(self.client.session, "get", side_effect=mock_get):
-                availability = self.client.check_fulltext_availability("123456")
+        with (
+            patch.object(self.client.session, "head", side_effect=mock_head),
+            patch.object(self.client.session, "get", side_effect=mock_get),
+        ):
+            availability = self.client.check_fulltext_availability("123456")
 
         expected = {"pdf": False, "xml": True, "html": False}
         assert availability == expected
@@ -221,9 +225,11 @@ class TestFullTextClient:
             mock_response.status_code = 404  # HTML not available
             return mock_response
 
-        with patch.object(self.client.session, "head", side_effect=mock_head):
-            with patch.object(self.client.session, "get", side_effect=mock_get):
-                availability = self.client.check_fulltext_availability("123456")
+        with (
+            patch.object(self.client.session, "head", side_effect=mock_head),
+            patch.object(self.client.session, "get", side_effect=mock_get),
+        ):
+            availability = self.client.check_fulltext_availability("123456")
 
         expected = {"pdf": False, "xml": False, "html": False}
         assert availability == expected

@@ -651,7 +651,7 @@ class TestDedupLargeScale:
         """Stress test with N base papers and ~30% duplication."""
         s1, s2 = _generate_large_dataset(n_base=n_base, dup_ratio=0.3)
         combined = s1 + s2
-        expected_unique = len(s1) + len(s2) - int(n_base * 0.3)  # approx
+        len(s1) + len(s2) - int(n_base * 0.3)  # approx
 
         for mode in DedupMode:
             config = DedupConfig(mode=mode)

@@ -213,7 +213,6 @@ class TestFieldAPIIntegration:
         """Test INVESTIGATOR field with real API call."""
         qb = QueryBuilder(validate=False)
         query = qb.field("investigator", "Smith").build(validate=False)
-        base_query = "Smith"
 
         # Note: INVESTIGATOR may have fewer results than general search
         response = client.search(query, page_size=5)
@@ -339,7 +338,6 @@ class TestFieldAPIIntegration:
         query = (
             qb.field("title", "protein").and_().field("has_uniprot", True).build(validate=False)
         )
-        base_query = "TITLE:protein"
 
         # Note: This may significantly reduce results
         response = client.search(query, page_size=5)
@@ -350,7 +348,6 @@ class TestFieldAPIIntegration:
         """Test HAS_PDB field with real API call."""
         qb = QueryBuilder(validate=False)
         query = qb.field("title", "structure").and_().field("has_pdb", True).build(validate=False)
-        base_query = "TITLE:structure"
 
         response = client.search(query, page_size=5)
         assert "hitCount" in response
@@ -397,7 +394,6 @@ class TestFieldAPIIntegration:
         query = (
             qb.field("title", "genomics").and_().field("license", "cc by").build(validate=False)
         )
-        base_query = "TITLE:genomics"
 
         # Note: LICENSE may have specific values
         response = client.search(query, page_size=5)
@@ -423,7 +419,6 @@ class TestFieldAPIIntegration:
         """Test accession_type() method (special case with lowercase) with real API call."""
         qb = QueryBuilder(validate=False)
         query = qb.field("title", "protein").and_().accession_type("pdb").build(validate=False)
-        base_query = "TITLE:protein"
 
         response = client.search(query, page_size=5)
         assert "hitCount" in response
