@@ -1021,14 +1021,15 @@ def compute_section_accuracy(
 
     # Sections from front/back matter (not <sec> elements in <body>):
     # These are synthetically created by the parser with distinct section_type
-    # values: "back" for references, acknowledgments, footnotes, notes, glossary;
-    # "appendix" for appendices.  Use the section_type field to reliably
-    # distinguish them from body <sec> sections, which have section_type="body".
+    # values: "front" for the article title and abstract; "back" for references,
+    # acknowledgments, footnotes, notes, glossary; "appendix" for appendices.
+    # Use the section_type field to reliably distinguish them from body <sec>
+    # sections, which have section_type="body".
     #
-    # Synthetic body sections (section_type="body" but not from <sec> elements):
-    # "Article Title" and "Abstract" are always synthetic.
-    # "body" is synthetic when the XML has <sec> elements; otherwise it's the
-    # expected bare-<p> path (checked via expected_paths).
+    # "Article Title" and "Abstract" are also listed below, for results serialised
+    # before those sections were labelled "front". "body" is synthetic when the
+    # XML has <sec> elements; otherwise it's the expected bare-<p> path (checked
+    # via expected_paths).
     _SYNTHETIC_BODY_PATHS_LOWER = frozenset({"article title", "abstract", "body"})
 
     def _get_section_type(sec: Any) -> str:

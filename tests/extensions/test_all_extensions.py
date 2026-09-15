@@ -364,11 +364,12 @@ class TestContentBlocks:
 
         # First section should be article title
         assert sections[0]["title"] == "Article Title"
+        assert sections[0]["section_type"] == "front"
 
         # Second section should be abstract
         abstract = sections[1]
         assert abstract["title"] == "Abstract"
-        assert abstract["section_type"] == "body"
+        assert abstract["section_type"] == "front"
 
         # Third section should be Introduction
         intro = sections[2]

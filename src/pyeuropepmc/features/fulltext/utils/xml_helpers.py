@@ -51,7 +51,9 @@ class XMLHelper:
     """Helper class for generic XML extraction operations."""
 
     @staticmethod
-    def get_text_content(element: ET.Element | None) -> str:
+    def get_text_content(
+        element: ET.Element | None, exclude_tags: frozenset[str] | set[str] = frozenset()
+    ) -> str:
         """
         Get all text content from an element and its descendants.
 
@@ -59,6 +61,9 @@ class XMLHelper:
         ----------
         element : ET.Element or None
             XML element to extract text from
+        exclude_tags : frozenset of str, optional
+            Tags whose whole subtree is left out. The text after one (its tail) is
+            kept, and a block-level one still separates what surrounds it.
 
         Returns
         -------
@@ -103,7 +108,8 @@ class XMLHelper:
                 block = child.tag in BLOCK_LEVEL_TAGS
                 if block:
                     parts.append(" ")
-                walk(child)
+                if child.tag not in exclude_tags:
+                    walk(child)
                 if block:
                     parts.append(" ")
                 if child.tail:

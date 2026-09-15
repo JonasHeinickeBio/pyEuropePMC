@@ -24,6 +24,33 @@ All notable changes to PyEuropePMC are documented here.
   PubMed and figure paths treat it like any other unparseable response. Ruff now
   reports any other XML parser (rules S313-S319, and a ban on importing lxml).
 
+### 🐛 Bug Fixes
+
+- **A table or figure inside a paragraph gets a block of its own.** JATS
+  allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
+  `get_full_text_sections_structured()` folded it into the paragraph block:
+  no table or figure block, so the rows and caption were out of reach, and the
+  cells ran together with nothing between them. PMC12311175 nests seven tables
+  and nine figures that way; its structured output had no table or figure
+  block at all, and 703 cell boundaries ran together. The paragraph is now split
+  around the element: the text before it, a table or figure block with label,
+  caption and rows, then the text after.
+
+- **`to_plaintext()` keeps the cells of such a table apart again**, as 2.0.0
+  did. 2.2 built a paragraph's text with a walker of its own that put nothing
+  around block-level elements, where `get_text_content()` puts a space, so
+  the same 703 boundaries ran together ("miRNARole") and a figure's label ran
+  into its caption ("Fig. 1Mechanisms of immune"). Both now use the one walker.
+
+- **A caption's title no longer runs into its text** in the figure and table
+  blocks built from it ("Overview of the study.a The workflow"). Eight
+  figure captions in PMC12738713 joined that way.
+
+- **The article title and abstract are labelled `section_type="front"`**, not
+  `"body"`, so keeping only body sections no longer returns them a second time
+  alongside the metadata. `front` is added to `SectionType` in the LinkML
+  schema. Code that relied on the old label needs to accept `front`.
+
 ## [2.2.1] - 2026-09-15
 
 Packaging metadata only; no change to the installed package's runtime

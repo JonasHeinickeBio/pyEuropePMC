@@ -75,27 +75,15 @@ class BaseParser:
         that renders those containers separately would emit the text twice -
         seven paragraphs in PMC4355508, and three times over in PMC12126031,
         where a table sits inside a paragraph with lists in its cells.
+
+        This used to walk the tree itself, joining text nodes with nothing
+        between them. That lost the separator ``get_text_content`` keeps around
+        block-level elements, so the cells of a table inside a paragraph ran
+        together - 703 cell boundaries in PMC12311175 - and a figure's label
+        ran into its caption. It now uses that walker, so the two cannot drift
+        apart again.
         """
-        skip = set(skip_tags)
-        parts: list[str] = []
-
-        def walk(elem: ET.Element) -> None:
-            if elem.text:
-                parts.append(elem.text)
-            for child in elem:
-                # Comments and processing instructions - lxml keeps them as
-                # children with a non-string tag. See XMLHelper.get_text_content.
-                if not isinstance(child.tag, str):
-                    if child.tail:
-                        parts.append(child.tail)
-                    continue
-                if child.tag not in skip:
-                    walk(child)
-                if child.tail:
-                    parts.append(child.tail)
-
-        walk(element)
-        return " ".join("".join(parts).split())
+        return XMLHelper.get_text_content(element, exclude_tags=frozenset(skip_tags))
 
     @staticmethod
     def _own_bodies(root: ET.Element) -> list[ET.Element]:

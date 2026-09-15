@@ -440,6 +440,7 @@ class SectionType(EnumDefinitionImpl):
     Structural type of a document section.
     """
 
+    front = PermissibleValue(text="front", description="Front matter (article title, abstract)")
     body = PermissibleValue(text="body", description="Main article body section")
     back = PermissibleValue(text="back", description="Back matter (acknowledgments, glossary)")
     appendix = PermissibleValue(

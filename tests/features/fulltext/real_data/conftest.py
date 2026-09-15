@@ -15,6 +15,9 @@ FIXTURE_DIR = pathlib.Path(__file__).resolve().parents[3] / "fixtures" / "fullte
 #: rendering; not a linguistic claim.
 SENTENCE = re.compile(r"(?<=[.!?])\s+")
 
+#: Rendered as blocks of their own even where JATS places them inside a <p>.
+OWN_BLOCKS = frozenset({"fig", "table-wrap", "table"})
+
 
 def squash(text: str | None) -> str:
     """Whitespace-insensitive form, for comparing text across renderings."""
@@ -23,6 +26,33 @@ def squash(text: str | None) -> str:
 
 def normalise(text: str | None) -> str:
     return " ".join((text or "").split())
+
+
+def paragraph_text(para: ET.Element) -> str:
+    """Text of ``para`` with any figure or table nested in it left out.
+
+    Joining a nested <fig> onto the paragraph around it made "sentences" of
+    the paragraph's last sentence run into the figure label ("...malignant
+    cells.15,16 Fig.") and of a label run into its caption ("Figure 1.
+    Affinity..."). They matched only because 2.2.1 folded the figure into the
+    paragraph. The figure's own <p> are still counted where they stand, as for
+    a figure outside a paragraph; test_nested_blocks.py checks the rest of it.
+    """
+    parts: list[str] = []
+
+    def walk(node: ET.Element) -> None:
+        if node.text:
+            parts.append(node.text)
+        for child in node:
+            if child.tag in OWN_BLOCKS:
+                parts.append(" ")
+            else:
+                walk(child)
+            if child.tail:
+                parts.append(child.tail)
+
+    walk(para)
+    return "".join(parts)
 
 
 def sentences(element: ET.Element) -> dict[str, int]:
@@ -34,7 +64,7 @@ def sentences(element: ET.Element) -> dict[str, int]:
     """
     counts: dict[str, int] = {}
     for para in element.findall(".//p"):
-        raw = normalise("".join(para.itertext()))
+        raw = normalise(paragraph_text(para))
         for part in SENTENCE.split(raw):
             key = squash(part)
             if len(key) > 60:
