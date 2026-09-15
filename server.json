@@ -8,14 +8,14 @@
     "source": "github",
     "id": "999512652"
   },
-  "version": "2.1.2",
+  "version": "2.2.0",
   "websiteUrl": "https://jonasheinickebio.github.io/pyEuropePMC/",
   "packages": [
     {
       "registryType": "pypi",
       "registryBaseUrl": "https://pypi.org",
       "identifier": "pyeuropepmc",
-      "version": "2.1.2",
+      "version": "2.2.0",
       "runtimeHint": "uvx",
       "transport": {
         "type": "stdio"
