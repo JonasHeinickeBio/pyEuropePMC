@@ -7,9 +7,9 @@ from unittest.mock import Mock, mock_open, patch
 
 import pytest
 
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 
 
 class TestFTPDownloader:

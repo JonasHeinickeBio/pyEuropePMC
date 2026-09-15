@@ -11,7 +11,6 @@ Tests all extension modules against real Europe PMC articles:
 
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 from xml.etree import ElementTree as ET  # nosec B405
@@ -115,7 +114,7 @@ SIMPLE_XML = """<?xml version="1.0"?>
 
 def load_real_xml(filepath: Path) -> str:
     """Load a real XML file and return its content."""
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         return f.read()
 
 
@@ -200,7 +199,6 @@ class TestFunctionalRealXML:
 
     def test_content_block_roundtrip(self, article_data):
         """Verify structured content can be serialized and deserialized."""
-        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         label, xml_content, article_id = article_data
         parser = FullTextXMLParser(xml_content)
@@ -260,7 +258,6 @@ class TestFunctionalRealXML:
         """Verify peer review extraction handles all articles gracefully."""
         from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
-            PeerReviewType,
         )
 
         label, xml_content, article_id = article_data
@@ -314,9 +311,9 @@ class TestFunctionalRealXML:
     def test_local_processing_helpers(self, article_data, tmp_path):
         """Verify local processing helpers work with real XML."""
         from pyeuropepmc.features.fulltext.extensions.local_processing import (
+            LocalXMLProcessor,
             extract_article_id_from_xml,
             parse_xml_file,
-            LocalXMLProcessor,
         )
 
         label, xml_content, article_id = article_data
@@ -344,10 +341,10 @@ class TestFunctionalRealXML:
         pytest.importorskip("linkml_runtime")
         from pyeuropepmc.features.fulltext.extensions.linkml_models import (
             ArticleContent,
+            ArticleMetadata,
             ContentBlock,
             ContentBlockType,
             StructuredSection,
-            ArticleMetadata,
         )
 
         label, xml_content, article_id = article_data

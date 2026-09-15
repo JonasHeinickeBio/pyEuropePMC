@@ -1,7 +1,5 @@
 """Tests for text cleaning utilities."""
 
-import pytest
-
 from pyeuropepmc.features.fulltext.utils.text_cleaners import TextCleaner
 
 

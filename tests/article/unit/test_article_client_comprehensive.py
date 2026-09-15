@@ -10,9 +10,9 @@ from unittest.mock import Mock, call, patch
 import pytest
 import requests
 
-from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, ValidationError
+from pyeuropepmc.features.literature.article import ArticleClient
 
 
 class TestArticleClientComprehensive:

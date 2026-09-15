@@ -10,13 +10,12 @@ This module tests:
 """
 
 import pytest
-from unittest.mock import Mock
 
 from pyeuropepmc.agentic.registry import (
+    BaseTool,
+    ToolInfo,
     ToolRegistry,
     ToolType,
-    ToolInfo,
-    BaseTool,
     register,
 )
 
@@ -332,7 +331,7 @@ class TestRegisterDecorator:
 
     def test_module_decorator(self):
         """Test that module-level register works."""
-        from pyeuropepmc.agentic.registry import registry, register
+        from pyeuropepmc.agentic.registry import registry
 
         @register("module_tool", tool_type=ToolType.UTILITY)
         def module_tool_func(x: int) -> int:

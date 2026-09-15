@@ -1,17 +1,12 @@
 """Tests for agentic claims tools."""
 
-from unittest.mock import patch
-
-import pytest
-
 from pyeuropepmc.agentic.claims_tools import (
-    claims_registry,
+    claim_accept,
     claim_extract,
     claim_summary,
     claim_verify,
-    claim_review,
-    claim_accept,
     claim_write,
+    claims_registry,
     register_all_claims_tools,
 )
 

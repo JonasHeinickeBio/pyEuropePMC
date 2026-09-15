@@ -9,11 +9,10 @@ add on top, the dedup rate, and per-source reliability / latency.
 
 from __future__ import annotations
 
+from _showcase import Timer, _fmt_hist, pct, summary_stats, write_report
 import pytest
 
 from pyeuropepmc.features.search import UnifiedSearch
-
-from _showcase import Timer, pct, summary_stats, write_report, _fmt_hist
 
 QUERIES: list[str] = [
     "CRISPR base editing off-target",

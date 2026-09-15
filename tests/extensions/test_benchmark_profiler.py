@@ -6,8 +6,6 @@ from __future__ import annotations
 
 from xml.etree import ElementTree as ET  # nosec B405
 
-import pytest
-
 from pyeuropepmc.benchmark.memory import MemoryTracker, profile_memory, profile_memory_blocks
 from pyeuropepmc.benchmark.profiler import (
     ProfilerContext,

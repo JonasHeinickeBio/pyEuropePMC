@@ -2,11 +2,9 @@
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
 from pyeuropepmc.mappers.processors import (
-    _convert_search_author_to_entity,
     _convert_search_author_simple,
+    _convert_search_author_to_entity,
     _create_author_entities,
     _create_enrichment_author_entities,
     _create_enrichment_paper_entity,
@@ -37,16 +35,12 @@ from pyeuropepmc.mappers.processors import (
 )
 from pyeuropepmc.models import (
     AuthorEntity,
-    FigureEntity,
-    GrantEntity,
     InstitutionEntity,
     JournalEntity,
     PaperEntity,
-    ReferenceEntity,
 )
 from pyeuropepmc.models.section import SectionEntity
 from pyeuropepmc.models.table import TableEntity
-
 
 # =============================================================================
 # _convert_search_author_to_entity

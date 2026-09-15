@@ -1,12 +1,11 @@
-import pytest
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
 
+from pyeuropepmc.features.bibliography.models import Reference
 from pyeuropepmc.features.bibliography.reference import (
+    IdentifierType,
     ReferenceResolver,
     detect_identifier_type,
-    IdentifierType,
 )
-from pyeuropepmc.features.bibliography.models import Reference
 
 
 class TestDetectIdentifierType:
@@ -79,19 +78,21 @@ class TestReferenceResolver:
 
     def test_resolve_many(self):
         resolver = ReferenceResolver()
-        with patch.object(
-            resolver,
-            "resolve_doi",
-            return_value=Reference(title="Paper A", doi="10.1234/a", source="crossref"),
-        ):
-            with patch.object(
+        with (
+            patch.object(
+                resolver,
+                "resolve_doi",
+                return_value=Reference(title="Paper A", doi="10.1234/a", source="crossref"),
+            ),
+            patch.object(
                 resolver,
                 "resolve_pmid",
                 return_value=Reference(title="Paper B", pmid="99999", source="europe_pmc"),
-            ):
-                ids = ["10.1234/a", "99999"]
-                results = resolver.resolve_many(ids)
-                assert len(results) == 2
+            ),
+        ):
+            ids = ["10.1234/a", "99999"]
+            results = resolver.resolve_many(ids)
+            assert len(results) == 2
 
     def test_resolve_invalid_doi_returns_none(self):
         resolver = ReferenceResolver()

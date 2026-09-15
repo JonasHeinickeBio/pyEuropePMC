@@ -15,7 +15,7 @@ Usage:
 
 import pytest
 
-from pyeuropepmc.features.enrich.merger import DedupConfig, DedupMode, MatchLevel, LiteratureMerger
+from pyeuropepmc.features.enrich.merger import DedupConfig, DedupMode, LiteratureMerger, MatchLevel
 from pyeuropepmc.features.literature.adapters import OpenAlexLiteratureAdapter
 from pyeuropepmc.features.search import UnifiedSearch
 from pyeuropepmc.features.search.sources.core import COREClient

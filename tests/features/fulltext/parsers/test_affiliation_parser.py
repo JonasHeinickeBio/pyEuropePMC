@@ -1,7 +1,8 @@
 """Tests for the AffiliationParser."""
 
-import pytest
 from xml.etree import ElementTree as ET
+
+import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.parsers.affiliation_parser import AffiliationParser

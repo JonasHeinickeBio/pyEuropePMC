@@ -1,10 +1,11 @@
 import pytest
+
 from pyeuropepmc.features.bibliography.conversion import CitationConverter
 from pyeuropepmc.features.bibliography.models import (
     BibEntry,
     BibLibrary,
-    Reference,
     CitationFormat,
+    Reference,
 )
 
 

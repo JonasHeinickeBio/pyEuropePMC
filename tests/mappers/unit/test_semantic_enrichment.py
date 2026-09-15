@@ -2,11 +2,10 @@
 Unit tests for semantic enrichment functions.
 """
 
-from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
-from rdflib import DCTERMS, RDF, XSD, Graph, Literal, Namespace, URIRef
+from rdflib import DCTERMS, Graph, Literal, Namespace, URIRef
 
 from pyeuropepmc.mappers import semantic_enrichment as se
 

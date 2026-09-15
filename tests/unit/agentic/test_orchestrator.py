@@ -9,15 +9,12 @@ This module tests:
 - Result aggregation
 """
 
-import pytest
-from unittest.mock import Mock, patch
+from unittest.mock import Mock
 
 from pyeuropepmc.agentic.orchestrator import (
+    AgentCommunication,
     AgentOrchestrator,
     AgentRole,
-    AgentConfig,
-    Task,
-    AgentCommunication,
 )
 
 

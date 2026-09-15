@@ -5,16 +5,16 @@ These tests require network access and interact with the real Europe PMC API.
 
 from pathlib import Path
 import tempfile
-from xml.etree import ElementTree
 from unittest.mock import Mock, mock_open, patch
+from xml.etree import ElementTree
 
 import pytest
 
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.search import SearchClient
 
 pytestmark = pytest.mark.functional
 

@@ -15,12 +15,11 @@ the full source set (Europe PMC base + CrossRef + OpenAlex + Semantic Scholar
 
 from __future__ import annotations
 
+from _showcase import Timer, _fmt_hist, pct, summary_stats, write_report
 import pytest
 
 from pyeuropepmc.features.enrich import EnrichmentConfig, PaperEnricher
 from pyeuropepmc.features.literature.search import SearchClient
-
-from _showcase import Timer, pct, summary_stats, write_report, _fmt_hist
 
 _SEED_QUERIES = [
     "cancer immunotherapy resistance",

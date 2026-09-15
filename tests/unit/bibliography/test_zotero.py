@@ -1,6 +1,8 @@
+from unittest.mock import patch
+
 import pytest
-from unittest.mock import patch, MagicMock
-from pyeuropepmc.features.bibliography.zotero import ZoteroClient, ZOTERO_AVAILABLE
+
+from pyeuropepmc.features.bibliography.zotero import ZoteroClient
 
 
 class TestZoteroClientInit:

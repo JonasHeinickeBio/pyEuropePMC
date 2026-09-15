@@ -1,6 +1,5 @@
 """Tests for claims models."""
 
-import pytest
 from pyeuropepmc.claims.models import (
     Claim,
     ClaimEvidence,

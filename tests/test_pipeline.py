@@ -1,12 +1,10 @@
 """Unit tests for the paper processing pipeline."""
 
-import tempfile
 from pathlib import Path
-from unittest.mock import Mock, patch
+import tempfile
+from unittest.mock import patch
 
-import pytest
-
-from pyeuropepmc.pipeline import PipelineConfig, PaperProcessingPipeline
+from pyeuropepmc.pipeline import PaperProcessingPipeline, PipelineConfig
 
 
 class TestPipelineConfig:
@@ -150,7 +148,7 @@ class TestPaperProcessingPipeline:
         )
         pipeline = PaperProcessingPipeline(config)
 
-        from pyeuropepmc.models import PaperEntity, AuthorEntity
+        from pyeuropepmc.models import PaperEntity
 
         paper = PaperEntity(
             pmcid="PMC1234567",

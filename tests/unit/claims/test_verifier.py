@@ -2,9 +2,7 @@
 
 from unittest.mock import MagicMock, patch
 
-import pytest
-
-from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, Verdict
+from pyeuropepmc.claims.models import Claim, ClaimSet, Verdict
 from pyeuropepmc.claims.verifier import ClaimVerifier
 
 
@@ -84,19 +82,24 @@ class TestClaimVerifier:
         """LLM returns refuted verdict."""
         verifier = ClaimVerifier(llm_enabled=True)
         claim = Claim(id="c1", text="CRISPR dangerous", original_text="test")
-        with patch.object(
-            verifier,
-            "_search_evidence",
-            return_value=[
-                {"title": "P", "authorString": "A", "pmid": "1", "abstractText": "CRISPR safe."}
-            ],
+        with (
+            patch.object(
+                verifier,
+                "_search_evidence",
+                return_value=[
+                    {
+                        "title": "P",
+                        "authorString": "A",
+                        "pmid": "1",
+                        "abstractText": "CRISPR safe.",
+                    }
+                ],
+            ),
+            patch.object(verifier, "_llm_verify", return_value=(Verdict.REFUTED, "Contradicts.")),
         ):
-            with patch.object(
-                verifier, "_llm_verify", return_value=(Verdict.REFUTED, "Contradicts.")
-            ):
-                verifier.llm_client = MagicMock()
-                verifier.llm_client.enabled = True
-                result = verifier.verify_claim(claim)
+            verifier.llm_client = MagicMock()
+            verifier.llm_client.enabled = True
+            result = verifier.verify_claim(claim)
 
         assert result.verdict == Verdict.REFUTED
 

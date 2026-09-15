@@ -14,16 +14,14 @@ Metrics reported:
 from __future__ import annotations
 
 import json
-import os
-import time
 from pathlib import Path
+import time
 from xml.etree import ElementTree as ET  # nosec B405
 
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
     ContentBlockType,
-    ContentBlockExtractor,
 )
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
@@ -71,7 +69,7 @@ def benchmark_articles() -> dict[str, str]:
     """Load all benchmark articles into memory."""
     articles: dict[str, str] = {"synthetic": SIMPLE_XML}
     for fpath in REAL_XML_FILES:
-        with open(fpath, "r", encoding="utf-8") as f:
+        with open(fpath, encoding="utf-8") as f:
             articles[fpath.stem] = f.read()
     return articles
 
@@ -224,13 +222,13 @@ class TestContentCoverage:
         known_types = {t.value for t in ContentBlockType}
         unrecognized = all_types - known_types
 
-        print(f"\n=== Content Coverage ===")
+        print("\n=== Content Coverage ===")
         print(f"  Distinct block types found: {len(all_types)}")
         print(f"  Known types: {len(known_types)}")
         print(f"  Coverage: {len(all_types & known_types)}/{len(known_types)}")
         if unrecognized:
             print(f"  Unrecognized types: {unrecognized}")
-        print(f"\n  Type frequency:")
+        print("\n  Type frequency:")
         for bt, count in sorted(type_counts.items(), key=lambda x: -x[1]):
             print(f"    {bt}: {count}")
         assert len(all_types & known_types) >= 6, "Low type diversity"
@@ -246,7 +244,7 @@ class TestContentCoverage:
                     for inline in block.get("inlines", []):
                         all_inline_types.add(inline.get("type", "unknown"))
 
-        print(f"\n=== Inline Element Coverage ===")
+        print("\n=== Inline Element Coverage ===")
         print(f"  Inline types found: {sorted(all_inline_types)}")
         print(f"  Count: {len(all_inline_types)}")
 
@@ -265,7 +263,7 @@ class TestContentCoverage:
             b.get("type") == "definition_list" for s in sections for b in s.get("content", [])
         )
 
-        print(f"\n=== Definition List Detection ===")
+        print("\n=== Definition List Detection ===")
         print(f"  def-list in XML: {found}")
         print(f"  detected as definition_list: {has_def_list}")
 
@@ -280,7 +278,6 @@ class TestMemoryUsage:
 
     def test_parser_memory(self, benchmark_articles: dict[str, str]):
         """Estimate memory usage of parsed articles (via object size)."""
-        import sys
 
         sizes: dict[str, int] = {}
         for label, xml in benchmark_articles.items():
@@ -448,10 +445,6 @@ class TestSerializationRoundtrip:
 
     def test_dict_roundtrip(self, benchmark_articles: dict[str, str]):
         """Verify ContentBlocks survive to_dict -> dict -> ContentBlock roundtrip."""
-        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
-            ContentBlock,
-            ContentBlockType,
-        )
 
         for label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
@@ -481,7 +474,7 @@ class TestParseDiagnosticBenchmarks:
             avg = sum(scores) / len(scores) if scores else 1.0
             score_map[label] = avg
 
-        print(f"\n=== Parse Quality Scores ===")
+        print("\n=== Parse Quality Scores ===")
         for label, avg in sorted(score_map.items()):
             print(f"  {label}: {avg:.2f} average quality score")
         assert all(v >= 0.0 for v in score_map.values()), "Negative quality scores"

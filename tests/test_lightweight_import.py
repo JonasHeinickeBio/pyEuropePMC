@@ -55,7 +55,6 @@ def test_bare_import_does_not_load_heavy_dependencies() -> None:
 def test_public_attributes_still_resolve() -> None:
     """Lazy attribute access returns the same objects as a direct import."""
     import pyeuropepmc
-
     from pyeuropepmc.features.literature.search import SearchClient
     from pyeuropepmc.features.literature.search_parser import EuropePMCParser
 

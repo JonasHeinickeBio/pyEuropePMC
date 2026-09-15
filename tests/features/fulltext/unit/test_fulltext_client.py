@@ -8,8 +8,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, FullTextError
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, FullTextError
 
 pytestmark = pytest.mark.unit
 

@@ -430,17 +430,17 @@ class TestPaperEnricher:
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         paths = [Path("file1.json"), Path("file2.json")]
-        with patch.object(
-            enricher, "enrich_from_metadata_files", wraps=enricher.enrich_from_metadata_files
-        ) as spy:
-            with patch("pyeuropepmc.features.enrich.enricher.FileEnricher") as mock_file_cls:
-                mock_instance = mock_file_cls.return_value
-                mock_instance.__enter__.return_value = mock_instance
-                mock_instance.enrich_from_files.return_value = {}
-                enricher.enrich_from_metadata_files(paths)
-                mock_instance.enrich_from_files.assert_called_once_with(
-                    ["file1.json", "file2.json"]
-                )
+        with (
+            patch.object(
+                enricher, "enrich_from_metadata_files", wraps=enricher.enrich_from_metadata_files
+            ) as spy,
+            patch("pyeuropepmc.features.enrich.enricher.FileEnricher") as mock_file_cls,
+        ):
+            mock_instance = mock_file_cls.return_value
+            mock_instance.__enter__.return_value = mock_instance
+            mock_instance.enrich_from_files.return_value = {}
+            enricher.enrich_from_metadata_files(paths)
+            mock_instance.enrich_from_files.assert_called_once_with(["file1.json", "file2.json"])
 
     # --- generate_enrichment_report tests ---
 
@@ -539,8 +539,8 @@ class TestPaperEnricher:
 
     def test_save_responses_creates_files(self):
         """Test _save_responses writes JSON files to disk."""
-        import tempfile
         from pathlib import Path
+        import tempfile
 
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
@@ -563,8 +563,8 @@ class TestPaperEnricher:
 
     def test_save_responses_creates_directory(self):
         """Test _save_responses creates the save directory if needed."""
-        import tempfile
         from pathlib import Path
+        import tempfile
 
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
@@ -593,10 +593,9 @@ class TestPaperEnricher:
             "sources": [],
             "merged": {},
         }
-        with patch.object(Path, "mkdir") as mock_mkdir:
-            with patch("builtins.open", Mock()):
-                enricher._save_responses(results, save_dir=None)
-                mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        with patch.object(Path, "mkdir") as mock_mkdir, patch("builtins.open", Mock()):
+            enricher._save_responses(results, save_dir=None)
+            mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
     # --- close with client errors ---
 

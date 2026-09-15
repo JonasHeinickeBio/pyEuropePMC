@@ -3,8 +3,8 @@ LiteratureSearchResponse)."""
 
 from __future__ import annotations
 
-import pytest
 from pydantic import ValidationError
+import pytest
 
 from pyeuropepmc.models.literature import (
     Author,

@@ -15,8 +15,7 @@ from pyeuropepmc.utils.dependencies import (
 
 
 def test_reexports_match_optional_imports():
-    from pyeuropepmc._optional_imports import DEPENDENCY_GROUPS as D2
-    from pyeuropepmc._optional_imports import FEATURE_TO_GROUP as F2
+    from pyeuropepmc._optional_imports import DEPENDENCY_GROUPS as D2, FEATURE_TO_GROUP as F2
 
     assert DEPENDENCY_GROUPS is D2
     assert FEATURE_TO_GROUP is F2

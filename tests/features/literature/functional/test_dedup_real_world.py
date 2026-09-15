@@ -32,9 +32,6 @@ from pyeuropepmc.features.enrich.merger import (
     DedupConfig,
     DedupMode,
     LiteratureMerger,
-    MatchLevel,
-    MergeReport,
-    _extract_author_last_names,
     _has_part_marker,
     _title_similarity,
 )

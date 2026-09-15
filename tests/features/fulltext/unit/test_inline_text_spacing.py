@@ -15,8 +15,9 @@ Across 124 real documents this took exact article titles from 122 to 124;
 `PM2.5` had been coming back as `PM 2.5`.
 """
 
-import pytest
 from xml.etree import ElementTree as ET
+
+import pytest
 
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 

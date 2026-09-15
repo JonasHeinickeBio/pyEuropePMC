@@ -13,8 +13,8 @@ pytestmark = pytest.mark.skipif(
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.core.exceptions import APIClientError
+from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 
 # Mock CacheBackend at the correct import path (common base module, not enrich base)
 

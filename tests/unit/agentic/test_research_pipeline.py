@@ -9,14 +9,13 @@ This module tests:
 - Result aggregation
 """
 
-import pytest
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock
 
 from pyeuropepmc.agentic.pipeline import (
-    ResearchPipeline,
     PipelineStage,
-    PipelineStep,
     PipelineState,
+    PipelineStep,
+    ResearchPipeline,
 )
 
 

@@ -10,9 +10,9 @@ import zipfile
 import pytest
 import requests
 
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
 
 
 class TestFTPDownloaderCoverage:

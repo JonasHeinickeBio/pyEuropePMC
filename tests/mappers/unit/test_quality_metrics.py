@@ -1,7 +1,6 @@
 """Unit tests for quality metrics functions."""
 
 from types import SimpleNamespace
-from typing import Any
 
 import pytest
 

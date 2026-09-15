@@ -1,6 +1,6 @@
 """Tests for claim writer."""
 
-from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, ClaimType, Verdict
+from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, Verdict
 from pyeuropepmc.claims.writer import ClaimWriter
 
 

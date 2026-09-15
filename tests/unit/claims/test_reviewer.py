@@ -1,6 +1,7 @@
 """Tests for claim reviewer."""
 
 import pytest
+
 from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, EvidenceQuality, Verdict
 from pyeuropepmc.claims.reviewer import ClaimReviewer
 

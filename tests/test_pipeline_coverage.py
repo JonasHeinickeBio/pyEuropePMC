@@ -274,7 +274,6 @@ class TestConvertToRdf:
         assert call_kwargs["extraction_info"]["quality"]["completeness_score"] == 0.98
 
     def test_with_annotations_data(self, pipeline):
-        from rdflib import Graph as RDFGraph
         from rdflib.term import URIRef
 
         paper = MagicMock()

@@ -3,10 +3,10 @@
 import pytest
 from rdflib import Graph
 
+from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.features.literature.search import SearchClient
-from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
     convert_annotations_to_rdf,

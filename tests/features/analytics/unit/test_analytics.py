@@ -4,7 +4,6 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import (
     is_dependency_available,
-    skip_if_dependency_missing,
 )
 
 pytestmark = pytest.mark.skipif(

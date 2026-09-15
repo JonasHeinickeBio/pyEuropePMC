@@ -14,15 +14,14 @@ import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.features.literature.search_parser import XML_NAMESPACES, EuropePMCParser
 from pyeuropepmc.models import (
     AuthorEntity,
     GrantEntity,
-    InstitutionEntity,
     JournalEntity,
     PaperEntity,
 )
 from pyeuropepmc.models.mesh import MeSHHeadingEntity
-from pyeuropepmc.features.literature.search_parser import EuropePMCParser, XML_NAMESPACES
 
 pytestmark = pytest.mark.unit
 

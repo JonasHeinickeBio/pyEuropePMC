@@ -2,16 +2,14 @@
 Unit tests for cache backend functionality.
 """
 
+from pathlib import Path
 import tempfile
 import time
-from pathlib import Path
-from unittest.mock import Mock, patch
 
 import pytest
 
 from pyeuropepmc.cache.cache import (
     CACHETOOLS_AVAILABLE,
-    DISKCACHE_AVAILABLE,
     CacheBackend,
     CacheConfig,
     CacheDataType,

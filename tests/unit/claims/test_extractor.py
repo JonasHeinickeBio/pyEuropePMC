@@ -1,11 +1,8 @@
 """Tests for claim extraction."""
 
-from unittest.mock import MagicMock, patch
+from unittest.mock import MagicMock
 
-import pytest
-
-from pyeuropepmc.claims.extractor import ClaimExtractor, ClaimExtractionError
-from pyeuropepmc.claims.models import ClaimType
+from pyeuropepmc.claims.extractor import ClaimExtractor
 
 
 class TestClaimExtractor:

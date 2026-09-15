@@ -1,6 +1,6 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock, mock_open
-from pathlib import Path
 
 from pyeuropepmc.features.bibliography.bibtex import BibtexManager, is_bibtex_content
 from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary

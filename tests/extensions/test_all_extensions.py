@@ -302,7 +302,6 @@ class TestContentBlocks:
         """Verify to_dict includes non-empty optional fields."""
         from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
-            ContentBlockType,
         )
 
         # Code block with language
@@ -1248,7 +1247,6 @@ class TestJATS4RValidator:
         from pyeuropepmc.features.fulltext.extensions.jats4r import (
             JATS4RValidator,
             ValidationFinding,
-            ValidationReport,
         )
 
         root = ET.fromstring(SIMPLE_ARTICLE_XML)

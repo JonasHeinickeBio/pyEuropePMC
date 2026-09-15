@@ -10,11 +10,10 @@ This module tests:
 """
 
 import pytest
-from unittest.mock import Mock
 
 from pyeuropepmc.agentic.task_planner import (
-    TaskPlanner,
     TaskNode,
+    TaskPlanner,
     TaskStatus,
 )
 

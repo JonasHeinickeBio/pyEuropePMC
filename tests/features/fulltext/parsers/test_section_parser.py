@@ -1,7 +1,8 @@
 """Tests for section parser."""
 
-import pytest
 from xml.etree import ElementTree as ET
+
+import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.parsers.section_parser import SectionParser

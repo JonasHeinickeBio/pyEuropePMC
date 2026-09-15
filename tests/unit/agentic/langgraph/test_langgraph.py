@@ -9,7 +9,6 @@ API calls (which are slow and flaky in tests). The actual verifier logic
 is tested in separate unit tests.
 """
 
-import time
 from unittest.mock import patch
 
 import pytest
@@ -40,7 +39,6 @@ def mock_verifier_network_calls():
 
 from pyeuropepmc.agentic.langgraph import (
     LANGGRAPH_AVAILABLE,
-    ClaimState,
     SupervisorClaimWorkflow,
     build_claim_graph,
     create_initial_state,
@@ -48,7 +46,6 @@ from pyeuropepmc.agentic.langgraph import (
     run_claim_graph,
     stream_claim_graph,
 )
-
 
 # ======================================================================= #
 # State tests

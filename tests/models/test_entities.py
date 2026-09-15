@@ -7,7 +7,6 @@ from pyeuropepmc.models.base import BaseEntity
 from pyeuropepmc.models.mesh import MeSHHeadingEntity, MeSHQualifierEntity
 from pyeuropepmc.models.section import SectionEntity
 
-
 # ── BaseEntity ──
 
 

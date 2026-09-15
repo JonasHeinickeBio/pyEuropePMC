@@ -16,10 +16,10 @@ import pytest
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 
 # Import all main client classes here
 from pyeuropepmc.features.literature.article import ArticleClient
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.features.literature.search import SearchClient
 
 

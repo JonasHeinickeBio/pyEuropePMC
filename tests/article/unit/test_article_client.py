@@ -13,8 +13,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.core.exceptions import ValidationError
+from pyeuropepmc.features.literature.article import ArticleClient
 
 
 class TestArticleClient:

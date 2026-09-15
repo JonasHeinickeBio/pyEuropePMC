@@ -14,7 +14,7 @@ pytestmark = [
 ]
 
 from rdflib import Graph, Literal, Namespace, URIRef
-from rdflib.namespace import OWL, RDF, RDFS
+from rdflib.namespace import OWL, RDFS
 
 from pyeuropepmc.features.literature.annotations_to_rdf import (
     annotations_to_entities,

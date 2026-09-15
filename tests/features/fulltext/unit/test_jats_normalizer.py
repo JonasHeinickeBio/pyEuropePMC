@@ -13,10 +13,9 @@ Tests all normalization layers:
 from __future__ import annotations
 
 import json
+from xml.etree.ElementTree import ParseError
 
 import pytest
-
-from xml.etree.ElementTree import ParseError
 
 from pyeuropepmc.features.fulltext.jats_normalizer import (
     JATSNormalizer,

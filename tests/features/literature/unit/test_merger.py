@@ -3,17 +3,15 @@
 import pytest
 
 from pyeuropepmc.features.enrich.merger import (
+    SOURCE_PRIORITY,
     DedupConfig,
     LiteratureMerger,
     MatchLevel,
-    MergeReport,
     PaperMatcher,
-    SOURCE_PRIORITY,
+    compute_paper_hash,
     deduplicate_by_doi,
-    deduplicate_by_hash,
     deduplicate_by_pmid,
     deduplicate_by_title,
-    compute_paper_hash,
 )
 
 pytestmark = pytest.mark.unit

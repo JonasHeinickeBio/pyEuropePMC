@@ -7,8 +7,8 @@ from unittest.mock import Mock, patch
 import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.core.exceptions import ValidationError
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
 
 pytestmark = pytest.mark.unit
 

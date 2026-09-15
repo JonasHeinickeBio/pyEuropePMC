@@ -1,15 +1,13 @@
 import pytest
-from unittest.mock import patch, MagicMock
 
 from pyeuropepmc.agentic.bibliography_tools import (
-    bibliography_registry,
-    register_all_bibliography_tools,
+    bib_is_bibtex,
     bib_parse_string,
     bib_validate,
-    bib_is_bibtex,
+    bibliography_registry,
+    register_all_bibliography_tools,
 )
 from pyeuropepmc.agentic.registry import ToolRegistry
-
 
 SAMPLE_BIBTEX = "@article{key2024, title = {Hello}, author = {Smith, John}, year = {2024}}"
 

@@ -11,11 +11,18 @@ Run: pytest tests/ -v --run-real  (for real API calls)
 from __future__ import annotations
 
 import logging
-from typing import Any
 from urllib.parse import urlparse
 
 import pytest
 
+from pyeuropepmc.features.enrich import ICiteClient
+from pyeuropepmc.features.fulltext import (
+    FigureExtractor,
+    FullTextIndex,
+    IndexEntry,
+    RhetoricalHighlighter,
+    RhetoricalRole,
+)
 from pyeuropepmc.features.search import (
     COREClient,
     DBLPClient,
@@ -24,15 +31,7 @@ from pyeuropepmc.features.search import (
     UnifiedSearch,
     ZenodoClient,
 )
-from pyeuropepmc.features.enrich import ICiteClient
 from pyeuropepmc.models import ClinicalTrial, ICiteMetrics, LiteratureResult
-from pyeuropepmc.features.fulltext import (
-    FigureExtractor,
-    FullTextIndex,
-    IndexEntry,
-    RhetoricalHighlighter,
-    RhetoricalRole,
-)
 
 logger = logging.getLogger(__name__)
 

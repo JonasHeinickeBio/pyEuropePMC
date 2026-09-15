@@ -12,9 +12,9 @@ import zipfile
 import pytest
 import requests
 
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 
 pytestmark = pytest.mark.unit
 

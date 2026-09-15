@@ -3,8 +3,8 @@
 import time
 from unittest.mock import patch
 
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, RateLimiter
 from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, RateLimiter
 
 
 def test_rate_limiter():

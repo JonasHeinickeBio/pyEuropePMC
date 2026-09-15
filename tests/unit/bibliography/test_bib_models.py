@@ -1,8 +1,6 @@
-import pytest
 from pyeuropepmc.features.bibliography.models import (
     BibEntry,
     BibLibrary,
-    BibField,
     CitationFormat,
     VerificationStatus,
 )

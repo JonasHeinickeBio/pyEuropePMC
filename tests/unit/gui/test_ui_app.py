@@ -386,8 +386,6 @@ class TestApiDecisions:
             lambda *a, **kw: MockGraph(),
         )
 
-        from pyeuropepmc.ui.app import create_app
-
         app = create_app(testing=True)
         with app.test_client() as client:
             # Start a workflow

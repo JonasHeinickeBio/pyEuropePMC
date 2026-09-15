@@ -9,10 +9,8 @@ Comprehensive tests for the pyEuropePMC benchmark suite:
 from __future__ import annotations
 
 import json
-import os
-import tempfile
 from pathlib import Path
-from xml.etree import ElementTree as ET  # nosec B405
+import tempfile
 
 import pytest
 
@@ -282,10 +280,10 @@ class TestDatasetDownloadBackends:
 
     def test_http_download_requests_not_available(self, tmp_dir, monkeypatch):
         """Test HTTP download when requests library is not available."""
-        from pyeuropepmc.benchmark.dataset import _try_http_download
-
         # Mock requests import to fail
         import sys
+
+        from pyeuropepmc.benchmark.dataset import _try_http_download
 
         monkeypatch.setitem(sys.modules, "requests", None)
 

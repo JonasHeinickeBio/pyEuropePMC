@@ -8,7 +8,6 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.reference_resolver import (
-    EUROPE_PMC_API,
     ReferenceResolver,
     ResolvedReference,
 )

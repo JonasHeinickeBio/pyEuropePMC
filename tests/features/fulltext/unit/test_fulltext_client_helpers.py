@@ -158,12 +158,14 @@ class TestSearchForPmcids:
     def test_closes_search_client_on_exception(self, client):
         fake_search_client = MagicMock()
         fake_search_client.search.side_effect = RuntimeError("boom")
-        with patch(
-            "pyeuropepmc.features.literature.search.SearchClient",
-            return_value=fake_search_client,
+        with (
+            patch(
+                "pyeuropepmc.features.literature.search.SearchClient",
+                return_value=fake_search_client,
+            ),
+            pytest.raises(RuntimeError),
         ):
-            with pytest.raises(RuntimeError):
-                client._search_for_pmcids("cancer", 10)
+            client._search_for_pmcids("cancer", 10)
         fake_search_client.close.assert_called_once()
 
 
