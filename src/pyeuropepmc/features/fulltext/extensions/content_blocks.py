@@ -32,7 +32,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
-from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
+from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
 
 logger = logging.getLogger(__name__)
 
@@ -393,7 +393,8 @@ class StructuredSection:
     content : list[ContentBlock]
         Ordered sequence of content blocks in this section.
     section_type : str, optional
-        Section type hint (e.g. ``"body"``, ``"back"``, ``"appendix"``).
+        Section type hint: ``"front"`` (article title, abstract), ``"body"``,
+        ``"back"``, ``"appendix"`` or ``"peer_review"``.
     """
 
     title: str
@@ -633,6 +634,11 @@ class ContentBlockExtractor(BaseParser):
         "preformat": "code",
         "media": "media",
     }
+
+    # A <table-wrap>, <table> or <fig> inside a <p> is not part of the paragraph's
+    # prose. Folding it into the paragraph block lost its rows and caption and ran
+    # its cells together, so _handle_paragraph splits the paragraph around it.
+    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset({"table-wrap", "table", "fig"})
 
     def __init__(
         self,
@@ -932,13 +938,46 @@ class ContentBlockExtractor(BaseParser):
                 blocks.append(ContentBlock.paragraph(full_text))
         return blocks
 
+    @staticmethod
+    def _needs_separator(parts: list[str]) -> bool:
+        """Whether the text gathered so far ends in something other than whitespace."""
+        for part in reversed(parts):
+            if part:
+                return not part[-1].isspace()
+        return False
+
+    @staticmethod
+    def _paragraph_from_parts(
+        parts: list[str], inlines: list[InlineElement]
+    ) -> ContentBlock | None:
+        """A paragraph block from gathered text, or None if there is none.
+
+        Inline positions were counted from the start of the gathered text; they
+        are shifted to index the stripped text the block actually carries.
+        """
+        raw = "".join(parts)
+        text = raw.strip()
+        if not text:
+            return None
+        lead = len(raw) - len(raw.lstrip())
+        if lead:
+            for inline in inlines:
+                inline.position = max(0, inline.position - lead)
+        return ContentBlock.paragraph_with_inlines(text=text, inlines=inlines)
+
     def _handle_paragraph(self, elem: ET.Element) -> list[ContentBlock]:  # noqa: C901
         """
         Handle ``<p>`` elements with inline element tracking.
 
         Walks child elements to detect xrefs, inline formatting, and inline formulas,
         recording them as ``InlineElement`` entries in the paragraph block.
+
+        A ``<table-wrap>``, ``<table>`` or ``<fig>`` inside the paragraph is not part of
+        its prose, so the paragraph is split around it: the text before becomes a
+        paragraph block, the element its own table or figure block, and the text after
+        a new paragraph block.
         """
+        blocks: list[ContentBlock] = []
         # Collect all text and inline elements
         inlines: list[InlineElement] = []
         parts: list[str] = []
@@ -953,7 +992,26 @@ class ContentBlockExtractor(BaseParser):
         # Walk children in document order to capture inline elements
         for child in elem:
             tag = self._get_local_tag(child.tag)
+
+            if tag in self.PARAGRAPH_SPLIT_TAGS:
+                paragraph = self._paragraph_from_parts(parts, inlines)
+                if paragraph is not None:
+                    blocks.append(paragraph)
+                blocks.extend(self._handler_map[self.JATS_BLOCK_TAGS[tag]](child))
+                inlines, parts, pos = [], [], 0
+                if child.tail:
+                    tail = self._resolve_entities(child.tail)
+                    parts.append(tail)
+                    pos += len(tail)
+                continue
+
             inline_handler = self.INLINE_TAG_MAP.get(tag)
+            # A block-level child that stays in the paragraph (a <list>, a
+            # <disp-quote>) is kept apart from the text around it.
+            block_child = tag in BLOCK_LEVEL_TAGS
+            if block_child and self._needs_separator(parts):
+                parts.append(" ")
+                pos += 1
 
             if inline_handler == "xref":
                 # Cross-reference
@@ -1046,8 +1104,8 @@ class ContentBlockExtractor(BaseParser):
                     pos += len(child_text)
 
             else:
-                # Unknown block element (e.g., <fig> inside <p>) —
-                # recursively walk for inline elements instead of flattening
+                # Any other child (an unrecognised wrapper, a <list>): walk it for
+                # inline elements rather than flattening it
                 child_parts, child_inlines, pos = self._extract_inlines_recursive(
                     child, pos, parent_inlines=inlines
                 )
@@ -1057,22 +1115,23 @@ class ContentBlockExtractor(BaseParser):
             # Tail text after this child
             if child.tail:
                 tail = self._resolve_entities(child.tail)
+                if block_child and not tail[:1].isspace() and self._needs_separator(parts):
+                    parts.append(" ")
+                    pos += 1
                 parts.append(tail)
                 pos += len(tail)
 
         # If no child elements found, use simple text content
-        if not inlines and not parts:
+        if not inlines and not parts and not blocks:
             full_text = XMLHelper.get_text_content(elem)
             if full_text.strip():
                 return [ContentBlock.paragraph(full_text.strip())]
             return []
 
-        full_text = "".join(parts).strip()
-        if not full_text:
-            return []
-
-        block = ContentBlock.paragraph_with_inlines(text=full_text, inlines=inlines)
-        return [block]
+        paragraph = self._paragraph_from_parts(parts, inlines)
+        if paragraph is not None:
+            blocks.append(paragraph)
+        return blocks
 
     def _collect_nested_inlines(
         self,
@@ -1237,6 +1296,12 @@ class ContentBlockExtractor(BaseParser):
         for child in elem:
             tag = self._get_local_tag(child.tag)
             inline_handler = self.INLINE_TAG_MAP.get(tag)
+            # Keep block-level children apart: a caption's <title> and <p>, or two
+            # <p> in a table cell, otherwise run together ("MechanismBinding").
+            block_child = tag in BLOCK_LEVEL_TAGS
+            if block_child and self._needs_separator(parts):
+                parts.append(" ")
+                pos += 1
 
             if inline_handler == "xref":
                 child_text = self._resolve_entities(XMLHelper.get_text_content(child))
@@ -1346,6 +1411,9 @@ class ContentBlockExtractor(BaseParser):
             # Tail text after this child
             if child.tail:
                 tail = self._resolve_entities(child.tail)
+                if block_child and not tail[:1].isspace() and self._needs_separator(parts):
+                    parts.append(" ")
+                    pos += 1
                 parts.append(tail)
                 pos += len(tail)
 
@@ -1723,10 +1791,12 @@ class ContentBlockExtractor(BaseParser):
                             )
                         else:
                             block = ContentBlock.heading(title_text)
+                        # "front", not "body": filtering on body would otherwise
+                        # return the title again alongside the metadata.
                         return StructuredSection(
                             title="Article Title",
                             content=[block],
-                            section_type="body",
+                            section_type="front",
                             section_path="Article Title",
                         )
         return None
@@ -1813,10 +1883,11 @@ class ContentBlockExtractor(BaseParser):
                             blocks.append(ContentBlock.paragraph(f"{prefix}{joined}"))
 
             if blocks:
+                # Front matter, like the title: not a body section.
                 return StructuredSection(
                     title=title,
                     content=blocks,
-                    section_type="body",
+                    section_type="front",
                     section_path=title,
                 )
         return None
