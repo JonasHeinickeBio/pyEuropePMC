@@ -139,8 +139,8 @@ jobs:
           python-version: '3.10'
           extras: all
 
-      - run: poetry run ruff check src/ --output-format=github
-      - run: poetry run ruff format --check src/
+      - run: poetry run ruff check src/ tests/ --output-format=github
+      - run: poetry run ruff format --check src/ tests/
       - run: poetry run mypy src/
       - run: poetry run bandit -r ./src --skip "B101,B303"
 

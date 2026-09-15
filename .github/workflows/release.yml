@@ -96,8 +96,8 @@ jobs:
 
       - name: Lint and type-check
         run: |
-          poetry run ruff check src/ --output-format=github
-          poetry run ruff format --check src/
+          poetry run ruff check src/ tests/ --output-format=github
+          poetry run ruff format --check src/ tests/
           poetry run mypy src/
 
       - name: Run tests

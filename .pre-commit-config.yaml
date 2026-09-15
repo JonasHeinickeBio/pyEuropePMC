@@ -1,12 +1,12 @@
 repos:
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.12.1
+    rev: v0.14.14  # the ruff version poetry.lock resolves, which CI runs
     hooks:
       - id: ruff
-        args: [--fix, src/]  # auto-fix issues where possible, only check src/
+        args: [--fix, src/, tests/]  # auto-fix issues where possible
         language_version: python3.12
       - id: ruff-format
-        args: [src/]  # only format src/
+        args: [src/, tests/]
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3
