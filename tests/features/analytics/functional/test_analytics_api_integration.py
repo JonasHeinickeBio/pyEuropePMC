@@ -7,11 +7,6 @@ live data from Europe PMC API. Marked as slow tests.
 
 import pytest
 
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas")
-
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.features.analytics.analytics import (
     citation_statistics,
     detect_duplicates,
@@ -21,6 +16,12 @@ from pyeuropepmc.features.analytics.analytics import (
     quality_metrics,
     remove_duplicates,
     to_dataframe,
+)
+from pyeuropepmc.features.literature.search import SearchClient
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("pandas"), reason="skipped due to missing pandas"
 )
 
 
@@ -38,7 +39,7 @@ class TestAnalyticsWithRealAPI:
         response = client.search(
             query="breast cancer AND 2023[DP]",
             limit=50,  # Small limit for faster testing
-            result_type="lite"
+            result_type="lite",
         )
 
         # Extract the results list from the response
@@ -65,8 +66,8 @@ class TestAnalyticsWithRealAPI:
         year_dist = publication_year_distribution(real_dataframe)
 
         # publication_year_distribution returns a pandas Series
-        assert hasattr(year_dist, 'index')  # pandas Series has index
-        assert hasattr(year_dist, 'values')  # pandas Series has values
+        assert hasattr(year_dist, "index")  # pandas Series has index
+        assert hasattr(year_dist, "values")  # pandas Series has values
         assert len(year_dist) > 0
 
         # Should have data from recent years (within last 10 years)
@@ -80,15 +81,17 @@ class TestAnalyticsWithRealAPI:
 
         current_year = 2025  # Current year
         min_acceptable_year = current_year - 10  # Accept publications from last 10 years
-        assert any(year >= min_acceptable_year for year in years), f"No publications found from {min_acceptable_year} or later. Years found: {years}"
+        assert any(year >= min_acceptable_year for year in years), (
+            f"No publications found from {min_acceptable_year} or later. Years found: {years}"
+        )
 
     def test_real_journal_distribution(self, real_dataframe):
         """Test journal distribution with real data."""
         journal_dist = journal_distribution(real_dataframe)
 
         # journal_distribution returns a pandas Series
-        assert hasattr(journal_dist, 'index')  # pandas Series has index
-        assert hasattr(journal_dist, 'values')  # pandas Series has values
+        assert hasattr(journal_dist, "index")  # pandas Series has index
+        assert hasattr(journal_dist, "values")  # pandas Series has values
         assert len(journal_dist) > 0
 
         # Should have some journals (top 10 by default)
@@ -101,8 +104,8 @@ class TestAnalyticsWithRealAPI:
         type_dist = publication_type_distribution(real_dataframe)
 
         # publication_type_distribution returns a pandas Series
-        assert hasattr(type_dist, 'index')  # pandas Series has index
-        assert hasattr(type_dist, 'values')  # pandas Series has values
+        assert hasattr(type_dist, "index")  # pandas Series has index
+        assert hasattr(type_dist, "values")  # pandas Series has values
         # Real data should have publication types
         assert len(type_dist) > 0
         # All values should be positive (may be numpy types)
@@ -113,7 +116,14 @@ class TestAnalyticsWithRealAPI:
         stats = citation_statistics(real_dataframe)
 
         assert isinstance(stats, dict)
-        expected_keys = ["total_papers", "mean_citations", "median_citations", "min_citations", "max_citations", "total_citations"]
+        expected_keys = [
+            "total_papers",
+            "mean_citations",
+            "median_citations",
+            "min_citations",
+            "max_citations",
+            "total_citations",
+        ]
         for key in expected_keys:
             assert key in stats
             assert isinstance(stats[key], (int, float))
@@ -165,9 +175,9 @@ class TestAnalyticsWithRealAPI:
         quality = quality_metrics(real_dataframe)
 
         # Verify all results are valid
-        assert hasattr(year_dist, 'index') and len(year_dist) > 0
-        assert hasattr(journal_dist, 'index') and len(journal_dist) > 0
-        assert hasattr(type_dist, 'index') and len(type_dist) > 0
+        assert hasattr(year_dist, "index") and len(year_dist) > 0
+        assert hasattr(journal_dist, "index") and len(journal_dist) > 0
+        assert hasattr(type_dist, "index") and len(type_dist) > 0
         assert isinstance(citation_stats, dict) and len(citation_stats) > 0
         assert isinstance(quality, dict) and len(quality) > 0
 
@@ -202,11 +212,7 @@ class TestAnalyticsWithRealAPI:
         client = SearchClient()
 
         # Get different sized datasets
-        response = client.search(
-            query="diabetes AND 2023[DP]",
-            limit=limit,
-            result_type="lite"
-        )
+        response = client.search(query="diabetes AND 2023[DP]", limit=limit, result_type="lite")
 
         # Extract results from response
         if isinstance(response, dict) and "resultList" in response:
@@ -227,6 +233,6 @@ class TestAnalyticsWithRealAPI:
         citation_stats = citation_statistics(df)
 
         # Verify results are reasonable for the data size
-        assert hasattr(year_dist, 'index')
-        assert hasattr(journal_dist, 'index')
+        assert hasattr(year_dist, "index")
+        assert hasattr(journal_dist, "index")
         assert isinstance(citation_stats, dict)

@@ -3,17 +3,15 @@
 import pytest
 
 from pyeuropepmc.features.enrich.merger import (
+    SOURCE_PRIORITY,
     DedupConfig,
     LiteratureMerger,
     MatchLevel,
-    MergeReport,
     PaperMatcher,
-    SOURCE_PRIORITY,
+    compute_paper_hash,
     deduplicate_by_doi,
-    deduplicate_by_hash,
     deduplicate_by_pmid,
     deduplicate_by_title,
-    compute_paper_hash,
 )
 
 pytestmark = pytest.mark.unit
@@ -22,6 +20,7 @@ pytestmark = pytest.mark.unit
 # ===========================================================================
 # Helpers
 # ===========================================================================
+
 
 def make_paper(pmid=None, doi=None, title="Test", year=2024, source="pubmed", **kw):
     paper = {
@@ -38,6 +37,7 @@ def make_paper(pmid=None, doi=None, title="Test", year=2024, source="pubmed", **
 # ===========================================================================
 # DedupConfig
 # ===========================================================================
+
 
 class TestDedupConfig:
     def test_defaults(self):
@@ -56,6 +56,7 @@ class TestDedupConfig:
 # ===========================================================================
 # deduplicate_by_pmid
 # ===========================================================================
+
 
 class TestDeduplicateByPmid:
     def test_empty(self):
@@ -82,6 +83,7 @@ class TestDeduplicateByPmid:
 # ===========================================================================
 # deduplicate_by_doi
 # ===========================================================================
+
 
 class TestDeduplicateByDoi:
     def test_empty(self):
@@ -115,6 +117,7 @@ class TestDeduplicateByDoi:
 # ===========================================================================
 # deduplicate_by_title (fuzzy, year-grouped)
 # ===========================================================================
+
 
 class TestDeduplicateByTitle:
     def test_empty(self):
@@ -167,6 +170,7 @@ class TestDeduplicateByTitle:
 # compute_paper_hash
 # ===========================================================================
 
+
 class TestComputePaperHash:
     def test_with_doi(self):
         paper = make_paper(doi="10.1234/ABC")
@@ -187,6 +191,7 @@ class TestComputePaperHash:
 # ===========================================================================
 # PaperMatcher
 # ===========================================================================
+
 
 class TestPaperMatcher:
     def test_match_by_pmid(self):
@@ -247,6 +252,7 @@ class TestPaperMatcher:
 # ===========================================================================
 # LiteratureMerger (full pipeline)
 # ===========================================================================
+
 
 class TestLiteratureMerger:
     def test_empty_input(self):
@@ -381,6 +387,7 @@ class TestLiteratureMerger:
 # ===========================================================================
 # SOURCE_PRIORITY
 # ===========================================================================
+
 
 class TestSourcePriority:
     def test_pubmed_highest(self):

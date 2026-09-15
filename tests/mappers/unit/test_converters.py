@@ -188,7 +188,9 @@ class TestConvertersProcessing:
         entities_data = process_enrichment_data(enrichment_data)
 
         assert len(entities_data) == 2
-        assert all(isinstance(ed["entity"], AuthorEntity) for ed in entities_data)  # AuthorEntity objects
+        assert all(
+            isinstance(ed["entity"], AuthorEntity) for ed in entities_data
+        )  # AuthorEntity objects
 
 
 class TestConvertersGeneric:
@@ -270,7 +272,7 @@ class TestConvertersGeneric:
         mock_entity = Mock()
         mock_entity.to_rdf.return_value = None
 
-        result = _convert_to_rdf(
+        _convert_to_rdf(
             data={"test": "data"},
             validator=Mock(),
             processor=Mock(return_value=[{"entity": mock_entity, "related_entities": {}}]),
@@ -461,7 +463,7 @@ class TestConvertersCaching:
 
         xml_data = {"paper": {"title": "Test"}}
 
-        result = convert_xml_to_rdf(xml_data, cache_backend=mock_cache)
+        convert_xml_to_rdf(xml_data, cache_backend=mock_cache)
 
         mock_convert.assert_called_once()
         call_kwargs = mock_convert.call_args[1]
@@ -478,7 +480,7 @@ class TestConvertersCaching:
 
         enrichment_data = {"paper": {"title": "Test"}}
 
-        result = convert_enrichment_to_rdf(enrichment_data, cache_backend=mock_cache)
+        convert_enrichment_to_rdf(enrichment_data, cache_backend=mock_cache)
 
         mock_convert.assert_called_once()
         call_kwargs = mock_convert.call_args[1]
@@ -495,7 +497,6 @@ class TestConvertersNamespaces:
         search_data = [{"doi": "10.1234/test", "title": "Test Paper"}]
         custom_namespaces = {"custom": "http://example.org/custom#"}
 
-
         graph = convert_search_to_rdf(search_data, namespaces=custom_namespaces)
 
         assert isinstance(graph, Graph)
@@ -508,7 +509,6 @@ class TestConvertersNamespaces:
         xml_data = {"paper": {"title": "Test"}}
         custom_namespaces = {"custom": "http://example.org/custom#"}
 
-
         graph = convert_xml_to_rdf(xml_data, namespaces=custom_namespaces)
 
         assert isinstance(graph, Graph)
@@ -519,7 +519,6 @@ class TestConvertersNamespaces:
         """Test pipeline conversion with custom namespaces."""
         search_data = [{"title": "Test"}]
         custom_namespaces = {"custom": "http://example.org/custom#"}
-
 
         graph = convert_pipeline_to_rdf(search_results=search_data, namespaces=custom_namespaces)
 
@@ -540,7 +539,7 @@ class TestConvertersConfig:
         search_data = [{"title": "Test"}]
         config_path = "/path/to/config.yml"
 
-        result = convert_search_to_rdf(search_data, config_path=config_path)
+        convert_search_to_rdf(search_data, config_path=config_path)
 
         mock_convert.assert_called_once()
         call_kwargs = mock_convert.call_args[1]
@@ -555,7 +554,7 @@ class TestConvertersConfig:
         xml_data = {"paper": {"title": "Test"}}
         config_path = "/path/to/config.yml"
 
-        result = convert_xml_to_rdf(xml_data, config_path=config_path)
+        convert_xml_to_rdf(xml_data, config_path=config_path)
 
         mock_convert.assert_called_once()
         call_kwargs = mock_convert.call_args[1]

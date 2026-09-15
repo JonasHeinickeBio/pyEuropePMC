@@ -14,16 +14,14 @@ Metrics reported:
 from __future__ import annotations
 
 import json
-import os
-import time
 from pathlib import Path
+import time
 from xml.etree import ElementTree as ET  # nosec B405
 
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
     ContentBlockType,
-    ContentBlockExtractor,
 )
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
@@ -71,7 +69,7 @@ def benchmark_articles() -> dict[str, str]:
     """Load all benchmark articles into memory."""
     articles: dict[str, str] = {"synthetic": SIMPLE_XML}
     for fpath in REAL_XML_FILES:
-        with open(fpath, "r", encoding="utf-8") as f:
+        with open(fpath, encoding="utf-8") as f:
             articles[fpath.stem] = f.read()
     return articles
 
@@ -100,7 +98,7 @@ class TestParseSpeed:
             print(f"  {label}: {elapsed:.3f}s")
         median = sorted(results.values())[len(results) // 2]
         print(f"\n  Median: {median:.3f}s/article")
-        print(f"  Throughput: {1/median:.1f} articles/s")
+        print(f"  Throughput: {1 / median:.1f} articles/s")
 
         # All should complete in under 10 seconds (generous)
         for label, elapsed in results.items():
@@ -108,6 +106,7 @@ class TestParseSpeed:
 
     def test_structured_parse_overhead(self, benchmark_articles: dict[str, str]):
         """Measure overhead of structured parsing vs flat parsing."""
+
         def best_of(call, rounds: int = 3) -> float:
             """Fastest of several runs, after a warm-up.
 
@@ -184,9 +183,7 @@ class TestSectionAccuracy:
 
             flat_text_len = sum(len(s.get("content", "")) for s in flat)
             structured_text_len = sum(
-                len(b.get("text", ""))
-                for s in structured
-                for b in s.get("content", [])
+                len(b.get("text", "")) for s in structured for b in s.get("content", [])
             )
 
             # Structured should have >= flat (more metadata preserved)
@@ -213,7 +210,7 @@ class TestContentCoverage:
         """Count distinct block types found across all articles."""
         all_types: set[str] = set()
         type_counts: dict[str, int] = {}
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
             for sec in sections:
@@ -225,13 +222,13 @@ class TestContentCoverage:
         known_types = {t.value for t in ContentBlockType}
         unrecognized = all_types - known_types
 
-        print(f"\n=== Content Coverage ===")
+        print("\n=== Content Coverage ===")
         print(f"  Distinct block types found: {len(all_types)}")
         print(f"  Known types: {len(known_types)}")
         print(f"  Coverage: {len(all_types & known_types)}/{len(known_types)}")
         if unrecognized:
             print(f"  Unrecognized types: {unrecognized}")
-        print(f"\n  Type frequency:")
+        print("\n  Type frequency:")
         for bt, count in sorted(type_counts.items(), key=lambda x: -x[1]):
             print(f"    {bt}: {count}")
         assert len(all_types & known_types) >= 6, "Low type diversity"
@@ -239,7 +236,7 @@ class TestContentCoverage:
     def test_inline_element_coverage(self, benchmark_articles: dict[str, str]):
         """Measure detection of inline elements (xref, bold, italic, etc.)."""
         all_inline_types: set[str] = set()
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
             for sec in sections:
@@ -247,14 +244,14 @@ class TestContentCoverage:
                     for inline in block.get("inlines", []):
                         all_inline_types.add(inline.get("type", "unknown"))
 
-        print(f"\n=== Inline Element Coverage ===")
+        print("\n=== Inline Element Coverage ===")
         print(f"  Inline types found: {sorted(all_inline_types)}")
         print(f"  Count: {len(all_inline_types)}")
 
     def test_definition_list_detection(self, benchmark_articles: dict[str, str]):
         """Check if definition lists are detected in any article."""
         found = False
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             root = ET.fromstring(xml)
             if root.find(".//def-list") is not None:
                 found = True
@@ -263,12 +260,10 @@ class TestContentCoverage:
         parser = FullTextXMLParser(SIMPLE_XML)
         sections = parser.get_full_text_sections_structured()
         has_def_list = any(
-            b.get("type") == "definition_list"
-            for s in sections
-            for b in s.get("content", [])
+            b.get("type") == "definition_list" for s in sections for b in s.get("content", [])
         )
 
-        print(f"\n=== Definition List Detection ===")
+        print("\n=== Definition List Detection ===")
         print(f"  def-list in XML: {found}")
         print(f"  detected as definition_list: {has_def_list}")
 
@@ -283,7 +278,6 @@ class TestMemoryUsage:
 
     def test_parser_memory(self, benchmark_articles: dict[str, str]):
         """Estimate memory usage of parsed articles (via object size)."""
-        import sys
 
         sizes: dict[str, int] = {}
         for label, xml in benchmark_articles.items():
@@ -294,7 +288,7 @@ class TestMemoryUsage:
 
         print("\n=== Serialized Size ===")
         for label, size in sorted(sizes.items(), key=lambda x: x[1]):
-            print(f"  {label}: {size:,} bytes ({size/1024:.1f} KB)")
+            print(f"  {label}: {size:,} bytes ({size / 1024:.1f} KB)")
         max_size = max(sizes.values())
         assert max_size < 50 * 1024 * 1024, f"Output too large: {max_size:,} bytes"
 
@@ -313,10 +307,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         paragraph_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "paragraph"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "paragraph"
         )
         # Should have at least 2 paragraphs
         assert paragraph_count >= 2, f"Expected >= 2 paragraphs, got {paragraph_count}"
@@ -344,10 +335,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         def_list_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "definition_list"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "definition_list"
         )
         assert def_list_count >= 1, "Definition list not detected"
 
@@ -357,10 +345,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         formula_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "formula"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "formula"
         )
         assert formula_count >= 1, "Formula not detected"
 
@@ -370,10 +355,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         figure_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "figure"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "figure"
         )
         assert figure_count >= 1, "Figure not detected"
 
@@ -394,7 +376,7 @@ class TestRagChunkBenchmarks:
             StructuredSection,
         )
 
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
 
@@ -428,7 +410,7 @@ class TestRagChunkBenchmarks:
             StructuredSection,
         )
 
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
 
@@ -452,9 +434,7 @@ class TestRagChunkBenchmarks:
                     prev = chunks[i - 1]["text"]
                     curr = chunks[i]["text"]
                     # Adjacent chunks should share some content (overlap)
-                    overlap_found = any(
-                        word in curr for word in prev.split()[:10]
-                    )
+                    overlap_found = any(word in curr for word in prev.split()[:10])
                     if not overlap_found:
                         # Overlap may not always be possible with short chunks
                         pass
@@ -465,12 +445,8 @@ class TestSerializationRoundtrip:
 
     def test_dict_roundtrip(self, benchmark_articles: dict[str, str]):
         """Verify ContentBlocks survive to_dict -> dict -> ContentBlock roundtrip."""
-        from pyeuropepmc.features.fulltext.extensions.content_blocks import (
-            ContentBlock,
-            ContentBlockType,
-        )
 
-        for label, xml in benchmark_articles.items():
+        for _label, xml in benchmark_articles.items():
             parser = FullTextXMLParser(xml)
             sections = parser.get_full_text_sections_structured()
 
@@ -498,7 +474,7 @@ class TestParseDiagnosticBenchmarks:
             avg = sum(scores) / len(scores) if scores else 1.0
             score_map[label] = avg
 
-        print(f"\n=== Parse Quality Scores ===")
+        print("\n=== Parse Quality Scores ===")
         for label, avg in sorted(score_map.items()):
             print(f"  {label}: {avg:.2f} average quality score")
         assert all(v >= 0.0 for v in score_map.values()), "Negative quality scores"

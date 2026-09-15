@@ -243,6 +243,7 @@ class TestHelpersCoverage:
         import warnings
 
         from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+
         response = {"hitCount": 0}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -254,6 +255,7 @@ class TestHelpersCoverage:
         import warnings
 
         from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+
         response = {"hitCount": 0}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -265,6 +267,7 @@ class TestHelpersCoverage:
         import warnings
 
         from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+
         response = {"other": 1}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -276,6 +279,7 @@ class TestHelpersCoverage:
         import warnings
 
         from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+
         response = {"other": 1}
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
@@ -287,6 +291,7 @@ class TestHelpersCoverage:
         import warnings
 
         from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+
         response = None
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")

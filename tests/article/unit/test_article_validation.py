@@ -6,9 +6,9 @@ Comprehensive tests for all validation helper methods to maximize coverage.
 
 import pytest
 
-from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import ValidationError
+from pyeuropepmc.features.literature.article import ArticleClient
 
 
 class TestArticleClientValidation:
@@ -68,12 +68,7 @@ class TestArticleClientValidation:
     # Test _validate_pagination
     def test_validate_pagination_valid_ranges(self, client):
         """Test pagination validation with valid ranges."""
-        valid_combinations = [
-            (1, 1),
-            (1, 25),
-            (10, 100),
-            (999, 1000)
-        ]
+        valid_combinations = [(1, 1), (1, 25), (10, 100), (999, 1000)]
         for page, page_size in valid_combinations:
             client._validate_pagination(page, page_size)  # Should not raise
 
@@ -140,7 +135,7 @@ class TestArticleClientValidation:
     def test_validate_callback_none_valid(self, client):
         """Test callback validation with None (valid case)."""
         client._validate_callback(None, "json")  # Should not raise
-        client._validate_callback(None, "xml")   # Should not raise
+        client._validate_callback(None, "xml")  # Should not raise
 
     def test_validate_callback_valid_string_json(self, client):
         """Test callback validation with valid string and JSON format."""

@@ -10,11 +10,10 @@ This module tests:
 """
 
 import pytest
-from unittest.mock import Mock
 
 from pyeuropepmc.agentic.task_planner import (
-    TaskPlanner,
     TaskNode,
+    TaskPlanner,
     TaskStatus,
 )
 
@@ -79,7 +78,9 @@ class TestTaskPlanner:
         planner = TaskPlanner()
 
         # Description with multiple research keywords
-        desc = "Analyze and compare the impact of exercise on depression and anxiety in adolescents"
+        desc = (
+            "Analyze and compare the impact of exercise on depression and anxiety in adolescents"
+        )
         complexity = planner._estimate_complexity(desc)
 
         # Should have higher complexity due to keywords
@@ -234,7 +235,7 @@ class TestTaskPlanner:
         """Test resetting the planner."""
         planner = TaskPlanner()
 
-        task = planner.create_task("Test task")
+        planner.create_task("Test task")
         assert planner.task_count == 1
 
         planner.reset()

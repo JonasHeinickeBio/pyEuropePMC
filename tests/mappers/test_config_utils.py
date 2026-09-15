@@ -7,10 +7,6 @@ setup_graph, setup_dataset, _bind_fallback_namespaces, and create_named_graph.
 
 from __future__ import annotations
 
-import pytest
-
-pytestmark = pytest.mark.unit
-
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
@@ -28,10 +24,13 @@ from pyeuropepmc.mappers.config_utils import (
     setup_graph,
 )
 
+pytestmark = pytest.mark.unit
+
 
 # ---------------------------------------------------------------------------
 # Fixtures
 # ---------------------------------------------------------------------------
+
 
 @pytest.fixture
 def mock_graph() -> MagicMock:
@@ -55,6 +54,7 @@ def mock_dataset() -> MagicMock:
 # ---------------------------------------------------------------------------
 # load_rdf_config
 # ---------------------------------------------------------------------------
+
 
 class TestLoadRdfConfig:
     """Tests for load_rdf_config()."""
@@ -206,6 +206,7 @@ _defaults:
 # get_namespace_from_config
 # ---------------------------------------------------------------------------
 
+
 class TestGetNamespaceFromConfig:
     """Tests for get_namespace_from_config()."""
 
@@ -227,6 +228,7 @@ class TestGetNamespaceFromConfig:
 # ---------------------------------------------------------------------------
 # rebind_namespaces
 # ---------------------------------------------------------------------------
+
 
 class TestRebindNamespaces:
     """Tests for rebind_namespaces()."""
@@ -278,6 +280,7 @@ class TestRebindNamespaces:
 # setup_graph
 # ---------------------------------------------------------------------------
 
+
 class TestSetupGraph:
     """Tests for setup_graph()."""
 
@@ -324,6 +327,7 @@ class TestSetupGraph:
 # setup_dataset
 # ---------------------------------------------------------------------------
 
+
 class TestSetupDataset:
     """Tests for setup_dataset()."""
 
@@ -369,6 +373,7 @@ class TestSetupDataset:
 # _bind_fallback_namespaces
 # ---------------------------------------------------------------------------
 
+
 class TestBindFallbackNamespaces:
     """Tests for _bind_fallback_namespaces()."""
 
@@ -388,6 +393,7 @@ class TestBindFallbackNamespaces:
 # ---------------------------------------------------------------------------
 # create_named_graph
 # ---------------------------------------------------------------------------
+
 
 class TestCreateNamedGraph:
     """Tests for create_named_graph()."""

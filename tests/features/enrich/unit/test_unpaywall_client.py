@@ -2,7 +2,7 @@
 Unit tests for UnpaywallClient.
 """
 
-from unittest.mock import MagicMock, PropertyMock, patch
+from unittest.mock import MagicMock, patch
 
 import pytest
 import requests
@@ -36,7 +36,7 @@ def mock_record():
 @pytest.fixture
 def client():
     """Fixture for UnpaywallClient with mocked super().__init__."""
-    with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__") as mock_super_init:
+    with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"):
         client = UnpaywallClient(email="test@example.com")
         yield client
 
@@ -52,19 +52,23 @@ class TestUnpaywallClient:
 
     def test_init_empty_email(self):
         """Test initialization with empty email."""
-        with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"):
-            with pytest.raises(Exception):
-                UnpaywallClient(email="")
+        with (
+            patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"),
+            pytest.raises(Exception),  # noqa: B017
+        ):
+            UnpaywallClient(email="")
 
     def test_init_invalid_email_no_at(self):
         """Test initialization with email missing @."""
-        with patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"):
-            with pytest.raises(Exception):
-                UnpaywallClient(email="notanemail")
+        with (
+            patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"),
+            pytest.raises(Exception),  # noqa: B017
+        ):
+            UnpaywallClient(email="notanemail")
 
     def test_lookup_by_doi_empty(self, client):
         """Test lookup with empty DOI."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             client.lookup_by_doi("")
 
     def test_lookup_by_doi_success(self, client, mock_record):
@@ -119,14 +123,14 @@ class TestUnpaywallClient:
         mock_http_error.response.status_code = 500
         client._get = MagicMock(side_effect=mock_http_error)
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             client.lookup_by_doi("10.1234/servererror")
 
     def test_lookup_by_doi_request_exception(self, client):
         """Test DOI lookup with network error."""
         client._get = MagicMock(side_effect=requests.RequestException("Connection timeout"))
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             client.lookup_by_doi("10.1234/timeout")
 
     def test_get_oa_status_found(self, client, mock_record):
@@ -198,28 +202,34 @@ class TestUnpaywallClient:
 
     def test_get_pdf_url_no_url_for_pdf(self, client):
         """Test get_pdf_url falls back to url containing 'pdf'."""
-        client.get_best_oa_location = MagicMock(return_value={
-            "url_for_pdf": None,
-            "url": "https://example.com/pdf/article.html",
-        })
+        client.get_best_oa_location = MagicMock(
+            return_value={
+                "url_for_pdf": None,
+                "url": "https://example.com/pdf/article.html",
+            }
+        )
         result = client.get_pdf_url("10.1234/test")
         assert result == "https://example.com/pdf/article.html"
 
     def test_get_pdf_url_fallback_full(self, client):
         """Test get_pdf_url falls back to url containing 'full'."""
-        client.get_best_oa_location = MagicMock(return_value={
-            "url_for_pdf": "",
-            "url": "https://example.com/full/article",
-        })
+        client.get_best_oa_location = MagicMock(
+            return_value={
+                "url_for_pdf": "",
+                "url": "https://example.com/full/article",
+            }
+        )
         result = client.get_pdf_url("10.1234/test")
         assert result == "https://example.com/full/article"
 
     def test_get_pdf_url_no_match(self, client):
         """Test get_pdf_url returns None when no PDF URL available."""
-        client.get_best_oa_location = MagicMock(return_value={
-            "url_for_pdf": None,
-            "url": "https://example.com/abstract",
-        })
+        client.get_best_oa_location = MagicMock(
+            return_value={
+                "url_for_pdf": None,
+                "url": "https://example.com/abstract",
+            }
+        )
         result = client.get_pdf_url("10.1234/test")
         assert result is None
 
@@ -231,10 +241,12 @@ class TestUnpaywallClient:
 
     def test_get_pdf_url_empty_url_for_pdf(self, client):
         """Test get_pdf_url with empty url_for_pdf string."""
-        client.get_best_oa_location = MagicMock(return_value={
-            "url_for_pdf": "",
-            "url": "https://example.com/article",
-        })
+        client.get_best_oa_location = MagicMock(
+            return_value={
+                "url_for_pdf": "",
+                "url": "https://example.com/article",
+            }
+        )
         # Empty string is falsy, so falls through
         # But url doesn't contain pdf or full, so returns None
         result = client.get_pdf_url("10.1234/test")

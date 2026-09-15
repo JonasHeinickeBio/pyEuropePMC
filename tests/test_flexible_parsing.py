@@ -4,6 +4,7 @@ Unit tests for flexible parsing features.
 Tests ElementPatterns configuration, fallback patterns, schema detection,
 and flexible extraction methods.
 """
+
 import xml.etree.ElementTree as ET
 
 import pytest
@@ -30,7 +31,9 @@ class TestElementPatterns:
         assert "citation" in config.citation_types["types"]
 
         # Check author patterns
-        assert ".//contrib[@contrib-type='author']/name" in config.author_element_patterns["patterns"]
+        assert (
+            ".//contrib[@contrib-type='author']/name" in config.author_element_patterns["patterns"]
+        )
         assert ".//author" in config.author_element_patterns["patterns"]
 
         # Check journal patterns
@@ -55,7 +58,10 @@ class TestElementPatterns:
         config = ElementPatterns(author_element_patterns=custom_patterns)
 
         assert config.author_element_patterns == custom_patterns
-        assert ".//contrib[@contrib-type='author']/name" not in config.author_element_patterns["patterns"]
+        assert (
+            ".//contrib[@contrib-type='author']/name"
+            not in config.author_element_patterns["patterns"]
+        )
 
 
 class TestDocumentSchema:
@@ -87,9 +93,7 @@ class TestExtractWithFallbacks:
         parser = FullTextXMLParser()
         parser.root = root
 
-        result = parser._extract_with_fallbacks(
-            root, [".//title", ".//alt-title", ".//heading"]
-        )
+        result = parser._extract_with_fallbacks(root, [".//title", ".//alt-title", ".//heading"])
 
         assert result == "Main Title"
 
@@ -103,9 +107,7 @@ class TestExtractWithFallbacks:
         parser = FullTextXMLParser()
         parser.root = root
 
-        result = parser._extract_with_fallbacks(
-            root, [".//title", ".//alt-title", ".//heading"]
-        )
+        result = parser._extract_with_fallbacks(root, [".//title", ".//alt-title", ".//heading"])
 
         assert result == "Alternative Title"
 
@@ -119,9 +121,7 @@ class TestExtractWithFallbacks:
         parser = FullTextXMLParser()
         parser.root = root
 
-        result = parser._extract_with_fallbacks(
-            root, [".//title", ".//alt-title", ".//heading"]
-        )
+        result = parser._extract_with_fallbacks(root, [".//title", ".//alt-title", ".//heading"])
 
         assert result is None
 
@@ -661,7 +661,9 @@ class TestInlineElementHandling:
         parser = FullTextXMLParser(config=config)
         parser.root = root
 
-        markers = parser._extract_inline_elements(p_elem, config.inline_element_patterns["patterns"])
+        markers = parser._extract_inline_elements(
+            p_elem, config.inline_element_patterns["patterns"]
+        )
 
         assert len(markers) == 1
         assert "*" in markers

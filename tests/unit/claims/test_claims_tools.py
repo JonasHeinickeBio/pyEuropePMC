@@ -1,17 +1,12 @@
 """Tests for agentic claims tools."""
 
-from unittest.mock import patch
-
-import pytest
-
 from pyeuropepmc.agentic.claims_tools import (
-    claims_registry,
+    claim_accept,
     claim_extract,
     claim_summary,
     claim_verify,
-    claim_review,
-    claim_accept,
     claim_write,
+    claims_registry,
     register_all_claims_tools,
 )
 
@@ -36,12 +31,14 @@ class TestClaimsTools:
 
     def test_claim_summary_no_claims(self):
         from pyeuropepmc.agentic.claims_tools import _workflow_state
+
         _workflow_state.clear()
         result = claim_summary()
         assert result["status"] == "no_claims"
 
     def test_claim_verify_no_claims(self):
         from pyeuropepmc.agentic.claims_tools import _workflow_state
+
         _workflow_state.clear()
         result = claim_verify()
         assert result["success"] is False
@@ -56,6 +53,7 @@ class TestClaimsTools:
 
     def test_claim_write_no_state(self):
         from pyeuropepmc.agentic.claims_tools import _workflow_state
+
         _workflow_state.clear()
         result = claim_write()
         assert result["success"] is False
@@ -63,6 +61,7 @@ class TestClaimsTools:
 
     def test_register_all_claims_tools(self):
         from pyeuropepmc.agentic.registry import ToolRegistry
+
         target = ToolRegistry(name="target")
         register_all_claims_tools(target)
         tools = target.list_all()

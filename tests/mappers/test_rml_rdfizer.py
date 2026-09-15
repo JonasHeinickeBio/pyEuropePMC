@@ -10,9 +10,7 @@ from pyeuropepmc.mappers import RDFIZER_AVAILABLE, RMLRDFizer
 from pyeuropepmc.models import AuthorEntity, PaperEntity
 
 # Skip all tests if rdfizer is not available
-pytestmark = pytest.mark.skipif(
-    not RDFIZER_AVAILABLE, reason="rdfizer package not installed"
-)
+pytestmark = pytest.mark.skipif(not RDFIZER_AVAILABLE, reason="rdfizer package not installed")
 
 
 @pytest.mark.slow
@@ -31,6 +29,7 @@ class TestRMLRDFizer:
         """Test RMLRDFizer initialization when rdfizer is not available."""
         # Mock RDFIZER_AVAILABLE to False
         import pyeuropepmc.mappers.rml_rdfizer as rml_module
+
         original_available = rml_module.RDFIZER_AVAILABLE
         rml_module.RDFIZER_AVAILABLE = False
 
@@ -43,22 +42,16 @@ class TestRMLRDFizer:
     def test_rdfizer_with_custom_paths(self):
         """Test RMLRDFizer with custom config paths."""
         # Create temp files
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".ini", delete=False
-        ) as config_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".ini", delete=False) as config_file:
             config_file.write("[default]\nmain_directory: .\n")
             config_path = config_file.name
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".ttl", delete=False
-        ) as mapping_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".ttl", delete=False) as mapping_file:
             mapping_file.write("@prefix rr: <http://www.w3.org/ns/r2rml#> .\n")
             mapping_path = mapping_file.name
 
         try:
-            rdfizer = RMLRDFizer(
-                config_path=config_path, mapping_path=mapping_path
-            )
+            rdfizer = RMLRDFizer(config_path=config_path, mapping_path=mapping_path)
             assert rdfizer.config_path == config_path
             assert rdfizer.mapping_path == mapping_path
         finally:
@@ -73,17 +66,13 @@ class TestRMLRDFizer:
     def test_rdfizer_invalid_mapping_path(self):
         """Test RMLRDFizer with invalid mapping path."""
         # Create a valid config file
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".ini", delete=False
-        ) as config_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".ini", delete=False) as config_file:
             config_file.write("[default]\nmain_directory: .\n")
             config_path = config_file.name
 
         try:
             with pytest.raises(FileNotFoundError):
-                RMLRDFizer(
-                    config_path=config_path, mapping_path="/nonexistent/path.ttl"
-                )
+                RMLRDFizer(config_path=config_path, mapping_path="/nonexistent/path.ttl")
         finally:
             os.unlink(config_path)
 
@@ -186,7 +175,7 @@ class TestRMLRDFizer:
             },
             {
                 "full_name": "Jane Smith",
-            }
+            },
         ]
 
         try:

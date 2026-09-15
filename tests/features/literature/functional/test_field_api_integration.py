@@ -89,8 +89,7 @@ class TestFieldAPIIntegration:
 
         # Assert field filter reduced results
         assert field_count <= base_count, (
-            f"Field filter should reduce results: "
-            f"{field_name}={field_count}, base={base_count}"
+            f"Field filter should reduce results: {field_name}={field_count}, base={base_count}"
         )
 
     # Core Bibliographic Fields
@@ -138,11 +137,7 @@ class TestFieldAPIIntegration:
     def test_pub_year_field(self, client: SearchClient) -> None:
         """Test PUB_YEAR field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "cancer")
-                .and_()
-                .field("pub_year", 2023)
-                .build(validate=False))
+        query = qb.field("title", "cancer").and_().field("pub_year", 2023).build(validate=False)
         base_query = "cancer"
 
         self._test_field_reduces_results(client, query, base_query, "PUB_YEAR")
@@ -194,11 +189,12 @@ class TestFieldAPIIntegration:
     def test_date_range(self, client: SearchClient) -> None:
         """Test date_range() with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "CRISPR")
-                .and_()
-                .date_range(start_year=2020, end_year=2023)
-                .build(validate=False))
+        query = (
+            qb.field("title", "CRISPR")
+            .and_()
+            .date_range(start_year=2020, end_year=2023)
+            .build(validate=False)
+        )
         base_query = "TITLE:CRISPR"
 
         self._test_field_reduces_results(client, query, base_query, "PUB_YEAR")
@@ -217,7 +213,6 @@ class TestFieldAPIIntegration:
         """Test INVESTIGATOR field with real API call."""
         qb = QueryBuilder(validate=False)
         query = qb.field("investigator", "Smith").build(validate=False)
-        base_query = "Smith"
 
         # Note: INVESTIGATOR may have fewer results than general search
         response = client.search(query, page_size=5)
@@ -229,11 +224,7 @@ class TestFieldAPIIntegration:
     def test_language_field(self, client: SearchClient) -> None:
         """Test LANG (language) field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "cancer")
-                .and_()
-                .field("language", "eng")
-                .build(validate=False))
+        query = qb.field("title", "cancer").and_().field("language", "eng").build(validate=False)
         base_query = "TITLE:cancer"
 
         self._test_field_reduces_results(client, query, base_query, "LANG")
@@ -300,11 +291,9 @@ class TestFieldAPIIntegration:
     def test_has_abstract_field(self, client: SearchClient) -> None:
         """Test HAS_ABSTRACT field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "cancer")
-                .and_()
-                .field("has_abstract", True)
-                .build(validate=False))
+        query = (
+            qb.field("title", "cancer").and_().field("has_abstract", True).build(validate=False)
+        )
         base_query = "TITLE:cancer"
 
         self._test_field_reduces_results(client, query, base_query, "HAS_ABSTRACT")
@@ -312,11 +301,7 @@ class TestFieldAPIIntegration:
     def test_has_pdf_field(self, client: SearchClient) -> None:
         """Test HAS_PDF field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "cancer")
-                .and_()
-                .field("has_pdf", True)
-                .build(validate=False))
+        query = qb.field("title", "cancer").and_().field("has_pdf", True).build(validate=False)
         base_query = "TITLE:cancer"
 
         self._test_field_reduces_results(client, query, base_query, "HAS_PDF")
@@ -324,11 +309,7 @@ class TestFieldAPIIntegration:
     def test_open_access_field(self, client: SearchClient) -> None:
         """Test OPEN_ACCESS field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "CRISPR")
-                .and_()
-                .field("open_access", True)
-                .build(validate=False))
+        query = qb.field("title", "CRISPR").and_().field("open_access", True).build(validate=False)
         base_query = "TITLE:CRISPR"
 
         self._test_field_reduces_results(client, query, base_query, "OPEN_ACCESS")
@@ -336,11 +317,7 @@ class TestFieldAPIIntegration:
     def test_in_pmc_field(self, client: SearchClient) -> None:
         """Test IN_PMC field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "genomics")
-                .and_()
-                .field("in_pmc", True)
-                .build(validate=False))
+        query = qb.field("title", "genomics").and_().field("in_pmc", True).build(validate=False)
         base_query = "TITLE:genomics"
 
         self._test_field_reduces_results(client, query, base_query, "IN_PMC")
@@ -348,11 +325,7 @@ class TestFieldAPIIntegration:
     def test_in_epmc_field(self, client: SearchClient) -> None:
         """Test IN_EPMC field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "genomics")
-                .and_()
-                .field("in_epmc", True)
-                .build(validate=False))
+        query = qb.field("title", "genomics").and_().field("in_epmc", True).build(validate=False)
         base_query = "TITLE:genomics"
 
         self._test_field_reduces_results(client, query, base_query, "IN_EPMC")
@@ -362,12 +335,9 @@ class TestFieldAPIIntegration:
     def test_has_uniprot_field(self, client: SearchClient) -> None:
         """Test HAS_UNIPROT field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "protein")
-                .and_()
-                .field("has_uniprot", True)
-                .build(validate=False))
-        base_query = "TITLE:protein"
+        query = (
+            qb.field("title", "protein").and_().field("has_uniprot", True).build(validate=False)
+        )
 
         # Note: This may significantly reduce results
         response = client.search(query, page_size=5)
@@ -377,12 +347,7 @@ class TestFieldAPIIntegration:
     def test_has_pdb_field(self, client: SearchClient) -> None:
         """Test HAS_PDB field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "structure")
-                .and_()
-                .field("has_pdb", True)
-                .build(validate=False))
-        base_query = "TITLE:structure"
+        query = qb.field("title", "structure").and_().field("has_pdb", True).build(validate=False)
 
         response = client.search(query, page_size=5)
         assert "hitCount" in response
@@ -393,11 +358,9 @@ class TestFieldAPIIntegration:
     def test_citation_count(self, client: SearchClient) -> None:
         """Test citation_count() with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "CRISPR")
-                .and_()
-                .citation_count(min_count=10)
-                .build(validate=False))
+        query = (
+            qb.field("title", "CRISPR").and_().citation_count(min_count=10).build(validate=False)
+        )
         base_query = "TITLE:CRISPR"
 
         self._test_field_reduces_results(client, query, base_query, "CITED")
@@ -420,11 +383,7 @@ class TestFieldAPIIntegration:
     def test_source_method(self, client: SearchClient) -> None:
         """Test source() method (special case with uppercase) with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "cancer")
-                .and_()
-                .source("MED")
-                .build(validate=False))
+        query = qb.field("title", "cancer").and_().source("MED").build(validate=False)
         base_query = "TITLE:cancer"
 
         self._test_field_reduces_results(client, query, base_query, "SRC")
@@ -432,12 +391,9 @@ class TestFieldAPIIntegration:
     def test_license_field(self, client: SearchClient) -> None:
         """Test LICENSE field with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "genomics")
-                .and_()
-                .field("license", "cc by")
-                .build(validate=False))
-        base_query = "TITLE:genomics"
+        query = (
+            qb.field("title", "genomics").and_().field("license", "cc by").build(validate=False)
+        )
 
         # Note: LICENSE may have specific values
         response = client.search(query, page_size=5)
@@ -462,12 +418,7 @@ class TestFieldAPIIntegration:
     def test_accession_type_method(self, client: SearchClient) -> None:
         """Test accession_type() method (special case with lowercase) with real API call."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "protein")
-                .and_()
-                .accession_type("pdb")
-                .build(validate=False))
-        base_query = "TITLE:protein"
+        query = qb.field("title", "protein").and_().accession_type("pdb").build(validate=False)
 
         response = client.search(query, page_size=5)
         assert "hitCount" in response
@@ -530,15 +481,16 @@ class TestFieldAPIIntegration:
     def test_complex_query_multiple_fields(self, client: SearchClient) -> None:
         """Test complex query with multiple fields."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "CRISPR")
-                .and_()
-                .field("author", "Smith")
-                .and_()
-                .date_range(start_year=2020, end_year=2023)
-                .and_()
-                .field("open_access", True)
-                .build(validate=False))
+        query = (
+            qb.field("title", "CRISPR")
+            .and_()
+            .field("author", "Smith")
+            .and_()
+            .date_range(start_year=2020, end_year=2023)
+            .and_()
+            .field("open_access", True)
+            .build(validate=False)
+        )
 
         response = client.search(query, page_size=5)
 
@@ -551,11 +503,7 @@ class TestFieldAPIIntegration:
     def test_complex_query_with_or_logic(self, client: SearchClient) -> None:
         """Test complex query with OR logic."""
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .field("title", "cancer")
-                .or_()
-                .field("title", "tumor")
-                .build(validate=False))
+        query = qb.field("title", "cancer").or_().field("title", "tumor").build(validate=False)
 
         response = client.search(query, page_size=5)
 
@@ -566,17 +514,10 @@ class TestFieldAPIIntegration:
     def test_complex_query_with_grouping(self, client: SearchClient) -> None:
         """Test complex query with grouped sub-queries."""
         sub_qb = QueryBuilder(validate=False)
-        sub_query = (sub_qb
-                    .field("title", "cancer")
-                    .or_()
-                    .field("title", "tumor"))
+        sub_query = sub_qb.field("title", "cancer").or_().field("title", "tumor")
 
         qb = QueryBuilder(validate=False)
-        query = (qb
-                .group(sub_query)
-                .and_()
-                .field("open_access", True)
-                .build(validate=False))
+        query = qb.group(sub_query).and_().field("open_access", True).build(validate=False)
 
         response = client.search(query, page_size=5)
 
@@ -598,9 +539,18 @@ class TestFieldCoverage:
     def test_all_boolean_fields_work(self, client: SearchClient) -> None:
         """Test that all boolean fields (has_*, in_*, open_access) work."""
         boolean_fields = [
-            "has_abstract", "has_pdf", "has_fulltext", "has_reflist",
-            "has_tm", "has_xrefs", "has_suppl", "has_labslinks", "has_data",
-            "open_access", "in_pmc", "in_epmc",
+            "has_abstract",
+            "has_pdf",
+            "has_fulltext",
+            "has_reflist",
+            "has_tm",
+            "has_xrefs",
+            "has_suppl",
+            "has_labslinks",
+            "has_data",
+            "open_access",
+            "in_pmc",
+            "in_epmc",
         ]
 
         for field in boolean_fields:
@@ -613,4 +563,6 @@ class TestFieldCoverage:
             logger.debug(f"Response for {field}: {response}")
             assert "hitCount" in response
             # Field name should appear in query (uppercase)
-            assert field.upper().replace("_", "") in response["request"]["queryString"].upper().replace("_", "")
+            assert field.upper().replace("_", "") in response["request"][
+                "queryString"
+            ].upper().replace("_", "")

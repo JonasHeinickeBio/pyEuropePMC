@@ -31,10 +31,10 @@ from pyeuropepmc.models.utils import (
     validate_regex,
 )
 
-
 # ============================================================================
 # normalize_string
 # ============================================================================
+
 
 class TestNormalizeString:
     def test_allow_empty_false_with_empty(self) -> None:
@@ -50,6 +50,7 @@ class TestNormalizeString:
 # validate_regex
 # ============================================================================
 
+
 class TestValidateRegex:
     def test_no_match_raises(self) -> None:
         """Regex mismatch raises ValueError."""
@@ -61,11 +62,14 @@ class TestValidateRegex:
 # convert_to_type
 # ============================================================================
 
+
 class TestConvertToType:
     def test_converter_raises_typeerror(self) -> None:
         """Converter raising TypeError is caught and re-raised as ValueError."""
+
         def bad(_x: object) -> int:
             raise TypeError("bad conversion")
+
         with pytest.raises(ValueError, match="convert error"):
             convert_to_type(123, int, bad, "convert error")
 
@@ -79,6 +83,7 @@ class TestConvertToType:
 # validate_range
 # ============================================================================
 
+
 class TestValidateRange:
     def test_out_of_range(self) -> None:
         """Value outside range raises ValueError."""
@@ -90,6 +95,7 @@ class TestValidateRange:
 # validate_format
 # ============================================================================
 
+
 class TestValidateFormat:
     def test_validator_returns_false(self) -> None:
         """Validator returning False raises ValueError."""
@@ -100,6 +106,7 @@ class TestValidateFormat:
 # ============================================================================
 # normalize_and_validate
 # ============================================================================
+
 
 class TestNormalizeAndValidate:
     def test_allow_none_false_with_none(self) -> None:
@@ -114,25 +121,36 @@ class TestNormalizeAndValidate:
 
     def test_with_converter(self) -> None:
         """converter pipeline runs."""
+
         def normalizer(x: object) -> object:
             return x
-        result = normalize_and_validate("123", normalizer=normalizer, converter=convert_to_type,
-                                        converter_target_type=int, converter_func=int,
-                                        converter_error_msg="conv fail")
+
+        result = normalize_and_validate(
+            "123",
+            normalizer=normalizer,
+            converter=convert_to_type,
+            converter_target_type=int,
+            converter_func=int,
+            converter_error_msg="conv fail",
+        )
         assert result == 123
 
     def test_with_validator(self) -> None:
         """validator is applied."""
+
         def normalizer(x: str) -> str:
             return x.strip()
-        result = normalize_and_validate("abc", normalizer=normalizer,
-                                        validator=lambda x: x.upper())
+
+        result = normalize_and_validate(
+            "abc", normalizer=normalizer, validator=lambda x: x.upper()
+        )
         assert result == "ABC"
 
 
 # ============================================================================
 # normalize_doi
 # ============================================================================
+
 
 class TestNormalizeDoi:
     def test_none_input(self) -> None:
@@ -143,6 +161,7 @@ class TestNormalizeDoi:
 # ============================================================================
 # validate_and_normalize_uri
 # ============================================================================
+
 
 class TestValidateAndNormalizeUri:
     def test_none_input(self) -> None:
@@ -165,6 +184,7 @@ class TestValidateAndNormalizeUri:
 # validate_and_normalize_email
 # ============================================================================
 
+
 class TestValidateAndNormalizeEmail:
     def test_none_input(self) -> None:
         """None returns None."""
@@ -179,6 +199,7 @@ class TestValidateAndNormalizeEmail:
 # ============================================================================
 # validate_and_normalize_orcid
 # ============================================================================
+
 
 class TestValidateAndNormalizeOrcid:
     def test_none_input(self) -> None:
@@ -204,6 +225,7 @@ class TestValidateAndNormalizeOrcid:
 # validate_and_normalize_pmcid
 # ============================================================================
 
+
 class TestValidateAndNormalizePmcid:
     def test_none_input(self) -> None:
         """None returns None."""
@@ -224,6 +246,7 @@ class TestValidateAndNormalizePmcid:
 # validate_and_normalize_pmid
 # ============================================================================
 
+
 class TestValidateAndNormalizePmid:
     def test_none_input(self) -> None:
         """None returns None."""
@@ -238,6 +261,7 @@ class TestValidateAndNormalizePmid:
 # ============================================================================
 # validate_and_normalize_year
 # ============================================================================
+
 
 class TestValidateAndNormalizeYear:
     def test_none_input(self) -> None:
@@ -270,6 +294,7 @@ class TestValidateAndNormalizeYear:
 # validate_and_normalize_date
 # ============================================================================
 
+
 class TestValidateAndNormalizeDate:
     def test_none_input(self) -> None:
         """None returns None."""
@@ -288,6 +313,7 @@ class TestValidateAndNormalizeDate:
     def test_date_object(self) -> None:
         """datetime.date object is preserved."""
         from datetime import date
+
         d = date(2024, 6, 15)
         assert validate_and_normalize_date(d) == d
 
@@ -295,6 +321,7 @@ class TestValidateAndNormalizeDate:
 # ============================================================================
 # validate_and_normalize_volume
 # ============================================================================
+
 
 class TestValidateAndNormalizeVolume:
     def test_none_input(self) -> None:
@@ -324,6 +351,7 @@ class TestValidateAndNormalizeVolume:
 # ============================================================================
 # validate_and_normalize_boolean
 # ============================================================================
+
 
 class TestValidateAndNormalizeBoolean:
     def test_none_input(self) -> None:
@@ -377,6 +405,7 @@ class TestValidateAndNormalizeBoolean:
 # validate_positive_integer
 # ============================================================================
 
+
 class TestValidatePositiveInteger:
     def test_none_input(self) -> None:
         """None returns None."""
@@ -409,6 +438,7 @@ class TestValidatePositiveInteger:
 # validate_latitude_longitude
 # ============================================================================
 
+
 class TestValidateLatitudeLongitude:
     def test_none_both(self) -> None:
         """Both None returns (None, None)."""
@@ -435,6 +465,7 @@ class TestValidateLatitudeLongitude:
 # ============================================================================
 # normalize_country / validate_and_normalize_country
 # ============================================================================
+
 
 class TestNormalizeCountry:
     def test_none_input(self) -> None:

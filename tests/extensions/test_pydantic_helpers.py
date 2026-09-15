@@ -191,7 +191,7 @@ class TestPydanticModelGeneratorGenerateModel:
         instance = Model(id=1, title="X")
         assert instance.id == 1
         assert instance.title == "X"
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             Model()
 
     def test_explicit_field_types_take_precedence(self) -> None:
@@ -237,7 +237,5 @@ class TestPydanticModelGeneratorFromDataclass:
             a: str
             b: int
 
-        Model = PydanticModelGenerator.from_dataclass(
-            Sample, include_fields=["a"]
-        )
+        Model = PydanticModelGenerator.from_dataclass(Sample, include_fields=["a"])
         assert list(Model.model_fields.keys()) == ["a"]

@@ -6,17 +6,18 @@ import json
 from pathlib import Path
 
 import pytest
+from typer.testing import CliRunner
 
+from pyeuropepmc.cli.normalize import normalize_app
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = [
     pytest.mark.unit,
-    pytest.mark.skipif(not is_dependency_available("typer"), reason="skipped due to missing typer"),
+    pytest.mark.skipif(
+        not is_dependency_available("typer"), reason="skipped due to missing typer"
+    ),
 ]
 
-from typer.testing import CliRunner
-
-from pyeuropepmc.cli.normalize import normalize_app
 
 runner = CliRunner()
 
@@ -64,9 +65,7 @@ class TestNormalizeText:
     def test_output_file(self, xml_file: Path) -> None:
         """Text can be written to an output file."""
         out = xml_file.with_suffix(".txt")
-        result = runner.invoke(
-            normalize_app, ["text", str(xml_file), "--output", str(out)]
-        )
+        result = runner.invoke(normalize_app, ["text", str(xml_file), "--output", str(out)])
         assert result.exit_code == 0
         assert out.exists()
         assert "This is a test paragraph." in out.read_text(encoding="utf-8")
@@ -110,9 +109,7 @@ class TestNormalizeSections:
     def test_output_file(self, xml_file: Path) -> None:
         """Sections can be written as JSON to an output file."""
         out = xml_file.with_suffix(".json")
-        result = runner.invoke(
-            normalize_app, ["sections", str(xml_file), "--output", str(out)]
-        )
+        result = runner.invoke(normalize_app, ["sections", str(xml_file), "--output", str(out)])
         assert result.exit_code == 0
         assert out.exists()
         data = json.loads(out.read_text(encoding="utf-8"))
@@ -138,9 +135,7 @@ class TestNormalizeBioc:
     def test_output_file(self, xml_file: Path) -> None:
         """BioC output is written to file."""
         out = xml_file.with_suffix(".bioc.json")
-        result = runner.invoke(
-            normalize_app, ["bioc", str(xml_file), "--output", str(out)]
-        )
+        result = runner.invoke(normalize_app, ["bioc", str(xml_file), "--output", str(out)])
         assert result.exit_code == 0
         assert out.exists()
         data = json.loads(out.read_text(encoding="utf-8"))
@@ -182,9 +177,7 @@ class TestNormalizeBatch:
         for name in ("a.xml", "b.xml"):
             (tmp_path / name).write_text(MINIMAL_XML, encoding="utf-8")
         out_dir = tmp_path / "out"
-        result = runner.invoke(
-            normalize_app, ["batch", str(tmp_path), str(out_dir)]
-        )
+        result = runner.invoke(normalize_app, ["batch", str(tmp_path), str(out_dir)])
         assert result.exit_code == 0
         assert "2 succeeded" in result.stdout
         assert (out_dir / "a.txt").exists()
@@ -193,9 +186,7 @@ class TestNormalizeBatch:
     def test_no_xml_files(self, tmp_path: Path) -> None:
         """Error when no XML files found."""
         out_dir = tmp_path / "out"
-        result = runner.invoke(
-            normalize_app, ["batch", str(tmp_path), str(out_dir)]
-        )
+        result = runner.invoke(normalize_app, ["batch", str(tmp_path), str(out_dir)])
         assert result.exit_code == 1
         assert "no xml files" in result.stdout.lower()
 

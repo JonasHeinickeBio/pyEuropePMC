@@ -1,6 +1,7 @@
 """Tests for claim reviewer."""
 
 import pytest
+
 from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, EvidenceQuality, Verdict
 from pyeuropepmc.claims.reviewer import ClaimReviewer
 
@@ -18,7 +19,9 @@ class TestClaimReviewer:
         cs = ClaimSet(source_text="test")
         cs.claims = [
             Claim(
-                id="c1", text="test1", original_text="t1",
+                id="c1",
+                text="test1",
+                original_text="t1",
                 verdict=Verdict.SUPPORTED,
                 evidence=[
                     ClaimEvidence(
@@ -40,12 +43,14 @@ class TestClaimReviewer:
         reviewer = ClaimReviewer(llm_enabled=False)
         cs = ClaimSet(source_text="test")
         cs.claims = [
-            Claim(id="c1", text="refuted claim", original_text="r",
-                  verdict=Verdict.REFUTED),
-            Claim(id="c2", text="insufficient", original_text="i",
-                  verdict=Verdict.INSUFFICIENT_EVIDENCE),
-            Claim(id="c3", text="unchecked", original_text="u",
-                  verdict=Verdict.NOT_CHECKED),
+            Claim(id="c1", text="refuted claim", original_text="r", verdict=Verdict.REFUTED),
+            Claim(
+                id="c2",
+                text="insufficient",
+                original_text="i",
+                verdict=Verdict.INSUFFICIENT_EVIDENCE,
+            ),
+            Claim(id="c3", text="unchecked", original_text="u", verdict=Verdict.NOT_CHECKED),
         ]
         review = reviewer.review_claim_set(cs)
         assert len(review["suggestions"]) >= 2
@@ -56,16 +61,26 @@ class TestClaimReviewer:
         cs = ClaimSet(source_text="test")
         cs.claims = [
             Claim(
-                id="c1", text="t", original_text="t",
+                id="c1",
+                text="t",
+                original_text="t",
                 verdict=Verdict.SUPPORTED,
                 evidence=[
                     ClaimEvidence(
-                        text="e", paper_title="P", authors="A", source="1",
-                        relevance_score=0.8, quality=EvidenceQuality.HIGH,
+                        text="e",
+                        paper_title="P",
+                        authors="A",
+                        source="1",
+                        relevance_score=0.8,
+                        quality=EvidenceQuality.HIGH,
                     ),
                     ClaimEvidence(
-                        text="e2", paper_title="P2", authors="A2", source="2",
-                        relevance_score=0.4, quality=EvidenceQuality.LOW,
+                        text="e2",
+                        paper_title="P2",
+                        authors="A2",
+                        source="2",
+                        relevance_score=0.4,
+                        quality=EvidenceQuality.LOW,
                     ),
                 ],
             ),
@@ -93,7 +108,12 @@ class TestClaimReviewer:
         cs.claims = [
             Claim(id="c1", text="supported", original_text="s", verdict=Verdict.SUPPORTED),
             Claim(id="c2", text="refuted", original_text="r", verdict=Verdict.REFUTED),
-            Claim(id="c3", text="insufficient", original_text="i", verdict=Verdict.INSUFFICIENT_EVIDENCE),
+            Claim(
+                id="c3",
+                text="insufficient",
+                original_text="i",
+                verdict=Verdict.INSUFFICIENT_EVIDENCE,
+            ),
         ]
         gaps = reviewer._identify_gaps(cs)
         assert len(gaps) == 2

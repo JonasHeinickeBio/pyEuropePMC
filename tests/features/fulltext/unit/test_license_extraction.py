@@ -47,37 +47,32 @@ class TestLicenceUrl:
             '<license><license-p>See <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"'
             ' xlink:href="https://example.org/licence">here</ext-link>.</license-p></license>'
         )
-        assert (
-            FullTextXMLParser(xml).extract_license()["url"] == "https://example.org/licence"
-        )
+        assert FullTextXMLParser(xml).extract_license()["url"] == "https://example.org/licence"
 
     def test_license_ref_preferred_over_ext_link(self):
         """license_ref is the canonical machine-readable form."""
         xml = _article(
-            f'<license><ali:license_ref {ALI}>https://canonical.example/by/4.0/'
+            f"<license><ali:license_ref {ALI}>https://canonical.example/by/4.0/"
             "</ali:license_ref>"
             '<license-p>See <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"'
             ' xlink:href="https://other.example/x">here</ext-link>.</license-p></license>'
         )
         assert (
-            FullTextXMLParser(xml).extract_license()["url"]
-            == "https://canonical.example/by/4.0/"
+            FullTextXMLParser(xml).extract_license()["url"] == "https://canonical.example/by/4.0/"
         )
 
     def test_empty_license_ref_falls_through_to_ext_link(self):
         xml = _article(
-            f'<license><ali:license_ref {ALI}>   </ali:license_ref>'
+            f"<license><ali:license_ref {ALI}>   </ali:license_ref>"
             '<license-p>See <ext-link xmlns:xlink="http://www.w3.org/1999/xlink"'
             ' xlink:href="https://fallback.example/x">here</ext-link>.</license-p></license>'
         )
-        assert (
-            FullTextXMLParser(xml).extract_license()["url"] == "https://fallback.example/x"
-        )
+        assert FullTextXMLParser(xml).extract_license()["url"] == "https://fallback.example/x"
 
 
 class TestLicenceText:
     def test_text_when_paragraph_opens_with_an_inline_element(self):
-        """"<bold>Open Access</bold>This article..." read as empty before.
+        """ "<bold>Open Access</bold>This article..." read as empty before.
 
         Without `use_full_text` the helper takes only the element's own
         leading text, which here is the whitespace before <bold>.

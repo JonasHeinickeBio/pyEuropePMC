@@ -15,6 +15,8 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.core.exceptions import QueryBuilderError
+from pyeuropepmc.features.literature.query_builder import QueryBuilder
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = [
@@ -23,9 +25,6 @@ pytestmark = [
         not is_dependency_available("search_query"), reason="skipped due to missing search_query"
     ),
 ]
-
-from pyeuropepmc.core.exceptions import QueryBuilderError
-from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
 
 class TestQueryBuilderFromString:
@@ -83,9 +82,7 @@ class TestQueryBuilderFromFile:
     def test_from_file_standard_format(self) -> None:
         """Test loading a query from a standard JSON file."""
         # Create a temporary JSON file
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             search_data = {
                 "search_string": "cancer AND treatment",
                 "platform": "pubmed",
@@ -120,9 +117,7 @@ class TestQueryBuilderFromFile:
 
     def test_from_file_with_validate(self) -> None:
         """Test loading from file with validation enabled."""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             search_data = {
                 "search_string": "cancer AND treatment",
                 "platform": "pubmed",
@@ -147,11 +142,9 @@ class TestQueryBuilderSave:
     def test_save_basic(self) -> None:
         """Test saving a simple query to a JSON file."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer").and_().keyword("treatment")
+        qb.keyword("cancer").and_().keyword("treatment")
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -177,7 +170,7 @@ class TestQueryBuilderSave:
     def test_save_with_metadata(self) -> None:
         """Test saving a query with full metadata."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer").and_().keyword("treatment")
+        qb.keyword("cancer").and_().keyword("treatment")
 
         authors = [{"name": "Jane Smith", "ORCID": "0000-0000-0000-0002"}]
         date_info = {
@@ -187,9 +180,7 @@ class TestQueryBuilderSave:
         database = ["PubMed", "PMC", "Europe PMC"]
         record_info = {"project": "Cancer Research Review"}
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -217,11 +208,9 @@ class TestQueryBuilderSave:
     def test_save_with_generic_query(self) -> None:
         """Test saving with generic query representation."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer").and_().keyword("treatment")
+        qb.keyword("cancer").and_().keyword("treatment")
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -257,7 +246,7 @@ class TestQueryBuilderTranslate:
     def test_translate_to_generic(self) -> None:
         """Test translating to generic syntax."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer", field="title").and_().keyword("treatment")
+        qb.keyword("cancer", field="title").and_().keyword("treatment")
         qb_str = qb.build()
 
         # Create from string to get parsed query
@@ -272,7 +261,7 @@ class TestQueryBuilderTranslate:
     def test_translate_without_parsed_query(self) -> None:
         """Test translate when query hasn't been parsed yet."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer").and_().keyword("treatment")
+        qb.keyword("cancer").and_().keyword("treatment")
 
         # Should still work even without pre-parsed query
         translated = qb.translate("wos")
@@ -281,7 +270,7 @@ class TestQueryBuilderTranslate:
     def test_translate_invalid_platform_raises_error(self) -> None:
         """Test that invalid target platform raises error."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer")
+        qb.keyword("cancer")
 
         # search-query should raise an error for invalid platforms
         with pytest.raises(QueryBuilderError):
@@ -294,7 +283,7 @@ class TestQueryBuilderToQueryObject:
     def test_to_query_object_basic(self) -> None:
         """Test converting QueryBuilder to Query object."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer").and_().keyword("treatment")
+        qb.keyword("cancer").and_().keyword("treatment")
 
         query_obj = qb.to_query_object()
 
@@ -305,7 +294,7 @@ class TestQueryBuilderToQueryObject:
     def test_to_query_object_cached(self) -> None:
         """Test that Query object is cached."""
         qb = QueryBuilder()
-        query = qb.keyword("cancer")
+        qb.keyword("cancer")
 
         # First call creates and caches
         query_obj1 = qb.to_query_object()
@@ -395,7 +384,7 @@ class TestQueryBuilderEvaluate:
             },
         }
 
-        results = qb.evaluate(records, platform="pubmed")
+        qb.evaluate(records, platform="pubmed")
 
         # Should use the same cached object
         assert qb._parsed_query is query_obj
@@ -408,11 +397,9 @@ class TestIntegrationLoadSaveTranslate:
         """Test saving and loading a query preserves content."""
         # Create a query
         qb1 = QueryBuilder()
-        query = qb1.keyword("cancer").and_().keyword("treatment")
+        qb1.keyword("cancer").and_().keyword("treatment")
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -430,9 +417,7 @@ class TestIntegrationLoadSaveTranslate:
     def test_load_translate_save(self) -> None:
         """Test loading, translating, and saving a query."""
         # Create initial query file
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             search_data = {
                 "search_string": "cancer[ti]",
                 "platform": "pubmed",
@@ -444,9 +429,7 @@ class TestIntegrationLoadSaveTranslate:
             json.dump(search_data, tmp_file)
             tmp_path1 = tmp_file.name
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path2 = tmp_file.name
 
         try:
@@ -485,7 +468,10 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_string("cancer", platform="pubmed")
 
-    @patch("search_query.search_file.load_search_file", side_effect=ImportError("No module named 'search_query'"))
+    @patch(
+        "search_query.search_file.load_search_file",
+        side_effect=ImportError("No module named 'search_query'"),
+    )
     def test_from_file_raises_import_error(self, mock_load) -> None:
         """Test that from_file raises ImportError when package not available."""
         with pytest.raises(QueryBuilderError, match="search-query package is required"):

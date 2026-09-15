@@ -143,7 +143,9 @@ class TestFetchBiocPmc:
     def test_success(self):
         ctx = FetchContext(pmcid="123")
         ctx._get = MagicMock(
-            return_value=_resp('<?xml version="1.0"?><collection><passage>x</passage></collection>')
+            return_value=_resp(
+                '<?xml version="1.0"?><collection><passage>x</passage></collection>'
+            )
         )
         assert fetch_bioc_pmc(ctx) is not None
 
@@ -257,7 +259,9 @@ class TestRegistry:
             return None
 
         register_strategy("my_custom_strategy", custom)
-        assert any(n == "my_custom_strategy" for n, _ in default_strategies(["my_custom_strategy"]))
+        assert any(
+            n == "my_custom_strategy" for n, _ in default_strategies(["my_custom_strategy"])
+        )
 
 
 class TestRunStrategies:

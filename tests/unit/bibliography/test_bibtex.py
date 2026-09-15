@@ -1,6 +1,6 @@
+from unittest.mock import MagicMock, patch
+
 import pytest
-from unittest.mock import patch, MagicMock, mock_open
-from pathlib import Path
 
 from pyeuropepmc.features.bibliography.bibtex import BibtexManager, is_bibtex_content
 from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary
@@ -8,12 +8,16 @@ from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary
 
 @pytest.fixture
 def sample_bibtex() -> str:
-    return '@article{key2024, title = {Hello}, author = {Smith, John}, year = {2024}, doi = {10.1234/test}}'
+    return "@article{key2024, title = {Hello}, author = {Smith, John}, year = {2024}, doi = {10.1234/test}}"
 
 
 @pytest.fixture
 def entry() -> BibEntry:
-    return BibEntry(entry_type="article", citation_key="key2024", fields={"title": "Hello", "author": "Smith, John", "year": "2024", "doi": "10.1234/test"})
+    return BibEntry(
+        entry_type="article",
+        citation_key="key2024",
+        fields={"title": "Hello", "author": "Smith, John", "year": "2024", "doi": "10.1234/test"},
+    )
 
 
 @pytest.fixture
@@ -26,7 +30,9 @@ def library(entry) -> BibLibrary:
 class TestBibtexManagerParse:
     def test_parse_string_v2(self, sample_bibtex):
         mock_lib = BibLibrary()
-        mock_lib.add(BibEntry(entry_type="article", citation_key="key2024", fields={"title": "{Hello}"}))
+        mock_lib.add(
+            BibEntry(entry_type="article", citation_key="key2024", fields={"title": "{Hello}"})
+        )
         mgr = BibtexManager()
         mgr._parse = MagicMock(return_value=mock_lib)
         result = mgr.parse_string(sample_bibtex)
@@ -38,7 +44,9 @@ class TestBibtexManagerParse:
         bib_file = tmp_path / "test.bib"
         bib_file.write_text(sample_bibtex, encoding="utf-8")
         mock_lib = BibLibrary()
-        mock_lib.add(BibEntry(entry_type="article", citation_key="key2024", fields={"title": "{Hello}"}))
+        mock_lib.add(
+            BibEntry(entry_type="article", citation_key="key2024", fields={"title": "{Hello}"})
+        )
         mock_lib.file_path = str(bib_file.resolve())
         mgr = BibtexManager()
         mgr._parse = MagicMock(return_value=mock_lib)
@@ -87,7 +95,9 @@ class TestBibtexManagerValidate:
         assert len(issues) == 0
 
     def test_missing_title_warning(self):
-        entry = BibEntry(entry_type="article", citation_key="k", fields={"author": "A", "year": "2020"})
+        entry = BibEntry(
+            entry_type="article", citation_key="k", fields={"author": "A", "year": "2020"}
+        )
         lib = BibLibrary()
         lib.add(entry)
         mgr = BibtexManager()
@@ -97,7 +107,9 @@ class TestBibtexManagerValidate:
         assert titles[0]["severity"] == "warning"
 
     def test_missing_author_warning(self):
-        entry = BibEntry(entry_type="article", citation_key="k", fields={"title": "T", "year": "2020"})
+        entry = BibEntry(
+            entry_type="article", citation_key="k", fields={"title": "T", "year": "2020"}
+        )
         lib = BibLibrary()
         lib.add(entry)
         mgr = BibtexManager()
@@ -146,7 +158,9 @@ class TestBibtexManagerEnrich:
         lib = BibLibrary()
         lib.add(entry)
         mgr = BibtexManager()
-        with patch("pyeuropepmc.features.bibliography.reference.ReferenceResolver") as MockResolver:
+        with patch(
+            "pyeuropepmc.features.bibliography.reference.ReferenceResolver"
+        ) as MockResolver:
             resolver = MockResolver.return_value
             resolver.resolve_doi.return_value = None
             enriched = mgr.enrich_entries(lib)

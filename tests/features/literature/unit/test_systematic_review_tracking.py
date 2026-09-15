@@ -47,7 +47,7 @@ class TestSystematicReviewTracking:
         log = start_search("Test Review")
 
         qb = QueryBuilder()
-        query = (
+        (
             qb.keyword("CRISPR", field="title")
             .and_()
             .date_range(start_year=2020, end_year=2023)
@@ -224,7 +224,7 @@ class TestSystematicReviewTracking:
         log = start_search("Complex Query Test")
 
         qb = QueryBuilder()
-        query = (
+        (
             qb.keyword("cancer", field="title")
             .or_()
             .keyword("tumor", field="title")
@@ -274,9 +274,7 @@ class TestSystematicReviewIntegration:
 
             # Search Europe PMC
             qb1 = QueryBuilder()
-            qb1.keyword("cancer immunotherapy").and_().date_range(
-                start_year=2020, end_year=2024
-            )
+            qb1.keyword("cancer immunotherapy").and_().date_range(start_year=2020, end_year=2024)
             qb1.log_to_search(
                 log,
                 database="Europe PMC",

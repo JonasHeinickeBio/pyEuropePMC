@@ -8,13 +8,6 @@ from urllib.parse import urlparse
 import pytest
 from rdflib import Graph
 
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = [
-    pytest.mark.functional,
-    pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"),
-]
-
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
@@ -24,6 +17,14 @@ from pyeuropepmc.mappers.converters import (
     convert_search_to_rdf,
     convert_xml_to_rdf,
 )
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = [
+    pytest.mark.functional,
+    pytest.mark.skipif(
+        not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+    ),
+]
 
 
 @pytest.fixture
@@ -47,7 +48,7 @@ def sample_search_data():
             "authors": ["Dr. Carol Wilson"],
             "abstractText": "We developed novel methods for analyzing biological networks...",
             "keywords": ["network analysis", "biological data", "graph algorithms"],
-        }
+        },
     ]
 
 
@@ -68,7 +69,7 @@ def sample_xml_data():
                     "first_name": "Alice",
                     "last_name": "Johnson",
                     "orcid": "0000-0001-2345-6789",
-                    "affiliation": "Department of Bioinformatics, University of Science"
+                    "affiliation": "Department of Bioinformatics, University of Science",
                 }
             ],
             "keywords": ["protein-protein interaction", "network analysis"],
@@ -78,7 +79,7 @@ def sample_xml_data():
                 "full_name": "Dr. Alice Johnson",
                 "orcid": "0000-0001-2345-6789",
                 "affiliation_text": "Department of Bioinformatics, University of Science",
-                "email": "alice.johnson@university.edu"
+                "email": "alice.johnson@university.edu",
             }
         ],
         "sections": [
@@ -93,7 +94,7 @@ def sample_xml_data():
                 "content": "We collected PPI data from multiple databases including STRING and BioGRID...",
                 "begin_index": 501,
                 "end_index": 1200,
-            }
+            },
         ],
         "references": [
             {
@@ -101,7 +102,7 @@ def sample_xml_data():
                 "title": "Protein interaction databases",
                 "publication_year": 2020,
             }
-        ]
+        ],
     }
 
 
@@ -126,20 +127,21 @@ def sample_enrichment_data():
                 "h_index": 15,
                 "citation_count": 1250,
             }
-        ]
+        ],
     }
 
 
 @pytest.mark.slow
 class TestConvertersEndToEnd:
-
     def test_search_to_rdf_complete_conversion(self, sample_search_data):
         """Test complete conversion of search results to RDF."""
         graph = convert_search_to_rdf(sample_search_data)
 
         # Verify graph structure
         assert isinstance(graph, Graph)
-        assert len(graph) > 10  # Should have content (reduced expectation for simplified test data)
+        assert (
+            len(graph) > 10
+        )  # Should have content (reduced expectation for simplified test data)
 
         # Check for expected triples
         triples = list(graph)
@@ -186,7 +188,9 @@ class TestConvertersEndToEnd:
         # Just check that we have some triples
         assert len(triples) > 0
 
-    def test_pipeline_conversion_combined_sources(self, sample_search_data, sample_xml_data, sample_enrichment_data):
+    def test_pipeline_conversion_combined_sources(
+        self, sample_search_data, sample_xml_data, sample_enrichment_data
+    ):
         """Test pipeline conversion combining all data sources."""
         graph = convert_pipeline_to_rdf(
             search_results=sample_search_data,
@@ -243,7 +247,7 @@ class TestConvertersEndToEnd:
             "timestamp": "2024-01-15T12:00:00Z",
             "method": "test_conversion",
             "source": "functional_test",
-            "quality": {"validation_passed": True, "completeness_score": 0.95}
+            "quality": {"validation_passed": True, "completeness_score": 0.95},
         }
 
         graph = convert_search_to_rdf(sample_search_data, extraction_info=extraction_info)
@@ -253,7 +257,9 @@ class TestConvertersEndToEnd:
 
         # Check for provenance triples
         triples = list(graph)
-        prov_triples = [t for t in triples if "prov" in str(t[1]) or "generatedAtTime" in str(t[1])]
+        prov_triples = [
+            t for t in triples if "prov" in str(t[1]) or "generatedAtTime" in str(t[1])
+        ]
         assert len(prov_triples) > 0
 
 
@@ -306,8 +312,7 @@ class TestConvertersCachingIntegration:
     def test_pipeline_conversion_with_cache(self, sample_search_data, mock_cache_backend):
         """Test pipeline conversion with cache backend."""
         graph = convert_pipeline_to_rdf(
-            search_results=sample_search_data,
-            cache_backend=mock_cache_backend
+            search_results=sample_search_data, cache_backend=mock_cache_backend
         )
 
         assert isinstance(graph, Graph)
@@ -378,15 +383,17 @@ class TestConvertersPerformance:
         # Create large dataset
         large_search_data = []
         for i in range(100):
-            large_search_data.append({
-                "doi": f"10.1234/paper{i:03d}",
-                "title": f"Research Paper {i}",
-                "journalTitle": "Test Journal",
-                "pubYear": 2024,
-                "authors": [f"Author {i}"],
-                "abstractText": f"This is abstract {i} with some content...",
-                "keywords": [f"keyword{i}", f"topic{i}"],
-            })
+            large_search_data.append(
+                {
+                    "doi": f"10.1234/paper{i:03d}",
+                    "title": f"Research Paper {i}",
+                    "journalTitle": "Test Journal",
+                    "pubYear": 2024,
+                    "authors": [f"Author {i}"],
+                    "abstractText": f"This is abstract {i} with some content...",
+                    "keywords": [f"keyword{i}", f"topic{i}"],
+                }
+            )
 
         graph = convert_search_to_rdf(large_search_data)
 
@@ -403,15 +410,17 @@ class TestConvertersPerformance:
         # Create moderately large dataset
         large_data = []
         for i in range(50):
-            large_data.append({
-                "doi": f"10.1234/large{i:03d}",
-                "title": f"Large Scale Paper {i}",
-                "journalTitle": "Large Journal",
-                "pubYear": 2024,
-                "authors": [f"Researcher {i}", f"Collaborator {i}"],
-                "abstractText": "This is a comprehensive study..." * 10,  # Longer abstract
-                "keywords": [f"large_scale_{i}", f"comprehensive_{i}", f"study_{i}"],
-            })
+            large_data.append(
+                {
+                    "doi": f"10.1234/large{i:03d}",
+                    "title": f"Large Scale Paper {i}",
+                    "journalTitle": "Large Journal",
+                    "pubYear": 2024,
+                    "authors": [f"Researcher {i}", f"Collaborator {i}"],
+                    "abstractText": "This is a comprehensive study..." * 10,  # Longer abstract
+                    "keywords": [f"large_scale_{i}", f"comprehensive_{i}", f"study_{i}"],
+                }
+            )
 
         # Should complete without memory issues
         graph = convert_search_to_rdf(large_data)
@@ -469,8 +478,7 @@ class TestConvertersSerialization:
     def test_pipeline_serialization_consistency(self, sample_search_data, sample_xml_data):
         """Test that pipeline results serialize consistently."""
         graph = convert_pipeline_to_rdf(
-            search_results=sample_search_data,
-            xml_data=sample_xml_data
+            search_results=sample_search_data, xml_data=sample_xml_data
         )
 
         # Serialize to different formats
@@ -489,9 +497,9 @@ class TestConvertersSerialization:
             host = urlparse(str(term)).netloc.lower()
             return host == "doi.org" or host.endswith(".doi.org")
 
-        assert any(
-            _is_doi_org(s) or _is_doi_org(p) or _is_doi_org(o) for s, p, o, *_ in graph
-        ), "Expected a doi.org URI somewhere in the graph"
+        assert any(_is_doi_org(s) or _is_doi_org(p) or _is_doi_org(o) for s, p, o, *_ in graph), (
+            "Expected a doi.org URI somewhere in the graph"
+        )
 
 
 @pytest.mark.slow

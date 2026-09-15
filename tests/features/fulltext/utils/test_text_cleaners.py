@@ -1,5 +1,4 @@
 """Tests for text cleaning utilities."""
-import pytest
 
 from pyeuropepmc.features.fulltext.utils.text_cleaners import TextCleaner
 
@@ -43,7 +42,7 @@ class TestTextCleaner:
     def test_clean_country_name_no_country(self):
         """Test cleaning None or empty country."""
         assert TextCleaner.clean_country_name("") == ""
-        assert TextCleaner.clean_country_name(None) is None   # type: ignore[arg-type]
+        assert TextCleaner.clean_country_name(None) is None  # type: ignore[arg-type]
 
     def test_clean_country_name_removes_trailing_punctuation(self):
         """Test that trailing punctuation is removed from country names."""

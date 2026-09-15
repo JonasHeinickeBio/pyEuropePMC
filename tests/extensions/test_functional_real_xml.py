@@ -11,7 +11,6 @@ Tests all extension modules against real Europe PMC articles:
 
 from __future__ import annotations
 
-import json
 import os
 from pathlib import Path
 from xml.etree import ElementTree as ET  # nosec B405
@@ -115,7 +114,7 @@ SIMPLE_XML = """<?xml version="1.0"?>
 
 def load_real_xml(filepath: Path) -> str:
     """Load a real XML file and return its content."""
-    with open(filepath, "r", encoding="utf-8") as f:
+    with open(filepath, encoding="utf-8") as f:
         return f.read()
 
 
@@ -133,10 +132,7 @@ def get_article_id_from_file(filepath: Path) -> str:
 
 
 @pytest.fixture(
-    params=[
-        (str(p), load_real_xml(p), get_article_id_from_file(p))
-        for p in REAL_XML_FILES
-    ]
+    params=[(str(p), load_real_xml(p), get_article_id_from_file(p)) for p in REAL_XML_FILES]
     + [("synthetic", SIMPLE_XML, "PMC9999999")],
     ids=[p.stem for p in REAL_XML_FILES] + ["synthetic"],
 )
@@ -183,9 +179,17 @@ class TestFunctionalRealXML:
                 assert "type" in block, f"{label}: block missing type"
                 # Verify known types
                 assert block["type"] in (
-                    "paragraph", "heading", "list", "formula",
-                    "figure", "table", "code", "boxed_text",
-                    "figure_ref", "table_ref", "mathml",
+                    "paragraph",
+                    "heading",
+                    "list",
+                    "formula",
+                    "figure",
+                    "table",
+                    "code",
+                    "boxed_text",
+                    "figure_ref",
+                    "table_ref",
+                    "mathml",
                     "unknown_block",
                 ), f"{label}: unknown block type: {block['type']}"
 
@@ -195,7 +199,6 @@ class TestFunctionalRealXML:
 
     def test_content_block_roundtrip(self, article_data):
         """Verify structured content can be serialized and deserialized."""
-        from pyeuropepmc.features.fulltext.extensions.content_blocks import ContentBlock
 
         label, xml_content, article_id = article_data
         parser = FullTextXMLParser(xml_content)
@@ -227,11 +230,9 @@ class TestFunctionalRealXML:
 
             # Test delimiter wrapping
             wrapped = converter.convert(math_ml)
-            assert wrapped.startswith(
-                "$"
-            ) or wrapped.startswith(
-                "$$"
-            ), f"{label}: should start with math delimiter"
+            assert wrapped.startswith("$") or wrapped.startswith("$$"), (
+                f"{label}: should start with math delimiter"
+            )
 
     def test_jats4r_validation(self, article_data):
         """Verify JATS4R validation runs on all articles."""
@@ -257,7 +258,6 @@ class TestFunctionalRealXML:
         """Verify peer review extraction handles all articles gracefully."""
         from pyeuropepmc.features.fulltext.extensions.peer_review import (
             PeerReviewExtractor,
-            PeerReviewType,
         )
 
         label, xml_content, article_id = article_data
@@ -311,9 +311,9 @@ class TestFunctionalRealXML:
     def test_local_processing_helpers(self, article_data, tmp_path):
         """Verify local processing helpers work with real XML."""
         from pyeuropepmc.features.fulltext.extensions.local_processing import (
+            LocalXMLProcessor,
             extract_article_id_from_xml,
             parse_xml_file,
-            LocalXMLProcessor,
         )
 
         label, xml_content, article_id = article_data
@@ -341,10 +341,10 @@ class TestFunctionalRealXML:
         pytest.importorskip("linkml_runtime")
         from pyeuropepmc.features.fulltext.extensions.linkml_models import (
             ArticleContent,
+            ArticleMetadata,
             ContentBlock,
             ContentBlockType,
             StructuredSection,
-            ArticleMetadata,
         )
 
         label, xml_content, article_id = article_data
@@ -421,10 +421,7 @@ class TestFunctionalRealXML:
         # Flat text should be a subset of structured text (which preserves more)
         flat_text = " ".join(s["content"] for s in flat)
         structured_text = " ".join(
-            b.get("text", "")
-            for s in structured
-            for b in s["content"]
-            if b.get("text")
+            b.get("text", "") for s in structured for b in s["content"] if b.get("text")
         )
 
         # Structured may have more text (from lists, formulas, etc.)
@@ -443,7 +440,7 @@ class TestArticleReport:
     def test_report_articles(self):
         """Print information about what articles were tested."""
         print(f"\nTesting with {len(REAL_XML_FILES)} real XML files:")
-        for i, (fpath, pmcid) in enumerate(zip(REAL_XML_FILES, PMC_IDS)):
+        for i, (fpath, pmcid) in enumerate(zip(REAL_XML_FILES, PMC_IDS, strict=False)):
             size_kb = fpath.stat().st_size / 1024
-            print(f"  {i+1}. {pmcid}: {fpath.name} ({size_kb:.0f} KB)")
-        print(f"  {len(REAL_XML_FILES)+1}. synthetic: PMC9999999 (test fixture)")
+            print(f"  {i + 1}. {pmcid}: {fpath.name} ({size_kb:.0f} KB)")
+        print(f"  {len(REAL_XML_FILES) + 1}. synthetic: PMC9999999 (test fixture)")

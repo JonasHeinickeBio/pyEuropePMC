@@ -3,8 +3,8 @@ LiteratureSearchResponse)."""
 
 from __future__ import annotations
 
-import pytest
 from pydantic import ValidationError
+import pytest
 
 from pyeuropepmc.models.literature import (
     Author,
@@ -41,9 +41,7 @@ class TestAuthor:
 
 class TestLiteratureResultValidators:
     def test_doi_normalized_lowercase_and_stripped(self):
-        r = LiteratureResult(
-            doi="https://doi.org/10.1234/ABC", source="pubmed", source_id="1"
-        )
+        r = LiteratureResult(doi="https://doi.org/10.1234/ABC", source="pubmed", source_id="1")
         assert r.doi == "10.1234/abc"
 
     def test_doi_none(self):

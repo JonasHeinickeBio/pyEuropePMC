@@ -2,16 +2,14 @@
 Unit tests for cache backend functionality.
 """
 
+from pathlib import Path
 import tempfile
 import time
-from pathlib import Path
-from unittest.mock import Mock, patch
 
 import pytest
 
 from pyeuropepmc.cache.cache import (
     CACHETOOLS_AVAILABLE,
-    DISKCACHE_AVAILABLE,
     CacheBackend,
     CacheConfig,
     CacheDataType,
@@ -34,7 +32,7 @@ class TestCacheConfig:
     def test_cache_config_defaults(self):
         """Test CacheConfig with default values."""
         config = CacheConfig()
-        assert config.enabled is (True if CACHETOOLS_AVAILABLE else False)
+        assert config.enabled is bool(CACHETOOLS_AVAILABLE)
         assert config.ttl == 86400
         assert config.size_limit_mb == 500
         assert config.cache_dir is not None
@@ -67,17 +65,17 @@ class TestCacheConfig:
 
     def test_cache_config_negative_ttl_raises_error(self):
         """Test negative TTL raises ConfigurationError."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             CacheConfig(ttl=-1)
 
     def test_cache_config_zero_size_limit_raises_error(self):
         """Test size_limit_mb < 1 raises ConfigurationError."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             CacheConfig(size_limit_mb=0)
 
     def test_cache_config_invalid_namespace_version_raises_error(self):
         """Test namespace_version < 1 raises ConfigurationError."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             CacheConfig(namespace_version=0)
 
 

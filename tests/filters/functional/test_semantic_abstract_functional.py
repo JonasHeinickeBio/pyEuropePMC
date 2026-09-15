@@ -36,12 +36,11 @@ def make_sample_papers():
     ]
 
 
-
-from collections.abc import Sequence
-from typing import Any
+from collections.abc import Sequence  # noqa: E402
+from typing import Any  # noqa: E402
 
 pytest.importorskip("numpy")
-import numpy as np
+import numpy as np  # noqa: E402
 
 
 class FakeSemanticModel:
@@ -105,7 +104,7 @@ def test_semantic_abstract_with_real_model() -> None:
         papers,
         required_abstract_terms={"immunotherapy"},
         use_semantic_abstract=True,
-            semantic_model=as_semantic_model(model),
+        semantic_model=as_semantic_model(model),
         semantic_threshold=0.6,
         open_access=None,
     )
@@ -126,7 +125,7 @@ def test_semantic_abstract_or_with_fake_model() -> None:
         papers,
         required_abstract_terms={"tumor", "diabetes"},
         use_semantic_abstract=True,
-            semantic_model=as_semantic_model(model),
+        semantic_model=as_semantic_model(model),
         semantic_threshold=0.6,
         open_access=None,
     )
@@ -146,7 +145,6 @@ def test_semantic_abstract_or_with_real_model() -> None:
     except Exception:
         pytest.skip("sentence-transformers not available")
 
-
     model = SentenceTransformer("all-MiniLM-L6-v2")
     papers: list[dict[str, Any]] = make_sample_papers()
 
@@ -154,13 +152,14 @@ def test_semantic_abstract_or_with_real_model() -> None:
         papers,
         required_abstract_terms={"immunotherapy", "diabetes"},
         use_semantic_abstract=True,
-            semantic_model=as_semantic_model(model),
+        semantic_model=as_semantic_model(model),
         semantic_threshold=0.55,
         open_access=None,
     )
 
     assert any(p["id"] == "S1" for p in filtered)
     assert any(p["id"] == "S2" for p in filtered)
+
 
 @pytest.mark.model
 @pytest.mark.skip(reason="Semantic abstract matching not yet implemented in filter_pmc_papers")
@@ -181,7 +180,15 @@ def test_semantic_abstract_empty_papers() -> None:
 @pytest.mark.skip(reason="Semantic abstract matching not yet implemented in filter_pmc_papers")
 def test_semantic_abstract_missing_abstract() -> None:
     model = FakeSemanticModel()
-    papers = [{"id": "S3", "title": "No abstract", "pubYear": "2022", "isOpenAccess": "Y", "citedByCount": "5"}]
+    papers = [
+        {
+            "id": "S3",
+            "title": "No abstract",
+            "pubYear": "2022",
+            "isOpenAccess": "Y",
+            "citedByCount": "5",
+        }
+    ]
     filtered = filter_pmc_papers(
         papers,
         required_abstract_terms={"tumor"},
@@ -199,6 +206,7 @@ def test_semantic_abstract_with_broken_model() -> None:
     class BrokenModel:
         def encode(self, *a, **k):
             raise RuntimeError("broken model")
+
     model = BrokenModel()
     papers = make_sample_papers()
     filtered = filter_pmc_papers(

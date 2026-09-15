@@ -25,7 +25,7 @@ class TestBaseEntity:
             label="Test Entity",
             source_uri="urn:test:123",
             confidence=0.95,
-            types=["ex:TestType"]
+            types=["ex:TestType"],
         )
         assert entity.id == "test-123"
         assert entity.label == "Test Entity"
@@ -90,7 +90,7 @@ class TestAuthorEntity:
             first_name="John",
             last_name="Smith",
             orcid="0000-0001-2345-6789",
-            affiliation_text="Test University"
+            affiliation_text="Test University",
         )
         assert author.full_name == "John Smith"
         assert author.first_name == "John"
@@ -132,7 +132,7 @@ class TestAuthorEntity:
             full_name="  John Smith  ",
             first_name="  John  ",
             last_name="  Smith  ",
-            affiliation_text="  University  "
+            affiliation_text="  University  ",
         )
         author.normalize()
         assert author.full_name == "John Smith"
@@ -149,7 +149,7 @@ class TestFigureEntity:
         figure = FigureEntity(
             caption="Sample scatter plot showing correlation",
             figure_label="Figure 1",
-            graphic_uri="https://example.com/figure1.png"
+            graphic_uri="https://example.com/figure1.png",
         )
         assert figure.caption == "Sample scatter plot showing correlation"
         assert figure.figure_label == "Figure 1"
@@ -183,7 +183,7 @@ class TestFigureEntity:
         figure = FigureEntity(
             caption="  Sample plot  ",
             figure_label="  Figure 1  ",
-            graphic_uri="  https://example.com/fig.png  "
+            graphic_uri="  https://example.com/fig.png  ",
         )
         figure.normalize()
         assert figure.caption == "Sample plot"
@@ -211,7 +211,7 @@ class TestPaperEntity:
             issue="5",
             pages="100-110",
             pub_date="2021-01-01",
-            keywords=["test", "article"]
+            keywords=["test", "article"],
         )
         assert paper.pmcid == "PMC1234567"
         assert paper.doi == "10.1234/test.2021.001"
@@ -265,7 +265,7 @@ class TestPaperEntity:
             doi="HTTPS://DOI.ORG/10.1234/TEST.2021.001",
             title="  Test Article  ",
             journal="  Journal  ",
-            pmcid="  PMC123  "
+            pmcid="  PMC123  ",
         )
         paper.normalize()
         assert paper.doi == "10.1234/test.2021.001"
@@ -344,7 +344,7 @@ class TestReferenceEntity:
             volume="590",
             pages="123-456",
             doi="10.1038/nature12345",
-            authors="Smith J, Doe J"
+            authors="Smith J, Doe J",
         )
         assert ref.title == "Cited Article"
         assert ref.journal == "Nature"
@@ -391,7 +391,7 @@ class TestReferenceEntity:
             doi="HTTPS://DOI.ORG/10.1038/NATURE12345",
             title="  Cited Article  ",
             journal="  Nature  ",
-            authors="  Smith J  "
+            authors="  Smith J  ",
         )
         ref.normalize()
         assert ref.doi == "10.1038/nature12345"
@@ -409,7 +409,7 @@ class TestSectionEntity:
             title="Introduction",
             content="This is the introduction section content.",
             begin_index=0,
-            end_index=50
+            end_index=50,
         )
         assert section.title == "Introduction"
         assert section.content == "This is the introduction section content."
@@ -448,10 +448,7 @@ class TestSectionEntity:
     def test_normalize_trims_whitespace(self):
         """Test normalization trims whitespace."""
         section = SectionEntity(
-            title="  Introduction  ",
-            content="  This is content.  ",
-            begin_index=0,
-            end_index=50
+            title="  Introduction  ", content="  This is content.  ", begin_index=0, end_index=50
         )
         section.normalize()
         assert section.title == "Introduction"
@@ -468,7 +465,7 @@ class TestTableEntity:
             table_label="Table 1",
             caption="Sample data table",
             headers=["Name", "Value"],
-            rows=rows
+            rows=rows,
         )
         assert table.table_label == "Table 1"
         assert table.caption == "Sample data table"
@@ -496,10 +493,7 @@ class TestTableEntity:
 
     def test_validate_success_consistent_columns(self):
         """Test validation passes with consistent column counts."""
-        rows = [
-            TableRowEntity(cells=["A", "1"]),
-            TableRowEntity(cells=["B", "2"])
-        ]
+        rows = [TableRowEntity(cells=["A", "1"]), TableRowEntity(cells=["B", "2"])]
         table = TableEntity(headers=["Name", "Value"], rows=rows)
         table.validate()  # Should not raise
 
@@ -511,10 +505,7 @@ class TestTableEntity:
 
     def test_validate_failure_inconsistent_columns(self):
         """Test validation fails with inconsistent column counts."""
-        rows = [
-            TableRowEntity(cells=["A", "1"]),
-            TableRowEntity(cells=["B", "2", "extra"])
-        ]
+        rows = [TableRowEntity(cells=["A", "1"]), TableRowEntity(cells=["B", "2", "extra"])]
         table = TableEntity(rows=rows)
         with pytest.raises(ValueError, match="must have the same number of columns"):
             table.validate()
@@ -533,7 +524,7 @@ class TestTableEntity:
             table_label="  Table 1  ",
             caption="  Sample table  ",
             headers=["  Name  ", "  Value  "],
-            rows=rows
+            rows=rows,
         )
         table.normalize()
         assert table.table_label == "Table 1"
@@ -543,8 +534,10 @@ class TestTableEntity:
 
     def test_validate_row_begin_end_indices(self):
         """Test validation of row begin_index and end_index."""
+
         class RowWithPositions:
             """Duck-typed row like object with index attributes."""
+
             def __init__(self, cells, begin_index=None, end_index=None):
                 self.cells = cells
                 self.begin_index = begin_index
@@ -570,8 +563,7 @@ class TestTableEntity:
     def test_validate_headers_trimmed_when_empty(self):
         """Test normalize removes empty headers."""
         table = TableEntity(
-            headers=["Name", "", "Value", ""],
-            rows=[TableRowEntity(cells=["A", "1", "B", "2"])]
+            headers=["Name", "", "Value", ""], rows=[TableRowEntity(cells=["A", "1", "B", "2"])]
         )
         table.normalize()
         assert table.headers == ["Name", "Value"]
@@ -640,7 +632,7 @@ class TestInstitutionEntity:
             fundref_id="501100000001",
             website="https://example.edu",
             established=1850,
-            domains=["example.edu"]
+            domains=["example.edu"],
         )
         assert institution.display_name == "University of Example"
         assert institution.ror_id == "https://ror.org/abc123"
@@ -686,7 +678,7 @@ class TestInstitutionEntity:
         institution = InstitutionEntity(
             display_name="  Test University  ",
             ror_id="  https://ror.org/abc  ",
-            city="  Test City  "
+            city="  Test City  ",
         )
         institution.normalize()
         assert institution.display_name == "Test University"
@@ -729,9 +721,9 @@ class TestInstitutionEntity:
                 {"type": "grid", "preferred": "grid.258151.a", "all": ["grid.258151.a"]},
                 {"type": "isni", "all": ["0000 0001 0708 1323"]},
                 {"type": "wikidata", "all": ["Q6191676"]},
-                {"type": "fundref", "all": ["501100004028"]}
+                {"type": "fundref", "all": ["501100004028"]},
             ],
-            "domains": ["jiangnan.edu.cn"]
+            "domains": ["jiangnan.edu.cn"],
         }
         institution = InstitutionEntity.from_enrichment_dict(inst_dict)
         assert institution.display_name == "Jiangnan University"
@@ -748,9 +740,7 @@ class TestInstitutionEntity:
 
     def test_from_enrichment_dict_minimal(self):
         """Test creating InstitutionEntity from minimal enrichment dict."""
-        inst_dict = {
-            "display_name": "Test University"
-        }
+        inst_dict = {"display_name": "Test University"}
         institution = InstitutionEntity.from_enrichment_dict(inst_dict)
         assert institution.display_name == "Test University"
         assert institution.ror_id is None

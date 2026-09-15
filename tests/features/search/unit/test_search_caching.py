@@ -94,10 +94,12 @@ class TestSearchClientCacheBehavior:
         """Test that first request is cached, second uses cache."""
         mock_response = {
             "hitCount": 1,
-            "resultList": {"result": [{"id": "12345", "title": "Test"}]}
+            "resultList": {"result": [{"id": "12345", "title": "Test"}]},
         }
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response) as mock_req:
+        with patch.object(
+            client_with_cache, "_make_request", return_value=mock_response
+        ) as mock_req:
             # First call - cache miss
             result1 = client_with_cache.search("cancer")
             assert result1 == mock_response
@@ -117,7 +119,9 @@ class TestSearchClientCacheBehavior:
         mock_response1 = {"hitCount": 1, "query": "cancer"}
         mock_response2 = {"hitCount": 2, "query": "diabetes"}
 
-        with patch.object(client_with_cache, '_make_request', side_effect=[mock_response1, mock_response2]) as mock_req:
+        with patch.object(
+            client_with_cache, "_make_request", side_effect=[mock_response1, mock_response2]
+        ) as mock_req:
             result1 = client_with_cache.search("cancer")
             result2 = client_with_cache.search("diabetes")
 
@@ -129,9 +133,11 @@ class TestSearchClientCacheBehavior:
         mock_response1 = {"hitCount": 1, "pageSize": 25}
         mock_response2 = {"hitCount": 1, "pageSize": 100}
 
-        with patch.object(client_with_cache, '_make_request', side_effect=[mock_response1, mock_response2]) as mock_req:
-            result1 = client_with_cache.search("cancer", pageSize=25)
-            result2 = client_with_cache.search("cancer", pageSize=100)
+        with patch.object(
+            client_with_cache, "_make_request", side_effect=[mock_response1, mock_response2]
+        ) as mock_req:
+            client_with_cache.search("cancer", pageSize=25)
+            client_with_cache.search("cancer", pageSize=100)
 
             assert mock_req.call_count == 2  # Different parameters
 
@@ -139,9 +145,11 @@ class TestSearchClientCacheBehavior:
         """Test that caching is disabled when config is not provided."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(client_no_cache, '_make_request', return_value=mock_response) as mock_req:
-            result1 = client_no_cache.search("cancer")
-            result2 = client_no_cache.search("cancer")
+        with patch.object(
+            client_no_cache, "_make_request", return_value=mock_response
+        ) as mock_req:
+            client_no_cache.search("cancer")
+            client_no_cache.search("cancer")
 
             # Should make two requests (no caching)
             assert mock_req.call_count == 2
@@ -164,9 +172,11 @@ class TestSearchPostCaching:
         """Test that POST searches are cached."""
         mock_response = {"hitCount": 1, "method": "POST"}
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response) as mock_req:
+        with patch.object(
+            client_with_cache, "_make_request", return_value=mock_response
+        ) as mock_req:
             # First call
-            result1 = client_with_cache.search_post("cancer")
+            client_with_cache.search_post("cancer")
             assert mock_req.call_count == 1
 
             # Second call - should use cache
@@ -182,7 +192,9 @@ class TestSearchPostCaching:
         def mock_request(endpoint, params, method):
             return mock_response_get if method == "GET" else mock_response_post
 
-        with patch.object(client_with_cache, '_make_request', side_effect=mock_request) as mock_req:
+        with patch.object(
+            client_with_cache, "_make_request", side_effect=mock_request
+        ) as mock_req:
             result_get = client_with_cache.search("cancer")
             result_post = client_with_cache.search_post("cancer")
 
@@ -227,7 +239,7 @@ class TestCacheManagementMethods:
         """Test clearing cache."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response):
+        with patch.object(client_with_cache, "_make_request", return_value=mock_response):
             # Make a request to populate cache
             client_with_cache.search("cancer")
 
@@ -243,7 +255,7 @@ class TestCacheManagementMethods:
         """Test invalidating all search caches."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response):
+        with patch.object(client_with_cache, "_make_request", return_value=mock_response):
             # Make multiple requests
             client_with_cache.search("cancer")
             client_with_cache.search("diabetes")
@@ -256,7 +268,7 @@ class TestCacheManagementMethods:
         """Test invalidating search caches with pattern."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response):
+        with patch.object(client_with_cache, "_make_request", return_value=mock_response):
             client_with_cache.search("cancer")
 
             # Invalidate with pattern
@@ -304,7 +316,7 @@ class TestBackwardCompatibility:
         client = SearchClient()
         mock_response = {"hitCount": 1}
 
-        with patch.object(client, '_make_request', return_value=mock_response):
+        with patch.object(client, "_make_request", return_value=mock_response):
             # All existing search patterns should work
             result = client.search("cancer")
             assert result == mock_response
@@ -345,17 +357,19 @@ class TestCacheErrorHandling:
         mock_response = {"hitCount": 1}
 
         # Simulate cache error
-        with patch.object(client_with_cache._cache, 'get', side_effect=Exception("Cache error")):
-            with patch.object(client_with_cache, '_make_request', return_value=mock_response):
-                # Search should still work despite cache error
-                result = client_with_cache.search("cancer")
-                assert result == mock_response
+        with (
+            patch.object(client_with_cache._cache, "get", side_effect=Exception("Cache error")),
+            patch.object(client_with_cache, "_make_request", return_value=mock_response),
+        ):
+            # Search should still work despite cache error
+            result = client_with_cache.search("cancer")
+            assert result == mock_response
 
     def test_search_error_not_cached(self, client_with_cache):
         """Test that search errors are not cached."""
         from pyeuropepmc.core.exceptions import SearchError
 
-        with patch.object(client_with_cache, '_make_request', side_effect=SearchError):
+        with patch.object(client_with_cache, "_make_request", side_effect=SearchError):
             # First call raises error
             with pytest.raises(SearchError):
                 client_with_cache.search("invalid")
@@ -382,7 +396,9 @@ class TestCacheKeyNormalization:
         """Test that parameter order doesn't affect caching."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response) as mock_req:
+        with patch.object(
+            client_with_cache, "_make_request", return_value=mock_response
+        ) as mock_req:
             # Same parameters in different order
             result1 = client_with_cache.search("cancer", pageSize=25, synonym=False)
             result2 = client_with_cache.search("cancer", synonym=False, pageSize=25)
@@ -395,7 +411,7 @@ class TestCacheKeyNormalization:
         """Test that whitespace in queries is normalized."""
         mock_response = {"hitCount": 1}
 
-        with patch.object(client_with_cache, '_make_request', return_value=mock_response) as mock_req:
+        with patch.object(client_with_cache, "_make_request", return_value=mock_response):
             # Queries with different whitespace
             result1 = client_with_cache.search("cancer  treatment")
             result2 = client_with_cache.search("cancer treatment")

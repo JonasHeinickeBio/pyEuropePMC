@@ -81,9 +81,12 @@ def test_close(client):
 
 @pytest.mark.unit
 def test_get_request_exception_logs_and_raises(client, caplog):
-    with patch.object(
-        client.session, "get", side_effect=requests.RequestException("Timeout error")
-    ), caplog.at_level("ERROR"):
+    with (
+        patch.object(
+            client.session, "get", side_effect=requests.RequestException("Timeout error")
+        ),
+        caplog.at_level("ERROR"),
+    ):
         with pytest.raises(APIClientError) as exc_info:
             client._get("timeout_endpoint")
 
@@ -96,17 +99,20 @@ def test_get_request_exception_logs_and_raises(client, caplog):
         assert "Network connection failed" in error_str
 
         # Check that the URL and error details are in the context
-        assert "timeout_endpoint" in error_str or exc_info.value.context.get(
-            "url", ""
-        ).endswith("timeout_endpoint")
+        assert "timeout_endpoint" in error_str or exc_info.value.context.get("url", "").endswith(
+            "timeout_endpoint"
+        )
         assert "Timeout error" in str(exc_info.value.context.get("error", ""))
 
 
 @pytest.mark.unit
 def test_post_request_exception_logs_and_raises(client, caplog):
-    with patch.object(
-        client.session, "post", side_effect=requests.RequestException("Timeout error")
-    ), caplog.at_level("ERROR"):
+    with (
+        patch.object(
+            client.session, "post", side_effect=requests.RequestException("Timeout error")
+        ),
+        caplog.at_level("ERROR"),
+    ):
         with pytest.raises(APIClientError) as exc_info:
             client._post("timeout_endpoint", data={"foo": "bar"})
 
@@ -119,9 +125,9 @@ def test_post_request_exception_logs_and_raises(client, caplog):
         assert "Network connection failed" in error_str
 
         # Check that the URL and error details are in the context
-        assert "timeout_endpoint" in error_str or exc_info.value.context.get(
-            "url", ""
-        ).endswith("timeout_endpoint")
+        assert "timeout_endpoint" in error_str or exc_info.value.context.get("url", "").endswith(
+            "timeout_endpoint"
+        )
         assert "Timeout error" in str(exc_info.value.context.get("error", ""))
 
 

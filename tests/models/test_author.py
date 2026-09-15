@@ -1,4 +1,6 @@
 """Tests for the AuthorEntity model."""
+
+import contextlib
 from urllib.parse import urlparse
 
 import pytest
@@ -80,11 +82,10 @@ class TestAuthorEntity:
             full_name="ORCID Author",
             orcid="https://orcid.org/0000-0002-1825-0097",
         )
-        # The validate_and_normalize_orcid returns the ID part
-        try:
+        # validate_and_normalize_orcid returns the ID part, and may raise if the
+        # format is invalid.
+        with contextlib.suppress(Exception):
             author.validate()
-        except Exception:
-            pass  # validate_and_normalize_orcid may raise if format invalid
 
     def test_validate_with_positive_integers(self):
         """Test validate with positive integer fields."""

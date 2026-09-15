@@ -1,6 +1,6 @@
 """Tests for claim writer."""
 
-from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, ClaimType, Verdict
+from pyeuropepmc.claims.models import Claim, ClaimEvidence, ClaimSet, Verdict
 from pyeuropepmc.claims.writer import ClaimWriter
 
 
@@ -48,7 +48,12 @@ class TestClaimWriter:
         claims = [
             Claim(id="c1", text="supported", original_text="s", verdict=Verdict.SUPPORTED),
             Claim(id="c2", text="refuted", original_text="r", verdict=Verdict.REFUTED),
-            Claim(id="c3", text="insufficient", original_text="i", verdict=Verdict.INSUFFICIENT_EVIDENCE),
+            Claim(
+                id="c3",
+                text="insufficient",
+                original_text="i",
+                verdict=Verdict.INSUFFICIENT_EVIDENCE,
+            ),
         ]
         accepted = writer._filter_accepted(claims, {"c1": True, "c2": False})
         # c1 explicitly accepted, c2 explicitly rejected, c3 auto-accepted (not refuted)
@@ -58,8 +63,13 @@ class TestClaimWriter:
     def test_filter_accepted_default_refuted_excluded(self):
         writer = ClaimWriter(llm_enabled=False)
         claims = [
-            Claim(id="c1", text="supported", original_text="s", verdict=Verdict.SUPPORTED,
-                  evidence=[ClaimEvidence(text="e", paper_title="P", authors="A", source="1")]),
+            Claim(
+                id="c1",
+                text="supported",
+                original_text="s",
+                verdict=Verdict.SUPPORTED,
+                evidence=[ClaimEvidence(text="e", paper_title="P", authors="A", source="1")],
+            ),
             Claim(id="c2", text="refuted", original_text="r", verdict=Verdict.REFUTED),
         ]
         accepted = writer._filter_accepted(claims, {})
@@ -70,11 +80,17 @@ class TestClaimWriter:
         writer = ClaimWriter(llm_enabled=False)
         claims = [
             Claim(
-                id="c1", text="claim1", original_text="c1",
+                id="c1",
+                text="claim1",
+                original_text="c1",
                 verdict=Verdict.SUPPORTED,
                 evidence=[
-                    ClaimEvidence(text="e1", paper_title="Paper A", authors="Author A", source="1"),
-                    ClaimEvidence(text="e2", paper_title="Paper A", authors="Author A", source="1"),
+                    ClaimEvidence(
+                        text="e1", paper_title="Paper A", authors="Author A", source="1"
+                    ),
+                    ClaimEvidence(
+                        text="e2", paper_title="Paper A", authors="Author A", source="1"
+                    ),
                 ],
             ),
         ]
@@ -85,7 +101,9 @@ class TestClaimWriter:
         writer = ClaimWriter(llm_enabled=False)
         claims = [
             Claim(
-                id="c1", text="claim text", original_text="claim here",
+                id="c1",
+                text="claim text",
+                original_text="claim here",
                 verdict=Verdict.SUPPORTED,
                 evidence=[
                     ClaimEvidence(text="e", paper_title="Paper", authors="A", source="1"),
@@ -98,8 +116,17 @@ class TestClaimWriter:
 
     def test_convert_bibliography(self):
         writer = ClaimWriter(llm_enabled=False)
-        bib = [{"id": "ref1", "type": "article", "title": "Paper", "author": "Author",
-                "year": "2023", "journal": "Journal", "source": "1"}]
+        bib = [
+            {
+                "id": "ref1",
+                "type": "article",
+                "title": "Paper",
+                "author": "Author",
+                "year": "2023",
+                "journal": "Journal",
+                "source": "1",
+            }
+        ]
         # bibtex format returns as-is
         result = writer._convert_bibliography(bib, "bibtex")
         assert result == bib

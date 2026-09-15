@@ -242,19 +242,19 @@ class TestParseXml:
         """Test parsing invalid XML raises error."""
         xml_str = "<invalid><xml>missing closing tag</invalid>"
 
-        with pytest.raises(Exception):  # ET.ParseError or similar
+        with pytest.raises(Exception):  # ET.ParseError or similar  # noqa: B017
             EuropePMCParser.parse_xml(xml_str)
 
     def test_parse_empty_xml_string(self):
         """Test parsing empty XML string."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             EuropePMCParser.parse_xml("")
 
     def test_parse_malformed_xml(self):
         """Test parsing malformed XML."""
         xml_str = "not xml at all"
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             EuropePMCParser.parse_xml(xml_str)
 
     def test_parse_xml_with_special_characters(self):
@@ -396,7 +396,7 @@ class TestParseDc:
         """Test parsing invalid DC XML raises error."""
         dc_str = "<invalid><xml>missing closing tag</invalid>"
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             EuropePMCParser.parse_dc(dc_str)
 
     def test_parse_dc_xml_duplicate_handling(self):
@@ -449,12 +449,14 @@ class TestParserExceptionHandling:
 
     def test_json_parser_exception_handling(self, caplog):
         """Test that JSON parser handles exceptions gracefully."""
+
         # Create a mock object that will raise an exception during iteration
         class MockDict(dict):
             def get(self, key, default=None):
                 if key == "resultList":
                     raise RuntimeError("Mock exception")
                 return super().get(key, default)
+
         mock_data = MockDict({"hitCount": 1})
         with pytest.raises(ParsingError) as exc_info:
             EuropePMCParser.parse_json(mock_data)

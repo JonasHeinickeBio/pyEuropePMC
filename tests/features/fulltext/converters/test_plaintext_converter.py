@@ -1,6 +1,8 @@
 """Tests for PlaintextConverter."""
-import pytest
+
 from xml.etree import ElementTree as ET
+
+import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.converters.plaintext_converter import PlaintextConverter

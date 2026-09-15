@@ -72,8 +72,8 @@ jobs:
 
           # 1. Run linters and save results
           echo "Running Ruff linter..." | tee -a analysis.log
-          poetry run ruff check src/ --output-format json > analysis_output/ruff_results.json 2>&1 || true
-          poetry run ruff check src/ > analysis_output/ruff_results.txt 2>&1 || true
+          poetry run ruff check src/ tests/ --output-format json > analysis_output/ruff_results.json 2>&1 || true
+          poetry run ruff check src/ tests/ > analysis_output/ruff_results.txt 2>&1 || true
 
           # 2. Run Bandit security checks
           echo "Running Bandit security checks..." | tee -a analysis.log

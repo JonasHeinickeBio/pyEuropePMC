@@ -41,7 +41,7 @@ class TestFullTextXMLParserFunctional:
         """Test parsing real XML files from fixtures."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         try:
@@ -64,7 +64,7 @@ class TestFullTextXMLParserFunctional:
         """Test metadata extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -76,7 +76,7 @@ class TestFullTextXMLParserFunctional:
         assert isinstance(metadata, dict), "Metadata should be a dictionary"
 
         # Check for expected metadata fields
-        expected_fields = ['title', 'authors', 'abstract', 'journal', 'publication_date']
+        expected_fields = ["title", "authors", "abstract", "journal", "publication_date"]
         for field in expected_fields:
             if field in metadata:
                 logger.info(f"  ✅ {field}: {type(metadata[field])}")
@@ -91,7 +91,7 @@ class TestFullTextXMLParserFunctional:
         """Test author extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -117,7 +117,7 @@ class TestFullTextXMLParserFunctional:
         """Test reference extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -135,11 +135,14 @@ class TestFullTextXMLParserFunctional:
 
             # Log reference information
             logger.info(f"  First reference fields: {list(first_ref.keys())}")
-            if 'authors' in first_ref and first_ref['authors']:
-                if isinstance(first_ref['authors'], list):
-                    logger.info(f"    Authors: {len(first_ref['authors'])} authors")
-            if 'title' in first_ref and first_ref['title']:
-                title_preview = str(first_ref['title'])[:50]
+            if (
+                "authors" in first_ref
+                and first_ref["authors"]
+                and isinstance(first_ref["authors"], list)
+            ):
+                logger.info(f"    Authors: {len(first_ref['authors'])} authors")
+            if "title" in first_ref and first_ref["title"]:
+                title_preview = str(first_ref["title"])[:50]
                 logger.info(f"    Title: {title_preview}...")
 
     @pytest.mark.parametrize("filename", get_fulltext_xml_files())
@@ -147,7 +150,7 @@ class TestFullTextXMLParserFunctional:
         """Test table extraction from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -165,13 +168,13 @@ class TestFullTextXMLParserFunctional:
 
             # Log table information
             logger.info(f"  First table fields: {list(first_table.keys())}")
-            if 'label' in first_table:
+            if "label" in first_table:
                 logger.info(f"    Label: {first_table['label']}")
-            if 'caption' in first_table:
+            if "caption" in first_table:
                 logger.info(f"    Caption: {first_table['caption'][:50]}...")
-            if 'rows' in first_table and first_table['rows']:
+            if "rows" in first_table and first_table["rows"]:
                 logger.info(f"    Rows: {len(first_table['rows'])}")
-            if 'headers' in first_table and first_table['headers']:
+            if "headers" in first_table and first_table["headers"]:
                 logger.info(f"    Headers: {len(first_table['headers'])}")
 
     @pytest.mark.parametrize("filename", get_fulltext_xml_files())
@@ -179,7 +182,7 @@ class TestFullTextXMLParserFunctional:
         """Test schema detection from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -204,7 +207,7 @@ class TestFullTextXMLParserFunctional:
         """Test conversion to plaintext from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -224,7 +227,7 @@ class TestFullTextXMLParserFunctional:
         """Test conversion to markdown from real XML files."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -237,8 +240,8 @@ class TestFullTextXMLParserFunctional:
         assert len(markdown) > 0, f"Markdown should not be empty for {filename}"
 
         # Check for markdown formatting
-        has_headers = '#' in markdown
-        has_bold_italic = '**' in markdown or '*' in markdown
+        has_headers = "#" in markdown
+        has_bold_italic = "**" in markdown or "*" in markdown
 
         logger.info(f"  Has headers: {has_headers}")
         logger.info(f"  Has formatting: {has_bold_italic}")
@@ -251,12 +254,14 @@ class TestFullTextXMLParserFunctional:
         """Test parser with custom ElementPatterns configuration."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         # Create custom configuration with additional citation types
         custom_config = ElementPatterns(
-            citation_types={"types": ["element-citation", "mixed-citation", "nlm-citation", "citation", "ref"]}
+            citation_types={
+                "types": ["element-citation", "mixed-citation", "nlm-citation", "citation", "ref"]
+            }
         )
 
         parser = FullTextXMLParser(xml_content, config=custom_config)
@@ -279,11 +284,11 @@ class TestFullTextXMLParserFunctional:
         filename = xml_files[0]
         xml_path = FIXTURE_DIR / filename
 
-        logger.info(f"\n{'='*60}")
+        logger.info(f"\n{'=' * 60}")
         logger.info(f"INTEGRATION TEST: Complete workflow with {filename}")
-        logger.info(f"{'='*60}\n")
+        logger.info(f"{'=' * 60}\n")
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         # Step 1: Initialize parser
@@ -295,9 +300,11 @@ class TestFullTextXMLParserFunctional:
         # Step 2: Detect schema
         logger.info("\nStep 2: Detect schema")
         schema = parser.detect_schema()
-        logger.info(f"  Capabilities: tables={schema.has_tables}, "
-                   f"figures={schema.has_figures}, supplementary={schema.has_supplementary}, "
-                   f"acknowledgments={schema.has_acknowledgments}, funding={schema.has_funding}")
+        logger.info(
+            f"  Capabilities: tables={schema.has_tables}, "
+            f"figures={schema.has_figures}, supplementary={schema.has_supplementary}, "
+            f"acknowledgments={schema.has_acknowledgments}, funding={schema.has_funding}"
+        )
         logger.info(f"  Citation types: {schema.citation_types}")
         logger.info("  ✅ Schema detected")
 
@@ -305,7 +312,7 @@ class TestFullTextXMLParserFunctional:
         logger.info("\nStep 3: Extract metadata")
         metadata = parser.extract_metadata()
         logger.info(f"  Fields: {list(metadata.keys())}")
-        if 'title' in metadata:
+        if "title" in metadata:
             logger.info(f"  Title: {metadata['title'][:80]}...")
         logger.info("  ✅ Metadata extracted")
 
@@ -341,9 +348,9 @@ class TestFullTextXMLParserFunctional:
         logger.info(f"  Length: {len(markdown)} characters")
         logger.info("  ✅ Markdown generated")
 
-        logger.info(f"\n{'='*60}")
+        logger.info(f"\n{'=' * 60}")
         logger.info("INTEGRATION TEST: PASSED ✅")
-        logger.info(f"{'='*60}\n")
+        logger.info(f"{'=' * 60}\n")
 
         # Verify all steps completed
         assert metadata is not None
@@ -379,7 +386,7 @@ class TestFullTextXMLParserFunctional:
         """Test that multiple parses of same file produce consistent results."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         # Parse twice
@@ -391,15 +398,17 @@ class TestFullTextXMLParserFunctional:
         metadata2 = parser2.extract_metadata()
 
         # Compare keys (values might differ slightly due to processing)
-        assert set(metadata1.keys()) == set(metadata2.keys()), \
+        assert set(metadata1.keys()) == set(metadata2.keys()), (
             "Multiple parses should produce same metadata keys"
+        )
 
         # Extract authors twice
         authors1 = parser1.extract_authors()
         authors2 = parser2.extract_authors()
 
-        assert len(authors1) == len(authors2), \
+        assert len(authors1) == len(authors2), (
             "Multiple parses should produce same number of authors"
+        )
 
         logger.info(f"[{filename}] Roundtrip consistency: ✅")
 
@@ -408,7 +417,7 @@ class TestFullTextXMLParserFunctional:
         """Test that different output formats contain compatible information."""
         xml_path = FIXTURE_DIR / filename
 
-        with open(xml_path, encoding='utf-8') as f:
+        with open(xml_path, encoding="utf-8") as f:
             xml_content = f.read()
 
         parser = FullTextXMLParser(xml_content)
@@ -421,18 +430,21 @@ class TestFullTextXMLParserFunctional:
         markdown = parser.to_markdown()
 
         # If title exists in metadata, it should appear in both text formats
-        if 'title' in metadata and metadata['title']:
-            title = metadata['title'].strip()
+        if "title" in metadata and metadata["title"]:
+            title = metadata["title"].strip()
             if len(title) > 10:  # Only check substantial titles
                 # Title should appear in at least one of the text formats
                 in_plaintext = title[:30] in plaintext
                 in_markdown = title[:30] in markdown
 
-                assert in_plaintext or in_markdown, \
+                assert in_plaintext or in_markdown, (
                     f"Title should appear in plaintext or markdown: {title[:50]}"
+                )
 
-                logger.info(f"[{filename}] Title appears in: "
-                          f"plaintext={in_plaintext}, markdown={in_markdown}")
+                logger.info(
+                    f"[{filename}] Title appears in: "
+                    f"plaintext={in_plaintext}, markdown={in_markdown}"
+                )
 
 
 # Fixtures for test data
@@ -448,7 +460,7 @@ def sample_xml_path():
 @pytest.fixture
 def sample_xml_content(sample_xml_path):
     """Provide content of first available XML fixture."""
-    with open(sample_xml_path, encoding='utf-8') as f:
+    with open(sample_xml_path, encoding="utf-8") as f:
         return f.read()
 
 

@@ -13,10 +13,9 @@ Tests all normalization layers:
 from __future__ import annotations
 
 import json
+from xml.etree.ElementTree import ParseError
 
 import pytest
-
-from xml.etree.ElementTree import ParseError
 
 from pyeuropepmc.features.fulltext.jats_normalizer import (
     JATSNormalizer,
@@ -686,7 +685,10 @@ class TestMetadataNormalization:
 
     def test_orcid_url_stripped(self) -> None:
         """ORCID URL prefix is stripped."""
-        assert JATSNormalizer._normalize_orcid("https://orcid.org/0000-0002-1234-5678") == "0000-0002-1234-5678"
+        assert (
+            JATSNormalizer._normalize_orcid("https://orcid.org/0000-0002-1234-5678")
+            == "0000-0002-1234-5678"
+        )
 
     def test_journal_extracted(self) -> None:
         """Journal name is extracted."""

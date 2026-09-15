@@ -15,12 +15,11 @@ the full source set (Europe PMC base + CrossRef + OpenAlex + Semantic Scholar
 
 from __future__ import annotations
 
+from _showcase import Timer, _fmt_hist, pct, summary_stats, write_report
 import pytest
 
 from pyeuropepmc.features.enrich import EnrichmentConfig, PaperEnricher
 from pyeuropepmc.features.literature.search import SearchClient
-
-from _showcase import Timer, pct, summary_stats, write_report, _fmt_hist
 
 _SEED_QUERIES = [
     "cancer immunotherapy resistance",
@@ -139,13 +138,11 @@ def test_enrichment_showcase() -> None:
         "iCite RCR present": f"{icite_rcr_ok} ({pct(icite_rcr_ok, n):.0f}%)",
         "latency / paper, parallel (s)": summary_stats(latencies),
         "parallel wall time, 50 papers (s)": round(sum(latencies), 1),
-        "≈ serial wall time (parallel × avg sources) (s)": round(
-            sum(latencies) * avg_sources, 1
-        ),
+        "≈ serial wall time (parallel × avg sources) (s)": round(sum(latencies) * avg_sources, 1),
     }
     sections = {
-        "Source contribution (of %d papers)" % n: _fmt_hist(source_hits, n),
-        "Merged-field coverage (of %d papers)" % n: _fmt_hist(field_hits, n),
+        f"Source contribution (of {n} papers)": _fmt_hist(source_hits, n),
+        f"Merged-field coverage (of {n} papers)": _fmt_hist(field_hits, n),
     }
     write_report("enrichment", headline=headline, per_item=per_item, sections=sections)
 

@@ -5,11 +5,12 @@ from pyeuropepmc.features.literature.search_parser import EuropePMCParser, Parsi
 
 def list_fixtures(fixture_dir):
     files = []
-    for root, dirs, filenames in os.walk(fixture_dir):
+    for root, _dirs, filenames in os.walk(fixture_dir):
         for fname in filenames:
             if fname.endswith((".json", ".xml", ".dc.xml", ".ris", ".bib", ".csv")):
                 files.append(os.path.join(root, fname))
     return files
+
 
 def interactive_fixture_parser_test():
     fixture_dir = os.path.join(os.path.dirname(__file__), "../../fixtures")
@@ -17,7 +18,7 @@ def interactive_fixture_parser_test():
     print("EuropePMCParser Interactive Fixture Test")
     print("Available fixture files:")
     for idx, fpath in enumerate(fixtures):
-        print(f"{idx+1}. {fpath}")
+        print(f"{idx + 1}. {fpath}")
     choice = input("Select fixture file by number: ").strip()
     try:
         idx = int(choice) - 1
@@ -26,11 +27,14 @@ def interactive_fixture_parser_test():
         print("Invalid selection.")
         return
     import json
+
     with open(fpath, encoding="utf-8") as f:
         if fpath.endswith(".json"):
             try:
                 raw_input = json.load(f)
-                raw_input_str = str(raw_input)[:1000] + ("..." if len(str(raw_input)) > 1000 else "")
+                raw_input_str = str(raw_input)[:1000] + (
+                    "..." if len(str(raw_input)) > 1000 else ""
+                )
             except Exception as e:
                 print(f"Error loading JSON: {e}")
                 return
@@ -83,6 +87,7 @@ def interactive_fixture_parser_test():
             print("Test marked as FAIL.")
         else:
             print("Test marked as PASS.")
+
 
 if __name__ == "__main__":
     interactive_fixture_parser_test()

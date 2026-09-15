@@ -6,7 +6,7 @@ from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
 # Sample XML content for testing
-SAMPLE_ARTICLE_XML = '''<?xml version="1.0"?>
+SAMPLE_ARTICLE_XML = """<?xml version="1.0"?>
 <!DOCTYPE article PUBLIC "-//NLM//DTD Journal Archiving and Interchange DTD v3.0 20080202//EN" "archivearticle3.dtd">
 <article xmlns:xlink="http://www.w3.org/1999/xlink">
 <front>
@@ -109,7 +109,7 @@ SAMPLE_ARTICLE_XML = '''<?xml version="1.0"?>
 </ref-list>
 </back>
 </article>
-'''
+"""
 
 
 class TestFullTextXMLParserInit:
@@ -405,15 +405,13 @@ class TestFullTextXMLParserGenericHelpers:
 
     def test_extract_flat_texts_with_full_text(self):
         """Test _extract_flat_texts with use_full_text=True."""
-        xml = '''<article>
+        xml = """<article>
             <body>
                 <p>Text with <bold>nested</bold> elements</p>
             </body>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
-        paragraphs = parser._extract_flat_texts(
-            parser.root, ".//p", use_full_text=True
-        )
+        paragraphs = parser._extract_flat_texts(parser.root, ".//p", use_full_text=True)
         assert len(paragraphs) == 1
         assert "nested" in paragraphs[0]
 
@@ -491,18 +489,14 @@ class TestFullTextXMLParserExtractByPatterns:
     def test_extract_by_patterns_first_only(self):
         """Test extracting only first match."""
         parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
-        results = parser.extract_elements_by_patterns(
-            {"keyword": ".//kwd"}, first_only=True
-        )
+        results = parser.extract_elements_by_patterns({"keyword": ".//kwd"}, first_only=True)
         assert len(results["keyword"]) == 1
         assert results["keyword"][0] == "keyword1"
 
     def test_extract_by_patterns_no_match(self):
         """Test extracting with no matches."""
         parser = FullTextXMLParser(SAMPLE_ARTICLE_XML)
-        results = parser.extract_elements_by_patterns(
-            {"nonexistent": ".//nonexistent-tag"}
-        )
+        results = parser.extract_elements_by_patterns({"nonexistent": ".//nonexistent-tag"})
         assert results["nonexistent"] == []
 
 
@@ -517,7 +511,7 @@ class TestFullTextXMLParserPubDate:
 
     def test_extract_pub_date_epub_fallback(self):
         """Test fallback to epub date."""
-        xml = '''<article>
+        xml = """<article>
             <front>
                 <article-meta>
                     <pub-date pub-type="epub">
@@ -527,14 +521,14 @@ class TestFullTextXMLParserPubDate:
                     </pub-date>
                 </article-meta>
             </front>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
         pub_date = parser.extract_pub_date()
         assert pub_date == "2022-06-01"
 
     def test_extract_pub_date_year_only(self):
         """Test extracting year-only date."""
-        xml = '''<article>
+        xml = """<article>
             <front>
                 <article-meta>
                     <pub-date pub-type="ppub">
@@ -542,7 +536,7 @@ class TestFullTextXMLParserPubDate:
                     </pub-date>
                 </article-meta>
             </front>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
         pub_date = parser.extract_pub_date()
         assert pub_date == "2023"
@@ -692,7 +686,7 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_malformed_authors(self):
         """Test parsing authors with missing fields."""
-        xml = '''<article>
+        xml = """<article>
             <front>
                 <article-meta>
                     <contrib-group>
@@ -704,7 +698,7 @@ class TestFullTextXMLParserEdgeCases:
                     </contrib-group>
                 </article-meta>
             </front>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
         authors = parser.extract_authors()
         assert len(authors) == 1
@@ -733,7 +727,7 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_malformed_reference(self):
         """Test extracting reference with missing fields."""
-        xml = '''<article>
+        xml = """<article>
             <back>
                 <ref-list>
                     <ref id="ref1">
@@ -743,7 +737,7 @@ class TestFullTextXMLParserEdgeCases:
                     </ref>
                 </ref-list>
             </back>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
         refs = parser.extract_references()
         assert len(refs) == 1
@@ -753,7 +747,7 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_table_without_caption(self):
         """Test extracting table without caption."""
-        xml = '''<article>
+        xml = """<article>
             <body>
                 <table-wrap id="t1">
                     <table>
@@ -765,7 +759,7 @@ class TestFullTextXMLParserEdgeCases:
                     </table>
                 </table-wrap>
             </body>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
         tables = parser.extract_tables()
         assert len(tables) == 1
@@ -773,13 +767,13 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_section_without_title(self):
         """Test extracting section without title."""
-        xml = '''<article>
+        xml = """<article>
             <body>
                 <sec>
                     <p>Content without title</p>
                 </sec>
             </body>
-        </article>'''
+        </article>"""
         parser = FullTextXMLParser(xml)
         sections = parser.get_full_text_sections()
         assert len(sections) == 1
@@ -788,12 +782,12 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_parse_xml_with_namespaces(self):
         """Test parsing XML with namespaces."""
-        xml_with_ns = '''<?xml version="1.0"?>
+        xml_with_ns = """<?xml version="1.0"?>
         <article xmlns:xlink="http://www.w3.org/1999/xlink">
         <front><article-meta>
         <article-id pub-id-type="pmcid">123</article-id>
         </article-meta></front>
-        </article>'''
+        </article>"""
 
         parser = FullTextXMLParser(xml_with_ns)
         metadata = parser.extract_metadata()
@@ -801,9 +795,9 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_get_text_content_with_nested_elements(self):
         """Test extracting text from nested elements."""
-        xml = '''<article><front><article-meta>
+        xml = """<article><front><article-meta>
         <article-title>Title with <italic>italic</italic> and <bold>bold</bold> text</article-title>
-        </article-meta></front></article>'''
+        </article-meta></front></article>"""
 
         parser = FullTextXMLParser(xml)
         metadata = parser.extract_metadata()
@@ -812,9 +806,9 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_extract_metadata_with_missing_dates(self):
         """Test extracting metadata when publication date components are missing."""
-        xml = '''<article><front><article-meta>
+        xml = """<article><front><article-meta>
         <pub-date pub-type="ppub"><year>2021</year></pub-date>
-        </article-meta></front></article>'''
+        </article-meta></front></article>"""
 
         parser = FullTextXMLParser(xml)
         metadata = parser.extract_metadata()
@@ -822,13 +816,13 @@ class TestFullTextXMLParserEdgeCases:
 
     def test_table_without_headers(self):
         """Test parsing table without thead."""
-        xml = '''<article><body>
+        xml = """<article><body>
         <table-wrap id="t1">
         <table><tbody>
         <tr><td>Cell 1</td><td>Cell 2</td></tr>
         </tbody></table>
         </table-wrap>
-        </body></article>'''
+        </body></article>"""
 
         parser = FullTextXMLParser(xml)
         tables = parser.extract_tables()

@@ -14,13 +14,13 @@ from pyeuropepmc.features.fulltext.extensions.batch_processor import (
 
 pytestmark = pytest.mark.unit
 
-VALID_XML = '''<?xml version="1.0"?>
+VALID_XML = """<?xml version="1.0"?>
 <article>
 <front><article-meta>
 <title-group><article-title>Test</article-title></title-group>
 </article-meta></front>
 <body><sec><p>Content</p></sec></body>
-</article>'''
+</article>"""
 
 
 # ---------------------------------------------------------------------------

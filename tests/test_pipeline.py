@@ -1,12 +1,10 @@
 """Unit tests for the paper processing pipeline."""
 
-import tempfile
 from pathlib import Path
-from unittest.mock import Mock, patch
+import tempfile
+from unittest.mock import patch
 
-import pytest
-
-from pyeuropepmc.pipeline import PipelineConfig, PaperProcessingPipeline
+from pyeuropepmc.pipeline import PaperProcessingPipeline, PipelineConfig
 
 
 class TestPipelineConfig:
@@ -109,7 +107,7 @@ class TestPaperProcessingPipeline:
         """Test that output directory is created."""
         with tempfile.TemporaryDirectory() as tmpdir:
             config = PipelineConfig(output_dir=tmpdir)
-            pipeline = PaperProcessingPipeline(config)
+            PaperProcessingPipeline(config)
 
             assert Path(tmpdir).exists()
 
@@ -150,7 +148,7 @@ class TestPaperProcessingPipeline:
         )
         pipeline = PaperProcessingPipeline(config)
 
-        from pyeuropepmc.models import PaperEntity, AuthorEntity
+        from pyeuropepmc.models import PaperEntity
 
         paper = PaperEntity(
             pmcid="PMC1234567",
@@ -168,25 +166,29 @@ class TestPaperProcessingPipeline:
             "references": [],
         }
 
-        with patch.object(pipeline, "_download_xml", return_value=None):
-            with patch.object(pipeline, "_parse_xml", return_value=entities):
-                with patch("pyeuropepmc.builders.from_parser.build_paper_entities") as mock_build:
-                    mock_build.return_value = (paper, [], [], [], [], [])
+        with (
+            patch.object(pipeline, "_download_xml", return_value=None),
+            patch.object(pipeline, "_parse_xml", return_value=entities),
+            patch("pyeuropepmc.builders.from_parser.build_paper_entities") as mock_build,
+        ):
+            mock_build.return_value = (paper, [], [], [], [], [])
 
-                    with patch.object(pipeline.rdf_mapper, "map_fields", return_value=None):
-                        with patch.object(pipeline.rdf_mapper, "add_provenance", return_value=None):
-                            result = pipeline.process_paper(
-                                xml_content=mock_xml,
-                                doi="10.1234/test.doi",
-                                save_rdf=False,
-                            )
+            with (
+                patch.object(pipeline.rdf_mapper, "map_fields", return_value=None),
+                patch.object(pipeline.rdf_mapper, "add_provenance", return_value=None),
+            ):
+                result = pipeline.process_paper(
+                    xml_content=mock_xml,
+                    doi="10.1234/test.doi",
+                    save_rdf=False,
+                )
 
-                            assert result is not None
-                            assert "entities" in result
-                            assert "rdf_graph" in result
-                            assert "triple_count" in result
-                            assert result["triple_count"] >= 0
-                            assert result["output_file"] is None  # save_rdf=False
+                assert result is not None
+                assert "entities" in result
+                assert "rdf_graph" in result
+                assert "triple_count" in result
+                assert result["triple_count"] >= 0
+                assert result["output_file"] is None  # save_rdf=False
 
     def test_process_papers_with_multiple_papers(self):
         """Test processing multiple papers."""
@@ -247,20 +249,24 @@ class TestPaperProcessingPipeline:
             "10.1234/test.doi2": mock_xml,
         }
 
-        with patch.object(pipeline, "_download_xml", return_value=None):
-            with patch.object(pipeline, "_parse_xml", return_value=entities):
-                with patch("pyeuropepmc.builders.from_parser.build_paper_entities") as mock_build:
-                    mock_build.return_value = (paper, [], [], [], [], [])
+        with (
+            patch.object(pipeline, "_download_xml", return_value=None),
+            patch.object(pipeline, "_parse_xml", return_value=entities),
+            patch("pyeuropepmc.builders.from_parser.build_paper_entities") as mock_build,
+        ):
+            mock_build.return_value = (paper, [], [], [], [], [])
 
-                    with patch.object(pipeline.rdf_mapper, "map_fields", return_value=None):
-                        with patch.object(pipeline.rdf_mapper, "add_provenance", return_value=None):
-                            results = pipeline.process_papers(xml_contents, save_rdf=False)
+            with (
+                patch.object(pipeline.rdf_mapper, "map_fields", return_value=None),
+                patch.object(pipeline.rdf_mapper, "add_provenance", return_value=None),
+            ):
+                results = pipeline.process_papers(xml_contents, save_rdf=False)
 
-                            assert len(results) == 2
-                            for identifier, result in results.items():
-                                assert "entities" in result
-                                assert "rdf_graph" in result
-                                assert "triple_count" in result
+                assert len(results) == 2
+                for _identifier, result in results.items():
+                    assert "entities" in result
+                    assert "rdf_graph" in result
+                    assert "triple_count" in result
 
     def test_process_papers_with_error_handling(self):
         """Test error handling in process_papers."""
@@ -285,14 +291,16 @@ class TestPaperProcessingPipeline:
         }
 
         # This should handle errors gracefully
-        with patch.object(pipeline, "_download_xml", return_value=None):
-            with patch.object(pipeline.parser, "parse", side_effect=Exception("Parse error")):
-                results = pipeline.process_papers(xml_contents, save_rdf=False)
+        with (
+            patch.object(pipeline, "_download_xml", return_value=None),
+            patch.object(pipeline.parser, "parse", side_effect=Exception("Parse error")),
+        ):
+            results = pipeline.process_papers(xml_contents, save_rdf=False)
 
-                assert len(results) == 2
-                # One should have an error
-                has_error = any("error" in result for result in results.values())
-                assert has_error
+            assert len(results) == 2
+            # One should have an error
+            has_error = any("error" in result for result in results.values())
+            assert has_error
 
     def test_get_pmcid_from_doi_success(self):
         """Test getting PMCID from DOI."""
@@ -300,11 +308,7 @@ class TestPaperProcessingPipeline:
         pipeline = PaperProcessingPipeline(config)
 
         mock_search_result = {
-            "resultList": {
-                "result": [
-                    {"pmcid": "PMC1234567", "doi": "10.1234/test.doi"}
-                ]
-            }
+            "resultList": {"result": [{"pmcid": "PMC1234567", "doi": "10.1234/test.doi"}]}
         }
 
         with patch.object(pipeline.search_client, "search", return_value=mock_search_result):

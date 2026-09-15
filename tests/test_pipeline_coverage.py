@@ -91,9 +91,7 @@ class TestGetPmcidFromDoi:
             assert pipeline._get_pmcid_from_doi("10.1/x") is None
 
     def test_exception_returns_none(self, pipeline):
-        with patch.object(
-            pipeline.search_client, "search", side_effect=RuntimeError("boom")
-        ):
+        with patch.object(pipeline.search_client, "search", side_effect=RuntimeError("boom")):
             assert pipeline._get_pmcid_from_doi("10.1/x") is None
 
 
@@ -188,7 +186,14 @@ class TestUpdateAuthorsWithEnrichment:
         author = AuthorEntity(id="a1", full_name="Jane Doe")
         pipeline._update_authors_with_enrichment(
             [author],
-            [{"name": "Jane Doe", "orcid": "0000-1", "openalex_id": "A1", "semantic_scholar_id": "S1"}],
+            [
+                {
+                    "name": "Jane Doe",
+                    "orcid": "0000-1",
+                    "openalex_id": "A1",
+                    "semantic_scholar_id": "S1",
+                }
+            ],
         )
         assert author.orcid == "0000-1"
         assert author.openalex_id == "A1"
@@ -196,9 +201,7 @@ class TestUpdateAuthorsWithEnrichment:
 
     def test_does_not_overwrite_existing_values(self, pipeline):
         author = AuthorEntity(id="a1", full_name="Jane Doe", orcid="existing")
-        pipeline._update_authors_with_enrichment(
-            [author], [{"name": "Jane Doe", "orcid": "new"}]
-        )
+        pipeline._update_authors_with_enrichment([author], [{"name": "Jane Doe", "orcid": "new"}])
         assert author.orcid == "existing"
 
     def test_no_match_leaves_author_unchanged(self, pipeline):
@@ -271,7 +274,6 @@ class TestConvertToRdf:
         assert call_kwargs["extraction_info"]["quality"]["completeness_score"] == 0.98
 
     def test_with_annotations_data(self, pipeline):
-        from rdflib import Graph as RDFGraph
         from rdflib.term import URIRef
 
         paper = MagicMock()
@@ -287,11 +289,14 @@ class TestConvertToRdf:
         }
         annotation_ds = MagicMock()
         annotation_ds.quads.return_value = [
-            (URIRef("http://x/s"), URIRef("http://x/p"), URIRef("http://x/o"), URIRef("http://x/g"))
+            (
+                URIRef("http://x/s"),
+                URIRef("http://x/p"),
+                URIRef("http://x/o"),
+                URIRef("http://x/g"),
+            )
         ]
-        with patch(
-            "pyeuropepmc.pipeline.convert_annotations_to_rdf", return_value=annotation_ds
-        ):
+        with patch("pyeuropepmc.pipeline.convert_annotations_to_rdf", return_value=annotation_ds):
             result = pipeline._convert_to_rdf(entities, annotations_data=[{"a": 1}])
         assert result["triple_count"] == 1
 

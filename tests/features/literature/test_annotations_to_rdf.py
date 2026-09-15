@@ -3,7 +3,15 @@ Tests for annotations to RDF conversion.
 """
 
 import pytest
+from rdflib import Graph, Literal, Namespace, URIRef
+from rdflib.namespace import OWL, RDFS
 
+from pyeuropepmc.features.literature.annotations_to_rdf import (
+    annotations_to_entities,
+    annotations_to_rdf,
+    entity_annotation_to_model,
+    relationship_annotation_to_model,
+)
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = [
@@ -13,15 +21,6 @@ pytestmark = [
     ),
 ]
 
-from rdflib import Graph, Literal, Namespace, URIRef
-from rdflib.namespace import OWL, RDF, RDFS
-
-from pyeuropepmc.features.literature.annotations_to_rdf import (
-    annotations_to_entities,
-    annotations_to_rdf,
-    entity_annotation_to_model,
-    relationship_annotation_to_model,
-)
 
 OA = Namespace("http://www.w3.org/ns/oa#")
 PROV = Namespace("http://www.w3.org/ns/prov#")

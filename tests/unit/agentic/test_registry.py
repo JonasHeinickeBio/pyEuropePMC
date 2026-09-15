@@ -10,13 +10,12 @@ This module tests:
 """
 
 import pytest
-from unittest.mock import Mock
 
 from pyeuropepmc.agentic.registry import (
+    BaseTool,
+    ToolInfo,
     ToolRegistry,
     ToolType,
-    ToolInfo,
-    BaseTool,
     register,
 )
 
@@ -116,7 +115,7 @@ class TestToolRegistry:
         assert tool_info is not None
         assert tool_info.name == "info_tool"
         assert tool_info.description == "Info test"
-        assert tool_info.return_type == str
+        assert tool_info.return_type is str
 
     def test_get_nonexistent_tool(self):
         """Test getting non-existent tool."""
@@ -290,6 +289,7 @@ class TestBaseTool:
 
     def test_concrete_implementation(self):
         """Test concrete implementation of BaseTool."""
+
         class ConcreteTool(BaseTool):
             name = "concrete"
             description = "Concrete tool"
@@ -309,6 +309,7 @@ class TestBaseTool:
 
     def test_tool_info_from_class(self):
         """Test getting tool info from BaseTool subclass."""
+
         class InfoTool(BaseTool):
             name = "info"
             description = "Info tool"
@@ -330,7 +331,7 @@ class TestRegisterDecorator:
 
     def test_module_decorator(self):
         """Test that module-level register works."""
-        from pyeuropepmc.agentic.registry import registry, register
+        from pyeuropepmc.agentic.registry import registry
 
         @register("module_tool", tool_type=ToolType.UTILITY)
         def module_tool_func(x: int) -> int:

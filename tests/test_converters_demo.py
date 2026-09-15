@@ -3,10 +3,10 @@
 import pytest
 from rdflib import Graph
 
+from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.features.literature.search import SearchClient
-from pyeuropepmc.features.enrich.enricher import PaperEnricher
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
     convert_annotations_to_rdf,
@@ -41,6 +41,7 @@ class TestConvertersWithRealAPI:
     def enricher(self):
         """Create enrichment client with caching disabled for testing."""
         from pyeuropepmc.features.enrich.config import EnrichmentConfig
+
         config = EnrichmentConfig(
             enable_crossref=False,
             enable_semantic_scholar=False,
@@ -96,9 +97,7 @@ class TestConvertersWithRealAPI:
                 source="MED", article_id=pmid, result_type="core"
             )
             enrichment_data = enricher.enrich(papers=[result])
-            annotations_data = annotations_client.get_annotations_by_article_ids(
-                [pmid]
-            )
+            annotations_data = annotations_client.get_annotations_by_article_ids([pmid])
         except Exception as e:
             pytest.skip(f"Skipping due to API error: {e}")
 
@@ -473,7 +472,9 @@ class TestConvertersWithMockedData:
         assert isinstance(graph, Graph)
         assert len(graph) > 0
 
-    def test_convert_pipeline_to_rdf_creates_graph(self, search_data, xml_data, enrichment_data, annotations_data):
+    def test_convert_pipeline_to_rdf_creates_graph(
+        self, search_data, xml_data, enrichment_data, annotations_data
+    ):
         """Test pipeline conversion creates valid RDF graph."""
         graph = convert_pipeline_to_rdf(
             search_results=search_data,
@@ -499,17 +500,14 @@ class TestConvertersWithMockedData:
         base_graph = BaseGraph()
         base_graph.bind("ex", "http://example.org/")
 
-        enrichment_data = {
-            "paper": {
-                "doi": "10.1234/test",
-                "title": "Test Paper",
-            }
-        }
-
-        result_graph = convert_pipeline_to_rdf(search_results=[{
-            "doi": "10.1234/test",
-            "title": "Test Paper",
-        }])
+        result_graph = convert_pipeline_to_rdf(
+            search_results=[
+                {
+                    "doi": "10.1234/test",
+                    "title": "Test Paper",
+                }
+            ]
+        )
 
         assert isinstance(result_graph, Graph)
         assert len(result_graph) > 0
@@ -529,7 +527,9 @@ class TestConvertersWithMockedData:
         assert isinstance(graph, Graph)
         assert len(graph) > 0
 
-    def test_convert_pipeline_with_all_options(self, search_data, xml_data, enrichment_data, annotations_data):
+    def test_convert_pipeline_with_all_options(
+        self, search_data, xml_data, enrichment_data, annotations_data
+    ):
         """Test pipeline conversion with all options enabled."""
         graph = convert_pipeline_to_rdf(
             search_results=search_data,
@@ -594,7 +594,7 @@ class TestEnhancedRDFOutput:
                         "provider": "Europe PMC",
                         "annotation_category": "Chemicals",
                     },
-                ]
+                ],
             }
         ]
 
@@ -629,8 +629,7 @@ class TestEnhancedRDFOutput:
         # Check that the object URIs are from known ontologies
         ontology_uris = [str(obj) for _, _, obj in sameas_triples]
         assert any(
-            "linkedlifedata.com" in uri or "obolibrary.org" in uri
-            for uri in ontology_uris
+            "linkedlifedata.com" in uri or "obolibrary.org" in uri for uri in ontology_uris
         ), "owl:sameAs should link to recognized ontologies"
 
     def test_annotations_rdf_has_prov_generatedAtTime(self, annotations_data_with_entity_uri):
@@ -665,10 +664,12 @@ class TestEnhancedRDFOutput:
 
         # Check that labels are strings with entity names
         labels = [str(obj) for _, _, obj in label_triples]
-        assert any("chronic fatigue" in label.lower() for label in labels), \
+        assert any("chronic fatigue" in label.lower() for label in labels), (
             "Should have label for ME/CFS entity"
-        assert any("amino acid" in label.lower() for label in labels), \
+        )
+        assert any("amino acid" in label.lower() for label in labels), (
             "Should have label for amino acid entity"
+        )
 
     def test_annotations_rdf_has_oa_hasBody(self, annotations_data_with_entity_uri):
         """Test that RDF includes oa:hasBody linking to semantic entities."""
@@ -685,10 +686,9 @@ class TestEnhancedRDFOutput:
 
         # Check that body URIs link to recognized ontologies
         body_uris = [str(obj) for _, _, obj in hasbody_triples]
-        assert any(
-            "linkedlifedata.com" in uri or "obolibrary.org" in uri
-            for uri in body_uris
-        ), "oa:hasBody should link to ontology URIs"
+        assert any("linkedlifedata.com" in uri or "obolibrary.org" in uri for uri in body_uris), (
+            "oa:hasBody should link to ontology URIs"
+        )
 
     def test_annotations_rdf_has_oa_hasTarget(self, annotations_data_with_entity_uri):
         """Test that RDF includes oa:hasTarget linking to source articles."""
@@ -705,9 +705,9 @@ class TestEnhancedRDFOutput:
 
         # Check that target URIs point to Europe PMC articles
         target_uris = [str(obj) for _, _, obj in hastarget_triples]
-        assert any(
-            "europepmc.org" in uri for uri in target_uris
-        ), "oa:hasTarget should point to Europe PMC articles"
+        assert any("europepmc.org" in uri for uri in target_uris), (
+            "oa:hasTarget should point to Europe PMC articles"
+        )
 
     def test_annotations_rdf_has_dcterms_creator(self, annotations_data_with_entity_uri):
         """Test that RDF includes dcterms:creator for provenance."""
@@ -724,8 +724,9 @@ class TestEnhancedRDFOutput:
 
         # Check that creators are identified
         creators = [str(obj) for _, _, obj in creator_triples]
-        assert any("Europe PMC" in creator for creator in creators), \
+        assert any("Europe PMC" in creator for creator in creators), (
             "Should identify Europe PMC as creator"
+        )
 
     def test_annotations_rdf_has_nif_anchorOf(self, annotations_data_with_entity_uri):
         """Test that RDF includes nif:anchorOf for text context."""
@@ -742,10 +743,12 @@ class TestEnhancedRDFOutput:
 
         # Check that anchor text matches entity mentions
         anchor_texts = [str(obj) for _, _, obj in anchor_triples]
-        assert any("ME/CFS" in text for text in anchor_texts), \
+        assert any("ME/CFS" in text for text in anchor_texts), (
             "Should have anchor text for ME/CFS mention"
-        assert any("amino acid" in text for text in anchor_texts), \
+        )
+        assert any("amino acid" in text for text in anchor_texts), (
             "Should have anchor text for amino acid mention"
+        )
 
     def test_annotations_rdf_has_pyeuropepmc_confidence(self, annotations_data_with_entity_uri):
         """Test that RDF includes pyeuropepmc:confidence when confidence score present."""
@@ -755,7 +758,7 @@ class TestEnhancedRDFOutput:
         VOCAB = Namespace("https://w3id.org/pyeuropepmc/vocab#")
 
         # Query for confidence triples
-        confidence_triples = list(graph.triples((None, VOCAB.confidence, None)))
+        list(graph.triples((None, VOCAB.confidence, None)))
 
         # Even if confidence is not in input, the enhanced parser might generate it
         # So this test just checks the namespace binding is present
@@ -775,7 +778,9 @@ class TestEnhancedRDFOutput:
         # We should have derivation information linking to source
         assert len(derived_triples) > 0, "Should have prov:wasDerivedFrom triples"
 
-    def test_annotations_rdf_ttl_contains_required_keywords(self, annotations_data_with_entity_uri):
+    def test_annotations_rdf_ttl_contains_required_keywords(
+        self, annotations_data_with_entity_uri
+    ):
         """Test that Turtle serialization includes all enhanced triples."""
         graph = convert_annotations_to_rdf(annotations_data_with_entity_uri)
         ttl = graph.serialize(format="turtle")
@@ -823,7 +828,7 @@ class TestEnhancedRDFOutput:
                         "section": "abstract",
                         "provider": "Europe PMC",
                     },
-                ]
+                ],
             }
         ]
 
@@ -846,7 +851,7 @@ class TestEnhancedRDFOutput:
                         "tags": [{"uri": "DOID:12365"}],  # No name field
                         "section": "abstract",
                     },
-                ]
+                ],
             }
         ]
 
@@ -871,7 +876,7 @@ class TestEnhancedRDFOutput:
                         "section": "abstract",
                         # No id field
                     },
-                ]
+                ],
             }
         ]
 

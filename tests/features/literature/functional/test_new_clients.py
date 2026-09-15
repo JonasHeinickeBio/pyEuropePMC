@@ -11,11 +11,18 @@ Run: pytest tests/ -v --run-real  (for real API calls)
 from __future__ import annotations
 
 import logging
-from typing import Any
 from urllib.parse import urlparse
 
 import pytest
 
+from pyeuropepmc.features.enrich import ICiteClient
+from pyeuropepmc.features.fulltext import (
+    FigureExtractor,
+    FullTextIndex,
+    IndexEntry,
+    RhetoricalHighlighter,
+    RhetoricalRole,
+)
 from pyeuropepmc.features.search import (
     COREClient,
     DBLPClient,
@@ -24,15 +31,7 @@ from pyeuropepmc.features.search import (
     UnifiedSearch,
     ZenodoClient,
 )
-from pyeuropepmc.features.enrich import ICiteClient
 from pyeuropepmc.models import ClinicalTrial, ICiteMetrics, LiteratureResult
-from pyeuropepmc.features.fulltext import (
-    FigureExtractor,
-    FullTextIndex,
-    IndexEntry,
-    RhetoricalHighlighter,
-    RhetoricalRole,
-)
 
 logger = logging.getLogger(__name__)
 
@@ -343,8 +342,16 @@ class TestUnifiedSearchNewClients:
         """All 10 sources should be available."""
         us = UnifiedSearch(
             sources=[
-                "pubmed", "arxiv", "clinicaltrials", "semantic_scholar",
-                "openalex", "zenodo", "doaj", "dblp", "hal", "core",
+                "pubmed",
+                "arxiv",
+                "clinicaltrials",
+                "semantic_scholar",
+                "openalex",
+                "zenodo",
+                "doaj",
+                "dblp",
+                "hal",
+                "core",
             ]
         )
         assert len(us.sources) == 10
@@ -400,7 +407,10 @@ class TestFullTextIndex:
         results = idx.search("deep learning medical")
         assert len(results) >= 1
         # First result should be the deep learning paper
-        assert "deep learning" in results[0].title.lower() or "deep learning" in results[0].abstract.lower()
+        assert (
+            "deep learning" in results[0].title.lower()
+            or "deep learning" in results[0].abstract.lower()
+        )
 
         idx.close()
 
@@ -692,7 +702,7 @@ class TestLiteratureResultNewSources:
 
     def test_invalid_source_rejected(self):
         """Old invalid source names should still raise."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             LiteratureResult(
                 title="Test",
                 source="invalid_source",

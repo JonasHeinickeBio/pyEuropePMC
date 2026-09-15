@@ -1,6 +1,8 @@
 """Tests for figure parser."""
-import pytest
+
 from xml.etree import ElementTree as ET
+
+import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.parsers.figure_parser import FigureParser

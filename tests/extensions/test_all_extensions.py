@@ -302,7 +302,6 @@ class TestContentBlocks:
         """Verify to_dict includes non-empty optional fields."""
         from pyeuropepmc.features.fulltext.extensions.content_blocks import (
             ContentBlock,
-            ContentBlockType,
         )
 
         # Code block with language
@@ -598,9 +597,7 @@ class TestPeerReview:
         referee = result.reviews[1]
         assert len(referee.sections) >= 1
         # Should have paragraph blocks
-        all_text = " ".join(
-            b.text for s in referee.sections for b in s.content
-        )
+        all_text = " ".join(b.text for s in referee.sections for b in s.content)
         assert "methodology" in all_text.lower()
 
     # ------------------------------------------------------------------
@@ -1250,7 +1247,6 @@ class TestJATS4RValidator:
         from pyeuropepmc.features.fulltext.extensions.jats4r import (
             JATS4RValidator,
             ValidationFinding,
-            ValidationReport,
         )
 
         root = ET.fromstring(SIMPLE_ARTICLE_XML)
@@ -1709,8 +1705,7 @@ class TestDefList:
         parser = FullTextXMLParser(self.XML_WITH_DEF_LIST)
         sections = parser.get_full_text_sections_structured()
         def_lists = [
-            b for s in sections for b in s["content"]
-            if b.get("type") == "definition_list"
+            b for s in sections for b in s["content"] if b.get("type") == "definition_list"
         ]
         assert len(def_lists) >= 1
 
@@ -1718,10 +1713,7 @@ class TestDefList:
         """Verify term/definition pairs are extracted."""
         parser = FullTextXMLParser(self.XML_WITH_DEF_LIST)
         sections = parser.get_full_text_sections_structured()
-        dl = next(
-            b for s in sections for b in s["content"]
-            if b.get("type") == "definition_list"
-        )
+        dl = next(b for s in sections for b in s["content"] if b.get("type") == "definition_list")
         assert "definition_terms" in dl
         terms = dl["definition_terms"]
         assert len(terms) == 2
@@ -1806,10 +1798,7 @@ class TestRagChunking:
         for section in structured_sections:
             chunks.extend(section.to_chunks(max_tokens=200))
 
-        introduction_chunks = [
-            c for c in chunks
-            if c["section_path"] == "Introduction"
-        ]
+        introduction_chunks = [c for c in chunks if c["section_path"] == "Introduction"]
         assert len(introduction_chunks) >= 1
 
     def test_to_langchain_documents(self):

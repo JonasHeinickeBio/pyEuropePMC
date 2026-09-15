@@ -26,6 +26,7 @@ pytestmark = pytest.mark.unit
 # Helpers
 # ===========================================================================
 
+
 def make_paper(pmid=None, doi=None, title="Test", year=2024, source="pubmed", **kw):
     paper = {
         "pmid": pmid,
@@ -41,6 +42,7 @@ def make_paper(pmid=None, doi=None, title="Test", year=2024, source="pubmed", **
 # ===========================================================================
 # MergeReport.metadata (latent bug fix)
 # ===========================================================================
+
 
 class TestMergeReportMetadata:
     def test_metadata_default_factory(self):
@@ -65,6 +67,7 @@ class TestMergeReportMetadata:
 # ===========================================================================
 # Identifier deduplication (CORD-19 multi-identifier overlap)
 # ===========================================================================
+
 
 class TestIdentifierDedup:
     def test_shared_doi(self):
@@ -135,6 +138,7 @@ class TestIdentifierDedup:
 # Strict conflict detection (CORD-19 rule)
 # ===========================================================================
 
+
 class TestStrictConflicts:
     def test_conflicting_secondary_id_splits_group(self):
         """Same DOI but different PMCID -> separate groups under strict mode."""
@@ -159,6 +163,7 @@ class TestStrictConflicts:
 # ===========================================================================
 # Identifier deduplication pass in merge pipeline
 # ===========================================================================
+
 
 class TestIdentifierDedupPass:
     def test_pmcid_duplicate_merged(self):
@@ -227,6 +232,7 @@ class TestIdentifierDedupPass:
 # Canonical metadata selection (license + document availability)
 # ===========================================================================
 
+
 class TestCanonicalSelection:
     def test_oa_license_and_pmcid_wins_over_pubmed(self):
         """Crossref with open-access license + full text should be canonical."""
@@ -288,6 +294,7 @@ class TestCanonicalSelection:
 # Non-paper entry filtering (CORD-19 group filtering)
 # ===========================================================================
 
+
 class TestNonPaperFiltering:
     @pytest.mark.parametrize(
         "title",
@@ -327,7 +334,9 @@ class TestNonPaperFiltering:
 
     def test_real_papers_not_filtered(self):
         papers = [
-            make_paper(pmid="1", title="Cognitive behavioural therapy for chronic fatigue syndrome"),
+            make_paper(
+                pmid="1", title="Cognitive behavioural therapy for chronic fatigue syndrome"
+            ),
             make_paper(pmid="2", title="Gut microbiota composition in chronic fatigue syndrome"),
         ]
         merger = LiteratureMerger()
@@ -338,6 +347,7 @@ class TestNonPaperFiltering:
 # ===========================================================================
 # Config defaults (existing behavior preserved)
 # ===========================================================================
+
 
 class TestConfigDefaults:
     def test_new_fields_default_on(self):

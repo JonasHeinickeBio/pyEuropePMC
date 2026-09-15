@@ -1,5 +1,5 @@
-
 from abc import ABC, abstractmethod
+import contextlib
 from dataclasses import dataclass, field
 import json
 import os
@@ -17,10 +17,10 @@ import pytest
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 
 # Import all main client classes here
 from pyeuropepmc.features.literature.article import ArticleClient
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.features.literature.search import SearchClient
 
 
@@ -40,6 +40,7 @@ class _DummyBenchmarkFixture:
 @dataclass
 class BenchmarkConfig:
     """Configuration for a benchmark run."""
+
     client_class: type
     cache_config: CacheConfig | None = None
     methods: list[str] = field(default_factory=list)
@@ -57,6 +58,7 @@ class BenchmarkConfig:
 @dataclass
 class BenchmarkResult:
     """Result of a single benchmark run."""
+
     method_name: str
     client_name: str
     cache_enabled: bool
@@ -107,6 +109,7 @@ class BenchmarkResult:
 @dataclass
 class BenchmarkSuiteResult:
     """Results from a complete benchmark suite."""
+
     suite_name: str
     timestamp: str
     results: dict[str, list[BenchmarkResult]] = field(default_factory=dict)
@@ -138,24 +141,31 @@ class BenchmarkRunner:
             self._cleanup_client()
 
         # Create isolated cache directory if needed
-        if self.config.cache_config and self.config.cache_config.enabled:
-            if self.config.cache_dir is None:
-                temp_dir = Path(tempfile.mkdtemp(prefix=f"{self.config.name}_cache_"))
-                self.temp_dirs.append(temp_dir)
-                self.config.cache_dir = temp_dir
+        if (
+            self.config.cache_config
+            and self.config.cache_config.enabled
+            and self.config.cache_dir is None
+        ):
+            temp_dir = Path(tempfile.mkdtemp(prefix=f"{self.config.name}_cache_"))
+            self.temp_dirs.append(temp_dir)
+            self.config.cache_dir = temp_dir
 
         # Instantiate client based on type
         if self.config.client_class == ArticleClient or self.config.client_class == SearchClient:
             self.client = self.config.client_class(cache_config=self.config.cache_config)
         elif self.config.client_class == FullTextClient:
             file_cache_dir = None
-            if self.config.cache_config and self.config.cache_config.enabled and self.config.cache_dir:
+            if (
+                self.config.cache_config
+                and self.config.cache_config.enabled
+                and self.config.cache_dir
+            ):
                 file_cache_dir = self.config.cache_dir / "files"
                 file_cache_dir.mkdir(parents=True, exist_ok=True)
             self.client = self.config.client_class(
                 cache_config=self.config.cache_config,
                 cache_dir=file_cache_dir,
-                enable_cache=bool(file_cache_dir)
+                enable_cache=bool(file_cache_dir),
             )
         else:
             self.client = self.config.client_class()
@@ -187,25 +197,19 @@ class BenchmarkRunner:
     def _stop_request_instrumentation(self):
         """Restore original requests.Session.request."""
         if self._original_request is not None:
-            try:
+            with contextlib.suppress(Exception):
                 requests.Session.request = self._original_request
-            except Exception:
-                pass
             self._original_request = None
 
     def _cleanup_client(self):
         """Clean up client and temporary directories."""
-        if self.client and hasattr(self.client, '_cache'):
-            try:
+        if self.client and hasattr(self.client, "_cache"):
+            with contextlib.suppress(BaseException):
                 self.client._cache.clear_cache()
-            except:
-                pass
 
         for temp_dir in self.temp_dirs:
-            try:
+            with contextlib.suppress(BaseException):
                 shutil.rmtree(temp_dir, ignore_errors=True)
-            except:
-                pass
         self.temp_dirs.clear()
 
     def get_memory_usage(self) -> float:
@@ -252,7 +256,9 @@ class BenchmarkRunner:
         except Exception:
             pass
 
-    def run_method_with_timing(self, method_name: str, *args, **kwargs) -> tuple[Any, float, float, int, int]:
+    def run_method_with_timing(
+        self, method_name: str, *args, **kwargs
+    ) -> tuple[Any, float, float, int, int]:
         """
         Run a method and return result, execution time, and memory usage.
         """
@@ -268,10 +274,8 @@ class BenchmarkRunner:
             start_rss = 0
 
         # Start tracemalloc (best-effort) to capture Python allocation peaks
-        try:
+        with contextlib.suppress(Exception):
             tracemalloc.start()
-        except Exception:
-            pass
 
         start_time = time.perf_counter()
         try:
@@ -283,10 +287,8 @@ class BenchmarkRunner:
                 tracemalloc_peak = peak_tr
             except Exception:
                 tracemalloc_peak = 0
-            try:
+            with contextlib.suppress(Exception):
                 tracemalloc.stop()
-            except Exception:
-                pass
             raise e
 
         end_time = time.perf_counter()
@@ -306,16 +308,16 @@ class BenchmarkRunner:
             tracemalloc_peak = peak_tr
         except Exception:
             tracemalloc_peak = 0
-        try:
+        with contextlib.suppress(Exception):
             tracemalloc.stop()
-        except Exception:
-            pass
 
         execution_time = end_time - start_time
 
         return result, execution_time, memory_used, rss_delta_bytes, tracemalloc_peak
 
-    def benchmark_method(self, method_name: str, method_args: tuple = (), method_kwargs: dict | None = None) -> BenchmarkResult:
+    def benchmark_method(  # noqa: C901
+        self, method_name: str, method_args: tuple = (), method_kwargs: dict | None = None
+    ) -> BenchmarkResult:
         """
         Benchmark a method with multiple iterations.
         """
@@ -328,7 +330,7 @@ class BenchmarkRunner:
         # Request counting collectors
         request_counts_per_run: list[int] = []
         cold_request_counts: list[int] = []
-    # Memory peak collectors
+        # Memory peak collectors
         rss_peak_bytes_per_run: list[int] = []
         tracemalloc_peak_bytes_per_run: list[int] = []
         cold_rss_peak_bytes: list[int] = []
@@ -342,8 +344,8 @@ class BenchmarkRunner:
                 # Instrument per-run requests
                 self._current_request_count = 0
                 self._start_request_instrumentation()
-                result, exec_time, mem_usage, rss_peak_bytes, tracemalloc_peak = self.run_method_with_timing(
-                    method_name, *method_args, **(method_kwargs or {})
+                result, exec_time, mem_usage, rss_peak_bytes, tracemalloc_peak = (
+                    self.run_method_with_timing(method_name, *method_args, **(method_kwargs or {}))
                 )
                 self._stop_request_instrumentation()
                 cold_execution_times.append(exec_time)
@@ -357,7 +359,9 @@ class BenchmarkRunner:
         # Warmup runs (unmeasured) to populate caches and stabilize behavior
         # If cache is enabled, reuse the same client across warmup+measured runs so the cache
         # populated during warmup is available during measured runs.
-        reuse_client_for_measured = bool(self.config.cache_config and getattr(self.config.cache_config, 'enabled', False))
+        reuse_client_for_measured = bool(
+            self.config.cache_config and getattr(self.config.cache_config, "enabled", False)
+        )
 
         if reuse_client_for_measured:
             # create one client to be reused for all warmup and measured runs
@@ -377,15 +381,12 @@ class BenchmarkRunner:
             finally:
                 if not reuse_client_for_measured:
                     # clean up transient client used for this warmup
-                    try:
+                    with contextlib.suppress(Exception):
                         self._cleanup_client()
-                    except Exception:
-                        pass
 
         # Measured runs
-        if getattr(self, 'benchmark_fixture', None) is not None:
+        if getattr(self, "benchmark_fixture", None) is not None:
             # Use pytest-benchmark if provided for robust timing statistics.
-            per_run_cache_stats: list[dict[str, Any]] = []
 
             def _bench_wrapper():
                 # Each invocation corresponds to one measured run
@@ -396,8 +397,8 @@ class BenchmarkRunner:
                 self._start_request_instrumentation()
 
                 # Use run_method_with_timing to gather memory and tracemalloc info as well
-                result, exec_time, mem_usage, rss_peak_bytes, tracemalloc_peak = self.run_method_with_timing(
-                    method_name, *method_args, **(method_kwargs or {})
+                result, exec_time, mem_usage, rss_peak_bytes, tracemalloc_peak = (
+                    self.run_method_with_timing(method_name, *method_args, **(method_kwargs or {}))
                 )
 
                 self._stop_request_instrumentation()
@@ -412,36 +413,36 @@ class BenchmarkRunner:
                 # per-run cache stats
                 run_cache_stats: dict[str, Any] = {}
                 if self.client:
-                    if hasattr(self.client, 'get_cache_stats'):
+                    if hasattr(self.client, "get_cache_stats"):
                         try:
-                            run_cache_stats['api_cache'] = self.client.get_cache_stats()
+                            run_cache_stats["api_cache"] = self.client.get_cache_stats()
                         except Exception:
-                            run_cache_stats['api_cache'] = None
-                    if hasattr(self.client, 'get_api_cache_stats'):
+                            run_cache_stats["api_cache"] = None
+                    if hasattr(self.client, "get_api_cache_stats"):
                         try:
-                            run_cache_stats['api_cache'] = self.client.get_api_cache_stats()
+                            run_cache_stats["api_cache"] = self.client.get_api_cache_stats()
                         except Exception:
-                            run_cache_stats['api_cache'] = run_cache_stats.get('api_cache')
-                    if hasattr(self.client, 'get_file_cache_health'):
+                            run_cache_stats["api_cache"] = run_cache_stats.get("api_cache")
+                    if hasattr(self.client, "get_file_cache_health"):
                         try:
-                            run_cache_stats['file_cache'] = self.client.get_file_cache_health()
+                            run_cache_stats["file_cache"] = self.client.get_file_cache_health()
                         except Exception:
-                            run_cache_stats['file_cache'] = None
+                            run_cache_stats["file_cache"] = None
 
                 cache_stats_per_run.append(run_cache_stats)
 
                 if not reuse_client_for_measured:
-                    try:
+                    with contextlib.suppress(Exception):
                         self._cleanup_client()
-                    except Exception:
-                        pass
 
                 return result
 
             # Try to use the pedantic API which allows specifying rounds/iterations
             try:
                 # iterations=1 so each round performs a single invocation; rounds == number of runs
-                self.benchmark_fixture.pedantic(_bench_wrapper, iterations=1, rounds=self.config.iterations, warmup_rounds=0)
+                self.benchmark_fixture.pedantic(
+                    _bench_wrapper, iterations=1, rounds=self.config.iterations, warmup_rounds=0
+                )
             except Exception:
                 # Fallback: call the benchmark fixture once per desired measured run
                 for _ in range(self.config.iterations):
@@ -462,8 +463,10 @@ class BenchmarkRunner:
                     self._current_request_count = 0
                     self._start_request_instrumentation()
 
-                    result, exec_time, mem_usage, rss_peak_bytes, tracemalloc_peak = self.run_method_with_timing(
-                        method_name, *method_args, **(method_kwargs or {})
+                    result, exec_time, mem_usage, rss_peak_bytes, tracemalloc_peak = (
+                        self.run_method_with_timing(
+                            method_name, *method_args, **(method_kwargs or {})
+                        )
                     )
 
                     # Stop instrumentation and record count
@@ -480,57 +483,53 @@ class BenchmarkRunner:
                     # Attempt to collect cache stats after the run, if the client exposes them
                     run_cache_stats: dict[str, Any] = {}
                     if self.client:
-                        if hasattr(self.client, 'get_cache_stats'):
+                        if hasattr(self.client, "get_cache_stats"):
                             try:
-                                run_cache_stats['api_cache'] = self.client.get_cache_stats()
+                                run_cache_stats["api_cache"] = self.client.get_cache_stats()
                             except Exception:
-                                run_cache_stats['api_cache'] = None
-                        if hasattr(self.client, 'get_api_cache_stats'):
+                                run_cache_stats["api_cache"] = None
+                        if hasattr(self.client, "get_api_cache_stats"):
                             try:
-                                run_cache_stats['api_cache'] = self.client.get_api_cache_stats()
+                                run_cache_stats["api_cache"] = self.client.get_api_cache_stats()
                             except Exception:
-                                run_cache_stats['api_cache'] = run_cache_stats.get('api_cache')
-                        if hasattr(self.client, 'get_file_cache_health'):
+                                run_cache_stats["api_cache"] = run_cache_stats.get("api_cache")
+                        if hasattr(self.client, "get_file_cache_health"):
                             try:
-                                run_cache_stats['file_cache'] = self.client.get_file_cache_health()
+                                run_cache_stats["file_cache"] = self.client.get_file_cache_health()
                             except Exception:
-                                run_cache_stats['file_cache'] = None
+                                run_cache_stats["file_cache"] = None
 
                     cache_stats_per_run.append(run_cache_stats)
                 except Exception as e:
                     errors.append(f"Run {run + 1}: {str(e)}")
                     # ensure instrumentation restored if exception happened
-                    try:
+                    with contextlib.suppress(Exception):
                         self._stop_request_instrumentation()
-                    except Exception:
-                        pass
                     continue
                 finally:
                     if not reuse_client_for_measured:
                         # cleanup per-run transient client
-                        try:
+                        with contextlib.suppress(Exception):
                             self._cleanup_client()
-                        except Exception:
-                            pass
 
         # Aggregate final cache stats (best-effort)
         cache_stats = {}
         if self.client:
-            if hasattr(self.client, 'get_cache_stats'):
+            if hasattr(self.client, "get_cache_stats"):
                 try:
-                    cache_stats['api_cache'] = self.client.get_cache_stats()
+                    cache_stats["api_cache"] = self.client.get_cache_stats()
                 except Exception:
-                    cache_stats['api_cache'] = None
-            if hasattr(self.client, 'get_api_cache_stats'):
+                    cache_stats["api_cache"] = None
+            if hasattr(self.client, "get_api_cache_stats"):
                 try:
-                    cache_stats['api_cache'] = self.client.get_api_cache_stats()
+                    cache_stats["api_cache"] = self.client.get_api_cache_stats()
                 except Exception:
-                    cache_stats['api_cache'] = cache_stats.get('api_cache')
-            if hasattr(self.client, 'get_file_cache_health'):
+                    cache_stats["api_cache"] = cache_stats.get("api_cache")
+            if hasattr(self.client, "get_file_cache_health"):
                 try:
-                    cache_stats['file_cache'] = self.client.get_file_cache_health()
+                    cache_stats["file_cache"] = self.client.get_file_cache_health()
                 except Exception:
-                    cache_stats['file_cache'] = None
+                    cache_stats["file_cache"] = None
 
         # If we reused a client for measured runs, clean it up now
         try:
@@ -545,7 +544,8 @@ class BenchmarkRunner:
         return BenchmarkResult(
             method_name=method_name,
             client_name=self.config.name,
-            cache_enabled=self.config.cache_config is not None and self.config.cache_config.enabled,
+            cache_enabled=self.config.cache_config is not None
+            and self.config.cache_config.enabled,
             execution_times=execution_times,
             memory_usages=memory_usages,
             cold_execution_times=cold_execution_times,
@@ -555,12 +555,11 @@ class BenchmarkRunner:
             errors=errors,
             request_counts_per_run=request_counts_per_run,
             cold_request_counts=cold_request_counts,
-            total_requests=total_requests_observed
-            ,
+            total_requests=total_requests_observed,
             rss_peak_bytes_per_run=rss_peak_bytes_per_run,
             tracemalloc_peak_bytes_per_run=tracemalloc_peak_bytes_per_run,
             cold_rss_peak_bytes=cold_rss_peak_bytes,
-            cold_tracemalloc_peak_bytes=cold_tracemalloc_peak_bytes
+            cold_tracemalloc_peak_bytes=cold_tracemalloc_peak_bytes,
         )
 
     def __del__(self):
@@ -613,6 +612,7 @@ class BaseBenchmark(ABC):
 
         return "".join(report_lines)
 
+
 class ArticleClientBenchmark(BaseBenchmark):
     """Benchmark for ArticleClient methods."""
 
@@ -620,7 +620,12 @@ class ArticleClientBenchmark(BaseBenchmark):
         """Get test parameters for ArticleClient methods."""
         test_data = self.config.test_data
 
-        if method_name in ["get_article_details", "get_citations", "get_references", "get_database_links"]:
+        if method_name in [
+            "get_article_details",
+            "get_citations",
+            "get_references",
+            "get_database_links",
+        ]:
             article_ids = test_data.get("article_ids", ["34308300", "34261881", "34183448"])
             article_id = article_ids[iteration % len(article_ids)]
             return (("MED", article_id), {})
@@ -641,10 +646,11 @@ class ArticleClientBenchmark(BaseBenchmark):
                 error_result = BenchmarkResult(
                     method_name=method,
                     client_name=self.config.name,
-                    cache_enabled=self.config.cache_config is not None and self.config.cache_config.enabled,
+                    cache_enabled=self.config.cache_config is not None
+                    and self.config.cache_config.enabled,
                     execution_times=[],
                     memory_usages=[],
-                    errors=[str(e)]
+                    errors=[str(e)],
                 )
                 results.append(error_result)
 
@@ -678,10 +684,11 @@ class SearchClientBenchmark(BaseBenchmark):
                 error_result = BenchmarkResult(
                     method_name=method,
                     client_name=self.config.name,
-                    cache_enabled=self.config.cache_config is not None and self.config.cache_config.enabled,
+                    cache_enabled=self.config.cache_config is not None
+                    and self.config.cache_config.enabled,
                     execution_times=[],
                     memory_usages=[],
-                    errors=[str(e)]
+                    errors=[str(e)],
                 )
                 results.append(error_result)
 
@@ -715,10 +722,11 @@ class FullTextClientBenchmark(BaseBenchmark):
                 error_result = BenchmarkResult(
                     method_name=method,
                     client_name=self.config.name,
-                    cache_enabled=self.config.cache_config is not None and self.config.cache_config.enabled,
+                    cache_enabled=self.config.cache_config is not None
+                    and self.config.cache_config.enabled,
                     execution_times=[],
                     memory_usages=[],
-                    errors=[str(e)]
+                    errors=[str(e)],
                 )
                 results.append(error_result)
 
@@ -741,8 +749,7 @@ class BenchmarkManager:
     def run_all_benchmarks(self) -> BenchmarkSuiteResult:
         """Run all benchmarks and return comprehensive results."""
         suite_result = BenchmarkSuiteResult(
-            suite_name="pyEuropePMC Benchmark Suite",
-            timestamp=time.strftime('%Y-%m-%d %H:%M:%S')
+            suite_name="pyEuropePMC Benchmark Suite", timestamp=time.strftime("%Y-%m-%d %H:%M:%S")
         )
 
         for benchmark in self.benchmarks:
@@ -764,12 +771,12 @@ class BenchmarkManager:
             "successful_runs": 0,
             "failed_runs": 0,
             "average_speedup": 0.0,
-            "cache_enabled_count": 0
+            "cache_enabled_count": 0,
         }
 
         speedups = []
 
-        for benchmark_name, method_results in results.items():
+        for _benchmark_name, method_results in results.items():
             for result in method_results:
                 if result.errors:
                     summary["failed_runs"] += 1
@@ -787,7 +794,7 @@ class BenchmarkManager:
 
         return summary
 
-    def generate_comprehensive_report(self, suite_result: BenchmarkSuiteResult) -> str:
+    def generate_comprehensive_report(self, suite_result: BenchmarkSuiteResult) -> str:  # noqa: C901
         """Generate a comprehensive, GitHub-friendly Markdown report from suite results.
 
         The report contains per-benchmark tables and a cache-vs-no-cache comparison
@@ -798,16 +805,26 @@ class BenchmarkManager:
         report_lines.append(f"# 🚀 {suite_result.suite_name}\n")
         report_lines.append(f"**Generated:** {suite_result.timestamp}\n\n")
         report_lines.append("## 📊 Summary\n\n")
-        report_lines.append(f"- **Total Benchmarks:** {suite_result.summary.get('total_benchmarks', 0)}\n")
-        report_lines.append(f"- **Total Methods:** {suite_result.summary.get('total_methods', 0)}\n")
-        report_lines.append(f"- **Successful Runs:** {suite_result.summary.get('successful_runs', 0)}\n")
+        report_lines.append(
+            f"- **Total Benchmarks:** {suite_result.summary.get('total_benchmarks', 0)}\n"
+        )
+        report_lines.append(
+            f"- **Total Methods:** {suite_result.summary.get('total_methods', 0)}\n"
+        )
+        report_lines.append(
+            f"- **Successful Runs:** {suite_result.summary.get('successful_runs', 0)}\n"
+        )
         report_lines.append(f"- **Failed Runs:** {suite_result.summary.get('failed_runs', 0)}\n")
-        report_lines.append(f"- **Cache Enabled:** {suite_result.summary.get('cache_enabled_count', 0)}\n\n")
+        report_lines.append(
+            f"- **Cache Enabled:** {suite_result.summary.get('cache_enabled_count', 0)}\n\n"
+        )
 
         # Per-benchmark tables
         for benchmark_name, results in suite_result.results.items():
             report_lines.append(f"## {benchmark_name}\n\n")
-            report_lines.append("| Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |\n")
+            report_lines.append(
+                "| Method | Mean Time | Std Dev | Mean Memory | Cache | Requests | Errors |\n"
+            )
             report_lines.append("|---|---:|---:|---:|:--:|---:|---:|\n")
 
             def fmt_mean_time(val: float | None) -> str:
@@ -819,11 +836,17 @@ class BenchmarkManager:
 
             for result in results:
                 mean_time = fmt_mean_time(result.mean_time) if result.execution_times else "-"
-                std_dev = fmt_mean_time(result.std_dev_time) if len(result.execution_times) > 1 else "-"
+                std_dev = (
+                    fmt_mean_time(result.std_dev_time) if len(result.execution_times) > 1 else "-"
+                )
                 mean_mem = f"{result.mean_memory:.1f}MB" if result.memory_usages else "-"
                 cache_icon = "✅" if result.cache_enabled else "❌"
                 errors = len(result.errors) if result.errors else 0
-                requests_count = result.total_requests if getattr(result, 'total_requests', None) is not None else '-'
+                requests_count = (
+                    result.total_requests
+                    if getattr(result, "total_requests", None) is not None
+                    else "-"
+                )
 
                 report_lines.append(
                     f"| {result.method_name} | {mean_time} | {std_dev} | {mean_mem} | {cache_icon} | {requests_count} | {errors} |\n"
@@ -837,7 +860,6 @@ class BenchmarkManager:
                     # simple percentile: pick nearest value
                     p95 = times[min(cnt - 1, int(0.95 * cnt))]
                     mean = result.mean_time
-                    stddev = result.std_dev_time
                     ops = (1.0 / mean) if mean and mean > 0 else None
 
                     def fmt_stat(val: float | None) -> str:
@@ -848,16 +870,21 @@ class BenchmarkManager:
                         return f"{val:.3f}s"
 
                     ops_s = f"{ops:.2f}/s" if ops is not None else "-"
-                    report_lines.append(f"<sub>p50: {fmt_stat(p50)} · p95: {fmt_stat(p95)} · ops: {ops_s} · runs: {cnt}</sub>\n")
+                    report_lines.append(
+                        f"<sub>p50: {fmt_stat(p50)} · p95: {fmt_stat(p95)} · ops: {ops_s} · runs: {cnt}</sub>\n"
+                    )
 
             report_lines.append("\n")
 
         # Cache comparison summary: attempt to pair Cached vs NoCache per client base
         report_lines.append("## 🔁 Cache vs No-Cache Comparison\n\n")
-        lookup = {name: {r.method_name: r for r in results} for name, results in suite_result.results.items()}
+        lookup = {
+            name: {r.method_name: r for r in results}
+            for name, results in suite_result.results.items()
+        }
 
         bases = set()
-        for name in suite_result.results.keys():
+        for name in suite_result.results:
             if name.endswith("_Cached") or name.endswith("_NoCache"):
                 bases.add(name.rsplit("_", 1)[0])
 
@@ -866,7 +893,9 @@ class BenchmarkManager:
             nocache_name = f"{base}_NoCache"
             if cached_name in lookup and nocache_name in lookup:
                 report_lines.append(f"### {base} — cached vs no-cache\n\n")
-                report_lines.append("| Method | No-Cache Mean | Cached Mean | Speedup (no/cache) |\n")
+                report_lines.append(
+                    "| Method | No-Cache Mean | Cached Mean | Speedup (no/cache) |\n"
+                )
                 report_lines.append("|---|---:|---:|---:|\n")
 
                 paired_speedups: list[float] = []
@@ -909,41 +938,84 @@ class BenchmarkManager:
 
                 if paired_speedups:
                     avg_speed = statistics.mean(paired_speedups)
-                    report_lines.append(f"\n- **Average speedup for {base} (no-cache / cached):** {avg_speed:.2f}x\n\n")
+                    report_lines.append(
+                        f"\n- **Average speedup for {base} (no-cache / cached):** {avg_speed:.2f}x\n\n"
+                    )
                 else:
                     report_lines.append("\n")
 
         report_lines.append("---\n")
-        report_lines.append("_Notes: Means are computed over measured iterations; '-' indicates missing data. Values like '<1ms' indicate very fast cached responses. Speedups shown as lower-bounds when cached times are too small to measure precisely._\n\n")
+        report_lines.append(
+            "_Notes: Means are computed over measured iterations; '-' indicates missing data. Values like '<1ms' indicate very fast cached responses. Speedups shown as lower-bounds when cached times are too small to measure precisely._\n\n"
+        )
 
         # Add a short "how to run" and pointer to the raw JSON results for GitHub consumers
         report_lines.append("## ⚙️ How to reproduce\n\n")
-        report_lines.append("Run the modular benchmark locally and regenerate these artifacts:\n\n")
+        report_lines.append(
+            "Run the modular benchmark locally and regenerate these artifacts:\n\n"
+        )
         report_lines.append("```bash\n")
-        report_lines.append("pytest -q tests/benchmark_article_client.py::test_modular_benchmark_system -q\n")
+        report_lines.append(
+            "pytest -q tests/benchmark_article_client.py::test_modular_benchmark_system -q\n"
+        )
         report_lines.append("```\n\n")
         report_lines.append("- Detailed JSON results: `MODULAR_BENCHMARK_RESULTS.json`\n")
 
         return "".join(report_lines)
 
+
 # Default test data
 DEFAULT_TEST_DATA = {
     "search_queries": [
-        "cancer", "diabetes", "neural network", "machine learning",
-        "genetic", "CRISPR", "protein", "RNA", "DNA", "gene",
-        "mutation", "therapy", "clinical trial", "drug"
+        "cancer",
+        "diabetes",
+        "neural network",
+        "machine learning",
+        "genetic",
+        "CRISPR",
+        "protein",
+        "RNA",
+        "DNA",
+        "gene",
+        "mutation",
+        "therapy",
+        "clinical trial",
+        "drug",
     ],
     "article_ids": [
-        "34308300", "34261881", "34183448", "34081923", "33987245",
-        "33876412", "33789123", "33694567", "33578901", "33467890",
-        "33356789", "33245678", "33134567", "33023456", "32912345"
+        "34308300",
+        "34261881",
+        "34183448",
+        "34081923",
+        "33987245",
+        "33876412",
+        "33789123",
+        "33694567",
+        "33578901",
+        "33467890",
+        "33356789",
+        "33245678",
+        "33134567",
+        "33023456",
+        "32912345",
     ],
     "pmc_ids": [
-        "PMC12124214", "PMC3312970", "PMC3257301", "PMC2989456",
-        "PMC2876543", "PMC2765432", "PMC2654321", "PMC2543210",
-        "PMC2432109", "PMC2321098", "PMC2210987", "PMC2109876",
-        "PMC2098765", "PMC1987654", "PMC1876543"
-    ]
+        "PMC12124214",
+        "PMC3312970",
+        "PMC3257301",
+        "PMC2989456",
+        "PMC2876543",
+        "PMC2765432",
+        "PMC2654321",
+        "PMC2543210",
+        "PMC2432109",
+        "PMC2321098",
+        "PMC2210987",
+        "PMC2109876",
+        "PMC2098765",
+        "PMC1987654",
+        "PMC1876543",
+    ],
 }
 
 
@@ -960,43 +1032,43 @@ def test_modular_benchmark_system(benchmark):
             cache_config=None,
             methods=["get_article_details", "get_citations"],
             name="ArticleClient_NoCache",
-            test_data=DEFAULT_TEST_DATA
+            test_data=DEFAULT_TEST_DATA,
         ),
         BenchmarkConfig(
             client_class=ArticleClient,
             cache_config=CacheConfig(enabled=True, size_limit_mb=100, ttl=3600),
             methods=["get_article_details", "get_citations"],
             name="ArticleClient_Cached",
-            test_data=DEFAULT_TEST_DATA
+            test_data=DEFAULT_TEST_DATA,
         ),
         BenchmarkConfig(
             client_class=SearchClient,
             cache_config=None,
             methods=["search", "get_hit_count"],
             name="SearchClient_NoCache",
-            test_data=DEFAULT_TEST_DATA
+            test_data=DEFAULT_TEST_DATA,
         ),
         BenchmarkConfig(
             client_class=SearchClient,
             cache_config=CacheConfig(enabled=True, size_limit_mb=100, ttl=3600),
             methods=["search", "get_hit_count"],
             name="SearchClient_Cached",
-            test_data=DEFAULT_TEST_DATA
+            test_data=DEFAULT_TEST_DATA,
         ),
         BenchmarkConfig(
             client_class=FullTextClient,
             cache_config=None,
             methods=["check_fulltext_availability"],
             name="FullTextClient_NoCache",
-            test_data=DEFAULT_TEST_DATA
+            test_data=DEFAULT_TEST_DATA,
         ),
         BenchmarkConfig(
             client_class=FullTextClient,
             cache_config=CacheConfig(enabled=True, size_limit_mb=100, ttl=3600),
             methods=["check_fulltext_availability"],
             name="FullTextClient_Cached",
-            test_data=DEFAULT_TEST_DATA
-        )
+            test_data=DEFAULT_TEST_DATA,
+        ),
     ]
 
     # Create and add benchmarks
@@ -1011,10 +1083,8 @@ def test_modular_benchmark_system(benchmark):
             continue
 
         # attach pytest-benchmark fixture to runner so measured runs can use it
-        try:
+        with contextlib.suppress(Exception):
             bench_inst.runner.benchmark_fixture = benchmark
-        except Exception:
-            pass
 
         manager.add_benchmark(bench_inst)
 
@@ -1023,9 +1093,9 @@ def test_modular_benchmark_system(benchmark):
 
     # Generate and save report
     report = manager.generate_comprehensive_report(suite_result)
-    print("\n" + "="*80)
+    print("\n" + "=" * 80)
     print("MODULAR BENCHMARK REPORT")
-    print("="*80)
+    print("=" * 80)
     print(report)
 
     # Save detailed results
@@ -1043,11 +1113,13 @@ def test_modular_benchmark_system(benchmark):
                     "memory_usages": r.memory_usages,
                     "cache_stats": r.cache_stats,
                     "errors": r.errors,
-                    "request_counts_per_run": getattr(r, 'request_counts_per_run', []),
-                    "cold_request_counts": getattr(r, 'cold_request_counts', []),
-                    "total_requests": getattr(r, 'total_requests', 0),
-                    "rss_peak_bytes_per_run": getattr(r, 'rss_peak_bytes_per_run', []),
-                    "tracemalloc_peak_bytes_per_run": getattr(r, 'tracemalloc_peak_bytes_per_run', [])
+                    "request_counts_per_run": getattr(r, "request_counts_per_run", []),
+                    "cold_request_counts": getattr(r, "cold_request_counts", []),
+                    "total_requests": getattr(r, "total_requests", 0),
+                    "rss_peak_bytes_per_run": getattr(r, "rss_peak_bytes_per_run", []),
+                    "tracemalloc_peak_bytes_per_run": getattr(
+                        r, "tracemalloc_peak_bytes_per_run", []
+                    ),
                 }
 
                 # Add pytest-benchmark style aggregates if we have times
@@ -1068,17 +1140,22 @@ def test_modular_benchmark_system(benchmark):
                         "stddev": stddev,
                         "p50": p50,
                         "p95": p95,
-                        "ops": ops
+                        "ops": ops,
                     }
 
                 serializable_results[name].append(entry)
 
-        json.dump({
-            "suite_name": suite_result.suite_name,
-            "timestamp": suite_result.timestamp,
-            "results": serializable_results,
-            "summary": suite_result.summary
-        }, f, indent=2, default=str)
+        json.dump(
+            {
+                "suite_name": suite_result.suite_name,
+                "timestamp": suite_result.timestamp,
+                "results": serializable_results,
+                "summary": suite_result.summary,
+            },
+            f,
+            indent=2,
+            default=str,
+        )
 
     # Save report
     with open("MODULAR_PERFORMANCE_REPORT.md", "w") as f:
@@ -1096,17 +1173,15 @@ def test_article_client_benchmark(benchmark):
         cache_config=CacheConfig(enabled=True, size_limit_mb=100, ttl=3600),
         methods=["get_article_details"],
         name="ArticleClient_Benchmark",
-        test_data=DEFAULT_TEST_DATA
+        test_data=DEFAULT_TEST_DATA,
     )
 
     benchmark_instance = ArticleClientBenchmark(config)
     # attach pytest-benchmark fixture to the runner so measured runs inside
     # the benchmark harness will use the real pytest fixture instead of the
     # dummy fallback.
-    try:
+    with contextlib.suppress(Exception):
         benchmark_instance.runner.benchmark_fixture = benchmark
-    except Exception:
-        pass
 
     def run_benchmark():
         results = benchmark_instance.run_benchmark()
@@ -1123,17 +1198,15 @@ def test_search_client_benchmark(benchmark):
         cache_config=CacheConfig(enabled=True, size_limit_mb=100, ttl=3600),
         methods=["search"],
         name="SearchClient_Benchmark",
-        test_data=DEFAULT_TEST_DATA
+        test_data=DEFAULT_TEST_DATA,
     )
 
     benchmark_instance = SearchClientBenchmark(config)
     # attach pytest-benchmark fixture to the runner so measured runs inside
     # the benchmark harness will use the real pytest fixture instead of the
     # dummy fallback.
-    try:
+    with contextlib.suppress(Exception):
         benchmark_instance.runner.benchmark_fixture = benchmark
-    except Exception:
-        pass
 
     def run_benchmark():
         results = benchmark_instance.run_benchmark()
@@ -1150,17 +1223,15 @@ def test_fulltext_client_benchmark(benchmark):
         cache_config=CacheConfig(enabled=True, size_limit_mb=100, ttl=3600),
         methods=["check_fulltext_availability"],
         name="FullTextClient_Benchmark",
-        test_data=DEFAULT_TEST_DATA
+        test_data=DEFAULT_TEST_DATA,
     )
 
     benchmark_instance = FullTextClientBenchmark(config)
     # attach pytest-benchmark fixture to the runner so measured runs inside
     # the benchmark harness will use the real pytest fixture instead of the
     # dummy fallback.
-    try:
+    with contextlib.suppress(Exception):
         benchmark_instance.runner.benchmark_fixture = benchmark
-    except Exception:
-        pass
 
     def run_benchmark():
         results = benchmark_instance.run_benchmark()

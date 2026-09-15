@@ -7,8 +7,8 @@ from unittest.mock import Mock, patch
 import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.core.exceptions import ValidationError
+from pyeuropepmc.features.literature.annotations import AnnotationsClient
 
 pytestmark = pytest.mark.unit
 
@@ -109,9 +109,7 @@ class TestGetAnnotationsByArticleIds:
         mock_get.assert_called_once()
 
     @patch.object(AnnotationsClient, "_get")
-    def test_get_annotations_with_filters(
-        self, mock_get, annotations_client, mock_response
-    ):
+    def test_get_annotations_with_filters(self, mock_get, annotations_client, mock_response):
         """Test retrieval with provider and type filters."""
         mock_get.return_value = mock_response
 
@@ -138,25 +136,19 @@ class TestGetAnnotationsByArticleIds:
     def test_get_annotations_invalid_section(self, annotations_client):
         """Test with invalid section parameter."""
         with pytest.raises(ValidationError):
-            annotations_client.get_annotations_by_article_ids(
-                ["PMC1234567"], section="invalid"
-            )
+            annotations_client.get_annotations_by_article_ids(["PMC1234567"], section="invalid")
 
     def test_get_annotations_invalid_format(self, annotations_client):
         """Test with invalid format parameter."""
         with pytest.raises(ValidationError):
-            annotations_client.get_annotations_by_article_ids(
-                ["PMC1234567"], format="INVALID"
-            )
+            annotations_client.get_annotations_by_article_ids(["PMC1234567"], format="INVALID")
 
 
 class TestGetAnnotationsByEntity:
     """Test get_annotations_by_entity method."""
 
     @patch.object(AnnotationsClient, "_get")
-    def test_get_annotations_by_entity_success(
-        self, mock_get, annotations_client, mock_response
-    ):
+    def test_get_annotations_by_entity_success(self, mock_get, annotations_client, mock_response):
         """Test successful retrieval of annotations by entity."""
         mock_get.return_value = mock_response
 
@@ -171,21 +163,15 @@ class TestGetAnnotationsByEntity:
     def test_get_annotations_by_entity_invalid_id(self, annotations_client):
         """Test with invalid entity ID."""
         with pytest.raises(ValidationError):
-            annotations_client.get_annotations_by_entity(
-                entity_id="", entity_type="CHEBI"
-            )
+            annotations_client.get_annotations_by_entity(entity_id="", entity_type="CHEBI")
 
         with pytest.raises(ValidationError):
-            annotations_client.get_annotations_by_entity(
-                entity_id=None, entity_type="CHEBI"
-            )
+            annotations_client.get_annotations_by_entity(entity_id=None, entity_type="CHEBI")
 
     def test_get_annotations_by_entity_invalid_type(self, annotations_client):
         """Test with invalid entity type."""
         with pytest.raises(ValidationError):
-            annotations_client.get_annotations_by_entity(
-                entity_id="CHEBI:16236", entity_type=""
-            )
+            annotations_client.get_annotations_by_entity(entity_id="CHEBI:16236", entity_type="")
 
     def test_get_annotations_by_entity_invalid_pagination(self, annotations_client):
         """Test with invalid pagination parameters."""

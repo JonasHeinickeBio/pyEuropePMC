@@ -16,6 +16,7 @@ pytestmark = pytest.mark.unit
 # SemanticScholarLiteratureAdapter
 # ===========================================================================
 
+
 class TestSemanticScholarAdapter:
     def test_init_default(self):
         """Should create enrichment client by default."""
@@ -118,6 +119,7 @@ class TestSemanticScholarAdapter:
 # OpenAlexLiteratureAdapter
 # ===========================================================================
 
+
 class TestOpenAlexAdapter:
     def test_init_default(self):
         adapter = OpenAlexLiteratureAdapter()
@@ -131,9 +133,7 @@ class TestOpenAlexAdapter:
             "title": "Test Paper",
             "publication_year": 2023,
             "doi": "https://doi.org/10.1234/test",
-            "primary_location": {
-                "source": {"display_name": "Nature"}
-            },
+            "primary_location": {"source": {"display_name": "Nature"}},
             "authorships": [
                 {
                     "author": {"display_name": "John Doe", "orcid": "0000-0002-1825-0097"},

@@ -32,9 +32,6 @@ from pyeuropepmc.features.enrich.merger import (
     DedupConfig,
     DedupMode,
     LiteratureMerger,
-    MatchLevel,
-    MergeReport,
-    _extract_author_last_names,
     _has_part_marker,
     _title_similarity,
 )
@@ -654,7 +651,6 @@ class TestDedupLargeScale:
         """Stress test with N base papers and ~30% duplication."""
         s1, s2 = _generate_large_dataset(n_base=n_base, dup_ratio=0.3)
         combined = s1 + s2
-        expected_unique = len(s1) + len(s2) - int(n_base * 0.3)  # approx
 
         for mode in DedupMode:
             config = DedupConfig(mode=mode)

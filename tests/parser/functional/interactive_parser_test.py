@@ -5,7 +5,9 @@ from pyeuropepmc.features.literature.search_parser import EuropePMCParser, Parsi
 
 def interactive_parser_test():
     print("EuropePMCParser Interactive Test")
-    print("Enter raw input (XML, JSON, DC, RIS, BibTeX, CSV). End with Ctrl+D (Linux/Mac) or Ctrl+Z (Windows):")
+    print(
+        "Enter raw input (XML, JSON, DC, RIS, BibTeX, CSV). End with Ctrl+D (Linux/Mac) or Ctrl+Z (Windows):"
+    )
     raw_input = sys.stdin.read()
     print("\nRaw input received:")
     print(raw_input)
@@ -53,6 +55,7 @@ def interactive_parser_test():
             print("Test marked as FAIL.")
         else:
             print("Test marked as PASS.")
+
 
 if __name__ == "__main__":
     interactive_parser_test()

@@ -1,6 +1,5 @@
 """Tests for claims models."""
 
-import pytest
 from pyeuropepmc.claims.models import (
     Claim,
     ClaimEvidence,
@@ -84,7 +83,12 @@ class TestClaimModels:
         cs.claims = [
             Claim(id="c1", text="supported", original_text="s", verdict=Verdict.SUPPORTED),
             Claim(id="c2", text="refuted", original_text="r", verdict=Verdict.REFUTED),
-            Claim(id="c3", text="insufficient", original_text="i", verdict=Verdict.INSUFFICIENT_EVIDENCE),
+            Claim(
+                id="c3",
+                text="insufficient",
+                original_text="i",
+                verdict=Verdict.INSUFFICIENT_EVIDENCE,
+            ),
             Claim(id="c4", text="unchecked", original_text="u"),
         ]
         summary = cs.verification_summary

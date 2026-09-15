@@ -56,7 +56,7 @@ class TestAssetRef:
 class TestExtractAssetRefs:
     def test_no_root_raises(self):
         fetcher = ImageFetcher()
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             fetcher.extract_asset_refs()
 
     def test_extracts_all_asset_kinds(self):

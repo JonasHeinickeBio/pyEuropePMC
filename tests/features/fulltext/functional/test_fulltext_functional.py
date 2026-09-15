@@ -5,16 +5,16 @@ These tests require network access and interact with the real Europe PMC API.
 
 from pathlib import Path
 import tempfile
-from xml.etree import ElementTree
 from unittest.mock import Mock, mock_open, patch
+from xml.etree import ElementTree
 
 import pytest
 
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
-from pyeuropepmc.features.literature.search import SearchClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
+from pyeuropepmc.features.literature.search import SearchClient
 
 pytestmark = pytest.mark.functional
 
@@ -150,9 +150,9 @@ class TestFullTextClientFunctional:
 
         # Create a realistic test scenario with known good, known bad, and invalid PMC IDs
         test_pmcids = {
-            "known_good": "3257301",      # Known XML available
-            "known_bad": "99999999",      # Valid format but doesn't exist
-            "invalid": "invalid_format"   # Invalid PMC ID format
+            "known_good": "3257301",  # Known XML available
+            "known_bad": "99999999",  # Valid format but doesn't exist
+            "invalid": "invalid_format",  # Invalid PMC ID format
         }
 
         pmcids = list(test_pmcids.values())
@@ -171,8 +171,7 @@ class TestFullTextClientFunctional:
                 # Try individual download for the known good ID to verify it works
                 try:
                     good_result = self.client.download_xml_by_pmcid(
-                        test_pmcids["known_good"],
-                        Path(temp_dir) / "test_good.xml"
+                        test_pmcids["known_good"], Path(temp_dir) / "test_good.xml"
                     )
                     if good_result:
                         results[test_pmcids["known_good"]] = good_result  # type: ignore
@@ -205,11 +204,11 @@ class TestFullTextClientFunctional:
         # Test with known good PMC ID in various formats
         base_pmcid = "3257301"
         variations = [
-            base_pmcid,                    # Numeric only
-            f"PMC{base_pmcid}",           # Standard PMC prefix
-            f"pmc{base_pmcid}",           # Lowercase prefix
-            f"  PMC{base_pmcid}  ",       # With whitespace
-            f"PMC {base_pmcid}",          # With space
+            base_pmcid,  # Numeric only
+            f"PMC{base_pmcid}",  # Standard PMC prefix
+            f"pmc{base_pmcid}",  # Lowercase prefix
+            f"  PMC{base_pmcid}  ",  # With whitespace
+            f"PMC {base_pmcid}",  # With space
         ]
 
         successful_checks = 0
@@ -225,14 +224,20 @@ class TestFullTextClientFunctional:
                     successful_checks += 1
                     logger.info(f"XML available for '{pmcid}'")
                 else:
-                    logger.warning(f"XML not available for '{pmcid}' - might be temporary API issue")
+                    logger.warning(
+                        f"XML not available for '{pmcid}' - might be temporary API issue"
+                    )
 
             except Exception as e:
                 logger.warning(f"Failed to check availability for '{pmcid}': {e}")
 
         # Ensure at least some variations worked (allows for API issues)
-        assert successful_checks > 0, f"No PMC ID variations worked out of {len(variations)} tested"
-        logger.info(f"Successfully checked {successful_checks}/{len(variations)} PMC ID variations")
+        assert successful_checks > 0, (
+            f"No PMC ID variations worked out of {len(variations)} tested"
+        )
+        logger.info(
+            f"Successfully checked {successful_checks}/{len(variations)} PMC ID variations"
+        )
 
     def test_rate_limiting_behavior(self):
         import logging
@@ -386,8 +391,16 @@ class TestFullTextClientFunctional:
 
         # Known good PMC IDs with XML available as fallback
         known_xml_available = [
-            "3257301", "3312970", "4000000", "5000000", "6000000",
-            "7000000", "8000000", "9000000", "10000000", "11000000"
+            "3257301",
+            "3312970",
+            "4000000",
+            "5000000",
+            "6000000",
+            "7000000",
+            "8000000",
+            "9000000",
+            "10000000",
+            "11000000",
         ]
 
         try:
@@ -450,15 +463,15 @@ class TestFullTextClientFunctional:
         # Strategy 1: Start with broader queries for better success rate
         search_queries = [
             # Broad queries first - higher chance of results
-            'SRC:PMC',
-            'open_access:Y',
-            'isOA:Y',
+            "SRC:PMC",
+            "open_access:Y",
+            "isOA:Y",
             # More specific queries
-            'SRC:PMC AND open_access:Y',
-            'hasReferences:Y AND open_access:Y',
-            'hasTextMinedTerms:Y AND open_access:Y',
-            'hasSuppl:Y AND open_access:Y',
-            'hasPDF:Y AND hasXML:Y',
+            "SRC:PMC AND open_access:Y",
+            "hasReferences:Y AND open_access:Y",
+            "hasTextMinedTerms:Y AND open_access:Y",
+            "hasSuppl:Y AND open_access:Y",
+            "hasPDF:Y AND hasXML:Y",
         ]
 
         for query in search_queries:
@@ -508,7 +521,7 @@ class TestFullTextClientFunctional:
         available_pmcids = []
 
         for i in range(0, len(pmcids), batch_size):
-            batch = pmcids[i:i + batch_size]
+            batch = pmcids[i : i + batch_size]
             logger.info(f"Checking availability for batch: {batch}")
 
             for pmcid in batch:
@@ -622,8 +635,12 @@ class TestFTPDownloaderFunctional:
         assert zip_files[1]["size"] == 1258291  # 1.2M in bytes
         assert zip_files[1]["directory"] == "PMCxxxx1200"
 
-    @patch("pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.get_zip_files_in_directory")
-    @patch("pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_relevant_directories")
+    @patch(
+        "pyeuropepmc.features.literature.ftp_downloader.FTPDownloader.get_zip_files_in_directory"
+    )
+    @patch(
+        "pyeuropepmc.features.literature.ftp_downloader.FTPDownloader._get_relevant_directories"
+    )
     def test_query_pmcids_functional(self, mock_get_dirs, mock_get_zips):
         """Test querying PMC IDs with realistic data."""
         mock_get_dirs.return_value = {"PMCxxxx1200", "PMCxxxx1201"}
@@ -869,7 +886,7 @@ class TestFTPDownloaderFunctional:
         search_queries = [
             "hasPDF:Y AND hasXML:Y AND isOA:Y",
             "open_access:Y AND hasReferences:Y",
-            "SRC:PMC AND isOA:Y"
+            "SRC:PMC AND isOA:Y",
         ]
 
         for query in search_queries:

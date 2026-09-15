@@ -2,6 +2,8 @@
 Copied unit tests for text matching into tests/filters/unit
 """
 
+import contextlib
+
 import pytest
 
 from pyeuropepmc.utils import text_match as tm
@@ -38,10 +40,8 @@ def test_all_and_any_needles_match():
 
 def test_any_match_semantic_skip_if_missing():
     # If sentence-transformers is installed the call should not raise; otherwise it's gracefully handled
-    try:
-        has_st = True
-    except Exception:
-        has_st = False
+    with contextlib.suppress(Exception):
+        pass
 
     # Run with use_semantic=True but keep test robust when model not present
     res = tm.any_match("cancer therapy", ["oncology treatment"], use_semantic=True)
@@ -66,11 +66,14 @@ def test_any_match_semantic_with_injected_model_positive():
         ):
             # return list of identical vectors (1-dim) so dot product = 1.0 after normalization
             import numpy as _np
+
             arr = _np.ones((len(list(sentences)), 1), dtype=float)
             return arr
 
     model = FakeModelPos()
-    res = tm.any_match("cancer therapy", ["oncology treatment"], use_semantic=True, semantic_model=model)
+    res = tm.any_match(
+        "cancer therapy", ["oncology treatment"], use_semantic=True, semantic_model=model
+    )
     assert res is True
 
 
@@ -88,6 +91,7 @@ def test_any_match_semantic_with_injected_model_negative():
             normalize_embeddings: bool = False,
         ):
             import numpy as _np
+
             out = []
             for t in list(sentences):
                 tt = (t or "").lower()
@@ -100,7 +104,13 @@ def test_any_match_semantic_with_injected_model_negative():
             return _np.vstack(out)
 
     model = FakeModelNeg()
-    res = tm.any_match("cancer therapy", ["oncology treatment"], use_semantic=True, semantic_model=model, semantic_threshold=0.5)
+    res = tm.any_match(
+        "cancer therapy",
+        ["oncology treatment"],
+        use_semantic=True,
+        semantic_model=model,
+        semantic_threshold=0.5,
+    )
     assert res is False
 
 
@@ -111,7 +121,9 @@ def test_any_match_semantic_model_error_handling():
             raise RuntimeError("broken model")
 
     model = BrokenModel()
-    res = tm.any_match("cancer therapy", ["oncology treatment"], use_semantic=True, semantic_model=model)
+    res = tm.any_match(
+        "cancer therapy", ["oncology treatment"], use_semantic=True, semantic_model=model
+    )
     assert res is False
 
 
@@ -207,8 +219,10 @@ def test_semantic_chunk_match_positive():
             return _np.ones((len(list(sentences)), 1), dtype=float)
 
     result = tm.semantic_chunk_match(
-        "cancer therapy", "Oncology treatment.",
-        semantic_model=FakeModelPos(), semantic_threshold=0.5,
+        "cancer therapy",
+        "Oncology treatment.",
+        semantic_model=FakeModelPos(),
+        semantic_threshold=0.5,
     )
     assert result is True
 

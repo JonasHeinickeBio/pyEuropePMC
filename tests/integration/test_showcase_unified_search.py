@@ -9,11 +9,10 @@ add on top, the dedup rate, and per-source reliability / latency.
 
 from __future__ import annotations
 
+from _showcase import Timer, _fmt_hist, pct, summary_stats, write_report
 import pytest
 
 from pyeuropepmc.features.search import UnifiedSearch
-
-from _showcase import Timer, pct, summary_stats, write_report, _fmt_hist
 
 QUERIES: list[str] = [
     "CRISPR base editing off-target",
@@ -80,7 +79,9 @@ def test_unified_search_showcase() -> None:
     # arxiv (no mailto) and unauthenticated Semantic Scholar both rate-limit
     # hard; a generous per-source delay keeps 50 sequential searches from
     # burning most of their time on 429 backoff instead of real work.
-    searcher = UnifiedSearch(sources=sources, primary="europepmc", timeout=40, rate_limit_delay=3.0)
+    searcher = UnifiedSearch(
+        sources=sources, primary="europepmc", timeout=40, rate_limit_delay=3.0
+    )
 
     per_item: list[dict] = []
     source_hit_totals: dict[str, int] = dict.fromkeys(sources, 0)
@@ -159,9 +160,7 @@ def test_unified_search_showcase() -> None:
         ],
     }
 
-    write_report(
-        "unified_search", headline=headline, per_item=per_item, sections=sections
-    )
+    write_report("unified_search", headline=headline, per_item=per_item, sections=sections)
 
     # Europe PMC should genuinely be the spine.
     assert pct(total_epmc_anchored, total_merged) >= 40, (

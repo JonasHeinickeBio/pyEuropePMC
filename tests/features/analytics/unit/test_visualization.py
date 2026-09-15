@@ -7,7 +7,6 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import (
     is_dependency_available,
-    skip_if_dependencies_missing,
 )
 
 pytestmark = pytest.mark.skipif(
@@ -19,13 +18,13 @@ pytestmark = pytest.mark.skipif(
 # raising ModuleNotFoundError at collection time when matplotlib is absent.
 pytest.importorskip("matplotlib")
 
-import matplotlib
-import matplotlib.pyplot as plt
+import matplotlib  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 
 matplotlib.use("Agg")
 
-from pyeuropepmc.features.analytics.analytics import to_dataframe
-from pyeuropepmc.features.analytics.visualization import (
+from pyeuropepmc.features.analytics.analytics import to_dataframe  # noqa: E402
+from pyeuropepmc.features.analytics.visualization import (  # noqa: E402
     create_summary_dashboard,
     plot_access_distribution,
     plot_author_collaboration_network,
@@ -284,34 +283,62 @@ def extended_papers():
     """Extended sample papers for new visualization tests."""
     return [
         {
-            "id": "1", "source": "MED", "title": "Cancer Research on ME/CFS",
-            "authorString": "Smith J, Doe J", "pubYear": "2020",
-            "isOpenAccess": "Y", "citedByCount": "10", "hasPDF": "Y",
-            "inPMC": "Y", "inEPMC": "Y", "license": "CC-BY",
+            "id": "1",
+            "source": "MED",
+            "title": "Cancer Research on ME/CFS",
+            "authorString": "Smith J, Doe J",
+            "pubYear": "2020",
+            "isOpenAccess": "Y",
+            "citedByCount": "10",
+            "hasPDF": "Y",
+            "inPMC": "Y",
+            "inEPMC": "Y",
+            "license": "CC-BY",
             "abstractText": "This study examines ME/CFS.",
             "grantsList": {"grant": [{"agency": "NIH"}, {"agency": "Wellcome"}]},
         },
         {
-            "id": "2", "source": "MED", "title": "Paper on long COVID",
-            "authorString": "Jones A", "pubYear": "2021",
-            "isOpenAccess": "N", "citedByCount": "25", "hasPDF": "N",
-            "inPMC": "N", "inEPMC": "N", "license": "Publisher",
+            "id": "2",
+            "source": "MED",
+            "title": "Paper on long COVID",
+            "authorString": "Jones A",
+            "pubYear": "2021",
+            "isOpenAccess": "N",
+            "citedByCount": "25",
+            "hasPDF": "N",
+            "inPMC": "N",
+            "inEPMC": "N",
+            "license": "Publisher",
             "abstractText": "Long COVID post-acute sequelae.",
             "grantsList": {"grant": [{"agency": "NIH"}]},
         },
         {
-            "id": "3", "source": "MED", "title": "Immunotherapy for chronic fatigue",
-            "authorString": "Brown B, Green G", "pubYear": "2022",
-            "isOpenAccess": "Y", "citedByCount": "5", "hasPDF": "Y",
-            "inPMC": "Y", "inEPMC": "Y", "license": "CC0",
+            "id": "3",
+            "source": "MED",
+            "title": "Immunotherapy for chronic fatigue",
+            "authorString": "Brown B, Green G",
+            "pubYear": "2022",
+            "isOpenAccess": "Y",
+            "citedByCount": "5",
+            "hasPDF": "Y",
+            "inPMC": "Y",
+            "inEPMC": "Y",
+            "license": "CC0",
             "abstractText": "Clinical trial on CFS.",
             "grantsList": {"grant": [{"agency": "MRC"}]},
         },
         {
-            "id": "4", "source": "MED", "title": "ME prevalence study",
-            "authorString": "White W, Black K", "pubYear": "2023",
-            "isOpenAccess": "Y", "citedByCount": "15", "hasPDF": "Y",
-            "inPMC": "N", "inEPMC": "Y", "license": "CC-BY-NC",
+            "id": "4",
+            "source": "MED",
+            "title": "ME prevalence study",
+            "authorString": "White W, Black K",
+            "pubYear": "2023",
+            "isOpenAccess": "Y",
+            "citedByCount": "15",
+            "hasPDF": "Y",
+            "inPMC": "N",
+            "inEPMC": "Y",
+            "license": "CC-BY-NC",
             "abstractText": "ME/CFS prevalence.",
             "grantsList": {"grant": [{"agency": "NIH"}, {"agency": "MRC"}]},
         },
@@ -483,9 +510,7 @@ class TestPlotAuthorCollaborationNetwork:
         """Test saving plot to file."""
         with tempfile.TemporaryDirectory() as tmpdir:
             save_path = Path(tmpdir) / "author_network.png"
-            fig = plot_author_collaboration_network(
-                extended_papers, save_path=save_path
-            )
+            fig = plot_author_collaboration_network(extended_papers, save_path=save_path)
             assert save_path.exists()
             plt.close(fig)
 

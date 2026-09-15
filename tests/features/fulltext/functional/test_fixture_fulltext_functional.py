@@ -6,6 +6,7 @@ from pyeuropepmc.features.literature.search_parser import EuropePMCParser, Parsi
 
 FIXTURE_DIR = os.path.join(os.path.dirname(__file__), "../../../fixtures/fulltext_downloads")
 
+
 # Dynamically list all PMCIDs with both XML and PDF in the fixture folder
 def get_pmcids():
     files = os.listdir(FIXTURE_DIR)
@@ -13,7 +14,9 @@ def get_pmcids():
     pdf_ids = {f.split(".")[0] for f in files if f.endswith(".pdf") and f.startswith("PMC")}
     return sorted(xml_ids & pdf_ids)
 
+
 PMCIDS = get_pmcids()
+
 
 @pytest.mark.parametrize("pmcid", PMCIDS)
 def test_parse_xml_fulltext(pmcid):
@@ -35,7 +38,8 @@ def test_parse_xml_fulltext(pmcid):
         assert True  # Error handling is tested
     except Exception as e:
         print(f"Unexpected error for {pmcid}.xml: {e}")
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}") from e
+
 
 @pytest.mark.parametrize("pmcid", PMCIDS)
 def test_pdf_exists(pmcid):
@@ -46,12 +50,13 @@ def test_pdf_exists(pmcid):
         header = f.read(5)
         debug_head = f.read(27)  # Read next 27 bytes for debugging (total 32 bytes)
         print(f"PDF head for {pmcid}: {header + debug_head}")
-        assert header == b'%PDF-', f"{pdf_path} does not start with PDF magic number"
+        assert header == b"%PDF-", f"{pdf_path} does not start with PDF magic number"
         f.seek(-7, os.SEEK_END)
         trailer = f.read(7)
-        assert b'%%EOF' in trailer, f"{pdf_path} does not end with PDF EOF marker"
+        assert b"%%EOF" in trailer, f"{pdf_path} does not end with PDF EOF marker"
     # Optionally check file size is reasonable (e.g., >100 bytes)
     assert os.path.getsize(pdf_path) > 100, f"{pdf_path} is unexpectedly small"
+
 
 # Additional error handling test: try parsing a broken XML file
 @pytest.mark.parametrize("bad_xml", ["<broken><xml>", "", "<resultList></resultList>"])
@@ -65,4 +70,4 @@ def test_parse_xml_error_handling(bad_xml):
     except ParsingError:
         assert True  # Expected error
     except Exception as e:
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}") from e

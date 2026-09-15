@@ -3,8 +3,8 @@
 import time
 from unittest.mock import patch
 
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, RateLimiter
 from pyeuropepmc.core.exceptions import FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient, RateLimiter
 
 
 def test_rate_limiter():
@@ -79,10 +79,20 @@ def test_parallel_method_basic():
     """Test basic parallel download functionality with empty list."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         results = client.download_fulltext_batch_parallel(
             pmcids=[], format_type="pdf", max_workers=2, show_progress=False
         )
@@ -97,10 +107,20 @@ def test_parallel_method_with_workers():
     """Test parallel download with different worker counts."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=1, show_progress=False
@@ -122,12 +142,24 @@ def test_parallel_method_auto_workers():
 
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
-        client.download_fulltext_batch_parallel(pmcids=["123"], format_type="pdf", show_progress=False)
+        client.download_fulltext_batch_parallel(
+            pmcids=["123"], format_type="pdf", show_progress=False
+        )
 
         expected_workers = min(os.cpu_count() or 4, 8)
         assert client.download_stats["max_workers"] == expected_workers, (
@@ -140,10 +172,20 @@ def test_parallel_method_max_workers_range():
     """Test parallel download max_workers range validation."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=0, show_progress=False
@@ -161,12 +203,26 @@ def test_parallel_method_format_types():
     """Test parallel download with different format types."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_pdf, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_xml_with_session") as mock_xml, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_html_with_session") as mock_html, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_pdf,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_xml_with_session"
+        ) as mock_xml,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_html_with_session"
+        ) as mock_html,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_pdf.return_value = ("success", "/tmp/PMC123.pdf", {})
         mock_xml.return_value = ("success", "/tmp/PMC123.xml", {})
         mock_html.return_value = ("success", "/tmp/PMC123.html", {})
@@ -185,10 +241,20 @@ def test_parallel_method_statistics():
     """Test parallel download statistics tracking."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False
@@ -209,10 +275,20 @@ def test_parallel_method_worker_stats():
     """Test parallel download worker statistics."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123", "456"], format_type="pdf", max_workers=2, show_progress=False
@@ -235,10 +311,20 @@ def test_parallel_method_global_stats():
     """Test parallel download global statistics."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123", "456"], format_type="pdf", max_workers=2, show_progress=False
@@ -250,7 +336,8 @@ def test_parallel_method_global_stats():
         assert "total_successes" in global_stats, "Missing total_successes"
 
         total_from_workers = sum(
-            worker_stat["requests"] for worker_stat in client.download_stats["worker_stats"].values()
+            worker_stat["requests"]
+            for worker_stat in client.download_stats["worker_stats"].values()
         )
         assert global_stats["total_requests"] == total_from_workers, "Global requests mismatch"
 
@@ -261,10 +348,20 @@ def test_parallel_method_verbose_mode():
     """Test parallel download verbose mode."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False, verbose=True
@@ -277,13 +374,23 @@ def test_parallel_method_skip_errors():
     """Test parallel download skip_errors behavior."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.side_effect = [
             ("error", None, {"error": "not found"}),
-            ("success", "/tmp/PMC123.pdf", {})
+            ("success", "/tmp/PMC123.pdf", {}),
         ]
         client.download_fulltext_batch_parallel(
             pmcids=["invalid", "123"],
@@ -300,10 +407,20 @@ def test_parallel_method_empty_pmcids_with_stats():
     """Test parallel download with empty list verifies stats initialization."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         client.download_fulltext_batch_parallel(
             pmcids=[], format_type="xml", max_workers=4, show_progress=False
         )
@@ -328,10 +445,20 @@ def test_parallel_method_progress_bar_display():
     old_stdout = sys.stdout
     sys.stdout = io.StringIO()
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         try:
             client.download_fulltext_batch_parallel(
@@ -347,10 +474,20 @@ def test_parallel_method_worker_id_in_results():
     """Test that worker ID is correctly tracked in stats."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123", "456", "789"], format_type="pdf", max_workers=3, show_progress=False
@@ -374,10 +511,20 @@ def test_parallel_method_output_dir():
 
     with tempfile.TemporaryDirectory() as tmpdir:
         output_path = Path(tmpdir)
-        with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-             patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-             patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-             patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+        with (
+            patch(
+                "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+            ) as mock_download,
+            patch(
+                "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+                return_value=True,
+            ),
+            patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+            patch(
+                "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+                return_value={"requests_made": 0, "warnings_issued": 0},
+            ),
+        ):
             mock_download.return_value = ("success", output_path / "PMC123.pdf", {})
             client.download_fulltext_batch_parallel(
                 pmcids=["123"],
@@ -394,10 +541,20 @@ def test_parallel_method_rate_limiter_per_worker():
     """Test that each worker has its own rate limiter."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=2, show_progress=False
@@ -418,13 +575,26 @@ def test_parallel_method_concurrent_access():
     """Test thread safety with multiple concurrent downloads."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
-            pmcids=["123", "456", "789", "999"], format_type="pdf", max_workers=4, show_progress=False
+            pmcids=["123", "456", "789", "999"],
+            format_type="pdf",
+            max_workers=4,
+            show_progress=False,
         )
 
         stats = client.download_stats
@@ -442,10 +612,20 @@ def test_parallel_method_no_progress_bar():
     """Test parallel download without progress bar."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123", "456"], format_type="pdf", max_workers=2, show_progress=False
@@ -458,10 +638,20 @@ def test_parallel_method_single_pmcid():
     """Test parallel download with single PMCID."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="pdf", max_workers=1, show_progress=False
@@ -474,10 +664,20 @@ def test_parallel_method_xml_format():
     """Test parallel download with XML format."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_xml_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_xml_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.xml", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="xml", max_workers=2, show_progress=False
@@ -492,10 +692,20 @@ def test_parallel_method_html_format():
     """Test parallel download with HTML format."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_html_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_html_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.html", {})
         client.download_fulltext_batch_parallel(
             pmcids=["123"], format_type="html", max_workers=2, show_progress=False
@@ -546,10 +756,20 @@ def test_parallel_method_skip_errors_false():
     """Test parallel download with skip_errors=False."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("error", None, {"error": "not found"})
         try:
             client.download_fulltext_batch_parallel(
@@ -563,7 +783,9 @@ def test_parallel_method_skip_errors_false():
         except FullTextError:
             pass
         except Exception as e:
-            raise AssertionError(f"Expected FullTextError but got {type(e).__name__}: {e}") from None
+            raise AssertionError(
+                f"Expected FullTextError but got {type(e).__name__}: {e}"
+            ) from None
 
     print("✓ skip_errors=False raises errors correctly")
 
@@ -572,10 +794,20 @@ def test_parallel_method_statistics_consistency():
     """Test that statistics remain consistent across multiple runs."""
     client = FullTextClient(enable_cache=False)
 
-    with patch("pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session") as mock_download, \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record", return_value=True), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"), \
-         patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats", return_value={"requests_made": 0, "warnings_issued": 0}):
+    with (
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.FullTextClient._download_pdf_with_session"
+        ) as mock_download,
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.check_and_record",
+            return_value=True,
+        ),
+        patch("pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.wait_if_needed"),
+        patch(
+            "pyeuropepmc.features.fulltext.fulltext_client.RateLimiter.get_stats",
+            return_value={"requests_made": 0, "warnings_issued": 0},
+        ),
+    ):
         mock_download.return_value = ("success", "/tmp/PMC123.pdf", {})
         for _ in range(3):
             client.download_fulltext_batch_parallel(

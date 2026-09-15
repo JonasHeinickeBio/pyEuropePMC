@@ -2,11 +2,10 @@
 Unit tests for semantic enrichment functions.
 """
 
-from datetime import datetime
 from unittest.mock import MagicMock, patch
 
 import pytest
-from rdflib import DCTERMS, RDF, XSD, Graph, Literal, Namespace, URIRef
+from rdflib import DCTERMS, Graph, Literal, Namespace, URIRef
 
 from pyeuropepmc.mappers import semantic_enrichment as se
 
@@ -50,7 +49,9 @@ class TestProcessFunctions:
 
     def test_process_search_for_rdf_empty(self, mock_dataset, named_graph_uris, mock_mapper):
         """Test process_search_for_rdf with empty results."""
-        with patch("pyeuropepmc.mappers.semantic_enrichment.process_search_results", return_value=[]):
+        with patch(
+            "pyeuropepmc.mappers.semantic_enrichment.process_search_results", return_value=[]
+        ):
             se.process_search_for_rdf([], mock_dataset, named_graph_uris, mock_mapper)
             assert len(mock_dataset.graph.return_value) == 0
 
@@ -60,13 +61,17 @@ class TestProcessFunctions:
         mock_entity.to_rdf = MagicMock()
         mock_entity.authors = []
 
-        with patch(
-            "pyeuropepmc.mappers.semantic_enrichment.process_search_results",
-            return_value=[{"entity": mock_entity, "related_entities": {}}],
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.add_paper_metadata",
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.add_author_metadata",
+        with (
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.process_search_results",
+                return_value=[{"entity": mock_entity, "related_entities": {}}],
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.add_paper_metadata",
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.add_author_metadata",
+            ),
         ):
             se.process_search_for_rdf([{}], mock_dataset, named_graph_uris, mock_mapper)
             mock_entity.to_rdf.assert_called_once()
@@ -82,7 +87,9 @@ class TestProcessFunctions:
         ):
             se.process_search_for_rdf([{}], mock_dataset, named_graph_uris, mock_mapper)
 
-    def test_process_search_for_rdf_with_authors(self, mock_dataset, named_graph_uris, mock_mapper):
+    def test_process_search_for_rdf_with_authors(
+        self, mock_dataset, named_graph_uris, mock_mapper
+    ):
         """Test process_search_for_rdf with author metadata."""
         mock_author = MagicMock()
         mock_entity = MagicMock()
@@ -192,16 +199,21 @@ class TestNetworkFunctions:
         g.add((author1, EX.affiliation, Literal("University A")))
         g.add((author2, EX.affiliation, Literal("University A")))
 
-        with patch(
-            "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
-            return_value=_config_with_prefixes({
-                "ex": str(EX),
-                "europepmc": str(EUROPEPMC),
-                "org": str(ORG),
-            }),
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.calculate_institution_quality_score",
-            return_value=0.85,
+        with (
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
+                return_value=_config_with_prefixes(
+                    {
+                        "ex": str(EX),
+                        "europepmc": str(EUROPEPMC),
+                        "org": str(ORG),
+                    }
+                ),
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.calculate_institution_quality_score",
+                return_value=0.85,
+            ),
         ):
             se.build_institutional_hierarchies(mock_dataset, named_graph_uris)
 
@@ -232,10 +244,12 @@ class TestMetadataFunctions:
 
         with patch(
             "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
-            return_value=_config_with_prefixes({
-                "pyeuropepmc": str(PYEUROPEPMC),
-                "ex": str(EX),
-            }),
+            return_value=_config_with_prefixes(
+                {
+                    "pyeuropepmc": str(PYEUROPEPMC),
+                    "ex": str(EX),
+                }
+            ),
         ):
             se.add_provenance_and_metadata(mock_dataset, named_graph_uris)
 
@@ -251,20 +265,28 @@ class TestMetadataFunctions:
         EX = Namespace("http://example.org/ex/")
         EUROPEPMC = Namespace("http://example.org/europepmc/")
 
-        with patch(
-            "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
-            return_value=_config_with_prefixes({
-                "ex": str(EX),
-                "europepmc": str(EUROPEPMC),
-            }),
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.calculate_paper_quality_score",
-            return_value=0.9,
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.get_confidence_level",
-            return_value="high",
+        with (
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
+                return_value=_config_with_prefixes(
+                    {
+                        "ex": str(EX),
+                        "europepmc": str(EUROPEPMC),
+                    }
+                ),
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.calculate_paper_quality_score",
+                return_value=0.9,
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.get_confidence_level",
+                return_value="high",
+            ),
         ):
-            se.add_paper_metadata(mock_entity, mock_dataset, paper_uri, named_graph_uris["publications"])
+            se.add_paper_metadata(
+                mock_entity, mock_dataset, paper_uri, named_graph_uris["publications"]
+            )
 
         assert len(g) == 5
 
@@ -278,20 +300,28 @@ class TestMetadataFunctions:
         EX = Namespace("http://example.org/ex/")
         EUROPEPMC = Namespace("http://example.org/europepmc/")
 
-        with patch(
-            "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
-            return_value=_config_with_prefixes({
-                "ex": str(EX),
-                "europepmc": str(EUROPEPMC),
-            }),
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.calculate_paper_quality_score",
-            return_value=0.5,
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.get_confidence_level",
-            return_value="medium",
+        with (
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
+                return_value=_config_with_prefixes(
+                    {
+                        "ex": str(EX),
+                        "europepmc": str(EUROPEPMC),
+                    }
+                ),
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.calculate_paper_quality_score",
+                return_value=0.5,
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.get_confidence_level",
+                return_value="medium",
+            ),
         ):
-            se.add_paper_metadata(mock_entity, mock_dataset, paper_uri, named_graph_uris["publications"])
+            se.add_paper_metadata(
+                mock_entity, mock_dataset, paper_uri, named_graph_uris["publications"]
+            )
 
         # citedByCount only added if truthy, 0 is falsy
         assert len(g) == 4
@@ -305,19 +335,27 @@ class TestMetadataFunctions:
         EX = Namespace("http://example.org/ex/")
         EUROPEPMC = Namespace("http://example.org/europepmc/")
 
-        with patch(
-            "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
-            return_value=_config_with_prefixes({
-                "ex": str(EX),
-                "europepmc": str(EUROPEPMC),
-            }),
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.calculate_author_quality_score",
-            return_value=0.75,
-        ), patch(
-            "pyeuropepmc.mappers.semantic_enrichment.get_confidence_level",
-            return_value="high",
+        with (
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.load_rdf_config",
+                return_value=_config_with_prefixes(
+                    {
+                        "ex": str(EX),
+                        "europepmc": str(EUROPEPMC),
+                    }
+                ),
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.calculate_author_quality_score",
+                return_value=0.75,
+            ),
+            patch(
+                "pyeuropepmc.mappers.semantic_enrichment.get_confidence_level",
+                return_value="high",
+            ),
         ):
-            se.add_author_metadata(mock_author, mock_dataset, author_uri, named_graph_uris["authors"])
+            se.add_author_metadata(
+                mock_author, mock_dataset, author_uri, named_graph_uris["authors"]
+            )
 
         assert len(g) == 4

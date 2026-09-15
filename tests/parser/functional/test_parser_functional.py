@@ -15,20 +15,26 @@ FULLTEXT_DIR = os.path.join(FIXTURE_DIR, "fulltext_downloads")
 
 # --- Fine-grained functional tests for each parser function ---
 
+
 def get_json_files():
     return [f for f in os.listdir(FIXTURE_DIR) if f.endswith(".json")]
+
 
 def get_xml_files():
     return [f for f in os.listdir(FIXTURE_DIR) if f.endswith(".xml")]
 
+
 def get_dc_files():
     return [f for f in os.listdir(FIXTURE_DIR) if f.endswith("_dc.xml")]
+
 
 def get_fulltext_xml_files():
     return [f for f in os.listdir(FULLTEXT_DIR) if f.endswith(".xml")]
 
+
 def get_fulltext_pdf_files():
     return [f for f in os.listdir(FULLTEXT_DIR) if f.endswith(".pdf")]
+
 
 @pytest.mark.parametrize("filename", get_json_files())
 def test_parse_json_fixture(filename):
@@ -46,7 +52,8 @@ def test_parse_json_fixture(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_json] {filename}: Unexpected error: {e}")
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}") from e
+
 
 @pytest.mark.parametrize("filename", get_xml_files())
 def test_parse_xml_fixture(filename):
@@ -64,7 +71,8 @@ def test_parse_xml_fixture(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_xml] {filename}: Unexpected error: {e}")
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}") from e
+
 
 @pytest.mark.parametrize("filename", get_dc_files())
 def test_parse_dc_fixture(filename):
@@ -82,7 +90,8 @@ def test_parse_dc_fixture(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_dc] {filename}: Unexpected error: {e}")
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}") from e
+
 
 @pytest.mark.parametrize("filename", get_fulltext_xml_files())
 def test_parse_fulltext_xml(filename):
@@ -93,13 +102,16 @@ def test_parse_fulltext_xml(filename):
         results = EuropePMCParser.parse_xml(xml_str)
         logger.info(f"[parse_fulltext_xml] {filename}: Parsed {len(results)} records.")
         if results:
-            logger.info(f"[parse_fulltext_xml] {filename}: First record keys: {list(results[0].keys())}")
+            logger.info(
+                f"[parse_fulltext_xml] {filename}: First record keys: {list(results[0].keys())}"
+            )
     except ParsingError as e:
         logger.warning(f"[parse_fulltext_xml] {filename}: ParsingError: {e}")
         assert True
     except Exception as e:
         logger.error(f"[parse_fulltext_xml] {filename}: Unexpected error: {e}")
-        assert False, f"Unexpected error: {e}"
+        raise AssertionError(f"Unexpected error: {e}") from e
+
 
 @pytest.mark.parametrize("filename", get_fulltext_pdf_files())
 def test_fulltext_pdf_exists(filename):
@@ -110,6 +122,7 @@ def test_fulltext_pdf_exists(filename):
     assert exists
     assert size > 1000
 
+
 @pytest.mark.parametrize("bad_xml", ["<broken><xml>", "", "<resultList></resultList>"])
 def test_parse_xml_error_handling(bad_xml):
     with pytest.raises(ParsingError) as exc_info:
@@ -118,11 +131,20 @@ def test_parse_xml_error_handling(bad_xml):
     logger.warning(f"[parse_xml_error_handling] ParsingError: {err_msg}")
     # Check error code (accept PARSE002, PARSE003, or PARSE004)
     assert (
-        ErrorCodes.PARSE002.value in err_msg or ErrorCodes.PARSE003.value in err_msg or ErrorCodes.PARSE004.value in err_msg
+        ErrorCodes.PARSE002.value in err_msg
+        or ErrorCodes.PARSE003.value in err_msg
+        or ErrorCodes.PARSE004.value in err_msg
     ), f"Error code not found in error message: {err_msg}"
     # Check informative error message: not empty, not just error code, and contains some explanation
     code_002 = ErrorCodes.PARSE002.value
     code_003 = ErrorCodes.PARSE003.value
     code_004 = ErrorCodes.PARSE004.value
-    msg_without_code = err_msg.replace(f"[{code_002}]", "").replace(f"[{code_003}]", "").replace(f"[{code_004}]", "").strip()
-    assert msg_without_code and len(msg_without_code) > 5, f"Error message not informative: {err_msg}"
+    msg_without_code = (
+        err_msg.replace(f"[{code_002}]", "")
+        .replace(f"[{code_003}]", "")
+        .replace(f"[{code_004}]", "")
+        .strip()
+    )
+    assert msg_without_code and len(msg_without_code) > 5, (
+        f"Error message not informative: {err_msg}"
+    )

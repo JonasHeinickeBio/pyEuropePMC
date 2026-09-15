@@ -145,12 +145,14 @@ class TestSearchLog:
         """Test exporting log in different formats."""
         with tempfile.TemporaryDirectory() as temp_dir:
             log = SearchLog(title="Test Export")
-            log.add_entry(SearchLogEntry(
-                database="EuropePMC",
-                query="cancer",
-                filters={"date": "2020-2024"},
-                results_returned=100,
-            ))
+            log.add_entry(
+                SearchLogEntry(
+                    database="EuropePMC",
+                    query="cancer",
+                    filters={"date": "2020-2024"},
+                    results_returned=100,
+                )
+            )
 
             export_path = Path(temp_dir) / f"test.{format}"
 
@@ -336,18 +338,22 @@ class TestSearchLoggingFunctions:
         log = SearchLog(title="Cancer Search", executed_by="Researcher")
 
         # Add some entries
-        log.add_entry(SearchLogEntry(
-            database="EuropePMC",
-            query="cancer",
-            filters={},
-            results_returned=100,
-        ))
-        log.add_entry(SearchLogEntry(
-            database="PubMed",
-            query="neoplasm",
-            filters={},
-            results_returned=80,
-        ))
+        log.add_entry(
+            SearchLogEntry(
+                database="EuropePMC",
+                query="cancer",
+                filters={},
+                results_returned=100,
+            )
+        )
+        log.add_entry(
+            SearchLogEntry(
+                database="PubMed",
+                query="neoplasm",
+                filters={},
+                results_returned=80,
+            )
+        )
 
         log.deduplicated_total = 150
         log.final_included = 20
@@ -379,6 +385,7 @@ class TestSearchLoggingFunctions:
 
             # Verify zip contents
             import zipfile
+
             with zipfile.ZipFile(zip_path) as zf:
                 assert "file1.txt" in zf.namelist()
                 assert "file2.txt" in zf.namelist()
@@ -476,6 +483,8 @@ class TestSearchLoggingFunctions:
 
     def test_generate_private_key_no_crypto(self):
         """Test key generation when cryptography is not available."""
-        with patch("pyeuropepmc.utils.search_logging.serialization", None):
-            with pytest.raises(ImportError):
-                generate_private_key("/tmp/key.pem")
+        with (
+            patch("pyeuropepmc.utils.search_logging.serialization", None),
+            pytest.raises(ImportError),
+        ):
+            generate_private_key("/tmp/key.pem")

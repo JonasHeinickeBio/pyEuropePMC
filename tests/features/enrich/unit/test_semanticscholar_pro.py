@@ -200,9 +200,12 @@ class TestGetPapers:
 
     def test_non_rate_limit_api_error_reraised(self):
         c = _client()
-        with patch.object(
-            c, "_execute_with_retry", side_effect=APIClientError(message="some other error")
-        ), pytest.raises(APIClientError):
+        with (
+            patch.object(
+                c, "_execute_with_retry", side_effect=APIClientError(message="some other error")
+            ),
+            pytest.raises(APIClientError),
+        ):
             c.get_papers(["1"])
 
 

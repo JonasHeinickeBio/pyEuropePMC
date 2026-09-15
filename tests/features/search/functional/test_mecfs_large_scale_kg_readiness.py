@@ -40,9 +40,7 @@ from pyeuropepmc.features.literature.search import SearchClient
 
 pytestmark = [pytest.mark.slow, pytest.mark.integration, pytest.mark.network]
 
-MECFS_QUERY = (
-    '("myalgic encephalomyelitis" OR "chronic fatigue syndrome" OR "ME/CFS") '
-)
+MECFS_QUERY = '("myalgic encephalomyelitis" OR "chronic fatigue syndrome" OR "ME/CFS") '
 
 TARGET_PAPERS_DEFAULT = 100_000
 PAGE_SIZE_DEFAULT = 1_000
@@ -258,7 +256,11 @@ def _probe_xml_and_annotations(
                 try:
                     out_file = temp_path / f"{pmcid}.xml"
                     downloaded = fulltext_client.download_xml_by_pmcid(pmcid, out_file)
-                    if downloaded and Path(downloaded).exists() and Path(downloaded).stat().st_size > 0:
+                    if (
+                        downloaded
+                        and Path(downloaded).exists()
+                        and Path(downloaded).stat().st_size > 0
+                    ):
                         xml_successes += 1
                 except Exception:
                     continue
@@ -292,7 +294,9 @@ def _probe_xml_and_annotations(
     return probe_metrics, first_annotation_payload
 
 
-def _evaluate_enrichment(first_annotation_payload: dict[str, Any] | None) -> tuple[dict[str, bool], dict[str, bool]]:
+def _evaluate_enrichment(
+    first_annotation_payload: dict[str, Any] | None,
+) -> tuple[dict[str, bool], dict[str, bool]]:
     """Evaluate parser and RDF enrichment signals used by downstream KGs."""
     parser_fields = {
         "entity_id": False,

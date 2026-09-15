@@ -50,11 +50,11 @@ jobs:
           extras: all
 
       - name: Ruff (lint)
-        run: poetry run ruff check src/ --output-format=github
+        run: poetry run ruff check src/ tests/ --output-format=github
 
       - name: Ruff (format check)
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}
-        run: poetry run ruff format --check src/
+        run: poetry run ruff format --check src/ tests/
 
       - name: mypy (type checking)
         if: ${{ !cancelled() && steps.setup.outcome == 'success' }}

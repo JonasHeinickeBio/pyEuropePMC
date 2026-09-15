@@ -15,7 +15,7 @@ Usage:
 
 import pytest
 
-from pyeuropepmc.features.enrich.merger import DedupConfig, DedupMode, MatchLevel, LiteratureMerger
+from pyeuropepmc.features.enrich.merger import DedupConfig, DedupMode, LiteratureMerger, MatchLevel
 from pyeuropepmc.features.literature.adapters import OpenAlexLiteratureAdapter
 from pyeuropepmc.features.search import UnifiedSearch
 from pyeuropepmc.features.search.sources.core import COREClient
@@ -42,9 +42,7 @@ class TestCrossSourceDedup:
         assert oa.pmid == KNOWN_PMID or oa.doi == KNOWN_DOI
 
         merger = LiteratureMerger(config=DedupConfig(mode=DedupMode.BALANCED))
-        merged, report = merger.merge_results(
-            [[r.model_dump() for r in pm], [oa.model_dump()]]
-        )
+        merged, report = merger.merge_results([[r.model_dump() for r in pm], [oa.model_dump()]])
 
         assert len(merged) == 1
         assert report.duplicates_removed == 1

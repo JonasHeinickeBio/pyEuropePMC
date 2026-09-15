@@ -13,8 +13,8 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.core.exceptions import ValidationError
+from pyeuropepmc.features.literature.article import ArticleClient
 
 
 class TestArticleClient:
@@ -32,13 +32,15 @@ class TestArticleClient:
             "version": "6.5",
             "hitCount": 1,
             "resultList": {
-                "result": [{
-                    "id": "12345",
-                    "pmid": "12345",
-                    "source": "MED",
-                    "title": "Test Article Title"
-                }]
-            }
+                "result": [
+                    {
+                        "id": "12345",
+                        "pmid": "12345",
+                        "source": "MED",
+                        "title": "Test Article Title",
+                    }
+                ]
+            },
         }
 
     # Basic initialization test
@@ -48,7 +50,7 @@ class TestArticleClient:
         assert article_client.rate_limit_delay == 1.0
 
     # Test get_article_details method
-    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
+    @patch("pyeuropepmc.features.literature.article.ArticleClient._get")
     def test_get_article_details_success(self, mock_get, article_client, mock_response):
         """Test successful article details retrieval."""
         mock_response_obj = Mock()
@@ -59,8 +61,7 @@ class TestArticleClient:
 
         assert result == mock_response
         mock_get.assert_called_once_with(
-            "article/med/12345",
-            params={"resultType": "core", "format": "json"}
+            "article/med/12345", params={"resultType": "core", "format": "json"}
         )
 
     def test_get_article_details_invalid_source(self, article_client):
@@ -80,7 +81,7 @@ class TestArticleClient:
             article_client._validate_citations_format("invalid")
 
     # Additional comprehensive tests for coverage
-    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
+    @patch("pyeuropepmc.features.literature.article.ArticleClient._get")
     def test_get_citations_with_all_params(self, mock_get, article_client):
         """Test citations with all parameters."""
         mock_response = Mock()
@@ -90,16 +91,15 @@ class TestArticleClient:
         mock_get.return_value = mock_response
 
         article_client.get_citations(
-            "MED", "12345", page=2, page_size=50,
-            format="xml", extra_param="test"
+            "MED", "12345", page=2, page_size=50, format="xml", extra_param="test"
         )
 
         mock_get.assert_called_once_with(
             "MED/12345/citations",
-            params={"page": 2, "pageSize": 50, "format": "xml", "extra_param": "test"}
+            params={"page": 2, "pageSize": 50, "format": "xml", "extra_param": "test"},
         )
 
-    @patch('pyeuropepmc.features.literature.article.ArticleClient._get')
+    @patch("pyeuropepmc.features.literature.article.ArticleClient._get")
     def test_get_supplementary_files_basic(self, mock_get, article_client):
         """Test basic supplementary files retrieval."""
         mock_response = Mock()
@@ -112,7 +112,7 @@ class TestArticleClient:
 
         assert result == b"test binary data"
         mock_get.assert_called_once_with(
-            "PMC12345/supplementaryFiles", params={'includeInlineImage': 'true'}, stream=True
+            "PMC12345/supplementaryFiles", params={"includeInlineImage": "true"}, stream=True
         )
 
     def test_validation_source_and_id_edge_cases(self, article_client):

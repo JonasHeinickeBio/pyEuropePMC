@@ -12,9 +12,9 @@ import zipfile
 import pytest
 import requests
 
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 from pyeuropepmc.core.error_codes import ErrorCodes
 from pyeuropepmc.core.exceptions import APIClientError, FullTextError
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
 
 pytestmark = pytest.mark.unit
 
@@ -601,11 +601,13 @@ class TestFullTextClientCoverage:
 
     def test_download_xml_by_pmcid_bulk_success(self):
         """Test successful bulk XML download via dedicated method."""
-        with patch.object(self.client, "_try_bulk_xml_download", return_value=True):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid_bulk("123456", output_path)
-                assert result == output_path
+        with (
+            patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
+        ):
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid_bulk("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_by_pmcid_bulk_failure(self):
         """Test bulk XML download failure via dedicated method."""
@@ -659,11 +661,11 @@ class TestFullTextClientCoverage:
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP404)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_api_403_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after 403 error."""
@@ -671,11 +673,11 @@ class TestFullTextClientCoverage:
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP403)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_api_other_error_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after other API error."""
@@ -683,11 +685,11 @@ class TestFullTextClientCoverage:
         with (
             patch.object(self.client, "_get", side_effect=APIClientError(ErrorCodes.HTTP500)),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_download_xml_network_error_fallback_to_bulk_success(self):
         """Test XML download falling back to bulk download after network error."""
@@ -697,11 +699,11 @@ class TestFullTextClientCoverage:
                 self.client, "_get", side_effect=requests.RequestException("Network error")
             ),
             patch.object(self.client, "_try_bulk_xml_download", return_value=True),
+            tempfile.TemporaryDirectory() as temp_dir,
         ):
-            with tempfile.TemporaryDirectory() as temp_dir:
-                output_path = Path(temp_dir) / "test.xml"
-                result = self.client.download_xml_by_pmcid("123456", output_path)
-                assert result == output_path
+            output_path = Path(temp_dir) / "test.xml"
+            result = self.client.download_xml_by_pmcid("123456", output_path)
+            assert result == output_path
 
     def test_check_availability_request_exceptions(self):
         """Test availability check with RequestException for each format type."""
@@ -873,21 +875,23 @@ class TestFullTextClientCoverage:
     def test_try_bulk_xml_download_final_return_false(self):
         """Test bulk XML download reaching final return False."""
         # This tests the final return False line that's not covered
-        with patch.object(self.client, "_determine_bulk_archive_range", return_value=(0, 999)):
-            with patch("requests.get") as mock_get:
-                mock_response = Mock()
-                mock_response.status_code = 200
-                mock_response.iter_content.return_value = [b"valid content"]
-                mock_get.return_value = mock_response
+        with (
+            patch.object(self.client, "_determine_bulk_archive_range", return_value=(0, 999)),
+            patch("requests.get") as mock_get,
+        ):
+            mock_response = Mock()
+            mock_response.status_code = 200
+            mock_response.iter_content.return_value = [b"valid content"]
+            mock_get.return_value = mock_response
 
-                # Mock gzip.open to not find the PMC ID
-                xml_content = "<article><article-meta>PMC999999</article-meta></article>"
+            # Mock gzip.open to not find the PMC ID
+            xml_content = "<article><article-meta>PMC999999</article-meta></article>"
 
-                with patch("gzip.open") as mock_gzip:
-                    mock_gzip.return_value.__enter__.return_value.read.return_value = xml_content
+            with patch("gzip.open") as mock_gzip:
+                mock_gzip.return_value.__enter__.return_value.read.return_value = xml_content
 
-                    result = self.client._try_bulk_xml_download("123456", Path("/tmp/test.xml"))
-                    assert result is False
+                result = self.client._try_bulk_xml_download("123456", Path("/tmp/test.xml"))
+                assert result is False
 
     def test_progress_info_initialization(self):
         """Test ProgressInfo initialization with all parameters."""
@@ -907,7 +911,7 @@ class TestFullTextClientCoverage:
             format_type="pdf",
             start_time=start_time,
             current_file_size=1024,
-            total_downloaded_bytes=50000
+            total_downloaded_bytes=50000,
         )
 
         assert progress.total_items == 100
@@ -971,7 +975,7 @@ class TestFullTextClientCoverage:
         assert 2.0 < rate < 4.0
 
         # Test zero elapsed time by mocking time.time to return start_time
-        with patch('time.time') as mock_time:
+        with patch("time.time") as mock_time:
             fixed_time = 1000.0
             mock_time.return_value = fixed_time
             progress_new = ProgressInfo(total_items=100, current_item=25, start_time=fixed_time)
@@ -982,19 +986,26 @@ class TestFullTextClientCoverage:
         from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(
-            total_items=100,
-            current_item=25,
-            current_pmcid="123456",
-            status="downloading"
+            total_items=100, current_item=25, current_pmcid="123456", status="downloading"
         )
 
         result_dict = progress.to_dict()
 
         required_keys = [
-            "total_items", "current_item", "current_pmcid", "status",
-            "progress_percent", "successful_downloads", "failed_downloads",
-            "cache_hits", "format_type", "elapsed_time", "estimated_remaining_time",
-            "completion_rate", "current_file_size", "total_downloaded_bytes"
+            "total_items",
+            "current_item",
+            "current_pmcid",
+            "status",
+            "progress_percent",
+            "successful_downloads",
+            "failed_downloads",
+            "cache_hits",
+            "format_type",
+            "elapsed_time",
+            "estimated_remaining_time",
+            "completion_rate",
+            "current_file_size",
+            "total_downloaded_bytes",
         ]
 
         assert all(key in result_dict for key in required_keys)
@@ -1005,10 +1016,7 @@ class TestFullTextClientCoverage:
         from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(
-            total_items=100,
-            current_item=25,
-            current_pmcid="123456",
-            status="downloading"
+            total_items=100, current_item=25, current_pmcid="123456", status="downloading"
         )
 
         string_repr = str(progress)
@@ -1027,7 +1035,7 @@ class TestFullTextClientCoverage:
                 enable_cache=True,
                 cache_dir=cache_dir,
                 cache_max_age_days=7,
-                verify_cached_files=False
+                verify_cached_files=False,
             )
 
             assert client.enable_cache is True
@@ -1092,6 +1100,7 @@ class TestFullTextClientCoverage:
             # Make file old
             import os
             import time
+
             old_time = time.time() - (2 * 24 * 3600)  # 2 days ago
             os.utime(stale_file, (old_time, old_time))
             assert not client._is_cached_file_valid(stale_file)

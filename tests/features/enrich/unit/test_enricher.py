@@ -142,13 +142,15 @@ class TestPaperEnricher:
         enricher = PaperEnricher(config)
 
         # Mock other clients to return None
-        with patch.object(enricher.clients["semantic_scholar"], "enrich", return_value=None):
-            with patch.object(enricher.clients["openalex"], "enrich", return_value=None):
-                result = enricher.enrich_paper(identifier="10.1234/test")
+        with (
+            patch.object(enricher.clients["semantic_scholar"], "enrich", return_value=None),
+            patch.object(enricher.clients["openalex"], "enrich", return_value=None),
+        ):
+            result = enricher.enrich_paper(identifier="10.1234/test")
 
-                assert result is not None
-                assert len(result["sources"]) == 1
-                assert "crossref" in result["sources"]
+            assert result is not None
+            assert len(result["sources"]) == 1
+            assert "crossref" in result["sources"]
 
     def test_enrich_paper_all_failures(self):
         """Test enrichment when all clients fail."""
@@ -298,9 +300,7 @@ class TestPaperEnricher:
     def test_resolve_to_doi_pmcid(self, mock_search_client):
         """Test PMCID resolution to DOI via SearchClient."""
         mock_instance = mock_search_client.return_value.__enter__.return_value
-        mock_instance.search.return_value = {
-            "resultList": {"result": [{"doi": "10.1234/test"}]}
-        }
+        mock_instance.search.return_value = {"resultList": {"result": [{"doi": "10.1234/test"}]}}
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         doi = enricher._resolve_to_doi("PMC123456")
@@ -318,9 +318,7 @@ class TestPaperEnricher:
     def test_resolve_to_doi_pmcid_no_results(self, mock_search_client):
         """Test PMCID with no search results raises ValueError."""
         mock_instance = mock_search_client.return_value.__enter__.return_value
-        mock_instance.search.return_value = {
-            "resultList": {"result": []}
-        }
+        mock_instance.search.return_value = {"resultList": {"result": []}}
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         with pytest.raises(ValueError, match="Could not resolve PMCID"):
@@ -330,9 +328,7 @@ class TestPaperEnricher:
     def test_resolve_to_doi_pmcid_no_doi_in_result(self, mock_search_client):
         """Test PMCID result without DOI field raises ValueError."""
         mock_instance = mock_search_client.return_value.__enter__.return_value
-        mock_instance.search.return_value = {
-            "resultList": {"result": [{"pmcid": "PMC123456"}]}
-        }
+        mock_instance.search.return_value = {"resultList": {"result": [{"pmcid": "PMC123456"}]}}
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         with pytest.raises(ValueError, match="Could not resolve PMCID"):
@@ -345,7 +341,9 @@ class TestPaperEnricher:
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         papers = [{"doi": "10.1234/test"}]
-        with patch.object(enricher, "enrich_paper", return_value={"doi": "10.1234/test"}) as mock_enrich:
+        with patch.object(
+            enricher, "enrich_paper", return_value={"doi": "10.1234/test"}
+        ) as mock_enrich:
             result = enricher.enrich(papers=papers)
             mock_enrich.assert_called_once_with(identifier="10.1234/test")
             assert result == {"doi": "10.1234/test"}
@@ -355,8 +353,10 @@ class TestPaperEnricher:
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         papers = [{"pmcid": "PMC123456"}]
-        with patch.object(enricher, "enrich_paper", return_value={"doi": "10.1234/test"}) as mock_enrich:
-            result = enricher.enrich(papers=papers)
+        with patch.object(
+            enricher, "enrich_paper", return_value={"doi": "10.1234/test"}
+        ) as mock_enrich:
+            enricher.enrich(papers=papers)
             mock_enrich.assert_called_once_with(identifier="PMC123456")
 
     def test_enrich_with_multiple_papers(self):
@@ -374,7 +374,9 @@ class TestPaperEnricher:
         """Test enrich with identifier kwarg delegates to enrich_paper."""
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
-        with patch.object(enricher, "enrich_paper", return_value={"doi": "10.1234/test"}) as mock_enrich:
+        with patch.object(
+            enricher, "enrich_paper", return_value={"doi": "10.1234/test"}
+        ) as mock_enrich:
             result = enricher.enrich(identifier="10.1234/test")
             mock_enrich.assert_called_once_with(identifier="10.1234/test")
             assert result == {"doi": "10.1234/test"}
@@ -426,16 +428,21 @@ class TestPaperEnricher:
     def test_enrich_from_metadata_files_with_path_objects(self):
         """Test file-based enrichment with Path objects."""
         from pathlib import Path
+
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
         paths = [Path("file1.json"), Path("file2.json")]
-        with patch.object(enricher, "enrich_from_metadata_files", wraps=enricher.enrich_from_metadata_files) as spy:
-            with patch("pyeuropepmc.features.enrich.enricher.FileEnricher") as mock_file_cls:
-                mock_instance = mock_file_cls.return_value
-                mock_instance.__enter__.return_value = mock_instance
-                mock_instance.enrich_from_files.return_value = {}
-                enricher.enrich_from_metadata_files(paths)
-                mock_instance.enrich_from_files.assert_called_once_with(["file1.json", "file2.json"])
+        with (
+            patch.object(
+                enricher, "enrich_from_metadata_files", wraps=enricher.enrich_from_metadata_files
+            ),
+            patch("pyeuropepmc.features.enrich.enricher.FileEnricher") as mock_file_cls,
+        ):
+            mock_instance = mock_file_cls.return_value
+            mock_instance.__enter__.return_value = mock_instance
+            mock_instance.enrich_from_files.return_value = {}
+            enricher.enrich_from_metadata_files(paths)
+            mock_instance.enrich_from_files.assert_called_once_with(["file1.json", "file2.json"])
 
     # --- generate_enrichment_report tests ---
 
@@ -467,13 +474,7 @@ class TestPaperEnricher:
         enricher.clients["ror"] = mock_ror
 
         merged_data = {
-            "authors": [
-                {
-                    "institutions": [
-                        {"ror_id": "012345678", "display_name": "Test Univ"}
-                    ]
-                }
-            ]
+            "authors": [{"institutions": [{"ror_id": "012345678", "display_name": "Test Univ"}]}]
         }
         result = enricher._enrich_institutions_with_ror(merged_data)
         assert "012345678" in result
@@ -531,13 +532,7 @@ class TestPaperEnricher:
         enricher.clients["ror"] = mock_ror
 
         merged_data = {
-            "authors": [
-                {
-                    "institutions": [
-                        {"ror_id": "012345678", "display_name": "Test Univ"}
-                    ]
-                }
-            ]
+            "authors": [{"institutions": [{"ror_id": "012345678", "display_name": "Test Univ"}]}]
         }
         result = enricher._enrich_institutions_with_ror(merged_data)
         assert result == {}
@@ -546,8 +541,8 @@ class TestPaperEnricher:
 
     def test_save_responses_creates_files(self):
         """Test _save_responses writes JSON files to disk."""
-        import tempfile
         from pathlib import Path
+        import tempfile
 
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
@@ -570,8 +565,8 @@ class TestPaperEnricher:
 
     def test_save_responses_creates_directory(self):
         """Test _save_responses creates the save directory if needed."""
-        import tempfile
         from pathlib import Path
+        import tempfile
 
         config = EnrichmentConfig()
         enricher = PaperEnricher(config)
@@ -600,10 +595,9 @@ class TestPaperEnricher:
             "sources": [],
             "merged": {},
         }
-        with patch.object(Path, "mkdir") as mock_mkdir:
-            with patch("builtins.open", Mock()):
-                enricher._save_responses(results, save_dir=None)
-                mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
+        with patch.object(Path, "mkdir") as mock_mkdir, patch("builtins.open", Mock()):
+            enricher._save_responses(results, save_dir=None)
+            mock_mkdir.assert_called_once_with(parents=True, exist_ok=True)
 
     # --- close with client errors ---
 

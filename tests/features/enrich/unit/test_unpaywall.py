@@ -4,11 +4,13 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.features.enrich.sources.unpaywall import UnpaywallClient
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("cryptography"), reason="skipped due to missing cryptography (enrichment dependency)")
-
-from pyeuropepmc.features.enrich.sources.unpaywall import UnpaywallClient
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("cryptography"),
+    reason="skipped due to missing cryptography (enrichment dependency)",
+)
 
 
 class TestUnpaywallClient:

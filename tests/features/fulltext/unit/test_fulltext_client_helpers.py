@@ -146,9 +146,7 @@ class TestFilterAvailablePmcids:
 class TestSearchForPmcids:
     def test_delegates_to_search_client(self, client):
         fake_search_client = MagicMock()
-        fake_search_client.search.return_value = {
-            "resultList": {"result": [{"pmcid": "PMC1"}]}
-        }
+        fake_search_client.search.return_value = {"resultList": {"result": [{"pmcid": "PMC1"}]}}
         with patch(
             "pyeuropepmc.features.literature.search.SearchClient",
             return_value=fake_search_client,
@@ -160,12 +158,14 @@ class TestSearchForPmcids:
     def test_closes_search_client_on_exception(self, client):
         fake_search_client = MagicMock()
         fake_search_client.search.side_effect = RuntimeError("boom")
-        with patch(
-            "pyeuropepmc.features.literature.search.SearchClient",
-            return_value=fake_search_client,
+        with (
+            patch(
+                "pyeuropepmc.features.literature.search.SearchClient",
+                return_value=fake_search_client,
+            ),
+            pytest.raises(RuntimeError),
         ):
-            with pytest.raises(RuntimeError):
-                client._search_for_pmcids("cancer", 10)
+            client._search_for_pmcids("cancer", 10)
         fake_search_client.close.assert_called_once()
 
 
@@ -195,24 +195,18 @@ class TestApiCachePassthroughs:
             assert client.clear_api_cache() is False
 
     def test_invalidate_fulltext_cache_with_pmcid(self, client):
-        with patch.object(
-            client._cache, "invalidate_pattern", return_value=3
-        ) as mock_invalidate:
+        with patch.object(client._cache, "invalidate_pattern", return_value=3) as mock_invalidate:
             count = client.invalidate_fulltext_cache("PMC123")
         assert count == 3
         mock_invalidate.assert_called_once_with("*:123*")
 
     def test_invalidate_fulltext_cache_without_pmcid(self, client):
-        with patch.object(
-            client._cache, "invalidate_pattern", return_value=5
-        ) as mock_invalidate:
+        with patch.object(client._cache, "invalidate_pattern", return_value=5) as mock_invalidate:
             client.invalidate_fulltext_cache()
         mock_invalidate.assert_called_once_with("*")
 
     def test_invalidate_fulltext_cache_exception_returns_zero(self, client):
-        with patch.object(
-            client._cache, "invalidate_pattern", side_effect=RuntimeError("boom")
-        ):
+        with patch.object(client._cache, "invalidate_pattern", side_effect=RuntimeError("boom")):
             assert client.invalidate_fulltext_cache() == 0
 
     def test_close_calls_cache_close(self, client):

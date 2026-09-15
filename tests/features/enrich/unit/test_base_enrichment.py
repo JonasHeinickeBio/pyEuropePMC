@@ -3,16 +3,17 @@
 from unittest.mock import Mock, patch
 
 import pytest
-
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = pytest.mark.skipif(not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar")
-
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
 from pyeuropepmc.core.exceptions import APIClientError
+from pyeuropepmc.features.enrich.base import BaseEnrichmentClient
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar"
+)
+
 
 # Mock CacheBackend at the correct import path (common base module, not enrich base)
 

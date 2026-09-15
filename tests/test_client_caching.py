@@ -1,11 +1,12 @@
 """
 Quick test to verify caching is integrated in all clients.
 """
+
 import pytest
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.literature.article import ArticleClient
 from pyeuropepmc.features.literature.search import SearchClient
 
 
@@ -15,7 +16,7 @@ class TestSearchClientCaching:
     def test_search_client_cache_disabled_by_default(self):
         """Verify SearchClient has caching disabled by default for backward compatibility."""
         client = SearchClient()
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
         # Cache should be disabled by default
         stats = client.get_cache_stats()
         assert isinstance(stats, dict)
@@ -25,7 +26,7 @@ class TestSearchClientCaching:
         """Verify SearchClient can enable caching."""
         cache_config = CacheConfig(enabled=True)
         client = SearchClient(cache_config=cache_config)
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
 
         # Cache management methods should work
         stats = client.get_cache_stats()
@@ -46,7 +47,7 @@ class TestArticleClientCaching:
     def test_article_client_cache_disabled_by_default(self):
         """Verify ArticleClient has caching disabled by default for backward compatibility."""
         client = ArticleClient()
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
         # Cache should be disabled by default
         stats = client.get_cache_stats()
         assert isinstance(stats, dict)
@@ -56,7 +57,7 @@ class TestArticleClientCaching:
         """Verify ArticleClient can enable caching."""
         cache_config = CacheConfig(enabled=True)
         client = ArticleClient(cache_config=cache_config)
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
 
         # Cache management methods should work
         stats = client.get_cache_stats()
@@ -80,7 +81,7 @@ class TestFullTextClientCaching:
     def test_fulltext_client_cache_disabled_by_default(self):
         """Verify FullTextClient has API response caching disabled by default."""
         client = FullTextClient()
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
         # API response cache should be disabled by default
         stats = client.get_api_cache_stats()
         assert isinstance(stats, dict)
@@ -90,7 +91,7 @@ class TestFullTextClientCaching:
         """Verify FullTextClient can enable API response caching."""
         cache_config = CacheConfig(enabled=True)
         client = FullTextClient(cache_config=cache_config)
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
 
         # API response cache management methods should work
         stats = client.get_api_cache_stats()
@@ -113,18 +114,18 @@ class TestFullTextClientCaching:
         client = FullTextClient(enable_cache=True, cache_config=cache_config)
 
         # File cache
-        assert hasattr(client, 'enable_cache')
+        assert hasattr(client, "enable_cache")
         assert client.enable_cache is True
-        assert hasattr(client, 'cache_dir')
+        assert hasattr(client, "cache_dir")
 
         # File cache health method should exist
         health = client.get_file_cache_health()
         assert isinstance(health, dict)
-        assert 'status' in health
-        assert 'enabled' in health
+        assert "status" in health
+        assert "enabled" in health
 
         # API response cache
-        assert hasattr(client, '_cache')
+        assert hasattr(client, "_cache")
         stats = client.get_api_cache_stats()
         assert isinstance(stats, dict)
 

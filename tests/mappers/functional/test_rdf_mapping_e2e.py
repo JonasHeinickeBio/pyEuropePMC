@@ -4,15 +4,15 @@ from pathlib import Path
 import tempfile
 
 import pytest
-
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib")
-
 from rdflib import Graph, URIRef
 
 from pyeuropepmc.mappers import RDFMapper
 from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+)
 
 
 class TestRDFMappingEndToEnd:
@@ -101,20 +101,22 @@ class TestRDFMappingEndToEnd:
 
         # Verify keywords (multi-value field)
         keyword_count = 0
-        for triple in g.triples((uri, mapper._resolve_predicate("dcterms:subject"), None)):
+        for _triple in g.triples((uri, mapper._resolve_predicate("dcterms:subject"), None)):
             keyword_count += 1
         assert keyword_count == 3  # 3 keywords
 
         # Verify external identifiers (owl:sameAs)
         sameas_count = 0
-        for triple in g.triples((uri, mapper._resolve_predicate("owl:sameAs"), None)):
+        for _triple in g.triples((uri, mapper._resolve_predicate("owl:sameAs"), None)):
             sameas_count += 1
         assert sameas_count >= 2  # DOI and PMCID at minimum
 
         # Verify graph has substantial content
         assert len(g) > 20  # Should have many triples
 
-    def test_paper_with_relationships_rdf(self, mapper, sample_paper, sample_author, sample_institution):
+    def test_paper_with_relationships_rdf(
+        self, mapper, sample_paper, sample_author, sample_institution
+    ):
         """Test RDF conversion with relationships between entities."""
         g = Graph()
 
@@ -167,17 +169,12 @@ class TestRDFMappingEndToEnd:
     def test_batch_entity_conversion(self, mapper, sample_paper, sample_author):
         """Test batch conversion of multiple entities."""
         entities_data = {
-            "paper1": {
-                "entity": sample_paper,
-                "related_entities": {"authors": [sample_author]}
-            }
+            "paper1": {"entity": sample_paper, "related_entities": {"authors": [sample_author]}}
         }
 
         with tempfile.TemporaryDirectory() as tmpdir:
             results = mapper.convert_and_save_entities_to_rdf(
-                entities_data,
-                output_dir=tmpdir,
-                prefix="test_"
+                entities_data, output_dir=tmpdir, prefix="test_"
             )
 
             # Verify results
@@ -217,10 +214,7 @@ class TestRDFMappingEndToEnd:
         extraction_info = {
             "timestamp": "2024-01-15T10:30:00Z",
             "method": "xml_parser",
-            "quality": {
-                "validation_passed": True,
-                "completeness_score": 0.95
-            }
+            "quality": {"validation_passed": True, "completeness_score": 0.95},
         }
 
         uri = sample_paper.to_rdf(g, mapper=mapper, extraction_info=extraction_info)
@@ -231,7 +225,9 @@ class TestRDFMappingEndToEnd:
         assert (uri, mapper._resolve_predicate("ex:validationStatus"), None) in g
         assert (uri, mapper._resolve_predicate("ex:completenessScore"), None) in g
 
-    def test_ontology_alignments_complete(self, mapper, sample_paper, sample_author, sample_institution):
+    def test_ontology_alignments_complete(
+        self, mapper, sample_paper, sample_author, sample_institution
+    ):
         """Test complete ontology alignments across all entity types."""
         g = Graph()
 
@@ -241,14 +237,18 @@ class TestRDFMappingEndToEnd:
         inst_uri = sample_institution.to_rdf(g, mapper=mapper)
 
         # Check paper ontology alignments (MeSH terms using official vocabulary)
-        mesh_triples = list(g.triples((paper_uri, mapper._resolve_predicate("meshv:hasDescriptor"), None)))
+        mesh_triples = list(
+            g.triples((paper_uri, mapper._resolve_predicate("meshv:hasDescriptor"), None))
+        )
         assert len(mesh_triples) == 3  # 3 keywords mapped to meshv:hasDescriptor
 
         # Check external identifiers for all entities
         paper_sameas = list(g.triples((paper_uri, mapper._resolve_predicate("owl:sameAs"), None)))
         assert len(paper_sameas) >= 2  # DOI + PMCID + OpenAlex
 
-        author_sameas = list(g.triples((author_uri, mapper._resolve_predicate("owl:sameAs"), None)))
+        author_sameas = list(
+            g.triples((author_uri, mapper._resolve_predicate("owl:sameAs"), None))
+        )
         assert len(author_sameas) >= 1  # ORCID + OpenAlex
 
         inst_sameas = list(g.triples((inst_uri, mapper._resolve_predicate("owl:sameAs"), None)))
@@ -263,10 +263,10 @@ class TestRDFMappingEndToEnd:
         for i in range(10):
             paper = PaperEntity(
                 pmcid=f"PMC{i:07d}",
-                doi=f"10.1234/test.{2024+i:04d}.001",
+                doi=f"10.1234/test.{2024 + i:04d}.001",
                 title=f"Test Paper {i}",
                 keywords=[f"keyword{i}", f"topic{i}"],
-                publication_year=2024 + i
+                publication_year=2024 + i,
             )
             papers.append(paper)
 
@@ -279,7 +279,7 @@ class TestRDFMappingEndToEnd:
 
         # Verify all papers are represented
         paper_uris = set()
-        for s, p, o in g.triples((None, mapper._resolve_predicate("dcterms:title"), None)):
+        for s, _p, o in g.triples((None, mapper._resolve_predicate("dcterms:title"), None)):
             if "Test Paper" in str(o):
                 paper_uris.add(s)
         assert len(paper_uris) == 10

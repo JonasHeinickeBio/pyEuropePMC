@@ -34,11 +34,11 @@ class TestDownloadWithSession:
     def test_pdf_restores_session_even_on_exception(self, client):
         original = client.session
         fake_session = MagicMock()
-        with patch.object(
-            client, "download_pdf_by_pmcid", side_effect=RuntimeError("boom")
+        with (
+            patch.object(client, "download_pdf_by_pmcid", side_effect=RuntimeError("boom")),
+            pytest.raises(RuntimeError),
         ):
-            with pytest.raises(RuntimeError):
-                client._download_pdf_with_session("1", MagicMock(), fake_session)
+            client._download_pdf_with_session("1", MagicMock(), fake_session)
         assert client.session is original
 
     def test_xml_swaps_session(self, client, tmp_path):
