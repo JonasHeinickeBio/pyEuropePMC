@@ -1,7 +1,6 @@
 """Tests for section parser."""
 
-from xml.etree import ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
@@ -71,7 +70,7 @@ class TestSectionParser:
 
     def test_get_full_text_sections(self):
         """Extract sections with titles and content."""
-        root = ET.fromstring(SAMPLE_XML)
+        root = DefusedET.fromstring(SAMPLE_XML)
         parser = SectionParser(root)
         sections = parser.get_full_text_sections()
 
@@ -89,7 +88,7 @@ class TestSectionParser:
 
     def test_bare_p_elements(self):
         """Extract bare <p> elements directly under <body> (PLOS style)."""
-        root = ET.fromstring(PLOS_STYLE_XML)
+        root = DefusedET.fromstring(PLOS_STYLE_XML)
         parser = SectionParser(root)
         sections = parser.get_full_text_sections()
 
@@ -100,7 +99,7 @@ class TestSectionParser:
 
     def test_empty_section_included(self):
         """Section with empty content is included but has empty fields."""
-        root = ET.fromstring(EMPTY_SECTION_XML)
+        root = DefusedET.fromstring(EMPTY_SECTION_XML)
         parser = SectionParser(root)
         sections = parser.get_full_text_sections()
 
@@ -112,7 +111,7 @@ class TestSectionParser:
 
     def test_additional_content_structures(self):
         """Extract author-notes, appendices, and glossary."""
-        root = ET.fromstring(APPENDIX_XML)
+        root = DefusedET.fromstring(APPENDIX_XML)
         parser = SectionParser(root)
         sections = parser.get_full_text_sections()
 
@@ -133,7 +132,7 @@ class TestSectionParser:
 
     def test_section_with_custom_config(self):
         """SectionParser with custom config."""
-        root = ET.fromstring(SAMPLE_XML)
+        root = DefusedET.fromstring(SAMPLE_XML)
         config = type("Config", (), {"content_structure_patterns": {}, "appendix_patterns": {}})()
         parser = SectionParser(root, config)
         sections = parser.get_full_text_sections()

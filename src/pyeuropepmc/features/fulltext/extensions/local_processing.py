@@ -17,6 +17,8 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
+import defusedxml.ElementTree as DefusedET
+
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
@@ -157,8 +159,6 @@ def extract_article_id_from_xml(xml_content: str | ET.Element) -> str | None:
     """
     if isinstance(xml_content, str):
         try:
-            import defusedxml.ElementTree as DefusedET
-
             root = DefusedET.fromstring(xml_content)
         except Exception:
             return None
@@ -432,12 +432,10 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
     >>> for parser in parsers:
     ...     print(parser.extract_metadata().get("title"))
     """
-    import xml.etree.ElementTree as ET2  # nosec B405
-
     with open(manifest_path, encoding="utf-8") as f:
         manifest_xml = f.read()
 
-    root = ET2.fromstring(manifest_xml)  # nosec B314
+    root: ET.Element = DefusedET.fromstring(manifest_xml)
     parsers: list[FullTextXMLParser] = []
 
     # bioRxiv manifest typically uses <article> or <record> elements with DOIs
@@ -540,8 +538,7 @@ def parse_bits_book(filepath_or_xml: str, **kwargs: Any) -> FullTextXMLParser:
 def _safe_parse(xml_content: str) -> ET.Element | None:
     """Safely parse XML content, returning None on failure."""
     try:
-        import xml.etree.ElementTree as ET2  # nosec B405
-
-        return ET2.fromstring(xml_content)  # nosec B314
+        root: ET.Element = DefusedET.fromstring(xml_content)
     except Exception:
         return None
+    return root

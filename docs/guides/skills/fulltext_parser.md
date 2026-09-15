@@ -31,7 +31,7 @@ Key tips:
 - Extract sections with `parser.extract_sections()`
 - Access table captions with `table['caption']`
 
-## Extension Modules (10 modules)
+## Extension Modules (9 modules)
 
 ```python
 from pyeuropepmc.features.fulltext.extensions import (
@@ -43,7 +43,6 @@ from pyeuropepmc.features.fulltext.extensions import (
     ImageFetcher,              # Asset extraction
     ReferenceResolver,         # API-based reference enrichment
     LocalXMLProcessor,         # Local file convenience utilities
-    LXMLParser,                # Optional lxml backend
 )
 
 # Structured content blocks

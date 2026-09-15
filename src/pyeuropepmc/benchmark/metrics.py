@@ -29,6 +29,8 @@ import re
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
+import defusedxml.ElementTree as DefusedET
+
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 from pyeuropepmc.features.fulltext.utils.xml_helpers import XMLHelper
 
@@ -427,7 +429,7 @@ def _extract_all_tags(root: ET.Element) -> set[str]:
 
 def _get_all_body_text(xml_content: str) -> str:
     """Extract all text content from the <body> element (naive but complete)."""
-    root = ET.fromstring(xml_content)  # nosec B314
+    root: ET.Element = DefusedET.fromstring(xml_content)
 
     body = _find_first_with_local_tag(root, "body")
     if body is None:
@@ -604,7 +606,7 @@ def compute_element_coverage(
     dict with keys: ``score``, ``total_elements``, ``covered_elements``,
     ``missing_elements``, ``coverage_pct``, ``element_lists``.
     """
-    root = ET.fromstring(xml_content)  # nosec B314
+    root: ET.Element = DefusedET.fromstring(xml_content)
 
     found_tags = _extract_all_tags(root)
 
@@ -991,7 +993,7 @@ def compute_section_accuracy(
     dict with keys: ``score``, ``expected_sections``, ``found_sections``,
     ``title_match_ratio``, ``depth_consistency``.
     """
-    root = ET.fromstring(xml_content)  # nosec B314
+    root: ET.Element = DefusedET.fromstring(xml_content)
 
     expected_sections = _get_section_titles_from_xml(root)
     expected_paths = {s["section_path"] for s in expected_sections if s["section_path"]}
@@ -1101,7 +1103,7 @@ def compute_inline_recall(
     dict with keys: ``score``, ``by_type``, ``total_in_xml``,
     ``total_found``, ``overall_recall``.
     """
-    root = ET.fromstring(xml_content)  # nosec B314
+    root: ET.Element = DefusedET.fromstring(xml_content)
 
     xml_counts = _count_inline_elements_in_xml(root)
 
@@ -1174,7 +1176,7 @@ def compute_metadata_accuracy(
     -------
     dict with keys: ``score``, ``fields``, ``exact_matches``, ``total_fields``.
     """
-    root = ET.fromstring(xml_content)  # nosec B314
+    root: ET.Element = DefusedET.fromstring(xml_content)
 
     expected = _get_expected_metadata(root)
 

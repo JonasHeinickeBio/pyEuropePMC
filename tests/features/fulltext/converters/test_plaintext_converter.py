@@ -1,7 +1,6 @@
 """Tests for PlaintextConverter."""
 
-from xml.etree import ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
@@ -24,7 +23,7 @@ class TestPlaintextConverter:
 <sec><title>Introduction</title><p>This is the intro.</p></sec>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Test Article" in result
@@ -47,7 +46,7 @@ class TestPlaintextConverter:
 </front>
 <body/>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Authors" in result
@@ -63,7 +62,7 @@ class TestPlaintextConverter:
 </front>
 <body/>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         # Should not fail even though no abstract
         result = converter.to_plaintext()
@@ -83,7 +82,7 @@ class TestPlaintextConverter:
 <ack><p>Thanks to everyone.</p></ack>
 </back>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Acknowledgments" in result
@@ -103,7 +102,7 @@ class TestPlaintextConverter:
 <app><title>Supplementary Data</title><p>Extra content here.</p></app>
 </back>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Appendix" in result
@@ -123,7 +122,7 @@ class TestPlaintextConverter:
 <app><p>No title here.</p></app>
 </back>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Appendix" in result
@@ -142,7 +141,7 @@ class TestPlaintextConverter:
 <glossary><p>Terms and definitions.</p></glossary>
 </back>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Glossary" in result
@@ -161,7 +160,7 @@ class TestPlaintextConverter:
 <p>Second paragraph.</p>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "First paragraph" in result
@@ -185,7 +184,7 @@ class TestPlaintextConverter:
 </sec>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "1. Step one" in result
@@ -209,7 +208,7 @@ class TestPlaintextConverter:
 </sec>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Item A" in result
@@ -234,7 +233,7 @@ class TestPlaintextConverter:
 </sec>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Table: Sample Data" in result
@@ -258,7 +257,7 @@ class TestPlaintextConverter:
 </sec>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         result = converter.to_plaintext()
         assert "Table: Empty Table" in result
@@ -292,7 +291,7 @@ class TestPlaintextConverter:
 <sec><title>S</title><p>Regular text</p></sec>
 </body>
 </article>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         converter = PlaintextConverter(root)
         # The method is trivial but should not modify text
         result = converter._process_formatting_in_text("some text")

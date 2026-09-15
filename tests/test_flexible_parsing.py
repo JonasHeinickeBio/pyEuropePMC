@@ -5,8 +5,7 @@ Tests ElementPatterns configuration, fallback patterns, schema detection,
 and flexible extraction methods.
 """
 
-import xml.etree.ElementTree as ET
-
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.core.exceptions import ParsingError
@@ -88,7 +87,7 @@ class TestExtractWithFallbacks:
             <title>Main Title</title>
             <alt-title>Alternative Title</alt-title>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -102,7 +101,7 @@ class TestExtractWithFallbacks:
         xml = """<root>
             <alt-title>Alternative Title</alt-title>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -116,7 +115,7 @@ class TestExtractWithFallbacks:
         xml = """<root>
             <other>Some Text</other>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -128,7 +127,7 @@ class TestExtractWithFallbacks:
     def test_empty_pattern_list(self):
         """Test handling of empty pattern list."""
         xml = """<root><title>Title</title></root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -154,7 +153,7 @@ class TestDetectSchema:
                 </sec>
             </body>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -175,7 +174,7 @@ class TestDetectSchema:
                 </sec>
             </body>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -196,7 +195,7 @@ class TestDetectSchema:
                 </ref-list>
             </back>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -209,7 +208,7 @@ class TestDetectSchema:
     def test_schema_caching(self):
         """Test that schema is cached after first detection."""
         xml = """<root><body><table-wrap/></body></root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -244,7 +243,7 @@ class TestFlexibleExtractReferences:
                 </ref-list>
             </back>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -274,7 +273,7 @@ class TestFlexibleExtractReferences:
                 </ref-list>
             </back>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -299,7 +298,7 @@ class TestFlexibleExtractReferences:
                 </ref-list>
             </back>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -323,7 +322,7 @@ class TestFlexibleExtractReferences:
                 </ref-list>
             </back>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -360,7 +359,7 @@ class TestFlexibleExtractMetadata:
                 </article-meta>
             </front>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -387,7 +386,7 @@ class TestFlexibleExtractMetadata:
                 </article-meta>
             </front>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -425,7 +424,7 @@ class TestFlexibleExtractAuthors:
                 </article-meta>
             </front>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -450,7 +449,7 @@ class TestFlexibleExtractAuthors:
                 </article-meta>
             </front>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -475,7 +474,7 @@ class TestFlexibleExtractAuthors:
                 </article-meta>
             </front>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -514,7 +513,7 @@ class TestCustomConfiguration:
                 </ref-list>
             </back>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         custom_config = ElementPatterns(citation_types={"types": ["custom-citation"]})
         parser = FullTextXMLParser(config=custom_config)
@@ -534,7 +533,7 @@ class TestInlineElementHandling:
         xml = """<root>
             <p>Some text<sup>1</sup> and more<sup>2</sup> text</p>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         p_elem = root.find(".//p")
         assert p_elem is not None
 
@@ -552,7 +551,7 @@ class TestInlineElementHandling:
         xml = """<root>
             <p>Text<sup>1</sup> with <sub>subscript</sub> elements</p>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         p_elem = root.find(".//p")
         assert p_elem is not None
 
@@ -570,7 +569,7 @@ class TestInlineElementHandling:
         xml = """<root>
             <p>Text<sup>marker</sup> here</p>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         p_elem = root.find(".//p")
         assert p_elem is not None
 
@@ -590,7 +589,7 @@ class TestInlineElementHandling:
                 <sup>1</sup>Department of Biology, University of Science
             </aff>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         aff_elem = root.find(".//aff")
         assert aff_elem is not None
 
@@ -608,7 +607,7 @@ class TestInlineElementHandling:
         xml = """<root>
             <p>Normal<sup>1</sup> and <sub>2</sub> text<italic>italic</italic> here</p>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         p_elem = root.find(".//p")
         assert p_elem is not None
 
@@ -634,7 +633,7 @@ class TestInlineElementHandling:
                 <sup>1</sup>Department of Biology, University of Science, City 12345, Country
             </aff>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
 
         parser = FullTextXMLParser()
         parser.root = root
@@ -653,7 +652,7 @@ class TestInlineElementHandling:
         xml = """<root>
             <p>Text<custom-sup>*</custom-sup> with custom marker</p>
         </root>"""
-        root = ET.fromstring(xml)
+        root = DefusedET.fromstring(xml)
         p_elem = root.find(".//p")
         assert p_elem is not None
 

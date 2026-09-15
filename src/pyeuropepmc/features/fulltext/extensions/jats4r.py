@@ -208,9 +208,9 @@ class JATS4RValidator(BaseParser):
 
         A contribution inside a ``content-type="author"`` group is only counted
         when it carries no ``contrib-type`` of its own. That keeps the two
-        lists disjoint without comparing element identity (lxml can hand back
-        distinct proxy objects for one node), and it stops an explicitly
-        tagged editor inside an author group being counted as an author.
+        lists disjoint without comparing element identity, and it stops an
+        explicitly tagged editor inside an author group being counted as an
+        author.
         """
         if self.root is None:
             return []

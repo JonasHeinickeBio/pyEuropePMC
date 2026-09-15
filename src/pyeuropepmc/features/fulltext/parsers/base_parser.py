@@ -51,9 +51,7 @@ class BaseParser:
         """The outermost <sec> elements beneath ``parent``.
 
         Descends through non-section wrappers but stops at each <sec>, so a
-        subsection is never returned alongside its own parent. Identity is
-        never compared - lxml can hand back distinct proxy objects for one
-        node, which makes an ``id()``-keyed exclusion set unreliable.
+        subsection is never returned alongside its own parent.
         """
         found: list[ET.Element] = []
 
@@ -98,9 +96,7 @@ class BaseParser:
         of "sections", and duplicated the data-availability statement in
         PMC13567818.
 
-        Descends through wrappers but stops at <sub-article> and <response>,
-        without comparing element identity - lxml can hand back distinct proxy
-        objects for one node.
+        Descends through wrappers but stops at <sub-article> and <response>.
         """
         found: list[ET.Element] = []
 

@@ -94,13 +94,12 @@ class XMLHelper:
             if node.text:
                 parts.append(node.text)
             for child in node:
-                # lxml keeps comments and processing instructions in the tree
-                # as children whose `tag` is a callable rather than a string.
-                # Walking into one appends its text, so an editorial marker
-                # like <!--CREATIVE COMMONS--> ended up inside the licence
-                # text. stdlib ElementTree discards them at parse time, so the
-                # two backends disagreed about the same document. Their tail
-                # is real content and is kept.
+                # A comment or processing instruction is a child whose `tag` is
+                # a callable rather than a string. The parser drops them, but a
+                # tree built another way can hold them, and walking into one
+                # would put an editorial marker like <!--CREATIVE COMMONS-->
+                # inside the licence text. Their tail is real content and is
+                # kept.
                 if not isinstance(child.tag, str):
                     if child.tail:
                         parts.append(child.tail)

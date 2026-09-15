@@ -4,6 +4,26 @@ All notable changes to PyEuropePMC are documented here.
 
 ## [Unreleased]
 
+### 💥 Breaking Changes
+
+- **The lxml backend is removed.** `LXMLParser` and `is_lxml_available` are no
+  longer exported from `pyeuropepmc.features.fulltext.extensions`.
+  `FullTextXMLParser` parses exactly as before. The backend was opt-in, lxml was
+  never a declared dependency, and CI never ran its tests. Measured on 36 papers
+  it was no faster end to end, and it crashed building structured output for 15
+  of them, ran words together, and returned no sections for JATS that uses a
+  default namespace.
+
+### 🔒 Security
+
+- **All XML is parsed with defusedxml.** The arXiv and PubMed sources, figure
+  extraction, the JATS normalizer, local-file and bioRxiv-manifest parsing and
+  the benchmark metrics called the standard-library parser directly. They now
+  use defusedxml, as full-text and search-result parsing already did, so a
+  document that declares entities is refused instead of expanded. The arXiv,
+  PubMed and figure paths treat it like any other unparseable response. Ruff now
+  reports any other XML parser (rules S313-S319, and a ban on importing lxml).
+
 ### 🐛 Bug Fixes
 
 - **A table or figure inside a paragraph gets a block of its own.** JATS

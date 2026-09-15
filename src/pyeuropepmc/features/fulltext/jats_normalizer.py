@@ -42,6 +42,8 @@ from typing import Any
 import unicodedata
 from xml.etree import ElementTree as ET  # nosec B405
 
+import defusedxml.ElementTree as DefusedET
+
 logger = logging.getLogger(__name__)
 
 
@@ -471,12 +473,12 @@ class JATSNormalizer:
         dict
             Normalization results.
         """
-        # Pre-resolve XML entities that ET.fromstring can't handle
+        # Pre-resolve XML entities that the XML parser can't handle
         if isinstance(xml_content, bytes):
             xml_content = xml_content.decode("utf-8")
         xml_content = self._pre_resolve_entities(xml_content)
 
-        root = ET.fromstring(xml_content)  # nosec B314
+        root: ET.Element = DefusedET.fromstring(xml_content)
 
         # Deep copy to avoid mutating original
         root = copy.deepcopy(root)
@@ -578,7 +580,7 @@ class JATSNormalizer:
 
     @staticmethod
     def _pre_resolve_entities(xml_text: str) -> str:
-        """Pre-resolve XML entities that ET.fromstring can't handle.
+        """Pre-resolve XML entities that the XML parser can't handle.
 
         Resolves named entities like ``&alpha;`` to their Unicode characters
         before the XML parser sees them. Also handles numeric character

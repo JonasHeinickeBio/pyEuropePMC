@@ -410,17 +410,6 @@ for asset in assets:
     print(f"[{asset.type.value}] {asset.label}: {asset.uri}")
 ```
 
-### lxml Backend (Optional)
-
-```python
-from pyeuropepmc.features.fulltext.extensions import LXMLParser, is_lxml_available
-
-if is_lxml_available():
-    lxml_root = LXMLParser().parse(xml_content)
-    # Or enable directly on the parser
-    LXMLParser.enable_for(parser)
-```
-
 See the **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** for complete documentation.
 
 ## Error Handling

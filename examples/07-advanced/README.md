@@ -144,11 +144,11 @@ def analyze_corpus_schemas(xml_files):
 ### 1. Streaming Processing
 Handle large files efficiently:
 ```python
-import xml.etree.ElementTree as ET
+import defusedxml.ElementTree as DefusedET
 
 def stream_process_large_xml(xml_file):
     """Process large XML without loading into memory."""
-    context = ET.iterparse(xml_file, events=('start', 'end'))
+    context = DefusedET.iterparse(xml_file, events=('start', 'end'))
 
     for event, elem in context:
         if event == 'end' and elem.tag == 'article':

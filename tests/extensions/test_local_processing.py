@@ -213,13 +213,13 @@ class TestExtractArticleIdFromXml:
         assert article_id == "87654321"
 
     def test_element_input(self) -> None:
-        from xml.etree import ElementTree as ET
+        import defusedxml.ElementTree as DefusedET
 
         from pyeuropepmc.features.fulltext.extensions.local_processing import (
             extract_article_id_from_xml,
         )
 
-        root = ET.fromstring(VALID_XML)
+        root = DefusedET.fromstring(VALID_XML)
         article_id = extract_article_id_from_xml(root)
         assert article_id == "PMC1234567"
 

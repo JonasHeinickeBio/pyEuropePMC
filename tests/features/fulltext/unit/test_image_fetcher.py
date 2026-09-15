@@ -3,8 +3,8 @@
 from __future__ import annotations
 
 from unittest.mock import patch
-from xml.etree import ElementTree as ET
 
+import defusedxml.ElementTree as DefusedET
 import pytest
 
 from pyeuropepmc.features.fulltext.extensions.image_fetcher import (
@@ -41,7 +41,7 @@ XML_WITH_ASSETS = f"""<article {XLINK}>
 
 
 def _fetcher(xml: str = XML_WITH_ASSETS, **kwargs) -> ImageFetcher:
-    root = ET.fromstring(xml)
+    root = DefusedET.fromstring(xml)
     return ImageFetcher(root=root, **kwargs)
 
 
@@ -152,12 +152,12 @@ class TestHelpers:
 
     def test_get_xlink_href_plain_href_fallback(self):
         fetcher = _fetcher()
-        elem = ET.fromstring('<graphic href="plain.png"/>')
+        elem = DefusedET.fromstring('<graphic href="plain.png"/>')
         assert fetcher._get_xlink_href(elem) == "plain.png"
 
     def test_get_xlink_href_missing(self):
         fetcher = _fetcher()
-        elem = ET.fromstring("<graphic/>")
+        elem = DefusedET.fromstring("<graphic/>")
         assert fetcher._get_xlink_href(elem) == ""
 
     def test_resolve_uri_absolute_untouched(self):

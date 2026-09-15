@@ -238,9 +238,9 @@ class TestJATSNormalizerBasic:
 
     def test_original_tree_not_mutated(self) -> None:
         """Deep copy prevents mutation of the original tree."""
-        import xml.etree.ElementTree as ET
+        import defusedxml.ElementTree as DefusedET
 
-        root = ET.fromstring(_MINIMAL_JATS)  # nosec B314
+        root = DefusedET.fromstring(_MINIMAL_JATS)
         normalizer = JATSNormalizer()
         normalizer.normalize_xml(_MINIMAL_JATS)
         # Root should still have inline tags

@@ -31,7 +31,8 @@ import logging
 import pstats
 import time
 from typing import Any
-from xml.etree import ElementTree as ET  # nosec B405
+
+import defusedxml.ElementTree as DefusedET
 
 logger = logging.getLogger(__name__)
 
@@ -343,4 +344,4 @@ def time_et_parse(xml_content: str) -> dict[str, Any]:
     -------
     dict with ``seconds`` and ``root`` (parsed element).
     """
-    return time_function(ET.fromstring, xml_content)
+    return time_function(DefusedET.fromstring, xml_content)
