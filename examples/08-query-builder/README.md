@@ -331,7 +331,7 @@ When `search-query` is installed, queries are automatically validated before exe
 
 For more examples, see:
 - `examples/08-query-builder/query_builder_demo.py` - Comprehensive usage examples
-- `tests/query_builder/test_query_builder.py` - Unit test examples
+- `tests/features/literature/unit/test_query_builder.py` - Unit test examples
 
 ## License
 

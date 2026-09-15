@@ -1,5 +1,7 @@
 # QueryBuilder Test Reorganization Summary
 
+> **Historical record (November 2025).** This describes a reorganization within `tests/query_builder/`. Those tests have since moved to `tests/features/literature/unit/` and `tests/features/literature/functional/`, so the paths below no longer exist.
+
 ## Overview
 
 Reorganized QueryBuilder tests into **unit tests** (no API calls) and **functional tests** (with real API calls) for better organization, faster CI/CD, and comprehensive field validation.

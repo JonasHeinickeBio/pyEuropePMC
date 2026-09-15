@@ -220,7 +220,7 @@ results = client.search(qb2.build())
 
 ### Unit Tests
 
-Located in `tests/query_builder/unit/test_query_load_save_translate.py`:
+Located in `tests/features/literature/unit/test_query_load_save_translate.py`:
 
 - **From String**: 7 tests covering various parsing scenarios
 - **From File**: 3 tests for JSON file loading
@@ -237,13 +237,13 @@ Total: 27 passing tests, 3 skipped
 
 ```bash
 # Run all load/save/translate tests
-pytest tests/query_builder/unit/test_query_load_save_translate.py -v
+pytest tests/features/literature/unit/test_query_load_save_translate.py -v
 
 # Run with coverage
-pytest tests/query_builder/unit/test_query_load_save_translate.py --cov=pyeuropepmc.features.literature.query_builder
+pytest tests/features/literature/unit/test_query_load_save_translate.py --cov=pyeuropepmc.features.literature.query_builder
 
 # Run only specific test class
-pytest tests/query_builder/unit/test_query_load_save_translate.py::TestQueryBuilderFromString -v
+pytest tests/features/literature/unit/test_query_load_save_translate.py::TestQueryBuilderFromString -v
 ```
 
 ## Demo Script

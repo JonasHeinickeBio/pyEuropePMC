@@ -689,7 +689,7 @@ class TestFieldValidation:
         from pathlib import Path
         from unittest.mock import MagicMock, patch
 
-        fixture = Path(__file__).parents[2] / "fixtures" / "europepmc_fields.json"
+        fixture = Path(__file__).parents[3] / "fixtures" / "europepmc_fields.json"
         payload = json.loads(fixture.read_text())
 
         response = MagicMock()
@@ -789,7 +789,7 @@ class TestFieldValidation:
         url = "https://www.ebi.ac.uk/europepmc/webservices/rest/fields?format=json"
         live = _extract_field_names(requests.get(url, timeout=30).json())
         fixture = json.loads(
-            (Path(__file__).parents[2] / "fixtures" / "europepmc_fields.json").read_text()
+            (Path(__file__).parents[3] / "fixtures" / "europepmc_fields.json").read_text()
         )
         assert _extract_field_names(fixture) == live
 
