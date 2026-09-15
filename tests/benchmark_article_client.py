@@ -315,7 +315,7 @@ class BenchmarkRunner:
 
         return result, execution_time, memory_used, rss_delta_bytes, tracemalloc_peak
 
-    def benchmark_method(
+    def benchmark_method(  # noqa: C901
         self, method_name: str, method_args: tuple = (), method_kwargs: dict | None = None
     ) -> BenchmarkResult:
         """
@@ -794,7 +794,7 @@ class BenchmarkManager:
 
         return summary
 
-    def generate_comprehensive_report(self, suite_result: BenchmarkSuiteResult) -> str:
+    def generate_comprehensive_report(self, suite_result: BenchmarkSuiteResult) -> str:  # noqa: C901
         """Generate a comprehensive, GitHub-friendly Markdown report from suite results.
 
         The report contains per-benchmark tables and a cache-vs-no-cache comparison

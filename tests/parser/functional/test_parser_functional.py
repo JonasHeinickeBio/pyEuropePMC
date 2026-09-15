@@ -52,7 +52,7 @@ def test_parse_json_fixture(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_json] {filename}: Unexpected error: {e}")
-        raise AssertionError(f"Unexpected error: {e}")
+        raise AssertionError(f"Unexpected error: {e}") from e
 
 
 @pytest.mark.parametrize("filename", get_xml_files())
@@ -71,7 +71,7 @@ def test_parse_xml_fixture(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_xml] {filename}: Unexpected error: {e}")
-        raise AssertionError(f"Unexpected error: {e}")
+        raise AssertionError(f"Unexpected error: {e}") from e
 
 
 @pytest.mark.parametrize("filename", get_dc_files())
@@ -90,7 +90,7 @@ def test_parse_dc_fixture(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_dc] {filename}: Unexpected error: {e}")
-        raise AssertionError(f"Unexpected error: {e}")
+        raise AssertionError(f"Unexpected error: {e}") from e
 
 
 @pytest.mark.parametrize("filename", get_fulltext_xml_files())
@@ -110,7 +110,7 @@ def test_parse_fulltext_xml(filename):
         assert True
     except Exception as e:
         logger.error(f"[parse_fulltext_xml] {filename}: Unexpected error: {e}")
-        raise AssertionError(f"Unexpected error: {e}")
+        raise AssertionError(f"Unexpected error: {e}") from e
 
 
 @pytest.mark.parametrize("filename", get_fulltext_pdf_files())

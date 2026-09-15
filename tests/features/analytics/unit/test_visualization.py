@@ -18,13 +18,13 @@ pytestmark = pytest.mark.skipif(
 # raising ModuleNotFoundError at collection time when matplotlib is absent.
 pytest.importorskip("matplotlib")
 
-import matplotlib
-import matplotlib.pyplot as plt
+import matplotlib  # noqa: E402
+import matplotlib.pyplot as plt  # noqa: E402
 
 matplotlib.use("Agg")
 
-from pyeuropepmc.features.analytics.analytics import to_dataframe
-from pyeuropepmc.features.analytics.visualization import (
+from pyeuropepmc.features.analytics.analytics import to_dataframe  # noqa: E402
+from pyeuropepmc.features.analytics.visualization import (  # noqa: E402
     create_summary_dashboard,
     plot_access_distribution,
     plot_author_collaboration_network,

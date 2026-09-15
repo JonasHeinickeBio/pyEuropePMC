@@ -15,7 +15,7 @@ pytestmark = pytest.mark.skipif(
 # raising ModuleNotFoundError at collection time when pandas is absent.
 pd = pytest.importorskip("pandas")
 
-from pyeuropepmc.features.analytics.analytics import (
+from pyeuropepmc.features.analytics.analytics import (  # noqa: E402
     access_distribution,
     author_collaboration_network,
     author_statistics,

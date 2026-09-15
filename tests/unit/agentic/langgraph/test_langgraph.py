@@ -13,6 +13,16 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.agentic.langgraph import (
+    LANGGRAPH_AVAILABLE,
+    SupervisorClaimWorkflow,
+    build_claim_graph,
+    create_initial_state,
+    make_parallel_verify_node,
+    run_claim_graph,
+    stream_claim_graph,
+)
+
 pytestmark = pytest.mark.slow
 
 
@@ -36,16 +46,6 @@ def mock_verifier_network_calls():
 
         yield
 
-
-from pyeuropepmc.agentic.langgraph import (
-    LANGGRAPH_AVAILABLE,
-    SupervisorClaimWorkflow,
-    build_claim_graph,
-    create_initial_state,
-    make_parallel_verify_node,
-    run_claim_graph,
-    stream_claim_graph,
-)
 
 # ======================================================================= #
 # State tests

@@ -4,17 +4,15 @@ from pathlib import Path
 import tempfile
 
 import pytest
+from rdflib import Graph
 
+from pyeuropepmc.mappers import RDFMapper
+from pyeuropepmc.models import AuthorEntity, PaperEntity, ReferenceEntity, SectionEntity
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = pytest.mark.skipif(
     not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
 )
-
-from rdflib import Graph
-
-from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import AuthorEntity, PaperEntity, ReferenceEntity, SectionEntity
 
 
 class TestRDFPipelineIntegration:

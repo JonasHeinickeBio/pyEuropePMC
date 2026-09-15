@@ -7,10 +7,6 @@ setup_graph, setup_dataset, _bind_fallback_namespaces, and create_named_graph.
 
 from __future__ import annotations
 
-import pytest
-
-pytestmark = pytest.mark.unit
-
 from pathlib import Path
 from typing import Any
 from unittest.mock import MagicMock, patch
@@ -27,6 +23,9 @@ from pyeuropepmc.mappers.config_utils import (
     setup_dataset,
     setup_graph,
 )
+
+pytestmark = pytest.mark.unit
+
 
 # ---------------------------------------------------------------------------
 # Fixtures

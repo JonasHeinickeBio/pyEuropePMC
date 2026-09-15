@@ -36,11 +36,11 @@ def make_sample_papers():
     ]
 
 
-from collections.abc import Sequence
-from typing import Any
+from collections.abc import Sequence  # noqa: E402
+from typing import Any  # noqa: E402
 
 pytest.importorskip("numpy")
-import numpy as np
+import numpy as np  # noqa: E402
 
 
 class FakeSemanticModel:

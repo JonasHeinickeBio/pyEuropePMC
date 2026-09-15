@@ -8,15 +8,6 @@ from urllib.parse import urlparse
 import pytest
 from rdflib import Graph
 
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = [
-    pytest.mark.functional,
-    pytest.mark.skipif(
-        not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
-    ),
-]
-
 from pyeuropepmc.cache.cache import CacheBackend, CacheDataType
 from pyeuropepmc.mappers.converters import (
     RDFConversionError,
@@ -26,6 +17,14 @@ from pyeuropepmc.mappers.converters import (
     convert_search_to_rdf,
     convert_xml_to_rdf,
 )
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = [
+    pytest.mark.functional,
+    pytest.mark.skipif(
+        not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+    ),
+]
 
 
 @pytest.fixture

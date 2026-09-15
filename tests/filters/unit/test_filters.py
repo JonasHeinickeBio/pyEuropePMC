@@ -7,8 +7,6 @@ import logging
 
 import pytest
 
-logger = logging.getLogger("test.filters")
-
 from pyeuropepmc.features.literature.filters import (
     _extract_authors,
     _extract_keywords,
@@ -25,6 +23,8 @@ from pyeuropepmc.features.literature.filters import (
     filter_pmc_papers,
     filter_pmc_papers_or,
 )
+
+logger = logging.getLogger("test.filters")
 
 
 @pytest.fixture

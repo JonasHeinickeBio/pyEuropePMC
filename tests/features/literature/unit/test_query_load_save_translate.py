@@ -15,6 +15,8 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.core.exceptions import QueryBuilderError
+from pyeuropepmc.features.literature.query_builder import QueryBuilder
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = [
@@ -23,9 +25,6 @@ pytestmark = [
         not is_dependency_available("search_query"), reason="skipped due to missing search_query"
     ),
 ]
-
-from pyeuropepmc.core.exceptions import QueryBuilderError
-from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
 
 class TestQueryBuilderFromString:

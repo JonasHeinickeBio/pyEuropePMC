@@ -9,13 +9,12 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
+from pyeuropepmc.mappers import RDFMapper
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = pytest.mark.skipif(
     not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
 )
-
-from pyeuropepmc.mappers import RDFMapper
 
 
 def _fake_entity(class_name: str, triples: int = 1):

@@ -115,7 +115,7 @@ class TestToolRegistry:
         assert tool_info is not None
         assert tool_info.name == "info_tool"
         assert tool_info.description == "Info test"
-        assert tool_info.return_type == str
+        assert tool_info.return_type is str
 
     def test_get_nonexistent_tool(self):
         """Test getting non-existent tool."""

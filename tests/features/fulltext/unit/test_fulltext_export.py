@@ -2,7 +2,7 @@ import pytest
 
 pd = pytest.importorskip("pandas")
 
-from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient
+from pyeuropepmc.features.fulltext.fulltext_client import FullTextClient  # noqa: E402
 
 SAMPLE_RESULTS = [
     {"id": "1", "title": "First Article", "author": "Alice"},

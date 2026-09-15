@@ -702,7 +702,7 @@ class TestLiteratureResultNewSources:
 
     def test_invalid_source_rejected(self):
         """Old invalid source names should still raise."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             LiteratureResult(
                 title="Test",
                 source="invalid_source",

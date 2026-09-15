@@ -2,7 +2,7 @@ import pytest
 
 pd = pytest.importorskip("pandas")
 
-from pyeuropepmc.features.literature.search import SearchClient
+from pyeuropepmc.features.literature.search import SearchClient  # noqa: E402
 
 SAMPLE_RESULTS = [
     {"id": "1", "title": "First Article", "author": "Alice"},

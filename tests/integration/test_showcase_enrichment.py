@@ -141,8 +141,8 @@ def test_enrichment_showcase() -> None:
         "≈ serial wall time (parallel × avg sources) (s)": round(sum(latencies) * avg_sources, 1),
     }
     sections = {
-        "Source contribution (of %d papers)" % n: _fmt_hist(source_hits, n),
-        "Merged-field coverage (of %d papers)" % n: _fmt_hist(field_hits, n),
+        f"Source contribution (of {n} papers)": _fmt_hist(source_hits, n),
+        f"Merged-field coverage (of {n} papers)": _fmt_hist(field_hits, n),
     }
     write_report("enrichment", headline=headline, per_item=per_item, sections=sections)
 

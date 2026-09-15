@@ -6,14 +6,13 @@ from unittest.mock import patch
 
 import pytest
 
+from pyeuropepmc.features.enrich.sources.ror import RorClient
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = pytest.mark.skipif(
     not is_dependency_available("cryptography"),
     reason="skipped due to missing cryptography (enrichment dependency)",
 )
-
-from pyeuropepmc.features.enrich.sources.ror import RorClient
 
 
 class TestRorClient:

@@ -6,7 +6,9 @@ import json
 from pathlib import Path
 
 import pytest
+from typer.testing import CliRunner
 
+from pyeuropepmc.cli.normalize import normalize_app
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = [
@@ -16,9 +18,6 @@ pytestmark = [
     ),
 ]
 
-from typer.testing import CliRunner
-
-from pyeuropepmc.cli.normalize import normalize_app
 
 runner = CliRunner()
 

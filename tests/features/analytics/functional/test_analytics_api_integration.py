@@ -7,12 +7,6 @@ live data from Europe PMC API. Marked as slow tests.
 
 import pytest
 
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = pytest.mark.skipif(
-    not is_dependency_available("pandas"), reason="skipped due to missing pandas"
-)
-
 from pyeuropepmc.features.analytics.analytics import (
     citation_statistics,
     detect_duplicates,
@@ -24,6 +18,11 @@ from pyeuropepmc.features.analytics.analytics import (
     to_dataframe,
 )
 from pyeuropepmc.features.literature.search import SearchClient
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("pandas"), reason="skipped due to missing pandas"
+)
 
 
 @pytest.mark.slow

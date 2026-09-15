@@ -54,7 +54,7 @@ class TestUnpaywallClient:
         """Test initialization with empty email."""
         with (
             patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"),
-            pytest.raises(Exception),
+            pytest.raises(Exception),  # noqa: B017
         ):
             UnpaywallClient(email="")
 
@@ -62,13 +62,13 @@ class TestUnpaywallClient:
         """Test initialization with email missing @."""
         with (
             patch("pyeuropepmc.features.enrich.sources.unpaywall_client.BaseAPIClient.__init__"),
-            pytest.raises(Exception),
+            pytest.raises(Exception),  # noqa: B017
         ):
             UnpaywallClient(email="notanemail")
 
     def test_lookup_by_doi_empty(self, client):
         """Test lookup with empty DOI."""
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             client.lookup_by_doi("")
 
     def test_lookup_by_doi_success(self, client, mock_record):
@@ -123,14 +123,14 @@ class TestUnpaywallClient:
         mock_http_error.response.status_code = 500
         client._get = MagicMock(side_effect=mock_http_error)
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             client.lookup_by_doi("10.1234/servererror")
 
     def test_lookup_by_doi_request_exception(self, client):
         """Test DOI lookup with network error."""
         client._get = MagicMock(side_effect=requests.RequestException("Connection timeout"))
 
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             client.lookup_by_doi("10.1234/timeout")
 
     def test_get_oa_status_found(self, client, mock_record):

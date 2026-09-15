@@ -3,16 +3,6 @@ Tests for annotations to RDF conversion.
 """
 
 import pytest
-
-from pyeuropepmc.utils.dependencies import is_dependency_available
-
-pytestmark = [
-    pytest.mark.unit,
-    pytest.mark.skipif(
-        not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
-    ),
-]
-
 from rdflib import Graph, Literal, Namespace, URIRef
 from rdflib.namespace import OWL, RDFS
 
@@ -22,6 +12,15 @@ from pyeuropepmc.features.literature.annotations_to_rdf import (
     entity_annotation_to_model,
     relationship_annotation_to_model,
 )
+from pyeuropepmc.utils.dependencies import is_dependency_available
+
+pytestmark = [
+    pytest.mark.unit,
+    pytest.mark.skipif(
+        not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+    ),
+]
+
 
 OA = Namespace("http://www.w3.org/ns/oa#")
 PROV = Namespace("http://www.w3.org/ns/prov#")

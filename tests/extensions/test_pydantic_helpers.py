@@ -191,7 +191,7 @@ class TestPydanticModelGeneratorGenerateModel:
         instance = Model(id=1, title="X")
         assert instance.id == 1
         assert instance.title == "X"
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             Model()
 
     def test_explicit_field_types_take_precedence(self) -> None:

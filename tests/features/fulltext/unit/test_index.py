@@ -262,7 +262,7 @@ class TestFullTextIndexBasics:
         # is ensured, but we can still exercise the constructor path.
         idx = FullTextIndex(":memory:", create=False)
         try:
-            with pytest.raises(Exception):
+            with pytest.raises(Exception):  # noqa: B017
                 idx.count()
         finally:
             idx.close()

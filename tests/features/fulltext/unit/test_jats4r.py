@@ -70,7 +70,7 @@ class TestValidationReport:
 class TestValidateOverall:
     def test_no_root_raises(self):
         validator = JATS4RValidator()
-        with pytest.raises(Exception):
+        with pytest.raises(Exception):  # noqa: B017
             validator.validate()
 
     def test_fully_compliant_article_has_few_findings(self):

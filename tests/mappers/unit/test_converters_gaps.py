@@ -23,7 +23,7 @@ from pyeuropepmc.mappers.converters import (
 
 S = URIRef("http://example.org/s")
 P = URIRef("http://example.org/p")
-O = URIRef("http://example.org/o")
+O = URIRef("http://example.org/o")  # noqa: E741
 
 
 # ---------------------------------------------------------------------------

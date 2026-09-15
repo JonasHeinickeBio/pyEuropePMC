@@ -3,17 +3,15 @@
 import time
 
 import pytest
+from rdflib import Graph
 
+from pyeuropepmc.mappers import RDFMapper
+from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
 pytestmark = pytest.mark.skipif(
     not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
 )
-
-from rdflib import Graph
-
-from pyeuropepmc.mappers import RDFMapper
-from pyeuropepmc.models import AuthorEntity, InstitutionEntity, PaperEntity
 
 
 @pytest.mark.slow
@@ -281,7 +279,7 @@ class TestRDFPerformanceAndScalability:
             print(f"Query '{query_name}': {result} results in {query_times[query_name]:.4f}s")
 
         # Performance assertions
-        for query_name, query_time in query_times.items():
+        for query_time in query_times.values():
             assert query_time < 0.1  # Queries should be fast (< 100ms)
 
         # Verify query results

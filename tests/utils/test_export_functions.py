@@ -17,7 +17,7 @@ pytestmark = [
 # imported successfully — it does not stop `import pandas` below from
 # raising ModuleNotFoundError at collection time when pandas is absent.
 pd = pytest.importorskip("pandas")
-from pyeuropepmc.utils import export
+from pyeuropepmc.utils import export  # noqa: E402
 
 SAMPLE_RESULTS = [
     {"id": "1", "title": "First Article", "author": "Alice"},

@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import json
 import os
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
@@ -96,35 +97,35 @@ class TestEntitiesToJson:
         rdfizer = RMLRDFizer()
         paper = PaperEntity(doi="10.1234/x", title="T")
         path = rdfizer._entities_to_json([paper], "paper", str(tmp_path))
-        data = json.loads(open(path, encoding="utf-8").read())
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
         assert data[0]["id"] == "10.1234/x"
 
     def test_paper_entities_get_generated_id_from_pmcid(self, tmp_path):
         rdfizer = RMLRDFizer()
         paper = PaperEntity(pmcid="PMC123", title="T")
         path = rdfizer._entities_to_json([paper], "paper", str(tmp_path))
-        data = json.loads(open(path, encoding="utf-8").read())
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
         assert data[0]["id"] == "PMC123"
 
     def test_paper_entities_get_generated_id_from_pmid(self, tmp_path):
         rdfizer = RMLRDFizer()
         paper = PaperEntity(pmid="999", title="T")
         path = rdfizer._entities_to_json([paper], "paper", str(tmp_path))
-        data = json.loads(open(path, encoding="utf-8").read())
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
         assert data[0]["id"] == "pmid:999"
 
     def test_paper_entities_fallback_generated_id(self, tmp_path):
         rdfizer = RMLRDFizer()
         paper = PaperEntity(title="No identifiers at all")
         path = rdfizer._entities_to_json([paper], "paper", str(tmp_path))
-        data = json.loads(open(path, encoding="utf-8").read())
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
         assert data[0]["id"].startswith("entity_")
 
     def test_none_values_filtered_and_stringified(self, tmp_path):
         rdfizer = RMLRDFizer()
         author = AuthorEntity(id="a1", label="Jane Doe")
         path = rdfizer._entities_to_json([author], "author", str(tmp_path))
-        data = json.loads(open(path, encoding="utf-8").read())
+        data = json.loads(Path(path).read_text(encoding="utf-8"))
         assert "label" in data[0]
         assert isinstance(data[0]["label"], str)
         # Non-set attributes should not appear as explicit nulls
@@ -147,7 +148,7 @@ class TestCreateTempConfig:
     def test_rewrites_paths_into_temp_dir(self, tmp_path):
         rdfizer = RMLRDFizer()
         temp_config = rdfizer._create_temp_config(str(tmp_path), entity_type="paper")
-        content = open(temp_config, encoding="utf-8").read()
+        content = Path(temp_config).read_text(encoding="utf-8")
         assert str(tmp_path) in content
         assert os.path.exists(os.path.join(str(tmp_path), "rml_mappings.ttl"))
 
