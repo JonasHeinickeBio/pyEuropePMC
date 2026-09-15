@@ -1,250 +1,110 @@
-# API Reference
+# API reference
 
-**Complete API documentation** - All classes, methods, and parameters
+This section documents pyEuropePMC's public classes and functions. This page gives an overview of the main classes, the exceptions they raise and how to configure them; the pages linked below cover each class in detail.
 
-## API Overview
+## Imports
 
-This section provides detailed documentation for all PyEuropePMC classes and methods. The API is organized around several core clients:
-
-| Client | Purpose | Key Methods |
-|--------|---------|-------------|
-| **[SearchClient](search-client.md)** | Query Europe PMC database | `search()`, `get_by_id()` |
-| **[FullTextClient](fulltext-client.md)** | Download full-text content | `download_pdf()`, `get_xml()` |
-| **[ArticleClient](article-client.md)** | Article-specific operations | `get_citations()`, `get_references()` |
-| **[FullTextXMLParser](xml-parser.md)** | Parse XML documents | `extract_metadata()`, `extract_tables()` |
-| **[FTPDownloader](ftp-downloader.md)** | Bulk downloads via FTP | `download_bulk()` |
-
-## Core Classes
-
-### QueryBuilder
+Import public names from the top-level package:
 
 ```python
-from pyeuropepmc import QueryBuilder
-
-qb = QueryBuilder(validate=True)
-```
-
-The advanced fluent API for building complex search queries with type safety and validation.
-
-#### Key Features
-
-- **Fluent API**: Chain methods to build complex queries
-- **Type Safety**: Field names validated at compile time
-- **Validation**: Optional syntax validation with search-query package
-- **Persistence**: Save/load queries in standard JSON format
-- **Translation**: Convert between platform syntaxes
-- **Evaluation**: Assess search effectiveness metrics
-
-**[Complete QueryBuilder API →](query-builder.md)**
-
-### EuropePMC Client
-
-```python
-from pyeuropepmc import EuropePMC
-
-client = EuropePMC()
-```
-
-The main client class for interacting with the Europe PMC API.
-
-#### Constructor
-
-```python
-EuropePMC(
-    base_url: str = "https://www.ebi.ac.uk/europepmc/webservices/rest",
-    timeout: int = 30,
-    retries: int = 3,
-    rate_limit: float = 1.0
+from pyeuropepmc import (
+    ArticleClient,
+    CacheConfig,
+    EuropePMCParser,
+    FTPDownloader,
+    FullTextClient,
+    FullTextXMLParser,
+    QueryBuilder,
+    SearchClient,
+    UnifiedSearch,
 )
 ```
 
-**Parameters:**
+`import pyeuropepmc` loads submodules on first use, so an optional dependency is needed only when you use a feature that requires it.
 
-- `base_url`: Base URL for the Europe PMC API
-- `timeout`: Request timeout in seconds
-- `retries`: Number of retry attempts for failed requests
-- `rate_limit`: Minimum time between requests in seconds
+## Main classes
 
-#### Methods
+| Class | Purpose | Key methods | Details |
+|---|---|---|---|
+| `SearchClient` | Search Europe PMC | `search()`, `search_all()`, `get_hit_count()`, `search_and_parse()`, `search_ids_only()`, `export_results()` | [SearchClient](search-client.md) |
+| `ArticleClient` | Metadata, citations, references and links for one article | `get_article_details()`, `get_citations()`, `get_references()`, `get_citation_count()`, `get_reference_count()`, `get_supplementary_files()` | [ArticleClient](article-client.md) |
+| `FullTextClient` | Full-text XML, PDF and HTML | `get_fulltext_content()`, `check_fulltext_availability()`, `download_xml_by_pmcid()`, `download_pdf_by_pmcid()`, `download_html_by_pmcid()`, `download_fulltext_batch()` | [FullTextClient](fulltext-client.md) |
+| `FTPDownloader` | Bulk PDF packages from the Europe PMC FTP site | `query_pmcids_in_ftp()`, `bulk_download_and_extract()` | [FTPDownloader](ftp-downloader.md) |
+| `QueryBuilder` | Build query strings | `keyword()`, `field()`, `and_()`, `or_()`, `not_()`, `date_range()`, `citation_count()`, `build()`, `save()`, `translate()` | [QueryBuilder](query-builder.md) |
+| `FullTextXMLParser` | Parse JATS XML | `extract_metadata()`, `extract_tables()`, `extract_references()`, `get_full_text_sections_structured()`, `to_plaintext()`, `to_markdown()` | [XML parser](xml-parser.md) |
+| `EuropePMCParser` | Parse search responses | `parse_json()`, `parse_xml()`, `parse_dc()` | [EuropePMCParser](parser.md) |
+| `UnifiedSearch` | Search several services and merge duplicates | `search()`, `search_all()` | [Multi-source search](../features/multi-source-search.md) |
 
-##### search()
+Analytics and plotting functions are described in [Analytics and visualization](analytics-visualization.md).
 
-Search for articles in the Europe PMC database.
+## Clients
 
-```python
-search(
-    query: str,
-    source: str = "MED",
-    limit: int = 25,
-    offset: int = 0,
-    sort: str = "relevance",
-    format: str = "json",
-    **kwargs
-) -> List[Article]
-```
-
-**Parameters:**
-
-- `query`: Search query string
-- `source`: Data source (MED, PMC, AGR, CBA, CTX, ETH, HIR, PAT)
-- `limit`: Maximum number of results to return
-- `offset`: Number of results to skip
-- `sort`: Sort order (relevance, date, cited)
-- `format`: Response format (json, xml, dc)
-
-
-**Returns:** List of Article objects
-
-**Example:**
+`SearchClient`, `ArticleClient` and `FullTextClient` are context managers: leaving the `with` block closes the HTTP session, and a closed client raises an error with code `FULL007`.
 
 ```python
-results = client.search("cancer therapy", limit=10, sort="date", format="json")
+from pyeuropepmc import ArticleClient, SearchClient
+
+with SearchClient(rate_limit_delay=1.0) as search, ArticleClient() as articles:
+    hits = search.search("malaria vaccine", pageSize=5, resultType="core")
+    first = hits["resultList"]["result"][0]
+    count = articles.get_citation_count(first["source"], first["id"])
+
+print(first["title"], count)
 ```
 
-##### fetch_by_id()
+| Parameter | Type | Default | Accepted by | Meaning |
+|---|---|---|---|---|
+| `rate_limit_delay` | float | `1.0` | `SearchClient`, `ArticleClient`, `FullTextClient`, `FTPDownloader` | Seconds to wait between requests |
+| `cache_config` | `CacheConfig` or `None` | `None` | `SearchClient`, `ArticleClient`, `FullTextClient` | Cache for API responses; off unless you pass a `CacheConfig`, and kept in memory by default. See [Caching](../features/caching/README.md) |
+| `enable_cache` | bool | `True` | `FullTextClient` | Keep downloaded files in a file cache |
+| `cache_dir` | path or `None` | `None` | `FullTextClient` | Folder of the file cache; a folder in the system temporary directory when `None` |
 
-Fetch a specific article by its ID.
+The class pages list the other parameters.
 
-```python
-fetch_by_id(
-    pmid: str = None,
-    pmcid: str = None,
-    doi: str = None,
-    format: str = "json"
-) -> Article
+## Exceptions
+
+All exceptions are defined in `pyeuropepmc.core.exceptions`, derive from `PyEuropePMCError` and carry an error code:
+
+```text
+PyEuropePMCError
+├── APIClientError       failed HTTP requests (also pyeuropepmc.APIClientError)
+│   └── RateLimitError   defined, but not raised by the current code
+├── SearchError          SearchClient errors (also pyeuropepmc.EuropePMCError)
+├── FullTextError        FullTextClient and FTPDownloader errors (also pyeuropepmc.FullTextError)
+├── ParsingError         XML and search-response parsing
+├── ValidationError      invalid arguments and JSON file helpers
+├── ConfigurationError   invalid cache configuration
+├── QueryBuilderError    QueryBuilder errors
+└── UnpaywallError       UnpaywallClient errors (also pyeuropepmc.UnpaywallError)
 ```
 
-##### fetch_citations()
-
-Get citations for a specific article.
-
-```python
-fetch_citations(
-    pmid: str = None,
-    pmcid: str = None,
-    limit: int = 25,
-    offset: int = 0
-) -> List[Citation]
-```
-
-##### fetch_references()
-
-Get references cited by a specific article.
-
-```python
-fetch_references(
-    pmid: str = None,
-    pmcid: str = None,
-    limit: int = 25,
-    offset: int = 0
-) -> List[Reference]
-```
-
-
-## Data Models
-
-### Article
-
-Represents a scientific article from Europe PMC.
-
-**Attributes:**
-
-- `title`: Article title
-- `authors`: List of author names
-- `journal`: Journal name
-- `pub_year`: Publication year
-- `pmid`: PubMed ID
-- `pmcid`: PMC ID
-- `doi`: DOI
-- `abstract`: Article abstract
-- `keywords`: List of keywords
-- `mesh_terms`: List of MeSH terms
-
-### Citation
-
-Represents a citation to an article.
-
-**Attributes:**
-
-- `pmid`: PubMed ID of citing article
-- `title`: Title of citing article
-- `authors`: Authors of citing article
-- `journal`: Journal of citing article
-- `pub_year`: Publication year
-
-### Reference
-
-Represents a reference cited by an article.
-
-**Attributes:**
-
-- `pmid`: PubMed ID of referenced article
-- `title`: Title of referenced article
-- `authors`: Authors of referenced article
-- `journal`: Journal of referenced article
-- `pub_year`: Publication year
-
-
-## Error Handling
-
-### Exception Classes
-
-- `EuropePMCError`: Base exception class
-- `APIError`: API-related errors
-- `AuthenticationError`: Authentication failures
-- `RateLimitError`: Rate limiting exceeded
-- `ValidationError`: Input validation errors
-
-### Example Error Handling
-
-```python
-from pyeuropepmc import EuropePMC, APIError, RateLimitError
-
-try:
-    client = EuropePMC()
-    results = client.search("invalid query")
-except APIError as e:
-    print(f"API Error: {e}")
-except RateLimitError as e:
-    print(f"Rate limit exceeded: {e}")
-except Exception as e:
-    print(f"Unexpected error: {e}")
-```
-
-## Type Safety & Validation
-
-All public methods use type annotations and validate input parameters. Invalid arguments will raise exceptions with clear error messages.
+`ClientError`, `APIError`, `FileError` and `ModelError` are also defined but not raised. [Error codes](../reference/error-codes.md) lists every code, where it is raised and what to do about it.
 
 ## Configuration
 
-### Environment Variables
+There is no global configuration file: configure each client through its constructor. The Europe PMC API needs no key. Optional integrations read these environment variables:
 
-- `EUROPEPMC_API_KEY`: API key for authenticated requests
-- `EUROPEPMC_BASE_URL`: Custom base URL
-- `EUROPEPMC_TIMEOUT`: Default timeout in seconds
-- `EUROPEPMC_RATE_LIMIT`: Default rate limit in seconds
+| Variable | Read by | Purpose |
+|---|---|---|
+| `UNPAYWALL_EMAIL`, `CROSSREF_EMAIL`, `OPENALEX_EMAIL`, `DATACITE_EMAIL`, `ROR_EMAIL` | Enrichment configuration (`pyeuropepmc.features.enrich.config`) | Contact emails for those services |
+| `ROR_CLIENT_ID` | Enrichment configuration | ROR client ID |
+| `SEMANTIC_SCHOLAR_API_KEY` | Semantic Scholar enrichment source | API key |
+| `CORE_API_KEY` | CORE search source | API key |
+| `OPENAI_API_KEY`, `OPENAI_MODEL`, `OPENAI_BASE_URL` | `LLMClient` (`agentic` extra) | Model access |
+| `LLM_ENABLED`, `LLM_CACHE_ENABLED` | Agentic command-line commands | Turn the LLM and its cache on or off |
+| `ZOTERO_LIBRARY_ID`, `ZOTERO_API_KEY`, `ZOTERO_LOCAL` | Zotero integration (`zotero` extra) | Library access |
+| `PYEUROPEPMC_MCP_TRANSPORT`, `PYEUROPEPMC_MCP_HOST`, `PYEUROPEPMC_MCP_PORT`, `PYEUROPEPMC_MCP_LOG_LEVEL` | `pyeuropepmc-mcp` | Server transport, address and log level |
+| `PYEUROPEPMC_UI_SECRET_KEY`, `PYEUROPEPMC_UI_DEBUG` | Claim-review web interface (`ui` extra) | Flask settings |
 
-### Configuration File
+Behind a proxy, set `HTTPS_PROXY`, which `requests` reads.
 
-Create a `.pyeuropepmc.conf` file in your home directory:
+## Pages in this section
 
-```ini
-[api]
-base_url = https://www.ebi.ac.uk/europepmc/webservices/rest
-timeout = 30
-retries = 3
-rate_limit = 1.0
-
-[logging]
-level = INFO
-format = %(asctime)s - %(name)s - %(levelname)s - %(message)s
-```
-
-## Related Sections
-
-| Section | Why Visit? |
-|---------|------------|
-| **[Getting Started](../getting-started/)** | Installation and basics |
-| **[Features](../features/)** | What PyEuropePMC can do |
-| **[Examples](../examples/)** | Working code samples |
-| **[Advanced](../advanced/)** | Power user features |
+- [SearchClient](search-client.md)
+- [ArticleClient](article-client.md)
+- [FullTextClient](fulltext-client.md)
+- [FTPDownloader](ftp-downloader.md)
+- [QueryBuilder](query-builder.md), including its [field names](query-builder.md#field-names)
+- [EuropePMCParser](parser.md)
+- [XML parser](xml-parser.md) and [XML parser extensions](xml-parser-extensions.md)
+- [Analytics and visualization](analytics-visualization.md)

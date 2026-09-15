@@ -1,276 +1,109 @@
-# Testing and CI/CD Improvements
+# Testing
 
-This document describes the enhanced testing capabilities and workflow improvements for pyEuropePMC.
+This page describes how the test suite is organised, what a plain `pytest` run includes, how tests are sorted into categories, how to run the categories the default run leaves out, and which CI jobs run which tests.
 
-## New Features
+## Layout
 
-### 1. Enhanced GitHub Actions Workflow
+Tests live under `tests/` and mostly follow the package structure:
 
-The Python compatibility workflow now supports:
+- `tests/features/<area>/` holds the tests for each feature package, usually split into `unit/`, `functional/` (live services) and, where real Europe PMC documents are used offline, `real_data/`.
+- `tests/integration/` holds showcase tests against live APIs.
+- `tests/mcp/unit/` and `tests/mcp/e2e/` test the MCP server.
+- `tests/unit/` holds further tests, among them agentic, claims, bibliography and GUI tests.
+- Directories such as `tests/core/`, `tests/cache/`, `tests/models/`, `tests/mappers/` and `tests/cli/` cover the other packages.
+- `tests/fixtures/` holds recorded API responses and, in `fulltext_downloads/`, full-text XML and PDF files stored with Git LFS.
 
-- **Selective Test Execution**: Choose what level of tests to run
-- **Platform Skipping**: Skip problematic platforms (useful for Windows issues)
-- **Module-Specific Testing**: Test only specific modules
-- **Dry-Run Mode**: See what would run without executing
-- **Debug Mode**: Enhanced logging for troubleshooting
+pytest collects files named `test_*.py` or `*_test.py`.
 
-#### Manual Workflow Trigger Options
+## The default run
 
-You can now manually trigger the workflow with these options:
+`pytest` with no arguments applies `addopts` from `[tool.pytest.ini_options]` in `pyproject.toml`:
 
-- **Test Level**:
-  - `all` - Complete test suite (default)
-  - `syntax-only` - Only syntax and import checks
-  - `core-only` - Core module tests across platforms
-  - `full-only` - Full test suite with linting/coverage
-  - `integration-only` - Integration tests only
-  - `dry-run` - Analyze what would run without executing
+```text
+-ra -q --strict-markers --disable-socket --allow-unix-socket --timeout=120 -m 'not slow and not functional and not network and not benchmark and not e2e'
+```
 
-- **Skip Platforms**: Comma-separated list (e.g., `windows,macos`)
-- **Test Modules**: Comma-separated list (e.g., `utils,base,search,fulltext`)
-- **Performance Tests**: Enable/disable performance benchmarks
-- **Debug Mode**: Enhanced output for troubleshooting
+- The `-m` expression leaves out every test marked `slow`, `functional`, `network`, `benchmark` or `e2e`.
+- `--disable-socket` (pytest-socket) makes any network connection fail at once with `SocketBlockedError`. `--allow-unix-socket` keeps Unix sockets available.
+- `--timeout=120` (pytest-timeout) stops any test that runs for more than two minutes.
+- `--strict-markers` turns an unregistered marker into an error.
 
-### 2. Windows Compatibility Improvements
+Three more rules apply to every run:
 
-**Problem**: Windows has different file locking behavior that causes test failures in fulltext module.
+- Tests marked `integration` are not deselected, but `tests/integration/conftest.py` skips them unless `--run-integration` is given.
+- At the start of a session, `tests/conftest.py` looks for Git LFS pointer files in `tests/fixtures/fulltext_downloads/`. If it finds any, it runs `git lfs pull`, and it stops the session if pointers remain.
+- If pytest-socket or pytest-timeout is not installed, `tests/conftest.py` registers placeholder options so that the flags still parse. The run then has no network guard or timeout.
 
-**Solutions Implemented**:
-- Automatic detection of Windows environment
-- Skip problematic tests on Windows: `test_download_pdf_by_pmcid_all_fail`, `test_try_bulk_xml_download_success`
-- Uses pytest markers for broader Windows test exclusions
-- Clear feedback about skipped tests and reasons
+## Test categories
 
-### 3. Local Testing Script
+`tests/conftest.py` adds markers from each test's location, so most tests need none:
 
-New script: `scripts/local_test.py` - Run tests locally with similar options to CI/CD.
+| Marker | Added when |
+|---|---|
+| `functional` | the path contains `/functional/`, or the file name starts with `interactive_` or ends with `_interactive_test.py` |
+| `integration` | the path contains `/integration/` |
+| `gui` | the path contains `/gui/` |
+| `benchmark` and `slow` | the test requests the pytest-benchmark `benchmark` fixture, or its file name starts with `benchmark_` |
+| `unit` | the test has none of `functional`, `integration`, `network`, `slow`, `benchmark`, `e2e` and `gui` |
 
-#### Usage Examples
+Mark explicitly what the location cannot express, such as `slow`, `network` or `e2e`. Explicit markers count when `unit` is inferred, so a `network` test in a unit-test module is not marked `unit`.
+
+Tests marked `functional`, `integration`, `network` or `e2e` also get `enable_socket`, so they can reach the network when you select them. Tests under `tests/mcp/` are allowed loopback connections (`127.0.0.1` and `::1`), which asyncio needs to create an event loop on Windows.
+
+When a `functional` test fails with a network error, the failure is reported as a skip, so an outage of a third-party service does not fail the run. Network errors here are the client error codes `NET001` and `NET002`, read timeouts, exhausted retries, refused connections and failed name resolution. Assertion failures and other exceptions still fail.
+
+## Running the excluded tests
+
+A `-m` option on the command line replaces the default marker expression instead of adding to it.
+
+`--run-real` runs the tests that call real services. It replaces the marker expression with `functional or network or e2e` and turns the socket guard off. Tests that are also marked `integration` still need `--run-integration`:
 
 ```bash
-# Quick syntax check
-python scripts/local_test.py --syntax-only
-
-# Test specific modules only
-python scripts/local_test.py --core-only --modules utils,base,search
-
-# Full test suite, skip Windows problematic tests
-python scripts/local_test.py --full --skip-windows-tests
-
-# See what would run without executing
-python scripts/local_test.py --dry-run --modules fulltext
-
-# Complete test suite
-python scripts/local_test.py --all
+poetry run pytest --run-real
 ```
 
-#### Features
-
-- **Cross-platform**: Works on Windows, macOS, Linux
-- **Poetry Integration**: Automatic dependency management
-- **Progress Feedback**: Real-time test progress and results
-- **Error Handling**: Clear error messages and suggestions
-- **Dry-run Mode**: See estimated runtime and test coverage
-- **Windows Compatibility**: Automatic Windows test adaptations
-
-## How to Use for Your Workflow
-
-### Before Pushing Changes
-
-1. **Quick Local Check**:
-   ```bash
-   python scripts/local_test.py --syntax-only
-   ```
-
-2. **Test Affected Modules**:
-   ```bash
-   python scripts/local_test.py --core-only --modules fulltext,search
-   ```
-
-3. **Full Local Validation**:
-   ```bash
-   python scripts/local_test.py --full
-   ```
-
-### When Windows Tests Fail
-
-1. **Skip Windows in CI/CD**:
-   - Go to Actions → Python Version Compatibility Matrix
-   - Click "Run workflow"
-   - Set "Skip Platforms" to `windows`
-
-2. **Test Locally with Windows Mode**:
-   ```bash
-   python scripts/local_test.py --core-only --skip-windows-tests
-   ```
-
-### For Quick CI/CD Validation
-
-1. **Dry-run First**:
-   - Actions → Run workflow → Set "Test Level" to `dry-run`
-   - Review the summary to see what would execute
-
-2. **Targeted Testing**:
-   - Set "Test Level" to `core-only` for faster feedback
-   - Use "Test Modules" to focus on changed areas
-
-## Workflow Performance
-
-### Test Level Runtimes (Estimated)
-
-- **syntax-only**: ~5 minutes
-- **core-only**: ~15-45 minutes (depends on platforms)
-- **full-only**: ~20-30 minutes
-- **all**: ~45-60 minutes
-- **dry-run**: ~1 minute
-
-### Platform Matrix
-
-| Platform | Python Versions | Notes |
-|----------|----------------|-------|
-| Ubuntu | 3.10, 3.12 | Primary testing platform |
-| Windows | 3.10, 3.12 | With compatibility mode |
-| macOS | 3.12 only | Limited to reduce CI load |
-
-### Module Coverage
-
-- **utils**: Foundation utility functions
-- **base**: Base API client classes
-- **exceptions**: Error handling
-- **parser**: Response parsing
-- **search**: Search functionality
-- **fulltext**: PDF/XML/HTML retrieval (Windows-sensitive)
-- **ftp**: Bulk content downloads
-
-## Troubleshooting
-
-### Common Issues
-
-1. **Windows File Locking Errors**:
-   - Use `--skip-windows-tests` locally
-   - Set "Skip Platforms" to `windows` in CI/CD
-   - These specific tests are automatically skipped on Windows
-
-2. **Poetry Not Found**:
-   ```bash
-   curl -sSL https://install.python-poetry.org | python3 -
-   ```
-
-3. **Slow CI/CD Runs**:
-   - Use `core-only` for faster feedback
-   - Skip unnecessary platforms
-   - Focus on specific modules with changes
-
-4. **Test Failures**:
-   - Run locally first: `python scripts/local_test.py --syntax-only`
-   - Check specific modules: `--modules fulltext`
-   - Use debug mode: `--debug-mode true` in CI/CD
-
-### Windows-Specific Notes
-
-The following tests are automatically skipped on Windows due to file locking issues:
-- `test_download_pdf_by_pmcid_all_fail`
-- `test_try_bulk_xml_download_success`
-
-This is expected behavior and doesn't indicate a problem with the core functionality.
-
-## Architecture
-
-### Workflow Structure
-
-```
-Level 1: Syntax Check (All Python versions)
-├── Python 3.10, 3.11, 3.12, 3.13
-└── Ubuntu only
-
-Level 2: Core Tests (Primary versions)
-├── Python 3.10, 3.12
-├── Ubuntu, Windows, macOS
-└── Platform skip conditions
-
-Level 3: Full Tests (Primary versions)
-├── Linting, type checking, security
-├── Coverage analysis
-└── Ubuntu only
-
-Level 4: Integration Tests (Latest)
-├── Python 3.12
-├── Real API interactions
-└── Ubuntu only
-
-Performance Tests (Optional)
-├── Benchmarking
-├── Performance regression detection
-└── Triggered manually or scheduled
-```
-
-### Local Script Architecture
-
-```
-LocalTester Class
-├── check_poetry() - Verify Poetry installation
-├── install_dependencies() - Setup environment
-├── run_syntax_check() - Validate syntax/imports
-├── run_module_tests() - Execute test suites
-├── run_linting() - Code quality checks
-├── run_coverage() - Coverage analysis
-└── dry_run() - Show execution plan
-```
-
-This enhanced testing infrastructure provides you with the flexibility to:
-- Test changes quickly before CI/CD
-- Work around platform-specific issues
-- Get faster feedback during development
-- Validate changes with confidence
-
-The dry-run capabilities let you see exactly what would execute, helping you avoid wasting CI/CD minutes on unnecessary test runs.
-
----
-
-## Hermetic default test run (network guard + timeouts)
-
-The default `pytest` invocation is **fast and offline**:
-
-```
-addopts = -ra -q --strict-markers --disable-socket --allow-unix-socket
-          -m 'not slow and not functional and not network and not benchmark and not e2e'
-timeout = 120           # pytest-timeout, thread method
-```
-
-* **`--disable-socket`** (pytest-socket) — any test that opens a real network
-  connection fails immediately with `SocketBlockedError` instead of hanging.
-  This previously let whole `functional/` directories quietly call live APIs
-  during the "unit" run, which made it hang and grow to many GB of RAM
-  (accumulated HTTP responses + a multi-GB Hugging Face dataset download).
-* **`timeout = 120`** — a stuck test is killed after two minutes instead of
-  blocking the whole run.
-* **Category inference** (`tests/conftest.py::pytest_collection_modifyitems`) —
-  markers are derived from a test's location so unmarked files still get
-  excluded:
-  | Location / trait                     | Marker(s) added        |
-  |--------------------------------------|------------------------|
-  | any path containing `/functional/`   | `functional`           |
-  | any path containing `/integration/`  | `integration`          |
-  | filename `interactive_*`             | `functional`           |
-  | requests the `benchmark` fixture     | `benchmark`, `slow`    |
-  | filename `benchmark_*`               | `benchmark`, `slow`    |
-  | any path containing `/gui/`          | `gui`                  |
-  Tests in the network-capable categories also get `enable_socket`, so they
-  work when you run them on purpose.
-
-### Running the excluded lanes
+The nightly CI job runs every `functional` test, including those also marked `integration`:
 
 ```bash
-pytest -m functional          # real-service / pipeline tests   (== pytest --run-real)
-pytest -m network             # tests that need outbound HTTP
-pytest -m slow                # long-running tests
-pytest -m benchmark --benchmark-only
-pytest tests/integration --run-integration
-pytest --run-real             # exactly the functional/network/e2e tests, sockets enabled
+poetry run pytest -m functional --run-integration
 ```
 
-### Writing a test that needs the network
+The live-API tests in `tests/integration/`:
 
-Mark it (`@pytest.mark.network`, or put it under a `functional/` dir) — the
-guard then lets it through when selected and keeps it out of the default run.
-Prefer mocking `requests`/`self.session` so it can stay a real unit test.
+```bash
+poetry run pytest tests/integration --run-integration
+```
+
+Long-running tests. Slow tests that are also `functional`, `network` or `e2e` call live services:
+
+```bash
+poetry run pytest -m slow
+```
+
+The modular benchmark, which `benchmark.yml` runs every week, measures live API calls. Its file name does not match the test-file pattern, so name the test explicitly; `-m benchmark` on its own selects nothing. `--force-enable-socket` lifts the socket guard and `--timeout=3600` replaces the two-minute limit:
+
+```bash
+poetry run pytest tests/benchmark_article_client.py::test_modular_benchmark_system -m benchmark --force-enable-socket --timeout=3600
+```
+
+## Writing tests
+
+- Keep new tests offline. Mock the HTTP layer instead of calling the service; `tests/features/search/unit/test_search_caching.py`, for example, patches the client's `_make_request`.
+- Put a test that needs the network under a `functional/` directory, or mark it `@pytest.mark.network`. Either keeps it out of the default run and lets it through the socket guard when it is selected.
+- Register a new marker under `markers` in `[tool.pytest.ini_options]`; otherwise `--strict-markers` fails the run.
+- Make tests that need an optional dependency skip when it is missing, for example with `pytest.importorskip`. `unit-tests.yml` and `python-compatibility.yml` run the suite without any extras.
+
+## Tests in CI
+
+| Job | Workflow | Python | Dependencies | Command |
+|---|---|---|---|---|
+| `Tests & coverage` | `cdci.yml` | 3.10 | all extras | `pytest --cov`, then `coverage report` with `fail_under = 75` |
+| `Unit tests (core deps only)` | `unit-tests.yml` | 3.10 | core only | `pytest -q` |
+| `Tests (Python 3.12 on windows-latest)` and the other matrix legs | `python-compatibility.yml` | 3.10 and 3.12 | core only | `pytest -q --tb=short` |
+| `Functional Tests` | `integration-tests.yml` | 3.10 | all extras | `pytest -v -m functional --run-integration` |
+| `Run modular benchmarks (weekly)` | `benchmark.yml` | 3.10 | core only | the benchmark command above |
+| `Verify` | `release.yml` | 3.12 | all extras | `pytest -q` |
+
+Every job also installs the `dev` group. The functional tests run nightly and on pushes to `main`; when they fail, the workflow opens or updates a single issue labelled `functional-test-failure`.
+
+In `python-compatibility.yml`, pull requests run the tests on Ubuntu only. Pushes to `main`, the weekly run and manual runs add Windows and macOS; macOS runs Python 3.12 only. On Windows, two tests that depend on file-locking behaviour, `test_download_pdf_by_pmcid_all_fail` and `test_try_bulk_xml_download_success`, are deselected with `-k`. A manual run accepts `test_level` (`all`, or `syntax-only` to skip the test jobs) and `skip_platforms` (a comma-separated list such as `windows,macos`).

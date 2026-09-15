@@ -51,6 +51,18 @@ All notable changes to PyEuropePMC are documented here.
   alongside the metadata. `front` is added to `SectionType` in the LinkML
   schema. Code that relied on the old label needs to accept `front`.
 
+### 📚 Documentation
+
+- **The documentation matches the code again.** Audits of README.md and every
+  page in docs/ found that most examples raised or used classes, methods,
+  parameters and commands that do not exist. Each page was checked against the
+  code and rewritten, merged or removed, and every Python example on the
+  rewritten pages runs offline against mocked HTTP. README.md is a shorter front
+  page whose links work on PyPI; docs/SUMMARY.md lists every page; new pages
+  cover error codes, how the docs are published and the XML parser internals;
+  `.gitbook.yaml` lets GitBook Git Sync publish docs/. Code defects found on the
+  way are documented as known limitations where readers would hit them.
+
 ## [2.2.1] - 2026-09-15
 
 Packaging metadata only; no change to the installed package's runtime

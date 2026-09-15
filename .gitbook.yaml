@@ -1,0 +1,8 @@
+# GitBook Git Sync configuration for the pyEuropePMC documentation.
+# The pages live in docs/: docs/README.md is the first page and docs/SUMMARY.md
+# is the navigation. See docs/development/documentation.md before connecting a space.
+root: ./docs/
+
+structure:
+  readme: README.md
+  summary: SUMMARY.md

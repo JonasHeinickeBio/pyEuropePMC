@@ -420,9 +420,8 @@ def benchmark_operation(func, args_list, iterations=3):
 
 ## 🔗 Resources
 
-- [Performance Guide](../../docs/advanced/performance.md)
-- [Best Practices](../../docs/advanced/best-practices.md)
-- [API Reference](../../docs/api/)
+- [Advanced topics](../../docs/advanced/README.md)
+- [API reference](../../docs/api/README.md)
 
 ## 🎓 Learning Path
 

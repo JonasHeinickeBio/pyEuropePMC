@@ -1,168 +1,115 @@
-# FTPDownloader API Reference
+# FTPDownloader
 
-The `FTPDownloader` enables bulk downloading of full-text articles from Europe PMC's FTP servers.
-
-## Class Overview
+`FTPDownloader` downloads open-access PDF bundles from the Europe PMC FTP site, which it reads over HTTPS at `https://europepmc.org/ftp/pdf/`. It finds each article's ZIP file in the site's directory listings, downloads it and extracts the PDFs. It does not download XML; for XML see [FullTextClient](fulltext-client.md).
 
 ```python
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
-
-class FTPDownloader:
-    """Client for bulk downloading via FTP."""
+from pyeuropepmc import FTPDownloader
 ```
+
+The class is defined in `pyeuropepmc.features.literature.ftp_downloader`.
 
 ## Constructor
 
-### `FTPDownloader(timeout=30, max_retries=3)`
+`FTPDownloader(rate_limit_delay=1.0)`
 
-Create a new FTPDownloader instance.
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `rate_limit_delay` | `float` | `1.0` | Stored on the instance but not used: requests are sent without a delay |
 
-**Parameters:**
-- `timeout` (int): Connection timeout in seconds (default: 30)
-- `max_retries` (int): Maximum number of retry attempts (default: 3)
+`FTPDownloader` is a context manager; leaving the `with` block, or calling `close()`, closes its HTTP session.
 
-## Methods
+## bulk_download_and_extract
 
-### `bulk_download_and_extract(pmcids, output_dir, **kwargs)`
+`bulk_download_and_extract(pmcids, output_dir, extract_pdfs=True, keep_zips=False, max_concurrent=3) -> dict[str, dict[str, Any]]`
 
-Download and extract multiple PMC articles.
+Finds, downloads and extracts the PDF bundles for a list of articles.
 
-**Parameters:**
-- `pmcids` (List[str]): List of PMC IDs (without "PMC" prefix)
-- `output_dir` (str): Directory to save extracted files
-- `progress_callback` (callable): Optional progress callback function
-- `max_workers` (int): Maximum concurrent downloads (default: 4)
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `pmcids` | `list[str]` | required | PMC IDs as digits, without the `PMC` prefix. An ID with the prefix is reported as `not_found` |
+| `output_dir` | `str \| Path` | required | Directory for the ZIP files; created if needed |
+| `extract_pdfs` | `bool` | `True` | Extract the PDFs into `output_dir/extracted` |
+| `keep_zips` | `bool` | `False` | Keep each ZIP file after extracting it. Without extraction the ZIP files are always kept |
+| `max_concurrent` | `int` | `3` | Not used: articles are downloaded one after another |
 
-**Returns:**
-- List of successfully downloaded PMC IDs
+The method calls `query_pmcids_in_ftp()`, then `download_pdf_zip()` and `extract_pdf_from_zip()` for each article found. It returns a dict with one entry per requested PMC ID:
 
-**Example:**
-```python
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
-
-downloader = FTPDownloader()
-results = downloader.bulk_download_and_extract(
-    pmcids=["3258128", "1234567"],
-    output_dir="./downloads",
-    max_workers=2
-)
-
-print(f"Downloaded {len(results)} articles")
-```
-
-### `download_single_article(pmcid, output_dir)`
-
-Download and extract a single article.
-
-**Parameters:**
-- `pmcid` (str): PMC ID (without "PMC" prefix)
-- `output_dir` (str): Directory to save extracted files
-
-**Returns:**
-- Path to extracted directory or None if failed
-
-### `get_ftp_path(pmcid)`
-
-Get the FTP path for a PMC ID.
-
-**Parameters:**
-- `pmcid` (str): PMC ID (without "PMC" prefix)
-
-**Returns:**
-- FTP path string
-
-## Context Manager Usage
+| `status` | Other keys |
+|---|---|
+| `"success"` | `zip_path` (`Path`); `pdf_paths` (`list[Path]`), only with `extract_pdfs=True`. `zip_path` is reported even when the ZIP file was deleted after extraction |
+| `"not_found"` | `error`: `"PMC ID not found in FTP"` |
+| `"error"` | `error`: the message of the `FullTextError` raised while downloading or extracting |
 
 ```python
+from pyeuropepmc import FTPDownloader
+
 with FTPDownloader() as downloader:
-    results = downloader.bulk_download_and_extract(
-        pmcids=["3258128", "1234567"],
-        output_dir="./downloads"
-    )
+    results = downloader.bulk_download_and_extract(["11691200", "99999999"], output_dir="ftp_pdfs")
+
+succeeded = sum(result["status"] == "success" for result in results.values())
+print(succeeded, results["99999999"])
 ```
 
-## Error Handling
+Output:
 
-Raises `FTPDownloadError` for download-related issues:
+```text
+1 {'status': 'not_found', 'error': 'PMC ID not found in FTP'}
+```
+
+## query_pmcids_in_ftp
+
+`query_pmcids_in_ftp(pmcids, max_directories=100) -> dict[str, dict[str, str | int] | None]`
+
+Looks up which of the given PMC IDs have a ZIP file, without downloading anything. The result maps each PMC ID to its file information (see `get_zip_files_in_directory()`) or to `None`.
+
+The ZIP files sit in directories named `PMCxxxx` followed by digits. For each PMC ID the method derives candidate directories from its last digits: the last three digits and their neighbours (for `11691200`: `PMCxxxx199`, `PMCxxxx200`, `PMCxxxx201`), and, when the last four digits are between 1000 and 1200, those four digits and their neighbours within that range (`PMCxxxx1199`, `PMCxxxx1200`). When no candidate can be derived, it lists all directories. It then reads the listing of each candidate directory, at most `max_directories` of them, and stops early after 10 listings in a row fail.
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `pmcids` | `list[str]` | required | PMC IDs as digits |
+| `max_directories` | `int` | `100` | Maximum number of directory listings to read |
+
+A failed directory listing is logged, and an article whose directory could not be read is reported as `None`, the same as an article that does not exist.
+
+## Lower-level methods
+
+| Method | Returns | Description |
+|---|---|---|
+| `get_available_directories()` | `list[str]` | Sorted names of the `PMCxxxx…` directories in the root listing |
+| `get_zip_files_in_directory(directory)` | `list[dict[str, str \| int]]` | The ZIP files in one directory, as `{"filename": "PMC11691200.zip", "pmcid": "11691200", "size": 295936, "directory": "PMCxxxx1200"}`. `size` is in bytes, computed from the size shown in the listing (for example `289K`) |
+| `download_pdf_zip(zip_info, output_dir)` | `Path` | Downloads the ZIP file described by one of those dicts to `output_dir/filename`. Raises `TypeError` if `zip_info` is not a dict with `filename`, `directory`, `pmcid` and `size` |
+| `extract_pdf_from_zip(zip_path, extract_dir, keep_zip=True)` | `list[Path]` | Writes every archive member whose name ends in `.pdf` to `extract_dir`, then deletes the ZIP file if `keep_zip=False` |
+| `close()` | `None` | Closes the HTTP session |
 
 ```python
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
-from pyeuropepmc.core.exceptions import FTPDownloadError
+from pyeuropepmc import FTPDownloader
 
-try:
-    with FTPDownloader() as downloader:
-        results = downloader.bulk_download_and_extract(
-            pmcids=["3258128"],
-            output_dir="./downloads"
-        )
-except FTPDownloadError as e:
-    print(f"Download failed: {e}")
+with FTPDownloader() as downloader:
+    zip_info = downloader.query_pmcids_in_ftp(["11691200"])["11691200"]
+    if zip_info is not None:
+        zip_path = downloader.download_pdf_zip(zip_info, "zips")
+        pdf_paths = downloader.extract_pdf_from_zip(zip_path, "pdfs", keep_zip=False)
+        print(zip_info["directory"], zip_info["size"], [path.name for path in pdf_paths])
 ```
 
-## Examples
+Output:
 
-### Basic Bulk Download
-
-```python
-from pyeuropepmc.features.literature.ftp_downloader import FTPDownloader
-
-# Download multiple articles
-downloader = FTPDownloader()
-successful = downloader.bulk_download_and_extract(
-    pmcids=["3258128", "1234567", "2345678"],
-    output_dir="./pmc_articles"
-)
-
-print(f"Successfully downloaded {len(successful)} articles")
+```text
+PMCxxxx1200 295936 ['PMC11691200.pdf']
 ```
 
-### Progress Tracking
+## Errors
 
-```python
-def progress_callback(pmcid, status, current, total):
-    print(f"{pmcid}: {status} ({current}/{total})")
+`get_available_directories()`, `get_zip_files_in_directory()`, `download_pdf_zip()` and `extract_pdf_from_zip()` raise `FullTextError` with code `FULL005` when a request, a download or an extraction fails. `bulk_download_and_extract()` catches `FullTextError` for each article and reports it with status `"error"`. Import the exception with `from pyeuropepmc import FullTextError`.
 
-downloader = FTPDownloader()
-results = downloader.bulk_download_and_extract(
-    pmcids=["3258128", "1234567"],
-    output_dir="./downloads",
-    progress_callback=progress_callback
-)
-```
+## Known limitations
 
-### Single Article Download
+- `rate_limit_delay` and `max_concurrent` have no effect.
+- A directory listing that fails is reported as `not_found`, so a network outage looks like missing articles.
+- Only the candidate directories derived from the PMC ID are searched; an article stored in another directory is reported as `not_found`.
 
-```python
-# Download one article
-result = downloader.download_single_article("3258128", "./downloads")
-if result:
-    print(f"Article extracted to: {result}")
-else:
-    print("Download failed")
-```
+## See also
 
-## FTP Structure
-
-Europe PMC organizes articles in a hierarchical FTP structure:
-
-```
-/pub/pmc/
-├── oa_bulk/           # Open access articles
-│   ├── oa_comm/       # Commentary articles
-│   ├── oa_noncomm/    # Non-commentary articles
-│   └── oa_other/      # Other article types
-├── incremental/       # Incremental updates
-└── articles/          # Individual article files
-```
-
-## Performance Considerations
-
-- **Concurrent Downloads**: Use `max_workers` to control parallelism
-- **Rate Limiting**: Built-in delays prevent FTP server overload
-- **Resume Capability**: Automatically resumes interrupted downloads
-- **Disk Space**: Each article may require 1-10 MB of storage
-
-## Related Classes
-
-- [`FullTextClient`](./fulltext-client.md) - For individual article downloads
-- [`SearchClient`](./search-client.md) - For finding articles to download
+- [Full-text retrieval](../features/fulltext/README.md): downloading XML, PDF and HTML with `FullTextClient`
+- [FullTextClient](fulltext-client.md)
+- [SearchClient](search-client.md): finding PMC IDs to download

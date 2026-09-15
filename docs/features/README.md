@@ -1,128 +1,86 @@
-# PyEuropePMC Features
+# Features
 
-**Explore what PyEuropePMC can do** - Comprehensive feature overview and workflows
+This page gives an overview of what pyEuropePMC does, with a short example for each main feature and three workflows that combine them. Each section links to the page that covers the feature in detail.
 
-## Core Features
+## Search
 
-### Search
+Query Europe PMC with its search syntax: Boolean operators, fields such as `TITLE:` and `AUTH:`, date ranges, sorting and cursor-based paging for large result sets. Responses come back as JSON dicts, XML or Dublin Core.
 
-**Query the Europe PMC database with powerful search capabilities**
-
-- Advanced query syntax support
-- Boolean operators (AND, OR, NOT)
-- Field-specific searches
-- Date range filtering
-- Citation count sorting
-- Pagination for large result sets
-- Multiple output formats (JSON, XML, Dublin Core)
-
-**Quick Example:**
 ```python
 from pyeuropepmc import SearchClient
 
 with SearchClient() as client:
     results = client.search("cancer AND therapy", pageSize=50, sort="CITED desc")
+
+print(results["hitCount"])
 ```
 
-**[Learn More](search/)**
+More: [Search](search/README.md).
 
-### Full-Text Retrieval
+## Full-text retrieval
 
-**Download complete article content in multiple formats**
+Download XML, PDF and HTML for open-access articles, one at a time or in batches with progress callbacks. `FTPDownloader` fetches PDF packages in bulk from the Europe PMC FTP site.
 
-- PDF downloads from open access articles
-- XML full-text retrieval
-- HTML content access
-- Bulk FTP downloads for large datasets
-- Progress tracking with callbacks
-- Automatic retry and error handling
-
-**Quick Example:**
 ```python
 from pyeuropepmc import FullTextClient
 
 with FullTextClient() as client:
-    pdf_path = client.download_pdf_by_pmcid("PMC1234567")
-    xml_content = client.download_xml_by_pmcid("PMC1234567")
+    pdf_path = client.download_pdf_by_pmcid("PMC3258128", output_path="PMC3258128.pdf")
+    xml_path = client.download_xml_by_pmcid("PMC3258128", output_path="PMC3258128.xml")
+    xml_text = client.get_fulltext_content("PMC3258128")
+
+print(pdf_path, xml_path, len(xml_text))
 ```
 
-**[Learn More](fulltext/)**
+The `download_*` methods return the path of the saved file; `get_fulltext_content()` returns the XML as a string. More: [Full-text retrieval](fulltext/README.md).
 
-### XML Parsing
+## XML parsing
 
-**Extract structured data from full-text XML documents**
+`FullTextXMLParser` reads JATS XML and extracts metadata, tables, figures, references and sections, converts the article to plain text or Markdown, and reports which XML elements it recognised.
 
-- **Metadata extraction** - Title, authors, journal, dates, DOI, keywords
-- **Table extraction** - Extract tables with headers, captions, and data
-- **Reference extraction** - Bibliography with complete citations
-- **Format conversion** - Convert to plaintext or Markdown
-- **Section extraction** - Get structured body sections
-- **Schema coverage validation** - Analyze XML element recognition
-- **Flexible configuration** - Customize element patterns
-
-**Quick Example:**
 ```python
-from pyeuropepmc import FullTextXMLParser, ElementPatterns
+from pyeuropepmc import FullTextClient, FullTextXMLParser
 
-parser = FullTextXMLParser(xml_content)
+with FullTextClient() as client:
+    xml = client.get_fulltext_content("PMC3359999")
 
-# Extract metadata
+parser = FullTextXMLParser(xml)
 metadata = parser.extract_metadata()
-
-# Extract tables
 tables = parser.extract_tables()
-
-# Convert to markdown
 markdown = parser.to_markdown()
-
-# Validate schema coverage
 coverage = parser.validate_schema_coverage()
+
+print(metadata["title"], len(tables))
 print(f"Coverage: {coverage['coverage_percentage']:.1f}%")
 ```
 
-**[Learn More](parsing/)**
+`to_markdown()` does not escape Markdown characters that occur in the article text. More: [XML parsing](parsing/README.md) and [JATS normalization](parsing/jats-normalization.md).
 
-### Query Builder
+## Query builder
 
-**Advanced fluent API for building complex search queries with type safety**
+`QueryBuilder` builds query strings from named fields (more than 150 field names), checks operator placement, and saves, loads and translates queries.
 
-- Type-safe field specifications (150+ searchable fields)
-- Fluent method chaining with boolean logic (AND/OR/NOT)
-- Citation count and date range filtering
-- Query validation using CoLRev search-query package
-- Cross-platform query translation (PubMed, Web of Science, etc.)
-- Load/save queries in standard JSON format
-- Query evaluation with recall/precision metrics
-- Systematic review integration with PRISMA compliance
-
-**Quick Example:**
 ```python
 from pyeuropepmc import QueryBuilder
 
-qb = QueryBuilder()
-query = (qb
+query = (
+    QueryBuilder()
     .keyword("cancer", field="title")
     .and_()
     .citation_count(min_count=50)
     .and_()
     .date_range(start_year=2020)
-    .build())
-# Result: "(TITLE:cancer) AND (CITED:[50 TO *]) AND (PUB_YEAR:[2020 TO *])"
+    .build()
+)
+print(query)  # TITLE:cancer AND (CITED:[50 TO *]) AND (PUB_YEAR:[2020 TO <current year>])
 ```
 
-**[Learn More](query-builder-load-save-translate.md)**
+A `date_range()` without `end_year` ends at the year in which the query is built, so a saved query does not cover later years. `QueryBuilder(validate=True)` runs the search-query package's checks when you call `build()`, but these checks reject `PUB_YEAR` and `CITED` ranges and return other queries in PubMed syntax (for example `cancer[all] AND therapy[all]`), which Europe PMC does not accept; build Europe PMC queries without `validate=True`. More: [Query Builder](query-builder-load-save-translate.md) and the [QueryBuilder API](../api/query-builder.md).
 
-### Systematic Review Tracking
+## Systematic review tracking
 
-**PRISMA/Cochrane-compliant search logging and audit trails**
+A search log records each query, its filters and its result count, and saves them as JSON.
 
-- Complete systematic review workflow support
-- Search log integration with `log_to_search()` method
-- Raw results saving for reproducibility
-- PRISMA flow diagram data generation
-- Audit trails for research transparency
-
-**Quick Example:**
 ```python
 from pyeuropepmc import QueryBuilder
 from pyeuropepmc.utils.search_logging import start_search
@@ -130,72 +88,74 @@ from pyeuropepmc.utils.search_logging import start_search
 log = start_search("Cancer Review", executed_by="Researcher")
 qb = QueryBuilder().keyword("cancer").and_().field("open_access", True)
 qb.log_to_search(log, filters={"open_access": True}, results_returned=100)
+log.save("cancer_review_log.json")
 ```
 
-**[Learn More](systematic-review-tracking.md)**
+More: [Systematic Review Tracking](systematic-review-tracking.md) and [Search logging](../advanced/search-logging.md).
 
-## Feature Comparison
+## More features
 
-| Feature | SearchClient | FullTextClient | FullTextXMLParser | FTPDownloader | QueryBuilder |
-|---------|-------------|---------------|-------------------|---------------|--------------|
-| **Search Europe PMC** | Yes | - | - | - | Yes |
-| **Build Complex Queries** | - | - | - | - | Yes |
-| **Type-Safe Fields** | - | - | - | - | Yes |
-| **Query Validation** | - | - | - | - | Yes |
-| **Query Translation** | - | - | - | - | Yes |
-| **Download PDFs** | - | Yes | - | Yes | - |
-| **Download XML** | - | Yes | - | - | - |
-| **Parse XML** | - | - | Yes | - | - |
-| **Extract Metadata** | - | - | Yes | - | - |
-| **Extract Tables** | - | - | Yes | - | - |
-| **Bulk Downloads** | - | - | - | Yes | - |
-| **Systematic Review Logging** | - | - | - | - | Yes |
-| **Caching** | Yes | Yes | - | - | - |
-| **Progress Tracking** | - | Yes | - | Yes | - |
+| Feature | Page |
+|---|---|
+| Search Europe PMC, PubMed, arXiv, OpenAlex, Semantic Scholar and other services at once | [Multi-source search](multi-source-search.md) |
+| Merge duplicate records from several sources | [Deduplication](dedup.md) |
+| Follow citations forwards and backwards | [Citation graph walking](citation-walking.md) |
+| ClinicalTrials.gov and arXiv clients | [ClinicalTrials.gov](clinical-trials.md) and [arXiv](arxiv.md) |
+| ORCID profiles and NIH iCite citation metrics | [ORCID and NIH iCite clients](orcid.md) |
+| Add metadata from CrossRef, OpenAlex, Semantic Scholar, Unpaywall and others | [Enrichment](../guides/enrichment.md) |
+| Search downloaded full text locally with SQLite FTS5 | [Full-text indexing](fulltext-index.md) |
+| Label sentences by rhetorical role | [Rhetorical highlighting](rhetorical-highlighting.md) |
+| MeSH terms and PICO questions | [MeSH and PICO](mesh-pico.md) |
+| Cache API responses and downloads | [Caching](caching/README.md) |
 
-## Common Workflows
+The `pyeuropepmc` command (`pyeuropepmc --help`) offers the `normalize`, `unified_search`, `claim` and `benchmark` command groups, and `pyeuropepmc-mcp` runs an MCP server for MCP clients.
 
-### Workflow 1: Advanced Query -> Search -> Parse
+## Feature comparison
+
+| Capability | SearchClient | FullTextClient | FullTextXMLParser | FTPDownloader | QueryBuilder |
+|---|---|---|---|---|---|
+| Search Europe PMC | Yes | - | - | - | Builds queries |
+| Download PDF | - | Yes | - | Yes, in bulk | - |
+| Download XML and HTML | - | Yes | - | - | - |
+| Parse XML | - | - | Yes | - | - |
+| Batch downloads with progress callbacks | - | Yes | - | - | - |
+| Response caching | Yes, when configured | Yes | - | - | - |
+| Systematic review logging | - | - | - | - | Yes |
+
+## Workflows
+
+### Build a query, search, and parse the full text
 
 ```python
-from pyeuropepmc import QueryBuilder, SearchClient, FullTextXMLParser
+from pyeuropepmc import FullTextClient, FullTextXMLParser, QueryBuilder, SearchClient
 
-# Step 1: Build complex query with QueryBuilder
-qb = QueryBuilder()
-query = (qb
+query = (
+    QueryBuilder()
     .keyword("machine learning", field="title")
     .and_()
     .citation_count(min_count=25)
     .and_()
     .date_range(start_year=2020)
-    .build())
+    .build()
+)
 
-# Step 2: Search with the query
-with SearchClient() as client:
-    results = client.search(query, pageSize=20, sort="CITED desc")
-
-    # Step 3: Process results
-    for paper in results['resultList']['result']:
-        if paper.get('pmcid'):
-            # Download and parse XML
-            xml_content = client.get_fulltext_xml(paper['pmcid'])
-            parser = FullTextXMLParser(xml_content)
-            metadata = parser.extract_metadata()
-            print(f"High-impact paper: {metadata['title']}")
+with SearchClient() as search, FullTextClient() as fulltext:
+    results = search.search(query, pageSize=20, sort="CITED desc")
+    for paper in results["resultList"]["result"]:
+        if paper.get("pmcid") and paper.get("isOpenAccess") == "Y":
+            parser = FullTextXMLParser(fulltext.get_fulltext_content(paper["pmcid"]))
+            print(parser.extract_metadata()["title"])
 ```
 
-### Workflow 2: Systematic Review with Audit Trail
+### Log a systematic review search
 
 ```python
-from pyeuropepmc import QueryBuilder
+from pyeuropepmc import QueryBuilder, SearchClient
 from pyeuropepmc.utils.search_logging import start_search
 
-# Start systematic review
 log = start_search("ML in Biology Review", executed_by="Researcher Name")
-
-# Build comprehensive search strategy
-qb = QueryBuilder()
-comprehensive_query = (qb
+qb = (
+    QueryBuilder()
     .keyword("machine learning")
     .and_()
     .keyword("biology")
@@ -203,135 +163,44 @@ comprehensive_query = (qb
     .field("open_access", True)
     .and_()
     .date_range(start_year=2019)
-    .build())
+)
+query = qb.build()
 
-# Execute and log search
 with SearchClient() as client:
-    results = client.search(comprehensive_query, pageSize=100)
+    results = client.search(query, pageSize=100)
 
-    # Log for systematic review compliance
-    qb.log_to_search(
-        search_log=log,
-        filters={"open_access": True, "date_range": "2019+"},
-        results_returned=len(results['resultList']['result']),
-        notes="Comprehensive ML in biology search"
-    )
-
-# Save review log
+qb.log_to_search(
+    search_log=log,
+    filters={"open_access": True, "date_range": "2019+"},
+    results_returned=len(results["resultList"]["result"]),
+    notes="Machine learning in biology",
+)
 log.save("systematic_review_log.json")
 ```
 
-### Workflow 3: Advanced Search -> Filter -> Extract
+### Filter highly cited papers and extract their tables
 
 ```python
-from pyeuropepmc import SearchClient, FullTextXMLParser
+from pyeuropepmc import FullTextClient, FullTextXMLParser, SearchClient
 
-with SearchClient() as client:
-    # Advanced search with filters
-    results = client.search(
-        query="cancer AND (therapy OR treatment)",
-        sort="CITED desc",
-        pageSize=100,
-        resultType="core"
-    )
+with SearchClient() as search:
+    results = search.search("cancer AND (therapy OR treatment)", sort="CITED desc", pageSize=100, resultType="core")
 
-    # Filter for high-impact papers
-    high_impact = [
-        paper for paper in results['resultList']['result']
-        if paper.get('citedByCount', 0) > 50 and paper.get('pmcid')
-    ]
+high_impact = [
+    paper
+    for paper in results["resultList"]["result"]
+    if paper.get("citedByCount", 0) > 20 and paper.get("pmcid") and paper.get("isOpenAccess") == "Y"
+]
 
-    # Extract detailed information
-    for paper in high_impact:
-        xml_content = client.get_fulltext_xml(paper['pmcid'])
-        parser = FullTextXMLParser(xml_content)
-        # Analyze...
+with FullTextClient() as fulltext:
+    for paper in high_impact[:5]:
+        parser = FullTextXMLParser(fulltext.get_fulltext_content(paper["pmcid"]))
+        print(paper["pmcid"], len(parser.extract_tables()), "tables")
 ```
 
-## Feature Matrix
+## Next
 
-### Search Features
-
-| Capability | Supported | Notes |
-|-----------|-----------|-------|
-| Keyword search | Yes | Full-text search across all fields |
-| Boolean operators | Yes | AND, OR, NOT |
-| Field-specific | Yes | Search specific fields (author, title, etc.) |
-| Date filtering | Yes | Publication date ranges |
-| Citation sorting | Yes | Sort by citation count |
-| Pagination | Yes | Handle large result sets |
-| Multiple formats | Yes | JSON, XML, Dublin Core |
-
-### Full-Text Features
-
-| Capability | Supported | Notes |
-|-----------|-----------|-------|
-| PDF download | Yes | Open access articles only |
-| XML download | Yes | JATS/NLM XML format |
-| HTML content | Yes | HTML representation |
-| Bulk FTP | Yes | Efficient for large datasets |
-| Progress tracking | Yes | Real-time progress callbacks |
-| Auto-retry | Yes | Robust error handling |
-
-### Parsing Features
-
-| Capability | Supported | Notes |
-|-----------|-----------|-------|
-| Metadata extraction | Yes | Title, authors, journal, dates, etc. |
-| Table extraction | Yes | Structured table data |
-| Reference extraction | Yes | Complete bibliography |
-| Plaintext conversion | Yes | Full article text |
-| Markdown conversion | Yes | Formatted markdown |
-| Schema validation | Yes | Coverage analysis |
-| Custom patterns | Yes | Flexible configuration |
-| Multiple XML schemas | Yes | JATS, NLM, custom |
-
-## Learning Resources
-
-### By Feature
-
-- **Search** -> [Search Documentation](search/)
-- **Full-Text** -> [Full-Text Documentation](fulltext/)
-- **Parsing** -> [Parsing Documentation](parsing/)
-- **Caching** -> [Caching Documentation](caching/)
-
-### By Use Case
-
-- **Literature Review** -> [Examples](../examples/)
-- **Data Mining** -> [Examples](../examples/)
-- **Meta-Analysis** -> [Examples](../examples/)
-
-### By Skill Level
-
-- **Beginner** -> [Getting Started](../getting-started/)
-- **Intermediate** -> [Examples](../examples/)
-- **Advanced** -> [Advanced Guide](../advanced/)
-
-## Best Practices
-
-### Performance
-- Use caching for repeated queries
-- Implement bulk operations for large datasets
-- Set appropriate page sizes (50-100 for most cases)
-- Use FTP downloads for bulk PDF retrieval
-
-### Error Handling
-- Always use context managers (`with` statements)
-- Implement retry logic for network operations
-- Check for PMC ID availability before downloads
-- Validate XML before parsing
-
-### Rate Limiting
-- Respect Europe PMC API rate limits
-- Use delays between bulk operations
-- Cache results to minimize API calls
-- Consider FTP for large-scale downloads
-
-## Related Sections
-
-| Section | Why Visit? |
-|---------|------------|
-| **[Getting Started](../getting-started/)** | Installation and basics |
-| **[API Reference](../api/)** | Complete method documentation |
-| **[Examples](../examples/)** | Working code samples |
-| **[Advanced](../advanced/)** | Power user features |
+- [Getting started](../getting-started/README.md)
+- [API reference](../api/README.md)
+- [Examples](../examples/README.md)
+- [Advanced topics](../advanced/README.md)
