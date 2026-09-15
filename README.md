@@ -682,6 +682,9 @@ automatically and without a stored secret (GitHub OIDC — see the
 MCP-aware agent can discover this server without already knowing this
 repository exists.
 
+<!-- The MCP Registry confirms this PyPI package belongs to the server by finding the next line in its README. Keep it. -->
+<!-- mcp-name: io.github.JonasHeinickeBio/pyeuropepmc -->
+
 ### Usage
 
 24 tools covering multi-source search, citation-graph walking, clinical

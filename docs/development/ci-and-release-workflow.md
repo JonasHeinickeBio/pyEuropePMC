@@ -167,6 +167,10 @@ for a dry run — see below) and runs, in order:
    on `github.ref_type == 'tag'`, and `continue-on-error: true` since the
    registry is explicitly still in preview — a registry hiccup shouldn't
    fail a release that already shipped to PyPI and GitHub Releases.
+   The registry also checks that the PyPI package belongs to the server,
+   by finding `mcp-name: io.github.JonasHeinickeBio/pyeuropepmc` in the
+   package README. `README.md` carries that line as an HTML comment;
+   without it this job fails with a 400, as it did for 2.2.0.
 
 ### Dry-run before touching the release pipeline itself
 
