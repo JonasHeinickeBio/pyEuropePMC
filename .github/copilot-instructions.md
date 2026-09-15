@@ -13,7 +13,7 @@
   - `filter_pmc_papers`: AND logic - papers must match ALL criteria, and ALL terms within each criteria set (MeSH, keywords, abstract).
   - `filter_pmc_papers_or`: OR logic - papers match if ANY criteria set matches, and ANY term within each set can match.
 - **Error handling:** Custom exceptions in each module; all API errors are wrapped in project-specific exceptions.
-- **Testing:** All new features require tests in `tests/` (mirroring module structure). Use pytest, with markers for `unit`, `integration`, `slow`, etc.
+- **Testing:** All new features require tests in `tests/` (mirroring module structure). Use pytest. `tests/conftest.py` infers category markers (`functional` and `integration` from the directory, `unit` for any test in no other category), so mark explicitly only what it cannot infer, such as `slow`, `network` or `e2e`.
 
 ## Developer Workflow
 - **Install:** Use Poetry (`poetry install`).
