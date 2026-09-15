@@ -6,7 +6,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar"
+)
 
 import requests
 

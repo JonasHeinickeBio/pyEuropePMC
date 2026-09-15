@@ -1,4 +1,5 @@
 """Tests for model entities: BaseEntity, GrantEntity, MeSH entities, SectionEntity."""
+
 import pytest
 
 from pyeuropepmc.models import GrantEntity
@@ -157,9 +158,7 @@ class TestGrantEntity:
         """to_dict includes recipient dicts when recipients exist."""
         grant = GrantEntity(
             fundref_doi="10.13039/100000001",
-            recipients=[
-                type('AuthorEntity', (), {'to_dict': lambda s: {'name': 'Dr. Smith'}})()
-            ],
+            recipients=[type("AuthorEntity", (), {"to_dict": lambda s: {"name": "Dr. Smith"}})()],
         )
         result = grant.to_dict()
         assert result["recipients"] == [{"name": "Dr. Smith"}]

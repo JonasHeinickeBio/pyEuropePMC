@@ -907,7 +907,7 @@ class TestFullTextClientCoverage:
             format_type="pdf",
             start_time=start_time,
             current_file_size=1024,
-            total_downloaded_bytes=50000
+            total_downloaded_bytes=50000,
         )
 
         assert progress.total_items == 100
@@ -971,7 +971,7 @@ class TestFullTextClientCoverage:
         assert 2.0 < rate < 4.0
 
         # Test zero elapsed time by mocking time.time to return start_time
-        with patch('time.time') as mock_time:
+        with patch("time.time") as mock_time:
             fixed_time = 1000.0
             mock_time.return_value = fixed_time
             progress_new = ProgressInfo(total_items=100, current_item=25, start_time=fixed_time)
@@ -982,19 +982,26 @@ class TestFullTextClientCoverage:
         from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(
-            total_items=100,
-            current_item=25,
-            current_pmcid="123456",
-            status="downloading"
+            total_items=100, current_item=25, current_pmcid="123456", status="downloading"
         )
 
         result_dict = progress.to_dict()
 
         required_keys = [
-            "total_items", "current_item", "current_pmcid", "status",
-            "progress_percent", "successful_downloads", "failed_downloads",
-            "cache_hits", "format_type", "elapsed_time", "estimated_remaining_time",
-            "completion_rate", "current_file_size", "total_downloaded_bytes"
+            "total_items",
+            "current_item",
+            "current_pmcid",
+            "status",
+            "progress_percent",
+            "successful_downloads",
+            "failed_downloads",
+            "cache_hits",
+            "format_type",
+            "elapsed_time",
+            "estimated_remaining_time",
+            "completion_rate",
+            "current_file_size",
+            "total_downloaded_bytes",
         ]
 
         assert all(key in result_dict for key in required_keys)
@@ -1005,10 +1012,7 @@ class TestFullTextClientCoverage:
         from pyeuropepmc.features.fulltext.fulltext_client import ProgressInfo
 
         progress = ProgressInfo(
-            total_items=100,
-            current_item=25,
-            current_pmcid="123456",
-            status="downloading"
+            total_items=100, current_item=25, current_pmcid="123456", status="downloading"
         )
 
         string_repr = str(progress)
@@ -1027,7 +1031,7 @@ class TestFullTextClientCoverage:
                 enable_cache=True,
                 cache_dir=cache_dir,
                 cache_max_age_days=7,
-                verify_cached_files=False
+                verify_cached_files=False,
             )
 
             assert client.enable_cache is True
@@ -1092,6 +1096,7 @@ class TestFullTextClientCoverage:
             # Make file old
             import os
             import time
+
             old_time = time.time() - (2 * 24 * 3600)  # 2 days ago
             os.utime(stale_file, (old_time, old_time))
             assert not client._is_cached_file_valid(stale_file)

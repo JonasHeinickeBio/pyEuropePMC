@@ -231,9 +231,7 @@ class TestExtractRelationships:
 
     def test_extract_relationship_success(self, sample_relationship_annotation):
         """Test extracting a valid relationship annotation."""
-        relationships = AnnotationParser.extract_relationships(
-            [sample_relationship_annotation]
-        )
+        relationships = AnnotationParser.extract_relationships([sample_relationship_annotation])
 
         assert len(relationships) == 1
         rel = relationships[0]

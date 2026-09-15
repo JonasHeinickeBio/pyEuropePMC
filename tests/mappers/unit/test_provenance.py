@@ -22,9 +22,7 @@ class TestAddProvenanceAndMetadata:
         """Mock config utilities to return predictable namespaces."""
         with (
             patch("pyeuropepmc.mappers.provenance.load_rdf_config") as mock_load,
-            patch(
-                "pyeuropepmc.mappers.provenance.get_namespace_from_config"
-            ) as mock_get_ns,
+            patch("pyeuropepmc.mappers.provenance.get_namespace_from_config") as mock_get_ns,
         ):
             mock_config_dict = MagicMock()
             mock_load.return_value = mock_config_dict
@@ -59,9 +57,7 @@ class TestAddProvenanceAndMetadata:
 
         calls = mock_graph.add.call_args_list
         prov_type_calls = [
-            c
-            for c in calls
-            if "prov#Entity" in str(c) or "prov#SoftwareAgent" in str(c)
+            c for c in calls if "prov#Entity" in str(c) or "prov#SoftwareAgent" in str(c)
         ]
         assert len(prov_type_calls) == 2
 
@@ -109,15 +105,11 @@ class TestAddPaperMetadata:
         """Mock config and quality functions for paper metadata."""
         with (
             patch("pyeuropepmc.mappers.provenance.load_rdf_config") as mock_load,
-            patch(
-                "pyeuropepmc.mappers.provenance.get_namespace_from_config"
-            ) as mock_get_ns,
+            patch("pyeuropepmc.mappers.provenance.get_namespace_from_config") as mock_get_ns,
             patch(
                 "pyeuropepmc.mappers.provenance.calculate_paper_quality_score"
             ) as mock_calc_score,
-            patch(
-                "pyeuropepmc.mappers.provenance.get_confidence_level"
-            ) as mock_conf_level,
+            patch("pyeuropepmc.mappers.provenance.get_confidence_level") as mock_conf_level,
         ):
             mock_config_dict = MagicMock()
             mock_load.return_value = mock_config_dict
@@ -212,15 +204,11 @@ class TestAddAuthorMetadata:
         """Mock config and quality functions for author metadata."""
         with (
             patch("pyeuropepmc.mappers.provenance.load_rdf_config") as mock_load,
-            patch(
-                "pyeuropepmc.mappers.provenance.get_namespace_from_config"
-            ) as mock_get_ns,
+            patch("pyeuropepmc.mappers.provenance.get_namespace_from_config") as mock_get_ns,
             patch(
                 "pyeuropepmc.mappers.provenance.calculate_author_quality_score"
             ) as mock_calc_score,
-            patch(
-                "pyeuropepmc.mappers.provenance.get_confidence_level"
-            ) as mock_conf_level,
+            patch("pyeuropepmc.mappers.provenance.get_confidence_level") as mock_conf_level,
         ):
             mock_config_dict = MagicMock()
             mock_load.return_value = mock_config_dict
@@ -283,9 +271,7 @@ class TestAddQualityMetrics:
         """Mock config utilities to return pyeuropepmc namespace."""
         with (
             patch("pyeuropepmc.mappers.provenance.load_rdf_config") as mock_load,
-            patch(
-                "pyeuropepmc.mappers.provenance.get_namespace_from_config"
-            ) as mock_get_ns,
+            patch("pyeuropepmc.mappers.provenance.get_namespace_from_config") as mock_get_ns,
         ):
             mock_config_dict = MagicMock()
             mock_load.return_value = mock_config_dict

@@ -6,7 +6,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+)
 
 from rdflib import Graph
 
@@ -71,7 +73,7 @@ class TestRDFPerformanceAndScalability:
         papers = []
         for i in range(30):
             paper = PaperEntity(
-                pmcid=f"PMC{i+1000:07d}",
+                pmcid=f"PMC{i + 1000:07d}",
                 doi=f"10.1234/scale.{2024:04d}.{i:04d}",
                 title=f"Scalability Test Paper {i}",
                 keywords=[f"scale_kw_{j}" for j in range(5)],
@@ -131,7 +133,9 @@ class TestRDFPerformanceAndScalability:
             # Link author to institution
             inst_name = author.affiliation_text.replace("Department at ", "")
             if inst_name in inst_uris:
-                mapper.map_relationships(g, uri, author, {"institutions": [institutions[int(inst_name.split()[-1])]]})
+                mapper.map_relationships(
+                    g, uri, author, {"institutions": [institutions[int(inst_name.split()[-1])]]}
+                )
 
         # Convert all papers and link to authors
         paper_uris = {}
@@ -141,6 +145,7 @@ class TestRDFPerformanceAndScalability:
 
             # Link to random subset of authors (1-3 authors per paper)
             import random
+
             num_authors = random.randint(1, 3)
             selected_authors = random.sample(authors, num_authors)
             mapper.map_relationships(g, uri, paper, {"authors": selected_authors})
@@ -178,9 +183,7 @@ class TestRDFPerformanceAndScalability:
 
         with tempfile.TemporaryDirectory() as tmpdir:
             results = mapper.convert_and_save_entities_to_rdf(
-                entities_data,
-                output_dir=tmpdir,
-                prefix="throughput_"
+                entities_data, output_dir=tmpdir, prefix="throughput_"
             )
 
         end_time = time.time()
@@ -220,22 +223,53 @@ class TestRDFPerformanceAndScalability:
 
         # Add relationships
         for i, paper_uri in enumerate(paper_uris):
-            selected_authors = authors[i*2:(i+1)*2]  # 2 authors per paper
+            selected_authors = authors[i * 2 : (i + 1) * 2]  # 2 authors per paper
             mapper.map_relationships(g, paper_uri, papers[i], {"authors": selected_authors})
 
         # Query performance tests
         queries = [
             # Count all papers
-            ("papers", len([s for s, p, o in g.triples((None, mapper._resolve_predicate("rdf:type"), mapper._resolve_predicate("bibo:AcademicArticle")))])),
-
+            (
+                "papers",
+                len(
+                    [
+                        s
+                        for s, p, o in g.triples(
+                            (
+                                None,
+                                mapper._resolve_predicate("rdf:type"),
+                                mapper._resolve_predicate("bibo:AcademicArticle"),
+                            )
+                        )
+                    ]
+                ),
+            ),
             # Count all authors
-            ("authors", len([s for s, p, o in g.triples((None, mapper._resolve_predicate("rdf:type"), mapper._resolve_predicate("foaf:Person")))])),
-
+            (
+                "authors",
+                len(
+                    [
+                        s
+                        for s, p, o in g.triples(
+                            (
+                                None,
+                                mapper._resolve_predicate("rdf:type"),
+                                mapper._resolve_predicate("foaf:Person"),
+                            )
+                        )
+                    ]
+                ),
+            ),
             # Count relationships
-            ("creator_rels", len(list(g.triples((None, mapper._resolve_predicate("dcterms:creator"), None))))),
-
+            (
+                "creator_rels",
+                len(list(g.triples((None, mapper._resolve_predicate("dcterms:creator"), None)))),
+            ),
             # Count keywords
-            ("keywords", len(list(g.triples((None, mapper._resolve_predicate("dcterms:subject"), None))))),
+            (
+                "keywords",
+                len(list(g.triples((None, mapper._resolve_predicate("dcterms:subject"), None)))),
+            ),
         ]
 
         query_times = {}
@@ -290,7 +324,18 @@ class TestRDFPerformanceAndScalability:
         assert len(errors) == 0, f"Concurrent conversion errors: {errors}"
 
         # Verify all papers were converted
-        paper_count = len([s for s, p, o in g.triples((None, mapper._resolve_predicate("rdf:type"), mapper._resolve_predicate("bibo:AcademicArticle")))])
+        paper_count = len(
+            [
+                s
+                for s, p, o in g.triples(
+                    (
+                        None,
+                        mapper._resolve_predicate("rdf:type"),
+                        mapper._resolve_predicate("bibo:AcademicArticle"),
+                    )
+                )
+            ]
+        )
         assert paper_count == 10
 
         print(f"Concurrent conversion completed in {concurrent_time:.2f}s")

@@ -139,9 +139,7 @@ def test_enrichment_showcase() -> None:
         "iCite RCR present": f"{icite_rcr_ok} ({pct(icite_rcr_ok, n):.0f}%)",
         "latency / paper, parallel (s)": summary_stats(latencies),
         "parallel wall time, 50 papers (s)": round(sum(latencies), 1),
-        "≈ serial wall time (parallel × avg sources) (s)": round(
-            sum(latencies) * avg_sources, 1
-        ),
+        "≈ serial wall time (parallel × avg sources) (s)": round(sum(latencies) * avg_sources, 1),
     }
     sections = {
         "Source contribution (of %d papers)" % n: _fmt_hist(source_hits, n),

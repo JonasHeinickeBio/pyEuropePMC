@@ -252,9 +252,7 @@ class TestCreateGrantEntities:
 
     def test_create_grant_entities_recipient_string_fallback(self):
         """Test fallback to recipient_full/recipient_name for legacy data."""
-        funding_data = [
-            {"source": "Wellcome Trust", "recipient_full": "Dr. Jane Doe"}
-        ]
+        funding_data = [{"source": "Wellcome Trust", "recipient_full": "Dr. Jane Doe"}]
         grants = _create_grant_entities(funding_data)
         assert grants is not None
         assert grants[0].recipient == "Dr. Jane Doe"

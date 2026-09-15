@@ -331,7 +331,7 @@ class TestValidateDataAvailability:
         assert "DATA-01" in _rule_ids(report)
 
     def test_found_via_section_title(self):
-        xml = '<article><sec><title>Data Availability Statement</title></sec></article>'
+        xml = "<article><sec><title>Data Availability Statement</title></sec></article>"
         report = ValidationReport()
         _validator(xml)._validate_data_availability(report)
         assert "DATA-01" not in _rule_ids(report)

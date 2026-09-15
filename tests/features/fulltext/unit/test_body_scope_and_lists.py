@@ -132,8 +132,11 @@ class TestTableRendering:
         Cells and captions would otherwise be collected as section paragraphs
         as well as rendered by the table renderer.
         """
-        for text in ("CAPTION of the table.", "CELL first paragraph.",
-                     "FOOTNOTE explaining the abbreviations."):
+        for text in (
+            "CAPTION of the table.",
+            "CELL first paragraph.",
+            "FOOTNOTE explaining the abbreviations.",
+        ):
             assert plain.count(text) == 1, f"{text!r} appears {plain.count(text)}x"
 
     def test_ordinary_paragraph_unaffected(self, plain):

@@ -6,7 +6,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar"
+)
 
 from pyeuropepmc.features.enrich.batch_enricher import BatchEnricher
 from pyeuropepmc.features.enrich.config import EnrichmentConfig

@@ -351,7 +351,11 @@ def pytest_runtest_makereport(item, call):
         return
 
     report.outcome = "skipped"
-    report.longrepr = (__file__, 0, f"third-party service unreachable: {text.splitlines()[0][:160]}")
+    report.longrepr = (
+        __file__,
+        0,
+        f"third-party service unreachable: {text.splitlines()[0][:160]}",
+    )
 
 
 def pytest_collection_modifyitems(config, items):

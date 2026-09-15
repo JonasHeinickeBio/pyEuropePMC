@@ -449,12 +449,14 @@ class TestParserExceptionHandling:
 
     def test_json_parser_exception_handling(self, caplog):
         """Test that JSON parser handles exceptions gracefully."""
+
         # Create a mock object that will raise an exception during iteration
         class MockDict(dict):
             def get(self, key, default=None):
                 if key == "resultList":
                     raise RuntimeError("Mock exception")
                 return super().get(key, default)
+
         mock_data = MockDict({"hitCount": 1})
         with pytest.raises(ParsingError) as exc_info:
             EuropePMCParser.parse_json(mock_data)

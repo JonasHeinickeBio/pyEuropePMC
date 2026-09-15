@@ -165,10 +165,13 @@ class TestLocalDataset:
     """Test creating a benchmark dataset from local files."""
 
     def test_local_dataset_creation(self, tmp_dir):
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-            "PMC002.xml": SIMPLE_ARTICLE.replace("9999999", "2000000"),
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+                "PMC002.xml": SIMPLE_ARTICLE.replace("9999999", "2000000"),
+            },
+        )
 
         ds = BenchmarkDataset("local", local_path=xml_dir)
         assert ds.name == "local"
@@ -177,10 +180,13 @@ class TestLocalDataset:
 
     def test_local_dataset_iteration(self, tmp_dir):
         """Iterate over articles in a local dataset."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "a.xml": SIMPLE_ARTICLE,
-            "b.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "a.xml": SIMPLE_ARTICLE,
+                "b.xml": SIMPLE_ARTICLE,
+            },
+        )
 
         ds = BenchmarkDataset("local", local_path=xml_dir)
         paths = list(ds.iter_articles())
@@ -201,10 +207,13 @@ class TestLocalDataset:
 
     def test_iter_articles_cache(self, tmp_dir):
         """Second call to iter_articles should use cache."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "a.xml": SIMPLE_ARTICLE,
-            "b.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "a.xml": SIMPLE_ARTICLE,
+                "b.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         # First call populates cache
         paths1 = list(ds.iter_articles())
@@ -303,9 +312,12 @@ class TestDatasetDownloadBackends:
 
     def test_local_dataset_with_absolute_path(self, tmp_dir):
         """Create local dataset with absolute Path object."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "test.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "test.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         assert ds._local_dir == xml_dir.resolve()
         assert ds.article_count == 1
@@ -347,9 +359,12 @@ class TestDatasetDownloadBackends:
 
     def test_dataset_to_dict(self, tmp_dir):
         """Dataset to_dict should return proper structure."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         d = ds.to_dict()
         # Dataset info is nested under 'info' key
@@ -487,8 +502,13 @@ class TestAllMetrics:
         """All five metrics should be present in the composite output."""
         parser = FullTextXMLParser(SIMPLE_ARTICLE)
         result = compute_all_metrics(parser, SIMPLE_ARTICLE)
-        for key in ("element_coverage", "text_fidelity", "section_accuracy",
-                    "inline_recall", "metadata_accuracy"):
+        for key in (
+            "element_coverage",
+            "text_fidelity",
+            "section_accuracy",
+            "inline_recall",
+            "metadata_accuracy",
+        ):
             assert key in result, f"Missing metric: {key}"
         assert "composite_score" in result
         assert "per_metric" in result
@@ -519,12 +539,20 @@ class TestBenchmarkReport:
     def test_add_article_result(self):
         """Adding an article result should work."""
         report = BenchmarkReport()
-        report.add_article_result("test_dataset", "PMC001", {
-            "composite_score": 0.85,
-            "per_metric": {"element_coverage": 0.9, "text_fidelity": 0.8,
-                           "section_accuracy": 0.85, "inline_recall": 0.9,
-                           "metadata_accuracy": 0.8},
-        })
+        report.add_article_result(
+            "test_dataset",
+            "PMC001",
+            {
+                "composite_score": 0.85,
+                "per_metric": {
+                    "element_coverage": 0.9,
+                    "text_fidelity": 0.8,
+                    "section_accuracy": 0.85,
+                    "inline_recall": 0.9,
+                    "metadata_accuracy": 0.8,
+                },
+            },
+        )
         assert len(report.article_results) == 1
         assert report.article_results[0]["dataset"] == "test_dataset"
 
@@ -532,13 +560,23 @@ class TestBenchmarkReport:
         """Aggregation should compute correct means."""
         report = BenchmarkReport()
         for i in range(3):
-            report.add_article_result("ds1", f"A{i:03d}", {
-                "composite_score": 0.8 - i * 0.1,
-                "per_metric": {m: 0.8 - i * 0.1
-                               for m in ("element_coverage", "text_fidelity",
-                                          "section_accuracy", "inline_recall",
-                                          "metadata_accuracy")},
-            })
+            report.add_article_result(
+                "ds1",
+                f"A{i:03d}",
+                {
+                    "composite_score": 0.8 - i * 0.1,
+                    "per_metric": {
+                        m: 0.8 - i * 0.1
+                        for m in (
+                            "element_coverage",
+                            "text_fidelity",
+                            "section_accuracy",
+                            "inline_recall",
+                            "metadata_accuracy",
+                        )
+                    },
+                },
+            )
 
         agg = report.aggregate_by_dataset()
         assert "ds1" in agg
@@ -552,12 +590,23 @@ class TestBenchmarkReport:
         report = BenchmarkReport()
         for ds_name in ("ds1", "ds2"):
             for i in range(2):
-                report.add_article_result(ds_name, f"{ds_name}_{i}", {
-                    "composite_score": 0.9,
-                    "per_metric": {m: 0.9 for m in (
-                        "element_coverage", "text_fidelity", "section_accuracy",
-                        "inline_recall", "metadata_accuracy")},
-                })
+                report.add_article_result(
+                    ds_name,
+                    f"{ds_name}_{i}",
+                    {
+                        "composite_score": 0.9,
+                        "per_metric": {
+                            m: 0.9
+                            for m in (
+                                "element_coverage",
+                                "text_fidelity",
+                                "section_accuracy",
+                                "inline_recall",
+                                "metadata_accuracy",
+                            )
+                        },
+                    },
+                )
 
         overall = report.aggregate_overall()
         assert overall["total_articles"] == 4
@@ -566,12 +615,23 @@ class TestBenchmarkReport:
     def test_serialize_json(self, tmp_dir):
         """Report should roundtrip through JSON."""
         report = BenchmarkReport(title="Roundtrip")
-        report.add_article_result("ds1", "PMC001", {
-            "composite_score": 0.85,
-            "per_metric": {m: 0.85 for m in (
-                "element_coverage", "text_fidelity", "section_accuracy",
-                "inline_recall", "metadata_accuracy")},
-        })
+        report.add_article_result(
+            "ds1",
+            "PMC001",
+            {
+                "composite_score": 0.85,
+                "per_metric": {
+                    m: 0.85
+                    for m in (
+                        "element_coverage",
+                        "text_fidelity",
+                        "section_accuracy",
+                        "inline_recall",
+                        "metadata_accuracy",
+                    )
+                },
+            },
+        )
 
         json_str = report.to_json()
         data = json.loads(json_str)
@@ -597,12 +657,20 @@ class TestBenchmarkReport:
     def test_print_summary(self, capsys):
         """print_summary should output report contents."""
         report = BenchmarkReport(title="Test Summary")
-        report.add_article_result("ds1", "A001", {
-            "composite_score": 0.85,
-            "per_metric": {"element_coverage": 0.9, "text_fidelity": 0.8,
-                           "section_accuracy": 0.85, "inline_recall": 0.9,
-                           "metadata_accuracy": 0.8},
-        })
+        report.add_article_result(
+            "ds1",
+            "A001",
+            {
+                "composite_score": 0.85,
+                "per_metric": {
+                    "element_coverage": 0.9,
+                    "text_fidelity": 0.8,
+                    "section_accuracy": 0.85,
+                    "inline_recall": 0.9,
+                    "metadata_accuracy": 0.8,
+                },
+            },
+        )
         report.print_summary()
         captured = capsys.readouterr()
         assert "Test Summary" in captured.out
@@ -613,10 +681,14 @@ class TestBenchmarkReport:
         """print_summary with include_articles should list per-article scores."""
         report = BenchmarkReport(title="Article Test")
         for i in range(3):
-            report.add_article_result("ds1", f"A{i:03d}", {
-                "composite_score": 0.9 - i * 0.1,
-                "per_metric": {"element_coverage": 0.9 - i * 0.1},
-            })
+            report.add_article_result(
+                "ds1",
+                f"A{i:03d}",
+                {
+                    "composite_score": 0.9 - i * 0.1,
+                    "per_metric": {"element_coverage": 0.9 - i * 0.1},
+                },
+            )
         report.print_summary(include_articles=True)
         captured = capsys.readouterr()
         assert "A001" in captured.out
@@ -631,9 +703,16 @@ class TestBenchmarkReport:
     def test_summarize_values_empty(self):
         """_summarize_values with empty list should return zeros."""
         from pyeuropepmc.benchmark.report import _summarize_values
+
         result = _summarize_values([])
-        assert result == {"mean": 0.0, "median": 0.0, "min": 0.0,
-                          "max": 0.0, "std": 0.0, "count": 0}
+        assert result == {
+            "mean": 0.0,
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0,
+            "std": 0.0,
+            "count": 0,
+        }
 
 
 # ============================================================================
@@ -646,10 +725,13 @@ class TestBenchmarkRunner:
 
     def test_runner_with_local_dataset(self, tmp_dir):
         """Runner should process a local dataset and produce a report."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-            "PMC002.xml": SIMPLE_ARTICLE.replace("9999999", "2000000"),
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+                "PMC002.xml": SIMPLE_ARTICLE.replace("9999999", "2000000"),
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds)
         report = runner.run_all()
@@ -660,10 +742,13 @@ class TestBenchmarkRunner:
 
     def test_runner_error_handling(self, tmp_dir):
         """Runner should handle parse errors gracefully."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "good.xml": SIMPLE_ARTICLE,
-            "bad.xml": "<not-valid<<xml>",
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "good.xml": SIMPLE_ARTICLE,
+                "bad.xml": "<not-valid<<xml>",
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=True)
         report = runner.run_all()
@@ -695,20 +780,32 @@ class TestBenchmarkRunner:
 
         # Per-article metrics should include all five
         metrics = report.article_results[0]["metrics"]
-        for key in ("element_coverage", "text_fidelity", "section_accuracy",
-                    "inline_recall", "metadata_accuracy", "composite_score"):
+        for key in (
+            "element_coverage",
+            "text_fidelity",
+            "section_accuracy",
+            "inline_recall",
+            "metadata_accuracy",
+            "composite_score",
+        ):
             assert key in metrics
 
     def test_runner_multiple_datasets(self, tmp_dir):
         """Runner accepts a list of datasets."""
         (tmp_dir / "ds1").mkdir()
         (tmp_dir / "ds2").mkdir()
-        xml_dir1 = _make_local_dataset(tmp_dir / "ds1", {
-            "a.xml": SIMPLE_ARTICLE,
-        })
-        xml_dir2 = _make_local_dataset(tmp_dir / "ds2", {
-            "b.xml": SIMPLE_ARTICLE.replace("Smith", "Jones"),
-        })
+        xml_dir1 = _make_local_dataset(
+            tmp_dir / "ds1",
+            {
+                "a.xml": SIMPLE_ARTICLE,
+            },
+        )
+        xml_dir2 = _make_local_dataset(
+            tmp_dir / "ds2",
+            {
+                "b.xml": SIMPLE_ARTICLE.replace("Smith", "Jones"),
+            },
+        )
         ds1 = BenchmarkDataset("local", local_path=xml_dir1)
         ds2 = BenchmarkDataset("local", local_path=xml_dir2)
         runner = BenchmarkRunner([ds1, ds2])
@@ -730,6 +827,7 @@ class TestBenchmarkRunner:
     def test_runner_print_profile_summary_no_data(self, capsys, tmp_path):
         """print_profile_summary with no profiling data prints message."""
         from pyeuropepmc.benchmark.report import BenchmarkReport
+
         runner = BenchmarkRunner(BenchmarkDataset("local", local_path=tmp_path))
         report = BenchmarkReport(title="Empty Profile")
         runner.print_profile_summary(report)
@@ -751,8 +849,7 @@ class TestWithFixtures:
     def fixture_xmls(self):
         """Load available fixture XMLs."""
         xmls = {}
-        for fname in ["PMC12311175.xml", "PMC12738713.xml",
-                      "PMC3258128.xml", "PMC3359999.xml"]:
+        for fname in ["PMC12311175.xml", "PMC12738713.xml", "PMC3258128.xml", "PMC3359999.xml"]:
             fpath = self.FIXTURE_DIR / fname
             if fpath.exists() and fpath.stat().st_size > 1000:
                 xmls[fname] = fpath.read_text(encoding="utf-8")
@@ -766,8 +863,13 @@ class TestWithFixtures:
                 parser = FullTextXMLParser(xml)
                 metrics = compute_all_metrics(parser, xml)
                 assert 0 <= metrics["composite_score"] <= 1.0
-                for key in ("element_coverage", "text_fidelity", "section_accuracy",
-                            "inline_recall", "metadata_accuracy"):
+                for key in (
+                    "element_coverage",
+                    "text_fidelity",
+                    "section_accuracy",
+                    "inline_recall",
+                    "metadata_accuracy",
+                ):
                     assert key in metrics["per_metric"]
                     assert 0 <= metrics["per_metric"][key] <= 1.0
             except Exception as e:
@@ -1085,9 +1187,12 @@ class TestBenchmarkRunnerProfile:
 
     def test_runner_with_profiling(self, tmp_dir):
         """Runner should profile when profile=True."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, profile=True)
         report = runner.run_all()
@@ -1100,9 +1205,12 @@ class TestBenchmarkRunnerProfile:
 
     def test_runner_with_memory_profiling(self, tmp_dir):
         """Runner should profile memory when profile_memory=True."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, profile_memory=True)
         report = runner.run_all()
@@ -1115,9 +1223,12 @@ class TestBenchmarkRunnerProfile:
 
     def test_runner_profile_top_n(self, tmp_dir):
         """profile_top_n should limit displayed functions."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, profile=True, profile_top_n=5)
         report = runner.run_all()
@@ -1134,12 +1245,18 @@ class TestBenchmarkRunnerProfile:
         """Runner with multiple datasets and profiling."""
         (tmp_dir / "ds1").mkdir()
         (tmp_dir / "ds2").mkdir()
-        xml_dir1 = _make_local_dataset(tmp_dir / "ds1", {
-            "a.xml": SIMPLE_ARTICLE,
-        })
-        xml_dir2 = _make_local_dataset(tmp_dir / "ds2", {
-            "b.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir1 = _make_local_dataset(
+            tmp_dir / "ds1",
+            {
+                "a.xml": SIMPLE_ARTICLE,
+            },
+        )
+        xml_dir2 = _make_local_dataset(
+            tmp_dir / "ds2",
+            {
+                "b.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds1 = BenchmarkDataset("local", local_path=xml_dir1)
         ds2 = BenchmarkDataset("local", local_path=xml_dir2)
         runner = BenchmarkRunner([ds1, ds2], profile=True)
@@ -1158,9 +1275,12 @@ class TestBenchmarkRunnerMemoryEdgeCases:
 
     def test_runner_memory_only(self, tmp_dir):
         """Runner with memory profiling but no function profiling."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, profile=False, profile_memory=True)
         report = runner.run_all()
@@ -1177,9 +1297,12 @@ class TestBenchmarkRunnerMemoryEdgeCases:
 
     def test_runner_both_profiling(self, tmp_dir):
         """Runner with both function and memory profiling."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, profile=True, profile_memory=True, profile_top_n=10)
         report = runner.run_all()
@@ -1196,9 +1319,12 @@ class TestBenchmarkRunnerWithoutProfiling:
 
     def test_runner_normal_mode(self, tmp_dir):
         """Runner in normal mode (no profiling)."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, profile=False, profile_memory=False)
         report = runner.run_all()
@@ -1247,11 +1373,14 @@ class TestBenchmarkRunnerLimit:
 
     def test_runner_limit(self, tmp_dir):
         """Runner should respect limit parameter."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-            "PMC002.xml": SIMPLE_ARTICLE,
-            "PMC003.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+                "PMC002.xml": SIMPLE_ARTICLE,
+                "PMC003.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, limit=2)
         report = runner.run_all()
@@ -1266,9 +1395,12 @@ class TestBenchmarkRunnerErrors:
 
     def test_runner_metrics_error(self, tmp_dir):
         """Runner should handle metrics errors gracefully."""
-        xml_dir = _make_local_dataset(tmp_dir, {
-            "PMC001.xml": SIMPLE_ARTICLE,
-        })
+        xml_dir = _make_local_dataset(
+            tmp_dir,
+            {
+                "PMC001.xml": SIMPLE_ARTICLE,
+            },
+        )
         ds = BenchmarkDataset("local", local_path=xml_dir)
         # Use a custom config that will cause an error
         runner = BenchmarkRunner(ds, config={"bad": "config"})

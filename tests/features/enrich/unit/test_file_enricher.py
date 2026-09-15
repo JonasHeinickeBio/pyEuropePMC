@@ -68,8 +68,10 @@ class TestFileEnricher:
 
     def test_enrich_from_files_multiple(self, file_enricher):
         """Test enriching from multiple files."""
-        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f1, \
-                tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f2:
+        with (
+            tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f1,
+            tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as f2,
+        ):
             json.dump({"doi": "10.1234/test1", "title": "Paper 1"}, f1)
             json.dump({"doi": "10.1234/test2", "title": "Paper 2"}, f2)
             f1.flush()

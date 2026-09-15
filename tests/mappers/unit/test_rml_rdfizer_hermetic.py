@@ -35,10 +35,7 @@ def _fake_semantify_writes_nt(triples: str = "") -> callable:
     return _fake
 
 
-NT_TRIPLE = (
-    '<http://example.org/data/paper/PMC1> '
-    '<http://purl.org/dc/terms/title> "Test"@en .\n'
-)
+NT_TRIPLE = '<http://example.org/data/paper/PMC1> <http://purl.org/dc/terms/title> "Test"@en .\n'
 
 
 class TestInit:
@@ -222,7 +219,9 @@ class TestConvertJsonToRdf:
             "pyeuropepmc.mappers.rml_rdfizer.semantify",
             side_effect=_fake_semantify_writes_nt(NT_TRIPLE),
         ):
-            g = rdfizer.convert_json_to_rdf({"pmcid": "PMC1", "title": "Test"}, entity_type="paper")
+            g = rdfizer.convert_json_to_rdf(
+                {"pmcid": "PMC1", "title": "Test"}, entity_type="paper"
+            )
         assert len(g) == 1
 
     def test_list_input(self):

@@ -77,7 +77,13 @@ class TestUnifiedSearchLive:
             # Every result must have at least a title and source
             assert r.title, "Missing title"
             assert r.source, "Missing source"
-            assert r.source in ("pubmed", "arxiv", "semantic_scholar", "openalex", "clinicaltrials")
+            assert r.source in (
+                "pubmed",
+                "arxiv",
+                "semantic_scholar",
+                "openalex",
+                "clinicaltrials",
+            )
         # MergeReport fields are populated
         assert report.total_input > 0
         assert report.total_output == len(results)

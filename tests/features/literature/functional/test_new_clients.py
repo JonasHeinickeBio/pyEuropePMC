@@ -343,8 +343,16 @@ class TestUnifiedSearchNewClients:
         """All 10 sources should be available."""
         us = UnifiedSearch(
             sources=[
-                "pubmed", "arxiv", "clinicaltrials", "semantic_scholar",
-                "openalex", "zenodo", "doaj", "dblp", "hal", "core",
+                "pubmed",
+                "arxiv",
+                "clinicaltrials",
+                "semantic_scholar",
+                "openalex",
+                "zenodo",
+                "doaj",
+                "dblp",
+                "hal",
+                "core",
             ]
         )
         assert len(us.sources) == 10
@@ -400,7 +408,10 @@ class TestFullTextIndex:
         results = idx.search("deep learning medical")
         assert len(results) >= 1
         # First result should be the deep learning paper
-        assert "deep learning" in results[0].title.lower() or "deep learning" in results[0].abstract.lower()
+        assert (
+            "deep learning" in results[0].title.lower()
+            or "deep learning" in results[0].abstract.lower()
+        )
 
         idx.close()
 

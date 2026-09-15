@@ -100,7 +100,7 @@ class TestParseSpeed:
             print(f"  {label}: {elapsed:.3f}s")
         median = sorted(results.values())[len(results) // 2]
         print(f"\n  Median: {median:.3f}s/article")
-        print(f"  Throughput: {1/median:.1f} articles/s")
+        print(f"  Throughput: {1 / median:.1f} articles/s")
 
         # All should complete in under 10 seconds (generous)
         for label, elapsed in results.items():
@@ -108,6 +108,7 @@ class TestParseSpeed:
 
     def test_structured_parse_overhead(self, benchmark_articles: dict[str, str]):
         """Measure overhead of structured parsing vs flat parsing."""
+
         def best_of(call, rounds: int = 3) -> float:
             """Fastest of several runs, after a warm-up.
 
@@ -184,9 +185,7 @@ class TestSectionAccuracy:
 
             flat_text_len = sum(len(s.get("content", "")) for s in flat)
             structured_text_len = sum(
-                len(b.get("text", ""))
-                for s in structured
-                for b in s.get("content", [])
+                len(b.get("text", "")) for s in structured for b in s.get("content", [])
             )
 
             # Structured should have >= flat (more metadata preserved)
@@ -263,9 +262,7 @@ class TestContentCoverage:
         parser = FullTextXMLParser(SIMPLE_XML)
         sections = parser.get_full_text_sections_structured()
         has_def_list = any(
-            b.get("type") == "definition_list"
-            for s in sections
-            for b in s.get("content", [])
+            b.get("type") == "definition_list" for s in sections for b in s.get("content", [])
         )
 
         print(f"\n=== Definition List Detection ===")
@@ -294,7 +291,7 @@ class TestMemoryUsage:
 
         print("\n=== Serialized Size ===")
         for label, size in sorted(sizes.items(), key=lambda x: x[1]):
-            print(f"  {label}: {size:,} bytes ({size/1024:.1f} KB)")
+            print(f"  {label}: {size:,} bytes ({size / 1024:.1f} KB)")
         max_size = max(sizes.values())
         assert max_size < 50 * 1024 * 1024, f"Output too large: {max_size:,} bytes"
 
@@ -313,10 +310,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         paragraph_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "paragraph"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "paragraph"
         )
         # Should have at least 2 paragraphs
         assert paragraph_count >= 2, f"Expected >= 2 paragraphs, got {paragraph_count}"
@@ -344,10 +338,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         def_list_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "definition_list"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "definition_list"
         )
         assert def_list_count >= 1, "Definition list not detected"
 
@@ -357,10 +348,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         formula_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "formula"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "formula"
         )
         assert formula_count >= 1, "Formula not detected"
 
@@ -370,10 +358,7 @@ class TestKnownContentAccuracy:
         sections = parser.get_full_text_sections_structured()
 
         figure_count = sum(
-            1
-            for s in sections
-            for b in s.get("content", [])
-            if b.get("type") == "figure"
+            1 for s in sections for b in s.get("content", []) if b.get("type") == "figure"
         )
         assert figure_count >= 1, "Figure not detected"
 
@@ -452,9 +437,7 @@ class TestRagChunkBenchmarks:
                     prev = chunks[i - 1]["text"]
                     curr = chunks[i]["text"]
                     # Adjacent chunks should share some content (overlap)
-                    overlap_found = any(
-                        word in curr for word in prev.split()[:10]
-                    )
+                    overlap_found = any(word in curr for word in prev.split()[:10])
                     if not overlap_found:
                         # Overlap may not always be possible with short chunks
                         pass

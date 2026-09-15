@@ -21,10 +21,11 @@ pytestmark = pytest.mark.slow
 def mock_verifier_network_calls():
     """Patch verifier network calls to avoid real Europe PMC API requests."""
     # Patch both _search_evidence (SearchClient) and _enrich_papers (_get_article_details)
-    with patch("pyeuropepmc.claims.verifier.ClaimVerifier._search_evidence") as mock_search, \
-         patch("pyeuropepmc.claims.verifier.ClaimVerifier._enrich_papers") as mock_enrich, \
-         patch("pyeuropepmc.claims.verifier.ClaimVerifier._get_article_details") as mock_details:
-
+    with (
+        patch("pyeuropepmc.claims.verifier.ClaimVerifier._search_evidence") as mock_search,
+        patch("pyeuropepmc.claims.verifier.ClaimVerifier._enrich_papers") as mock_enrich,
+        patch("pyeuropepmc.claims.verifier.ClaimVerifier._get_article_details") as mock_details,
+    ):
         # Return empty evidence list - tests only care about graph state flow
         mock_search.return_value = []
 
@@ -35,6 +36,7 @@ def mock_verifier_network_calls():
         mock_details.return_value = None
 
         yield
+
 
 from pyeuropepmc.agentic.langgraph import (
     LANGGRAPH_AVAILABLE,
@@ -65,12 +67,21 @@ class TestLangGraphState:
     def test_state_keys_present(self):
         state = create_initial_state("hello")
         required_keys = [
-            "source_text", "claims_raw", "extraction_complete",
-            "verified_claims", "verification_summary", "verification_complete",
-            "review", "review_complete",
-            "user_decisions", "decisions_complete",
-            "improved_text", "bibliography", "output_complete",
-            "errors", "llm_enabled",
+            "source_text",
+            "claims_raw",
+            "extraction_complete",
+            "verified_claims",
+            "verification_summary",
+            "verification_complete",
+            "review",
+            "review_complete",
+            "user_decisions",
+            "decisions_complete",
+            "improved_text",
+            "bibliography",
+            "output_complete",
+            "errors",
+            "llm_enabled",
         ]
         for key in required_keys:
             assert key in state, f"Missing state key: {key}"
@@ -266,14 +277,22 @@ class TestAgentMessages:
             assert "action" in msg
             assert "timestamp" in msg
             # Common agent names
-            assert msg["agent"] in ("extract", "verify", "review", "decisions", "write", "supervisor")
+            assert msg["agent"] in (
+                "extract",
+                "verify",
+                "review",
+                "decisions",
+                "write",
+                "supervisor",
+            )
 
     def test_extract_agent_sends_complete_message(self):
         """Extract subagent should send a 'complete' action on success."""
         graph = build_claim_graph(llm_enabled=False, use_checkpointer=False)
         result = graph.invoke("Extract this claim.", auto_accept=True)
         extract_msgs = [
-            m for m in result.get("agent_messages", [])
+            m
+            for m in result.get("agent_messages", [])
             if m.get("agent") == "extract" and m.get("action") == "complete"
         ]
         assert len(extract_msgs) >= 1
@@ -283,7 +302,8 @@ class TestAgentMessages:
         graph = build_claim_graph(llm_enabled=False, use_checkpointer=False)
         result = graph.invoke("Verify this claim.", auto_accept=True)
         verify_msgs = [
-            m for m in result.get("agent_messages", [])
+            m
+            for m in result.get("agent_messages", [])
             if m.get("agent") == "verify" and m.get("action") == "complete"
         ]
         assert len(verify_msgs) >= 1
@@ -292,10 +312,7 @@ class TestAgentMessages:
         """Failed subagents should send 'failed' action messages."""
         graph = build_claim_graph(llm_enabled=False, use_checkpointer=False)
         result = graph.invoke("", auto_accept=True)
-        failed_msgs = [
-            m for m in result.get("agent_messages", [])
-            if m.get("action") == "failed"
-        ]
+        failed_msgs = [m for m in result.get("agent_messages", []) if m.get("action") == "failed"]
         assert len(failed_msgs) >= 1
 
 
@@ -379,8 +396,7 @@ class TestStreaming:
 
         # Check that at least one step contains output_complete
         has_output = any(
-            isinstance(v, dict) and v.get("output_complete")
-            for s in steps for v in s.values()
+            isinstance(v, dict) and v.get("output_complete") for s in steps for v in s.values()
         )
         assert has_output, "No step contained output_complete=True"
 
@@ -525,12 +541,19 @@ class TestCheckpointer:
 class TestDirectConstruction:
     def test_direct_construction_with_no_llm(self):
         """SupervisorClaimWorkflow can be constructed with simple node functions."""
+
         def noop_extract(state):
             return {"extraction_complete": True, "claims_raw": [{"id": "c1", "text": "mock"}]}
+
         def noop_verify(state):
-            return {"verification_complete": True, "verified_claims": [{"id": "c1", "text": "mock"}]}
+            return {
+                "verification_complete": True,
+                "verified_claims": [{"id": "c1", "text": "mock"}],
+            }
+
         def noop_review(state):
             return {"review_complete": True, "review": {"overall_quality": "high"}}
+
         def noop_write(state):
             return {"output_complete": True, "improved_text": "output", "bibliography": []}
 
@@ -545,12 +568,19 @@ class TestDirectConstruction:
 
     def test_direct_construction_streaming(self):
         """SupervisorClaimWorkflow.stream() should work with custom nodes."""
+
         def noop_extract(state):
             return {"extraction_complete": True, "claims_raw": [{"id": "c1", "text": "mock"}]}
+
         def noop_verify(state):
-            return {"verification_complete": True, "verified_claims": [{"id": "c1", "text": "mock"}]}
+            return {
+                "verification_complete": True,
+                "verified_claims": [{"id": "c1", "text": "mock"}],
+            }
+
         def noop_review(state):
             return {"review_complete": True, "review": {"overall_quality": "high"}}
+
         def noop_write(state):
             return {"output_complete": True, "improved_text": "output", "bibliography": []}
 
@@ -564,8 +594,7 @@ class TestDirectConstruction:
         assert len(steps) >= 2, f"Expected >=2 steps, got {len(steps)}"
         # Verify the steps include supervisor and subagent updates
         has_output = any(
-            isinstance(v, dict) and v.get("output_complete")
-            for s in steps for v in s.values()
+            isinstance(v, dict) and v.get("output_complete") for s in steps for v in s.values()
         )
         assert has_output, "No step contained output_complete=True"
 

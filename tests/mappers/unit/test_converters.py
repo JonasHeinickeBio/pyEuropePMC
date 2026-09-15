@@ -188,7 +188,9 @@ class TestConvertersProcessing:
         entities_data = process_enrichment_data(enrichment_data)
 
         assert len(entities_data) == 2
-        assert all(isinstance(ed["entity"], AuthorEntity) for ed in entities_data)  # AuthorEntity objects
+        assert all(
+            isinstance(ed["entity"], AuthorEntity) for ed in entities_data
+        )  # AuthorEntity objects
 
 
 class TestConvertersGeneric:
@@ -495,7 +497,6 @@ class TestConvertersNamespaces:
         search_data = [{"doi": "10.1234/test", "title": "Test Paper"}]
         custom_namespaces = {"custom": "http://example.org/custom#"}
 
-
         graph = convert_search_to_rdf(search_data, namespaces=custom_namespaces)
 
         assert isinstance(graph, Graph)
@@ -508,7 +509,6 @@ class TestConvertersNamespaces:
         xml_data = {"paper": {"title": "Test"}}
         custom_namespaces = {"custom": "http://example.org/custom#"}
 
-
         graph = convert_xml_to_rdf(xml_data, namespaces=custom_namespaces)
 
         assert isinstance(graph, Graph)
@@ -519,7 +519,6 @@ class TestConvertersNamespaces:
         """Test pipeline conversion with custom namespaces."""
         search_data = [{"title": "Test"}]
         custom_namespaces = {"custom": "http://example.org/custom#"}
-
 
         graph = convert_pipeline_to_rdf(search_results=search_data, namespaces=custom_namespaces)
 

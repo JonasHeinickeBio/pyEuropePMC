@@ -59,9 +59,7 @@ class TestJsonParsing:
 
 @pytest.fixture(scope="module")
 def parsed_xml() -> list[dict]:
-    return EuropePMCParser.parse_xml(
-        (FIXTURES / "search_cancer.xml").read_text(encoding="utf-8")
-    )
+    return EuropePMCParser.parse_xml((FIXTURES / "search_cancer.xml").read_text(encoding="utf-8"))
 
 
 @pytest.fixture(scope="module")

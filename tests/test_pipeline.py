@@ -174,7 +174,9 @@ class TestPaperProcessingPipeline:
                     mock_build.return_value = (paper, [], [], [], [], [])
 
                     with patch.object(pipeline.rdf_mapper, "map_fields", return_value=None):
-                        with patch.object(pipeline.rdf_mapper, "add_provenance", return_value=None):
+                        with patch.object(
+                            pipeline.rdf_mapper, "add_provenance", return_value=None
+                        ):
                             result = pipeline.process_paper(
                                 xml_content=mock_xml,
                                 doi="10.1234/test.doi",
@@ -253,7 +255,9 @@ class TestPaperProcessingPipeline:
                     mock_build.return_value = (paper, [], [], [], [], [])
 
                     with patch.object(pipeline.rdf_mapper, "map_fields", return_value=None):
-                        with patch.object(pipeline.rdf_mapper, "add_provenance", return_value=None):
+                        with patch.object(
+                            pipeline.rdf_mapper, "add_provenance", return_value=None
+                        ):
                             results = pipeline.process_papers(xml_contents, save_rdf=False)
 
                             assert len(results) == 2
@@ -300,11 +304,7 @@ class TestPaperProcessingPipeline:
         pipeline = PaperProcessingPipeline(config)
 
         mock_search_result = {
-            "resultList": {
-                "result": [
-                    {"pmcid": "PMC1234567", "doi": "10.1234/test.doi"}
-                ]
-            }
+            "resultList": {"result": [{"pmcid": "PMC1234567", "doi": "10.1234/test.doi"}]}
         }
 
         with patch.object(pipeline.search_client, "search", return_value=mock_search_result):

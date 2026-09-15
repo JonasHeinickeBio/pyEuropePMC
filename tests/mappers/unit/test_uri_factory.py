@@ -244,9 +244,7 @@ class TestGenerateJournalUri:
 
     def test_falls_back_to_iso_abbreviation(self, factory):
         uri = factory._generate_journal_uri(
-            _entity(
-                "JournalEntity", medline_abbreviation=None, iso_abbreviation="J. Gene. Ed."
-            )
+            _entity("JournalEntity", medline_abbreviation=None, iso_abbreviation="J. Gene. Ed.")
         )
         assert "journal/" in str(uri)
 
@@ -288,7 +286,9 @@ class TestGenerateJournalUri:
 
 class TestExtractPaperIdentifier:
     def test_from_pubmed_url(self, factory):
-        assert factory._extract_paper_identifier("https://pubmed.ncbi.nlm.nih.gov/12345/") == "12345"
+        assert (
+            factory._extract_paper_identifier("https://pubmed.ncbi.nlm.nih.gov/12345/") == "12345"
+        )
 
     def test_from_doi_url(self, factory):
         result = factory._extract_paper_identifier("https://doi.org/10.1234/x.y")
@@ -367,9 +367,7 @@ class TestGenerateGrantUri:
         assert "grant/" in str(uri)
 
     def test_entity_wrapper(self, factory):
-        entity = _entity(
-            "GrantEntity", fundref_doi=None, award_id="R01-1", funding_source=None
-        )
+        entity = _entity("GrantEntity", fundref_doi=None, award_id="R01-1", funding_source=None)
         uri = factory._generate_grant_uri(entity)
         assert "grant/r01-1" in str(uri)
 

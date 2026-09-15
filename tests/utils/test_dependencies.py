@@ -46,7 +46,9 @@ class TestRequireDependency:
 
     def test_missing_raises_with_install_group(self):
         with pytest.raises(ImportError, match=r"pip install pyeuropepmc\[standard\]"):
-            require_dependency("nonexistent_package_zzz_123", "some feature", install_group="standard")
+            require_dependency(
+                "nonexistent_package_zzz_123", "some feature", install_group="standard"
+            )
 
 
 class TestSkipIfDependencyMissing:
@@ -85,9 +87,7 @@ class TestSkipIfDependenciesMissing:
         assert fn() == "ran"
 
     def test_any_missing_skips(self):
-        @skip_if_dependencies_missing(
-            ["requests", "nonexistent_package_zzz_123"], "mixed feature"
-        )
+        @skip_if_dependencies_missing(["requests", "nonexistent_package_zzz_123"], "mixed feature")
         def fn():
             raise AssertionError("should not run")
 

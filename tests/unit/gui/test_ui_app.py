@@ -12,6 +12,7 @@ def _check_flask():
     """Check if Flask is available."""
     try:
         import flask  # noqa: F401
+
         return True
     except ImportError:
         return False
@@ -141,7 +142,9 @@ class TestApiStartWorkflow:
         class MockGraph:
             def invoke(self, **kwargs):
                 r = dict(mock_result)
-                r["workflow_id"] = kwargs.get("config", {}).get("configurable", {}).get("thread_id", "mock123")
+                r["workflow_id"] = (
+                    kwargs.get("config", {}).get("configurable", {}).get("thread_id", "mock123")
+                )
                 return r
 
             def compile(self):
@@ -524,8 +527,14 @@ class TestApiBibliography:
                     "decisions_complete": True,
                     "improved_text": "Improved.",
                     "bibliography": [
-                        {"cite_key": "ref1", "type": "article", "title": "Test Article",
-                         "author": "Smith J", "journal": "Test Journal", "year": "2024"}
+                        {
+                            "cite_key": "ref1",
+                            "type": "article",
+                            "title": "Test Article",
+                            "author": "Smith J",
+                            "journal": "Test Journal",
+                            "year": "2024",
+                        }
                     ],
                     "output_complete": True,
                     "bibliography_format": "bibtex",

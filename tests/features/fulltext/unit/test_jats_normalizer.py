@@ -686,7 +686,10 @@ class TestMetadataNormalization:
 
     def test_orcid_url_stripped(self) -> None:
         """ORCID URL prefix is stripped."""
-        assert JATSNormalizer._normalize_orcid("https://orcid.org/0000-0002-1234-5678") == "0000-0002-1234-5678"
+        assert (
+            JATSNormalizer._normalize_orcid("https://orcid.org/0000-0002-1234-5678")
+            == "0000-0002-1234-5678"
+        )
 
     def test_journal_extracted(self) -> None:
         """Journal name is extracted."""

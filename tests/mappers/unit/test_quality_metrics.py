@@ -38,12 +38,16 @@ class TestCalculatePaperQualityScore:
         assert calculate_paper_quality_score(paper) == 0.6
 
     def test_all_bonuses(self):
-        paper = SimpleNamespace(doi="10.1234/test", pmid="12345", title="A Test Title", cited_by_count=5)
+        paper = SimpleNamespace(
+            doi="10.1234/test", pmid="12345", title="A Test Title", cited_by_count=5
+        )
         score = calculate_paper_quality_score(paper)
         assert score == pytest.approx(1.0)
 
     def test_capped_at_one_point_zero(self):
-        paper = SimpleNamespace(doi="10.1234/test", pmid="12345", title="A Test Title", cited_by_count=3)
+        paper = SimpleNamespace(
+            doi="10.1234/test", pmid="12345", title="A Test Title", cited_by_count=3
+        )
         score = calculate_paper_quality_score(paper)
         assert score == pytest.approx(1.0)
 
@@ -56,7 +60,9 @@ class TestCalculatePaperQualityScore:
         assert calculate_paper_quality_score(paper) == 0.5
 
     def test_cited_by_count_zero_no_bonus(self):
-        paper = SimpleNamespace(doi="10.1234/test", pmid="12345", title="A Title", cited_by_count=0)
+        paper = SimpleNamespace(
+            doi="10.1234/test", pmid="12345", title="A Title", cited_by_count=0
+        )
         assert calculate_paper_quality_score(paper) == pytest.approx(0.9)
 
 
@@ -68,7 +74,9 @@ class TestCalculateAuthorQualityScore:
         assert calculate_author_quality_score(author) == 0.5
 
     def test_orcid_bonus(self):
-        author = SimpleNamespace(orcid="0000-0001-2345-6789", affiliation_text=None, full_name=None)
+        author = SimpleNamespace(
+            orcid="0000-0001-2345-6789", affiliation_text=None, full_name=None
+        )
         assert calculate_author_quality_score(author) == 0.7
 
     def test_affiliation_text_bonus(self):
@@ -81,13 +89,17 @@ class TestCalculateAuthorQualityScore:
 
     def test_all_bonuses(self):
         author = SimpleNamespace(
-            orcid="0000-0001-2345-6789", affiliation_text="University of Test", full_name="John Doe"
+            orcid="0000-0001-2345-6789",
+            affiliation_text="University of Test",
+            full_name="John Doe",
         )
         assert calculate_author_quality_score(author) == 1.0
 
     def test_capped_at_one_point_zero(self):
         author = SimpleNamespace(
-            orcid="0000-0001-2345-6789", affiliation_text="University of Test", full_name="John Doe"
+            orcid="0000-0001-2345-6789",
+            affiliation_text="University of Test",
+            full_name="John Doe",
         )
         score = calculate_author_quality_score(author)
         assert score == 1.0
@@ -101,7 +113,9 @@ class TestCalculateAuthorQualityScore:
         assert calculate_author_quality_score(author) == 0.5
 
     def test_orcid_and_full_name_only(self):
-        author = SimpleNamespace(orcid="0000-0001-2345-6789", affiliation_text=None, full_name="Jane Doe")
+        author = SimpleNamespace(
+            orcid="0000-0001-2345-6789", affiliation_text=None, full_name="Jane Doe"
+        )
         assert calculate_author_quality_score(author) == pytest.approx(0.9)
 
 
@@ -133,11 +147,21 @@ class TestCalculateInstitutionQualityScore:
         assert calculate_institution_quality_score({"member_count": 0}) == 0.5
 
     def test_all_bonuses(self):
-        inst = {"country": "US", "type": "university", "name": "University of Testing", "member_count": 100}
+        inst = {
+            "country": "US",
+            "type": "university",
+            "name": "University of Testing",
+            "member_count": 100,
+        }
         assert calculate_institution_quality_score(inst) == pytest.approx(0.9)
 
     def test_capped_at_one_point_zero(self):
-        inst = {"country": "US", "type": "university", "name": "University of Testing", "member_count": 1}
+        inst = {
+            "country": "US",
+            "type": "university",
+            "name": "University of Testing",
+            "member_count": 1,
+        }
         score = calculate_institution_quality_score(inst)
         assert score == pytest.approx(0.9)
 

@@ -5,7 +5,6 @@ This module focuses on testing edge cases, error paths, and less common scenario
 to achieve higher test coverage for the parser module.
 """
 
-
 from unittest.mock import patch
 import xml.etree.ElementTree as ET
 
@@ -22,22 +21,22 @@ class TestEuropePMCParserCoverage:
     def test_parse_json_with_invalid_items_logs_error(self, caplog):
         """Test that parse_json logs errors for invalid items in result list."""
         invalid_json = {
-            'resultList': {
-                'result': [
-                    {'valid': 'yes'},
-                    'not_a_dict',
+            "resultList": {
+                "result": [
+                    {"valid": "yes"},
+                    "not_a_dict",
                     123,
-                    {'valid': 'also'},
+                    {"valid": "also"},
                 ]
             }
         }
-        with caplog.at_level('ERROR'):
+        with caplog.at_level("ERROR"):
             results = self.parser.parse_json(invalid_json)
         # Only valid dicts should be returned
-        assert results == [{'valid': 'yes'}, {'valid': 'also'}]
+        assert results == [{"valid": "yes"}, {"valid": "also"}]
         # Should log errors for invalid items
-        error_logs = [r for r in caplog.records if r.levelname == 'ERROR']
-        assert any('Result item parsing failed at index' in r.getMessage() for r in error_logs)
+        error_logs = [r for r in caplog.records if r.levelname == "ERROR"]
+        assert any("Result item parsing failed at index" in r.getMessage() for r in error_logs)
 
     def test_parse_xml_with_malformed_record_logs_error(self, caplog):
         """Test that parse_xml raises ParsingError for malformed record elements."""
@@ -66,6 +65,7 @@ class TestEuropePMCParserCoverage:
         with pytest.raises(ParsingError) as exc_info:
             self.parser.parse_dc(dc_content)
         assert exc_info.value.error_code == ErrorCodes.PARSE002
+
     """Additional test coverage for EuropePMCParser edge cases."""
 
     def setup_method(self):

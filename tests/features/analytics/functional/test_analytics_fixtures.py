@@ -12,7 +12,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("pandas"), reason="skipped due to missing pandas"
+)
 
 from pyeuropepmc.features.analytics.analytics import (
     citation_statistics,
@@ -32,7 +34,9 @@ class TestAnalyticsWithFixtures:
     @pytest.fixture
     def fixture_data(self):
         """Load test data from fixtures."""
-        fixture_path = Path(__file__).parent.parent.parent.parent / "fixtures" / "search_cancer.json"
+        fixture_path = (
+            Path(__file__).parent.parent.parent.parent / "fixtures" / "search_cancer.json"
+        )
         with open(fixture_path, encoding="utf-8") as f:
             data = json.load(f)
         return data["resultList"]["result"]
@@ -40,7 +44,11 @@ class TestAnalyticsWithFixtures:
     @pytest.fixture
     def large_fixture_data(self):
         """Load larger test dataset from fixtures."""
-        fixture_path = Path(__file__).parent.parent.parent.parent / "fixtures" / "search_1000results_cancer.json"
+        fixture_path = (
+            Path(__file__).parent.parent.parent.parent
+            / "fixtures"
+            / "search_1000results_cancer.json"
+        )
         with open(fixture_path, encoding="utf-8") as f:
             data = json.load(f)
         return data["resultList"]["result"]
@@ -61,8 +69,8 @@ class TestAnalyticsWithFixtures:
         year_dist = publication_year_distribution(df)
 
         # publication_year_distribution returns a pandas Series
-        assert hasattr(year_dist, 'index')  # pandas Series has index
-        assert hasattr(year_dist, 'values')  # pandas Series has values
+        assert hasattr(year_dist, "index")  # pandas Series has index
+        assert hasattr(year_dist, "values")  # pandas Series has values
         assert len(year_dist) > 0
 
         # Check that years are reasonable (not in future, not too old)
@@ -77,13 +85,15 @@ class TestAnalyticsWithFixtures:
         journal_dist = journal_distribution(df)
 
         # journal_distribution returns a pandas Series
-        assert hasattr(journal_dist, 'index')  # pandas Series has index
-        assert hasattr(journal_dist, 'values')  # pandas Series has values
+        assert hasattr(journal_dist, "index")  # pandas Series has index
+        assert hasattr(journal_dist, "values")  # pandas Series has values
         assert len(journal_dist) > 0
 
         # Check that we have some expected journals
         journal_names = [j.lower() for j in journal_dist.index]
-        assert any("cancer" in name or "medicine" in name or "nature" in name for name in journal_names)
+        assert any(
+            "cancer" in name or "medicine" in name or "nature" in name for name in journal_names
+        )
 
     def test_publication_type_distribution_with_fixtures(self, fixture_data):
         """Test publication type distribution with fixture data."""
@@ -91,8 +101,8 @@ class TestAnalyticsWithFixtures:
         type_dist = publication_type_distribution(df)
 
         # publication_type_distribution returns a pandas Series
-        assert hasattr(type_dist, 'index')  # pandas Series has index
-        assert hasattr(type_dist, 'values')  # pandas Series has values
+        assert hasattr(type_dist, "index")  # pandas Series has index
+        assert hasattr(type_dist, "values")  # pandas Series has values
         # May be empty if fixture data doesn't have pubTypeList
         if len(type_dist) > 0:
             assert all(count > 0 for count in type_dist.values)
@@ -103,7 +113,14 @@ class TestAnalyticsWithFixtures:
         stats = citation_statistics(df)
 
         assert isinstance(stats, dict)
-        expected_keys = ["total_papers", "mean_citations", "median_citations", "min_citations", "max_citations", "total_citations"]
+        expected_keys = [
+            "total_papers",
+            "mean_citations",
+            "median_citations",
+            "min_citations",
+            "max_citations",
+            "total_citations",
+        ]
         for key in expected_keys:
             assert key in stats
 
@@ -156,8 +173,8 @@ class TestAnalyticsWithFixtures:
         quality = quality_metrics(df)
 
         # Verify all results are valid
-        assert hasattr(year_dist, 'index') and len(year_dist) > 0
-        assert hasattr(journal_dist, 'index') and len(journal_dist) > 0
-        assert hasattr(type_dist, 'index') and len(type_dist) > 0
+        assert hasattr(year_dist, "index") and len(year_dist) > 0
+        assert hasattr(journal_dist, "index") and len(journal_dist) > 0
+        assert hasattr(type_dist, "index") and len(type_dist) > 0
         assert isinstance(citation_stats, dict) and len(citation_stats) > 0
         assert isinstance(quality, dict) and len(quality) > 0

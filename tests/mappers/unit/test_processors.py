@@ -52,6 +52,7 @@ from pyeuropepmc.models.table import TableEntity
 # _convert_search_author_to_entity
 # =============================================================================
 
+
 class TestConvertSearchAuthorToEntity:
     """Tests for _convert_search_author_to_entity."""
 
@@ -68,9 +69,7 @@ class TestConvertSearchAuthorToEntity:
             "lastName": "Smith",
             "initials": "J",
             "authorAffiliationDetailsList": {
-                "authorAffiliation": [
-                    {"affiliation": "University of Testing, City"}
-                ]
+                "authorAffiliation": [{"affiliation": "University of Testing, City"}]
             },
         }
 
@@ -189,9 +188,7 @@ class TestConvertSearchAuthorToEntity:
 
         author_dict = {
             "fullName": "Test",
-            "authorAffiliationDetailsList": {
-                "authorAffiliation": [{"other": "data"}]
-            },
+            "authorAffiliationDetailsList": {"authorAffiliation": [{"other": "data"}]},
         }
 
         entity = _convert_search_author_to_entity(author_dict)
@@ -205,9 +202,7 @@ class TestConvertSearchAuthorToEntity:
 
         author_dict = {
             "fullName": "Test",
-            "authorAffiliationDetailsList": {
-                "authorAffiliation": "single_string"
-            },
+            "authorAffiliationDetailsList": {"authorAffiliation": "single_string"},
         }
 
         entity = _convert_search_author_to_entity(author_dict)
@@ -242,9 +237,7 @@ class TestConvertSearchAuthorToEntity:
 
         author_dict = {
             "fullName": "Test",
-            "authorAffiliationDetailsList": {
-                "authorAffiliation": [{"affiliation": "Some Dept"}]
-            },
+            "authorAffiliationDetailsList": {"authorAffiliation": [{"affiliation": "Some Dept"}]},
         }
 
         entity = _convert_search_author_to_entity(author_dict)
@@ -255,6 +248,7 @@ class TestConvertSearchAuthorToEntity:
 # =============================================================================
 # _convert_search_author_simple
 # =============================================================================
+
 
 class TestConvertSearchAuthorSimple:
     """Tests for _convert_search_author_simple."""
@@ -324,6 +318,7 @@ class TestConvertSearchAuthorSimple:
 # _parse_author_string_to_authors
 # =============================================================================
 
+
 class TestParseAuthorStringToAuthors:
     """Tests for _parse_author_string_to_authors."""
 
@@ -387,6 +382,7 @@ class TestParseAuthorStringToAuthors:
 # _extract_mesh_terms
 # =============================================================================
 
+
 class TestExtractMeshTerms:
     """Tests for _extract_mesh_terms."""
 
@@ -415,9 +411,7 @@ class TestExtractMeshTerms:
     def test_missing_descriptor_name(self):
         """Test heading without descriptorName."""
         result = {
-            "meshHeadingList": {
-                "meshHeading": [{"descriptorName": "Humans"}, {"other": "data"}]
-            }
+            "meshHeadingList": {"meshHeading": [{"descriptorName": "Humans"}, {"other": "data"}]}
         }
         terms = _extract_mesh_terms(result)
         assert terms == ["Humans"]
@@ -431,6 +425,7 @@ class TestExtractMeshTerms:
 # =============================================================================
 # _extract_mesh_headings
 # =============================================================================
+
 
 class TestExtractMeshHeadings:
     """Tests for _extract_mesh_headings."""
@@ -519,6 +514,7 @@ class TestExtractMeshHeadings:
 # _extract_authors_from_search_result
 # =============================================================================
 
+
 class TestExtractAuthorsFromSearchResult:
     """Tests for _extract_authors_from_search_result."""
 
@@ -549,9 +545,7 @@ class TestExtractAuthorsFromSearchResult:
     def test_author_list_precedence(self):
         """Test authorList takes precedence over authors."""
         result = {
-            "authorList": {
-                "author": [{"fullName": "From AuthorList"}]
-            },
+            "authorList": {"author": [{"fullName": "From AuthorList"}]},
             "authors": [{"fullName": "From Authors"}],
         }
         authors = _extract_authors_from_search_result(result)
@@ -600,6 +594,7 @@ class TestExtractAuthorsFromSearchResult:
 # =============================================================================
 # _create_paper_entity_from_search_result
 # =============================================================================
+
 
 class TestCreatePaperEntityFromSearchResult:
     """Tests for _create_paper_entity_from_search_result."""
@@ -652,6 +647,7 @@ class TestCreatePaperEntityFromSearchResult:
 # _process_single_search_result
 # =============================================================================
 
+
 class TestProcessSingleSearchResult:
     """Tests for _process_single_search_result."""
 
@@ -662,12 +658,8 @@ class TestProcessSingleSearchResult:
             "title": "Test Paper",
             "journalTitle": "Test Journal",
             "pubYear": 2024,
-            "authorList": {
-                "author": [{"fullName": "Smith J"}]
-            },
-            "meshHeadingList": {
-                "meshHeading": [{"descriptorName": "Humans"}]
-            },
+            "authorList": {"author": [{"fullName": "Smith J"}]},
+            "meshHeadingList": {"meshHeading": [{"descriptorName": "Humans"}]},
         }
         entities_data = _process_single_search_result(result)
         assert len(entities_data) == 2  # paper + 1 author
@@ -717,6 +709,7 @@ class TestProcessSingleSearchResult:
 # =============================================================================
 # process_search_results
 # =============================================================================
+
 
 class TestProcessSearchResults:
     """Tests for process_search_results."""
@@ -768,6 +761,7 @@ class TestProcessSearchResults:
 # process_xml_data
 # =============================================================================
 
+
 class TestProcessXmlData:
     """Tests for process_xml_data."""
 
@@ -809,6 +803,7 @@ class TestProcessXmlData:
 # =============================================================================
 # process_enrichment_data
 # =============================================================================
+
 
 class TestProcessEnrichmentData:
     """Tests for process_enrichment_data."""
@@ -875,12 +870,14 @@ class TestProcessEnrichmentData:
 # process_annotations_data
 # =============================================================================
 
+
 class TestProcessAnnotationsData:
     """Tests for process_annotations_data."""
 
     def _get_patches(self):
         """Get the real modules for patching (shadowed by __init__.py)."""
         import sys as _sys
+
         _ann_mod = _sys.modules["pyeuropepmc.features.literature.annotations_to_rdf"]
         _par_mod = _sys.modules["pyeuropepmc.features.fulltext.annotation_parser"]
         return (
@@ -961,6 +958,7 @@ class TestProcessAnnotationsData:
 # _create_journal_entity
 # =============================================================================
 
+
 class TestCreateJournalEntity:
     """Tests for _create_journal_entity."""
 
@@ -984,15 +982,17 @@ class TestCreateJournalEntity:
 
     def test_dict_with_extra_fields(self):
         """Test dict with all optional fields."""
-        journal = _create_journal_entity({
-            "title": "Test Journal",
-            "issn": "1234-5678",
-            "issn_electronic": "8765-4321",
-            "nlm_ta": "Test J",
-            "iso_abbrev": "Test J",
-            "publisher": "Test Pub",
-            "country": "US",
-        })
+        journal = _create_journal_entity(
+            {
+                "title": "Test Journal",
+                "issn": "1234-5678",
+                "issn_electronic": "8765-4321",
+                "nlm_ta": "Test J",
+                "iso_abbrev": "Test J",
+                "publisher": "Test Pub",
+                "country": "US",
+            }
+        )
         assert journal.title == "Test Journal"
         assert journal.issn == "1234-5678"
         assert journal.essn == "8765-4321"
@@ -1021,6 +1021,7 @@ class TestCreateJournalEntity:
 # =============================================================================
 # _create_paper_entity
 # =============================================================================
+
 
 class TestCreatePaperEntity:
     """Tests for _create_paper_entity."""
@@ -1090,6 +1091,7 @@ class TestCreatePaperEntity:
 # _extract_author_full_name
 # =============================================================================
 
+
 class TestExtractAuthorFullName:
     """Tests for _extract_author_full_name."""
 
@@ -1130,21 +1132,25 @@ class TestExtractAuthorFullName:
 
     def test_all_keys_full_name_takes_precedence(self):
         """Test full_name takes precedence over other keys."""
-        name = _extract_author_full_name({
-            "full_name": "Priority",
-            "name": "Fallback",
-            "given_names": "John",
-            "surname": "Smith",
-        })
+        name = _extract_author_full_name(
+            {
+                "full_name": "Priority",
+                "name": "Fallback",
+                "given_names": "John",
+                "surname": "Smith",
+            }
+        )
         assert name == "Priority"
 
     def test_name_takes_precedence_over_given_surname(self):
         """Test 'name' takes precedence over given+surname."""
-        name = _extract_author_full_name({
-            "name": "Name Only",
-            "given_names": "John",
-            "surname": "Smith",
-        })
+        name = _extract_author_full_name(
+            {
+                "name": "Name Only",
+                "given_names": "John",
+                "surname": "Smith",
+            }
+        )
         assert name == "Name Only"
 
 
@@ -1152,21 +1158,18 @@ class TestExtractAuthorFullName:
 # _resolve_affiliation_text
 # =============================================================================
 
+
 class TestResolveAffiliationText:
     """Tests for _resolve_affiliation_text."""
 
     def test_direct_affiliation(self):
         """Test direct affiliation text."""
-        result = _resolve_affiliation_text(
-            {"affiliation": "University of Testing"}, None
-        )
+        result = _resolve_affiliation_text({"affiliation": "University of Testing"}, None)
         assert result == "University of Testing"
 
     def test_affiliation_empty_refs_no_lookup(self):
         """Test empty affiliation with no refs and no lookup."""
-        result = _resolve_affiliation_text(
-            {"affiliation": "", "affiliation_refs": []}, None
-        )
+        result = _resolve_affiliation_text({"affiliation": "", "affiliation_refs": []}, None)
         assert result == ""
 
     def test_affiliation_refs_with_lookup(self):
@@ -1187,16 +1190,12 @@ class TestResolveAffiliationText:
 
     def test_affiliation_refs_no_lookup(self):
         """Test refs without lookup (falls back to raw refs)."""
-        result = _resolve_affiliation_text(
-            {"affiliation_refs": ["ref1", "ref2"]}, None
-        )
+        result = _resolve_affiliation_text({"affiliation_refs": ["ref1", "ref2"]}, None)
         assert result == "ref1, ref2"
 
     def test_affiliation_refs_empty_lookup(self):
         """Test refs with empty lookup (empty dict is falsy, returns raw refs)."""
-        result = _resolve_affiliation_text(
-            {"affiliation_refs": ["ref1"]}, {}
-        )
+        result = _resolve_affiliation_text({"affiliation_refs": ["ref1"]}, {})
         assert result == "ref1"
 
     def test_affiliation_text_takes_precedence(self):
@@ -1212,6 +1211,7 @@ class TestResolveAffiliationText:
 # _resolve_author_institutions
 # =============================================================================
 
+
 class TestResolveAuthorInstitutions:
     """Tests for _resolve_author_institutions."""
 
@@ -1221,25 +1221,19 @@ class TestResolveAuthorInstitutions:
         inst_b = InstitutionEntity(display_name="Univ B")
         mapping = {"ref1": inst_a, "ref2": inst_b}
 
-        result = _resolve_author_institutions(
-            {"affiliation_refs": ["ref1", "ref2"]}, mapping
-        )
+        result = _resolve_author_institutions({"affiliation_refs": ["ref1", "ref2"]}, mapping)
         assert len(result) == 2
         assert result[0].display_name == "Univ A"
         assert result[1].display_name == "Univ B"
 
     def test_no_mapping(self):
         """Test with no mapping (None)."""
-        result = _resolve_author_institutions(
-            {"affiliation_refs": ["ref1"]}, None
-        )
+        result = _resolve_author_institutions({"affiliation_refs": ["ref1"]}, None)
         assert result == []
 
     def test_empty_mapping(self):
         """Test with empty dict mapping."""
-        result = _resolve_author_institutions(
-            {"affiliation_refs": ["ref1"]}, {}
-        )
+        result = _resolve_author_institutions({"affiliation_refs": ["ref1"]}, {})
         assert result == []
 
     def test_partial_mapping(self):
@@ -1262,12 +1256,15 @@ class TestResolveAuthorInstitutions:
 # _create_author_entities
 # =============================================================================
 
+
 class TestCreateAuthorEntities:
     """Tests for _create_author_entities."""
 
     def test_dict_author(self):
         """Test dict-based author."""
-        result = _create_author_entities([{"full_name": "John Smith", "orcid": "0000-0002-1825-0097"}])
+        result = _create_author_entities(
+            [{"full_name": "John Smith", "orcid": "0000-0002-1825-0097"}]
+        )
         assert len(result) == 1
         assert result[0].full_name == "John Smith"
         assert result[0].orcid == "0000-0002-1825-0097"
@@ -1322,6 +1319,7 @@ class TestCreateAuthorEntities:
 # =============================================================================
 # _create_reference_entities
 # =============================================================================
+
 
 class TestCreateReferenceEntities:
     """Tests for _create_reference_entities."""
@@ -1388,6 +1386,7 @@ class TestCreateReferenceEntities:
 # =============================================================================
 # _create_institution_entities
 # =============================================================================
+
 
 class TestCreateInstitutionEntities:
     """Tests for _create_institution_entities."""
@@ -1487,6 +1486,7 @@ class TestCreateInstitutionEntities:
 # _create_grant_entities
 # =============================================================================
 
+
 class TestCreateGrantEntities:
     """Tests for _create_grant_entities."""
 
@@ -1578,6 +1578,7 @@ class TestCreateGrantEntities:
 # _create_section_entities
 # =============================================================================
 
+
 class TestCreateSectionEntities:
     """Tests for _create_section_entities."""
 
@@ -1630,6 +1631,7 @@ class TestCreateSectionEntities:
 # _create_table_entities
 # =============================================================================
 
+
 class TestCreateTableEntities:
     """Tests for _create_table_entities."""
 
@@ -1675,6 +1677,7 @@ class TestCreateTableEntities:
 # _create_figure_entities
 # =============================================================================
 
+
 class TestCreateFigureEntities:
     """Tests for _create_figure_entities."""
 
@@ -1718,6 +1721,7 @@ class TestCreateFigureEntities:
 # _extract_entities_from_xml
 # =============================================================================
 
+
 class TestExtractEntitiesFromXml:
     """Tests for _extract_entities_from_xml."""
 
@@ -1739,9 +1743,7 @@ class TestExtractEntitiesFromXml:
                     "country": "US",
                 }
             ],
-            "references": [
-                {"title": "Ref 1", "source": "Journal", "year": "2023"}
-            ],
+            "references": [{"title": "Ref 1", "source": "Journal", "year": "2023"}],
             "sections": [{"title": "Intro", "content": "Text"}],
             "tables": [{"label": "T1", "caption": "Data"}],
             "figures": [{"label": "F1", "caption": "Plot"}],
@@ -1877,6 +1879,7 @@ class TestExtractEntitiesFromXml:
 # _determine_enrichment_data_structure
 # =============================================================================
 
+
 class TestDetermineEnrichmentDataStructure:
     """Tests for _determine_enrichment_data_structure."""
 
@@ -1933,6 +1936,7 @@ class TestDetermineEnrichmentDataStructure:
 # =============================================================================
 # _create_enrichment_paper_entity
 # =============================================================================
+
 
 class TestCreateEnrichmentPaperEntity:
     """Tests for _create_enrichment_paper_entity."""
@@ -2010,14 +2014,15 @@ class TestCreateEnrichmentPaperEntity:
 # _create_enrichment_author_entities
 # =============================================================================
 
+
 class TestCreateEnrichmentAuthorEntities:
     """Tests for _create_enrichment_author_entities."""
 
     def test_dict_author(self):
         """Test dict-based author."""
-        result = _create_enrichment_author_entities([
-            {"name": "John Smith", "orcid": "0000-0002-1825-0097", "affiliation": "Univ A"}
-        ])
+        result = _create_enrichment_author_entities(
+            [{"name": "John Smith", "orcid": "0000-0002-1825-0097", "affiliation": "Univ A"}]
+        )
         assert len(result) == 1
         assert result[0].full_name == "John Smith"
         assert result[0].orcid == "0000-0002-1825-0097"
@@ -2025,9 +2030,7 @@ class TestCreateEnrichmentAuthorEntities:
 
     def test_dict_with_full_name(self):
         """Test dict with full_name key."""
-        result = _create_enrichment_author_entities([
-            {"full_name": "Jane Doe"}
-        ])
+        result = _create_enrichment_author_entities([{"full_name": "Jane Doe"}])
         assert result[0].full_name == "Jane Doe"
 
     def test_string_author(self):
@@ -2060,6 +2063,7 @@ class TestCreateEnrichmentAuthorEntities:
 # =============================================================================
 # _extract_entities_from_enrichment
 # =============================================================================
+
 
 class TestExtractEntitiesFromEnrichment:
     """Tests for _extract_entities_from_enrichment."""

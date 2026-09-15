@@ -6,7 +6,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("semanticscholar"), reason="skipped due to missing semanticscholar"
+)
 
 from pyeuropepmc.features.enrich.sources.semantic_scholar import SemanticScholarClient
 
@@ -34,9 +36,7 @@ class TestSemanticScholarRecommendations:
         """POST endpoint sends positive and negative IDs and parses recommendations."""
         client = SemanticScholarClient(rate_limit_delay=0)
         client._pro_client = MagicMock()
-        client._pro_client.get_recommendations_from_lists.return_value = [
-            {"paperId": "p3"}
-        ]
+        client._pro_client.get_recommendations_from_lists.return_value = [{"paperId": "p3"}]
 
         recommendations = client.get_recommendations_for_papers(
             positive_paper_ids=["649def34f8be52c8b66281af98ae884c09aef38b"],

@@ -1,4 +1,5 @@
 """Tests for geographic validation utilities."""
+
 import pytest
 
 from pyeuropepmc.features.fulltext.utils.geo_validators import (
@@ -96,9 +97,7 @@ class TestIsLikelyCountry:
 
     def test_with_clean_function(self):
         """Test with custom clean function."""
-        result = GeoValidator.is_likely_country(
-            "USA.", clean_country_fn=lambda s: s.strip(".")
-        )
+        result = GeoValidator.is_likely_country("USA.", clean_country_fn=lambda s: s.strip("."))
         assert result
 
     def test_empty_string(self):

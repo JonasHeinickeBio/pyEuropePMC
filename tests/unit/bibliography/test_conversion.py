@@ -1,6 +1,11 @@
 import pytest
 from pyeuropepmc.features.bibliography.conversion import CitationConverter
-from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary, Reference, CitationFormat
+from pyeuropepmc.features.bibliography.models import (
+    BibEntry,
+    BibLibrary,
+    Reference,
+    CitationFormat,
+)
 
 
 @pytest.fixture
@@ -44,7 +49,9 @@ class TestCitationConverterToRis:
         assert "ER  - " in ris
 
     def test_to_ris_from_reference(self, converter):
-        ref = Reference(title="Ref Article", authors=["Lee, K"], year=2023, journal="J", doi="10.1/z")
+        ref = Reference(
+            title="Ref Article", authors=["Lee, K"], year=2023, journal="J", doi="10.1/z"
+        )
         ris = converter.to_ris(ref)
         assert "TI  - Ref Article" in ris
         assert "AU  - Lee, K" in ris
@@ -92,7 +99,10 @@ class TestCitationConverterDetectFormat:
         assert converter.detect_format("TY  - JOUR\nTI  - Test\nER  - ") == CitationFormat.RIS
 
     def test_detect_csl_json(self, converter):
-        assert converter.detect_format('{"title": "Test", "type": "article-journal"}') == CitationFormat.CSL_JSON
+        assert (
+            converter.detect_format('{"title": "Test", "type": "article-journal"}')
+            == CitationFormat.CSL_JSON
+        )
 
 
 class TestCitationConverterConvert:

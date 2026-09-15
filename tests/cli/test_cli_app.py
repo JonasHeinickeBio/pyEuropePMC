@@ -11,7 +11,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("typer"), reason="skipped due to missing typer")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("typer"), reason="skipped due to missing typer"
+)
 
 from typer.testing import CliRunner
 

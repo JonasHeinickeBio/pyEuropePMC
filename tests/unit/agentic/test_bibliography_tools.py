@@ -11,7 +11,7 @@ from pyeuropepmc.agentic.bibliography_tools import (
 from pyeuropepmc.agentic.registry import ToolRegistry
 
 
-SAMPLE_BIBTEX = '@article{key2024, title = {Hello}, author = {Smith, John}, year = {2024}}'
+SAMPLE_BIBTEX = "@article{key2024, title = {Hello}, author = {Smith, John}, year = {2024}}"
 
 
 class TestBibliographyRegistry:
@@ -21,12 +21,20 @@ class TestBibliographyRegistry:
     def test_registry_contains_expected_tools(self):
         names = {t.name for t in bibliography_registry.list_all()}
         expected = {
-            "bib_parse_string", "bib_parse_file", "bib_write_string", "bib_write_file",
-            "bib_validate", "bib_merge",
-            "ref_resolve_doi", "ref_resolve_pmid", "ref_resolve_arxiv",
-            "convert_to_ris", "convert_to_csl",
+            "bib_parse_string",
+            "bib_parse_file",
+            "bib_write_string",
+            "bib_write_file",
+            "bib_validate",
+            "bib_merge",
+            "ref_resolve_doi",
+            "ref_resolve_pmid",
+            "ref_resolve_arxiv",
+            "convert_to_ris",
+            "convert_to_csl",
             "bib_is_bibtex",
-            "zotero_list_collections", "zotero_export_collection",
+            "zotero_list_collections",
+            "zotero_export_collection",
         }
         assert names.issuperset(expected)
 
@@ -42,7 +50,9 @@ class TestBibliographyRegistry:
         assert "error" in result or result["entries_count"] == 0
 
     def test_bib_validate_tool(self):
-        result = bib_validate({"entries": [{"entry_type": "article", "citation_key": "k", "fields": {}}]})
+        result = bib_validate(
+            {"entries": [{"entry_type": "article", "citation_key": "k", "fields": {}}]}
+        )
         assert result["issues_count"] >= 1
 
     def test_bib_is_bibtex_tool(self):

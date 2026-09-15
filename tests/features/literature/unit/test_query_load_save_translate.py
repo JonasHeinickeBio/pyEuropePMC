@@ -83,9 +83,7 @@ class TestQueryBuilderFromFile:
     def test_from_file_standard_format(self) -> None:
         """Test loading a query from a standard JSON file."""
         # Create a temporary JSON file
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             search_data = {
                 "search_string": "cancer AND treatment",
                 "platform": "pubmed",
@@ -120,9 +118,7 @@ class TestQueryBuilderFromFile:
 
     def test_from_file_with_validate(self) -> None:
         """Test loading from file with validation enabled."""
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             search_data = {
                 "search_string": "cancer AND treatment",
                 "platform": "pubmed",
@@ -149,9 +145,7 @@ class TestQueryBuilderSave:
         qb = QueryBuilder()
         query = qb.keyword("cancer").and_().keyword("treatment")
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -187,9 +181,7 @@ class TestQueryBuilderSave:
         database = ["PubMed", "PMC", "Europe PMC"]
         record_info = {"project": "Cancer Research Review"}
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -219,9 +211,7 @@ class TestQueryBuilderSave:
         qb = QueryBuilder()
         query = qb.keyword("cancer").and_().keyword("treatment")
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -410,9 +400,7 @@ class TestIntegrationLoadSaveTranslate:
         qb1 = QueryBuilder()
         query = qb1.keyword("cancer").and_().keyword("treatment")
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path = tmp_file.name
 
         try:
@@ -430,9 +418,7 @@ class TestIntegrationLoadSaveTranslate:
     def test_load_translate_save(self) -> None:
         """Test loading, translating, and saving a query."""
         # Create initial query file
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             search_data = {
                 "search_string": "cancer[ti]",
                 "platform": "pubmed",
@@ -444,9 +430,7 @@ class TestIntegrationLoadSaveTranslate:
             json.dump(search_data, tmp_file)
             tmp_path1 = tmp_file.name
 
-        with tempfile.NamedTemporaryFile(
-            mode="w", suffix=".json", delete=False
-        ) as tmp_file:
+        with tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False) as tmp_file:
             tmp_path2 = tmp_file.name
 
         try:
@@ -485,7 +469,10 @@ class TestSearchQueryNotAvailable:
         with pytest.raises(QueryBuilderError, match="search-query package is required"):
             QueryBuilder.from_string("cancer", platform="pubmed")
 
-    @patch("search_query.search_file.load_search_file", side_effect=ImportError("No module named 'search_query'"))
+    @patch(
+        "search_query.search_file.load_search_file",
+        side_effect=ImportError("No module named 'search_query'"),
+    )
     def test_from_file_raises_import_error(self, mock_load) -> None:
         """Test that from_file raises ImportError when package not available."""
         with pytest.raises(QueryBuilderError, match="search-query package is required"):

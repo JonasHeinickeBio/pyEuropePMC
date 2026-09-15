@@ -39,9 +39,7 @@ class TestAnnotationEntity:
 
     def test_annotation_entity_to_dict(self):
         """Test converting annotation entity to dictionary."""
-        annotation = AnnotationEntity(
-            exact="malaria", section="abstract", provider="Europe PMC"
-        )
+        annotation = AnnotationEntity(exact="malaria", section="abstract", provider="Europe PMC")
         data = annotation.to_dict()
         assert data["exact"] == "malaria"
         assert data["section"] == "abstract"
@@ -121,16 +119,12 @@ class TestRelationshipAnnotation:
         valid_rel.validate()  # Should not raise
 
         # Missing subject
-        invalid_rel = RelationshipAnnotation(
-            exact="test", object_id="DOID:162", section="body"
-        )
+        invalid_rel = RelationshipAnnotation(exact="test", object_id="DOID:162", section="body")
         with pytest.raises(ValueError, match="must have subject_id or subject_name"):
             invalid_rel.validate()
 
         # Missing object
-        invalid_rel2 = RelationshipAnnotation(
-            exact="test", subject_id="GENE:7157", section="body"
-        )
+        invalid_rel2 = RelationshipAnnotation(exact="test", subject_id="GENE:7157", section="body")
         with pytest.raises(ValueError, match="must have object_id or object_name"):
             invalid_rel2.validate()
 

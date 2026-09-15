@@ -293,14 +293,7 @@ class TestLogicalOperators:
     def test_complex_boolean_query(self) -> None:
         """Test complex query with multiple operators."""
         qb = QueryBuilder(validate=False)
-        query = (
-            qb.keyword("cancer")
-            .or_()
-            .keyword("tumor")
-            .and_()
-            .keyword("treatment")
-            .build()
-        )
+        query = qb.keyword("cancer").or_().keyword("tumor").and_().keyword("treatment").build()
         assert "cancer OR tumor AND treatment" in query
 
     def test_and_at_start_raises_error(self) -> None:
@@ -710,9 +703,7 @@ class TestFieldValidation:
         response.json.return_value = payload
         response.headers = {"content-type": "application/json"}
 
-        with patch(
-            "pyeuropepmc.core.base.BaseAPIClient._get", return_value=response
-        ):
+        with patch("pyeuropepmc.core.base.BaseAPIClient._get", return_value=response):
             yield
 
     @pytest.mark.unit
@@ -860,6 +851,4 @@ class TestFieldValidation:
         ]
 
         for full, abbr in aliases:
-            assert (
-                full in fields or abbr in fields
-            ), f"Neither '{full}' nor '{abbr}' in FieldType"
+            assert full in fields or abbr in fields, f"Neither '{full}' nor '{abbr}' in FieldType"

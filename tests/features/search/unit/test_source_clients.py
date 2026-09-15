@@ -717,7 +717,11 @@ class TestUnifiedSearch:
         """Test that successful source search records time."""
         mock_client = MagicMock()
         mock_client.search.return_value = [_make_result("pubmed", "1", "10.1/abc", "Paper")]
-        mock_get_clients.return_value = {"pubmed": mock_client, "arxiv": None, "semantic_scholar": None}
+        mock_get_clients.return_value = {
+            "pubmed": mock_client,
+            "arxiv": None,
+            "semantic_scholar": None,
+        }
 
         us = UnifiedSearch(sources=["pubmed"])
         _, report = us.search("test")
@@ -808,7 +812,11 @@ class TestUnifiedSearch:
         """Test that additional kwargs are passed to source client search."""
         mock_client = MagicMock()
         mock_client.search.return_value = [_make_result("pubmed", "1", "10.1/abc", "Paper")]
-        mock_get_clients.return_value = {"pubmed": mock_client, "arxiv": None, "semantic_scholar": None}
+        mock_get_clients.return_value = {
+            "pubmed": mock_client,
+            "arxiv": None,
+            "semantic_scholar": None,
+        }
 
         us = UnifiedSearch(sources=["pubmed"])
         us.search("test", sort="citation", custom_param="value")

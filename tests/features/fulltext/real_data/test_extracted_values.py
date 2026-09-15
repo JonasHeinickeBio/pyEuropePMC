@@ -74,7 +74,9 @@ class TestAuthors:
             for c in sub.findall(".//contrib")
             if c.find(".//surname") is not None
         }
-        expected = {normalise(c.findtext(".//surname")) for c in _expected_author_contribs(document)}
+        expected = {
+            normalise(c.findtext(".//surname")) for c in _expected_author_contribs(document)
+        }
         only_reviewers = reviewers - expected
         if not only_reviewers:
             pytest.skip(f"{document.pmcid} has no reviewer-only surnames to confuse")
@@ -83,7 +85,9 @@ class TestAuthors:
 
     def test_orcids_are_bare_identifiers(self, document):
         """Not the https://orcid.org/... URL the XML carries."""
-        found = [a.get("orcid") for a in document.parser.extract_authors_detailed() if a.get("orcid")]
+        found = [
+            a.get("orcid") for a in document.parser.extract_authors_detailed() if a.get("orcid")
+        ]
         if not found:
             pytest.skip(f"{document.pmcid} has no ORCIDs")
         assert all(ORCID.match(o.strip()) for o in found), found
@@ -116,7 +120,11 @@ class TestReferences:
                 continue
             expected = normalise("".join(article_title.itertext())).rstrip(".").lower()
             match = next(
-                (r for r in document.parser.extract_references() if r.get("id") == ref_elem.get("id")),
+                (
+                    r
+                    for r in document.parser.extract_references()
+                    if r.get("id") == ref_elem.get("id")
+                ),
                 None,
             )
             if match is None:

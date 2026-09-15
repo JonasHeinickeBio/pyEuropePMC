@@ -1,4 +1,5 @@
 """Tests for the AffiliationParser."""
+
 import pytest
 from xml.etree import ElementTree as ET
 

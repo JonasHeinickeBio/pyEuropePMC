@@ -4,7 +4,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+)
 
 from rdflib import Graph, URIRef
 
@@ -66,7 +68,9 @@ class TestRDFUtils:
 
     def test_generate_entity_uri_institution_ror(self):
         """Test URI generation for institution with ROR."""
-        institution = InstitutionEntity(display_name="Test University", ror_id="https://ror.org/123456")
+        institution = InstitutionEntity(
+            display_name="Test University", ror_id="https://ror.org/123456"
+        )
 
         uri = generate_entity_uri(institution)
         assert str(uri) == "https://ror.org/123456"
@@ -132,7 +136,9 @@ class TestRDFUtils:
                 return URIRef("http://purl.obolibrary.org/obo/RO_0000053")
             return URIRef(f"http://example.org/{pred_str}")
 
-        paper = PaperEntity(keywords=["COVID-19", "SARS-CoV-2"], doi="10.1234/test", pmcid="PMC123456")
+        paper = PaperEntity(
+            keywords=["COVID-19", "SARS-CoV-2"], doi="10.1234/test", pmcid="PMC123456"
+        )
 
         map_ontology_alignments(g, subject, paper, resolve_predicate)
 
@@ -170,7 +176,9 @@ class TestRDFUtils:
                 return URIRef("http://www.w3.org/2002/07/owl#sameAs")
             return URIRef(f"http://example.org/{pred_str}")
 
-        author = AuthorEntity(orcid="0000-0001-2345-6789", openalex_id="https://openalex.org/A123456")
+        author = AuthorEntity(
+            orcid="0000-0001-2345-6789", openalex_id="https://openalex.org/A123456"
+        )
 
         add_external_identifiers(g, subject, author, resolve_predicate)
 
@@ -191,7 +199,7 @@ class TestRDFUtils:
         institution = InstitutionEntity(
             ror_id="https://ror.org/123456",
             openalex_id="https://openalex.org/I123456",
-            wikidata_id="Q123456"
+            wikidata_id="Q123456",
         )
 
         add_external_identifiers(g, subject, institution, resolve_predicate)

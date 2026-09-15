@@ -133,10 +133,7 @@ def get_article_id_from_file(filepath: Path) -> str:
 
 
 @pytest.fixture(
-    params=[
-        (str(p), load_real_xml(p), get_article_id_from_file(p))
-        for p in REAL_XML_FILES
-    ]
+    params=[(str(p), load_real_xml(p), get_article_id_from_file(p)) for p in REAL_XML_FILES]
     + [("synthetic", SIMPLE_XML, "PMC9999999")],
     ids=[p.stem for p in REAL_XML_FILES] + ["synthetic"],
 )
@@ -183,9 +180,17 @@ class TestFunctionalRealXML:
                 assert "type" in block, f"{label}: block missing type"
                 # Verify known types
                 assert block["type"] in (
-                    "paragraph", "heading", "list", "formula",
-                    "figure", "table", "code", "boxed_text",
-                    "figure_ref", "table_ref", "mathml",
+                    "paragraph",
+                    "heading",
+                    "list",
+                    "formula",
+                    "figure",
+                    "table",
+                    "code",
+                    "boxed_text",
+                    "figure_ref",
+                    "table_ref",
+                    "mathml",
                     "unknown_block",
                 ), f"{label}: unknown block type: {block['type']}"
 
@@ -227,11 +232,9 @@ class TestFunctionalRealXML:
 
             # Test delimiter wrapping
             wrapped = converter.convert(math_ml)
-            assert wrapped.startswith(
-                "$"
-            ) or wrapped.startswith(
-                "$$"
-            ), f"{label}: should start with math delimiter"
+            assert wrapped.startswith("$") or wrapped.startswith("$$"), (
+                f"{label}: should start with math delimiter"
+            )
 
     def test_jats4r_validation(self, article_data):
         """Verify JATS4R validation runs on all articles."""
@@ -421,10 +424,7 @@ class TestFunctionalRealXML:
         # Flat text should be a subset of structured text (which preserves more)
         flat_text = " ".join(s["content"] for s in flat)
         structured_text = " ".join(
-            b.get("text", "")
-            for s in structured
-            for b in s["content"]
-            if b.get("text")
+            b.get("text", "") for s in structured for b in s["content"] if b.get("text")
         )
 
         # Structured may have more text (from lists, formulas, etc.)
@@ -445,5 +445,5 @@ class TestArticleReport:
         print(f"\nTesting with {len(REAL_XML_FILES)} real XML files:")
         for i, (fpath, pmcid) in enumerate(zip(REAL_XML_FILES, PMC_IDS)):
             size_kb = fpath.stat().st_size / 1024
-            print(f"  {i+1}. {pmcid}: {fpath.name} ({size_kb:.0f} KB)")
-        print(f"  {len(REAL_XML_FILES)+1}. synthetic: PMC9999999 (test fixture)")
+            print(f"  {i + 1}. {pmcid}: {fpath.name} ({size_kb:.0f} KB)")
+        print(f"  {len(REAL_XML_FILES) + 1}. synthetic: PMC9999999 (test fixture)")

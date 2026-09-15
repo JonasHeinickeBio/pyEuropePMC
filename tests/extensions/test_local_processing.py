@@ -14,7 +14,7 @@ pytestmark = pytest.mark.unit
 # Fixtures
 # ============================================================================
 
-VALID_XML = '''<?xml version="1.0"?>
+VALID_XML = """<?xml version="1.0"?>
 <article>
 <front><article-meta>
 <article-id pub-id-type="pmcid">PMC1234567</article-id>
@@ -23,9 +23,9 @@ VALID_XML = '''<?xml version="1.0"?>
 <title-group><article-title>Test Article</article-title></title-group>
 </article-meta></front>
 <body><sec><p>Content</p></sec></body>
-</article>'''
+</article>"""
 
-VALID_XML_2 = '''<?xml version="1.0"?>
+VALID_XML_2 = """<?xml version="1.0"?>
 <article>
 <front><article-meta>
 <article-id pub-id-type="pmcid">PMC9999999</article-id>
@@ -33,7 +33,7 @@ VALID_XML_2 = '''<?xml version="1.0"?>
 <title-group><article-title>Second Article</article-title></title-group>
 </article-meta></front>
 <body><sec><p>More content</p></sec></body>
-</article>'''
+</article>"""
 
 INVALID_XML = "this is not valid xml at all"
 
@@ -193,10 +193,10 @@ class TestExtractArticleIdFromXml:
             extract_article_id_from_xml,
         )
 
-        xml = '''<?xml version="1.0"?>
+        xml = """<?xml version="1.0"?>
         <article><front><article-meta>
         <article-id pub-id-type="doi">10.9999/journal</article-id>
-        </article-meta></front></article>'''
+        </article-meta></front></article>"""
         article_id = extract_article_id_from_xml(xml)
         assert article_id == "10.9999/journal"
 
@@ -205,10 +205,10 @@ class TestExtractArticleIdFromXml:
             extract_article_id_from_xml,
         )
 
-        xml = '''<?xml version="1.0"?>
+        xml = """<?xml version="1.0"?>
         <article><front><article-meta>
         <article-id pub-id-type="pmid">87654321</article-id>
-        </article-meta></front></article>'''
+        </article-meta></front></article>"""
         article_id = extract_article_id_from_xml(xml)
         assert article_id == "87654321"
 
@@ -228,10 +228,10 @@ class TestExtractArticleIdFromXml:
             extract_article_id_from_xml,
         )
 
-        xml = '''<?xml version="1.0"?>
+        xml = """<?xml version="1.0"?>
         <article><front><article-meta>
         <title-group><article-title>No IDs</article-title></title-group>
-        </article-meta></front></article>'''
+        </article-meta></front></article>"""
         article_id = extract_article_id_from_xml(xml)
         assert article_id is None
 
@@ -248,11 +248,11 @@ class TestExtractArticleIdFromXml:
             extract_article_id_from_xml,
         )
 
-        xml = '''<?xml version="1.0"?>
+        xml = """<?xml version="1.0"?>
         <article><front><article-meta>
         <article-id pub-id-type="doi">10.1111/example</article-id>
         <article-id pub-id-type="pmcid">PMC1111111</article-id>
-        </article-meta></front></article>'''
+        </article-meta></front></article>"""
         article_id = extract_article_id_from_xml(xml)
         assert article_id == "PMC1111111"
 
@@ -595,7 +595,7 @@ class TestParseBitsBook:
     def test_bits_root_detection(self) -> None:
         from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
 
-        bits_xml = '''<?xml version="1.0"?>
+        bits_xml = """<?xml version="1.0"?>
         <book xmlns:xlink="http://www.w3.org/1999/xlink">
         <book-meta>
         <book-title>BITS Book</book-title>
@@ -606,7 +606,7 @@ class TestParseBitsBook:
         <p>Book content</p>
         </chapter>
         </book-body>
-        </book>'''
+        </book>"""
 
         with patch(
             "pyeuropepmc.features.fulltext.extensions.local_processing.FullTextXMLParser"

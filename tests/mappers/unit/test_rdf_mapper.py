@@ -7,7 +7,9 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("rdflib"), reason="skipped due to missing rdflib")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("rdflib"), reason="skipped due to missing rdflib"
+)
 
 from rdflib import Graph, Namespace
 
@@ -179,7 +181,7 @@ class TestRDFMapper:
         extraction_info = {
             "timestamp": "2024-01-01T00:00:00Z",
             "method": "xml_parser",
-            "quality": {"validation_passed": True, "completeness_score": 0.95}
+            "quality": {"validation_passed": True, "completeness_score": 0.95},
         }
 
         mapper.add_provenance(g, subject, paper, extraction_info)
@@ -221,15 +223,19 @@ class TestRDFMapper:
         """Test URI generation for author with ORCID."""
         mapper = RDFMapper()
         from pyeuropepmc.models import AuthorEntity
+
         author = AuthorEntity(full_name="John Doe", orcid="0000-0001-2345-6789")
 
         uri = mapper._generate_entity_uri(author)
-        assert str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"  # Prioritizes name over ORCID
+        assert (
+            str(uri) == "https://w3id.org/pyeuropepmc/author/john-doe"
+        )  # Prioritizes name over ORCID
 
     def test_generate_entity_uri_author_name(self):
         """Test URI generation for author with name only."""
         mapper = RDFMapper()
         from pyeuropepmc.models import AuthorEntity
+
         author = AuthorEntity(full_name="John Doe")
 
         uri = mapper._generate_entity_uri(author)

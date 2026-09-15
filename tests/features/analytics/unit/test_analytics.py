@@ -7,7 +7,9 @@ from pyeuropepmc.utils.dependencies import (
     skip_if_dependency_missing,
 )
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("pandas"), reason="skipped due to missing pandas")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("pandas"), reason="skipped due to missing pandas"
+)
 
 # `pytestmark` only skips test *functions* once the module has already
 # imported successfully — it does not stop `import pandas` below from
@@ -479,36 +481,66 @@ def extended_papers():
     """Extended sample papers with license, grant, and fulltext fields."""
     return [
         {
-            "id": "1", "source": "MED", "title": "Cancer Research on ME/CFS",
-            "authorString": "Smith J, Doe J", "pubYear": "2020",
-            "isOpenAccess": "Y", "citedByCount": "10", "hasPDF": "Y",
-            "inPMC": "Y", "inEPMC": "Y", "license": "CC-BY",
+            "id": "1",
+            "source": "MED",
+            "title": "Cancer Research on ME/CFS",
+            "authorString": "Smith J, Doe J",
+            "pubYear": "2020",
+            "isOpenAccess": "Y",
+            "citedByCount": "10",
+            "hasPDF": "Y",
+            "inPMC": "Y",
+            "inEPMC": "Y",
+            "license": "CC-BY",
             "abstractText": "This study examines ME/CFS in detail.",
             "grantsList": {"grant": [{"agency": "NIH"}, {"agency": "Wellcome"}]},
         },
         {
-            "id": "2", "source": "MED", "title": "Another Paper on long COVID",
-            "authorString": "Jones A", "pubYear": "2021",
-            "isOpenAccess": "N", "citedByCount": "25", "hasPDF": "N",
-            "inPMC": "N", "inEPMC": "N", "license": "Publisher",
+            "id": "2",
+            "source": "MED",
+            "title": "Another Paper on long COVID",
+            "authorString": "Jones A",
+            "pubYear": "2021",
+            "isOpenAccess": "N",
+            "citedByCount": "25",
+            "hasPDF": "N",
+            "inPMC": "N",
+            "inEPMC": "N",
+            "license": "Publisher",
             "abstractText": "Review of long COVID post-acute sequelae.",
             "grantsList": {"grant": [{"agency": "NIH"}]},
         },
         {
-            "id": "3", "source": "MED", "title": "Immunotherapy for chronic fatigue syndrome",
-            "authorString": "Brown B, Green G", "pubYear": "2022",
-            "isOpenAccess": "Y", "citedByCount": "5", "hasPDF": "Y",
-            "inPMC": "Y", "inEPMC": "Y", "license": "CC0",
+            "id": "3",
+            "source": "MED",
+            "title": "Immunotherapy for chronic fatigue syndrome",
+            "authorString": "Brown B, Green G",
+            "pubYear": "2022",
+            "isOpenAccess": "Y",
+            "citedByCount": "5",
+            "hasPDF": "Y",
+            "inPMC": "Y",
+            "inEPMC": "Y",
+            "license": "CC0",
             "abstractText": "Clinical trial on chronic fatigue syndrome.",
             "grantsList": {"grant": [{"agency": "MRC"}]},
         },
         {
-            "id": "4", "source": "MED", "title": "ME prevalence study",
-            "authorString": "White W, Black K", "pubYear": "2023",
-            "isOpenAccess": "Y", "citedByCount": "15", "hasPDF": "Y",
-            "inPMC": "N", "inEPMC": "Y", "license": "CC-BY-NC",
+            "id": "4",
+            "source": "MED",
+            "title": "ME prevalence study",
+            "authorString": "White W, Black K",
+            "pubYear": "2023",
+            "isOpenAccess": "Y",
+            "citedByCount": "15",
+            "hasPDF": "Y",
+            "inPMC": "N",
+            "inEPMC": "Y",
+            "license": "CC-BY-NC",
             "abstractText": "ME/CFS prevalence across demographics.",
-            "grantsList": {"grant": [{"agency": "NIH"}, {"agency": "MRC"}, {"agency": "Wellcome"}]},
+            "grantsList": {
+                "grant": [{"agency": "NIH"}, {"agency": "MRC"}, {"agency": "Wellcome"}]
+            },
         },
     ]
 
@@ -919,28 +951,46 @@ class TestCitationByAccessTypeEffectSize:
         """Test Cohen's d and Welch's t-test with sufficient samples in both groups."""
         papers = [
             {
-                "id": "1", "isOpenAccess": "Y", "citedByCount": "10",
-                "title": "OA 1", "source": "MED",
+                "id": "1",
+                "isOpenAccess": "Y",
+                "citedByCount": "10",
+                "title": "OA 1",
+                "source": "MED",
             },
             {
-                "id": "2", "isOpenAccess": "Y", "citedByCount": "12",
-                "title": "OA 2", "source": "MED",
+                "id": "2",
+                "isOpenAccess": "Y",
+                "citedByCount": "12",
+                "title": "OA 2",
+                "source": "MED",
             },
             {
-                "id": "3", "isOpenAccess": "Y", "citedByCount": "8",
-                "title": "OA 3", "source": "MED",
+                "id": "3",
+                "isOpenAccess": "Y",
+                "citedByCount": "8",
+                "title": "OA 3",
+                "source": "MED",
             },
             {
-                "id": "4", "isOpenAccess": "N", "citedByCount": "3",
-                "title": "Closed 1", "source": "MED",
+                "id": "4",
+                "isOpenAccess": "N",
+                "citedByCount": "3",
+                "title": "Closed 1",
+                "source": "MED",
             },
             {
-                "id": "5", "isOpenAccess": "N", "citedByCount": "5",
-                "title": "Closed 2", "source": "MED",
+                "id": "5",
+                "isOpenAccess": "N",
+                "citedByCount": "5",
+                "title": "Closed 2",
+                "source": "MED",
             },
             {
-                "id": "6", "isOpenAccess": "N", "citedByCount": "4",
-                "title": "Closed 3", "source": "MED",
+                "id": "6",
+                "isOpenAccess": "N",
+                "citedByCount": "4",
+                "title": "Closed 3",
+                "source": "MED",
             },
         ]
         result = citation_by_access_type(papers)
@@ -955,20 +1005,32 @@ class TestCitationByAccessTypeEffectSize:
         """Test effect size when both groups have identical citations (variance=0)."""
         papers = [
             {
-                "id": "1", "isOpenAccess": "Y", "citedByCount": "5",
-                "title": "OA 1", "source": "MED",
+                "id": "1",
+                "isOpenAccess": "Y",
+                "citedByCount": "5",
+                "title": "OA 1",
+                "source": "MED",
             },
             {
-                "id": "2", "isOpenAccess": "Y", "citedByCount": "5",
-                "title": "OA 2", "source": "MED",
+                "id": "2",
+                "isOpenAccess": "Y",
+                "citedByCount": "5",
+                "title": "OA 2",
+                "source": "MED",
             },
             {
-                "id": "3", "isOpenAccess": "N", "citedByCount": "5",
-                "title": "Closed 1", "source": "MED",
+                "id": "3",
+                "isOpenAccess": "N",
+                "citedByCount": "5",
+                "title": "Closed 1",
+                "source": "MED",
             },
             {
-                "id": "4", "isOpenAccess": "N", "citedByCount": "5",
-                "title": "Closed 2", "source": "MED",
+                "id": "4",
+                "isOpenAccess": "N",
+                "citedByCount": "5",
+                "title": "Closed 2",
+                "source": "MED",
             },
         ]
         result = citation_by_access_type(papers)
@@ -983,18 +1045,30 @@ class TestFulltextAvailabilityListBranch:
         """Test that hasFullText='Y' on list papers is counted."""
         papers = [
             {
-                "id": "1", "source": "MED", "title": "Paper 1",
-                "hasPDF": "N", "inPMC": "N", "inEPMC": "N",
+                "id": "1",
+                "source": "MED",
+                "title": "Paper 1",
+                "hasPDF": "N",
+                "inPMC": "N",
+                "inEPMC": "N",
                 "hasFullText": "Y",
             },
             {
-                "id": "2", "source": "MED", "title": "Paper 2",
-                "hasPDF": "N", "inPMC": "N", "inEPMC": "N",
+                "id": "2",
+                "source": "MED",
+                "title": "Paper 2",
+                "hasPDF": "N",
+                "inPMC": "N",
+                "inEPMC": "N",
                 "hasFullText": "Y",
             },
             {
-                "id": "3", "source": "MED", "title": "Paper 3",
-                "hasPDF": "N", "inPMC": "N", "inEPMC": "N",
+                "id": "3",
+                "source": "MED",
+                "title": "Paper 3",
+                "hasPDF": "N",
+                "inPMC": "N",
+                "inEPMC": "N",
                 "hasFullText": "N",
             },
         ]

@@ -1,4 +1,5 @@
 """Tests for the AuthorEntity model."""
+
 from urllib.parse import urlparse
 
 import pytest

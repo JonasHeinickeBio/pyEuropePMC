@@ -8,7 +8,10 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("cryptography"), reason="skipped due to missing cryptography (enrichment dependency)")
+pytestmark = pytest.mark.skipif(
+    not is_dependency_available("cryptography"),
+    reason="skipped due to missing cryptography (enrichment dependency)",
+)
 
 from pyeuropepmc.features.enrich.sources.ror import RorClient
 
@@ -162,7 +165,9 @@ class TestRorClient:
         """Test enrich with client ID header."""
         client = RorClient(client_id="my-client")
 
-        with patch.object(client, "_make_request", return_value={"id": "ror.org/01234", "names": []}):
+        with patch.object(
+            client, "_make_request", return_value={"id": "ror.org/01234", "names": []}
+        ):
             client.enrich(identifier="ror.org/01234")
 
     def test_parse_ror_response_minimal(self):

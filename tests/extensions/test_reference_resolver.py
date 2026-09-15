@@ -20,6 +20,7 @@ pytestmark = pytest.mark.unit
 # ResolvedReference.to_dict()
 # ---------------------------------------------------------------------------
 
+
 class TestResolvedReferenceToDict:
     def test_to_dict_all_fields(self):
         ref = ResolvedReference(
@@ -71,6 +72,7 @@ class TestResolvedReferenceToDict:
 # ReferenceResolver.__init__()
 # ---------------------------------------------------------------------------
 
+
 class TestReferenceResolverInit:
     def test_default_params(self):
         r = ReferenceResolver()
@@ -109,6 +111,7 @@ class TestReferenceResolverInit:
 # ReferenceResolver.resolve_reference()
 # ---------------------------------------------------------------------------
 
+
 class TestResolveReference:
     def test_cache_hit(self):
         r = ReferenceResolver()
@@ -141,9 +144,7 @@ class TestResolveReference:
     @patch.object(ReferenceResolver, "_throttle")
     def test_cache_miss_doi_lookup(self, mock_throttle, mock_doi):
         r = ReferenceResolver()
-        mock_doi.return_value = ResolvedReference(
-            resolved_doi="10.1234/x", resolved_pmid="22222"
-        )
+        mock_doi.return_value = ResolvedReference(resolved_doi="10.1234/x", resolved_pmid="22222")
 
         ref = {"doi": "10.1234/x", "title": "Title here"}
         result = r.resolve_reference(ref)
@@ -171,9 +172,7 @@ class TestResolveReference:
     @patch.object(ReferenceResolver, "_lookup_by_pmid", return_value=None)
     @patch.object(ReferenceResolver, "_lookup_by_title")
     @patch.object(ReferenceResolver, "_throttle")
-    def test_cache_miss_title_fallback(
-        self, mock_throttle, mock_title, mock_pmid, mock_doi
-    ):
+    def test_cache_miss_title_fallback(self, mock_throttle, mock_title, mock_pmid, mock_doi):
         r = ReferenceResolver()
         mock_title.return_value = ResolvedReference(title="A Long Title Here")
 
@@ -187,9 +186,7 @@ class TestResolveReference:
     @patch.object(ReferenceResolver, "_lookup_by_pmid", return_value=None)
     @patch.object(ReferenceResolver, "_lookup_by_title", return_value=None)
     @patch.object(ReferenceResolver, "_throttle")
-    def test_cache_miss_all_return_none(
-        self, mock_throttle, mock_title, mock_pmid, mock_doi
-    ):
+    def test_cache_miss_all_return_none(self, mock_throttle, mock_title, mock_pmid, mock_doi):
         r = ReferenceResolver()
         ref = {"doi": "x", "pmid": "y", "title": "z"}
         result = r.resolve_reference(ref)
@@ -201,9 +198,7 @@ class TestResolveReference:
     @patch.object(ReferenceResolver, "_lookup_by_pmid", return_value=None)
     @patch.object(ReferenceResolver, "_lookup_by_title", return_value=None)
     @patch.object(ReferenceResolver, "_throttle")
-    def test_failed_lookup_not_cached(
-        self, mock_throttle, mock_title, mock_pmid, mock_doi
-    ):
+    def test_failed_lookup_not_cached(self, mock_throttle, mock_title, mock_pmid, mock_doi):
         r = ReferenceResolver()
         ref = {"doi": "10.fail/x"}
         r.resolve_reference(ref)
@@ -215,6 +210,7 @@ class TestResolveReference:
 # ---------------------------------------------------------------------------
 # ReferenceResolver.resolve_batch()
 # ---------------------------------------------------------------------------
+
 
 class TestResolveBatch:
     @patch.object(ReferenceResolver, "resolve_reference")
@@ -276,6 +272,7 @@ class TestResolveBatch:
 # ReferenceResolver._lookup_by_doi()
 # ---------------------------------------------------------------------------
 
+
 class TestLookupByDoi:
     @patch("urllib.request.urlopen")
     def test_success(self, mock_urlopen):
@@ -322,6 +319,7 @@ class TestLookupByDoi:
 # ReferenceResolver._lookup_by_pmid()
 # ---------------------------------------------------------------------------
 
+
 class TestLookupByPmid:
     @patch("urllib.request.urlopen")
     def test_success(self, mock_urlopen):
@@ -367,6 +365,7 @@ class TestLookupByPmid:
 # ReferenceResolver._lookup_by_title()
 # ---------------------------------------------------------------------------
 
+
 class TestLookupByTitle:
     def test_title_too_short_returns_none(self):
         r = ReferenceResolver()
@@ -382,9 +381,7 @@ class TestLookupByTitle:
     def test_title_exactly_20_chars_proceeds(self, mock_urlopen):
         r = ReferenceResolver()
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps(
-            {"resultList": {"result": []}}
-        ).encode()
+        mock_resp.read.return_value = json.dumps({"resultList": {"result": []}}).encode()
         mock_urlopen.return_value = mock_resp
 
         result = r._lookup_by_title("A" * 20)
@@ -433,6 +430,7 @@ class TestLookupByTitle:
 # ReferenceResolver._parse_api_response()
 # ---------------------------------------------------------------------------
 
+
 class TestParseApiResponse:
     def test_with_results(self):
         data = {
@@ -468,6 +466,7 @@ class TestParseApiResponse:
 # ---------------------------------------------------------------------------
 # ReferenceResolver._parse_entry()
 # ---------------------------------------------------------------------------
+
 
 class TestParseEntry:
     def test_all_fields(self):
@@ -528,6 +527,7 @@ class TestParseEntry:
 # ReferenceResolver._throttle()
 # ---------------------------------------------------------------------------
 
+
 class TestThrottle:
     @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.time")
     @patch("pyeuropepmc.features.fulltext.extensions.reference_resolver.time.sleep")
@@ -570,6 +570,7 @@ class TestThrottle:
 # ReferenceResolver.stats
 # ---------------------------------------------------------------------------
 
+
 class TestStats:
     def test_stats_returns_copy(self):
         r = ReferenceResolver()
@@ -591,13 +592,12 @@ class TestStats:
 # API key appended to URL in lookup methods
 # ---------------------------------------------------------------------------
 
+
 class TestApiKeyInLookup:
     @patch("urllib.request.urlopen")
     def test_api_key_in_doi_url(self, mock_urlopen):
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps(
-            {"resultList": {"result": []}}
-        ).encode()
+        mock_resp.read.return_value = json.dumps({"resultList": {"result": []}}).encode()
         mock_urlopen.return_value = mock_resp
 
         r = ReferenceResolver(api_key="MYKEY")
@@ -609,9 +609,7 @@ class TestApiKeyInLookup:
     @patch("urllib.request.urlopen")
     def test_api_key_in_pmid_url(self, mock_urlopen):
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps(
-            {"resultList": {"result": []}}
-        ).encode()
+        mock_resp.read.return_value = json.dumps({"resultList": {"result": []}}).encode()
         mock_urlopen.return_value = mock_resp
 
         r = ReferenceResolver(api_key="MYKEY")
@@ -623,9 +621,7 @@ class TestApiKeyInLookup:
     @patch("urllib.request.urlopen")
     def test_api_key_in_title_url(self, mock_urlopen):
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps(
-            {"resultList": {"result": []}}
-        ).encode()
+        mock_resp.read.return_value = json.dumps({"resultList": {"result": []}}).encode()
         mock_urlopen.return_value = mock_resp
 
         r = ReferenceResolver(api_key="MYKEY")
@@ -637,9 +633,7 @@ class TestApiKeyInLookup:
     @patch("urllib.request.urlopen")
     def test_no_api_key_no_key_param(self, mock_urlopen):
         mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps(
-            {"resultList": {"result": []}}
-        ).encode()
+        mock_resp.read.return_value = json.dumps({"resultList": {"result": []}}).encode()
         mock_urlopen.return_value = mock_resp
 
         r = ReferenceResolver()
@@ -652,6 +646,7 @@ class TestApiKeyInLookup:
 # ---------------------------------------------------------------------------
 # Cache key priority: doi > pmid > title[:50]
 # ---------------------------------------------------------------------------
+
 
 class TestCacheKeyPriority:
     def test_cache_key_uses_doi_when_present(self):

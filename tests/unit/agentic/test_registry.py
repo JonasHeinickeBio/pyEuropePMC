@@ -290,6 +290,7 @@ class TestBaseTool:
 
     def test_concrete_implementation(self):
         """Test concrete implementation of BaseTool."""
+
         class ConcreteTool(BaseTool):
             name = "concrete"
             description = "Concrete tool"
@@ -309,6 +310,7 @@ class TestBaseTool:
 
     def test_tool_info_from_class(self):
         """Test getting tool info from BaseTool subclass."""
+
         class InfoTool(BaseTool):
             name = "info"
             description = "Info tool"

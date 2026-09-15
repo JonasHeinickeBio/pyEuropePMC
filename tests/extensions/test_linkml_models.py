@@ -71,7 +71,17 @@ class TestContentBlock:
             jats_tag=8,
             metadata=9,
         )
-        for field in ("label", "target_id", "language", "tex", "mathml", "caption", "uri", "jats_tag", "metadata"):
+        for field in (
+            "label",
+            "target_id",
+            "language",
+            "tex",
+            "mathml",
+            "caption",
+            "uri",
+            "jats_tag",
+            "metadata",
+        ):
             assert isinstance(getattr(block, field), str)
 
 

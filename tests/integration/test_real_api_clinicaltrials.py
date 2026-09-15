@@ -48,9 +48,7 @@ class TestClinicalTrialsLiveAPI:
         meta = study.extra_metadata
         assert meta.get("nct_id") == nct
         assert meta.get("overall_status") is not None
-        interventions = " ".join(
-            str(i) for i in (meta.get("interventions") or [])
-        ).lower()
+        interventions = " ".join(str(i) for i in (meta.get("interventions") or [])).lower()
         assert "remdesivir" in interventions or "covid" in study.title.lower()
 
     def test_get_paper_not_found(self, client: ClinicalTrialsClient) -> None:

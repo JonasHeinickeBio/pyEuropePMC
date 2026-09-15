@@ -16,9 +16,7 @@ class TestAddShaclValidationShapes:
         """Mock RDF config utilities to return predictable namespaces."""
         with (
             patch("pyeuropepmc.mappers.validation.load_rdf_config") as mock_load,
-            patch(
-                "pyeuropepmc.mappers.validation.get_namespace_from_config"
-            ) as mock_get_ns,
+            patch("pyeuropepmc.mappers.validation.get_namespace_from_config") as mock_get_ns,
         ):
             mock_config_dict = MagicMock()
             mock_load.return_value = mock_config_dict
@@ -69,8 +67,7 @@ class TestAddShaclValidationShapes:
 
         calls = mock_graph.add.call_args_list
         title_calls = [
-            c for c in calls
-            if "titleProperty" in str(c) and "PaperShape" not in str(c)
+            c for c in calls if "titleProperty" in str(c) and "PaperShape" not in str(c)
         ]
         assert len(title_calls) == 3
 
@@ -83,10 +80,7 @@ class TestAddShaclValidationShapes:
         add_shacl_validation_shapes(dataset, {"provenance": "http://example.org/prov"})
 
         calls = mock_graph.add.call_args_list
-        doi_calls = [
-            c for c in calls
-            if "doiProperty" in str(c) and "PaperShape" not in str(c)
-        ]
+        doi_calls = [c for c in calls if "doiProperty" in str(c) and "PaperShape" not in str(c)]
         assert len(doi_calls) == 3
 
     def test_empty_provenance_context(self, mock_config):

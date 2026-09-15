@@ -9,7 +9,12 @@ from xml.etree import ElementTree as ET  # nosec B405
 import pytest
 
 from pyeuropepmc.benchmark.memory import MemoryTracker, profile_memory, profile_memory_blocks
-from pyeuropepmc.benchmark.profiler import ProfilerContext, profile_text, time_et_parse, time_function
+from pyeuropepmc.benchmark.profiler import (
+    ProfilerContext,
+    profile_text,
+    time_et_parse,
+    time_function,
+)
 
 SIMPLE_XML = """<?xml version="1.0"?>
 <article xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -65,6 +70,7 @@ class TestProfilerContext:
 
     def test_simple_function_profile(self):
         """Verify function-level data is captured."""
+
         def foo():
             return sum(range(100))
 
@@ -76,6 +82,7 @@ class TestProfilerContext:
 
     def test_filter_by_module(self):
         """Verify module filtering."""
+
         def bar():
             _ = ET.fromstring("<a><b/></a>")
 
@@ -112,11 +119,15 @@ class TestProfileText:
         breakdown = result["parser_breakdown_s"]
         # cProfile may not capture __init__ separately for dataclass-based classes;
         # verify at least the major extraction methods are tracked
-        key_methods = ["get_full_text_sections_structured", "extract_metadata",
-                       "get_full_text_sections"]
+        key_methods = [
+            "get_full_text_sections_structured",
+            "extract_metadata",
+            "get_full_text_sections",
+        ]
         found = [m for m in key_methods if m in breakdown]
-        assert len(found) >= 2, \
+        assert len(found) >= 2, (
             f"Expected >=2 key methods in breakdown, got {found} from {list(breakdown.keys())}"
+        )
         assert breakdown.get("get_full_text_sections_structured", 0) >= 0
 
 

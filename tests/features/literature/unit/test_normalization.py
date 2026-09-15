@@ -22,6 +22,7 @@ pytestmark = pytest.mark.unit
 # NFKC
 # ===========================================================================
 
+
 class TestNormalizeToNfkc:
     def test_none(self):
         assert normalize_to_nfkc(None) is None
@@ -51,6 +52,7 @@ class TestNormalizeToNfkc:
 # ===========================================================================
 # DOI
 # ===========================================================================
+
 
 class TestNormalizeDoi:
     def test_none_input(self):
@@ -105,6 +107,7 @@ class TestIsValidDoi:
 # ===========================================================================
 # Author name
 # ===========================================================================
+
 
 class TestNormalizeAuthorName:
     def test_none_input(self):
@@ -175,6 +178,7 @@ class TestNormalizeAuthorName:
 # Author list
 # ===========================================================================
 
+
 class TestNormalizeAuthorList:
     def test_none_input(self):
         assert normalize_author_list(None) is None
@@ -242,6 +246,7 @@ class TestNormalizeAuthorList:
 # Journal title
 # ===========================================================================
 
+
 class TestNormalizeJournalTitle:
     def test_none(self):
         assert normalize_journal_title(None) is None
@@ -261,6 +266,7 @@ class TestNormalizeJournalTitle:
 # ===========================================================================
 # Paper title
 # ===========================================================================
+
 
 class TestNormalizePaperTitle:
     def test_none(self):
@@ -284,6 +290,7 @@ class TestNormalizePaperTitle:
 # Abstract
 # ===========================================================================
 
+
 class TestNormalizeAbstract:
     def test_none(self):
         assert normalize_abstract(None) is None
@@ -293,7 +300,9 @@ class TestNormalizeAbstract:
         assert result == "Hello world"
 
     def test_strip_headers(self):
-        result = normalize_abstract("Background: This is background. Methods: We did X. Results: Y. Conclusions: Z.")
+        result = normalize_abstract(
+            "Background: This is background. Methods: We did X. Results: Y. Conclusions: Z."
+        )
         assert "Background:" not in result
         assert "Methods:" not in result
         assert "This is background" in result
@@ -324,6 +333,7 @@ class TestNormalizeAbstract:
 # MeSH terms
 # ===========================================================================
 
+
 class TestNormalizeMeshTerms:
     def test_none(self):
         assert normalize_mesh_terms(None) is None
@@ -352,6 +362,7 @@ class TestNormalizeMeshTerms:
 # ===========================================================================
 # Affiliation
 # ===========================================================================
+
 
 class TestNormalizeAffiliation:
     def test_none(self):

@@ -1,4 +1,5 @@
 """Tests for figure parser."""
+
 import pytest
 from xml.etree import ElementTree as ET
 

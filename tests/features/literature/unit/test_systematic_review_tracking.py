@@ -274,9 +274,7 @@ class TestSystematicReviewIntegration:
 
             # Search Europe PMC
             qb1 = QueryBuilder()
-            qb1.keyword("cancer immunotherapy").and_().date_range(
-                start_year=2020, end_year=2024
-            )
+            qb1.keyword("cancer immunotherapy").and_().date_range(start_year=2020, end_year=2024)
             qb1.log_to_search(
                 log,
                 database="Europe PMC",

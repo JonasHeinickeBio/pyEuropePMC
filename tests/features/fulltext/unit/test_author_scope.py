@@ -84,7 +84,9 @@ class TestExistingDialectsStillWork:
             "<given-names>S.</given-names></name></contrib>"
             "</contrib-group></article-meta></front></article>"
         )
-        assert [a["surname"] for a in FullTextXMLParser(xml).extract_authors_detailed()] == ["Solo"]
+        assert [a["surname"] for a in FullTextXMLParser(xml).extract_authors_detailed()] == [
+            "Solo"
+        ]
 
     def test_fragment_without_a_front_still_parses(self):
         """The scope falls back to the root when there is no <front>."""
@@ -93,4 +95,6 @@ class TestExistingDialectsStillWork:
             '<contrib contrib-type="author"><name><surname>Bare</surname>'
             "<given-names>B.</given-names></name></contrib></article>"
         )
-        assert [a["surname"] for a in FullTextXMLParser(xml).extract_authors_detailed()] == ["Bare"]
+        assert [a["surname"] for a in FullTextXMLParser(xml).extract_authors_detailed()] == [
+            "Bare"
+        ]

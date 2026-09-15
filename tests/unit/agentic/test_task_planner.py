@@ -79,7 +79,9 @@ class TestTaskPlanner:
         planner = TaskPlanner()
 
         # Description with multiple research keywords
-        desc = "Analyze and compare the impact of exercise on depression and anxiety in adolescents"
+        desc = (
+            "Analyze and compare the impact of exercise on depression and anxiety in adolescents"
+        )
         complexity = planner._estimate_complexity(desc)
 
         # Should have higher complexity due to keywords

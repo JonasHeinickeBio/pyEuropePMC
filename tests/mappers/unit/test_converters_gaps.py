@@ -134,9 +134,7 @@ class TestConvertPipelineCaching:
         mock_setup.return_value = ds
         mock_annot.return_value = Mock()
 
-        result = convert_pipeline_to_rdf(
-            annotations_data=[{"source": "MED", "extId": "12345"}]
-        )
+        result = convert_pipeline_to_rdf(annotations_data=[{"source": "MED", "extId": "12345"}])
 
         assert result is ds
         mock_annot.assert_called_once()
@@ -151,9 +149,7 @@ class TestConvertPipelineCaching:
         mock_search.return_value = Mock()
         cache = Mock()
 
-        convert_pipeline_to_rdf(
-            search_results=[{"doi": "10.1"}], cache_backend=cache
-        )
+        convert_pipeline_to_rdf(search_results=[{"doi": "10.1"}], cache_backend=cache)
 
         cache.set.assert_called_once()
         call = cache.set.call_args
@@ -221,18 +217,14 @@ class TestConvertIncrementalEnhanced:
         mock_get_mapper.return_value = Mock()
         info = {"method": "test", "timestamp": "2024-01-01T00:00:00Z"}
 
-        convert_incremental_to_rdf(
-            Graph(), {"paper": {"title": "T"}}, extraction_info=info
-        )
+        convert_incremental_to_rdf(Graph(), {"paper": {"title": "T"}}, extraction_info=info)
 
         entity.to_rdf.assert_called_once()
         assert entity.to_rdf.call_args[1]["extraction_info"] == info
 
     @patch("pyeuropepmc.mappers.converters._get_default_mapper")
     @patch("pyeuropepmc.mappers.converters._extract_entities_from_enrichment")
-    def test_incremental_entity_conversion_failure_continues(
-        self, mock_extract, mock_get_mapper
-    ):
+    def test_incremental_entity_conversion_failure_continues(self, mock_extract, mock_get_mapper):
         bad = Mock()
         bad.to_rdf.side_effect = Exception("Entity error")
         good = Mock()
@@ -243,9 +235,7 @@ class TestConvertIncrementalEnhanced:
         ]
         mock_get_mapper.return_value = Mock()
 
-        result = convert_incremental_to_rdf(
-            Graph(), {"paper": {"title": "T"}}
-        )
+        result = convert_incremental_to_rdf(Graph(), {"paper": {"title": "T"}})
 
         assert isinstance(result, Graph)
         bad.to_rdf.assert_called_once()
@@ -253,9 +243,7 @@ class TestConvertIncrementalEnhanced:
 
     @patch("pyeuropepmc.mappers.converters._get_default_mapper")
     @patch("pyeuropepmc.mappers.converters._extract_entities_from_enrichment")
-    def test_incremental_caching_and_namespaces_together(
-        self, mock_extract, mock_get_mapper
-    ):
+    def test_incremental_caching_and_namespaces_together(self, mock_extract, mock_get_mapper):
         entity = Mock()
         entity.to_rdf.return_value = None
         mock_extract.return_value = [{"entity": entity, "related_entities": {}}]
@@ -374,9 +362,7 @@ class TestConvertToRdf:
         xd = {"paper": {"title": "T"}}
         ed = {"paper": {"title": "T"}}
 
-        dataset, uris = convert_to_rdf(
-            search_results=sr, xml_data=xd, enrichment_data=ed
-        )
+        dataset, uris = convert_to_rdf(search_results=sr, xml_data=xd, enrichment_data=ed)
 
         assert dataset is ds
         assert sorted(uris) == ["authors", "institutions", "provenance", "publications"]
@@ -543,9 +529,7 @@ class TestConvertToRdf:
         mock_mapper.return_value = Mock()
         cache = Mock()
 
-        dataset, uris = convert_to_rdf(
-            search_results=[{"doi": "10.1"}], cache_backend=cache
-        )
+        dataset, uris = convert_to_rdf(search_results=[{"doi": "10.1"}], cache_backend=cache)
 
         cache.set.assert_called_once()
         key, val = cache.set.call_args[0][0], cache.set.call_args[0][1]
@@ -612,9 +596,7 @@ class TestConvertToRdf:
         mock_mapper.return_value = Mock()
         info = {"method": "test", "timestamp": "2024-01-01T00:00:00Z"}
 
-        dataset, uris = convert_to_rdf(
-            search_results=[{"doi": "10.1"}], extraction_info=info
-        )
+        dataset, uris = convert_to_rdf(search_results=[{"doi": "10.1"}], extraction_info=info)
 
         mock_proc_search.assert_called_once_with(
             [{"doi": "10.1"}], ds, uris, mock_mapper.return_value, info
@@ -680,10 +662,12 @@ class TestConvertToRdfDetails:
         result = _convert_to_rdf(
             data={"x": 1},
             validator=Mock(),
-            processor=Mock(return_value=[
-                {"entity": bad, "related_entities": {}},
-                {"entity": good, "related_entities": {}},
-            ]),
+            processor=Mock(
+                return_value=[
+                    {"entity": bad, "related_entities": {}},
+                    {"entity": good, "related_entities": {}},
+                ]
+            ),
             cache_key_prefix="t",
             cache_data_type=CacheDataType.SEARCH,
         )

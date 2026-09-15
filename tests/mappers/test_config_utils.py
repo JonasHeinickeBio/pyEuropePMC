@@ -33,6 +33,7 @@ from pyeuropepmc.mappers.config_utils import (
 # Fixtures
 # ---------------------------------------------------------------------------
 
+
 @pytest.fixture
 def mock_graph() -> MagicMock:
     """Mock an rdflib Graph with bind tracking."""
@@ -55,6 +56,7 @@ def mock_dataset() -> MagicMock:
 # ---------------------------------------------------------------------------
 # load_rdf_config
 # ---------------------------------------------------------------------------
+
 
 class TestLoadRdfConfig:
     """Tests for load_rdf_config()."""
@@ -206,6 +208,7 @@ _defaults:
 # get_namespace_from_config
 # ---------------------------------------------------------------------------
 
+
 class TestGetNamespaceFromConfig:
     """Tests for get_namespace_from_config()."""
 
@@ -227,6 +230,7 @@ class TestGetNamespaceFromConfig:
 # ---------------------------------------------------------------------------
 # rebind_namespaces
 # ---------------------------------------------------------------------------
+
 
 class TestRebindNamespaces:
     """Tests for rebind_namespaces()."""
@@ -278,6 +282,7 @@ class TestRebindNamespaces:
 # setup_graph
 # ---------------------------------------------------------------------------
 
+
 class TestSetupGraph:
     """Tests for setup_graph()."""
 
@@ -324,6 +329,7 @@ class TestSetupGraph:
 # setup_dataset
 # ---------------------------------------------------------------------------
 
+
 class TestSetupDataset:
     """Tests for setup_dataset()."""
 
@@ -369,6 +375,7 @@ class TestSetupDataset:
 # _bind_fallback_namespaces
 # ---------------------------------------------------------------------------
 
+
 class TestBindFallbackNamespaces:
     """Tests for _bind_fallback_namespaces()."""
 
@@ -388,6 +395,7 @@ class TestBindFallbackNamespaces:
 # ---------------------------------------------------------------------------
 # create_named_graph
 # ---------------------------------------------------------------------------
+
 
 class TestCreateNamedGraph:
     """Tests for create_named_graph()."""

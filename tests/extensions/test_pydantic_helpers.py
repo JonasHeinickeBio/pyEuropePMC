@@ -237,7 +237,5 @@ class TestPydanticModelGeneratorFromDataclass:
             a: str
             b: int
 
-        Model = PydanticModelGenerator.from_dataclass(
-            Sample, include_fields=["a"]
-        )
+        Model = PydanticModelGenerator.from_dataclass(Sample, include_fields=["a"])
         assert list(Model.model_fields.keys()) == ["a"]

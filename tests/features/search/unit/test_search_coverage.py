@@ -195,8 +195,9 @@ class TestSearchClientCoverage:
         """Test interactive_search when user inputs 0."""
         mock_response = {"hitCount": 10, "resultList": {"result": [{"id": "1"}]}}
 
-        with patch.object(self.client, "search", return_value=mock_response), patch(
-            "builtins.input", return_value="0"
+        with (
+            patch.object(self.client, "search", return_value=mock_response),
+            patch("builtins.input", return_value="0"),
         ):
             result = self.client.interactive_search("cancer")
             assert result == []  # Should return empty list when user inputs 0
@@ -254,8 +255,12 @@ class TestSearchClientCoverage:
         # Mock a valid API response with no results
         empty_response = {"hitCount": 0, "resultList": {"result": []}}
 
-        with patch.object(self.client, "search", return_value=empty_response), patch(
-            "pyeuropepmc.features.literature.search_parser.EuropePMCParser.parse_json", return_value=[]
+        with (
+            patch.object(self.client, "search", return_value=empty_response),
+            patch(
+                "pyeuropepmc.features.literature.search_parser.EuropePMCParser.parse_json",
+                return_value=[],
+            ),
         ):
             result = self.client.search_and_parse("cancer", format="json")
             assert result == []

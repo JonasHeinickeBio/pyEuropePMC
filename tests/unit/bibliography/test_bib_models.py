@@ -1,5 +1,11 @@
 import pytest
-from pyeuropepmc.features.bibliography.models import BibEntry, BibLibrary, BibField, CitationFormat, VerificationStatus
+from pyeuropepmc.features.bibliography.models import (
+    BibEntry,
+    BibLibrary,
+    BibField,
+    CitationFormat,
+    VerificationStatus,
+)
 
 
 class TestBibEntry:
@@ -12,12 +18,29 @@ class TestBibEntry:
         assert entry.source is None
 
     def test_to_dict(self):
-        entry = BibEntry(entry_type="article", citation_key="key1", fields={"title": "A"}, tags=["ml"], source="manual")
+        entry = BibEntry(
+            entry_type="article",
+            citation_key="key1",
+            fields={"title": "A"},
+            tags=["ml"],
+            source="manual",
+        )
         d = entry.to_dict()
-        assert d == {"entry_type": "article", "citation_key": "key1", "fields": {"title": "A"}, "tags": ["ml"], "source": "manual"}
+        assert d == {
+            "entry_type": "article",
+            "citation_key": "key1",
+            "fields": {"title": "A"},
+            "tags": ["ml"],
+            "source": "manual",
+        }
 
     def test_from_dict_roundtrip(self):
-        original = BibEntry(entry_type="inproceedings", citation_key="johnson2023", fields={"title": "B"}, tags=["nlp"])
+        original = BibEntry(
+            entry_type="inproceedings",
+            citation_key="johnson2023",
+            fields={"title": "B"},
+            tags=["nlp"],
+        )
         d = original.to_dict()
         restored = BibEntry.from_dict(d)
         assert restored.entry_type == original.entry_type
@@ -70,7 +93,15 @@ class TestBibLibrary:
 
     def test_to_dict_from_dict_roundtrip(self):
         lib = BibLibrary()
-        lib.add(BibEntry(entry_type="article", citation_key="k1", fields={"title": "T"}, tags=["a"], source="x"))
+        lib.add(
+            BibEntry(
+                entry_type="article",
+                citation_key="k1",
+                fields={"title": "T"},
+                tags=["a"],
+                source="x",
+            )
+        )
         lib.add(BibEntry(entry_type="book", citation_key="k2", fields={"author": "A"}, source="y"))
         data = lib.to_dict()
         assert len(data) == 2

@@ -1,4 +1,5 @@
 """Tests for PlaintextConverter."""
+
 import pytest
 from xml.etree import ElementTree as ET
 

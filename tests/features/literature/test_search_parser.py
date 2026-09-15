@@ -208,8 +208,10 @@ class TestParseJSON:
     def test_validate_result_list_mixed_validity(self) -> None:
         """_validate_result_list filters out non-dict items."""
         items = [{"good": 1}, "bad", 42, {"fine": 2}]
-        with patch.object(EuropePMCParser.logger, "error") as mock_err, \
-             patch.object(EuropePMCParser.logger, "warning") as mock_warn:
+        with (
+            patch.object(EuropePMCParser.logger, "error") as mock_err,
+            patch.object(EuropePMCParser.logger, "warning") as mock_warn,
+        ):
             result = EuropePMCParser._validate_result_list(items)
             assert result == [{"good": 1}, {"fine": 2}]
             assert mock_err.call_count == 2
@@ -217,30 +219,38 @@ class TestParseJSON:
 
     def test_handle_parsing_errors_passthrough_result(self) -> None:
         """_handle_parsing_errors returns the result from parse_func."""
+
         def good(data: Any) -> list[dict[str, Any]]:
             return [{"key": "val"}]
+
         result = EuropePMCParser._handle_parsing_errors(good, None, "JSON")
         assert result == [{"key": "val"}]
 
     def test_handle_parsing_errors_non_list_result(self) -> None:
         """_handle_parsing_errors returns [] when result is not a list."""
+
         def not_list(data: Any) -> str:
             return "string"
+
         result = EuropePMCParser._handle_parsing_errors(not_list, None, "JSON")
         assert result == []
 
     def test_handle_parsing_errors_passthrough_parsing_error(self) -> None:
         """_handle_parsing_errors re-raises ParsingError unchanged."""
+
         def raiser(data: Any) -> list[dict[str, Any]]:
             raise ParsingError(ErrorCodes.PARSE001, {"expected": "dict", "actual": "str"})
+
         with pytest.raises(ParsingError) as exc:
             EuropePMCParser._handle_parsing_errors(raiser, None, "JSON")
         assert exc.value.error_code == ErrorCodes.PARSE001
 
     def test_handle_parsing_errors_wraps_xml_parse_error(self) -> None:
         """_handle_parsing_errors wraps ET.ParseError in ParsingError PARSE002."""
+
         def raiser(data: Any) -> list[dict[str, Any]]:
             raise ET.ParseError("mangled")
+
         with pytest.raises(ParsingError) as exc:
             EuropePMCParser._handle_parsing_errors(raiser, None, "XML")
         assert exc.value.error_code == ErrorCodes.PARSE002
@@ -248,8 +258,10 @@ class TestParseJSON:
 
     def test_handle_parsing_errors_wraps_generic_exception(self) -> None:
         """_handle_parsing_errors wraps generic Exception in ParsingError PARSE003."""
+
         def raiser(data: Any) -> list[dict[str, Any]]:
             raise ValueError("something broke")
+
         with pytest.raises(ParsingError) as exc:
             EuropePMCParser._handle_parsing_errors(raiser, None, "CSV")
         assert exc.value.error_code == ErrorCodes.PARSE003
@@ -409,9 +421,9 @@ class TestParseDC:
     """Tests for Dublin Core XML parsing methods."""
 
     DC_VALID = f"""<?xml version="1.0" encoding="UTF-8"?>
-<rdf:RDF xmlns:rdf="{XML_NAMESPACES['rdf']}"
-         xmlns:dc="{XML_NAMESPACES['dc']}"
-         xmlns:dcterms="{XML_NAMESPACES['dcterms']}">
+<rdf:RDF xmlns:rdf="{XML_NAMESPACES["rdf"]}"
+         xmlns:dc="{XML_NAMESPACES["dc"]}"
+         xmlns:dcterms="{XML_NAMESPACES["dcterms"]}">
   <rdf:Description rdf:about="http://example.org/1">
     <dc:title>Test Article</dc:title>
     <dc:creator>Smith J</dc:creator>
@@ -424,8 +436,8 @@ class TestParseDC:
 </rdf:RDF>"""
 
     DC_SINGLE = f"""<?xml version="1.0" encoding="UTF-8"?>
-<rdf:RDF xmlns:rdf="{XML_NAMESPACES['rdf']}"
-         xmlns:dc="{XML_NAMESPACES['dc']}">
+<rdf:RDF xmlns:rdf="{XML_NAMESPACES["rdf"]}"
+         xmlns:dc="{XML_NAMESPACES["dc"]}">
   <rdf:Description rdf:about="http://example.org/1">
     <dc:title>Single</dc:title>
   </rdf:Description>
@@ -462,15 +474,15 @@ class TestParseDC:
     def test_parse_dc_no_descriptions(self) -> None:
         """parse_dc with no descriptions returns empty list."""
         xml = f"""<?xml version="1.0"?>
-<rdf:RDF xmlns:rdf="{XML_NAMESPACES['rdf']}"/>"""
+<rdf:RDF xmlns:rdf="{XML_NAMESPACES["rdf"]}"/>"""
         result = EuropePMCParser.parse_dc(xml)
         assert result == []
 
     def test_parse_dc_duplicate_tags_become_list(self) -> None:
         """parse_dc handles duplicate tags by converting to list."""
         xml = f"""<?xml version="1.0"?>
-<rdf:RDF xmlns:rdf="{XML_NAMESPACES['rdf']}"
-         xmlns:dc="{XML_NAMESPACES['dc']}">
+<rdf:RDF xmlns:rdf="{XML_NAMESPACES["rdf"]}"
+         xmlns:dc="{XML_NAMESPACES["dc"]}">
   <rdf:Description>
     <dc:creator>Smith J</dc:creator>
     <dc:creator>Doe J</dc:creator>
@@ -492,7 +504,7 @@ class TestParseDC:
 
     def test_extract_dc_description_data_basic(self) -> None:
         """_extract_dc_description_data extracts children tags."""
-        xml = f"""<rdf:Description xmlns:rdf="{XML_NAMESPACES['rdf']}" xmlns:dc="{XML_NAMESPACES['dc']}">
+        xml = f"""<rdf:Description xmlns:rdf="{XML_NAMESPACES["rdf"]}" xmlns:dc="{XML_NAMESPACES["dc"]}">
   <dc:title>Hello</dc:title>
 </rdf:Description>"""
         elem = ET.fromstring(xml)
@@ -501,7 +513,7 @@ class TestParseDC:
 
     def test_extract_dc_description_data_default_title(self) -> None:
         """_extract_dc_description_data adds empty title if missing."""
-        xml = f"""<rdf:Description xmlns:rdf="{XML_NAMESPACES['rdf']}" xmlns:dc="{XML_NAMESPACES['dc']}">
+        xml = f"""<rdf:Description xmlns:rdf="{XML_NAMESPACES["rdf"]}" xmlns:dc="{XML_NAMESPACES["dc"]}">
   <dc:creator>X</dc:creator>
 </rdf:Description>"""
         elem = ET.fromstring(xml)
@@ -511,7 +523,7 @@ class TestParseDC:
 
     def test_extract_dc_description_data_duplicates(self) -> None:
         """_extract_dc_description_data handles duplicate tags."""
-        xml = f"""<rdf:Description xmlns:rdf="{XML_NAMESPACES['rdf']}" xmlns:dc="{XML_NAMESPACES['dc']}">
+        xml = f"""<rdf:Description xmlns:rdf="{XML_NAMESPACES["rdf"]}" xmlns:dc="{XML_NAMESPACES["dc"]}">
   <dc:subject>A</dc:subject>
   <dc:subject>B</dc:subject>
 </rdf:Description>"""
@@ -764,9 +776,7 @@ class TestExtractAuthorsAndEntities:
                     {
                         "fullName": "Smith J",
                         "authorAffiliationDetailsList": {
-                            "authorAffiliation": [
-                                {"affiliation": "University of Example, USA"}
-                            ]
+                            "authorAffiliation": [{"affiliation": "University of Example, USA"}]
                         },
                     }
                 ]
@@ -790,11 +800,7 @@ class TestExtractAuthorsAndEntities:
                     }
                 ]
             },
-            "authorIdList": {
-                "authorId": [
-                    {"type": "ORCID", "value": "0000-0002-9999-8888"}
-                ]
-            },
+            "authorIdList": {"authorId": [{"type": "ORCID", "value": "0000-0002-9999-8888"}]},
         }
         authors, author_entities, _ = EuropePMCParser.extract_authors_and_entities(result)
         assert authors[0]["orcid"] == "0000-0002-9999-8888"
@@ -850,9 +856,7 @@ class TestExtractKeywordsAndMesh:
         result = {
             "keywordList": {"keyword": ["cancer"]},
             "meshHeadingList": {
-                "meshHeading": [
-                    {"descriptorName": "Neoplasms", "majorTopic_YN": "Y"}
-                ]
+                "meshHeading": [{"descriptorName": "Neoplasms", "majorTopic_YN": "Y"}]
             },
         }
         keywords = EuropePMCParser.extract_keywords_and_mesh(result)
@@ -882,7 +886,11 @@ class TestExtractMeshHeadings:
                         "descriptorUI": "D009369",
                         "meshQualifierList": {
                             "meshQualifier": [
-                                {"qualifierName": "therapy", "abbreviation": "TH", "majorTopic_YN": "N"}
+                                {
+                                    "qualifierName": "therapy",
+                                    "abbreviation": "TH",
+                                    "majorTopic_YN": "N",
+                                }
                             ]
                         },
                     }
@@ -945,9 +953,7 @@ class TestExtractOpenAccessInfo:
     def test_all_false_no_url(self) -> None:
         """All flags false and no URL."""
         result = {}
-        is_oa, in_epmc, in_pmc, has_pdf, oa_url = (
-            EuropePMCParser.extract_open_access_info(result)
-        )
+        is_oa, in_epmc, in_pmc, has_pdf, oa_url = EuropePMCParser.extract_open_access_info(result)
         assert is_oa is False
         assert in_epmc is False
         assert in_pmc is False
@@ -970,9 +976,7 @@ class TestExtractOpenAccessInfo:
                 ]
             },
         }
-        is_oa, in_epmc, in_pmc, has_pdf, oa_url = (
-            EuropePMCParser.extract_open_access_info(result)
-        )
+        is_oa, in_epmc, in_pmc, has_pdf, oa_url = EuropePMCParser.extract_open_access_info(result)
         assert is_oa is True
         assert in_epmc is True
         assert in_pmc is True
@@ -982,9 +986,7 @@ class TestExtractOpenAccessInfo:
     def test_mixed_flags(self) -> None:
         """Mixed flag values."""
         result = {"isOpenAccess": "Y", "inPMC": "Y"}
-        is_oa, in_epmc, in_pmc, has_pdf, oa_url = (
-            EuropePMCParser.extract_open_access_info(result)
-        )
+        is_oa, in_epmc, in_pmc, has_pdf, oa_url = EuropePMCParser.extract_open_access_info(result)
         assert is_oa is True
         assert in_epmc is False
         assert in_pmc is True
@@ -994,9 +996,7 @@ class TestExtractOpenAccessInfo:
         """FullTextUrlList present but no OA code match."""
         result = {
             "fullTextUrlList": {
-                "fullTextUrl": [
-                    {"availabilityCode": "F", "url": "https://example.com/other"}
-                ]
+                "fullTextUrl": [{"availabilityCode": "F", "url": "https://example.com/other"}]
             }
         }
         _, _, _, _, oa_url = EuropePMCParser.extract_open_access_info(result)
@@ -1130,9 +1130,14 @@ class TestExtractPublicationMetadata:
 
     def test_with_license(self) -> None:
         """License info is extracted."""
-        result = {"license": {"type": "CC-BY", "url": "https://creativecommons.org/licenses/by/4.0/"}}
+        result = {
+            "license": {"type": "CC-BY", "url": "https://creativecommons.org/licenses/by/4.0/"}
+        }
         _, _, license_info = EuropePMCParser.extract_publication_metadata(result)
-        assert license_info == {"type": "CC-BY", "url": "https://creativecommons.org/licenses/by/4.0/"}
+        assert license_info == {
+            "type": "CC-BY",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+        }
 
 
 # ===========================================================================
@@ -1171,22 +1176,14 @@ class TestCreatePaperEntity:
                 }
             ]
         },
-        "keywordList": {
-            "keyword": ["testing", "python"]
-        },
-        "meshHeadingList": {
-            "meshHeading": [
-                {"descriptorName": "Software", "majorTopic_YN": "Y"}
-            ]
-        },
+        "keywordList": {"keyword": ["testing", "python"]},
+        "meshHeadingList": {"meshHeading": [{"descriptorName": "Software", "majorTopic_YN": "Y"}]},
         "isOpenAccess": "Y",
         "inEPMC": "Y",
         "inPMC": "Y",
         "hasPDF": "Y",
         "fullTextUrlList": {
-            "fullTextUrl": [
-                {"availabilityCode": "OA", "url": "https://example.com/oa"}
-            ]
+            "fullTextUrl": [{"availabilityCode": "OA", "url": "https://example.com/oa"}]
         },
         "citedByCount": "15",
         "hasReferences": "Y",
@@ -1194,14 +1191,8 @@ class TestCreatePaperEntity:
         "hasDbCrossReferences": "Y",
         "hasLabsLinks": "N",
         "hasTMAccessionNumbers": "N",
-        "pubTypeList": {
-            "pubType": ["Journal Article"]
-        },
-        "grantsList": {
-            "grant": [
-                {"agency": "NIH", "grantId": "R01-TEST", "acronym": "TE"}
-            ]
-        },
+        "pubTypeList": {"pubType": ["Journal Article"]},
+        "grantsList": {"grant": [{"agency": "NIH", "grantId": "R01-TEST", "acronym": "TE"}]},
         "license": {"type": "CC-BY", "url": "https://creativecommons.org/licenses/by/4.0/"},
     }
 
@@ -1274,7 +1265,10 @@ class TestCreatePaperEntity:
     def test_license_info(self) -> None:
         """License is set."""
         paper, _ = EuropePMCParser.create_paper_entity_from_result(self.FULL_RESULT)
-        assert paper.license == {"type": "CC-BY", "url": "https://creativecommons.org/licenses/by/4.0/"}
+        assert paper.license == {
+            "type": "CC-BY",
+            "url": "https://creativecommons.org/licenses/by/4.0/",
+        }
 
     def test_dates(self) -> None:
         """Publication and index dates are set."""
@@ -1335,9 +1329,7 @@ class TestParseSearchResultsWithEntities:
 
     def test_error_in_create_skipped(self) -> None:
         """Exception in create_paper_entity_from_result is caught."""
-        with patch.object(
-            EuropePMCParser, "create_paper_entity_from_result"
-        ) as mock_create:
+        with patch.object(EuropePMCParser, "create_paper_entity_from_result") as mock_create:
             mock_create.side_effect = [
                 (MagicMock(spec=PaperEntity), {"authors": [], "institutions": []}),
                 ValueError("bad result"),
@@ -1359,9 +1351,7 @@ class TestParseSearchResultsWithEntities:
                     {
                         "fullName": "Smith J",
                         "authorAffiliationDetailsList": {
-                            "authorAffiliation": [
-                                {"affiliation": "University of Example, USA"}
-                            ]
+                            "authorAffiliation": [{"affiliation": "University of Example, USA"}]
                         },
                     }
                 ]
@@ -1396,9 +1386,7 @@ class TestIntegration:
                         "title": "Integration Article",
                         "isOpenAccess": "Y",
                         "citedByCount": "5",
-                        "authorList": {
-                            "author": [{"fullName": "Test A"}]
-                        },
+                        "authorList": {"author": [{"fullName": "Test A"}]},
                     },
                     {
                         "doi": "10.1000/test.2",
@@ -1406,9 +1394,7 @@ class TestIntegration:
                         "pmid": "101",
                         "title": "Second Article",
                         "isOpenAccess": "N",
-                        "authorList": {
-                            "author": [{"fullName": "Test B"}]
-                        },
+                        "authorList": {"author": [{"fullName": "Test B"}]},
                     },
                 ]
             }

@@ -49,9 +49,9 @@ class TestStructuredValuesMatchExactly:
 
     def test_authors(self, both_backends, document):
         default, lxml_backed = both_backends
-        assert (
-            default.extract_authors_detailed() == lxml_backed.extract_authors_detailed()
-        ), document.pmcid
+        assert default.extract_authors_detailed() == lxml_backed.extract_authors_detailed(), (
+            document.pmcid
+        )
 
     def test_references(self, both_backends, document):
         default, lxml_backed = both_backends
@@ -67,23 +67,21 @@ class TestStructuredValuesMatchExactly:
 class TestRenderedTextMatchesIgnoringWhitespace:
     def test_plaintext(self, both_backends, document):
         default, lxml_backed = both_backends
-        assert _squash(default.to_plaintext()) == _squash(
-            lxml_backed.to_plaintext()
-        ), document.pmcid
+        assert _squash(default.to_plaintext()) == _squash(lxml_backed.to_plaintext()), (
+            document.pmcid
+        )
 
     def test_markdown(self, both_backends, document):
         default, lxml_backed = both_backends
-        assert _squash(default.to_markdown()) == _squash(
-            lxml_backed.to_markdown()
-        ), document.pmcid
+        assert _squash(default.to_markdown()) == _squash(lxml_backed.to_markdown()), document.pmcid
 
     def test_sections(self, both_backends, document):
         default, lxml_backed = both_backends
         assert _squash(
             "\n".join(s["content"] for s in default.get_full_text_sections())
-        ) == _squash(
-            "\n".join(s["content"] for s in lxml_backed.get_full_text_sections())
-        ), document.pmcid
+        ) == _squash("\n".join(s["content"] for s in lxml_backed.get_full_text_sections())), (
+            document.pmcid
+        )
 
 
 class TestCommentsAreNotContent:
@@ -104,9 +102,7 @@ class TestCommentsAreNotContent:
             surfaces = {
                 "to_plaintext": backend.to_plaintext(),
                 "licence text": (backend.extract_license() or {}).get("text") or "",
-                "sections": "\n".join(
-                    s["content"] for s in backend.get_full_text_sections()
-                ),
+                "sections": "\n".join(s["content"] for s in backend.get_full_text_sections()),
                 "abstract": str(backend.extract_metadata().get("abstract") or ""),
             }
             for where, rendered in surfaces.items():
