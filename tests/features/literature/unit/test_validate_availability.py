@@ -15,6 +15,8 @@ import pytest
 from pyeuropepmc.features.literature import query_builder as qb_module
 from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
+pytestmark = pytest.mark.unit
+
 
 class TestValidateWithSearchQueryInstalled:
     """search-query is a declared runtime dependency, so it is installed."""
