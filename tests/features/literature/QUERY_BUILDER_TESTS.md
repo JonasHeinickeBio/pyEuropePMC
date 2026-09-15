@@ -1,6 +1,11 @@
 # QueryBuilder Tests
 
-This directory contains tests for the `QueryBuilder` class, organized into unit and functional test suites.
+The tests for the `QueryBuilder` class live in `tests/features/literature/`, alongside the tests for the other literature modules, split into unit and functional suites:
+
+- `unit/`: `test_query_builder.py`, `test_query_load_save_translate.py`, `test_systematic_review_tracking.py`, `test_validate_availability.py`
+- `functional/`: `test_field_api_integration.py`
+
+Commands below that name a directory run every literature test in it; name the files above to run only the QueryBuilder tests.
 
 ## Test Organization
 
@@ -18,7 +23,7 @@ Unit tests verify the QueryBuilder logic **without making API calls**:
 
 **Run unit tests:**
 ```bash
-pytest tests/query_builder/unit/ -v
+pytest tests/features/literature/unit/ -v
 ```
 
 ### Functional Tests (`functional/`)
@@ -35,13 +40,13 @@ Functional tests validate QueryBuilder **with real Europe PMC API calls**:
 **Run functional tests:**
 ```bash
 # All functional tests (slow - makes many API calls)
-pytest tests/query_builder/functional/ -v -m functional
+pytest tests/features/literature/functional/ -v -m functional
 
 # Run a specific test
-pytest tests/query_builder/functional/test_field_api_integration.py::TestFieldAPIIntegration::test_title_field -v
+pytest tests/features/literature/functional/test_field_api_integration.py::TestFieldAPIIntegration::test_title_field -v -m functional
 
 # Run tests for specific fields
-pytest tests/query_builder/functional/ -k "test_title_field or test_author_field" -v
+pytest tests/features/literature/functional/ -k "test_title_field or test_author_field" -v -m functional
 ```
 
 **Note:** Functional tests are marked with `@pytest.mark.functional` and `@pytest.mark.slow` for selective execution.
@@ -112,17 +117,17 @@ def test_field_api_integration(self, client: SearchClient) -> None:
 ## Running All Tests
 
 ```bash
-# Run all QueryBuilder tests (unit + functional)
-pytest tests/query_builder/ -v
+# Run every test in unit/ and functional/ (-m "" clears the default marker filter)
+pytest tests/features/literature/unit/ tests/features/literature/functional/ -v -m ""
 
 # Run only unit tests (fast)
-pytest tests/query_builder/unit/ -v
+pytest tests/features/literature/unit/ -v
 
 # Run only functional tests (slow)
-pytest tests/query_builder/functional/ -v -m functional
+pytest tests/features/literature/functional/ -v -m functional
 
 # Run with coverage
-pytest tests/query_builder/ --cov=src/pyeuropepmc/query_builder --cov-report=html
+pytest tests/features/literature/unit/ tests/features/literature/functional/ --cov=pyeuropepmc.features.literature.query_builder --cov-report=html
 ```
 
 ## Test Configuration
@@ -170,9 +175,9 @@ In CI pipelines:
 ```yaml
 # Example GitHub Actions
 - name: Run unit tests
-  run: pytest tests/query_builder/unit/ -v
+  run: pytest tests/features/literature/unit/ -v
 
 - name: Run functional tests (on schedule only)
   if: github.event_name == 'schedule'
-  run: pytest tests/query_builder/functional/ -v -m functional
+  run: pytest tests/features/literature/functional/ -v -m functional
 ```
