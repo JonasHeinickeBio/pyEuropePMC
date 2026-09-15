@@ -13,6 +13,7 @@ Reported against 2.2.1:
 import xml.etree.ElementTree as ET
 
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
+    ContentBlock,
     ContentBlockExtractor,
     ContentBlockType,
     InlineElementType,
@@ -52,7 +53,7 @@ def _extractor() -> ContentBlockExtractor:
     return ContentBlockExtractor(ET.fromstring("<article/>"))
 
 
-def _paragraph_blocks(xml: str):
+def _paragraph_blocks(xml: str) -> list[ContentBlock]:
     return _extractor()._handle_paragraph(ET.fromstring(xml))
 
 
@@ -61,26 +62,28 @@ def _squash(text: str) -> str:
 
 
 class TestTableInsideParagraph:
-    def test_the_table_becomes_a_block_between_the_paragraph_text(self):
+    """A <table-wrap> inside a <p> becomes a table block between paragraph blocks."""
+
+    def test_the_table_becomes_a_block_between_the_paragraph_text(self) -> None:
         blocks = _paragraph_blocks(f"<p>Doses are listed below.{TABLE}They were tolerated.</p>")
         assert [b.type for b in blocks] == [PARAGRAPH, TABLE_BLOCK, PARAGRAPH]
         assert blocks[0].text == "Doses are listed below."
         assert blocks[2].text == "They were tolerated."
 
-    def test_the_table_block_keeps_label_caption_and_rows(self):
+    def test_the_table_block_keeps_label_caption_and_rows(self) -> None:
         table = _paragraph_blocks(f"<p>See {TABLE}</p>")[1]
         assert table.label == "Table 1"
         assert table.caption == "Doses Per group."
         assert table.rows == [["Group", "Dose"], ["A", "10 mg"], ["B", "20 mg"]]
 
-    def test_no_cell_text_is_left_in_the_paragraphs(self):
+    def test_no_cell_text_is_left_in_the_paragraphs(self) -> None:
         blocks = _paragraph_blocks(f"<p>See {TABLE} for details.</p>")
         assert " ".join(b.text for b in blocks if b.type == PARAGRAPH) == "See for details."
 
-    def test_a_paragraph_holding_only_a_table_yields_only_the_table(self):
+    def test_a_paragraph_holding_only_a_table_yields_only_the_table(self) -> None:
         assert [b.type for b in _paragraph_blocks(f"<p>{TABLE}</p>")] == [TABLE_BLOCK]
 
-    def test_inline_positions_after_the_table_index_the_new_paragraph(self):
+    def test_inline_positions_after_the_table_index_the_new_paragraph(self) -> None:
         blocks = _paragraph_blocks(f"<p>Before.{TABLE} Then <bold>bold</bold> text.</p>")
         after = blocks[-1]
         assert after.text == "Then bold text."
@@ -89,13 +92,15 @@ class TestTableInsideParagraph:
 
 
 class TestFigureInsideParagraph:
-    def test_the_figure_becomes_a_block_between_the_paragraph_text(self):
+    """A <fig> inside a <p> becomes a figure block between paragraph blocks."""
+
+    def test_the_figure_becomes_a_block_between_the_paragraph_text(self) -> None:
         blocks = _paragraph_blocks(f"<p>Binding is shown in{FIGURE}and quantified below.</p>")
         assert [b.type for b in blocks] == [PARAGRAPH, FIGURE_BLOCK, PARAGRAPH]
         assert blocks[0].text == "Binding is shown in"
         assert blocks[2].text == "and quantified below."
 
-    def test_the_figure_block_keeps_label_caption_and_graphic(self):
+    def test_the_figure_block_keeps_label_caption_and_graphic(self) -> None:
         figure = _paragraph_blocks(f"<p>{FIGURE}</p>")[0]
         assert (figure.label, figure.caption, figure.uri) == (
             "Fig. 1",
@@ -105,7 +110,9 @@ class TestFigureInsideParagraph:
 
 
 class TestOtherChildrenOfAParagraph:
-    def test_an_unrecognised_wrapper_is_still_walked_for_inlines(self):
+    """Children other than tables and figures stay in the paragraph."""
+
+    def test_an_unrecognised_wrapper_is_still_walked_for_inlines(self) -> None:
         blocks = _paragraph_blocks("<p>Before <foo>inner <bold>x</bold></foo> after.</p>")
         assert [b.type for b in blocks] == [PARAGRAPH]
         assert blocks[0].text == "Before inner x after."
@@ -114,21 +121,25 @@ class TestOtherChildrenOfAParagraph:
 
 
 class TestCaptionParts:
-    def test_a_caption_title_is_not_run_into_its_paragraph(self):
+    """A caption's title and paragraph are kept apart."""
+
+    def test_a_caption_title_is_not_run_into_its_paragraph(self) -> None:
         """Was "MechanismBinding in vitro." for every figure, nested or not."""
         figure = _extractor()._handle_figure(ET.fromstring(FIGURE))[0]
         assert figure.caption == "Mechanism Binding in vitro."
 
 
 class TestFrontMatterSections:
-    def test_title_and_abstract_are_front_and_the_body_is_body(self):
+    """The article title and abstract are front matter, not body sections."""
+
+    def test_title_and_abstract_are_front_and_the_body_is_body(self) -> None:
         parser = FullTextXMLParser(_article("<p>Body text.</p>"))
         types = {s["title"]: s["section_type"] for s in parser.get_full_text_sections_structured()}
         assert types["Article Title"] == "front"
         assert types["Abstract"] == "front"
         assert types["Results"] == "body"
 
-    def test_keeping_only_body_sections_leaves_title_and_abstract_out(self):
+    def test_keeping_only_body_sections_leaves_title_and_abstract_out(self) -> None:
         parser = FullTextXMLParser(_article("<p>Body text.</p>"))
         body = [
             block["text"]
@@ -140,10 +151,12 @@ class TestFrontMatterSections:
 
 
 class TestPlaintext:
-    def test_the_cells_of_a_table_inside_a_paragraph_stay_apart(self):
+    """to_plaintext() keeps nested table cells, and a figure label, apart."""
+
+    def test_the_cells_of_a_table_inside_a_paragraph_stay_apart(self) -> None:
         text = _squash(FullTextXMLParser(_article(f"<p>Doses:{TABLE}</p>")).to_plaintext())
         assert "Group Dose A 10 mg B 20 mg" in text
 
-    def test_a_figure_label_stays_apart_from_its_caption(self):
+    def test_a_figure_label_stays_apart_from_its_caption(self) -> None:
         text = _squash(FullTextXMLParser(_article(f"<p>See{FIGURE}</p>")).to_plaintext())
         assert "See Fig. 1 Mechanism Binding in vitro." in text
