@@ -228,6 +228,12 @@ _EXTRA_MARKERS = {
 # Categories whose tests may talk to the network when run on purpose.
 _NETWORK_CATEGORIES = {"functional", "integration", "network", "e2e"}
 
+# Categories a unit test is not. A test in none of them is marked ``unit`` in
+# pytest_collection_modifyitems, so ``pytest -m unit`` selects every fast,
+# hermetic test without each module declaring it. Explicit markers count too:
+# a ``network``- or ``slow``-marked test in an otherwise-unit module stays out.
+_NON_UNIT_CATEGORIES = {"functional", "integration", "network", "slow", "benchmark", "e2e", "gui"}
+
 
 def pytest_addoption(parser):
     import importlib.util
@@ -370,6 +376,10 @@ def pytest_collection_modifyitems(config, items):
             if mark_name not in categories:
                 item.add_marker(getattr(pytest.mark, mark_name))
                 categories.add(mark_name)
+
+        if "unit" not in categories and not categories & _NON_UNIT_CATEGORIES:
+            item.add_marker(pytest.mark.unit)
+            categories.add("unit")
 
         # Tests that may use the network: let the socket through so they work
         # when the user asks for them explicitly.

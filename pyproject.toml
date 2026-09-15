@@ -141,7 +141,8 @@ build-backend = "poetry.core.masonry.api"
 # see tests/conftest.py::pytest_configure) real sockets are blocked and each
 # test gets a 120s wall-clock cap. Categories are inferred from a test's path in
 # tests/conftest.py, so whole `functional/` and `integration/` directories are
-# excluded even when individual files carry no marker.
+# excluded even when individual files carry no marker, and a test in no other
+# category is marked `unit`.
 #   Run the excluded lanes explicitly:
 #     pytest -m functional            # or: pytest --run-real
 #     pytest -m benchmark --benchmark-only
@@ -153,7 +154,7 @@ asyncio_mode = "auto"
 markers = [
   "slow: mark test as slow (use '-m \"not slow\"' to skip)",
   "integration: mark test as integration (requires --run-integration)",
-  "unit: mark test as unit (use '-m \"not unit\"' to skip)",
+  "unit: fast, hermetic test; inferred in tests/conftest.py for any test in no other category",
   "network: needs outbound network access; excluded by default",
   "functional: exercises real services / full pipelines; excluded by default",
   "benchmark: pytest-benchmark performance test; excluded by default",
