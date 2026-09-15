@@ -11,6 +11,8 @@ import pytest
 from pyeuropepmc import QueryBuilder
 from pyeuropepmc.utils.search_logging import start_search
 
+pytestmark = pytest.mark.unit
+
 
 class TestSystematicReviewTracking:
     """Test systematic review tracking integration."""

@@ -15,6 +15,8 @@ from pyeuropepmc.features.literature.normalization import (
     normalize_to_nfkc,
 )
 
+pytestmark = pytest.mark.unit
+
 
 # ===========================================================================
 # NFKC

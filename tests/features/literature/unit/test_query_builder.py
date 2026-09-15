@@ -17,6 +17,7 @@ from pyeuropepmc.core.exceptions import QueryBuilderError
 from pyeuropepmc.features.literature.query_builder import QueryBuilder
 
 
+@pytest.mark.unit
 class TestQueryBuilderBasics:
     """Test basic query builder functionality."""
 
@@ -59,6 +60,7 @@ class TestQueryBuilderBasics:
         assert "cancer" in repr_str
 
 
+@pytest.mark.unit
 class TestFieldMethod:
     """Test field-specific query helper methods."""
 
@@ -99,6 +101,7 @@ class TestFieldMethod:
             qb.field("mesh", "")
 
 
+@pytest.mark.unit
 class TestDateRangeFilters:
     """Test date range filtering functionality."""
 
@@ -154,6 +157,7 @@ class TestDateRangeFilters:
             qb.date_range(start_date="2020/01/01")
 
 
+@pytest.mark.unit
 class TestCitationCountFilters:
     """Test citation count filtering functionality."""
 
@@ -188,6 +192,7 @@ class TestCitationCountFilters:
             qb.citation_count(min_count=100, max_count=10)
 
 
+@pytest.mark.unit
 class TestBooleanFilters:
     """Test boolean filter helpers."""
 
@@ -216,6 +221,7 @@ class TestBooleanFilters:
         assert query == "HAS_TEXT:y"
 
 
+@pytest.mark.unit
 class TestIdentifierSearch:
     """Test identifier-based search methods."""
 
@@ -262,6 +268,7 @@ class TestIdentifierSearch:
             qb.field("doi", "")
 
 
+@pytest.mark.unit
 class TestLogicalOperators:
     """Test logical operator functionality."""
 
@@ -327,6 +334,7 @@ class TestLogicalOperators:
             qb.keyword("cancer").and_().build()
 
 
+@pytest.mark.unit
 class TestGrouping:
     """Test query grouping functionality."""
 
@@ -348,6 +356,7 @@ class TestGrouping:
             qb.group(sub)
 
 
+@pytest.mark.unit
 class TestRawQueries:
     """Test raw query string functionality."""
 
@@ -364,6 +373,7 @@ class TestRawQueries:
             qb.raw("")
 
 
+@pytest.mark.unit
 class TestMethodChaining:
     """Test method chaining fluent API."""
 
@@ -415,6 +425,7 @@ class TestMethodChaining:
         assert "OR" in query
 
 
+@pytest.mark.unit
 class TestRealWorldScenarios:
     """Test real-world usage scenarios."""
 
@@ -487,6 +498,7 @@ class TestRealWorldScenarios:
         assert "machine learning" in query or '"machine learning"' in query
 
 
+@pytest.mark.unit
 class TestExtendedFieldMethods:
     """Test extended field-specific methods from Europe PMC documentation."""
 
@@ -655,6 +667,7 @@ class TestExtendedFieldMethods:
 
 
 # Integration test with search-query package (if available)
+@pytest.mark.unit
 class TestValidation:
     """Test query validation functionality."""
 
@@ -702,6 +715,7 @@ class TestFieldValidation:
         ):
             yield
 
+    @pytest.mark.unit
     def test_get_available_fields(self) -> None:
         """Test fetching available fields from API."""
         pytest.importorskip("requests")
@@ -719,6 +733,7 @@ class TestFieldValidation:
         assert "text_hl" in fields
         assert all(isinstance(f, str) for f in fields)
 
+    @pytest.mark.unit
     def test_get_available_fields_requires_requests(self) -> None:
         """Test that get_available_fields requires requests library."""
         # This test checks if ImportError is raised when requests is not available
@@ -728,6 +743,7 @@ class TestFieldValidation:
 
         assert callable(get_available_fields)
 
+    @pytest.mark.unit
     def test_validate_field_coverage(self) -> None:
         """Test field coverage validation."""
         pytest.importorskip("requests")
@@ -764,6 +780,7 @@ class TestFieldValidation:
         assert result["coverage_percent"] == 100.0
         assert result["up_to_date"] is True
 
+    @pytest.mark.unit
     def test_validate_field_coverage_verbose(self) -> None:
         """Test field coverage validation with verbose output."""
         pytest.importorskip("requests")
@@ -793,6 +810,7 @@ class TestFieldValidation:
         )
         assert _extract_field_names(fixture) == live
 
+    @pytest.mark.unit
     def test_field_type_includes_common_fields(self) -> None:
         """Test that FieldType includes commonly used fields."""
         import typing
@@ -820,6 +838,7 @@ class TestFieldValidation:
         for field in common_fields:
             assert field in fields, f"Common field '{field}' not in FieldType"
 
+    @pytest.mark.unit
     def test_field_type_includes_aliases(self) -> None:
         """Test that FieldType includes both full and abbreviated field names."""
         import typing

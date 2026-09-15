@@ -10,6 +10,8 @@ from pyeuropepmc.cache.cache import CacheConfig
 from pyeuropepmc.features.literature.annotations import AnnotationsClient
 from pyeuropepmc.core.exceptions import ValidationError
 
+pytestmark = pytest.mark.unit
+
 
 @pytest.fixture
 def annotations_client():

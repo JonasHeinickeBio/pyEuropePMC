@@ -17,7 +17,12 @@ import pytest
 
 from pyeuropepmc.utils.dependencies import is_dependency_available
 
-pytestmark = pytest.mark.skipif(not is_dependency_available("search_query"), reason="skipped due to missing search_query")
+pytestmark = [
+    pytest.mark.unit,
+    pytest.mark.skipif(
+        not is_dependency_available("search_query"), reason="skipped due to missing search_query"
+    ),
+]
 
 from pyeuropepmc.core.exceptions import QueryBuilderError
 from pyeuropepmc.features.literature.query_builder import QueryBuilder
