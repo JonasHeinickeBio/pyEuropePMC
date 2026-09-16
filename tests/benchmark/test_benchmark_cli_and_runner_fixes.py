@@ -203,8 +203,9 @@ class TestSkipErrors:
         result = runner.invoke(
             app, ["benchmark", "run", "local", "--local-path", str(broken_dir), "--no-skip-errors"]
         )
-        assert result.exit_code != 0
-        assert result.exception is not None
+        # the parse error itself, not a usage error (exit code 2) for an unknown option
+        assert result.exit_code == 1, result.output
+        assert "PARSE002" in str(result.exception)
 
     @needs_typer
     def test_cli_skips_errors_by_default(self, broken_dir):
