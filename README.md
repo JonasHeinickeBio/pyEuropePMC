@@ -111,6 +111,7 @@ pyeuropepmc benchmark list-datasets
 
 ```bash
 pyeuropepmc-mcp                                # stdio, for Claude Desktop and similar clients
+pyeuropepmc mcp                                # the same server, through the CLI
 pyeuropepmc-mcp --transport streamable-http    # HTTP at http://127.0.0.1:8000/mcp
 ```
 
@@ -125,6 +126,8 @@ For Claude Desktop and other clients that start the server themselves:
   }
 }
 ```
+
+Without an install, `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]` does the same; this is what the MCP Registry entry tells clients to run.
 
 The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
 

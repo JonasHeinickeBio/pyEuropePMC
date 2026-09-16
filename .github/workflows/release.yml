@@ -16,13 +16,16 @@ on:
   # thing this would have caught for free). Dispatch against a branch, not a
   # tag: `github.ref_type` is then "branch", so `github-release` and
   # `publish-mcp-registry` below (both gated on `ref_type == 'tag'`) don't
-  # fire - only `verify` → `build` → `attest` → `publish` (to testpypi) run.
+  # fire - only `verify` → `build` → `attest` → `publish` run, and the upload
+  # goes to TestPyPI: that is the default, and pypi.org is refused from
+  # anything but a version tag (see "Refuse a production publish" in `verify`
+  # and "Confirm the publish target" in `publish`).
   workflow_dispatch:
     inputs:
       environment:
-        description: 'PyPI environment (testpypi or pypi)'
+        description: 'PyPI environment (pypi requires a v* tag)'
         required: true
-        default: 'pypi'
+        default: 'testpypi'
         type: choice
         options:
           - testpypi
@@ -53,6 +56,18 @@ jobs:
       contents: read
 
     steps:
+      # First step of the whole workflow: a dispatch that asks for pypi.org
+      # from a branch stops here, in seconds, instead of building a branch
+      # snapshot and burning a version number on the real index.
+      - name: Refuse a production publish outside a version tag
+        if: inputs.environment == 'pypi' && github.ref_type != 'tag'
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          echo "::error::Publishing to pypi.org needs a v* tag; this run is on $REF_TYPE '$REF_NAME'. Re-run with -f environment=testpypi, or push the tag."
+          exit 1
+
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           lfs: true
@@ -151,6 +166,14 @@ jobs:
           done
           echo "Both distributions install, import and expose the CLI."
 
+      - name: Check the packaging metadata and the PyPI long description
+        run: |
+          set -euo pipefail
+          # README.md is the long description; PyPI rejects a description it
+          # cannot render, and only readme_renderer[md] can tell us here.
+          python -m pip install --quiet 'twine>=6.2,<7' 'readme_renderer[md]>=44'
+          python -m twine check --strict dist/*
+
       - name: Extract release notes from CHANGELOG
         # Runs unconditionally so the artifact always has the file; on a
         # non-tag dispatch it is simply empty.
@@ -241,6 +264,19 @@ jobs:
           ls -la dist/
           sha256sum dist/*
 
+      - name: Confirm the publish target
+        env:
+          TARGET: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'pypi' }}
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          echo "Target index: $TARGET (from $REF_TYPE '$REF_NAME')"
+          if [ "$TARGET" = "pypi" ] && [ "$REF_TYPE" != "tag" ]; then
+            echo "::error::Refusing to upload to pypi.org from $REF_TYPE '$REF_NAME'." >&2
+            exit 1
+          fi
+
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@dc37677b2e1c63e2034f94d8a5b11f265b73ba33 # v1.14.2
         with:
@@ -283,7 +319,7 @@ jobs:
   # https://registry.modelcontextprotocol.io by any MCP-aware agent, not just
   # people who already know this repository exists. Uses OIDC (no secret): the
   # registry trusts that this workflow can only run from JonasHeinickeBio's
-  # own repo to prove ownership of the io.github.jonasheinickebio/* namespace.
+  # own repo to prove ownership of the io.github.JonasHeinickeBio/* namespace.
   # Never fails the release itself if the registry has a bad day.
   # ---------------------------------------------------------------------------
   publish-mcp-registry:
@@ -295,7 +331,7 @@ jobs:
     continue-on-error: true
 
     permissions:
-      id-token: write # OIDC auth for io.github.jonasheinickebio/* - no secret needed
+      id-token: write # OIDC auth for io.github.JonasHeinickeBio/* - no secret needed
       contents: read
 
     steps:
