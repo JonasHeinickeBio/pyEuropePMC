@@ -282,7 +282,8 @@ def pytest_runtest_makereport(item, call):
 
     The functional suite calls live services (Europe PMC, Zenodo, DOAJ, DBLP,
     HAL, CORE, iCite). When one of them is slow or down, the client correctly
-    raises NET001/NET002 - that is the client behaving as designed, and says
+    raises NET001/NET002, or HTTP502/HTTP503/HTTP504 for a gateway or service that
+    is down - that is the client behaving as designed, and says
     nothing about whether the code under test is correct. Failing the build for
     it turns someone else's uptime into our red CI: `zenodo.org ... Read timed
     out. (read timeout=3)` did exactly that.
@@ -306,6 +307,10 @@ def pytest_runtest_makereport(item, call):
     network = (
         "NET001" in text
         or "NET002" in text
+        # A Europe PMC request reported these as NET001 before they got their own codes.
+        or "HTTP502" in text
+        or "HTTP503" in text
+        or "HTTP504" in text
         or "Read timed out" in text
         or "Max retries exceeded" in text
         or "Connection refused" in text

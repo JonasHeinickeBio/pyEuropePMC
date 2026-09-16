@@ -49,7 +49,7 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 ## How SearchClient reports failed requests
 
 - `search()` checks the query, the page size and the format before sending anything, and raises `SEARCH001`, `SEARCH002` or `SEARCH004`.
-- A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code is `HTTP403`, `HTTP404`, `HTTP500` or `RATE429` for those statuses, `FULL007` for a closed client, and `NET001` for anything else.
+- A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code names the HTTP status: `AUTH401` for 401, `RATE429` for 429, and the `HTTP…` code for the other statuses in the [HTTP table](#http-status-http), such as `HTTP404` or `HTTP503`. It is `FULL007` for a closed client, and `NET001` for a network error, a timeout or a status without a code of its own.
 - `search_all()` and `fetch_all_pages()` do not raise when a request fails: they stop and return the records collected so far. `search_ids_only()` returns an empty list on any error.
 
 ## Network: NET
@@ -65,6 +65,8 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 | `NET007` | Connection interrupted during transfer | Not raised | Retry |
 
 ## HTTP status: HTTP
+
+The Europe PMC clients raise the code of every status in this table except `HTTP401` and `HTTP429`: `ArticleClient`, `AnnotationsClient` and `FullTextClient` directly, `SearchClient` in `err.__cause__` of its `NET001` error. A status that is not in the table raises `NET001`, with the status in `err.context["status_code"]`. The Raised by column lists where else a code comes from.
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
@@ -84,9 +86,9 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `AUTH401` | The service rejected the credentials | Multi-source search clients | Europe PMC needs no key. For a source that needs one, pass `UnifiedSearch(credentials={"api_key": ...})` or set its variable, such as `CORE_API_KEY` |
+| `AUTH401` | The service rejected the credentials | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__` (a 401 response); multi-source search clients | Europe PMC needs no key. For a source that needs one, pass `UnifiedSearch(credentials={"api_key": ...})` or set its variable, such as `CORE_API_KEY` |
 | `AUTH403` | The credentials lack permission | Not raised | Check the key's permissions |
-| `RATE429` | Rate limit exceeded | Requests by `ArticleClient`, `FullTextClient` and `SearchClient` (in `err.__cause__`); multi-source search clients | Increase `rate_limit_delay`, send fewer requests, retry later |
+| `RATE429` | Rate limit exceeded | Requests by `ArticleClient`, `AnnotationsClient` and `FullTextClient`, and by `SearchClient` in `err.__cause__`; multi-source search clients | Increase `rate_limit_delay`, send fewer requests, retry later |
 | `RETRY001` | Retries exhausted | Multi-source search clients | Retry later; raise `rate_limit_delay` or lower `max_workers` in `UnifiedSearch` |
 | `RETRY002` | Invalid `Retry-After` header | Not raised | Wait and retry |
 

@@ -464,6 +464,38 @@ ERROR_MESSAGES: dict[str, str] = {
 }
 
 
+# The error code for each HTTP status that has one. 401 and 429 use the AUTH and
+# RATE codes, as documented; HTTP401 and HTTP429 are not raised.
+HTTP_STATUS_ERROR_CODES: dict[int, ErrorCodes] = {
+    400: ErrorCodes.HTTP400,
+    401: ErrorCodes.AUTH401,
+    403: ErrorCodes.HTTP403,
+    404: ErrorCodes.HTTP404,
+    405: ErrorCodes.HTTP405,
+    406: ErrorCodes.HTTP406,
+    407: ErrorCodes.HTTP407,
+    408: ErrorCodes.HTTP408,
+    410: ErrorCodes.HTTP410,
+    413: ErrorCodes.HTTP413,
+    414: ErrorCodes.HTTP414,
+    415: ErrorCodes.HTTP415,
+    416: ErrorCodes.HTTP416,
+    429: ErrorCodes.RATE429,
+    500: ErrorCodes.HTTP500,
+    501: ErrorCodes.HTTP501,
+    502: ErrorCodes.HTTP502,
+    503: ErrorCodes.HTTP503,
+    504: ErrorCodes.HTTP504,
+}
+
+
+def error_code_for_status(status_code: object) -> ErrorCodes | None:
+    """Return the error code for an HTTP status, or None if it has no specific code."""
+    if not isinstance(status_code, int):
+        return None
+    return HTTP_STATUS_ERROR_CODES.get(status_code)
+
+
 def get_error_message(error_code: ErrorCodes | str, include_help_link: bool = False) -> str:
     """
     Get the error message for a given error code.
