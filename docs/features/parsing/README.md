@@ -461,9 +461,8 @@ These were found by checking the parser's output against the source XML of real 
   - `extract_funding()` reports one recipient as `recipient_full`; the rest are in `recipients`.
   - An affiliation's address is split by heuristics, so `city`, `postal_code` and `country` are often wrong for markup that does not tag them.
 - **References.**
-  - `authors` is one string that cannot always be split into people; PLOS references run surname and initials together ("NewtonSI"), and collaboration authors are dropped.
-  - `title` falls back to `source` for software and some books.
-  - A pass over the flattened citation text can overwrite correctly tagged pages or DOIs.
+  - `authors` is one string that cannot always be split into people, because the parts of a name and the names themselves are both joined with ", ". An author written as plain text between tagged names is left out: PLOS's `<name>…</name>, Ankit, <name>…</name>` gives `"Yadav, AK, Kumar, V, Mohan, S"`.
+  - A citation that is only text has its authors, title, source, year, volume and pages guessed from that text, and the guesses can be wrong; a journal abbreviation containing a full stop is cut short, so "Cell Commun. Signal." becomes `"Cell Commun"`.
 - **Structured sections.**
   - Front-matter `<notes>` are typed `back`. The `peer_review` section type is produced only by `PeerReviewExtractor`; `get_full_text_sections_structured()` leaves sub-articles out.
   - Appendix sections have no `section_path`, and a path is ambiguous when a title contains `/`.
