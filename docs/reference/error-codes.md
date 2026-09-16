@@ -31,11 +31,11 @@ The messages of the `HTTP` codes, and any message built with `get_error_message(
 
 ## Exception classes
 
-All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyEuropePMCError`.
+All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyEuropePMCError`, which is also exported as `pyeuropepmc.EuropePMCError`. Catching either name catches everything in the table below.
 
 | Exception | Raised by | Codes |
 |---|---|---|
-| `SearchError`, exported as `pyeuropepmc.EuropePMCError` | `SearchClient` | `SEARCH001`–`SEARCH005`, `NET001` |
+| `SearchError` | `SearchClient` | `SEARCH001`–`SEARCH005`, `NET001` |
 | `APIClientError` | Requests made by `ArticleClient`, `AnnotationsClient`, `FullTextClient`, the multi-source search clients and the enrichment clients | `NET001`, `NET002`, `HTTP…`, `AUTH401`, `RATE429`, `RETRY001`, `API001`, `FULL007`, `GENERIC002` |
 | `FullTextError` | `FullTextClient`, `FTPDownloader` | `FULL001`–`FULL011` |
 | `ParsingError` | `FullTextXMLParser`, `EuropePMCParser`, `SearchClient.search_and_parse()` | `PARSE001`–`PARSE004` |
