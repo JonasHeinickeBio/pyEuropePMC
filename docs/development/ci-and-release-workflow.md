@@ -1,201 +1,168 @@
-# CI, branch protection, and the release pipeline
+# CI, branch protection and releases
 
-How `main` is protected, how the CI workflows are structured (and why the OS
-matrix behaves differently on a PR vs. a push), and how a release actually
-goes out. Written after a review of the actual `.github/workflows/*.yml`
-files and the repository's branch-protection ruleset — everything below
-reflects what is actually configured, not an aspirational description.
+This page describes how `main` is protected, what each GitHub Actions workflow does, how dependency updates pass CI, and how a release is made. It reflects the files in `.github/workflows/` and the repository settings as of September 2026.
 
 ## Branch protection on `main`
 
-`main` is protected by a repository ruleset named **"Protect Main"**
-(`Settings → Rules → Rulesets`, or `GET /repos/{owner}/{repo}/rulesets`).
-It currently enforces:
+`main` is protected by a repository ruleset named **Protect Main** (Settings → Rules → Rulesets, or `gh api repos/JonasHeinickeBio/pyEuropePMC/rulesets`). It enforces:
 
-| Rule | What it does |
+| Rule | Effect |
 |---|---|
 | `deletion` | `main` cannot be deleted. |
-| `non_fast_forward` | History on `main` cannot be rewritten (no force-push). |
-| `pull_request` | **All changes must go through a PR** — direct pushes to `main` are rejected outright, not just non-fast-forward ones. 0 required approvals (see below for why), all three merge methods allowed. |
-| `required_status_checks` | A PR cannot merge until these all pass, **and** the branch must be up to date with `main` (`strict_required_status_checks_policy: true`): `Lint, types & security`, `Tests & coverage`, `Unit tests (core deps only)`, `Compatibility Summary`. |
+| `non_fast_forward` | History on `main` cannot be rewritten. |
+| `pull_request` | Every change goes through a pull request; direct pushes are rejected. No approvals are required, and merge, squash and rebase merges are all allowed. |
+| `required_status_checks` | A pull request can merge only when these checks pass and the branch is up to date with `main` (`strict_required_status_checks_policy: true`): `Lint, types & security`, `Tests & coverage`, `Unit tests (core deps only)`, `Compatibility Summary` and `zizmor`. |
 
-**No bypass, for anyone, ever**: `bypass_actors` is empty and
-`current_user_can_bypass` is `"never"` — this predates the checks/PR rules
-added here (the `deletion`/`non_fast_forward` rules already had no bypass)
-and was kept consistent. Two direct consequences:
+Nobody can bypass the ruleset: `bypass_actors` is empty. That has two consequences:
 
-- **0 required approvals is deliberate, not an oversight.** With zero
-  bypass actors, requiring even 1 approval would lock a solo maintainer out
-  of merging their own PRs — GitHub doesn't let you approve your own PR by
-  default, and there'd be no escape hatch.
-- There is no "just this once" override for an emergency hotfix. A fix to
-  `main` always means: branch, PR, wait for the four checks, merge.
+- **Requiring no approvals is deliberate.** With no bypass actors, one required approval would stop a sole maintainer from merging their own pull requests, because GitHub does not let authors approve their own.
+- There is no emergency override. A hotfix goes through a branch, a pull request and the required checks like any other change.
 
-## Why there's no merge queue
+## Why there is no merge queue
 
-GitHub's native **Merge Queue is only available on organization-owned
-repositories.** `pyEuropePMC` is owned by a personal account
-(`JonasHeinickeBio`), and the ruleset API rejects the `merge_queue` rule
-outright for that reason — confirmed by testing it in complete isolation
-(no other rules), which still failed with the same opaque
-`Invalid rule 'merge_queue'` 422. This is a hard platform restriction, not
-a configuration problem to work around.
+GitHub's merge queue is available only to repositories owned by an organization. `pyEuropePMC` belongs to a personal account (`JonasHeinickeBio`), and the ruleset API rejects a `merge_queue` rule with `Invalid rule 'merge_queue'` (HTTP 422), even when it is the only rule in the request.
 
-**Substitute in place instead:** `pull_request` (no direct pushes) +
-`required_status_checks` with `strict_required_status_checks_policy: true`
-(branch must be up to date) + repository-level auto-merge (see below). This
-gets most of the same safety property — nothing merges without the checks
-passing against a current base — for a repo with low enough PR volume that
-the one thing a real queue adds (re-validating against a base that changed
-*after* your last "up to date" check, when two PRs land back-to-back) is a
-negligible risk.
+The ruleset uses the closest substitute: pull requests only, required checks against an up-to-date branch, and [auto-merge](#auto-merge). What a queue would add, re-testing against a base that changed after the branch was last updated, matters little at this repository's pull request volume.
 
-If this repository is ever transferred to a GitHub organization, enabling
-the queue is just adding a `merge_queue` rule to this same ruleset — the
-workflows are already wired for it (next section).
+If the repository moves to an organization, adding a `merge_queue` rule to the same ruleset is enough; the workflows already handle the `merge_group` event.
 
-## CI workflow structure
+## Workflows
 
-| Workflow | File | Runs on | What it checks |
+### Pull request and push workflows
+
+| Workflow | File | Triggers | What it does |
 |---|---|---|---|
-| CI | `cdci.yml` | push to `main`, PR, merge queue, manual | Lint (`ruff`), type-check (`mypy`), bandit, full test suite with `--all-extras`, coverage ≥75% |
-| CI — Light core install | `unit-tests.yml` | push to `main`, PR, merge queue, manual | Tests against a bare `pip install pyeuropepmc` (no extras) — proves the optional-dependency split actually works |
-| Python Version Compatibility Matrix | `python-compatibility.yml` | push to `main`, every PR, merge queue, weekly, manual | Syntax/import checks on 3.10–3.13; full test suite on a matrix of Python version × OS |
-| Workflow security audit | `zizmor.yml` | push to `.github/**`, every PR, merge queue, weekly, manual | Audits every workflow/action file with [zizmor](https://docs.zizmor.sh/) (pinned version, for reproducibility) |
+| CI | `cdci.yml` | push to `main`, pull request, merge group, manual | `Lint, types & security` runs ruff, the format check, mypy, the `requirements.txt` sync check, `poetry check --lock` and bandit. `Tests & coverage` runs the default test suite with all extras, enforces the 75% coverage threshold and uploads reports to Codecov and Coveralls. `CodeScene delta (advisory)` runs `cs delta` when the `CS_ACCESS_TOKEN` secret is available and never fails the workflow. |
+| CI — Light core install | `unit-tests.yml` | push to `main`, pull request, merge group, manual | Installs the locked core dependencies and the `dev` group without any extra, checks that representative optional packages (pandas, matplotlib, flask, langchain, openai, semanticscholar) are absent, and runs `pyeuropepmc --help` and the default test suite. |
+| Python Version Compatibility Matrix | `python-compatibility.yml` | push to `main`, pull request, merge group, Sundays at 06:00 UTC, manual | Compiles and imports the package on Python 3.10 to 3.13, runs the default test suite on Python 3.10 and 3.12 across operating systems, and reports both stages in `Compatibility Summary`. |
+| Workflow security audit | `zizmor.yml` | push to `main` that changes `.github/workflows/`, `.github/actions/` or `.github/zizmor.yml`; pull request; merge group; Wednesdays at 05:00 UTC; manual | Audits the workflow and action files with zizmor 1.30.1, uploads the results to code scanning and fails on findings of medium severity or higher. |
+| CI — Functional Tests | `integration-tests.yml` | push to `main`, nightly at 03:00 UTC, manual | Runs `pytest -m functional --run-integration` with all extras against the live services. On failure it opens a single issue labelled `functional-test-failure`, or comments on the open one, and the job fails. |
+| Deploy Documentation to GitHub Pages | `deploy-docs.yml` | push to `main` or pull request that changes `docs/` or the workflow, manual | Builds `docs/` with Jekyll and deploys it to GitHub Pages, except on pull requests. |
+| Pull Request Labeler | `labeler.yml` | pull request opened or updated | Applies labels according to `.github/labeler.yml`. |
+| Greetings | `greetings.yml` | issue or pull request opened | Welcomes first-time contributors; skips the repository owner and bots. |
+| Enhance new issues | `enhanceIssue.yml` | issue opened by a person | Rewrites the issue's title and body with `actions/ai-inference`. |
+| Summarize new issues | `summary.yml` | issue opened by a person | Comments with a summary generated by `actions/ai-inference`. |
 
-### The OS matrix is intentionally reduced on a PR, full everywhere else
+### Scheduled and release workflows
 
-`python-compatibility.yml`'s `config` job computes the OS matrix once, up
-front:
+| Workflow | File | Triggers | What it does |
+|---|---|---|---|
+| Weekly Benchmarks | `benchmark.yml` | Mondays at 02:00 UTC, manual | Runs the modular benchmark against the live API and opens a pull request that updates the benchmark section of `README.md` and `.github/benchmark-history.json`. A manual run with `commit_results` set to false opens no pull request. |
+| Feature Suggester | `analyze_repo.yml` | Mondays at 03:00 UTC, manual | Analyses the repository and files improvement suggestions as issues; see [Feature Suggester workflow](feature-suggester.md). |
+| Publish to PyPI | `release.yml` | tag `v*`, manual | Publishes a release; see [Release process](#release-process). |
+| Update Changelog | `changelog.yml` | tag `v*.*.*`, manual | When `CHANGELOG.md` has no section for the version, generates one from the commit subjects since the previous tag and opens a pull request with it. |
+| Manage Stale Issues and PRs | `stale.yml` | daily at 02:30 UTC, manual | Marks issues stale after 60 days without activity and closes them 7 days later; marks pull requests stale after 30 days and closes them 14 days later. Assigned items and items with exempt labels are left alone. |
 
-- **`pull_request`**: Ubuntu only. Windows and (especially) macOS runners
-  are the expensive legs; a PR-time Linux signal catches most cross-platform
-  breakage at a fraction of the cost.
-- **Everything else** (`push` to `main`, `schedule`, `workflow_dispatch`,
-  and `merge_group`): the full `ubuntu-latest` / `windows-latest` /
-  `macos-latest` matrix.
+Two further checks have no workflow file. CodeQL runs through GitHub's default code scanning setup for Python and GitHub Actions. Dependabot opens weekly update pull requests for the Python dependencies and for the actions in `.github/workflows/` and `.github/actions/setup-python-env/` (`.github/dependabot.yml`).
 
-This is a real, previously-demonstrated gap: the Windows-only
-`asyncio`/`pytest-socket` regression from the MCP server rewrite (#190)
-passed PR CI clean and only broke on the post-merge push-to-`main` run,
-requiring a follow-up fix (#202). `merge_group` was added specifically to
-close this — see below — but until/unless this repo can actually use a
-merge queue, that trigger is currently **dead code**: it's wired up and
-will work the moment a queue exists, but nothing fires it today.
+Jobs that need the project install it through the composite action `.github/actions/setup-python-env`. It installs Poetry 2.3.2 and poetry-plugin-export 1.10.0 with pip, exports the locked versions for the requested extras and dependency groups, and installs them into a fresh `.venv` with uv. `poetry lock` never runs in CI.
 
-### A required check must run — and report — on *every* PR
+### The OS matrix is reduced on pull requests
 
-`python-compatibility.yml` and `zizmor.yml` both used to filter their
-`pull_request` trigger with a `paths:` list (source/test files for the
-former, `.github/**` for the latter). That interacts badly with making
-either workflow's summary job a **required** status check: a workflow
-suppressed by a `paths:` filter never runs *at all*, so it never reports
-anything, and a required check that never reports leaves the PR stuck
-forever on "Expected — waiting for status to be reported." There's no
-"not applicable, treat as passed" concept for a check that never ran. This
-is exactly how it was found — on the PR that added this document, which
-touched neither workflow's original path list.
+The `config` job in `python-compatibility.yml` computes the operating-system matrix up front:
 
-**The fix moves the filtering from the trigger into a job condition**,
-[per GitHub's own troubleshooting
-guidance](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks):
-a workflow *suppressed by `paths:`* never reports, but a *job skipped by
-an `if:`* reports success. Concretely, in `python-compatibility.yml`:
+- **Pull requests** run on Ubuntu only. Windows and especially macOS runners are the expensive legs, and Linux catches most breakage.
+- **Everything else** (pushes to `main`, the weekly schedule, manual runs and `merge_group`) runs on Ubuntu, Windows and macOS.
 
-- The `config` job's "Decide whether this event needs the matrix" step
-  resolves an actual `relevant` output: `push`/`merge_group`/`schedule`/
-  `workflow_dispatch` are always relevant; for a `pull_request`, it fetches
-  the PR's changed files (`gh api repos/{repo}/pulls/{n}/files`) and checks
-  them against the same path patterns the old filter used.
-- `syntax-check` and `core-tests` are gated with
-  `if: needs.config.outputs.relevant == 'true'` — they simply don't run
-  for an irrelevant PR.
-- **`compatibility-summary`** (the `Compatibility Summary` check) runs
-  `if: always()` regardless, and only fails the job on an explicit
-  `failure` from its dependencies — so a skip still produces a *passing*
-  `Compatibility Summary`. **That's the job to name as the required check**,
-  never `syntax-check` or `core-tests` directly (those genuinely don't run
-  for an irrelevant PR, so requiring them would reintroduce the exact same
-  bug).
+The gap is real: a Windows-only failure between asyncio and pytest-socket after the MCP server rewrite (#190) passed the pull request checks, broke only on the push to `main`, and needed a follow-up fix (#202). The `merge_group` trigger would close the gap by running the full matrix before merging, but without a merge queue nothing sends that event.
 
-`zizmor.yml` got the identical treatment: a `changes` job resolves
-relevance from the PR's file list, and the actual audit job is gated on it.
+### Required checks must report on every pull request
 
-**The general rule, going forward:** before naming any job as a required
-status check, confirm two things — its workflow triggers unconditionally
-on `pull_request` (no `paths:` filter on the trigger itself), and the named
-job specifically still runs and reports even when its upstream work was
-skipped. A `paths:` filter on the *trigger* and "required check" don't mix;
-a `paths:`-equivalent condition on the *job*, feeding into an
-`if: always()` summary job, is the pattern that works.
+A workflow suppressed by a `paths:` filter never runs, so it never reports its checks, and a required check that never reports leaves a pull request waiting indefinitely for a status. A job skipped by an `if:` condition reports success instead, as [GitHub's troubleshooting guide for required status checks](https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/collaborating-on-repositories-with-code-quality-features/troubleshooting-required-status-checks) explains.
+
+Both path-sensitive workflows therefore trigger on every pull request and decide inside a job whether there is work to do:
+
+- In `python-compatibility.yml`, the `config` job sets `relevant` to true for every event except a pull request. For a pull request it is true only when the pull request changes `src/`, `tests/`, `pyproject.toml`, `poetry.lock`, the workflow itself or `.github/actions/setup-python-env/action.yml`. `syntax-check` and `core-tests` run only when `relevant` is true. `compatibility-summary`, the `Compatibility Summary` check, runs with `if: always()` and fails only when one of those jobs failed, so a skipped matrix still produces a passing check. Require `Compatibility Summary`, never the matrix jobs.
+- In `zizmor.yml`, the `changes` job does the same for `.github/workflows/`, `.github/actions/` and `.github/zizmor.yml`. When nothing relevant changed, the `zizmor` job is skipped, which counts as passing.
+
+Before making a job a required check, confirm two things: its workflow triggers on every `pull_request` without a `paths:` filter, and the job reports a result even when the work it depends on is skipped.
 
 ### `merge_group` triggers
 
-`cdci.yml`, `unit-tests.yml`, `python-compatibility.yml`, and `zizmor.yml`
-all listen for the `merge_group` event. This exists so that **if** this
-repo moves to an org and gets a merge queue, the required checks are
-already capable of firing against a queued PR — a merge queue's required
-checks must run on `merge_group`, or a queued entry just waits forever for
-a check that never executes. Until then, these triggers never activate (no
-merge queue → no `merge_group` events).
+`cdci.yml`, `unit-tests.yml`, `python-compatibility.yml` and `zizmor.yml` listen for the `merge_group` event, so their required checks would run on queued pull requests if the repository gets a merge queue. Until then the event never fires.
 
-### `zizmor` is not (yet) a required check
+## Updating a dependency
 
-`zizmor.yml`'s audit job is now safe to require (same relevance-gating
-pattern as above), but it hasn't been added to the ruleset's
-`required_status_checks` — that's a deliberate choice left open rather than
-made unilaterally alongside the other changes in this document.
+`pyproject.toml` and `poetry.lock` are the source of truth. `requirements.txt` lists the core dependencies exported from the lock, and the `Lint, types & security` job fails when the committed file differs from a fresh export. The output depends on the poetry-plugin-export version (1.8.0 and 1.10.0 write some environment markers differently), so regenerate the file with the versions CI pins:
+
+```bash
+uvx --from poetry==2.3.2 --with poetry-plugin-export==1.10.0 poetry export --without-hashes -f requirements.txt -o requirements.txt
+```
+
+The `poetry-export-requirements` pre-commit hook runs the same export when `pyproject.toml`, `poetry.lock` or `requirements.txt` is committed.
+
+Dependabot changes only `pyproject.toml` and `poetry.lock`, so its Python pull requests fail the sync check. Check out the pull request, replacing `NUMBER` with its number:
+
+```bash
+gh pr checkout NUMBER
+```
+
+Update the branch with `main` if it is behind, regenerate `requirements.txt` with the export command above, commit the result and push it to the same branch.
 
 ## Release process
 
-`release.yml` triggers on pushing a `v*` tag (or manual `workflow_dispatch`
-for a dry run — see below) and runs, in order:
+`release.yml` runs when a `v*` tag is pushed, or when it is dispatched manually (see [Dry run on TestPyPI](#dry-run-on-testpypi)). Its jobs run in this order:
 
-1. **`verify`** — re-runs lint/type-check/tests against the *tagged commit*
-   specifically (not just whatever last passed on `main`), and checks the
-   tag version matches `pyproject.toml`'s version.
-2. **`build`** — builds the wheel/sdist, smoke-tests both install cleanly
-   into a fresh venv and report the right `__version__`.
-3. **`attest`** — Sigstore build-provenance attestation.
-4. **`publish`** — uploads to PyPI via trusted publishing (OIDC, no token).
-5. **`github-release`** — creates the GitHub Release from the CHANGELOG
-   section for that version. Gated on `github.ref_type == 'tag'`.
-6. **`publish-mcp-registry`** — publishes `server.json` to the
-   [official MCP Registry](https://registry.modelcontextprotocol.io/) via
-   GitHub OIDC (no stored secret — the workflow's own repo identity proves
-   ownership of the `io.github.JonasHeinickeBio/*` namespace). Also gated
-   on `github.ref_type == 'tag'`, and `continue-on-error: true` since the
-   registry is explicitly still in preview — a registry hiccup shouldn't
-   fail a release that already shipped to PyPI and GitHub Releases.
-   The registry also checks that the PyPI package belongs to the server,
-   by finding `mcp-name: io.github.JonasHeinickeBio/pyeuropepmc` in the
-   package README. `README.md` carries that line as an HTML comment;
-   without it this job fails with a 400, as it did for 2.2.0.
+1. **`verify`** runs `poetry check --lock`, ruff, the format check, mypy and the default test suite on the tagged commit, with all extras on Python 3.12. On a tag it also checks that the tag is `v` followed by the `version` in `pyproject.toml`, and warns when `CHANGELOG.md` has no section for that version.
+2. **`build`** runs `poetry build`, installs the wheel and the sdist into separate fresh virtual environments, checks that each reports the `pyproject.toml` version as `pyeuropepmc.__version__` and runs `pyeuropepmc --help`, and extracts the version's changelog section as release notes.
+3. **`attest`** creates Sigstore build provenance attestations for the distributions.
+4. **`publish`** uploads the distributions with trusted publishing (OIDC, no API token) and `skip-existing: true`.
+5. **`github-release`** runs for tags only. It creates the GitHub Release with the distributions attached, using the changelog section as the description, with generated notes added from the commit log.
+6. **`publish-mcp-registry`** runs for tags only. It sets both version fields in `server.json` to the tag's version and publishes the file to the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`, authenticating with GitHub OIDC. It has `continue-on-error: true`, so a registry failure does not fail a release that is already on PyPI.
 
-### Dry-run before touching the release pipeline itself
+`changelog.yml` also runs on the tag. It does nothing when `CHANGELOG.md` already has a section for the version.
 
-If a change touches `release.yml`, `server.json`, or anything else in the
-release path, dispatch it manually first rather than finding out only after
-a real tag is live:
+### Release prerequisites
+
+Before you tag, the commit on `main` must have:
+
+- **The new version in every place that carries it:**
+  - `version` under `[project]` in `pyproject.toml`; `verify` fails when the tag differs;
+  - `__version__` in `src/pyeuropepmc/__init__.py`; `build` fails when the installed package reports a version other than the one in `pyproject.toml`;
+  - `version` and `packages[0].version` in `server.json`; the registry job rewrites both from the tag, but keep the committed file in step.
+- **A changelog section** headed `## [X.Y.Z] - YYYY-MM-DD` in `CHANGELOG.md`, usually the `## [Unreleased]` section renamed. Without it the GitHub Release has only generated notes, and `changelog.yml` opens a pull request with an entry generated from commit subjects.
+- **The `mcp-name` marker in `README.md`:** the line `<!-- mcp-name: io.github.JonasHeinickeBio/pyeuropepmc -->`. The MCP Registry confirms that the PyPI package belongs to the server by finding `mcp-name: io.github.JonasHeinickeBio/pyeuropepmc` in the package description, which is built from `README.md`. Without it the registry rejects the publish with HTTP 400, as happened with 2.2.0. PyPI does not let a released version's description change, so a missing marker needs a new version.
+- **Passing required checks**, which the pull request that bumped the version guarantees.
+
+### Making a release
+
+1. Create a branch, for example `chore/release-X.Y.Z`, with the version and changelog edits listed above.
+2. If the release changes `release.yml`, `server.json`, the `mcp-name` marker or packaging metadata, run the [dry run on TestPyPI](#dry-run-on-testpypi) from that branch.
+3. Open a pull request titled `chore(release): bump to X.Y.Z` and merge it when the required checks pass.
+4. Tag the merge commit on `main` and push the tag, replacing `X.Y.Z` with the version:
+
+   ```bash
+   git switch main
+   ```
+
+   ```bash
+   git pull --ff-only
+   ```
+
+   ```bash
+   git tag vX.Y.Z
+   ```
+
+   ```bash
+   git push origin vX.Y.Z
+   ```
+
+5. Follow the `Publish to PyPI` run in the Actions tab, then check the version on PyPI, the GitHub Release and the MCP Registry listing.
+
+### Dry run on TestPyPI
+
+Try any change to `release.yml`, `server.json` or anything else on the release path before a real tag exists. Dispatch the workflow against your branch with the TestPyPI environment:
 
 ```bash
-gh workflow run release.yml --ref <your-branch> -f environment=testpypi
+gh workflow run release.yml --ref <branch> -f environment=testpypi
 ```
 
-Dispatching against a **branch** (not a tag) means `github.ref_type` is
-`"branch"`, so `github-release` and `publish-mcp-registry` — both gated on
-`ref_type == 'tag'` — don't fire. Only `verify → build → attest → publish`
-(to TestPyPI) run. Two real bugs this session — the MCP Registry namespace
-casing mismatch (`io.github.jonasheinickebio` vs. the actual, case-sensitive
-`io.github.JonasHeinickeBio`) and the mypy `python_version` regression the
-`verify` job would have caught — are exactly the kind of thing this dry run
-surfaces for free, before a tag (and its version bump, CHANGELOG entry, and
-PyPI upload) is a committed, hard-to-fully-undo fact.
+On a branch, `github.ref_type` is `branch`, so everything gated on a tag is skipped: the version and changelog checks in `verify`, `github-release` and `publish-mcp-registry`. `verify`, `build`, `attest` and `publish` run, and `publish` uploads to TestPyPI. This catches problems such as a wrongly cased MCP Registry namespace, or a mypy setting that fails `verify`, while the version bump and changelog entry are still easy to change.
 
-### Auto-merge
+> **Warning:** a manual run publishes to the real PyPI unless you pass `-f environment=testpypi`. The `environment` input defaults to `pypi`, the `publish` job has no tag condition, and the `pypi` environment has no required reviewers or branch restrictions. A dispatch from any branch without that flag uploads the build to pypi.org, where the version number can never be used again.
 
-Repository-level "Allow auto-merge" is enabled
-(`allow_auto_merge: true`). On any PR, `gh pr merge --auto --squash` (or the
-"Enable auto-merge" button in the GitHub UI) queues it to merge itself the
-moment the four required checks above go green — no need to babysit a PR
-waiting on a slow matrix run.
+Because `publish` uses `skip-existing: true`, a dry run for a version that is already on TestPyPI uploads nothing and still succeeds.
+
+## Auto-merge
+
+Auto-merge is enabled for the repository. `gh pr merge --auto --squash`, or **Enable auto-merge** on the pull request page, merges a pull request as soon as the required checks pass and the branch is up to date.

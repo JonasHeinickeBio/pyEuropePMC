@@ -1,132 +1,130 @@
-# MeSH Models & PICO Decomposition
+# MeSH models, MeSH expansion and PICO decomposition
 
-Structured representations of MeSH terms and clinical question parsing for evidence-based literature search.
+This page covers the data models for MeSH (Medical Subject Headings) terms in Europe PMC records, the MeSH query-expansion helpers, and the heuristic parser that splits clinical questions into PICO (Population, Intervention, Comparison, Outcome) elements.
 
-## MeSH Models
+## MeSH data models
 
-PyEuropePMC provides Pydantic-like data models for MeSH (Medical Subject Headings) terms extracted from Europe PMC annotations.
-
-### MeSHHeadingEntity
-
-Represents a complete MeSH heading with descriptor and qualifiers:
+`MeSHHeadingEntity` and `MeSHQualifierEntity` are dataclasses in `pyeuropepmc.models`.
 
 ```python
 from pyeuropepmc.models import MeSHHeadingEntity, MeSHQualifierEntity
 
-# From structured data
 heading = MeSHHeadingEntity(
     descriptor_name="Neoplasms",
     major_topic=True,
-    qualifiers=[MeSHQualifierEntity("diagnosis", "DI", False)],
+    qualifiers=[MeSHQualifierEntity(qualifier_name="diagnosis", abbreviation="DI", major_topic=False)],
     descriptor_ui="D009369",
 )
 
-print(heading.full_term)
-# "Neoplasms/diagnosis"
-
-print(heading.descriptor_name)
-# "Neoplasms"
+print(heading.get_full_term())  # Neoplasms/diagnosis
+print(heading.to_dict())
+# {'descriptor_name': 'Neoplasms', 'major_topic': True, 'qualifiers': [{'qualifier_name': 'diagnosis',
+#  'abbreviation': 'DI', 'major_topic': False}], 'descriptor_ui': 'D009369'}
 ```
 
-### MeSHQualifierEntity
+| Class | Fields and defaults |
+|---|---|
+| `MeSHQualifierEntity` | `qualifier_name: str`, `abbreviation: str or None = None`, `major_topic: bool = False` |
+| `MeSHHeadingEntity` | `descriptor_name: str`, `major_topic: bool = False`, `qualifiers: list[MeSHQualifierEntity] = []`, `descriptor_ui: str or None = None` |
 
-Represents a MeSH qualifier (subheading) that refines a descriptor:
+`get_full_term()` returns the descriptor followed by each qualifier name, separated by `/`.
 
-```python
-qualifier = MeSHQualifierEntity(
-    name="therapy",
-    abbreviation="TH",
-    major_topic=False,
-)
-```
+### From Europe PMC records
 
-### Parsing from API Response
+`MeSHHeadingEntity.from_dict(data)` reads one entry of a record's `meshHeadingList.meshHeading` list: `descriptorName`, `majorTopic_YN` (`"Y"` or `"N"`), `descriptorUI` and `meshQualifierList.meshQualifier`, whose entries have `qualifierName`, `abbreviation` and `majorTopic_YN`.
 
 ```python
-# From Europe PMC API response
+from pyeuropepmc.models import MeSHHeadingEntity
+
 data = {
     "descriptorName": "Neoplasms",
     "majorTopic_YN": "Y",
     "meshQualifierList": {
-        "meshQualifier": [
-            {"qualifierName": "diagnosis", "qualifierUI": "Q000175", "majorTopic_YN": "N"},
-        ]
+        "meshQualifier": [{"qualifierName": "therapy", "abbreviation": "TH", "majorTopic_YN": "N"}]
     },
 }
-
-heading = MeSHHeadingEntity.from_dict(data)
+print(MeSHHeadingEntity.from_dict(data).get_full_term())  # Neoplasms/therapy
 ```
 
-## PICO Decomposition
-
-Decompose clinical research questions into PICO (Population, Intervention, Comparison, Outcome) elements for structured literature search.
-
-### Basic Parsing
+MeSH headings are only included in `resultType="core"` search results. `EuropePMCParser.extract_mesh_headings(record)` converts all headings of a record:
 
 ```python
-from pyeuropepmc.features.literature import pico_decompose, PICOElements
+from pyeuropepmc import EuropePMCParser, SearchClient
+
+with SearchClient() as client:
+    records = client.search("cancer fatigue", resultType="core")["resultList"]["result"]
+
+for record in records:
+    headings = EuropePMCParser.extract_mesh_headings(record)
+    if headings:
+        print(record["id"], [heading.get_full_term() for heading in headings[:4]])
+        break
+```
+
+## MeSH query expansion
+
+`pyeuropepmc.features.review` suggests MeSH headings for common terms and adds them to a query.
+
+```python
+from pyeuropepmc.features.review import expand_with_mesh, translate_to_mesh
+
+expansion = expand_with_mesh("heart attack AND diabetes")
+print(expansion.mesh_terms)
+# ['Myocardial Infarction', 'Myocardial Ischemia', 'Diabetes Mellitus', 'Diabetes Mellitus, Type 1', 'Diabetes Mellitus, Type 2']
+print(expansion.expanded_query)
+
+print(translate_to_mesh(["heart attack", "unknown term"]))
+# {'heart attack': ['Myocardial Infarction', 'Myocardial Ischemia']}
+```
+
+| Function | Returns | Description |
+|---|---|---|
+| `expand_with_mesh(query, use_api=False)` | `MeSHExpansionResult` | `original_query`, `expanded_query`, `mesh_terms` and `term_suggestions` (term to headings) |
+| `suggest_mesh_terms(term, max_suggestions=5, use_api=False)` | `list[str]` | Headings for one term |
+| `translate_to_mesh(terms, use_api=False)` | `dict[str, list[str]]` | Headings for each term that has suggestions |
+| `lookup_mesh_descriptor(mesh_heading)` | `dict` or `None` | Descriptor record from the NLM MeSH lookup service (network); `None` on failure |
+
+`MeSHExpander(use_api=False, max_suggestions=5)` provides the same through `expand(query)`.
+
+Without `use_api`, suggestions come from a built-in list of about twenty common terms, such as "cancer", "diabetes", "heart attack" and "machine learning"; other terms get no suggestions. With `use_api=True`, terms are looked up with the NLM MeSH suggestion service and the built-in list is the fallback.
+
+The query is split into terms at `AND`, `OR`, `NOT`, quotes, brackets and parentheses, so `"cancer gene therapy"` is a single term with no suggestions while `"cancer AND gene therapy"` is two. `expanded_query` joins the expanded terms with spaces, drops the original operators and does not quote multi-word headings, so review it before using it as a Europe PMC query.
+
+## PICO decomposition
+
+```python
+from pyeuropepmc.features.review import pico_decompose, pico_to_pubmed_query, pico_to_query
 
 pico = pico_decompose(
     "In patients with diabetes, does metformin reduce cardiovascular risk compared to placebo?"
 )
+print(pico.population)    # diabetes, does metformin reduce cardiovascular risk compared to placebo
+print(pico.intervention)  # (empty)
+print(pico.comparison)    # placebo
+print(pico.outcome)       # reduce cardiovascular risk compared to placebo
+print(round(pico.confidence, 2), pico.is_complete())  # 0.7 False
 
-print(f"Population:   {pico.population}")    # "patients with diabetes"
-print(f"Intervention: {pico.intervention}")  # "metformin"
-print(f"Comparison:   {pico.comparison}")    # "placebo"
-print(f"Outcome:      {pico.outcome}")       # "reduce cardiovascular risk"
+print(pico_to_query(pico))
+# (diabetes, OR does OR metformin OR reduce OR cardiovascular) AND (reduce OR cardiovascular OR risk OR compared OR to) AND (placebo)
+print(pico_to_pubmed_query(pico, use_mesh=True))
+# (diabetes, does metformin reduce cardiovascular risk compared to placebo[MeSH]) AND (reduce cardiovascular risk compared to placebo[MeSH]) AND (placebo[MeSH])
 ```
 
-### Converting to Search Queries
+The parser matches regular expressions for cue words such as "patients with", "compared to" and "reduce". It often captures too much or too little: in the example the intervention is missing and the population runs to the end of the sentence, and "Does exercise help depression?" yields no elements at all. Treat the elements and the generated queries as a draft for manual review.
 
-```python
-from pyeuropepmc.features.literature import pico_to_query, pico_to_pubmed_query
+| Name | Description |
+|---|---|
+| `pico_decompose(question)` | `PICOElements` for a question, using `PICOParser` |
+| `PICOParser(patterns=None)` | `parse(question)` returns `PICOElements`; `patterns` replaces the built-in regular expressions |
+| `PICOElements` | Dataclass with `population`, `intervention`, `comparison`, `outcome`, `study_design`, `time_frame`, `setting`, `original_question`, `confidence` (0.0 to 1.0) and `identifiers_used`; `is_complete()` is `True` when population, intervention and outcome are set; `to_dict()` |
+| `pico_to_query(pico, use_boolean=True)` | Each element as up to five words joined with `OR` (three for comparison), elements joined with `AND` |
+| `pico_to_pubmed_query(pico, use_mesh=True)` | Each element tagged `[MeSH]`, or `[tiab]` with `use_mesh=False`, joined with `AND` |
+| `PICOSDecomposer`, `PICOTDecomposer` | Same behaviour as `PICOParser`; `study_design` is filled by every parser |
+| `SPIDERDecomposer` | `parse(question)` returns a dict with the SPIDER elements it finds (`sample`, `phenomenon_of_interest`, `design`, `evaluation`, `research_type`) and `original_question` |
 
-# Generic boolean query
-query = pico_to_query(pico)
-print(query)
-# "(diabetes) AND (metformin) AND (cardiovascular risk) AND (placebo)"
+Known limitation: `time_frame` is never filled. The time pattern stores its match in an attribute named `time` instead, so `PICOTDecomposer().parse("... within 30 days?").time_frame` is empty.
 
-# PubMed-optimized with MeSH hints
-pubmed_query = pico_to_pubmed_query(pico, use_mesh=True)
-print(pubmed_query)
-# "(diabetes[MeSH]) AND (metformin[MeSH]) AND (cardiovascular risk) AND (placebo)"
-```
+## See also
 
-### Parser Variants
-
-```python
-from pyeuropepmc.features.literature import PICOParser, PICOSDecomposer, PICOTDecomposer
-
-# Standard PICO
-parser = PICOParser()
-pico = parser.parse("In children with asthma, does exercise improve lung function?")
-
-# PICOS (with Study Design)
-parser = PICOSDecomposer()
-pico = parser.parse("In elderly patients, does aspirin prevent stroke? A randomized trial")
-
-# PICOT (with Time frame)
-parser = PICOTDecomposer()
-pico = parser.parse("In ICU patients, does early mobilization reduce length of stay within 30 days?")
-```
-
-### Confidence Scoring
-
-```python
-pico = pico_decompose("Does exercise help depression?")
-print(f"Population: {pico.population}")
-print(f"Confidence: {pico.confidence:.2f}")
-```
-
-### Command-Line PICO
-
-```bash
-python -m pyeuropepmc.features.review.pico "In patients with diabetes, does metformin reduce cardiovascular risk?"
-```
-
-## Use Cases
-
-- **Systematic reviews**: Structure clinical questions for precise searching
-- **Evidence-based practice**: Convert clinical queries to PubMed search strings
-- **Clinical decision support**: Parse and categorize clinical questions
-- **Medical education**: Teach PICO formulation
+- [Searching Europe PMC](search/README.md)
+- [EuropePMCParser](../api/parser.md)

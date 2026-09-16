@@ -1,579 +1,261 @@
-# QueryBuilder API Reference
+# QueryBuilder API reference
 
-The `QueryBuilder` class provides a fluent API for constructing complex Europe PMC search queries with type safety and validation.
+`QueryBuilder` assembles Europe PMC query strings from method calls, rejects unknown field names, and connects to the `search-query` package to save, load, translate and evaluate search strings. For a walkthrough see [Query builder](../features/query-builder-load-save-translate.md).
 
-## Class Overview
+```python
+from pyeuropepmc import QueryBuilder
+```
+
+The module `pyeuropepmc.features.literature.query_builder` also defines `QueryBuilderError`, `FIELD_METADATA`, `FieldType`, `get_field_info()`, `get_available_fields()` and `validate_field_coverage()`. `get_available_fields` and `validate_field_coverage` are exported by `pyeuropepmc` as well.
+
+## How a query is built
+
+Each method appends one part to the builder and returns the builder, so calls can be chained. `build()` joins the parts with single spaces. Operators are never added for you: `QueryBuilder().keyword("cancer").keyword("therapy", field="title").build()` returns `cancer TITLE:therapy`.
+
+A builder keeps its parts after `build()`, so reusing it for a second query appends to the first. Create a new `QueryBuilder()` for each query.
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-qb = QueryBuilder(validate=False)  # Optional validation
+query = (
+    QueryBuilder()
+    .keyword("cancer", field="title")
+    .and_()
+    .keyword("immunotherapy")
+    .and_()
+    .date_range(start_year=2020, end_year=2023)
+    .and_()
+    .citation_count(min_count=10)
+    .build()
+)
+print(query)
+# TITLE:cancer AND immunotherapy AND (PUB_YEAR:[2020 TO 2023]) AND (CITED:[10 TO *])
 ```
+
+String values are wrapped in double quotes when they contain a space, one of `: ( ) [ ] { }`, or the uppercase letters `AND`, `OR` or `NOT` anywhere in the value (so `CORE` becomes `"CORE"`). Double quotes inside a value are escaped. `field(..., escape=False)` and `raw()` send text unchanged.
 
 ## Constructor
 
-```python
-QueryBuilder(validate: bool = False) -> QueryBuilder
-```
+`QueryBuilder(validate=False)`
 
-**Parameters:**
-- `validate` (bool, optional): Whether to validate queries using search-query package. Defaults to False.
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `validate` | `bool` | `False` | Parse the finished query with `search-query` in `build()` |
 
-## Core Methods
+With `validate=True`, `build()` parses the string with `search-query` using PubMed rules and returns the PubMed rendering, for example `cancer[all] AND therapy[all]` for `cancer AND therapy`. Europe PMC constructs such as `(PUB_YEAR:[2020 TO 2023])` then raise `QueryBuilderError` with code `QUERY004`, and the parser prints warnings to standard output. Leave `validate` off for queries you send to Europe PMC; unknown field names are rejected in either mode.
 
-### keyword()
+## Terms
 
-Add a keyword search term.
+### keyword
 
-```python
-keyword(term: str, field: FieldType | None = None) -> QueryBuilder
-```
+`keyword(term, field=None) -> QueryBuilder`
 
-**Parameters:**
-- `term` (str): Search term
-- `field` (FieldType, optional): Field to search in
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `term` | `str` | required | Search term; quoted when needed |
+| `field` | `FieldType` or `None` | `None` | A field name from [`FIELD_METADATA`](#field-names), such as `"title"` |
 
-**Returns:** QueryBuilder (for method chaining)
+| Call | Part added |
+|---|---|
+| `keyword("cancer")` | `cancer` |
+| `keyword("gene editing")` | `"gene editing"` |
+| `keyword("CRISPR", field="title")` | `TITLE:CRISPR` |
+| `keyword("CRISPR AND therapy")` | `"CRISPR AND therapy"` (one phrase, not a Boolean expression) |
 
-**Example:**
-```python
-qb.keyword("cancer").keyword("therapy", field="title")
-```
+Raises `QueryBuilderError` (`QUERY001`) for an empty term and `ValueError` for an unknown field. To add a Boolean sub-expression, use `raw()` or `group()`.
 
-### field()
+### field
 
-Generic field search with optional value transformation.
+`field(field_name, value, escape=True, transform=None) -> QueryBuilder`
 
-```python
-field(
-    field_name: FieldType,
-    value: str | int | bool,
-    escape: bool = True,
-    transform: Callable[[str | int | bool], str | int | bool] | None = None
-) -> QueryBuilder
-```
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `field_name` | `FieldType` | required | A name from `FIELD_METADATA`; case-insensitive |
+| `value` | `str`, `int` or `bool` | required | `True` is sent as `y` and `False` as `n` |
+| `escape` | `bool` | `True` | Quote string values when needed |
+| `transform` | callable or `None` | `None` | Applied to `value` before formatting |
 
-**Parameters:**
-- `field_name` (FieldType): Field to search (e.g., "author", "title")
-- `value` (str | int | bool): Search value
-- `escape` (bool, optional): Whether to escape special characters. Defaults to True.
-- `transform` (Callable, optional): Function to transform value before formatting
+| Call | Part added |
+|---|---|
+| `field("author", "Smith J")` | `AUTH:"Smith J"` |
+| `field("open_access", True)` | `OPEN_ACCESS:y` |
+| `field("pub_year", 2023)` | `PUB_YEAR:2023` |
+| `field("mesh", "Neoplasms")` | `MESH:Neoplasms` |
+| `field("pub_type", "Clinical Trial")` | `PUB_TYPE:"Clinical Trial"` |
+| `field("first_pdate", "[2020-01-01 TO 2023-12-31]", escape=False)` | `FIRST_PDATE:[2020-01-01 TO 2023-12-31]` |
 
-**Returns:** QueryBuilder (for method chaining)
+Raises `ValueError` for an unknown field name and `QueryBuilderError` (`QUERY001`) for an empty string value.
 
-**Examples:**
-```python
-# Basic field search
-qb.field("author", "Smith J")
+### date_range
 
-# With transformation
-qb.field("pmcid", "1234567", transform=lambda x: f"PMC{x}" if not str(x).startswith("PMC") else str(x))
-```
+`date_range(start_year=None, end_year=None, start_date=None, end_date=None) -> QueryBuilder`
 
-### date_range()
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `start_year` | `int` or `None` | `None` | First publication year, inclusive |
+| `end_year` | `int` or `None` | `None` | Last publication year, inclusive |
+| `start_date` | `str` or `None` | `None` | `YYYY-MM-DD`; when either date is given the years are ignored |
+| `end_date` | `str` or `None` | `None` | `YYYY-MM-DD` |
 
-Add publication date constraints.
+| Call | Part added |
+|---|---|
+| `date_range(2020, 2023)` | `(PUB_YEAR:[2020 TO 2023])` |
+| `date_range(start_year=2020)` | `(PUB_YEAR:[2020 TO <current year>])`, using the year at the time of the call |
+| `date_range(end_year=2020)` | `(PUB_YEAR:[1000 TO 2020])` |
+| `date_range(start_date="2020-01-01", end_date="2023-12-31")` | `(PUB_YEAR:[2020-01-01 TO 2023-12-31])` |
 
-```python
-date_range(
-    start_year: int | None = None,
-    end_year: int | None = None,
-    start_date: str | None = None,
-    end_date: str | None = None
-) -> QueryBuilder
-```
+Europe PMC's `PUB_YEAR` field holds years. For day precision, search `FIRST_PDATE` with `field("first_pdate", "[2020-01-01 TO 2023-12-31]", escape=False)` instead of passing dates to `date_range()`.
 
-**Parameters:**
-- `start_year` (int, optional): Start year (inclusive)
-- `end_year` (int, optional): End year (inclusive)
-- `start_date` (str, optional): Start date in YYYY-MM-DD format
-- `end_date` (str, optional): End date in YYYY-MM-DD format
+Raises `QueryBuilderError` (`QUERY002`) for a year before 1000 or after next year, a start after the end, or a date not in `YYYY-MM-DD` form. With no arguments nothing is added.
 
-**Returns:** QueryBuilder (for method chaining)
+### citation_count
 
-**Examples:**
-```python
-# Year range
-qb.date_range(start_year=2020, end_year=2023)
+`citation_count(min_count=None, max_count=None) -> QueryBuilder`
 
-# Date range
-qb.date_range(start_date="2020-01-01", end_date="2023-12-31")
-```
+Adds `(CITED:[10 TO *])` for `min_count=10`, `(CITED:[* TO 5])` for `max_count=5` and `(CITED:[5 TO 50])` for both. Raises `QueryBuilderError` (`QUERY002`) for a negative count or `min_count` greater than `max_count`.
 
-### citation_count()
+### pmcid, source, accession_type and cites
 
-Add citation count filters.
+| Call | Part added | Notes |
+|---|---|---|
+| `pmcid("1234567")` | `PMCID:PMC1234567` | The `PMC` prefix is added when missing |
+| `source("med")` | `SRC:MED` | Upper-cased |
+| `accession_type("PDB")` | `ACCESSION_TYPE:pdb` | Lower-cased |
+| `cites("8521067", source="med")` | `CITES:8521067_med` | Records that cite the given article |
 
-```python
-citation_count(min_count: int | None = None, max_count: int | None = None) -> QueryBuilder
-```
+Each raises `QueryBuilderError` (`QUERY001`) for an empty value.
 
-**Parameters:**
-- `min_count` (int, optional): Minimum citation count (inclusive)
-- `max_count` (int, optional): Maximum citation count (inclusive)
+## Operators and grouping
 
-**Returns:** QueryBuilder (for method chaining)
+| Call | Result |
+|---|---|
+| `keyword("cancer").and_().keyword("therapy")` | `cancer AND therapy` |
+| `keyword("cancer").or_().keyword("tumour")` | `cancer OR tumour` |
+| `keyword("cancer").and_().not_().keyword("review")` | `cancer AND NOT review` |
+| `keyword("cancer").not_().keyword("review")` | `cancer NOT review` |
 
-**Examples:**
-```python
-# Papers with at least 10 citations
-qb.citation_count(min_count=10)
+`and_()`, `or_()` and `not_()` raise `QueryBuilderError` (`QUERY003`) when they are the first call or follow another operator; the one exception is `not_()` after `and_()`. `build()` raises the same error when the query ends with an operator.
 
-# Papers with 5-50 citations
-qb.citation_count(min_count=5, max_count=50)
-```
-
-### pmcid()
-
-Search by PMC ID.
-
-```python
-pmcid(pmcid: str) -> QueryBuilder
-```
-
-**Parameters:**
-- `pmcid` (str): PMC ID (with or without "PMC" prefix)
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.pmcid("PMC1234567")  # Also accepts "1234567"
-```
-
-### source()
-
-Search by data source.
-
-```python
-source(source: str) -> QueryBuilder
-```
-
-**Parameters:**
-- `source` (str): Data source code (e.g., "MED", "PMC", "AGR")
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.source("MED")
-```
-
-### accession_type()
-
-Search by accession type.
-
-```python
-accession_type(accession_type: str) -> QueryBuilder
-```
-
-**Parameters:**
-- `accession_type` (str): Accession type (automatically lowercased)
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.accession_type("pdb")  # Automatically lowercased
-```
-
-### cites()
-
-Search for papers that cite a specific article.
-
-```python
-cites(article_id: str, source: str = "med") -> QueryBuilder
-```
-
-**Parameters:**
-- `article_id` (str): Article ID to find citations for
-- `source` (str, optional): Data source. Defaults to "med".
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.cites("8521067", source="med")
-```
-
-## Logical Operators
-
-### and_()
-
-Add AND operator between query parts.
-
-```python
-and_() -> QueryBuilder
-```
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.keyword("cancer").and_().keyword("therapy")
-```
-
-### or_()
-
-Add OR operator between query parts.
-
-```python
-or_() -> QueryBuilder
-```
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.keyword("cancer").or_().keyword("tumor")
-```
-
-### not_()
-
-Add NOT operator before the next query part.
-
-```python
-not_() -> QueryBuilder
-```
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.keyword("cancer").and_().not_().keyword("review")
-```
-
-## Advanced Methods
-
-### group()
-
-Add a grouped sub-query.
-
-```python
-group(builder: QueryBuilder) -> QueryBuilder
-```
-
-**Parameters:**
-- `builder` (QueryBuilder): Sub-query to group
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-sub_query = QueryBuilder().keyword("cancer").or_().keyword("tumor")
-qb.group(sub_query).and_().keyword("therapy")
-```
-
-### raw()
-
-Add raw query string.
-
-```python
-raw(query_string: str) -> QueryBuilder
-```
-
-**Parameters:**
-- `query_string` (str): Raw query string
-
-**Returns:** QueryBuilder (for method chaining)
-
-**Example:**
-```python
-qb.raw("(cancer OR tumor) AND therapy")
-```
-
-## Build & Validation
-
-### build()
-
-Build and return the final query string.
-
-```python
-build(validate: bool = True) -> str
-```
-
-**Parameters:**
-- `validate` (bool, optional): Whether to validate the query. Defaults to True.
-
-**Returns:** str - The constructed query string
-
-**Example:**
-```python
-query = qb.keyword("cancer").and_().keyword("therapy").build()
-print(query)  # "cancer AND therapy"
-```
-
-## Persistence Methods
-
-### save()
-
-Save query to JSON file in standard format.
-
-```python
-save(
-    file_path: str,
-    platform: str = "pubmed",
-    authors: list[dict[str, str]] | None = None,
-    record_info: dict[str, Any] | None = None,
-    date_info: dict[str, str] | None = None,
-    database: list[str] | None = None,
-    include_generic: bool = False
-) -> None
-```
-
-**Parameters:**
-- `file_path` (str): Path to save JSON file
-- `platform` (str, optional): Query platform. Defaults to "pubmed".
-- `authors` (list[dict[str, str]], optional): Author information
-- `record_info` (dict, optional): Additional record metadata
-- `date_info` (dict, optional): Date information
-- `database` (list[str], optional): Database information
-- `include_generic` (bool, optional): Include generic query representation
-
-### Class Methods
-
-#### from_string()
-
-Load query from string.
-
-```python
-@classmethod
-from_string(
-    query_string: str,
-    platform: str = "pubmed",
-    validate: bool = False
-) -> QueryBuilder
-```
-
-**Parameters:**
-- `query_string` (str): Query string to parse
-- `platform` (str, optional): Platform syntax. Defaults to "pubmed".
-- `validate` (bool, optional): Whether to validate. Defaults to False.
-
-**Returns:** QueryBuilder instance
-
-#### from_file()
-
-Load query from JSON file.
-
-```python
-@classmethod
-from_file(file_path: str, validate: bool = False) -> QueryBuilder
-```
-
-**Parameters:**
-- `file_path` (str): Path to JSON file
-- `validate` (bool, optional): Whether to validate. Defaults to False.
-
-**Returns:** QueryBuilder instance
-
-## Translation & Evaluation
-
-### translate()
-
-Translate query to another platform's syntax.
-
-```python
-translate(target_platform: str) -> str
-```
-
-**Parameters:**
-- `target_platform` (str): Target platform ("pubmed", "wos", "ebsco", "generic")
-
-**Returns:** str - Query in target platform syntax
-
-**Example:**
-```python
-qb = QueryBuilder.from_string('("cancer"[Title])', platform="pubmed")
-wos_query = qb.translate("wos")  # TI="cancer"
-```
-
-### to_query_object()
-
-Convert to search-query Query object.
-
-```python
-to_query_object(platform: str = "pubmed") -> Any
-```
-
-**Parameters:**
-- `platform` (str, optional): Platform for parsing. Defaults to "pubmed".
-
-**Returns:** Query object from search-query package
-
-### evaluate()
-
-Evaluate search effectiveness against records.
-
-```python
-evaluate(records: dict[str, dict[str, str]], platform: str = "pubmed") -> dict[str, float]
-```
-
-**Parameters:**
-- `records` (dict): Records with IDs as keys, containing 'title' and 'colrev_status'
-- `platform` (str, optional): Platform for evaluation. Defaults to "pubmed".
-
-**Returns:** dict with 'recall', 'precision', and 'f1_score'
-
-## Systematic Review Integration
-
-### log_to_search()
-
-Log query to SearchLog for systematic review tracking.
-
-```python
-log_to_search(
-    search_log: Any,
-    database: str = "Europe PMC",
-    filters: dict[str, Any] | None = None,
-    results_returned: int | None = None,
-    notes: str | None = None,
-    raw_results: Any = None,
-    raw_results_dir: str | None = None,
-    platform: str | None = None,
-    export_path: str | None = None
-) -> None
-```
-
-**Parameters:**
-- `search_log` (SearchLog): SearchLog instance to record query
-- `database` (str, optional): Database name. Defaults to "Europe PMC".
-- `filters` (dict, optional): Applied filters
-- `results_returned` (int, optional): Number of results returned
-- `notes` (str, optional): Additional notes
-- `raw_results` (Any, optional): Raw API response
-- `raw_results_dir` (str, optional): Directory for raw results
-- `platform` (str, optional): Search platform used
-- `export_path` (str, optional): Path to exported results
-
-## Field Types
-
-The `FieldType` literal type includes all 150+ searchable fields:
-
-**Core Fields:** `title`, `abstract`, `author`, `journal`, `doi`, `pmid`, `pmcid`
-
-**Date Fields:** `pub_year`, `first_pdate`, `e_pdate`, `update_date`
-
-**Author Fields:** `affiliation`, `authorid`, `auth_first`, `auth_last`
-
-**Content Fields:** `keyword`, `mesh`, `chemical`, `disease`, `gene_protein`
-
-**Citation Fields:** `citation_count`, `cites`, `cited`, `reffed_by`
-
-**Full-Text Fields:** `has_pdf`, `has_fulltext`, `open_access`, `in_pmc`
-
-**And many more...** See [Field Metadata](field-metadata-structure.md) for complete list.
-
-## Error Handling
-
-QueryBuilder uses specific error codes:
-
-- `QUERY001`: Empty or invalid query parameters
-- `QUERY002`: Invalid date/year/citation values
-- `QUERY003`: Incorrect operator usage
-- `QUERY004`: Query parsing/validation failures
-- `CONFIG003`: Missing search-query dependency
-
-## Examples
-
-### Basic Query Building
+`group(builder)` adds another builder's query in parentheses, and `raw(query_string)` adds a string unchanged:
 
 ```python
 from pyeuropepmc import QueryBuilder
 
-qb = QueryBuilder()
+subquery = QueryBuilder().keyword("cancer").or_().keyword("tumour")
+print(QueryBuilder().keyword("CRISPR").and_().group(subquery).build())
+# CRISPR AND (cancer OR tumour)
 
-# Simple keyword search
-query1 = qb.keyword("machine learning").build()
-# "machine learning"
-
-# Field-specific search
-query2 = qb.field("author", "Smith J").build()
-# "AUTH:Smith J"
-
-# Complex query with operators
-query3 = (qb
-    .keyword("cancer", field="title")
-    .and_()
-    .keyword("therapy")
-    .and_()
-    .date_range(start_year=2020)
-    .build())
-# "(TITLE:cancer) AND therapy AND (PUB_YEAR:[2020 TO *])"
+print(QueryBuilder().raw("(cancer OR tumor) AND therapy").and_().date_range(2020, 2024).build())
+# (cancer OR tumor) AND therapy AND (PUB_YEAR:[2020 TO 2024])
 ```
 
-### Advanced Query Patterns
+## build
+
+`build(validate=True) -> str`
+
+Returns the query string. The `validate` argument only has an effect on a builder created with `QueryBuilder(validate=True)`; see [Constructor](#constructor). Raises `QueryBuilderError` with `QUERY001` for an empty builder and `QUERY003` for a trailing operator.
+
+## Saving, loading, translating and evaluating
+
+These methods pass the query string to the `search-query` package, which is installed with pyeuropepmc. `search-query` reads a query in the syntax of one platform: `pubmed`, `wos` (Web of Science) or `ebscohost`; `translate()` also accepts `generic`. It has no Europe PMC syntax. A builder's own query is parsed as PubMed syntax, so a Europe PMC range such as `(PUB_YEAR:[2020 TO 2023])` makes `save()`, `translate()` and `to_query_object()` raise `QueryBuilderError` (`QUERY004`), and a Europe PMC field prefix such as `TITLE:` is not read as a field. Parser warnings are printed to standard output.
+
+| Method | Returns | Description |
+|---|---|---|
+| `QueryBuilder.from_string(query_string, platform="pubmed", validate=False)` | `QueryBuilder` | Class method. Parses `query_string`; `build()` returns the string unchanged. `QUERY001` for an empty string, `QUERY004` if parsing fails |
+| `QueryBuilder.from_file(file_path, validate=False)` | `QueryBuilder` | Class method. Loads a search file with at least `search_string` and `platform`. `FileNotFoundError` if the file is missing, `QUERY004` if it cannot be read |
+| `save(file_path, platform="pubmed", authors=None, record_info=None, date_info=None, database=None, include_generic=False)` | `None` | Writes a search file; `QUERY004` if the query cannot be parsed |
+| `translate(target_platform)` | `str` | The query in `"pubmed"`, `"wos"`, `"ebscohost"` or `"generic"` syntax; `QUERY004` otherwise |
+| `to_query_object(platform="pubmed")` | `search_query` query object | Parsed query tree, cached on the builder, for example `search_query.query_and.AndQuery` |
+| `evaluate(records, platform="pubmed")` | `dict` | Recall and precision against screened records |
+
+`save()` parameters:
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `file_path` | `str` | required | Output path |
+| `platform` | `str` | `"pubmed"` | Platform written to the file and used to parse the query |
+| `authors` | `list[dict]` or `None` | `None` | For example `[{"name": "Jane Smith", "ORCID": "0000-0000-0000-0002"}]` |
+| `record_info` | `dict` or `None` | `None` | Free-form metadata |
+| `date_info` | `dict` or `None` | `None` | For example `{"search_conducted": "2025-11-06"}`; stored as `date` |
+| `database` | `list[str]` or `None` | `None` | Stored as `{"databases": [...]}` |
+| `include_generic` | `bool` | `False` | Also store the generic rendering under `generic_query` |
 
 ```python
-# Citation-based filtering
-query = (qb
-    .keyword("CRISPR")
-    .and_()
-    .citation_count(min_count=50)
-    .build())
+from pyeuropepmc import QueryBuilder
 
-# Multi-field search with OR logic
-query = (qb
-    .field("title", "machine learning")
-    .or_()
-    .field("abstract", "machine learning")
-    .and_()
-    .field("pub_year", 2023)
-    .build())
+qb = QueryBuilder.from_string("cancer[tiab] AND therapy[tiab]", platform="pubmed")
+print(qb.translate("wos"))
+# (AB=cancer OR TI=cancer) AND (AB=therapy OR TI=therapy)
 
-# Complex nested query
-sub_query = QueryBuilder().keyword("cancer").or_().keyword("tumor")
-main_query = (qb
-    .group(sub_query)
-    .and_()
-    .field("journal", "Nature")
-    .build())
+print(QueryBuilder.from_string("TI=cancer", platform="wos").translate("pubmed"))
+# cancer[ti]
 ```
 
-### Systematic Review Workflow
+`evaluate(records, platform="pubmed")` takes a dict of records keyed by ID, each with `title` and `colrev_status` (`"rev_included"` or `"rev_excluded"`). It returns `total_evaluated`, `selected`, `true_positives`, `false_positives`, `false_negatives`, `precision`, `recall` and `f1_score`. Terms without a field are matched against titles; a query with PubMed field tags such as `cancer[title]` raises `ValueError`, and a Europe PMC field prefix such as `TITLE:cancer` matches no records.
+
+## log_to_search
+
+`log_to_search(search_log, database="Europe PMC", filters=None, results_returned=None, notes=None, raw_results=None, raw_results_dir=None, platform=None, export_path=None) -> None`
+
+Records `build(validate=False)` as a new entry in a `SearchLog`. The parameters are described in [Systematic review search logging](../features/systematic-review-tracking.md#log-a-querybuilder-query).
+
+## Field names
+
+`FIELD_METADATA` maps 158 lowercase field names to a tuple of the Europe PMC field name and a description, for example `"author": ("AUTH", "Author name (full or abbreviated form)")`. `FieldType` is a `typing.Literal` of the same names for static type checkers; at run time an unknown name raises `ValueError`. Names are matched case-insensitively.
+
+Some names are aliases of the same Europe PMC field:
+
+| Names | Europe PMC field |
+|---|---|
+| `author`, `auth` | `AUTH` |
+| `affiliation`, `aff` | `AFF` |
+| `language`, `lang` | `LANG` |
+| `chemical`, `chem` | `CHEM` |
+| `source`, `src` | `SRC` |
+| `editor`, `ed` | `ED` |
+| `citation_count`, `cited` | `CITED` |
+| `pmid`, `ext_id` | `EXT_ID` |
+
+Because `pmid` maps to `EXT_ID`, combine it with the source to search a PubMed ID: `QueryBuilder().field("pmid", "32791984").and_().source("MED").build()` returns `EXT_ID:32791984 AND SRC:MED`.
+
+The names cover bibliographic fields (`title`, `abstract`, `journal`, `issn`, `doi`, `pub_year`, `pub_type`), dates (`first_pdate`, `e_pdate`, `p_pdate`, `update_date`), authors and funding (`auth_first`, `auth_last`, `authorid`, `investigator`, `grant_agency`, `grant_id`), subject terms (`mesh`, `keyword`, `disease`, `gene_protein`, `organism`, `goterm`, `chebiterm`), availability flags (`open_access`, `in_pmc`, `in_epmc`, `has_pdf`, `has_fulltext`, `has_abstract`), database links (`has_uniprot`, `has_pdb`, `accession_id`, `accession_type`), citations (`cites`, `reffed_by`), full-text sections (`intro`, `methods`, `results`, `discuss`, `concl`, `fig`, `table`, `ack_fund`) and a few internal fields (`_version_`, `text_hl`, `text_synonyms`, `shard`, `qn1`, `qn2`).
+
+| Function | Returns | Network | Description |
+|---|---|---|---|
+| `get_field_info(field)` | `tuple[str, str]` | no | Europe PMC name and description; `ValueError` for an unknown name |
+| `get_available_fields(api_url=None)` | `list[str]` | yes | Sorted upper-case field names from the Europe PMC `fields` endpoint; raises `APIClientError` on failure |
+| `validate_field_coverage(verbose=False)` | `dict` | yes | Compares the live field list with `FIELD_METADATA` |
+
+`validate_field_coverage()` returns `api_fields`, `defined_fields`, `missing_in_code`, `extra_in_code`, `coverage_percent`, `up_to_date`, `total_api_fields` and `total_defined_fields`. With `verbose=True` it also logs a report through the `logging` module. Fields such as `MESH`, `PAGE_INFO` and `SUBSET` are documented by Europe PMC but not returned by the `fields` endpoint, so they appear in `extra_in_code`.
 
 ```python
-from pyeuropepmc.utils.search_logging import start_search
+from pyeuropepmc import get_available_fields, validate_field_coverage
+from pyeuropepmc.features.literature.query_builder import get_field_info
 
-# Start systematic review log
-log = start_search("CRISPR Review", executed_by="Researcher Name")
+print(get_field_info("author"))  # ('AUTH', 'Author name (full or abbreviated form)')
 
-# Build and execute query
-qb = QueryBuilder()
-query = (qb
-    .keyword("CRISPR")
-    .and_()
-    .keyword("gene editing")
-    .and_()
-    .date_range(start_year=2018)
-    .build())
-
-# Log the search
-qb.log_to_search(
-    search_log=log,
-    filters={"date_range": "2018+", "keywords": ["CRISPR", "gene editing"]},
-    results_returned=150,
-    notes="Initial broad search for CRISPR literature"
-)
-
-# Save the log
-log.save("systematic_review_searches.json")
+fields = get_available_fields()
+report = validate_field_coverage()
+print(len(fields), report["up_to_date"], report["missing_in_code"])
 ```
 
-### Query Persistence
+In a source checkout, `python examples/scripts/check_fields.py` runs `validate_field_coverage(verbose=True)` and exits with status 0 when every live field is defined and 1 when some are missing. It takes no options.
 
-```python
-# Save query
-qb.save("my_search.json",
-        authors=[{"name": "John Doe", "ORCID": "0000-0000-0000-0001"}],
-        date_info={"data_entry": "2025-11-07", "search_conducted": "2025-11-07"})
+## Errors
 
-# Load query
-loaded_qb = QueryBuilder.from_file("my_search.json")
-translated = loaded_qb.translate("wos")  # Translate to Web of Science syntax
-```
+`QueryBuilderError` is defined in `pyeuropepmc.core.exceptions` and derives from `PyEuropePMCError`; `error.error_code` holds the code.
 
-See Also:
-- [Query Builder Features](../features/query-builder-load-save-translate.md)
-- [Systematic Review Tracking](../features/systematic-review-tracking.md)
-- [Field Metadata](field-metadata-structure.md)
+| Code | Cause |
+|---|---|
+| `QUERY001` | Empty term, value or query, or an empty sub-builder passed to `group()` |
+| `QUERY002` | Invalid year, date or citation count, or a range whose start is after its end |
+| `QUERY003` | An operator at the start, after another operator, or at the end of the query |
+| `QUERY004` | `search-query` could not parse, validate, save or translate the query |
+
+Unknown field names raise `ValueError`.
+
+## Related pages
+
+- [Query builder guide](../features/query-builder-load-save-translate.md)
+- [Systematic review search logging](../features/systematic-review-tracking.md)
+- [SearchClient](search-client.md)

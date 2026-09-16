@@ -1,103 +1,85 @@
-# Summary
+# Table of contents
 
 * [Introduction](README.md)
-* [Glossary](GLOSSARY.md)
 
-## Getting Started
+## Getting started
 
 * [Overview](getting-started/README.md)
 * [Installation](getting-started/installation.md)
-* [Quick Start](getting-started/quickstart.md)
+* [Quick start](getting-started/quickstart.md)
+* [Examples](examples/README.md)
 * [FAQ](getting-started/faq.md)
-* [Migrating 1.x → 2.0](migration/v1-to-v2.md)
+* [Migrating from 1.x to 2.0](migration/v1-to-v2.md)
 
 ## Features
 
-* [Features Overview](features/README.md)
+* [Features overview](features/README.md)
 * [Search](features/search/README.md)
-* [Multi-Source Search](features/multi-source-search.md)
-* [Citation Graph Walking](features/citation-walking.md)
-* [Full-Text Retrieval](features/fulltext/README.md)
-* [XML Parsing](features/parsing/README.md)
-* [XML Parser Guide](features/parsing/xml-parser-guide.md)
-* [JATS Normalization](features/parsing/jats-normalization.md)
-* [Query Builder](features/query-builder-load-save-translate.md)
-* [Intelligent Deduplication](features/dedup.md)
-* [ClinicalTrials.gov Integration](features/clinical-trials.md)
-* [arXiv Integration](features/arxiv.md)
-* [ORCID Integration](features/orcid.md)
-* [Full-Text Indexing (FTS5)](features/fulltext-index.md)
-* [Figure Extraction](features/figure-extraction.md)
-* [Rhetorical Highlighting](features/rhetorical-highlighting.md)
-* [MeSH Models & PICO](features/mesh-pico.md)
-* [Additional Source Clients](features/small-source-clients.md)
-* [Systematic Review Tracking](features/systematic-review-tracking.md)
+  * [Query builder](features/query-builder-load-save-translate.md)
+  * [Systematic review search logging](features/systematic-review-tracking.md)
+  * [Deduplication](features/dedup.md)
+  * [Citation graph walking](features/citation-walking.md)
+  * [MeSH and PICO](features/mesh-pico.md)
+* [Multi-source search](features/multi-source-search.md)
+  * [ClinicalTrials.gov client](features/clinical-trials.md)
+  * [arXiv client](features/arxiv.md)
+* [Full-text retrieval](features/fulltext/README.md)
+  * [Full-text index (SQLite FTS5)](features/fulltext-index.md)
+* [XML parsing](features/parsing/README.md)
+  * [JATS normalization](features/parsing/jats-normalization.md)
+  * [Rhetorical highlighting](features/rhetorical-highlighting.md)
+* [Metadata enrichment](guides/enrichment.md)
+  * [ORCID and NIH iCite clients](features/orcid.md)
 * [Caching](features/caching/README.md)
 
-## API Reference
+## Recipes
 
-* [API Overview](api/README.md)
-* [SearchClient](api/search-client.md)
-* [FullTextClient](api/fulltext-client.md)
-* [ArticleClient](api/article-client.md)
-* [QueryBuilder](api/query-builder.md)
-* [XML Parser](api/xml-parser.md)
-* [XML Parser Extensions](api/xml-parser-extensions.md)
-* [EuropePMCParser](api/parser.md)
-* [FTPDownloader](api/ftp-downloader.md)
-* [Analytics & Visualization](api/analytics-visualization.md)
-* [Field Validation](api/field-validation.md)
-* [Field Metadata](api/field-metadata-structure.md)
-
-## Guides
-
-* [Benchmarking & Profiling](guides/benchmarking.md)
-* [Enrichment](guides/enrichment.md)
-* [Feature Suggester](guides/feature-suggester.md)
-
-### Skill Cards
-
-* [Analytics](guides/skills/analytics.md)
+* [Query builder](guides/skills/query_builder.md)
+* [Full-text parser](guides/skills/fulltext_parser.md)
+* [FTP downloader](guides/skills/ftp_downloader.md)
 * [Annotations](guides/skills/annotations.md)
-* [Caching](guides/skills/caching.md)
 * [Enrichment](guides/skills/enrichment.md)
-* [FTP Downloader](guides/skills/ftp_downloader.md)
-* [Full-Text Parser](guides/skills/fulltext_parser.md)
+* [Analytics](guides/skills/analytics.md)
+* [RDF mapping](guides/skills/rdf_mapping.md)
 * [Pipeline](guides/skills/pipeline.md)
-* [Query Builder](guides/skills/query_builder.md)
-* [RDF Mapping](guides/skills/rdf_mapping.md)
+* [Caching](guides/skills/caching.md)
 
-## Advanced
+## API reference
 
-* [Advanced Topics](advanced/README.md)
-* [Multi-Layer Caching](advanced/caching.md)
-* [Caching Implementation](advanced/all-clients-caching-implementation.md)
-* [Cache Schema Migration](advanced/cache_schema_migration.md)
-* [Advanced Cache Architecture](advanced/advanced_cache_implementation_guide.md)
-* [SearchClient Caching](advanced/search-client-caching-integration.md)
-* [Progress Callbacks](advanced/progress-callbacks.md)
-* [Search Logging](advanced/search-logging.md)
-* [Schema Coverage Validation](advanced/schema-coverage-validation.md)
+* [API overview](api/README.md)
+* [SearchClient](api/search-client.md)
+* [ArticleClient](api/article-client.md)
+* [FullTextClient](api/fulltext-client.md)
+* [FTPDownloader](api/ftp-downloader.md)
+* [QueryBuilder](api/query-builder.md)
+* [EuropePMCParser](api/parser.md)
+* [FullTextXMLParser](api/xml-parser.md)
+  * [XML parser extensions](api/xml-parser-extensions.md)
+* [Analytics and visualization](api/analytics-visualization.md)
 
 ## Reference
 
-* [Data Models & RDF Mapping](reference/models.md)
-* [Data Models Quickstart](reference/data_models_quickstart.md)
-* [RML Mappings Guide](reference/rml_mappings_guide.md)
-* [XML Element Types](reference/xml_element_types_documentation.md)
-* [XML Element Coverage](reference/xml_element_coverage_analysis.md)
-* [XML Parser Extensions](reference/xml-parser-extensions.md)
-* [Performance Benchmarks](reference/MODULAR_PERFORMANCE_REPORT.md)
+* [Error codes](reference/error-codes.md)
+* [Data models and RDF mapping](reference/models.md)
+  * [RML mappings](reference/rml_mappings_guide.md)
+* [XML element types](reference/xml_element_types_documentation.md)
+* [Glossary](GLOSSARY.md)
+
+## Advanced
+
+* [Advanced topics](advanced/README.md)
+* [Caching internals](advanced/caching.md)
+* [Progress callbacks](advanced/progress-callbacks.md)
+* [Search logging](advanced/search-logging.md)
+* [Schema coverage validation](advanced/schema-coverage-validation.md)
 
 ## Development
 
-* [Development Guide](development/README.md)
-* [Python Version Strategy](development/python-version-strategy.md)
-* [Testing & CI/CD](development/testing-improvements.md)
-* [v2.0.0 Release Checklist](development/v2-release-checklist.md)
-* [QueryBuilder Refactoring](development/query-builder-refactoring.md)
-* [CodeScene Setup](development/codescene-setup.md)
-
-## Examples
-
-* [Examples](examples/README.md)
+* [Development guide](development/README.md)
+* [CI, branch protection and releases](development/ci-and-release-workflow.md)
+* [Documentation](development/documentation.md)
+* [Python version support](development/python-version-strategy.md)
+* [Testing](development/testing-improvements.md)
+* [Benchmarking and profiling](guides/benchmarking.md)
+* [XML parser internals](development/xml-parser-internals.md)
+* [Feature Suggester workflow](development/feature-suggester.md)

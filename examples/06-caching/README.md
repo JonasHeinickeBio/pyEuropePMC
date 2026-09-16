@@ -347,9 +347,9 @@ def print_cache_stats(client):
 
 ## 🔗 Resources
 
-- [Caching Best Practices](../../docs/advanced/caching.md)
-- [Performance Optimization Guide](../../docs/advanced/performance.md)
-- [Client Configuration](../../docs/api/clients.md)
+- [Caching guide](../../docs/features/caching/README.md)
+- [Caching reference](../../docs/advanced/caching.md)
+- [API reference](../../docs/api/README.md)
 
 ## 🚀 Best Practices
 

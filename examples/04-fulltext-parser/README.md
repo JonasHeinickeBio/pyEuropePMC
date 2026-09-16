@@ -309,7 +309,7 @@ xml_file = downloader.download_fulltext("PMC3258128", format="xml")
 - [JATS Specification](https://jats.nlm.nih.gov/)
 - [NLM DTD Documentation](https://dtd.nlm.nih.gov/)
 - [Europe PMC XML Guide](https://europepmc.org/ftp/)
-- [Parser API Reference](../../docs/api/fulltext-parser.md)
+- [FullTextXMLParser reference](../../docs/api/xml-parser.md)
 
 ## 🎓 Learning Path
 

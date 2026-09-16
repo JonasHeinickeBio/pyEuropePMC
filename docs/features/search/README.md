@@ -1,504 +1,272 @@
-# Search Features
+# Searching Europe PMC
 
-The **SearchClient** provides powerful querying capabilities for the Europe PMC database, allowing you to find scientific literature using advanced search syntax.
+`SearchClient` queries the Europe PMC REST search service. This page covers query syntax, request parameters, paging through large result sets, the shape of the results and error handling; the [SearchClient API reference](../../api/search-client.md) lists every method and parameter.
 
-## Overview
-
-- **Full-text search** across millions of papers
-- **Advanced query syntax** with Boolean operators
-- **Flexible filtering** by date, citation count, and more
-- **Pagination** for large result sets
-- **Automatic caching** for improved performance
-- **Multiple output formats** (JSON, XML, Dublin Core)
-
-## Quick Start
+## Quick start
 
 ```python
 from pyeuropepmc import SearchClient
 
 with SearchClient() as client:
-    # Simple keyword search
-    results = client.search("CRISPR gene editing")
+    results = client.search("CRISPR gene editing", pageSize=10)
 
-    # Advanced search with filters
-    results = client.search(
-        query="cancer AND therapy",
-        sort="CITED desc",
-        pageSize=50,
-        resultType="core"
-    )
-
-    # Process results
-    for paper in results['resultList']['result']:
-        print(f"{paper['title']} - {paper.get('citedByCount', 0)} citations")
+print(f"Total matches: {results['hitCount']}")
+for paper in results["resultList"]["result"]:
+    print(paper["title"], "-", paper.get("citedByCount", 0), "citations")
 ```
 
-## Search Query Syntax
+`search()` returns the parsed JSON response as a `dict`. The records are in `results["resultList"]["result"]`; `hitCount` is the total number of matches, not the number of records in this response.
 
-### Basic Search
+## Query syntax
 
-```python
-# Single keyword
-results = client.search("cancer")
-
-# Multiple keywords (implicit AND)
-results = client.search("cancer therapy")
-
-# Phrase search (exact match)
-results = client.search('"machine learning"')
-```
-
-### Boolean Operators
+The query string is sent to Europe PMC unchanged, so the full Europe PMC query language is available: keywords, quoted phrases, `AND`, `OR`, `NOT`, parentheses and fielded searches.
 
 ```python
-# AND - both terms must appear
-results = client.search("cancer AND therapy")
+from pyeuropepmc import SearchClient
 
-# OR - either term must appear
-results = client.search("cancer OR tumor")
-
-# NOT - exclude term
-results = client.search("cancer NOT lung")
-
-# Complex combinations
-results = client.search("(cancer OR tumor) AND (therapy OR treatment) NOT surgery")
-```
-
-### Field-Specific Searches
-
-Search specific metadata fields:
-
-```python
-# Author search
-results = client.search("AUTH:Einstein")
-
-# Title search
-results = client.search("TITLE:relativity")
-
-# Journal search
-results = client.search("JOURNAL:Nature")
-
-# Affiliation search
-results = client.search("AFF:Stanford")
-
-# Date range
-results = client.search("PUB_YEAR:[2020 TO 2024]")
-
-# Combine fields
-results = client.search("AUTH:Smith AND TITLE:cancer AND PUB_YEAR:2023")
-```
-
-### Available Fields
-
-| Field | Description | Example |
-|-------|-------------|---------|
-| `AUTH` | Author name | `AUTH:Einstein` |
-| `TITLE` | Article title | `TITLE:cancer` |
-| `JOURNAL` | Journal name | `JOURNAL:Nature` |
-| `AFF` | Author affiliation | `AFF:Harvard` |
-| `ABSTRACT` | Abstract text | `ABSTRACT:therapy` |
-| `PUB_YEAR` | Publication year | `PUB_YEAR:2023` |
-| `PMID` | PubMed ID | `PMID:12345678` |
-| `PMCID` | PMC ID | `PMCID:PMC1234567` |
-| `DOI` | Digital Object Identifier | `DOI:10.1038/...` |
-| `GRANT_AGENCY` | Funding agency | `GRANT_AGENCY:NIH` |
-| `GRANT_ID` | Grant number | `GRANT_ID:R01CA123456` |
-
-## Filtering and Sorting
-
-### Sort Options
-
-```python
-# By relevance (default)
-results = client.search("cancer", sort="relevance")
-
-# By citation count (descending)
-results = client.search("cancer", sort="CITED desc")
-
-# By publication date (newest first)
-results = client.search("cancer", sort="P_PDATE_D desc")
-
-# By publication date (oldest first)
-results = client.search("cancer", sort="P_PDATE_D asc")
-```
-
-### Pagination
-
-```python
-# Set page size
-results = client.search("cancer", pageSize=100)
-
-# Get specific page
-results = client.search("cancer", pageSize=50, cursorMark="*")
-
-# Iterate through pages
-cursor = "*"
-while True:
-    results = client.search("cancer", pageSize=100, cursorMark=cursor)
-
-    # Process results
-    for paper in results['resultList']['result']:
-        print(paper['title'])
-
-    # Check if more pages
-    next_cursor = results.get('nextCursorMark')
-    if not next_cursor or next_cursor == cursor:
-        break
-    cursor = next_cursor
-```
-
-### Result Types
-
-```python
-# Core metadata only (faster)
-results = client.search("cancer", resultType="core")
-
-# Include ID list
-results = client.search("cancer", resultType="idlist")
-
-# Lightweight results
-results = client.search("cancer", resultType="lite")
-```
-
-## Advanced Examples
-
-### Example 1: Highly Cited Papers
-
-Find highly cited papers on a specific topic:
-
-```python
-with SearchClient() as client:
-    results = client.search(
-        query="CRISPR",
-        sort="CITED desc",
-        pageSize=20,
-        resultType="core"
-    )
-
-    high_impact = [
-        paper for paper in results['resultList']['result']
-        if paper.get('citedByCount', 0) > 100
-    ]
-
-    for paper in high_impact:
-        print(f"{paper['title']}")
-        print(f"Citations: {paper['citedByCount']}")
-        print(f"Year: {paper.get('pubYear', 'N/A')}")
-        print("---")
-```
-
-### Example 2: Recent Papers from Specific Journal
-
-```python
-with SearchClient() as client:
-    results = client.search(
-        query='JOURNAL:"Nature" AND PUB_YEAR:[2023 TO 2024]',
-        sort="P_PDATE_D desc",
-        pageSize=50
-    )
-
-    for paper in results['resultList']['result']:
-        print(f"{paper['title']} ({paper.get('pubYear')})")
-```
-
-### Example 3: Author Publication History
-
-```python
-with SearchClient() as client:
-    results = client.search(
-        query='AUTH:"Smith J"',
-        sort="P_PDATE_D desc",
-        pageSize=100
-    )
-
-    papers_by_year = {}
-    for paper in results['resultList']['result']:
-        year = paper.get('pubYear', 'Unknown')
-        papers_by_year.setdefault(year, []).append(paper['title'])
-
-    for year in sorted(papers_by_year.keys(), reverse=True):
-        print(f"\n{year}: {len(papers_by_year[year])} papers")
-```
-
-### Example 4: Multi-Institutional Collaboration
-
-```python
-with SearchClient() as client:
-    results = client.search(
-        query='AFF:Harvard AND AFF:Stanford AND PUB_YEAR:2024',
-        pageSize=50
-    )
-
-    print(f"Found {results['hitCount']} collaborative papers")
-```
-
-### Example 5: Grant-Funded Research
-
-```python
-with SearchClient() as client:
-    results = client.search(
-        query='GRANT_AGENCY:NIH AND cancer AND PUB_YEAR:[2020 TO 2024]',
-        pageSize=100
-    )
-
-    for paper in results['resultList']['result']:
-        grants = paper.get('grantsList', {}).get('grant', [])
-        if grants:
-            grant_ids = [g.get('grantId') for g in grants]
-            print(f"{paper['title']}")
-            print(f"Grants: {', '.join(grant_ids)}")
-```
-
-## Working with Results
-
-### Result Structure
-
-```python
-results = client.search("cancer")
-
-# Result overview
-print(f"Total hits: {results['hitCount']}")
-print(f"Page size: {results['request']['pageSize']}")
-
-# Access individual papers
-for paper in results['resultList']['result']:
-    # Essential metadata
-    title = paper['title']
-    pmid = paper.get('pmid')
-    pmcid = paper.get('pmcid')
-    doi = paper.get('doi')
-
-    # Publication info
-    journal = paper.get('journalTitle')
-    pub_year = paper.get('pubYear')
-    pub_date = paper.get('firstPublicationDate')
-
-    # Authors
-    authors = paper.get('authorString', 'N/A')
-
-    # Citations
-    cited_by = paper.get('citedByCount', 0)
-
-    # Abstract (if available)
-    abstract = paper.get('abstractText', '')
-```
-
-### Filter Results
-
-```python
-results = client.search("cancer therapy", pageSize=100)
-
-# Filter by citation count
-high_impact = [
-    p for p in results['resultList']['result']
-    if p.get('citedByCount', 0) > 50
+queries = [
+    "malaria",                                  # keyword
+    '"machine learning"',                       # exact phrase
+    "cancer AND therapy",                       # both terms
+    "cancer OR tumour",                         # either term
+    "cancer NOT lung",                          # exclude a term
+    "(cancer OR tumour) AND (therapy OR treatment)",
+    'AUTH:"Smith J" AND TITLE:cancer',          # fielded search
+    "PUB_YEAR:[2020 TO 2024]",                  # range
 ]
 
-# Filter by publication year
-recent = [
-    p for p in results['resultList']['result']
-    if p.get('pubYear', 0) >= 2020
-]
-
-# Filter for open access with PMC ID
-open_access = [
-    p for p in results['resultList']['result']
-    if p.get('pmcid') and p.get('isOpenAccess') == 'Y'
-]
+with SearchClient() as client:
+    for query in queries:
+        print(query, "->", client.get_hit_count(query))
 ```
 
-## Large-Scale Search Operations
+Frequently used fields:
 
-For processing thousands of papers, use these strategies:
+| Field | Searches | Example |
+|---|---|---|
+| `TITLE` | Article title | `TITLE:malaria` |
+| `ABSTRACT` | Abstract text | `ABSTRACT:"drug resistance"` |
+| `AUTH` | Author name | `AUTH:"Smith J"` |
+| `AFF` | Author affiliation | `AFF:"university of oxford"` |
+| `JOURNAL` | Journal title or abbreviation | `JOURNAL:"Nature"` |
+| `PUB_YEAR` | Publication year, single or range | `PUB_YEAR:[2020 TO 2024]` |
+| `FIRST_PDATE` | Date of first publication | `FIRST_PDATE:[2020-01-01 TO 2020-06-30]` |
+| `EXT_ID` with `SRC` | Record ID within a source, for example a PubMed ID | `EXT_ID:32791984 AND SRC:MED` |
+| `PMCID` | PubMed Central ID | `PMCID:PMC3258128` |
+| `DOI` | DOI | `DOI:"10.1038/s41586-020-2649-2"` |
+| `GRANT_AGENCY` | Funder | `GRANT_AGENCY:wellcome` |
+| `OPEN_ACCESS` | Open-access subset | `OPEN_ACCESS:y` |
+| `CITED` | Number of citations | `CITED:[100 TO *]` |
+| `CITES` | Records that cite an article, given as `ID_source` | `CITES:8521067_med` |
+| `SRC` | Data source code | `SRC:PPR` |
 
-### Bulk Search (Recommended for Semantic Scholar)
+Source codes include `MED` (PubMed/MEDLINE), `PMC` (PubMed Central), `PPR` (preprints), `AGR` (Agricola), `CBA` (Chinese Biological Abstracts), `CTX` (CiteXplore), `ETH` (EThOS theses), `HIR` (NHS Evidence), `NBK` (Europe PMC Bookshelf) and `PAT` (biological patents).
 
-When using the Semantic Scholar enrichment client, use `bulk=True` for faster search:
+The builder's field list and a live list of searchable fields are described in the [QueryBuilder API reference](../../api/query-builder.md#field-names). To assemble query strings in code, use [`QueryBuilder`](../query-builder-load-save-translate.md).
+
+## Search parameters
+
+`search(query, **kwargs)` recognises these keyword arguments. Any other keyword argument is added to the request as a query-string parameter without checks.
+
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `resultType` | `str` | `"lite"` | `"idlist"`, `"lite"` or `"core"`; see [Result types](#result-types) |
+| `pageSize` | `int` | `25` | Records per request, 1 to 1000. `page_size` is accepted as well and wins if both are given |
+| `cursorMark` | `str` | `"*"` | Paging cursor; `"*"` requests the first page |
+| `sort` | `str` | `""` (relevance) | A sortable field and a direction, for example `"CITED desc"` or `"P_PDATE_D asc"` |
+| `synonym` | `bool` | `False` | Expand the query with MeSH and UniProt synonyms |
+| `format` | `str` | `"json"` | `"json"` returns a `dict`; `"xml"` and `"dc"` (Dublin Core) return the response text as a `str` |
+| `email` | `str` | not sent | Contact address passed to Europe PMC |
+
+## Result types
+
+| `resultType` | Record contents |
+|---|---|
+| `idlist` | `id`, `source` and the PubMed and PubMed Central IDs where they exist |
+| `lite` | Key metadata: title, `authorString`, `journalTitle`, `pubYear`, `citedByCount`, identifiers and availability flags such as `isOpenAccess` and `hasPDF` |
+| `core` | Full metadata: `abstractText`, `authorList` with affiliations, `journalInfo`, `pubTypeList`, `fullTextUrlList` and, when the record has them, `meshHeadingList`, `keywordList`, `grantsList` and `license` |
+
+Abstracts, MeSH headings and grants are only returned with `resultType="core"`. A `core` record describes the journal in `journalInfo["journal"]["title"]` instead of `journalTitle`.
+
+## Sorting
+
+Omit `sort` to get results in relevance order. Otherwise give a field and `asc` or `desc`:
 
 ```python
-from pyeuropepmc.features.enrich import ProfessionalSemanticScholarClient
+from pyeuropepmc import SearchClient
 
-client = ProfessionalSemanticScholarClient()
-
-# Bulk search (fast, no relevance ranking, up to 10M results)
-results = client.search_paper("cancer", bulk=True, limit=1000)
-
-# Regular search with relevance ranking (slower for large result sets)
-results = client.search_paper("cancer", bulk=False, limit=100)
+with SearchClient() as client:
+    by_relevance = client.search("cancer")
+    most_cited = client.search("cancer", sort="CITED desc")
+    newest_first = client.search("cancer", sort="P_PDATE_D desc")
+    oldest_first = client.search("cancer", sort="P_PDATE_D asc")
 ```
 
-### Europe PMC CursorMark Pagination
+## Paging through results
 
-Efficient pagination for large result sets:
+### Collect many records with search_all
+
+```python
+from pyeuropepmc import SearchClient
+
+with SearchClient() as client:
+    papers = client.search_all("malaria vaccine", page_size=100, max_results=500)
+
+print(f"Retrieved {len(papers)} records")
+```
+
+`search_all(query, page_size=100, max_results=None, **kwargs)` follows `nextCursorMark` until it has `max_results` records or no more pages remain, and returns a `list` of record dicts. Other keyword arguments, such as `resultType="core"` or `sort`, are sent with every request. With `max_results=None` it fetches every match, which for a broad query means many requests.
+
+`search_all()` does not raise when a request fails: it stops and returns the records collected so far. Compare `len(papers)` with `get_hit_count()` when completeness matters.
+
+### Count matches and list IDs
+
+```python
+from pyeuropepmc import SearchClient
+
+with SearchClient() as client:
+    total = client.get_hit_count("malaria vaccine")          # int
+    first_ids = client.search_ids_only("malaria vaccine")    # list[str] from one page
+
+print(total, first_ids[:5])
+```
+
+`get_hit_count()` makes one request with a page size of 1. `search_ids_only()` requests one `idlist` page (25 IDs unless you pass `pageSize`) and returns an empty list if the request fails.
+
+### Page manually with cursorMark
 
 ```python
 from pyeuropepmc import SearchClient
 
 with SearchClient() as client:
     cursor = "*"
-    all_results = []
-
-    # Get 10 pages of 100 results each
-    for i in range(10):
-        results = client.search("cancer", pageSize=100, cursorMark=cursor)
-
-        # Process results
-        all_results.extend(results['resultList']['result'])
-
-        # Get next page
-        next_cursor = results.get('nextCursorMark')
+    for _ in range(3):  # at most three pages of 100 records
+        page = client.search("malaria vaccine", pageSize=100, cursorMark=cursor)
+        for paper in page["resultList"]["result"]:
+            print(paper["id"], paper["title"])
+        next_cursor = page.get("nextCursorMark")
         if not next_cursor or next_cursor == cursor:
-            break
+            break  # Europe PMC returns the same cursor on the last page
         cursor = next_cursor
-
-    print(f"Total papers retrieved: {len(all_results)}")
 ```
 
-### Batch Processing 1000+ Papers
+Pages are reachable only through `nextCursorMark`; there is no page number or offset parameter.
+
+### Very long queries
+
+`search_post(query, **kwargs)` takes the same parameters as `search()` and sends them as a form-encoded POST request, for queries that are too long for a URL.
+
+## Working with results
+
+Keys in a `lite` record:
+
+| Key | Type | Notes |
+|---|---|---|
+| `id`, `source` | `str` | Record ID and source code; [ArticleClient](../../api/article-client.md) takes both |
+| `pmid`, `pmcid`, `doi` | `str` | Present only when the record has them |
+| `title` | `str` | |
+| `authorString` | `str` | Comma-separated author names |
+| `journalTitle` | `str` | `core` records use `journalInfo` instead |
+| `pubYear` | `str` | For example `"2024"`; convert it before comparing numbers |
+| `firstPublicationDate` | `str` | `YYYY-MM-DD` |
+| `citedByCount` | `int` | Citations counted by Europe PMC |
+| `isOpenAccess`, `inEPMC`, `inPMC`, `hasPDF` | `str` | `"Y"` or `"N"` |
+
+### Filter records
 
 ```python
 from pyeuropepmc import SearchClient
 
-def process_papers_in_batches(query, batch_size=100, max_batches=10):
-    with SearchClient() as client:
-        cursor = "*"
-        total_processed = 0
-
-        for batch_num in range(max_batches):
-            results = client.search(
-                query=query,
-                pageSize=batch_size,
-                cursorMark=cursor,
-                resultType="core"
-            )
-
-            papers = results['resultList']['result']
-            if not papers:
-                break
-
-            # Process batch
-            for paper in papers:
-                # Your processing logic here
-                process_paper(paper)
-                total_processed += 1
-
-            # Update cursor
-            next_cursor = results.get('nextCursorMark')
-            if not next_cursor or next_cursor == cursor:
-                break
-            cursor = next_cursor
-
-        return total_processed
-
-# Usage
-count = process_papers_in_batches("cancer immunotherapy")
-print(f"Processed {count} papers")
-```
-
-### Performance Comparison
-
-| Strategy | API Calls | Time for 1000 papers | Best For |
-|----------|-----------|---------------------|----------|
-| `pageSize=10` | 100 | ~100s | Testing |
-| `pageSize=100` | 10 | ~20s | Default |
-| `pageSize=500` | 2 | ~8s | Large datasets |
-| `bulk=True` (SemSchol) | ~1 | ~5s | Semantic Scholar |
-
-## Performance Tips
-
-### 1. Use Caching
-
-Caching is enabled by default and significantly speeds up repeated queries:
-
-```python
 with SearchClient() as client:
-    # First call - hits API
-    results1 = client.search("cancer")
+    papers = client.search("cancer therapy", pageSize=100)["resultList"]["result"]
 
-    # Second call - from cache (instant)
-    results2 = client.search("cancer")
+recent = [p for p in papers if int(p.get("pubYear") or 0) >= 2020]
+highly_cited = [p for p in papers if p.get("citedByCount", 0) > 50]
+open_access_in_pmc = [p for p in papers if p.get("pmcid") and p.get("isOpenAccess") == "Y"]
+
+print(len(recent), len(highly_cited), len(open_access_in_pmc))
 ```
 
-### 2. Optimize Page Size
-
-```python
-# Too small - many API calls
-results = client.search("cancer", pageSize=10)
-
-# Optimal for most use cases
-results = client.search("cancer", pageSize=100)
-
-# Too large - slow response
-results = client.search("cancer", pageSize=1000)
-```
-
-### 3. Use Specific Queries
-
-```python
-# Vague - many irrelevant results
-results = client.search("cancer")
-
-# Specific - fewer, better results
-results = client.search("lung cancer AND immunotherapy AND PUB_YEAR:[2020 TO 2024]")
-```
-
-### 4. Request Only Needed Data
-
-```python
-# Full metadata (slower)
-results = client.search("cancer", resultType="core")
-
-# Minimal metadata (faster)
-results = client.search("cancer", resultType="idlist")
-```
-
-## Rate Limiting
-
-### SearchClient Rate Limiting
+### Read core metadata
 
 ```python
 from pyeuropepmc import SearchClient
 
-with SearchClient(rate_limit_delay=1.0) as client:
-    results = client.search("cancer")
+with SearchClient() as client:
+    results = client.search("GRANT_AGENCY:wellcome AND malaria", resultType="core", pageSize=50)
+
+for paper in results["resultList"]["result"]:
+    abstract = paper.get("abstractText", "")
+    grants = paper.get("grantsList", {}).get("grant", [])
+    funders = sorted({grant.get("agency", "unknown") for grant in grants})
+    print(paper["title"])
+    print("  abstract length:", len(abstract))
+    print("  funders:", ", ".join(funders) or "none listed")
 ```
 
-### Europe PMC Rate Limits
+### Parse into a list of records
 
-| API | Free Tier Limit | With Authentication |
-|-----|----------------|---------------------|
-| Europe PMC | No strict limit | Register for API key |
-
-### Best Practices
-1. Use caching for repeated queries
-2. Set appropriate `rate_limit_delay` based on your use case
-3. Use larger `pageSize` to reduce total API calls
-4. Implement retry logic for transient failures
-
-## Error Handling
+`search_and_parse(query, format="json", **kwargs)` runs one search and returns the records as a `list` of dicts, for JSON, XML or Dublin Core responses:
 
 ```python
 from pyeuropepmc import SearchClient
-from pyeuropepmc.exceptions import EuropePMCException
+
+with SearchClient() as client:
+    records = client.search_and_parse("malaria", format="json")
+    dublin_core = client.search_and_parse("malaria", format="dc")
+
+print(records[0]["title"])
+print(dublin_core[0]["title"], dublin_core[0]["date"])
+```
+
+The parsing is done by [EuropePMCParser](../../api/parser.md).
+
+## Caching
+
+Caching is opt-in: responses are not cached unless you pass a `CacheConfig`, and the cache is held in memory unless you also set `enable_l2=True`. With caching enabled, an identical request is answered from the cache:
+
+```python
+from pyeuropepmc import CacheConfig, SearchClient
+
+with SearchClient(cache_config=CacheConfig(enabled=True, ttl=3600)) as client:
+    client.search("malaria")  # sent to Europe PMC
+    client.search("malaria")  # answered from the cache
+    print(client.get_cache_stats()["hits"])
+```
+
+See [Caching](../caching/README.md) for how to configure it and the [caching reference](../../advanced/caching.md) for cache layers, expiry and invalidation.
+
+## Rate limiting
+
+`SearchClient(rate_limit_delay=1.0)` waits `rate_limit_delay` seconds after every request; the default is 1.0. Europe PMC needs no API key or registration. You can pass `email="you@example.org"` to `search()` so that the Europe PMC team can contact you about service changes.
+
+## Error handling
+
+```python
+from pyeuropepmc import EuropePMCError, SearchClient
 
 with SearchClient() as client:
     try:
-        results = client.search("cancer", pageSize=100)
-
-        if results['hitCount'] == 0:
+        results = client.search("malaria", pageSize=100)
+    except EuropePMCError as error:
+        print(f"Search failed: {error}")
+    else:
+        if results["hitCount"] == 0:
             print("No results found")
-        else:
-            # Process results
-            pass
-
-    except EuropePMCException as e:
-        print(f"API error: {e}")
-    except Exception as e:
-        print(f"Unexpected error: {e}")
 ```
 
-## See Also
+`EuropePMCError` is the exported name of `SearchError` from `pyeuropepmc.core.exceptions`. `search()` raises it when:
 
-- **[API Reference: SearchClient](../../api/search-client.md)** - Complete API documentation
-- **[Search Examples](../../examples/)** - Code examples in the repository
-- **[Caching](../caching/)** - Understanding caching behavior
+- the query fails the local check in `SearchClient.validate_query()`: empty, shorter than two characters, an odd number of double quotes, or more than 30% special characters (error code `SEARCH001`);
+- `pageSize` is outside 1 to 1000 (`SEARCH002`);
+- `format` is not a supported value (`SEARCH004`);
+- the request fails, including HTTP error responses (for example `NET001`).
+
+The error code is available as `error.error_code`. All exceptions raised by the package derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions`. `search_all()` and `search_ids_only()` do not raise on request failures, as described above.
+
+## See also
+
+- [SearchClient API reference](../../api/search-client.md)
+- [Query builder](../query-builder-load-save-translate.md)
+- [Multi-source search](../multi-source-search.md)
+- [Caching](../caching/README.md)

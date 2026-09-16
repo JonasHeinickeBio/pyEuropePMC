@@ -1,62 +1,82 @@
-# arXiv Integration
+# arXiv client
 
-Search and retrieve preprints from arXiv.org across all subject areas.
+`ArxivClient` searches arXiv preprints through the arXiv API and returns `LiteratureResult` records. The API needs no key or registration.
 
-## Basic Usage
+## Search
 
 ```python
 from pyeuropepmc.features.search import ArxivClient
 
 with ArxivClient() as client:
     papers = client.search("machine learning", limit=10)
-    for paper in papers:
-        print(f"{paper.title} ({paper.source_id})")
+
+for paper in papers:
+    print(paper.source_id, paper.publication_year, paper.title)
 ```
 
-## Searching by Subject
+`search(query, limit=25, sort=None, **kwargs) -> list[LiteratureResult]`
 
-arXiv supports searching by subject category:
+| Parameter | Type | Default | Description |
+|---|---|---|---|
+| `query` | `str` | required | arXiv query, sent unchanged as `search_query` |
+| `limit` | `int` | `25` | Maximum records; capped at 2000 |
+| `sort` | `str` or `None` | `None` | `"relevance"`, `"date"` (submission date) or `"title"`; `None` leaves the order to arXiv |
+| `id_list` | `str` | not sent | Comma-separated arXiv IDs to look up |
 
-```python
-papers = client.search(
-    query="quantum computing",
-    limit=20,
-    categories="cs.AI,cs.LG",  # Computer Science categories
-)
-```
+Other keyword arguments are ignored without a warning.
 
-## Sorting
+## Fields and subject categories
+
+Queries use arXiv's own syntax: prefixes such as `ti:` (title), `au:` (author), `abs:` (abstract), `cat:` (subject category) and `all:`, combined with `AND`, `OR` and `ANDNOT`. To restrict a search to subject categories, put `cat:` terms in the query:
 
 ```python
 from pyeuropepmc.features.search import ArxivClient
 
 with ArxivClient() as client:
-    # By relevance (default)
-    papers = client.search("transformer architecture", sort="relevance")
+    papers = client.search(
+        'all:"quantum computing" AND (cat:cs.AI OR cat:cs.LG)',
+        limit=20,
+        sort="date",
+    )
 
-    # By date (newest first)
-    papers = client.search("transformer architecture", sort="date")
+print(len(papers))
 ```
 
-## Get Paper by ID
+There is no `categories` argument: `search("quantum computing", categories="cs.AI")` searches all categories. The syntax is described in the [arXiv API user manual](https://info.arxiv.org/help/api/user-manual.html). Through `UnifiedSearch`, a query without arXiv prefixes is sent as `all:"<query>"`.
+
+## Get a paper
 
 ```python
-# By arXiv ID
-paper = client.get_paper("2101.12345")
+from pyeuropepmc.features.search import ArxivClient
 
-# By DOI
-paper = client.get_paper("10.48550/arXiv.2101.12345")
+with ArxivClient() as client:
+    by_id = client.get_paper("2101.12345")
+    by_doi = client.get_paper("10.48550/arXiv.2101.12345")
+    by_url = client.get_paper("https://arxiv.org/abs/2101.12345")
+
+print(by_id.title if by_id else "not found")
 ```
 
-## No API Key Needed
+`get_paper(identifier) -> LiteratureResult | None` accepts an arXiv ID, an ID with an `arxiv:` prefix, an abstract URL or an arXiv DOI (`10.48550/arXiv.<id>`).
 
-arXiv is a free, open API. No registration or API key is required. The client includes a polite 3-second rate limit by default.
+## Result fields
 
-## Features
+| Field | Content |
+|---|---|
+| `source` | `"arxiv"` |
+| `source_id` | arXiv ID without the version suffix, for example `2101.12345` |
+| `title`, `abstract` | Entry title and summary |
+| `authors` | `Author` objects with names in `Last, First` form |
+| `publication_year` | Year of the first version |
+| `doi` | DOI of the published version, when the authors added one |
+| `journal` | Journal reference, when present |
 
-- ✅ Free, no API key required
-- ✅ All arXiv subject areas (CS, physics, math, bio, finance, statistics)
-- ✅ Atom XML parsing with proper metadata extraction
-- ✅ Author name normalization
-- ✅ Rate-limited (3s by default)
-- ✅ Standardized `LiteratureResult` output
+Subject categories are not included in the results.
+
+## Rate limit
+
+`ArxivClient(rate_limit_delay=3.0, timeout=30, cache_config=None)` waits 3 seconds between requests, following arXiv's request to send at most one request every three seconds. `UnifiedSearch` replaces this with its own `rate_limit_delay`, 1.2 seconds by default; use `UnifiedSearch(rate_limit_delay=3.0)` when arXiv is one of the sources.
+
+## See also
+
+- [Multi-source search](multi-source-search.md)

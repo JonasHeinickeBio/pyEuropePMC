@@ -1,524 +1,320 @@
-# Advanced Multi-Layer Caching
+# Caching internals
 
-PyEuropePMC implements a sophisticated multi-layer caching architecture optimized for scientific literature retrieval. This professional-grade system provides significant performance improvements while maintaining data freshness and reliability.
+This page is the reference for the cache layer behind the clients: `CacheConfig`, `CacheBackend`, how cache keys are built, the disk layer and its schema helpers, the `cached` decorator and the standalone `ArtifactStore`. To turn caching on in a client, see [Caching](../features/caching/README.md).
 
-## Architecture Overview
-
-### Multi-Layer Cache Design
-
-The cache system implements a **hierarchical caching strategy** with three distinct layers:
-
-1. **L1 Cache (In-Memory)**: Ultra-fast access using `cachetools.TTLCache`
-   - Hot data with short TTL (seconds to minutes)
-   - Per-process, survives for session duration
-   - Maximum speed for frequently accessed data
-
-2. **L2 Cache (Persistent)**: Durable storage using `diskcache`
-   - Warm/cold data with longer TTL (hours to days)
-   - Survives process restarts and system reboots
-   - Shared across multiple processes
-
-3. **Content-Addressed Storage**: Immutable artifact storage
-   - SHA-256 based content addressing
-   - Automatic deduplication
-   - Optimized for large files (PDFs, XMLs)
-
-### Data Type Optimization
-
-Different data types have optimized TTL configurations:
+## Imports
 
 ```python
-DEFAULT_TTLS = {
-    CacheDataType.SEARCH: 300,      # 5 minutes - volatile search results
-    CacheDataType.RECORD: 86400,    # 24 hours - semi-stable article metadata
-    CacheDataType.FULLTEXT: 2592000, # 30 days - mostly immutable full-text
-    CacheDataType.ERROR: 30,        # 30 seconds - very short error responses
-}
+from pyeuropepmc import CacheBackend, CacheConfig, CacheDataType, CacheLayer, normalize_query_params
+from pyeuropepmc import ArtifactMetadata, ArtifactStore  # also importable from pyeuropepmc.storage
+from pyeuropepmc.cache.cache import CACHETOOLS_AVAILABLE, DISKCACHE_AVAILABLE, cached
 ```
 
-## Quick Start
+`src/pyeuropepmc/cache/` has no `__init__.py`, so `from pyeuropepmc.cache import CacheConfig` raises `ImportError`. `cachetools` and `diskcache` are core dependencies, so both availability flags are normally `True`.
 
-### Basic Multi-Layer Caching
+## Architecture
+
+A `CacheBackend` has up to two layers:
+
+| Layer | Implementation | Bound | Expiry |
+|---|---|---|---|
+| L1 | `cachetools.TTLCache` in the memory of one `CacheBackend` | Entry count, `min(size_limit_mb * 1024, 10000)` | `CacheConfig.ttl`, the same for every entry |
+| L2 (`enable_l2=True`) | `diskcache.Cache` in `cache_dir` | `l2_size_limit_mb`, least-recently-used eviction | Per entry: `expire`, otherwise the `ttl_by_type` value of `data_type`, otherwise `ttl` |
+
+- `get()` checks L1, then L2, and copies an L2 hit into L1.
+- `set()` writes to both layers unless `layer=` names one.
+- Every client creates its own `CacheBackend` from the `CacheConfig` you pass, so clients never share a backend.
+- If a layer cannot be created, the backend logs a warning, sets `enabled` or `enable_l2` to `False` on the `CacheConfig` object you passed, and continues without that layer.
+
+## CacheConfig reference
+
+`CacheConfig(enabled=True, cache_dir=None, ttl=86400, size_limit_mb=500, eviction_policy="least-recently-used", enable_l2=False, l2_size_limit_mb=5000, ttl_by_type=None, namespace_version=1)`
+
+| Parameter | Type | Default | Effect |
+|---|---|---|---|
+| `enabled` | `bool` | `True` | With `False` (also forced if `cachetools` is missing), `get()` returns the default, `set()` returns `False` and the other methods do nothing. |
+| `cache_dir` | `Path`, `str` or `None` | `None` | L2 directory. `None` means `Path(tempfile.gettempdir()) / "pyeuropepmc_cache"`; a `str` is converted to `Path`. Unused without L2. |
+| `ttl` | `int` | `86400` | Lifetime of every L1 entry and the default L2 expiry, in seconds. A negative value raises `ConfigurationError`, `None` raises `TypeError`, and `0` expires entries immediately. |
+| `size_limit_mb` | `int` | `500` | L1 capacity as an entry count, `min(size_limit_mb * 1024, 10000)`: 1 gives 1024 entries, 10 or more gives 10000. Values below 1 raise `ConfigurationError`. |
+| `eviction_policy` | `str` | `"least-recently-used"` | Stored but not used; L2 always uses least-recently-used eviction. |
+| `enable_l2` | `bool` | `False` | Create the L2 disk layer. Forced to `False` if `diskcache` is missing or the disk cache cannot be opened. |
+| `l2_size_limit_mb` | `int` | `5000` | L2 size limit, passed to diskcache in bytes. |
+| `ttl_by_type` | `dict[CacheDataType, int]` or `None` | `None` | Merged over `CacheConfig.DEFAULT_TTLS`. Used by `set(..., data_type=...)` for the L2 expiry only. |
+| `namespace_version` | `int` | `1` | Version written into hashed keys (`v1`). Values below 1 raise `ConfigurationError`. |
+
+`config.get_ttl(data_type=None) -> int` returns the `ttl_by_type` value for `data_type`, or `ttl` when no data type is given.
+
+`CacheDataType` members and `CacheConfig.DEFAULT_TTLS`:
+
+| Member | Value | Default TTL |
+|---|---|---|
+| `CacheDataType.SEARCH` | `"search"` | 300 s |
+| `CacheDataType.RECORD` | `"record"` | 86400 s |
+| `CacheDataType.FULLTEXT` | `"fulltext"` | 2592000 s (30 days) |
+| `CacheDataType.ERROR` | `"error"` | 30 s |
+
+No client passes a `data_type`, so these values only matter for your own `set()` calls with `enable_l2=True`. `CacheLayer.L1` (`"l1"`) and `CacheLayer.L2` (`"l2"`) select a layer in `get()`, `set()`, `delete()`, `clear()` and `invalidate_pattern()`.
 
 ```python
-from pyeuropepmc.cache import CacheConfig, CacheBackend
+from pathlib import Path
 
-# Configure multi-layer cache
-config = CacheConfig(
-    enabled=True,
-    enable_l2=True,              # Enable L2 persistent cache
-    size_limit_mb=500,           # L1: 500MB
-    l2_size_limit_mb=5000,       # L2: 5GB
-    namespace_version=1,         # Version for invalidation
-)
-
-cache = CacheBackend(config)
-
-# Cache with automatic data type detection
-cache.set("search:covid", search_results, data_type=CacheDataType.SEARCH)
-cache.set("record:PMC123", article_data, data_type=CacheDataType.RECORD)
-cache.set("fulltext:PMC123:pdf", pdf_hash, data_type=CacheDataType.FULLTEXT)
-```
-
-### Content-Addressed Artifact Storage
-
-```python
-from pyeuropepmc.storage import ArtifactStore
-
-# Initialize content-addressed storage
-store = ArtifactStore("/path/to/artifacts", max_size_mb=10000)
-
-# Store content with automatic deduplication
-pdf_hash = store.store_artifact(
-    content=pdf_bytes,
-    mime_type="application/pdf",
-    source_id="PMC12345",
-    format_type="pdf"
-)
-
-# Retrieve by hash
-pdf_content = store.get_artifact(pdf_hash)
-```
-
-## Advanced Features
-
-### Namespace Versioning
-
-Enable instant broad invalidation by bumping namespace versions:
-
-```python
-# Version 1 cache keys
-cache_v1 = CacheBackend(CacheConfig(namespace_version=1))
-cache_v1.set("search:cancer", results)  # Key: "search:v1:cancer:hash"
-
-# Upgrade to version 2 (different algorithm)
-cache_v2 = CacheBackend(CacheConfig(namespace_version=2))
-cache_v2.set("search:cancer", results)  # Key: "search:v2:cancer:hash"
-
-# Invalidate all v1 entries instantly
-cache_v1.invalidate_pattern("*:v1:*")
-```
-
-### Query Normalization
-
-Consistent cache keys through intelligent parameter normalization:
-
-```python
-from pyeuropepmc.cache import normalize_query_params
-
-# These generate the same cache key
-params1 = {"query": "  COVID-19  ", "pageSize": "25"}
-params2 = {"query": "covid-19", "pageSize": 25}
-
-normalized1 = normalize_query_params(params1)  # {"query": "COVID-19", "pageSize": 25}
-normalized2 = normalize_query_params(params2)  # {"query": "covid-19", "pageSize": 25}
-
-# Keys are identical despite formatting differences
-key1 = cache.normalize_query_key(**params1)
-key2 = cache.normalize_query_key(**params2)
-assert key1 == key2  # True
-```
-
-### Tag-Based Selective Eviction
-
-Group related cache entries for bulk operations:
-
-```python
-# Tag entries by category
-cache.set("search:cancer", results, tag="oncology")
-cache.set("search:diabetes", results, tag="endocrinology")
-cache.set("record:PMC123", article, tag="oncology")
-
-# Evict all oncology-related data
-evicted = cache.evict("oncology")  # Evicts 2 entries
-```
-
-### Pattern-Based Invalidation
-
-Use glob patterns for sophisticated cache management:
-
-```python
-# Invalidate all search queries
-cache.invalidate_pattern("search:*")
-
-# Invalidate specific namespace version
-cache.invalidate_pattern("*:v1:*")
-
-# Invalidate specific data types
-cache.invalidate_pattern("record:*")
-```
-
-### Cache Warming
-
-Pre-populate cache with frequently accessed data:
-
-```python
-popular_queries = {
-    "search:cancer": cancer_results,
-    "search:diabetes": diabetes_results,
-    "record:PMC_top_cited": top_article,
-}
-
-warmed_count = cache.warm_cache(popular_queries, tag="preloaded")
-```
-
-## Performance Optimization
-
-### Cache Hierarchy Benefits
-
-```
-User Request → L1 Cache → L2 Cache → API Call
-     ↓            ↓          ↓          ↓
-   Instant     ~1ms       ~10ms      ~500ms
-```
-
-### Typical Performance Gains
-
-- **First request**: Normal API latency (500-2000ms)
-- **L2 cache hit**: 10-50ms (20-100x faster)
-- **L1 cache hit**: 0.1-1ms (500-20000x faster)
-
-### Memory Management
-
-Automatic size-based eviction with configurable limits:
-
-```python
-config = CacheConfig(
-    size_limit_mb=500,      # L1 cache limit
-    l2_size_limit_mb=5000,  # L2 cache limit
-    eviction_policy="least-recently-used"
-)
-```
-
-## Monitoring and Health Checks
-
-### Comprehensive Statistics
-
-```python
-stats = cache.get_stats()
-
-# Overall metrics
-print(f"Hit Rate: {stats['overall']['hit_rate']:.1%}")
-print(f"Total Ops: {stats['overall']['hits'] + stats['overall']['misses']}")
-
-# Per-layer metrics
-l1_stats = stats['layers']['l1']
-print(f"L1 Hit Rate: {l1_stats['hit_rate']:.1%}")
-print(f"L1 Size: {l1_stats['size_mb']:.1f} MB")
-
-l2_stats = stats['layers']['l2']
-print(f"L2 Hit Rate: {l2_stats['hit_rate']:.1%}")
-print(f"L2 Size: {l2_stats['size_mb']:.1f} MB")
-```
-
-### Health Monitoring
-
-```python
-health = cache.get_health()
-
-if health['status'] == 'healthy':
-    print("Cache operating normally")
-elif health['status'] == 'warning':
-    print(f"Warnings: {health['warnings']}")
-else:
-    print(f"Critical: {health['warnings']}")
-
-print(f"Size Utilization: {health['size_utilization']:.1%}")
-print(f"Error Rate: {health['error_rate']:.1%}")
-```
-
-## Content-Addressed Storage
-
-### SHA-256 Based Addressing
-
-```python
-import hashlib
-
-# Content addressing ensures deduplication
-content = pdf_bytes
-content_hash = hashlib.sha256(content).hexdigest()
-
-# Same content always produces same hash
-# Different IDs can reference same content
-store.store_artifact(content, source_id="PMC123", format_type="pdf")  # hash_abc
-store.store_artifact(content, source_id="PMC456", format_type="pdf")  # hash_abc (same!)
-```
-
-### Storage Benefits
-
-- **Deduplication**: Identical content stored once
-- **Integrity**: SHA-256 verification
-- **Immutability**: Content never changes
-- **Efficiency**: Reduced storage requirements
-
-## Client Integration
-
-### SearchClient with Advanced Caching
-
-```python
-from pyeuropepmc.search import SearchClient
-from pyeuropepmc.cache import CacheConfig
+from pyeuropepmc import CacheBackend, CacheConfig, CacheDataType, CacheLayer
 
 config = CacheConfig(
     enabled=True,
     enable_l2=True,
-    namespace_version=2,
-    ttl_by_type={
-        CacheDataType.SEARCH: 600,  # 10 minutes for search results
-    }
+    cache_dir=Path("cache-l2"),
+    ttl=3600,
+    ttl_by_type={CacheDataType.SEARCH: 600},
 )
+cache = CacheBackend(config)
 
-client = SearchClient(cache_config=config)
+cache.set("record:PMC3312970", {"title": "Example"}, data_type=CacheDataType.RECORD)
+cache.set("search:malaria", ["PMC1", "PMC2"], data_type=CacheDataType.SEARCH)  # 600 s on disk, 3600 s in memory
 
-# First search - cache miss
-results = client.search("COVID-19 vaccine")
-
-# Second search - cache hit (instant)
-results = client.search("COVID-19 vaccine")
+print(cache.get("record:PMC3312970"))  # {'title': 'Example'}
+print(cache.get("search:malaria", layer=CacheLayer.L2))  # ['PMC1', 'PMC2']
+print(cache.get("missing", default="n/a"))  # n/a
+cache.close()
 ```
 
-### FullTextClient with Artifact Storage
+## CacheBackend reference
+
+`CacheBackend(config: CacheConfig)`. The attributes `config`, `l1_cache` and `l2_cache` expose the configuration and the two stores; `cache` is an alias of `l1_cache`.
+
+| Method | Returns | Notes |
+|---|---|---|
+| `get(key, default=None, layer=None)` | Cached value or `default` | L1 first, then L2; an L2 hit is copied to L1. |
+| `set(key, value, expire=None, tag=None, data_type=None, layer=None)` | `bool` | `True` if at least one layer stored the value. `expire` and `data_type` only set the L2 expiry, and `expire=0` counts as not given. L2 values must be picklable. |
+| `delete(key, layer=None)` | `bool` | `True` if the key was removed from at least one layer. |
+| `clear(layer=None)` | `bool` | Removes all entries and all tag records. |
+| `evict(tag)` | `int` | Deletes the keys this backend stored with `tag`. Tags are kept in memory and forgotten on `close()`. |
+| `invalidate_pattern(pattern, layer=None)` | `int` | Deletes keys that match an `fnmatch` pattern (`*`, `?`, `[seq]`). |
+| `warm_cache(entries, ttl=None, tag=None)` | `int` | Calls `set(key, value, expire=ttl, tag=tag)` for each item of a dict and returns how many succeeded. |
+| `get_keys(pattern=None, limit=1000)` | `list[str]` | L1 keys only. |
+| `normalize_query_key(query, prefix="search", **params)` | `str` | See [Cache keys](#cache-keys). |
+| `get_stats()` | `dict` | See [Statistics and health](#statistics-and-health). |
+| `get_health()` | `dict` | See [Statistics and health](#statistics-and-health). |
+| `reset_stats()` | `None` | Sets all counters to zero. |
+| `invalidate_older_than(seconds)` | `int` | Always returns `0`; expiry is left to the TTLs. |
+| `compact()` | `bool` | Walks the L1 keys so that expired entries are dropped. Does not touch L2. |
+| `close()` | `None` | Empties L1, closes L2 and forgets tags. |
 
 ```python
-from pyeuropepmc.fulltext import FullTextClient
-from pyeuropepmc.storage import ArtifactStore
+from pyeuropepmc import CacheBackend, CacheConfig
 
-# Configure both caches
-cache_config = CacheConfig(enabled=True, enable_l2=True)
-artifact_store = ArtifactStore("./artifacts")
+cache = CacheBackend(CacheConfig(enabled=True))
 
-client = FullTextClient(
-    cache_config=cache_config,
-    artifact_store=artifact_store
-)
+cache.set("search:cancer", {"hitCount": 10}, tag="oncology")
+cache.set("record:PMC3312970", {"title": "Example"}, tag="oncology")
+cache.set("search:diabetes", {"hitCount": 4}, tag="endocrinology")
 
-# Downloads are cached with content addressing
-pdf_path = client.download_pdf_by_pmcid("PMC12345")
-xml_path = client.download_xml_by_pmcid("PMC12345")
-
-# Same content automatically deduplicated
-pdf2_path = client.download_pdf_by_pmcid("PMC67890")  # Different article, same PDF
-# Storage shows only one copy of identical content
+print(cache.evict("oncology"))  # 2
+print(cache.invalidate_pattern("search:*"))  # 1
+print(cache.warm_cache({"search:zika": {"hitCount": 3}}, tag="preloaded"))  # 1
+print(cache.get_keys())  # ['search:zika']
+cache.close()
 ```
 
-## Best Practices
+## Cache keys
 
-### 1. Configure TTLs by Use Case
+`set()` stores the key you give it unchanged. Hashed keys come from `normalize_query_key()` and from the clients:
 
 ```python
-# Research workflows - longer TTLs
-research_config = CacheConfig(
-    ttl_by_type={
-        CacheDataType.SEARCH: 3600,    # 1 hour - stable queries
-        CacheDataType.RECORD: 86400,   # 24 hours - rarely change
-        CacheDataType.FULLTEXT: 604800, # 1 week - very stable
-    }
-)
+from pyeuropepmc import CacheBackend, CacheConfig
 
-# Real-time monitoring - shorter TTLs
-monitoring_config = CacheConfig(
-    ttl_by_type={
-        CacheDataType.SEARCH: 300,     # 5 minutes - fresh data needed
-        CacheDataType.RECORD: 1800,    # 30 minutes - updates possible
-        CacheDataType.FULLTEXT: 3600,  # 1 hour - balance freshness/speed
-    }
-)
+cache = CacheBackend(CacheConfig(enabled=True))
+
+key = cache.normalize_query_key("covid-19 vaccine", pageSize=25)
+print(key)  # search:v1:search:63bbc7e22d791885
+print(cache.normalize_query_key("  covid-19   vaccine ", pageSize=25) == key)  # True: whitespace is collapsed
+print(cache.normalize_query_key("COVID-19 vaccine", pageSize=25) == key)  # False: case is kept
+print(cache.normalize_query_key("covid-19 vaccine", pageSize="25") == key)  # False: "25" is not 25
 ```
 
-### 2. Monitor Cache Health
+A hashed key has the form `{type}:v{namespace_version}:{prefix}:{hash}`. `type` is `search` for `normalize_query_key()` and `general` for the keys that clients build. `hash` is the first 16 hexadecimal characters of the SHA-256 of the parameters, which are first normalized (`None`, empty strings and empty dicts dropped, whitespace in strings collapsed, booleans turned into `"true"` or `"false"`, lists sorted into tuples, dicts normalized recursively), then sorted and JSON-encoded.
+
+Keys used by the clients:
+
+| Client call | Key | Tag |
+|---|---|---|
+| `SearchClient.search()` | `general:v{n}:search:{hash}` | `search` |
+| `SearchClient.search_post()` | `general:v{n}:search_post:{hash}` | `search_post` |
+| `AnnotationsClient.get_annotations_by_article_ids()`, `get_annotations_by_entity()`, `get_annotations_by_provider()` | `general:v{n}:annotations_by_ids:{hash}`, `general:v{n}:annotations_by_entity:{hash}`, `general:v{n}:annotations_by_provider:{hash}` | `annotations` |
+| `ArticleClient.get_article_details()` | `article_details:{source}:{article_id}:{result_type}:{format}` | `article_details` |
+| `ArticleClient.get_citations()`, `get_references()` | `citations:{source}:{article_id}:{page}:{page_size}:{format}`, `references:{source}:{article_id}:{page}:{page_size}:{format}` | `citations`, `references` |
+| `FullTextClient.check_fulltext_availability()` | `fulltext_availability:{digits}` (the PMC ID without its prefix) | `fulltext_availability` |
+| Enrichment clients | `{url}:{params}` | none |
+| `PubMedClient`, `ArxivClient`, `ClinicalTrialsClient` | `{url}:{params}:{response_format}` | none |
+
+Patterns used by the client invalidation methods:
+
+| Method | Pattern | Matches the client's keys |
+|---|---|---|
+| `SearchClient.invalidate_search_cache(pattern="search:*")` | The pattern you pass | Not with the default; use `"*:search:*"` or `"*:search_post:*"` |
+| `AnnotationsClient.invalidate_annotations_cache(pattern="annotations:*")` | The pattern you pass | Not with the default; use `"*:annotations_by_*"` |
+| `ArticleClient.invalidate_article_cache(source=None, article_id=None)` | `*:{source}:{article_id}:*`, `*:{source}:*`, or `*` with no arguments | Yes |
+| `FullTextClient.invalidate_fulltext_cache(pmcid=None)` | `*:{digits}*`, or `*` with no argument | Yes; also longer IDs that start with the same digits |
+
+`namespace_version` only changes hashed keys. A backend with `namespace_version=2` computes `search:v2:search:63bbc7e22d791885` for the query above, so it no longer finds the `v1` entry; remove old entries with `invalidate_pattern("*:v1:*")`. Keys stored unchanged through `set()`, such as `"search:cancer"`, contain no version and are not affected.
+
+`normalize_query_params()` is a standalone helper with different rules: it strips surrounding whitespace without collapsing inner whitespace, converts numeric strings to `int` or `float`, keeps booleans and case, sorts lists and drops `None` and empty strings. The clients do not use it to build keys.
 
 ```python
-def check_cache_health(cache):
-    health = cache.get_health()
+from pyeuropepmc import normalize_query_params
 
-    # Alert on low hit rate
-    if health['hit_rate'] < 0.5:
-        print(f"Low cache hit rate: {health['hit_rate']:.1%}")
-
-    # Alert on high utilization
-    if health['size_utilization'] > 0.9:
-        print(f"Cache nearly full: {health['size_utilization']:.1%}")
-
-    # Alert on errors
-    if health['error_rate'] > 0.05:
-        print(f"High cache error rate: {health['error_rate']:.1%}")
-
-    return health['status'] == 'healthy'
+params = {"query": "  COVID-19  ", "pageSize": "25", "sort": None, "email": "", "ids": ["b", "a"], "year": "2020"}
+print(normalize_query_params(params))
+# {'query': 'COVID-19', 'pageSize': 25, 'ids': ['a', 'b'], 'year': 2020}
 ```
 
-### 3. Use Namespace Versioning for Upgrades
+## Statistics and health
+
+`get_stats()` on an enabled backend returns:
+
+| Key | Content |
+|---|---|
+| `hits`, `misses`, `sets`, `deletes`, `errors` | Counters summed over both layers. |
+| `hit_rate` | `hits / (hits + misses)`, a fraction rounded to 4 decimal places. |
+| `entry_count`, `maxsize`, `currsize` | L1 entries and capacity. |
+| `size_bytes`, `size_mb` | L1 size estimated as 1 KB per entry. |
+| `namespace_version` | From `CacheConfig`. |
+| `layers` | `l1` with `hits`, `misses`, `sets`, `deletes`, `errors`, `entry_count`, `maxsize`, `currsize`, `hit_rate`, `size_bytes`, `size_mb`; and with L2, `l2` with `hits`, `misses`, `sets`, `deletes`, `errors`, `entry_count`, `hit_rate`, `size_bytes` (measured on disk), `size_mb`, `size_limit_mb`. |
+| `overall` | `hits`, `misses`, `sets`, `deletes`, `errors` and `hit_rate` over both layers. |
+
+A disabled backend returns only `{"namespace_version": ..., "layers": {}, "overall": {}}`. With L2 enabled, a lookup that misses L1 is counted in both layers (an L1 miss plus an L2 hit or miss), so `hits + misses` can be larger than the number of lookups.
+
+`get_health()` returns `enabled`, `status`, `available`, `hit_rate`, `size_utilization`, `error_rate` and `warnings`. `status` is `"disabled"` when caching is off, `"unavailable"` when L1 was not created and `"error"` when the statistics could not be computed. Otherwise the first matching rule applies:
+
+| Condition | `status` |
+|---|---|
+| `size_utilization > 0.95` | `"critical"` |
+| `size_utilization > 0.80` | `"warning"` |
+| `error_rate > 0.05` | `"warning"` |
+| `hit_rate < 0.5` with more than 100 operations | `"warning"` |
+| none of the above | `"healthy"` |
+
+`size_utilization` is `size_mb / size_limit_mb`, based on the 1 KB estimate; with the default `size_limit_mb=500`, a full L1 layer reports about 0.02. `error_rate` is `errors` divided by the sum of all counters.
+
+## Disk layer (L2)
+
+When `enable_l2=True`, the backend creates `cache_dir`, opens `diskcache.Cache(str(cache_dir), size_limit=l2_size_limit_mb * 1024 * 1024, eviction_policy="least-recently-used")` and writes and deletes a test key. If any step fails, it logs a warning and continues with L1 only.
+
+> **Known limitation.** Before it opens the disk cache, `_initialize_l2_cache()` deletes `cache.db` and any `cache.db-wal`, `cache.db-shm` and `cache.db-journal` files in `cache_dir` (`src/pyeuropepmc/cache/cache.py`, lines 447-460; the code comment says this is meant for test environments). With the current code:
+>
+> - a value written by one process is `None` in the next process that opens the same directory;
+> - two backends or clients that are open on the same directory at the same time do not see each other's entries;
+> - values that diskcache stored as separate `.val` files (large values) remain in `cache_dir` after the database is deleted.
+>
+> Treat L2 as storage for the lifetime of one backend, and give each backend its own `cache_dir`.
 
 ```python
-# When upgrading query algorithms or data formats
-def upgrade_cache_namespace(old_version, new_version):
-    old_cache = CacheBackend(CacheConfig(namespace_version=old_version))
-    new_cache = CacheBackend(CacheConfig(namespace_version=new_version))
+from pathlib import Path
 
-    # Migrate important entries to new namespace
-    # (or let them expire naturally)
+from pyeuropepmc import CacheBackend, CacheConfig
+from pyeuropepmc.cache.cache import DISKCACHE_AVAILABLE
 
-    # Invalidate old namespace
-    old_cache.invalidate_pattern(f"*:{old_version}:*")
+config = CacheConfig(enabled=True, enable_l2=True, cache_dir=Path("cache-check"))
+backend = CacheBackend(config)
+print(DISKCACHE_AVAILABLE, config.enable_l2, backend.l2_cache is not None)  # True True True
+backend.close()
 ```
 
-### 4. Implement Cache Warming for Known Workloads
+If the second or third value is `False`, the log contains the reason (`L2 cache test failed` or `Failed to initialize L2 cache`).
+
+### Schema helpers
+
+Databases created by older diskcache versions can lack the `size` column that diskcache 5.6.3 and later expects, which fails with `sqlite3.OperationalError: table Cache has no column named size`. The module `pyeuropepmc.cache.cache` has two private helpers for this case:
+
+| Function | Behaviour |
+|---|---|
+| `_validate_diskcache_schema(cache_dir: Path) -> bool` | Returns `True` if `cache_dir / "cache.db"` does not exist; otherwise calls `_check_and_migrate_schema()`. Returns `False` if SQLite cannot open the file. |
+| `_check_and_migrate_schema(db_path: Path) -> bool` | Reads `PRAGMA table_info(Cache)`. If `size` is missing, runs `ALTER TABLE Cache ADD COLUMN size INTEGER DEFAULT 0` and returns `True`. If SQLite raises an error (for example on a corrupt file), deletes `cache.db` and raises `ConfigurationError` with code `CONFIG001`. |
+
+`CacheBackend` does not call these helpers; it deletes `cache.db` instead, as described above. Use them when you open a `diskcache.Cache` yourself on an older directory, or delete the directory. Their tests are in `tests/cache/test_cache_l2_and_health.py`.
+
+## The cached decorator
 
 ```python
-def warm_common_queries(client, cache):
-    common_queries = [
-        "cancer immunotherapy",
-        "COVID-19 vaccine efficacy",
-        "diabetes treatment",
-        "neural networks machine learning",
-    ]
+from pyeuropepmc import CacheBackend, CacheConfig
+from pyeuropepmc.cache.cache import cached
 
-    warm_data = {}
-    for query in common_queries:
-        try:
-            results = client.search(query, pageSize=10)
-            key = cache.normalize_query_key(query, pageSize=10)
-            warm_data[key] = results
-        except Exception as e:
-            print(f"Failed to warm query '{query}': {e}")
+cache = CacheBackend(CacheConfig(enabled=True))
+calls = []
 
-    cache.warm_cache(warm_data, tag="common_queries")
+
+@cached(cache, "square", ttl=60)
+def square(x):
+    calls.append(x)
+    return x * x
+
+
+print(square(4), square(4), len(calls))  # 16 16 1
 ```
 
-## Troubleshooting
+`cached(cache_backend, key_prefix, ttl=None, tag=None, key_func=None)` builds the key from `key_prefix`, the function name and the arguments (`general:v1:square:{hash}`), unless you pass `key_func(*args, **kwargs) -> str`. A result of `None` is never cached, and `ttl` only sets the L2 expiry, like `set(expire=...)`.
 
-### Common Issues
+## ArtifactStore
 
-#### Low Hit Rate
-```python
-stats = cache.get_stats()
-if stats['overall']['hit_rate'] < 0.3:
-    print("Consider:")
-    print("- Increasing TTL values")
-    print("- Pre-warming cache with common queries")
-    print("- Checking query normalization consistency")
+`ArtifactStore` is a standalone content-addressed store for large files such as PDF, XML and ZIP downloads. No client uses it; `FullTextClient` keeps its downloads in its own [download cache](../features/caching/README.md#fulltextclient-download-cache).
+
+| Parameter | Type | Default | Effect |
+|---|---|---|---|
+| `base_dir` | `Path` or `str` | required | Root directory; `artifacts/` and `index/` are created inside it. |
+| `size_limit_mb` | `int` | `10000` | When new content would push the stored bytes over this limit, index entries are removed, least recently accessed first, until usage would fall to 80% of the limit; content that no entry references is then deleted. |
+| `min_free_space_mb` | `int` | `1000` | Stored but not checked. |
+
+| Method | Returns | Notes |
+|---|---|---|
+| `store(artifact_id, content, mime_type=None, etag=None, last_modified=None)` | `ArtifactMetadata` | Writes the bytes once per SHA-256 hash and points `artifact_id` at them. Storing an existing ID replaces its index entry. |
+| `retrieve(artifact_id)` | `(bytes, ArtifactMetadata)` or `None` | Also updates `last_accessed`. |
+| `exists(artifact_id)` | `bool` | Checks the index entry only. |
+| `get_metadata(artifact_id)` | `ArtifactMetadata` or `None` | Does not read the content. |
+| `delete(artifact_id)` | `bool` | Removes the index entry; the content stays until `compact()`. |
+| `compact()` | `dict` | Deletes content that no index entry references. Returns `orphans_removed`, `artifacts_remaining`, `index_entries` and `used_mb`. |
+| `get_disk_usage()` | `dict` | `used_bytes`, `used_mb`, `limit_bytes`, `limit_mb`, `used_percent`, `artifact_count`, `index_count`, `fs_available_bytes`, `fs_available_mb`, `fs_total_bytes`, `fs_total_mb`. |
+| `clear()` | `None` | Deletes all content and index entries. |
+
+`ArtifactMetadata` has the attributes `hash_value`, `size`, `mime_type`, `etag`, `last_modified`, `stored_at` and `last_accessed`. `to_dict()` writes `hash_value` under the key `hash`, and `ArtifactMetadata.from_dict()` reads that format back.
+
+```text
+base_dir/
+    artifacts/<first two hex characters>/<sha256>
+    index/<artifact_id with ":" and "/" replaced by "_">.json
 ```
 
-#### Cache Too Large
-```python
-stats = cache.get_stats()
-if stats.get('size_mb', 0) > cache.config.size_limit_mb * 0.9:
-    # Clear old entries
-    cache.invalidate_older_than(3600)  # Clear entries > 1 hour old
-    # Or reduce TTL values
-```
-
-#### L2 Cache Not Working
-```python
-# Check diskcache availability
-from pyeuropepmc.cache import DISKCACHE_AVAILABLE
-if not DISKCACHE_AVAILABLE:
-    print("Install diskcache: pip install diskcache")
-
-# Check L2 configuration
-config = CacheConfig(enable_l2=True)
-if not config.enable_l2:
-    print("L2 cache disabled - check diskcache installation")
-```
-
-### Debug Logging
-
-Enable detailed cache logging:
+Because of that replacement, IDs that differ only in `:`, `/` or `_` share one index file.
 
 ```python
-import logging
-logging.getLogger('pyeuropepmc.cache').setLevel(logging.DEBUG)
+from pathlib import Path
 
-# This will show cache hits/misses, key generation, etc.
+from pyeuropepmc import ArtifactStore
+
+store = ArtifactStore(Path("artifacts"), size_limit_mb=1000)
+
+pdf = b"%PDF-1.7 example"
+first = store.store("pmc:PMC3312970:pdf", pdf, mime_type="application/pdf")
+second = store.store("doi:10.1000/example:pdf", pdf, mime_type="application/pdf")
+print(first.hash_value == second.hash_value)  # True: the bytes are stored once
+
+content, metadata = store.retrieve("pmc:PMC3312970:pdf")
+print(len(content), metadata.mime_type)  # 16 application/pdf
+
+store.delete("pmc:PMC3312970:pdf")
+store.delete("doi:10.1000/example:pdf")
+print(store.compact()["orphans_removed"])  # 1
 ```
 
-## Performance Benchmarks
+## Logging
 
-### Typical Results
+The cache logs to `pyeuropepmc.cache.cache`: layer initialisation, `clear()`, `evict()`, `invalidate_pattern()` and `close()` at INFO level, and every hit, miss, write and delete, with its key, at DEBUG level. `ArtifactStore` logs to `pyeuropepmc.storage.artifact_store`.
 
-Based on real-world usage patterns:
+## Known limitations
 
-- **Search Queries**: 85-95% hit rate after initial warm-up
-- **Article Records**: 90-98% hit rate (stable metadata)
-- **Full-Text Downloads**: 80-90% hit rate (frequent re-access)
-- **Memory Usage**: 50-200MB for L1 cache (configurable)
-- **Disk Usage**: 1-10GB for L2 cache (configurable)
+These are issues in the current code; the sections above describe the actual behaviour.
 
-### Benchmark Script
-
-```python
-# Run the advanced demo for performance testing
-python examples/06-caching/02-advanced-cache-demo.py
-```
-
-## Migration Guide
-
-### From Basic Caching
-
-```python
-# Old way
-client = SearchClient(enable_cache=True)
-
-# New way - full control
-from pyeuropepmc.cache import CacheConfig
-config = CacheConfig(enabled=True, enable_l2=True)
-client = SearchClient(cache_config=config)
-```
-
-### From No Caching
-
-```python
-# Add one line for significant performance gains
-cache_config = CacheConfig(enabled=True)
-client = SearchClient(cache_config=cache_config)
-```
-
-## API Reference
-
-### CacheConfig
-
-```python
-class CacheConfig:
-    def __init__(
-        self,
-        enabled: bool = True,
-        cache_dir: Path | None = None,
-        ttl: int = 86400,
-        size_limit_mb: int = 500,
-        eviction_policy: str = "least-recently-used",
-        enable_l2: bool = False,
-        l2_size_limit_mb: int = 5000,
-        ttl_by_type: dict[CacheDataType, int] | None = None,
-        namespace_version: int = 1,
-    ):
-        # ... see source for full parameter details
-```
-
-### CacheBackend
-
-```python
-class CacheBackend:
-    def get(self, key: str, default=None, layer=None) -> Any: ...
-    def set(self, key: str, value: Any, expire=None, tag=None, data_type=None, layer=None) -> bool: ...
-    def delete(self, key: str, layer=None) -> bool: ...
-    def clear(self, layer=None) -> bool: ...
-    def get_stats(self) -> dict: ...
-    def get_health(self) -> dict: ...
-    def evict(self, tag: str) -> int: ...
-    def invalidate_pattern(self, pattern: str, layer=None) -> int: ...
-    def warm_cache(self, entries: dict, ttl=None, tag=None) -> int: ...
-```
-
-### ArtifactStore
-
-```python
-class ArtifactStore:
-    def store_artifact(self, content: bytes, mime_type=None, source_id=None, format_type=None) -> str: ...
-    def get_artifact(self, hash_value: str) -> bytes | None: ...
-    def delete_artifact(self, hash_value: str) -> bool: ...
-    def get_stats(self) -> dict: ...
-    def cleanup(self, max_age_days=None) -> int: ...
-```
-
-## See Also
-
-- [Advanced Cache Demo](../../examples/06-caching/02-advanced-cache-demo.py)
+- The disk layer deletes `cache.db` when it starts, so it does not persist ([Disk layer](#disk-layer-l2)).
+- `SearchClient.invalidate_search_cache()` and `AnnotationsClient.invalidate_annotations_cache()` default to patterns that match none of their keys ([Cache keys](#cache-keys)).
+- L1 uses one TTL for every entry; `set(expire=...)`, `data_type` and `ttl_by_type` only change the L2 expiry.
+- `CacheConfig(eviction_policy=...)` and `ArtifactStore(min_free_space_mb=...)` are stored but not used.
+- `invalidate_older_than()` always returns `0`, and `get_keys()` and `compact()` only look at L1.

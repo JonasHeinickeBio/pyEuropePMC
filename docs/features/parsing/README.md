@@ -1,706 +1,453 @@
-# XML Parsing Features
+# XML parsing
 
-The **FullTextXMLParser** provides comprehensive capabilities for extracting structured data from Europe PMC full-text XML documents.
+`FullTextXMLParser` reads a Europe PMC full-text article in JATS XML and extracts its metadata, authors, tables, figures, references and sections, or renders it as plain text or Markdown. This page shows the common tasks; the [FullTextXMLParser reference](../../api/xml-parser.md) lists every method and every returned key.
 
-## Overview
+## Get the XML
 
-- **Metadata extraction** - Title, authors, journal, dates, DOI, keywords
-- **Table extraction** - Complete table data with headers and captions
-- **Reference extraction** - Bibliography with full citation information
-- **Format conversion** - Convert to plaintext or Markdown
-- **Section extraction** - Get structured body sections
-- **Schema validation** - Analyze XML element recognition
-- **Flexible configuration** - Customize element patterns
-- **Multi-schema support** - Handle JATS, NLM, and custom XML
-- **Parser Extensions** - Content blocks, MathML, peer review, JATS4R validation, and more
-
-## Quick Start
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-# Load XML content
-with open("article.xml") as f:
-    xml_content = f.read()
-
-parser = FullTextXMLParser(xml_content)
-
-# Extract metadata
-metadata = parser.extract_metadata()
-print(f"Title: {metadata['title']}")
-print(f"Authors: {metadata['authors']}")
-
-# Extract tables
-tables = parser.extract_tables()
-print(f"Found {len(tables)} tables")
-
-# Convert to markdown
-markdown = parser.to_markdown()
-```
-
-## Metadata Extraction
-
-Extract comprehensive article metadata:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-metadata = parser.extract_metadata()
-
-# Available metadata fields
-title = metadata['title']                    # Article title
-authors = metadata['authors']                # List of author dicts
-journal = metadata['journal']                # Journal info dict (title, volume, issue)
-pub_date = metadata['publication_date']      # Publication date
-doi = metadata['doi']                        # Digital Object Identifier
-pmid = metadata['pmid']                      # PubMed ID
-pmcid = metadata['pmcid']                    # PMC ID
-abstract = metadata['abstract']              # Abstract text
-keywords = metadata['keywords']              # List of keywords
-affiliations = metadata['affiliations']      # Author affiliations
-
-# Author information
-for author in authors:
-    print(f"{author['given_names']} {author['surname']}")
-    print(f"  Affiliation: {author.get('affiliation', 'N/A')}")
-    print(f"  Email: {author.get('email', 'N/A')}")
-```
-
-### Metadata Fields Reference
-
-| Field | Type | Description |
-|-------|------|-------------|
-| `title` | str | Article title |
-| `authors` | list[dict] | Author information |
-| `journal` | dict | Journal info with 'title', 'volume', 'issue' keys |
-| `publication_date` | str | Publication date (ISO format) |
-| `doi` | str | DOI identifier |
-| `pmid` | str | PubMed ID |
-| `pmcid` | str | PMC ID |
-| `abstract` | str | Abstract text |
-| `keywords` | list[str] | Article keywords |
-| `affiliations` | list[str] | Author affiliations |
-| `article_type` | str | Article type |
-| `pages` | str | Page range |
-| `copyright` | str | Copyright statement |
-| `license` | str | License information |
-
-## Table Extraction
-
-Extract structured table data:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-tables = parser.extract_tables()
-
-for i, table in enumerate(tables):
-    print(f"\nTable {i+1}")
-    print(f"Caption: {table['caption']}")
-    print(f"Label: {table['label']}")
-
-    # Table headers
-    headers = table['headers']
-    print(f"Headers: {headers}")
-
-    # Table data
-    for row in table['data']:
-        print(row)
-```
-
-### Table Structure
-
-Each table is returned as a dictionary:
-
-```python
-{
-    'label': 'Table 1',
-    'caption': 'Patient demographics and baseline characteristics',
-    'headers': ['Parameter', 'Group A', 'Group B', 'P-value'],
-    'data': [
-        ['Age (years)', '45.3 ± 12.1', '43.8 ± 11.5', '0.23'],
-        ['Gender (M/F)', '12/8', '14/6', '0.51'],
-        # ...
-    ]
-}
-```
-
-### Working with Tables
-
-```python
-# Convert table to pandas DataFrame
-import pandas as pd
-
-for table in tables:
-    df = pd.DataFrame(table['data'], columns=table['headers'])
-    print(f"\n{table['caption']}")
-    print(df)
-
-    # Save to CSV
-    df.to_csv(f"table_{table['label']}.csv", index=False)
-```
-
-## Reference Extraction
-
-Extract bibliography and citations:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-references = parser.extract_references()
-
-for i, ref in enumerate(references, 1):
-    print(f"\n[{i}] {ref['title']}")
-    print(f"    Authors: {ref['authors']}")
-    print(f"    Journal: {ref['journal']}")
-    print(f"    Year: {ref['year']}")
-    print(f"    DOI: {ref.get('doi', 'N/A')}")
-    print(f"    PMID: {ref.get('pmid', 'N/A')}")
-```
-
-### Reference Structure
-
-```python
-{
-    'id': 'ref1',
-    'title': 'Original research title',
-    'authors': 'Smith J, Jones M, Brown L',
-    'journal': 'Nature',
-    'year': '2020',
-    'volume': '123',
-    'pages': '45-52',
-    'doi': '10.1038/...',
-    'pmid': '12345678'
-}
-```
-
-## Format Conversion
-
-### Convert to Plaintext
-
-Extract clean plaintext from XML:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-
-# Get full plaintext
-plaintext = parser.to_plaintext()
-
-# Save to file
-with open("article.txt", "w", encoding="utf-8") as f:
-    f.write(plaintext)
-```
-
-### Convert to Markdown
-
-Generate formatted Markdown:
-
-```python
-parser = FullTextXMLParser(xml_content)
-
-# Generate markdown
-markdown = parser.to_markdown()
-
-# Save to file
-with open("article.md", "w", encoding="utf-8") as f:
-    f.write(markdown)
-```
-
-**Markdown includes:**
-- Article title as H1
-- Authors and affiliations
-- Abstract section
-- Body sections with proper headings
-- Tables in markdown table format
-- References section
-- Figures with captions
-
-### Example Markdown Output
-
-```markdown
-# Machine Learning in Genomics: A Review
-
-**Authors:** John Smith¹, Jane Doe², Mary Johnson¹
-
-¹ Department of Computer Science, Stanford University
-² Department of Biology, MIT
-
-## Abstract
-
-Machine learning has revolutionized genomics research...
-
-## Introduction
-
-The application of computational methods to biological data...
-
-### Background
-
-Recent advances in sequencing technology...
-
-## Methods
-
-### Data Collection
-
-We collected genomic data from...
-
-| Sample ID | Tissue Type | Read Count |
-|-----------|-------------|------------|
-| S001      | Brain       | 1,234,567  |
-| S002      | Liver       | 987,654    |
-
-## References
-
-1. Smith et al. (2020). "Previous work." *Nature*, 123:45-52.
-```
-
-## Section Extraction
-
-Extract specific sections from the article:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-
-# Extract introduction
-intro = parser.extract_section('introduction')
-
-# Extract methods
-methods = parser.extract_section('methods')
-
-# Extract all sections
-sections = parser.extract_all_sections()
-
-for section in sections:
-    print(f"\n{section['title']}")
-    print(f"{section['content'][:200]}...")  # First 200 chars
-```
-
-## Schema Coverage Validation
-
-Analyze how well the parser recognizes XML elements:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-
-# Validate schema coverage
-coverage = parser.validate_schema_coverage()
-
-print(f"Overall coverage: {coverage['coverage_percentage']:.1f}%")
-print(f"Recognized elements: {coverage['recognized_count']}")
-print(f"Unrecognized elements: {coverage['unrecognized_count']}")
-
-# See unrecognized elements
-if coverage['unrecognized_elements']:
-    print("\nUnrecognized elements:")
-    for elem, count in coverage['unrecognized_elements'].items():
-        print(f"  {elem}: {count} occurrences")
-```
-
-### Coverage Report Structure
-
-```python
-{
-    'coverage_percentage': 85.5,
-    'recognized_count': 342,
-    'unrecognized_count': 58,
-    'total_elements': 400,
-    'recognized_elements': {
-        'article-title': 1,
-        'contrib': 5,
-        'p': 45,
-        'table': 3,
-        # ...
-    },
-    'unrecognized_elements': {
-        'custom-meta': 12,
-        'inline-formula': 8,
-        # ...
-    }
-}
-```
-
-## Custom Element Patterns
-
-Customize XML element recognition for specialized XML schemas:
-
-```python
-from pyeuropepmc import FullTextXMLParser, ElementPatterns
-
-# Create custom element patterns
-custom_patterns = ElementPatterns(
-    title_paths=['./front/article-meta/title-group/article-title'],
-    author_paths=['./front/article-meta/contrib-group/contrib'],
-    abstract_paths=['./front/article-meta/abstract'],
-    # Add custom patterns for specialized elements
-    custom_patterns={
-        'supplementary': './back/app-group/app',
-        'data_availability': './back/sec[@sec-type="data-availability"]'
-    }
-)
-
-# Use custom patterns
-parser = FullTextXMLParser(xml_content, element_patterns=custom_patterns)
-metadata = parser.extract_metadata()
-```
-
-### Available Pattern Groups
-
-```python
-ElementPatterns(
-    # Metadata patterns
-    title_paths=[...],
-    author_paths=[...],
-    abstract_paths=[...],
-    keywords_paths=[...],
-
-    # Content patterns
-    body_paths=[...],
-    section_paths=[...],
-    paragraph_paths=[...],
-
-    # Table patterns
-    table_paths=[...],
-    table_caption_paths=[...],
-
-    # Reference patterns
-    ref_list_paths=[...],
-    ref_paths=[...],
-
-    # Custom patterns (dict)
-    custom_patterns={}
-)
-```
-
-## Advanced Examples
-
-### Example 1: Extract All Data
-
-Complete extraction workflow:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-
-parser = FullTextXMLParser(xml_content)
-
-# Extract everything
-data = {
-    'metadata': parser.extract_metadata(),
-    'tables': parser.extract_tables(),
-    'references': parser.extract_references(),
-    'plaintext': parser.to_plaintext(),
-    'coverage': parser.validate_schema_coverage()
-}
-
-# Save to JSON
-import json
-with open("article_data.json", "w") as f:
-    json.dump(data, f, indent=2)
-```
-
-### Example 2: Batch Processing
-
-Process multiple XML files:
-
-```python
-import os
-from pyeuropepmc import FullTextXMLParser
-
-xml_dir = "./xml_files"
-output_dir = "./processed"
-
-for filename in os.listdir(xml_dir):
-    if filename.endswith('.xml'):
-        # Read XML
-        with open(os.path.join(xml_dir, filename)) as f:
-            xml_content = f.read()
-
-        # Parse
-        parser = FullTextXMLParser(xml_content)
-
-        # Extract and save metadata
-        metadata = parser.extract_metadata()
-        pmcid = metadata.get('pmcid', filename.replace('.xml', ''))
-
-        # Save markdown
-        markdown = parser.to_markdown()
-        with open(f"{output_dir}/{pmcid}.md", "w") as f:
-            f.write(markdown)
-
-        print(f"Processed: {pmcid}")
-```
-
-### Example 3: Table Export to Excel
-
-Export all tables to Excel:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-import pandas as pd
-
-parser = FullTextXMLParser(xml_content)
-tables = parser.extract_tables()
-
-# Create Excel writer
-with pd.ExcelWriter('article_tables.xlsx') as writer:
-    for i, table in enumerate(tables):
-        # Convert to DataFrame
-        df = pd.DataFrame(table['data'], columns=table['headers'])
-
-        # Write to Excel sheet
-        sheet_name = f"Table_{i+1}"
-        df.to_excel(writer, sheet_name=sheet_name, index=False)
-
-        # Add caption as note (requires openpyxl)
-        worksheet = writer.sheets[sheet_name]
-        worksheet.insert_rows(0)
-        worksheet['A1'] = table['caption']
-```
-
-### Example 4: Citation Network Analysis
-
-Build citation network from references:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-import networkx as nx
-
-# Parse multiple papers
-papers_data = []
-for xml_file in xml_files:
-    with open(xml_file) as f:
-        parser = FullTextXMLParser(f.read())
-        papers_data.append({
-            'metadata': parser.extract_metadata(),
-            'references': parser.extract_references()
-        })
-
-# Build citation graph
-G = nx.DiGraph()
-
-for paper in papers_data:
-    pmid = paper['metadata']['pmid']
-    G.add_node(pmid, title=paper['metadata']['title'])
-
-    for ref in paper['references']:
-        if ref.get('pmid'):
-            G.add_edge(pmid, ref['pmid'])
-
-# Analyze
-print(f"Papers: {G.number_of_nodes()}")
-print(f"Citations: {G.number_of_edges()}")
-
-# Find most cited papers
-in_degree = dict(G.in_degree())
-most_cited = sorted(in_degree.items(), key=lambda x: x[1], reverse=True)[:10]
-```
-
-### Example 5: Schema Coverage Analysis
-
-Analyze parser coverage across multiple files:
-
-```python
-from pyeuropepmc import FullTextXMLParser
-from collections import defaultdict
-
-all_unrecognized = defaultdict(int)
-
-for xml_file in xml_files:
-    with open(xml_file) as f:
-        parser = FullTextXMLParser(f.read())
-        coverage = parser.validate_schema_coverage()
-
-        # Aggregate unrecognized elements
-        for elem, count in coverage['unrecognized_elements'].items():
-            all_unrecognized[elem] += count
-
-# Report most common unrecognized elements
-print("Most common unrecognized elements across all files:")
-sorted_unrecognized = sorted(all_unrecognized.items(), key=lambda x: x[1], reverse=True)
-for elem, count in sorted_unrecognized[:20]:
-    print(f"  {elem}: {count} occurrences")
-```
-
-## Performance Tips
-
-### 1. Reuse Parser Instances
-
-```python
-# Bad: Creating new parser for each operation
-xml_content = load_xml()
-parser1 = FullTextXMLParser(xml_content)
-metadata = parser1.extract_metadata()
-parser2 = FullTextXMLParser(xml_content)
-tables = parser2.extract_tables()
-
-# Good: Reuse parser instance
-parser = FullTextXMLParser(xml_content)
-metadata = parser.extract_metadata()
-tables = parser.extract_tables()
-references = parser.extract_references()
-```
-
-### 2. Extract Only Needed Data
-
-```python
-# Bad: Extract everything if you only need metadata
-parser = FullTextXMLParser(xml_content)
-metadata = parser.extract_metadata()
-tables = parser.extract_tables()  # Unnecessary
-references = parser.extract_references()  # Unnecessary
-
-# Good: Extract only what you need
-parser = FullTextXMLParser(xml_content)
-metadata = parser.extract_metadata()
-```
-
-### 3. Use Schema Validation Wisely
-
-```python
-# Schema validation is computationally expensive
-# Only run when needed (e.g., during development)
-
-if debug_mode:
-    coverage = parser.validate_schema_coverage()
-    if coverage['coverage_percentage'] < 80:
-        print("Warning: Low coverage")
-```
-
-## Error Handling
-
-```python
-from pyeuropepmc import FullTextXMLParser
-from xml.etree.ElementTree import ParseError
-
-try:
-    parser = FullTextXMLParser(xml_content)
-    metadata = parser.extract_metadata()
-
-    if not metadata.get('title'):
-        print("Warning: No title found")
-
-except ParseError as e:
-    print(f"Invalid XML: {e}")
-
-except Exception as e:
-    print(f"Parser error: {e}")
-```
-
-## Parser Extensions
-
-The parser provides an **extensions package** (`pyeuropepmc.features.fulltext.extensions`) with 9 specialized modules for advanced use cases:
-
-| Module | Purpose |
-|--------|---------|
-| **Content Blocks** | Typed content blocks (paragraph, list, figure, formula, etc.) preserving document structure for RAG/LLM pipelines |
-| **Peer Review** | Extract peer review materials from `<sub-article>` elements |
-| **MathML Conversion** | Convert MathML to LaTeX for formula extraction |
-| **JATS4R Validation** | Compliance checking against NISO JATS4R recommendations |
-| **Batch Processing** | Concurrent XML parsing with rate limiting and progress callbacks |
-| **Image Fetcher** | Extract figure/supplementary/media references and download assets |
-| **Reference Resolver** | Enrich references via Europe PMC API lookup |
-| **Pydantic Helpers** | Convert dataclasses to Pydantic v2 models dynamically |
-| **Local Processing** | Parse XML files, directories, or strings with helper utilities |
-
-See the **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** for detailed usage and API documentation.
-
-### Quick Example
-
-```python
-from pyeuropepmc import FullTextXMLParser
-from pyeuropepmc.features.fulltext.extensions import (
-    ContentBlockExtractor,
-    JATS4RValidator,
-    MathMLConverter,
-    PeerReviewExtractor,
-    LocalXMLProcessor,
-    BatchProcessor,
-)
-
-# Parse XML
-parser = FullTextXMLParser(xml_content)
-
-# 1. Structured content blocks (for RAG/LLM pipelines)
-extractor = ContentBlockExtractor(parser.root)
-sections = extractor.extract_sections()
-for section in sections:
-    print(f"Section: {section.title}")
-    for block in section.content:
-        print(f"  [{block.type.value}]: {block.text[:80]}")
-
-# 2. JATS4R compliance validation
-validator = JATS4RValidator(parser.root)
-report = validator.validate()
-print(f"Compliance score: {report.compliance_score:.2f}")
-for finding in report.findings:
-    print(f"  {finding.category}: {finding.message}")
-
-# 3. Peer review extraction
-review_extractor = PeerReviewExtractor(parser.root)
-review_sets = review_extractor.extract_all()
-for review_set in review_sets:
-    print(f"Round {review_set.revision_round}: {len(review_set.reviews)} reviews")
-
-# 4. MathML to LaTeX conversion
-converter = MathMLConverter()
-for formula in parser.root.findall(".//disp-formula"):
-    mathml = formula.find(".//mml:math", converter.namespaces)
-    if mathml is not None:
-        latex = converter.convert(ET.tostring(mathml, encoding="unicode"))
-        print(f"LaTeX: {latex}")
-
-# 5. Local processing convenience
-LocalXMLProcessor.write_markdown(xml_content, "output.md")
-
-# 6. Batch processing
-processor = BatchProcessor(rate_per_second=5)
-results = processor.process_directory("xml_files/")
-```
-
-## Integration with FullTextClient
-
-Use the extensions with the FullTextClient workflow:
+The examples on this page read the full text of article PMC3258128 from a file. Download it once:
 
 ```python
 from pyeuropepmc import FullTextClient
-from pyeuropepmc.features.fulltext.extensions import (
-    ContentBlockExtractor,
-    JATS4RValidator,
-    BatchProcessor,
-)
-from xml.etree import ElementTree as ET
 
-# Download and process articles
 with FullTextClient() as client:
-    pmcids = ["PMC3258128", "PMC3359999"]
-
-    for pmcid in pmcids:
-        xml_path = client.download_xml_by_pmcid(pmcid)
-        with open(xml_path) as f:
-            xml_content = f.read()
-
-        parser = FullTextXMLParser(xml_content)
-
-        # Content blocks for structured output
-        extractor = ContentBlockExtractor(parser.root)
-        sections = extractor.extract_sections()
-
-        # JATS4R validation
-        report = JATS4RValidator(parser.root).validate()
-        print(f"{pmcid}: compliance = {report.compliance_score:.2f}")
+    path = client.download_xml_by_pmcid("PMC3258128", output_path="PMC3258128.xml")
+print(path)
 ```
 
-## See Also
+Output:
 
-- **[API Reference: FullTextXMLParser](../../api/xml-parser.md)** - Complete API documentation
-- **[XML Parser Extensions Reference](../../reference/xml-parser-extensions.md)** - All extension modules
-- **[API Reference: XML Parser Extensions](../../api/xml-parser-extensions.md)** - Extension API reference
-- **[Full-Text Retrieval](../fulltext/)** - Download XML files to parse
-- **[Examples](../../examples/)** - Code examples in the repository
+```text
+PMC3258128.xml
+```
+
+`client.get_fulltext_content("PMC3258128")` returns the same XML as a string instead. See [Full-text retrieval](../fulltext/README.md).
+
+## Parse a document
+
+```python
+from pathlib import Path
+
+from pyeuropepmc import FullTextXMLParser
+
+xml_content = Path("PMC3258128.xml").read_text(encoding="utf-8")
+parser = FullTextXMLParser(xml_content)
+print(parser.root.tag)
+```
+
+Output:
+
+```text
+article
+```
+
+The examples below continue with this `parser`.
+
+- `FullTextXMLParser(xml_content=None, config=None)` accepts a string or an `xml.etree.ElementTree.Element`. Without content, call `parser.parse(xml_content)` before extracting anything. The parser does not read files; pass the file's text, or use `parse_xml_file()` from the [extensions](../../api/xml-parser-extensions.md#local-processing).
+- Strings are parsed with [defusedxml](https://pypi.org/project/defusedxml/). A `<!DOCTYPE>` is accepted as long as it declares no entities; the external DTD that Europe PMC documents reference is not loaded. A document that declares an entity, internal or external, is refused.
+- If the root element declares a default namespace, as schema-based JATS does, that namespace is removed from the tags so the same lookups work. Prefixed namespaces such as `xlink:` and `mml:` are kept. An `Element` you pass in is used as it is, without this step.
+- Parsing the same text again creates a new tree; reuse one parser for all extractions on a document.
+
+### Parse errors
+
+Every failure raises `ParsingError` from `pyeuropepmc.core.exceptions`:
+
+```python
+from pyeuropepmc import FullTextXMLParser
+from pyeuropepmc.core.exceptions import ParsingError
+
+for document in ["<article><p>", '<!DOCTYPE article [<!ENTITY x "y">]><article/>', b"<article/>"]:
+    try:
+        FullTextXMLParser(document)
+    except ParsingError as error:
+        cause = type(error.__cause__).__name__ if error.__cause__ else None
+        print(error.error_code.value, cause)
+```
+
+Output:
+
+```text
+PARSE002 ParseError
+PARSE003 EntitiesForbidden
+PARSE003 None
+```
+
+| Input | Error code | `__cause__` |
+|---|---|---|
+| Malformed XML, including an undeclared named entity such as `&alpha;` | `PARSE002` | `xml.etree.ElementTree.ParseError` |
+| A DOCTYPE that declares an entity | `PARSE003` | `defusedxml.EntitiesForbidden` |
+| `None`, an empty string, `bytes` or another type | `PARSE003` | none |
+| Calling an extraction method before anything was parsed | `PARSE003` | none |
+
+`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it. The `PARSE003` message always reads "Content cannot be None or empty", whatever the cause; look at `__cause__` for the real reason. Numeric character references such as `&#x0003c;` parse normally.
+
+## Metadata, authors and affiliations
+
+```python
+metadata = parser.extract_metadata()
+print(metadata["title"])
+print(metadata["authors"][:2], metadata["journal"]["title"], metadata["pub_date"])
+print(metadata["doi"], metadata["pmcid"], metadata.get("pmid"))
+```
+
+Output:
+
+```text
+Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA
+['Shuai Li', 'Juanjuan Zhu'] Nucleic Acids Research 2012-01
+10.1093/nar/gkr715 3258128 None
+```
+
+`extract_metadata()` returns a dict. These keys are always present, with `None` or an empty value when the article lacks them: `title`, `abstract`, `authors` (a list of name strings), `journal` (a dict with `title`, `volume`, `issue` and, when present, ISSNs, publisher and journal IDs), `pub_date` (a string such as `"2012-01"`), `doi`, `pmcid` (as written in the XML, with or without the `PMC` prefix), `volume`, `issue`, `pages` and `keywords`. Other keys, such as `pmid`, `identifiers`, `license`, `copyright`, `publisher`, `funding`, `categories`, `history`, `correspondence`, `self_uri`, `counts` and `extended_metadata`, appear only for some articles, so read them with `.get()`. The [reference](../../api/xml-parser.md#extract_metadata) describes every key.
+
+Separate methods return single parts of the front matter:
+
+```python
+print(parser.extract_authors_detailed()[0])
+print(sorted(parser.extract_affiliations()[0]))
+print(parser.extract_pub_date(), parser.extract_license()["url"], parser.extract_publisher())
+```
+
+Output:
+
+```text
+{'given_names': 'Shuai', 'surname': 'Li', 'full_name': 'Shuai Li', 'affiliation_refs': ['gkr715-AFF1'], 'orcid': None}
+['id', 'institution_text', 'markers', 'parsed_institutions', 'text']
+2012-01 http://creativecommons.org/licenses/by-nc/3.0 {'name': 'Oxford University Press'}
+```
+
+The keys of an affiliation depend on how it is tagged: tagged affiliations have `institution`, `city`, `country` and sometimes `institutions` and `institution_ids`; untagged ones, like these, have `markers`, `institution_text` and `parsed_institutions`. `extract_keywords()`, `extract_funding()` and `extract_article_categories()` return the corresponding metadata values.
+
+## Tables
+
+```python
+from pathlib import Path
+
+from pyeuropepmc import FullTextXMLParser
+
+plos = FullTextXMLParser(Path("PMC13567752.xml").read_text(encoding="utf-8"))
+table = plos.extract_tables()[0]
+print(table["id"], table["label"], table["caption"])
+print(table["headers"], len(table["rows"]), table["rows"][0])
+```
+
+Output:
+
+```text
+pone.0357759.t001 Table 1 Powder metallurgy steps employed.
+['Steps', 'Details'] 9 ['Milling Method', 'Ball milling (RETSCH PM400)']
+```
+
+Each table is a dict with `id`, `label`, `caption`, `footer` (text of the table footnotes, or `None`), `headers` and `rows`, plus `column_groups` when the table has `<colgroup>` markup.
+
+- `headers` holds the `<th>` cells of the first header row. It is `[]` when the table has no `<thead>`, and also when the header cells are tagged `<td>`, which many journals do.
+- `rows` holds the `<td>` cells of every `<tbody>` row, as strings. Spanning cells are not expanded.
+
+To load a table into pandas, allow for empty headers:
+
+```python
+import pandas as pd
+
+for table in plos.extract_tables()[:2]:
+    frame = pd.DataFrame(table["rows"], columns=table["headers"] or None)
+    print(table["label"], frame.shape)
+```
+
+Output:
+
+```text
+Table 1 (9, 2)
+Table 2 (3, 6)
+```
+
+## Figures and assets
+
+```python
+figures = parser.extract_figures()
+print(len(figures), figures[0]["id"], figures[0]["label"], figures[0]["graphic_uri"])
+print(figures[0]["caption"][:60])
+```
+
+Output:
+
+```text
+5 gkr715-F1 Figure 1. gkr715f1
+Affinity purification with biotin-tagged miR-122 from human
+```
+
+Each figure is a dict with `id`, `label`, `caption` and, when the figure has a `<graphic>`, `graphic_uri`: the file name from the XML, not a URL.
+
+`ImageFetcher` from the extensions turns the file references of figures, supplementary material and media into URLs, and can download them:
+
+```python
+from pyeuropepmc.features.fulltext.extensions import ImageFetcher
+
+assets = ImageFetcher(parser.root, article_id="PMC3258128").extract_asset_refs()
+print(len(assets), assets[0].asset_type.value, assets[0].label, assets[0].uri)
+```
+
+Output:
+
+```text
+15 figure Figure 1. https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3258128/gkr715f1
+```
+
+The URLs are built by appending the file name to the article's PMC page address; they have not been checked against the PMC site, and the list contains duplicates (see [Known limitations](#known-limitations)).
+
+`FigureExtractor` in `pyeuropepmc.features.fulltext` does not work on Europe PMC XML: it only looks for elements in the JATS1 XML namespace, which Europe PMC documents do not use, so it returns no figures. Use `extract_figures()` instead.
+
+## References
+
+```python
+references = parser.extract_references()
+print(len(references))
+print(references[0])
+```
+
+Output:
+
+```text
+47
+{'id': 'gkr715-B1', 'label': '1', 'citation_type': 'element-citation', 'authors': 'Bartel, DP', 'title': 'MicroRNAs: genomics, biogenesis, mechanism, and function', 'source': 'Cell', 'year': '2004', 'volume': '116', 'pages': '281-297', 'doi': None, 'pmid': '14744438', 'pmcid': None}
+```
+
+Each reference has `id`, `label`, `citation_type` (`element-citation` or `mixed-citation`), `authors`, `title`, `source` (journal or book), `year`, `volume`, `pages`, `doi`, `pmid` and `pmcid`; missing values are `None`. Some references also carry `raw_citation`. `authors` is a single string, not a list.
+
+## Sections
+
+`get_full_text_sections()` returns the body as a flat list of `{"title", "content"}` dicts, where `content` is the section's own paragraphs joined by blank lines:
+
+```python
+sections = parser.get_full_text_sections()
+print(len(sections), [s["title"] for s in sections[:4]])
+print(sections[0]["content"][:70])
+print([s["type"] for s in sections if "type" in s])
+```
+
+Output:
+
+```text
+23 ['INTRODUCTION', 'MATERIALS AND METHODS', 'Cell lines and cultures', 'Affinity purification experiments']
+MicroRNAs (miRNAs) are small conserved RNAs of ∼22 nt which negatively
+['author_notes']
+```
+
+- There is one entry per `<sec>` in the article's own body, in document order; a subsection is a separate entry, and a section that only contains subsections has empty `content`. The list gives no nesting information.
+- Paragraphs that sit directly in `<body>`, outside any `<sec>`, form one untitled entry placed after all sections.
+- Back matter follows, with a third key `type`: `author_notes`, `acknowledgments`, `appendix` or `glossary`.
+- Only paragraph text is included: table cells, figure labels and code listings are not.
+
+### Structured sections
+
+`get_full_text_sections_structured()` keeps the document structure: each section holds typed content blocks.
+
+```python
+structured = parser.get_full_text_sections_structured()
+for section in structured[:3]:
+    print(section["section_type"], "|", section["title"], "|", section.get("section_path"),
+          [block["type"] for block in section["content"]][:3])
+
+body = [section for section in structured if section["section_type"] == "body"]
+first_paragraph = body[0]["content"][0]
+print(sorted(first_paragraph))
+```
+
+Output:
+
+```text
+front | Article Title | Article Title ['heading']
+front | Abstract | Abstract ['paragraph']
+body | INTRODUCTION | INTRODUCTION ['paragraph', 'paragraph', 'paragraph']
+['inlines', 'schema_version', 'text', 'type']
+```
+
+The method returns a list of dicts (`StructuredSection.to_dict()`), in this order:
+
+1. A section titled `Article Title` with `section_type` `"front"`, holding the title as a `heading` block.
+2. A section titled `Abstract` with `section_type` `"front"`.
+3. One section per `<sec>` in the body, with `section_type` `"body"`. Nested sections are separate entries; `section_path` joins the titles with `/`, for example `"Results/Gene mutation prediction"`. Paragraphs directly in `<body>` form an untitled section with `section_path` `"body"`.
+4. Back matter such as footnotes, notes and references, with `section_type` `"back"`, and appendices with `"appendix"`.
+
+Filter on `section_type == "body"` to get the main text only.
+
+Each block is a dict with `type` and `schema_version`, plus the fields that apply and are not empty:
+
+| Block `type` | Fields |
+|---|---|
+| `heading` | `text` |
+| `paragraph` | `text`; `inlines`, a list of `{type, text, position, length}` dicts for cross-references and formatting, with `ref_type` and `target_id` for cross-references |
+| `list` | `items`, `list_type` |
+| `table` | `label`, `caption`, `rows` (header and body rows), `text` (label, caption, cells and footer in one string), `inlines`, `metadata` |
+| `figure` | `label`, `caption`, `uri`, `target_id`, `inlines` |
+| `formula` | `tex`, `label`, `mathml` |
+| `code`, `quote`, `boxed_text` | `text` |
+| `definition_list` | `definition_terms` |
+| `unknown_block` | `jats_tag`, `text` for elements without a dedicated block type |
+
+A `<table-wrap>`, `<table>` or `<fig>` inside a `<p>` becomes its own block: the paragraph is split into a paragraph block with the text before it, the table or figure block, and a paragraph block with the text after it. In PMC12311175, for example, the section "Tumor-induced immune suppression" contains a paragraph, then a `figure` block labelled `Fig. 1`, then the rest of the paragraph. Display formulas (`<disp-formula>`) inside a `<p>` are not split out; see [Known limitations](#known-limitations).
+
+For `StructuredSection` and `ContentBlock` objects instead of dicts, with methods to split sections into chunks for retrieval, use `ContentBlockExtractor`; see [Content blocks](../../api/xml-parser-extensions.md#content-blocks).
+
+## Plain text and Markdown
+
+```python
+text = parser.to_plaintext()
+print(text[:150])
+
+markdown = parser.to_markdown()
+print([line for line in markdown.splitlines() if line.startswith("#")][:4])
+```
+
+Output:
+
+```text
+Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA
+
+Authors: Shuai Li, Juanjuan Zhu, Hanjiang F
+['# Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA through regulating PRKRA', '## Abstract', '## INTRODUCTION', '## MATERIALS AND METHODS']
+```
+
+`to_plaintext()` returns, separated by blank lines: the title; `Authors: ...`; `Abstract` and its text; each body section's title, paragraphs, lists (items prefixed with `• ` or `1. `) and tables; the paragraphs outside any section; then `Acknowledgments`, `Author Notes`, `Appendix: <title>` and `Glossary` blocks. A table directly in a section is written as `Table: <caption>`, one line per row with cells joined by ` | `, then its footnotes. A table or figure nested in a paragraph stays in that paragraph's text, with its cells, label and caption separated by spaces.
+
+`to_markdown()` returns the title as `#`, `**Authors:**`, `**Journal:**` and `**DOI:**` lines, `## Abstract`, the paragraphs outside any section, the body sections as `##` headings with subsections one level deeper, and `## Acknowledgments`, `## Author Notes`, `## Appendix` and `## Glossary` sections. It contains paragraph text only: no tables, list markers, figures or references, and characters such as `*` and `_` are not escaped.
+
+## Inspect the document structure
+
+```python
+print(parser.detect_schema())
+print(len(parser.list_element_types()))
+coverage = parser.validate_schema_coverage()
+print(coverage["total_elements"], coverage["recognized_count"], round(coverage["coverage_percentage"], 1))
+print(coverage["unrecognized_elements"][:3], coverage["element_frequency"]["p"])
+```
+
+Output:
+
+```text
+DocumentSchema(has_tables=False, has_figures=True, has_supplementary=True, has_acknowledgments=False, has_funding=False, citation_types=['element-citation'], table_structure='jats')
+72
+72 56 77.8
+['article-categories', 'article-meta', 'award-id'] 38
+```
+
+- `detect_schema()` returns a `DocumentSchema` describing which structures the document contains.
+- `list_element_types()` returns the sorted tag names used in the document.
+- `validate_schema_coverage()` compares those tag names with the parser's pattern configuration. `total_elements` counts distinct tag names, not elements; `recognized_elements` and `unrecognized_elements` are sorted lists of tag names; `element_frequency` maps each tag name to its number of occurrences. A tag counts as recognized if it appears in the configuration, which does not guarantee its content is extracted.
+
+The [XML element types](../../reference/xml_element_types_documentation.md) page explains the elements of a typical Europe PMC article.
+
+## Custom element patterns
+
+The parser finds elements through the XPath patterns in an `ElementPatterns` configuration. Each field is a `dict[str, list[str]]`; a field you pass replaces that whole group of defaults.
+
+```python
+from pyeuropepmc import ElementPatterns, FullTextXMLParser
+
+print(ElementPatterns().citation_types)
+config = ElementPatterns(citation_types={"types": ["element-citation", "mixed-citation"]})
+custom = FullTextXMLParser(xml_content, config=config)
+print(len(custom.extract_references()))
+```
+
+Output:
+
+```text
+{'types': ['element-citation', 'mixed-citation', 'nlm-citation', 'citation']}
+47
+```
+
+For one-off lookups, `extract_elements_by_patterns()` takes a dict of names and ElementTree XPath expressions and returns a dict of lists:
+
+```python
+found = parser.extract_elements_by_patterns(
+    {"doi": ".//article-id[@pub-id-type='doi']", "supplementary": ".//supplementary-material//title"},
+    first_only=True,
+)
+print(found)
+graphics = parser.extract_elements_by_patterns(
+    {"graphic": ".//fig/graphic"},
+    return_type="attribute",
+    get_attribute={"graphic": "{http://www.w3.org/1999/xlink}href"},
+)
+print(graphics["graphic"][:2])
+```
+
+Output:
+
+```text
+{'doi': ['10.1093/nar/gkr715'], 'supplementary': ['Supplementary Data']}
+['gkr715f1', 'gkr715f2']
+```
+
+## Parse many files
+
+`parse_xml_directory()` from the extensions returns a parser for each XML file in a directory, and `BatchProcessor` parses files concurrently:
+
+```python
+from pathlib import Path
+
+from pyeuropepmc.features.fulltext.extensions import BatchProcessor
+
+paths = sorted(str(path) for path in Path(".").glob("PMC*.xml"))
+result = BatchProcessor(max_workers=4).process_files(
+    paths, extraction_fn=lambda p: {"title": p.extract_metadata()["title"]}
+)
+print(len(result.successes), len(result.failures))
+```
+
+Output:
+
+```text
+6 0
+```
+
+See [Batch processing](../../api/xml-parser-extensions.md#batch-processing) and [Local processing](../../api/xml-parser-extensions.md#local-processing).
+
+## Extensions
+
+The `pyeuropepmc.features.fulltext.extensions` package adds nine modules; the [extensions reference](../../api/xml-parser-extensions.md) documents them.
+
+| Module | Main classes and functions | Purpose |
+|---|---|---|
+| Content blocks | `ContentBlockExtractor`, `StructuredSection`, `ContentBlock` | Typed blocks behind `get_full_text_sections_structured()`, with chunking for retrieval |
+| Peer review | `PeerReviewExtractor` | Review reports and author responses from `<sub-article>` elements |
+| MathML | `MathMLConverter` | MathML elements to LaTeX |
+| JATS4R | `JATS4RValidator` | Checks against JATS4R recommendations, with a score |
+| Batch processing | `BatchProcessor` | Parse many files or strings in threads |
+| Assets | `ImageFetcher` | Figure, supplementary and media file references; downloads |
+| Reference resolution | `ReferenceResolver` | Look up cited works in Europe PMC |
+| Local processing | `parse_xml_file`, `parse_xml_directory`, `LocalXMLProcessor` | Parse files and directories |
+| Pydantic helpers | `dataclass_to_pydantic`, `PydanticModelGenerator` | Pydantic models from dataclasses or sample data |
+
+For normalized text for text mining, with canonical section types and BioC output, see [JATS normalization](jats-normalization.md).
+
+## Known limitations
+
+These were found by checking the parser's output against the source XML of real Europe PMC articles.
+
+- **Floats outside the body.** Tables and figures in `<floats-group>`, where NIH author manuscripts put them, are returned by `extract_tables()` and `extract_figures()` but are missing from the structured sections, `to_plaintext()`, `to_markdown()` and `get_full_text_sections()`.
+- **Display formulas.** A `<disp-formula>` inside a `<p>` becomes part of the paragraph's text: there is no formula block, the MathML is dropped, and subscripts and superscripts become plain characters (x² reads "x2").
+- **Tables.** `extract_tables()` drops header rows whose cells are `<td>` (`headers` is `[]`) and reads only the first `<th>` header row; `colspan` and `rowspan` are ignored in every output.
+- **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.
+- **Metadata.**
+  - `pages` is read from the first `<fpage>` and `<lpage>` in the document. For articles that use `<elocation-id>` instead, which is not extracted, it is the page range of a reference.
+  - Only the first `<abstract>` is used, so author summaries and digests are missing.
+  - Keywords and affiliations are collected from the whole document, including peer-review sub-articles, so an eLife article's keywords can end with the assessment terms "Important" or "Compelling", and editors' affiliations are included.
+  - `extract_funding()` keeps only the first award ID and the first recipient of each award group.
+- **References.**
+  - `authors` is one string that cannot always be split into people; PLOS references run surname and initials together ("NewtonSI"), and collaboration authors are dropped.
+  - `title` falls back to `source` for software and some books.
+  - A pass over the flattened citation text can overwrite correctly tagged pages or DOIs.
+- **Structured sections.**
+  - Front-matter `<notes>` are typed `back`, and the `peer_review` section type is never produced.
+  - Appendix sections have no `section_path`, and a path is ambiguous when a title contains `/`.
+  - Paragraph text can run two words together where an inline element's text ends in a space (for example "IC50values"), and code blocks lose their line breaks.
+- **Text renderings.** `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` omit code listings, table labels, and the labels and caption titles of figures placed directly in a section. `to_plaintext()` renders an appendix that consists of a table as its title only, and moves a section's lists and tables after its paragraphs.
+- **Errors and size.** The `PARSE003` error text does not describe the actual cause. There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
+
+## See also
+
+- [FullTextXMLParser reference](../../api/xml-parser.md)
+- [XML parser extensions](../../api/xml-parser-extensions.md)
+- [JATS normalization](jats-normalization.md)
+- [Full-text retrieval](../fulltext/README.md)
+- [Full-text index](../fulltext-index.md): search parsed articles locally
