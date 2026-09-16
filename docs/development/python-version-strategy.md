@@ -73,7 +73,7 @@ Python 3.10 reaches end of life in October 2026.
    - `python-version: '3.10'` in `cdci.yml` (both jobs), `unit-tests.yml`, `integration-tests.yml`, `benchmark.yml` and `analyze_repo.yml`;
    - the `python-version` default in `.github/actions/setup-python-env/action.yml`;
    - in `python-compatibility.yml`, the `syntax-check` matrix, the `core-tests` matrix and its macOS exclusion, and the support text in the `compatibility-summary` job.
-5. Update `PYTHON_VERSION` in the `Makefile`, and update or delete `tox.ini`, which still lists `py310`.
+5. Update `PYTHON_VERSION` in the `Makefile`, and remove `py310` from `env_list` in `tox.ini`.
 6. Update the pages that name Python 3.10 as the minimum, including `README.md`, `docs/README.md`, the pages in `docs/getting-started/` and this page.
 7. Record the change under breaking changes in `CHANGELOG.md`.
 

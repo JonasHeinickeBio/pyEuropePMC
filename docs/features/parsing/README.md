@@ -67,18 +67,18 @@ Output:
 
 ```text
 PARSE002 ParseError
-PARSE003 EntitiesForbidden
+PARSE005 EntitiesForbidden
 PARSE003 None
 ```
 
 | Input | Error code | `__cause__` |
 |---|---|---|
 | Malformed XML, including an undeclared named entity such as `&alpha;` | `PARSE002` | `xml.etree.ElementTree.ParseError` |
-| A DOCTYPE that declares an entity | `PARSE003` | `defusedxml.EntitiesForbidden` |
+| A DOCTYPE that declares an entity | `PARSE005` | `defusedxml.EntitiesForbidden` |
 | `None`, an empty string, `bytes` or another type | `PARSE003` | none |
 | Calling an extraction method before anything was parsed | `PARSE003` | none |
 
-`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it. The `PARSE003` message always reads "Content cannot be None or empty", whatever the cause; look at `__cause__` for the real reason. Numeric character references such as `&#x0003c;` parse normally.
+`ParsingError` derives from `PyEuropePMCError`, not from `xml.etree.ElementTree.ParseError`, so `except ParseError` does not catch it; catch `ParsingError` instead. Every entry point that parses XML raises it the same way, and the message names the cause: which entity a refused document declares, or the line and column of a malformed one. Numeric character references such as `&#x0003c;` parse normally.
 
 ## Metadata, authors and affiliations
 
@@ -97,7 +97,7 @@ Hepato-specific microRNA-122 facilitates accumulation of newly synthesized miRNA
 10.1093/nar/gkr715 3258128 None
 ```
 
-`extract_metadata()` returns a dict. These keys are always present, with `None` or an empty value when the article lacks them: `title`, `abstract`, `authors` (a list of name strings), `journal` (a dict with `title`, `volume`, `issue` and, when present, ISSNs, publisher and journal IDs), `pub_date` (a string such as `"2012-01"`), `doi`, `pmcid` (as written in the XML, with or without the `PMC` prefix), `volume`, `issue`, `pages` and `keywords`. Other keys, such as `pmid`, `identifiers`, `license`, `copyright`, `publisher`, `funding`, `categories`, `history`, `correspondence`, `self_uri`, `counts` and `extended_metadata`, appear only for some articles, so read them with `.get()`. The [reference](../../api/xml-parser.md#extract_metadata) describes every key.
+`extract_metadata()` returns a dict. These keys are always present, with `None` or an empty value when the article lacks them: `title`, `abstract`, `authors` (a list of name strings), `journal` (a dict with `title`, `volume`, `issue` and, when present, ISSNs, publisher and journal IDs), `pub_date` (a string such as `"2012-01"`), `doi`, `pmcid` (as written in the XML, with or without the `PMC` prefix), `volume`, `issue`, `pages`, `elocation_id` and `keywords`. Other keys, such as `pmid`, `identifiers`, `license`, `copyright`, `publisher`, `funding`, `categories`, `history`, `correspondence`, `self_uri`, `counts` and `extended_metadata`, appear only for some articles, so read them with `.get()`. The [reference](../../api/xml-parser.md#extract_metadata) describes every key.
 
 Separate methods return single parts of the front matter:
 
@@ -116,6 +116,8 @@ Output:
 ```
 
 The keys of an affiliation depend on how it is tagged: tagged affiliations have `institution`, `city`, `country` and sometimes `institutions` and `institution_ids`; untagged ones, like these, have `markers`, `institution_text` and `parsed_institutions`. `extract_keywords()`, `extract_funding()` and `extract_article_categories()` return the corresponding metadata values.
+
+Front matter is read from the article's own `<front>`, never from the whole document: a peer-review `<sub-article>` has authors, affiliations and keywords of its own, a `<related-article>` in `<article-meta>` carries the companion paper's pagination, and every reference has a `<volume>`, an `<fpage>` and an `<lpage>`. `extract_affiliations()` additionally leaves out the affiliations of the editors, which are told apart by which `<contrib>` elements cite them.
 
 ## Tables
 
@@ -455,19 +457,17 @@ These were found by checking the parser's output against the source XML of real 
 - **Tables.** A spanning cell's text appears once, at its top-left position; the positions it covers are `""`, not filled with its value, so fill them yourself where a value applies to every row it spans. A Markdown pipe table cannot express a span, so there a spanning cell stands in its first column only.
 - **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.
 - **Metadata.**
-  - `pages` is read from the first `<fpage>` and `<lpage>` in the document. For articles that use `<elocation-id>` instead, which is not extracted, it is the page range of a reference.
   - Only the first `<abstract>` is used, so author summaries and digests are missing.
-  - Keywords and affiliations are collected from the whole document, including peer-review sub-articles, so an eLife article's keywords can end with the assessment terms "Important" or "Compelling", and editors' affiliations are included.
-  - `extract_funding()` keeps only the first award ID and the first recipient of each award group.
+  - `extract_funding()` reports one recipient as `recipient_full`; the rest are in `recipients`.
+  - An affiliation's address is split by heuristics, so `city`, `postal_code` and `country` are often wrong for markup that does not tag them.
 - **References.**
-  - `authors` is one string that cannot always be split into people; PLOS references run surname and initials together ("NewtonSI"), and collaboration authors are dropped.
-  - `title` falls back to `source` for software and some books.
-  - A pass over the flattened citation text can overwrite correctly tagged pages or DOIs.
+  - `authors` is one string that cannot always be split into people, because the parts of a name and the names themselves are both joined with ", ". An author written as plain text between tagged names is left out: PLOS's `<name>…</name>, Ankit, <name>…</name>` gives `"Yadav, AK, Kumar, V, Mohan, S"`.
+  - A citation that is only text has its authors, title, source, year, volume and pages guessed from that text, and the guesses can be wrong; a journal abbreviation containing a full stop is cut short, so "Cell Commun. Signal." becomes `"Cell Commun"`.
 - **Structured sections.**
   - Front-matter `<notes>` are typed `back`. The `peer_review` section type is produced only by `PeerReviewExtractor`; `get_full_text_sections_structured()` leaves sub-articles out.
   - Appendix sections have no `section_path`, and a path is ambiguous when a title contains `/`.
 - **Text renderings.** `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render the title of a `<boxed-text>` or `<disp-quote>` and the `<label>` of a section or footnote as nothing, and a `<ref-list>` placed inside `<body>` not at all. `to_markdown()` renders a display formula as its flattened text rather than LaTeX, and emphasis, sub- and superscripts as plain text.
-- **Errors and size.** The `PARSE003` error text does not describe the actual cause. There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
+- **Size and depth.** There are no size or depth limits; a document nested a few thousand levels deep fails in section extraction with `ParsingError`.
 
 ## See also
 

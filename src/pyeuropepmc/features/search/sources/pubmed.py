@@ -14,11 +14,11 @@ import logging
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-from defusedxml import DefusedXmlException
-import defusedxml.ElementTree as DefusedET
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import parse_xml
 from pyeuropepmc.features.literature.normalization import (
     normalize_affiliation,
     normalize_author_list,
@@ -400,9 +400,9 @@ class PubMedClient(BaseLiteratureClient):
     ) -> LiteratureResult | None:
         """Parse EFetch XML response into a :class:`LiteratureResult`."""
         try:
-            root: ET.Element = DefusedET.fromstring(xml_text)
-        except (DefusedET.ParseError, DefusedXmlException):
-            logger.exception("Failed to parse EFetch XML for PMID=%s", pmid)
+            root: ET.Element = parse_xml(xml_text, what="The EFetch response")
+        except ParsingError as exc:
+            logger.warning("EFetch XML for PMID=%s could not be parsed, no result: %s", pmid, exc)
             return None
 
         # Find the PubmedArticle

@@ -22,10 +22,11 @@ from __future__ import annotations
 import hashlib
 import json
 import os
-from pathlib import Path
 import re
 import tempfile
 from typing import TYPE_CHECKING, Any
+
+from pyeuropepmc.conf import config_file
 
 if TYPE_CHECKING:
     from rdflib import Graph
@@ -156,14 +157,13 @@ class RMLRDFizer:
         if not RDFIZER_AVAILABLE:
             raise ImportError("rdfizer package not found. Install it with: pip install rdfizer")
 
-        # Default to conf/rdfizer_config.ini and conf/rml_mappings.ttl
+        # Default to the rdfizer_config.ini and rml_mappings.ttl that ship with
+        # the package.
         if config_path is None:
-            base_path = Path(__file__).parent.parent.parent.parent
-            config_path = str(base_path / "conf" / "rdfizer_config.ini")
+            config_path = str(config_file("rdfizer_config.ini"))
 
         if mapping_path is None:
-            base_path = Path(__file__).parent.parent.parent.parent
-            mapping_path = str(base_path / "conf" / "rml_mappings.ttl")
+            mapping_path = str(config_file("rml_mappings.ttl"))
 
         self.config_path = config_path
         self.mapping_path = mapping_path

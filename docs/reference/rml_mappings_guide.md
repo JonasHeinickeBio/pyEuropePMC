@@ -6,7 +6,7 @@
 
 | | `RDFMapper` | `RMLRDFizer` |
 |---|---|---|
-| Mapping | `conf/rdf_map.yml` | `conf/rml_mappings.ttl`, generated from `rdf_map.yml`, plus `conf/rdfizer_config.ini` |
+| Mapping | `rdf_map.yml` | `rml_mappings.ttl`, generated from `rdf_map.yml`, plus `rdfizer_config.ini` |
 | Extra package | None | `rdfizer` |
 | Output | Entities with their relationships, provenance and `owl:sameAs` links; used by `PaperProcessingPipeline` | Flat properties of one entity type per call |
 | Subject URIs | PubMed, DOI, PMC or `https://w3id.org/pyeuropepmc/...` URIs | `http://example.org/data/<type>/<id>` |
@@ -24,11 +24,11 @@ pip install pyeuropepmc rdfizer
 
 ## Configuration files
 
-Both files are in the repository's `conf/` directory and are not included in the installed package. Use a source checkout, or download [`rml_mappings.ttl`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rml_mappings.ttl) and [`rdfizer_config.ini`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rdfizer_config.ini), then pass their paths.
+Both files ship with the package ([`rml_mappings.ttl`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/conf/rml_mappings.ttl) and [`rdfizer_config.ini`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/conf/rdfizer_config.ini) in `src/pyeuropepmc/conf/`), and `RMLRDFizer()` uses them unless you pass other paths.
 
 ### rml_mappings.ttl
 
-`examples/scripts/sync_rdf_mappings.py` generates this file from `conf/rdf_map.yml` (see [Changing the mapping](#changing-the-mapping)). It has one triples map per entity class, and each map reads a JSON file:
+`examples/scripts/sync_rdf_mappings.py` generates this file from `rdf_map.yml` (see [Changing the mapping](#changing-the-mapping)). It has one triples map per entity class, and each map reads a JSON file:
 
 ```turtle
 <#ScholarlyWorkEntityMap>
@@ -117,10 +117,7 @@ from pyeuropepmc.models import PaperEntity
 
 print(RDFIZER_AVAILABLE)
 
-rdfizer = RMLRDFizer(
-    config_path="conf/rdfizer_config.ini",
-    mapping_path="conf/rml_mappings.ttl",
-)
+rdfizer = RMLRDFizer()  # the packaged rdfizer_config.ini and rml_mappings.ttl
 
 paper = PaperEntity(pmcid="PMC1234567", doi="10.1234/example.2024.001", title="Example Paper")
 g = rdfizer.entities_to_rdf([paper], entity_type="paper")
@@ -143,7 +140,7 @@ Output:
 
 | Member | Description |
 |---|---|
-| `RMLRDFizer(config_path=None, mapping_path=None)` | `None` uses `conf/rdfizer_config.ini` and `conf/rml_mappings.ttl` of a source checkout. Raises `ImportError` without `rdfizer`, and `FileNotFoundError` (`Config file not found: <path>` or `Mapping file not found: <path>`) when a file is missing. |
+| `RMLRDFizer(config_path=None, mapping_path=None)` | `None` uses the packaged `rdfizer_config.ini` and `rml_mappings.ttl`. Raises `ImportError` without `rdfizer`, and `FileNotFoundError` (`Config file not found: <path>` or `Mapping file not found: <path>`) when a file is missing. |
 | `entities_to_rdf(entities, entity_type, output_format="turtle")` | Returns an rdflib `Graph` for a list of entities of one type (see the table above). The subject templates use `{id}`, so an entity without `id` gets one: its DOI, PMCID, `pmid:<PMID>`, ORCID or ROR ID when it has one, otherwise `<entity_type>-<16 hex digits>`, a digest of its content. The digest is the same in every run, and an entity whose content repeats an earlier one in the same call gets a `-2`, `-3`… suffix, so the output does not change between runs. `output_format` has no effect. |
 | `convert_json_to_rdf(json_data, entity_type, output_format="turtle")` | Returns a `Graph` for a dict, or a list of dicts, shaped like `entity.to_dict()` |
 
@@ -154,7 +151,7 @@ SDM-RDFizer prints progress messages and writes `error.log` to the current worki
 ```python
 from pyeuropepmc.mappers import RMLRDFizer
 
-rdfizer = RMLRDFizer(config_path="conf/rdfizer_config.ini", mapping_path="conf/rml_mappings.ttl")
+rdfizer = RMLRDFizer()
 
 json_data = {
     "id": "PMC123",
@@ -188,7 +185,7 @@ paper, authors, sections, tables, figures, references = build_paper_entities(par
 for entity in [paper, *authors, *sections, *figures, *references]:
     entity.normalize()
 
-rdfizer = RMLRDFizer(config_path="conf/rdfizer_config.ini", mapping_path="conf/rml_mappings.ttl")
+rdfizer = RMLRDFizer()
 
 g = Graph()
 g += rdfizer.entities_to_rdf([paper], entity_type="paper")
@@ -214,15 +211,15 @@ python examples/scripts/xml_to_rdf_rml.py PMC3258128.xml --output PMC3258128_rml
 | `INPUT` | PMC XML file |
 | `--output/-o PATH` | Turtle output file (required) |
 | `--json PATH` | Also save the entities as JSON |
-| `--mappings PATH` | RML mappings file (default: the checkout's `conf/rml_mappings.ttl`) |
-| `--config PATH` | RDFizer configuration (default: the checkout's `conf/rdfizer_config.ini`) |
+| `--mappings PATH` | RML mappings file (default: the packaged `rml_mappings.ttl`) |
+| `--config PATH` | RDFizer configuration (default: the packaged `rdfizer_config.ini`) |
 | `-v/--verbose` | Print progress |
 
 For PMC3258128 the output has 342 triples, from the paper, its journal, 6 grants, 12 authors, 23 sections, 5 figures and 47 references.
 
 ## Changing the mapping
 
-Edit `conf/rdf_map.yml` and regenerate the RML file from the repository root with `make sync-rdf` or `python examples/scripts/sync_rdf_mappings.py`. The `--yaml` option (default `conf/rdf_map.yml`) sets the input and `--rml` (default `conf/rml_mappings.ttl`) the output; `--check` is not implemented and exits with status 1. A field in the YAML may map to `{predicate, datatype}` or to a bare predicate string. The test suite checks that the committed `conf/rml_mappings.ttl` matches what the script generates.
+Edit `src/pyeuropepmc/conf/rdf_map.yml` and regenerate the RML file from the repository root with `make sync-rdf` or `python examples/scripts/sync_rdf_mappings.py`. The `--yaml` option (default `src/pyeuropepmc/conf/rdf_map.yml`) sets the input and `--rml` (default `src/pyeuropepmc/conf/rml_mappings.ttl`) the output; `--check` is not implemented and exits with status 1. A field in the YAML may map to `{predicate, datatype}` or to a bare predicate string. The test suite checks that the committed `rml_mappings.ttl` matches what the script generates.
 
 `RMLRDFizer` points every relative `rml:source "<name>.json"` of the mapping at its temporary directory and creates an empty file for each source it has no entities for, so triples maps added to the YAML need no change to `RMLRDFizer`.
 
