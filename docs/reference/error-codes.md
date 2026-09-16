@@ -56,7 +56,7 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `NET001` | A request failed: no connection, a timeout, or an HTTP status without a more specific code | Every client's requests. `SearchClient` and `ArticleClient` also use it to wrap a failed request, and `UnpaywallClient` uses it for network errors | Read `err.__cause__` for the HTTP status; check the connection and proxy; retry later |
+| `NET001` | A request failed: no connection, a timeout, or an HTTP status without a more specific code | Every client's requests. `SearchClient` and `ArticleClient` also use it to wrap a failed request, and `UnpaywallClient` uses it for network errors and HTTP errors other than 404 (a 404 returns `None`) | Read `err.__cause__` for the HTTP status; check the connection and proxy; retry later |
 | `NET002` | A request timed out | Multi-source search clients | Retry, or pass a larger `timeout` to `UnifiedSearch` |
 | `NET003` | DNS lookup failed | Not raised by the current code | Check DNS settings |
 | `NET004` | The server refused the connection | Not raised | Check the service status and firewall |
