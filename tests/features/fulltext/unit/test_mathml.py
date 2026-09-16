@@ -9,7 +9,7 @@ from xml.etree import ElementTree as ET
 import defusedxml.ElementTree as DefusedET
 import pytest
 
-from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
+from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 
 
 def _mml(xml: str) -> ET.Element:
@@ -83,7 +83,7 @@ class TestHandlers:
 
     def test_msup(self, conv):
         elem = _mml("<msup><mi>x</mi><mn>2</mn></msup>")
-        assert conv._handle_msup(elem) == "{x}^{2}"
+        assert conv._handle_msup(elem) == "x^{2}"
 
     def test_msup_missing_children_falls_back(self, conv):
         elem = _mml("<msup><mi>x</mi></msup>")
@@ -91,11 +91,11 @@ class TestHandlers:
 
     def test_msub(self, conv):
         elem = _mml("<msub><mi>x</mi><mn>1</mn></msub>")
-        assert conv._handle_msub(elem) == "{x}_{1}"
+        assert conv._handle_msub(elem) == "x_{1}"
 
     def test_msubsup(self, conv):
         elem = _mml("<msubsup><mi>x</mi><mn>1</mn><mn>2</mn></msubsup>")
-        assert conv._handle_msubsup(elem) == "{x}_{1}^{2}"
+        assert conv._handle_msubsup(elem) == "x_{1}^{2}"
 
     def test_mfrac(self, conv):
         elem = _mml("<mfrac><mn>1</mn><mn>2</mn></mfrac>")
@@ -137,17 +137,21 @@ class TestHandlers:
         elem = _mml("<menclose><mi>x</mi></menclose>")
         assert conv._handle_menclose(elem) == "x"
 
-    def test_munder(self, conv):
+    def test_munder_is_an_underscript_not_a_subscript(self, conv):
         elem = _mml("<munder><mi>x</mi><mi>y</mi></munder>")
-        assert conv._handle_munder(elem) == "{x}_{y}"
+        assert conv._handle_munder(elem) == "\\underset{y}{x}"
 
-    def test_mover(self, conv):
+    def test_mover_is_an_overscript_not_a_superscript(self, conv):
         elem = _mml("<mover><mi>x</mi><mi>y</mi></mover>")
-        assert conv._handle_mover(elem) == "{x}^{y}"
+        assert conv._handle_mover(elem) == "\\overset{y}{x}"
 
     def test_munderover(self, conv):
         elem = _mml("<munderover><mi>x</mi><mi>a</mi><mi>b</mi></munderover>")
-        assert conv._handle_munderover(elem) == "{x}_{a}^{b}"
+        assert conv._handle_munderover(elem) == "\\underset{a}{\\overset{b}{x}}"
+
+    def test_munderover_on_a_big_operator_is_its_limits(self, conv):
+        elem = _mml("<munderover><mo>\u2211</mo><mi>a</mi><mi>b</mi></munderover>")
+        assert conv._handle_munderover(elem) == "\\sum_{a}^{b}"
 
     def test_mmultiscripts(self, conv):
         elem = _mml("<mmultiscripts><mi>x</mi></mmultiscripts>")
@@ -264,3 +268,168 @@ class TestToSvg:
         with patch("subprocess.run", side_effect=[latex_ok, svg_result]):
             result = conv.to_svg(elem)
         assert result == "<svg>ok</svg>"
+
+
+MML = "http://www.w3.org/1998/Math/MathML"
+
+
+def _namespaced(inner: str) -> ET.Element:
+    """A fragment in the MathML namespace, as Europe PMC actually serves it."""
+    return DefusedET.fromstring(f'<math xmlns="{MML}">{inner}</math>')
+
+
+class TestNamespacedDocuments:
+    """Every Europe PMC document puts MathML in its own namespace."""
+
+    def test_mtable_rows_are_found_when_namespaced(self, conv):
+        elem = _namespaced(
+            "<mtable><mtr><mtd><mn>1</mn></mtd><mtd><mn>2</mn></mtd></mtr>"
+            "<mtr><mtd><mn>3</mn></mtd><mtd><mn>4</mn></mtd></mtr></mtable>"
+        )
+        latex = conv.convert_to_latex(elem)
+        assert "\\begin{array}{cc}" in latex
+        assert "1 & 2 \\\\ 3 & 4" in latex
+
+    def test_a_namespaced_formula_is_not_empty(self, conv):
+        """PLOS wraps every display formula in a one-row <mtable>; all 11 in
+        PMC10775981 converted to "" because findall("mtr") ignores namespaces."""
+        elem = _namespaced(
+            "<mtable><mtr><mtd><mrow><mi>x</mi><mo>=</mo><mn>1</mn></mrow></mtd></mtr></mtable>"
+        )
+        assert conv.convert_to_latex(elem) == "x = 1"
+
+    def test_single_cell_table_does_not_become_an_array(self, conv):
+        elem = _namespaced("<mtable><mtr><mtd><mi>x</mi></mtd></mtr></mtable>")
+        assert conv.convert_to_latex(elem) == "x"
+
+    def test_rows_are_separated_by_a_latex_row_break(self, conv):
+        elem = _mml(
+            "<mtable><mtr><mtd><mn>1</mn></mtd></mtr><mtr><mtd><mn>2</mn></mtd></mtr></mtable>"
+        )
+        # A bare newline is not a row separator in a LaTeX array.
+        assert "1 \\\\ 2" in conv._handle_mtable(elem)
+
+
+class TestAccents:
+    """``<mover>`` over a combining mark is an accent, not a superscript."""
+
+    def test_macron_is_a_bar(self, conv):
+        elem = _mml('<mover accent="true"><mi>η</mi><mo>¯</mo></mover>')
+        assert conv._handle_mover(elem) == "\\bar{\\eta}"
+
+    def test_dot_above_is_a_derivative(self, conv):
+        elem = _mml('<mover accent="true"><mi>x</mi><mo>˙</mo></mover>')
+        assert conv._handle_mover(elem) == "\\dot{x}"
+
+    def test_hat(self, conv):
+        elem = _mml("<mover><mi>p</mi><mo>^</mo></mover>")
+        assert conv._handle_mover(elem) == "\\hat{p}"
+
+    def test_arrow_above_is_a_vector(self, conv):
+        elem = _mml("<mover><mi>v</mi><mo>→</mo></mover>")
+        assert conv._handle_mover(elem) == "\\vec{v}"
+
+    def test_underbrace(self, conv):
+        elem = _mml("<munder><mi>x</mi><mo>⏟</mo></munder>")
+        assert conv._handle_munder(elem) == "\\underbrace{x}"
+
+    def test_an_accented_base_takes_a_script_without_extra_braces(self, conv):
+        elem = _mml('<msub><mover accent="true"><mi>x</mi><mo>˙</mo></mover><mi>i</mi></msub>')
+        assert conv._handle_msub(elem) == "\\dot{x}_{i}"
+
+    def test_a_compound_base_is_braced(self, conv):
+        elem = _mml("<msup><mrow><mo>(</mo><mi>x</mi><mo>)</mo></mrow><mn>2</mn></msup>")
+        assert conv._handle_msup(elem) == "{(x)}^{2}"
+
+
+class TestBigOperators:
+    def test_sum_limits(self, conv):
+        elem = _mml(
+            "<munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow>"
+            "<mi>N</mi></munderover>"
+        )
+        assert conv._handle_munderover(elem) == "\\sum_{j = 1}^{N}"
+
+    def test_integral_lower_limit_only(self, conv):
+        elem = _mml("<munder><mo>∫</mo><mi>a</mi></munder>")
+        assert conv._handle_munder(elem) == "\\int_{a}"
+
+
+class TestUnicodeSymbols:
+    def test_greek_identifier_becomes_a_command(self, conv):
+        assert conv._handle_mi(_mml("<mi>θ</mi>")) == "\\theta"
+
+    def test_greek_is_separated_from_the_letter_after_it(self, conv):
+        elem = _mml("<mrow><mi>α</mi><mi>x</mi></mrow>")
+        # "\alphax" is a different, undefined control word.
+        assert conv._handle_mrow(elem) == "\\alpha x"
+
+    def test_invisible_times_is_dropped(self, conv):
+        elem = _mml("<mrow><mi>a</mi><mo>⁢</mo><mi>b</mi></mrow>")
+        assert conv._handle_mrow(elem) == "ab"
+
+    def test_fences_and_punctuation_are_not_padded(self, conv):
+        elem = _mml("<mrow><mo>(</mo><mi>x</mi><mo>)</mo><mo>,</mo></mrow>")
+        assert conv._handle_mrow(elem) == "(x),"
+
+
+class TestMathVariant:
+    def test_bold_mtext_is_not_flattened_to_text(self, conv):
+        """PLOS writes a vector as <mtext mathvariant="bold">y</mtext>; \\text{y}
+        loses the only thing separating it from the scalar y beside it."""
+        assert conv._handle_mtext(_mml('<mtext mathvariant="bold">y</mtext>')) == "\\mathbf{y}"
+
+    def test_plain_mtext_is_still_text(self, conv):
+        assert conv._handle_mtext(_mml("<mtext>if</mtext>")) == "\\text{if}"
+
+    def test_double_struck_identifier(self, conv):
+        assert conv._handle_mi(_mml('<mi mathvariant="double-struck">R</mi>')) == "\\mathbb{R}"
+
+
+class TestSemanticAnnotation:
+    def test_author_supplied_tex_wins(self, conv):
+        xml = (
+            "<semantics><mrow><mi>x</mi></mrow>"
+            '<annotation encoding="application/x-tex">\\frac{1}{2}</annotation></semantics>'
+        )
+        assert conv._handle_semantics(_mml(xml)) == "\\frac{1}{2}"
+
+    def test_presentation_is_used_without_a_tex_annotation(self, conv):
+        xml = (
+            "<semantics><mrow><mi>x</mi></mrow>"
+            '<annotation encoding="application/mathml-content">?</annotation></semantics>'
+        )
+        assert conv._handle_semantics(_mml(xml)) == "x"
+
+
+class TestFenced:
+    def test_mfenced_defaults_to_parentheses(self, conv):
+        assert conv._handle_mfenced(_mml("<mfenced><mi>x</mi></mfenced>")) == "\\left(x\\right)"
+
+    def test_mfenced_honours_open_and_close(self, conv):
+        elem = _mml('<mfenced open="[" close="]"><mi>x</mi><mi>y</mi></mfenced>')
+        assert conv._handle_mfenced(elem) == "\\left[x,y\\right]"
+
+
+class TestSerializeMathml:
+    def test_namespaced_math_is_serialized_without_an_invented_prefix(self):
+        elem = _namespaced("<mi>x</mi>")
+        xml = serialize_mathml(elem)
+        assert xml.startswith("<math")
+        assert f'xmlns="{MML}"' in xml
+        assert "ns0:" not in xml
+        assert "<mi>x</mi>" in xml
+
+    def test_round_trips(self):
+        elem = _namespaced("<mrow><mi>x</mi></mrow>")
+        reparsed = DefusedET.fromstring(serialize_mathml(elem))
+        assert reparsed.tag == f"{{{MML}}}math"
+
+    def test_unnamespaced_math_is_left_alone(self):
+        elem = _mml("<math><mi>x</mi></math>")
+        assert serialize_mathml(elem) == "<math><mi>x</mi></math>"
+
+    def test_self_closing_root_keeps_its_declaration(self):
+        elem = DefusedET.fromstring(f'<math xmlns="{MML}"/>')
+        xml = serialize_mathml(elem)
+        assert xml in (f'<math xmlns="{MML}" />', f'<math xmlns="{MML}"/>')

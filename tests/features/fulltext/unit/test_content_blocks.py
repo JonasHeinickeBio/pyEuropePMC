@@ -823,3 +823,66 @@ class TestIsInsideBody:
         xml = "<article><body><p>x</p></body></article>"
         extractor = _extractor(xml)
         assert extractor._is_inside_body(_elem("<fn/>")) is False
+
+
+class TestDisplayFormulaInAParagraph:
+    """A <disp-formula> inside a <p> is a block, not part of the sentence."""
+
+    XML = (
+        '<p xmlns:mml="http://www.w3.org/1998/Math/MathML">models of the form '
+        '<disp-formula id="e1"><mml:math display="block"><mml:mi>x</mml:mi>'
+        "<mml:mo>=</mml:mo><mml:mn>1</mml:mn></mml:math><label>(1)</label>"
+        "</disp-formula> with N-dimensional state-vector y.</p>"
+    )
+
+    def test_the_paragraph_is_split_around_it(self):
+        extractor = _extractor("<root/>")
+        blocks = extractor._handle_paragraph(_elem(self.XML))
+        assert [b.type for b in blocks] == [
+            ContentBlockType.PARAGRAPH,
+            ContentBlockType.FORMULA,
+            ContentBlockType.PARAGRAPH,
+        ]
+        assert blocks[0].text == "models of the form"
+        assert blocks[2].text == "with N-dimensional state-vector y."
+
+    def test_the_formula_block_carries_text_tex_label_and_mathml(self):
+        extractor = _extractor("<root/>")
+        formula = extractor._handle_paragraph(_elem(self.XML))[1]
+        assert formula.label == "(1)"
+        assert formula.text == "x=1"
+        assert formula.tex == "x = 1"
+        assert formula.mathml.startswith("<math")
+
+    def test_an_inline_formula_stays_in_the_sentence(self):
+        extractor = _extractor("<root/>")
+        xml = "<p>the value <inline-formula>x=1</inline-formula> holds.</p>"
+        blocks = extractor._handle_paragraph(_elem(xml))
+        assert [b.type for b in blocks] == [ContentBlockType.PARAGRAPH]
+        assert blocks[0].text == "the value x=1 holds."
+
+
+class TestFormulaBlockFields:
+    def test_tex_math_beats_a_derived_conversion(self):
+        extractor = _extractor("<root/>")
+        xml = (
+            '<disp-formula xmlns:mml="http://www.w3.org/1998/Math/MathML">'
+            "<alternatives><tex-math>\\frac{a}{b}</tex-math>"
+            "<mml:math><mml:mi>x</mml:mi></mml:math></alternatives></disp-formula>"
+        )
+        block = extractor._handle_formula(_elem(xml))[0]
+        assert block.tex == "\\frac{a}{b}"
+
+    def test_the_rendered_image_is_kept_as_the_uri(self):
+        extractor = _extractor("<root/>")
+        xml = (
+            '<disp-formula xmlns:xlink="http://www.w3.org/1999/xlink">'
+            '<alternatives><graphic xlink:href="e001.jpg"/></alternatives></disp-formula>'
+        )
+        assert extractor._handle_formula(_elem(xml))[0].uri == "e001.jpg"
+
+    def test_an_empty_formula_is_reported_as_partial(self):
+        extractor = _extractor("<root/>")
+        block = extractor._handle_formula(_elem("<disp-formula/>"))[0]
+        assert block.parse_status == "partial"
+        assert block.parser_notes

@@ -62,6 +62,7 @@ INTRODUCTION 3 paragraph
 | `uri`, `target_id` | `str` | `""` | figure, figure and table references |
 | `rows` | `list[list[str]]` | `[]` | table |
 | `tex`, `mathml` | `str` | `""` | formula |
+| `uri` | `str` | `""` | figure, formula (the publisher's rendered image) |
 | `language` | `str` | `""` | code |
 | `definition_terms` | `list[dict[str, str]]` | `[]` | definition list: `{"term", "def"}` dicts |
 | `jats_tag` | `str` | `""` | unknown block |
@@ -135,8 +136,8 @@ print(converter.convert(math)[:40])
 Output:
 
 ```text
-${x}_{1}$ {x}_{1} $${x}_{1}$$
-$${L}_{P − T} = − \frac{1}{2 N} {\sum}_{
+$x_{1}$ x_{1} $$x_{1}$$
+$$\mathcal{L}_{P - T} = - \frac{1}{2N}\s
 ```
 
 | Member | Returns | Description |
@@ -377,7 +378,7 @@ Pydantic is a dependency of pyeuropepmc, so these helpers are always available.
 
 ## Known limitations
 
-- **MathML.** `MathMLConverter` returns an empty string (`$$$$` from `convert()`) for formulas wrapped in `<mtable>`, writes accents such as a bar as superscripts, flattens nested subscripts and fractions (`\frac{a i j}{b i j}`), and leaves Greek letters as Unicode characters.
+- **MathML.** `MathMLConverter` covers presentation MathML only. Content MathML (`<apply>`, `<annotation-xml>`) is dropped, `<mmultiscripts>` loses its script positions, and an `<mtable>` always becomes a plain `array` — a `cases` or `aligned` environment is never produced. Characters with no entry in the Unicode tables are passed through as they stand.
 - **Assets.** `extract_asset_refs()` reports many files more than once: graphics inside figures are added a second time without a label, graphics in `<alternatives>` again, and each `<media>` inside supplementary material twice. Formula images count as figures, figure supplements get their parent's label, and supplementary assets have no MIME type. The URLs lack the `/bin/` path segment that PMC file URLs use elsewhere in the package, and were not checked against the PMC site.
 - **Peer review.** Sub-articles of type `aggregated-review-documents` are skipped, review titles are empty when they sit in `<front-stub>`, and text in a review body without `<sec>` elements, such as quoted reviewer comments, can be lost.
 - **Reference resolution.** `is_open_access` is `True` whenever Europe PMC returns any value, including `"N"`.
