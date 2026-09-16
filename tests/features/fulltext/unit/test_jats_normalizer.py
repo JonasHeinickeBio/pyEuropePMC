@@ -13,10 +13,11 @@ Tests all normalization layers:
 from __future__ import annotations
 
 import json
-from xml.etree.ElementTree import ParseError
 
 import pytest
 
+from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import ParsingError
 from pyeuropepmc.features.fulltext.jats_normalizer import (
     JATSNormalizer,
     NormalizationConfig,
@@ -836,10 +837,16 @@ class TestEdgeCases:
         assert result["body_text"] == ""
 
     def test_malformed_xml(self) -> None:
-        """Malformed XML raises parsing error."""
+        """Malformed XML raises ParsingError, not the standard library's ParseError.
+
+        ``except ParseError`` never caught a refused document either, so every
+        parse failure now arrives as ``ParsingError``: ``PARSE002`` here,
+        ``PARSE005`` for a document that declares entities.
+        """
         normalizer = JATSNormalizer()
-        with pytest.raises(ParseError):
+        with pytest.raises(ParsingError) as excinfo:
             normalizer.normalize_xml("<article><body><unclosed>")
+        assert excinfo.value.error_code is ErrorCodes.PARSE002
 
     def test_only_metadata_no_body(self) -> None:
         """Article with metadata only, no body."""

@@ -25,7 +25,6 @@ from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.extensions.content_blocks import (
-    ContentBlock,
     ContentBlockExtractor,
     StructuredSection,
 )
@@ -43,6 +42,8 @@ class PeerReviewType(str, Enum):
     EDITOR_REPORT = "editor-report"
     REVIEWER_REPORT = "reviewer-report"
     AUTHOR_COMMENT = "author-comment"
+    COMMUNITY_COMMENT = "community-comment"
+    AGGREGATED_REVIEW_DOCUMENTS = "aggregated-review-documents"
     REPLY = "reply"
     UNKNOWN = "unknown"
 
@@ -54,6 +55,11 @@ JATS_REVIEW_TYPE_MAP: dict[str, PeerReviewType] = {
     "editor-report": PeerReviewType.EDITOR_REPORT,
     "reviewer-report": PeerReviewType.REVIEWER_REPORT,
     "author-comment": PeerReviewType.AUTHOR_COMMENT,
+    "community-comment": PeerReviewType.COMMUNITY_COMMENT,
+    # PLOS ships each round's decision letter and reviewer reports together
+    # under this type. Skipping it dropped two of PMC10775981's four review
+    # documents, and with them most of its review text.
+    "aggregated-review-documents": PeerReviewType.AGGREGATED_REVIEW_DOCUMENTS,
     "reply": PeerReviewType.REPLY,
 }
 
@@ -222,10 +228,17 @@ class PeerReviewExtractor(BaseParser):
         review_type: PeerReviewType,
     ) -> PeerReviewMaterial:
         """Extract a single peer review from a sub-article element."""
+        # PLOS and eLife give a review its title in <front-stub>, which has no
+        # <article-meta>; looking only under <article-meta> left every one
+        # untitled.
         title = ""
-        title_group = sub_article.find(".//article-meta/title-group/article-title")
-        if title_group is not None:
-            title = XMLHelper.get_text_content(title_group)
+        for front in sub_article:
+            if self._get_local_tag(front.tag) not in ("front-stub", "front", "article-meta"):
+                continue
+            title_elem = front.find(".//title-group/article-title")
+            if title_elem is not None:
+                title = XMLHelper.get_text_content(title_elem)
+                break
 
         # Detect revision round from metadata
         revision_round = self._detect_revision_round(sub_article)
@@ -294,38 +307,29 @@ class PeerReviewExtractor(BaseParser):
         return contributors
 
     def _extract_review_sections(self, sub_article: ET.Element) -> list[StructuredSection]:
-        """Extract structured content from review sub-article body."""
+        """Extract structured content from the review's own body.
+
+        The same walk as the article's body: every ``<sec>`` at every depth,
+        with its ``section_path``, and the content outside any section in
+        document order. This took the top-level ``<sec>`` elements only,
+        without their subsections; ignored everything outside a section once
+        there was one; and without sections kept the bare ``<p>`` and nothing
+        else, so an eLife author response lost the reviewer comments it quotes
+        in ``<disp-quote>``. With the skipped review types (see
+        ``JATS_REVIEW_TYPE_MAP``), 10 of PMC10775981's 160 review sentences and
+        100 of PMC11687933's 148 were kept.
+        """
         sections: list[StructuredSection] = []
 
-        body = sub_article.find(".//body")
+        # The sub-article's own body, not one of a sub-article nested inside it.
+        body = next((c for c in sub_article if self._get_local_tag(c.tag) == "body"), None)
         if body is None:
             return sections
 
-        for sec in body.findall("sec"):
-            structured_sec = self.block_extractor._extract_structured_section(sec)  # noqa: SLF001
-            if structured_sec.content:
-                sections.append(structured_sec)
-
-        # If no sec elements, treat body paragraphs as a single section
-        if not sections:
-            content_blocks: list[ContentBlock] = []
-            for child in body:
-                tag = self._get_local_tag(child.tag)
-                if tag == "p":
-                    text = XMLHelper.get_text_content(child)
-                    if text.strip():
-                        content_blocks.append(ContentBlock.paragraph(text.strip()))
-
-            if content_blocks:
-                sections.append(
-                    StructuredSection(
-                        title="",
-                        content=content_blocks,
-                        section_type="body",
-                    )
-                )
-
-        return sections
+        self.block_extractor._collect_sections(body, sections)  # noqa: SLF001
+        for section in sections:
+            section.section_type = "peer_review"
+        return [section for section in sections if section.content]
 
     def _extract_review_metadata(self, sub_article: ET.Element) -> dict[str, Any]:
         """Extract additional metadata from the review sub-article."""
