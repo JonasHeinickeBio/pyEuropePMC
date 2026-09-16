@@ -101,6 +101,33 @@ All notable changes to PyEuropePMC are documented here.
   list of lists that skipped cells without inlines, so no entry could be traced
   back to its cell.
 
+- **`to_markdown()` escapes the text it takes from the document.** Nothing was
+  escaped, so `DRB1*0402 ... DQB1*0503` opened an emphasis running to the next
+  asterisk and a literal `<node>` was passed through as an HTML tag: rendered
+  with a CommonMark implementation, 49 of PMC1764484's 127 body sentences came
+  out as something other than the article's text. Every character that changes
+  how Markdown renders text is now backslash-escaped; code listings are not.
+
+- **The flat renderings carry every block of a section, in document order.**
+  `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` collected a
+  section's `<p>` elements and little else, so anything that is not a
+  paragraph reached them only through a `<p>` nested inside it. A figure placed
+  directly in a section lost its label and caption title; a table lost its
+  label, and in `to_markdown()` and `get_full_text_sections()` every cell not
+  wrapped in a `<p>` - 225 of PMC1764484's 247 distinct cells; all 14 of
+  PMC10775981's code listings and every definition list were missing from all
+  three; and `to_plaintext()` rendered an appendix that is a table as its title
+  alone - 228 of the 248 cells in PMC11687933's appendix table. `to_plaintext()`
+  also emitted a section's paragraphs, then its lists, then its tables. All
+  three now walk a section once, in order, and render each element exactly
+  once: tables with their label and laid out with their spans (a pipe table in
+  Markdown), figures and supplementary items with label and caption, code
+  listings with their line breaks (fenced in Markdown), lists with markers.
+
+- **A structured `code` block keeps its line breaks.** The listing was
+  collapsed to single spaces like prose, running each of PMC10775981's listings
+  onto one line.
+
 - **A formula block's `mathml` is serialized in the MathML namespace.**
   `ET.tostring` invents a prefix for a namespace it was not told about, so the
   MathML came back as `<ns0:math xmlns:ns0="...">`. It now reads

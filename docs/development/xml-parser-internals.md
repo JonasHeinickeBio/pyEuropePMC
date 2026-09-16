@@ -88,6 +88,14 @@ Output:
 
 Use `_own_bodies()` and `_section_own_elements()` rather than `.//body` and `.//p`: the shortcuts pick up sub-article bodies and duplicate the text of subsections.
 
+Two modules in `utils/` lay out what the renderings share:
+
+| Function | Description |
+|---|---|
+| `table_grid.build_table_grid(table, cell_text=None)` | Places the cells of a `<table>` by their `colspan` and `rowspan`; `extract_tables()`, the structured `table` block and the flat renderings all read the result |
+| `flat_blocks.iter_flat_blocks(container)` | The blocks a section, `<body>` or `<app>` owns, in document order: paragraphs (cut where a table, figure, formula, list or listing sits inside a `<p>`), lists, definition lists, tables, figures, supplementary items, formulas and code. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render from it, so each element is rendered once and by the block that owns it |
+| `flat_blocks.escape_markdown(text)` | Escapes the characters that change what a Markdown renderer does with text |
+
 ## Add an extraction
 
 1. If the XPath patterns should be configurable, add them to a group in `ElementPatterns` (each field is a `dict[str, list[str]]` with a default factory).

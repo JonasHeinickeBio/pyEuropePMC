@@ -34,6 +34,7 @@ from xml.etree import ElementTree as ET  # nosec B405
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
+from pyeuropepmc.features.fulltext.utils.flat_blocks import code_text
 from pyeuropepmc.features.fulltext.utils.table_grid import TableGrid, build_table_grid, find_table
 from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
 
@@ -1843,11 +1844,16 @@ class ContentBlockExtractor(BaseParser):
         return metadata
 
     def _handle_code(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <code> and <preformat> elements."""
+        """Handle <code> and <preformat> elements.
+
+        The text keeps its line breaks and indentation. It was collapsed to
+        single spaces like prose, which ran PMC10775981's fourteen listings
+        together into one line each.
+        """
         language = elem.get("language", elem.get("lang", ""))
-        text = XMLHelper.get_text_content(elem)
-        if text.strip():
-            return [ContentBlock.code(text=text.strip(), language=language)]
+        text = code_text(elem)
+        if text:
+            return [ContentBlock.code(text=text, language=language)]
         return []
 
     def _handle_media(self, elem: ET.Element) -> list[ContentBlock]:

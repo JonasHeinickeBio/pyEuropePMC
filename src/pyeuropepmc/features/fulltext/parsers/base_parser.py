@@ -86,22 +86,6 @@ class BaseParser:
         return XMLHelper.get_text_content(element, exclude_tags=frozenset(skip_tags))
 
     @staticmethod
-    def _display_formula_text(formula: ET.Element) -> str:
-        """A ``<disp-formula>`` as one line of plain text, label last.
-
-        A display formula is set on its own line wherever the document is
-        rendered. Leaving it inside the sentence that introduces it produced
-        "models of the form y˙=F(y(t),θ,t,…), (1) with N-dimensional state
-        vector", which is neither the prose nor the equation.
-        """
-        label = ""
-        label_elem = formula.find("label")
-        if label_elem is not None:
-            label = XMLHelper.get_text_content(label_elem)
-        body = XMLHelper.get_text_content(formula, exclude_tags=frozenset({"label"}))
-        return " ".join(part for part in (body, label) if part).strip()
-
-    @staticmethod
     def _own_bodies(root: ET.Element) -> list[ET.Element]:
         """The <body> elements belonging to this article, not to a sub-article.
 

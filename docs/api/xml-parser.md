@@ -152,7 +152,7 @@ Every row in `header_rows` and `rows` is as wide as the table. A cell spanning s
 
 ## Flat sections
 
-`get_full_text_sections()` returns `{"title": str, "content": str}` dicts: one per `<sec>` in the article's own body (not sub-articles), in document order, with `content` holding that section's own paragraphs joined by blank lines. Then an untitled entry for paragraphs directly in `<body>`, if there are any. Then back matter with an extra `type` key: `author_notes` (title `"Author Notes"`), `acknowledgments`, `appendix` (the appendix title) and `glossary`.
+`get_full_text_sections()` returns `{"title": str, "content": str}` dicts: one per `<sec>` in the article's own body (not sub-articles), in document order, with `content` holding that section's own blocks - paragraphs, lists, tables, figures, formulas and code listings - as plain text in document order, joined by blank lines (see [Sections](../features/parsing/README.md#sections)). Then an untitled entry for content directly in `<body>`, if there is any. Then back matter with an extra `type` key: `author_notes` (title `"Author Notes"`), `acknowledgments`, `appendix` (the appendix title) and `glossary`.
 
 ## Structured sections
 

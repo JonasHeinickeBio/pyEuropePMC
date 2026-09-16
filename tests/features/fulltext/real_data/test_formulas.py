@@ -38,6 +38,11 @@ def _squash(text: str | None) -> str:
     return "".join((text or "").split())
 
 
+def _unescape_markdown(text: str) -> str:
+    """What a CommonMark renderer shows for a backslash escape: the character."""
+    return re.sub(r"\\([!-/:-@\[-`{-~])", r"\1", text)
+
+
 def _display_formulas(root: ET.Element) -> list[ET.Element]:
     return [el for el in root.iter() if _local(el.tag) == "disp-formula"]
 
@@ -76,9 +81,12 @@ class _Parsed:
         self.sections = parser.get_full_text_sections_structured()
         self.blocks = [block for section in self.sections for block in section["content"]]
         self.formulas = [b for b in self.blocks if b["type"] == "formula"]
-        self.plaintext = _squash(parser.to_plaintext())
-        self.markdown = _squash(parser.to_markdown())
-        self.flat = _squash("\n".join(s["content"] for s in parser.get_full_text_sections()))
+        self.plaintext_raw = parser.to_plaintext()
+        self.markdown_raw = parser.to_markdown()
+        self.flat_raw = "\n\n".join(s["content"] for s in parser.get_full_text_sections())
+        self.plaintext = _squash(self.plaintext_raw)
+        self.markdown = _squash(_unescape_markdown(self.markdown_raw))
+        self.flat = _squash(self.flat_raw)
 
 
 @pytest.fixture(scope="module", params=DOCUMENTS, ids=lambda p: p.stem)
@@ -164,41 +172,31 @@ class TestRenderingsAgree:
                     f"{doc.pmcid}: {expected[:50]!r} missing from {name}()"
                 )
 
-    def test_the_formula_does_not_interrupt_a_sentence(self, doc: _Parsed) -> None:
-        """The prose either side of a formula has to end up adjacent.
+    def test_a_display_formula_stands_on_a_line_of_its_own(self, doc: _Parsed) -> None:
+        """Not run into the sentence around it.
 
         PMC10775981 wrote "models of the form", equation (1), then "with
-        N-dimensional state-vector y". Rendering the equation between them
-        produced a sentence that is in no reading of the document.
+        N-dimensional state-vector y". Rendered inside that sentence, the
+        equation made one that is in no reading of the document; the article
+        sets it on a line of its own, and so do the renderings.
         """
-        body = doc.root.find("./body")
         checked = 0
-        for para in body.iter() if body is not None else ():
-            if _local(para.tag) != "p":
+        for formula in _body_display_formulas(doc.root):
+            expression = _expression(formula)
+            if len(expression) < 8:
                 continue
-            for formula in (c for c in para if _local(c.tag) == "disp-formula"):
-                before = _squash(para.text or "")
-                for sibling in para:
-                    if sibling is formula:
-                        break
-                    before = _squash(before + "".join(sibling.itertext()) + (sibling.tail or ""))
-                after = _squash(formula.tail or "")
-                # Twelve characters either side is enough to be unique in a
-                # document and short enough to stay inside one run of prose.
-                if len(before) < 12 or len(after) < 12:
-                    continue
-                joined = before[-12:] + after[:12]
-                for name, rendering in (
-                    ("to_plaintext", doc.plaintext),
-                    ("to_markdown", doc.markdown),
-                    ("get_full_text_sections", doc.flat),
-                ):
-                    assert joined in rendering, (
-                        f"{doc.pmcid}: {name}() still puts a formula inside {joined!r}"
-                    )
-                checked += 1
+            for name, rendering in (
+                ("to_plaintext", doc.plaintext_raw),
+                ("to_markdown", _unescape_markdown(doc.markdown_raw)),
+                ("get_full_text_sections", doc.flat_raw),
+            ):
+                lines = [_squash(line) for line in rendering.splitlines()]
+                assert any(line.startswith(expression) for line in lines), (
+                    f"{doc.pmcid}: {name}() has no line starting with {expression[:50]!r}"
+                )
+            checked += 1
         if not checked:
-            pytest.skip(f"{doc.pmcid} has no display formula between two runs of prose")
+            pytest.skip(f"{doc.pmcid} has no display formula in its body")
 
 
 def _unescaped(latex: str, char: str) -> int:
