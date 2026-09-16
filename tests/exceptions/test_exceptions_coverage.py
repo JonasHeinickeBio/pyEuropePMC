@@ -141,12 +141,16 @@ class TestExceptionsCoverage:
         assert "NET001" in repr_str
 
     def test_europe_pmc_error_legacy_alias(self):
-        """Test that EuropePMCError is an alias for SearchError."""
-        assert EuropePMCError is SearchError
+        """Test that EuropePMCError is an alias for the common base class."""
+        assert EuropePMCError is PyEuropePMCError
 
         error = EuropePMCError(ErrorCodes.SEARCH001)
-        assert isinstance(error, SearchError)
         assert isinstance(error, PyEuropePMCError)
+
+        # The point of the alias: it catches every error the library raises,
+        # not only the search ones.
+        assert isinstance(SearchError(ErrorCodes.SEARCH001), EuropePMCError)
+        assert isinstance(FullTextError(ErrorCodes.FULL001), EuropePMCError)
 
     def test_context_none_handling(self):
         """Test handling of None context."""

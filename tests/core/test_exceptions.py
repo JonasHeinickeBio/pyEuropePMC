@@ -391,5 +391,15 @@ class TestModelErrorContext:
 
 
 class TestLegacyAlias:
-    def test_europepmc_error_is_search_error(self):
-        assert EuropePMCError is SearchError
+    def test_europepmc_error_is_the_common_base_class(self):
+        assert EuropePMCError is PyEuropePMCError
+
+    def test_europepmc_error_catches_every_library_error(self):
+        for error in (
+            SearchError(ErrorCodes.SEARCH001),
+            FullTextError(ErrorCodes.FULL001),
+            ParsingError(ErrorCodes.PARSE001),
+            ValidationError(ErrorCodes.VALID001),
+            APIClientError(ErrorCodes.NET001),
+        ):
+            assert isinstance(error, EuropePMCError)

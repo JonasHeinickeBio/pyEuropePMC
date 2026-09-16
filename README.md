@@ -18,7 +18,7 @@
 - **Text-mining annotations** for genes, diseases, chemicals and their relationships. [Examples](https://github.com/JonasHeinickeBio/pyEuropePMC/tree/main/examples/10-annotations)
 - **Citations and metadata**: walk citation graphs, and enrich records from Crossref, Unpaywall, OpenAlex, Semantic Scholar, DataCite, ORCID, ROR and iCite. [Citation walking](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/features/citation-walking.md), [Enrichment](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/guides/enrichment.md)
 - **Analysis**: pandas DataFrames, citation statistics, duplicate detection, plots, and PRISMA-style search logs for systematic reviews. [Analytics](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/api/analytics-visualization.md), [Review tracking](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/features/systematic-review-tracking.md)
-- **RDF knowledge graphs** from parsed articles. After `pip install`, pass a mapping file explicitly, such as the repository's [`conf/rdf_map.yml`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rdf_map.yml): `RDFMapper(config_path=...)` or `PipelineConfig(rdf_config_path=...)`. [Data models and RDF](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/reference/models.md)
+- **RDF knowledge graphs** from parsed articles, mapped by the [`rdf_map.yml`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/conf/rdf_map.yml) that ships with the package; pass `RDFMapper(config_path=...)` or `PipelineConfig(rdf_config_path=...)` to use your own. [Data models and RDF](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/docs/reference/models.md)
 - **A command line and an MCP server**, described below.
 
 ## 📦 Installation
@@ -37,13 +37,14 @@ PyEuropePMC supports Python 3.10 to 3.13. The core install covers search, full-t
 | `visualization` | matplotlib, seaborn, pandas, numpy | The `plot_*` functions and `create_summary_dashboard` |
 | `export` | pandas, tabulate, xlsxwriter | Excel and Markdown-table export (`pyeuropepmc.utils.export`) |
 | `semanticscholar` | semanticscholar | `SemanticScholarClient` and the `semantic_scholar` search source |
-| `enrichment` | semanticscholar, cryptography | Semantic Scholar data in `PaperEnricher` |
+| `enrichment` | semanticscholar | Semantic Scholar data in `PaperEnricher` |
 | `bibliography` | bibtexparser | BibTeX parsing, validation and RIS/CSL conversion, including the `bib_*` MCP tools |
 | `zotero` | pyzotero | The Zotero client |
 | `agentic` | openai, langchain, langchain-openai, langgraph, jinja2 | LLM analysis, the LLM MCP tools and `pyeuropepmc claim` |
 | `ui` | flask, tornado | The web UI (`pyeuropepmc claim serve`) |
 | `signing` | cryptography | Signed search logs for systematic reviews |
-| `rdf` | rdflib-jsonld | The JSON-LD plugin for rdflib; the core rdflib (6 or later) already writes JSON-LD |
+| `benchmark` | huggingface-hub | Downloading the published benchmark datasets (`pyeuropepmc benchmark download`) |
+| `rdf` | nothing | Kept so existing installs keep working; the core rdflib writes JSON-LD itself |
 | `standard` | jupyterlab, notebook, ipykernel, ipython, ipywidgets, matplotlib, seaborn, pandas, numpy, tabulate, xlsxwriter, requests-cache, rich | Jupyter plus the analytics, plotting and export packages |
 | `all` | all of the above | Every optional feature |
 
@@ -111,6 +112,7 @@ pyeuropepmc benchmark list-datasets
 
 ```bash
 pyeuropepmc-mcp                                # stdio, for Claude Desktop and similar clients
+pyeuropepmc mcp                                # the same server, through the CLI
 pyeuropepmc-mcp --transport streamable-http    # HTTP at http://127.0.0.1:8000/mcp
 ```
 
@@ -125,6 +127,8 @@ For Claude Desktop and other clients that start the server themselves:
   }
 }
 ```
+
+Without an install, `"command": "uvx"` with `"args": ["pyeuropepmc", "mcp"]` does the same; this is what the MCP Registry entry tells clients to run.
 
 The server has no authentication of its own, so keep the HTTP transport on 127.0.0.1 or put an authenticating proxy in front of it. The [MCP server guide](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/mcp/README.md) lists every tool. The server is listed in the [MCP Registry](https://registry.modelcontextprotocol.io/) as `io.github.JonasHeinickeBio/pyeuropepmc`.
 

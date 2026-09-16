@@ -86,6 +86,50 @@ class BaseParser:
         return XMLHelper.get_text_content(element, exclude_tags=frozenset(skip_tags))
 
     @staticmethod
+    def _own_front(root: ET.Element | None) -> ET.Element:
+        """The article's own <front>, or ``root`` when it has none.
+
+        A peer-reviewed article carries each report as a <sub-article> with
+        its own front matter, so an unscoped ``.//`` search reads a
+        reviewer's metadata as the article's - and a <ref-list> puts every
+        reference's <volume>, <fpage> and <year> in the same result.
+
+        Falling back to the root keeps documents that carry front matter
+        outside a <front> working, including bare fragments.
+        """
+        if root is None:
+            return ET.Element("empty")
+        front = root.find("./front")
+        return front if front is not None else root
+
+    #: Children of <article-meta> that describe a *different* article - the
+    #: companion peer-review paper, a correction, the dataset a paper is
+    #: about. They carry their own <volume>, <issue>, <fpage> and <lpage>, so
+    #: a descendant search over <article-meta> reads the other article's
+    #: pagination as this one's: PMC13567752 reported pages
+    #: "e0357759-e0357759", the elocation-id of its companion.
+    _FOREIGN_META_TAGS = frozenset({"related-article", "related-object"})
+
+    @staticmethod
+    def _own_article_meta(root: ET.Element | None) -> ET.Element:
+        """The article's own <article-meta>, else its <front>, else ``root``.
+
+        Any <related-article> is left out; see ``_FOREIGN_META_TAGS``. The
+        result borrows the children rather than copying them, so the document
+        is untouched and nothing is duplicated.
+        """
+        front = BaseParser._own_front(root)
+        article_meta = front.find("./article-meta")
+        if article_meta is None:
+            return front
+
+        scope = ET.Element(article_meta.tag, article_meta.attrib)
+        scope.extend(
+            child for child in article_meta if child.tag not in BaseParser._FOREIGN_META_TAGS
+        )
+        return scope
+
+    @staticmethod
     def _own_bodies(root: ET.Element) -> list[ET.Element]:
         """The <body> elements belonging to this article, not to a sub-article.
 

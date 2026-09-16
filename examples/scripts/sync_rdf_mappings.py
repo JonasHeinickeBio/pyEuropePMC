@@ -233,14 +233,14 @@ def main() -> int:
     parser.add_argument(
         "--yaml",
         type=Path,
-        default=Path("conf/rdf_map.yml"),
-        help="Path to YAML configuration file (default: conf/rdf_map.yml)",
+        default=Path("src/pyeuropepmc/conf/rdf_map.yml"),
+        help="Path to YAML configuration file (default: src/pyeuropepmc/conf/rdf_map.yml)",
     )
     parser.add_argument(
         "--rml",
         type=Path,
-        default=Path("conf/rml_mappings.ttl"),
-        help="Path to RML output file (default: conf/rml_mappings.ttl)",
+        default=Path("src/pyeuropepmc/conf/rml_mappings.ttl"),
+        help="Path to RML output file (default: src/pyeuropepmc/conf/rml_mappings.ttl)",
     )
     parser.add_argument(
         "--check",

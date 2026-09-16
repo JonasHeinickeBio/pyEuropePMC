@@ -60,7 +60,7 @@ Pass `--output` to `run-extra`; without it the results overwrite `benchmark_xmls
 | `eLife_984` | 984 | 4.5 GB | eLife articles with publisher JATS XML |
 | `biorxiv-10k-test-2000` | 2,000 | 5.4 GB | bioRxiv preprints with reviewed NLM XML |
 
-All four come from the GROBID evaluation collection on Hugging Face (`sciencialab/grobid-evaluation`). Downloads use the `huggingface_hub` package, which is not installed with pyeuropepmc (`pip install huggingface_hub`). A dataset is stored in `~/pyeuropepmc_benchmark_data/<name>` unless you pass `--data-dir`.
+All four come from the GROBID evaluation collection on Hugging Face (`sciencialab/grobid-evaluation`). Downloads use the `huggingface_hub` package from the `benchmark` extra (`pip install "pyeuropepmc[benchmark]"`); without it a download fails with an error that names the extra. A dataset is stored in `~/pyeuropepmc_benchmark_data/<name>` unless you pass `--data-dir`.
 
 ```bash
 pyeuropepmc benchmark dataset-info PMC_sample_1943
