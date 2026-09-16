@@ -19,11 +19,14 @@ Usage:
 
 from __future__ import annotations
 
+import hashlib
 import json
 import os
-from pathlib import Path
+import re
 import tempfile
 from typing import TYPE_CHECKING, Any
+
+from pyeuropepmc.conf import config_file
 
 if TYPE_CHECKING:
     from rdflib import Graph
@@ -36,6 +39,71 @@ except ImportError:
     RDFIZER_AVAILABLE = False
 
 __all__ = ["RMLRDFizer", "RDFIZER_AVAILABLE"]
+
+#: JSON file each ``entity_type`` is written to. The names are the
+#: ``rml:source`` values that examples/scripts/sync_rdf_mappings.py generates.
+_SOURCE_FILES = {
+    "paper": "paper.json",
+    "author": "authors.json",
+    "section": "sections.json",
+    "table": "tables.json",
+    "tablerow": "table_rows.json",
+    "figure": "figures.json",
+    "reference": "references.json",
+    "journal": "journal.json",
+    "grant": "grant.json",
+    "institution": "institutions.json",
+    "scholarlywork": "scholarlywork.json",
+    "annotation": "annotation.json",
+}
+
+#: A relative JSON source in an RML mapping: ``rml:source "authors.json"``.
+_RML_JSON_SOURCE = re.compile(r'(rml:source\s+)"([^"/\\]+\.json)"')
+
+#: Record fields that are identifiers in their own right, in order of preference.
+_NATURAL_ID_FIELDS = ("doi", "pmcid", "pmid", "orcid", "ror_id")
+
+#: Fields left out of the content digest: they change from run to run.
+_VOLATILE_FIELDS = frozenset({"id", "last_updated"})
+
+
+def _content_digest(record: Any) -> str:
+    """Stable digest of a record's content, ignoring volatile fields."""
+
+    def strip(obj: Any) -> Any:
+        if isinstance(obj, dict):
+            return {k: strip(v) for k, v in obj.items() if k not in _VOLATILE_FIELDS}
+        if isinstance(obj, list):
+            return [strip(item) for item in obj]
+        return obj
+
+    canonical = json.dumps(strip(record), sort_keys=True, default=str, ensure_ascii=False)
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:16]
+
+
+def _assign_missing_ids(records: list[dict[str, Any]], entity_type: str) -> None:
+    """Give each record without an ``id`` one, for the ``.../{id}`` subject templates.
+
+    Without an ``id`` the RML subject template cannot be filled and the record
+    produces no triples. An identifier of the entity itself is used where there
+    is one (DOI, PMCID, ``pmid:<PMID>``, ORCID, ROR ID), so records for the same
+    work or person share a subject. Otherwise the id is a digest of the record's
+    content, ``<entity_type>-<16 hex digits>``: the same in every run (Python's
+    ``hash()`` of a string is salted per process), and a second record with
+    identical content gets a ``-2`` suffix instead of silently sharing a subject.
+    """
+    seen: dict[str, int] = {}
+    for record in records:
+        if record.get("id") is not None:
+            continue
+        natural = next((f for f in _NATURAL_ID_FIELDS if record.get(f)), None)
+        if natural is not None:
+            value = record[natural]
+            record["id"] = f"pmid:{value}" if natural == "pmid" else str(value)
+            continue
+        ident = f"{entity_type}-{_content_digest(record)}"
+        seen[ident] = seen.get(ident, 0) + 1
+        record["id"] = ident if seen[ident] == 1 else f"{ident}-{seen[ident]}"
 
 
 class RMLRDFizer:
@@ -89,14 +157,13 @@ class RMLRDFizer:
         if not RDFIZER_AVAILABLE:
             raise ImportError("rdfizer package not found. Install it with: pip install rdfizer")
 
-        # Default to conf/rdfizer_config.ini and conf/rml_mappings.ttl
+        # Default to the rdfizer_config.ini and rml_mappings.ttl that ship with
+        # the package.
         if config_path is None:
-            base_path = Path(__file__).parent.parent.parent.parent
-            config_path = str(base_path / "conf" / "rdfizer_config.ini")
+            config_path = str(config_file("rdfizer_config.ini"))
 
         if mapping_path is None:
-            base_path = Path(__file__).parent.parent.parent.parent
-            mapping_path = str(base_path / "conf" / "rml_mappings.ttl")
+            mapping_path = str(config_file("rml_mappings.ttl"))
 
         self.config_path = config_path
         self.mapping_path = mapping_path
@@ -180,46 +247,14 @@ class RMLRDFizer:
         str
             Path to the created JSON file
         """
-        # Determine filename based on entity type - match sync script naming
-        filename_map = {
-            "paper": "paper.json",  # PaperEntity
-            "author": "authors.json",
-            "section": "sections.json",
-            "table": "tables.json",
-            "reference": "references.json",
-            "journal": "journal.json",  # JournalEntity
-            "grant": "grant.json",  # GrantEntity
-            "scholarlywork": "scholarlywork.json",  # ScholarlyWorkEntity
-            "tablerow": "table_rows.json",
-            "institution": "institutions.json",
-        }
-
-        filename = filename_map.get(entity_type, f"{entity_type}.json")
+        filename = _SOURCE_FILES.get(entity_type, f"{entity_type}.json")
         json_path = os.path.join(output_dir, filename)
 
-        # Convert entities to dict and write JSON
-        if entity_type in ["paper", "scholarlywork"]:
-            # Always use array format for consistency
-            entities_dicts = [e.to_dict() for e in entities]
+        # Always use array format for consistency
+        data = [e.to_dict() for e in entities]
 
-            # Ensure each entity has an 'id' field for RML subject templates
-            for entity_dict in entities_dicts:
-                if entity_dict.get("id") is None:
-                    # Generate an ID similar to how RDFMapper does it
-                    if entity_dict.get("doi"):
-                        entity_dict["id"] = entity_dict["doi"]
-                    elif entity_dict.get("pmcid"):
-                        entity_dict["id"] = entity_dict["pmcid"]
-                    elif entity_dict.get("pmid"):
-                        entity_dict["id"] = f"pmid:{entity_dict['pmid']}"
-                    else:
-                        # Fallback to a generated ID
-                        entity_dict["id"] = f"entity_{hash(str(entity_dict)) % 10000}"
-
-            data = entities_dicts
-        else:
-            # Multiple entities (list)
-            data = [e.to_dict() for e in entities]
+        # Every subject template uses {id}: a record without one yields no triples.
+        _assign_missing_ids(data, entity_type)
 
         # Filter out None values and convert to strings to avoid invalid RDF
         def filter_none(obj: Any) -> Any:
@@ -238,29 +273,26 @@ class RMLRDFizer:
 
         return json_path
 
+    def _mapping_sources(self) -> list[str]:
+        """The relative JSON source files the RML mapping reads."""
+        with open(self.mapping_path, encoding="utf-8") as f:
+            return sorted({m.group(2) for m in _RML_JSON_SOURCE.finditer(f.read())})
+
     def _create_empty_json_files(self, temp_dir: str) -> None:
         """
         Create empty JSON files for all entity types to avoid RDFizer errors.
+
+        Covers every source the mapping names, so a triples map added to the
+        mapping (for example by regenerating it from rdf_map.yml) has an input.
 
         Parameters
         ----------
         temp_dir : str
             Temporary directory path
         """
-        filenames = [
-            "paper.json",
-            "authors.json",
-            "sections.json",
-            "tables.json",
-            "references.json",
-            "journal.json",  # JournalEntity
-            "grant.json",  # GrantEntity
-            "scholarlywork.json",  # ScholarlyWorkEntity
-            "table_rows.json",  # TableRowEntity
-            "institutions.json",  # InstitutionEntity
-        ]
+        filenames = set(_SOURCE_FILES.values()) | set(self._mapping_sources())
 
-        for filename in filenames:
+        for filename in sorted(filenames):
             json_path = os.path.join(temp_dir, filename)
             if not os.path.exists(json_path):
                 with open(json_path, "w", encoding="utf-8") as f:
@@ -293,36 +325,9 @@ class RMLRDFizer:
         with open(self.mapping_path, encoding="utf-8") as f:
             mapping_content = f.read()
 
-        # Update mapping sources to use temp directory
-        mapping_content = mapping_content.replace(
-            '"paper.json"', f'"{os.path.join(temp_dir, "paper.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"authors.json"', f'"{os.path.join(temp_dir, "authors.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"sections.json"', f'"{os.path.join(temp_dir, "sections.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"tables.json"', f'"{os.path.join(temp_dir, "tables.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"references.json"', f'"{os.path.join(temp_dir, "references.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"journal.json"', f'"{os.path.join(temp_dir, "journal.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"grant.json"', f'"{os.path.join(temp_dir, "grant.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"scholarlywork.json"', f'"{os.path.join(temp_dir, "scholarlywork.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"table_rows.json"', f'"{os.path.join(temp_dir, "table_rows.json")}"'
-        )
-        mapping_content = mapping_content.replace(
-            '"institutions.json"', f'"{os.path.join(temp_dir, "institutions.json")}"'
+        # Point every relative JSON source of the mapping at the temp directory
+        mapping_content = _RML_JSON_SOURCE.sub(
+            lambda m: f'{m.group(1)}"{os.path.join(temp_dir, m.group(2))}"', mapping_content
         )
 
         # Write temp mapping
@@ -445,18 +450,7 @@ class RMLRDFizer:
         """
         with tempfile.TemporaryDirectory() as temp_dir:
             # Write JSON data
-            filename_map = {
-                "paper": "paper.json",
-                "author": "authors.json",
-                "section": "sections.json",
-                "table": "tables.json",
-                "reference": "references.json",
-                "scholarlywork": "scholarlywork.json",
-                "tablerow": "table_rows.json",
-                "institution": "institutions.json",
-            }
-
-            filename = filename_map.get(entity_type, f"{entity_type}.json")
+            filename = _SOURCE_FILES.get(entity_type, f"{entity_type}.json")
             json_path = os.path.join(temp_dir, filename)
 
             # Ensure correct JSON structure

@@ -112,6 +112,26 @@ class TestVariantDecomposers:
         pico = PICOTDecomposer().parse(QUESTION)
         assert isinstance(pico, PICOElements)
 
+    def test_time_pattern_fills_time_frame(self):
+        pico = PICOTDecomposer().parse(
+            "In adults with sepsis, does early antibiotics reduce mortality within 30 days?"
+        )
+        assert pico.time_frame == "30 days"
+        assert pico.identifiers_used["time_frame"] == ["30 days"]
+        assert not hasattr(pico, "time"), "the match must not land on a stray attribute"
+
+    def test_time_frame_reaches_to_dict_and_query(self):
+        pico = PICOParser().parse(QUESTION)
+        assert pico.time_frame == "12 months"
+        assert pico.to_dict()["time_frame"] == "12 months"
+        assert pico_to_query(pico).endswith("12 months")
+
+    def test_custom_pattern_named_time_still_fills_time_frame(self):
+        import re
+
+        parser = PICOParser(patterns={"time": re.compile(r"\b(after)\s+(\d+\s+weeks)")})
+        assert parser.parse("pain after 6 weeks").time_frame == "6 weeks"
+
     def test_spider_decomposer(self):
         result = SPIDERDecomposer().parse(
             "What is the experience of nurses regarding burnout in a qualitative study?"

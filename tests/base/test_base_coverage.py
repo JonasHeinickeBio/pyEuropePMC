@@ -17,6 +17,13 @@ from pyeuropepmc.core.exceptions import APIClientError
 pytestmark = pytest.mark.unit
 
 
+@pytest.fixture(autouse=True)
+def no_sleep():
+    """Keep the retry backoff and the rate-limit delay out of the clock."""
+    with patch("time.sleep"):
+        yield
+
+
 class TestBaseAPIClientCoverage:
     """Additional test coverage for BaseAPIClient edge cases."""
 
@@ -181,8 +188,7 @@ class TestBaseAPIClientCoverage:
             mock_response.status_code = 404
             mock_response.url = "https://example.com/fullTextXML/123456"
             mock_http_error = requests.HTTPError("Not Found")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 404
+            mock_http_error.response = _http_response(404)
             mock_response.raise_for_status.side_effect = mock_http_error
             mock_get.return_value = mock_response
 
@@ -220,8 +226,7 @@ class TestBaseAPIClientCoverage:
             mock_response.status_code = 403
             mock_response.url = "https://example.com/search"
             mock_http_error = requests.HTTPError("Forbidden")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 403
+            mock_http_error.response = _http_response(403)
             mock_response.raise_for_status.side_effect = mock_http_error
             mock_post.return_value = mock_response
 
@@ -240,8 +245,7 @@ class TestBaseAPIClientCoverage:
         """Test _get method with 500 status code."""
         with patch.object(self.client.session, "get") as mock_get:
             mock_http_error = requests.HTTPError("Server Error")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 500
+            mock_http_error.response = _http_response(500)
             mock_get.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -252,8 +256,7 @@ class TestBaseAPIClientCoverage:
         """Test _get method with 429 status code."""
         with patch.object(self.client.session, "get") as mock_get:
             mock_http_error = requests.HTTPError("Rate Limited")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 429
+            mock_http_error.response = _http_response(429)
             mock_get.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -264,8 +267,7 @@ class TestBaseAPIClientCoverage:
         """Test _get method with 403 status code."""
         with patch.object(self.client.session, "get") as mock_get:
             mock_http_error = requests.HTTPError("Forbidden")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 403
+            mock_http_error.response = _http_response(403)
             mock_get.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -276,8 +278,7 @@ class TestBaseAPIClientCoverage:
         """Test _get method with unknown status code."""
         with patch.object(self.client.session, "get") as mock_get:
             mock_http_error = requests.HTTPError("Unknown")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 418
+            mock_http_error.response = _http_response(418)
             mock_get.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -299,8 +300,7 @@ class TestBaseAPIClientCoverage:
         """Test _post method with 500 status code."""
         with patch.object(self.client.session, "post") as mock_post:
             mock_http_error = requests.HTTPError("Server Error")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 500
+            mock_http_error.response = _http_response(500)
             mock_post.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -311,8 +311,7 @@ class TestBaseAPIClientCoverage:
         """Test _post method with 429 status code."""
         with patch.object(self.client.session, "post") as mock_post:
             mock_http_error = requests.HTTPError("Rate Limited")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 429
+            mock_http_error.response = _http_response(429)
             mock_post.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -323,8 +322,7 @@ class TestBaseAPIClientCoverage:
         """Test _post method with 403 status code."""
         with patch.object(self.client.session, "post") as mock_post:
             mock_http_error = requests.HTTPError("Forbidden")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 403
+            mock_http_error.response = _http_response(403)
             mock_post.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -335,8 +333,7 @@ class TestBaseAPIClientCoverage:
         """Test _post method with unknown status code."""
         with patch.object(self.client.session, "post") as mock_post:
             mock_http_error = requests.HTTPError("Unknown")
-            mock_http_error.response = Mock()
-            mock_http_error.response.status_code = 418
+            mock_http_error.response = _http_response(418)
             mock_post.return_value.raise_for_status.side_effect = mock_http_error
 
             with pytest.raises(APIClientError) as exc_info:
@@ -421,3 +418,14 @@ class TestBaseAPIClientCoverage:
         with pytest.raises(APIClientError) as exc_info:
             self.client._post("https://example.com/test", data={})
         assert exc_info.value.error_code == ErrorCodes.FULL007
+
+
+def _http_response(status_code: int) -> requests.Response:
+    """A real Response: unlike a Mock, it is falsy for 4xx/5xx (Response.__bool__ is .ok)."""
+    response = requests.Response()
+    response.status_code = status_code
+    response.reason = "Error"
+    response.url = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
+    response._content = b""
+    response._content_consumed = True
+    return response

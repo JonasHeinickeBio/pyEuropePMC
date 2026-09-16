@@ -49,13 +49,15 @@ These classes also accept `cache_config` and then cache their HTTP responses, bu
 | `cache_dir` | `Path`, `str` or `None` | `None` | Directory of the disk layer. `None` means `<system temp dir>/pyeuropepmc_cache`. Only used with `enable_l2=True`. |
 | `l2_size_limit_mb` | `int` | `5000` | Size limit of the disk layer in megabytes. |
 
-`ttl_by_type` and `eviction_policy` do not change how the clients cache, and `namespace_version` only changes their key strings. All three are described in the [CacheConfig reference](../../advanced/caching.md#cacheconfig-reference).
+`ttl_by_type` does not change how the clients cache, because no client passes a `data_type`; `eviction_policy` sets how the disk layer evicts entries once it is full; `namespace_version` only changes the key strings. All three are described in the [CacheConfig reference](../../advanced/caching.md#cacheconfig-reference).
 
 ## Memory and disk layers
 
-Every enabled cache has an in-memory layer (a cachetools `TTLCache`). Each client instance creates its own, so two clients never share entries, even when you pass them the same `CacheConfig` object. Leaving the `with` block, or calling `close()`, empties it.
+Every enabled cache has an in-memory layer (a cachetools `TLRUCache`). Each client instance creates its own, so two clients never share entries, even when you pass them the same `CacheConfig` object. Leaving the `with` block, or calling `close()`, empties it.
 
 With `enable_l2=True`, entries are also written to a diskcache database in `cache_dir`. A lookup checks memory first, then disk, and copies a disk hit back into memory.
+
+The disk layer keeps its entries: a client opened later on the same `cache_dir`, in this run or the next one, reads what an earlier client wrote, and two clients open at the same time on one directory share their entries. An existing database is only discarded when it cannot be opened or migrated, which is logged as a warning.
 
 ```python
 from pathlib import Path
@@ -64,18 +66,21 @@ from pyeuropepmc import CacheConfig, SearchClient
 
 config = CacheConfig(enabled=True, enable_l2=True, cache_dir=Path("pyeuropepmc-cache"))
 
+# First run
 with SearchClient(cache_config=config) as client:
-    client.search("dengue", pageSize=10)
+    client.search("dengue", pageSize=10)  # HTTP request
     print(sorted(client.get_cache_stats()["layers"]))  # ['l1', 'l2']
-```
 
-> **Known limitation.** The disk layer does not keep entries between client instances or runs yet. Opening it deletes an existing `cache.db` in `cache_dir` (`_initialize_l2_cache()` in `src/pyeuropepmc/cache/cache.py`). A new client, or the same script run again, therefore starts with an empty disk cache, and two clients that are open at the same time on one `cache_dir` do not see each other's entries. Give each client its own `cache_dir`, and do not rely on the disk layer to avoid requests in a later run.
+# A later run of the same script
+with SearchClient(cache_config=config) as client:
+    client.search("dengue", pageSize=10)  # answered from the disk layer
+```
 
 ## Expiry
 
 - An entry expires `ttl` seconds after it was stored, in memory and on disk.
-- There is no value that never expires: `ttl=None` raises `TypeError`, a negative `ttl` raises `ConfigurationError`, and `ttl=0` expires every entry immediately. For a long-lived development cache, use a large value such as `ttl=30 * 24 * 3600`.
-- `CacheConfig(ttl_by_type=...)` does not apply to client entries. It only sets the disk expiry of entries that you store yourself with `CacheBackend.set(..., data_type=...)`.
+- There is no value that never expires: `ttl=None` and any other non-integer raise `ConfigurationError`, a negative `ttl` raises `ConfigurationError`, and `ttl=0` expires every entry immediately. For a long-lived development cache, use a large value such as `ttl=30 * 24 * 3600`.
+- `CacheConfig(ttl_by_type=...)` does not apply to client entries, because no client passes a `data_type`. It sets the expiry, in both layers, of entries that you store yourself with `CacheBackend.set(..., data_type=...)`.
 
 ## How requests are matched
 
@@ -140,9 +145,9 @@ with SearchClient(cache_config=CacheConfig(enabled=True)) as client:
 - `clear_cache()` removes every entry and returns `True` (`False` when caching is disabled).
 - `invalidate_search_cache(pattern)` removes the keys that match a glob pattern and returns how many it removed. The query text is hashed into the key, so a pattern selects all `search()` entries (`"*:search:*"`) or all `search_post()` entries (`"*:search_post:*"`), never a single query.
 - `ArticleClient.invalidate_article_cache(source="MED", article_id="25883711")` removes the details, citations and references cached for that article. With only `source`, it removes that source's entries; with no arguments, all entries.
-- `FullTextClient.invalidate_fulltext_cache("PMC3312970")` removes the availability entry for that ID; with no argument, all entries.
+- `FullTextClient.invalidate_fulltext_cache("PMC3312970")` removes the availability entry for exactly that ID, leaving longer IDs such as `PMC33129701` cached; with no argument, all entries.
 
-> **Known limitation.** Called without a pattern, `invalidate_search_cache()` uses `"search:*"` and `invalidate_annotations_cache()` uses `"annotations:*"`. The keys of these clients start with `general:` (for example `general:v1:search:6950a79a94574e15`), so the defaults remove nothing. Pass `"*:search:*"`, `"*:search_post:*"` or `"*:annotations_by_*"` instead.
+Called without a pattern, `invalidate_search_cache()` removes every `search()` and `search_post()` entry, and `invalidate_annotations_cache()` removes every annotations entry. A pattern has to match the whole key, which starts with the data type (for example `general:v1:search:6950a79a94574e15`), so narrow a sweep with `"*:search:*"`, `"*:search_post:*"` or `"*:annotations_by_entity:*"`.
 
 ## FullTextClient download cache
 

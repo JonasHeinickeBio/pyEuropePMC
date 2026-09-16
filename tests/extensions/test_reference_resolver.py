@@ -32,6 +32,7 @@ class TestResolvedReferenceToDict:
             journal="Test Journal",
             citations=42,
             is_open_access=True,
+            resolved_pmcid="PMC7654321",
         )
         d = ref.to_dict()
         assert d == {
@@ -44,6 +45,7 @@ class TestResolvedReferenceToDict:
             "journal": "Test Journal",
             "citations": 42,
             "is_open_access": True,
+            "resolved_pmcid": "PMC7654321",
         }
 
     def test_to_dict_returns_new_dict(self):

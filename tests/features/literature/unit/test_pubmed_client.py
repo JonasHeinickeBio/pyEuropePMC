@@ -268,6 +268,20 @@ class TestPubMedClient:
         # Names should be in "Last, First" format
         assert any("Doe" in author.name for author in result.authors)
 
+    def test_normalize_result_esummary_authors_keep_surname_first(self):
+        """ESummary lists authors as "Surname Initials", e.g. "Smith J"."""
+        client = PubMedClient()
+        raw = {
+            "pmid": "12345678",
+            "title": "Test",
+            "pubdate": "2024",
+            "authors": [{"name": "Smith J"}, {"name": "de la Cruz MA"}],
+        }
+
+        result = client._normalize_result(raw)
+
+        assert [a.name for a in result.authors] == ["Smith, J", "de la Cruz, MA"]
+
     def test_context_manager(self):
         """Test context manager functionality."""
         with PubMedClient() as client:

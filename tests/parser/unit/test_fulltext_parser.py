@@ -294,6 +294,38 @@ class TestFullTextXMLParserExtractTables:
         assert table["rows"][0] == ["Data 1", "Data 2"]
         assert table["rows"][1] == ["Data 3", "Data 4"]
 
+    def test_extract_tables_header_cells_written_as_td(self):
+        """PMC1764484 and PMC3359999 tag header cells <td>; headers came back []."""
+        xml = """<article><body><table-wrap id="t1"><table>
+        <thead><tr><td>Rank</td><td>Peptide</td></tr></thead>
+        <tbody><tr><td>1</td><td>Dsg3</td></tr></tbody>
+        </table></table-wrap></body></article>"""
+        table = FullTextXMLParser(xml).extract_tables()[0]
+        assert table["headers"] == ["Rank", "Peptide"]
+        assert table["header_rows"] == [["Rank", "Peptide"]]
+        assert table["rows"] == [["1", "Dsg3"]]
+
+    def test_extract_tables_spans(self):
+        xml = """<article><body><table-wrap id="t1"><table>
+        <thead><tr><th rowspan="2">Name</th><th colspan="2">Dose</th></tr>
+        <tr><th>low</th><th>high</th></tr></thead>
+        <tbody><tr><td rowspan="2">A</td><td>1</td><td>2</td></tr>
+        <tr><td>3</td><td>4</td></tr></tbody>
+        </table><table-wrap-foot><p>in mg</p></table-wrap-foot></table-wrap></body></article>"""
+        table = FullTextXMLParser(xml).extract_tables()[0]
+        assert table["headers"] == ["Name", "Dose / low", "Dose / high"]
+        assert table["rows"] == [["A", "1", "2"], ["", "3", "4"]]
+        assert {"row": 2, "column": 0, "rowspan": 2, "colspan": 1} in table["spans"]
+        assert table["footer"] == "in mg"
+
+    def test_extract_tables_th_in_a_body_row_is_kept(self):
+        xml = """<article><body><table-wrap id="t1"><table>
+        <thead><tr><th>Group</th><th>n</th></tr></thead>
+        <tbody><tr><th>Cases</th><td>12</td></tr></tbody>
+        </table></table-wrap></body></article>"""
+        table = FullTextXMLParser(xml).extract_tables()[0]
+        assert table["rows"] == [["Cases", "12"]]
+
     def test_extract_tables_no_parse(self):
         """Test extracting tables without parsing first."""
         parser = FullTextXMLParser()
@@ -670,7 +702,7 @@ class TestFullTextXMLParserFundingSources:
             "<award-group><funding-source>US CDC</funding-source></award-group>"
         )
         assert FullTextXMLParser(self._article(fragment)).extract_funding() == [
-            {"source": "NIH", "award_id": "R01"},
+            {"source": "NIH", "award_id": "R01", "award_ids": ["R01"]},
             {"source": "US CDC"},
         ]
 

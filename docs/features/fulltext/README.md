@@ -253,7 +253,7 @@ with FullTextClient() as client:
 | `download_html_by_pmcid()` gets an HTTP or network error | `None` |
 | Saving an XML or HTML file fails | `FullTextError` (`FULL009`) |
 
-`FullTextError`, `APIClientError` and `ParsingError` derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions`. `FullTextError` and `APIClientError` can also be imported from `pyeuropepmc`. `pyeuropepmc.EuropePMCError` is an alias of `SearchError`, not the common base class.
+`FullTextError`, `APIClientError` and `ParsingError` derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions`. `FullTextError` and `APIClientError` can also be imported from `pyeuropepmc`. `pyeuropepmc.EuropePMCError` is an alias of `PyEuropePMCError`, so it catches all of them.
 
 ## Known limitations
 

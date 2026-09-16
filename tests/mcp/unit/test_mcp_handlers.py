@@ -344,14 +344,20 @@ class TestPaperFigures:
 
     def test_by_pmcid(self, monkeypatch):
         extractor = MagicMock()
-        extractor.extract.return_value = [{"label": "Fig 1"}]
+        extractor.extract.return_value = [
+            {"label": "Fig 1", "figure_type": "figure"},
+            {"label": "Table 1", "figure_type": "table"},
+        ]
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
         srv._figure_extractor_cache.set(extractor)
 
         result = _run(srv.paper_figures(pmcid="PMC1"))
 
-        extractor.extract.assert_called_once_with(pmcid="PMC1")
-        assert result["figure_count"] == 1
+        extractor.extract.assert_called_once_with(
+            pmcid="PMC1", include_tables=True, include_supplements=True
+        )
+        assert result["figure_count"] == 2
+        assert result["counts_by_type"] == {"figure": 1, "table": 1}
 
     def test_by_pmid(self, monkeypatch):
         extractor = MagicMock()
@@ -359,7 +365,9 @@ class TestPaperFigures:
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
         srv._figure_extractor_cache.set(extractor)
         _run(srv.paper_figures(pmid="123"))
-        extractor.extract.assert_called_once_with(pmid="123")
+        extractor.extract.assert_called_once_with(
+            pmid="123", include_tables=True, include_supplements=True
+        )
 
     def test_by_doi(self, monkeypatch):
         extractor = MagicMock()
@@ -367,7 +375,19 @@ class TestPaperFigures:
         monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
         srv._figure_extractor_cache.set(extractor)
         _run(srv.paper_figures(doi="10.1/x"))
-        extractor.extract.assert_called_once_with(doi="10.1/x")
+        extractor.extract.assert_called_once_with(
+            doi="10.1/x", include_tables=True, include_supplements=True
+        )
+
+    def test_tables_and_supplements_can_be_left_out(self, monkeypatch):
+        extractor = MagicMock()
+        extractor.extract.return_value = []
+        monkeypatch.setattr(srv, "FIGURE_EXTRACTOR_AVAILABLE", True)
+        srv._figure_extractor_cache.set(extractor)
+        _run(srv.paper_figures(pmcid="PMC1", include_tables=False, include_supplements=False))
+        extractor.extract.assert_called_once_with(
+            pmcid="PMC1", include_tables=False, include_supplements=False
+        )
 
 
 class TestLlmTools:
@@ -587,6 +607,7 @@ class TestBibliographyTools:
         converter = MagicMock()
         resolver = MagicMock()
         monkeypatch.setattr(srv, "BIBLIOGRAPHY_AVAILABLE", True)
+        monkeypatch.setattr(srv, "BIBTEXPARSER_AVAILABLE", True)
         srv._bib_manager_cache.set(mgr)
         srv._bib_converter_cache.set(converter)
         srv._bib_resolver_cache.set(resolver)
@@ -636,6 +657,22 @@ class TestBibliographyTools:
         result = _run(srv.bib_to_csl(content="x"))
 
         assert result == [{"type": "article"}]
+
+    def test_bib_tools_need_the_bibliography_extra(self, bib_mocks, monkeypatch):
+        """Without bibtexparser the BibTeX tools say which extra to install."""
+        monkeypatch.setattr(srv, "BIBTEXPARSER_AVAILABLE", False)
+        with pytest.raises(ToolError, match=r"pip install pyeuropepmc\[bibliography\]"):
+            _run(srv.bib_parse_string(content="@article{k, title={T}}"))
+
+    def test_ref_tools_work_without_the_bibliography_extra(self, bib_mocks, monkeypatch):
+        """Resolving an identifier needs no bibtexparser, so no extra is demanded."""
+        _, _, resolver = bib_mocks
+        monkeypatch.setattr(srv, "BIBTEXPARSER_AVAILABLE", False)
+        ref = MagicMock()
+        ref.to_dict.return_value = {"doi": "10.1/x"}
+        resolver.resolve_doi.return_value = ref
+
+        assert _run(srv.ref_resolve_doi(doi="10.1/x")) == {"doi": "10.1/x"}
 
     def test_ref_resolve_doi_found(self, bib_mocks):
         _, _, resolver = bib_mocks

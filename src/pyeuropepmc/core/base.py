@@ -7,37 +7,80 @@ import requests
 
 from pyeuropepmc._useragent import get_user_agent
 
-from .error_codes import ErrorCodes
+from .error_codes import ErrorCodes, error_code_for_status
 from .exceptions import APIClientError, ValidationError
 
-__all__ = ["BaseAPIClient", "APIClientError"]
+__all__ = ["BaseAPIClient", "APIClientError", "RETRYABLE_STATUS_CODES"]
+
+# A library must not configure logging on behalf of the application importing
+# it, so the package logger gets a NullHandler and nothing else. Applications
+# that want to see the log output call ``pyeuropepmc.configure_logging()`` or
+# configure the ``pyeuropepmc`` logger themselves.
+logging.getLogger("pyeuropepmc").addHandler(logging.NullHandler())
+
+# HTTP statuses worth a second attempt. Every other status (404, 403, 400, ...)
+# fails the same way however often the request is repeated, so retrying it only
+# delays the error the caller is waiting for.
+RETRYABLE_STATUS_CODES: frozenset[int] = frozenset({408, 425, 429, 500, 502, 503, 504})
+
+# Transport failures the backoff decorator retries. They have to escape the
+# decorated function unchanged -- translating them into APIClientError inside it
+# is what used to make the retries unreachable.
+_RETRYABLE_EXCEPTIONS = (requests.ConnectionError, requests.Timeout, requests.HTTPError)
 
 
-def _configure_base_logger() -> None:
-    """Configure base logger with datetime formatting."""
-    if not logging.getLogger().handlers:
-        logging.basicConfig(
-            level=logging.INFO,
-            format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-            datefmt="%Y-%m-%d %H:%M:%S",
-        )
+def _is_not_retryable(exc: Exception) -> bool:
+    """Tell ``backoff`` to give up on HTTP errors that a retry cannot fix."""
+    if not isinstance(exc, requests.HTTPError):
+        return False
+    response = exc.response
+    if response is None:
+        return True
+    return response.status_code not in RETRYABLE_STATUS_CODES
+
+
+def _log_backoff(details: Any) -> None:
+    """Log a retry that is about to be made."""
+    BaseAPIClient.logger.warning(
+        "Backing off %ss after %s tries calling %s for %s",
+        details.get("wait", "unknown"),
+        details["tries"],
+        details["target"].__name__,
+        details["kwargs"].get("url", "?"),
+    )
+
+
+def _log_giveup(details: Any) -> None:
+    """Log a request that has exhausted its retries."""
+    BaseAPIClient.logger.error(
+        "Giving up after %s tries calling %s for %s",
+        details["tries"],
+        details["target"].__name__,
+        details["kwargs"].get("url", "?"),
+    )
+
+
+_retry_on_transport_error = backoff.on_exception(
+    backoff.expo,
+    _RETRYABLE_EXCEPTIONS,
+    max_tries=5,
+    jitter=None,
+    giveup=_is_not_retryable,
+    on_backoff=_log_backoff,
+    on_giveup=_log_giveup,
+)
 
 
 class BaseAPIClient:
     BASE_URL: str = "https://www.ebi.ac.uk/europepmc/webservices/rest/"
     DEFAULT_TIMEOUT: int = 15
     logger = logging.getLogger(__name__)
-    _logger_configured = False
 
     def __init__(self, rate_limit_delay: float = 1.0) -> None:
         self.rate_limit_delay: float = rate_limit_delay
         self.session: requests.Session | None = requests.Session()
 
         self.session.headers.update({"User-Agent": get_user_agent()})
-
-        if not BaseAPIClient._logger_configured:
-            _configure_base_logger()
-            BaseAPIClient._logger_configured = True
 
     def __repr__(self) -> str:
         """Return a string representation of the client."""
@@ -46,20 +89,30 @@ class BaseAPIClient:
             f"{self.__class__.__name__}(rate_limit_delay={self.rate_limit_delay}, status={status})"
         )
 
-    @backoff.on_exception(
-        backoff.expo,
-        (requests.ConnectionError, requests.Timeout, requests.HTTPError),
-        max_tries=5,
-        jitter=None,
-        on_backoff=lambda details: BaseAPIClient.logger.warning(
-            f"Backing off {details.get('wait', 'unknown')}s after {details['tries']} tries "
-            f"calling {details['target'].__name__} with args {details['args']}, "
-            f"kwargs {details['kwargs']}"
-        ),
-        on_giveup=lambda details: BaseAPIClient.logger.error(
-            f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
-        ),
-    )
+    @_retry_on_transport_error
+    def _send_get(
+        self,
+        session: requests.Session,
+        *,
+        url: str,
+        params: dict[str, Any] | None,
+        stream: bool,
+        timeout: float,
+    ) -> requests.Response:
+        """
+        Send one GET request, retrying transport failures.
+
+        Deliberately kept apart from :meth:`_get`: the backoff decorator can
+        only see the ``requests`` exceptions while they are still ``requests``
+        exceptions, so the translation into :class:`APIClientError` has to
+        happen in the caller.
+        """
+        response: requests.Response = session.get(
+            url, params=params, timeout=timeout, stream=stream
+        )
+        response.raise_for_status()
+        return response
+
     def _get(
         self,
         endpoint: str,
@@ -84,27 +137,16 @@ class BaseAPIClient:
                 stream,
                 actual_timeout,
             )
-            response: requests.Response = self.session.get(
-                url, params=params, timeout=actual_timeout, stream=stream
+            response = self._send_get(
+                self.session, url=url, params=params, stream=stream, timeout=actual_timeout
             )
-            response.raise_for_status()
             self.logger.info(f"GET request to {url} succeeded with status {response.status_code}")
             return response
         except requests.HTTPError as e:
             # Map HTTP status codes to appropriate error codes
             status_code = e.response.status_code if e.response is not None else "unknown"
-
-            # Select appropriate error code based on status
-            if status_code == 404:
-                error_code = ErrorCodes.HTTP404
-            elif status_code == 403:
-                error_code = ErrorCodes.HTTP403
-            elif status_code == 500:
-                error_code = ErrorCodes.HTTP500
-            elif status_code == 429:
-                error_code = ErrorCodes.RATE429
-            else:
-                error_code = ErrorCodes.NET001  # Generic network error
+            # NET001 only when the status has no code of its own.
+            error_code = error_code_for_status(status_code) or ErrorCodes.NET001
 
             context = {
                 "url": url,
@@ -271,20 +313,23 @@ class BaseAPIClient:
             f"Check the Europe PMC API documentation for more information.",
         )
 
-    @backoff.on_exception(
-        backoff.expo,
-        (requests.ConnectionError, requests.Timeout, requests.HTTPError),
-        max_tries=5,
-        jitter=None,
-        on_backoff=lambda details: BaseAPIClient.logger.warning(
-            f"Backing off {details.get('wait', 'unknown')}s after {details['tries']} tries "
-            f"calling {details['target'].__name__} with args {details['args']}, "
-            f"kwargs {details['kwargs']}"
-        ),
-        on_giveup=lambda details: BaseAPIClient.logger.error(
-            f"Giving up after {details['tries']} tries calling {details['target'].__name__}"
-        ),
-    )
+    @_retry_on_transport_error
+    def _send_post(
+        self,
+        session: requests.Session,
+        *,
+        url: str,
+        data: dict[str, Any],
+        headers: dict[str, str] | None,
+        timeout: float,
+    ) -> requests.Response:
+        """Send one POST request, retrying transport failures (see :meth:`_send_get`)."""
+        response: requests.Response = session.post(
+            url, data=data, headers=headers, timeout=timeout
+        )
+        response.raise_for_status()
+        return response
+
     def _post(
         self, endpoint: str, data: dict[str, Any], headers: dict[str, str] | None = None
     ) -> requests.Response:
@@ -298,27 +343,21 @@ class BaseAPIClient:
         url: str = self.BASE_URL + endpoint
         try:
             self.logger.debug(f"POST request to {url} with data={data} and headers={headers}")
-            response: requests.Response = self.session.post(
-                url, data=data, headers=headers, timeout=self.DEFAULT_TIMEOUT
+            response = self._send_post(
+                self.session,
+                url=url,
+                data=data,
+                headers=headers,
+                timeout=self.DEFAULT_TIMEOUT,
             )
-            response.raise_for_status()
             self.logger.info(f"POST request to {url} succeeded with status {response.status_code}")
             return response
         except requests.HTTPError as e:
-            # Map HTTP status codes to appropriate error codes
-            status_code = e.response.status_code if e.response else "unknown"
-
-            # Select appropriate error code based on status
-            if status_code == 404:
-                error_code = ErrorCodes.HTTP404
-            elif status_code == 403:
-                error_code = ErrorCodes.HTTP403
-            elif status_code == 500:
-                error_code = ErrorCodes.HTTP500
-            elif status_code == 429:
-                error_code = ErrorCodes.RATE429
-            else:
-                error_code = ErrorCodes.NET001  # Generic network error
+            # Map HTTP status codes to appropriate error codes. "is not None":
+            # a Response for a 4xx/5xx is falsy (Response.__bool__ is .ok).
+            status_code = e.response.status_code if e.response is not None else "unknown"
+            # NET001 only when the status has no code of its own.
+            error_code = error_code_for_status(status_code) or ErrorCodes.NET001
 
             context = {
                 "url": url,

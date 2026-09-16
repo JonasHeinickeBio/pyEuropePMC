@@ -249,7 +249,7 @@ class PaperProcessingPipeline:
         # Step 3: Enrich metadata (if enabled)
         enrichment_data = None
         if self.enricher and (paper.doi or paper.pmcid):
-            enrichment_data = self._enrich_paper(paper)
+            enrichment_data = self._enrich_paper(paper, entities["authors"])
 
         # Step 4: Convert to RDF
         rdf_result = self._convert_to_rdf(entities, enrichment_data, annotations_data)
@@ -406,8 +406,17 @@ class PaperProcessingPipeline:
             logger.warning(f"Failed to get search data for {identifier}: {e}")
         return None
 
-    def _enrich_paper(self, paper: PaperEntity) -> dict[str, Any] | None:
-        """Enrich paper metadata using external APIs."""
+    def _enrich_paper(
+        self, paper: PaperEntity, authors: list[AuthorEntity] | None = None
+    ) -> dict[str, Any] | None:
+        """Enrich paper metadata using external APIs.
+
+        Copies the merged citation counts and fields of study onto *paper* and
+        author identifiers (ORCID, OpenAlex, Semantic Scholar) onto *authors* —
+        the author entities the RDF graph is built from, which
+        ``build_paper_entities`` returns separately from the paper — or onto
+        ``paper.authors`` when *authors* is not given.
+        """
         if not self.enricher:
             return None
 
@@ -419,21 +428,24 @@ class PaperProcessingPipeline:
 
             enriched_data = self.enricher.enrich_paper(identifier)
 
-            # Update paper entity with enrichment data
-            if enriched_data:
-                # paper.enrichment_sources = enriched_data.get("sources", [])
-                paper.citation_count = enriched_data.get("citation_count")
-                paper.influential_citation_count = enriched_data.get("influential_citation_count")
-                paper.fields_of_study = enriched_data.get("fields_of_study")
+            # Update paper entity with enrichment data. enrich_paper() returns
+            # {identifier, doi, pmid, sources, <source>: ..., merged: {...}};
+            # the combined values live under "merged".
+            merged = (enriched_data or {}).get("merged") or {}
+            for field_name in ("citation_count", "influential_citation_count", "fields_of_study"):
+                value = merged.get(field_name)
+                if value is not None:  # keep what the article already had
+                    setattr(paper, field_name, value)
 
-                # Update authors with enrichment data if available
-                if (
-                    "authors" in enriched_data
-                    and isinstance(enriched_data["authors"], list)
-                    and isinstance(paper.authors, list)
-                    and all(isinstance(a, AuthorEntity) for a in paper.authors)
-                ):
-                    self._update_authors_with_enrichment(paper.authors, enriched_data["authors"])  # type: ignore
+            # Update authors with enrichment data if available
+            enriched_authors = merged.get("authors")
+            author_entities = authors if authors is not None else paper.authors
+            if (
+                isinstance(enriched_authors, list)
+                and isinstance(author_entities, list)
+                and all(isinstance(a, AuthorEntity) for a in author_entities)
+            ):
+                self._update_authors_with_enrichment(author_entities, enriched_authors)  # type: ignore
 
             return enriched_data
 

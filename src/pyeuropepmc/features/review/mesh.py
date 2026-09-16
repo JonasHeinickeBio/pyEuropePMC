@@ -57,6 +57,23 @@ _COMMON_TERM_GUIDE: dict[str, list[str]] = {
     "surgery": ["Surgical Procedures, Operative", "General Surgery"],
 }
 
+# One token of a Boolean query: a quoted phrase (the closing quote may be
+# missing), a parenthesis, or a run of anything else up to whitespace.
+_QUERY_TOKEN = re.compile(r'"[^"]*"?|[()]|[^\s()"]+')
+_OPERATORS = frozenset({"AND", "OR", "NOT"})
+_PLAIN_WORD = re.compile(r"\w+")
+
+
+def _quote(text: str) -> str:
+    """Quote a term or heading unless it is a single plain word.
+
+    ``Diabetes Mellitus, Type 2`` must stay one phrase: unquoted, Europe PMC
+    reads its words as separate terms and the comma as syntax.
+    """
+    if _PLAIN_WORD.fullmatch(text):
+        return text
+    return '"' + text.replace('"', "") + '"'
+
 
 class MeSHExpander:
     """
@@ -105,40 +122,88 @@ class MeSHExpander:
             Contains the expanded query, discovered MeSH terms,
             and per-term suggestions.
         """
-        terms = self._tokenize(query)
         mesh_terms: list[str] = []
         term_suggestions: dict[str, list[str]] = {}
-        expansion_parts: list[str] = []
+        parts: list[str] = []
 
-        for term in terms:
-            suggestions = self._suggest_mesh(term)
-            if suggestions:
-                term_suggestions[term] = suggestions
-                mesh_terms.extend(suggestions)
-                expansion_parts.append(f"({term} OR {' OR '.join(suggestions)})")
-            else:
-                expansion_parts.append(term)
+        for kind, text in self._segments(query):
+            suggestions = self._suggest_mesh(text.lower()) if kind != "syntax" else []
+            if not suggestions:
+                # Unchanged, as written: a quoted phrase stays a phrase and bare
+                # words stay separate words.
+                parts.append(f'"{text}"' if kind == "phrase" else text)
+                continue
 
-        expanded_query = " ".join(expansion_parts)
-        unique_mesh = list(dict.fromkeys(mesh_terms))
+            term_suggestions[text.lower()] = suggestions
+            mesh_terms.extend(suggestions)
+            alternatives: dict[str, str] = {}  # lower-cased -> quoted, first wins
+            for candidate in (text, *suggestions):
+                alternatives.setdefault(candidate.lower(), _quote(candidate))
+            parts.append("(" + " OR ".join(alternatives.values()) + ")")
 
         return MeSHExpansionResult(
             original_query=query,
-            expanded_query=expanded_query,
-            mesh_terms=unique_mesh,
+            expanded_query=self._join(parts),
+            mesh_terms=list(dict.fromkeys(mesh_terms)),
             term_suggestions=term_suggestions,
         )
 
+    @staticmethod
+    def _segments(query: str) -> list[tuple[str, str]]:
+        """Split *query* into ``(kind, text)`` pieces.
+
+        ``kind`` is ``"words"`` for a run of adjacent bare words (looked up as
+        one term, so ``heart attack`` is found), ``"phrase"`` for a quoted
+        phrase (``text`` without the quotes), or ``"syntax"`` for what is kept
+        exactly as written: ``AND``/``OR``/``NOT``, parentheses,
+        field-qualified tokens such as ``TITLE:cancer`` or ``PUB_YEAR:[2020``,
+        and the token a bare ``FIELD:`` applies to.
+        """
+        segments: list[tuple[str, str]] = []
+        words: list[str] = []
+        bound_to_field = False
+
+        def flush() -> None:
+            if words:
+                segments.append(("words", " ".join(words)))
+                words.clear()
+
+        for piece in _QUERY_TOKEN.findall(query):
+            if (bound_to_field and piece != "(") or piece in _OPERATORS or piece in ("(", ")"):
+                flush()
+                segments.append(("syntax", piece))
+                bound_to_field = False
+            elif piece.startswith('"'):
+                flush()
+                phrase = " ".join(piece.strip('"').split())
+                if phrase:
+                    segments.append(("phrase", phrase))
+            elif ":" in piece or "[" in piece or "]" in piece:
+                flush()
+                segments.append(("syntax", piece))
+                bound_to_field = piece.endswith(":")
+            else:
+                words.append(piece)
+        flush()
+        return segments
+
+    @staticmethod
+    def _join(parts: list[str]) -> str:
+        """Join query parts with spaces, but not inside ``( … )`` or after ``FIELD:``."""
+        out = ""
+        for part in parts:
+            if out and not (out.endswith(("(", ":")) or part == ")"):
+                out += " "
+            out += part
+        return out
+
     def _tokenize(self, query: str) -> list[str]:
-        """Split query into individual search terms."""
-        # Split on boolean operators and punctuation
-        tokens = re.split(r'\s+(?:AND|OR|NOT)\s+|\s*[()"\[\]]\s*', query)
-        result = []
-        for t in tokens:
-            t = t.strip().lower()
-            if t and len(t) > 1:
-                result.append(t)
-        return result
+        """The search terms of *query*, lower-cased, without operators or syntax."""
+        return [
+            text.lower()
+            for kind, text in self._segments(query)
+            if kind != "syntax" and len(text) > 1
+        ]
 
     def _suggest_mesh(self, term: str) -> list[str]:
         """Suggest MeSH terms for a single query term."""
