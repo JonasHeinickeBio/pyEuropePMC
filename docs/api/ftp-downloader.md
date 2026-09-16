@@ -14,7 +14,7 @@ The class is defined in `pyeuropepmc.features.literature.ftp_downloader`.
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
-| `rate_limit_delay` | `float` | `1.0` | Stored on the instance but not used: requests are sent without a delay |
+| `rate_limit_delay` | `float` | `1.0` | Minimum number of seconds between the starts of two requests, also while downloads run in parallel. `0` turns the wait off |
 
 `FTPDownloader` is a context manager; leaving the `with` block, or calling `close()`, closes its HTTP session.
 
@@ -30,15 +30,15 @@ Finds, downloads and extracts the PDF bundles for a list of articles.
 | `output_dir` | `str \| Path` | required | Directory for the ZIP files; created if needed |
 | `extract_pdfs` | `bool` | `True` | Extract the PDFs into `output_dir/extracted` |
 | `keep_zips` | `bool` | `False` | Keep each ZIP file after extracting it. Without extraction the ZIP files are always kept |
-| `max_concurrent` | `int` | `3` | Not used: articles are downloaded one after another |
+| `max_concurrent` | `int` | `3` | Number of articles downloaded and extracted in parallel threads; values below 1 count as 1. The directory search before it runs one listing at a time |
 
-The method calls `query_pmcids_in_ftp()`, then `download_pdf_zip()` and `extract_pdf_from_zip()` for each article found. It returns a dict with one entry per requested PMC ID:
+The method calls `query_pmcids_in_ftp()`, then `download_pdf_zip()` and `extract_pdf_from_zip()` for each article found. It returns a dict with one entry per requested PMC ID, in the order given; an ID listed twice is downloaded once:
 
 | `status` | Other keys |
 |---|---|
-| `"success"` | `zip_path` (`Path`); `pdf_paths` (`list[Path]`), only with `extract_pdfs=True`. `zip_path` is reported even when the ZIP file was deleted after extraction |
-| `"not_found"` | `error`: `"PMC ID not found in FTP"` |
-| `"error"` | `error`: the message of the `FullTextError` raised while downloading or extracting |
+| `"success"` | `zip_path`: the `Path` of the ZIP file, or `None` when it was deleted after extraction (`keep_zips=False`); `pdf_paths` (`list[Path]`), only with `extract_pdfs=True` |
+| `"not_found"` | `error`: `"PMC ID not found in FTP"`. Every candidate directory for the article (see `query_pmcids_in_ftp()`) was searched |
+| `"error"` | `error`: the message of the `FullTextError` raised while downloading or extracting, or `"Could not search <directory> for PMC<id>: <reason>"` when a candidate directory for the article could not be listed |
 
 ```python
 from pyeuropepmc import FTPDownloader
@@ -69,7 +69,7 @@ The ZIP files sit in directories named `PMCxxxx` followed by digits. For each PM
 | `pmcids` | `list[str]` | required | PMC IDs as digits |
 | `max_directories` | `int` | `100` | Maximum number of directory listings to read |
 
-A failed directory listing is logged, and an article whose directory could not be read is reported as `None`, the same as an article that does not exist.
+A directory that does not exist (HTTP 404) counts as searched and empty. Any other failed listing is logged and recorded in `downloader.last_query_failures`, a dict from directory name to the reason, which also names the directories left out when the search stopped early. An article whose directory could not be read is `None` in the result, like an article that does not exist; check `last_query_failures` to tell them apart. `bulk_download_and_extract()` does this for you.
 
 ## Lower-level methods
 
@@ -104,8 +104,6 @@ PMCxxxx1200 295936 ['PMC11691200.pdf']
 
 ## Known limitations
 
-- `rate_limit_delay` and `max_concurrent` have no effect.
-- A directory listing that fails is reported as `not_found`, so a network outage looks like missing articles.
 - Only the candidate directories derived from the PMC ID are searched; an article stored in another directory is reported as `not_found`.
 
 ## See also

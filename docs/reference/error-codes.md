@@ -50,13 +50,13 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 - `search()` checks the query, the page size and the format before sending anything, and raises `SEARCH001`, `SEARCH002` or `SEARCH004`.
 - A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code is `HTTP403`, `HTTP404`, `HTTP500` or `RATE429` for those statuses, `FULL007` for a closed client, and `NET001` for anything else.
-- `search_all()` and `fetch_all_pages()` do not raise when a request fails: they stop and return the records collected so far. `search_ids_only()` returns an empty list on any error.
+- `search_all()`, `fetch_all_pages()` and `search_ids_only()` raise these errors too; they do not return partial or empty results for a failed request.
 
 ## Network: NET
 
 | Code | Meaning | Raised by | Typical fix |
 |---|---|---|---|
-| `NET001` | A request failed: no connection, a timeout, or an HTTP status without a more specific code | Every client's requests. `SearchClient` and `ArticleClient` also use it to wrap a failed request, and `UnpaywallClient` uses it for network errors | Read `err.__cause__` for the HTTP status; check the connection and proxy; retry later |
+| `NET001` | A request failed: no connection, a timeout, or an HTTP status without a more specific code | Every client's requests. `SearchClient` also uses it to wrap a failed request, and `UnpaywallClient` uses it for network errors | Read `err.__cause__` for the HTTP status; check the connection and proxy; retry later |
 | `NET002` | A request timed out | Multi-source search clients | Retry, or pass a larger `timeout` to `UnifiedSearch` |
 | `NET003` | DNS lookup failed | Not raised by the current code | Check DNS settings |
 | `NET004` | The server refused the connection | Not raised | Check the service status and firewall |

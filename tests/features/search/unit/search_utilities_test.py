@@ -4,6 +4,7 @@ from unittest.mock import patch
 import pytest
 
 from pyeuropepmc.core.error_codes import ErrorCodes
+from pyeuropepmc.core.exceptions import SearchError
 from pyeuropepmc.features.literature.search import EuropePMCError, SearchClient
 
 logging.basicConfig(level=logging.INFO)
@@ -105,14 +106,14 @@ def test_search_ids_only_empty_results() -> None:
 
 @pytest.mark.unit
 def test_search_ids_only_exception() -> None:
-    """Test search_ids_only handles exceptions gracefully."""
+    """A failed search raises instead of looking like a query without matches."""
     client = SearchClient()
 
     with patch.object(client, "search") as mock_search:
-        mock_search.side_effect = Exception("Search failed")
+        mock_search.side_effect = SearchError(ErrorCodes.SEARCH003)
 
-        ids = client.search_ids_only("test query")
-        assert ids == []
+        with pytest.raises(SearchError):
+            client.search_ids_only("test query")
 
     client.close()
 

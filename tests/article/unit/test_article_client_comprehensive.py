@@ -125,7 +125,8 @@ class TestArticleClientComprehensive:
             "PMC", "PMC123", result_type="lite", format="xml", custom_param="value"
         )
 
-        assert result == mock_json_response
+        # An XML body is returned as text, not run through response.json().
+        assert result == {"xml_response": mock_response.text}
         mock_get.assert_called_once_with(
             "article/PMC/PMC123",
             params={"resultType": "lite", "format": "xml", "custom_param": "value"},

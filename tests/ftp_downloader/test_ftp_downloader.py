@@ -311,7 +311,8 @@ class TestFTPDownloader:
         expected = {
             "11691200": {
                 "status": "success",
-                "zip_path": Path("/tmp/PMC11691200.zip"),
+                # keep_zips defaults to False: the ZIP was deleted after extraction.
+                "zip_path": None,
                 "pdf_paths": [Path("/tmp/extracted/paper1.pdf")],
             },
             "11691201": {"status": "not_found", "error": "PMC ID not found in FTP"},
