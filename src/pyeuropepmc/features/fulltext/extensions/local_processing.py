@@ -17,8 +17,7 @@ from pathlib import Path
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-import defusedxml.ElementTree as DefusedET
-
+from pyeuropepmc.core.xml_parsing import parse_xml
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
 from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
 
@@ -159,7 +158,7 @@ def extract_article_id_from_xml(xml_content: str | ET.Element) -> str | None:
     """
     if isinstance(xml_content, str):
         try:
-            root = DefusedET.fromstring(xml_content)
+            root = parse_xml(xml_content, what="The article XML")
         except Exception:
             return None
     else:
@@ -169,19 +168,19 @@ def extract_article_id_from_xml(xml_content: str | ET.Element) -> str | None:
     for elem in root.findall(".//article-id[@pub-id-type='pmcid']"):
         text = elem.text
         if text:
-            return text.strip()  # type: ignore[no-any-return]
+            return text.strip()
 
     # Then DOI
     for elem in root.findall(".//article-id[@pub-id-type='doi']"):
         text = elem.text
         if text:
-            return text.strip()  # type: ignore[no-any-return]
+            return text.strip()
 
     # Then PMID
     for elem in root.findall(".//article-id[@pub-id-type='pmid']"):
         text = elem.text
         if text:
-            return text.strip()  # type: ignore[no-any-return]
+            return text.strip()
 
     return None
 
@@ -437,7 +436,7 @@ def process_biorxiv_manifest(manifest_path: str, **kwargs: Any) -> list[FullText
     with open(manifest_path, encoding="utf-8") as f:
         manifest_xml = f.read()
 
-    root: ET.Element = DefusedET.fromstring(manifest_xml)
+    root: ET.Element = parse_xml(manifest_xml, what="The bioRxiv manifest")
     parsers: list[FullTextXMLParser] = []
 
     # bioRxiv manifest typically uses <article> or <record> elements with DOIs
@@ -565,7 +564,7 @@ def _is_existing_file(value: str | Path) -> bool:
 def _safe_parse(xml_content: str) -> ET.Element | None:
     """Safely parse XML content, returning None on failure."""
     try:
-        root: ET.Element = DefusedET.fromstring(xml_content)
+        root: ET.Element = parse_xml(xml_content)
     except Exception:
         return None
     return root

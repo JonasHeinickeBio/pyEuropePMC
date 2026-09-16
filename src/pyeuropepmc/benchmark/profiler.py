@@ -32,7 +32,7 @@ import pstats
 import time
 from typing import Any
 
-import defusedxml.ElementTree as DefusedET
+from pyeuropepmc.core.xml_parsing import parse_xml
 
 logger = logging.getLogger(__name__)
 
@@ -342,6 +342,6 @@ def time_et_parse(xml_content: str) -> dict[str, Any]:
 
     Returns
     -------
-    dict with ``seconds`` and ``root`` (parsed element).
+    dict with ``seconds`` and ``result`` (the parsed root element).
     """
-    return time_function(DefusedET.fromstring, xml_content)
+    return time_function(parse_xml, xml_content)
