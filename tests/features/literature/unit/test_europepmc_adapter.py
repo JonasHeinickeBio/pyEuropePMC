@@ -154,6 +154,21 @@ class TestNormalizeToLiteratureFormat:
         assert result.source == "europepmc"
         assert result.extra_metadata["is_open_access"] == "Y"
 
+    def test_author_string_keeps_surname_first(self, adapter):
+        """Europe PMC writes "Surname Initials"; the order must survive normalization."""
+        data = {
+            "title": "T",
+            "source": "MED",
+            "id": "1",
+            "authorString": "Smith J., van der Berg JA, Taylor-Smith AB.",
+        }
+        result = adapter._normalize_to_literature_format(data)
+        assert [a.name for a in result.authors] == [
+            "Smith, J",
+            "van der Berg, JA",
+            "Taylor-Smith, AB",
+        ]
+
     def test_pmid_falls_back_to_id_when_source_is_med(self, adapter):
         data = {"title": "T", "source": "MED", "id": "999"}
         result = adapter._normalize_to_literature_format(data)

@@ -52,6 +52,23 @@ _ARXIV_XML = """<?xml version="1.0" encoding="UTF-8"?>
 """
 
 
+# arXiv reports a malformed request as a normal feed holding one entry whose
+# <id> is in the error namespace — see
+# https://info.arxiv.org/help/api/user-manual.html#errors
+_ARXIV_ERROR_XML = """<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"
+      xmlns:opensearch="http://a9.com/-/spec/opensearch/1.1/">
+  <opensearch:totalResults>1</opensearch:totalResults>
+  <entry>
+    <id>http://arxiv.org/api/errors#incorrect_id_format_for_bad_query</id>
+    <title>Error</title>
+    <summary>incorrect id format for bad query</summary>
+    <updated>2024-01-01T00:00:00Z</updated>
+  </entry>
+</feed>
+"""
+
+
 class TestArxivClient:
     def test_init_default(self):
         client = ArxivClient()
@@ -101,6 +118,55 @@ class TestArxivClient:
     def test_parse_feed_invalid_xml(self):
         client = ArxivClient()
         assert client._parse_feed("<not xml") == []
+
+    @patch.object(ArxivClient, "_make_request", return_value=_ARXIV_XML)
+    def test_search_categories_are_anded_onto_the_query(self, mock_request):
+        client = ArxivClient()
+        client.search("quantum computing", categories=["cs.AI", "cs.LG"])
+
+        params = mock_request.call_args.kwargs["params"]
+        assert params["search_query"] == "(quantum computing) AND (cat:cs.AI OR cat:cs.LG)"
+
+    @patch.object(ArxivClient, "_make_request", return_value=_ARXIV_XML)
+    def test_search_categories_accepts_a_comma_separated_string(self, mock_request):
+        client = ArxivClient()
+        client.search("all:fatigue", categories="cs.AI, q-bio.NC")
+
+        params = mock_request.call_args.kwargs["params"]
+        assert params["search_query"] == "(all:fatigue) AND (cat:cs.AI OR cat:q-bio.NC)"
+
+    @patch.object(ArxivClient, "_make_request", return_value=_ARXIV_XML)
+    def test_search_without_categories_sends_the_query_unchanged(self, mock_request):
+        client = ArxivClient()
+        client.search("all:fatigue")
+
+        assert mock_request.call_args.kwargs["params"]["search_query"] == "all:fatigue"
+
+    @patch.object(ArxivClient, "_make_request", return_value=_ARXIV_ERROR_XML)
+    def test_search_api_error_feed_is_not_a_result(self, mock_request):
+        """arXiv reports a bad request as a feed entry titled "Error"."""
+        client = ArxivClient()
+        assert client.search("bad query") == []
+
+    def test_parse_feed_survives_a_non_numeric_total(self):
+        """A malformed count must not throw away the entries the feed carries."""
+        client = ArxivClient()
+        feed = _ARXIV_XML.replace(
+            "<opensearch:totalResults>2</opensearch:totalResults>",
+            "<opensearch:totalResults>many</opensearch:totalResults>",
+        )
+        assert len(client._parse_feed(feed)) == 2
+
+    def test_parse_feed_survives_an_unparseable_published_date(self):
+        client = ArxivClient()
+        feed = _ARXIV_XML.replace(
+            "<published>2017-06-12T10:00:00Z</published>", "<published>n/a</published>"
+        )
+        results = client._parse_feed(feed)
+
+        assert len(results) == 2
+        assert results[0].publication_year is None
+        assert results[1].publication_year == 2021
 
 
 # ===========================================================================
@@ -158,6 +224,20 @@ class TestClinicalTrialsClient:
         assert r.publication_year == 2020
         assert r.extra_metadata["overall_status"] == "COMPLETED"
         assert r.extra_metadata["conditions"] == ["COVID-19"]
+
+    @patch.object(ClinicalTrialsClient, "_make_request")
+    def test_client_result_converts_to_clinical_trial_with_status(self, mock_request):
+        """The client writes ``overall_status``; the model must read it."""
+        from pyeuropepmc.models.clinical_trial import ClinicalTrial
+
+        mock_request.return_value = {"studies": [{"study": _NCT_STUDY}]}
+        result = ClinicalTrialsClient().search("covid-19", limit=1)[0]
+
+        trial = ClinicalTrial.from_literature_result(result)
+
+        assert trial.nct_id == "NCT04280705"
+        assert trial.status == "COMPLETED"
+        assert trial.conditions == ["COVID-19"]
 
     @patch.object(ClinicalTrialsClient, "_make_request")
     def test_search_passes_status_and_phase_filters(self, mock_request):
@@ -707,6 +787,87 @@ class TestUnifiedSearch:
 
         assert clients["semantic_scholar"] is None
         assert clients["pubmed"] is sentinel
+
+    # --------------------------------------------------------------------------
+    # sort translation
+    # --------------------------------------------------------------------------
+
+    @staticmethod
+    def _sorting_client():
+        """A client whose ``search`` signature names ``sort`` explicitly."""
+        client = MagicMock()
+
+        def search(query, limit=25, sort=None, **kwargs):
+            return []
+
+        client.search = MagicMock(side_effect=search, spec=search)
+        return client
+
+    @patch.object(UnifiedSearch, "_get_or_init_clients")
+    def test_sort_date_is_translated_per_source(self, mock_get_clients):
+        """Europe PMC needs its own vocabulary; ``sort="date"`` is invalid there."""
+        epmc, pubmed, arxiv = (self._sorting_client() for _ in range(3))
+        mock_get_clients.return_value = {"europepmc": epmc, "pubmed": pubmed, "arxiv": arxiv}
+
+        us = UnifiedSearch(sources=["europepmc", "pubmed", "arxiv"])
+        us.search("test", sort="date")
+
+        assert epmc.search.call_args.kwargs["sort"] == "P_PDATE_D desc"
+        assert pubmed.search.call_args.kwargs["sort"] == "pub_date"
+        assert arxiv.search.call_args.kwargs["sort"] == "date"
+
+    @patch.object(UnifiedSearch, "_get_or_init_clients")
+    def test_sort_citations_accepts_the_citation_count_alias(self, mock_get_clients):
+        epmc, openalex = self._sorting_client(), self._sorting_client()
+        mock_get_clients.return_value = {"europepmc": epmc, "openalex": openalex}
+
+        us = UnifiedSearch(sources=["europepmc", "openalex"])
+        us.search("test", sort="citation_count")
+
+        assert epmc.search.call_args.kwargs["sort"] == "CITED desc"
+        assert openalex.search.call_args.kwargs["sort"] == "citation_count"
+
+    @patch.object(UnifiedSearch, "_get_or_init_clients")
+    def test_sort_a_source_cannot_do_is_left_off(self, mock_get_clients):
+        """PubMed has no citation order — omit ``sort`` rather than send junk."""
+        pubmed = self._sorting_client()
+        mock_get_clients.return_value = {"pubmed": pubmed}
+
+        us = UnifiedSearch(sources=["pubmed"])
+        us.search("test", sort="citations")
+
+        assert "sort" not in pubmed.search.call_args.kwargs
+
+    @patch.object(UnifiedSearch, "_get_or_init_clients")
+    def test_sort_relevance_uses_europepmc_default_order(self, mock_get_clients):
+        epmc = self._sorting_client()
+        mock_get_clients.return_value = {"europepmc": epmc}
+
+        us = UnifiedSearch(sources=["europepmc"])
+        us.search("test", sort="relevance")
+
+        assert "sort" not in epmc.search.call_args.kwargs
+
+    @patch.object(UnifiedSearch, "_get_or_init_clients")
+    def test_source_native_sort_value_is_passed_through(self, mock_get_clients):
+        """Anything outside the canonical vocabulary is the caller's own dialect."""
+        epmc = self._sorting_client()
+        mock_get_clients.return_value = {"europepmc": epmc}
+
+        us = UnifiedSearch(sources=["europepmc"])
+        us.search("test", sort="AUTH_FIRST asc")
+
+        assert epmc.search.call_args.kwargs["sort"] == "AUTH_FIRST asc"
+
+    @patch.object(UnifiedSearch, "_get_or_init_clients")
+    def test_no_sort_means_no_sort_kwarg(self, mock_get_clients):
+        epmc = self._sorting_client()
+        mock_get_clients.return_value = {"europepmc": epmc}
+
+        us = UnifiedSearch(sources=["europepmc"])
+        us.search("test")
+
+        assert "sort" not in epmc.search.call_args.kwargs
 
     # --------------------------------------------------------------------------
     # Source Time Tracking Tests

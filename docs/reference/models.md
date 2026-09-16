@@ -204,7 +204,7 @@ author.validate()
 | `SectionEntity` | `title`, `content` (`str \| None`); `begin_index`, `end_index` (`int \| None`, character offsets). `validate()` requires `content`. |
 | `TableEntity` | `table_label`, `caption` (`str \| None`); `headers` (`list[str]`); `rows` (`list[TableRowEntity]`) |
 | `TableRowEntity` | `cells` (`list[str]`). Column headers belong to `TableEntity.headers`. |
-| `FigureEntity` | `figure_label`, `caption`, `graphic_uri` (`str \| None`) |
+| `FigureEntity` | `figure_label`, `caption`, `graphic_uri` (`str \| None`). `graphic_uri` may be an absolute URI or a relative reference such as the file name in `<graphic xlink:href="gkr715f1"/>`; `normalize()` and `validate()` reject only malformed absolute URIs. |
 
 ```python
 from pyeuropepmc.models import FigureEntity, SectionEntity, TableEntity, TableRowEntity
@@ -256,7 +256,7 @@ ref.validate()
 | 1 | `list[AuthorEntity]` | `parser.extract_authors_detailed()` and `parser.extract_affiliations()`; affiliations become `InstitutionEntity` objects |
 | 2 | `list[SectionEntity]` | `parser.get_full_text_sections()`: title and text of each section |
 | 3 | `list[TableEntity]` | `parser.extract_tables()`, one `TableRowEntity` per row |
-| 4 | `list[FigureEntity]` | Always empty. Known limitation: the builder does not extract figures yet. |
+| 4 | `list[FigureEntity]` | `parser.extract_figures()`: label, caption and the `<graphic xlink:href>` file name as `graphic_uri` |
 | 5 | `list[ReferenceEntity]` | `parser.extract_references()` |
 
 `search_data` is an optional Europe PMC search result record, one dict from `response["resultList"]["result"]`. Its PMID, citation count, open-access flags, publication year and similar fields are merged into the paper with `merge_from_source(..., "europe_pmc_search")`.
@@ -371,7 +371,7 @@ For each class, `rdf_map.yml` defines `fields` (one triple per value), `multi_va
 | `ReferenceEntity` | `title`, `doi`, `volume`, `pages`, `publication_year` | `dcterms:title`, `bibo:doi`, `bibo:volume`, `bibo:pages`, `dcterms:issued` |
 | `ReferenceEntity` | `authors`, `raw_citation` | `bibo:authorList`, `dcterms:description` |
 
-`TableEntity.headers` is not mapped. `rdf_map.yml` gives `bibo:Article` as the type of `ReferenceEntity`, but the graph uses the entity's `types` field (`bibo:Document`).
+`TableEntity.headers` is not mapped. The graph types each entity from its `types` field; the `"rdf:type"` entries of `rdf_map.yml` hold the same types and are used for the generated RML file.
 
 **Namespaces**
 
@@ -409,7 +409,7 @@ PaperEntity:
       inverse: foaf:made
 ```
 
-`RDFMapper` reads the YAML file directly. The RML file `rml_mappings.ttl` is generated from it by `examples/scripts/sync_rdf_mappings.py` (options `--yaml` and `--rml`). Known limitation: that script stops with `TypeError: string indices must be integers` on the current `rdf_map.yml`, because the annotation classes map fields to plain predicate strings instead of `{predicate, datatype}` entries.
+`RDFMapper` reads the YAML file directly. The RML file `rml_mappings.ttl` is generated from it by `examples/scripts/sync_rdf_mappings.py` (options `--yaml` and `--rml`), also run by `make sync-rdf`. A field may map to `{predicate, datatype}` or, as the annotation classes do, to a bare predicate string. `"rdf:type"` only affects the generated RML file: `RDFMapper` takes the types from the entity's `types` field, so change both when you change a type.
 
 To add a field in Python, subclass an entity and decorate the subclass with `@dataclass`. Without the decorator, the new attribute is not a dataclass field and `to_dict()` leaves it out.
 

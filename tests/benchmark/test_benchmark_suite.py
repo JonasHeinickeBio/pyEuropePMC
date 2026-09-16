@@ -1363,17 +1363,17 @@ class TestBenchmarkRunnerWithoutProfiling:
         assert runner.stats["failed"] == 1
 
     def test_runner_abort_on_error(self, tmp_dir):
-        """Runner should handle errors gracefully even with skip_errors=False."""
+        """With skip_errors=False the first parse error stops the run."""
         xml_dir = tmp_dir / "xml"
         xml_dir.mkdir()
         (xml_dir / "bad.xml").write_text("<invalid xml")
 
         ds = BenchmarkDataset("local", local_path=xml_dir)
         runner = BenchmarkRunner(ds, skip_errors=False)
-        runner.run_all()
+        with pytest.raises(Exception, match="PARSE002"):
+            runner.run_all()
 
-        # Should still complete but with failed count
-        # The runner handles parse errors internally
+        # The failure is still recorded before the error propagates
         assert runner.stats["successful"] == 0
         assert runner.stats["failed"] == 1
 

@@ -161,6 +161,19 @@ def load_source(name: str, /, **kwargs: Any) -> Any:
     client_cls = spec.resolve()
     accepted = _acceptable_kwargs(client_cls)
     call_kwargs = {k: v for k, v in kwargs.items() if accepted is None or k in accepted}
+
+    # Dropping a credential the spec advertises means the client silently runs
+    # unauthenticated / outside a polite pool, which is hard to spot from the
+    # results, so say so instead of dropping it quietly.
+    for kwarg in (k for k in kwargs if k not in call_kwargs):
+        log = logger.warning if kwarg in spec.credential_kwargs else logger.debug
+        log(
+            "Source '%s': %s() does not accept %r — dropped",
+            name,
+            client_cls.__name__,
+            kwarg,
+        )
+
     return client_cls(**call_kwargs)
 
 

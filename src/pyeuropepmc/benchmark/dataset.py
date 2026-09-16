@@ -205,8 +205,13 @@ class BenchmarkDataset:
 
     @property
     def is_downloaded(self) -> bool:
-        """Check whether the dataset is already downloaded."""
-        return self._local_dir.exists() and any(self._local_dir.rglob("*.xml"))
+        """Check whether the dataset is already downloaded.
+
+        Looks for files matching the dataset's own ``filename_glob`` — ``*.nxml``
+        for PMC_sample_1943, eLife_984 and biorxiv-10k-test-2000 — as
+        :meth:`iter_articles` does.
+        """
+        return self._local_dir.exists() and any(self._local_dir.rglob(self.info.filename_glob))
 
     @property
     def article_count(self) -> int:

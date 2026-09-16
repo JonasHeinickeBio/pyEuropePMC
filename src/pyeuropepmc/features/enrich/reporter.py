@@ -59,7 +59,12 @@ class EnrichmentReporter:
                 lines.append(f"Authors: {author_count}")
             if merged.get("journal"):
                 journal = merged["journal"]
-                journal_name = journal.get("title") or journal.get("name", "Unknown")
+                # Europe PMC supplies the journal as a plain title string; the
+                # other sources as a dict.
+                if isinstance(journal, dict):
+                    journal_name = journal.get("title") or journal.get("name") or "Unknown"
+                else:
+                    journal_name = str(journal)
                 lines.append(f"Journal: {journal_name}")
             if merged.get("publication_date") or merged.get("publication_year"):
                 pub_date = merged.get("publication_date") or merged.get("publication_year")
