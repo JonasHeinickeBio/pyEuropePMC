@@ -55,14 +55,19 @@ class SectionParser(BaseParser):
                 # placed directly under <body> is found too. PMC6453151 lost
                 # one that way.
                 bare_ps = self._section_own_elements(body_elem, "p")
-                if bare_ps:
+                bare_formulas = self._section_own_elements(body_elem, "disp-formula")
+                if bare_ps or bare_formulas:
                     para_texts: list[str] = []
                     for p in bare_ps:
-                        texts = self._extract_flat_texts(
-                            p, ".", filter_empty=True, use_full_text=True
-                        )
-                        if texts:
-                            para_texts.extend(texts)
+                        # A display formula is emitted on its own below, as
+                        # for a formula inside a section.
+                        text = self._text_excluding(p, "disp-formula")
+                        if text:
+                            para_texts.append(text)
+                    for formula in bare_formulas:
+                        text = self._display_formula_text(formula)
+                        if text:
+                            para_texts.append(text)
                     para_text = "\n\n".join(para_texts)
                     if para_text:
                         sections.append({"title": "", "content": para_text})
@@ -135,11 +140,21 @@ class SectionParser(BaseParser):
         title = self._extract_flat_texts(section, "title", filter_empty=False, use_full_text=True)
         # Own paragraphs only: `.//p` also swept up every subsection's text,
         # which was then returned again under the subsection itself (#209).
+        #
+        # A <disp-formula> is taken out of the paragraph and emitted after it,
+        # the way <list> and <table-wrap> already are in to_plaintext(): the
+        # structured blocks make each display formula a block of its own, and
+        # a flat rendering that keeps it mid-sentence disagrees with them
+        # about where the prose ends.
         paragraphs: list[str] = []
         for para in self._section_own_elements(section, "p"):
-            paragraphs.extend(
-                self._extract_flat_texts(para, ".", filter_empty=True, use_full_text=True)
-            )
+            text = self._text_excluding(para, "disp-formula")
+            if text:
+                paragraphs.append(text)
+        for formula in self._section_own_elements(section, "disp-formula"):
+            text = self._display_formula_text(formula)
+            if text:
+                paragraphs.append(text)
         return {
             "title": title[0] if title else "",
             "content": "\n\n".join(paragraphs) if paragraphs else "",

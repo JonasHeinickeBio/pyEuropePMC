@@ -31,6 +31,7 @@ from typing import Any, ClassVar
 from xml.etree import ElementTree as ET  # nosec B405
 
 from pyeuropepmc.features.fulltext.config.element_patterns import ElementPatterns
+from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter, serialize_mathml
 from pyeuropepmc.features.fulltext.parsers.base_parser import BaseParser
 from pyeuropepmc.features.fulltext.utils.xml_helpers import BLOCK_LEVEL_TAGS, XMLHelper
 
@@ -635,10 +636,17 @@ class ContentBlockExtractor(BaseParser):
         "media": "media",
     }
 
-    # A <table-wrap>, <table> or <fig> inside a <p> is not part of the paragraph's
-    # prose. Folding it into the paragraph block lost its rows and caption and ran
-    # its cells together, so _handle_paragraph splits the paragraph around it.
-    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset({"table-wrap", "table", "fig"})
+    # A <table-wrap>, <table>, <fig> or <disp-formula> inside a <p> is not part
+    # of the paragraph's prose. Folding it into the paragraph block lost its
+    # rows, caption or MathML and ran its text into the sentence around it, so
+    # _handle_paragraph splits the paragraph around it.
+    #
+    # A display formula is set on its own line by every renderer of the source
+    # document; leaving it inline produced sentences like "models of the form
+    # y˙=F(y(t),θ,t,…), (1) with N-dimensional state vector".
+    PARAGRAPH_SPLIT_TAGS: ClassVar[frozenset[str]] = frozenset(
+        {"table-wrap", "table", "fig", "disp-formula"}
+    )
 
     def __init__(
         self,
@@ -1480,34 +1488,93 @@ class ContentBlockExtractor(BaseParser):
         return []
 
     def _handle_formula(self, elem: ET.Element) -> list[ContentBlock]:
-        """Handle <disp-formula> and <inline-formula> elements."""
+        """Handle ``<disp-formula>`` and ``<inline-formula>`` elements.
+
+        Three renderings of the same expression, because no one of them serves
+        every consumer:
+
+        ``text``
+            the formula as a reader sees it, so a rendering that only knows
+            about plain text still carries the equation;
+        ``tex``
+            LaTeX, from the MathML by way of :class:`MathMLConverter`, or from
+            an author-supplied ``<tex-math>`` when the document ships one;
+        ``mathml``
+            the MathML itself, in the default MathML namespace.
+
+        ``tex`` used to hold the flattened plain text - "y˙=F(y(t),θ,t,…)" -
+        which is not LaTeX and compiles as nothing.
+        """
         label = ""
         label_elem = elem.find("label")
         if label_elem is not None:
             label = XMLHelper.get_text_content(label_elem)
 
-        # Try to extract MathML first
         mathml_elem = elem.find(".//mml:math", self._get_namespace_map())
+        if mathml_elem is None:
+            mathml_elem = next(
+                (e for e in elem.iter() if self._get_local_tag(e.tag) == "math"), None
+            )
+
         tex = ""
         mathml_str = ""
-
         if mathml_elem is not None:
-            mathml_str = ET.tostring(mathml_elem, encoding="unicode")
-            # Basic MathML -> plain text fallback
-            tex = XMLHelper.get_text_content(mathml_elem)
+            mathml_str = serialize_mathml(mathml_elem)
+            with contextlib.suppress(Exception):
+                tex = MathMLConverter().convert_to_latex(mathml_elem).strip()
 
-        # Fallback to alt-text or plain text
-        if not tex.strip():
-            alt_text = elem.find("alt-text")
-            if alt_text is not None:
-                tex = XMLHelper.get_text_content(alt_text)
-            else:
-                tex = XMLHelper.get_text_content(elem)
+        # A <tex-math> is the author's own LaTeX and beats anything derived.
+        tex_math = next((e for e in elem.iter() if self._get_local_tag(e.tag) == "tex-math"), None)
+        if tex_math is not None and (tex_math.text or "").strip():
+            tex = (tex_math.text or "").strip()
 
-        block = ContentBlock.formula(tex=tex.strip(), label=label)
+        text = self._formula_text(elem)
+        if not tex:
+            tex = text
+
+        block = ContentBlock.formula(tex=tex, label=label)
+        block.text = text
         if mathml_str:
             block.mathml = mathml_str
+        uri = self._formula_graphic_uri(elem)
+        if uri:
+            block.uri = uri
+        if not text and not tex:
+            block.parse_status = "partial"
+            block.quality_score = 0.5
+            block.parser_notes = ["formula carries neither text nor MathML"]
         return [block]
+
+    def _formula_text(self, elem: ET.Element) -> str:
+        """The formula as plain text, without its label or any alt text.
+
+        The label is carried separately, and repeating it here would put "(1)"
+        into the middle of the equation.
+        """
+        parts: list[str] = []
+        for child in elem:
+            tag = self._get_local_tag(child.tag)
+            if tag in ("label", "alt-text", "object-id", "permissions"):
+                continue
+            parts.append(XMLHelper.get_text_content(child))
+            if child.tail:
+                parts.append(child.tail)
+        text = " ".join(" ".join(p.split()) for p in parts if p and p.strip())
+        if text.strip():
+            return text.strip()
+        alt_text = elem.find("alt-text")
+        if alt_text is not None:
+            return XMLHelper.get_text_content(alt_text)
+        return XMLHelper.get_text_content(elem)
+
+    def _formula_graphic_uri(self, elem: ET.Element) -> str:
+        """The rendered image a publisher ships alongside the MathML, if any."""
+        for child in elem.iter():
+            if self._get_local_tag(child.tag) == "graphic":
+                href = self._get_xlink_href(child)
+                if href:
+                    return str(href)
+        return ""
 
     def _handle_figure(self, elem: ET.Element) -> list[ContentBlock]:
         """Handle <fig> elements with inline-aware caption extraction."""
@@ -2151,15 +2218,12 @@ class ContentBlockExtractor(BaseParser):
 
     @staticmethod
     def _convert_inline_formula(elem: ET.Element) -> str:
-        """Attempt to extract LaTeX from an inline formula element."""
-        # Try MathML first
+        """Extract LaTeX from an inline formula element."""
         mathml_elem = elem.find(".//mml:math", {"mml": "http://www.w3.org/1998/Math/MathML"})
-        if mathml_elem is not None:
-            with contextlib.suppress(ImportError, Exception):
-                from pyeuropepmc.features.fulltext.extensions.mathml import MathMLConverter
-
-                converter = MathMLConverter(inline=True)
-                return converter.convert_to_latex(mathml_elem)
-
-        # Fallback: extract plain text
-        return XMLHelper.get_text_content(mathml_elem) if mathml_elem is not None else ""
+        if mathml_elem is None:
+            return ""
+        with contextlib.suppress(Exception):
+            latex = MathMLConverter(inline=True).convert_to_latex(mathml_elem).strip()
+            if latex:
+                return latex
+        return XMLHelper.get_text_content(mathml_elem)

@@ -110,8 +110,13 @@ class PlaintextConverter(BaseParser):
             bare_texts = [
                 text
                 for para in self._section_own_elements(body_elem, "p")
-                if (text := self._text_excluding(para, "list"))
+                if (text := self._text_excluding(para, "list", "disp-formula"))
             ]
+            bare_texts.extend(
+                text
+                for formula in self._section_own_elements(body_elem, "disp-formula")
+                if (text := self._display_formula_text(formula))
+            )
             if bare_texts:
                 text_parts.append("\n".join(bare_texts) + "\n\n")
 
@@ -187,11 +192,21 @@ class PlaintextConverter(BaseParser):
         paragraphs = [
             text
             for para in self._section_own_elements(section, "p", stop_at=("list", "table-wrap"))
-            if (text := self._text_excluding(para, "list"))
+            if (text := self._text_excluding(para, "list", "disp-formula"))
         ]
         for para_text in paragraphs:
             formatted_text = self._process_formatting_in_text(para_text)
             text_parts.append(f"{formatted_text}\n")
+
+        # Display formulas, on lines of their own. A <disp-formula> inside a
+        # <p> used to be flattened into the sentence introducing it - "models
+        # of the form y˙=F(y(t),θ,t,…), (1) with N-dimensional state
+        # vector" - which is neither the prose nor the equation, and disagreed
+        # with the structured blocks, where each one is a block of its own.
+        for formula in self._section_own_elements(section, "disp-formula"):
+            formula_text = self._display_formula_text(formula)
+            if formula_text:
+                text_parts.append(f"{formula_text}\n")
 
         # Extract lists
         lists = self._section_own_elements(section, "list")

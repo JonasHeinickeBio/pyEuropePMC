@@ -278,12 +278,14 @@ Each block is a dict with `type` and `schema_version`, plus the fields that appl
 | `list` | `items`, `list_type` |
 | `table` | `label`, `caption`, `rows` (header and body rows), `text` (label, caption, cells and footer in one string), `inlines`, `metadata` |
 | `figure` | `label`, `caption`, `uri`, `target_id`, `inlines` |
-| `formula` | `tex`, `label`, `mathml` |
+| `formula` | `text` (the expression as plain text), `tex` (LaTeX), `label`, `mathml`, `uri` |
 | `code`, `quote`, `boxed_text` | `text` |
 | `definition_list` | `definition_terms` |
 | `unknown_block` | `jats_tag`, `text` for elements without a dedicated block type |
 
-A `<table-wrap>`, `<table>` or `<fig>` inside a `<p>` becomes its own block: the paragraph is split into a paragraph block with the text before it, the table or figure block, and a paragraph block with the text after it. In PMC12311175, for example, the section "Tumor-induced immune suppression" contains a paragraph, then a `figure` block labelled `Fig. 1`, then the rest of the paragraph. Display formulas (`<disp-formula>`) inside a `<p>` are not split out; see [Known limitations](#known-limitations).
+A `<table-wrap>`, `<table>`, `<fig>` or `<disp-formula>` inside a `<p>` becomes its own block: the paragraph is split into a paragraph block with the text before it, the table, figure or formula block, and a paragraph block with the text after it. In PMC12311175, for example, the section "Tumor-induced immune suppression" contains a paragraph, then a `figure` block labelled `Fig. 1`, then the rest of the paragraph.
+
+A `formula` block carries the expression three ways: `text` is the plain text as a reader sees it, `tex` is LaTeX converted from the MathML (or the document's own `<tex-math>` when it ships one), and `mathml` is the MathML itself, serialized in the MathML namespace. `label` holds the equation number, which is kept out of `text`. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render a display formula on a line of its own, after the section's paragraphs, as the expression followed by its label.
 
 For `StructuredSection` and `ContentBlock` objects instead of dicts, with methods to split sections into chunks for retrieval, use `ContentBlockExtractor`; see [Content blocks](../../api/xml-parser-extensions.md#content-blocks).
 
@@ -425,7 +427,7 @@ For normalized text for text mining, with canonical section types and BioC outpu
 These were found by checking the parser's output against the source XML of real Europe PMC articles.
 
 - **Floats outside the body.** Tables and figures in `<floats-group>`, where NIH author manuscripts put them, are returned by `extract_tables()` and `extract_figures()` but are missing from the structured sections, `to_plaintext()`, `to_markdown()` and `get_full_text_sections()`.
-- **Display formulas.** A `<disp-formula>` inside a `<p>` becomes part of the paragraph's text: there is no formula block, the MathML is dropped, and subscripts and superscripts become plain characters (x² reads "x2").
+- **Display formulas.** The `text` of a formula block is the flattened MathML, so subscripts and superscripts become plain characters (x² reads "x2"); `tex` carries the structure. `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` render that flattened text, not the LaTeX, and place a display formula after the section's paragraphs rather than where it stood.
 - **Tables.** `extract_tables()` drops header rows whose cells are `<td>` (`headers` is `[]`) and reads only the first `<th>` header row; `colspan` and `rowspan` are ignored in every output.
 - **Figures.** `graphic_uri` and the figure block's `uri` are taken from the first `<graphic>` anywhere in the figure, which can be a formula image inside the caption. Figure supplements are listed as separate figures, not linked to their parent.
 - **Metadata.**
