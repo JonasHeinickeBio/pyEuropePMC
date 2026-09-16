@@ -226,6 +226,20 @@ class TestClinicalTrialsClient:
         assert r.extra_metadata["conditions"] == ["COVID-19"]
 
     @patch.object(ClinicalTrialsClient, "_make_request")
+    def test_client_result_converts_to_clinical_trial_with_status(self, mock_request):
+        """The client writes ``overall_status``; the model must read it."""
+        from pyeuropepmc.models.clinical_trial import ClinicalTrial
+
+        mock_request.return_value = {"studies": [{"study": _NCT_STUDY}]}
+        result = ClinicalTrialsClient().search("covid-19", limit=1)[0]
+
+        trial = ClinicalTrial.from_literature_result(result)
+
+        assert trial.nct_id == "NCT04280705"
+        assert trial.status == "COMPLETED"
+        assert trial.conditions == ["COVID-19"]
+
+    @patch.object(ClinicalTrialsClient, "_make_request")
     def test_search_passes_status_and_phase_filters(self, mock_request):
         mock_request.return_value = {"studies": []}
         client = ClinicalTrialsClient()

@@ -209,13 +209,13 @@ with SemanticScholarClient(api_key=None) as s2:
 | `get_recommendations_for_paper(paper_id, limit=None, fields=None, use_cache=True)` | `list[dict]` | `limit` is capped at 500. An invalid paper ID raises `ValueError`; API errors return `[]`. |
 | `get_recommendations_for_papers(positive_paper_ids, negative_paper_ids=None, limit=None, fields=None, use_cache=True)` | `list[dict]` | An empty `positive_paper_ids`, an invalid ID, or an ID in both lists raises `ValueError`; API errors return `[]`. IDs may contain letters, digits, `:`, `.`, `/`, `_` and `-`. |
 
-Known limitation: `search_papers()` returns at most 100 papers; a larger `limit` is reduced to 100.
+`search_papers()` returns up to `limit` papers, at most 1000; a larger `limit` is reduced to 1000. Semantic Scholar serves 100 papers per request, so a `limit` above 100 makes one request per further 100 papers.
 
 Without an API key, the Semantic Scholar API allows fewer requests; set `SEMANTIC_SCHOLAR_API_KEY` or pass `api_key`.
 
 ### Bulk search
 
-`search_papers(..., bulk=True)` sends the query to Semantic Scholar's bulk search endpoint, which returns papers without relevance ranking. The default, `bulk=False`, uses relevance search. Either way a call returns at most 100 papers.
+`search_papers(..., bulk=True)` sends the query to Semantic Scholar's bulk search endpoint, which returns papers without relevance ranking. The default, `bulk=False`, uses relevance search. Either way a call returns at most 1000 papers.
 
 ```python
 from pyeuropepmc import SemanticScholarClient
@@ -244,7 +244,7 @@ if paper:
 results = client.search_paper("cancer", bulk=True, limit=50)
 ```
 
-Its methods are `get_paper`, `get_papers`, `search_paper`, `get_paper_authors`, `get_author`, `search_author`, `get_recommendations` and `get_recommendations_from_lists`. `search_paper()` raises `ValueError` when `limit` is outside 1 to 100.
+Its methods are `get_paper`, `get_papers`, `search_paper`, `get_paper_authors`, `get_author`, `search_author`, `get_recommendations` and `get_recommendations_from_lists`. `search_paper()` raises `ValueError` when `limit` is outside 1 to 1000; it requests at most 100 papers per page and reads further pages up to `limit`.
 
 ## Merge rules
 
