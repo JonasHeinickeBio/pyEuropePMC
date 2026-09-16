@@ -22,6 +22,8 @@ import tarfile
 from typing import Any
 import zipfile
 
+from pyeuropepmc._optional_imports import is_package_available
+
 logger = logging.getLogger(__name__)
 
 
@@ -251,8 +253,13 @@ class BenchmarkDataset:
         if _try_http_download(self._source, self._local_dir, self.name, force, progress_callback):
             return self._local_dir
 
+        hint = ""
+        if not is_package_available("huggingface_hub"):
+            # Every registered dataset lives on Hugging Face, and the plain HTTP
+            # fallback cannot fetch a Hugging Face dataset page.
+            hint = '. Hugging Face downloads need: pip install "pyeuropepmc[benchmark]"'
         raise ConnectionError(
-            f"Could not download dataset {self.name}. Try manually from {self._source}"
+            f"Could not download dataset {self.name}. Try manually from {self._source}{hint}"
         )
 
     # ------------------------------------------------------------------

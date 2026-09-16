@@ -22,8 +22,8 @@ turtle = mapper.serialize_graph(graph, format="turtle")
 ```
 
 Key tips:
-- The installed package does not include `conf/rdf_map.yml`. Download it from the [repository](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/conf/rdf_map.yml) and pass `config_path`. `RDFMapper()` without a path works only in a source checkout; elsewhere it raises `FileNotFoundError`.
+- `RDFMapper()` uses the [`rdf_map.yml`](https://github.com/JonasHeinickeBio/pyEuropePMC/blob/main/src/pyeuropepmc/conf/rdf_map.yml) that ships with the package; pass `config_path` to use your own.
 - `build_paper_entities()` returns six values. Unpacking five raises `ValueError`.
 - `serialize_graph(graph, format=...)` accepts rdflib formats such as `turtle`, `nt`, `xml` and `json-ld`. With `destination="out.ttl"` it writes the file.
 - To choose the knowledge-graph structure, call `mapper.save_rdf({"PMC3258128": {"entity": paper, "related_entities": {"authors": authors, ...}}}, output_dir="rdf_output", kg_type="metadata")`. `kg_type` is `"complete"` (the default: all entities), `"metadata"` (paper, authors, institutions) or `"content"` (sections, references, tables, figures). `save_metadata_rdf()` and `save_content_rdf()` do the same with the file prefixes `metadata_` and `content_`.
-- `conf/rdf_map.yml` is also the source of the RML file `conf/rml_mappings.ttl` used by `RMLRDFizer`. Known limitation: the generator `examples/scripts/sync_rdf_mappings.py` stops with `TypeError: string indices must be integers` on the current `rdf_map.yml`, and `make sync-rdf` points at a `scripts/` path that no longer exists, so the RML file cannot be regenerated after YAML edits.
+- `rdf_map.yml` is also the source of the RML file `rml_mappings.ttl` used by `RMLRDFizer`; both are in `src/pyeuropepmc/conf/`. Known limitation: the generator `examples/scripts/sync_rdf_mappings.py` stops with `TypeError: string indices must be integers` on the current `rdf_map.yml`, and `make sync-rdf` points at a `scripts/` path that no longer exists, so the RML file cannot be regenerated after YAML edits.

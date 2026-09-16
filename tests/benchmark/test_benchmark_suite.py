@@ -278,6 +278,18 @@ class TestDatasetDownloadBackends:
         result = _try_huggingface_load_dataset("default", tmp_dir / "hf_test", force=False)
         assert isinstance(result, bool)
 
+    def test_failed_download_names_the_benchmark_extra(self, tmp_dir, monkeypatch):
+        """Without huggingface_hub the error says which extra provides it."""
+        from pyeuropepmc.benchmark import dataset as dataset_module
+
+        monkeypatch.setattr(dataset_module, "_try_huggingface_download", lambda *a, **k: False)
+        monkeypatch.setattr(dataset_module, "_try_http_download", lambda *a, **k: False)
+        monkeypatch.setattr(dataset_module, "is_package_available", lambda name: False)
+        dataset = BenchmarkDataset("PLOS_1000", data_dir=tmp_dir)
+
+        with pytest.raises(ConnectionError, match=r"pyeuropepmc\[benchmark\]"):
+            dataset.download(force=True)
+
     def test_http_download_requests_not_available(self, tmp_dir, monkeypatch):
         """Test HTTP download when requests library is not available."""
         # Mock requests import to fail

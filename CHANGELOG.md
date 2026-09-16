@@ -51,6 +51,49 @@ All notable changes to PyEuropePMC are documented here.
   alongside the metadata. `front` is added to `SectionType` in the LinkML
   schema. Code that relied on the old label needs to accept `front`.
 
+- **`RDFMapper()` and `PaperProcessingPipeline` work after `pip install`.** The
+  mapping files sat in a `conf/` directory at the repository root and were
+  found by walking up from `__file__`, which only a source checkout has: an
+  installed package looked in the interpreter's `lib/` directory and raised
+  `FileNotFoundError`, and `load_rdf_config()` quietly used its built-in
+  fallback, with `http://example.org/data/` as base URI instead of
+  `https://w3id.org/pyeuropepmc/`. The four files now ship inside the package
+  (`pyeuropepmc.conf.config_file(name)` returns a path), and `RMLRDFizer()`
+  finds its defaults there too.
+
+- **PyYAML is a declared dependency.** `pyeuropepmc.mappers` imports it at
+  module level, but it only ever arrived with the `standard` or `agentic`
+  extra: in a bare install `from pyeuropepmc.mappers import RDFMapper` raised
+  `ModuleNotFoundError: No module named 'yaml'`.
+
+- **MCP tools ask for the extra they need.** The availability flags recorded
+  whether a pyeuropepmc module imported, which it always does, because optional
+  libraries load lazily. The LLM tools now check LangChain, so without the
+  `agentic` extra they return an install hint instead of empty analyses; the
+  `bib_*` tools check bibtexparser; the `ref_*` tools, which need no extra, no
+  longer name `bibliography`; and tools that are part of the core install no
+  longer suggest `pip install pyeuropepmc[all]`.
+
+### ⬆️ Dependencies
+
+- **rapidfuzz 3 is allowed** (`>=2.15.0,<4.0`). The old bound resolved to
+  2.15.2, which has no wheels for Python 3.13 or later, so installing there
+  needed a compiler. Match scores do not change: `token_fuzzy_score()` now
+  passes rapidfuzz 2's default processor explicitly, and its scores are
+  identical on 5,064 pairs built from titles in the test fixtures (641 differ
+  without it).
+
+- **New `benchmark` extra** with `huggingface-hub`, which downloading the
+  published benchmark datasets needs; a failed download now names the extra.
+
+- **The `rdf` extra installs nothing.** rdflib, a core dependency, writes
+  JSON-LD itself since 6.0, which made rdflib-jsonld redundant. The extra is
+  kept so existing install commands keep working.
+
+- **The `enrichment` extra no longer installs cryptography**, which no
+  enrichment module imports. Signed search logs need the `signing` extra, as
+  before.
+
 ### 📚 Documentation
 
 - **The documentation matches the code again.** Audits of README.md and every

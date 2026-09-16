@@ -10,7 +10,7 @@ The enrichment clients are part of the base package. The Semantic Scholar source
 pip install "pyeuropepmc[enrichment]"
 ```
 
-The `enrichment` extra installs `semanticscholar` and `cryptography`; `pyeuropepmc[semanticscholar]` installs only `semanticscholar`. Without the library, `PaperEnricher` logs an error, skips Semantic Scholar and runs the other sources.
+The `enrichment` and `semanticscholar` extras both install `semanticscholar`. Without the library, `PaperEnricher` logs an error, skips Semantic Scholar and runs the other sources.
 
 ## Sources
 

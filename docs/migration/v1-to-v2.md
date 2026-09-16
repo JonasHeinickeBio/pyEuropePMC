@@ -40,22 +40,23 @@ pip install pyeuropepmc
 pip install "pyeuropepmc[analytics]"        # pandas / numpy — publication stats
 pip install "pyeuropepmc[visualization]"    # matplotlib / seaborn — plots
 pip install "pyeuropepmc[export]"           # xlsxwriter / tabulate — Excel/Markdown export
-pip install "pyeuropepmc[rdf]"              # rdflib-jsonld / rdfizer — RDF / RML mapping
+pip install "pyeuropepmc[rdf]"              # nothing now: the core rdflib writes JSON-LD
 pip install "pyeuropepmc[agentic]"          # LangChain / LangGraph / OpenAI / Jinja2 — LLM agents
 pip install "pyeuropepmc[ui]"               # Flask / Tornado — claim-review web UI
 pip install "pyeuropepmc[signing]"          # cryptography — signed search logs
 pip install "pyeuropepmc[bibliography]"     # bibtexparser — BibTeX read/write/convert
 pip install "pyeuropepmc[zotero]"           # pyzotero — Zotero library sync
 pip install "pyeuropepmc[semanticscholar]"  # semanticscholar — S2 client library
-pip install "pyeuropepmc[enrichment]"       # semanticscholar + cryptography bundle
+pip install "pyeuropepmc[enrichment]"       # semanticscholar
 
 # 2.0: convenience bundles
 pip install "pyeuropepmc[standard]"         # analytics + visualization + export + notebook niceties
 pip install "pyeuropepmc[all]"              # everything — reproduces 1.x behaviour exactly
 ```
 
-Since 2.1.0 the `rdf` extra installs only rdflib-jsonld, and `[all]` no longer
-includes rdfizer. RML mapping needs it installed separately:
+The `rdf` extra installs nothing any more: rdflib, a core dependency, writes
+JSON-LD itself, which made rdflib-jsonld redundant. Since 2.1.0 `[all]` does not
+include rdfizer either; RML mapping needs it installed separately:
 `pip install rdfizer`.
 
 If you use a feature whose extra isn't installed, you get a clear error
