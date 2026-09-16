@@ -47,6 +47,50 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🐛 Bug Fixes
 
+- **`FigureExtractor` finds the figures.** It searched for elements in the
+  JATS1 XML namespace, which Europe PMC documents do not use, so it returned
+  nothing for every article: 0 of 25 figures, 8 tables and 19 supplementary
+  files across five papers. It now strips the document's own default namespace
+  the way `FullTextXMLParser` does, so both the DTD-based JATS Europe PMC serves
+  and schema-based JATS are matched, and it keeps the contract for a document
+  defusedxml refuses: that still raises `ParsingError`. The MCP tool `paper_figures`, which reported
+  `figure_count: 0` for every paper, reports them too, with a `counts_by_type`
+  breakdown and `include_tables`/`include_supplements` arguments.
+
+- **Asset URLs point at files that exist.** Figure and asset URLs were built by
+  appending the file name to a PMC article page address - and, in
+  `FigureExtractor`, by prefixing a PMCID with `PMC` a second time, giving
+  `PMCPMC11687933`. Neither form resolved. Both now use the Europe PMC file
+  endpoint that the article pages themselves load,
+  `https://europepmc.org/api/fulltextRepo?pmcId=…&type=FILE&fileName=…&mimeType=…`,
+  including the `.jpg` that publishers such as Springer Nature and Oxford
+  University Press leave off a `<graphic>` reference. An identifier that is not
+  a PMCID now leaves the file name alone rather than building a URL that 404s.
+
+- **A figure's image is its own.** `extract_figures()`, the structured figure
+  blocks and `ImageFetcher` took the first `<graphic>` anywhere inside a
+  `<fig>`. That is an inline formula's image when the caption contains
+  mathematics - PMC10775981's Fig 3 resolved to `pcbi.1011761.e012.jpg` - and a
+  figure supplement's image when eLife nests one inside its parent. Only a
+  graphic the figure carries directly, or in an `<alternatives>` of its own,
+  counts now.
+
+- **Figure supplements are linked to their parent.** A `<fig>` nested in
+  another was listed as an unrelated figure. `extract_figures()` and
+  `FigureInfo` now carry `parent_id` and `parent_label` for one, and its asset
+  carries its own label instead of its parent's.
+
+- **`extract_asset_refs()` reports each file once.** Every graphic inside a
+  figure was added a second time without a label by the pass over "standalone"
+  graphics (its `_is_inside_fig` check could never succeed, since ElementTree
+  has no parent axis), graphics in `<alternatives>` again, and each `<media>`
+  inside supplementary material twice: 139 references for 73 files across five
+  papers, 56 of 101 figure references unlabelled. There is now one `AssetRef`
+  per file-bearing element, in document order, typed and labelled by the block
+  that owns it, and a file two blocks declare is returned once. Supplementary
+  assets carry a MIME type, formula images are typed `FORMULA` rather than
+  counted as figures, and a table deposited as an image is typed `TABLE`.
+
 - **A display formula inside a paragraph gets a block of its own.** JATS allows
   a `<disp-formula>` inside a `<p>`, and PLOS always writes one that way.
   `get_full_text_sections_structured()` flattened it into the sentence that
@@ -269,6 +313,32 @@ All notable changes to PyEuropePMC are documented here.
   around block-level elements, where `get_text_content()` puts a space, so
   the same 703 boundaries ran together ("miRNARole") and a figure's label ran
   into its caption ("Fig. 1Mechanisms of immune"). Both now use the one walker.
+
+- **`JATSNormalizer` parses documents that escape `<` and `&`.** Numeric
+  character references were decoded before parsing, so `&#x0003c;` became a raw
+  `<` and `&#x00026;` a raw `&`, and `normalize_xml()` raised `ParseError` on
+  PMC3258128 and PMC12311175. Only named entities are resolved beforehand now.
+  `bytes` input is decoded the way its byte order mark or XML declaration says,
+  not always as UTF-8.
+
+- **`JATSNormalizer` metadata is the article's own.** The DOI came from the last
+  `<article-id>` in the document - for PMC10775981 that of a peer-review report,
+  `10.1371/journal.pcbi.1011761.r004` - and every `<sub-article>` contributor
+  was an author: 45 for PMC11687933's 22. Authorship declared on the
+  `<contrib-group>` gave no authors at all.
+
+- **`JATSNormalizer` sections are in document order**, each followed by its own
+  subsections; they were in neither that order nor its reverse.
+  `strip_display_markup` and `flatten_xrefs` now act independently, so the
+  CLI's `--no-markup` keeps display markup, and an `<xref>` inside `<bold>` is
+  kept when only markup is stripped. `drop_mathml` keeps each formula's text
+  in its place instead of losing it and the text that followed.
+
+- **`pyeuropepmc normalize` prints document text as it is.** `text`, `bioc` and
+  the `sections` table went through Rich markup, so a `[/i]` in an article
+  stopped the command and `[a]` disappeared. `normalize batch` exits with
+  status 1 when any file fails, and every command reads files in the encoding
+  their XML declaration names.
 
 - **A caption's title no longer runs into its text** in the figure and table
   blocks built from it ("Overview of the study.a The workflow"). Eight

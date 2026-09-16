@@ -2,6 +2,7 @@
 Unit tests for FullTextClient functionality.
 """
 
+import gzip
 from pathlib import Path
 import tempfile
 from unittest.mock import Mock, patch
@@ -361,38 +362,27 @@ class TestFullTextClient:
 
             client.close()
 
+    @staticmethod
+    def _archive_response(*pmcids: str) -> Mock:
+        """A 200 response whose body is a gzipped article set with these PMC IDs."""
+        articles = "".join(
+            "<article><front><article-meta>"
+            f'<article-id pub-id-type="pmcid">PMC{pmcid}</article-id>'
+            f"<title-group><article-title>Article {pmcid}</article-title></title-group>"
+            "</article-meta></front><body><p>Test content</p></body></article>"
+            for pmcid in pmcids
+        )
+        body = f'<?xml version="1.0"?><pmc-articleset>{articles}</pmc-articleset>'
+        response = Mock()
+        response.status_code = 200
+        response.iter_content.return_value = [gzip.compress(body.encode("utf-8"))]
+        return response
+
     @pytest.mark.unit
     @patch("requests.get")
-    @patch("gzip.open")
-    @patch("tempfile.NamedTemporaryFile")
-    def test_bulk_xml_download_success(self, mock_tempfile, mock_gzip_open, mock_requests_get):
+    def test_bulk_xml_download_success(self, mock_requests_get):
         """Test successful bulk XML download from FTP archives."""
-        # Mock successful archive download
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.iter_content.return_value = [b"chunk1", b"chunk2"]
-        mock_requests_get.return_value = mock_response
-
-        # Mock temporary file
-        mock_temp_file = Mock()
-        mock_temp_file.name = "/tmp/test_archive.gz"
-        mock_tempfile.return_value.__enter__.return_value = mock_temp_file
-
-        # Mock gzip file content with XML containing our PMC ID
-        xml_content = """<?xml version="1.0"?>
-        <article>
-            <article-meta>
-                <article-id pub-id-type="pmc">PMC3257301</article-id>
-                <title>Test Article</title>
-            </article-meta>
-            <body>
-                <p>Test content</p>
-            </body>
-        </article>"""
-
-        mock_gzip_file = Mock()
-        mock_gzip_file.read.return_value = xml_content
-        mock_gzip_open.return_value.__enter__.return_value = mock_gzip_file
+        mock_requests_get.return_value = self._archive_response("3257301")
 
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = Path(temp_dir) / "PMC3257301.xml"
@@ -422,35 +412,9 @@ class TestFullTextClient:
 
     @pytest.mark.unit
     @patch("requests.get")
-    @patch("gzip.open")
-    @patch("tempfile.NamedTemporaryFile")
-    def test_bulk_xml_download_pmcid_not_in_archive(
-        self, mock_tempfile, mock_gzip_open, mock_requests_get
-    ):
+    def test_bulk_xml_download_pmcid_not_in_archive(self, mock_requests_get):
         """Test bulk XML download when PMC ID is not found in archive."""
-        # Mock successful archive download
-        mock_response = Mock()
-        mock_response.status_code = 200
-        mock_response.iter_content.return_value = [b"chunk1"]
-        mock_requests_get.return_value = mock_response
-
-        # Mock temporary file
-        mock_temp_file = Mock()
-        mock_temp_file.name = "/tmp/test_archive.gz"
-        mock_tempfile.return_value.__enter__.return_value = mock_temp_file
-
-        # Mock gzip file content WITHOUT our PMC ID
-        xml_content = """<?xml version="1.0"?>
-        <article>
-            <article-meta>
-                <article-id pub-id-type="pmc">PMC9999999</article-id>
-                <title>Different Article</title>
-            </article-meta>
-        </article>"""
-
-        mock_gzip_file = Mock()
-        mock_gzip_file.read.return_value = xml_content
-        mock_gzip_open.return_value.__enter__.return_value = mock_gzip_file
+        mock_requests_get.return_value = self._archive_response("9999999")
 
         with tempfile.TemporaryDirectory() as temp_dir:
             output_path = Path(temp_dir) / "PMC3257301.xml"

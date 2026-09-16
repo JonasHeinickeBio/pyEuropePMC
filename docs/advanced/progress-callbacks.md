@@ -32,8 +32,8 @@ With two successful downloads, the callback prints:
 
 ```text
   0.0%  item 0/2  ok=0 failed=0  initialized
- 50.0%  item 1/2  ok=0 failed=0  downloading PMCPMC3312970
-100.0%  item 2/2  ok=1 failed=0  downloading PMCPMC3258128
+ 50.0%  item 1/2  ok=0 failed=0  downloading PMC3312970
+100.0%  item 2/2  ok=1 failed=0  downloading PMC3258128
 100.0%  item 2/2  ok=2 failed=0  completed
 ```
 
@@ -53,12 +53,10 @@ It returns a dict that maps each ID, as you passed it, to the `Path` of the down
 ## When the callback runs
 
 1. Once before the first download, with `status="initialized"` and `current_item=0`.
-2. Before each download, if at least `progress_update_interval` seconds have passed since the previous call. `status` is `"downloading PMC"` followed by the ID as you passed it. The counters describe the downloads finished so far, while `current_item` and `progress_percent` already include the item that is about to start.
+2. Before each download, if at least `progress_update_interval` seconds have passed since the previous call. `status` is `"downloading "` followed by the ID with one `PMC` prefix, whether or not you passed it with one. The counters describe the downloads finished so far, while `current_item` and `progress_percent` already include the item that is about to start.
 3. Once after the last download, with `status="completed"`.
 
 With the default interval of 1.0 second and fast downloads (for example, files served from the cache), only the first and the last call may happen. After each download the client also sets `status` to `"completed PMC…"`, `"failed PMC…"` or `"error PMC…: …"`, but the next call overwrites it first, so the callback never sees these values; use `successful_downloads` and `failed_downloads` instead.
-
-> **Known limitation.** The per-item status adds a `PMC` prefix to the ID as given, so `"PMC3312970"` appears as `downloading PMCPMC3312970`. Use `current_pmcid` if you display the ID.
 
 ## ProgressInfo
 
@@ -86,7 +84,7 @@ With the default interval of 1.0 second and fast downloads (for example, files s
 | `estimated_remaining_time` | `float` or `None` | `estimated_total_time - elapsed_time`, at least 0; `None` before the first item. |
 | `completion_rate` | `float` | Items per second, `current_item / elapsed_time`. |
 
-`to_dict()` returns the attributes except `start_time`, plus `progress_percent`, `elapsed_time`, `estimated_remaining_time` and `completion_rate`. `str(progress)` gives a one-line summary.
+`to_dict()` returns the attributes except `start_time`, plus `progress_percent`, `elapsed_time`, `estimated_remaining_time` and `completion_rate`. `str(progress)` gives a one-line summary, such as `Progress: 1/2 (50.0%) - Current: PMC3312970 - Status: downloading PMC3312970`; the `Current` part is left out before the first item.
 
 ## Progress bar with tqdm
 

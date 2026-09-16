@@ -73,7 +73,7 @@ The Europe PMC clients raise the code of every status in this table except `HTTP
 | `HTTP400` | Bad request | Multi-source search clients | Simplify the query for that source |
 | `HTTP401` | Unauthorised | Not raised; a 401 response uses `AUTH401` | See `AUTH401` |
 | `HTTP403` | Access forbidden | Requests by `ArticleClient` and `FullTextClient`; multi-source search clients | Check the identifier; not all content is open |
-| `HTTP404` | Not found | Requests by `ArticleClient` and `FullTextClient`, for example `get_fulltext_content()` for an article without full-text XML | Check the ID; call `check_fulltext_availability()` first |
+| `HTTP404` | Not found | Requests by `ArticleClient` and `FullTextClient`; `get_fulltext_content()` raises `FULL003` with this error as its cause | Check the ID; call `check_fulltext_availability()` first |
 | `HTTP405`, `HTTP406`, `HTTP410`, `HTTP415`, `HTTP416` | The HTTP status with that number | Multi-source search clients | Report a bug: the library builds these requests |
 | `HTTP407` | Proxy authentication required | Multi-source search clients | Put the proxy credentials in `HTTPS_PROXY` |
 | `HTTP408` | Request timeout | Multi-source search clients | Retry |
@@ -110,12 +110,12 @@ The Europe PMC clients raise the code of every status in this table except `HTTP
 |---|---|---|---|
 | `FULL001` | Empty PMCID | `FullTextClient` methods; also wraps unexpected errors in parallel batch downloads | Pass a PMCID |
 | `FULL002` | Invalid PMCID | `FullTextClient` methods | Use `PMC` followed by digits, such as `PMC3258128`, or the digits alone |
-| `FULL003` | Content not found | `download_xml_by_pmcid()` when every download route fails; `download_xml_by_pmcid_bulk()`; PDF downloads that get a 404 | Check `check_fulltext_availability()`; not every article has full text |
+| `FULL003` | Content not found | `download_xml_by_pmcid()` when every download route fails; `download_xml_by_pmcid_bulk()`; `get_fulltext_content()` and PDF downloads that get a 404 | Check `check_fulltext_availability()`; not every article has full text |
 | `FULL004` | Invalid format | `get_fulltext_content()` (allowed: `xml`, `html`); `search_and_download_fulltext()` | Use an allowed format |
-| `FULL005` | Download failed | PDF downloads with an HTTP error other than 403 or 404; `FTPDownloader` directory listing, download and ZIP extraction | Retry; check the connection |
+| `FULL005` | Download failed | `get_fulltext_content()` with an HTTP error other than 403 or 404, or a failed request; PDF downloads with an HTTP error other than 403 or 404; `FTPDownloader` directory listing, download and ZIP extraction | Retry; check the connection |
 | `FULL006` | PDF validation failed | Not raised | — |
 | `FULL007` | The client is closed | Any request after `close()` or after the client's `with` block has ended | Create a new client, or keep calls inside the `with` block |
-| `FULL008` | Access denied | PDF downloads that get a 403 | The article is not open access; try the XML or another source |
+| `FULL008` | Access denied | `get_fulltext_content()` and PDF downloads that get a 403 | The article is not open access; try the XML or another source |
 | `FULL009` | A downloaded file could not be written | Saving XML or HTML downloads | Check the output path, permissions and free space |
 | `FULL010` | Unsupported batch format | `download_fulltext_batch()` and `download_fulltext_batch_parallel()` (allowed: `pdf`, `xml`, `html`) | Use an allowed format |
 | `FULL011` | No URL for this format | Building a full-text URL for a format other than `xml` | Use the `download_*` method for that format |
