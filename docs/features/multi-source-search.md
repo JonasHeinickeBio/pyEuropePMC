@@ -46,11 +46,19 @@ Clients are created at the first search. Use `UnifiedSearch` as a context manage
 |---|---|---|---|
 | `query` | `str` | required | Query string |
 | `limit` | `int` | `25` | Records requested from each source; the primary source is asked for `limit × primary_limit_factor` |
-| `sort` | `str` or `None` | `None` | Passed unchanged to every source whose `search()` accepts it |
+| `sort` | `str` or `None` | `None` | `"relevance"`, `"date"` or `"citations"`, translated into each source's own sort vocabulary; see below |
 | `sources` | `list[str]` or `None` | `None` | Query only these configured sources |
 | `**kwargs` | | | Passed to the sources whose `search()` accepts them |
 
-`sort` values mean different things to different sources: `sort="date"` is understood by arXiv and OpenAlex but sent to Europe PMC as the invalid sort `date` (Europe PMC expects, for example, `"P_PDATE_D desc"`). Query sources separately when you need sorted results.
+`sort` takes one of three canonical values, which `UnifiedSearch` rewrites into what each source expects:
+
+| `sort` | Europe PMC | PubMed | arXiv | OpenAlex | Semantic Scholar |
+|---|---|---|---|---|---|
+| `"relevance"` | default order | `relevance` | default order | `relevance` | default order |
+| `"date"` | `P_PDATE_D desc` | `pub_date` | `date` | `date` | `publicationDate:desc` |
+| `"citations"` (alias `"citation_count"`) | `CITED desc` | not supported | not supported | `citation_count` | `citationCount:desc` |
+
+A source that cannot sort the way you asked keeps its own default order instead of receiving a value it would reject. Any other `sort` value is passed through unchanged, so a source-native value such as `sort="P_PDATE_D desc"` still works when Europe PMC is the only source you query.
 
 A failing source does not stop the others. `report` is a [`MergeReport`](dedup.md#mergereport), and `report.metadata` holds:
 
@@ -108,7 +116,7 @@ print(sorted(registry.source_capabilities("europepmc")))  # ['date_filter', 'ful
 | `arxiv` | `ArxivClient` | arXiv preprints; see [arXiv client](arxiv.md) | |
 | `clinicaltrials` | `ClinicalTrialsClient` | ClinicalTrials.gov; see [ClinicalTrials.gov client](clinical-trials.md) | |
 | `semantic_scholar` | `SemanticScholarLiteratureAdapter` | Semantic Scholar; needs `pip install "pyeuropepmc[semanticscholar]"` | `api_key` |
-| `openalex` | `OpenAlexLiteratureAdapter` | OpenAlex | |
+| `openalex` | `OpenAlexLiteratureAdapter` | OpenAlex | `email` |
 | `zenodo` | `ZenodoClient` | Zenodo datasets, software and publications | |
 | `doaj` | `DOAJClient` | Directory of Open Access Journals articles | |
 | `dblp` | `DBLPClient` | DBLP computer-science bibliography | |
@@ -130,7 +138,8 @@ with UnifiedSearch(
 ```
 
 - `api_key` is passed to both Semantic Scholar and CORE; to use different keys, create those clients directly. `COREClient` reads the `CORE_API_KEY` environment variable when it gets no key.
-- `email` is added to the User-Agent header of PubMed requests. The registry lists `email` for `openalex` too, but `OpenAlexLiteratureAdapter` has no `email` parameter, so the address is dropped: constructor arguments a client does not accept are discarded without a warning.
+- `email` is added to the User-Agent header of PubMed requests and puts OpenAlex requests in its polite pool (the address is sent as the `mailto` parameter).
+- Constructor arguments a client does not accept are discarded. A credential the registry lists for that source is logged as a warning when it is dropped, so a mismatch does not pass unnoticed; other arguments are dropped at debug level.
 
 ### Rate limits
 

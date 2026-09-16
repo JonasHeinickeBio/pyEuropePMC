@@ -131,7 +131,10 @@ def run_benchmark(
         False, "--profile-memory", "-m", help="Enable memory profiling"
     ),
     skip_errors: bool = typer.Option(
-        True, "--skip-errors", "-s", help="Skip articles that fail to parse"
+        True,
+        "--skip-errors/--no-skip-errors",
+        "-s",
+        help="Skip articles that fail to read or parse; --no-skip-errors stops at the first",
     ),
 ) -> None:
     """Run the full benchmark suite on a dataset."""
@@ -271,7 +274,8 @@ def profile_file(
     for name, data in sorted_funcs[:top_n]:
         ncalls = data.get("ncalls", 0)
         cumtime = data.get("cumtime_s", 0)
-        percall = data.get("percall_s", 0)
+        # cumulative time per call, matching the Total column
+        percall = data.get("percall_cum_s", 0)
         print(f"  {name:45s} {ncalls:>7d} {cumtime:>8.4f} {percall:>9.6f}")
     print()
 
@@ -282,6 +286,19 @@ def profile_file(
         for method, total_s in sorted(parser_breakdown.items(), key=lambda x: -x[1])[:10]:
             print(f"    {method:45s}: {total_s:.4f}s")
         print()
+
+
+def _allocation_site(alloc: dict[str, Any]) -> str:
+    """``<file>:<line>`` of a ``profile_memory()`` allocation entry.
+
+    tracemalloc frames carry no function name, so ``function`` is usually empty
+    and only added when present.
+    """
+    filename = alloc.get("filename")
+    if not filename:
+        return "unknown"
+    site = f"{filename}:{alloc['lineno']}" if alloc.get("lineno") is not None else str(filename)
+    return f"{site} in {alloc['function']}" if alloc.get("function") else site
 
 
 @benchmark_app.command(name="profile-memory")
@@ -311,7 +328,7 @@ def profile_memory_cmd(
         print(f"  {'Size (KiB)':>10s}  {'Location'}")
         print(f"  {'-' * 50}")
         for alloc in top_alloc[:top_n]:
-            print(f"  {alloc.get('size_kib', 0):>10.1f}  {alloc.get('location', 'unknown')}")
+            print(f"  {alloc.get('size_kib', 0):>10.1f}  {_allocation_site(alloc)}")
         print()
 
     by_module = mem.get("by_module", {})
@@ -347,8 +364,7 @@ def show_report(
     metadata = report.metadata or {}
     if metadata.get("parser_version"):
         print(f"  Parser version  : {metadata['parser_version']}")
-    if metadata.get("date"):
-        print(f"  Date            : {metadata['date']}")
+    print(f"  Created         : {report.created_at}")
     print(f"  Articles        : {len(report.article_results)}")
     if metadata.get("stats"):
         stats = metadata["stats"]
@@ -356,41 +372,51 @@ def show_report(
         print(f"  Failed          : {stats.get('failed', 0)}")
         print(f"  Parse time      : {stats.get('total_parse_time_s', 0):.2f}s")
 
-    # Per-dataset summaries
+    # Per-dataset summaries. aggregate_by_dataset() holds {mean, ...} dicts per
+    # metric; parse times are only in the stored dataset_summaries.
     ds_agg = report.aggregate_by_dataset()
     if ds_agg:
         print("\n  Per-dataset summaries:")
         for ds_name, agg in sorted(ds_agg.items()):
+            summary = report.dataset_summaries.get(ds_name, {})
             print(f"\n  [{ds_name}]")
-            print(f"    Articles       : {agg.get('article_count', 'N/A')}")
-            if "parse_time_seconds" in agg:
-                pt = agg["parse_time_seconds"]
-                print(f"    Parse time     : {pt.get('mean', 'N/A')}s (mean)")
-            if "composite_score" in agg:
-                print(f"    Composite score: {agg['composite_score']:.4f}")
+            print(f"    Articles       : {summary.get('article_count', agg.get('article_count'))}")
+            parse_time = summary.get("parse_time_seconds", {})
+            if "mean" in parse_time:
+                print(f"    Parse time     : {parse_time['mean']}s (mean)")
+            print(f"    Composite score: {_format_score(agg.get('composite_score'))}")
 
     # Overall
     overall = report.aggregate_overall()
-    if overall:
+    if overall.get("total_articles"):
         print("\n  Overall:")
-        print(f"    Composite score: {overall.get('composite_score', 'N/A')}")
-        if "per_metric" in overall:
-            for metric, score in sorted(overall["per_metric"].items()):
-                print(f"      {metric:30s}: {score:.4f}")
+        print(f"    Composite score: {_format_score(overall.get('composite_score'))}")
+        for metric, summary in sorted(overall.items()):
+            if metric != "composite_score" and isinstance(summary, dict) and "mean" in summary:
+                print(f"      {metric:30s}: {_format_score(summary)}")
 
     # Verbose: per-article breakdown
     if verbose and report.article_results:
         print("\n  Per-article details:")
         for entry in report.article_results:
-            label = entry.get("article_label", "?")
-            ds = entry.get("dataset_name", "?")
+            label = entry.get("article", "?")
+            ds = entry.get("dataset", "?")
             metrics = entry.get("metrics", {})
             meta = entry.get("metadata", {})
             pt = meta.get("parse_time_seconds", "?")
-            cs = metrics.get("composite_score", "N/A")
-            print(f"    {label:30s} [{ds}]  score={cs:.4f}  parse={pt}s")
+            cs = _format_score(metrics.get("composite_score"))
+            print(f"    {label:30s} [{ds}]  score={cs}  parse={pt}s")
 
     print()
+
+
+def _format_score(value: Any) -> str:
+    """A score as 4 decimals; aggregates store it as ``{"mean": ...}``."""
+    if isinstance(value, dict):
+        value = value.get("mean")
+    if isinstance(value, (int, float)):
+        return f"{value:.4f}"
+    return "N/A"
 
 
 # ---------------------------------------------------------------------------

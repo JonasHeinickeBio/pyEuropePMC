@@ -617,3 +617,103 @@ class TestParseBitsBook:
             assert "config" in kwargs
             cfg = kwargs["config"]
             assert "element-citation" in cfg.citation_types["types"]
+
+
+class TestParseBitsBookInput:
+    """parse_bits_book() used to try the XML text as a file name first."""
+
+    FIXTURE = (
+        Path(__file__).resolve().parents[1] / "fixtures" / "fulltext_downloads" / "PMC3258128.xml"
+    )
+
+    def test_long_xml_text_is_not_treated_as_a_path(self) -> None:
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
+
+        xml = self.FIXTURE.read_text(encoding="utf-8")
+        assert len(xml) > 4096  # longer than any file-name limit
+
+        parser = parse_bits_book(xml)
+
+        assert parser.extract_metadata()["title"].startswith("Hepato-specific microRNA-122")
+
+    def test_xml_text_with_leading_whitespace(self) -> None:
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
+
+        # an XML declaration must come first, so strip it before indenting
+        body = VALID_XML.split("?>", 1)[1]
+        parser = parse_bits_book("\n   " + body)
+        assert parser.extract_metadata()["title"] == "Test Article"
+
+    @pytest.mark.parametrize("as_path", [False, True])
+    def test_file_path_as_str_or_path(self, tmp_path, as_path) -> None:
+        from pyeuropepmc.features.fulltext.extensions.local_processing import parse_bits_book
+
+        xml_file = tmp_path / "book.xml"
+        xml_file.write_text(VALID_XML, encoding="utf-8")
+
+        parser = parse_bits_book(xml_file if as_path else str(xml_file))
+
+        assert parser.extract_metadata()["title"] == "Test Article"
+
+    def test_name_the_os_rejects_is_not_a_file(self) -> None:
+        from pyeuropepmc.features.fulltext.extensions.local_processing import _is_existing_file
+
+        assert _is_existing_file("x" * 5000) is False
+        assert _is_existing_file("bad\x00name") is False
+
+
+class TestProcessBiorxivManifest:
+    MANIFEST = """<?xml version="1.0"?>
+<manifest>
+  <article><doi>10.1101/2020.01.01.000001</doi></article>
+  <article><doi>10.1101/2020.01.01.000002</doi></article>
+</manifest>"""
+
+    def test_downloads_by_pmcid_not_pmid(self, tmp_path) -> None:
+        from pyeuropepmc.features.fulltext.extensions import local_processing
+        from pyeuropepmc.features.fulltext.extensions.reference_resolver import (
+            ReferenceResolver,
+            ResolvedReference,
+        )
+
+        manifest = tmp_path / "manifest.xml"
+        manifest.write_text(self.MANIFEST, encoding="utf-8")
+        resolved = {
+            "10.1101/2020.01.01.000001": ResolvedReference(
+                resolved_pmid="32000001", resolved_pmcid="PMC7000001"
+            ),
+            # in Europe PMC, but without PMC full text
+            "10.1101/2020.01.01.000002": ResolvedReference(resolved_pmid="32000002"),
+        }
+
+        with (
+            patch.object(ReferenceResolver, "_lookup_by_doi", side_effect=resolved.get),
+            patch.object(
+                local_processing, "process_single_pmc", return_value=MagicMock()
+            ) as fetch,
+        ):
+            parsers = local_processing.process_biorxiv_manifest(str(manifest), max_retries=1)
+
+        assert len(parsers) == 1
+        fetch.assert_called_once_with("PMC7000001", max_retries=1)
+
+
+class TestResolvedPmcid:
+    def test_parse_entry_reads_pmcid(self) -> None:
+        from pyeuropepmc.features.fulltext.extensions.reference_resolver import ReferenceResolver
+
+        ref = ReferenceResolver._parse_entry(
+            {
+                "pmid": "32000001",
+                "pmcid": "PMC7000001",
+                "doi": "10.1/x",
+                "firstPublicationDate": "2020-01-01",
+            }
+        )
+        assert (ref.resolved_pmid, ref.resolved_pmcid) == ("32000001", "PMC7000001")
+        assert ref.to_dict()["resolved_pmcid"] == "PMC7000001"
+
+    def test_missing_pmcid_is_empty(self) -> None:
+        from pyeuropepmc.features.fulltext.extensions.reference_resolver import ReferenceResolver
+
+        assert ReferenceResolver._parse_entry({"pmid": "1"}).resolved_pmcid == ""

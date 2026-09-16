@@ -51,7 +51,109 @@ All notable changes to PyEuropePMC are documented here.
   alongside the metadata. `front` is added to `SectionType` in the LinkML
   schema. Code that relied on the old label needs to accept `front`.
 
+- **The disk cache keeps its entries.** Opening a `CacheBackend` with
+  `enable_l2=True` on a directory that already held a `cache.db` deleted it
+  first, with its `-wal`, `-shm` and `-journal` files. Nothing survived a
+  restart, two clients open on one `cache_dir` could not see each other's
+  entries, two `SearchClient(enable_l2=True)` instances sent two HTTP requests
+  for the same query, and the `.val` files diskcache writes for large values
+  were left behind unreferenced. An existing database is now reused, and
+  `_validate_diskcache_schema()` — written for this and never called — migrates
+  an older one in place. A database that genuinely cannot be opened or migrated
+  is still discarded, now together with its sidecar and orphaned `.val` files,
+  and the reason is logged.
+
+- **The in-memory layer honours per-entry expiry.** L1 was a
+  `TTLCache(ttl=config.ttl)`, one lifetime for every entry, so
+  `set(expire=...)`, `data_type` and `ttl_by_type` only reached the disk layer
+  and a value could be served from memory long after it had expired on disk. L1
+  is now a `TLRUCache` that asks for each entry's own expiry, and an L2 hit
+  copied into L1 keeps the lifetime it has left instead of getting a fresh
+  full TTL.
+
+- **`invalidate_search_cache()` and `invalidate_annotations_cache()` remove
+  something.** Their defaults were `"search:*"` and `"annotations:*"`, while the
+  keys these clients write start with the data type
+  (`general:v1:search:6950a79a94574e15`), so calling either without a pattern
+  removed nothing and reported `0`. The defaults are now `"*:search*"` and
+  `"*:annotations_*"`.
+
+- **`invalidate_fulltext_cache(pmcid)` no longer removes other articles.** The
+  pattern `*:{digits}*` also matched every longer ID with the same prefix, so
+  clearing `PMC123` cleared `PMC1234` too. It is anchored at the end of the key.
+
+- **`invalidate_older_than()` works.** It returned `0` without looking at
+  anything. It now deletes entries this backend stored before the given age
+  from both layers and returns how many; entries another process wrote are
+  left to their TTL, which the docstring says.
+
+- **`get_keys()` and `compact()` cover the disk layer**, not just memory:
+  `get_keys()` lists L2-only keys too, and `compact()` runs `expire()` and
+  `cull()` on L2.
+
+- **One lookup counts as one hit or miss.** With L2 enabled, a lookup that
+  missed both layers was counted twice in `get_stats()["misses"]`, halving the
+  reported hit rate. The per-layer counters still record what each layer was
+  asked.
+
+- **`CacheConfig` reports a bad value as a configuration error.**
+  `CacheConfig(ttl=None)` raised `TypeError` from a comparison; a non-integer
+  `ttl`, `size_limit_mb`, `l2_size_limit_mb` or `namespace_version` now raises
+  `ConfigurationError`, as a negative value already did. `l2_size_limit_mb` is
+  validated too.
+
+- **`CacheConfig(eviction_policy=...)` is used.** It was stored and ignored,
+  and the disk layer always evicted least-recently-used entries. It is passed
+  to diskcache, and a value outside `CacheConfig.EVICTION_POLICIES` raises
+  `ConfigurationError` instead of being silently dropped.
+
+- **`from pyeuropepmc.cache import CacheConfig` works.** `src/pyeuropepmc/cache/`
+  had no `__init__.py`, so only `pyeuropepmc.cache.cache` could be imported.
+
+- **Artifact IDs that sanitize to the same filename keep separate entries.**
+  `ArtifactStore` mapped `:` and `/` to `_`, so `"a:b"` and `"a_b"` shared one
+  index file and the second store overwrote the first. Index filenames now carry
+  a digest of the ID, and each file records the ID it was written for, which is
+  what garbage collection reads instead of guessing it back from the filename.
+
+- **`ArtifactStore(min_free_space_mb=...)` is enforced.** It was stored and
+  never checked: a store under its size limit would fill the disk. Storing
+  content that would leave less free space than the floor now collects first.
+
+- **`prisma_summary()` adds up repeated searches.** `records_by_database` kept
+  only the last `results_returned` per database name, so a review that logged
+  1234 and 200 records for Europe PMC and 50 for PubMed reported 250 identified
+  records instead of 1484 — the number that goes into a PRISMA flow diagram.
+
+- **`sign_file()` signatures verify.** It hashed the file and passed the digest
+  to `sign(..., hashes.SHA256())`, which hashes again, so the signature was over
+  the digest of a digest and `openssl dgst -sha256 -verify` reported
+  `Verification failure` on the file it was meant to authenticate. It signs the
+  file contents.
+
+- **`generate_private_key(publish_public=True)` writes a loadable public key.**
+  The metadata comment went *inside* the `BEGIN PUBLIC KEY` block, so the base64
+  body would not decode and `load_pem_public_key()` raised `ValueError`. The
+  comment now precedes the block, as it already did for the private key.
+
+- **`record_platform()`, `record_export()` and a CSV export handle an empty
+  log.** All three raised `IndexError` from indexing an empty list. The two
+  record functions raise `ValueError` naming `record_query()`, and exporting a
+  log with no entries writes a header-only CSV.
+
+- **Schema coverage counts every pattern group.** `validate_schema_coverage()`
+  consulted eleven of the seventeen groups in `ElementPatterns`, so elements the
+  parser does handle — `award-id`, `subject`, `permissions`, `tex-math`, MathML
+  and more — were reported as unrecognized. Coverage of
+  `tests/fixtures/fulltext_downloads/PMC3258128.xml` goes from 77.8% to 86.1%.
+  A pattern written with a namespace prefix (`.//mml:math`) now contributes the
+  local name, which is what the document tags are compared as.
+
 ### 📚 Documentation
+
+- **The caching, search logging, systematic review tracking and schema coverage
+  pages drop the limitations above** and describe the fixed behaviour, with the
+  documented element counts and coverage percentages recomputed.
 
 - **The documentation matches the code again.** Audits of README.md and every
   page in docs/ found that most examples raised or used classes, methods,
