@@ -701,10 +701,10 @@ class TestLiteratureResultNewSources:
         assert result.source == source
 
     def test_invalid_source_rejected(self):
-        """Old invalid source names should still raise."""
+        """A value that cannot be a source name still raises."""
         with pytest.raises(Exception):  # noqa: B017
             LiteratureResult(
                 title="Test",
-                source="invalid_source",
+                source="invalid source",
                 source_id="12345",
             )

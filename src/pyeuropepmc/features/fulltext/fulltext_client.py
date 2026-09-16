@@ -2599,16 +2599,17 @@ class FullTextClient(BaseAPIClient):
         Invalidate cached fulltext availability data matching the pattern.
 
         Args:
-            pmcid: Optional PMC ID filter
+            pmcid: Optional PMC ID filter. Only the entry of that exact ID is
+                removed: "PMC123" leaves "PMC1234" cached.
 
         Returns:
             Number of cache entries invalidated
         """
         try:
             if pmcid:
-                # Normalize PMCID
+                # Normalize PMCID; availability keys end in the bare number.
                 normalized = pmcid.replace("PMC", "")
-                pattern = f"*:{normalized}*"
+                pattern = f"*:{normalized}"
             else:
                 pattern = "*"
 

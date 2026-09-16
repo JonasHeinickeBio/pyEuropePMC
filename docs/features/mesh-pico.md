@@ -72,6 +72,7 @@ expansion = expand_with_mesh("heart attack AND diabetes")
 print(expansion.mesh_terms)
 # ['Myocardial Infarction', 'Myocardial Ischemia', 'Diabetes Mellitus', 'Diabetes Mellitus, Type 1', 'Diabetes Mellitus, Type 2']
 print(expansion.expanded_query)
+# ("heart attack" OR "Myocardial Infarction" OR "Myocardial Ischemia") AND (diabetes OR ...)
 
 print(translate_to_mesh(["heart attack", "unknown term"]))
 # {'heart attack': ['Myocardial Infarction', 'Myocardial Ischemia']}
@@ -88,7 +89,14 @@ print(translate_to_mesh(["heart attack", "unknown term"]))
 
 Without `use_api`, suggestions come from a built-in list of about twenty common terms, such as "cancer", "diabetes", "heart attack" and "machine learning"; other terms get no suggestions. With `use_api=True`, terms are looked up with the NLM MeSH suggestion service and the built-in list is the fallback.
 
-The query is split into terms at `AND`, `OR`, `NOT`, quotes, brackets and parentheses, so `"cancer gene therapy"` is a single term with no suggestions while `"cancer AND gene therapy"` is two. `expanded_query` joins the expanded terms with spaces, drops the original operators and does not quote multi-word headings, so review it before using it as a Europe PMC query.
+The query is split into terms at `AND`, `OR`, `NOT`, quotes and parentheses, so `cancer gene therapy` is a single term with no suggestions while `cancer AND gene therapy` is two. `expanded_query` keeps the original operators and parentheses and replaces each term that has suggestions with a group of the term and its headings; terms and headings of more than one word are quoted:
+
+```python
+print(expand_with_mesh("heart attack AND diabetes").expanded_query)
+# ("heart attack" OR "Myocardial Infarction" OR "Myocardial Ischemia") AND (diabetes OR "Diabetes Mellitus" OR "Diabetes Mellitus, Type 1" OR "Diabetes Mellitus, Type 2")
+```
+
+Text without suggestions is kept as written. Field-qualified parts such as `TITLE:cancer`, `TITLE:"gene therapy"` or `PUB_YEAR:[2020 TO 2024]` are not expanded. A heading that repeats the term in another case, such as `Obesity` for `obesity`, is left out of the group.
 
 ## PICO decomposition
 
@@ -122,7 +130,7 @@ The parser matches regular expressions for cue words such as "patients with", "c
 | `PICOSDecomposer`, `PICOTDecomposer` | Same behaviour as `PICOParser`; `study_design` is filled by every parser |
 | `SPIDERDecomposer` | `parse(question)` returns a dict with the SPIDER elements it finds (`sample`, `phenomenon_of_interest`, `design`, `evaluation`, `research_type`) and `original_question` |
 
-Known limitation: `time_frame` is never filled. The time pattern stores its match in an attribute named `time` instead, so `PICOTDecomposer().parse("... within 30 days?").time_frame` is empty.
+`time_frame` is filled from phrases such as "within 30 days" or "over 12 months": `PICOTDecomposer().parse("... reduce mortality within 30 days?").time_frame` is `"30 days"`. A custom `patterns` dict is keyed by the `PICOElements` field each pattern fills; the key `"time"` is accepted for `time_frame`.
 
 ## See also
 

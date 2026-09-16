@@ -306,6 +306,33 @@ def _is_multi_word_surname(tokens: list[str]) -> tuple[int, str]:
     return boundary, family
 
 
+#: A token made only of capital initials — ``J``, ``JA``, ``J.A.``, ``J.-P.`` —
+#: as PubMed and Europe PMC write given names after the surname.
+_INITIALS_TOKEN = re.compile(r"^(?:[A-Z]\.?-?){1,4}$")
+
+
+def _split_trailing_initials(parts: list[str]) -> tuple[str, str] | None:
+    """Split ``"Surname INITIALS"`` into ``(family, initials)``.
+
+    PubMed ESummary and Europe PMC ``authorString`` write authors as the
+    surname followed by initials (``"Smith J"``, ``"van der Berg JA"``).  Read
+    as "First Last", those come out reversed, so recognise the form first.
+
+    Only applies when some earlier token has a lower-case letter: an all-caps
+    name such as ``"WANG LI"`` gives no hint which part is the surname and is
+    left to the general rule.
+    """
+    split = len(parts)
+    while split > 1 and _INITIALS_TOKEN.match(parts[split - 1]):
+        split -= 1
+    if split == len(parts) or split == 0:
+        return None
+    family_tokens = parts[:split]
+    if not any(ch.islower() for token in family_tokens for ch in token):
+        return None
+    return " ".join(family_tokens), " ".join(parts[split:])
+
+
 def normalize_author_name(name: str | None) -> str | None:
     """Normalize an author name to ``"Last, First"`` format.
 
@@ -313,6 +340,8 @@ def normalize_author_name(name: str | None) -> str | None:
     - Multi-word surnames (von Neumann, da Silva, de la Cruz, …)
     - Hyphenated surnames (Taylor-Smith → Taylor-Smith, …)
     - ``"Last, First"`` input (unchanged)
+    - ``"Last Initials"`` input as PubMed and Europe PMC write it
+      (``"Smith JA"`` → ``"Smith, JA"``)
     - Single names (returned as-is)
 
     Parameters
@@ -346,6 +375,12 @@ def normalize_author_name(name: str | None) -> str | None:
 
     if len(parts) == 1:
         return parts[0]
+
+    # "Smith JA" / "van der Berg JA": surname first, initials last
+    surname_first = _split_trailing_initials(parts)
+    if surname_first is not None:
+        family, initials = surname_first
+        return f"{family}, {initials}"
 
     # Detect multi-word surnames
     boundary, family = _is_multi_word_surname(parts)
