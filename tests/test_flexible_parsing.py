@@ -643,9 +643,12 @@ class TestInlineElementHandling:
         assert len(affiliations) == 1
         assert affiliations[0]["id"] == "aff1"
         assert affiliations[0]["markers"] == "1"
-        # Clean text should not contain the superscript
-        assert "1" not in affiliations[0]["institution_text"]
-        assert "Department of Biology" in affiliations[0]["institution_text"]
+        # The superscript is left out, but not every "1" in the address: the
+        # marker used to be deleted from the flattened text wherever it
+        # occurred, which turned the postal code 12345 into 2345.
+        assert affiliations[0]["institution_text"] == (
+            "Department of Biology, University of Science, City 12345, Country"
+        )
 
     def test_custom_inline_patterns_in_config(self):
         """Test using custom inline element patterns from config."""
