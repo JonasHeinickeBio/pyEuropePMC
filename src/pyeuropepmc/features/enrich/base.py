@@ -14,6 +14,7 @@ Common Patterns Abstracted:
 
 from collections.abc import Callable
 import logging
+import threading
 import time
 from typing import Any
 
@@ -91,6 +92,9 @@ class BaseEnrichmentClient(BaseHTTPClient):
             user_agent=user_agent,
             api_key_missing=api_key_missing,
         )
+        # When the last request went out (time.monotonic()), for _throttle().
+        self._last_request_time: float | None = None
+        self._throttle_lock = threading.Lock()
 
     def __enter__(self) -> "BaseEnrichmentClient":
         """Enter context manager."""
@@ -106,6 +110,24 @@ class BaseEnrichmentClient(BaseHTTPClient):
             self.session.close()
         if self._cache:
             self._cache.close()
+
+    def _throttle(self) -> None:
+        """
+        Wait until ``rate_limit_delay`` seconds have passed since the last request.
+
+        Called before every request that goes out, retries included; cache hits
+        do not count. The lock makes threads sharing a client queue up, so the
+        spacing holds for them too.
+        """
+        if self.rate_limit_delay <= 0:
+            return
+        with self._throttle_lock:
+            if self._last_request_time is not None:
+                wait = self.rate_limit_delay - (time.monotonic() - self._last_request_time)
+                if wait > 0:
+                    logger.debug("Rate limiting: waiting %.2fs before the next request", wait)
+                    time.sleep(wait)
+            self._last_request_time = time.monotonic()
 
     def _make_request(
         self,
@@ -158,6 +180,7 @@ class BaseEnrichmentClient(BaseHTTPClient):
         max_retries = 3
         for attempt in range(max_retries):
             try:
+                self._throttle()
                 logger.debug(f"GET request to {url} with params={params}, attempt={attempt + 1}")
                 response = self.session.get(
                     url, params=params, headers=request_headers, timeout=self.timeout
@@ -327,9 +350,6 @@ class BaseEnrichmentClient(BaseHTTPClient):
             except ValueError as e:
                 logger.error(f"Invalid JSON response from {url}: {e}")
                 return None
-
-            # Rate limit delay between attempts
-            time.sleep(self.rate_limit_delay)
 
         logger.error(f"Exceeded max retries ({max_retries}) for {url}")
         raise APIClientError(

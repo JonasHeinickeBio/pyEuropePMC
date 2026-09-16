@@ -78,6 +78,12 @@ class RorClient(BaseEnrichmentClient):
         -------
         dict or None
             ROR organization data, or None if not found
+
+        Raises
+        ------
+        APIClientError
+            On network errors, timeouts and HTTP errors other than 404, like the
+            other enrichment clients
         """
         if not identifier:
             logger.warning("No ROR ID provided for enrichment")
@@ -91,23 +97,19 @@ class RorClient(BaseEnrichmentClient):
 
         endpoint = f"/organizations/{normalized_id}"
 
-        try:
-            logger.debug(f"Fetching ROR data for: {normalized_id}")
-            headers = {}
-            if self.client_id:
-                headers["Client-Id"] = self.client_id
-            data = self._make_request(endpoint, headers=headers, use_cache=use_cache)
-
-            if data:
-                logger.info(f"Successfully retrieved ROR data for: {normalized_id}")
-                return self._parse_ror_response(data)
-            else:
-                logger.warning(f"ROR ID not found: {normalized_id}")
-                return None
-
-        except Exception as e:
-            logger.error(f"Error fetching ROR data for {normalized_id}: {e}")
+        logger.debug(f"Fetching ROR data for: {normalized_id}")
+        headers = {}
+        if self.client_id:
+            headers["Client-Id"] = self.client_id
+        # Request errors propagate as APIClientError; only 404 comes back as None.
+        data = self._make_request(endpoint, headers=headers, use_cache=use_cache)
+        if not data:
+            logger.warning(f"ROR ID not found: {normalized_id}")
             return None
+
+        return self._parse_response_safe(
+            data, self._parse_ror_response, entity_type="organization", identifier=normalized_id
+        )
 
     def _normalize_ror_id(self, ror_id: str) -> str | None:
         """
