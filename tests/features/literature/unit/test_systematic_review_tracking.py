@@ -299,8 +299,10 @@ class TestSystematicReviewIntegration:
             # Generate PRISMA summary
             summary = prisma_summary(log)
             assert summary["title"] == "Cancer Immunotherapy Systematic Review 2024"
-            # Since both searches are from same database, only last one counts in by_db
-            assert summary["total_records_identified"] == 230
+            # Both searches ran against Europe PMC, so their counts add up:
+            # 450 + 230 records identified, 550 of them left after deduplication.
+            assert summary["records_by_database"] == {"Europe PMC": 680}
+            assert summary["total_records_identified"] == 680
             assert summary["deduplicated_total"] == 550
             assert summary["final_included"] == 45
 
