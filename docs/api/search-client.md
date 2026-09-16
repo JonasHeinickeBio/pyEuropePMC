@@ -97,7 +97,7 @@ Takes the same parameters as `search()` and sends them form-encoded to the `sear
 
 Follows `nextCursorMark` from page to page. It stops when `max_results` is reached, a page is empty or shorter than requested, or the cursor is missing or unchanged. It returns an empty list when `max_results` is 0 or negative.
 
-A failed request ends the loop without an exception; the records collected so far are returned.
+**Raises:** the errors of `search()`. A request that fails on a later page raises too; the records collected before it are not returned.
 
 ```python
 from pyeuropepmc import SearchClient
@@ -126,7 +126,9 @@ Runs one `search()` and parses the response with [EuropePMCParser](parser.md):
 
 `search_ids_only(query, **kwargs) -> list[str]`
 
-Requests one page with `resultType="idlist"` and returns the `id` values. The page size is 25 unless you pass `pageSize`. Returns an empty list instead of raising when the request fails.
+Requests one page with `resultType="idlist"` and returns the `id` values. The page size is 25 unless you pass `pageSize`.
+
+**Raises:** the errors of `search_and_parse()`, so an empty list means the query had no matches.
 
 ### get_hit_count
 

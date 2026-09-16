@@ -434,7 +434,8 @@ class TestFTPDownloaderCoverage:
 
             # Check results
             assert results["123456"]["status"] == "success"
-            assert results["123456"]["zip_path"] == zip_path
+            # keep_zips=False: the ZIP was deleted after extraction, so no path.
+            assert results["123456"]["zip_path"] is None
             assert results["123456"]["pdf_paths"] == pdf_paths
 
             assert results["789012"]["status"] == "not_found"

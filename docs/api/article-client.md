@@ -51,13 +51,15 @@ The client can be used as a context manager; otherwise call `close()`.
 
 Extra keyword arguments are added to the request as query-string parameters.
 
+A failed request raises `APIClientError` with the code of the failure: `HTTP404`, `HTTP403`, `HTTP500` or `RATE429` for those HTTP statuses, `NET001` for a network error or another status, and `FULL007` after `close()`.
+
 ### Common parameters
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `page` | `int` | `1` | Page number, starting at 1 |
 | `page_size` | `int` | `25` | Records per page, 1 to 1000 |
-| `format` | `str` | `"json"` | Use `"json"`. The response body is always parsed as JSON, so another format makes the request fail with `APIClientError` |
+| `format` | `str` | `"json"` | `"json"` returns the parsed response. `"xml"` (and `"dc"` for `get_article_details()`) returns the body as text in `{"xml_response": <text>}` or `{"dc_response": <text>}`; the methods that cache JSON responses cache these too |
 | `callback` | `str` or `None` | `None` | JSONP function name; the method then returns `{"jsonp_response": <text>}` and skips the cache. Requires `format="json"` |
 
 ### get_article_details
@@ -78,7 +80,7 @@ When a response has `hitCount` 0, the client emits a `UserWarning`.
 
 ### get_supplementary_files
 
-Downloads the supplementary material of an open-access article as a ZIP archive and returns its bytes. `article_id` is the PMC ID, for example `"PMC3258128"`. `include_inline_image=False` leaves inline images out of the archive. A missing archive raises `APIClientError`.
+Downloads the supplementary material of an open-access article as a ZIP archive and returns its bytes. `article_id` is the PMC ID, for example `"PMC3258128"`. `include_inline_image=False` leaves inline images out of the archive. A missing archive raises `APIClientError` (`HTTP404`).
 
 ## Examples
 

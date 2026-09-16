@@ -8,6 +8,8 @@ references, database links, and detailed article information.
 import logging
 from typing import Any
 
+import requests
+
 from pyeuropepmc.cache.cache import CacheBackend, CacheConfig
 from pyeuropepmc.core.base import BaseAPIClient
 from pyeuropepmc.core.error_codes import ErrorCodes
@@ -55,6 +57,17 @@ class ArticleClient(BaseAPIClient):
         cache_status = "enabled" if cache_config.enabled else "disabled"
         self.logger.info(f"ArticleClient initialized with cache {cache_status}")
 
+    @staticmethod
+    def _text_result(response: requests.Response, format: str) -> dict[str, Any]:
+        """
+        Wrap a response body that is not JSON.
+
+        XML and Dublin Core responses cannot go through ``response.json()``; like
+        JSONP they are returned as text, under ``"xml_response"`` or
+        ``"dc_response"``.
+        """
+        return {f"{format}_response": response.text}
+
     def get_article_details(
         self,
         source: str,
@@ -74,8 +87,9 @@ class ArticleClient(BaseAPIClient):
             **kwargs: Additional query parameters
 
         Returns:
-            Dict containing article details
-        from pyeuropepmc.utils.helpers import warn_if_empty_hitcount
+            Dict containing article details. With format 'xml' or 'dc' the body
+            is returned as text under the key 'xml_response' or 'dc_response'.
+
         Raises:
             ValidationError: If source or article_id are invalid
             APIClientError: If the API request fails
@@ -106,9 +120,12 @@ class ArticleClient(BaseAPIClient):
 
         try:
             response = self._get(endpoint, params=params)
-            result = response.json()
-            warn_if_empty_hitcount(result, context="article details")
-            result_dict = dict(result)
+            if format != "json":
+                result_dict = self._text_result(response, format)
+            else:
+                result = response.json()
+                warn_if_empty_hitcount(result, context="article details")
+                result_dict = dict(result)
 
             # Cache the result
             try:
@@ -117,6 +134,10 @@ class ArticleClient(BaseAPIClient):
                 self.logger.warning(f"Failed to cache article details: {e}")
 
             return result_dict
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error(f"Failed to retrieve article details for {source}:{article_id}")
+            raise
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve article details for {source}:{article_id}")
@@ -146,7 +167,8 @@ class ArticleClient(BaseAPIClient):
             **kwargs: Additional query parameters
 
         Returns:
-            Dict containing citation information including count and list of citing papers
+            Dict containing citation information including count and list of citing papers.
+            With format 'xml' the body is returned as text under 'xml_response'.
 
         Raises:
             ValidationError: If parameters are invalid
@@ -199,9 +221,12 @@ class ArticleClient(BaseAPIClient):
                 # JSONP response - return raw JavaScript code as text
                 return {"jsonp_response": response.text}
             else:
-                result = response.json()
-                warn_if_empty_hitcount(result, context="citations")
-                result_dict = dict(result)
+                if format != "json":
+                    result_dict = self._text_result(response, format)
+                else:
+                    result = response.json()
+                    warn_if_empty_hitcount(result, context="citations")
+                    result_dict = dict(result)
 
                 # Cache the result
                 try:
@@ -210,6 +235,10 @@ class ArticleClient(BaseAPIClient):
                     self.logger.warning(f"Failed to cache citations: {e}")
 
                 return result_dict
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error(f"Failed to retrieve citations for {source}:{article_id}")
+            raise
         except Exception as e:
             context = {
                 "source": source,
@@ -245,7 +274,8 @@ class ArticleClient(BaseAPIClient):
             **kwargs: Additional query parameters
 
         Returns:
-            Dict containing reference information including count and list of referenced papers
+            Dict containing reference information including count and list of referenced papers.
+            With format 'xml' the body is returned as text under 'xml_response'.
 
         Raises:
             ValidationError: If parameters are invalid
@@ -292,9 +322,12 @@ class ArticleClient(BaseAPIClient):
                 # JSONP response - return raw JavaScript code as text
                 return {"jsonp_response": response.text}
             else:
-                result = response.json()
-                warn_if_empty_hitcount(result, context="references")
-                result_dict = dict(result)
+                if format != "json":
+                    result_dict = self._text_result(response, format)
+                else:
+                    result = response.json()
+                    warn_if_empty_hitcount(result, context="references")
+                    result_dict = dict(result)
 
                 # Cache the result
                 try:
@@ -303,6 +336,10 @@ class ArticleClient(BaseAPIClient):
                     self.logger.warning(f"Failed to cache references: {e}")
 
                 return result_dict
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error(f"Failed to retrieve references for {source}:{article_id}")
+            raise
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve references for {source}:{article_id}")
@@ -370,7 +407,8 @@ class ArticleClient(BaseAPIClient):
             **kwargs: Additional query parameters
 
         Returns:
-            Dict containing database link information
+            Dict containing database link information. With format 'xml' the body is
+            returned as text under 'xml_response'.
 
         Raises:
             ValidationError: If parameters are invalid
@@ -403,10 +441,16 @@ class ArticleClient(BaseAPIClient):
             if callback:
                 # JSONP response - return raw JavaScript code as text
                 return {"jsonp_response": response.text}
+            elif format != "json":
+                return self._text_result(response, format)
             else:
                 result = response.json()
                 warn_if_empty_hitcount(result, context="database links")
                 return dict(result)
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error(f"Failed to retrieve database links for {source}:{article_id}")
+            raise
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve database links for {source}:{article_id}")
@@ -462,6 +506,10 @@ class ArticleClient(BaseAPIClient):
             response.raise_for_status()
             content = response.content
             return bytes(content) if isinstance(content, bytes | bytearray) else b""
+        except APIClientError:
+            # _get's error, or the HTTP404 above: keep the specific code.
+            self.logger.error(f"Failed to retrieve supplementary files for {article_id}")
+            raise
         except Exception as e:
             context = {"article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve supplementary files for {article_id}")
@@ -489,7 +537,8 @@ class ArticleClient(BaseAPIClient):
             **kwargs: Additional query parameters
 
         Returns:
-            Dict containing lab links information
+            Dict containing lab links information. With format 'xml' the body is
+            returned as text under 'xml_response'.
 
         Raises:
             ValidationError: If parameters are invalid
@@ -521,10 +570,16 @@ class ArticleClient(BaseAPIClient):
             if callback:
                 # JSONP response - return raw JavaScript code as text
                 return {"jsonp_response": response.text}
+            elif format != "json":
+                return self._text_result(response, format)
             else:
                 result = response.json()
                 warn_if_empty_hitcount(result, context="lab links")
                 return dict(result)
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error(f"Failed to retrieve lab links for {source}:{article_id}")
+            raise
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve lab links for {source}:{article_id}")
@@ -552,7 +607,8 @@ class ArticleClient(BaseAPIClient):
             **kwargs: Additional query parameters
 
         Returns:
-            Dict containing consolidated data links in Scholix format
+            Dict containing consolidated data links in Scholix format. With format
+            'xml' the body is returned as text under 'xml_response'.
 
         Raises:
             ValidationError: If parameters are invalid
@@ -581,10 +637,16 @@ class ArticleClient(BaseAPIClient):
             if callback:
                 # JSONP response - return raw JavaScript code as text
                 return {"jsonp_response": response.text}
+            elif format != "json":
+                return self._text_result(response, format)
             else:
                 result = response.json()
                 warn_if_empty_hitcount(result, context="data links")
                 return dict(result)
+        except APIClientError:
+            # _get's error already names the failure (HTTP404, RATE429, ...).
+            self.logger.error(f"Failed to retrieve data links for {source}:{article_id}")
+            raise
         except Exception as e:
             context = {"source": source, "article_id": article_id, "endpoint": endpoint}
             self.logger.error(f"Failed to retrieve data links for {source}:{article_id}")
@@ -711,6 +773,8 @@ class ArticleClient(BaseAPIClient):
             self._cache.close()
         except Exception as e:
             self.logger.warning(f"Error closing cache: {e}")
+        # Close the HTTP session too; without this is_closed stayed False.
+        super().close()
 
     # Validation Methods
 

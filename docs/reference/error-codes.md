@@ -50,7 +50,7 @@ All exceptions are defined in `pyeuropepmc.core.exceptions` and derive from `PyE
 
 - `search()` checks the query, the page size and the format before sending anything, and raises `SEARCH001`, `SEARCH002` or `SEARCH004`.
 - A failed request, whether a network error, a timeout or an HTTP error status, is raised as `SearchError` with code `NET001`. The `APIClientError` it wraps is in `err.__cause__`. Its code names the HTTP status: `AUTH401` for 401, `RATE429` for 429, and the `HTTP…` code for the other statuses in the [HTTP table](#http-status-http), such as `HTTP404` or `HTTP503`. It is `FULL007` for a closed client, and `NET001` for a network error, a timeout or a status without a code of its own.
-- `search_all()` and `fetch_all_pages()` do not raise when a request fails: they stop and return the records collected so far. `search_ids_only()` returns an empty list on any error.
+- `search_all()`, `fetch_all_pages()` and `search_ids_only()` raise these errors too; they do not return partial or empty results for a failed request.
 
 ## Network: NET
 

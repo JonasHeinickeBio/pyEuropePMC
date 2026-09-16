@@ -5,9 +5,12 @@ This module provides functionality to query, download, and extract
 open access PDFs from the Europe PMC FTP server.
 """
 
+from concurrent.futures import ThreadPoolExecutor
 import logging
 from pathlib import Path
 import re
+import threading
+import time
 from typing import Any
 from urllib.parse import urljoin
 import zipfile
@@ -41,9 +44,27 @@ class FTPDownloader(BaseAPIClient):
         Parameters
         ----------
         rate_limit_delay : float, optional
-            Delay between requests to be respectful to the server (default 1.0).
+            Minimum number of seconds between the starts of two requests, also
+            when downloads run concurrently (default 1.0).
         """
         super().__init__(rate_limit_delay=rate_limit_delay)
+        self._last_request_time: float | None = None
+        self._throttle_lock = threading.Lock()
+        # Directories the last query_pmcids_in_ftp() call could not search,
+        # mapped to the reason. An article missing from the results may be in
+        # one of them, so it cannot be reported as not found.
+        self.last_query_failures: dict[str, str] = {}
+
+    def _throttle(self) -> None:
+        """Wait until ``rate_limit_delay`` seconds have passed since the last request began."""
+        if self.rate_limit_delay <= 0:
+            return
+        with self._throttle_lock:
+            if self._last_request_time is not None:
+                wait = self.rate_limit_delay - (time.monotonic() - self._last_request_time)
+                if wait > 0:
+                    time.sleep(wait)
+            self._last_request_time = time.monotonic()
 
     def _get_ftp_url(self, url: str, stream: bool = False) -> requests.Response:
         """
@@ -71,6 +92,7 @@ class FTPDownloader(BaseAPIClient):
             raise FullTextError(ErrorCodes.FULL005, context)
 
         try:
+            self._throttle()
             logger.debug(f"FTP GET request to {url} with stream={stream}")
             response = self.session.get(url, timeout=self.DEFAULT_TIMEOUT, stream=stream)
             response.raise_for_status()
@@ -79,7 +101,10 @@ class FTPDownloader(BaseAPIClient):
         except requests.RequestException as e:
             context = {"url": url, "error": str(e)}
             logger.error(f"FTP GET request to {url} failed: {e}")
-            raise FullTextError(ErrorCodes.FULL005, context) from e
+            # The status tells a directory that does not exist (404) apart from
+            # a server that could not be reached.
+            status_code = getattr(getattr(e, "response", None), "status_code", None)
+            raise FullTextError(ErrorCodes.FULL005, context, status_code=status_code) from e
 
     def get_available_directories(self) -> list[str]:
         """
@@ -117,6 +142,8 @@ class FTPDownloader(BaseAPIClient):
             logger.info(f"Found {len(directories)} directories")
             return sorted(directories)
 
+        except FullTextError:
+            raise
         except Exception as e:
             context = {"url": self.BASE_FTP_URL, "error": str(e)}
             raise FullTextError(ErrorCodes.FULL005, context) from e
@@ -167,6 +194,8 @@ class FTPDownloader(BaseAPIClient):
             logger.info(f"Found {len(zip_files)} ZIP files in {directory}")
             return zip_files
 
+        except FullTextError:
+            raise
         except Exception as e:
             context = {"url": directory_url, "error": str(e)}
             raise FullTextError(ErrorCodes.FULL005, context) from e
@@ -253,7 +282,9 @@ class FTPDownloader(BaseAPIClient):
         Returns
         -------
         Dict[str, Optional[Dict[str, Union[str, int]]]]
-            Dictionary mapping PMC ID to file info (or None if not found)
+            Dictionary mapping PMC ID to file info (or None if not found).
+            ``None`` can also mean the article's directory could not be
+            searched: ``last_query_failures`` then names that directory.
 
         Example
         -------
@@ -263,11 +294,14 @@ class FTPDownloader(BaseAPIClient):
         {'11691200': {'filename': 'PMC11691200.zip', 'directory': 'PMCxxxx1200', ...},
          '11861200': {'filename': 'PMC11861200.zip', 'directory': 'PMCxxxx1200', ...}}
         """
+        self.last_query_failures = {}
+
         # Determine which directories to check based on PMC IDs
         try:
             directories_to_check = self._get_relevant_directories(pmcids)
         except FullTextError as e:
             logger.error(f"Failed to get directory list: {e}")
+            self.last_query_failures[self.BASE_FTP_URL] = str(e.context.get("error") or e)
             # Return empty results if we can't get directories
             return {pmcid: None for pmcid in pmcids}
 
@@ -324,10 +358,14 @@ class FTPDownloader(BaseAPIClient):
         max_consecutive_failures = 10
         found_count = 0
 
-        for directory in directories_list:
+        for index, directory in enumerate(directories_list):
             if directories_checked >= max_directories:
                 logger.warning(
                     f"Reached maximum directory limit ({max_directories}), stopping search"
+                )
+                self._record_unsearched(
+                    directories_list[index:],
+                    f"not searched: the search stopped after {max_directories} directories",
                 )
                 break
 
@@ -340,6 +378,11 @@ class FTPDownloader(BaseAPIClient):
                 if consecutive_failures >= max_consecutive_failures:
                     logger.error(
                         f"Too many consecutive failures ({consecutive_failures}), stopping search"
+                    )
+                    self._record_unsearched(
+                        directories_list[index + 1 :],
+                        f"not searched: the search stopped after {consecutive_failures} "
+                        "failed directory listings in a row",
                     )
                     break
 
@@ -364,8 +407,20 @@ class FTPDownloader(BaseAPIClient):
             return True
 
         except FullTextError as e:
+            if e.status_code == 404:
+                # A candidate directory that does not exist holds no files.
+                logger.debug(f"Directory {directory} does not exist")
+                return True
             logger.warning(f"Failed to check directory {directory}: {e}")
+            # The underlying error ("Connection refused", "503 Server Error") says
+            # more than FULL005's generic "download failed" text.
+            self.last_query_failures[directory] = str(e.context.get("error") or e)
             return False
+
+    def _record_unsearched(self, directories: list[str], reason: str) -> None:
+        """Note directories the search skipped, unless an earlier failure explains them."""
+        for directory in directories:
+            self.last_query_failures.setdefault(directory, reason)
 
     def download_pdf_zip(self, zip_info: dict[str, str | int], output_dir: str | Path) -> Path:
         """
@@ -521,12 +576,18 @@ class FTPDownloader(BaseAPIClient):
         keep_zips : bool, optional
             Whether to keep ZIP files after extraction (default False)
         max_concurrent : int, optional
-            Maximum concurrent downloads (default 3)
+            Maximum number of articles downloaded and extracted at the same time
+            (default 3). Values below 1 count as 1. The requests still start at
+            least ``rate_limit_delay`` seconds apart.
 
         Returns
         -------
         Dict[str, Dict[str, Union[Path, List[Path], str]]]
-            Results for each PMC ID with status, paths, etc.
+            Results for each PMC ID with status, paths, etc. ``status`` is
+            ``"success"``, ``"not_found"``, or ``"error"``: a download or
+            extraction failed, or a directory the article could be in could not
+            be searched. ``zip_path`` is ``None`` once the ZIP file has been
+            deleted after extraction (``keep_zips=False``).
 
         Example
         -------
@@ -543,35 +604,79 @@ class FTPDownloader(BaseAPIClient):
         logger.info(f"Querying {len(pmcids)} PMC IDs in FTP server")
         available_files = self.query_pmcids_in_ftp(pmcids)
 
-        results: dict[str, dict[str, Any]] = {}
-
-        for pmcid in pmcids:
+        outcomes: dict[str, dict[str, Any]] = {}
+        to_download: dict[str, dict[str, str | int]] = {}
+        for pmcid in dict.fromkeys(pmcids):
             zip_info = available_files.get(pmcid)
+            if zip_info:
+                to_download[pmcid] = zip_info
+            else:
+                outcomes[pmcid] = self._missing_article_result(pmcid)
 
-            if not zip_info:
-                results[pmcid] = {"status": "not_found", "error": "PMC ID not found in FTP"}
-                continue
+        def download(pmcid: str) -> dict[str, Any]:
+            return self._download_and_extract(
+                pmcid, to_download[pmcid], output_dir, extract_pdfs, keep_zips
+            )
 
-            try:
-                # Download ZIP file
-                zip_path = self.download_pdf_zip(zip_info, output_dir)
+        workers = min(max(1, max_concurrent), len(to_download))
+        if workers <= 1:
+            for pmcid in to_download:
+                outcomes[pmcid] = download(pmcid)
+        else:
+            with ThreadPoolExecutor(max_workers=workers) as pool:
+                for pmcid, outcome in zip(
+                    to_download, pool.map(download, to_download), strict=True
+                ):
+                    outcomes[pmcid] = outcome
 
-                result_data: dict[str, Any] = {"status": "success", "zip_path": zip_path}
+        # One entry per requested ID, in the order given.
+        return {pmcid: outcomes[pmcid] for pmcid in dict.fromkeys(pmcids)}
 
-                # Extract PDFs if requested
-                if extract_pdfs:
-                    pdf_paths = self.extract_pdf_from_zip(
-                        zip_path, output_dir / "extracted", keep_zip=keep_zips
-                    )
-                    result_data["pdf_paths"] = pdf_paths
+    def _download_and_extract(
+        self,
+        pmcid: str,
+        zip_info: dict[str, str | int],
+        output_dir: Path,
+        extract_pdfs: bool,
+        keep_zips: bool,
+    ) -> dict[str, Any]:
+        """Download one article's ZIP file and extract its PDFs."""
+        try:
+            zip_path = self.download_pdf_zip(zip_info, output_dir)
+            result_data: dict[str, Any] = {"status": "success", "zip_path": zip_path}
 
-                results[pmcid] = result_data
+            if extract_pdfs:
+                result_data["pdf_paths"] = self.extract_pdf_from_zip(
+                    zip_path, output_dir / "extracted", keep_zip=keep_zips
+                )
+                if not keep_zips:
+                    # extract_pdf_from_zip has deleted the file.
+                    result_data["zip_path"] = None
 
-            except FullTextError as e:
-                results[pmcid] = {"status": "error", "error": str(e)}
-                logger.error(f"Failed to download PMC{pmcid}: {e}")
+            return result_data
 
-        return results
+        except FullTextError as e:
+            logger.error(f"Failed to download PMC{pmcid}: {e}")
+            return {"status": "error", "error": str(e)}
+
+    def _missing_article_result(self, pmcid: str) -> dict[str, Any]:
+        """Result for an article the search did not find: not found, or not searchable."""
+        candidates: set[str] = set()
+        self._add_directories_for_pmcid(candidates, pmcid)
+        # Without derivable candidates the search covered every directory.
+        blocking = sorted(
+            (directory, reason)
+            for directory, reason in self.last_query_failures.items()
+            if not candidates or directory in candidates or directory == self.BASE_FTP_URL
+        )
+        if not blocking:
+            return {"status": "not_found", "error": "PMC ID not found in FTP"}
+
+        directory, reason = blocking[0]
+        return {
+            "status": "error",
+            "error": f"Could not search {directory} for PMC{pmcid}: {reason}",
+        }
 
     def _get_relevant_directories(self, pmcids: list[str]) -> set[str]:
         """

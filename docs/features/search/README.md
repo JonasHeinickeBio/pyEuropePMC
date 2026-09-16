@@ -117,7 +117,7 @@ print(f"Retrieved {len(papers)} records")
 
 `search_all(query, page_size=100, max_results=None, **kwargs)` follows `nextCursorMark` until it has `max_results` records or no more pages remain, and returns a `list` of record dicts. Other keyword arguments, such as `resultType="core"` or `sort`, are sent with every request. With `max_results=None` it fetches every match, which for a broad query means many requests.
 
-`search_all()` does not raise when a request fails: it stops and returns the records collected so far. Compare `len(papers)` with `get_hit_count()` when completeness matters.
+If a request fails, on any page, `search_all()` raises the `SearchError` from `search()` instead of returning the records collected so far, so a returned list is never cut short by an error.
 
 ### Count matches and list IDs
 
@@ -131,7 +131,7 @@ with SearchClient() as client:
 print(total, first_ids[:5])
 ```
 
-`get_hit_count()` makes one request with a page size of 1. `search_ids_only()` requests one `idlist` page (25 IDs unless you pass `pageSize`) and returns an empty list if the request fails.
+`get_hit_count()` makes one request with a page size of 1. `search_ids_only()` requests one `idlist` page (25 IDs unless you pass `pageSize`); a failed request raises `SearchError`, and an empty list means no matches.
 
 ### Page manually with cursorMark
 
@@ -262,7 +262,7 @@ with SearchClient() as client:
 - `format` is not a supported value (`SEARCH004`);
 - the request fails, including HTTP error responses (for example `NET001`).
 
-The error code is available as `error.error_code`. All exceptions raised by the package derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions`. `search_all()` and `search_ids_only()` do not raise on request failures, as described above.
+The error code is available as `error.error_code`. All exceptions raised by the package derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions`. `search_all()` and `search_ids_only()` raise the same errors as `search()`.
 
 ## See also
 

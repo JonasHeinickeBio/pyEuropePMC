@@ -453,7 +453,8 @@ class SearchClient(BaseAPIClient):
         Raises
         ------
         EuropePMCError
-            If the query is invalid or the request fails.
+            If the query is invalid or a request fails, including a request for a
+            later page: records already fetched are not returned as if complete.
 
         Examples
         --------
@@ -478,13 +479,11 @@ class SearchClient(BaseAPIClient):
                     break
                 current_page_size = min(page_size, remaining)
 
-            # Fetch page
-            try:
-                data = self.search(
-                    query, page_size=current_page_size, cursorMark=cursor_mark, **kwargs
-                )
-            except EuropePMCError:
-                break
+            # Fetch page. A failed request raises: ending the loop here would hand
+            # back a partial result that looks complete.
+            data = self.search(
+                query, page_size=current_page_size, cursorMark=cursor_mark, **kwargs
+            )
 
             # Validate response and extract results using helper
             page_results, next_cursor = self._extract_page_results(data)
@@ -741,8 +740,8 @@ class SearchClient(BaseAPIClient):
         except ParsingError:
             # Re-raise ParsingError as-is (for type mismatches and parsing issues)
             raise
-        except EuropePMCError:
-            # Re-raise EuropePMC errors as-is
+        except SearchError:
+            # Re-raise search errors as-is
             raise
         except Exception as e:
             context = {"format": format, "error": str(e)}
@@ -814,16 +813,21 @@ class SearchClient(BaseAPIClient):
         -------
         List[str]
             List of publication IDs.
+
+        Raises
+        ------
+        SearchError
+            If the query is invalid or the request fails.
+        ParsingError
+            If the response cannot be parsed.
         """
         # Force resultType to idlist for efficiency
         kwargs["resultType"] = "idlist"
 
-        try:
-            results = self.search_and_parse(query, **kwargs)
-            return [result.get("id", "") for result in results if result.get("id")]
-        except Exception as e:
-            logger.error(f"Error in search_ids_only: {e}")
-            return []
+        # Errors propagate: an empty list would be indistinguishable from a
+        # query without matches.
+        results = self.search_and_parse(query, **kwargs)
+        return [result.get("id", "") for result in results if result.get("id")]
 
     @staticmethod
     def validate_query(query: str) -> bool:
