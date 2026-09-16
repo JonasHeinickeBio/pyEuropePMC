@@ -143,7 +143,9 @@ class SearchLog:
             import csv
 
             with p.open("w", encoding="utf8", newline="") as fh:
-                fieldnames = list(self.entries[0].__dataclass_fields__.keys())
+                # Take the columns from the dataclass, not from the first
+                # entry, so a log with no entries exports a header row.
+                fieldnames = list(SearchLogEntry.__dataclass_fields__.keys())
                 writer = csv.DictWriter(fh, fieldnames=fieldnames)
                 writer.writeheader()
                 for entry in self.entries:
@@ -259,14 +261,39 @@ def record_peer_review(log: SearchLog, peer_reviewed: str | None = None) -> None
     log.peer_reviewed = peer_reviewed
 
 
+def _last_entry(log: SearchLog, operation: str) -> SearchLogEntry:
+    """Return the most recent log entry, or explain why there is none.
+
+    Raises:
+        ValueError: If the log has no entries yet.
+    """
+    if not log.entries:
+        raise ValueError(
+            f"Cannot {operation}: the search log has no entries. Call record_query() first."
+        )
+    return log.entries[-1]
+
+
 def record_platform(log: SearchLog, platform: str) -> None:
-    """Record the search platform/interface/tool version used."""
-    log.entries[-1].platform = platform
+    """Record the search platform/interface/tool version used.
+
+    The platform is recorded on the most recent entry.
+
+    Raises:
+        ValueError: If the log has no entries yet.
+    """
+    _last_entry(log, "record a platform").platform = platform
 
 
 def record_export(log: SearchLog, export_path: str, format: str) -> None:
-    """Record the export file path and format for a query entry."""
-    log.entries[-1].export_path = export_path
+    """Record the export file path and format for a query entry.
+
+    The export path is recorded on the most recent entry.
+
+    Raises:
+        ValueError: If the log has no entries yet.
+    """
+    _last_entry(log, "record an export").export_path = export_path
     log.export_format = format
 
 
@@ -297,6 +324,11 @@ def sign_file(file_path: str | Path, private_key_path: str | Path) -> str:
     """
     Sign a file with an RSA private key (PKCS1v15, SHA256) and save the signature.
 
+    The signature is over the file's contents, so it verifies with standard
+    tooling::
+
+        openssl dgst -sha256 -verify public_key.pem -signature results.zip.sig results.zip
+
     All file and cryptographic operations are logged. Only RSA keys are supported.
 
     Args:
@@ -309,8 +341,6 @@ def sign_file(file_path: str | Path, private_key_path: str | Path) -> str:
     Raises:
         Exception: If signing fails or the key is not RSA.
     """
-    import hashlib
-
     from cryptography.hazmat.primitives import hashes
     from cryptography.hazmat.primitives.asymmetric import padding, rsa
     from cryptography.hazmat.primitives.serialization import load_pem_private_key
@@ -319,13 +349,14 @@ def sign_file(file_path: str | Path, private_key_path: str | Path) -> str:
     try:
         with open(file_path, "rb") as f:
             file_bytes = f.read()
-        digest = hashlib.sha256(file_bytes).digest()
         with open(private_key_path, "rb") as key_file:
             private_key = load_pem_private_key(key_file.read(), password=None)
         if not isinstance(private_key, rsa.RSAPrivateKey):
             logger.error("Loaded private key does not support RSA signing.")
             raise TypeError("Loaded private key does not support RSA signing.")
-        signature = private_key.sign(digest, padding.PKCS1v15(), hashes.SHA256())
+        # Sign the file itself: sign() applies SHA-256, so hashing here first
+        # would sign the digest of a digest and fail every standard verifier.
+        signature = private_key.sign(file_bytes, padding.PKCS1v15(), hashes.SHA256())
         sig_path = str(file_path) + ".sig"
         with open(sig_path, "wb") as sig_file:
             sig_file.write(signature)
@@ -400,8 +431,13 @@ def prisma_summary(log: SearchLog) -> dict[str, Any]:
 
     Returns:
         dict: Summary with counts for PRISMA flow diagram and methods.
+            ``records_by_database`` sums the results of every query run
+            against each database, so several queries against one database
+            add up instead of overwriting each other.
     """
-    by_db = {e.database: (e.results_returned or 0) for e in log.entries}
+    by_db: dict[str, int] = {}
+    for e in log.entries:
+        by_db[e.database] = by_db.get(e.database, 0) + (e.results_returned or 0)
     total_records = sum(by_db.values())
     summary = {
         "title": log.title,
@@ -462,12 +498,11 @@ def generate_private_key(
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption(),
     )
+    # Sanitize comment to remove newlines and special characters
+    sanitized_comment = comment_str.replace("\n", " ").replace("\r", " ").replace("#", "").strip()
+
     private_key_path = str(private_key_path)
     with open(private_key_path, "wb") as f:
-        # Sanitize comment to remove newlines and special characters
-        sanitized_comment = (
-            comment_str.replace("\n", " ").replace("\r", " ").replace("#", "").strip()
-        )
         f.write(f"# {sanitized_comment}\n".encode())
         f.write(private_key_bytes)
     logger.info(f"Generated new RSA private key at {private_key_path}")
@@ -481,9 +516,10 @@ def generate_private_key(
         )
         pub_path = str(public_key_path) if public_key_path else private_key_path + ".pub.pem"
         with open(pub_path, "wb") as f:
-            f.write(b"-----BEGIN PUBLIC KEY-----\n")
-            f.write(f"# {comment_str}\n".encode())
-            f.write(b"".join(public_key_bytes.splitlines(keepends=True)[1:]))
+            # The comment goes before the PEM block. Inside it, the base64
+            # body would not decode and the file could not be loaded as PEM.
+            f.write(f"# {sanitized_comment}\n".encode())
+            f.write(public_key_bytes)
         logger.info(f"Exported public key at {pub_path}")
 
     return private_key_path, pub_path

@@ -30,7 +30,7 @@ class ICiteClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = ICiteClient()
-    >>> metrics = client.enrich(pmid="12345678")
+    >>> metrics = client.enrich("12345678")
     >>> if metrics:
     ...     print(metrics.get("rcr"), metrics.get("percentile"))
     """
@@ -62,7 +62,7 @@ class ICiteClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str
-            PubMed ID (PMID) of the paper.
+            PubMed ID (PMID) of the paper; may also be passed as ``pmid=``.
         use_cache : bool, optional
             Whether to use cache (default: True).
 
@@ -77,6 +77,7 @@ class ICiteClient(BaseEnrichmentClient):
             - field_citation_ratio: Actual/expected ratio
             - nih_percentile: NIH-specific percentile
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "pmid")
         if not identifier:
             return None
 

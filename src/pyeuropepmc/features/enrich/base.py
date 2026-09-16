@@ -606,6 +606,19 @@ class BaseEnrichmentClient(BaseHTTPClient):
 
         return results
 
+    @staticmethod
+    def _identifier_or_alias(
+        identifier: str | None, kwargs: dict[str, Any], *aliases: str
+    ) -> str | None:
+        """Return *identifier*, or the value passed under a keyword alias.
+
+        Lets ``enrich(doi="10.…")`` mean ``enrich("10.…")``.  The aliases are
+        removed from *kwargs* either way, so they are not forwarded as API
+        parameters.
+        """
+        values = [kwargs.pop(alias, None) for alias in aliases]
+        return identifier or next((v for v in values if v), None)
+
     def enrich(
         self, identifier: str | None = None, use_cache: bool = True, **kwargs: Any
     ) -> dict[str, Any] | None:

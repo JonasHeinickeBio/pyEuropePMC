@@ -643,9 +643,12 @@ class TestInlineElementHandling:
         assert len(affiliations) == 1
         assert affiliations[0]["id"] == "aff1"
         assert affiliations[0]["markers"] == "1"
-        # Clean text should not contain the superscript
-        assert "1" not in affiliations[0]["institution_text"]
-        assert "Department of Biology" in affiliations[0]["institution_text"]
+        # The superscript is left out, but not every "1" in the address: the
+        # marker used to be deleted from the flattened text wherever it
+        # occurred, which turned the postal code 12345 into 2345.
+        assert affiliations[0]["institution_text"] == (
+            "Department of Biology, University of Science, City 12345, Country"
+        )
 
     def test_custom_inline_patterns_in_config(self):
         """Test using custom inline element patterns from config."""
@@ -823,3 +826,79 @@ class TestSchemaCoverageValidation:
             parser.validate_schema_coverage()
 
         assert exc_info.value.error_code.value == "PARSE003"
+
+    def test_validate_schema_coverage_includes_every_config_pattern_group(self):
+        """Every pattern group in the config counts towards coverage.
+
+        The award, math, formatting, extended metadata, content structure and
+        appendix groups used to be left out of the recognized set, so elements
+        the parser handles were reported as unrecognized.
+        """
+        xml = """<article>
+            <front>
+                <article-meta>
+                    <funding-group>
+                        <award-group>
+                            <award-id>GRANT-1</award-id>
+                            <principal-award-recipient>A Researcher</principal-award-recipient>
+                        </award-group>
+                    </funding-group>
+                    <subj-group><subject>Research Article</subject></subj-group>
+                    <elocation-id>e12345</elocation-id>
+                    <conf-name>A Conference</conf-name>
+                </article-meta>
+            </front>
+            <body>
+                <sec>
+                    <p>Text <styled-content>styled</styled-content><break/>
+                        <math><mi>x</mi></math>
+                    </p>
+                    <disp-formula><tex-math>a+b</tex-math></disp-formula>
+                </sec>
+                <app><title>Appendix 1</title></app>
+                <glossary><def>definition</def></glossary>
+                <permissions/>
+                <collab>A Consortium</collab>
+            </body>
+        </article>"""
+
+        parser = FullTextXMLParser(xml)
+        coverage = parser.validate_schema_coverage()
+
+        recognized = set(coverage["recognized_elements"])
+        for element in (
+            "award-group",  # award_patterns
+            "award-id",
+            "principal-award-recipient",
+            "math",  # math_patterns
+            "mi",
+            "break",  # formatting_patterns
+            "styled-content",
+            "tex-math",
+            "elocation-id",  # extended_metadata_patterns
+            "conf-name",
+            "subj-group",
+            "subject",
+            "disp-formula",  # content_structure_patterns
+            "glossary",
+            "permissions",
+            "collab",
+            "def",
+            "app",  # appendix_patterns
+        ):
+            assert element in recognized, f"{element} should be recognized"
+
+        assert coverage["coverage_percentage"] > 90
+
+    def test_validate_schema_coverage_recognizes_namespaced_mathml(self):
+        """A ".//mml:math" pattern covers the namespace-stripped "math" tag."""
+        xml = """<article xmlns:mml="http://www.w3.org/1998/Math/MathML">
+            <body><p><mml:math><mml:mi>x</mml:mi></mml:math></p></body>
+        </article>"""
+
+        parser = FullTextXMLParser(xml)
+        coverage = parser.validate_schema_coverage()
+
+        assert "math" in coverage["recognized_elements"]
+        assert "mi" in coverage["recognized_elements"]
+        assert coverage["unrecognized_elements"] == []

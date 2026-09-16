@@ -326,6 +326,17 @@ class TestLiteratureMerger:
         assert len(results) == 1
         assert results[0]["pmid"] == "1"
 
+    def test_retracted_removal_is_reported_as_retracted(self):
+        papers = [
+            make_paper(pmid="1", title="Good paper"),
+            make_paper(pmid="2", title="Retracted: Bad paper"),
+        ]
+        _, report = LiteratureMerger(DedupConfig(remove_retracted=True)).merge_results([papers])
+
+        assert [r.match_level for r in report.records] == [MatchLevel.RETRACTED]
+        assert report.records[0].reason == "Retracted paper"
+        assert report.summary()["by_match_level"] == {"RETRACTED": 1}
+
     def test_retracted_removal_disabled(self):
         papers = [
             make_paper(pmid="1", title="Good paper"),

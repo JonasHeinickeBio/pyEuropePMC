@@ -37,7 +37,7 @@ PMC IDs are accepted with or without the `PMC` prefix, in any letter case. An em
 | `pmcid` | `str` | required | PMC ID |
 | `format_type` | `str` | `"xml"` | `"xml"` requests `PMC{id}/fullTextXML`, `"html"` requests `PMC{id}/fullTextHTML` from `https://www.ebi.ac.uk/europepmc/webservices/rest/` |
 
-Sends one request and returns the response body. It does not use the file cache and tries no other source. An HTTP error or failed request raises `APIClientError` (for example `HTTP404`, `NET001`); another `format_type` raises `FullTextError` (`FULL004`).
+Sends one request and returns the response body. It does not use the file cache and tries no other source. Errors are raised as `FullTextError`, with the `APIClientError` from the request as `__cause__`: HTTP 404 gives `FULL003`, HTTP 403 gives `FULL008`, and any other HTTP error or a failed request gives `FULL005`. Another `format_type` raises `FullTextError` (`FULL004`); calling it after `close()` raises `APIClientError` (`FULL007`).
 
 ## Download single files
 
@@ -45,14 +45,14 @@ The three download methods save to `output_path`, a file path whose parent direc
 
 ### download_xml_by_pmcid
 
-`download_xml_by_pmcid(pmcid, output_path=None, rate_limiter=None, doi=None, extra_strategies=True) -> Path | None`
+`download_xml_by_pmcid(pmcid, output_path=None, rate_limiter=None, doi=None, extra_strategies=True) -> Path`
 
 | Parameter | Type | Default | Description |
 |---|---|---|---|
 | `pmcid` | `str` | required | PMC ID |
 | `output_path` | `str \| Path \| None` | `None` | Target file |
 | `rate_limiter` | `RateLimiter \| None` | `None` | Rate limiter for the network steps |
-| `doi` | `str \| None` | `None` | DOI for the DOI-based steps; looked up in Europe PMC when needed and not given |
+| `doi` | `str \| None` | `None` | DOI for the DOI-based steps, including Unpaywall; looked up in Europe PMC when needed and not given |
 | `extra_strategies` | `bool` | `True` | Try the non-Europe-PMC sources before Unpaywall |
 
 Steps, in order; the name of the successful step is stored in `client.last_xml_source`:
@@ -64,21 +64,21 @@ Steps, in order; the name of the successful step is stored in `client.last_xml_s
 | Europe PMC FTP open-access archive (see `download_xml_by_pmcid_bulk()`) | `europepmc_ftp_bulk` |
 | Europe PMC `fulltextRepo` endpoint | `europepmc_fulltext_repo` |
 | With `extra_strategies=True`: NCBI PMC OA web service, NCBI E-utilities efetch, BioC-PMC (BioC XML, not JATS), DOI content negotiation, bioRxiv/medRxiv API | `pmc_oa_service`, `ncbi_efetch`, `bioc_pmc`, `doi_negotiation`, `biorxiv` |
-| Unpaywall, with an e-mail address; only a link that serves XML is used | `unpaywall` |
+| Unpaywall, only with an e-mail address; only a link that serves XML is used | `unpaywall` |
 
-Returns the `Path` of the saved file. If no step succeeds it raises `FullTextError` (`FULL003`); it does not return `None`. A file system error while saving from the REST API raises `FullTextError` (`FULL009`).
+Returns the `Path` of the saved file. If no step succeeds it raises `FullTextError` (`FULL003`); it does not return `None`. A step that fails, including the Europe PMC request that looks up the DOI, counts as that step finding nothing. Without an e-mail address the Unpaywall step is skipped before any request is made. A file system error while saving from the REST API raises `FullTextError` (`FULL009`).
 
 ### download_xml_by_pmcid_bulk
 
-`download_xml_by_pmcid_bulk(pmcid, output_path=None) -> Path | None`
+`download_xml_by_pmcid_bulk(pmcid, output_path=None) -> Path`
 
-Runs only the FTP archive step, without the file cache. The archive name is derived from the PMC ID: `https://europepmc.org/ftp/oa/PMC{start}_PMC{end}.xml.gz`, with ranges of 100,000 IDs for IDs from 100,000 up (PMC3258128 is in `PMC3200000_PMC3299999.xml.gz`), 10,000 for IDs from 10,000 and 1,000 below. The archive is downloaded and decompressed in memory. If its text contains `<article-meta>` and `PMC{id}`, the whole decompressed text is written to `output_path`, including any other articles in the archive; otherwise `FullTextError` (`FULL003`) is raised.
+Runs only the FTP archive step, without the file cache. The archive name is derived from the PMC ID: `https://europepmc.org/ftp/oa/PMC{start}_PMC{end}.xml.gz`, with ranges of 100,000 IDs for IDs from 100,000 up (PMC3258128 is in `PMC3200000_PMC3299999.xml.gz`), 10,000 for IDs from 10,000 and 1,000 below. The archive is downloaded to a temporary file and read as a stream, one article at a time. The `<article>` whose own `<front>/<article-meta>` has an `<article-id>` of type `pmcid`, `pmc` or `pmcid-ver` equal to the PMC ID, with or without the `PMC` prefix, is written to `output_path` as a standalone XML document; the other articles in the archive are not saved. The saved document has no DOCTYPE, and namespace prefixes are renamed (`xlink:href` becomes, for example, `ns0:href`, bound to the same namespace). If no article matches, `FullTextError` (`FULL003`) is raised.
 
 ### download_pdf_by_pmcid
 
 `download_pdf_by_pmcid(pmcid, output_path=None, rate_limiter=None) -> Path | None`
 
-Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the ZIP file `https://europepmc.org/pub/databases/pmc/pdf/OA/PMC{nnnn}000/PMC{id}.zip`, and Unpaywall (with an e-mail address). A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. Returns the `Path`, or `None` when no step succeeds.
+Tries the file cache, `https://europepmc.org/articles/PMC{id}?pdf=render`, `https://europepmc.org/backend/ptpmcrender.fcgi?accid=PMC{id}&blobtype=pdf`, the ZIP file `https://europepmc.org/pub/databases/pmc/pdf/OA/PMC{nnnn}000/PMC{id}.zip`, and Unpaywall (only with an e-mail address). A downloaded file counts only if it starts with `%PDF` and is at least 1,024 bytes long. Returns the `Path`, or `None` when no step succeeds, including when the request that looks up the DOI for Unpaywall fails.
 
 ### download_html_by_pmcid
 
@@ -208,18 +208,19 @@ Output:
 | Error | Raised by |
 |---|---|
 | `FullTextError` `FULL001`, `FULL002` | Every method, for an empty or malformed PMC ID |
-| `FullTextError` `FULL003` | `download_xml_by_pmcid()` and `download_xml_by_pmcid_bulk()` when nothing is found |
+| `FullTextError` `FULL003` | `download_xml_by_pmcid()` and `download_xml_by_pmcid_bulk()` when nothing is found; `get_fulltext_content()` on HTTP 404 |
 | `FullTextError` `FULL004` | `get_fulltext_content()` and `search_and_download_fulltext()` with an unsupported format |
+| `FullTextError` `FULL005` | `get_fulltext_content()` on an HTTP error other than 403 and 404, or a failed request |
+| `FullTextError` `FULL008` | `get_fulltext_content()` on HTTP 403 |
 | `FullTextError` `FULL009` | Saving an XML or HTML file fails |
-| `APIClientError` | `get_fulltext_content()` on an HTTP error or failed request; the download methods when the DOI lookup request fails (see below) |
+| `APIClientError` `FULL007` | `get_fulltext_content()` after `close()` |
 
 Both derive from `PyEuropePMCError` in `pyeuropepmc.core.exceptions` and can be imported from `pyeuropepmc`.
 
 ## Known limitations
 
-- When no Europe PMC source has the file, `download_xml_by_pmcid()` and `download_pdf_by_pmcid()` look up the article's DOI even without an e-mail address. If that request fails, they raise `APIClientError` instead of `FullTextError` or `None`.
-- The `fulltextRepo` step of `download_xml_by_pmcid()` requests a malformed URL, with the API base URL repeated, so it never succeeds.
-- `download_xml_by_pmcid_bulk()` saves the whole decompressed archive, not just the requested article.
+- The `fulltextRepo` step requests `https://www.ebi.ac.uk/europepmc/webservices/rest/PMC{id}/fulltextRepo`. That path has not been checked against the live service; the file endpoint the Europe PMC website loads, `https://europepmc.org/api/fulltextRepo`, takes a file name and MIME type rather than only a PMC ID.
+- The Unpaywall steps do not find anything yet: `UnpaywallClient` requests the Unpaywall API base URL twice (`https://api.unpaywall.org/v2/https://api.unpaywall.org/v2/{doi}`), so every lookup fails and the step counts the article as not found.
 - The HTML download is the Europe PMC web page as served, not an article-only document.
 
 ## See also

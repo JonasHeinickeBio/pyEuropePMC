@@ -52,6 +52,74 @@ class _Unset:
 _UNSET = _Unset()
 
 
+#: Canonical sort tokens accepted by :meth:`UnifiedSearch.search`, mapped to the
+#: value each source's own ``search()`` expects.  ``None`` means "this source
+#: cannot sort that way" — the key is then left out of the call so the source
+#: falls back to its default order instead of receiving a value it rejects.
+#: A source that is missing from a row, or a ``sort`` value that is not a
+#: canonical token, is passed through unchanged, so source-native values such as
+#: ``sort="P_PDATE_D desc"`` still work when you search a single source.
+_SORT_BY_SOURCE: dict[str, dict[str, str | None]] = {
+    "relevance": {
+        "europepmc": None,  # Europe PMC's default order is relevance
+        "pubmed": "relevance",
+        "openalex": "relevance",
+        "semantic_scholar": None,
+        "clinicaltrials": "relevance",
+    },
+    "date": {
+        "europepmc": "P_PDATE_D desc",
+        "pubmed": "pub_date",
+        "arxiv": "date",
+        "openalex": "date",
+        "semantic_scholar": "publicationDate:desc",
+        "clinicaltrials": "last_update",
+        "core": "date",
+        "doaj": "date",
+        "hal": "date",
+        "zenodo": "date",
+        "dblp": None,
+    },
+    "citations": {
+        "europepmc": "CITED desc",
+        "pubmed": None,
+        "arxiv": None,
+        "openalex": "citation_count",
+        "semantic_scholar": "citationCount:desc",
+        "clinicaltrials": None,
+        "core": None,
+        "doaj": None,
+        "hal": None,
+        "zenodo": None,
+        "dblp": None,
+    },
+}
+
+#: Aliases for the canonical tokens above.
+_SORT_ALIASES = {"citation_count": "citations", "cited": "citations"}
+
+
+def _translate_sort(sort: str | None, source: str) -> tuple[bool, str | None]:
+    """Map a canonical ``sort`` token to *source*'s dialect.
+
+    Returns ``(send, value)``.  ``send=False`` means the source cannot sort this
+    way and ``sort`` should be left off the call entirely.
+    """
+    if sort is None:
+        return False, None
+    canonical = _SORT_ALIASES.get(sort.strip().lower(), sort.strip().lower())
+    per_source = _SORT_BY_SOURCE.get(canonical)
+    if per_source is None or source not in per_source:
+        # Not a canonical token (or a source we have no mapping for): the caller
+        # knows this source's dialect better than we do.
+        return True, sort
+    value = per_source[source]
+    if value is None:
+        logger.debug("Source '%s' cannot sort by %r — using its default order", source, canonical)
+        return False, None
+    return True, value
+
+
 def _accepted_params(func: Any) -> set[str] | None:
     """Names ``func`` accepts as keyword args, or ``None`` if it takes ``**kwargs``."""
     try:
@@ -169,6 +237,25 @@ class UnifiedSearch:
     ) -> tuple[list[LiteratureResult], MergeReport]:
         """
         Search across all configured sources in parallel and deduplicate.
+
+        Parameters
+        ----------
+        query : str
+            The search string, translated into each source's dialect when
+            ``translate`` is on.
+        limit : int, optional
+            Records per source (default: 25); the primary source gets
+            ``limit × primary_limit_factor``.
+        sort : str, optional
+            One of the canonical tokens ``"relevance"``, ``"date"`` or
+            ``"citations"`` (alias ``"citation_count"``), translated into each
+            source's own sort vocabulary — Europe PMC receives
+            ``"P_PDATE_D desc"`` for ``"date"``, PubMed ``"pub_date"``.  A
+            source that cannot sort that way keeps its default order.  Any
+            other value is passed through unchanged, so a source-native value
+            still works when you search that source alone.
+        sources : list[str], optional
+            Restrict this one call to a subset of the configured sources.
 
         Returns
         -------
@@ -316,7 +403,9 @@ class UnifiedSearch:
             # TypeError (which would look like a source failure).
             call: dict[str, Any] = {"query": q, "limit": limits.get(source_name, 25)}
             accepted = _accepted_params(client.search)
-            for key, value in (("sort", sort), *kwargs.items()):
+            send_sort, sort_value = _translate_sort(sort, source_name)
+            pairs = [("sort", sort_value)] if send_sort else []
+            for key, value in (*pairs, *kwargs.items()):
                 if accepted is None or key in accepted:
                     call[key] = value
             return list(client.search(**call))

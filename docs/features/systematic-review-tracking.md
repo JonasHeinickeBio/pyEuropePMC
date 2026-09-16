@@ -134,16 +134,13 @@ QueryBuilder().keyword("checkpoint inhibitor").log_to_search(log, results_return
 record_results(log, deduplicated_total=2150, final_included=67)
 
 summary = prisma_summary(log)
-print(summary["records_by_database"])       # {'Europe PMC': 734}
-print(summary["total_records_identified"])  # 734
-
-identified = sum(entry.results_returned or 0 for entry in log.entries)
-print(identified)                           # 2576
+print(summary["records_by_database"])       # {'Europe PMC': 2576}
+print(summary["total_records_identified"])  # 2576
 ```
 
 `prisma_summary(log)` returns `title`, `executed_by`, `created_at`, `records_by_database`, `total_records_identified`, `deduplicated_total` and `final_included`.
 
-Known limitation: `records_by_database` keeps only the last `results_returned` for each database label, and `total_records_identified` is the sum of those values. When you log several searches under the same label, as `log_to_search()` does by default, the total is too low. Sum the entries yourself as shown, or give each search its own `database` label.
+`records_by_database` adds up every search logged under a database label, so the two searches above, which `log_to_search()` records under `Europe PMC` by default, count together. Pass a `database` of your own to `log_to_search()` when you want a label per source or per search.
 
 The counts can be entered in the PRISMA 2020 flow diagram tool at https://estech.shinyapps.io/prisma_flowdiagram/.
 

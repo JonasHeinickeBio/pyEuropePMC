@@ -69,7 +69,7 @@ Builds a `PaperEntity` and its related author and institution entities for each 
 {"entity": PaperEntity, "related_entities": {"authors": [AuthorEntity, ...], "institutions": [InstitutionEntity, ...]}}
 ```
 
-Pass the list of records, `response["resultList"]["result"]`. A single dict is treated as one record, so passing the whole response produces one meaningless entity. Records that fail to convert are skipped with a logged warning. Use `resultType="core"` records to populate authors, affiliations, MeSH-based keywords and grants.
+Pass the whole search response, the list of records (`response["resultList"]["result"]`), or a single record dict. A dict with a `resultList` key is read as a response and yields one item per record; any other dict is one record. Records that fail to convert are skipped with a logged warning. Use `resultType="core"` records to populate authors, affiliations, MeSH-based keywords and grants.
 
 ```python
 from pyeuropepmc import EuropePMCParser, SearchClient
@@ -77,7 +77,7 @@ from pyeuropepmc import EuropePMCParser, SearchClient
 with SearchClient() as client:
     response = client.search("malaria", resultType="core")
 
-items = EuropePMCParser.parse_search_results_with_entities(response["resultList"]["result"])
+items = EuropePMCParser.parse_search_results_with_entities(response)
 paper = items[0]["entity"]
 print(paper.title, paper.publication_year, paper.cited_by_count)
 print(len(items[0]["related_entities"]["authors"]), "authors")

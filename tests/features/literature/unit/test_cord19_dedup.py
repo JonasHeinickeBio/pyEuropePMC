@@ -357,3 +357,61 @@ class TestConfigDefaults:
         assert cfg.prefer_open_access is True
         assert cfg.filter_non_papers is True
         assert cfg.persist_dedup_ids is True
+
+
+# ===========================================================================
+# License permissiveness tiers
+# ===========================================================================
+
+
+class TestLicenseScore:
+    """CC BY variants must not all score as plain CC BY."""
+
+    @pytest.mark.parametrize(
+        ("license_text", "expected"),
+        [
+            ("cc0", 100),
+            ("public domain", 100),
+            ("CC-BY", 90),
+            ("cc by 4.0", 90),
+            ("https://creativecommons.org/licenses/by/4.0/", 90),
+            ("Creative Commons Attribution 4.0 International", 90),
+            ("cc-by-sa", 80),
+            ("CC BY-SA 4.0", 80),
+            ("https://creativecommons.org/licenses/by-sa/4.0/", 80),
+            ("cc-by-nc", 70),
+            ("CC BY-NC 4.0", 70),
+            ("cc-by-nc-sa", 70),
+            ("cc_by_nc_nd", 70),
+            ("https://creativecommons.org/licenses/by-nc-nd/4.0/", 70),
+            ("Creative Commons Attribution-NonCommercial-NoDerivatives 4.0", 70),
+            ("cc-by-nd", 60),
+            ("Creative Commons Attribution-NoDerivatives 4.0", 60),
+            ("open access", 50),
+            ("publisher license", 10),
+            ("", 0),
+        ],
+    )
+    def test_tiers(self, license_text, expected):
+        from pyeuropepmc.features.enrich.merger import _license_score
+
+        assert _license_score({"license": license_text}) == expected
+
+    def test_most_permissive_license_wins(self):
+        from pyeuropepmc.features.enrich.merger import _license_score
+
+        assert _license_score({"license": ["cc-by-nc", "cc-by"]}) == 90
+        assert _license_score({"license": "cc-by-nd", "is_oa": True}) == 60
+
+    def test_canonical_record_prefers_cc_by_over_cc_by_nc(self):
+        """Same paper from two sources: the CC BY copy is kept."""
+        papers = [
+            make_paper(
+                pmid="1", doi="10.1/x", title="Shared", source="pubmed", license="cc-by-nc"
+            ),
+            make_paper(pmid="1", doi="10.1/x", title="Shared", source="crossref", license="cc-by"),
+        ]
+        merger = LiteratureMerger(DedupConfig(use_identifier_dedup=True, prefer_open_access=True))
+        results, _ = merger.merge_results([papers])
+        assert len(results) == 1
+        assert results[0]["license"] == "cc-by"

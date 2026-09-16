@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import pytest
 
-from .conftest import sentences, squash
+from .conftest import sentences, squash, unescape_markdown
 
 pytestmark = [pytest.mark.unit]
 
@@ -118,13 +118,14 @@ class TestNothingIsRepeated:
 
 class TestRenderingsAgree:
     def test_markdown_carries_the_body(self, document, body_sentences):
-        missing = _missing(squash(document.markdown), body_sentences)
+        """Compared against the text a Markdown reader sees, escapes resolved."""
+        missing = _missing(squash(unescape_markdown(document.markdown)), body_sentences)
         assert not missing, (
             f"{document.pmcid}: {len(missing)} body sentences absent from to_markdown()"
         )
 
     def test_every_section_title_appears_in_markdown(self, document):
-        markdown = squash(document.markdown)
+        markdown = squash(unescape_markdown(document.markdown))
         for section in document.sections:
             title = squash(section["title"])
             if title:

@@ -48,10 +48,10 @@ Every method raises `ParsingError` (`PARSE003`) when nothing has been parsed. Th
 | `extract_affiliations()` | `list[dict]`, see [Affiliations](#affiliations) | – |
 | `extract_pub_date()` | `str \| None`: `YYYY`, `YYYY-MM` or `YYYY-MM-DD` | – |
 | `extract_keywords()` | `list[str]` | – |
-| `extract_funding()` | `list[dict]` with `source`, and when present `fundref_doi`, `award_id`, `recipients` (list of name dicts), `recipient_full` | – |
+| `extract_funding()` | `list[dict]` with `source`, and when present `fundref_doi`, `award_id` (the first), `award_ids` (all of them), `recipients` (list of name dicts), `recipient_full` | – |
 | `extract_license()` | `dict` with `url`, `text` and, when present, `type`; `{}` when there is no licence | – |
 | `extract_publisher()` | `dict` with `name` and, when present, `location`; `{}` when absent | – |
-| `extract_article_categories()` | `dict`: `{"subject_groups": [{"subjects": [...], "type": ...}]}`; `{}` when absent | – |
+| `extract_article_categories()` | `dict`: `article_type` (the root element's `article-type`) and `{"subject_groups": [{"subjects": [...], "type": ...}]}`; `{}` when absent | – |
 | `extract_tables()` | `list[dict]`, see [Tables](#tables) | wrapped |
 | `extract_figures()` | `list[dict]`, see [Figures](#figures) | wrapped |
 | `extract_references()` | `list[dict]`, see [References](#references) | wrapped |
@@ -80,7 +80,8 @@ Always present, with `None` or an empty value when not found:
 | `doi` | `str \| None` | Article DOI |
 | `pmcid` | `str \| None` | As written in the XML: `"PMC3258128"` or `"3258128"` |
 | `volume`, `issue` | `str \| None` | Volume and issue |
-| `pages` | `str \| None` | `"fpage-lpage"` or `"fpage"` |
+| `pages` | `str \| None` | `"fpage-lpage"` or `"fpage"`, from the article's own `<article-meta>`; `None` for an article paginated with `<elocation-id>` |
+| `elocation_id` | `str \| None` | The article's `<elocation-id>`, for example `"e1011761"` or `"RP99323"` |
 | `keywords` | `list[str]` | Same as `extract_keywords()` |
 
 Present only when the article has the information:
@@ -96,17 +97,17 @@ Present only when the article has the information:
 | `categories` | `dict` | Same as `extract_article_categories()` |
 | `history` | `list[dict]` | Editorial dates: `{"type": "received", "date": "2010-12-13"}` |
 | `correspondence` | `list[dict]` | `id`, `email`, `text` of `<corresp>` elements |
-| `self_uri` | `str` | The first `<self-uri>` link |
+| `self_uri` | `str` | The first `<self-uri>` link of the article's own front matter that is not a preprint version of it |
 | `counts` | `dict[str, int]` | From `<counts>`, for example `{"pages": 8}` |
 | `extended_metadata` | `dict` | Further values such as `alternative_title` and `article_version` |
 
 ## Affiliations
 
-`extract_affiliations()` returns one dict per `<aff>` element. Keys depend on the markup:
+`extract_affiliations()` returns one dict per `<aff>` element of the article's own front matter that belongs to an author. The editors' affiliations and those of the peer-review `<sub-article>` elements are left out. Keys depend on the markup:
 
 | Key | Present for | Description |
 |---|---|---|
-| `id`, `text` | all | Element ID and full text |
+| `id`, `text` | all | Element ID, and the text without the `<label>` marker or the `<institution-id>` identifiers |
 | `institution`, `city`, `country` | tagged or heuristically split affiliations | Parts of the address; missing parts are left out or `None` |
 | `institutions`, `institution_ids` | affiliations with `<institution-wrap>` | All institution names; identifiers such as `ROR` and `GRID` |
 | `markers`, `institution_text`, `parsed_institutions` | one `<aff>` holding several numbered institutions | Marker numbers, the text without markers, and one dict per institution |
@@ -118,10 +119,15 @@ Present only when the article has the information:
 | `id` | `str \| None` | `id` attribute of `<table-wrap>` |
 | `label` | `str \| None` | For example `"Table 1"` |
 | `caption` | `str \| None` | Caption text |
-| `footer` | `str \| None` | Text of `<table-wrap-foot>` |
-| `headers` | `list[str]` | `<th>` cells of the first `<thead>` row; `[]` when there is no `<thead>` or its cells are `<td>` |
-| `rows` | `list[list[str]]` | `<td>` cells of each `<tbody>` row |
+| `footer` | `str \| None` | Text of every `<table-wrap-foot>` |
+| `headers` | `list[str]` | One label per column, combined from all header rows top to bottom with `" / "`; a header cell spanning several columns labels each. `[]` when the table has no header row |
+| `header_rows` | `list[list[str]]` | The header rows: the rows of `<thead>`, or leading rows made only of `<th>` when there is no `<thead>`. Cells may be `<td>` or `<th>` |
+| `rows` | `list[list[str]]` | The body rows, `<td>` and `<th>` cells alike |
+| `spans` | `list[dict]` | `{"row", "column", "rowspan", "colspan"}` for each cell covering more than one position; `row` counts `header_rows` first |
+| `cell_graphics` | `list[dict]` | `{"row", "column", "uri"}` for each `<graphic>` or `<inline-graphic>` inside a cell, `row` counted as in `spans` |
 | `column_groups` | `list[dict]` | Only when the table has `<colgroup>`: `{"columns": [{"span": ..., "width": ...}], "span": ...}` |
+
+Every row in `header_rows` and `rows` is as wide as the table. A cell spanning several positions holds its text at the top-left one; the positions it also covers hold `""`, so a row spanned into from above starts with `""` rather than being a cell short. A cell whose only content is an image reads `"[graphic: <file>]"`.
 
 ## Figures
 
@@ -138,16 +144,16 @@ Present only when the article has the information:
 |---|---|---|
 | `id`, `label` | `str \| None` | `id` attribute and label of `<ref>` |
 | `citation_type` | `str \| None` | `element-citation` or `mixed-citation` |
-| `authors` | `str \| None` | All author names in one string, for example `"Bartel, DP"` |
-| `title` | `str \| None` | Title of the cited work; falls back to `source` when there is none |
+| `authors` | `str \| None` | All authors in one string, in citation order: people as `"Surname, Given names"`, collaborations as written, for example `"Johnson, MB, International DS-PNDM Consortium"`. Editors are left out |
+| `title` | `str \| None` | Title of the cited work: `<article-title>`, `<chapter-title>`, `<part-title>` or, for software and data, `<data-title>`; falls back to `source` when there is none |
 | `source` | `str \| None` | Journal or book title |
 | `year`, `volume`, `pages` | `str \| None` | Year, volume, page range |
-| `doi`, `pmid`, `pmcid` | `str \| None` | Identifiers |
+| `doi`, `pmid`, `pmcid` | `str \| None` | Identifiers, from `<pub-id>` or from the target of an identifier `<ext-link>` |
 | `raw_citation` | `str` | Only for some untagged citations: the citation text |
 
 ## Flat sections
 
-`get_full_text_sections()` returns `{"title": str, "content": str}` dicts: one per `<sec>` in the article's own body (not sub-articles), in document order, with `content` holding that section's own paragraphs joined by blank lines. Then an untitled entry for paragraphs directly in `<body>`, if there are any. Then back matter with an extra `type` key: `author_notes` (title `"Author Notes"`), `acknowledgments`, `appendix` (the appendix title) and `glossary`.
+`get_full_text_sections()` returns `{"title": str, "content": str}` dicts: one per `<sec>` in the article's own body (not sub-articles), in document order, with `content` holding that section's own blocks - paragraphs, lists, tables, figures, formulas and code listings - as plain text in document order, joined by blank lines (see [Sections](../features/parsing/README.md#sections)). Then an untitled entry for content directly in `<body>`, if there is any, and an entry titled `"Figures and Tables"` for the figures and tables of `<floats-group>`, if the article has one. Then back matter with an extra `type` key: `author_notes` (title `"Author Notes"`), `acknowledgments`, `appendix` (the appendix title) and `glossary`.
 
 ## Structured sections
 

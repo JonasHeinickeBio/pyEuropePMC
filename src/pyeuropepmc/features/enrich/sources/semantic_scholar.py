@@ -40,7 +40,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = SemanticScholarClient()
-    >>> metrics = client.enrich(doi="10.1371/journal.pone.0123456")
+    >>> metrics = client.enrich("10.1371/journal.pone.0123456")
     >>> if metrics:
     ...     print(f"Citations: {metrics.get('citation_count')}")
     ...     print(f"Influential citations: {metrics.get('influential_citation_count')}")
@@ -267,7 +267,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str, optional
-            Paper DOI
+            Paper DOI; may also be passed as ``doi=``.
         use_cache : bool, optional
             Whether to use cached results (default: True)
         semantic_scholar_id : str, optional
@@ -303,6 +303,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
         ValueError
             If neither identifier nor Semantic Scholar ID is provided
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "doi")
         if not identifier and not semantic_scholar_id:
             raise ValueError("Either identifier or Semantic Scholar ID is required")
 
@@ -531,7 +532,7 @@ class SemanticScholarClient(BaseEnrichmentClient):
                 fields_of_study=kwargs.get("fieldsOfStudy"),
                 min_citation_count=kwargs.get("minCitationCount"),
                 publication_date_or_year=kwargs.get("publicationDateOrYear"),
-                limit=min(limit, 100),
+                limit=min(limit, 1000),
                 fields=[
                     "title",
                     "abstract",

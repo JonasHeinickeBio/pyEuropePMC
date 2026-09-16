@@ -955,13 +955,21 @@ class BenchmarkManager:
             "Run the modular benchmark locally and regenerate these artifacts:\n\n"
         )
         report_lines.append("```bash\n")
-        report_lines.append(
-            "pytest -q tests/benchmark_article_client.py::test_modular_benchmark_system -q\n"
-        )
+        report_lines.append(f"{REPRODUCE_COMMAND}\n")
         report_lines.append("```\n\n")
         report_lines.append("- Detailed JSON results: `MODULAR_BENCHMARK_RESULTS.json`\n")
 
         return "".join(report_lines)
+
+
+# The command in the report's "How to reproduce" section (copied into README.md
+# by .github/scripts/benchmark_report.py). The project's default pytest options
+# deselect benchmark tests, block sockets and stop a test after 120 s, so each
+# needs overriding - the same invocation .github/workflows/benchmark.yml uses.
+REPRODUCE_COMMAND = (
+    "pytest tests/benchmark_article_client.py::test_modular_benchmark_system "
+    "-m benchmark --force-enable-socket --timeout=3600"
+)
 
 
 # Default test data

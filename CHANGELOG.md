@@ -16,6 +16,19 @@ All notable changes to PyEuropePMC are documented here.
 
 ### 🔒 Security
 
+- **One contract for a refused document.** defusedxml refuses XML that declares
+  entities, and that refusal now reaches callers the same way everywhere: the
+  JATS normalizer, the bioRxiv manifest, the benchmark metrics and the parse
+  profiler raise `ParsingError` instead of a raw `defusedxml.EntitiesForbidden`,
+  which `except ParseError` never caught. A refusal has its own code,
+  `PARSE005`, so it is no longer reported as "Content cannot be None or empty".
+  The arXiv, PubMed and figure paths still return their empty value and now log
+  the reason; the MCP tool `paper_figures` reports an error instead of zero
+  figures. Hostile XML is now tested against every entry point that parses, and
+  ruff bans nine more parser entry points (`xml.etree.ElementTree.XML`,
+  `XMLPullParser`, `fromstringlist`, `ElementInclude`, `expat`, `pyexpat`,
+  `xmltodict`, `pandas.read_xml`, `defusedxml.lxml`).
+
 - **All XML is parsed with defusedxml.** The arXiv and PubMed sources, figure
   extraction, the JATS normalizer, local-file and bioRxiv-manifest parsing and
   the benchmark metrics called the standard-library parser directly. They now
@@ -24,7 +37,233 @@ All notable changes to PyEuropePMC are documented here.
   PubMed and figure paths treat it like any other unparseable response. Ruff now
   reports any other XML parser (rules S313-S319, and a ban on importing lxml).
 
+- **A manual release run can no longer publish to pypi.org from a branch.** The
+  `environment` input of `release.yml` defaulted to `pypi` and nothing tied
+  publishing to a tag, so `gh workflow run release.yml --ref <branch>` uploaded
+  a branch snapshot to the real index and burned that version number for good.
+  The default is now `testpypi`; asking for `pypi` outside a `v*` tag fails in
+  the first step of `verify`, and `publish` checks the target again immediately
+  before the upload.
+
 ### 🐛 Bug Fixes
+
+- **`FigureExtractor` finds the figures.** It searched for elements in the
+  JATS1 XML namespace, which Europe PMC documents do not use, so it returned
+  nothing for every article: 0 of 25 figures, 8 tables and 19 supplementary
+  files across five papers. It now strips the document's own default namespace
+  the way `FullTextXMLParser` does, so both the DTD-based JATS Europe PMC serves
+  and schema-based JATS are matched, and it keeps the contract for a document
+  defusedxml refuses: that still raises `ParsingError`. The MCP tool `paper_figures`, which reported
+  `figure_count: 0` for every paper, reports them too, with a `counts_by_type`
+  breakdown and `include_tables`/`include_supplements` arguments.
+
+- **Asset URLs point at files that exist.** Figure and asset URLs were built by
+  appending the file name to a PMC article page address - and, in
+  `FigureExtractor`, by prefixing a PMCID with `PMC` a second time, giving
+  `PMCPMC11687933`. Neither form resolved. Both now use the Europe PMC file
+  endpoint that the article pages themselves load,
+  `https://europepmc.org/api/fulltextRepo?pmcId=…&type=FILE&fileName=…&mimeType=…`,
+  including the `.jpg` that publishers such as Springer Nature and Oxford
+  University Press leave off a `<graphic>` reference. An identifier that is not
+  a PMCID now leaves the file name alone rather than building a URL that 404s.
+
+- **A figure's image is its own.** `extract_figures()`, the structured figure
+  blocks and `ImageFetcher` took the first `<graphic>` anywhere inside a
+  `<fig>`. That is an inline formula's image when the caption contains
+  mathematics - PMC10775981's Fig 3 resolved to `pcbi.1011761.e012.jpg` - and a
+  figure supplement's image when eLife nests one inside its parent. Only a
+  graphic the figure carries directly, or in an `<alternatives>` of its own,
+  counts now.
+
+- **Figure supplements are linked to their parent.** A `<fig>` nested in
+  another was listed as an unrelated figure. `extract_figures()` and
+  `FigureInfo` now carry `parent_id` and `parent_label` for one, and its asset
+  carries its own label instead of its parent's.
+
+- **`extract_asset_refs()` reports each file once.** Every graphic inside a
+  figure was added a second time without a label by the pass over "standalone"
+  graphics (its `_is_inside_fig` check could never succeed, since ElementTree
+  has no parent axis), graphics in `<alternatives>` again, and each `<media>`
+  inside supplementary material twice: 139 references for 73 files across five
+  papers, 56 of 101 figure references unlabelled. There is now one `AssetRef`
+  per file-bearing element, in document order, typed and labelled by the block
+  that owns it, and a file two blocks declare is returned once. Supplementary
+  assets carry a MIME type, formula images are typed `FORMULA` rather than
+  counted as figures, and a table deposited as an image is typed `TABLE`.
+
+- **A display formula inside a paragraph gets a block of its own.** JATS allows
+  a `<disp-formula>` inside a `<p>`, and PLOS always writes one that way.
+  `get_full_text_sections_structured()` flattened it into the sentence that
+  introduced it: PMC10775981 has eleven display formulas and produced no formula
+  block at all, only paragraphs reading "models of the form y˙=F(y(t),θ,t,…), (1)
+  with N-dimensional state-vector y". The paragraph is now split around the
+  formula, as it already was around a table or figure. `to_plaintext()`,
+  `to_markdown()` and `get_full_text_sections()` render the formula on a line of
+  its own, after the section's paragraphs.
+
+- **A formula block carries LaTeX in `tex`, not the flattened text.** `tex` held
+  whatever `get_text_content()` made of the MathML - "y˙=F(y(t),θ,t,…)" - which
+  compiles as nothing. It now holds LaTeX converted from the MathML, or the
+  document's own `<tex-math>` where it ships one. The plain text moved to `text`,
+  so a consumer that only reads text still gets the equation, and the equation
+  number stays in `label` instead of being run into the expression. The
+  publisher's rendered image, where there is one, is kept in `uri`.
+
+- **`MathMLConverter` reads namespaced MathML.** `_handle_mtable` looked for rows
+  with `findall("mtr")`, which matches nothing once the document declares the
+  MathML namespace - which every Europe PMC document does. Every `<mtable>`
+  converted to the empty string, and with it every PLOS display formula, since
+  they all wrap their content in a one-row table. Rows are found by local name
+  now, and a one-cell table unwraps instead of becoming a 1x1 `array`. Array rows
+  are separated by `\\`, not by a newline, which is not a row separator in LaTeX.
+
+- **`MathMLConverter` writes accents, scripts and symbols correctly.** An
+  `<mover>` over a combining mark is an accent, so `η̄` is `\bar{\eta}` rather than
+  `{\eta}^{¯}`, and `ẋ` is `\dot{x}`; `<munder>`/`<mover>` on anything else are
+  `\underset`/`\overset`, not subscripts; limits on a big operator stay
+  `\sum_{j=1}^{N}`. Greek letters and mathematical symbols become LaTeX commands
+  instead of Unicode characters, `mathvariant` is kept (`\mathbf{y}`, not
+  `\text{y}`), an author's `<annotation encoding="application/x-tex">` wins over
+  anything derived, `<mfenced>` and `<mspace>` are handled, and a base is braced
+  only where the script would otherwise mis-bind. Spacing follows the operator:
+  `x + y`, but `(x)` and `\theta,`. Fences go through a delimiter table, so
+  `<mfenced open="{">` is `\left\{`, not the error `\left{`; styled letters
+  such as `ℝ` or a mathematical bold `x` become `\mathbb{R}` and `\mathbf{x}`;
+  LaTeX's special characters are escaped; and an explicit space at the end of a
+  group no longer turns into a backslash that escapes the closing brace.
+  Measured with pdflatex on 1,654 formulas from 32 open-access papers, 711
+  compiled and 275 were empty before; 1,650 compile now. The other four use a
+  character outside mathematics, such as a Latin "ꝏ" for infinity.
+
+- **`extract_tables()` finds header rows whose cells are `<td>`.** Header
+  labels were read from `<th>` cells only, so a `<thead>` tagged with `<td>` -
+  as many journals do - gave `headers == []`: all five tables of PMC1764484,
+  both of PMC3359999. Every header row is read now, not only the first, and
+  `headers` has one label per column, combined top to bottom
+  ("Inputparameter 1 / A: Composition / wt.%"). The rows themselves are in the
+  new `header_rows`. A `<th>` in a body row, which was dropped, is kept.
+
+- **Tables are laid out with their `colspan` and `rowspan`.** Cells were read
+  in document order with both attributes ignored, so every cell after a
+  spanning one moved into the wrong column. In PMC12311175's Table 4 a drug's
+  name and mechanism span every row of its trials, and 110 of the 120 body rows
+  came back two cells short, their values under the wrong headers. Every row of
+  `extract_tables()` and of the structured `table` block is now as wide as the
+  table, with a spanning cell's text at its top-left position and `""` at the
+  others; `spans` records which cells span.
+
+- **The structured `table` block records its footer and its header rows.**
+  `metadata["footer"]` holds the `<table-wrap-foot>` text and
+  `metadata["header_rows"]` how many of `rows` are header rows; neither was
+  recorded. A cell holding only an image - PMC5393345 draws six compound
+  structures that way - reads `[graphic: <file>]` instead of `""`, in both
+  outputs, and `cell_graphics` lists every image in a cell.
+
+- **A table block's inline positions index its `text`.** They were positions
+  within each cell, stored against the text of the whole table: 207 of 207 in
+  PMC1764484 pointed at the wrong characters. `metadata["cell_inlines"]` now
+  names the cell each entry belongs to (`{row, column, inlines}`); it was a
+  list of lists that skipped cells without inlines, so no entry could be traced
+  back to its cell.
+
+- **`to_markdown()` escapes the text it takes from the document.** Nothing was
+  escaped, so `DRB1*0402 ... DQB1*0503` opened an emphasis running to the next
+  asterisk and a literal `<node>` was passed through as an HTML tag: rendered
+  with a CommonMark implementation, 49 of PMC1764484's 127 body sentences came
+  out as something other than the article's text. Every character that changes
+  how Markdown renders text is now backslash-escaped; code listings are not.
+
+- **The flat renderings carry every block of a section, in document order.**
+  `to_plaintext()`, `to_markdown()` and `get_full_text_sections()` collected a
+  section's `<p>` elements and little else, so anything that is not a
+  paragraph reached them only through a `<p>` nested inside it. A figure placed
+  directly in a section lost its label and caption title; a table lost its
+  label, and in `to_markdown()` and `get_full_text_sections()` every cell not
+  wrapped in a `<p>` - 225 of PMC1764484's 247 distinct cells; all 14 of
+  PMC10775981's code listings and every definition list were missing from all
+  three; and `to_plaintext()` rendered an appendix that is a table as its title
+  alone - 228 of the 248 cells in PMC11687933's appendix table. `to_plaintext()`
+  also emitted a section's paragraphs, then its lists, then its tables. All
+  three now walk a section once, in order, and render each element exactly
+  once: tables with their label and laid out with their spans (a pipe table in
+  Markdown), figures and supplementary items with label and caption, code
+  listings with their line breaks (fenced in Markdown), lists with markers.
+
+- **A structured `code` block keeps its line breaks.** The listing was
+  collapsed to single spaces like prose, running each of PMC10775981's listings
+  onto one line.
+
+- **Figures and tables in `<floats-group>` reach every output.** NIH author
+  manuscripts keep every figure and table in `<floats-group>`, a sibling of
+  `<body>`, and every output but `extract_figures()` and `extract_tables()`
+  walked only the body: PMC5393345's figure and table were missing from the
+  structured sections, `to_plaintext()`, `to_markdown()` and
+  `get_full_text_sections()`. They are now gathered in a section titled
+  `Figures and Tables`, after the body and before the back matter. In the
+  structured output its `section_type` is `"body"`, since a figure is body
+  content wherever the XML keeps it; in `get_full_text_sections()` the entry has
+  no `type`. A `<sub-article>`'s floats are not the article's and are left out.
+
+- **References are given once, with their label once and correct offsets.**
+  PMC1764484 keeps its reference list inside a `<sec>` of the body, and the
+  structured sections gave it twice: flattened into one unknown block in that
+  section, and again as References. A labelled reference repeated its label
+  ("1. 1.Rowlett"), a `<citation-alternatives>` gave the element citation and
+  the mixed citation one after the other, the fields of an element citation ran
+  together ("RowlettVWImpact"), and the prefixed label moved the text without
+  its inlines: all 134 reference inlines of PMC11671585 pointed at the wrong
+  characters, and all 1,278 of PMC12311175. PMC12738713 also keeps its
+  reference list in the body and got it twice. Each reference
+  is now one block - label, then the mixed citation where there is one - with
+  `target_id` set to the `<ref>`'s `id`, and the reference list is left out of
+  the body section that holds it. A sub-article's references are no longer the
+  article's. A footnote no longer repeats its label either.
+
+- **An inline element that ends or starts with a space keeps it.** The text of
+  `<sup>`, `<italic>`, `<xref>` and the rest was taken stripped in the
+  structured blocks, so `R<sup>2 </sup>= 0.90` read "R2= 0.90" - 51 words ran
+  together that way in PMC1764484 - while `get_full_text_sections()` read it
+  correctly.
+
+- **List and definition-list inlines say which item they index.** Their
+  positions were relative to an item with nothing to say which, and a
+  cross-reference in a list lost its `ref_type` and `target_id`. Each inline now
+  carries `metadata["item"]` (or `"term"`/`"definition"`), and
+  `metadata["item_inlines"]` names its item.
+
+- **`extract_peer_reviews()` keeps the whole review.** It skipped PLOS's
+  `aggregated-review-documents`, which hold each round's decision letter and
+  reviews; read titles only from an `<article-meta>` that `<front-stub>` lacks,
+  so every PLOS and eLife review was untitled; took top-level sections without
+  their subsections; and, for a review without sections - every review of those
+  publishers - kept the bare paragraphs and nothing else, losing the reviewer
+  comments an eLife author response quotes. Measured by sentence, PMC10775981
+  kept 10 of 160, PMC11687933 100 of 148 and PMC13567752 312 of 368; all are
+  kept now. Review sections have `section_type` `"peer_review"`.
+
+- **Content outside any section keeps its document order.** The structured
+  sections put every bare `<p>` of a body first and every other block after
+  them, and dropped a `<supplementary-material>` placed there.
+
+- **`StructuredSection.to_chunks()` gives chunks their section path, type and
+  order.** A chunk's `section_path` held the section title; the pieces of a
+  block split for length had an empty `section_type` and were emitted before
+  the text gathered ahead of them; and the overlap was compared, in tokens,
+  with a limit in characters, so it repeated four times as much as asked. A
+  sentence longer than a chunk is now split at spaces rather than left whole.
+
+- **A formula block's `mathml` is serialized in the MathML namespace.**
+  `ET.tostring` invents a prefix for a namespace it was not told about, so the
+  MathML came back as `<ns0:math xmlns:ns0="...">`. It now reads
+  `<math xmlns="http://www.w3.org/1998/Math/MathML">`, the form a renderer
+  expects.
+
+- **Parse errors say what went wrong.** `PARSE003` no longer stands in for a
+  refused document, a recursion error or `bytes` input; each message names the
+  cause, and extraction failures carry the underlying error.
+
+- **`compute_all_metrics()` parses the document once**, not five times, which
+  takes about a third off its runtime.
 
 - **A table or figure inside a paragraph gets a block of its own.** JATS
   allows a `<table-wrap>` or `<fig>` inside a `<p>`, and
@@ -36,22 +275,291 @@ All notable changes to PyEuropePMC are documented here.
   around the element: the text before it, a table or figure block with label,
   caption and rows, then the text after.
 
+- **Article metadata is read from the article's own front matter.** Every field
+  in `<article-meta>` has a namesake elsewhere in the document, and the lookups
+  searched all of them. `extract_metadata()["pages"]` took the page range of the
+  first reference whenever the article itself is paginated with
+  `<elocation-id>` — 4 of 5 measured articles, PMC11671585 reporting "1-22" for
+  elocation-id 354 — and `volume`, `issue` and the journal title had the same
+  fallback. A `<related-article>` beside them describes a different paper;
+  PMC13567752 reported its companion's pages. `elocation_id` is now extracted
+  and is a new key of `extract_metadata()`.
+
+- **`extract_affiliations()` returns the authors' affiliations.** It returned
+  every `<aff>` in the document: PMC11687933 has 8 and came back with 33 — the
+  2 editor affiliations and the 23 belonging to the peer-review `<sub-article>`
+  elements. An affiliation's `text` also ran the `<label>` marker and each
+  `<institution-id>` (a ROR URL, a GRID code, an ISNI) into the institution
+  name, which affected 18 of the 19 affiliations across the test corpus.
+
+- **`extract_keywords()` returns the article's own keywords.** A peer-review
+  `<sub-article>` tags keywords too, so PMC11687933's author keywords ended
+  with eLife's assessment vocabulary, "Compelling" and "Important".
+
+- **`extract_article_categories()` reports `article_type`.** It looked for
+  `.//article`, which never matches, because the root element *is* the
+  `<article>` and ElementTree's descendant search does not include it.
+
+- **`extract_funding()` keeps every award ID of an award group** in a new
+  `award_ids` list; only the first survived. PMC11671585 has a group naming
+  four grants. `award_id` still holds the first.
+
+- **`self_uri` is not an earlier version of the article.** eLife lists the
+  preprint and each reviewed preprint before the version of record, so
+  PMC11687933 reported the bioRxiv DOI of its preprint.
+
 - **`to_plaintext()` keeps the cells of such a table apart again**, as 2.0.0
   did. 2.2 built a paragraph's text with a walker of its own that put nothing
   around block-level elements, where `get_text_content()` puts a space, so
   the same 703 boundaries ran together ("miRNARole") and a figure's label ran
   into its caption ("Fig. 1Mechanisms of immune"). Both now use the one walker.
 
+- **`JATSNormalizer` parses documents that escape `<` and `&`.** Numeric
+  character references were decoded before parsing, so `&#x0003c;` became a raw
+  `<` and `&#x00026;` a raw `&`, and `normalize_xml()` raised `ParseError` on
+  PMC3258128 and PMC12311175. Only named entities are resolved beforehand now.
+  `bytes` input is decoded the way its byte order mark or XML declaration says,
+  not always as UTF-8.
+
+- **`JATSNormalizer` metadata is the article's own.** The DOI came from the last
+  `<article-id>` in the document - for PMC10775981 that of a peer-review report,
+  `10.1371/journal.pcbi.1011761.r004` - and every `<sub-article>` contributor
+  was an author: 45 for PMC11687933's 22. Authorship declared on the
+  `<contrib-group>` gave no authors at all.
+
+- **`JATSNormalizer` sections are in document order**, each followed by its own
+  subsections; they were in neither that order nor its reverse.
+  `strip_display_markup` and `flatten_xrefs` now act independently, so the
+  CLI's `--no-markup` keeps display markup, and an `<xref>` inside `<bold>` is
+  kept when only markup is stripped. `drop_mathml` keeps each formula's text
+  in its place instead of losing it and the text that followed.
+
+- **`pyeuropepmc normalize` prints document text as it is.** `text`, `bioc` and
+  the `sections` table went through Rich markup, so a `[/i]` in an article
+  stopped the command and `[a]` disappeared. `normalize batch` exits with
+  status 1 when any file fails, and every command reads files in the encoding
+  their XML declaration names.
+
 - **A caption's title no longer runs into its text** in the figure and table
   blocks built from it ("Overview of the study.a The workflow"). Eight
   figure captions in PMC12738713 joined that way.
+
+- **PubMed EFetch records have their DOI, their own PMCID and full text.**
+  `PubMedClient.get_paper(pmid, use_efetch=True)` looked for the DOI inside
+  `<MedlineCitation>`, but EFetch puts a record's identifiers in
+  `<PubmedData><ArticleIdList>`, so the DOI was `None` for 5 of 5 measured
+  records; it now falls back to `<ELocationID EIdType="doi">` too. The PMCID
+  search covered the `<ArticleIdList>` of every cited reference as well, so a
+  record without a PMCID of its own reported a reference's (PMID 33093664).
+  Abstract sections and titles stopped at their first inline `<i>`, `<b>`,
+  `<sup>` or `<sub>`, and each author's ORCID and affiliations were dropped.
 
 - **The article title and abstract are labelled `section_type="front"`**, not
   `"body"`, so keeping only body sections no longer returns them a second time
   alongside the metadata. `front` is added to `SectionType` in the LinkML
   schema. Code that relied on the old label needs to accept `front`.
 
+- **The disk cache keeps its entries.** Opening a `CacheBackend` with
+  `enable_l2=True` on a directory that already held a `cache.db` deleted it
+  first, with its `-wal`, `-shm` and `-journal` files. Nothing survived a
+  restart, two clients open on one `cache_dir` could not see each other's
+  entries, two `SearchClient(enable_l2=True)` instances sent two HTTP requests
+  for the same query, and the `.val` files diskcache writes for large values
+  were left behind unreferenced. An existing database is now reused, and
+  `_validate_diskcache_schema()` — written for this and never called — migrates
+  an older one in place. A database that genuinely cannot be opened or migrated
+  is still discarded, now together with its sidecar and orphaned `.val` files,
+  and the reason is logged.
+
+- **The in-memory layer honours per-entry expiry.** L1 was a
+  `TTLCache(ttl=config.ttl)`, one lifetime for every entry, so
+  `set(expire=...)`, `data_type` and `ttl_by_type` only reached the disk layer
+  and a value could be served from memory long after it had expired on disk. L1
+  is now a `TLRUCache` that asks for each entry's own expiry, and an L2 hit
+  copied into L1 keeps the lifetime it has left instead of getting a fresh
+  full TTL.
+
+- **`invalidate_search_cache()` and `invalidate_annotations_cache()` remove
+  something.** Their defaults were `"search:*"` and `"annotations:*"`, while the
+  keys these clients write start with the data type
+  (`general:v1:search:6950a79a94574e15`), so calling either without a pattern
+  removed nothing and reported `0`. The defaults are now `"*:search*"` and
+  `"*:annotations_*"`.
+
+- **`invalidate_fulltext_cache(pmcid)` no longer removes other articles.** The
+  pattern `*:{digits}*` also matched every longer ID with the same prefix, so
+  clearing `PMC123` cleared `PMC1234` too. It is anchored at the end of the key.
+
+- **`invalidate_older_than()` works.** It returned `0` without looking at
+  anything. It now deletes entries this backend stored before the given age
+  from both layers and returns how many; entries another process wrote are
+  left to their TTL, which the docstring says.
+
+- **`get_keys()` and `compact()` cover the disk layer**, not just memory:
+  `get_keys()` lists L2-only keys too, and `compact()` runs `expire()` and
+  `cull()` on L2.
+
+- **One lookup counts as one hit or miss.** With L2 enabled, a lookup that
+  missed both layers was counted twice in `get_stats()["misses"]`, halving the
+  reported hit rate. The per-layer counters still record what each layer was
+  asked.
+
+- **`CacheConfig` reports a bad value as a configuration error.**
+  `CacheConfig(ttl=None)` raised `TypeError` from a comparison; a non-integer
+  `ttl`, `size_limit_mb`, `l2_size_limit_mb` or `namespace_version` now raises
+  `ConfigurationError`, as a negative value already did. `l2_size_limit_mb` is
+  validated too.
+
+- **`CacheConfig(eviction_policy=...)` is used.** It was stored and ignored,
+  and the disk layer always evicted least-recently-used entries. It is passed
+  to diskcache, and a value outside `CacheConfig.EVICTION_POLICIES` raises
+  `ConfigurationError` instead of being silently dropped.
+
+- **`from pyeuropepmc.cache import CacheConfig` works.** `src/pyeuropepmc/cache/`
+  had no `__init__.py`, so only `pyeuropepmc.cache.cache` could be imported.
+
+- **Artifact IDs that sanitize to the same filename keep separate entries.**
+  `ArtifactStore` mapped `:` and `/` to `_`, so `"a:b"` and `"a_b"` shared one
+  index file and the second store overwrote the first. Index filenames now carry
+  a digest of the ID, and each file records the ID it was written for, which is
+  what garbage collection reads instead of guessing it back from the filename.
+
+- **`ArtifactStore(min_free_space_mb=...)` is enforced.** It was stored and
+  never checked: a store under its size limit would fill the disk. Storing
+  content that would leave less free space than the floor now collects first.
+
+- **`prisma_summary()` adds up repeated searches.** `records_by_database` kept
+  only the last `results_returned` per database name, so a review that logged
+  1234 and 200 records for Europe PMC and 50 for PubMed reported 250 identified
+  records instead of 1484 — the number that goes into a PRISMA flow diagram.
+
+- **`sign_file()` signatures verify.** It hashed the file and passed the digest
+  to `sign(..., hashes.SHA256())`, which hashes again, so the signature was over
+  the digest of a digest and `openssl dgst -sha256 -verify` reported
+  `Verification failure` on the file it was meant to authenticate. It signs the
+  file contents.
+
+- **`generate_private_key(publish_public=True)` writes a loadable public key.**
+  The metadata comment went *inside* the `BEGIN PUBLIC KEY` block, so the base64
+  body would not decode and `load_pem_public_key()` raised `ValueError`. The
+  comment now precedes the block, as it already did for the private key.
+
+- **`record_platform()`, `record_export()` and a CSV export handle an empty
+  log.** All three raised `IndexError` from indexing an empty list. The two
+  record functions raise `ValueError` naming `record_query()`, and exporting a
+  log with no entries writes a header-only CSV.
+
+- **Schema coverage counts every pattern group.** `validate_schema_coverage()`
+  consulted eleven of the seventeen groups in `ElementPatterns`, so elements the
+  parser does handle — `award-id`, `subject`, `permissions`, `tex-math`, MathML
+  and more — were reported as unrecognized. Coverage of
+  `tests/fixtures/fulltext_downloads/PMC3258128.xml` goes from 77.8% to 86.1%.
+  A pattern written with a namespace prefix (`.//mml:math`) now contributes the
+  local name, which is what the document tags are compared as.
+
+- **The MCP Registry entry starts the server, not the command-line tool.**
+  `server.json` asked clients to run `uvx pyeuropepmc`, which starts the
+  `pyeuropepmc` CLI - the console script named after the distribution - and
+  prints its help instead of speaking MCP. The entry now passes the `mcp`
+  subcommand.
+
+- **`RDFMapper()` and `PaperProcessingPipeline` work after `pip install`.** The
+  mapping files sat in a `conf/` directory at the repository root and were
+  found by walking up from `__file__`, which only a source checkout has: an
+  installed package looked in the interpreter's `lib/` directory and raised
+  `FileNotFoundError`, and `load_rdf_config()` quietly used its built-in
+  fallback, with `http://example.org/data/` as base URI instead of
+  `https://w3id.org/pyeuropepmc/`. The four files now ship inside the package
+  (`pyeuropepmc.conf.config_file(name)` returns a path), and `RMLRDFizer()`
+  finds its defaults there too.
+
+- **PyYAML is a declared dependency.** `pyeuropepmc.mappers` imports it at
+  module level, but it only ever arrived with the `standard` or `agentic`
+  extra: in a bare install `from pyeuropepmc.mappers import RDFMapper` raised
+  `ModuleNotFoundError: No module named 'yaml'`.
+
+- **MCP tools ask for the extra they need.** The availability flags recorded
+  whether a pyeuropepmc module imported, which it always does, because optional
+  libraries load lazily. The LLM tools now check LangChain, so without the
+  `agentic` extra they return an install hint instead of empty analyses; the
+  `bib_*` tools check bibtexparser; the `ref_*` tools, which need no extra, no
+  longer name `bibliography`; and tools that are part of the core install no
+  longer suggest `pip install pyeuropepmc[all]`.
+
+### ⬆️ Dependencies
+
+- **rapidfuzz 3 is allowed** (`>=2.15.0,<4.0`). The old bound resolved to
+  2.15.2, which has no wheels for Python 3.13 or later, so installing there
+  needed a compiler. Match scores do not change: `token_fuzzy_score()` now
+  passes rapidfuzz 2's default processor explicitly, and its scores are
+  identical on 5,064 pairs built from titles in the test fixtures (641 differ
+  without it).
+
+- **New `benchmark` extra** with `huggingface-hub`, which downloading the
+  published benchmark datasets needs; a failed download now names the extra.
+
+- **The `rdf` extra installs nothing.** rdflib, a core dependency, writes
+  JSON-LD itself since 6.0, which made rdflib-jsonld redundant. The extra is
+  kept so existing install commands keep working.
+
+- **The `enrichment` extra no longer installs cryptography**, which no
+  enrichment module imports. Signed search logs need the `signing` extra, as
+  before.
+
+### ✨ Features
+
+- **`pyeuropepmc mcp` runs the MCP server**, the same server as the
+  `pyeuropepmc-mcp` command. A client that starts the package with
+  `uvx pyeuropepmc` gets the console script named after the distribution, and
+  had no way to ask for the other one.
+
+### 🔧 Maintenance
+
+- **`twine check --strict` runs on the wheel and the sdist before publishing**,
+  with `readme_renderer[md]` installed, so a `README.md` that PyPI cannot render
+  fails the build instead of the upload.
+
+- **Contributor tooling matches the repository.** `make codescene`,
+  `make codescene-delta` and `make quality-full` call
+  `examples/scripts/codescene_analysis.sh` where the script is. CI, `make
+  quality` and the pre-commit hook read one bandit configuration from
+  `pyproject.toml`; the hook used to skip two checks that CI ran. `tox.ini`
+  installs the package with every extra and the `dev` dependency group instead
+  of a stale hand-written list, and gains the `--run-integration` flag its
+  integration environment needed. A test hook that skipped by marker names no
+  test uses is removed, and stale comments and the Copilot instructions are
+  brought up to date.
+
+- **Reference authors are read in every JATS dialect.** PLOS lists a
+  `<mixed-citation>`'s contributors as bare `<name>` children, which were not
+  read, and the text pass that took over ran surname and initials together:
+  `"NewtonSI"` in all 53 references of PMC10775981. They now read
+  `"Newton, SI"`, and a chapter's editors, written after its title, are left
+  out. A `<collab>` or `<string-name>` among the authors is kept in place; the
+  4 collaboration authors of PMC11687933 were dropped.
+
+- **The citation text no longer overwrites tagged reference fields.** The pass
+  over a `<mixed-citation>`'s flattened text assigned volume, pages, DOI and
+  PMID even when the tagged elements had given them: `"385-430"` became `"385"`,
+  and a DOI followed by its PMID was read as `"10.1098/rstb.2001.091011545699"`
+  (4 references in PMC10775981). It now only fills fields that are empty.
+
+- **Identifiers in `<ext-link xlink:href>` are read.** BMC and Springer tag a
+  text-only citation's DOI, PMID and PMCID as empty `<ext-link>` elements with
+  the value in the link target, so every PMID was lost: 0 of 45 in PMC1764484.
+  A page range written with an en dash, "48:662–667", also lost its last page
+  in 43 references there.
+
+- **Software and dataset references are titled by their `<data-title>`**, not
+  by the repository in `<source>`: eLife's software citations were titled
+  "GitHub", "CRAN" and "Sourceforge". A book chapter's `<chapter-title>` or
+  `<part-title>` likewise comes before the book's title.
+
 ### 📚 Documentation
+
+- **The caching, search logging, systematic review tracking and schema coverage
+  pages drop the limitations above** and describe the fixed behaviour, with the
+  documented element counts and coverage percentages recomputed.
 
 - **The documentation matches the code again.** Audits of README.md and every
   page in docs/ found that most examples raised or used classes, methods,
@@ -62,6 +570,13 @@ All notable changes to PyEuropePMC are documented here.
   cover error codes, how the docs are published and the XML parser internals;
   `.gitbook.yaml` lets GitBook Git Sync publish docs/. Code defects found on the
   way are documented as known limitations where readers would hit them.
+
+- **Error messages link to the error reference that exists.** The `Docs:` line
+  of the HTTP error messages, and of any message built with
+  `get_error_message(code, include_help_link=True)`, pointed at
+  `pyeuropepmc.rtfd.io/errors/<CODE>`, which never existed. It now links to the
+  section of the published error-codes page that lists the code, and a test
+  checks that every code is listed in the section its link names.
 
 ## [2.2.1] - 2026-09-15
 

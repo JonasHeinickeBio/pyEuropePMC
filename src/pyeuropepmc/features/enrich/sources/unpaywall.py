@@ -31,7 +31,7 @@ class UnpaywallClient(BaseEnrichmentClient):
     Examples
     --------
     >>> client = UnpaywallClient(email="your@email.com")
-    >>> oa_info = client.enrich(doi="10.1371/journal.pone.0123456")
+    >>> oa_info = client.enrich("10.1371/journal.pone.0123456")
     >>> if oa_info and oa_info.get("is_oa"):
     ...     print("Open access available!")
     ...     print(f"URL: {oa_info.get('best_oa_location', {}).get('url')}")
@@ -86,7 +86,7 @@ class UnpaywallClient(BaseEnrichmentClient):
         Parameters
         ----------
         identifier : str
-            Paper DOI (required)
+            Paper DOI (required); may also be passed as ``doi=``.
         **kwargs
             Additional parameters (unused)
 
@@ -109,6 +109,7 @@ class UnpaywallClient(BaseEnrichmentClient):
         ValueError
             If identifier is not provided
         """
+        identifier = self._identifier_or_alias(identifier, kwargs, "doi")
         if not identifier:
             raise ValueError("Identifier is required for Unpaywall enrichment")
 

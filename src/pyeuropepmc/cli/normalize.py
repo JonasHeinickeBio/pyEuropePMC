@@ -15,7 +15,9 @@ except ImportError:
 
 try:
     from rich.console import Console
+    from rich.markup import escape
     from rich.table import Table
+    from rich.text import Text
 except ImportError:
     raise OptionalDependencyError(
         "rich", "CLI interface (table display)", "pip install pyeuropepmc[standard]"
@@ -60,9 +62,11 @@ def normalize_text(
 
     if output_path:
         output_path.write_text(text, encoding="utf-8")
-        console.print(f"[green]Written to {output_path}[/green]")
+        console.print(f"[green]Written to {escape(str(output_path))}[/green]")
     else:
-        console.print(text)
+        # Document text is data, not Rich markup: printed through the console,
+        # "[/i]" stopped the command with MarkupError and "[a]" disappeared.
+        typer.echo(text)
 
 
 @normalize_app.command("sections")
@@ -99,7 +103,8 @@ def normalize_sections_cmd(
         word_count = len(content_text.split()) if content_text else 0
         table.add_row(
             sec.get("type", "other"),
-            title_text[:60] + ("..." if len(title_text) > 60 else ""),
+            # Text, not a markup string: a title is the document's words.
+            Text(title_text[:60] + ("..." if len(title_text) > 60 else "")),
             str(sec.get("level", 0)),
             str(word_count),
         )
@@ -112,7 +117,7 @@ def normalize_sections_cmd(
         output_path.write_text(
             json.dumps(sections, indent=2, ensure_ascii=False), encoding="utf-8"
         )
-        console.print(f"[green]Written to {output_path}[/green]")
+        console.print(f"[green]Written to {escape(str(output_path))}[/green]")
 
 
 @normalize_app.command("bioc")
@@ -135,9 +140,9 @@ def normalize_bioc(
         output_path.write_text(
             json.dumps(bioc_data, indent=2, ensure_ascii=False), encoding="utf-8"
         )
-        console.print(f"[green]Written to {output_path}[/green]")
+        console.print(f"[green]Written to {escape(str(output_path))}[/green]")
     else:
-        console.print(json.dumps(bioc_data, indent=2, ensure_ascii=False))
+        typer.echo(json.dumps(bioc_data, indent=2, ensure_ascii=False))
 
 
 @normalize_app.command("classify")
@@ -148,7 +153,7 @@ def classify_heading(
     from pyeuropepmc.features.fulltext.jats_normalizer import classify_section
 
     section_type = classify_section(heading)
-    console.print(f"[cyan]{heading}[/cyan] -> [green]{section_type}[/green]")
+    console.print(f"[cyan]{escape(heading)}[/cyan] -> [green]{section_type}[/green]")
 
 
 @normalize_app.command("batch")
@@ -177,7 +182,7 @@ def normalize_batch(
     xml_files = sorted(input_dir.glob(glob_pattern))
 
     if not xml_files:
-        console.print(f"[red]No XML files found in {input_dir}[/red]")
+        console.print(f"[red]No XML files found in {escape(str(input_dir))}[/red]")
         raise typer.Exit(code=1)
 
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -185,7 +190,7 @@ def normalize_batch(
     valid_formats = ("text", "sections", "bioc")
     if output_format not in valid_formats:
         console.print(
-            f"[red]Invalid output format: {output_format}."
+            f"[red]Invalid output format: {escape(output_format)}."
             f" Expected one of: text, sections, bioc[/red]"
         )
         raise typer.Exit(code=1)
@@ -197,8 +202,7 @@ def normalize_batch(
 
     for xml_file in xml_files:
         try:
-            xml_content = xml_file.read_text(encoding="utf-8")
-            result = normalizer.normalize_xml(xml_content)
+            result = normalizer.normalize_xml(xml_file.read_bytes())
 
             # Build output path relative to input_dir to avoid leaking
             # nested directory structure when using recursive glob
@@ -222,26 +226,33 @@ def normalize_batch(
                 )
 
             success += 1
-            console.print(f"  [green]✓[/green] {xml_file.name}")
+            console.print(f"  [green]✓[/green] {escape(xml_file.name)}")
 
         except Exception as exc:
             failed += 1
-            console.print(f"  [red]✗[/red] {xml_file.name}: {exc}")
+            console.print(f"  [red]✗[/red] {escape(xml_file.name)}: {escape(str(exc))}")
 
     console.print(
         f"\n[bold]Done:[/bold] {success} succeeded, {failed} failed out of {len(xml_files)}"
     )
+    # A script has to be able to tell that files were not normalized.
+    if failed:
+        raise typer.Exit(code=1)
 
 
-def _read_xml(path: Path) -> str:
-    """Read XML content from a file."""
+def _read_xml(path: Path) -> bytes:
+    """Read XML content from a file.
+
+    Bytes, so the normalizer decodes the file the way its XML declaration
+    says rather than always as UTF-8.
+    """
     if not path.exists():
-        console.print(f"[red]File not found: {path}[/red]")
+        console.print(f"[red]File not found: {escape(str(path))}[/red]")
         raise typer.Exit(code=1)
     if path.is_dir():
         console.print(
-            f"[red]Expected a file, got directory: {path}."
+            f"[red]Expected a file, got directory: {escape(str(path))}."
             f" Use the 'batch' command for directory processing.[/red]"
         )
         raise typer.Exit(code=1)
-    return path.read_text(encoding="utf-8")
+    return path.read_bytes()

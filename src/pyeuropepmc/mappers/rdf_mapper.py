@@ -5,7 +5,6 @@ RDF Mapper for converting entities to RDF triples based on YAML configuration.
 from __future__ import annotations
 
 import os
-from pathlib import Path
 from typing import TYPE_CHECKING, Any
 
 if TYPE_CHECKING:
@@ -13,6 +12,7 @@ if TYPE_CHECKING:
 
 import yaml
 
+from pyeuropepmc.conf import config_file
 from pyeuropepmc.mappers.rdf_utils import (
     map_multi_value_fields,
     map_ontology_alignments,
@@ -54,14 +54,13 @@ class RDFMapper:
         Parameters
         ----------
         config_path : Optional[str]
-            Path to the YAML configuration file. If None, uses default.
+            Path to the YAML configuration file. If None, uses the
+            ``rdf_map.yml`` that ships with the package.
         enable_named_graphs : bool
             Whether to enable named graphs for entity organization. Default True.
         """
         if config_path is None:
-            # Default to conf/rdf_map.yml in project root
-            base_path = Path(__file__).parent.parent.parent.parent
-            config_path = str(base_path / "conf" / "rdf_map.yml")
+            config_path = str(config_file("rdf_map.yml"))
 
         self.config = self._load_config(config_path)
         self.enable_named_graphs = enable_named_graphs

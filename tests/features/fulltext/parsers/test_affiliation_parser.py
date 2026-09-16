@@ -229,3 +229,83 @@ Department of Biology, University of Test, Boston, USA
         parser = AffiliationParser(root)
         ids = parser._extract_institution_ids(root)
         assert ids == {}
+
+
+EDITOR_AND_REVIEWERS = """<?xml version="1.0"?>
+<article><front><article-meta>
+<contrib-group>
+  <contrib contrib-type="author"><name><surname>Rachubinski</surname></name>
+    <xref ref-type="aff" rid="aff1">1</xref></contrib>
+  <aff id="aff1"><label>1</label>
+    <institution-id institution-id-type="ror">https://ror.org/03wmf1y16</institution-id>
+    <institution>Linda Crnic Institute</institution>
+    <city>Aurora</city></aff>
+</contrib-group>
+<contrib-group>
+  <contrib contrib-type="editor"><name><surname>Marinazzo</surname></name></contrib>
+  <aff><institution>Ghent University</institution></aff>
+</contrib-group>
+<contrib-group>
+  <contrib contrib-type="editor"><name><surname>Scala</surname></name>
+    <xref ref-type="aff" rid="edit1">1</xref></contrib>
+</contrib-group>
+<aff id="edit1"><institution>Sapienza University</institution></aff>
+<aff id="aff9"><institution>Uncited Institute</institution></aff>
+</article-meta></front>
+<body><sec><p>Body.</p></sec></body>
+<sub-article article-type="referee-report"><front-stub><contrib-group>
+  <contrib contrib-type="author"><name><surname>Osorio</surname></name>
+    <xref ref-type="aff" rid="sa1">1</xref></contrib>
+  <aff id="sa1"><institution>Reviewer Institute</institution></aff>
+</contrib-group></front-stub><body><p>Review.</p></body></sub-article>
+</article>"""
+
+GROUP_DIALECT = """<?xml version="1.0"?>
+<article><front><article-meta>
+<contrib-group content-type="author">
+  <contrib><name><surname>Tong</surname></name>
+    <xref ref-type="aff" rid="I1">1</xref></contrib>
+</contrib-group>
+<aff id="I1"><sup>1</sup>Department of Biochemistry, 8 Medical Drive, Singapore 117597</aff>
+</article-meta></front><body><sec><p>Body.</p></sec></body></article>"""
+
+
+class TestAffiliationScope:
+    """Whose affiliations come back, and what their text says.
+
+    `.//aff` matched the editors' affiliations and every peer-review
+    <sub-article>'s: PMC11687933 has 8 author affiliations and returned 33.
+    The text ran the <label> marker and each <institution-id> - a ROR URL, a
+    GRID code, an ISNI - straight into the institution name, because the
+    markup puts no whitespace between them (#251).
+    """
+
+    @pytest.fixture
+    def affiliations(self):
+        root = DefusedET.fromstring(EDITOR_AND_REVIEWERS)
+        return AffiliationParser(root).extract_affiliations()
+
+    def test_author_affiliations_in_document_order(self, affiliations):
+        assert [a["id"] for a in affiliations] == ["aff1", "aff9"]
+
+    def test_editor_affiliations_are_left_out(self, affiliations):
+        text = " ".join(a["text"] for a in affiliations)
+        assert "Ghent" not in text and "Sapienza" not in text
+
+    def test_reviewer_affiliations_are_left_out(self, affiliations):
+        assert "Reviewer Institute" not in " ".join(a["text"] for a in affiliations)
+
+    def test_text_drops_the_label_and_the_institution_ids(self, affiliations):
+        assert affiliations[0]["text"] == "Linda Crnic Institute Aurora"
+
+    def test_institution_ids_are_still_reported_separately(self, affiliations):
+        assert affiliations[0]["institution_ids"] == {"ror": "https://ror.org/03wmf1y16"}
+
+    def test_a_superscript_marker_does_not_strip_digits_from_the_address(self):
+        """The marker used to be removed by text, taking a street number."""
+        root = DefusedET.fromstring(GROUP_DIALECT)
+        affiliation = AffiliationParser(root).extract_affiliations()[0]
+        assert affiliation["markers"] == "1"
+        assert affiliation["institution_text"] == (
+            "Department of Biochemistry, 8 Medical Drive, Singapore 117597"
+        )

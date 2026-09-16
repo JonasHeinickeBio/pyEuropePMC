@@ -237,3 +237,100 @@ class TestNormalizeBatch:
         assert "1 succeeded" in result.stdout
         # Output path should mirror subdirectory structure
         assert (out_dir / "sub" / "test.txt").exists()
+
+
+# ---------------------------------------------------------------------------
+# Document text is data: Rich markup, encodings, flags and exit codes
+# ---------------------------------------------------------------------------
+
+BRACKETS_XML = """\
+<?xml version="1.0" encoding="UTF-8"?>
+<article><body>
+  <sec><title>Results [part 1/i]</title>
+    <p>Gene [a] was fixed at rate r [/i] with P &#x0003c; 0.05 &#x00026; more.</p>
+  </sec>
+</body></article>"""
+
+
+class TestDocumentTextIsNotMarkup:
+    """Rich reads "[...]" as markup: "[/i]" raised MarkupError, "[a]" vanished."""
+
+    @pytest.fixture
+    def brackets_file(self, tmp_path: Path) -> Path:
+        path = tmp_path / "brackets.xml"
+        path.write_text(BRACKETS_XML, encoding="utf-8")
+        return path
+
+    def test_text_prints_brackets_verbatim(self, brackets_file: Path) -> None:
+        result = runner.invoke(normalize_app, ["text", str(brackets_file)])
+        assert result.exit_code == 0, result.output
+        assert "Gene [a] was fixed at rate r [/i] with P < 0.05 & more." in result.stdout
+
+    def test_bioc_prints_valid_json(self, brackets_file: Path) -> None:
+        result = runner.invoke(normalize_app, ["bioc", str(brackets_file)])
+        assert result.exit_code == 0, result.output
+        passages = json.loads(result.stdout)["documents"][0]["passages"]
+        assert "[/i]" in passages[0]["text"]
+
+    def test_sections_table_shows_a_bracketed_title(self, brackets_file: Path) -> None:
+        result = runner.invoke(normalize_app, ["sections", str(brackets_file)])
+        assert result.exit_code == 0, result.output
+        assert "[part 1/i]" in result.stdout
+
+    def test_classify_echoes_a_bracketed_heading(self) -> None:
+        result = runner.invoke(normalize_app, ["classify", "Methods [/i]"])
+        assert result.exit_code == 0, result.output
+        assert "Methods [/i]" in result.stdout
+
+
+class TestInputEncoding:
+    def test_the_declared_encoding_is_honoured(self, tmp_path: Path) -> None:
+        """Files were read as UTF-8 whatever their XML declaration said."""
+        path = tmp_path / "latin1.xml"
+        path.write_bytes(
+            '<?xml version="1.0" encoding="ISO-8859-1"?>'
+            "<article><body><sec><title>T</title><p>Café</p></sec></body></article>".encode(
+                "iso-8859-1"
+            )
+        )
+        result = runner.invoke(normalize_app, ["text", str(path)])
+        assert result.exit_code == 0, result.output
+        assert "Café" in result.stdout
+
+
+class TestNoMarkup:
+    def test_no_markup_keeps_inline_elements(self, tmp_path: Path) -> None:
+        """--no-markup changed nothing while flatten_xrefs stayed on."""
+        path = tmp_path / "bold.xml"
+        path.write_text(
+            "<article><body><sec><title>T</title>"
+            "<p>Some <bold>bold</bold> text.</p></sec></body></article>",
+            encoding="utf-8",
+        )
+        stripped = runner.invoke(normalize_app, ["text", str(path)])
+        kept = runner.invoke(normalize_app, ["text", str(path), "--no-markup"])
+        assert "Some bold text." in stripped.stdout
+        assert "Some\nbold\ntext." in kept.stdout
+
+
+class TestBatchExitCode:
+    def test_exit_code_is_1_when_every_file_fails(self, tmp_path: Path) -> None:
+        (tmp_path / "broken.xml").write_text("<article><body>", encoding="utf-8")
+        result = runner.invoke(normalize_app, ["batch", str(tmp_path), str(tmp_path / "out")])
+        assert result.exit_code == 1
+        assert "0 succeeded, 1 failed" in result.stdout
+
+    def test_exit_code_is_1_when_some_files_fail(self, tmp_path: Path) -> None:
+        (tmp_path / "good.xml").write_text(MINIMAL_XML, encoding="utf-8")
+        (tmp_path / "broken.xml").write_text("<article><body>", encoding="utf-8")
+        out_dir = tmp_path / "out"
+        result = runner.invoke(normalize_app, ["batch", str(tmp_path), str(out_dir)])
+        assert result.exit_code == 1
+        assert "1 succeeded, 1 failed" in result.stdout
+        assert (out_dir / "good.txt").exists()
+
+    def test_a_bracket_in_an_error_message_is_printed(self, tmp_path: Path) -> None:
+        (tmp_path / "[draft].xml").write_text("<article><body>", encoding="utf-8")
+        result = runner.invoke(normalize_app, ["batch", str(tmp_path), str(tmp_path / "out")])
+        assert result.exit_code == 1
+        assert "[draft].xml" in result.stdout

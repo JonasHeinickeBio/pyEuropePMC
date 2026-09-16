@@ -50,7 +50,7 @@ Mark explicitly what the location cannot express, such as `slow`, `network` or `
 
 Tests marked `functional`, `integration`, `network` or `e2e` also get `enable_socket`, so they can reach the network when you select them. Tests under `tests/mcp/` are allowed loopback connections (`127.0.0.1` and `::1`), which asyncio needs to create an event loop on Windows.
 
-When a `functional` test fails with a network error, the failure is reported as a skip, so an outage of a third-party service does not fail the run. Network errors here are the client error codes `NET001` and `NET002`, read timeouts, exhausted retries, refused connections and failed name resolution. Assertion failures and other exceptions still fail.
+When a `functional` test fails with a network error, the failure is reported as a skip, so an outage of a third-party service does not fail the run. Network errors here are the client error codes `NET001` and `NET002`, the gateway and availability codes `HTTP502`, `HTTP503` and `HTTP504`, read timeouts, exhausted retries, refused connections and failed name resolution. Assertion failures and other exceptions still fail.
 
 ## Running the excluded tests
 

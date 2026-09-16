@@ -15,7 +15,7 @@ from typing import Any, Literal, overload
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
-from pyeuropepmc.core.error_codes import ErrorCodes, format_error_message
+from pyeuropepmc.core.error_codes import ErrorCodes, error_code_for_status, format_error_message
 from pyeuropepmc.core.exceptions import APIClientError
 from pyeuropepmc.features.common.base import BaseHTTPClient
 from pyeuropepmc.models.literature import LiteratureResult
@@ -320,28 +320,7 @@ class BaseLiteratureClient(BaseHTTPClient, ABC):
     @staticmethod
     def _map_status_to_error_code(status_code: int) -> ErrorCodes:
         """Map HTTP status to an ErrorCodes enum value."""
-        mapping = {
-            400: ErrorCodes.HTTP400,
-            401: ErrorCodes.AUTH401,
-            403: ErrorCodes.HTTP403,
-            404: ErrorCodes.HTTP404,
-            405: ErrorCodes.HTTP405,
-            406: ErrorCodes.HTTP406,
-            407: ErrorCodes.HTTP407,
-            408: ErrorCodes.HTTP408,
-            410: ErrorCodes.HTTP410,
-            413: ErrorCodes.HTTP413,
-            414: ErrorCodes.HTTP414,
-            415: ErrorCodes.HTTP415,
-            416: ErrorCodes.HTTP416,
-            429: ErrorCodes.RATE429,
-            500: ErrorCodes.HTTP500,
-            501: ErrorCodes.HTTP501,
-            502: ErrorCodes.HTTP502,
-            503: ErrorCodes.HTTP503,
-            504: ErrorCodes.HTTP504,
-        }
-        return mapping.get(status_code, ErrorCodes.API001)
+        return error_code_for_status(status_code) or ErrorCodes.API001
 
     # ------------------------------------------------------------------
     # Abstract interface

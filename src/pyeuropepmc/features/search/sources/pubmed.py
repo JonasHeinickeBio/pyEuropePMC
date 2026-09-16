@@ -14,12 +14,13 @@ import logging
 from typing import Any
 from xml.etree import ElementTree as ET  # nosec B405
 
-from defusedxml import DefusedXmlException
-import defusedxml.ElementTree as DefusedET
 import requests
 
 from pyeuropepmc.cache.cache import CacheConfig
+from pyeuropepmc.core.exceptions import ParsingError
+from pyeuropepmc.core.xml_parsing import parse_xml
 from pyeuropepmc.features.literature.normalization import (
+    normalize_affiliation,
     normalize_author_list,
     normalize_doi,
     normalize_journal_title,
@@ -36,6 +37,18 @@ __all__ = ["PubMedClient"]
 # XML namespace for EFetch results
 # ---------------------------------------------------------------------------
 _NS = {"ns": "http://www.ncbi.nlm.nih.gov/PubMed"}
+
+
+def _element_text(element: ET.Element | None) -> str:
+    """All the text of ``element``, inline markup included, whitespace collapsed.
+
+    ``element.text`` stops at the first child element, and EFetch keeps
+    inline HTML-style markup - <i>, <b>, <sup>, <sub> - in titles, abstracts
+    and affiliations.
+    """
+    if element is None:
+        return ""
+    return " ".join("".join(element.itertext()).split())
 
 
 class PubMedClient(BaseLiteratureClient):
@@ -387,9 +400,9 @@ class PubMedClient(BaseLiteratureClient):
     ) -> LiteratureResult | None:
         """Parse EFetch XML response into a :class:`LiteratureResult`."""
         try:
-            root: ET.Element = DefusedET.fromstring(xml_text)
-        except (DefusedET.ParseError, DefusedXmlException):
-            logger.exception("Failed to parse EFetch XML for PMID=%s", pmid)
+            root: ET.Element = parse_xml(xml_text, what="The EFetch response")
+        except ParsingError as exc:
+            logger.warning("EFetch XML for PMID=%s could not be parsed, no result: %s", pmid, exc)
             return None
 
         # Find the PubmedArticle
@@ -404,19 +417,19 @@ class PubMedClient(BaseLiteratureClient):
         # --- Article title ---
         art_elem = medline.find(".//Article")
         title_elem = art_elem.find("ArticleTitle") if art_elem is not None else None
-        title = title_elem.text if title_elem is not None else None
-        title = normalize_paper_title(title)
+        # Like an abstract section, a title keeps inline markup: "Structure
+        # of the <i>Escherichia coli</i> LolCDE complex" read as "Structure of
+        # the" through .text.
+        title = normalize_paper_title(_element_text(title_elem) or None)
 
         # --- Authors ---
         authors_list: list[Author] = []
         author_list_elem = medline.find(".//AuthorList")
         if author_list_elem is not None:
             for author_elem in author_list_elem.findall("Author"):
-                last = author_elem.find("LastName")
-                fore = author_elem.find("ForeName")
-                if last is not None:
-                    name = f"{last.text}, {fore.text}" if fore is not None else last.text
-                    authors_list.append(Author(name=name or ""))
+                author = self._efetch_author(author_elem)
+                if author is not None:
+                    authors_list.append(author)
 
         # --- Journal ---
         journal_elem = medline.find(".//Journal/Title")
@@ -457,7 +470,11 @@ class PubMedClient(BaseLiteratureClient):
             parts: list[str] = []
             for at in medline.findall(".//Abstract/AbstractText"):
                 label = at.get("Label", "")
-                text = (at.text or "").strip()
+                # itertext, not .text: a section is cut off at its first
+                # inline element, and PubMed keeps <i>, <b>, <sup> and <sub>
+                # in abstracts. PMID 28424752's BACKGROUND section stopped at
+                # "commercial", before <i>bath salts</i>.
+                text = _element_text(at)
                 if label and text:
                     parts.append(f"{label}: {text}")
                 elif text:
@@ -482,19 +499,44 @@ class PubMedClient(BaseLiteratureClient):
             if kw.text:
                 keywords.append(kw.text)
 
-        # --- DOI ---
-        doi = None
-        for eid in medline.findall(".//ArticleIdList/ArticleId"):
-            if eid.get("IdType") == "doi" and eid.text:
-                doi = normalize_doi(eid.text)
-                break
+        # --- DOI and PMCID ---
+        # The record's own identifiers are in <PubmedData><ArticleIdList>, a
+        # sibling of <MedlineCitation>, so the DOI search - which ran inside
+        # <MedlineCitation> - found nothing: 5 of 5 measured records came back
+        # without a DOI. The PMCID search ran over the whole <PubmedArticle>,
+        # which also holds an <ArticleIdList> for every cited reference, so a
+        # record with no PMCID of its own took a reference's: PMID 33093664
+        # reported "1738058".
+        own_ids = self._efetch_own_article_ids(article)
 
-        # --- PMCID ---
-        pmcid = None
-        for eid in article.findall(".//ArticleIdList/ArticleId"):
-            if eid.get("IdType") == "pmc" and eid.text:
-                pmcid = eid.text
-                break
+        doi = next(
+            (
+                d
+                for eid in own_ids
+                if eid.get("IdType") == "doi" and (d := normalize_doi(eid.text))
+            ),
+            None,
+        )
+        if doi is None and art_elem is not None:
+            doi = next(
+                (
+                    d
+                    for eloc in art_elem.findall("ELocationID")
+                    if eloc.get("EIdType") == "doi"
+                    and eloc.get("ValidYN", "Y") == "Y"
+                    and (d := normalize_doi(eloc.text))
+                ),
+                None,
+            )
+
+        pmcid = next(
+            (
+                eid.text.strip()
+                for eid in own_ids
+                if eid.get("IdType") == "pmc" and eid.text and eid.text.strip()
+            ),
+            None,
+        )
 
         # --- Grant info ---
         grants: list[dict[str, str]] = []
@@ -532,6 +574,52 @@ class PubMedClient(BaseLiteratureClient):
                 "grants": grants,
             },
         )
+
+    @staticmethod
+    def _efetch_own_article_ids(article: ET.Element) -> list[ET.Element]:
+        """The <ArticleId> elements that identify this record.
+
+        Only <PubmedData><ArticleIdList> - not the <ArticleIdList> of each
+        <Reference> in <ReferenceList>, which describe the works it cites.
+        """
+        return article.findall("./PubmedData/ArticleIdList/ArticleId")
+
+    @staticmethod
+    def _efetch_author(author_elem: ET.Element) -> Author | None:
+        """One EFetch <Author>, with its ORCID and affiliations.
+
+        Both were dropped. An author with several <AffiliationInfo> elements
+        gets them joined with "; ", since each affiliation is a full address
+        that contains commas of its own.
+        """
+        last = _element_text(author_elem.find("LastName"))
+        if not last:
+            return None
+        fore = _element_text(author_elem.find("ForeName"))
+        name = f"{last}, {fore}" if fore else last
+
+        affiliations = [
+            affiliation
+            for elem in author_elem.findall("AffiliationInfo/Affiliation")
+            if (affiliation := normalize_affiliation(_element_text(elem)))
+        ]
+        affiliation = "; ".join(affiliations) or None
+
+        orcid = next(
+            (
+                value
+                for identifier in author_elem.findall("Identifier")
+                if identifier.get("Source") == "ORCID" and (value := _element_text(identifier))
+            ),
+            None,
+        )
+        try:
+            return Author(name=name, orcid=orcid, affiliation=affiliation)
+        except ValueError:
+            # A malformed ORCID must not cost the author: keep the name and
+            # the affiliation.
+            logger.debug("Ignoring invalid ORCID %r for %s", orcid, name)
+            return Author(name=name, affiliation=affiliation)
 
     # ------------------------------------------------------------------
     # Normalisation  (ESummary → LiteratureResult)

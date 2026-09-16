@@ -22,6 +22,8 @@ import tarfile
 from typing import Any
 import zipfile
 
+from pyeuropepmc._optional_imports import is_package_available
+
 logger = logging.getLogger(__name__)
 
 
@@ -203,8 +205,13 @@ class BenchmarkDataset:
 
     @property
     def is_downloaded(self) -> bool:
-        """Check whether the dataset is already downloaded."""
-        return self._local_dir.exists() and any(self._local_dir.rglob("*.xml"))
+        """Check whether the dataset is already downloaded.
+
+        Looks for files matching the dataset's own ``filename_glob`` — ``*.nxml``
+        for PMC_sample_1943, eLife_984 and biorxiv-10k-test-2000 — as
+        :meth:`iter_articles` does.
+        """
+        return self._local_dir.exists() and any(self._local_dir.rglob(self.info.filename_glob))
 
     @property
     def article_count(self) -> int:
@@ -251,8 +258,13 @@ class BenchmarkDataset:
         if _try_http_download(self._source, self._local_dir, self.name, force, progress_callback):
             return self._local_dir
 
+        hint = ""
+        if not is_package_available("huggingface_hub"):
+            # Every registered dataset lives on Hugging Face, and the plain HTTP
+            # fallback cannot fetch a Hugging Face dataset page.
+            hint = '. Hugging Face downloads need: pip install "pyeuropepmc[benchmark]"'
         raise ConnectionError(
-            f"Could not download dataset {self.name}. Try manually from {self._source}"
+            f"Could not download dataset {self.name}. Try manually from {self._source}{hint}"
         )
 
     # ------------------------------------------------------------------
