@@ -14,6 +14,7 @@
 @prefix obo: <http://purl.obolibrary.org/obo/> .
 @prefix org: <http://www.w3.org/ns/org#> .
 @prefix cito: <http://purl.org/spar/cito/> .
+@prefix oa: <http://www.w3.org/ns/oa#> .
 @prefix datacite: <http://purl.org/spar/datacite/> .
 @prefix frapo: <http://purl.org/cerif/frapo/> .
 @prefix geo: <http://www.w3.org/2003/01/geo/wgs84_pos#> .
@@ -28,7 +29,7 @@
 
 # RML Mappings for PyEuropePMC Data Models
 # Auto-generated from rdf_map.yml - DO NOT EDIT MANUALLY
-# Run 'python scripts/sync_rdf_mappings.py' to regenerate
+# Run 'python examples/scripts/sync_rdf_mappings.py' to regenerate
 
 # ===== ScholarlyWorkEntity Mapping =====
 <#ScholarlyWorkEntityMap>
@@ -413,12 +414,65 @@
 
     rr:subjectMap [
         rr:template "http://example.org/data/reference/{id}" ;
-        rr:class bibo:Article
+        rr:class bibo:Document
     ] ;
 
     rr:predicateObjectMap [
         rr:predicate bibo:authorList ;
         rr:objectMap [ rml:reference "authors" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:description ;
+        rr:objectMap [ rml:reference "raw_citation" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== AnnotationEntity Mapping =====
+<#AnnotationEntityMap>
+    rml:logicalSource [
+        rml:source "annotation.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/annotation/{id}" ;
+        rr:class oa:Annotation
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate oa:hasBody ;
+        rr:objectMap [ rml:reference "exact" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:isPartOf ;
+        rr:objectMap [ rml:reference "section" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:creator ;
+        rr:objectMap [ rml:reference "provider" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:articleId ;
+        rr:objectMap [ rml:reference "article_id" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate oa:hasTarget ;
+        rr:objectMap [ rml:reference "article_uri" ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate pyeuropepmc:annotationType ;
+        rr:objectMap [ rml:reference "annotation_type" ]
     ] ;
 
     rr:predicateObjectMap [
@@ -673,6 +727,39 @@
     rr:predicateObjectMap [
         rr:predicate frapo:hasRecipient ;
         rr:objectMap [ rml:reference "recipient" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "label" ]
+    ] .
+
+# ===== FigureEntity Mapping =====
+<#FigureEntityMap>
+    rml:logicalSource [
+        rml:source "figures.json" ;
+        rml:referenceFormulation ql:JSONPath ;
+        rml:iterator "$[*]"
+    ] ;
+
+    rr:subjectMap [
+        rr:template "http://example.org/data/figure/{id}" ;
+        rr:class bibo:Image
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate dcterms:description ;
+        rr:objectMap [ rml:reference "caption" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate rdfs:label ;
+        rr:objectMap [ rml:reference "figure_label" ; rr:datatype xsd:string ]
+    ] ;
+
+    rr:predicateObjectMap [
+        rr:predicate foaf:depiction ;
+        rr:objectMap [ rml:reference "graphic_uri" ; rr:datatype xsd:anyURI ]
     ] ;
 
     rr:predicateObjectMap [

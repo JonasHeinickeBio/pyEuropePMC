@@ -207,3 +207,40 @@ class TestRMLRDFizerNotAvailable:
         # This should always be True since we installed it
         # But we test the flag exists
         assert isinstance(RDFIZER_AVAILABLE, bool)
+
+
+@pytest.mark.slow
+class TestRMLRDFizerWholeArticle:
+    """Real SDM-RDFizer run over a fixture article."""
+
+    ARTICLE = os.path.join(
+        os.path.dirname(__file__), "..", "fixtures", "fulltext_downloads", "PMC3258128.xml"
+    )
+
+    def _convert(self):
+        from pyeuropepmc.builders import build_paper_entities
+        from pyeuropepmc.features.fulltext.fulltext_parser import FullTextXMLParser
+
+        with open(self.ARTICLE, encoding="utf-8") as fh:
+            parser = FullTextXMLParser(fh.read())
+        paper, authors, sections, tables, figures, references = build_paper_entities(parser)
+        rdfizer = RMLRDFizer()
+        return {
+            kind: set(rdfizer.entities_to_rdf(entities, entity_type=kind))
+            for kind, entities in (
+                ("paper", [paper]),
+                ("author", authors),
+                ("section", sections),
+                ("figure", figures),
+                ("reference", references),
+            )
+        }
+
+    @pytest.mark.timeout(900)  # ten SDM-RDFizer runs
+    def test_every_entity_type_produces_triples_and_runs_agree(self, tmp_path, monkeypatch):
+        monkeypatch.chdir(tmp_path)  # SDM-RDFizer writes error.log to the working directory
+        first = self._convert()
+        second = self._convert()
+
+        assert all(first[kind] for kind in first), {k: len(v) for k, v in first.items()}
+        assert first == second

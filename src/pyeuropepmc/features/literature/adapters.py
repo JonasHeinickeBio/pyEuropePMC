@@ -330,6 +330,7 @@ class OpenAlexLiteratureAdapter:
         rate_limit_delay: float = 1.0,
         timeout: int = 15,
         cache_config: CacheConfig | None = None,
+        email: str | None = None,
     ) -> None:
         """
         Initialize the adapter.
@@ -344,6 +345,11 @@ class OpenAlexLiteratureAdapter:
             Request timeout in seconds (default: 15)
         cache_config : CacheConfig, optional
             Cache configuration
+        email : str, optional
+            Contact address for OpenAlex's polite pool.  Ignored when
+            *enrichment_client* is given — configure it on that client instead.
+            This is the ``email`` credential the source registry forwards, so
+            ``UnifiedSearch(credentials={"email": ...})`` reaches OpenAlex.
         """
         if enrichment_client is not None:
             self.enrichment_client = enrichment_client
@@ -353,6 +359,7 @@ class OpenAlexLiteratureAdapter:
                 rate_limit_delay=rate_limit_delay,
                 timeout=timeout,
                 cache_config=cache_config,
+                email=email,
             )
 
         # Dedicated HTTP client for the *search* endpoint so the call goes
